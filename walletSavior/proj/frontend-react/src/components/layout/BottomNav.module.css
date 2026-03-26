@@ -1,0 +1,28 @@
+.bar {
+  display:none;
+  position:fixed; bottom:0; left:0; right:0; z-index:100;
+  height:60px;
+  background:rgba(11,15,25,.88); backdrop-filter:blur(18px) saturate(1.6);
+  border-top:1px solid var(--border);
+  align-items:center; justify-content:space-around;
+  padding:0 4px; padding-bottom:env(safe-area-inset-bottom,0);
+}
+
+@media(max-width:768px) {
+  .bar { display:flex; }
+}
+
+.tab {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:3px; flex:1;
+  min-height:44px; min-width:44px;
+  padding:6px 2px;
+  color:var(--text3); font-size:.65rem; font-weight:var(--fw-medium);
+  text-decoration:none; transition:color var(--dur) var(--ease);
+  -webkit-tap-highlight-color:transparent;
+}
+.tab:hover { color:var(--text2); }
+.tab svg { flex-shrink:0; }
+
+.active { color:var(--accent); }
+.active svg { filter:drop-shadow(0 0 6px rgba(56,189,248,.4)); }

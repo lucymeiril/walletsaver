@@ -1,0 +1,30 @@
+/* FavoritesDashboard */
+.wrap { display:flex; gap:14px; overflow-x:auto; padding-bottom:8px; scrollbar-width:thin; scrollbar-color:var(--border) transparent; }
+.wrap::-webkit-scrollbar { height:4px; }
+.wrap::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
+
+.card { flex:0 0 200px; background:var(--surface); border-radius:var(--radius); padding:16px; border:1px solid rgba(251,191,36,.25); position:relative; transition:transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease); cursor:pointer; }
+.card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(0,0,0,.3); }
+
+.cardTop { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.icon { font-size:1.5rem; width:36px; height:36px; display:flex; align-items:center; justify-content:center; background:var(--glass2); border-radius:8px; }
+.removeBtn { color:var(--text3); padding:4px; border-radius:6px; transition:color var(--dur) var(--ease), background var(--dur) var(--ease); display:flex; align-items:center; justify-content:center; }
+.removeBtn:hover { color:var(--red); background:rgba(248,113,113,.1); }
+
+.name { font-size:.88rem; color:var(--text2); margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.price { font-size:1.15rem; font-weight:var(--fw-bold); margin-bottom:6px; }
+
+.trend { display:inline-flex; align-items:center; gap:3px; font-size:.75rem; font-weight:var(--fw-semi); padding:2px 8px; border-radius:10px; }
+.trendDown { background:rgba(52,211,153,.12); color:var(--green); }
+.trendUp { background:rgba(248,113,113,.12); color:var(--red); }
+.trendSame { background:rgba(148,163,184,.1); color:var(--text3); }
+
+.badge { display:inline-flex; align-items:center; gap:4px; margin-top:8px; font-size:.72rem; font-weight:var(--fw-semi); padding:4px 10px; border-radius:8px; }
+.badgeUltra { background:linear-gradient(135deg,rgba(52,211,153,.15),rgba(56,189,248,.15)); color:var(--green); }
+.badgeGreat { background:rgba(56,189,248,.1); color:var(--accent); }
+.badgeOk { background:rgba(148,163,184,.08); color:var(--text3); }
+.badgeWait { background:rgba(251,191,36,.1); color:var(--yellow); }
+
+.empty { text-align:center; padding:32px 20px; color:var(--text3); font-size:.95rem; line-height:1.7; }
+
+@media(max-width:600px) { .card { flex:0 0 170px; padding:14px; } }
