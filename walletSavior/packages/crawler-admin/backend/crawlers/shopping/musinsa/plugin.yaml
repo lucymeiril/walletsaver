@@ -1,0 +1,8 @@
+name: musinsa
+display_name: 무신사
+category: shopping
+module: crawlers.shopping.musinsa.crawler
+class_name: MusinsaCrawler
+schedule: "0 */4 * * *"
+difficulty: hard
+notes: "Next.js SPA — Selenium/Playwright 필요"

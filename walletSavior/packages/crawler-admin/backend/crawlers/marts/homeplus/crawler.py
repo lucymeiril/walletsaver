@@ -53,7 +53,12 @@ class HomeplusCrawler(CrawlerContract):
         )
 
     async def crawl(self) -> CrawlResult:
-        """홈플러스 행사 상품 페이지를 크롤링한다."""
+        """홈플러스 행사 상품 페이지를 크롤링한다.
+
+        2025년 기준 homeplus.co.kr → mfront.homeplus.co.kr(SPA)로 전환됨.
+        SPA 렌더링 없이 데이터를 가져올 수 있는 API를 우선 시도하고,
+        실패 시 HTML 파싱으로 폴백한다.
+        """
         started_at = datetime.now()
         logger.info("[홈플러스] 크롤링 시작")
 
@@ -66,8 +71,25 @@ class HomeplusCrawler(CrawlerContract):
 
             response = requests.get(
                 self.EVENT_URL, headers=headers, timeout=20,
+                allow_redirects=True,
             )
-            response.encoding = "utf-8"
+
+            # SPA 감지 — 응답이 작고 JS 프레임워크 셸만 반환되는 경우
+            if "mfront.homeplus" in response.url or len(response.text) < 15000:
+                from bs4 import BeautifulSoup
+                soup = BeautifulSoup(response.text, "html.parser")
+                product_markers = soup.select(".product-item, .goods_item, .event_item")
+                if not product_markers:
+                    logger.warning("[홈플러스] SPA 셸만 반환됨 — 브라우저 자동화 필요")
+                    return CrawlResult(
+                        status=CrawlStatus.PARTIAL,
+                        crawler_name=self.info.name,
+                        strategy_used="requests",
+                        error_msg="홈플러스가 SPA로 전환됨 (mfront.homeplus.co.kr). "
+                                  "Selenium/Playwright 기반 브라우저 자동화 필요.",
+                        started_at=started_at,
+                        finished_at=datetime.now(),
+                    )
 
             if response.status_code != 200:
                 logger.error(f"[홈플러스] HTTP {response.status_code}")

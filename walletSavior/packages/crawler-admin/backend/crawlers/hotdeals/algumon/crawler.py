@@ -43,6 +43,8 @@ class AlgumonCrawler(CrawlerContract):
 
     BASE_URL = "https://www.algumon.com"
     DEAL_URL = "https://www.algumon.com/n/deal"
+    # 알구몬은 SPA(Svelte)이지만 SSR로 JSON-LD가 포함된다
+    # JSON-LD schema에서 데이터 추출이 더 안정적
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=0.5, delay_max=1.5)
@@ -109,11 +111,42 @@ class AlgumonCrawler(CrawlerContract):
             )
 
     async def parse(self, raw_data: str) -> list[HotdealPost]:
-        """HTML에서 핫딜 게시글을 파싱한다."""
+        """HTML에서 핫딜 게시글을 파싱한다.
+
+        알구몬은 SPA이지만 SSR 렌더링으로 JSON-LD가 포함된다.
+        1차: JSON-LD schema에서 추출 (안정적)
+        2차: HTML DOM에서 추출 (폴백)
+        """
         soup = BeautifulSoup(raw_data, "html.parser")
         items: list[HotdealPost] = []
 
-        # deal-card-content 기반 파싱
+        # 1차: JSON-LD에서 추출 시도
+        import json
+        for script in soup.select('script[type="application/ld+json"]'):
+            try:
+                data = json.loads(script.string)
+                if data.get("@type") == "CollectionPage" and "mainEntity" in data:
+                    item_list = data["mainEntity"].get("itemListElement", [])
+                    for entry in item_list:
+                        item_data = entry.get("item", {})
+                        title = item_data.get("name", "")
+                        url = item_data.get("url", "")
+                        if title and url:
+                            price = self._extract_price(title)
+                            items.append(HotdealPost(
+                                title=title,
+                                url=url,
+                                source_community="알구몬",
+                                price=price,
+                            ))
+            except (json.JSONDecodeError, KeyError):
+                continue
+
+        if items:
+            logger.info(f"[알구몬] JSON-LD에서 {len(items)}개 추출")
+            return items
+
+        # 2차: HTML DOM 기반 파싱
         cards = soup.select(".deal-card-content")
         logger.info(f"[알구몬] deal-card-content 카드: {len(cards)}개")
 

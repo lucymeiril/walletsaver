@@ -1,0 +1,8 @@
+name: giordano
+display_name: 지오다노
+category: shopping
+module: crawlers.shopping.giordano.crawler
+class_name: GiordanoCrawler
+schedule: "0 */4 * * *"
+difficulty: hard
+notes: "Cafe24 SPA — Selenium/Playwright 필요"

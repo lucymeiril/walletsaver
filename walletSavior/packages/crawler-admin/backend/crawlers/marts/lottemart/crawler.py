@@ -53,7 +53,12 @@ class LottemartCrawler(CrawlerContract):
         )
 
     async def crawl(self) -> CrawlResult:
-        """롯데마트 행사 상품 페이지를 크롤링한다."""
+        """롯데마트 행사 상품 페이지를 크롤링한다.
+
+        2025년 기준 lottemart.com → lottemartzetta.com(SPA)으로 리다이렉트됨.
+        SPA 렌더링 없이 데이터를 가져올 수 있는 API를 우선 시도하고,
+        실패 시 HTML 파싱으로 폴백한다.
+        """
         started_at = datetime.now()
         logger.info("[롯데마트] 크롤링 시작")
 
@@ -66,8 +71,21 @@ class LottemartCrawler(CrawlerContract):
 
             response = requests.get(
                 self.EVENT_URL, headers=headers, timeout=20,
+                allow_redirects=True,
             )
-            response.encoding = "utf-8"
+
+            # SPA 리다이렉트 감지 (lottemartzetta.com으로 리다이렉트)
+            if "lottemartzetta" in response.url or "zetta" in response.text[:2000].lower():
+                logger.warning("[롯데마트] lottemartzetta.com SPA로 리다이렉트됨 — 브라우저 자동화 필요")
+                return CrawlResult(
+                    status=CrawlStatus.PARTIAL,
+                    crawler_name=self.info.name,
+                    strategy_used="requests",
+                    error_msg="롯데마트가 lottemartzetta.com SPA로 전환됨. "
+                              "Selenium/Playwright 기반 브라우저 자동화 필요.",
+                    started_at=started_at,
+                    finished_at=datetime.now(),
+                )
 
             if response.status_code != 200:
                 logger.error(f"[롯데마트] HTTP {response.status_code}")

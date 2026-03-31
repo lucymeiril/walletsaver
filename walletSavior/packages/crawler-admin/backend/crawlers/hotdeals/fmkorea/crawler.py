@@ -91,7 +91,7 @@ class FmkoreaCrawler(CrawlerContract):
             return CrawlResult(
                 status=CrawlStatus.SUCCESS,
                 crawler_name=self.info.name,
-                strategy_used="requests",
+                strategy_used="cloudscraper",
                 items_count=len(valid_items),
                 items=items_as_dict,
                 started_at=started_at,
@@ -110,35 +110,33 @@ class FmkoreaCrawler(CrawlerContract):
             )
 
     def _fetch_with_fallback(self) -> Optional[str]:
-        """requests → cloudscraper 순서로 시도하여 HTML을 가져온다.
+        """cloudscraper → requests 순서로 시도하여 HTML을 가져온다.
 
-        FM코리아는 Cloudflare 보호가 있을 수 있어
-        일반 requests 실패 시 cloudscraper로 폴백한다.
+        FM코리아는 Cloudflare 보호가 강해서 일반 requests는 축소된 HTML만 반환한다.
+        cloudscraper를 먼저 시도하고, 실패 시 requests로 폴백한다.
         """
-        # 1차: 일반 requests
-        try:
-            headers = self._anti_detect.get_random_headers()
-            response = requests.get(self.DEAL_URL, headers=headers, timeout=15)
-            response.encoding = "utf-8"
-            if response.status_code == 200 and len(response.text) > 1000:
-                return response.text
-            logger.warning(f"[FM코리아] requests 실패: HTTP {response.status_code}")
-        except Exception as e:
-            logger.warning(f"[FM코리아] requests 예외: {e}")
-
-        # 2차: cloudscraper 폴백
+        # 1차: cloudscraper (Cloudflare 우회 — 전체 HTML 반환)
         try:
             import cloudscraper
             scraper = cloudscraper.create_scraper()
             response = scraper.get(self.DEAL_URL, timeout=20)
-            response.encoding = "utf-8"
-            if response.status_code == 200:
+            if response.status_code == 200 and len(response.text) > 5000:
                 return response.text
-            logger.warning(f"[FM코리아] cloudscraper 실패: HTTP {response.status_code}")
+            logger.warning(f"[FM코리아] cloudscraper 응답 부족: HTTP {response.status_code}, len={len(response.text)}")
         except ImportError:
             logger.warning("[FM코리아] cloudscraper 미설치 — pip install cloudscraper")
         except Exception as e:
             logger.warning(f"[FM코리아] cloudscraper 예외: {e}")
+
+        # 2차: 일반 requests 폴백
+        try:
+            headers = self._anti_detect.get_random_headers()
+            response = requests.get(self.DEAL_URL, headers=headers, timeout=15)
+            if response.status_code == 200 and len(response.text) > 5000:
+                return response.text
+            logger.warning(f"[FM코리아] requests 응답 부족: HTTP {response.status_code}, len={len(response.text)}")
+        except Exception as e:
+            logger.warning(f"[FM코리아] requests 예외: {e}")
 
         return None
 
@@ -151,18 +149,25 @@ class FmkoreaCrawler(CrawlerContract):
         soup = BeautifulSoup(raw_data, "html.parser")
         items: list[HotdealPost] = []
 
-        # 패턴 1: li 기반 레이아웃
+        # 패턴 1: li 기반 레이아웃 (hotdeal_var8 등 클래스)
         list_items = soup.select("li.li_best2_pop0, li.li_best2_pop1, li.li_best2_pop2")
         if not list_items:
-            # 패턴 2: 일반 li 리스트에서 hotdeal 관련 항목 선택
             list_items = soup.select("div.fm_best_widget li")
 
-        # 패턴 3: 테이블 기반 레이아웃
+        # 패턴 2: 테이블 기반 레이아웃
         table_rows = soup.select("tr.bg1, tr.bg2") if not list_items else []
+
+        # 패턴 3: hotdeal_var8 제목 td 기반 (새 레이아웃)
+        if not list_items and not table_rows:
+            table_rows = soup.select("table.bd_lst tr")
 
         # 패턴 4: 범용 — 핫딜 제목 링크 기반 탐색
         if not list_items and not table_rows:
             list_items = soup.select("li[class*='li']")
+
+        # 패턴 5: div.content_list 내 게시글
+        if not list_items and not table_rows:
+            list_items = soup.select("div.content_list div.li")
 
         logger.info(f"[FM코리아] 리스트 항목: {len(list_items)}개, 테이블 행: {len(table_rows)}개")
 
