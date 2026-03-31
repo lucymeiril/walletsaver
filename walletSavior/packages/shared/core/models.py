@@ -248,3 +248,48 @@ class HotdealPost(BaseModel):
     matched_product: str = ""                   # DB 매칭된 품목명
     price_vs_avg: Optional[float] = None        # 평균 대비 비율 (0.7 = 30% 저렴)
 
+
+# --- 대기열 (Pending Ingestion) ---
+
+class IngestionStatus(str, Enum):
+    """크롤 결과 대기열 상태"""
+    PENDING = "pending"
+    CRAWLER_APPROVED = "crawler_approved"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+    PARTIAL = "partial"
+
+
+class PendingIngestionSummary(BaseModel):
+    """대기열 항목 요약 — 목록 표시용"""
+    id: int
+    crawler_name: str
+    crawl_status: str
+    items_count: int
+    schema_type: str
+    quality_score: Optional[float] = None
+    status: IngestionStatus = IngestionStatus.PENDING
+    crawled_at: datetime = Field(default_factory=datetime.now)
+    duration_seconds: Optional[float] = None
+
+
+class PendingIngestionDetail(PendingIngestionSummary):
+    """대기열 항목 상세 — 미리보기, 검토용"""
+    items: list[dict[str, Any]] = Field(default_factory=list)
+    quality_details: Optional[dict[str, Any]] = None
+    errors: list[dict[str, Any]] = Field(default_factory=list)
+    crawler_reviewer_notes: Optional[str] = None
+    db_reviewer_notes: Optional[str] = None
+    rejected_reason: Optional[str] = None
+    approved_items: Optional[list[dict[str, Any]]] = None
+    strategy_used: Optional[str] = None
+    source_url: Optional[str] = None
+
+
+class IngestionReviewRequest(BaseModel):
+    """크롤러/DB 관리자의 검토 요청"""
+    action: str                                         # "approve", "reject", "partial"
+    notes: Optional[str] = None
+    approved_item_indices: Optional[list[int]] = None   # partial 승인 시 항목 인덱스
+    rejected_reason: Optional[str] = None
+

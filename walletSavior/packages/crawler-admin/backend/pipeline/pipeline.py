@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import os
 import time
 from datetime import datetime
 from typing import Any, Optional
@@ -29,6 +30,12 @@ logger = logging.getLogger(__name__)
 
 # DB-Admin API endpoint (configurable)
 DB_ADMIN_API_URL = "http://localhost:8001/api/prices/bulk"
+
+# 대기열(Pending Ingestion) 설정
+INGESTION_API_URL = os.getenv(
+    "INGESTION_API_URL", "http://localhost:8002/api/ingestions"
+)
+SKIP_REVIEW = os.getenv("SKIP_REVIEW", "").lower() == "true"
 
 
 class PipelineResult:
@@ -153,8 +160,19 @@ class CrawlPipeline:
         else:
             records = to_discount_history(items, source="mart_discount")
 
-        # 5. Store — POST to DB-Admin API
-        items_saved = await self._store(records, errors)
+        # 5. Store — 대기열 또는 직접 DB 저장
+        if SKIP_REVIEW:
+            items_saved = await self._store(records, errors)
+        else:
+            items_saved = await self._store_to_ingestion(
+                crawler_name=crawler_name,
+                crawl_status="success",
+                items=items,
+                schema_type=model_type,
+                strategy_used=crawl_result.strategy_used,
+                duration_seconds=time.monotonic() - start,
+                errors=errors,
+            )
 
         duration = time.monotonic() - start
         result = PipelineResult(
@@ -211,6 +229,38 @@ class CrawlPipeline:
         except Exception as exc:
             errors.append(f"store: {exc}")
             logger.warning(f"[Pipeline] store failed: {exc}")
+            return 0
+
+    async def _store_to_ingestion(
+        self,
+        crawler_name: str,
+        crawl_status: str,
+        items: list[dict[str, Any]],
+        schema_type: str,
+        strategy_used: str | None,
+        duration_seconds: float,
+        errors: list[str],
+    ) -> int:
+        """대기열(Pending Ingestion)에 크롤 결과 제출."""
+        if not items:
+            return 0
+        payload = {
+            "crawler_name": crawler_name,
+            "crawl_status": crawl_status,
+            "items": items,
+            "schema_type": schema_type,
+            "strategy_used": strategy_used,
+            "duration_seconds": round(duration_seconds, 2),
+            "errors": [{"message": e} for e in errors],
+        }
+        try:
+            async with httpx.AsyncClient(timeout=30) as client:
+                resp = await client.post(INGESTION_API_URL, json=payload)
+                resp.raise_for_status()
+                return len(items)
+        except Exception as exc:
+            errors.append(f"ingestion_submit: {exc}")
+            logger.warning(f"[Pipeline] ingestion submit failed: {exc}")
             return 0
 
     def _fail(

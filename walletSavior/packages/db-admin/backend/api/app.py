@@ -23,12 +23,14 @@ def create_app() -> FastAPI:
     from api.routes.categories import router as categories_router
     from api.routes.keywords import router as keywords_router
     from api.routes.analytics import router as analytics_router
+    from api.routes.ingestion import router as ingestion_router
 
     app.include_router(products_router)
     app.include_router(prices_router)
     app.include_router(categories_router)
     app.include_router(keywords_router)
     app.include_router(analytics_router)
+    app.include_router(ingestion_router)
 
     @app.get("/health")
     async def health():

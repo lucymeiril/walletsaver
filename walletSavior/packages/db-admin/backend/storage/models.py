@@ -491,3 +491,61 @@ class ShoppingItem(Base):
     __table_args__ = (
         Index("ix_shopping_platform", "platform"),
     )
+
+
+# ═══════════════════════════════════════════════
+# 대기열 (Pending Ingestion)
+# ═══════════════════════════════════════════════
+
+class IngestionStatus(str, enum.Enum):
+    PENDING = "pending"                    # 대기 중 — 검토 필요
+    CRAWLER_APPROVED = "crawler_approved"  # 크롤러 관리자 1차 승인
+    APPROVED = "approved"                  # DB 관리자 최종 승인 → DB 저장 완료
+    REJECTED = "rejected"                  # 거부됨
+    PARTIAL = "partial"                    # 일부만 승인
+
+
+class PendingIngestion(Base):
+    """크롤 결과 대기열 — 크롤러→여기→검토→승인→최종 DB"""
+    __tablename__ = "pending_ingestions"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+
+    # 크롤 메타데이터
+    crawler_name: Mapped[str] = mapped_column(String(100), nullable=False)
+    crawl_status: Mapped[str] = mapped_column(String(20))
+    strategy_used: Mapped[Optional[str]] = mapped_column(String(50))
+
+    # 데이터
+    items_count: Mapped[int] = mapped_column(Integer, default=0)
+    items_json: Mapped[str] = mapped_column(Text, nullable=False)
+    schema_type: Mapped[str] = mapped_column(String(50))
+
+    # 품질
+    quality_score: Mapped[Optional[float]] = mapped_column(Float)
+    quality_details: Mapped[Optional[dict]] = mapped_column(JSON)
+    errors_json: Mapped[Optional[str]] = mapped_column(Text)
+
+    # 검토 상태
+    status: Mapped[IngestionStatus] = mapped_column(
+        SAEnum(IngestionStatus), default=IngestionStatus.PENDING,
+    )
+    crawler_reviewer_notes: Mapped[Optional[str]] = mapped_column(Text)
+    db_reviewer_notes: Mapped[Optional[str]] = mapped_column(Text)
+    approved_items_json: Mapped[Optional[str]] = mapped_column(Text)
+    rejected_reason: Mapped[Optional[str]] = mapped_column(Text)
+
+    # 타임스탬프
+    crawled_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    crawler_reviewed_at: Mapped[Optional[datetime]] = mapped_column(DateTime)
+    db_reviewed_at: Mapped[Optional[datetime]] = mapped_column(DateTime)
+
+    # 실행 정보
+    duration_seconds: Mapped[Optional[float]] = mapped_column(Float)
+    source_url: Mapped[Optional[str]] = mapped_column(String(500))
+
+    __table_args__ = (
+        Index("ix_pending_status", "status"),
+        Index("ix_pending_crawler", "crawler_name"),
+        Index("ix_pending_crawled_at", "crawled_at"),
+    )

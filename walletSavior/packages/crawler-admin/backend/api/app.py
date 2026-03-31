@@ -21,10 +21,12 @@ def create_app() -> FastAPI:
     from api.routes.crawlers import router as crawlers_router
     from api.routes.schedules import router as schedules_router
     from api.routes.logs import router as logs_router
+    from api.routes.ingestion import router as ingestion_router
 
     app.include_router(crawlers_router)
     app.include_router(schedules_router)
     app.include_router(logs_router)
+    app.include_router(ingestion_router)
 
     @app.get("/health")
     async def health():
