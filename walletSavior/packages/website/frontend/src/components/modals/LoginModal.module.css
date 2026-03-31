@@ -1,0 +1,19 @@
+.modal { position:fixed; inset:0; z-index:300; display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; pointer-events:none; transition:opacity var(--dur) var(--ease); }
+.modal:global(.open) { opacity:1; pointer-events:auto; }
+.overlay { position:absolute; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(4px); }
+.box { position:relative; background:var(--bg2); border:1px solid var(--border2); border-radius:var(--radius2); padding:32px; width:100%; max-width:420px; max-height:90vh; overflow-y:auto; transform:translateY(20px); transition:transform .3s var(--ease); box-shadow:0 24px 64px rgba(0,0,0,.4); }
+.modal:global(.open) .box { transform:translateY(0); }
+.close { position:absolute; top:16px; right:16px; font-size:1.4rem; color:var(--text3); padding:4px; z-index:1; }
+.tabs { display:flex; gap:4px; margin-bottom:24px; }
+.tab { flex:1; padding:10px; text-align:center; font-weight:var(--fw-semi); color:var(--text3); border-radius:8px; transition:all var(--dur) var(--ease); }
+.tabActive { color:var(--accent); background:rgba(56,189,248,.06); }
+.form { display:flex; flex-direction:column; gap:14px; }
+.group { display:flex; flex-direction:column; gap:4px; }
+.group label { font-size:.82rem; font-weight:var(--fw-semi); color:var(--text2); }
+.submitBtn { width:100%; padding:12px; border-radius:10px; font-weight:var(--fw-semi); background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; cursor:pointer; transition:transform var(--dur) var(--ease); }
+.submitBtn:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(56,189,248,.3); }
+.divider { text-align:center; color:var(--text3); font-size:.82rem; position:relative; margin:8px 0; }
+.divider span { background:var(--bg2); padding:0 12px; position:relative; z-index:1; }
+.divider::before { content:''; position:absolute; left:0; right:0; top:50%; height:1px; background:var(--border); }
+.kakao { width:100%; padding:12px; border-radius:10px; font-weight:var(--fw-semi); background:#FEE500; color:#3C1E1E; border:none; cursor:pointer; }
+.naver { width:100%; padding:12px; border-radius:10px; font-weight:var(--fw-semi); background:#03C75A; color:#fff; border:none; cursor:pointer; }

@@ -1,0 +1,34 @@
+.overlay { position:fixed; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(6px); z-index:200; display:flex; align-items:center; justify-content:center; animation:fadeIn .2s var(--ease); }
+.modal { background:var(--bg); border:1px solid var(--border); border-radius:var(--radius2); width:min(560px,92vw); max-height:85vh; overflow-y:auto; position:relative; animation:fadeSlideUp .3s var(--ease); }
+.close { position:absolute; top:12px; right:12px; z-index:10; width:32px; height:32px; border-radius:50%; background:rgba(0,0,0,.5); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.hero { width:100%; height:200px; object-fit:cover; border-radius:var(--radius2) var(--radius2) 0 0; }
+.martImg { width:80px; height:80px; border-radius:10px; object-fit:cover; margin-bottom:12px; }
+.body { padding:20px; }
+.meta { display:flex; align-items:center; gap:10px; font-size:.78rem; color:var(--text3); margin-bottom:10px; }
+.source { color:var(--accent); font-weight:var(--fw-semi); background:rgba(56,189,248,.08); padding:2px 8px; border-radius:4px; }
+.time { display:flex; align-items:center; gap:4px; }
+.title { font-size:1.15rem; font-weight:var(--fw-bold); line-height:1.4; margin-bottom:12px; }
+.priceRow { display:flex; align-items:center; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
+.price { font-size:1.4rem; font-weight:var(--fw-black); color:var(--accent); }
+.orig { font-size:.9rem; color:var(--text3); text-decoration:line-through; }
+.disc { font-size:.82rem; font-weight:var(--fw-bold); color:var(--green); background:rgba(52,211,153,.1); padding:3px 8px; border-radius:4px; }
+.eventTag { display:inline-block; font-size:.78rem; padding:4px 10px; border-radius:6px; background:rgba(56,189,248,.08); color:var(--accent); margin-bottom:10px; }
+.dbCompare { font-size:.88rem; color:var(--text2); margin-bottom:10px; }
+.stats { display:flex; align-items:center; gap:8px; color:var(--text3); font-size:.82rem; }
+.postBody { color:var(--text2); font-size:.92rem; line-height:1.65; margin-bottom:14px; white-space:pre-wrap; }
+.imgGrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); gap:8px; margin-bottom:14px; }
+.postImg { width:100%; height:100px; object-fit:cover; border-radius:8px; }
+.priceBadge { font-size:.82rem; font-weight:var(--fw-bold); margin-bottom:10px; }
+
+/* 댓글 */
+.commentSec { border-top:1px solid var(--border); padding:16px 20px; }
+.commentSec h4 { font-size:.92rem; margin-bottom:12px; }
+.commentList { max-height:200px; overflow-y:auto; }
+.noComment { color:var(--text3); font-size:.85rem; font-style:italic; }
+.comment { padding:8px 0; border-bottom:1px solid var(--border); }
+.comment strong { font-size:.82rem; color:var(--accent); }
+.commentTime { margin-left:8px; font-size:.72rem; color:var(--text3); }
+.comment p { margin:4px 0 0; font-size:.88rem; color:var(--text2); }
+.commentInput { display:flex; gap:8px; margin-top:12px; }
+.commentInput input { flex:1; padding:10px 14px; border-radius:8px; font-size:.88rem; }
+.commentInput button { padding:10px 14px; border-radius:8px; background:var(--accent); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; }
