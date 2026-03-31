@@ -51,7 +51,7 @@ export default function MartPage() {
         fetch(`/api/marts/${key}/promotions`).then(r => r.json())
           .then(res => ({
             key,
-            items: (res.data || []).map(d => ({
+            items: (Array.isArray(res.data) ? res.data : res.data?.items || []).map(d => ({
               name: d.name,
               sale: d.price ?? d.sale,
               orig: d.original_price ?? d.orig,

@@ -54,7 +54,7 @@ export default function HomePage() {
   useEffect(() => {
     fetch(`/api/marts/${martTab}/promotions`).then(r => r.json())
       .then(res => {
-        const items = (res.data || []).map(d => ({
+        const items = (Array.isArray(res.data) ? res.data : res.data?.items || []).map(d => ({
           name: d.name,
           sale: d.price ?? d.sale,
           orig: d.original_price ?? d.orig,

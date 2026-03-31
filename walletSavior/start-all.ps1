@@ -88,6 +88,29 @@ foreach ($dir in $frontendDirs) {
 }
 Write-Host ""
 
+# === 기존 서버 정리 (포트 충돌 방지) ===
+Write-Host "[정리] 기존 서버 프로세스 정리 중..." -ForegroundColor Yellow
+$portsToClean = @()
+if ($Web)   { $portsToClean += @(8000, 5173) }
+if ($Admin) { $portsToClean += @(8001, 5174, 8002, 5175) }
+
+foreach ($port in $portsToClean) {
+    $conns = Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue |
+             Where-Object { $_.LocalPort -eq $port }
+    foreach ($c in $conns) {
+        $targetPid = $c.OwningProcess
+        if ($targetPid -le 4 -or $targetPid -eq $PID) { continue }
+        $proc = Get-Process -Id $targetPid -ErrorAction SilentlyContinue
+        if ($proc) {
+            Write-Host "         포트 $port → PID $targetPid ($($proc.ProcessName)) 종료" -ForegroundColor DarkGray
+            Stop-Process -Id $targetPid -Force -ErrorAction SilentlyContinue
+        }
+    }
+}
+Start-Sleep -Seconds 2
+Write-Host "         ✅ 정리 완료" -ForegroundColor Green
+Write-Host ""
+
 # === 서버 시작 ===
 $processes = @()
 
