@@ -1,6 +1,6 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Wallet, Menu } from 'lucide-react';
+import { Wallet, Bell, User, X, Search } from 'lucide-react';
 import useStore from '../../stores/appStore';
 import s from './Header.module.css';
 
@@ -16,7 +16,13 @@ const NAV = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { isLoggedIn, logout } = useStore();
+  const [searchOpen, setSearchOpen] = useState(false);
+  const { isLoggedIn, logout, notifications } = useStore();
+  const location = useLocation();
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -24,42 +30,121 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
   const openLogin = () => {
     document.getElementById('modal-login')?.classList.add('open');
   };
 
-  return (
-    <header className={`${s.hdr} ${scrolled ? s.scrolled : ''}`}>
-      <div className={s.inner}>
-        <NavLink to="/" className={s.logo}>
-          <Wallet size={24} className={s.logoIcon} />
-          <span>지갑 지키미</span>
-        </NavLink>
+  const unreadCount = notifications?.filter(n => !n.read).length || 0;
 
-        <nav className={s.nav}>
+  return (
+    <>
+      <header className={`${s.hdr} ${scrolled ? s.scrolled : ''}`}>
+        <div className={s.inner}>
+          <NavLink to="/" className={s.logo}>
+            <Wallet size={24} className={s.logoIcon} />
+            <span>지갑 지키미</span>
+          </NavLink>
+
+          <nav className={s.nav}>
+            {NAV.map(n => (
+              <NavLink
+                key={n.to}
+                to={n.to}
+                end={n.to === '/'}
+                className={({ isActive }) => `${s.link} ${isActive ? s.linkActive : ''}`}
+              >
+                {n.label}
+              </NavLink>
+            ))}
+          </nav>
+
+          <div className={s.right}>
+            <button
+              className={s.iconBtn}
+              onClick={() => setSearchOpen(!searchOpen)}
+              aria-label="검색"
+            >
+              <Search size={20} />
+            </button>
+
+            <button className={s.iconBtn} aria-label="알림">
+              <Bell size={20} />
+              {unreadCount > 0 && <span className={s.badge}>{unreadCount > 9 ? '9+' : unreadCount}</span>}
+            </button>
+
+            {isLoggedIn ? (
+              <button className={s.avatarBtn} onClick={logout} aria-label="프로필">
+                <User size={18} />
+              </button>
+            ) : (
+              <button className={s.loginBtn} onClick={openLogin}>로그인</button>
+            )}
+
+            <button
+              className={`${s.mobileBtn} ${mobileOpen ? s.mobileBtnOpen : ''}`}
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="메뉴"
+            >
+              <span /><span /><span />
+            </button>
+          </div>
+        </div>
+
+        {searchOpen && (
+          <div className={s.searchBar}>
+            <div className={s.searchInner}>
+              <input
+                type="search"
+                className={s.searchInput}
+                placeholder="상품, 가격, 핫딜 검색..."
+                autoFocus
+              />
+              <button className={s.searchClose} onClick={() => setSearchOpen(false)}>
+                <X size={18} />
+              </button>
+            </div>
+          </div>
+        )}
+      </header>
+
+      {/* Mobile drawer */}
+      <div
+        className={`${s.overlay} ${mobileOpen ? s.overlayOpen : ''}`}
+        onClick={() => setMobileOpen(false)}
+      />
+      <aside className={`${s.drawer} ${mobileOpen ? s.drawerOpen : ''}`}>
+        <div className={s.drawerHeader}>
+          <span className={s.drawerTitle}>메뉴</span>
+          <button className={s.drawerClose} onClick={() => setMobileOpen(false)}>
+            <X size={20} />
+          </button>
+        </div>
+        <nav className={s.drawerNav}>
           {NAV.map(n => (
             <NavLink
               key={n.to}
               to={n.to}
               end={n.to === '/'}
-              className={({ isActive }) => `${s.link} ${isActive ? s.linkActive : ''}`}
+              className={({ isActive }) => `${s.drawerLink} ${isActive ? s.drawerLinkActive : ''}`}
+              onClick={() => setMobileOpen(false)}
             >
               {n.label}
             </NavLink>
           ))}
         </nav>
-
-        <div className={s.right}>
+        <div className={s.drawerFooter}>
           {isLoggedIn ? (
-            <button className={s.loginBtn} onClick={logout}>로그아웃</button>
+            <button className={s.drawerBtn} onClick={() => { logout(); setMobileOpen(false); }}>로그아웃</button>
           ) : (
-            <button className={s.loginBtn} onClick={openLogin}>로그인</button>
+            <button className={s.drawerBtn} onClick={() => { openLogin(); setMobileOpen(false); }}>로그인</button>
           )}
-          <button className={s.mobileBtn} onClick={() => setMobileOpen(!mobileOpen)} aria-label="메뉴">
-            <span /><span /><span />
-          </button>
         </div>
-      </div>
-    </header>
+      </aside>
+    </>
   );
 }

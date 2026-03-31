@@ -20,9 +20,16 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from storage.models import (
     Base, Product, BaselinePrice, DiscountHistory,
-    HotdealPost, GasStation, CrawlLog, UserFavorite, PriceAlert,
+    HotdealPrice, GasStation, CrawlLog, Favorite, PriceAlert,
+    CrawlStatus,
 )
-from core.contracts.storage import StorageContract
+
+try:
+    from core.contracts.storage import StorageContract
+except ImportError:
+    # 독립 실행 시 계약 없이도 동작
+    class StorageContract:  # type: ignore[no-redef]
+        pass
 
 
 class DBStorage(StorageContract):
@@ -70,15 +77,20 @@ class DBStorage(StorageContract):
     ) -> int:
         """크롤링 실행 로그 저장 — 엔진이 크롤 완료 후 호출."""
         with self.SessionLocal() as session:
+            try:
+                crawl_status = CrawlStatus(status)
+            except ValueError:
+                crawl_status = CrawlStatus.FAILED
             log = CrawlLog(
                 crawler_name=crawler_name,
-                status=status,
-                items_count=items_count,
+                status=crawl_status,
+                items_found=items_count,
+                items_saved=items_count,
                 started_at=started_at,
                 finished_at=finished_at,
                 duration_seconds=(finished_at - started_at).total_seconds(),
-                error_msg=error_msg,
-                diagnosis=diagnosis,
+                error_message=error_msg,
+                raw_log=diagnosis,
             )
             session.add(log)
             session.commit()
@@ -103,7 +115,7 @@ class DBStorage(StorageContract):
         if data_type == "discount":
             return self._save_discount_items(items)
         elif data_type == "hotdeal":
-            return self._save_hotdeal_posts(items)
+            return self._save_hotdeal_prices(items)
         elif data_type == "price":
             return self._save_baseline_prices(items)
         elif data_type == "gas":
@@ -123,7 +135,11 @@ class DBStorage(StorageContract):
             if crawler_name:
                 stmt = stmt.where(CrawlLog.crawler_name == crawler_name)
             if status:
-                stmt = stmt.where(CrawlLog.status == status)
+                try:
+                    crawl_status = CrawlStatus(status)
+                    stmt = stmt.where(CrawlLog.status == crawl_status)
+                except ValueError:
+                    pass
             if since:
                 stmt = stmt.where(CrawlLog.started_at >= since)
             stmt = stmt.limit(limit)
@@ -133,13 +149,14 @@ class DBStorage(StorageContract):
                 {
                     "id": log.id,
                     "crawler_name": log.crawler_name,
-                    "status": log.status,
+                    "status": log.status.value if log.status else None,
                     "strategy_used": log.strategy_used,
-                    "items_count": log.items_count,
+                    "items_found": log.items_found,
+                    "items_saved": log.items_saved,
                     "started_at": log.started_at.isoformat() if log.started_at else None,
                     "finished_at": log.finished_at.isoformat() if log.finished_at else None,
                     "duration_seconds": log.duration_seconds,
-                    "error_msg": log.error_msg,
+                    "error_message": log.error_message,
                 }
                 for log in logs
             ]
@@ -181,17 +198,18 @@ class DBStorage(StorageContract):
             for p in products:
                 price_stats = self._compute_product_stats(session, p.id)
                 store_prices = self._get_store_prices(session, p.id)
+                cat = p.category
                 result.append({
                     "id": p.id,
                     "name": p.name,
-                    "icon": p.icon,
-                    "cat": p.category,
+                    "icon": cat.icon if cat else "",
+                    "cat": cat.name if cat else "",
                     "unit": p.unit,
                     "avg": price_stats["avg"],
                     "cur": price_stats["cur"],
                     "low": price_stats["low"],
                     "high": price_stats["high"],
-                    "img": "",
+                    "img": p.image_url or "",
                     "stores": store_prices,
                     "stats": {
                         "dataDays": price_stats["data_days"],
@@ -212,17 +230,18 @@ class DBStorage(StorageContract):
                 return None
             price_stats = self._compute_product_stats(session, p.id)
             store_prices = self._get_store_prices(session, p.id)
+            cat = p.category
             return {
                 "id": p.id,
                 "name": p.name,
-                "icon": p.icon,
-                "cat": p.category,
+                "icon": cat.icon if cat else "",
+                "cat": cat.name if cat else "",
                 "unit": p.unit,
                 "avg": price_stats["avg"],
                 "cur": price_stats["cur"],
                 "low": price_stats["low"],
                 "high": price_stats["high"],
-                "img": "",
+                "img": p.image_url or "",
                 "stores": store_prices,
                 "stats": {
                     "dataDays": price_stats["data_days"],
@@ -247,81 +266,68 @@ class DBStorage(StorageContract):
         shape: {id, title, source, price, origPrice, time, cat, views, comments, thumb}
         """
         with self.SessionLocal() as session:
-            stmt = select(HotdealPost)
-            if category and category != "all":
-                stmt = stmt.where(HotdealPost.category == category)
+            stmt = select(HotdealPrice)
 
             if sort == "time":
-                stmt = stmt.order_by(desc(HotdealPost.crawled_at))
-            elif sort == "views":
-                stmt = stmt.order_by(desc(HotdealPost.views))
-            elif sort == "comments":
-                stmt = stmt.order_by(desc(HotdealPost.comments_count))
+                stmt = stmt.order_by(desc(HotdealPrice.crawled_at))
+            elif sort == "votes":
+                stmt = stmt.order_by(desc(HotdealPrice.votes_hot))
 
             stmt = stmt.limit(limit)
-            posts = session.execute(stmt).scalars().all()
+            prices = session.execute(stmt).scalars().all()
 
             return [
                 {
-                    "id": post.id,
-                    "title": post.title,
-                    "source": post.source_community,
-                    "price": post.price,
-                    "origPrice": post.original_price,
-                    "time": self._relative_time(post.crawled_at),
-                    "cat": post.category,
-                    "views": post.views,
-                    "comments": post.comments_count,
-                    "thumb": post.thumbnail_url,
+                    "id": hp.id,
+                    "title": hp.title or "",
+                    "source": hp.source,
+                    "price": hp.price,
+                    "time": self._relative_time(hp.crawled_at),
+                    "votes_hot": hp.votes_hot,
+                    "votes_not": hp.votes_not,
+                    "is_verified": hp.is_verified,
                 }
-                for post in posts
+                for hp in prices
             ]
 
     def get_mart_deals(self, store: str | None = None, limit: int = 50) -> dict:
         """
         마트별 할인 정보 — 프론트엔드 MART_DATA와 동일 shape.
-
-        shape: {storeName: {name, color, period, flyerImg, items: [{name, orig, sale, disc, event, img}]}}
         """
-        # 마트 메타 정보
         mart_meta = {
-            "이마트": {"key": "emart", "color": "#FFD700"},
-            "홈플러스": {"key": "homeplus", "color": "#FF6B35"},
-            "롯데마트": {"key": "lotte", "color": "#E4002B"},
-            "코스트코": {"key": "costco", "color": "#E31837"},
+            "emart": {"name": "이마트", "color": "#FFD700"},
+            "homeplus": {"name": "홈플러스", "color": "#FF6B35"},
+            "lottemart": {"name": "롯데마트", "color": "#E4002B"},
+            "costco": {"name": "코스트코", "color": "#E31837"},
         }
 
         with self.SessionLocal() as session:
             stmt = select(DiscountHistory).order_by(desc(DiscountHistory.crawled_at))
             if store:
-                stmt = stmt.where(DiscountHistory.store == store)
+                stmt = stmt.where(DiscountHistory.source == store)
             stmt = stmt.limit(limit)
 
             items = session.execute(stmt).scalars().all()
 
-            # 매장별 그룹핑
             grouped: dict[str, list] = {}
             for item in items:
-                store_name = item.store
-                if store_name not in grouped:
-                    grouped[store_name] = []
-                grouped[store_name].append({
+                source = item.source
+                if source not in grouped:
+                    grouped[source] = []
+                grouped[source].append({
                     "name": self._get_product_name(session, item.product_id) or "",
                     "orig": item.original_price,
-                    "sale": item.sale_price,
-                    "disc": round(item.discount_percent) if item.discount_percent else 0,
-                    "event": item.event_name,
-                    "img": item.image_url,
+                    "sale": item.price,
+                    "disc": round(item.discount_rate) if item.discount_rate else 0,
+                    "source_url": item.source_url or "",
                 })
 
             result = {}
-            for store_name, deal_items in grouped.items():
-                meta = mart_meta.get(store_name, {"key": store_name, "color": "#666"})
-                result[meta["key"]] = {
-                    "name": store_name,
+            for source_key, deal_items in grouped.items():
+                meta = mart_meta.get(source_key, {"name": source_key, "color": "#666"})
+                result[source_key] = {
+                    "name": meta["name"],
                     "color": meta["color"],
-                    "period": "",
-                    "flyerImg": "",
                     "items": deal_items,
                 }
             return result
@@ -363,7 +369,7 @@ class DBStorage(StorageContract):
 
     def get_price_history(self, product_id: int, days: int = 30) -> list[dict]:
         """
-        가격 추이 데이터 — 프론트엔드 genPriceHistory()와 동일 shape.
+        가격 추이 데이터.
 
         shape: [{date: "MM-DD", price: int}]
         """
@@ -371,27 +377,27 @@ class DBStorage(StorageContract):
         with self.SessionLocal() as session:
             stmt = (
                 select(
-                    func.strftime("%m-%d", BaselinePrice.recorded_date).label("date"),
+                    func.strftime("%m-%d", BaselinePrice.recorded_at).label("date"),
                     func.avg(BaselinePrice.price).label("price"),
                 )
                 .where(
                     BaselinePrice.product_id == product_id,
-                    BaselinePrice.recorded_date >= since,
+                    BaselinePrice.recorded_at >= since,
                 )
-                .group_by(func.strftime("%m-%d", BaselinePrice.recorded_date))
-                .order_by(BaselinePrice.recorded_date)
+                .group_by(func.strftime("%m-%d", BaselinePrice.recorded_at))
+                .order_by(BaselinePrice.recorded_at)
             )
             rows = session.execute(stmt).all()
             return [{"date": row.date, "price": round(row.price)} for row in rows]
 
     def search_products(self, query: str) -> list[dict]:
-        """품목 검색 — 이름 또는 카테고리에 query가 포함된 상품."""
+        """품목 검색 — 이름에 query가 포함된 상품."""
         with self.SessionLocal() as session:
             stmt = (
                 select(Product)
                 .where(
                     Product.is_active == True,
-                    (Product.name.contains(query)) | (Product.category.contains(query)),
+                    Product.name.contains(query),
                 )
             )
             products = session.execute(stmt).scalars().all()
@@ -399,17 +405,18 @@ class DBStorage(StorageContract):
             for p in products:
                 price_stats = self._compute_product_stats(session, p.id)
                 store_prices = self._get_store_prices(session, p.id)
+                cat = p.category
                 result.append({
                     "id": p.id,
                     "name": p.name,
-                    "icon": p.icon,
-                    "cat": p.category,
+                    "icon": cat.icon if cat else "",
+                    "cat": cat.name if cat else "",
                     "unit": p.unit,
                     "avg": price_stats["avg"],
                     "cur": price_stats["cur"],
                     "low": price_stats["low"],
                     "high": price_stats["high"],
-                    "img": "",
+                    "img": p.image_url or "",
                     "stores": store_prices,
                     "stats": {
                         "dataDays": price_stats["data_days"],
@@ -430,17 +437,16 @@ class DBStorage(StorageContract):
         """사용자 즐겨찾기 목록 조회."""
         with self.SessionLocal() as session:
             stmt = (
-                select(UserFavorite, Product)
-                .join(Product, UserFavorite.product_id == Product.id)
-                .where(UserFavorite.user_id == user_id)
+                select(Favorite, Product)
+                .join(Product, Favorite.product_id == Product.id)
+                .where(Favorite.user_id == int(user_id) if user_id.isdigit() else False)
             )
             rows = session.execute(stmt).all()
             return [
                 {
                     "product_id": fav.product_id,
                     "name": prod.name,
-                    "icon": prod.icon,
-                    "cat": prod.category,
+                    "cat": prod.category.name if prod.category else "",
                     "unit": prod.unit,
                     "added_at": fav.created_at.isoformat() if fav.created_at else None,
                 }
@@ -450,7 +456,7 @@ class DBStorage(StorageContract):
     def add_user_favorite(self, user_id: str, product_id: int) -> dict:
         """즐겨찾기 추가."""
         with self.SessionLocal() as session:
-            fav = UserFavorite(user_id=user_id, product_id=product_id)
+            fav = Favorite(user_id=int(user_id), product_id=product_id)
             session.add(fav)
             session.commit()
             return {"user_id": user_id, "product_id": product_id, "status": "added"}
@@ -458,9 +464,9 @@ class DBStorage(StorageContract):
     def remove_user_favorite(self, user_id: str, product_id: int) -> dict:
         """즐겨찾기 제거."""
         with self.SessionLocal() as session:
-            stmt = select(UserFavorite).where(
-                UserFavorite.user_id == user_id,
-                UserFavorite.product_id == product_id,
+            stmt = select(Favorite).where(
+                Favorite.user_id == int(user_id),
+                Favorite.product_id == product_id,
             )
             fav = session.execute(stmt).scalar_one_or_none()
             if fav:
@@ -473,7 +479,7 @@ class DBStorage(StorageContract):
         """가격 알림 설정."""
         with self.SessionLocal() as session:
             alert = PriceAlert(
-                user_id=user_id,
+                user_id=int(user_id),
                 product_id=product_id,
                 target_price=target_price,
             )
@@ -493,7 +499,7 @@ class DBStorage(StorageContract):
             stmt = (
                 select(PriceAlert, Product)
                 .join(Product, PriceAlert.product_id == Product.id)
-                .where(PriceAlert.user_id == user_id, PriceAlert.is_active == True)
+                .where(PriceAlert.user_id == int(user_id), PriceAlert.is_active == True)
             )
             rows = session.execute(stmt).all()
             return [
@@ -522,43 +528,35 @@ class DBStorage(StorageContract):
                     continue
                 record = DiscountHistory(
                     product_id=product_id,
-                    store=item.get("store", ""),
+                    source=item.get("source", item.get("store", "")),
                     original_price=item.get("original_price"),
-                    sale_price=item.get("sale_price", 0),
-                    discount_percent=item.get("discount_percent"),
-                    event_name=item.get("event_name", ""),
+                    price=item.get("sale_price", item.get("price", 0)),
+                    discount_rate=item.get("discount_rate", item.get("discount_percent")),
                     valid_from=item.get("valid_from"),
-                    valid_until=item.get("valid_until"),
-                    image_url=item.get("image_url", ""),
+                    valid_to=item.get("valid_to", item.get("valid_until")),
+                    source_url=item.get("source_url", ""),
                 )
                 session.add(record)
                 count += 1
             session.commit()
             return count
 
-    def _save_hotdeal_posts(self, items: list[dict]) -> int:
-        """핫딜 게시글 배치 저장 — URL 중복 시 스킵."""
+    def _save_hotdeal_prices(self, items: list[dict]) -> int:
+        """핫딜 가격 배치 저장."""
         with self.SessionLocal() as session:
             count = 0
             for item in items:
-                url = item.get("url", "")
-                existing = session.execute(
-                    select(HotdealPost).where(HotdealPost.url == url)
-                ).scalar_one_or_none()
-                if existing:
+                product_id = self._resolve_product_id(session, item.get("product_name", ""))
+                if not product_id:
                     continue
-                post = HotdealPost(
+                hp = HotdealPrice(
+                    product_id=product_id,
+                    price=item.get("price", 0),
+                    source=item.get("source", item.get("source_community", "")),
+                    source_url=item.get("source_url", item.get("url", "")),
                     title=item.get("title", ""),
-                    url=url,
-                    source_community=item.get("source_community", ""),
-                    price=item.get("price"),
-                    original_price=item.get("original_price"),
-                    category=item.get("category", ""),
-                    views=item.get("views", 0),
-                    comments_count=item.get("comments_count", 0),
-                    thumbnail_url=item.get("thumbnail_url", ""),
                 )
-                session.add(post)
+                session.add(hp)
                 count += 1
             session.commit()
             return count
@@ -574,10 +572,9 @@ class DBStorage(StorageContract):
                 record = BaselinePrice(
                     product_id=product_id,
                     source=item.get("source", ""),
-                    source_type=item.get("source_type", "government"),
                     price=item.get("price", 0),
                     unit=item.get("unit", ""),
-                    recorded_date=item.get("recorded_date", datetime.now()),
+                    recorded_at=item.get("recorded_at", item.get("recorded_date", datetime.now())),
                 )
                 session.add(record)
                 count += 1
@@ -649,12 +646,12 @@ class DBStorage(StorageContract):
             ).where(BaselinePrice.product_id == product_id)
         ).one()
 
-        # 최신 가격 (가장 최근 recorded_date의 평균)
+        # 최신 가격 (가장 최근 recorded_at의 평균)
         latest = session.execute(
             select(func.avg(BaselinePrice.price))
             .where(BaselinePrice.product_id == product_id)
-            .order_by(desc(BaselinePrice.recorded_date))
-            .limit(4)  # 최근 4개 소스의 평균
+            .order_by(desc(BaselinePrice.recorded_at))
+            .limit(4)
         ).scalar()
 
         # 할인 통계
@@ -664,7 +661,7 @@ class DBStorage(StorageContract):
         ).scalar() or 0
 
         disc_avg = session.execute(
-            select(func.avg(DiscountHistory.discount_percent))
+            select(func.avg(DiscountHistory.discount_rate))
             .where(DiscountHistory.product_id == product_id)
         ).scalar()
 
@@ -681,22 +678,17 @@ class DBStorage(StorageContract):
 
     def _get_store_prices(self, session: Session, product_id: int) -> dict:
         """매장별 최신 가격 조회 — stores: {emart: 2280, homeplus: 2380, ...}."""
-        store_key_map = {
-            "이마트": "emart",
-            "홈플러스": "homeplus",
-            "롯데마트": "lotte",
-            "코스트코": "costco",
-        }
+        store_keys = ["emart", "homeplus", "lottemart", "costco"]
 
         result = {}
-        for store_name, key in store_key_map.items():
+        for key in store_keys:
             price = session.execute(
                 select(BaselinePrice.price)
                 .where(
                     BaselinePrice.product_id == product_id,
-                    BaselinePrice.source == store_name,
+                    BaselinePrice.source == key,
                 )
-                .order_by(desc(BaselinePrice.recorded_date))
+                .order_by(desc(BaselinePrice.recorded_at))
                 .limit(1)
             ).scalar()
             if price is not None:
@@ -714,11 +706,10 @@ class DBStorage(StorageContract):
             items = session.execute(stmt).scalars().all()
             return [
                 {
-                    "store": i.store,
-                    "sale_price": i.sale_price,
+                    "source": i.source,
+                    "price": i.price,
                     "original_price": i.original_price,
-                    "discount_percent": i.discount_percent,
-                    "event_name": i.event_name,
+                    "discount_rate": i.discount_rate,
                 }
                 for i in items
             ]
@@ -726,35 +717,34 @@ class DBStorage(StorageContract):
     def _query_hotdeals(self, limit: int = 100, since: datetime | None = None) -> list[dict]:
         """핫딜 조회."""
         with self.SessionLocal() as session:
-            stmt = select(HotdealPost).order_by(desc(HotdealPost.crawled_at))
+            stmt = select(HotdealPrice).order_by(desc(HotdealPrice.crawled_at))
             if since:
-                stmt = stmt.where(HotdealPost.crawled_at >= since)
+                stmt = stmt.where(HotdealPrice.crawled_at >= since)
             stmt = stmt.limit(limit)
-            posts = session.execute(stmt).scalars().all()
+            prices = session.execute(stmt).scalars().all()
             return [
                 {
-                    "title": p.title,
-                    "url": p.url,
-                    "source": p.source_community,
-                    "price": p.price,
-                    "category": p.category,
+                    "title": hp.title,
+                    "source": hp.source,
+                    "source_url": hp.source_url,
+                    "price": hp.price,
                 }
-                for p in posts
+                for hp in prices
             ]
 
     def _query_baseline_prices(self, limit: int = 100, since: datetime | None = None) -> list[dict]:
         """기준 가격 조회."""
         with self.SessionLocal() as session:
-            stmt = select(BaselinePrice).order_by(desc(BaselinePrice.recorded_date))
+            stmt = select(BaselinePrice).order_by(desc(BaselinePrice.recorded_at))
             if since:
-                stmt = stmt.where(BaselinePrice.recorded_date >= since)
+                stmt = stmt.where(BaselinePrice.recorded_at >= since)
             stmt = stmt.limit(limit)
             prices = session.execute(stmt).scalars().all()
             return [
                 {
                     "source": p.source,
                     "price": p.price,
-                    "recorded_date": p.recorded_date.isoformat() if p.recorded_date else None,
+                    "recorded_at": p.recorded_at.isoformat() if p.recorded_at else None,
                 }
                 for p in prices
             ]

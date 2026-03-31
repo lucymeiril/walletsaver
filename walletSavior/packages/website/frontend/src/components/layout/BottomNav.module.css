@@ -20,9 +20,50 @@
   color:var(--text3); font-size:.65rem; font-weight:var(--fw-medium);
   text-decoration:none; transition:color var(--dur) var(--ease);
   -webkit-tap-highlight-color:transparent;
+  position: relative;
 }
 .tab:hover { color:var(--text2); }
 .tab svg { flex-shrink:0; }
 
+.iconWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .active { color:var(--accent); }
 .active svg { filter:drop-shadow(0 0 6px rgba(56,189,248,.4)); }
+
+/* Active dot indicator */
+.active::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* Notification badge */
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: var(--red);
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: var(--fw-bold);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  border: 2px solid rgba(11,15,25,.88);
+}

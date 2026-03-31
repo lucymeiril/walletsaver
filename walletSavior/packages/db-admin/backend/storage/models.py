@@ -1,5 +1,4 @@
-"""
-SQLAlchemy ORM 모델 — 모든 테이블 정의를 한 곳에 모은다.
+"""WalletSavior 데이터베이스 모델 — 완전한 스키마 정의
 
 왜 존재하는가:
     core/models.py의 Pydantic 모델은 "전송·검증용 DTO"이고,
@@ -14,12 +13,15 @@ SQLAlchemy ORM 모델 — 모든 테이블 정의를 한 곳에 모은다.
 """
 
 from datetime import datetime
+from typing import Optional
 
 from sqlalchemy import (
-    String, Integer, Float, DateTime, Text, JSON,
-    ForeignKey, Index, Boolean,
+    String, Integer, Float, Boolean, Text, DateTime, ForeignKey,
+    Index, UniqueConstraint, JSON, Enum as SAEnum,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+
+import enum
 
 
 class Base(DeclarativeBase):
@@ -27,231 +29,465 @@ class Base(DeclarativeBase):
     pass
 
 
-# ──────────────────────────────────────────────
-# 1. 품목 마스터
-# ──────────────────────────────────────────────
+# ═══════════════════════════════════════════════
+# Enums
+# ═══════════════════════════════════════════════
+
+class PriceTier(str, enum.Enum):
+    ULTRA = "ultra"      # 70% 이하 (초특가)
+    GREAT = "great"      # 70-85% (핫딜)
+    GOOD = "good"        # 85-105% (적정가)
+    WAIT = "wait"        # 105%+ (비쌈)
+
+
+class PostType(str, enum.Enum):
+    HOTDEAL = "hotdeal"   # 핫딜 게시판
+    FREE = "free"         # 자유 게시판
+
+
+class VoteType(str, enum.Enum):
+    HOT = "hot"           # 핫딜 맞음
+    NOT = "not"           # 핫딜 아님
+
+
+class CrawlStatus(str, enum.Enum):
+    SUCCESS = "success"
+    PARTIAL = "partial"
+    FAILED = "failed"
+
+
+class UserRole(str, enum.Enum):
+    USER = "user"
+    ADMIN = "admin"
+    MODERATOR = "moderator"
+
+
+class OAuthProvider(str, enum.Enum):
+    GOOGLE = "google"
+    KAKAO = "kakao"
+    NAVER = "naver"
+
+
+# ═══════════════════════════════════════════════
+# 사용자
+# ═══════════════════════════════════════════════
+
+class User(Base):
+    __tablename__ = "users"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
+    hashed_password: Mapped[Optional[str]] = mapped_column(String(255))
+    nickname: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    role: Mapped[UserRole] = mapped_column(SAEnum(UserRole), default=UserRole.USER)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    oauth_accounts: Mapped[list["OAuthAccount"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    posts: Mapped[list["Post"]] = relationship(back_populates="author", cascade="all, delete-orphan")
+    comments: Mapped[list["Comment"]] = relationship(back_populates="author", cascade="all, delete-orphan")
+    votes: Mapped[list["Vote"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    favorites: Mapped[list["Favorite"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    price_alerts: Mapped[list["PriceAlert"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+
+
+class OAuthAccount(Base):
+    __tablename__ = "oauth_accounts"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    provider: Mapped[OAuthProvider] = mapped_column(SAEnum(OAuthProvider))
+    provider_user_id: Mapped[str] = mapped_column(String(255))
+    access_token: Mapped[Optional[str]] = mapped_column(Text)
+    refresh_token: Mapped[Optional[str]] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    user: Mapped["User"] = relationship(back_populates="oauth_accounts")
+
+    __table_args__ = (
+        UniqueConstraint("provider", "provider_user_id", name="uq_oauth_provider_user"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 카테고리
+# ═══════════════════════════════════════════════
+
+class Category(Base):
+    __tablename__ = "categories"
+
+    id: Mapped[str] = mapped_column(String(100), primary_key=True)  # "meat.pork.belly"
+    name: Mapped[str] = mapped_column(String(100), nullable=False)  # "삼겹살"
+    parent_id: Mapped[Optional[str]] = mapped_column(ForeignKey("categories.id"))
+    depth: Mapped[int] = mapped_column(Integer, default=0)
+    sort_order: Mapped[int] = mapped_column(Integer, default=0)
+    icon: Mapped[Optional[str]] = mapped_column(String(50))
+    attributes: Mapped[Optional[dict]] = mapped_column(JSON)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+
+    parent: Mapped[Optional["Category"]] = relationship("Category", remote_side="Category.id")
+    products: Mapped[list["Product"]] = relationship(back_populates="category")
+
+
+# ═══════════════════════════════════════════════
+# 상품
+# ═══════════════════════════════════════════════
 
 class Product(Base):
-    """
-    품목 마스터 — 모든 가격 비교의 기준 단위.
-
-    왜 필요한가:
-        "양파 1kg"처럼 표준화된 품목 단위가 없으면
-        마트마다 다른 상품명·용량을 비교할 수 없다.
-    어디서 쓰이는가:
-        baseline_prices, discount_history, hotdeal_posts 등
-        모든 가격 테이블이 이 테이블을 FK로 참조한다.
-        프론트엔드 PRODUCTS 배열의 원천.
-    """
+    """품목 마스터 — 모든 가격 비교의 기준 단위."""
     __tablename__ = "products"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(100), unique=True, index=True)  # "양파", "삼겹살"
-    category: Mapped[str] = mapped_column(String(200), default="")  # "채소류 > 근채류"
-    unit: Mapped[str] = mapped_column(String(50), default="")  # "1kg", "100g"
-    icon: Mapped[str] = mapped_column(String(10), default="")  # emoji
-    # 부가 속성 — 산지, 등급, 보관법 등 품목마다 다른 메타데이터
-    attributes: Mapped[dict] = mapped_column(JSON, default=dict)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    category_id: Mapped[Optional[str]] = mapped_column(ForeignKey("categories.id"))
+    unit: Mapped[str] = mapped_column(String(50), default="개")
+    description: Mapped[Optional[str]] = mapped_column(Text)
+    image_url: Mapped[Optional[str]] = mapped_column(String(500))
+    attributes: Mapped[Optional[dict]] = mapped_column(JSON)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
-    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, onupdate=datetime.now)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # relationships
-    baseline_prices = relationship("BaselinePrice", back_populates="product", lazy="selectin")
-    discount_items = relationship("DiscountHistory", back_populates="product", lazy="selectin")
+    category: Mapped[Optional["Category"]] = relationship(back_populates="products")
+    baseline_prices: Mapped[list["BaselinePrice"]] = relationship(back_populates="product", cascade="all, delete-orphan")
+    discount_history: Mapped[list["DiscountHistory"]] = relationship(back_populates="product", cascade="all, delete-orphan")
+    hotdeal_prices: Mapped[list["HotdealPrice"]] = relationship(back_populates="product", cascade="all, delete-orphan")
+
+    __table_args__ = (
+        Index("ix_products_name", "name"),
+        Index("ix_products_category", "category_id"),
+    )
 
 
-# ──────────────────────────────────────────────
-# 2. 기준 가격 (평균 산출의 유일한 원천)
-# ──────────────────────────────────────────────
+# ═══════════════════════════════════════════════
+# 가격 테이블 (Pure Price DB 전략)
+# ═══════════════════════════════════════════════
 
 class BaselinePrice(Base):
-    """
-    기준 가격 — 정부 공식(KAMIS) + 마트 정가만 기록.
-
-    왜 별도 테이블인가:
-        할인가·핫딜가를 평균에 섞으면 baseline이 왜곡된다.
-        이 테이블에는 "정상 시장가"만 넣어서 신뢰할 수 있는 평균을 산출한다.
-    어디서 쓰이는가:
-        statistics.compute_stats()가 이 테이블에서 avg/min/max를 계산하고,
-        프론트엔드 product.avg, product.low, product.high의 원천이 된다.
-    """
+    """정부 공인 도매가 + 소매 공식 가격 (기준가)"""
     __tablename__ = "baseline_prices"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"), index=True)
-    source: Mapped[str] = mapped_column(String(50))  # "KAMIS", "이마트", "코스트코"
-    source_type: Mapped[str] = mapped_column(String(30))  # "government", "mart_regular"
-    price: Mapped[int] = mapped_column(Integer)
-    unit: Mapped[str] = mapped_column(String(50), default="")
-    recorded_date: Mapped[datetime] = mapped_column(DateTime, index=True)
-    crawled_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id", ondelete="CASCADE"))
+    price: Mapped[float] = mapped_column(Float, nullable=False)
+    source: Mapped[str] = mapped_column(String(50))
+    unit: Mapped[str] = mapped_column(String(50))
+    recorded_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    region: Mapped[Optional[str]] = mapped_column(String(50))
+    raw_data: Mapped[Optional[dict]] = mapped_column(JSON)
 
-    product = relationship("Product", back_populates="baseline_prices")
+    product: Mapped["Product"] = relationship(back_populates="baseline_prices")
 
-    # 복합 인덱스 — product_id + recorded_date 조합 조회가 빈번 (일별 평균 등)
     __table_args__ = (
-        Index("ix_baseline_product_date", "product_id", "recorded_date"),
+        Index("ix_baseline_product_date", "product_id", "recorded_at"),
     )
 
-
-# ──────────────────────────────────────────────
-# 3. 할인 이력 (baseline과 분리하여 가격 오염 방지)
-# ──────────────────────────────────────────────
 
 class DiscountHistory(Base):
-    """
-    할인 이력 — 마트 전단 할인가를 별도 기록.
-
-    왜 baseline과 분리하는가:
-        "1+1", "반값 행사" 같은 특가는 일시적이라
-        평균에 포함하면 "지금 비싼가?"를 정확히 판단할 수 없다.
-        분리 저장하면 "이 품목은 할인 주기가 2.3주" 같은 패턴 분석이 가능하다.
-    어디서 쓰이는가:
-        프론트엔드 MART_DATA.items의 원천 — 마트별 현재 할인 목록.
-    """
+    """마트 실제 할인 가격 (실거래가)"""
     __tablename__ = "discount_history"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"), index=True)
-    store: Mapped[str] = mapped_column(String(50))  # "이마트", "홈플러스"
-    original_price: Mapped[int | None] = mapped_column(Integer, nullable=True)
-    sale_price: Mapped[int] = mapped_column(Integer)
-    discount_percent: Mapped[float | None] = mapped_column(Float, nullable=True)
-    event_name: Mapped[str] = mapped_column(String(200), default="")  # "주간특가", "1+1"
-    valid_from: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
-    valid_until: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
-    image_url: Mapped[str] = mapped_column(Text, default="")
-    crawled_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id", ondelete="CASCADE"))
+    price: Mapped[float] = mapped_column(Float, nullable=False)
+    original_price: Mapped[Optional[float]] = mapped_column(Float)
+    discount_rate: Mapped[Optional[float]] = mapped_column(Float)
+    source: Mapped[str] = mapped_column(String(50))
+    source_url: Mapped[Optional[str]] = mapped_column(String(500))
+    valid_from: Mapped[Optional[datetime]] = mapped_column(DateTime)
+    valid_to: Mapped[Optional[datetime]] = mapped_column(DateTime)
+    crawled_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    raw_data: Mapped[Optional[dict]] = mapped_column(JSON)
 
-    product = relationship("Product", back_populates="discount_items")
+    product: Mapped["Product"] = relationship(back_populates="discount_history")
 
-
-# ──────────────────────────────────────────────
-# 4. 핫딜 게시글 (참고용만 — 절대 평균에 불포함)
-# ──────────────────────────────────────────────
-
-class HotdealPost(Base):
-    """
-    핫딜 게시글 — 뽐뿌·어미새·루리웹 등 커뮤니티 핫딜.
-
-    왜 평균에 넣지 않는가:
-        "1원 이벤트", "한정 10개" 같은 비정상 가격이 섞이면
-        baseline이 오염되어 "지금 사도 되는가?" 판정이 무의미해진다.
-    어디서 쓰이는가:
-        프론트엔드 HOTDEALS 배열의 원천.
-        price_vs_avg로 baseline 대비 얼마나 저렴한지 참고만 제공.
-    """
-    __tablename__ = "hotdeal_posts"
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    title: Mapped[str] = mapped_column(Text)
-    url: Mapped[str] = mapped_column(Text, unique=True)
-    source_community: Mapped[str] = mapped_column(String(50), default="")  # "뽐뿌", "어미새"
-    price: Mapped[int | None] = mapped_column(Integer, nullable=True)
-    original_price: Mapped[int | None] = mapped_column(Integer, nullable=True)
-    category: Mapped[str] = mapped_column(String(50), default="")  # "food", "electronics"
-    matched_product_id: Mapped[int | None] = mapped_column(
-        ForeignKey("products.id"), nullable=True
+    __table_args__ = (
+        Index("ix_discount_product_date", "product_id", "crawled_at"),
+        Index("ix_discount_source", "source"),
     )
-    price_vs_avg: Mapped[float | None] = mapped_column(Float, nullable=True)
-    views: Mapped[int] = mapped_column(Integer, default=0)
-    comments_count: Mapped[int] = mapped_column(Integer, default=0)
-    thumbnail_url: Mapped[str] = mapped_column(Text, default="")
-    crawled_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
 
 
-# ──────────────────────────────────────────────
-# 5. 주유소 정보
-# ──────────────────────────────────────────────
+class HotdealPrice(Base):
+    """커뮤니티 핫딜 가격 (참고용, 기준가 산정에 사용 안 함)"""
+    __tablename__ = "hotdeal_prices"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id", ondelete="CASCADE"))
+    price: Mapped[float] = mapped_column(Float, nullable=False)
+    source: Mapped[str] = mapped_column(String(50))
+    source_url: Mapped[Optional[str]] = mapped_column(String(500))
+    title: Mapped[Optional[str]] = mapped_column(String(500))
+    votes_hot: Mapped[int] = mapped_column(Integer, default=0)
+    votes_not: Mapped[int] = mapped_column(Integer, default=0)
+    crawled_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    is_verified: Mapped[bool] = mapped_column(Boolean, default=False)
+
+    product: Mapped["Product"] = relationship(back_populates="hotdeal_prices")
+
+    __table_args__ = (
+        Index("ix_hotdeal_product_date", "product_id", "crawled_at"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 주유소
+# ═══════════════════════════════════════════════
 
 class GasStation(Base):
-    """
-    주유소 정보 — OPINET API로 수집한 유가 데이터.
-
-    어디서 쓰이는가:
-        프론트엔드 GAS_STATIONS 배열의 원천.
-        연료 종류별(gasoline/diesel/lpg) 최저가 정렬에 사용.
-    """
     __tablename__ = "gas_stations"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(100))
-    brand: Mapped[str] = mapped_column(String(50), default="")
-    address: Mapped[str] = mapped_column(Text, default="")
-    lat: Mapped[float | None] = mapped_column(Float, nullable=True)
-    lng: Mapped[float | None] = mapped_column(Float, nullable=True)
-    gasoline_price: Mapped[int | None] = mapped_column(Integer, nullable=True)
-    diesel_price: Mapped[int | None] = mapped_column(Integer, nullable=True)
-    lpg_price: Mapped[int | None] = mapped_column(Integer, nullable=True)
-    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(200), nullable=False)
+    brand: Mapped[Optional[str]] = mapped_column(String(50))
+    address: Mapped[str] = mapped_column(String(500))
+    lat: Mapped[float] = mapped_column(Float)
+    lng: Mapped[float] = mapped_column(Float)
+    gasoline_price: Mapped[Optional[float]] = mapped_column(Float)
+    diesel_price: Mapped[Optional[float]] = mapped_column(Float)
+    lpg_price: Mapped[Optional[float]] = mapped_column(Float)
+    is_self: Mapped[bool] = mapped_column(Boolean, default=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    source: Mapped[str] = mapped_column(String(50), default="opinet")
+
+    __table_args__ = (
+        Index("ix_gas_location", "lat", "lng"),
+    )
 
 
-# ──────────────────────────────────────────────
-# 6. 크롤링 실행 로그
-# ──────────────────────────────────────────────
+# ═══════════════════════════════════════════════
+# 식당
+# ═══════════════════════════════════════════════
 
-class CrawlLog(Base):
-    """
-    크롤링 실행 로그 — 각 크롤러 실행 결과를 기록.
+class Restaurant(Base):
+    __tablename__ = "restaurants"
 
-    왜 필요한가:
-        "마지막 성공은 언제?", "어떤 전략이 실패했나?" 를 추적해야
-        DiagnosticsEngine이 자동 진단·복구를 할 수 있다.
-    어디서 쓰이는가:
-        프론트엔드 크롤러 관리 대시보드 + 자동 복구 트리거.
-    """
-    __tablename__ = "crawl_logs"
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(200), nullable=False)
+    category: Mapped[Optional[str]] = mapped_column(String(100))
+    address: Mapped[str] = mapped_column(String(500))
+    lat: Mapped[float] = mapped_column(Float)
+    lng: Mapped[float] = mapped_column(Float)
+    phone: Mapped[Optional[str]] = mapped_column(String(20))
+    naver_place_id: Mapped[Optional[str]] = mapped_column(String(100))
+    rating: Mapped[Optional[float]] = mapped_column(Float)
+    review_count: Mapped[int] = mapped_column(Integer, default=0)
+    menu_data: Mapped[Optional[dict]] = mapped_column(JSON)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    crawler_name: Mapped[str] = mapped_column(String(50), index=True)
-    status: Mapped[str] = mapped_column(String(20))  # "success", "failed", "partial"
-    strategy_used: Mapped[str | None] = mapped_column(String(50), nullable=True)
-    items_count: Mapped[int] = mapped_column(Integer, default=0)
-    started_at: Mapped[datetime] = mapped_column(DateTime)
-    finished_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
-    duration_seconds: Mapped[float] = mapped_column(Float, default=0.0)
-    error_msg: Mapped[str | None] = mapped_column(Text, nullable=True)
-    diagnosis: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    __table_args__ = (
+        Index("ix_restaurant_location", "lat", "lng"),
+    )
 
 
-# ──────────────────────────────────────────────
-# 7. 사용자 관심 품목 (서버사이드 백업)
-# ──────────────────────────────────────────────
+# ═══════════════════════════════════════════════
+# 커뮤니티
+# ═══════════════════════════════════════════════
 
-class UserFavorite(Base):
-    """
-    사용자 관심 품목 — 로그인 없이도 세션 기반으로 저장.
+class Post(Base):
+    __tablename__ = "posts"
 
-    왜 서버에 저장하는가:
-        localStorage만 쓰면 디바이스 변경 시 목록이 사라진다.
-        서버 백업 + localStorage 캐시 이중화로 사용자 경험을 보장.
-    """
-    __tablename__ = "user_favorites"
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    author_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    post_type: Mapped[PostType] = mapped_column(SAEnum(PostType), nullable=False)
+    title: Mapped[str] = mapped_column(String(300), nullable=False)
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    category_id: Mapped[Optional[str]] = mapped_column(ForeignKey("categories.id"))
+    custom_category: Mapped[Optional[str]] = mapped_column(String(100))
+    product_id: Mapped[Optional[int]] = mapped_column(ForeignKey("products.id"))
+    deal_price: Mapped[Optional[float]] = mapped_column(Float)
+    deal_url: Mapped[Optional[str]] = mapped_column(String(500))
+    suggested_tier: Mapped[Optional[str]] = mapped_column(String(20))
+    view_count: Mapped[int] = mapped_column(Integer, default=0)
+    is_pinned: Mapped[bool] = mapped_column(Boolean, default=False)
+    is_deleted: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[str] = mapped_column(String(100), index=True)
-    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"))
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    author: Mapped["User"] = relationship(back_populates="posts")
+    comments: Mapped[list["Comment"]] = relationship(back_populates="post", cascade="all, delete-orphan")
+    votes: Mapped[list["Vote"]] = relationship(back_populates="post", cascade="all, delete-orphan")
+    images: Mapped[list["PostImage"]] = relationship(back_populates="post", cascade="all, delete-orphan")
+
+    __table_args__ = (
+        Index("ix_posts_type_created", "post_type", "created_at"),
+        Index("ix_posts_author", "author_id"),
+    )
 
 
-# ──────────────────────────────────────────────
-# 8. 가격 알림 설정
-# ──────────────────────────────────────────────
+class PostImage(Base):
+    """게시글 사이사이 삽입되는 이미지"""
+    __tablename__ = "post_images"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    post_id: Mapped[int] = mapped_column(ForeignKey("posts.id", ondelete="CASCADE"))
+    image_url: Mapped[str] = mapped_column(String(500), nullable=False)
+    position: Mapped[int] = mapped_column(Integer, default=0)
+    alt_text: Mapped[Optional[str]] = mapped_column(String(200))
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    post: Mapped["Post"] = relationship(back_populates="images")
+
+
+class Comment(Base):
+    __tablename__ = "comments"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    post_id: Mapped[int] = mapped_column(ForeignKey("posts.id", ondelete="CASCADE"))
+    author_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    parent_id: Mapped[Optional[int]] = mapped_column(ForeignKey("comments.id"))
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    is_deleted: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    post: Mapped["Post"] = relationship(back_populates="comments")
+    author: Mapped["User"] = relationship(back_populates="comments")
+    parent: Mapped[Optional["Comment"]] = relationship("Comment", remote_side="Comment.id")
+
+    __table_args__ = (
+        Index("ix_comments_post", "post_id"),
+    )
+
+
+class Vote(Base):
+    """핫딜 여부 투표"""
+    __tablename__ = "votes"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    post_id: Mapped[int] = mapped_column(ForeignKey("posts.id", ondelete="CASCADE"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    vote_type: Mapped[VoteType] = mapped_column(SAEnum(VoteType), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    post: Mapped["Post"] = relationship(back_populates="votes")
+    user: Mapped["User"] = relationship(back_populates="votes")
+
+    __table_args__ = (
+        UniqueConstraint("post_id", "user_id", name="uq_vote_post_user"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 즐겨찾기 & 알림
+# ═══════════════════════════════════════════════
+
+class Favorite(Base):
+    __tablename__ = "favorites"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    product_id: Mapped[Optional[int]] = mapped_column(ForeignKey("products.id"))
+    category_id: Mapped[Optional[str]] = mapped_column(ForeignKey("categories.id"))
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    user: Mapped["User"] = relationship(back_populates="favorites")
+
 
 class PriceAlert(Base):
-    """
-    가격 알림 — 목표 가격 이하로 떨어지면 알림 발송.
-
-    어디서 쓰이는가:
-        크롤링 완료 이벤트 → alert 체크 → 조건 충족 시 알림 큐 발행.
-    """
+    """가격 알림 — 목표 가격 이하 시 알림"""
     __tablename__ = "price_alerts"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[str] = mapped_column(String(100), index=True)
-    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"))
-    target_price: Mapped[int] = mapped_column(Integer)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id", ondelete="CASCADE"))
+    target_price: Mapped[float] = mapped_column(Float, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-    triggered_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    last_triggered: Mapped[Optional[datetime]] = mapped_column(DateTime)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    user: Mapped["User"] = relationship(back_populates="price_alerts")
+
+
+# ═══════════════════════════════════════════════
+# 크롤링 로그
+# ═══════════════════════════════════════════════
+
+class CrawlLog(Base):
+    __tablename__ = "crawl_logs"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    crawler_name: Mapped[str] = mapped_column(String(100), nullable=False)
+    status: Mapped[CrawlStatus] = mapped_column(SAEnum(CrawlStatus))
+    items_found: Mapped[int] = mapped_column(Integer, default=0)
+    items_saved: Mapped[int] = mapped_column(Integer, default=0)
+    strategy_used: Mapped[Optional[str]] = mapped_column(String(50))
+    duration_seconds: Mapped[Optional[float]] = mapped_column(Float)
+    error_message: Mapped[Optional[str]] = mapped_column(Text)
+    error_type: Mapped[Optional[str]] = mapped_column(String(50))
+    raw_log: Mapped[Optional[dict]] = mapped_column(JSON)
+    started_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    finished_at: Mapped[Optional[datetime]] = mapped_column(DateTime)
+
+    __table_args__ = (
+        Index("ix_crawl_log_name_date", "crawler_name", "started_at"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 자동완성 키워드
+# ═══════════════════════════════════════════════
+
+class Keyword(Base):
+    __tablename__ = "keywords"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    word: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
+    synonyms: Mapped[Optional[list]] = mapped_column(JSON)
+    category_id: Mapped[Optional[str]] = mapped_column(ForeignKey("categories.id"))
+    search_count: Mapped[int] = mapped_column(Integer, default=0)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+
+    __table_args__ = (
+        Index("ix_keywords_word", "word"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 배달 음식
+# ═══════════════════════════════════════════════
+
+class DeliveryItem(Base):
+    """배달 앱 메뉴 가격"""
+    __tablename__ = "delivery_items"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    restaurant_name: Mapped[str] = mapped_column(String(200), nullable=False)
+    menu_name: Mapped[str] = mapped_column(String(200), nullable=False)
+    price: Mapped[float] = mapped_column(Float, nullable=False)
+    original_price: Mapped[Optional[float]] = mapped_column(Float)
+    platform: Mapped[str] = mapped_column(String(50))
+    delivery_fee: Mapped[Optional[float]] = mapped_column(Float)
+    min_order: Mapped[Optional[float]] = mapped_column(Float)
+    source_url: Mapped[Optional[str]] = mapped_column(String(500))
+    crawled_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    __table_args__ = (
+        Index("ix_delivery_restaurant", "restaurant_name"),
+        Index("ix_delivery_platform", "platform"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 쇼핑 (의류 등)
+# ═══════════════════════════════════════════════
+
+class ShoppingItem(Base):
+    """쇼핑몰 할인 상품"""
+    __tablename__ = "shopping_items"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(300), nullable=False)
+    brand: Mapped[Optional[str]] = mapped_column(String(100))
+    price: Mapped[float] = mapped_column(Float, nullable=False)
+    original_price: Mapped[Optional[float]] = mapped_column(Float)
+    discount_rate: Mapped[Optional[float]] = mapped_column(Float)
+    platform: Mapped[str] = mapped_column(String(50))
+    category: Mapped[Optional[str]] = mapped_column(String(100))
+    image_url: Mapped[Optional[str]] = mapped_column(String(500))
+    source_url: Mapped[Optional[str]] = mapped_column(String(500))
+    crawled_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    __table_args__ = (
+        Index("ix_shopping_platform", "platform"),
+    )

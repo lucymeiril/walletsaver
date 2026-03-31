@@ -1,0 +1,86 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--text2);
+}
+
+.inputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: var(--fs-base);
+  transition: border var(--dur) var(--ease);
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+}
+
+.hasIcon {
+  padding-left: 40px;
+}
+
+.hasToggle {
+  padding-right: 40px;
+}
+
+.icon {
+  position: absolute;
+  left: 12px;
+  color: var(--text3);
+}
+
+.toggle {
+  position: absolute;
+  right: 8px;
+  padding: 4px;
+  color: var(--text3);
+  cursor: pointer;
+  background: none;
+  border: none;
+  display: flex;
+}
+
+.toggle:hover {
+  color: var(--text);
+}
+
+.hasError .input {
+  border-color: var(--color-danger);
+}
+
+.hasError .label {
+  color: var(--color-danger);
+}
+
+.error {
+  font-size: var(--fs-xs);
+  color: var(--color-danger);
+}
+
+.helper {
+  font-size: var(--fs-xs);
+  color: var(--text3);
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
