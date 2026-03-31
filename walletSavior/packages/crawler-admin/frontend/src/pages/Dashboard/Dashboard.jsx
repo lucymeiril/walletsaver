@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import useAdminStore from '../../stores/adminStore';
-import { crawlLogs, errorTrend, statusDistribution } from '../../data/mockData';
+import { errorTrend, statusDistribution } from '../../data/mockData';
 import {
   PieChart,
   Pie,
@@ -19,7 +20,26 @@ const STATUS_LABEL = { success: '성공', failure: '실패', partial: '부분' }
 
 export default function Dashboard() {
   const stats = useAdminStore((s) => s.dashboardStats);
-  const recentLogs = crawlLogs.slice(0, 7);
+  const logs = useAdminStore((s) => s.logs);
+  const loading = useAdminStore((s) => s.loading);
+  const fetchDashboard = useAdminStore((s) => s.fetchDashboard);
+
+  useEffect(() => {
+    fetchDashboard();
+  }, [fetchDashboard]);
+
+  const recentLogs = logs.slice(0, 7);
+
+  if (loading && !stats.totalCrawlers) {
+    return (
+      <div className={styles.page}>
+        <h1 className={styles.pageTitle}>대시보드</h1>
+        <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text3)' }}>
+          데이터 로딩 중...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>

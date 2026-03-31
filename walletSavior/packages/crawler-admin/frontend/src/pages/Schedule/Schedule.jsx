@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useAdminStore from '../../stores/adminStore';
 import { Play, Edit3 } from 'lucide-react';
 import styles from './Schedule.module.css';
@@ -23,9 +23,16 @@ export default function Schedule() {
   const schedules = useAdminStore((s) => s.schedules);
   const toggleSchedule = useAdminStore((s) => s.toggleSchedule);
   const updateScheduleCron = useAdminStore((s) => s.updateScheduleCron);
+  const fetchSchedules = useAdminStore((s) => s.fetchSchedules);
+  const updateScheduleApi = useAdminStore((s) => s.updateScheduleApi);
+  const loading = useAdminStore((s) => s.loading);
 
   const [editing, setEditing] = useState(null);
   const [editCron, setEditCron] = useState('');
+
+  useEffect(() => {
+    fetchSchedules();
+  }, [fetchSchedules]);
 
   const formatDateTime = (iso) =>
     new Date(iso).toLocaleString('ko-KR', {
@@ -43,6 +50,8 @@ export default function Schedule() {
   const handleSave = () => {
     if (editing) {
       updateScheduleCron(editing.id, editCron, cronToHuman(editCron));
+      // API 호출 시도 (실패해도 로컬 상태는 이미 업데이트됨)
+      updateScheduleApi(editing.crawlerName || editing.crawlerId, { cron: editCron, description: cronToHuman(editCron) });
       setEditing(null);
     }
   };

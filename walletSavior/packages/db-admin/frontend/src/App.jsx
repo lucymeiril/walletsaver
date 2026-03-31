@@ -8,6 +8,7 @@ const Prices     = lazy(() => import('./pages/Prices/Prices'));
 const Categories = lazy(() => import('./pages/Categories/Categories'));
 const Keywords   = lazy(() => import('./pages/Keywords/Keywords'));
 const Analytics  = lazy(() => import('./pages/Analytics/Analytics'));
+const InboxPage  = lazy(() => import('./pages/Inbox/InboxPage'));
 
 function Loader() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
       <Routes>
         <Route element={<AdminLayout />}>
           <Route path="/"           element={<Dashboard />} />
+          <Route path="/inbox"      element={<InboxPage />} />
           <Route path="/products"   element={<Products />} />
           <Route path="/prices"     element={<Prices />} />
           <Route path="/categories" element={<Categories />} />

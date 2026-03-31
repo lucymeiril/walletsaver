@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Plus, Pencil, Trash2, X, Search } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import useDbAdminStore from '../../stores/dbAdminStore';
@@ -8,13 +8,17 @@ const TIER_LABEL = { ultra: '초특가', great: '특가', good: '적정', wait: 
 const TIER_CLASS = { ultra: 'tierUltra', great: 'tierGreat', good: 'tierGood', wait: 'tierWait', bad: 'tierBad' };
 
 export default function Products() {
-  const { products, addProduct, updateProduct, deleteProduct, priceHistories } = useDbAdminStore();
+  const { products, addProduct, updateProduct, deleteProduct, priceHistories, fetchProducts, loading } = useDbAdminStore();
   const [search, setSearch] = useState('');
   const [catFilter, setCatFilter] = useState('');
   const [modal, setModal] = useState(null); // null | { mode: 'add'|'edit'|'detail', product? }
   const [form, setForm] = useState({});
 
   const allCategories = useMemo(() => [...new Set(products.map(p => p.category))].sort(), [products]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   const filtered = useMemo(() => {
     return products.filter(p => {

@@ -8,12 +8,14 @@ import {
   Clock,
   Menu,
   X,
+  ClipboardCheck,
 } from 'lucide-react';
 import styles from './AdminLayout.module.css';
 
 const navItems = [
   { to: '/', label: '대시보드', icon: LayoutDashboard },
   { to: '/crawlers', label: '크롤러', icon: Bot },
+  { to: '/data-review', label: '데이터 검토', icon: ClipboardCheck },
   { to: '/plugins', label: '플러그인', icon: Puzzle },
   { to: '/logs', label: '로그', icon: FileText },
   { to: '/schedule', label: '스케줄', icon: Clock },

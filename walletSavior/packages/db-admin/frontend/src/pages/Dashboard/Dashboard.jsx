@@ -1,13 +1,22 @@
-import { Package, DollarSign, FolderTree, Search, Clock, Activity } from 'lucide-react';
+import { useEffect } from 'react';
+import { Package, DollarSign, FolderTree, Search, Clock, Activity, Inbox } from 'lucide-react';
 import useDbAdminStore from '../../stores/dbAdminStore';
+import { useNavigate } from 'react-router-dom';
 import s from './Dashboard.module.css';
 
 export default function Dashboard() {
-  const { dashboardStats } = useDbAdminStore();
+  const { dashboardStats, loading, ingestionStats, fetchDashboard, fetchIngestionStats } = useDbAdminStore();
   const { totalProducts, totalPriceRecords, totalCategories, totalKeywords, lastUpdated, qualityScore, recentIngestions } = dashboardStats;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchDashboard();
+    fetchIngestionStats();
+  }, [fetchDashboard, fetchIngestionStats]);
 
   const timeSince = getTimeSince(lastUpdated);
   const freshness = timeSince.hours < 1 ? 'fresh' : timeSince.hours < 6 ? 'normal' : 'stale';
+  const pendingCount = ingestionStats.pending || 0;
 
   return (
     <div className={s.page}>
@@ -20,6 +29,23 @@ export default function Dashboard() {
         <StatCard icon={FolderTree} label="카테고리 수" value={totalCategories} color="var(--yellow)" />
         <StatCard icon={Search} label="키워드 수" value={totalKeywords} color="var(--pink)" />
       </div>
+
+      {/* 수신함 대기 알림 */}
+      {pendingCount > 0 && (
+        <div
+          className={s.card}
+          style={{ marginBottom: 'var(--space-md)', cursor: 'pointer', borderColor: 'var(--accent)' }}
+          onClick={() => navigate('/inbox')}
+        >
+          <h3 className={s.cardTitle}><Inbox size={16} /> 📥 수신함 대기</h3>
+          <p style={{ color: 'var(--accent)', fontSize: 'var(--fs-lg)', fontWeight: 'var(--fw-bold)' }}>
+            {pendingCount}건의 데이터가 승인 대기 중입니다
+          </p>
+          <p style={{ color: 'var(--text3)', fontSize: 'var(--fs-sm)', marginTop: 4 }}>
+            클릭하여 수신함으로 이동
+          </p>
+        </div>
+      )}
 
       <div className={s.grid}>
         {/* 데이터 최신성 */}
