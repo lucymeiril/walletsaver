@@ -1,23 +1,27 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { PRODUCTS, MARTS, fmt } from '../../data/mockData';
-import { MART_DATA } from '../../data/seedData';
+import { MARTS, fmt } from '../../data/mockData';
 import useStore from '../../stores/appStore';
 import Modal from '../../components/common/Modal';
+import Spinner from '../../components/common/Spinner';
 import s from './MartPage.module.css';
+
+const img = (w, h, text, bg = '1e293b', fg = '94a3b8') =>
+  `https://placehold.co/${w}x${h}/${bg}/${fg}?text=${encodeURIComponent(text)}`;
 
 function getCategories(items) {
   const events = new Set(items.map(i => i.event));
   return ['전체', ...events];
 }
 
-function findCommonProducts(martData) {
+function findCommonProducts(martDeals) {
   const productNames = {};
-  for (const [martKey, mart] of Object.entries(martData)) {
-    for (const item of mart.items) {
+  for (const [martKey, items] of Object.entries(martDeals)) {
+    const martInfo = MARTS.find(m => m.key === martKey);
+    for (const item of (items || [])) {
       const base = item.name.replace(/\s+\d+.*$/, '').replace(/\s+(1kg|100g|1L|5P|2입|24입|30구|12|21포|500g|1통|1포기|2마리|1망|793g|1.5kg|2.3L|600g).*$/i, '').trim();
       if (!productNames[base]) productNames[base] = {};
-      productNames[base][martKey] = { ...item, mart: mart.name, color: mart.color || MARTS.find(m => m.key === martKey)?.color };
+      productNames[base][martKey] = { ...item, mart: martInfo?.name, color: martInfo?.color };
     }
   }
   return Object.entries(productNames)
@@ -35,15 +39,58 @@ export default function MartPage() {
 
   const { addToShoppingList, addToast } = useStore();
 
-  const mart = MART_DATA[activeMart];
-  const categories = useMemo(() => getCategories(mart.items), [mart]);
-  const filteredItems = catFilter === '전체' ? mart.items : mart.items.filter(i => i.event === catFilter);
-  const commonProducts = useMemo(() => findCommonProducts(MART_DATA), []);
+  const [martDeals, setMartDeals] = useState({});
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch all mart deals on mount (needed for compare view)
+  useEffect(() => {
+    const martKeys = MARTS.map(m => m.key);
+    Promise.all(
+      martKeys.map(key =>
+        fetch(`/api/marts/${key}/deals`).then(r => r.json())
+          .then(res => ({
+            key,
+            items: (res.data || []).map(d => ({
+              name: d.name,
+              sale: d.price ?? d.sale,
+              orig: d.original_price ?? d.orig,
+              disc: d.discount_rate ?? d.disc,
+              event: d.event || '할인',
+              img: d.img,
+            })),
+          }))
+      )
+    ).then(results => {
+      const deals = {};
+      results.forEach(r => { deals[r.key] = r.items; });
+      setMartDeals(deals);
+    }).catch(err => {
+      console.error(err);
+      addToast('마트 데이터를 불러오는데 실패했습니다', 'error');
+    }).finally(() => setLoading(false));
+
+    fetch('/api/products/search?per_page=50').then(r => r.json())
+      .then(res => setProducts(res.data || []))
+      .catch(console.error);
+  }, []);
+
+  const martInfo = MARTS.find(m => m.key === activeMart);
+  const martItems = martDeals[activeMart] || [];
+  const categories = useMemo(() => getCategories(martItems), [martItems]);
+  const filteredItems = catFilter === '전체' ? martItems : martItems.filter(i => i.event === catFilter);
+  const commonProducts = useMemo(() => findCommonProducts(martDeals), [martDeals]);
+
+  // Generate period from current week
+  const now = new Date();
+  const startOfWeek = new Date(now); startOfWeek.setDate(now.getDate() - now.getDay());
+  const endOfWeek = new Date(startOfWeek); endOfWeek.setDate(startOfWeek.getDate() + 6);
+  const martPeriod = `${startOfWeek.getMonth()+1}/${startOfWeek.getDate()} ~ ${endOfWeek.getMonth()+1}/${endOfWeek.getDate()}`;
 
   const flyerImages = MARTS.map(m => ({
     key: m.key,
     name: m.name,
-    img: MART_DATA[m.key].flyerImg,
+    img: img(800, 1200, `${m.name} 전단지`, '1e293b', '94a3b8'),
   }));
 
   return (
@@ -66,9 +113,11 @@ export default function MartPage() {
         ))}
       </div>
 
+      {loading && <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem 0' }}><Spinner /></div>}
+
       <div className={s.info}>
-        <span>행사 기간: {mart.period}</span>
-        <span>총 {mart.items.length}개 상품</span>
+        <span>행사 기간: {martPeriod}</span>
+        <span>총 {martItems.length}개 상품</span>
       </div>
 
       {/* Mode Toggle */}
@@ -138,10 +187,10 @@ export default function MartPage() {
 
           <div className={s.grid}>
             {filteredItems.map((item, i) => {
-              const matched = PRODUCTS.find(p => item.name.includes(p.name));
+              const matched = products.find(p => item.name?.includes(p.name));
               const diff = matched ? item.sale - matched.avg : null;
               return (
-                <div key={i} className={s.card} onClick={() => setSaleDetail({ ...item, martName: mart.name, period: mart.period })}>
+                <div key={i} className={s.card} onClick={() => setSaleDetail({ ...item, martName: martInfo?.name, period: martPeriod })}>
                   <div className={s.cardName}>{item.name}</div>
                   <div className={s.cardPrices}>
                     <span className={s.sale}>{fmt(item.sale)}원</span>
@@ -167,7 +216,7 @@ export default function MartPage() {
                       🛒
                     </button>
                   </div>
-                  <div className={s.validity}>~ {mart.period.split('~')[1]?.trim() || mart.period}</div>
+                  <div className={s.validity}>~ {martPeriod.split('~')[1]?.trim() || martPeriod}</div>
                 </div>
               );
             })}
@@ -214,7 +263,7 @@ export default function MartPage() {
 
       {/* Sale Detail Modal */}
       {saleDetail && (() => {
-        const matched = PRODUCTS.find(p => saleDetail.name.includes(p.name));
+        const matched = products.find(p => saleDetail.name?.includes(p.name));
         const diffVsAvg = matched ? saleDetail.sale - matched.avg : null;
         const periodParts = saleDetail.period?.split('~') || [];
         return (

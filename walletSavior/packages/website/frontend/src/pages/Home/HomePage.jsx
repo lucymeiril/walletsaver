@@ -1,9 +1,10 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X, TrendingUp, TrendingDown, Minus, ArrowRight, Heart, Clock, Fuel } from 'lucide-react';
 import { MARTS, GAS_STATIONS, fmt } from '../../data/mockData';
-import { HOTDEALS, MART_DATA, COMMUNITY_POSTS, products as PRODUCTS, TRENDING } from '../../data/seedData';
+import { TRENDING } from '../../data/seedData';
 import useStore from '../../stores/appStore';
+import Spinner from '../../components/common/Spinner';
 import s from './HomePage.module.css';
 
 const CATEGORIES = [
@@ -29,8 +30,44 @@ export default function HomePage() {
   const [martTab, setMartTab] = useState('emart');
   const inputRef = useRef(null);
 
+  const [products, setProducts] = useState([]);
+  const [hotdeals, setHotdeals] = useState([]);
+  const [martDeals, setMartDeals] = useState({});
+  const [communityPosts, setCommunityPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/products/search?per_page=50').then(r => r.json()),
+      fetch('/api/hotdeals?per_page=4').then(r => r.json()),
+      fetch('/api/posts?board=hotdeal&per_page=5').then(r => r.json()),
+    ]).then(([prodRes, dealRes, postRes]) => {
+      setProducts(prodRes.data || []);
+      setHotdeals(dealRes.data || []);
+      setCommunityPosts(postRes.data || []);
+    }).catch(err => {
+      console.error(err);
+      addToast('데이터를 불러오는데 실패했습니다', 'error');
+    }).finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    fetch(`/api/marts/${martTab}/deals`).then(r => r.json())
+      .then(res => {
+        const items = (res.data || []).map(d => ({
+          name: d.name,
+          sale: d.price ?? d.sale,
+          orig: d.original_price ?? d.orig,
+          disc: d.discount_rate ?? d.disc,
+          event: d.event || '할인',
+        }));
+        setMartDeals(prev => ({ ...prev, [martTab]: items }));
+      })
+      .catch(console.error);
+  }, [martTab]);
+
   const matches = query.length > 0
-    ? PRODUCTS.filter(p => p.name.includes(query) || p.cat.includes(query))
+    ? products.filter(p => p.name?.includes(query) || p.cat?.includes(query))
     : [];
 
   const selectProduct = useCallback((p) => {
@@ -43,8 +80,13 @@ export default function HomePage() {
 
   const quickTags = ['양파', '삼겹살', '계란', '휘발유', '사과', '우유'];
 
-  const activeMart = MART_DATA[martTab];
+  const activeMartInfo = MARTS.find(m => m.key === martTab);
+  const activeMartItems = martDeals[martTab] || [];
   const topGas = [...GAS_STATIONS].sort((a, b) => a.gasoline - b.gasoline).slice(0, 4);
+
+  if (loading) {
+    return <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}><Spinner size="lg" /></div>;
+  }
 
   return (
     <div>
@@ -106,7 +148,7 @@ export default function HomePage() {
                     <div className={s.trendList}>
                       {recentSearches.slice(0, 5).map(rs => (
                         <button key={rs.timestamp} className={s.trendItem} onClick={() => {
-                          const p = PRODUCTS.find(pr => pr.name === rs.query);
+                          const p = products.find(pr => pr.name === rs.query);
                           if (p) selectProduct(p);
                           else { setQuery(rs.query); setAcOpen(true); }
                         }}>
@@ -121,7 +163,7 @@ export default function HomePage() {
                   {TRENDING.map((t, i) => (
                     <button key={t} className={s.trendItem} onClick={() => {
                       setQuery(t);
-                      const p = PRODUCTS.find(pr => pr.name === t || t.includes(pr.name));
+                      const p = products.find(pr => pr.name === t || t.includes(pr.name));
                       if (p) selectProduct(p);
                     }}>
                       <span className={s.trendRank}>{i + 1}</span> {t}
@@ -135,7 +177,7 @@ export default function HomePage() {
           <div className={s.tags}>
             {quickTags.map(t => (
               <button key={t} className={s.tag} onClick={() => {
-                const p = PRODUCTS.find(pr => pr.name === t);
+                const p = products.find(pr => pr.name === t);
                 if (p) selectProduct(p);
               }}>{t}</button>
             ))}
@@ -145,7 +187,7 @@ export default function HomePage() {
             <div className={s.recentChips}>
               {recentSearches.slice(0, 6).map(rs => (
                 <button key={rs.timestamp} className={s.recentChip} onClick={() => {
-                  const p = PRODUCTS.find(pr => pr.name === rs.query);
+                  const p = products.find(pr => pr.name === rs.query);
                   if (p) selectProduct(p);
                   else { setQuery(rs.query); setAcOpen(true); }
                 }}>
@@ -181,7 +223,7 @@ export default function HomePage() {
           <button className={s.secMore} onClick={() => navigate('/hotdeal')}>전체보기 <ArrowRight size={14} /></button>
         </div>
         <div className={s.dealGrid}>
-          {HOTDEALS.slice(0, 4).map(d => {
+          {hotdeals.slice(0, 4).map(d => {
             const ratio = d.price && d.origPrice ? d.price / d.origPrice : null;
             let tierClass = '';
             if (ratio !== null) {
@@ -216,7 +258,7 @@ export default function HomePage() {
         <h2 className={s.secTitle}>오늘의 물가</h2>
         <p className={s.secDesc}>정부 공시 + 마트 평균 기준</p>
         <div className={s.priceGrid}>
-          {PRODUCTS.slice(0, 8).map(p => {
+          {products.slice(0, 8).map(p => {
             const diff = p.cur - p.avg;
             const pct = ((diff / p.avg) * 100).toFixed(1);
             let trend = 'same', icon = <Minus size={12} />;
@@ -279,7 +321,7 @@ export default function HomePage() {
           ))}
         </div>
         <div className={s.martSaleGrid}>
-          {activeMart.items.slice(0, 4).map((item, i) => (
+          {activeMartItems.slice(0, 4).map((item, i) => (
             <div key={i} className={s.martSaleCard} onClick={() => navigate('/mart')}>
               <div className={s.martSaleName}>{item.name}</div>
               <div className={s.martSalePrices}>
@@ -288,7 +330,7 @@ export default function HomePage() {
                 <span className={s.martSaleDisc}>-{item.disc}%</span>
               </div>
               <div className={s.martSaleBottom}>
-                <span className={s.martSaleEvent}>{activeMart.name} · {item.event}</span>
+                <span className={s.martSaleEvent}>{activeMartInfo?.name} · {item.event}</span>
                 <button
                   className={s.cartSmall}
                   onClick={(e) => {
@@ -339,7 +381,7 @@ export default function HomePage() {
           <button className={s.secMore} onClick={() => navigate('/community')}>전체보기 <ArrowRight size={14} /></button>
         </div>
         <div className={s.communityList}>
-          {COMMUNITY_POSTS.slice(0, 5).map(p => (
+          {communityPosts.slice(0, 5).map(p => (
             <div key={p.id} className={s.communityItem} onClick={() => navigate('/community', { state: { openPostId: p.id } })}>
               <span className={s.comCat}>{p.cat}</span>
               <div className={s.comBody}>

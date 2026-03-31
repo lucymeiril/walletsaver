@@ -2,10 +2,10 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useMemo, useState, useEffect } from 'react';
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { Heart, Search, TrendingUp, TrendingDown, Minus } from 'lucide-react';
-import { PRODUCTS, MARTS, PRODUCT_VARIANTS, fmt, genPriceHistory } from '../../data/mockData';
-import { HOTDEALS } from '../../data/seedData';
+import { MARTS, PRODUCT_VARIANTS, fmt } from '../../data/mockData';
 import useStore from '../../stores/appStore';
 import useDebounce from '../../hooks/useDebounce';
+import Spinner from '../../components/common/Spinner';
 import s from './PricePage.module.css';
 
 export default function PricePage() {
@@ -14,17 +14,44 @@ export default function PricePage() {
   const location = useLocation();
   const { selectedProduct, setSelectedProduct, addFavorite, removeFavorite, isFavorite, addRecentSearch, addToShoppingList, addToast } = useStore();
 
+  const [products, setProducts] = useState([]);
+  const [productData, setProductData] = useState(null);
+  const [chartData, setChartData] = useState([]);
+  const [relatedHotdeals, setRelatedHotdeals] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch all products for search
+  useEffect(() => {
+    fetch('/api/products/search?per_page=50').then(r => r.json())
+      .then(res => setProducts(res.data || []))
+      .catch(console.error);
+  }, []);
+
+  // Fetch product detail by ID
+  useEffect(() => {
+    if (!id) { setProductData(null); return; }
+    setLoading(true);
+    fetch(`/api/products/${id}`).then(r => r.json())
+      .then(res => setProductData(res.data))
+      .catch(err => {
+        console.error(err);
+        addToast('상품 정보를 불러오는데 실패했습니다', 'error');
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  // Navigate from search query in location state
   useEffect(() => {
     const sq = location.state?.searchQuery;
-    if (sq) {
-      const match = PRODUCTS.find(p => p.name.includes(sq) || sq.includes(p.name));
+    if (sq && products.length > 0) {
+      const match = products.find(p => p.name?.includes(sq) || sq.includes(p.name));
       if (match) {
         setSelectedProduct(match);
         addRecentSearch(match.name);
         navigate(`/price/${match.id}`, { replace: true });
       }
     }
-  }, [location.state]);
+  }, [location.state, products]);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [range, setRange] = useState(30);
@@ -34,14 +61,27 @@ export default function PricePage() {
   const debouncedQuery = useDebounce(searchQuery, 300);
 
   const searchResults = debouncedQuery.length > 0
-    ? PRODUCTS.filter(p => p.name.includes(debouncedQuery) || p.cat.includes(debouncedQuery))
+    ? products.filter(p => p.name?.includes(debouncedQuery) || p.cat?.includes(debouncedQuery))
     : [];
 
-  const product = id
-    ? PRODUCTS.find(p => p.id === Number(id))
-    : selectedProduct;
+  const product = productData || (id ? products.find(p => p.id === Number(id)) : null) || selectedProduct;
 
-  const chartData = useMemo(() => product ? genPriceHistory(product, range) : [], [product, range]);
+  // Fetch price history from API
+  useEffect(() => {
+    if (!product) return;
+    fetch(`/api/products/${product.id}/price-history?days=${range}`)
+      .then(r => r.json())
+      .then(res => setChartData(res.data || []))
+      .catch(console.error);
+  }, [product?.id, range]);
+
+  // Fetch related hotdeals
+  useEffect(() => {
+    if (!product) return;
+    fetch('/api/hotdeals?category=food&per_page=3').then(r => r.json())
+      .then(res => setRelatedHotdeals(res.data || []))
+      .catch(console.error);
+  }, [product?.id]);
 
   const handleSelectProduct = (p) => {
     setSelectedProduct(p);
@@ -51,6 +91,10 @@ export default function PricePage() {
   };
 
   // No product selected — show search
+  if (loading) {
+    return <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}><Spinner size="lg" /></div>;
+  }
+
   if (!product) {
     return (
       <div>
@@ -83,7 +127,7 @@ export default function PricePage() {
           </div>
         </div>
         <div className={s.resultGrid}>
-          {PRODUCTS.map(p => {
+          {products.map(p => {
             const diff = p.cur - p.avg;
             const pct = ((diff / p.avg) * 100).toFixed(1);
             let changeClass = s.changeSame;
@@ -349,7 +393,7 @@ export default function PricePage() {
 
           <h4>관련 핫딜</h4>
           <div className={s.relatedDeals}>
-            {HOTDEALS.filter(d => d.cat === 'food').slice(0, 3).map(d => (
+            {relatedHotdeals.slice(0, 3).map(d => (
               <div key={d.id} className={s.rdItem}>
                 <div className={s.rdTitle}>{d.title}</div>
                 <div className={s.rdMeta}><span>{d.source}</span><span>{d.time}</span></div>

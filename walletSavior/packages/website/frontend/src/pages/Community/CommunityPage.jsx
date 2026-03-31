@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Pencil, ImagePlus, X, Send, Eye, MessageSquare, Clock, Search } from 'lucide-react';
-import { PRODUCTS, fmt, verifyPrice } from '../../data/mockData';
-import { COMMUNITY_POSTS } from '../../data/seedData';
+import { fmt, verifyPrice } from '../../data/mockData';
 import useStore from '../../stores/appStore';
+import Spinner from '../../components/common/Spinner';
 import s from './CommunityPage.module.css';
 
 const BOARD_TABS = [
@@ -22,16 +22,6 @@ const VERIFY_STYLES = {
   sus_high:   { bg: 'rgba(248,113,113,.1)', color: 'var(--red)', icon: '🚨', border: 'var(--red)' },
 };
 
-const FREE_POSTS_MOCK = [
-  { id: 101, title: '물가 절약 팁 공유합니다', cat: '정보', tag: '정보', author: '절약러', time: '10분 전', views: 156, comments: 12, body: '장 볼 때 전단지 먼저 확인하고 가면 평균 15% 절약 가능해요. 특히 이마트 에브리데이 앱은 필수!', commentData: [{ id: 1, author: '살림꾼', text: '좋은 정보 감사합니다!', time: '5분 전' }] },
-  { id: 102, title: '요즘 장보기 너무 비싸지 않나요?', cat: '질문', tag: '질문', author: '주부9단', time: '30분 전', views: 234, comments: 28, body: '2인 가족인데 한 달에 식비가 80만원이 넘어가요. 다들 얼마나 쓰시나요?', commentData: [{ id: 1, author: '먹보', text: '저도 비슷해요...', time: '20분 전' }, { id: 2, author: '절약왕', text: '저는 60만원 정도 쓰는데 마트 세일 기간 맞춰서 장봐요', time: '15분 전' }] },
-  { id: 103, title: '코스트코 회원권 가성비 후기', cat: '후기', tag: '후기', author: '코스트코러버', time: '1시간 전', views: 445, comments: 34, body: '연회비 38,500원인데 한 달에 2번만 가도 비회원 대비 5만원은 절약됩니다. 특히 고기/계란은 확실히 저렴해요.', commentData: [] },
-  { id: 104, title: '배달 vs 포장 vs 직접 조리 뭐가 나을까', cat: '잡담', tag: '잡담', author: '먹보', time: '2시간 전', views: 178, comments: 19, body: '치킨 기준으로 배달 21,000원, 포장 18,000원, 직접 만들면 8,000원 정도... 근데 시간도 비용이잖아요.', commentData: [{ id: 1, author: '치킨매니아', text: '포장이 답이죠', time: '1시간 전' }] },
-  { id: 105, title: '1인가구 식비 줄이는 현실적인 방법', cat: '정보', tag: '정보', author: '자취생', time: '3시간 전', views: 567, comments: 42, body: '1. 밑반찬 주말에 몰아서 만들기\n2. 마트 마감 할인 노리기\n3. 냉동실 적극 활용\n4. 계절 채소 위주로 구매', commentData: [] },
-  { id: 106, title: '편의점 도시락 가성비 순위', cat: '후기', tag: '후기', author: '편의점마스터', time: '4시간 전', views: 321, comments: 15, body: 'CU > GS25 > 세븐일레븐 순으로 가성비가 좋은 것 같아요. CU는 양이 제일 많고요.', commentData: [] },
-  { id: 107, title: '장보기 앱 추천 좀 해주세요', cat: '질문', tag: '질문', author: '앱덕후', time: '5시간 전', views: 189, comments: 23, body: '물가 비교 앱이나 마트 할인 정보 앱 중에 좋은 거 있으면 추천 부탁드려요!', commentData: [] },
-  { id: 108, title: '오늘 저녁 뭐 해먹을지 고민', cat: '잡담', tag: '잡담', author: '요리초보', time: '6시간 전', views: 98, comments: 8, body: '냉장고에 양파, 계란, 김치밖에 없는데 뭘 만들 수 있을까요?', commentData: [{ id: 1, author: '절약러', text: '김치볶음밥이 답입니다', time: '5시간 전' }] },
-];
 
 export default function CommunityPage() {
   const location = useLocation();
@@ -45,14 +35,38 @@ export default function CommunityPage() {
   const [page, setPage] = useState(1);
   const { isLoggedIn, addToast } = useStore();
 
+  const [posts, setPosts] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch products for price verification
+  useEffect(() => {
+    fetch('/api/products/search?per_page=50').then(r => r.json())
+      .then(res => setProducts(res.data || []))
+      .catch(console.error);
+  }, []);
+
+  // Fetch posts from API when board changes
+  useEffect(() => {
+    setLoading(true);
+    const params = new URLSearchParams({ board, per_page: '50' });
+    fetch(`/api/posts?${params}`).then(r => r.json())
+      .then(res => setPosts(res.data || []))
+      .catch(err => {
+        console.error(err);
+        addToast('게시글을 불러오는데 실패했습니다', 'error');
+      })
+      .finally(() => setLoading(false));
+  }, [board]);
+
   useEffect(() => {
     const openPostId = location.state?.openPostId;
-    if (openPostId) {
-      const post = COMMUNITY_POSTS.find((p) => p.id === openPostId);
+    if (openPostId && posts.length > 0) {
+      const post = posts.find((p) => p.id === openPostId);
       if (post) setDetail(post);
       window.history.replaceState({}, '');
     }
-  }, [location.state]);
+  }, [location.state, posts]);
 
   useEffect(() => {
     setSortBy(board === 'hotdeal' ? 'popular' : 'latest');
@@ -74,35 +88,35 @@ export default function CommunityPage() {
   const fileRef = useRef(null);
 
   const filteredAndSorted = useMemo(() => {
-    let posts;
+    let items = [...posts];
 
     if (board === 'hotdeal') {
-      posts = filter === '전체' ? [...COMMUNITY_POSTS] : COMMUNITY_POSTS.filter(p => p.cat === filter);
+      if (filter !== '전체') items = items.filter(p => p.cat === filter);
     } else {
-      posts = freeTag === '전체' ? [...FREE_POSTS_MOCK] : FREE_POSTS_MOCK.filter(p => p.tag === freeTag);
+      if (freeTag !== '전체') items = items.filter(p => p.tag === freeTag);
     }
 
     if (searchQuery.trim()) {
       const q = searchQuery.trim().toLowerCase();
-      posts = posts.filter(p =>
-        p.title.toLowerCase().includes(q) || (p.body && p.body.toLowerCase().includes(q))
+      items = items.filter(p =>
+        p.title?.toLowerCase().includes(q) || (p.body && p.body.toLowerCase().includes(q))
       );
     }
 
     if (sortBy === 'popular') {
-      posts.sort((a, b) => ((b.hotVotes || 0) - (b.coldVotes || 0)) - ((a.hotVotes || 0) - (a.coldVotes || 0)));
+      items.sort((a, b) => ((b.hotVotes || 0) - (b.coldVotes || 0)) - ((a.hotVotes || 0) - (a.coldVotes || 0)));
     } else if (sortBy === 'comments') {
-      posts.sort((a, b) => (b.commentData?.length || b.comments || 0) - (a.commentData?.length || a.comments || 0));
+      items.sort((a, b) => (b.commentData?.length || b.comments || 0) - (a.commentData?.length || a.comments || 0));
     }
 
-    return posts;
-  }, [board, filter, freeTag, searchQuery, sortBy]);
+    return items;
+  }, [posts, board, filter, freeTag, searchQuery, sortBy]);
 
   const totalPages = Math.max(1, Math.ceil(filteredAndSorted.length / POSTS_PER_PAGE));
   const safePage = Math.min(page, totalPages);
   const paginatedPosts = filteredAndSorted.slice((safePage - 1) * POSTS_PER_PAGE, safePage * POSTS_PER_PAGE);
 
-  const matchedProduct = PRODUCTS.find(p => wProduct.includes(p.name));
+  const matchedProduct = products.find(p => wProduct.includes(p.name));
   const verification = wPrice && matchedProduct ? verifyPrice(Number(wPrice), matchedProduct.avg) : null;
 
   const handleImageAdd = (e) => {
@@ -114,7 +128,7 @@ export default function CommunityPage() {
     });
   };
 
-  const handleWrite = () => {
+  const handleWrite = async () => {
     if (!isLoggedIn) {
       addToast('로그인이 필요합니다.', 'error');
       return;
@@ -129,8 +143,36 @@ export default function CommunityPage() {
       addToast('허위 가격이 의심되어 등록할 수 없습니다.', 'error');
       return;
     }
-    addToast('게시글이 등록되었습니다! (데모)', 'success');
-    setShowWrite(false);
+    try {
+      const resp = await fetch('/api/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: wTitle,
+          content: wBody,
+          board,
+          product_name: wProduct || undefined,
+          price: wPrice ? Number(wPrice) : undefined,
+          category: board === 'hotdeal' ? wCat : undefined,
+          link: wLink || undefined,
+          tag: board === 'free' ? wTag : undefined,
+        }),
+      });
+      if (resp.ok) {
+        addToast('게시글이 등록되었습니다!', 'success');
+        setShowWrite(false);
+        // Re-fetch posts
+        const params = new URLSearchParams({ board, per_page: '50' });
+        fetch(`/api/posts?${params}`).then(r => r.json())
+          .then(res => setPosts(res.data || []))
+          .catch(console.error);
+      } else {
+        addToast('등록에 실패했습니다.', 'error');
+      }
+    } catch (err) {
+      console.error(err);
+      addToast('등록 중 오류가 발생했습니다.', 'error');
+    }
     setWTitle(''); setWBody(''); setWProduct(''); setWPrice(''); setWLink(''); setWImages([]);
   };
 
@@ -231,7 +273,7 @@ export default function CommunityPage() {
                   list="product-list"
                 />
                 <datalist id="product-list">
-                  {PRODUCTS.map(p => <option key={p.id} value={p.name} />)}
+                  {products.map(p => <option key={p.id} value={p.name} />)}
                 </datalist>
                 <input
                   type="number"
@@ -358,6 +400,8 @@ export default function CommunityPage() {
         )}
       </div>
 
+      {loading && <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem 0' }}><Spinner /></div>}
+
       {/* Post List */}
       <div className={s.list}>
         {board === 'hotdeal' ? (
@@ -450,17 +494,17 @@ export default function CommunityPage() {
       )}
 
       {/* Detail Modal */}
-      {detail && <PostDetailModal post={detail} onClose={() => setDetail(null)} board={board} />}
+      {detail && <PostDetailModal post={detail} onClose={() => setDetail(null)} board={board} products={products} />}
     </div>
   );
 }
 
-function PostDetailModal({ post, onClose, board }) {
+function PostDetailModal({ post, onClose, board, products }) {
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState(post?.commentData || []);
   const [vote, setVote] = useState(null);
 
-  const matchedProduct = PRODUCTS.find(p => post.title?.includes(p.name));
+  const matchedProduct = products.find(p => post.title?.includes(p.name));
 
   const addComment = () => {
     if (!newComment.trim()) return;

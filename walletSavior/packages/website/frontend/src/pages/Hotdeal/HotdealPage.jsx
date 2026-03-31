@@ -2,10 +2,12 @@ import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { X, Info, Eye, MessageSquare, Clock, Send } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { HOTDEAL_FILTERS, PRODUCTS, fmt, genPriceHistory } from '../../data/mockData';
-import { HOTDEALS, HOTDEAL_SOURCES } from '../../data/seedData';
+import { HOTDEAL_FILTERS, fmt } from '../../data/mockData';
+import { HOTDEAL_SOURCES } from '../../data/seedData';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import Badge from '../../components/common/Badge';
+import Spinner from '../../components/common/Spinner';
+import useStore from '../../stores/appStore';
 import s from './HotdealPage.module.css';
 
 const SOURCES = HOTDEAL_SOURCES;
@@ -22,6 +24,7 @@ function getTier(price, origPrice) {
 
 export default function HotdealPage() {
   const location = useLocation();
+  const { addToast } = useStore();
   const [filter, setFilter] = useState('all');
   const [source, setSource] = useState('전체');
   const [sort, setSort] = useState('time');
@@ -29,17 +32,43 @@ export default function HotdealPage() {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [votes, setVotes] = useState({});
 
+  const [allDeals, setAllDeals] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/products/search?per_page=50').then(r => r.json())
+      .then(res => setProducts(res.data || []))
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    setVisibleCount(PAGE_SIZE);
+    const params = new URLSearchParams({ per_page: '50' });
+    if (filter !== 'all') params.set('category', filter);
+    if (sort) params.set('sort', sort);
+
+    fetch(`/api/hotdeals?${params}`).then(r => r.json())
+      .then(res => setAllDeals(res.data || []))
+      .catch(err => {
+        console.error(err);
+        addToast('핫딜 데이터를 불러오는데 실패했습니다', 'error');
+      })
+      .finally(() => setLoading(false));
+  }, [filter, sort]);
+
   useEffect(() => {
     const openDealId = location.state?.openDealId;
-    if (openDealId) {
-      const deal = HOTDEALS.find((d) => d.id === openDealId);
+    if (openDealId && allDeals.length > 0) {
+      const deal = allDeals.find((d) => d.id === openDealId);
       if (deal) setDetail(deal);
       window.history.replaceState({}, '');
     }
-  }, [location.state]);
+  }, [location.state, allDeals]);
 
   const allItems = useMemo(() => {
-    let items = filter === 'all' ? [...HOTDEALS] : HOTDEALS.filter(d => d.cat === filter);
+    let items = [...allDeals];
     if (source !== '전체') items = items.filter(d => d.source === source);
     if (sort === 'discount') items.sort((a, b) => {
       const ra = a.price && a.origPrice ? a.price / a.origPrice : 1;
@@ -49,7 +78,7 @@ export default function HotdealPage() {
     if (sort === 'popular') items.sort((a, b) => b.views - a.views);
     if (sort === 'priceAsc') items.sort((a, b) => (a.price || Infinity) - (b.price || Infinity));
     return items;
-  }, [filter, source, sort]);
+  }, [allDeals, source, sort]);
 
   const items = allItems.slice(0, visibleCount);
   const hasMore = visibleCount < allItems.length;
@@ -74,6 +103,8 @@ export default function HotdealPage() {
         <h2>핫딜 모아보기</h2>
         <p>뽐뿌 · 어미새 · 루리웹 · 에펨코리아 · 무신사 핫딜과 자동 가격 판단</p>
       </div>
+
+      {loading && <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem 0' }}><Spinner /></div>}
 
       <div className={s.controls}>
         <div className={s.filterRow}>
@@ -112,7 +143,7 @@ export default function HotdealPage() {
       <div className={s.grid}>
         {items.map(d => {
           const tier = getTier(d.price, d.origPrice);
-          const matchedProduct = PRODUCTS.find(p => d.title.includes(p.name));
+          const matchedProduct = products.find(p => d.title?.includes(p.name));
           const vsAvg = matchedProduct && d.price
             ? Math.round((1 - d.price / matchedProduct.avg) * 100)
             : null;
@@ -170,21 +201,26 @@ export default function HotdealPage() {
         </div>
       )}
 
-      {detail && <HotdealDetailModal item={detail} votes={votes} onVote={handleVote} onClose={() => setDetail(null)} />}
+      {detail && <HotdealDetailModal item={detail} votes={votes} onVote={handleVote} onClose={() => setDetail(null)} products={products} />}
     </div>
   );
 }
 
-function HotdealDetailModal({ item, votes, onVote, onClose }) {
+function HotdealDetailModal({ item, votes, onVote, onClose, products }) {
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState(item?.commentData || []);
   const vote = votes[item.id];
 
-  const matchedProduct = PRODUCTS.find(p => item.title.includes(p.name));
-  const chartData = useMemo(
-    () => matchedProduct ? genPriceHistory(matchedProduct, 30) : [],
-    [matchedProduct]
-  );
+  const matchedProduct = products.find(p => item.title?.includes(p.name));
+
+  const [chartData, setChartData] = useState([]);
+  useEffect(() => {
+    if (!matchedProduct) return;
+    fetch(`/api/products/${matchedProduct.id}/price-history?days=30`)
+      .then(r => r.json())
+      .then(res => setChartData(res.data || []))
+      .catch(console.error);
+  }, [matchedProduct?.id]);
 
   const addComment = () => {
     if (!newComment.trim()) return;
