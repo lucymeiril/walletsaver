@@ -283,8 +283,10 @@ async def list_posts(
 
 
 @router.post("")
-async def create_post(body: PostCreate, user: dict = Depends(require_auth)):
-    """게시글 작성."""
+async def create_post(body: PostCreate, user: dict = Depends(get_current_user)):
+    """게시글 작성 — 로그인 시 사용자 정보 사용, 비로그인 시 게스트로 작성."""
+    if not user:
+        user = {"id": 0, "email": "guest@wallet.local", "nickname": "게스트", "role": "guest"}
     if _use_db and _SessionLocal:
         with _SessionLocal() as session:
             _ensure_user(session, user["id"], user.get("email", ""), user.get("nickname", ""))

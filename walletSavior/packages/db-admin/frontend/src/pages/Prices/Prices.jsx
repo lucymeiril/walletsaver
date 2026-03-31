@@ -11,13 +11,14 @@ export default function Prices() {
 
   /* 가격 통계 */
   const stats = useMemo(() => {
-    const allPrices = products.map(p => p.currentAvg);
+    if (products.length === 0) return { avg: 0, median: 0, stdDev: 0, min: 0, max: 0, count: 0 };
+    const allPrices = products.map(p => p.currentAvg ?? 0);
     const sorted = [...allPrices].sort((a, b) => a - b);
     const avg = Math.round(allPrices.reduce((s, p) => s + p, 0) / allPrices.length);
-    const median = sorted[Math.floor(sorted.length / 2)];
+    const median = sorted[Math.floor(sorted.length / 2)] ?? 0;
     const variance = allPrices.reduce((s, p) => s + (p - avg) ** 2, 0) / allPrices.length;
     const stdDev = Math.round(Math.sqrt(variance));
-    return { avg, median, stdDev, min: sorted[0], max: sorted[sorted.length - 1], count: allPrices.length };
+    return { avg, median, stdDev, min: sorted[0] ?? 0, max: sorted[sorted.length - 1] ?? 0, count: allPrices.length };
   }, [products]);
 
   /* 대량 가격 데이터 */
@@ -109,8 +110,8 @@ export default function Prices() {
                   <tr key={o.id}>
                     <td className={s.bold}>{o.productName}</td>
                     <td>{o.date}</td>
-                    <td className={o.deviation > 0 ? s.red : s.green}>{o.price.toLocaleString()}원</td>
-                    <td>{o.avgPrice.toLocaleString()}원</td>
+                    <td className={o.deviation > 0 ? s.red : s.green}>{(o.price ?? 0).toLocaleString()}원</td>
+                    <td>{(o.avgPrice ?? 0).toLocaleString()}원</td>
                     <td className={o.deviation > 0 ? s.red : s.green}>{o.deviation > 0 ? '+' : ''}{o.deviation}%</td>
                     <td>{o.source}</td>
                   </tr>
@@ -148,7 +149,7 @@ export default function Prices() {
                 {priceData.slice(-50).map((d, i) => (
                   <tr key={i}>
                     <td>{d.date}</td>
-                    <td>{d.price.toLocaleString()}원</td>
+                    <td>{(d.price ?? 0).toLocaleString()}원</td>
                     <td>{d.source}</td>
                   </tr>
                 ))}
@@ -164,11 +165,11 @@ export default function Prices() {
         <div className={s.section}>
           <h3 className={s.sectionTitle}>가격 통계 요약</h3>
           <div className={s.statsGrid}>
-            <div className={s.statCard}><span className={s.statLabel}>평균</span><span className={s.statValue}>{stats.avg.toLocaleString()}원</span></div>
-            <div className={s.statCard}><span className={s.statLabel}>중앙값</span><span className={s.statValue}>{stats.median.toLocaleString()}원</span></div>
-            <div className={s.statCard}><span className={s.statLabel}>표준편차</span><span className={s.statValue}>{stats.stdDev.toLocaleString()}원</span></div>
-            <div className={s.statCard}><span className={s.statLabel}>최솟값</span><span className={s.statValue}>{stats.min.toLocaleString()}원</span></div>
-            <div className={s.statCard}><span className={s.statLabel}>최댓값</span><span className={s.statValue}>{stats.max.toLocaleString()}원</span></div>
+            <div className={s.statCard}><span className={s.statLabel}>평균</span><span className={s.statValue}>{(stats.avg ?? 0).toLocaleString()}원</span></div>
+            <div className={s.statCard}><span className={s.statLabel}>중앙값</span><span className={s.statValue}>{(stats.median ?? 0).toLocaleString()}원</span></div>
+            <div className={s.statCard}><span className={s.statLabel}>표준편차</span><span className={s.statValue}>{(stats.stdDev ?? 0).toLocaleString()}원</span></div>
+            <div className={s.statCard}><span className={s.statLabel}>최솟값</span><span className={s.statValue}>{(stats.min ?? 0).toLocaleString()}원</span></div>
+            <div className={s.statCard}><span className={s.statLabel}>최댓값</span><span className={s.statValue}>{(stats.max ?? 0).toLocaleString()}원</span></div>
             <div className={s.statCard}><span className={s.statLabel}>상품 수</span><span className={s.statValue}>{stats.count}개</span></div>
           </div>
         </div>

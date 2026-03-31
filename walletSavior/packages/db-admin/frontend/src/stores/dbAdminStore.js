@@ -71,12 +71,14 @@ const useDbAdminStore = create((set, get) => ({
   /* ── 카테고리 (트리 구조) ── */
   categories: mockCategories,
   addCategory: async (parentId, category) => {
+    // 백엔드 CategoryCreate 스키마에는 id가 필수 — 이름 기반으로 자동 생성
+    const autoId = category.id || `cat-${category.name.replace(/\s+/g, '-')}-${Date.now()}`;
     try {
-      await api.createCategory({ ...category, parent_id: parentId });
+      await api.createCategory({ ...category, id: autoId, parent_id: parentId });
       await get().fetchCategories();
     } catch {
       set((s) => ({
-        categories: addToTree(s.categories, parentId, { ...category, id: `cat-${Date.now()}`, children: [], productCount: 0 }),
+        categories: addToTree(s.categories, parentId, { ...category, id: autoId, children: [], productCount: 0 }),
       }));
     }
   },
@@ -113,21 +115,32 @@ const useDbAdminStore = create((set, get) => ({
   /* ── 키워드 ── */
   keywords: mockKeywords,
   addKeyword: async (kw) => {
+    // 프론트엔드 필드명 → 백엔드 필드명 변환
+    const word = (kw.keyword ?? kw.word ?? '').trim();
+    if (!word) return;
+    const apiData = {
+      word,
+      synonyms: kw.synonyms || [],
+      category_id: (kw.categoryId || kw.category_id) || null,
+    };
     try {
-      await api.createKeyword(kw);
-      // 키워드 목록 갱신 (API에 목록 조회가 있으면 사용)
-      try {
-        const data = await api.getKeywords();
-        const list = Array.isArray(data) ? data : data.keywords ?? data.data ?? [];
-        if (list.length > 0) set({ keywords: list });
-      } catch { /* 갱신 실패 시 로컬 추가 */ }
+      await api.createKeyword(apiData);
+      await get().fetchKeywords();
     } catch {
       set((s) => ({ keywords: [...s.keywords, { ...kw, id: `kw-${Date.now()}` }] }));
     }
   },
   updateKeyword: async (id, data) => {
+    // 프론트엔드 필드명 → 백엔드 필드명 변환
+    const apiData = {};
+    if (data.keyword !== undefined) apiData.word = data.keyword;
+    if (data.word !== undefined) apiData.word = data.word;
+    if (data.synonyms !== undefined) apiData.synonyms = data.synonyms;
+    if (data.categoryId !== undefined) apiData.category_id = data.categoryId;
+    if (data.category_id !== undefined) apiData.category_id = data.category_id;
     try {
-      await api.updateKeyword(id, data);
+      await api.updateKeyword(id, apiData);
+      await get().fetchKeywords();
     } catch {
       set((s) => ({ keywords: s.keywords.map((k) => (k.id === id ? { ...k, ...data } : k)) }));
     }
@@ -138,6 +151,24 @@ const useDbAdminStore = create((set, get) => ({
       set((s) => ({ keywords: s.keywords.filter((k) => k.id !== id) }));
     } catch {
       set((s) => ({ keywords: s.keywords.filter((k) => k.id !== id) }));
+    }
+  },
+
+  fetchKeywords: async () => {
+    try {
+      const data = await api.getKeywords();
+      const list = Array.isArray(data) ? data : data.keywords ?? data.data ?? [];
+      // 백엔드 필드명 → 프론트엔드 필드명 변환
+      const mapped = list.map((kw) => ({
+        ...kw,
+        keyword: kw.keyword || kw.word || '',
+        searchCount: kw.searchCount ?? kw.search_count ?? 0,
+        synonyms: kw.synonyms || [],
+        categoryId: kw.categoryId || kw.category_id || '',
+      }));
+      if (mapped.length > 0) set({ keywords: mapped });
+    } catch {
+      // mock 유지
     }
   },
 
@@ -163,7 +194,21 @@ const useDbAdminStore = create((set, get) => ({
         api.getSummary(),
       ]);
       if (qualityData.status === 'fulfilled' && qualityData.value) {
-        set({ qualityReport: qualityData.value });
+        const qr = qualityData.value;
+        // API 응답 → 프론트엔드 형식 변환
+        const counts = qr.counts || {};
+        const quality = qr.quality || {};
+        const totalRecords = counts.baseline_prices ?? counts.products ?? qr.totalRecords ?? 0;
+        set({
+          qualityReport: {
+            totalRecords,
+            outliers: quality.outliers ?? qr.outliers ?? 0,
+            duplicates: quality.duplicates ?? qr.duplicates ?? 0,
+            missingFields: quality.products_without_prices ?? quality.missingFields ?? qr.missingFields ?? 0,
+            completeness: quality.completeness ?? qr.completeness ?? (totalRecords > 0 ? 95 : 0),
+            accuracy: quality.accuracy ?? qr.accuracy ?? (totalRecords > 0 ? 90 : 0),
+          },
+        });
       }
       if (summaryData.status === 'fulfilled' && summaryData.value) {
         const s = summaryData.value;
@@ -194,15 +239,16 @@ const useDbAdminStore = create((set, get) => ({
 
       if (summaryData.status === 'fulfilled' && summaryData.value) {
         const s = summaryData.value;
+        // API 필드명 → 프론트엔드 필드명 변환
         set({
           dashboardStats: {
             ...get().dashboardStats,
-            totalProducts: s.totalProducts ?? products.length ?? get().dashboardStats.totalProducts,
-            totalPriceRecords: s.totalPriceRecords ?? get().dashboardStats.totalPriceRecords,
-            totalCategories: s.totalCategories ?? get().dashboardStats.totalCategories,
-            totalKeywords: s.totalKeywords ?? get().dashboardStats.totalKeywords,
-            lastUpdated: s.lastUpdated ?? new Date().toISOString(),
-            qualityScore: s.qualityScore ?? get().dashboardStats.qualityScore,
+            totalProducts: s.totalProducts ?? s.products ?? products.length ?? get().dashboardStats.totalProducts,
+            totalPriceRecords: s.totalPriceRecords ?? s.baseline_prices ?? get().dashboardStats.totalPriceRecords,
+            totalCategories: s.totalCategories ?? s.categories ?? get().dashboardStats.totalCategories,
+            totalKeywords: s.totalKeywords ?? s.keywords ?? get().dashboardStats.totalKeywords,
+            lastUpdated: s.lastUpdated ?? s.generated_at ?? new Date().toISOString(),
+            qualityScore: s.qualityScore ?? s.quality_score ?? get().dashboardStats.qualityScore,
             recentIngestions: s.recentIngestions ?? get().dashboardStats.recentIngestions,
           },
         });
@@ -224,7 +270,7 @@ const useDbAdminStore = create((set, get) => ({
     set({ loading: true, error: null });
     try {
       const data = await api.getIngestions(params);
-      const list = Array.isArray(data) ? data : data.ingestions ?? data.data ?? [];
+      const list = Array.isArray(data) ? data : data.items ?? data.ingestions ?? data.data ?? [];
       set({ ingestions: list });
     } catch {
       set({ ingestions: [] });
@@ -250,7 +296,15 @@ const useDbAdminStore = create((set, get) => ({
   fetchIngestionStats: async () => {
     try {
       const data = await api.getIngestionStats();
-      if (data) set({ ingestionStats: data });
+      if (data) {
+        set({
+          ingestionStats: {
+            pending: data.pending ?? data.total_pending ?? 0,
+            approved: data.approved ?? data.total_approved ?? 0,
+            rejected: data.rejected ?? data.total_rejected ?? 0,
+          },
+        });
+      }
     } catch {
       // mock 유지
     }

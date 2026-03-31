@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Download, AlertTriangle, Database, TrendingUp } from 'lucide-react';
 import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip,
@@ -8,9 +8,14 @@ import useDbAdminStore from '../../stores/dbAdminStore';
 import s from './Analytics.module.css';
 
 export default function Analytics() {
-  const { products, priceHistories, categoryAvgPrices, qualityReport, sourceStats } = useDbAdminStore();
+  const { products, priceHistories, categoryAvgPrices, qualityReport, sourceStats, fetchAnalytics, fetchProducts } = useDbAdminStore();
   const [selectedProduct, setSelectedProduct] = useState(products[0]?.id || '');
   const [period, setPeriod] = useState(30);
+
+  useEffect(() => {
+    fetchAnalytics();
+    fetchProducts();
+  }, [fetchAnalytics, fetchProducts]);
 
   const trendData = useMemo(() => {
     const history = priceHistories[selectedProduct] || [];
@@ -91,9 +96,9 @@ export default function Analytics() {
             <QualityStat label="이상치 수" value={qualityReport.outliers} color="var(--red)" />
             <QualityStat label="중복 수" value={qualityReport.duplicates} color="var(--yellow)" />
             <QualityStat label="누락 필드" value={qualityReport.missingFields} color="var(--orange)" />
-            <QualityStat label="총 레코드" value={qualityReport.totalRecords.toLocaleString()} color="var(--accent)" />
-            <QualityStat label="완전성" value={`${qualityReport.completeness}%`} color="var(--green)" />
-            <QualityStat label="정확도" value={`${qualityReport.accuracy}%`} color="var(--accent2)" />
+            <QualityStat label="총 레코드" value={(qualityReport.totalRecords ?? 0).toLocaleString()} color="var(--accent)" />
+            <QualityStat label="완전성" value={`${qualityReport.completeness ?? 0}%`} color="var(--green)" />
+            <QualityStat label="정확도" value={`${qualityReport.accuracy ?? 0}%`} color="var(--accent2)" />
           </div>
         </div>
       </div>
@@ -121,8 +126,8 @@ export default function Analytics() {
               {sourceStats.map(src => (
                 <tr key={src.source}>
                   <td className={s.bold}>{src.source}</td>
-                  <td>{src.records.toLocaleString()}</td>
-                  <td>{new Date(src.lastCrawl).toLocaleString('ko-KR')}</td>
+                  <td>{(src.records ?? 0).toLocaleString()}</td>
+                  <td>{src.lastCrawl ? new Date(src.lastCrawl).toLocaleString('ko-KR') : '-'}</td>
                   <td>
                     <span className={`${s.status} ${s[src.status]}`}>
                       {src.status === 'active' ? '활성' : src.status === 'warning' ? '경고' : '오류'}

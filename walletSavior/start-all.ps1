@@ -10,6 +10,12 @@
       .\start-all.ps1          # 전체 시작
       .\start-all.ps1 -Web     # 웹사이트만
       .\start-all.ps1 -Admin   # 관리 도구만
+
+    주의: --reload를 사용하지 않습니다.
+    WatchFiles + cmd.exe 조합에서 파일 변경 시 "Terminate batch job?" 프롬프트가
+    모든 서버를 죽이는 버그가 있으며, 리로더 프로세스가 죽어도 워커가 좀비로 남아
+    구(旧) 코드를 계속 서비스하는 심각한 문제가 있습니다.
+    코드를 수정한 경우 이 스크립트를 재시작하세요.
 #>
 
 param(
@@ -65,6 +71,12 @@ $SharedDir         = Join-Path $Root "packages\shared"
 # PYTHONPATH — shared 모듈 참조용
 $env:PYTHONPATH = "$SharedDir;$CrawlerBackend;$DbBackend;$WebBackend"
 
+# === __pycache__ 정리 (좀비 워커 방지) ===
+Write-Host "[정리] __pycache__ 정리 중..." -ForegroundColor Yellow
+Get-ChildItem -Path (Join-Path $Root "packages") -Recurse -Directory -Filter "__pycache__" -ErrorAction SilentlyContinue |
+    ForEach-Object { Remove-Item $_.FullName -Recurse -Force -ErrorAction SilentlyContinue }
+Write-Host "         ✅ __pycache__ 정리 완료" -ForegroundColor Green
+
 # === 의존성 설치 ===
 Write-Host "[의존성] Python 패키지 확인..." -ForegroundColor Yellow
 & $PyExe -m pip install --quiet fastapi uvicorn httpx requests beautifulsoup4 lxml sqlalchemy pyyaml 2>$null | Out-Null
@@ -79,7 +91,7 @@ foreach ($dir in $frontendDirs) {
     if (-not (Test-Path (Join-Path $dir "node_modules"))) {
         Write-Host "[의존성] $name npm install..." -ForegroundColor Yellow
         Push-Location $dir
-        & cmd.exe /c "npm install --silent" 2>&1 | Out-Null
+        & npm install --silent 2>&1 | Out-Null
         Pop-Location
         Write-Host "         ✅ $name 완료" -ForegroundColor Green
     } else {
@@ -100,10 +112,17 @@ foreach ($port in $portsToClean) {
     foreach ($c in $conns) {
         $targetPid = $c.OwningProcess
         if ($targetPid -le 4 -or $targetPid -eq $PID) { continue }
+        # 메인 프로세스 종료
         $proc = Get-Process -Id $targetPid -ErrorAction SilentlyContinue
         if ($proc) {
             Write-Host "         포트 $port → PID $targetPid ($($proc.ProcessName)) 종료" -ForegroundColor DarkGray
             Stop-Process -Id $targetPid -Force -ErrorAction SilentlyContinue
+        }
+        # 좀비 자식 워커도 검색하여 종료
+        $children = Get-CimInstance Win32_Process | Where-Object { $_.ParentProcessId -eq $targetPid }
+        foreach ($child in $children) {
+            Write-Host "         좀비 자식 PID $($child.ProcessId) 종료" -ForegroundColor DarkGray
+            Stop-Process -Id $child.ProcessId -Force -ErrorAction SilentlyContinue
         }
     }
 }
@@ -114,16 +133,21 @@ Write-Host ""
 # === 서버 시작 ===
 $processes = @()
 
+# --reload 제거: WatchFiles가 cmd.exe와 결합 시 "Terminate batch job?" 프롬프트로
+# 모든 서버를 죽이고, 리로더 부모가 죽어도 워커 자식이 좀비로 남아
+# 구(旧) 코드를 계속 서비스하는 심각한 문제 방지.
+# 코드 수정 후에는 Ctrl+C → 재시작으로 대응.
+
 if ($Web) {
     Write-Host "🚀 [웹] 백엔드 시작 (port 8000)..." -ForegroundColor Yellow
     $p = Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
-        -ArgumentList "-m uvicorn api.app:create_app --factory --reload --port 8000 --host 127.0.0.1" `
+        -ArgumentList "-m uvicorn api.app:create_app --factory --port 8000 --host 127.0.0.1" `
         -WorkingDirectory $WebBackend
     $processes += $p
 
     Write-Host "🚀 [웹] 프론트엔드 시작 (port 5173)..." -ForegroundColor Yellow
-    $p = Start-Process -PassThru -NoNewWindow -FilePath "cmd.exe" `
-        -ArgumentList "/c cd /d `"$WebFrontend`" && npm run dev" `
+    $p = Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
+        -ArgumentList "vite --port 5173" `
         -WorkingDirectory $WebFrontend
     $processes += $p
 }
@@ -131,25 +155,25 @@ if ($Web) {
 if ($Admin) {
     Write-Host "🚀 [크롤러] 백엔드 시작 (port 8001)..." -ForegroundColor Yellow
     $p = Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
-        -ArgumentList "-m uvicorn api.app:create_app --factory --reload --port 8001 --host 127.0.0.1" `
+        -ArgumentList "-m uvicorn api.app:create_app --factory --port 8001 --host 127.0.0.1" `
         -WorkingDirectory $CrawlerBackend
     $processes += $p
 
     Write-Host "🚀 [크롤러] 프론트엔드 시작 (port 5174)..." -ForegroundColor Yellow
-    $p = Start-Process -PassThru -NoNewWindow -FilePath "cmd.exe" `
-        -ArgumentList "/c cd /d `"$CrawlerFrontend`" && npm run dev" `
+    $p = Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
+        -ArgumentList "vite --port 5174" `
         -WorkingDirectory $CrawlerFrontend
     $processes += $p
 
     Write-Host "🚀 [DB관리] 백엔드 시작 (port 8002)..." -ForegroundColor Yellow
     $p = Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
-        -ArgumentList "-m uvicorn api.app:create_app --factory --reload --port 8002 --host 127.0.0.1" `
+        -ArgumentList "-m uvicorn api.app:create_app --factory --port 8002 --host 127.0.0.1" `
         -WorkingDirectory $DbBackend
     $processes += $p
 
     Write-Host "🚀 [DB관리] 프론트엔드 시작 (port 5175)..." -ForegroundColor Yellow
-    $p = Start-Process -PassThru -NoNewWindow -FilePath "cmd.exe" `
-        -ArgumentList "/c cd /d `"$DbFrontend`" && npm run dev" `
+    $p = Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
+        -ArgumentList "vite --port 5175" `
         -WorkingDirectory $DbFrontend
     $processes += $p
 }
@@ -233,7 +257,15 @@ try {
     Write-Host ""
     Write-Host "🛑 서버 종료 중..." -ForegroundColor Yellow
     foreach ($p in $processes) {
-        if ($p -and -not $p.HasExited) { Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue }
+        if ($p -and -not $p.HasExited) {
+            # 자식 프로세스도 먼저 종료 (좀비 방지)
+            $children = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
+                        Where-Object { $_.ParentProcessId -eq $p.Id }
+            foreach ($child in $children) {
+                Stop-Process -Id $child.ProcessId -Force -ErrorAction SilentlyContinue
+            }
+            Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue
+        }
     }
     Write-Host "✅ 모든 서버가 종료되었습니다." -ForegroundColor Green
 }

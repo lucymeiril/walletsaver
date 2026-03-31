@@ -29,14 +29,18 @@ export default function Logs() {
     logPage * logsPerPage
   );
 
-  const formatDateTime = (iso) =>
-    new Date(iso).toLocaleString('ko-KR', {
+  const formatDateTime = (iso) => {
+    if (!iso) return '-';
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return '-';
+    return d.toLocaleString('ko-KR', {
       month: 'numeric',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
     });
+  };
 
   const getEntryClass = (status) => {
     if (status === 'failure') return styles.logEntryError;

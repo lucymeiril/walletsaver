@@ -25,7 +25,7 @@ export default function Dashboard() {
       {/* 요약 카드 */}
       <div className={s.cards}>
         <StatCard icon={Package} label="총 상품 수" value={totalProducts} color="var(--accent)" />
-        <StatCard icon={DollarSign} label="가격 이력 수" value={totalPriceRecords.toLocaleString()} color="var(--green)" />
+        <StatCard icon={DollarSign} label="가격 이력 수" value={(totalPriceRecords ?? 0).toLocaleString()} color="var(--green)" />
         <StatCard icon={FolderTree} label="카테고리 수" value={totalCategories} color="var(--yellow)" />
         <StatCard icon={Search} label="키워드 수" value={totalKeywords} color="var(--pink)" />
       </div>
@@ -58,7 +58,7 @@ export default function Dashboard() {
             </span>
           </div>
           <p className={s.timeAgo}>{timeSince.text}</p>
-          <p className={s.timestamp}>{new Date(lastUpdated).toLocaleString('ko-KR')}</p>
+          <p className={s.timestamp}>{lastUpdated ? new Date(lastUpdated).toLocaleString('ko-KR') : '-'}</p>
         </div>
 
         {/* 품질 점수 게이지 */}
@@ -99,7 +99,7 @@ export default function Dashboard() {
               {recentIngestions.map((item) => (
                 <tr key={item.id}>
                   <td>{item.source}</td>
-                  <td>{item.count.toLocaleString()}</td>
+                  <td>{(item.count ?? 0).toLocaleString()}</td>
                   <td>{item.date}</td>
                   <td>
                     <span className={`${s.status} ${s[item.status]}`}>
@@ -131,7 +131,9 @@ function StatCard({ icon: Icon, label, value, color }) {
 }
 
 function getTimeSince(dateStr) {
+  if (!dateStr) return { hours: 999, text: '알 수 없음' };
   const diff = Date.now() - new Date(dateStr).getTime();
+  if (isNaN(diff)) return { hours: 999, text: '알 수 없음' };
   const hours = Math.floor(diff / 3600000);
   const minutes = Math.floor((diff % 3600000) / 60000);
   if (hours > 24) return { hours, text: `${Math.floor(hours / 24)}일 전` };

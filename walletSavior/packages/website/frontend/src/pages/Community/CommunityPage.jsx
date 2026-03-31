@@ -129,10 +129,6 @@ export default function CommunityPage() {
   };
 
   const handleWrite = async () => {
-    if (!isLoggedIn) {
-      addToast('로그인이 필요합니다.', 'error');
-      return;
-    }
     if (!wTitle.trim()) { addToast('제목을 입력해주세요.', 'error'); return; }
     if (board === 'hotdeal') {
       if (!wProduct.trim()) { addToast('품목명을 입력해주세요.', 'error'); return; }
@@ -144,17 +140,22 @@ export default function CommunityPage() {
       return;
     }
     try {
+      const headers = { 'Content-Type': 'application/json' };
+      // 로그인 상태면 인증 토큰 추가
+      const token = localStorage.getItem('access_token');
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
       const resp = await fetch('/api/posts', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           title: wTitle,
           content: wBody,
-          board,
+          post_type: board === 'hotdeal' ? 'hotdeal' : 'free',
           product_name: wProduct || undefined,
           price: wPrice ? Number(wPrice) : undefined,
           category: board === 'hotdeal' ? wCat : undefined,
-          link: wLink || undefined,
+          url: wLink || undefined,
           tag: board === 'free' ? wTag : undefined,
         }),
       });
@@ -167,7 +168,8 @@ export default function CommunityPage() {
           .then(res => setPosts(res.data || []))
           .catch(console.error);
       } else {
-        addToast('등록에 실패했습니다.', 'error');
+        const errData = await resp.json().catch(() => ({}));
+        addToast(`등록 실패: ${errData.detail || resp.statusText}`, 'error');
       }
     } catch (err) {
       console.error(err);
@@ -177,10 +179,6 @@ export default function CommunityPage() {
   };
 
   const handleWriteBtn = () => {
-    if (!isLoggedIn) {
-      addToast('로그인이 필요합니다', 'error');
-      return;
-    }
     setShowWrite(!showWrite);
   };
 

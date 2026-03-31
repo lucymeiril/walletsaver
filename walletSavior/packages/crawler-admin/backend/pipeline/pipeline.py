@@ -104,9 +104,14 @@ class CrawlPipeline:
             return self._fail(crawler_name, str(exc), start)
 
         config = self.registry._registry.get(crawler_name, {}).get("config", {})
-        retry_count = config.get("schedule", {}).get(
-            "retry_count", self.default_retry_count
-        )
+        # schedule은 cron 문자열일 수 있으므로 dict인 경우만 .get() 사용
+        schedule_conf = config.get("schedule", {})
+        if isinstance(schedule_conf, dict):
+            retry_count = schedule_conf.get(
+                "retry_count", self.default_retry_count
+            )
+        else:
+            retry_count = self.default_retry_count
 
         crawl_result: CrawlResult | None = None
         for attempt in range(1, retry_count + 1):

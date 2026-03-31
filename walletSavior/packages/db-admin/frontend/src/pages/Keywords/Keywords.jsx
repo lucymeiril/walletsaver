@@ -1,23 +1,28 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Plus, Pencil, Trash2, X, Tag } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import useDbAdminStore from '../../stores/dbAdminStore';
 import s from './Keywords.module.css';
 
 export default function Keywords() {
-  const { keywords, addKeyword, updateKeyword, deleteKeyword, categories } = useDbAdminStore();
+  const { keywords, addKeyword, updateKeyword, deleteKeyword, categories, fetchKeywords, fetchCategories } = useDbAdminStore();
   const [search, setSearch] = useState('');
   const [modal, setModal] = useState(null);
   const [form, setForm] = useState({});
   const [synonymInput, setSynonymInput] = useState('');
 
+  useEffect(() => {
+    fetchKeywords();
+    fetchCategories();
+  }, [fetchKeywords, fetchCategories]);
+
   const sorted = useMemo(() => {
-    const list = [...keywords].sort((a, b) => b.searchCount - a.searchCount);
+    const list = [...keywords].sort((a, b) => (b.searchCount ?? 0) - (a.searchCount ?? 0));
     if (!search) return list;
-    return list.filter(k => k.keyword.includes(search) || k.synonyms.some(s => s.includes(search)));
+    return list.filter(k => (k.keyword || '').includes(search) || (k.synonyms || []).some(s => s.includes(search)));
   }, [keywords, search]);
 
-  const chartData = useMemo(() => sorted.slice(0, 15).map(k => ({ name: k.keyword, 검색수: k.searchCount })), [sorted]);
+  const chartData = useMemo(() => sorted.slice(0, 15).map(k => ({ name: k.keyword, 검색수: k.searchCount ?? 0 })), [sorted]);
 
   const flatCategories = useMemo(() => {
     const flat = [];
@@ -45,14 +50,15 @@ export default function Keywords() {
 
   const addSynonym = () => {
     const val = synonymInput.trim();
-    if (val && !form.synonyms.includes(val)) {
-      setForm({ ...form, synonyms: [...form.synonyms, val] });
+    const syns = form.synonyms || [];
+    if (val && !syns.includes(val)) {
+      setForm({ ...form, synonyms: [...syns, val] });
     }
     setSynonymInput('');
   };
 
   const removeSynonym = (syn) => {
-    setForm({ ...form, synonyms: form.synonyms.filter(s => s !== syn) });
+    setForm({ ...form, synonyms: (form.synonyms || []).filter(s => s !== syn) });
   };
 
   const handleSave = () => {
@@ -115,10 +121,10 @@ export default function Keywords() {
             {sorted.map(kw => (
               <tr key={kw.id}>
                 <td className={s.bold}>{kw.keyword}</td>
-                <td>{kw.searchCount.toLocaleString()}</td>
+                <td>{(kw.searchCount ?? 0).toLocaleString()}</td>
                 <td>
                   <div className={s.synonyms}>
-                    {kw.synonyms.map(syn => (
+                    {(kw.synonyms ?? []).map(syn => (
                       <span key={syn} className={s.synonymTag}>{syn}</span>
                     ))}
                   </div>
@@ -158,7 +164,7 @@ export default function Keywords() {
               <label>동의어</label>
               <div className={s.synonymEditor}>
                 <div className={s.synonymTags}>
-                  {form.synonyms.map(syn => (
+                  {(form.synonyms || []).map(syn => (
                     <span key={syn} className={s.editTag}>
                       {syn}
                       <button onClick={() => removeSynonym(syn)}><X size={12} /></button>

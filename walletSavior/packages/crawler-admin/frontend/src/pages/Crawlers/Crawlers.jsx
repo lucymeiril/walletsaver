@@ -34,18 +34,55 @@ export default function Crawlers() {
   }, [fetchCrawlers]);
 
   const handleRun = async (id) => {
-    setRunResult(null);
+    setRunResult({ id, success: true, message: '크롤러 실행 요청 중...' });
     const result = await runCrawler(id);
     if (result) {
-      setRunResult({ id, success: true, message: result.message || '크롤러 실행 요청 완료' });
+      setRunResult({ id, success: true, message: result.message || '크롤러 실행 시작됨 — 상태 추적 중...' });
+      // 실행 상태 폴링 (2초 간격, 최대 60회 = 2분)
+      let pollCount = 0;
+      const poll = setInterval(async () => {
+        pollCount++;
+        try {
+          const statusResp = await fetch(`/api/crawlers/${id}/status`);
+          if (statusResp.ok) {
+            const statusData = await statusResp.json();
+            if (statusData.status === 'success') {
+              setRunResult({
+                id,
+                success: true,
+                message: `✅ 크롤링 완료 — ${statusData.items_found ?? 0}건 발견, ${statusData.items_saved ?? 0}건 저장 (${(statusData.duration ?? 0).toFixed(1)}초)`,
+              });
+              clearInterval(poll);
+              fetchCrawlers();
+              setTimeout(() => setRunResult(null), 8000);
+            } else if (statusData.status === 'failed') {
+              setRunResult({
+                id,
+                success: false,
+                message: `❌ 크롤링 실패: ${(statusData.errors || []).join(', ') || '알 수 없는 오류'}`,
+              });
+              clearInterval(poll);
+              setTimeout(() => setRunResult(null), 8000);
+            }
+            // "running" 상태면 계속 폴링
+          }
+        } catch { /* 폴링 실패 무시 */ }
+        if (pollCount >= 60) {
+          clearInterval(poll);
+          setRunResult({ id, success: false, message: '⏱ 시간 초과 — 크롤러 상태를 확인해주세요' });
+          setTimeout(() => setRunResult(null), 6000);
+        }
+      }, 2000);
     } else {
       setRunResult({ id, success: false, message: '크롤러 실행 요청 실패' });
+      setTimeout(() => setRunResult(null), 4000);
     }
-    setTimeout(() => setRunResult(null), 4000);
   };
 
   const formatTime = (iso) => {
+    if (!iso) return '-';
     const d = new Date(iso);
+    if (isNaN(d.getTime())) return '-';
     return d.toLocaleString('ko-KR', {
       month: 'numeric',
       day: 'numeric',

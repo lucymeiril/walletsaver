@@ -188,7 +188,7 @@ const useAdminStore = create((set, get) => ({
     set({ loading: true, error: null });
     try {
       const data = await api.getIngestions(params);
-      const list = Array.isArray(data) ? data : data.ingestions ?? data.data ?? [];
+      const list = Array.isArray(data) ? data : data.items ?? data.ingestions ?? data.data ?? [];
       set({ ingestions: list });
     } catch {
       set({ ingestions: [] });

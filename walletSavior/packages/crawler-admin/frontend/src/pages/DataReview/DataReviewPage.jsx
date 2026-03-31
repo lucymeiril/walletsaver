@@ -124,11 +124,11 @@ export default function DataReviewPage() {
                   <div className={styles.cardInfo}>
                     <span className={styles.crawlerName}>{item.crawlerName || item.crawler_name || item.crawler_id || '알 수 없음'}</span>
                     <span className={styles.timestamp}>
-                      {item.timestamp ? new Date(item.timestamp).toLocaleString('ko-KR') : ''}
+                      {(item.timestamp || item.crawled_at) ? new Date(item.timestamp || item.crawled_at).toLocaleString('ko-KR') : ''}
                     </span>
                   </div>
                   <div className={styles.cardMeta}>
-                    <span className={styles.itemCount}>{items.length || item.itemCount || 0}건</span>
+                    <span className={styles.itemCount}>{items.length || item.itemCount || item.items_count || 0}건</span>
                     <span className={`${styles.qualityBadge} ${getQualityColor(qualityScore)}`}>
                       품질 {qualityScore}점
                     </span>

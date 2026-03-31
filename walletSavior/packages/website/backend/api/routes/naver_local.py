@@ -1,20 +1,122 @@
 """
 네이버 플레이스 실시간 검색 API — 위치 기반 가게/식당/주유소 정보.
 
-네이버 플레이스는 공식 API를 제공하지 않으므로,
-백엔드에서 Playwright를 통해 실시간 크롤링하여 데이터를 반환한다.
+Playwright sync API를 스레드 풀에서 실행하여 네이버 지도의 봇 감지를 우회한다.
+Windows asyncio ProactorEventLoop에서는 Playwright async API가 작동하지 않으므로,
+sync API + ThreadPoolExecutor 조합으로 해결한다.
+네이버는 headless 브라우저를 감지하여 API 응답을 차단하므로,
+--disable-blink-features=AutomationControlled 등 stealth 설정이 필수다.
 
 엔드포인트:
     GET /api/local/naver-search — 네이버 지도 기반 주변 가게 검색
 """
 
+import asyncio
 import logging
+from concurrent.futures import ThreadPoolExecutor
 from fastapi import APIRouter, Query
 from api.schemas.common import ApiResponse
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+# Playwright는 브라우저 인스턴스 생성 비용이 크므로 스레드 풀을 재사용
+_executor = ThreadPoolExecutor(max_workers=2)
+
+
+def _search_via_playwright_sync(query: str, lat: float, lng: float, max_items: int) -> list[dict]:
+    """Playwright sync API로 네이버 지도를 검색하고 API 응답을 인터셉트한다.
+
+    네이버 지도는 headless 브라우저와 httpx 직접 호출을 모두 감지하여 차단하므로,
+    Playwright stealth 설정으로 봇 감지를 우회한 뒤 내부 allSearch API 응답을
+    인터셉트하여 구조화된 장소 데이터를 추출한다.
+
+    주요 stealth 기법:
+    - --disable-blink-features=AutomationControlled: 자동화 플래그 제거
+    - navigator.webdriver = undefined: WebDriver 속성 숨김
+    - 실제 Chrome User-Agent, viewport, locale, timezone 설정
+    """
+    from playwright.sync_api import sync_playwright
+
+    api_data = {}
+
+    def handle_response(response):
+        """네이버 지도 내부 allSearch API 응답을 캡처한다."""
+        if "allSearch" in response.url and response.status == 200:
+            try:
+                body = response.json()
+                if isinstance(body, dict) and "result" in body:
+                    api_data["response"] = body
+            except Exception:
+                pass
+
+    items = []
+    try:
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(
+                headless=True,
+                args=["--disable-blink-features=AutomationControlled"],
+            )
+            context = browser.new_context(
+                user_agent=(
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) "
+                    "Chrome/125.0.0.0 Safari/537.36"
+                ),
+                viewport={"width": 1920, "height": 1080},
+                locale="ko-KR",
+                timezone_id="Asia/Seoul",
+                geolocation={"latitude": lat, "longitude": lng},
+                permissions=["geolocation"],
+            )
+            page = context.new_page()
+            # navigator.webdriver 속성을 숨겨 봇 감지 우회
+            page.add_init_script(
+                "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+            )
+            page.on("response", handle_response)
+
+            url = f"https://map.naver.com/p/search/{query}"
+            page.goto(url, timeout=20000)
+            # 네이버 지도의 JS가 API를 호출하고 결과를 렌더링할 시간 확보
+            page.wait_for_timeout(5000)
+            browser.close()
+    except Exception as exc:
+        logger.warning(f"[네이버 검색] Playwright 크롤링 실패: {exc}")
+        return items
+
+    # 인터셉트된 API 응답에서 장소 목록 추출
+    if "response" in api_data:
+        data = api_data["response"]
+        result = data.get("result") or {}
+        place_data = result.get("place") or {}
+        place_list = place_data.get("list") or []
+
+        for place in place_list[:max_items]:
+            cat = place.get("category", "")
+            if isinstance(cat, list):
+                cat = cat[0] if cat else ""
+            item = {
+                "name": place.get("name", ""),
+                "category": cat,
+                "address": place.get("roadAddress") or place.get("address", ""),
+                "tel": place.get("tel", ""),
+                "x": place.get("x", ""),
+                "y": place.get("y", ""),
+                "distance": place.get("distance", ""),
+                "url": (
+                    f"https://map.naver.com/p/entry/place/{place.get('id', '')}"
+                    if place.get("id") else ""
+                ),
+                "image_url": place.get("thumUrl") or place.get("imageUrl", ""),
+                "rating": place.get("reviewCount", 0),
+                "menu_info": place.get("menuInfo", ""),
+            }
+            if item["name"]:
+                items.append(item)
+
+    return items
 
 
 @router.get("/naver-search")
@@ -26,49 +128,32 @@ async def naver_place_search(
 ):
     """네이버 플레이스 실시간 검색.
 
-    사용자가 지도에서 검색하거나 위치를 이동하면
-    백엔드에서 네이버 지도를 Playwright로 크롤링하여 결과를 반환한다.
+    Playwright sync API를 별도 스레드에서 실행하여 네이버 지도 검색 결과를 가져온다.
+    Windows asyncio 호환 문제를 스레드 풀 실행으로 해결하고,
+    네이버의 봇 감지는 stealth 브라우저 설정으로 우회한다.
     """
+    loop = asyncio.get_event_loop()
     try:
-        # 크롤러 동적 임포트 — crawler-admin 패키지 의존성 분리
-        import sys
-        import os
-        crawler_path = os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "..", "..", "..", "..",
-                         "crawler-admin", "backend")
+        items = await loop.run_in_executor(
+            _executor,
+            _search_via_playwright_sync,
+            query, lat, lng, max_items,
         )
-        if crawler_path not in sys.path:
-            sys.path.insert(0, crawler_path)
-
-        from crawlers.location.naver_place.crawler import NaverPlaceCrawler
-        crawler = NaverPlaceCrawler()
-        result = await crawler.crawl(
-            query=query, lat=lat, lng=lng, max_items=max_items
-        )
-
-        return ApiResponse(
-            success=result.status.value in ("success", "partial"),
-            data={
-                "items": result.items,
-                "count": result.items_count,
-                "query": query,
-                "lat": lat,
-                "lng": lng,
-            },
-            message=f"'{query}' 검색 결과 {result.items_count}건" if result.items else "검색 결과 없음",
-        )
-
-    except ImportError as e:
-        logger.warning(f"[네이버 검색] 크롤러 임포트 실패: {e}")
-        return ApiResponse(
-            success=False,
-            data={"items": [], "count": 0},
-            message="네이버 플레이스 크롤러를 사용할 수 없습니다 (playwright 미설치)",
-        )
+        source = "playwright"
     except Exception as e:
-        logger.error(f"[네이버 검색] 오류: {e}", exc_info=True)
-        return ApiResponse(
-            success=False,
-            data={"items": [], "count": 0},
-            message=f"검색 실패: {str(e)}",
-        )
+        logger.error(f"[네이버 검색] 검색 실패: {e}")
+        items = []
+        source = "error"
+
+    return ApiResponse(
+        success=len(items) > 0,
+        data={
+            "items": items,
+            "count": len(items),
+            "query": query,
+            "lat": lat,
+            "lng": lng,
+            "source": source,
+        },
+        message=f"'{query}' 검색 결과 {len(items)}건" if items else "검색 결과 없음",
+    )

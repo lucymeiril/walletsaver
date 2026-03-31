@@ -13,4 +13,4 @@ schedule:
   retry_delay: 60
 output:
   model: HotdealPost
-  required_fields: [title, price, source_url]
+  required_fields: [title, url]
