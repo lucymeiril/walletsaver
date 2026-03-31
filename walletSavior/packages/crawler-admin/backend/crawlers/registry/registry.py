@@ -59,16 +59,32 @@ class CrawlerRegistry:
 
     def list_crawlers(self) -> list[dict]:
         """등록된 모든 크롤러 목록."""
-        return [
-            {
+        result = []
+        for name, info in self._registry.items():
+            sched = info["config"].get("schedule", {})
+            if isinstance(sched, str):
+                schedule_str = sched
+            elif isinstance(sched, dict):
+                schedule_str = sched.get("cron", "manual")
+            else:
+                schedule_str = "manual"
+
+            difficulty = info["config"].get("difficulty", 1)
+            if isinstance(difficulty, dict):
+                difficulty = 1
+            target = info["config"].get("target", {})
+            if isinstance(target, dict):
+                difficulty = target.get("difficulty", difficulty)
+
+            result.append({
                 "name": name,
                 "display_name": info["config"].get("display_name", name),
-                "category": info["config"].get("category", "unknown"),
-                "difficulty": info["config"].get("target", {}).get("difficulty", 1),
-                "schedule": info["config"].get("schedule", {}).get("cron", "manual"),
-            }
-            for name, info in self._registry.items()
-        ]
+                "category": info["config"].get("category",
+                             info["config"].get("group", "unknown")),
+                "difficulty": difficulty,
+                "schedule": schedule_str,
+            })
+        return result
 
     def _resolve_module_path(self, crawler_dir: Path) -> str:
         """크롤러 디렉토리를 Python 모듈 경로로 변환."""

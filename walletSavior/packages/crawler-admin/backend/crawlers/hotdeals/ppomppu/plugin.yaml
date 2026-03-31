@@ -6,3 +6,5 @@ target_url: "https://www.ppomppu.co.kr/zboard/zboard.php?id=ppomppu"
 strategies:
   - requests
 difficulty: 2
+output:
+  model: HotdealPost

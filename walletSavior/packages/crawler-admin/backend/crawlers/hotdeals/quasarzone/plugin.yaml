@@ -6,3 +6,5 @@ target_url: "https://quasarzone.com/bbs/qb_saleinfo"
 strategies:
   - requests
 difficulty: 2
+output:
+  model: HotdealPost

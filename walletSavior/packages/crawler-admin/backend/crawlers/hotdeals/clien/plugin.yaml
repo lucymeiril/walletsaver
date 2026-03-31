@@ -6,3 +6,5 @@ target_url: "https://www.clien.net/service/board/jirum"
 strategies:
   - requests
 difficulty: 2
+output:
+  model: HotdealPost

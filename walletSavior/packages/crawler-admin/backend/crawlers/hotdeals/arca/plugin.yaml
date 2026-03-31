@@ -6,3 +6,5 @@ target_url: "https://arca.live/b/hotdeal"
 strategies:
   - cloudscraper
 difficulty: 4
+output:
+  model: HotdealPost
