@@ -48,8 +48,8 @@ $crawlerBackend = Start-Process -PassThru -NoNewWindow -FilePath "py" `
 
 # --- 크롤러 관리 프론트엔드 (port 5174) ---
 Write-Host "🚀 크롤러 관리 프론트엔드 시작 (port 5174)..." -ForegroundColor Yellow
-$crawlerFrontend = Start-Process -PassThru -NoNewWindow -FilePath "npm" `
-    -ArgumentList "run dev" `
+$crawlerFrontend = Start-Process -PassThru -NoNewWindow -FilePath "cmd.exe" `
+    -ArgumentList "/c cd /d `"$CrawlerFrontendDir`" && npm run dev" `
     -WorkingDirectory $CrawlerFrontendDir
 
 # --- DB 관리 백엔드 (port 8002) ---
@@ -60,8 +60,8 @@ $dbBackend = Start-Process -PassThru -NoNewWindow -FilePath "py" `
 
 # --- DB 관리 프론트엔드 (port 5175) ---
 Write-Host "🚀 DB 관리 프론트엔드 시작 (port 5175)..." -ForegroundColor Yellow
-$dbFrontend = Start-Process -PassThru -NoNewWindow -FilePath "npm" `
-    -ArgumentList "run dev" `
+$dbFrontend = Start-Process -PassThru -NoNewWindow -FilePath "cmd.exe" `
+    -ArgumentList "/c cd /d `"$DbFrontendDir`" && npm run dev" `
     -WorkingDirectory $DbFrontendDir
 
 # --- 서버 준비 대기 ---

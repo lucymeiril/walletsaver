@@ -44,8 +44,9 @@ $backend = Start-Process -PassThru -NoNewWindow -FilePath "py" `
 
 # --- 프론트엔드 시작 (port 5173) ---
 Write-Host "🚀 프론트엔드 서버 시작 (port 5173)..." -ForegroundColor Yellow
-$frontend = Start-Process -PassThru -NoNewWindow -FilePath "npm" `
-    -ArgumentList "run dev" `
+# npm은 .cmd 스크립트이므로 cmd /c로 실행해야 Start-Process에서 동작함
+$frontend = Start-Process -PassThru -NoNewWindow -FilePath "cmd.exe" `
+    -ArgumentList "/c cd /d `"$FrontendDir`" && npm run dev" `
     -WorkingDirectory $FrontendDir
 
 # --- 서버 준비 대기 ---
