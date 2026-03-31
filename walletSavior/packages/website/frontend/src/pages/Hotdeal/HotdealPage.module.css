@@ -111,9 +111,9 @@
   padding: 4px 10px;
   border-radius: 6px;
 }
-.tierUltra { background: rgba(248,113,113,.15); color: var(--red); }
-.tierGreat { background: rgba(251,146,60,.15); color: var(--orange); }
-.tierGood { background: rgba(52,211,153,.15); color: var(--green); }
+.tierUltra { background: rgba(34,197,94,.15); color: var(--green); }
+.tierGreat { background: rgba(56,189,248,.15); color: var(--tier-great); }
+.tierGood { background: rgba(251,191,36,.15); color: var(--yellow); }
 .tierWait { background: var(--glass2); color: var(--text3); }
 
 /* Discount Badge */
