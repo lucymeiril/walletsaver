@@ -4,6 +4,52 @@
 
 ---
 
+## 🖥️ 실행 방법 (개발자용)
+
+개발 환경에서 지갑 지키미를 실행하는 방법입니다.
+
+### 원클릭 실행
+
+```powershell
+# 프로젝트 루트에서 실행
+./start.ps1
+```
+
+웹사이트 프론트엔드(port 5173)와 백엔드(port 8000)가 동시에 시작되고,
+준비가 완료되면 브라우저가 자동으로 열립니다.
+
+### 수동 실행
+
+```powershell
+# 1. 프론트엔드 의존성 설치 (최초 1회)
+cd packages/website/frontend
+npm install
+
+# 2. 백엔드 시작
+cd packages/website/backend
+py -m uvicorn api.app:create_app --factory --reload --port 8000
+
+# 3. 프론트엔드 시작 (새 터미널)
+cd packages/website/frontend
+npm run dev
+```
+
+### 접속 주소
+
+| 서비스 | URL |
+|--------|-----|
+| 🌐 웹사이트 | http://localhost:5173 |
+| 📡 API 문서 | http://localhost:8000/docs |
+
+### 서버 종료
+
+```powershell
+./stop.ps1          # 모든 서버 종료
+# 또는 start.ps1 실행 중 Ctrl+C
+```
+
+---
+
 ## 📑 목차
 
 1. [시작하기](#-시작하기)

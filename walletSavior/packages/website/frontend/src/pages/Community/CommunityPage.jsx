@@ -10,24 +10,37 @@ const BOARD_TABS = [
   { id: 'free', label: '💬 자유 게시판' },
 ];
 const CATS = ['전체', '마트', '온라인', '외식', '기타'];
+const FREE_TAGS = ['질문', '정보', '후기', '잡담'];
 const WRITE_CATS = ['마트', '온라인', '외식', '기타'];
 const POSTS_PER_PAGE = 10;
 
 const VERIFY_STYLES = {
-  great_deal: { bg: 'rgba(52,211,153,.1)', color: 'var(--green)', icon: '🔥' },
-  verified:   { bg: 'rgba(56,189,248,.08)', color: 'var(--accent)', icon: '✅' },
-  sus_low:    { bg: 'rgba(248,113,113,.1)', color: 'var(--red)', icon: '⚠️' },
-  sus_high:   { bg: 'rgba(248,113,113,.1)', color: 'var(--red)', icon: '🚨' },
+  great_deal: { bg: 'rgba(52,211,153,.1)', color: 'var(--green)', icon: '🔥', border: 'var(--green)' },
+  verified:   { bg: 'rgba(56,189,248,.08)', color: 'var(--accent)', icon: '✅', border: 'var(--accent)' },
+  sus_low:    { bg: 'rgba(248,113,113,.1)', color: 'var(--red)', icon: '⚠️', border: 'var(--red)' },
+  sus_high:   { bg: 'rgba(248,113,113,.1)', color: 'var(--red)', icon: '🚨', border: 'var(--red)' },
 };
+
+const FREE_POSTS_MOCK = [
+  { id: 101, title: '물가 절약 팁 공유합니다', cat: '정보', tag: '정보', author: '절약러', time: '10분 전', views: 156, comments: 12, body: '장 볼 때 전단지 먼저 확인하고 가면 평균 15% 절약 가능해요. 특히 이마트 에브리데이 앱은 필수!', commentData: [{ id: 1, author: '살림꾼', text: '좋은 정보 감사합니다!', time: '5분 전' }] },
+  { id: 102, title: '요즘 장보기 너무 비싸지 않나요?', cat: '질문', tag: '질문', author: '주부9단', time: '30분 전', views: 234, comments: 28, body: '2인 가족인데 한 달에 식비가 80만원이 넘어가요. 다들 얼마나 쓰시나요?', commentData: [{ id: 1, author: '먹보', text: '저도 비슷해요...', time: '20분 전' }, { id: 2, author: '절약왕', text: '저는 60만원 정도 쓰는데 마트 세일 기간 맞춰서 장봐요', time: '15분 전' }] },
+  { id: 103, title: '코스트코 회원권 가성비 후기', cat: '후기', tag: '후기', author: '코스트코러버', time: '1시간 전', views: 445, comments: 34, body: '연회비 38,500원인데 한 달에 2번만 가도 비회원 대비 5만원은 절약됩니다. 특히 고기/계란은 확실히 저렴해요.', commentData: [] },
+  { id: 104, title: '배달 vs 포장 vs 직접 조리 뭐가 나을까', cat: '잡담', tag: '잡담', author: '먹보', time: '2시간 전', views: 178, comments: 19, body: '치킨 기준으로 배달 21,000원, 포장 18,000원, 직접 만들면 8,000원 정도... 근데 시간도 비용이잖아요.', commentData: [{ id: 1, author: '치킨매니아', text: '포장이 답이죠', time: '1시간 전' }] },
+  { id: 105, title: '1인가구 식비 줄이는 현실적인 방법', cat: '정보', tag: '정보', author: '자취생', time: '3시간 전', views: 567, comments: 42, body: '1. 밑반찬 주말에 몰아서 만들기\n2. 마트 마감 할인 노리기\n3. 냉동실 적극 활용\n4. 계절 채소 위주로 구매', commentData: [] },
+  { id: 106, title: '편의점 도시락 가성비 순위', cat: '후기', tag: '후기', author: '편의점마스터', time: '4시간 전', views: 321, comments: 15, body: 'CU > GS25 > 세븐일레븐 순으로 가성비가 좋은 것 같아요. CU는 양이 제일 많고요.', commentData: [] },
+  { id: 107, title: '장보기 앱 추천 좀 해주세요', cat: '질문', tag: '질문', author: '앱덕후', time: '5시간 전', views: 189, comments: 23, body: '물가 비교 앱이나 마트 할인 정보 앱 중에 좋은 거 있으면 추천 부탁드려요!', commentData: [] },
+  { id: 108, title: '오늘 저녁 뭐 해먹을지 고민', cat: '잡담', tag: '잡담', author: '요리초보', time: '6시간 전', views: 98, comments: 8, body: '냉장고에 양파, 계란, 김치밖에 없는데 뭘 만들 수 있을까요?', commentData: [{ id: 1, author: '절약러', text: '김치볶음밥이 답입니다', time: '5시간 전' }] },
+];
 
 export default function CommunityPage() {
   const location = useLocation();
   const [board, setBoard] = useState('hotdeal');
   const [filter, setFilter] = useState('전체');
+  const [freeTag, setFreeTag] = useState('전체');
   const [showWrite, setShowWrite] = useState(false);
   const [detail, setDetail] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('latest');
+  const [sortBy, setSortBy] = useState('popular');
   const [page, setPage] = useState(1);
   const { isLoggedIn, addToast } = useStore();
 
@@ -40,6 +53,14 @@ export default function CommunityPage() {
     }
   }, [location.state]);
 
+  useEffect(() => {
+    setSortBy(board === 'hotdeal' ? 'popular' : 'latest');
+    setFilter('전체');
+    setFreeTag('전체');
+    setPage(1);
+    setSearchQuery('');
+  }, [board]);
+
   // Write form state
   const [wTitle, setWTitle] = useState('');
   const [wBody, setWBody] = useState('');
@@ -47,11 +68,18 @@ export default function CommunityPage() {
   const [wProduct, setWProduct] = useState('');
   const [wPrice, setWPrice] = useState('');
   const [wLink, setWLink] = useState('');
+  const [wTag, setWTag] = useState('잡담');
   const [wImages, setWImages] = useState([]);
   const fileRef = useRef(null);
 
   const filteredAndSorted = useMemo(() => {
-    let posts = filter === '전체' ? [...COMMUNITY_POSTS] : COMMUNITY_POSTS.filter(p => p.cat === filter);
+    let posts;
+
+    if (board === 'hotdeal') {
+      posts = filter === '전체' ? [...COMMUNITY_POSTS] : COMMUNITY_POSTS.filter(p => p.cat === filter);
+    } else {
+      posts = freeTag === '전체' ? [...FREE_POSTS_MOCK] : FREE_POSTS_MOCK.filter(p => p.tag === freeTag);
+    }
 
     if (searchQuery.trim()) {
       const q = searchQuery.trim().toLowerCase();
@@ -67,7 +95,7 @@ export default function CommunityPage() {
     }
 
     return posts;
-  }, [filter, searchQuery, sortBy]);
+  }, [board, filter, freeTag, searchQuery, sortBy]);
 
   const totalPages = Math.max(1, Math.ceil(filteredAndSorted.length / POSTS_PER_PAGE));
   const safePage = Math.min(page, totalPages);
@@ -91,6 +119,11 @@ export default function CommunityPage() {
       return;
     }
     if (!wTitle.trim()) { addToast('제목을 입력해주세요.', 'error'); return; }
+    if (board === 'hotdeal') {
+      if (!wProduct.trim()) { addToast('품목명을 입력해주세요.', 'error'); return; }
+      if (!wPrice.trim()) { addToast('가격을 입력해주세요.', 'error'); return; }
+      if (!wLink.trim()) { addToast('핫딜 링크를 입력해주세요.', 'error'); return; }
+    }
     if (verification && !verification.canPost) {
       addToast('허위 가격이 의심되어 등록할 수 없습니다.', 'error');
       return;
@@ -113,6 +146,11 @@ export default function CommunityPage() {
     setPage(1);
   };
 
+  const handleTagChange = (t) => {
+    setFreeTag(t);
+    setPage(1);
+  };
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
     setPage(1);
@@ -123,12 +161,19 @@ export default function CommunityPage() {
     setPage(1);
   };
 
+  const getVerifyBorderColor = (verified) => {
+    if (!verified) return 'var(--border)';
+    return VERIFY_STYLES[verified]?.border || 'var(--border)';
+  };
+
   return (
     <div>
-      <div className={s.hdr}>
+      <div className={`${s.hdr} ${board === 'hotdeal' ? s.hdrHotdeal : s.hdrFree}`}>
         <div>
-          <h2>핫딜 공유 커뮤니티</h2>
-          <p>직접 발견한 할인을 공유하고, 자동으로 시세 비교를 해드립니다</p>
+          <h2>{board === 'hotdeal' ? '🔥 핫딜 정보를 공유하고 검증하세요' : '💬 자유롭게 이야기를 나눠보세요'}</h2>
+          <p>{board === 'hotdeal'
+            ? '직접 발견한 할인을 공유하고, 자동으로 시세 비교를 해드립니다'
+            : '물가, 절약, 살림에 대해 자유롭게 이야기하세요'}</p>
         </div>
         <button className={s.writeBtn} onClick={handleWriteBtn}>
           <Pencil size={16} /> {isLoggedIn ? '글쓰기' : '로그인 후 글쓰기'}
@@ -140,7 +185,7 @@ export default function CommunityPage() {
         {BOARD_TABS.map(t => (
           <button
             key={t.id}
-            className={`${s.mainTab} ${board === t.id ? s.mainTabActive : ''}`}
+            className={`${s.mainTab} ${board === t.id ? (t.id === 'hotdeal' ? s.mainTabHotdeal : s.mainTabFree) : ''}`}
             onClick={() => setBoard(t.id)}
           >
             {t.label}
@@ -164,47 +209,62 @@ export default function CommunityPage() {
           />
           <textarea
             className={s.bodyInput}
-            placeholder="내용을 입력하세요 (가격, 매장 위치, 수량 제한 등)"
+            placeholder={board === 'hotdeal'
+              ? '내용을 입력하세요 (가격, 매장 위치, 수량 제한 등)'
+              : '자유롭게 내용을 입력하세요'}
             rows={5}
             value={wBody}
             onChange={e => setWBody(e.target.value)}
           />
 
-          <div className={s.writeRow}>
-            <select value={wCat} onChange={e => setWCat(e.target.value)}>
-              {WRITE_CATS.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
-            <input
-              placeholder="품목명 (선택 — 자동 시세 비교)"
-              value={wProduct}
-              onChange={e => setWProduct(e.target.value)}
-              list="product-list"
-            />
-            <datalist id="product-list">
-              {PRODUCTS.map(p => <option key={p.id} value={p.name} />)}
-            </datalist>
-            <input
-              type="number"
-              placeholder="가격 (원, 선택)"
-              value={wPrice}
-              onChange={e => setWPrice(e.target.value)}
-            />
-          </div>
-
-          {/* Link input for hotdeal board */}
-          {board === 'hotdeal' && (
-            <input
-              className={s.linkInput}
-              placeholder="핫딜 링크 (선택)"
-              value={wLink}
-              onChange={e => setWLink(e.target.value)}
-            />
+          {board === 'hotdeal' ? (
+            <>
+              <div className={s.writeRow}>
+                <select value={wCat} onChange={e => setWCat(e.target.value)}>
+                  {WRITE_CATS.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+                <input
+                  placeholder="품목명 (필수 — 자동 시세 비교)"
+                  value={wProduct}
+                  onChange={e => setWProduct(e.target.value)}
+                  list="product-list"
+                />
+                <datalist id="product-list">
+                  {PRODUCTS.map(p => <option key={p.id} value={p.name} />)}
+                </datalist>
+                <input
+                  type="number"
+                  placeholder="가격 (원, 필수)"
+                  value={wPrice}
+                  onChange={e => setWPrice(e.target.value)}
+                />
+              </div>
+              <input
+                className={s.linkInput}
+                placeholder="핫딜 링크 (필수)"
+                value={wLink}
+                onChange={e => setWLink(e.target.value)}
+              />
+            </>
+          ) : (
+            <div className={s.writeTagRow}>
+              <span className={s.writeTagLabel}>태그:</span>
+              {FREE_TAGS.map(t => (
+                <button
+                  key={t}
+                  className={`${s.writeTagBtn} ${wTag === t ? s.writeTagActive : ''}`}
+                  onClick={() => setWTag(t)}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
           )}
 
           {/* Image Upload */}
           <div className={s.imgUpload}>
             <button className={s.imgBtn} onClick={() => fileRef.current?.click()}>
-              <ImagePlus size={18} /> 사진 추가
+              <ImagePlus size={18} /> 사진 추가 {board === 'free' && <span className={s.optionalLabel}>(선택)</span>}
             </button>
             <input ref={fileRef} type="file" accept="image/*" multiple hidden onChange={handleImageAdd} />
             {wImages.length > 0 && (
@@ -219,8 +279,8 @@ export default function CommunityPage() {
             )}
           </div>
 
-          {/* Verification */}
-          {verification && (
+          {/* Verification (hotdeal only) */}
+          {board === 'hotdeal' && verification && (
             <div className={s.verifyResult} style={{
               background: VERIFY_STYLES[verification.status]?.bg || 'var(--glass)',
               color: VERIFY_STYLES[verification.status]?.color || 'var(--text)'
@@ -230,14 +290,14 @@ export default function CommunityPage() {
               {matchedProduct && <span className={s.verifyDetail}>평균 시세: {fmt(matchedProduct.avg)}원</span>}
             </div>
           )}
-          {!matchedProduct && wProduct && (
+          {board === 'hotdeal' && !matchedProduct && wProduct && (
             <div className={s.noMatch}>ℹ️ 시세 데이터에 없는 품목입니다. 검증 없이 등록됩니다.</div>
           )}
-          {verification && !verification.canPost && (
+          {board === 'hotdeal' && verification && !verification.canPost && (
             <div className={s.blocked}>⛔ 등록 차단됨 — 허위 가격이 의심됩니다.</div>
           )}
 
-          <button className={s.submitBtn} onClick={handleWrite} disabled={verification?.canPost === false}>
+          <button className={s.submitBtn} onClick={handleWrite} disabled={board === 'hotdeal' && verification?.canPost === false}>
             등록
           </button>
         </div>
@@ -256,61 +316,113 @@ export default function CommunityPage() {
           />
         </div>
         <select className={s.sortSel} value={sortBy} onChange={handleSortChange}>
-          <option value="latest">최신순</option>
-          <option value="popular">인기순</option>
-          <option value="comments">댓글순</option>
+          {board === 'hotdeal' ? (
+            <>
+              <option value="popular">인기순</option>
+              <option value="latest">최신순</option>
+              <option value="comments">댓글순</option>
+            </>
+          ) : (
+            <>
+              <option value="latest">최신순</option>
+              <option value="comments">댓글순</option>
+              <option value="popular">인기순</option>
+            </>
+          )}
         </select>
       </div>
 
-      {/* Category Filter */}
+      {/* Category / Tag Filter */}
       <div className={s.filterRow}>
-        {CATS.map(t => (
-          <button
-            key={t}
-            className={`${s.tab} ${filter === t ? s.tabActive : ''}`}
-            onClick={() => handleFilterChange(t)}
-          >
-            {t}
-          </button>
-        ))}
+        {board === 'hotdeal' ? (
+          CATS.map(t => (
+            <button
+              key={t}
+              className={`${s.tab} ${filter === t ? s.tabActive : ''}`}
+              onClick={() => handleFilterChange(t)}
+            >
+              {t}
+            </button>
+          ))
+        ) : (
+          ['전체', ...FREE_TAGS].map(t => (
+            <button
+              key={t}
+              className={`${s.freeTagBtn} ${freeTag === t ? s.freeTagActive : ''}`}
+              onClick={() => handleTagChange(t)}
+            >
+              {t === '전체' ? '전체' : `#${t}`}
+            </button>
+          ))
+        )}
       </div>
 
       {/* Post List */}
       <div className={s.list}>
-        {paginatedPosts.map(p => (
-          <div key={p.id} className={s.post} onClick={() => setDetail(p)}>
-            <span className={s.postCat}>{p.cat}</span>
-            <div className={s.postBody}>
-              <div className={s.postTitle}>
-                {p.verified && (
-                  <span className={s.verifyBadge} style={{
-                    background: VERIFY_STYLES[p.verified]?.bg,
-                    color: VERIFY_STYLES[p.verified]?.color
-                  }}>
-                    {VERIFY_STYLES[p.verified]?.icon}
-                  </span>
-                )}
-                {p.title}
+        {board === 'hotdeal' ? (
+          paginatedPosts.map(p => (
+            <div
+              key={p.id}
+              className={`${s.post} ${s.hotdealPost}`}
+              style={{ borderLeftColor: getVerifyBorderColor(p.verified) }}
+              onClick={() => setDetail(p)}
+            >
+              <div className={s.hotdealVoteCol}>
+                <span className={s.hotdealVoteHot}>🔥 {p.hotVotes || 0}</span>
+                <span className={s.hotdealVoteCold}>❄️ {p.coldVotes || 0}</span>
               </div>
-              {p.body && <p className={s.postExcerpt}>{p.body.slice(0, 60)}...</p>}
-              <div className={s.postMeta}>
-                <span>{p.author}</span>
-                <span>{p.time}</span>
-                <span>조회 {p.views}</span>
-                <span>💬 {p.commentData?.length || p.comments}</span>
-                <span>🔥 {p.hotVotes || 0} / ❄️ {p.coldVotes || 0}</span>
+              <div className={s.postBody}>
+                <div className={s.postTitle}>
+                  {p.verified && (
+                    <span className={s.verifyBadge} style={{
+                      background: VERIFY_STYLES[p.verified]?.bg,
+                      color: VERIFY_STYLES[p.verified]?.color
+                    }}>
+                      {VERIFY_STYLES[p.verified]?.icon} 시세 검증
+                    </span>
+                  )}
+                  {p.title}
+                </div>
+                {p.body && <p className={s.postExcerpt}>{p.body.slice(0, 60)}...</p>}
+                <div className={s.postMeta}>
+                  <span className={s.postCatInline}>{p.cat}</span>
+                  <span>{p.author}</span>
+                  <span>{p.time}</span>
+                  <span>조회 {p.views}</span>
+                  <span>💬 {p.commentData?.length || p.comments}</span>
+                </div>
+              </div>
+              {p.priceVsAvg !== null && (
+                <span className={`${s.priceBadge} ${p.priceVsAvg < -20 ? s.cheap : s.avgBadge}`}>
+                  평균 대비 {p.priceVsAvg}%
+                </span>
+              )}
+            </div>
+          ))
+        ) : (
+          paginatedPosts.map(p => (
+            <div key={p.id} className={`${s.post} ${s.freePost}`} onClick={() => setDetail(p)}>
+              <div className={s.postBody}>
+                <div className={s.postTitle}>
+                  {p.tag && <span className={`${s.tagLabel} ${s[`tag_${p.tag}`] || ''}`}>#{p.tag}</span>}
+                  {p.title}
+                </div>
+                {p.body && <p className={s.postExcerpt}>{p.body.slice(0, 80)}...</p>}
+                <div className={s.postMeta}>
+                  <span>{p.author}</span>
+                  <span>{p.time}</span>
+                  <span>👁️ {p.views}</span>
+                  <span>💬 {p.commentData?.length || p.comments}</span>
+                </div>
               </div>
             </div>
-            {p.priceVsAvg !== null && (
-              <span className={`${s.priceBadge} ${p.priceVsAvg < -20 ? s.cheap : s.avgBadge}`}>
-                평균 대비 {p.priceVsAvg}%
-              </span>
-            )}
-          </div>
-        ))}
+          ))
+        )}
         {paginatedPosts.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text3)' }}>
-            검색 결과가 없습니다.
+          <div className={s.emptyState}>
+            {board === 'hotdeal'
+              ? '🔥 아직 핫딜이 없습니다. 첫 번째 핫딜을 공유해보세요!'
+              : '💬 아직 게시글이 없습니다. 자유롭게 이야기를 시작해보세요!'}
           </div>
         )}
       </div>
@@ -337,12 +449,12 @@ export default function CommunityPage() {
       )}
 
       {/* Detail Modal */}
-      {detail && <PostDetailModal post={detail} onClose={() => setDetail(null)} />}
+      {detail && <PostDetailModal post={detail} onClose={() => setDetail(null)} board={board} />}
     </div>
   );
 }
 
-function PostDetailModal({ post, onClose }) {
+function PostDetailModal({ post, onClose, board }) {
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState(post?.commentData || []);
   const [vote, setVote] = useState(null);
@@ -367,6 +479,7 @@ function PostDetailModal({ post, onClose }) {
         <div className={s.modalBody}>
           <div className={s.modalMeta}>
             <span className={s.modalCat}>{post.cat}</span>
+            {post.tag && <span className={`${s.tagLabel} ${s[`tag_${post.tag}`] || ''}`}>#{post.tag}</span>}
             <span className={s.modalAuthor}>{post.author}</span>
             <span className={s.modalTime}><Clock size={12} /> {post.time}</span>
           </div>
@@ -384,33 +497,35 @@ function PostDetailModal({ post, onClose }) {
           <div className={s.modalStats}>
             <Eye size={14} /> {post.views}
             <MessageSquare size={14} /> {comments.length}
-            <span>🔥 {post.hotVotes || 0} / ❄️ {post.coldVotes || 0}</span>
+            {board === 'hotdeal' && <span>🔥 {post.hotVotes || 0} / ❄️ {post.coldVotes || 0}</span>}
           </div>
 
-          {/* Price Badge */}
-          {matchedProduct && post.priceVsAvg !== null && (
+          {/* Price Badge (hotdeal only) */}
+          {board === 'hotdeal' && matchedProduct && post.priceVsAvg !== null && (
             <div className={`${s.dbBadge} ${post.priceVsAvg < -20 ? s.dbBadgeDeal : s.dbBadgeOk}`}>
               🎯 평균 시세: {fmt(matchedProduct.avg)}원 · 현재 평균 대비 {post.priceVsAvg}%
             </div>
           )}
 
-          {/* Vote */}
-          <div className={s.voteSection}>
-            <button
-              className={`${s.voteBtn} ${s.voteHot} ${vote === 'hot' ? s.voteActive : ''}`}
-              onClick={() => handleVote('hot')}
-              style={vote === 'hot' ? { background: 'rgba(248,113,113,.12)' } : {}}
-            >
-              🔥 핫딜이다
-            </button>
-            <button
-              className={`${s.voteBtn} ${s.voteCold} ${vote === 'cold' ? s.voteActive : ''}`}
-              onClick={() => handleVote('cold')}
-              style={vote === 'cold' ? { background: 'rgba(56,189,248,.12)' } : {}}
-            >
-              ❄️ 아니다
-            </button>
-          </div>
+          {/* Vote (hotdeal only) */}
+          {board === 'hotdeal' && (
+            <div className={s.voteSection}>
+              <button
+                className={`${s.voteBtn} ${s.voteHot} ${vote === 'hot' ? s.voteActive : ''}`}
+                onClick={() => handleVote('hot')}
+                style={vote === 'hot' ? { background: 'rgba(248,113,113,.12)' } : {}}
+              >
+                🔥 핫딜이다
+              </button>
+              <button
+                className={`${s.voteBtn} ${s.voteCold} ${vote === 'cold' ? s.voteActive : ''}`}
+                onClick={() => handleVote('cold')}
+                style={vote === 'cold' ? { background: 'rgba(56,189,248,.12)' } : {}}
+              >
+                ❄️ 아니다
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Comments */}
