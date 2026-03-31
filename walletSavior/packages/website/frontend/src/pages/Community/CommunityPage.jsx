@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Pencil, ImagePlus, X, Send, Eye, MessageSquare, Clock, Search } from 'lucide-react';
-import { COMMUNITY_POSTS, PRODUCTS, fmt, verifyPrice } from '../../data/mockData';
+import { PRODUCTS, fmt, verifyPrice } from '../../data/mockData';
+import { COMMUNITY_POSTS } from '../../data/seedData';
 import useStore from '../../stores/appStore';
 import s from './CommunityPage.module.css';
 

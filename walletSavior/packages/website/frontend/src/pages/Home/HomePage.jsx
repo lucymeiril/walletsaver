@@ -1,11 +1,10 @@
 import { useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X, TrendingUp, TrendingDown, Minus, ArrowRight, Heart, Clock, Fuel } from 'lucide-react';
-import { PRODUCTS, HOTDEALS, MART_DATA, MARTS, GAS_STATIONS, COMMUNITY_POSTS, fmt } from '../../data/mockData';
+import { MARTS, GAS_STATIONS, fmt } from '../../data/mockData';
+import { HOTDEALS, MART_DATA, COMMUNITY_POSTS, products as PRODUCTS, TRENDING } from '../../data/seedData';
 import useStore from '../../stores/appStore';
 import s from './HomePage.module.css';
-
-const TRENDING = ['삼겹살', '계란 30구', '양파 특가', '코스트코', '우유 1L', '라면 5입', '휘발유', '사과'];
 
 const CATEGORIES = [
   { icon: '🥩', name: '농축산물', path: '/price' },

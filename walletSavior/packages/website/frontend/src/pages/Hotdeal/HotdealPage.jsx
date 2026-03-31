@@ -2,20 +2,21 @@ import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { X, Info, Eye, MessageSquare, Clock, Send } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { HOTDEALS, HOTDEAL_FILTERS, PRODUCTS, fmt, genPriceHistory } from '../../data/mockData';
+import { HOTDEAL_FILTERS, PRODUCTS, fmt, genPriceHistory } from '../../data/mockData';
+import { HOTDEALS, HOTDEAL_SOURCES } from '../../data/seedData';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import Badge from '../../components/common/Badge';
 import s from './HotdealPage.module.css';
 
-const SOURCES = ['전체', '뽐뿌', '어미새', '루리웹', '에펨코리아', '무신사매거진'];
+const SOURCES = HOTDEAL_SOURCES;
 const PAGE_SIZE = 8;
 
 function getTier(price, origPrice) {
   if (!price || !origPrice) return null;
   const ratio = price / origPrice;
-  if (ratio <= 0.4) return { label: '역대급', cls: 'tierUltra', color: 'danger' };
-  if (ratio <= 0.6) return { label: '대박', cls: 'tierGreat', color: 'warning' };
-  if (ratio <= 0.8) return { label: '괜찮은', cls: 'tierGood', color: 'success' };
+  if (ratio <= 0.4) return { label: '역대급', cls: 'tierUltra', color: 'success' };
+  if (ratio <= 0.6) return { label: '대박', cls: 'tierGreat', color: 'info' };
+  if (ratio <= 0.8) return { label: '괜찮은', cls: 'tierGood', color: 'warning' };
   return { label: '보통', cls: 'tierWait', color: 'neutral' };
 }
 

@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { MART_DATA, PRODUCTS, MARTS, fmt } from '../../data/mockData';
+import { PRODUCTS, MARTS, fmt } from '../../data/mockData';
+import { MART_DATA } from '../../data/seedData';
 import useStore from '../../stores/appStore';
 import Modal from '../../components/common/Modal';
 import s from './MartPage.module.css';
