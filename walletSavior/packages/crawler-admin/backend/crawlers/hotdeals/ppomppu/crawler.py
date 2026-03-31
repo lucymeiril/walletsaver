@@ -68,7 +68,8 @@ class PpomppuCrawler(CrawlerContract):
         try:
             headers = self._anti_detect.get_random_headers()
             response = requests.get(self.DEAL_URL, headers=headers, timeout=15)
-            response.encoding = "utf-8"
+            # 뽐뿌는 EUC-KR 인코딩 사용 — UTF-8로 설정하면 한글이 깨진다
+            response.encoding = "euc-kr"
 
             if response.status_code != 200:
                 logger.error(f"[뽐뿌] HTTP {response.status_code}")
@@ -135,7 +136,21 @@ class PpomppuCrawler(CrawlerContract):
         return items
 
     def _parse_row(self, row) -> Optional[HotdealPost]:
-        """개별 게시글 행을 파싱한다."""
+        """개별 게시글 행을 파싱한다.
+
+        2026 기준 HTML 구조:
+          <tr class="baseList bbs_new1">
+            <td class="baseList-space title">
+              <a class="baseList-title" href="view.php?...">
+                <span>
+                  <em class="baseList-head subject_preface">[G마켓]</em>
+                  상품명 (가격원/배송)
+                </span>
+              </a>
+              <small class="baseList-small">[식품/건강]</small>
+            </td>
+          </tr>
+        """
 
         # 공지·광고 행 스킵
         if row.get("class") and "baseList-space" in row.get("class", []):
@@ -146,9 +161,8 @@ class PpomppuCrawler(CrawlerContract):
         if not title_el:
             return None
 
-        # 제목 텍스트 — font.list_title 이 있으면 사용, 없으면 a 태그 전체
-        font_el = title_el.select_one("font.list_title")
-        title = (font_el or title_el).get_text(strip=True)
+        # 제목 텍스트 — a.baseList-title 내 전체 텍스트 사용
+        title = title_el.get_text(strip=True)
         if not title or len(title) < 3:
             return None
 
@@ -159,31 +173,27 @@ class PpomppuCrawler(CrawlerContract):
         href = title_el.get("href", "")
         url = href if href.startswith("http") else urljoin(self.BASE_URL + "/zboard/", href)
 
-        # 2) 가격 추출
-        price = None
-        price_td = row.select_one("td.baseList-price")
-        if price_td:
-            price = self._extract_price(price_td.get_text(strip=True))
-
-        # fallback: 제목이나 행 전체에서 가격 추출
-        if price is None:
-            price = self._extract_price(title)
+        # 2) 가격 추출 — 제목 텍스트에 (39,800원/무배) 형태로 포함
+        price = self._extract_price(title)
         if price is None:
             price = self._extract_price(row.get_text(" ", strip=True))
 
-        # 3) 카테고리 추출 — 제목 앞 [카테고리] 패턴
+        # 3) 카테고리 추출 — em.baseList-head 또는 제목 앞 [카테고리]
         category = ""
-        cat_match = re.match(r"\[([^\]]+)\]", title)
-        if cat_match:
-            category = cat_match.group(1)
+        cat_el = row.select_one("em.baseList-head, em.subject_preface")
+        if cat_el:
+            category = cat_el.get_text(strip=True).strip("[]")
+        else:
+            cat_match = re.match(r"\[([^\]]+)\]", title)
+            if cat_match:
+                category = cat_match.group(1)
 
-        # 4) 이미지 URL 추출
-        img_el = row.select_one("img[src]")
-        image_url = ""
-        if img_el:
-            img_src = img_el.get("src", "")
-            if img_src and not img_src.endswith((".gif", "icon")):
-                image_url = img_src if img_src.startswith("http") else urljoin(self.BASE_URL, img_src)
+        # 서브 카테고리 (식품/건강 등)
+        sub_cat = row.select_one("small.baseList-small")
+        if sub_cat:
+            sub_text = sub_cat.get_text(strip=True).strip("[]")
+            if sub_text and not category:
+                category = sub_text
 
         return HotdealPost(
             title=title,
@@ -211,13 +221,21 @@ class PpomppuCrawler(CrawlerContract):
         if not text:
             return None
 
-        if "무료" in text and ("배송" not in text):
-            return 0
-
+        # 가격 패턴을 먼저 시도 — "무료" 검사보다 우선
         patterns = [
             r"(\d{1,3}(?:,\d{3})+)\s*원",  # 1,000원 이상 (콤마 포함)
             r"(\d{3,})\s*원",                # 100원 이상
         ]
+        for pattern in patterns:
+            match = re.search(pattern, text)
+            if match:
+                return int(match.group(1).replace(",", ""))
+
+        # 숫자 가격이 없고 "무료"만 있으면 0원
+        if "무료" in text and ("배송" not in text):
+            return 0
+
+        return None
         for pattern in patterns:
             match = re.search(pattern, text)
             if match:
