@@ -1,0 +1,16 @@
+name: homeplus
+display_name: 홈플러스
+category: mart
+version: 1.0.0
+description: 홈플러스 전단지 및 할인 행사 상품 정보 수집
+target:
+  url: https://www.homeplus.co.kr
+  difficulty: 3
+  strategy: cloudscraper
+schedule:
+  cron: "0 7 * * *"
+  retry_count: 3
+  retry_delay: 300
+output:
+  model: DiscountItem
+  required_fields: [name, price, source_url]

@@ -1,0 +1,10 @@
+"""crawlers.hotdeals.fmkorea 패키지."""
+
+plugin_info = {
+    "name": "FM코리아",
+    "version": "1.0.0",
+    "group": "hotdeals",
+    "description": "FM코리아 핫딜 게시판 크롤러 — 대형 커뮤니티 핫딜 보드",
+    "target_url": "https://www.fmkorea.com/hotdeal",
+    "strategies": ["requests", "cloudscraper"],
+}

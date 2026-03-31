@@ -9,7 +9,7 @@ def create_app() -> FastAPI:
         description="데이터베이스 관리 API",
         version="0.1.0",
     )
-    
+
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
@@ -17,9 +17,21 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    
+
+    from api.routes.products import router as products_router
+    from api.routes.prices import router as prices_router
+    from api.routes.categories import router as categories_router
+    from api.routes.keywords import router as keywords_router
+    from api.routes.analytics import router as analytics_router
+
+    app.include_router(products_router)
+    app.include_router(prices_router)
+    app.include_router(categories_router)
+    app.include_router(keywords_router)
+    app.include_router(analytics_router)
+
     @app.get("/health")
     async def health():
         return {"status": "ok", "service": "db-admin"}
-    
+
     return app

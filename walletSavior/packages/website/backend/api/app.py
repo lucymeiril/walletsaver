@@ -57,6 +57,9 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     from api.routes.crawlers import router as crawlers_router
     from api.routes.users import router as users_router
     from api.routes.auth import router as auth_router
+    from api.routes.community import router as community_router
+    from api.routes.search import router as search_router
+    from api.routes.restaurants import router as restaurants_router
 
     app.include_router(products_router, prefix="/api/products", tags=["Products"])
     app.include_router(hotdeals_router, prefix="/api/hotdeals", tags=["Hotdeals"])
@@ -65,6 +68,9 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     app.include_router(crawlers_router, prefix="/api/crawlers", tags=["Crawlers"])
     app.include_router(users_router, prefix="/api/users", tags=["Users"])
     app.include_router(auth_router)
+    app.include_router(community_router, prefix="/api/posts", tags=["Community"])
+    app.include_router(search_router, prefix="/api/search", tags=["Search"])
+    app.include_router(restaurants_router, prefix="/api", tags=["Restaurants"])
 
     @app.get("/api/health")
     def health():

@@ -1,0 +1,16 @@
+name: cocodalin
+display_name: 코코달인 (코스트코)
+category: mart
+version: 2.0.0
+description: 코스트코 인기 상품 가격 정보 (코코달인 API)
+target:
+  url: https://www.cocodalin.com
+  difficulty: 1
+  strategy: requests
+schedule:
+  cron: "0 6 * * *"
+  retry_count: 3
+  retry_delay: 300
+output:
+  model: DiscountItem
+  required_fields: [name, price, source_url]
