@@ -1,10 +1,21 @@
-import { useState, useMemo } from 'react';
-import { MapPin, X } from 'lucide-react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import { MapPin, Search, RefreshCw, X } from 'lucide-react';
 import { GAS_STATIONS, RESTAURANTS, LOCAL_AVGS, RECIPES, fmt, calcRecipeCost } from '../../data/mockData';
 import Modal from '../../components/common/Modal';
 import useStore from '../../stores/appStore';
 import s from './LocalPage.module.css';
 
+/**
+ * LocalPage — 우리 동네 물가 지도.
+ *
+ * 네이버 지도를 iframe으로 삽입하고, 사용자의 검색/위치 이동에 따라
+ * 백엔드에서 네이버 플레이스를 실시간 크롤링하여 주변 가게 정보를 표시한다.
+ *
+ * 구조:
+ *   - 좌측: 네이버 지도 iframe (사용자가 직접 조작)
+ *   - 우측: 실시간 크롤링 결과 + 기존 mock 데이터 (주유소/식당)
+ *   - 하단: 외식 vs 직접 조리 비교
+ */
 export default function LocalPage() {
   const [tab, setTab] = useState('gas');
   const [fuel, setFuel] = useState('gasoline');
@@ -13,7 +24,47 @@ export default function LocalPage() {
   const [location, setLocation] = useState('');
   const [selectedGas, setSelectedGas] = useState(null);
   const [selectedRest, setSelectedRest] = useState(null);
+  const [naverQuery, setNaverQuery] = useState('');
+  const [naverResults, setNaverResults] = useState([]);
+  const [naverLoading, setNaverLoading] = useState(false);
+  const [mapLat, setMapLat] = useState(37.4979);
+  const [mapLng, setMapLng] = useState(127.0276);
   const { addToast } = useStore();
+
+  // 네이버 지도 iframe URL — 사용자 위치 기반
+  const naverMapUrl = useMemo(() => {
+    return `https://map.naver.com/p?c=${mapLng},${mapLat},15,0,0,0,dh`;
+  }, [mapLat, mapLng]);
+
+  // 네이버 플레이스 실시간 검색 — 백엔드 API 호출
+  const searchNaverPlaces = useCallback(async (query) => {
+    if (!query || query.length < 1) return;
+    setNaverLoading(true);
+    try {
+      const res = await fetch(
+        `http://localhost:8000/api/local/naver-search?query=${encodeURIComponent(query)}&lat=${mapLat}&lng=${mapLng}&max_items=20`
+      );
+      const data = await res.json();
+      if (data.success && data.data?.items) {
+        setNaverResults(data.data.items);
+        addToast(`'${query}' 검색: ${data.data.count}건 발견`, 'success');
+      } else {
+        setNaverResults([]);
+        addToast(data.message || '검색 결과 없음', 'warning');
+      }
+    } catch (err) {
+      console.error('네이버 검색 실패:', err);
+      setNaverResults([]);
+    } finally {
+      setNaverLoading(false);
+    }
+  }, [mapLat, mapLng, addToast]);
+
+  const handleNaverSearch = (e) => {
+    e.preventDefault();
+    const q = tab === 'gas' ? (naverQuery || '주유소') : (naverQuery || '맛집');
+    searchNaverPlaces(q);
+  };
 
   const gasStations = useMemo(() => {
     let stations = [...GAS_STATIONS].filter(g => g[fuel]);
@@ -32,24 +83,44 @@ export default function LocalPage() {
   const cookCost = cookExample ? calcRecipeCost(cookExample) : null;
 
   const handleLocation = () => {
-    addToast('현재 위치를 사용합니다. (데모)', 'info');
-    setLocation('서울 강남구 역삼동');
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setMapLat(pos.coords.latitude);
+          setMapLng(pos.coords.longitude);
+          setLocation('현재 위치');
+          addToast('현재 위치를 가져왔습니다', 'success');
+        },
+        () => {
+          setLocation('서울 강남구 역삼동');
+          addToast('위치 권한이 거부되어 기본 위치를 사용합니다', 'info');
+        }
+      );
+    } else {
+      setLocation('서울 강남구 역삼동');
+      addToast('브라우저가 위치 서비스를 지원하지 않습니다', 'warning');
+    }
   };
 
   return (
     <div>
       <div className={s.hdr}>
         <h2>우리 동네 물가 지도</h2>
-        <p>주유소 및 식당/카페 평균 가격을 비교하세요</p>
+        <p>네이버 지도에서 검색하고, 주변 가게 가격을 실시간으로 비교하세요</p>
       </div>
 
       <div className={s.layout}>
-        {/* Map area */}
+        {/* 네이버 지도 iframe */}
         <div className={s.map}>
-          <div className={s.mapPlaceholder}>
-            <MapPin size={48} strokeWidth={1.2} />
-            <p>지도 API 연결 시 위치가 표시됩니다</p>
-            <span className={s.mapTag}>Kakao Maps / Naver Maps API 연동 예정</span>
+          <iframe
+            src={naverMapUrl}
+            className={s.naverIframe}
+            title="네이버 지도"
+            allow="geolocation"
+            loading="lazy"
+          />
+          <div className={s.mapOverlay}>
+            <span className={s.mapTag}>🗺️ 네이버 지도 — 지도에서 직접 검색/이동 가능</span>
           </div>
         </div>
 
@@ -75,6 +146,50 @@ export default function LocalPage() {
             />
             <button className={s.locationBtn} onClick={handleLocation}>📍 현위치</button>
           </div>
+
+          {/* 네이버 플레이스 실시간 검색 */}
+          <form onSubmit={handleNaverSearch} className={s.naverSearchRow}>
+            <input
+              className={s.naverSearchInput}
+              value={naverQuery}
+              onChange={e => setNaverQuery(e.target.value)}
+              placeholder={tab === 'gas' ? '주유소 검색...' : '맛집, 카페 검색...'}
+            />
+            <button type="submit" className={s.naverSearchBtn} disabled={naverLoading}>
+              {naverLoading ? <RefreshCw size={16} className={s.spin} /> : <Search size={16} />}
+            </button>
+          </form>
+
+          {/* 네이버 실시간 검색 결과 */}
+          {naverResults.length > 0 && (
+            <div className={s.naverResults}>
+              <div className={s.naverResultsHeader}>
+                <span>📍 네이버 검색 결과 ({naverResults.length}건)</span>
+                <button className={s.naverClearBtn} onClick={() => setNaverResults([])}>
+                  <X size={14} />
+                </button>
+              </div>
+              <div className={s.list}>
+                {naverResults.map((r, i) => (
+                  <div key={i} className={s.item}>
+                    <span className={`${s.rank} ${i === 0 ? s.rank1 : i === 1 ? s.rank2 : i === 2 ? s.rank3 : ''}`}>
+                      {i + 1}
+                    </span>
+                    <div className={s.itemBody}>
+                      <div className={s.itemName}>{r.name}</div>
+                      <div className={s.itemAddr}>
+                        {r.addr || r.category}
+                        {r.rating > 0 && <span className={s.rating}> ⭐ {r.rating}</span>}
+                      </div>
+                    </div>
+                    <div className={s.itemRight}>
+                      {r.price > 0 && <span className={s.itemPrice}>{fmt(r.price)}원</span>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {tab === 'gas' ? (
             <>

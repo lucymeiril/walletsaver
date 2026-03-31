@@ -58,6 +58,8 @@ class CrawlerGroup(str, Enum):
     MART = "marts"              # 대형마트
     HOTDEAL = "hotdeals"        # 핫딜 게시판
     FOOD = "food"               # 배달/식당
+    SHOPPING = "shopping"       # 패션/쇼핑
+    LOCAL = "local"             # 위치 기반 (네이버 플레이스, 주유소 등)
 
 
 # --- 크롤러 정보 ---

@@ -39,9 +39,14 @@ class UniqloCrawler(CrawlerContract):
     # 유니클로 상품 API — 세일 상품 필터
     PRODUCT_API = "https://www.uniqlo.com/kr/api/commerce/v5/kr/products"
     # 세일 카테고리 페이지
+    # 세일 카테고리 페이지 — feature/sale/{gender} 경로에 상품이 직접 렌더링된다
     SALE_PAGE = "https://www.uniqlo.com/kr/ko/sale"
-    # 기간한정가 페이지
     LIMITED_PAGE = "https://www.uniqlo.com/kr/ko/limited-offers"
+    SALE_PAGES = [
+        "https://www.uniqlo.com/kr/ko/feature/sale/men",
+        "https://www.uniqlo.com/kr/ko/feature/sale/women",
+        "https://www.uniqlo.com/kr/ko/feature/sale/kids",
+    ]
 
     # 주요 카테고리 (남성, 여성, 키즈)
     CATEGORIES = {
@@ -65,12 +70,19 @@ class UniqloCrawler(CrawlerContract):
         )
 
     async def crawl(self) -> CrawlResult:
-        """유니클로 세일 상품을 크롤링한다."""
+        """유니클로 세일 상품을 크롤링한다.
+
+        전략 순서:
+          1차: 상품 API (JSON)
+          2차: Playwright 브라우저 렌더링 — Fast Retailing SPA 완전 렌더링
+          3차: HTTP HTML fallback
+        """
         started_at = datetime.now()
         logger.info("[유니클로] 크롤링 시작")
 
         all_items: list[DiscountItem] = []
         errors: list[str] = []
+        strategy_used = "requests"
 
         try:
             # 1차: 상품 API로 세일 상품 조회
@@ -81,9 +93,19 @@ class UniqloCrawler(CrawlerContract):
             else:
                 errors.append("상품 API 응답 없음")
 
-            # 2차: API 실패 시 세일 페이지 HTML에서 추출
+            # 2차: Playwright 브라우저 렌더링
             if not all_items:
-                logger.info("[유니클로] API 실패, HTML 크롤링 시도")
+                logger.info("[유니클로] API 실패, Playwright 렌더링 시도")
+                pw_items = await self._fetch_via_playwright()
+                if pw_items:
+                    all_items.extend(pw_items)
+                    strategy_used = "playwright"
+                else:
+                    errors.append("Playwright 렌더링 실패")
+
+            # 3차: HTTP HTML fallback
+            if not all_items:
+                logger.info("[유니클로] Playwright 실패, HTML 크롤링 시도")
                 html_items = self._fetch_via_html()
                 if html_items:
                     all_items.extend(html_items)
@@ -95,19 +117,13 @@ class UniqloCrawler(CrawlerContract):
 
             finished_at = datetime.now()
             duration = (finished_at - started_at).total_seconds()
-            status = CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED
-            if not valid_items:
-                errors.append(
-                    "유니클로는 Fast Retailing SPA로 구현되어 HTTP 크롤링으로 상품 데이터 수집 불가. "
-                    "Selenium/Playwright 기반 브라우저 자동화 필요."
-                )
-                status = CrawlStatus.PARTIAL
-            logger.info(f"[유니클로] 크롤링 완료: {len(valid_items)}개, {duration:.2f}초")
+            status = CrawlStatus.SUCCESS if valid_items else CrawlStatus.PARTIAL
+            logger.info(f"[유니클로] 크롤링 완료: {len(valid_items)}개, {duration:.2f}초, 전략={strategy_used}")
 
             return CrawlResult(
                 status=status,
                 crawler_name=self.info.name,
-                strategy_used="requests",
+                strategy_used=strategy_used,
                 items_count=len(valid_items),
                 items=items_as_dict,
                 started_at=started_at,
@@ -125,6 +141,118 @@ class UniqloCrawler(CrawlerContract):
                 started_at=started_at,
                 finished_at=datetime.now(),
             )
+
+    async def _fetch_via_playwright(self) -> list[DiscountItem]:
+        """Playwright로 유니클로 SPA를 렌더링하여 상품 데이터를 추출한다.
+
+        유니클로 feature/sale 페이지는 상품이 HTML에 직접 렌더링되며(2M+ HTML),
+        가격 패턴 "59,900원" 형태로 DOM에 다수 존재한다.
+        API 인터셉트는 featured 4개만 반환하므로 DOM 파싱을 우선한다.
+        """
+        items: list[DiscountItem] = []
+        seen_names: set[str] = set()
+
+        try:
+            from engine.playwright_helper import PlaywrightHelper
+            from bs4 import BeautifulSoup
+
+            async with PlaywrightHelper() as helper:
+                for sale_url in self.SALE_PAGES:
+                    try:
+                        html = await helper.get_rendered_html(
+                            sale_url,
+                            wait_selector="body",
+                            wait_timeout=15000,
+                            scroll_to_bottom=False,
+                        )
+                        if not html or len(html) < 10000:
+                            continue
+
+                        soup = BeautifulSoup(html, "html.parser")
+
+                        # 유니클로는 상품 링크가 /kr/ko/products/{ID} 패턴
+                        product_links = soup.select('a[href*="/products/"]')
+                        logger.info(f"[유니클로] {sale_url.split('/')[-1]}: 상품링크 {len(product_links)}개")
+
+                        for link in product_links:
+                            try:
+                                href = link.get("href", "")
+                                if not href or "/products/" not in href:
+                                    continue
+
+                                text = link.get_text(separator=" ", strip=True)
+                                if not text or len(text) < 3:
+                                    continue
+
+                                # 상품명 추출 — 가격 패턴 앞의 텍스트
+                                name_match = re.match(r"^(.+?)[\s]*[\d,]+원", text)
+                                name = name_match.group(1).strip() if name_match else text[:80]
+
+                                if not name or name in seen_names:
+                                    continue
+
+                                # 가격 추출 — "가격인하" 태그 후 원래가/할인가
+                                prices = re.findall(r"([\d,]+)원", text)
+                                if not prices:
+                                    continue
+
+                                # 가격이 2개면: 원래가, 할인가
+                                if len(prices) >= 2:
+                                    original = int(prices[0].replace(",", ""))
+                                    sale = int(prices[1].replace(",", ""))
+                                    if sale >= original:
+                                        original, sale = sale, original
+                                else:
+                                    sale = int(prices[0].replace(",", ""))
+                                    original = sale
+
+                                if sale <= 0 or sale > 1000000:
+                                    continue
+
+                                discount = round((1 - sale / original) * 100, 1) if original > sale else 0
+
+                                # 이미지 URL
+                                img = link.select_one("img")
+                                img_url = ""
+                                if img:
+                                    img_url = img.get("src", "") or img.get("data-src", "")
+
+                                # 카테고리 — URL에서 추출
+                                gender = "남성" if "/men" in sale_url else "여성" if "/women" in sale_url else "키즈"
+
+                                full_url = href if href.startswith("http") else f"https://www.uniqlo.com{href}"
+
+                                seen_names.add(name)
+                                items.append(DiscountItem(
+                                    name=name,
+                                    normalized_name="",
+                                    store="유니클로",
+                                    original_price=original,
+                                    sale_price=sale,
+                                    discount_percent=discount,
+                                    unit="",
+                                    category=f"유니클로 > {gender}",
+                                    event_name="유니클로 가격인하",
+                                    image_url=img_url,
+                                    detail_url=full_url,
+                                    crawled_at=datetime.now(),
+                                ))
+
+                            except (ValueError, AttributeError):
+                                continue
+
+                    except Exception as e:
+                        logger.warning(f"[유니클로] Playwright {sale_url} 실패: {e}")
+                        continue
+
+                logger.info(f"[유니클로] Playwright DOM 파싱: 총 {len(items)}개")
+
+        except ImportError:
+            logger.warning("[유니클로] playwright 미설치 — pip install playwright && playwright install chromium")
+        except Exception as e:
+            logger.warning(f"[유니클로] Playwright 크롤링 실패: {e}")
+
+        return items
 
     def _get_headers(self) -> dict:
         """유니클로 API 요청용 헤더."""

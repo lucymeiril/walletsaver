@@ -60,12 +60,19 @@ class MusinsaCrawler(CrawlerContract):
         )
 
     async def crawl(self) -> CrawlResult:
-        """무신사 할인 상품을 크롤링한다."""
+        """무신사 할인 상품을 크롤링한다.
+
+        전략 순서:
+          1차: PLP API (JSON) — 가장 빠르고 안정적
+          2차: Playwright 브라우저 렌더링 — SPA 완전 렌더링 후 DOM 파싱
+          3차: HTTP HTML fallback
+        """
         started_at = datetime.now()
         logger.info("[무신사] 크롤링 시작")
 
         all_items: list[DiscountItem] = []
         errors: list[str] = []
+        strategy_used = "requests"
 
         try:
             # 1차: PLP API 시도
@@ -75,9 +82,19 @@ class MusinsaCrawler(CrawlerContract):
             else:
                 errors.append("PLP API 응답 없음")
 
-            # 2차: API 실패 시 HTML 크롤링 fallback
+            # 2차: Playwright 브라우저 렌더링 — Next.js SPA를 완전히 렌더링
             if not all_items:
-                logger.info("[무신사] API 실패, HTML 크롤링 시도")
+                logger.info("[무신사] API 실패, Playwright 렌더링 시도")
+                pw_items = await self._fetch_via_playwright()
+                if pw_items:
+                    all_items.extend(pw_items)
+                    strategy_used = "playwright"
+                else:
+                    errors.append("Playwright 렌더링 실패")
+
+            # 3차: HTTP HTML fallback
+            if not all_items:
+                logger.info("[무신사] Playwright 실패, HTTP HTML 크롤링 시도")
                 html_items = self._fetch_via_html()
                 if html_items:
                     all_items.extend(html_items)
@@ -89,21 +106,13 @@ class MusinsaCrawler(CrawlerContract):
 
             finished_at = datetime.now()
             duration = (finished_at - started_at).total_seconds()
-
-            if valid_items:
-                status = CrawlStatus.SUCCESS
-            else:
-                status = CrawlStatus.PARTIAL
-                errors.append(
-                    "무신사는 Next.js SPA로 전환되어 HTTP 크롤링으로 상품 데이터 수집 불가. "
-                    "Selenium/Playwright 기반 브라우저 자동화 필요."
-                )
-            logger.info(f"[무신사] 크롤링 완료: {len(valid_items)}개, {duration:.2f}초")
+            status = CrawlStatus.SUCCESS if valid_items else CrawlStatus.PARTIAL
+            logger.info(f"[무신사] 크롤링 완료: {len(valid_items)}개, {duration:.2f}초, 전략={strategy_used}")
 
             return CrawlResult(
                 status=status,
                 crawler_name=self.info.name,
-                strategy_used="requests",
+                strategy_used=strategy_used,
                 items_count=len(valid_items),
                 items=items_as_dict,
                 started_at=started_at,
@@ -121,6 +130,67 @@ class MusinsaCrawler(CrawlerContract):
                 started_at=started_at,
                 finished_at=datetime.now(),
             )
+
+    async def _fetch_via_playwright(self) -> list[DiscountItem]:
+        """Playwright로 무신사 SPA를 렌더링하여 상품 데이터를 추출한다.
+
+        무신사는 Next.js SPA로 전환되어 HTTP 요청만으로는 상품 목록이 비어있다.
+        Playwright로 실제 브라우저를 띄워 JS 렌더링 완료 후 DOM을 파싱한다.
+        또한 네트워크 요청을 인터셉트하여 내부 API 응답도 수집한다.
+        """
+        items: list[DiscountItem] = []
+        url = "https://www.musinsa.com/categories/item/001?gf=A&sortCode=SALE_RATE"
+
+        try:
+            from engine.playwright_helper import PlaywrightHelper
+
+            async with PlaywrightHelper() as helper:
+                # 방법 1: API 인터셉트 — SPA가 로드하는 내부 API 응답 가로채기
+                api_responses = await helper.intercept_api(
+                    url,
+                    api_pattern="*api*goods*",
+                    wait_timeout=20000,
+                )
+
+                for resp_data in api_responses:
+                    goods_list = self._extract_goods_from_api(resp_data)
+                    for product in goods_list:
+                        item = self._api_product_to_item(product, "001")
+                        if item:
+                            items.append(item)
+
+                if items:
+                    logger.info(f"[무신사] Playwright API 인터셉트: {len(items)}개")
+                    return items
+
+                # 방법 2: 렌더링된 DOM에서 직접 파싱
+                html = await helper.get_rendered_html(
+                    url,
+                    wait_selector="[class*='goods'], [class*='product']",
+                    wait_timeout=20000,
+                    scroll_to_bottom=True,
+                )
+
+                from bs4 import BeautifulSoup
+                soup = BeautifulSoup(html, "html.parser")
+                cards = soup.select(
+                    "[class*='goods-card'], [class*='product-card'], "
+                    ".list_info, .li_inner, [data-goods-no], "
+                    "[class*='ProductCard'], [class*='item-card']"
+                )
+                logger.info(f"[무신사] Playwright DOM 카드: {len(cards)}개")
+
+                for card in cards[:60]:
+                    item = self._parse_html_card(card)
+                    if item:
+                        items.append(item)
+
+        except ImportError:
+            logger.warning("[무신사] playwright 미설치 — pip install playwright && playwright install chromium")
+        except Exception as e:
+            logger.warning(f"[무신사] Playwright 크롤링 실패: {e}")
+
+        return items
 
     def _get_headers(self) -> dict:
         """무신사 API 요청용 헤더."""

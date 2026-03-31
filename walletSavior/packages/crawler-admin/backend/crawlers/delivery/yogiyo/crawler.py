@@ -8,11 +8,15 @@
   1차: 요기요 웹 API — /api/v1/restaurants 또는 유사 엔드포인트
   2차: 웹 페이지 HTML/__NEXT_DATA__ 파싱
   3차: cloudscraper를 통한 JS 챌린지 우회
+  4차: Playwright 브라우저 렌더링 + API 인터셉트
 
-제한사항:
+제한사항 (2026-03 확인):
   - 요기요 API는 위치(좌표) 기반 조회가 필수이다
   - 인증 토큰 없이는 제한적인 응답만 받을 수 있다
   - 웹 렌더링이 React/SPA 기반이라 서버사이드 데이터가 제한적이다
+  - 웹 접속 시 #/ hash 라우팅만 보이며 주소 설정 없이는 콘텐츠가 없다
+  - ⚠ 현재 웹에서는 음식점/메뉴 데이터를 가져올 수 없음 (앱 전용 서비스)
+  - 향후 모바일 앱 자동화(Appium) 또는 파트너 API 접근이 필요
 
 데이터 흐름: 요기요 웹/API → JSON/HTML → dict → CrawlResult
 의존: core/ 만
@@ -78,12 +82,20 @@ class YogiyoCrawler(CrawlerContract):
         )
 
     async def crawl(self) -> CrawlResult:
-        """요기요 음식점 정보를 크롤링한다."""
+        """요기요 음식점 정보를 크롤링한다.
+
+        전략 순서:
+          1차: 요기요 API (JSON)
+          2차: 웹 HTML 파싱
+          3차: cloudscraper
+          4차: Playwright 브라우저 렌더링 — React SPA 완전 렌더링
+        """
         started_at = datetime.now()
         logger.info("[요기요] 크롤링 시작")
 
         all_items: list[dict] = []
         errors: list[str] = []
+        strategy_used = "requests"
 
         try:
             # 1차: 요기요 API 시도
@@ -110,27 +122,31 @@ class YogiyoCrawler(CrawlerContract):
                 cs_items = self._fetch_with_cloudscraper()
                 if cs_items:
                     all_items.extend(cs_items)
+                    strategy_used = "cloudscraper"
                 else:
                     errors.append("cloudscraper 접근도 실패")
+
+            # 4차: Playwright 브라우저 렌더링
+            if not all_items:
+                logger.info("[요기요] Playwright 렌더링 시도")
+                pw_items = await self._fetch_via_playwright()
+                if pw_items:
+                    all_items.extend(pw_items)
+                    strategy_used = "playwright"
+                else:
+                    errors.append("Playwright 렌더링 실패")
 
             valid_items = await self.validate(all_items)
 
             finished_at = datetime.now()
             duration = (finished_at - started_at).total_seconds()
             status = CrawlStatus.SUCCESS if valid_items else CrawlStatus.PARTIAL
-
-            if not valid_items:
-                logger.warning(
-                    "[요기요] 데이터 수집 제한 — 요기요 API는 위치 기반 조회와 "
-                    "인증이 필요합니다. 실제 운영 시 API 키 또는 브라우저 자동화가 필요합니다."
-                )
-
-            logger.info(f"[요기요] 크롤링 완료: {len(valid_items)}개, {duration:.2f}초")
+            logger.info(f"[요기요] 크롤링 완료: {len(valid_items)}개, {duration:.2f}초, 전략={strategy_used}")
 
             return CrawlResult(
                 status=status,
                 crawler_name=self.info.name,
-                strategy_used="requests",
+                strategy_used=strategy_used,
                 items_count=len(valid_items),
                 items=valid_items,
                 started_at=started_at,
@@ -148,6 +164,52 @@ class YogiyoCrawler(CrawlerContract):
                 started_at=started_at,
                 finished_at=datetime.now(),
             )
+
+    async def _fetch_via_playwright(self) -> list[dict]:
+        """Playwright로 요기요 SPA를 렌더링하여 데이터를 수집한다.
+
+        요기요 웹은 React SPA로 위치 기반 조회가 필수이다.
+        Playwright로 브라우저를 띄워 내부 API 호출을 인터셉트하거나
+        렌더링된 음식점 카드 DOM에서 데이터를 추출한다.
+        """
+        items: list[dict] = []
+
+        try:
+            from engine.playwright_helper import PlaywrightHelper
+
+            async with PlaywrightHelper() as helper:
+                # API 인터셉트 — 요기요 내부 API 가로채기
+                api_responses = await helper.intercept_api(
+                    self.BASE_URL,
+                    api_pattern="*api*restaurant*",
+                    wait_timeout=20000,
+                )
+
+                for resp_data in api_responses:
+                    restaurants = self._extract_restaurants_from_api(resp_data)
+                    for restaurant in restaurants:
+                        item = self._api_restaurant_to_item(restaurant)
+                        if item:
+                            items.append(item)
+
+                if not items:
+                    # 렌더링된 DOM에서 파싱
+                    html = await helper.get_rendered_html(
+                        self.BASE_URL,
+                        wait_selector="[class*='restaurant'], [class*='store'], [class*='list-item']",
+                        wait_timeout=20000,
+                        scroll_to_bottom=True,
+                    )
+                    items.extend(self._extract_from_html(html))
+
+                logger.info(f"[요기요] Playwright: {len(items)}개 수집")
+
+        except ImportError:
+            logger.warning("[요기요] playwright 미설치 — pip install playwright && playwright install chromium")
+        except Exception as e:
+            logger.warning(f"[요기요] Playwright 크롤링 실패: {e}")
+
+        return items
 
     def _get_headers(self) -> dict:
         """요기요 API 요청용 헤더."""

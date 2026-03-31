@@ -37,6 +37,8 @@ class LottemartCrawler(CrawlerContract):
     EVENT_URL = "https://www.lottemart.com/product/event/eventMain.do"
     # 롯데마트 전단지/행사 API
     LEAFLET_API = "https://www.lottemart.com/product/event/leafletList.do"
+    ZETTA_BASE = "https://lottemartzetta.com"
+    SEARCH_QUERIES = ["과일", "채소", "정육", "세일", "특가"]
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=1.0, delay_max=3.0)
@@ -55,9 +57,11 @@ class LottemartCrawler(CrawlerContract):
     async def crawl(self) -> CrawlResult:
         """롯데마트 행사 상품 페이지를 크롤링한다.
 
+        전략 순서:
+          1차: HTTP 직접 요청 (JSON/HTML)
+          2차: Playwright 브라우저 렌더링 — lottemartzetta.com SPA 완전 렌더링
+
         2025년 기준 lottemart.com → lottemartzetta.com(SPA)으로 리다이렉트됨.
-        SPA 렌더링 없이 데이터를 가져올 수 있는 API를 우선 시도하고,
-        실패 시 HTML 파싱으로 폴백한다.
         """
         started_at = datetime.now()
         logger.info("[롯데마트] 크롤링 시작")
@@ -74,17 +78,25 @@ class LottemartCrawler(CrawlerContract):
                 allow_redirects=True,
             )
 
-            # SPA 리다이렉트 감지 (lottemartzetta.com으로 리다이렉트)
+            # SPA 리다이렉트 감지 → Playwright로 전환
             if "lottemartzetta" in response.url or "zetta" in response.text[:2000].lower():
-                logger.warning("[롯데마트] lottemartzetta.com SPA로 리다이렉트됨 — 브라우저 자동화 필요")
+                logger.info("[롯데마트] lottemartzetta.com SPA 감지 → Playwright 렌더링")
+                items = await self._fetch_via_playwright()
+                valid_items = await self.validate(items)
+                items_as_dict = [item.model_dump(mode="json") for item in valid_items]
+                finished_at = datetime.now()
+                duration = (finished_at - started_at).total_seconds()
+                logger.info(f"[롯데마트] Playwright 크롤링 완료: {len(valid_items)}개, {duration:.2f}초")
                 return CrawlResult(
-                    status=CrawlStatus.PARTIAL,
+                    status=CrawlStatus.SUCCESS if valid_items else CrawlStatus.PARTIAL,
                     crawler_name=self.info.name,
-                    strategy_used="requests",
-                    error_msg="롯데마트가 lottemartzetta.com SPA로 전환됨. "
-                              "Selenium/Playwright 기반 브라우저 자동화 필요.",
+                    strategy_used="playwright",
+                    items_count=len(valid_items),
+                    items=items_as_dict,
                     started_at=started_at,
-                    finished_at=datetime.now(),
+                    finished_at=finished_at,
+                    duration_seconds=duration,
+                    error_msg="Playwright 렌더링 사용 (SPA)" if not valid_items else None,
                 )
 
             if response.status_code != 200:
@@ -119,7 +131,26 @@ class LottemartCrawler(CrawlerContract):
             )
 
         except Exception as e:
-            logger.error(f"[롯데마트] 크롤링 실패: {e}", exc_info=True)
+            logger.warning(f"[롯데마트] HTTP 요청 실패, Playwright 시도: {e}")
+            try:
+                items = await self._fetch_via_playwright()
+                valid_items = await self.validate(items)
+                items_as_dict = [item.model_dump(mode="json") for item in valid_items]
+                finished_at = datetime.now()
+                duration = (finished_at - started_at).total_seconds()
+                if valid_items:
+                    return CrawlResult(
+                        status=CrawlStatus.SUCCESS,
+                        crawler_name=self.info.name,
+                        strategy_used="playwright",
+                        items_count=len(valid_items),
+                        items=items_as_dict,
+                        started_at=started_at,
+                        finished_at=finished_at,
+                        duration_seconds=duration,
+                    )
+            except Exception as e2:
+                logger.error(f"[롯데마트] Playwright 폴백도 실패: {e2}")
             return CrawlResult(
                 status=CrawlStatus.FAILED,
                 crawler_name=self.info.name,
@@ -127,6 +158,145 @@ class LottemartCrawler(CrawlerContract):
                 started_at=started_at,
                 finished_at=datetime.now(),
             )
+
+    async def _fetch_via_playwright(self) -> list[DiscountItem]:
+        """Playwright로 롯데마트 SPA(lottemartzetta.com) 검색 페이지에서 상품을 수집한다.
+
+        lottemartzetta.com/search?query=... 페이지를 렌더링하고
+        .product-card-container 요소에서 상품 정보를 추출한다.
+        """
+        items: list[DiscountItem] = []
+
+        try:
+            from engine.playwright_helper import PlaywrightHelper
+
+            async with PlaywrightHelper() as helper:
+                for query in self.SEARCH_QUERIES:
+                    url = f"{self.ZETTA_BASE}/search?query={query}"
+                    try:
+                        html = await helper.get_rendered_html(
+                            url,
+                            wait_selector=".product-card-container",
+                            wait_timeout=20000,
+                            scroll_to_bottom=True,
+                        )
+                        page_items = self._parse_spa_html(html, query)
+                        items.extend(page_items)
+                        logger.info(f"[롯데마트] 검색 '{query}': {len(page_items)}개 수집")
+                    except Exception as e:
+                        logger.debug(f"[롯데마트] Playwright 검색 '{query}' 실패: {e}")
+                        continue
+
+                logger.info(f"[롯데마트] Playwright 총: {len(items)}개 수집")
+
+        except ImportError:
+            logger.warning("[롯데마트] playwright 미설치 — pip install playwright && playwright install chromium")
+        except Exception as e:
+            logger.warning(f"[롯데마트] Playwright 크롤링 실패: {e}")
+
+        return items
+
+    def _parse_spa_html(self, html: str, query: str = "") -> list[DiscountItem]:
+        """lottemartzetta.com SPA에서 렌더링된 HTML의 상품 카드를 파싱한다."""
+        from bs4 import BeautifulSoup
+        soup = BeautifulSoup(html, "html.parser")
+        items: list[DiscountItem] = []
+
+        cards = soup.select(".product-card-container")
+        logger.info(f"[롯데마트] SPA 상품 카드: {len(cards)}개 (query={query})")
+
+        for card in cards:
+            try:
+                item = self._parse_spa_card(card)
+                if item:
+                    items.append(item)
+            except Exception as e:
+                logger.debug(f"[롯데마트] SPA 카드 파싱 오류: {e}")
+                continue
+
+        return items
+
+    def _parse_spa_card(self, card) -> Optional[DiscountItem]:
+        """lottemartzetta.com SPA 상품 카드 → DiscountItem."""
+        # 상품명: [class*="name"], [class*="title"], h3, h4, strong
+        name_el = card.select_one(
+            "[class*='name'], [class*='title'], h3, h4, strong"
+        )
+        if not name_el:
+            return None
+        name = name_el.get_text(strip=True)
+        if not name or len(name) < 2:
+            return None
+
+        # 가격 — "가격4,990원" 형태에서 "가격" 접두사 제거 후 숫자 추출
+        prices: list[int] = []
+        for el in card.select("[class*='price']"):
+            text = el.get_text(strip=True)
+            text = re.sub(r'^가격', '', text)
+            price = self._extract_price(text)
+            if price and price > 0:
+                prices.append(price)
+
+        if not prices:
+            return None
+
+        prices = sorted(set(prices))
+        sale_price = prices[0]
+        original_price = prices[-1] if len(prices) > 1 and prices[-1] != prices[0] else None
+
+        # 상세 URL
+        detail_url = ""
+        link_el = card.select_one("a[href*='products']")
+        if not link_el:
+            link_el = card.select_one("a[href]")
+        if link_el:
+            href = link_el.get("href", "")
+            if href.startswith("http"):
+                detail_url = href
+            elif href.startswith("/"):
+                detail_url = f"{self.ZETTA_BASE}{href}"
+
+        # 이미지
+        image_url = ""
+        img_el = card.select_one("img")
+        if img_el:
+            image_url = img_el.get("src") or img_el.get("data-src", "")
+
+        # 할인/행사 정보 — "2개씩 골라 담으면, 50% 할인"
+        card_text = card.get_text(" ", strip=True)
+        discount_pct = None
+        event_name = "롯데마트 할인"
+
+        discount_match = re.search(r'(\d+)%\s*할인', card_text)
+        if discount_match:
+            discount_pct = float(discount_match.group(1))
+            context_match = re.search(r'([^,]*,?\s*\d+%\s*할인)', card_text)
+            if context_match:
+                event_name = context_match.group(1).strip()
+
+        if discount_pct is None and original_price and original_price > sale_price:
+            discount_pct = round((1 - sale_price / original_price) * 100, 1)
+
+        # 단위 정보 — "600g(100g당 692원)"
+        unit = ""
+        unit_match = re.search(
+            r'(\d+(?:\.\d+)?\s*(?:g|kg|ml|L|개|팩|봉|매|입)(?:\([^)]+\))?)',
+            card_text, re.IGNORECASE,
+        )
+        if unit_match:
+            unit = unit_match.group(1)
+
+        return DiscountItem(
+            name=name,
+            store="롯데마트",
+            original_price=original_price,
+            sale_price=sale_price,
+            discount_percent=discount_pct,
+            unit=unit,
+            image_url=image_url,
+            detail_url=detail_url,
+            event_name=event_name,
+        )
 
     async def parse(self, raw_data: str) -> list[DiscountItem]:
         """HTML/JSON 응답에서 할인 상품을 파싱한다."""
@@ -218,7 +388,7 @@ class LottemartCrawler(CrawlerContract):
         items: list[DiscountItem] = []
 
         product_cards = soup.select(
-            ".product-item, .goods_item, .event_item, .item_box, .prod_wrap"
+            ".product-card-container, .product-item, .goods_item, .event_item, .item_box, .prod_wrap"
         )
         logger.info(f"[롯데마트] HTML 상품 카드: {len(product_cards)}개")
 
@@ -236,7 +406,8 @@ class LottemartCrawler(CrawlerContract):
     def _parse_product_card(self, card) -> Optional[DiscountItem]:
         """개별 상품 카드 HTML → DiscountItem."""
         name_el = card.select_one(
-            ".product-name, .goods_name, .item_name, .prod_name, a[href*='goods']"
+            ".product-name, .goods_name, .item_name, .prod_name, a[href*='goods'], "
+            "[class*='name'], [class*='title'], h3, h4, strong"
         )
         if not name_el:
             return None

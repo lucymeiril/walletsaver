@@ -4,16 +4,19 @@
 쿠팡이츠는 웹 버전(www.coupangeats.com)이 있으나, 대부분의 데이터는
 앱 API를 통해 제공되며 웹에서는 제한적인 정보만 접근 가능하다.
 
-제한사항:
+제한사항 (2026-03 확인):
   - 쿠팡이츠 웹은 주소 설정 후에만 음식점 목록을 보여준다
   - API 엔드포인트는 인증 토큰이 필요할 수 있다
   - 웹 렌더링이 JavaScript 기반이라 requests만으로는 한계가 있다
   - cloudscraper로 안티봇 우회를 시도한다
+  - ⚠ 웹사이트는 "앱 다운로드" 랜딩 페이지만 제공 — 음식점/메뉴 없음
+  - 향후 모바일 앱 자동화(Appium) 또는 파트너 API가 필요
 
 접근 전략:
   1차: 쿠팡이츠 웹 API 엔드포인트 탐색
   2차: 웹 페이지 HTML/__NEXT_DATA__ 파싱
   3차: 공개된 음식점 정보 페이지 크롤링
+  4차: Playwright 브라우저 렌더링 + API 인터셉트
 
 데이터 흐름: 쿠팡이츠 웹 → HTML/JSON → dict → CrawlResult
 의존: core/ 만
@@ -66,12 +69,19 @@ class CoupangEatsCrawler(CrawlerContract):
         )
 
     async def crawl(self) -> CrawlResult:
-        """쿠팡이츠 음식점 정보를 크롤링한다."""
+        """쿠팡이츠 음식점 정보를 크롤링한다.
+
+        전략 순서:
+          1차: HTTP 메인 페이지 데이터 추출
+          2차: cloudscraper JS 챌린지 우회
+          3차: Playwright 브라우저 렌더링 — React SPA 완전 렌더링
+        """
         started_at = datetime.now()
         logger.info("[쿠팡이츠] 크롤링 시작")
 
         all_items: list[dict] = []
         errors: list[str] = []
+        strategy_used = "requests"
 
         try:
             # 1차: 메인 페이지에서 데이터 추출 시도
@@ -88,29 +98,32 @@ class CoupangEatsCrawler(CrawlerContract):
                 cs_items = self._fetch_with_cloudscraper()
                 if cs_items:
                     all_items.extend(cs_items)
+                    strategy_used = "cloudscraper"
                     logger.info(f"[쿠팡이츠] cloudscraper: {len(cs_items)}개 수집")
                 else:
                     errors.append("cloudscraper 접근도 실패")
+
+            # 3차: Playwright 브라우저 렌더링
+            if not all_items:
+                logger.info("[쿠팡이츠] Playwright 렌더링 시도")
+                pw_items = await self._fetch_via_playwright()
+                if pw_items:
+                    all_items.extend(pw_items)
+                    strategy_used = "playwright"
+                else:
+                    errors.append("Playwright 렌더링 실패")
 
             valid_items = await self.validate(all_items)
 
             finished_at = datetime.now()
             duration = (finished_at - started_at).total_seconds()
             status = CrawlStatus.SUCCESS if valid_items else CrawlStatus.PARTIAL
-
-            if not valid_items:
-                logger.warning(
-                    "[쿠팡이츠] 데이터 수집 제한 — 쿠팡이츠 웹은 "
-                    "주소 설정 후에만 음식점 목록을 제공합니다. "
-                    "실제 운영 시 Selenium/Playwright 기반 브라우저 자동화가 필요합니다."
-                )
-
-            logger.info(f"[쿠팡이츠] 크롤링 완료: {len(valid_items)}개, {duration:.2f}초")
+            logger.info(f"[쿠팡이츠] 크롤링 완료: {len(valid_items)}개, {duration:.2f}초, 전략={strategy_used}")
 
             return CrawlResult(
                 status=status,
                 crawler_name=self.info.name,
-                strategy_used="requests",
+                strategy_used=strategy_used,
                 items_count=len(valid_items),
                 items=valid_items,
                 started_at=started_at,
@@ -128,6 +141,52 @@ class CoupangEatsCrawler(CrawlerContract):
                 started_at=started_at,
                 finished_at=datetime.now(),
             )
+
+    async def _fetch_via_playwright(self) -> list[dict]:
+        """Playwright로 쿠팡이츠 SPA를 렌더링하여 데이터를 수집한다.
+
+        쿠팡이츠 웹은 주소 설정 후에만 음식점 목록을 보여주므로,
+        Playwright로 브라우저를 띄워 주소 설정 과정을 시뮬레이션하거나
+        내부 API 호출을 인터셉트하여 음식점 데이터를 수집한다.
+        """
+        items: list[dict] = []
+
+        try:
+            from engine.playwright_helper import PlaywrightHelper
+
+            async with PlaywrightHelper() as helper:
+                # API 인터셉트 — 쿠팡이츠 내부 API 가로채기
+                api_responses = await helper.intercept_api(
+                    self.MAIN_PAGE,
+                    api_pattern="*api*restaurant*",
+                    wait_timeout=20000,
+                )
+
+                for resp_data in api_responses:
+                    restaurants = self._find_restaurants_in_json(resp_data)
+                    for restaurant in restaurants:
+                        item = self._restaurant_to_item(restaurant)
+                        if item:
+                            items.append(item)
+
+                if not items:
+                    # 렌더링된 DOM에서 파싱
+                    html = await helper.get_rendered_html(
+                        self.MAIN_PAGE,
+                        wait_selector="[class*='restaurant'], [class*='store']",
+                        wait_timeout=20000,
+                        scroll_to_bottom=True,
+                    )
+                    items.extend(self._extract_from_html(html))
+
+                logger.info(f"[쿠팡이츠] Playwright: {len(items)}개 수집")
+
+        except ImportError:
+            logger.warning("[쿠팡이츠] playwright 미설치 — pip install playwright && playwright install chromium")
+        except Exception as e:
+            logger.warning(f"[쿠팡이츠] Playwright 크롤링 실패: {e}")
+
+        return items
 
     def _get_headers(self) -> dict:
         """쿠팡이츠 요청용 헤더."""

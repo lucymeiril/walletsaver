@@ -60,6 +60,7 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     from api.routes.community import router as community_router
     from api.routes.search import router as search_router
     from api.routes.restaurants import router as restaurants_router
+    from api.routes.naver_local import router as naver_local_router
 
     app.include_router(products_router, prefix="/api/products", tags=["Products"])
     app.include_router(hotdeals_router, prefix="/api/hotdeals", tags=["Hotdeals"])
@@ -71,6 +72,7 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     app.include_router(community_router, prefix="/api/posts", tags=["Community"])
     app.include_router(search_router, prefix="/api/search", tags=["Search"])
     app.include_router(restaurants_router, prefix="/api", tags=["Restaurants"])
+    app.include_router(naver_local_router, prefix="/api/local", tags=["Local / Naver"])
 
     @app.get("/api/health")
     def health():
