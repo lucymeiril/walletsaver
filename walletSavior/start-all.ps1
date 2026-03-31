@@ -67,7 +67,7 @@ $env:PYTHONPATH = "$SharedDir;$CrawlerBackend;$DbBackend;$WebBackend"
 
 # === 의존성 설치 ===
 Write-Host "[의존성] Python 패키지 확인..." -ForegroundColor Yellow
-& $PyExe -m pip install --quiet fastapi uvicorn httpx requests beautifulsoup4 lxml 2>$null | Out-Null
+& $PyExe -m pip install --quiet fastapi uvicorn httpx requests beautifulsoup4 lxml sqlalchemy pyyaml 2>$null | Out-Null
 Write-Host "         ✅ Python 패키지 완료" -ForegroundColor Green
 
 $frontendDirs = @()

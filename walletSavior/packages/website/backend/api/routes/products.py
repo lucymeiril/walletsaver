@@ -2,10 +2,12 @@
 상품(물가비교) API — 프론트엔드 '물가비교' 탭의 데이터 소스.
 
 엔드포인트:
-    GET /api/products/search          — 상품 검색
-    GET /api/products/{id}            — 상품 상세
-    GET /api/products/{id}/price-history  — 가격 이력
-    GET /api/products/{id}/price-compare  — 출처별 비교
+    GET /api/products/search             — 상품 검색
+    GET /api/products/categories         — 카테고리 목록
+    GET /api/products/popular            — 인기 상품
+    GET /api/products/{id}               — 상품 상세
+    GET /api/products/{id}/price-history — 가격 이력
+    GET /api/products/{id}/price-compare — 출처별 비교
 """
 
 import math
@@ -50,6 +52,50 @@ async def search_products(
 
     data = storage.search_products(q, category=category, page=page, per_page=per_page)
     return ApiResponse(data=data)
+
+
+@router.get("/categories")
+async def get_categories(request: Request):
+    """상품 카테고리 목록."""
+    DEFAULT_CATEGORIES = [
+        {"id": "agricultural", "name": "농산물", "icon": "🥬"},
+        {"id": "livestock", "name": "축산물", "icon": "🥩"},
+        {"id": "seafood", "name": "수산물", "icon": "🐟"},
+        {"id": "processed", "name": "가공식품", "icon": "🥫"},
+        {"id": "living", "name": "생활용품", "icon": "🧴"},
+        {"id": "electronics", "name": "전자제품", "icon": "📱"},
+        {"id": "fashion", "name": "패션", "icon": "👕"},
+        {"id": "etc", "name": "기타", "icon": "📦"},
+    ]
+    storage = request.app.state.storage
+    if storage is None:
+        return ApiResponse(data=DEFAULT_CATEGORIES)
+
+    try:
+        categories = storage.get_categories()
+        return ApiResponse(data=categories)
+    except Exception:
+        return ApiResponse(data=DEFAULT_CATEGORIES)
+
+
+@router.get("/popular")
+async def get_popular_products(
+    request: Request,
+    per_page: int = Query(10, ge=1, le=50),
+):
+    """인기/트렌딩 상품 목록."""
+    storage = request.app.state.storage
+    if storage is None:
+        from api.mock_responses import MOCK_PRODUCTS
+        results = sorted(MOCK_PRODUCTS, key=lambda p: p.get("cur", 0), reverse=True)
+        return ApiResponse(data=results[:per_page])
+
+    results = storage.search_products("")
+    if isinstance(results, dict) and "items" in results:
+        return ApiResponse(data=results["items"][:per_page])
+    if isinstance(results, list):
+        return ApiResponse(data=results[:per_page])
+    return ApiResponse(data=results)
 
 
 @router.get("/{product_id}")

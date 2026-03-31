@@ -52,7 +52,7 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    fetch(`/api/marts/${martTab}/deals`).then(r => r.json())
+    fetch(`/api/marts/${martTab}/promotions`).then(r => r.json())
       .then(res => {
         const items = (res.data || []).map(d => ({
           name: d.name,

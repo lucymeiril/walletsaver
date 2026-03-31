@@ -48,7 +48,7 @@ export default function MartPage() {
     const martKeys = MARTS.map(m => m.key);
     Promise.all(
       martKeys.map(key =>
-        fetch(`/api/marts/${key}/deals`).then(r => r.json())
+        fetch(`/api/marts/${key}/promotions`).then(r => r.json())
           .then(res => ({
             key,
             items: (res.data || []).map(d => ({

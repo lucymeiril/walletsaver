@@ -14,7 +14,7 @@ export const productService = {
   },
 
   async getPriceHistory(productId, params = {}) {
-    const res = await api.get(`/api/products/${productId}/prices`, params);
+    const res = await api.get(`/api/products/${productId}/price-history`, params);
     if (!res.ok) throw new Error('가격 히스토리 조회에 실패했습니다');
     return res.json();
   },

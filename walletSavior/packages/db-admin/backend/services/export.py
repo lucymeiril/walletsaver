@@ -96,7 +96,7 @@ def get_statistics_summary(session: Session) -> dict:
     ).scalar() or 0
 
     avg_baseline = session.execute(
-        select(func.avg(BaselinePrice.price))
+        select(func.avg(BaselinePrice.price)).select_from(BaselinePrice)
     ).scalar()
 
     return {

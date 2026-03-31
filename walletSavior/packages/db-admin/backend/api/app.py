@@ -25,11 +25,13 @@ def create_app() -> FastAPI:
     from api.routes.analytics import router as analytics_router
     from api.routes.ingestion import router as ingestion_router
 
-    app.include_router(products_router)
-    app.include_router(prices_router)
-    app.include_router(categories_router)
-    app.include_router(keywords_router)
-    app.include_router(analytics_router)
+    # /api 접두어 — 프론트엔드 client.js가 /api/products 등으로 호출
+    app.include_router(products_router, prefix="/api")
+    app.include_router(prices_router, prefix="/api")
+    app.include_router(categories_router, prefix="/api")
+    app.include_router(keywords_router, prefix="/api")
+    app.include_router(analytics_router, prefix="/api")
+    # ingestion 라우터는 이미 /api/ingestions 접두어가 있음
     app.include_router(ingestion_router)
 
     @app.get("/health")

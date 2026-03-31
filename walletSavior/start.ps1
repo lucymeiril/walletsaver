@@ -56,11 +56,16 @@ if (-not (Test-Path (Join-Path $FrontendDir "node_modules"))) {
 }
 
 Write-Host "[2/2] 백엔드 의존성 확인..." -ForegroundColor Yellow
-& $PyExe -m pip install --quiet fastapi uvicorn httpx 2>$null | Out-Null
+& $PyExe -m pip install --quiet fastapi uvicorn httpx sqlalchemy pyyaml 2>$null | Out-Null
 Write-Host "      ✅ 백엔드 의존성 확인 완료" -ForegroundColor Green
 Write-Host ""
 
 # --- 백엔드 시작 (port 8000) ---
+# PYTHONPATH — shared 모듈 + db-admin 스토리지 참조용
+$SharedDir = Join-Path $Root "packages\shared"
+$DbBackendDir = Join-Path $Root "packages\db-admin\backend"
+$env:PYTHONPATH = "$SharedDir;$DbBackendDir;$BackendDir"
+
 Write-Host "🚀 백엔드 서버 시작 (port 8000)..." -ForegroundColor Yellow
 $backend = Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
     -ArgumentList "-m uvicorn api.app:create_app --factory --reload --port 8000 --host 127.0.0.1" `
