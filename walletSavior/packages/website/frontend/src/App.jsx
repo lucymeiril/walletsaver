@@ -7,12 +7,12 @@ import ToastContainer from './components/common/ToastContainer';
 import LoginModal from './components/modals/LoginModal';
 
 // Lazy-load 페이지 (코드 스플리팅 — 초기 로드 최소화)
-const HomePage      = lazy(() => import('./pages/HomePage'));
-const PricePage     = lazy(() => import('./pages/PricePage'));
-const HotdealPage   = lazy(() => import('./pages/HotdealPage'));
-const MartPage      = lazy(() => import('./pages/MartPage'));
-const LocalPage     = lazy(() => import('./pages/LocalPage'));
-const CommunityPage = lazy(() => import('./pages/CommunityPage'));
+const HomePage      = lazy(() => import('./pages/Home/HomePage'));
+const PricePage     = lazy(() => import('./pages/Price/PricePage'));
+const HotdealPage   = lazy(() => import('./pages/Hotdeal/HotdealPage'));
+const MartPage      = lazy(() => import('./pages/Mart/MartPage'));
+const LocalPage     = lazy(() => import('./pages/Local/LocalPage'));
+const CommunityPage = lazy(() => import('./pages/Community/CommunityPage'));
 
 function PageLoader() {
   return (

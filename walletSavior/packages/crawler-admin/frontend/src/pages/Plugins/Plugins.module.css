@@ -1,0 +1,165 @@
+.page {
+  max-width: 1200px;
+}
+
+.pageTitle {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  margin-bottom: var(--space-lg);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: var(--space-md);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.card:hover {
+  border-color: var(--border2);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.pluginName {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semi);
+  color: var(--text);
+}
+
+.version {
+  font-size: var(--fs-xs);
+  color: var(--text3);
+  background: var(--glass);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.description {
+  font-size: var(--fs-sm);
+  color: var(--text2);
+  margin-bottom: var(--space-md);
+  line-height: var(--lh-relaxed);
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.author {
+  font-size: var(--fs-xs);
+  color: var(--text3);
+}
+
+.statusActive {
+  font-size: var(--fs-xs);
+  color: var(--green);
+  font-weight: var(--fw-medium);
+}
+
+.statusInactive {
+  font-size: var(--fs-xs);
+  color: var(--text3);
+  font-weight: var(--fw-medium);
+}
+
+/* Toggle */
+.toggleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.toggleLabel {
+  font-size: var(--fs-sm);
+  color: var(--text2);
+}
+
+.toggle {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  background: var(--border2);
+  border-radius: 11px;
+  border: none;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease);
+  padding: 0;
+}
+
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.toggleOn {
+  composes: toggle;
+  background: var(--green);
+}
+
+.toggleOn::after {
+  transform: translateX(18px);
+}
+
+/* YAML Viewer */
+.yamlToggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  border: none;
+  background: none;
+  color: var(--accent);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  padding: 0;
+}
+
+.yamlViewer {
+  margin-top: var(--space-sm);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  overflow-x: auto;
+}
+
+.yamlCode {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: var(--fs-xs);
+  color: var(--text2);
+  white-space: pre;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>핫딜 타이머</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: #0f172a;
+      color: #f1f5f9;
+      padding: 16px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .timer-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .timer-item {
+      padding: 12px;
+      border-radius: 8px;
+      background: #1e293b;
+      border: 1px solid #334155;
+    }
+    .deal-name {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .countdown {
+      display: flex;
+      gap: 8px;
+    }
+    .time-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 48px;
+      padding: 8px;
+      border-radius: 6px;
+      background: #020617;
+    }
+    .time-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+    .time-label {
+      font-size: 10px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+    .urgent .time-value {
+      color: #f87171;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .deal-price {
+      margin-top: 8px;
+      font-size: 13px;
+    }
+    .original { color: #64748b; text-decoration: line-through; }
+    .sale { color: #34d399; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="header">⏱️ 핫딜 타이머</div>
+  <div id="timers" class="timer-list"></div>
+
+  <script>
+    const deals = [
+      { id: 1, name: '맥북 에어 M3 15인치', originalPrice: 1990000, salePrice: 1690000, endsIn: 2 * 3600 + 30 * 60 },
+      { id: 2, name: '다이슨 에어랩', originalPrice: 698000, salePrice: 498000, endsIn: 45 * 60 },
+      { id: 3, name: '나이키 에어맥스 97', originalPrice: 199000, salePrice: 119000, endsIn: 5 * 3600 + 15 * 60 },
+    ];
+
+    function formatTime(seconds) {
+      const h = Math.floor(seconds / 3600);
+      const m = Math.floor((seconds % 3600) / 60);
+      const sec = seconds % 60;
+      return { h, m, s: sec };
+    }
+
+    function render() {
+      const container = document.getElementById('timers');
+      container.innerHTML = deals.map(deal => {
+        const t = formatTime(Math.max(0, deal.endsIn));
+        const urgent = deal.endsIn < 3600;
+        return `
+          <div class="timer-item ${urgent ? 'urgent' : ''}">
+            <div class="deal-name">${deal.name}</div>
+            <div class="countdown">
+              <div class="time-unit">
+                <span class="time-value">${String(t.h).padStart(2, '0')}</span>
+                <span class="time-label">시간</span>
+              </div>
+              <div class="time-unit">
+                <span class="time-value">${String(t.m).padStart(2, '0')}</span>
+                <span class="time-label">분</span>
+              </div>
+              <div class="time-unit">
+                <span class="time-value">${String(t.s).padStart(2, '0')}</span>
+                <span class="time-label">초</span>
+              </div>
+            </div>
+            <div class="deal-price">
+              <span class="original">${deal.originalPrice.toLocaleString()}원</span>
+              → <span class="sale">${deal.salePrice.toLocaleString()}원</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    render();
+    setInterval(() => {
+      deals.forEach(d => { if (d.endsIn > 0) d.endsIn--; });
+      render();
+    }, 1000);
+  </script>
+</body>
+</html>

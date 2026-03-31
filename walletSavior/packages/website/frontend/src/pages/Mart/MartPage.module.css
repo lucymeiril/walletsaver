@@ -1,0 +1,279 @@
+/* ============================================================
+   MartPage — Tabs, Flyer Viewer, Sale Grid, Category Filter, Compare
+   ============================================================ */
+
+.hdr { max-width: var(--max-w); margin: 0 auto; padding: 28px 20px 20px; }
+.hdr h2 { font-size: 1.5rem; font-weight: var(--fw-bold); }
+.hdr p { color: var(--text3); font-size: .9rem; }
+
+/* Tabs */
+.tabs {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: .9rem;
+  font-weight: var(--fw-semi);
+  color: var(--text2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: all var(--dur) var(--ease);
+  cursor: pointer;
+}
+.tab:hover { border-color: var(--border2); }
+.tabActive { color: var(--text); border-color: var(--accent); background: rgba(56,189,248,.06); }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+
+/* Info */
+.info {
+  max-width: var(--max-w);
+  margin: 12px auto 16px;
+  padding: 0 20px;
+  font-size: .82rem;
+  color: var(--text3);
+  display: flex;
+  gap: 16px;
+}
+
+/* Mode Toggle */
+.modeRow {
+  max-width: var(--max-w);
+  margin: 0 auto 16px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.modeBtn {
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: .85rem;
+  font-weight: var(--fw-medium);
+  color: var(--text2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.modeBtn:hover { border-color: var(--border2); }
+.modeBtnActive { color: var(--accent); border-color: var(--accent); background: rgba(56,189,248,.06); }
+
+/* Category Filter */
+.catRow {
+  max-width: var(--max-w);
+  margin: 0 auto 16px;
+  padding: 0 20px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.catLabel { font-size: .82rem; color: var(--text3); font-weight: var(--fw-semi); margin-right: 4px; }
+.catBtn {
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: .8rem;
+  color: var(--text3);
+  background: var(--glass);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.catBtn:hover { color: var(--text2); border-color: var(--border2); }
+.catBtnActive { color: var(--accent2); border-color: var(--accent2); background: rgba(129,140,248,.08); }
+
+/* Flyer Viewer */
+.flyerSection {
+  max-width: var(--max-w);
+  margin: 0 auto 20px;
+  padding: 0 20px;
+}
+.flyerViewer {
+  position: relative;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+.flyerImg {
+  max-width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  cursor: zoom-in;
+  transition: transform .3s var(--ease);
+}
+.flyerImgZoomed {
+  transform: scale(1.8);
+  cursor: zoom-out;
+}
+.flyerNav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.flyerNav:hover { background: var(--surface); }
+.flyerPrev { left: 12px; }
+.flyerNext { right: 12px; }
+.flyerDots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  padding: 12px;
+}
+.flyerDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.flyerDotActive { background: var(--accent); border-color: var(--accent); }
+
+/* Sale Grid */
+.grid {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 20px 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 1px solid var(--border);
+  transition: transform var(--dur) var(--ease);
+  cursor: pointer;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.2); }
+.cardName { font-size: .95rem; font-weight: var(--fw-semi); margin-bottom: 8px; line-height: 1.3; }
+.cardPrices { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+.sale { font-size: 1.2rem; font-weight: var(--fw-bold); color: var(--accent); }
+.orig { font-size: .85rem; color: var(--text3); text-decoration: line-through; }
+.disc {
+  font-size: .78rem;
+  font-weight: var(--fw-semi);
+  color: var(--red);
+  background: rgba(248,113,113,.1);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.vs { font-size: .75rem; color: var(--text3); margin-top: 4px; }
+.vs em { font-style: normal; font-weight: var(--fw-semi); }
+.cheap { color: var(--green); }
+.expensive { color: var(--red); }
+.event {
+  margin-top: 6px;
+  font-size: .72rem;
+  color: var(--accent2);
+  background: rgba(129,140,248,.08);
+  padding: 3px 8px;
+  border-radius: 6px;
+  display: inline-block;
+}
+.validity {
+  margin-top: 4px;
+  font-size: .72rem;
+  color: var(--text3);
+}
+
+/* Compare View */
+.compareSection {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+.compareTitle {
+  font-size: 1.1rem;
+  font-weight: var(--fw-bold);
+  margin-bottom: 16px;
+}
+.compareGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.compareRow {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+.compareProductName {
+  font-size: .95rem;
+  font-weight: var(--fw-semi);
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.comparePrices {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+.compareMart {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+}
+.compareMartName {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .82rem;
+  font-weight: var(--fw-medium);
+}
+.compareMartDot { width: 6px; height: 6px; border-radius: 50%; }
+.compareMartPrice { font-size: .9rem; font-weight: var(--fw-bold); color: var(--accent); }
+.compareLowest {
+  background: rgba(52,211,153,.06);
+  border-color: rgba(52,211,153,.2);
+}
+.compareLowest .compareMartPrice { color: var(--green); }
+
+/* Responsive */
+@media(max-width:768px) {
+  .hdr { padding: 20px 12px 14px; }
+  .tabs { padding: 0 12px; }
+  .info { padding: 0 12px; }
+  .modeRow { padding: 0 12px; }
+  .catRow { padding: 0 12px; }
+  .flyerSection { padding: 0 12px; }
+  .grid { grid-template-columns: repeat(2, 1fr); padding: 0 12px 40px; }
+  .compareSection { padding: 0 12px 40px; }
+  .comparePrices { grid-template-columns: repeat(2, 1fr); }
+}
+@media(max-width:480px) {
+  .grid { grid-template-columns: 1fr; }
+  .comparePrices { grid-template-columns: 1fr; }
+}

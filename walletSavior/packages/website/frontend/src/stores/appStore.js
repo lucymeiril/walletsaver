@@ -12,9 +12,15 @@ const useStore = create(
       selectedProduct: null,
       setSelectedProduct: (product) => set({ selectedProduct: product }),
 
-      // 검색어
+      // 검색 상태
       searchQuery: '',
       setSearchQuery: (q) => set({ searchQuery: q }),
+      searchResults: [],
+      setSearchResults: (results) => set({ searchResults: results }),
+      searchFilters: { category: 'all', sort: 'relevance' },
+      setSearchFilters: (filters) => set((state) => ({
+        searchFilters: { ...state.searchFilters, ...filters }
+      })),
 
       // 로그인 상태
       isLoggedIn: false,
@@ -84,6 +90,35 @@ const useStore = create(
       removePriceAlert: (productId) => set((state) => ({
         priceAlerts: state.priceAlerts.filter(a => a.productId !== productId)
       })),
+
+      // 커뮤니티 상태
+      communityPosts: [],
+      setCommunityPosts: (posts) => set({ communityPosts: posts }),
+      selectedPost: null,
+      setSelectedPost: (post) => set({ selectedPost: post }),
+      communityComments: [],
+      setCommunityComments: (comments) => set({ communityComments: comments }),
+
+      // 위치 상태
+      location: { lat: null, lng: null },
+      setLocation: (lat, lng) => set({ location: { lat, lng } }),
+      nearbyGasStations: [],
+      setNearbyGasStations: (stations) => set({ nearbyGasStations: stations }),
+      nearbyRestaurants: [],
+      setNearbyRestaurants: (restaurants) => set({ nearbyRestaurants: restaurants }),
+
+      // 필터/정렬 환경설정
+      filterPreferences: {
+        hotdealCategory: 'all',
+        hotdealSource: '전체',
+        hotdealSort: 'time',
+        martActive: 'emart',
+        localFuel: 'gasoline',
+        communityBoard: 'hotdeal',
+      },
+      setFilterPreference: (key, value) => set((state) => ({
+        filterPreferences: { ...state.filterPreferences, [key]: value }
+      })),
     }),
     {
       name: 'wallet-savior-store',
@@ -92,6 +127,7 @@ const useStore = create(
         recentSearches: state.recentSearches,
         shoppingList: state.shoppingList,
         priceAlerts: state.priceAlerts,
+        filterPreferences: state.filterPreferences,
       }),
     }
   )
