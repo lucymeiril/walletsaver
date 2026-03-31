@@ -44,6 +44,28 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
         allow_headers=["*"],
     )
 
+    # storage가 없으면 db-admin의 DBStorage로 자동 연결 시도
+    if storage is None:
+        try:
+            import sys, os, logging
+            db_admin_path = os.path.normpath(os.path.join(
+                os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))),
+                "db-admin", "backend"
+            ))
+            if db_admin_path not in sys.path:
+                sys.path.insert(0, db_admin_path)
+
+            from storage.db import DBStorage
+
+            db_path = os.path.join(db_admin_path, "walletguardian.db")
+            storage = DBStorage(f"sqlite:///{db_path}")
+            storage.init_db()
+            logging.info(f"✅ DB 연결 성공: {db_path}")
+        except Exception as e:
+            import logging
+            logging.warning(f"DB 연결 실패, mock 데이터 사용: {e}")
+            storage = None
+
     # 의존성을 app.state에 저장 — 라우터에서 request.app.state.storage로 접근
     app.state.storage = storage
     app.state.engine = engine

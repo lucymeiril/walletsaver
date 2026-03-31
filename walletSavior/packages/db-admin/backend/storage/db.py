@@ -199,16 +199,19 @@ class DBStorage(StorageContract):
                 price_stats = self._compute_product_stats(session, p.id)
                 store_prices = self._get_store_prices(session, p.id)
                 cat = p.category
+                avg = price_stats["avg"]
+                cur = price_stats["cur"]
                 result.append({
                     "id": p.id,
                     "name": p.name,
                     "icon": cat.icon if cat else "",
                     "cat": cat.name if cat else "",
                     "unit": p.unit,
-                    "avg": price_stats["avg"],
-                    "cur": price_stats["cur"],
+                    "avg": avg,
+                    "cur": cur,
                     "low": price_stats["low"],
                     "high": price_stats["high"],
+                    "price_tier": self._compute_price_tier(cur, avg),
                     "img": p.image_url or "",
                     "stores": store_prices,
                     "stats": {
@@ -231,16 +234,19 @@ class DBStorage(StorageContract):
             price_stats = self._compute_product_stats(session, p.id)
             store_prices = self._get_store_prices(session, p.id)
             cat = p.category
+            avg = price_stats["avg"]
+            cur = price_stats["cur"]
             return {
                 "id": p.id,
                 "name": p.name,
                 "icon": cat.icon if cat else "",
                 "cat": cat.name if cat else "",
                 "unit": p.unit,
-                "avg": price_stats["avg"],
-                "cur": price_stats["cur"],
+                "avg": avg,
+                "cur": cur,
                 "low": price_stats["low"],
                 "high": price_stats["high"],
+                "price_tier": self._compute_price_tier(cur, avg),
                 "img": p.image_url or "",
                 "stores": store_prices,
                 "stats": {
@@ -257,8 +263,11 @@ class DBStorage(StorageContract):
     def get_hotdeals(
         self,
         category: str | None = None,
-        sort: str = "time",
-        limit: int = 20,
+        source: str | None = None,
+        sort: str = "recent",
+        page: int = 1,
+        per_page: int = 20,
+        limit: int | None = None,
     ) -> list[dict]:
         """
         핫딜 목록 — 프론트엔드 HOTDEALS 배열과 동일 shape.
@@ -268,27 +277,52 @@ class DBStorage(StorageContract):
         with self.SessionLocal() as session:
             stmt = select(HotdealPrice)
 
-            if sort == "time":
+            if sort in ("recent", "time"):
                 stmt = stmt.order_by(desc(HotdealPrice.crawled_at))
-            elif sort == "votes":
+            elif sort in ("popular", "votes"):
                 stmt = stmt.order_by(desc(HotdealPrice.votes_hot))
+            elif sort == "price_asc":
+                stmt = stmt.order_by(HotdealPrice.price.asc())
+            elif sort == "discount":
+                stmt = stmt.order_by(desc(HotdealPrice.crawled_at))
 
-            stmt = stmt.limit(limit)
+            if source:
+                stmt = stmt.where(HotdealPrice.source == source)
+
+            if limit is not None:
+                stmt = stmt.limit(limit)
+            else:
+                offset = (page - 1) * per_page
+                stmt = stmt.offset(offset).limit(per_page)
+
             prices = session.execute(stmt).scalars().all()
 
-            return [
-                {
+            results = []
+            for hp in prices:
+                product = session.get(Product, hp.product_id) if hp.product_id else None
+                cat_name = ""
+                if product and product.category:
+                    cat_name = product.category.name
+                results.append({
                     "id": hp.id,
                     "title": hp.title or "",
                     "source": hp.source,
                     "price": hp.price,
+                    "origPrice": None,
                     "time": self._relative_time(hp.crawled_at),
+                    "cat": cat_name,
+                    "views": 0,
+                    "comments": 0,
+                    "thumb": None,
                     "votes_hot": hp.votes_hot,
                     "votes_not": hp.votes_not,
                     "is_verified": hp.is_verified,
-                }
-                for hp in prices
-            ]
+                })
+
+            if category and category != "all":
+                results = [r for r in results if category in r["cat"]]
+
+            return results
 
     def get_mart_deals(self, store: str | None = None, limit: int = 50) -> dict:
         """
@@ -332,12 +366,29 @@ class DBStorage(StorageContract):
                 }
             return result
 
-    def get_gas_prices(self, fuel_type: str = "gasoline", sort_by: str = "price") -> list[dict]:
+    def get_gas_prices(
+        self,
+        fuel_type: str = "gasoline",
+        sort_by: str = "price",
+        lat: float | None = None,
+        lng: float | None = None,
+        radius: int | None = None,
+        **kwargs,
+    ) -> list[dict]:
         """
         주유소 목록 — 프론트엔드 GAS_STATIONS와 동일 shape.
 
-        shape: {name, addr, gasoline, diesel, lpg, brand}
+        shape: {id, name, addr, lat, lng, gasoline, diesel, lpg, brand, distance}
         """
+        import math
+
+        def _haversine(lat1, lng1, lat2, lng2):
+            R = 6371000
+            dlat = math.radians(lat2 - lat1)
+            dlng = math.radians(lng2 - lng1)
+            a = math.sin(dlat / 2) ** 2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlng / 2) ** 2
+            return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
         with self.SessionLocal() as session:
             stmt = select(GasStation)
 
@@ -348,24 +399,38 @@ class DBStorage(StorageContract):
                 "lpg": GasStation.lpg_price,
             }.get(fuel_type, GasStation.gasoline_price)
 
-            if sort_by == "price":
+            if sort_by in ("price", "price_asc"):
                 stmt = stmt.order_by(price_col.asc().nullslast())
             else:
                 stmt = stmt.order_by(GasStation.name)
 
             stations = session.execute(stmt).scalars().all()
 
-            return [
-                {
+            results = []
+            for s in stations:
+                entry = {
+                    "id": s.id,
                     "name": s.name,
                     "addr": s.address,
+                    "lat": s.lat,
+                    "lng": s.lng,
                     "gasoline": s.gasoline_price,
                     "diesel": s.diesel_price,
                     "lpg": s.lpg_price,
                     "brand": s.brand,
+                    "updated_at": s.updated_at.isoformat() if s.updated_at else None,
                 }
-                for s in stations
-            ]
+                if lat is not None and lng is not None and s.lat and s.lng:
+                    dist = _haversine(lat, lng, s.lat, s.lng)
+                    if radius and dist > radius:
+                        continue
+                    entry["distance"] = round(dist)
+                results.append(entry)
+
+            if lat is not None and lng is not None and sort_by == "distance":
+                results.sort(key=lambda x: x.get("distance", float("inf")))
+
+            return results
 
     def get_price_history(self, product_id: int, days: int = 30) -> list[dict]:
         """
@@ -390,32 +455,44 @@ class DBStorage(StorageContract):
             rows = session.execute(stmt).all()
             return [{"date": row.date, "price": round(row.price)} for row in rows]
 
-    def search_products(self, query: str) -> list[dict]:
-        """품목 검색 — 이름에 query가 포함된 상품."""
+    def search_products(
+        self,
+        query: str,
+        category: str | None = None,
+        page: int = 1,
+        per_page: int = 20,
+    ) -> list[dict]:
+        """품목 검색 — 이름/카테고리에 검색어가 포함된 상품 (페이지네이션 지원)."""
         with self.SessionLocal() as session:
-            stmt = (
-                select(Product)
-                .where(
-                    Product.is_active == True,
-                    Product.name.contains(query),
+            stmt = select(Product).where(Product.is_active == True)
+            if query:
+                stmt = stmt.where(Product.name.contains(query))
+            if category:
+                from storage.models import Category
+                stmt = stmt.join(Category, Product.category_id == Category.id).where(
+                    Category.name.contains(category)
                 )
-            )
+            offset = (page - 1) * per_page
+            stmt = stmt.offset(offset).limit(per_page)
             products = session.execute(stmt).scalars().all()
             result = []
             for p in products:
                 price_stats = self._compute_product_stats(session, p.id)
                 store_prices = self._get_store_prices(session, p.id)
                 cat = p.category
+                avg = price_stats["avg"]
+                cur = price_stats["cur"]
                 result.append({
                     "id": p.id,
                     "name": p.name,
                     "icon": cat.icon if cat else "",
                     "cat": cat.name if cat else "",
                     "unit": p.unit,
-                    "avg": price_stats["avg"],
-                    "cur": price_stats["cur"],
+                    "avg": avg,
+                    "cur": cur,
                     "low": price_stats["low"],
                     "high": price_stats["high"],
+                    "price_tier": self._compute_price_tier(cur, avg),
                     "img": p.image_url or "",
                     "stores": store_prices,
                     "stats": {
@@ -428,6 +505,54 @@ class DBStorage(StorageContract):
                     },
                 })
             return result
+
+    def get_price_compare(self, product_id: int) -> list[dict]:
+        """출처별 가격 비교 — 프론트엔드 price-compare 탭용."""
+        with self.SessionLocal() as session:
+            p = session.get(Product, product_id)
+            if not p:
+                return []
+            price_stats = self._compute_product_stats(session, p.id)
+            store_prices = self._get_store_prices(session, p.id)
+            avg = price_stats["avg"]
+            compare = []
+            for source, price in store_prices.items():
+                disc = round((1 - price / avg) * 100, 1) if avg else None
+                compare.append({
+                    "source": source,
+                    "price": price,
+                    "original_price": avg,
+                    "discount_rate": disc,
+                    "url": None,
+                })
+            compare.sort(key=lambda x: x["price"])
+            return compare
+
+    def get_hotdeal_detail(self, hotdeal_id: int) -> dict | None:
+        """핫딜 상세."""
+        with self.SessionLocal() as session:
+            hp = session.get(HotdealPrice, hotdeal_id)
+            if not hp:
+                return None
+            product = session.get(Product, hp.product_id) if hp.product_id else None
+            cat_name = ""
+            if product and product.category:
+                cat_name = product.category.name
+            return {
+                "id": hp.id,
+                "title": hp.title or "",
+                "source": hp.source,
+                "price": hp.price,
+                "origPrice": None,
+                "time": self._relative_time(hp.crawled_at),
+                "cat": cat_name,
+                "views": 0,
+                "comments": 0,
+                "thumb": None,
+                "votes_hot": hp.votes_hot,
+                "votes_not": hp.votes_not,
+                "is_verified": hp.is_verified,
+            }
 
     # ──────────────────────────────────────────
     # 사용자 기능 — 즐겨찾기 / 알림
@@ -769,3 +894,17 @@ class DBStorage(StorageContract):
             return f"{hours}시간 전"
         days = hours // 24
         return f"{days}일 전"
+
+    @staticmethod
+    def _compute_price_tier(cur: float, avg: float) -> str:
+        """현재가와 평균가를 비교해 가격 등급을 반환."""
+        if not avg or avg == 0:
+            return "good"
+        ratio = cur / avg
+        if ratio >= 1.0:
+            return "wait"
+        if ratio >= 0.85:
+            return "good"
+        if ratio >= 0.7:
+            return "great"
+        return "ultra"
