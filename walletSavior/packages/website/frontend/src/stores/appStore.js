@@ -28,6 +28,11 @@ const useStore = create(
       login: (user) => set({ isLoggedIn: true, user }),
       logout: () => set({ isLoggedIn: false, user: null }),
 
+      // 로그인 모달
+      isLoginModalOpen: false,
+      openLoginModal: () => set({ isLoginModalOpen: true }),
+      closeLoginModal: () => set({ isLoginModalOpen: false }),
+
       // 토스트 메시지
       toasts: [],
       addToast: (msg, type = 'info') => set((state) => ({

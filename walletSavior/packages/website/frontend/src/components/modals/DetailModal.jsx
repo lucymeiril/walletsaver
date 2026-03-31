@@ -33,6 +33,11 @@ export default function DetailModal({ item, type, onClose }) {
                 {item.price && item.origPrice && <span className={s.disc}>{Math.round((1-item.price/item.origPrice)*100)}% 할인</span>}
               </div>
               <div className={s.stats}><Eye size={14} /> {item.views} <MessageSquare size={14} /> {item.comments}</div>
+              {item.url && (
+                <a href={item.url} target="_blank" rel="noopener noreferrer" className={s.extLink}>
+                  🔗 원본 글 보기
+                </a>
+              )}
             </div>
           </>
         )}

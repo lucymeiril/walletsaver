@@ -39,9 +39,8 @@ export default function Header() {
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
-  const openLogin = () => {
-    document.getElementById('modal-login')?.classList.add('open');
-  };
+  const openLoginModal = useStore((s) => s.openLoginModal);
+  const openLogin = () => openLoginModal();
 
   const unreadCount = notifications?.filter(n => !n.read).length || 0;
 

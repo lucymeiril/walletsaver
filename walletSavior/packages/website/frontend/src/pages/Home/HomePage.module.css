@@ -107,6 +107,7 @@
 .acName { font-weight: var(--fw-semi); font-size: .95rem; }
 .acCat { font-size: .78rem; color: var(--text3); }
 .acPrice { font-weight: var(--fw-bold); color: var(--accent); font-size: .9rem; white-space: nowrap; }
+.acEmpty { padding: 20px 16px; text-align: center; color: var(--text3); font-size: .9rem; }
 
 /* Trending */
 .trending {

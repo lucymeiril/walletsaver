@@ -1,3 +1,5 @@
+import useStore from '../stores/appStore';
+
 const API_BASE = import.meta.env.VITE_API_URL || '';
 
 class ApiClient {
@@ -37,7 +39,7 @@ class ApiClient {
         return fetch(`${this.baseUrl}${path}`, { ...options, headers });
       }
       this.clearToken();
-      window.location.href = '/login';
+      useStore.getState().openLoginModal();
     }
 
     return response;

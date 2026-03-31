@@ -4,28 +4,26 @@ import s from './LoginModal.module.css';
 
 export default function LoginModal() {
   const [tab, setTab] = useState('login');
-  const { login, addToast } = useStore();
-
-  const close = () => document.getElementById('modal-login')?.classList.remove('open');
+  const { login, addToast, isLoginModalOpen, closeLoginModal } = useStore();
 
   const handleLogin = (e) => {
     e.preventDefault();
     login({ name: '테스트유저', email: 'test@test.com' });
     addToast('로그인 되었습니다! (데모)', 'success');
-    close();
+    closeLoginModal();
   };
 
   const handleSignup = (e) => {
     e.preventDefault();
     addToast('회원가입이 완료되었습니다! (데모)', 'success');
-    close();
+    closeLoginModal();
   };
 
   return (
-    <div className={s.modal} id="modal-login">
-      <div className={s.overlay} onClick={close} />
+    <div className={`${s.modal} ${isLoginModalOpen ? 'open' : ''}`}>
+      <div className={s.overlay} onClick={closeLoginModal} />
       <div className={s.box}>
-        <button className={s.close} onClick={close}>&times;</button>
+        <button className={s.close} onClick={closeLoginModal}>&times;</button>
         <div className={s.tabs}>
           <button className={`${s.tab} ${tab === 'login' ? s.tabActive : ''}`} onClick={() => setTab('login')}>로그인</button>
           <button className={`${s.tab} ${tab === 'signup' ? s.tabActive : ''}`} onClick={() => setTab('signup')}>회원가입</button>

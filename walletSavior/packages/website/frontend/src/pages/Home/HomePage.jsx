@@ -74,7 +74,7 @@ export default function HomePage() {
               )}
             </div>
 
-            {acOpen && matches.length > 0 && (
+            {acOpen && query.length > 0 && matches.length > 0 && (
               <div className={s.acList}>
                 {matches.map(p => (
                   <div key={p.id} className={s.acItem} onClick={() => selectProduct(p)}>
@@ -86,6 +86,12 @@ export default function HomePage() {
                     <span className={s.acPrice}>{fmt(p.cur)}원</span>
                   </div>
                 ))}
+              </div>
+            )}
+
+            {acOpen && query.length > 0 && matches.length === 0 && (
+              <div className={s.acList}>
+                <div className={s.acEmpty}>검색 결과가 없습니다</div>
               </div>
             )}
 

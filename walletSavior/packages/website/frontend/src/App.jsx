@@ -15,6 +15,7 @@ const HotdealPage   = lazy(() => import('./pages/Hotdeal/HotdealPage'));
 const MartPage      = lazy(() => import('./pages/Mart/MartPage'));
 const LocalPage     = lazy(() => import('./pages/Local/LocalPage'));
 const CommunityPage = lazy(() => import('./pages/Community/CommunityPage'));
+const NotFoundPage  = lazy(() => import('./pages/NotFound/NotFoundPage'));
 
 function PageLoader() {
   return (
@@ -44,6 +45,7 @@ export default function App() {
             <Route path="/mart"      element={<MartPage />} />
             <Route path="/local"     element={<LocalPage />} />
             <Route path="/community" element={<CommunityPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
       </main>

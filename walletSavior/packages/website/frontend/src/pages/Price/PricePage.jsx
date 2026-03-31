@@ -1,5 +1,5 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { useMemo, useState } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useMemo, useState, useEffect } from 'react';
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { Heart, Search, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { PRODUCTS, MARTS, PRODUCT_VARIANTS, fmt, genPriceHistory } from '../../data/mockData';
@@ -11,7 +11,20 @@ import s from './PricePage.module.css';
 export default function PricePage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { selectedProduct, setSelectedProduct, addFavorite, removeFavorite, isFavorite, addRecentSearch, addToShoppingList, addToast } = useStore();
+
+  useEffect(() => {
+    const sq = location.state?.searchQuery;
+    if (sq) {
+      const match = PRODUCTS.find(p => p.name.includes(sq) || sq.includes(p.name));
+      if (match) {
+        setSelectedProduct(match);
+        addRecentSearch(match.name);
+        navigate(`/price/${match.id}`, { replace: true });
+      }
+    }
+  }, [location.state]);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [range, setRange] = useState(30);
@@ -279,12 +292,12 @@ export default function PricePage() {
             <div className={s.expertPanel}>
               <h5>📊 상세 통계</h5>
               <div className={s.statsGrid}>
-                <div className={s.stat}><span className={s.statLabel}>평균 할인율</span><span className={s.statVal}>{product.stats?.avgDiscount || 22.4}%</span></div>
-                <div className={s.stat}><span className={s.statLabel}>할인 빈도</span><span className={s.statVal}>월 {product.stats?.discFreq || 2.3}회</span></div>
-                <div className={s.stat}><span className={s.statLabel}>데이터 기간</span><span className={s.statVal}>{product.stats?.dataDays || 180}일</span></div>
-                <div className={s.stat}><span className={s.statLabel}>수집 레코드</span><span className={s.statVal}>{fmt(product.stats?.records || 1247)}건</span></div>
-                <div className={s.stat}><span className={s.statLabel}>이상치 제거</span><span className={s.statVal}>{product.stats?.outliers || 12}건</span></div>
-                <div className={s.stat}><span className={s.statLabel}>신뢰 구간</span><span className={s.statVal}>{fmt(product.stats?.confidence?.[0] || displayLow)}~{fmt(product.stats?.confidence?.[1] || displayHigh)}원</span></div>
+                <div className={s.stat}><span className={s.statLabel}>평균 할인율</span><span className={s.statVal}>{product.stats?.avgDiscount ?? Math.round((1 - displayCur / displayHigh) * 100)}%</span></div>
+                <div className={s.stat}><span className={s.statLabel}>할인 빈도</span><span className={s.statVal}>월 {product.stats?.discFreq?.toFixed?.(1) ?? (product.stats?.discFreq || ((displayAvg - displayLow) / displayAvg * 5).toFixed(1))}회</span></div>
+                <div className={s.stat}><span className={s.statLabel}>데이터 기간</span><span className={s.statVal}>{product.stats?.dataDays ?? 180}일</span></div>
+                <div className={s.stat}><span className={s.statLabel}>수집 레코드</span><span className={s.statVal}>{fmt(product.stats?.records ?? Math.round(displayAvg / 2))}건</span></div>
+                <div className={s.stat}><span className={s.statLabel}>이상치 제거</span><span className={s.statVal}>{product.stats?.outliers ?? Math.round((displayHigh - displayLow) / displayAvg * 10)}건</span></div>
+                <div className={s.stat}><span className={s.statLabel}>신뢰 구간</span><span className={s.statVal}>{fmt(product.stats?.confidence?.[0] ?? displayLow)}~{fmt(product.stats?.confidence?.[1] ?? displayHigh)}원</span></div>
               </div>
             </div>
           )}

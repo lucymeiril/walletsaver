@@ -517,8 +517,9 @@
 }
 
 /* Board-specific header styles */
-.hdrHotdeal {}
-.hdrFree {}
+.hdrHotdeal { border-bottom: 3px solid var(--red); }
+.hdrHotdeal .writeBtn { background: linear-gradient(135deg, #ef4444, #f97316); }
+.hdrFree { border-bottom: 3px solid var(--accent); }
 
 /* Hotdeal post with left border */
 .hotdealPost {

@@ -17,7 +17,12 @@ export default function ToastContainer() {
         <div key={t.id} style={{
           background:'var(--surface)', border:'1px solid var(--border2)', borderRadius:10,
           padding:'14px 20px', fontSize:'.88rem', boxShadow:'0 8px 24px rgba(0,0,0,.3)',
-          borderLeft: `3px solid ${t.type === 'success' ? 'var(--green)' : 'var(--accent)'}`,
+          borderLeft: `3px solid ${
+            t.type === 'success' ? 'var(--green)' :
+            t.type === 'error' ? 'var(--red, #ef4444)' :
+            t.type === 'warning' ? 'var(--orange, #f59e0b)' :
+            'var(--accent)'
+          }`,
           animation: 'slideInRight .3s var(--ease)',
         }}>
           {t.msg}
