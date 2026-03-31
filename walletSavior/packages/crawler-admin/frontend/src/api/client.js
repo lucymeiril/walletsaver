@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:8001/api';
+const API_BASE = '/api';
 
 export const api = {
   // 크롤러 목록

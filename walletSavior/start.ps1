@@ -7,7 +7,7 @@
     Ctrl+C로 모든 서버를 종료합니다.
 #>
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 $Root = $PSScriptRoot
 if (-not $Root) { $Root = Get-Location }
 
@@ -17,6 +17,30 @@ Write-Host "  🛡️  지갑 지키미 — 웹사이트 시작" -ForegroundColo
 Write-Host "============================================" -ForegroundColor Cyan
 Write-Host ""
 
+# --- Python 실행 파일 감지 ---
+$PyExe = $null
+foreach ($candidate in @("py", "python", "python3")) {
+    try {
+        $null = & $candidate --version 2>&1
+        if ($LASTEXITCODE -eq 0) { $PyExe = $candidate; break }
+    } catch {}
+}
+if (-not $PyExe) {
+    Write-Host "❌ Python을 찾을 수 없습니다. py / python / python3 중 하나가 PATH에 있어야 합니다." -ForegroundColor Red
+    exit 1
+}
+Write-Host "  🐍 Python: $PyExe ($( & $PyExe --version 2>&1 ))" -ForegroundColor DarkGray
+
+# --- npm 실행 파일 감지 ---
+$npmCmd = Get-Command npm -ErrorAction SilentlyContinue
+if (-not $npmCmd) {
+    Write-Host "❌ npm을 찾을 수 없습니다. Node.js가 설치되어 있어야 합니다." -ForegroundColor Red
+    exit 1
+}
+$NpmPath = $npmCmd.Source
+Write-Host "  📦 npm: $NpmPath" -ForegroundColor DarkGray
+Write-Host ""
+
 # --- 의존성 확인 ---
 $FrontendDir = Join-Path $Root "packages\website\frontend"
 $BackendDir  = Join-Path $Root "packages\website\backend"
@@ -24,7 +48,7 @@ $BackendDir  = Join-Path $Root "packages\website\backend"
 if (-not (Test-Path (Join-Path $FrontendDir "node_modules"))) {
     Write-Host "[1/2] 프론트엔드 의존성 설치 중..." -ForegroundColor Yellow
     Push-Location $FrontendDir
-    npm install --silent 2>&1 | Out-Null
+    & cmd.exe /c "npm install --silent" 2>&1 | Out-Null
     Pop-Location
     Write-Host "      ✅ npm install 완료" -ForegroundColor Green
 } else {
@@ -32,19 +56,18 @@ if (-not (Test-Path (Join-Path $FrontendDir "node_modules"))) {
 }
 
 Write-Host "[2/2] 백엔드 의존성 확인..." -ForegroundColor Yellow
-py -m pip install --quiet fastapi uvicorn 2>&1 | Out-Null
+& $PyExe -m pip install --quiet fastapi uvicorn httpx 2>$null | Out-Null
 Write-Host "      ✅ 백엔드 의존성 확인 완료" -ForegroundColor Green
 Write-Host ""
 
 # --- 백엔드 시작 (port 8000) ---
 Write-Host "🚀 백엔드 서버 시작 (port 8000)..." -ForegroundColor Yellow
-$backend = Start-Process -PassThru -NoNewWindow -FilePath "py" `
+$backend = Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
     -ArgumentList "-m uvicorn api.app:create_app --factory --reload --port 8000 --host 127.0.0.1" `
     -WorkingDirectory $BackendDir
 
 # --- 프론트엔드 시작 (port 5173) ---
 Write-Host "🚀 프론트엔드 서버 시작 (port 5173)..." -ForegroundColor Yellow
-# npm은 .cmd 스크립트이므로 cmd /c로 실행해야 Start-Process에서 동작함
 $frontend = Start-Process -PassThru -NoNewWindow -FilePath "cmd.exe" `
     -ArgumentList "/c cd /d `"$FrontendDir`" && npm run dev" `
     -WorkingDirectory $FrontendDir

@@ -42,7 +42,7 @@ export default function LocalPage() {
     setNaverLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:8000/api/local/naver-search?query=${encodeURIComponent(query)}&lat=${mapLat}&lng=${mapLng}&max_items=20`
+        `/api/local/naver-search?query=${encodeURIComponent(query)}&lat=${mapLat}&lng=${mapLng}&max_items=20`
       );
       const data = await res.json();
       if (data.success && data.data?.items) {
