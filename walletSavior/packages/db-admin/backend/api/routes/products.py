@@ -91,6 +91,21 @@ def update_product(product_id: int, body: ProductUpdate):
         session.close()
 
 
+@router.delete("/{product_id}")
+def delete_product(product_id: int):
+    """상품 삭제."""
+    session = get_session()
+    try:
+        p = session.get(Product, product_id)
+        if not p:
+            raise HTTPException(404, "Product not found")
+        session.delete(p)
+        session.commit()
+        return {"deleted": True, "id": product_id}
+    finally:
+        session.close()
+
+
 @router.get("/{product_id}/baseline")
 def product_baseline(product_id: int, days: int = 90):
     session = get_session()

@@ -97,8 +97,8 @@ export default function Products() {
                 <td className={s.nameCol}>{p.name}</td>
                 <td>{p.category}</td>
                 <td>{p.unit}</td>
-                <td>{p.basePrice.toLocaleString()}원</td>
-                <td>{p.currentAvg.toLocaleString()}원</td>
+                <td>{(p.basePrice ?? 0).toLocaleString()}원</td>
+                <td>{(p.currentAvg ?? 0).toLocaleString()}원</td>
                 <td><span className={`${s.tier} ${s[TIER_CLASS[p.tier]]}`}>{TIER_LABEL[p.tier]}</span></td>
                 <td>
                   <div className={s.actions} onClick={e => e.stopPropagation()}>
@@ -127,8 +127,8 @@ export default function Products() {
                 <div className={s.detailGrid}>
                   <div><span className={s.label}>카테고리</span><span>{modal.product.category}</span></div>
                   <div><span className={s.label}>단위</span><span>{modal.product.unit}</span></div>
-                  <div><span className={s.label}>기준가</span><span>{modal.product.basePrice.toLocaleString()}원</span></div>
-                  <div><span className={s.label}>현재 평균가</span><span>{modal.product.currentAvg.toLocaleString()}원</span></div>
+                  <div><span className={s.label}>기준가</span><span>{(modal.product.basePrice ?? 0).toLocaleString()}원</span></div>
+                  <div><span className={s.label}>현재 평균가</span><span>{(modal.product.currentAvg ?? 0).toLocaleString()}원</span></div>
                   <div><span className={s.label}>가격 티어</span><span className={`${s.tier} ${s[TIER_CLASS[modal.product.tier]]}`}>{TIER_LABEL[modal.product.tier]}</span></div>
                 </div>
                 <h4 className={s.chartTitle}>가격 이력 (90일)</h4>

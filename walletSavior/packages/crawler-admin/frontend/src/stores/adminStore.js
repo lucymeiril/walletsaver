@@ -26,7 +26,20 @@ const useAdminStore = create((set, get) => ({
     try {
       const data = await api.getCrawlers();
       const list = Array.isArray(data) ? data : data.crawlers ?? data.data ?? [];
-      if (list.length > 0) set({ crawlers: list });
+      // API 크롤러 → 프론트엔드 형식으로 변환 (name을 id로 사용)
+      const mapped = list.map((c) => ({
+        id: c.name,
+        name: c.display_name || c.name,
+        category: c.category || 'etc',
+        difficulty: c.difficulty ?? '중',
+        status: c.status || 'active',
+        lastCrawl: c.lastCrawl || c.last_run || new Date().toISOString(),
+        successRate: c.successRate ?? c.success_rate ?? 100,
+        totalRuns: c.totalRuns ?? c.total_runs ?? 0,
+        description: c.description || '',
+        schedule: c.schedule || '',
+      }));
+      if (mapped.length > 0) set({ crawlers: mapped });
     } catch {
       // API 실패 시 mock 데이터 유지
     } finally {

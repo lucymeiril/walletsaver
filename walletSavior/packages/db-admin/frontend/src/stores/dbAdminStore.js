@@ -20,19 +20,47 @@ const useDbAdminStore = create((set, get) => ({
 
   /* ── 상품 ── */
   products: mockProducts,
-  addProduct: (product) =>
-    set((s) => ({ products: [...s.products, { ...product, id: `p-${Date.now()}` }] })),
-  updateProduct: (id, data) =>
-    set((s) => ({ products: s.products.map((p) => (p.id === id ? { ...p, ...data } : p)) })),
-  deleteProduct: (id) =>
-    set((s) => ({ products: s.products.filter((p) => p.id !== id) })),
+  addProduct: async (product) => {
+    try {
+      const result = await api.createProduct(product);
+      await get().fetchProducts();
+      return result;
+    } catch {
+      // 오프라인 모드: 로컬 상태만 업데이트
+      set((s) => ({ products: [...s.products, { ...product, id: `p-${Date.now()}` }] }));
+    }
+  },
+  updateProduct: async (id, data) => {
+    try {
+      await api.updateProduct(id, data);
+      await get().fetchProducts();
+    } catch {
+      set((s) => ({ products: s.products.map((p) => (p.id === id ? { ...p, ...data } : p)) }));
+    }
+  },
+  deleteProduct: async (id) => {
+    try {
+      await api.deleteProduct(id);
+      await get().fetchProducts();
+    } catch {
+      set((s) => ({ products: s.products.filter((p) => p.id !== id) }));
+    }
+  },
 
   fetchProducts: async () => {
     set({ loading: true, error: null });
     try {
       const data = await api.getProducts();
       const list = Array.isArray(data) ? data : data.products ?? data.data ?? [];
-      if (list.length > 0) set({ products: list });
+      // API 상품 → 프론트엔드 형식으로 변환 (basePrice/currentAvg/tier 기본값)
+      const mapped = list.map((p) => ({
+        ...p,
+        category: p.category || p.category_id || '',
+        basePrice: p.basePrice ?? p.base_price ?? 0,
+        currentAvg: p.currentAvg ?? p.current_avg ?? 0,
+        tier: p.tier || 'good',
+      }));
+      if (mapped.length > 0) set({ products: mapped });
     } catch {
       // mock 유지
     } finally {
@@ -42,14 +70,32 @@ const useDbAdminStore = create((set, get) => ({
 
   /* ── 카테고리 (트리 구조) ── */
   categories: mockCategories,
-  addCategory: (parentId, category) =>
-    set((s) => ({
-      categories: addToTree(s.categories, parentId, { ...category, id: `cat-${Date.now()}`, children: [], productCount: 0 }),
-    })),
-  updateCategory: (id, data) =>
-    set((s) => ({ categories: updateInTree(s.categories, id, data) })),
-  deleteCategory: (id) =>
-    set((s) => ({ categories: removeFromTree(s.categories, id) })),
+  addCategory: async (parentId, category) => {
+    try {
+      await api.createCategory({ ...category, parent_id: parentId });
+      await get().fetchCategories();
+    } catch {
+      set((s) => ({
+        categories: addToTree(s.categories, parentId, { ...category, id: `cat-${Date.now()}`, children: [], productCount: 0 }),
+      }));
+    }
+  },
+  updateCategory: async (id, data) => {
+    try {
+      await api.updateCategory(id, data);
+      await get().fetchCategories();
+    } catch {
+      set((s) => ({ categories: updateInTree(s.categories, id, data) }));
+    }
+  },
+  deleteCategory: async (id) => {
+    try {
+      await api.deleteCategory(id);
+      await get().fetchCategories();
+    } catch {
+      set((s) => ({ categories: removeFromTree(s.categories, id) }));
+    }
+  },
 
   fetchCategories: async () => {
     set({ loading: true, error: null });
@@ -66,12 +112,34 @@ const useDbAdminStore = create((set, get) => ({
 
   /* ── 키워드 ── */
   keywords: mockKeywords,
-  addKeyword: (kw) =>
-    set((s) => ({ keywords: [...s.keywords, { ...kw, id: `kw-${Date.now()}` }] })),
-  updateKeyword: (id, data) =>
-    set((s) => ({ keywords: s.keywords.map((k) => (k.id === id ? { ...k, ...data } : k)) })),
-  deleteKeyword: (id) =>
-    set((s) => ({ keywords: s.keywords.filter((k) => k.id !== id) })),
+  addKeyword: async (kw) => {
+    try {
+      await api.createKeyword(kw);
+      // 키워드 목록 갱신 (API에 목록 조회가 있으면 사용)
+      try {
+        const data = await api.getKeywords();
+        const list = Array.isArray(data) ? data : data.keywords ?? data.data ?? [];
+        if (list.length > 0) set({ keywords: list });
+      } catch { /* 갱신 실패 시 로컬 추가 */ }
+    } catch {
+      set((s) => ({ keywords: [...s.keywords, { ...kw, id: `kw-${Date.now()}` }] }));
+    }
+  },
+  updateKeyword: async (id, data) => {
+    try {
+      await api.updateKeyword(id, data);
+    } catch {
+      set((s) => ({ keywords: s.keywords.map((k) => (k.id === id ? { ...k, ...data } : k)) }));
+    }
+  },
+  deleteKeyword: async (id) => {
+    try {
+      await api.deleteKeyword(id);
+      set((s) => ({ keywords: s.keywords.filter((k) => k.id !== id) }));
+    } catch {
+      set((s) => ({ keywords: s.keywords.filter((k) => k.id !== id) }));
+    }
+  },
 
   /* ── 가격 ── */
   priceHistories: mockPriceHistories,
