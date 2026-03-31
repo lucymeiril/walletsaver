@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react';
-import { Pencil, ImagePlus, X, Send, Eye, MessageSquare, Clock } from 'lucide-react';
+import { useState, useRef, useEffect, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Pencil, ImagePlus, X, Send, Eye, MessageSquare, Clock, Search } from 'lucide-react';
 import { COMMUNITY_POSTS, PRODUCTS, fmt, verifyPrice } from '../../data/mockData';
 import useStore from '../../stores/appStore';
 import s from './CommunityPage.module.css';
@@ -10,6 +11,7 @@ const BOARD_TABS = [
 ];
 const CATS = ['전체', '마트', '온라인', '외식', '기타'];
 const WRITE_CATS = ['마트', '온라인', '외식', '기타'];
+const POSTS_PER_PAGE = 10;
 
 const VERIFY_STYLES = {
   great_deal: { bg: 'rgba(52,211,153,.1)', color: 'var(--green)', icon: '🔥' },
@@ -19,11 +21,24 @@ const VERIFY_STYLES = {
 };
 
 export default function CommunityPage() {
+  const location = useLocation();
   const [board, setBoard] = useState('hotdeal');
   const [filter, setFilter] = useState('전체');
   const [showWrite, setShowWrite] = useState(false);
   const [detail, setDetail] = useState(null);
-  const { isLoggedIn, addToast, login } = useStore();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState('latest');
+  const [page, setPage] = useState(1);
+  const { isLoggedIn, addToast } = useStore();
+
+  useEffect(() => {
+    const openPostId = location.state?.openPostId;
+    if (openPostId) {
+      const post = COMMUNITY_POSTS.find((p) => p.id === openPostId);
+      if (post) setDetail(post);
+      window.history.replaceState({}, '');
+    }
+  }, [location.state]);
 
   // Write form state
   const [wTitle, setWTitle] = useState('');
@@ -35,7 +50,28 @@ export default function CommunityPage() {
   const [wImages, setWImages] = useState([]);
   const fileRef = useRef(null);
 
-  const filtered = (filter === '전체' ? COMMUNITY_POSTS : COMMUNITY_POSTS.filter(p => p.cat === filter));
+  const filteredAndSorted = useMemo(() => {
+    let posts = filter === '전체' ? [...COMMUNITY_POSTS] : COMMUNITY_POSTS.filter(p => p.cat === filter);
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
+      posts = posts.filter(p =>
+        p.title.toLowerCase().includes(q) || (p.body && p.body.toLowerCase().includes(q))
+      );
+    }
+
+    if (sortBy === 'popular') {
+      posts.sort((a, b) => ((b.hotVotes || 0) - (b.coldVotes || 0)) - ((a.hotVotes || 0) - (a.coldVotes || 0)));
+    } else if (sortBy === 'comments') {
+      posts.sort((a, b) => (b.commentData?.length || b.comments || 0) - (a.commentData?.length || a.comments || 0));
+    }
+
+    return posts;
+  }, [filter, searchQuery, sortBy]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredAndSorted.length / POSTS_PER_PAGE));
+  const safePage = Math.min(page, totalPages);
+  const paginatedPosts = filteredAndSorted.slice((safePage - 1) * POSTS_PER_PAGE, safePage * POSTS_PER_PAGE);
 
   const matchedProduct = PRODUCTS.find(p => wProduct.includes(p.name));
   const verification = wPrice && matchedProduct ? verifyPrice(Number(wPrice), matchedProduct.avg) : null;
@@ -66,10 +102,25 @@ export default function CommunityPage() {
 
   const handleWriteBtn = () => {
     if (!isLoggedIn) {
-      login({ name: '데모유저', email: 'demo@wallet.com' });
-      addToast('데모 로그인 완료! 이제 글을 작성할 수 있습니다.', 'success');
+      addToast('로그인이 필요합니다', 'error');
+      return;
     }
     setShowWrite(!showWrite);
+  };
+
+  const handleFilterChange = (f) => {
+    setFilter(f);
+    setPage(1);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setPage(1);
+  };
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+    setPage(1);
   };
 
   return (
@@ -124,7 +175,7 @@ export default function CommunityPage() {
               {WRITE_CATS.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
             <input
-              placeholder="품목명 (선택 — DB 자동 비교)"
+              placeholder="품목명 (선택 — 자동 시세 비교)"
               value={wProduct}
               onChange={e => setWProduct(e.target.value)}
               list="product-list"
@@ -176,11 +227,11 @@ export default function CommunityPage() {
             }}>
               <span>{verification.emoji}</span>
               <span>{verification.label}</span>
-              {matchedProduct && <span className={s.verifyDetail}>DB 평균: {fmt(matchedProduct.avg)}원</span>}
+              {matchedProduct && <span className={s.verifyDetail}>평균 시세: {fmt(matchedProduct.avg)}원</span>}
             </div>
           )}
           {!matchedProduct && wProduct && (
-            <div className={s.noMatch}>ℹ️ DB에 없는 품목입니다. 검증 없이 등록됩니다.</div>
+            <div className={s.noMatch}>ℹ️ 시세 데이터에 없는 품목입니다. 검증 없이 등록됩니다.</div>
           )}
           {verification && !verification.canPost && (
             <div className={s.blocked}>⛔ 등록 차단됨 — 허위 가격이 의심됩니다.</div>
@@ -192,13 +243,32 @@ export default function CommunityPage() {
         </div>
       )}
 
+      {/* Search & Sort */}
+      <div className={s.searchSortRow}>
+        <div className={s.searchWrap}>
+          <Search size={16} className={s.searchIcon} />
+          <input
+            className={s.searchInput}
+            value={searchQuery}
+            onChange={handleSearchChange}
+            placeholder="게시글 검색..."
+            autoComplete="off"
+          />
+        </div>
+        <select className={s.sortSel} value={sortBy} onChange={handleSortChange}>
+          <option value="latest">최신순</option>
+          <option value="popular">인기순</option>
+          <option value="comments">댓글순</option>
+        </select>
+      </div>
+
       {/* Category Filter */}
       <div className={s.filterRow}>
         {CATS.map(t => (
           <button
             key={t}
             className={`${s.tab} ${filter === t ? s.tabActive : ''}`}
-            onClick={() => setFilter(t)}
+            onClick={() => handleFilterChange(t)}
           >
             {t}
           </button>
@@ -207,7 +277,7 @@ export default function CommunityPage() {
 
       {/* Post List */}
       <div className={s.list}>
-        {filtered.map(p => (
+        {paginatedPosts.map(p => (
           <div key={p.id} className={s.post} onClick={() => setDetail(p)}>
             <span className={s.postCat}>{p.cat}</span>
             <div className={s.postBody}>
@@ -228,6 +298,7 @@ export default function CommunityPage() {
                 <span>{p.time}</span>
                 <span>조회 {p.views}</span>
                 <span>💬 {p.commentData?.length || p.comments}</span>
+                <span>🔥 {p.hotVotes || 0} / ❄️ {p.coldVotes || 0}</span>
               </div>
             </div>
             {p.priceVsAvg !== null && (
@@ -237,7 +308,33 @@ export default function CommunityPage() {
             )}
           </div>
         ))}
+        {paginatedPosts.length === 0 && (
+          <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text3)' }}>
+            검색 결과가 없습니다.
+          </div>
+        )}
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className={s.pagination}>
+          <button
+            className={s.pageBtn}
+            disabled={safePage <= 1}
+            onClick={() => setPage(p => Math.max(1, p - 1))}
+          >
+            ← 이전
+          </button>
+          <span className={s.pageInfo}>{safePage} / {totalPages}</span>
+          <button
+            className={s.pageBtn}
+            disabled={safePage >= totalPages}
+            onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+          >
+            다음 →
+          </button>
+        </div>
+      )}
 
       {/* Detail Modal */}
       {detail && <PostDetailModal post={detail} onClose={() => setDetail(null)} />}
@@ -287,12 +384,13 @@ function PostDetailModal({ post, onClose }) {
           <div className={s.modalStats}>
             <Eye size={14} /> {post.views}
             <MessageSquare size={14} /> {comments.length}
+            <span>🔥 {post.hotVotes || 0} / ❄️ {post.coldVotes || 0}</span>
           </div>
 
-          {/* DB Price Badge */}
+          {/* Price Badge */}
           {matchedProduct && post.priceVsAvg !== null && (
             <div className={`${s.dbBadge} ${post.priceVsAvg < -20 ? s.dbBadgeDeal : s.dbBadgeOk}`}>
-              🎯 DB 기반 적정가: {fmt(matchedProduct.avg)}원 · 현재 평균 대비 {post.priceVsAvg}%
+              🎯 평균 시세: {fmt(matchedProduct.avg)}원 · 현재 평균 대비 {post.priceVsAvg}%
             </div>
           )}
 

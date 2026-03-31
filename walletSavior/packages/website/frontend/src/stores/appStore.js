@@ -61,18 +61,24 @@ const useStore = create(
 
       // 장보기 리스트 (Shopping List)
       shoppingList: [],
-      addToShoppingList: (productId, quantity = 1) => set((state) => {
-        const existing = state.shoppingList.find(item => item.productId === productId);
+      addToShoppingList: (item) => set((state) => {
+        const id = item.productId ?? item.id ?? item.name;
+        const existing = state.shoppingList.find(i => (i.productId ?? i.id ?? i.name) === id);
         if (existing) {
           return {
-            shoppingList: state.shoppingList.map(item =>
-              item.productId === productId
-                ? { ...item, quantity: item.quantity + quantity }
-                : item
+            shoppingList: state.shoppingList.map(i =>
+              (i.productId ?? i.id ?? i.name) === id
+                ? { ...i, quantity: i.quantity + (item.quantity ?? 1) }
+                : i
             )
           };
         }
-        return { shoppingList: [...state.shoppingList, { productId, quantity }] };
+        return {
+          shoppingList: [
+            ...state.shoppingList,
+            { productId: id, name: item.name, price: item.price, unit: item.unit || '', icon: item.icon || '🛒', quantity: item.quantity ?? 1 },
+          ],
+        };
       }),
       removeFromShoppingList: (productId) => set((state) => ({
         shoppingList: state.shoppingList.filter(item => item.productId !== productId)
@@ -107,6 +113,12 @@ const useStore = create(
       nearbyRestaurants: [],
       setNearbyRestaurants: (restaurants) => set({ nearbyRestaurants: restaurants }),
 
+      // 테마
+      theme: 'light',
+      toggleTheme: () => set((state) => ({
+        theme: state.theme === 'light' ? 'dark' : 'light',
+      })),
+
       // 필터/정렬 환경설정
       filterPreferences: {
         hotdealCategory: 'all',
@@ -123,6 +135,7 @@ const useStore = create(
     {
       name: 'wallet-savior-store',
       partialize: (state) => ({
+        theme: state.theme,
         favorites: state.favorites,
         recentSearches: state.recentSearches,
         shoppingList: state.shoppingList,

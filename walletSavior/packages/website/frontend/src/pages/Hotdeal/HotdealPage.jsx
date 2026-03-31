@@ -1,4 +1,5 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { X, Info, Eye, MessageSquare, Clock, Send } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { HOTDEALS, HOTDEAL_FILTERS, PRODUCTS, fmt, genPriceHistory } from '../../data/mockData';
@@ -19,12 +20,22 @@ function getTier(price, origPrice) {
 }
 
 export default function HotdealPage() {
+  const location = useLocation();
   const [filter, setFilter] = useState('all');
   const [source, setSource] = useState('전체');
   const [sort, setSort] = useState('time');
   const [detail, setDetail] = useState(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [votes, setVotes] = useState({});
+
+  useEffect(() => {
+    const openDealId = location.state?.openDealId;
+    if (openDealId) {
+      const deal = HOTDEALS.find((d) => d.id === openDealId);
+      if (deal) setDetail(deal);
+      window.history.replaceState({}, '');
+    }
+  }, [location.state]);
 
   const allItems = useMemo(() => {
     let items = filter === 'all' ? [...HOTDEALS] : HOTDEALS.filter(d => d.cat === filter);
@@ -128,14 +139,14 @@ export default function HotdealPage() {
                     )}
                     {vsAvg !== null && (
                       <span className={`${s.dbBadge} ${vsAvg > 20 ? s.dbGreat : vsAvg > 0 ? s.dbOk : s.dbWarn}`}
-                        title="DB 수집 평균 가격과 비교한 결과">
-                        DB 대비 {vsAvg > 0 ? '-' : '+'}{Math.abs(vsAvg)}%
+                        title="수집된 평균 시세와 비교한 결과">
+                        시세 대비 {vsAvg > 0 ? '-' : '+'}{Math.abs(vsAvg)}%
                         <span className={s.dbInfo}><Info size={11} /></span>
                       </span>
                     )}
                   </div>
                 </div>
-                <div className={s.cardMeta}>👁️ {d.views} · 💬 {d.comments}</div>
+                <div className={s.cardMeta}>👁️ {d.views} · 💬 {d.comments} · 🔥 {d.hotVotes || 0} / ❄️ {d.coldVotes || 0}</div>
                 <div className={s.voteRow} onClick={e => e.stopPropagation()}>
                   <button
                     className={`${s.voteBtn} ${vote === 'hot' ? s.voteBtnHot : ''}`}
@@ -191,6 +202,11 @@ function HotdealDetailModal({ item, votes, onVote, onClose }) {
           <div className={s.modalMeta}>
             <span className={s.source}>{item.source}</span>
             <span className={s.time}><Clock size={12} /> {item.time}</span>
+            {item.url && (
+              <a href={item.url} target="_blank" rel="noopener noreferrer" className={s.sourceLink} onClick={e => e.stopPropagation()}>
+                🔗 원본 보기
+              </a>
+            )}
           </div>
           <h3 className={s.modalTitle}>{item.title}</h3>
 
@@ -205,6 +221,7 @@ function HotdealDetailModal({ item, votes, onVote, onClose }) {
           <div className={s.modalStats}>
             <Eye size={14} /> {item.views}
             <MessageSquare size={14} /> {item.comments}
+            <span>🔥 {item.hotVotes || 0} / ❄️ {item.coldVotes || 0}</span>
           </div>
 
           {/* 투표 */}

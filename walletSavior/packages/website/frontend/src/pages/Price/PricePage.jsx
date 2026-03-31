@@ -10,7 +10,7 @@ import s from './PricePage.module.css';
 export default function PricePage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { selectedProduct, setSelectedProduct, addFavorite, removeFavorite, isFavorite, addRecentSearch } = useStore();
+  const { selectedProduct, setSelectedProduct, addFavorite, removeFavorite, isFavorite, addRecentSearch, addToShoppingList, addToast } = useStore();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [range, setRange] = useState(30);
@@ -170,6 +170,16 @@ export default function PricePage() {
             >
               <Heart size={20} fill={isFavorite(product.id) ? 'currentColor' : 'none'} />
             </button>
+            <button
+              className={s.cartBtn}
+              onClick={() => {
+                addToShoppingList({ productId: product.id, name: product.name, price: displayCur, unit: product.unit, icon: product.icon });
+                addToast(`${product.name}을(를) 장보기 리스트에 추가했어요`, 'success');
+              }}
+              title="장보기에 추가"
+            >
+              🛒 장보기에 추가
+            </button>
           </div>
 
           {/* 속성 변형 */}
@@ -255,10 +265,10 @@ export default function PricePage() {
             </ResponsiveContainer>
           </div>
 
-          {/* 고인물 모드 */}
+          {/* 상세 분석 모드 */}
           <div className={s.expertToggle} onClick={() => setExpertMode(!expertMode)}>
             <div>
-              <div className={s.expertLabel}>🧙 고인물 모드</div>
+              <div className={s.expertLabel}>📊 상세 분석 모드</div>
               <div className={s.expertDesc}>상세 필터와 통계 패널 열기</div>
             </div>
             <div className={`${s.toggleSwitch} ${expertMode ? s.toggleActive : ''}`} />

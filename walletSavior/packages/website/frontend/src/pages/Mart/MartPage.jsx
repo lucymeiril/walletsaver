@@ -1,6 +1,8 @@
 import { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { MART_DATA, PRODUCTS, MARTS, fmt } from '../../data/mockData';
+import useStore from '../../stores/appStore';
+import Modal from '../../components/common/Modal';
 import s from './MartPage.module.css';
 
 function getCategories(items) {
@@ -28,6 +30,9 @@ export default function MartPage() {
   const [catFilter, setCatFilter] = useState('전체');
   const [flyerIdx, setFlyerIdx] = useState(0);
   const [flyerZoomed, setFlyerZoomed] = useState(false);
+  const [saleDetail, setSaleDetail] = useState(null);
+
+  const { addToShoppingList, addToast } = useStore();
 
   const mart = MART_DATA[activeMart];
   const categories = useMemo(() => getCategories(mart.items), [mart]);
@@ -135,7 +140,7 @@ export default function MartPage() {
               const matched = PRODUCTS.find(p => item.name.includes(p.name));
               const diff = matched ? item.sale - matched.avg : null;
               return (
-                <div key={i} className={s.card}>
+                <div key={i} className={s.card} onClick={() => setSaleDetail({ ...item, martName: mart.name, period: mart.period })}>
                   <div className={s.cardName}>{item.name}</div>
                   <div className={s.cardPrices}>
                     <span className={s.sale}>{fmt(item.sale)}원</span>
@@ -144,10 +149,23 @@ export default function MartPage() {
                   </div>
                   {diff !== null && (
                     <div className={s.vs}>
-                      DB 평균 대비 <em className={diff <= 0 ? s.cheap : s.expensive}>{diff <= 0 ? fmt(diff) : `+${fmt(diff)}`}원</em>
+                      시세 평균 대비 <em className={diff <= 0 ? s.cheap : s.expensive}>{diff <= 0 ? fmt(diff) : `+${fmt(diff)}`}원</em>
                     </div>
                   )}
-                  <span className={s.event}>{item.event}</span>
+                  <div className={s.cardBottom}>
+                    <span className={s.event}>{item.event}</span>
+                    <button
+                      className={s.cartMini}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addToShoppingList({ name: item.name, price: item.sale, icon: '🏪' });
+                        addToast(`${item.name}을(를) 장보기 리스트에 추가했어요`, 'success');
+                      }}
+                      title="장보기에 추가"
+                    >
+                      🛒
+                    </button>
+                  </div>
                   <div className={s.validity}>~ {mart.period.split('~')[1]?.trim() || mart.period}</div>
                 </div>
               );
@@ -192,6 +210,69 @@ export default function MartPage() {
           </div>
         </div>
       )}
+
+      {/* Sale Detail Modal */}
+      {saleDetail && (() => {
+        const matched = PRODUCTS.find(p => saleDetail.name.includes(p.name));
+        const diffVsAvg = matched ? saleDetail.sale - matched.avg : null;
+        const periodParts = saleDetail.period?.split('~') || [];
+        return (
+          <Modal isOpen={!!saleDetail} onClose={() => setSaleDetail(null)} title={saleDetail.name} size="sm">
+            <div className={s.detailBody}>
+              <div className={s.detailImgWrap}>
+                <img src={saleDetail.img} alt={saleDetail.name} className={s.detailImg} />
+              </div>
+              <div className={s.detailRow}>
+                <span className={s.detailLabel}>판매가</span>
+                <span className={s.detailSale}>{fmt(saleDetail.sale)}원</span>
+              </div>
+              <div className={s.detailRow}>
+                <span className={s.detailLabel}>정가</span>
+                <span className={s.detailOrig}>{fmt(saleDetail.orig)}원</span>
+              </div>
+              <div className={s.detailRow}>
+                <span className={s.detailLabel}>할인율</span>
+                <span className={s.detailDisc}>-{saleDetail.disc}%</span>
+              </div>
+              <div className={s.detailRow}>
+                <span className={s.detailLabel}>행사 기간</span>
+                <span>{periodParts[0]?.trim() || ''} ~ {periodParts[1]?.trim() || ''}</span>
+              </div>
+              <div className={s.detailRow}>
+                <span className={s.detailLabel}>마트</span>
+                <span>{saleDetail.martName}</span>
+              </div>
+              <div className={s.detailRow}>
+                <span className={s.detailLabel}>행사 유형</span>
+                <span className={s.detailEvent}>{saleDetail.event}</span>
+              </div>
+              {diffVsAvg !== null && (
+                <div className={s.detailRow}>
+                  <span className={s.detailLabel}>시세 평균 대비</span>
+                  <span className={diffVsAvg <= 0 ? s.cheap : s.expensive}>
+                    {diffVsAvg <= 0 ? fmt(diffVsAvg) : `+${fmt(diffVsAvg)}`}원
+                  </span>
+                </div>
+              )}
+              <div className={s.detailActions}>
+                <button
+                  className={s.detailCartBtn}
+                  onClick={() => {
+                    addToShoppingList({ name: saleDetail.name, price: saleDetail.sale, icon: '🏪' });
+                    addToast(`${saleDetail.name}을(를) 장보기 리스트에 추가했어요`, 'success');
+                    setSaleDetail(null);
+                  }}
+                >
+                  🛒 장보기에 추가
+                </button>
+                <button className={s.detailCloseBtn} onClick={() => setSaleDetail(null)}>
+                  닫기
+                </button>
+              </div>
+            </div>
+          </Modal>
+        );
+      })()}
     </div>
   );
 }

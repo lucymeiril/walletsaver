@@ -4,18 +4,18 @@
    ============================================================ */
 
 :root {
-  /* ── 색상 — 다크 글라스모피즘 ── */
-  --bg:      #0b0f19;
-  --bg2:     #111827;
-  --bg3:     #1a2035;
-  --surface: #1e293b;
-  --glass:   rgba(30, 41, 59, 0.55);
-  --glass2:  rgba(30, 41, 59, 0.35);
-  --border:  rgba(148, 163, 184, 0.12);
-  --border2: rgba(148, 163, 184, 0.22);
-  --text:    #f1f5f9;
-  --text2:   #94a3b8;
-  --text3:   #64748b;
+  /* ── 색상 — 라이트 모드 (기본) ── */
+  --bg:      #f8fafc;
+  --bg2:     #f1f5f9;
+  --bg3:     #e2e8f0;
+  --surface: #ffffff;
+  --glass:   rgba(255, 255, 255, 0.75);
+  --glass2:  rgba(255, 255, 255, 0.45);
+  --border:  rgba(15, 23, 42, 0.08);
+  --border2: rgba(15, 23, 42, 0.15);
+  --text:    #0f172a;
+  --text2:   #475569;
+  --text3:   #94a3b8;
 
   /* ── Color Palette ── */
   /* Primary */
@@ -89,13 +89,13 @@
   --red:     #f87171;
   --pink:    #f472b6;
 
-  /* 가격 등급 */
-  --tier-ultra: #f87171;
-  --tier-great: #fb923c;
-  --tier-good:  #34d399;
-  --tier-ok:    #a78bfa;
-  --tier-wait:  #94a3b8;
-  --tier-bad:   #64748b;
+  /* 가격 등급 (green=좋음, red=나쁨) */
+  --tier-ultra: #22c55e;
+  --tier-great: #38bdf8;
+  --tier-good:  #fbbf24;
+  --tier-ok:    #fb923c;
+  --tier-wait:  #f87171;
+  --tier-bad:   #ef4444;
 
   /* 소셜 */
   --kakao: #FEE500;
@@ -144,10 +144,10 @@
   --radius2: 16px;
 
   /* ── Shadows ── */
-  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md:  0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
-  --shadow-lg:  0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
-  --shadow-xl:  0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md:  0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg:  0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl:  0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   --shadow-glow: 0 0 20px rgba(56, 189, 248, 0.15);
 
   /* ── Breakpoints (reference values — use in media queries) ── */
@@ -166,7 +166,7 @@
   --dur-slow: 0.4s;
 }
 
-/* ── Dark mode (default is already dark, this is a toggle-ready selector) ── */
+/* ── Dark mode ── */
 [data-theme="dark"] {
   --bg:      #0b0f19;
   --bg2:     #111827;
@@ -179,24 +179,9 @@
   --text:    #f1f5f9;
   --text2:   #94a3b8;
   --text3:   #64748b;
-}
 
-/* ── Light mode ── */
-[data-theme="light"] {
-  --bg:      #f8fafc;
-  --bg2:     #f1f5f9;
-  --bg3:     #e2e8f0;
-  --surface: #ffffff;
-  --glass:   rgba(255, 255, 255, 0.75);
-  --glass2:  rgba(255, 255, 255, 0.45);
-  --border:  rgba(15, 23, 42, 0.08);
-  --border2: rgba(15, 23, 42, 0.15);
-  --text:    #0f172a;
-  --text2:   #475569;
-  --text3:   #94a3b8;
-
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md:  0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg:  0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+  --shadow-xl:  0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
 }

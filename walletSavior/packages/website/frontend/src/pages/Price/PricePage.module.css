@@ -146,6 +146,25 @@
 .favBtn:hover { color: var(--red); transform: scale(1.15); }
 .favActive { color: var(--red); }
 
+/* Cart Button */
+.cartBtn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: .82rem;
+  font-weight: var(--fw-semi);
+  color: var(--color-primary);
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.cartBtn:hover {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: var(--color-primary);
+}
+
 /* Variant Selector */
 .variantSec { background: var(--surface); border-radius: var(--radius); padding: 14px 18px; border: 1px solid var(--border); }
 .variantLabel { font-size: .78rem; color: var(--text3); display: block; margin-bottom: 8px; }

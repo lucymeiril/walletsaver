@@ -1,6 +1,6 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Wallet, Bell, User, X, Search } from 'lucide-react';
+import { Wallet, Bell, User, X, Search, Sun, Moon } from 'lucide-react';
 import useStore from '../../stores/appStore';
 import s from './Header.module.css';
 
@@ -17,8 +17,12 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const { isLoggedIn, logout, notifications } = useStore();
+  const theme = useStore((s) => s.theme);
+  const toggleTheme = useStore((s) => s.toggleTheme);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setMobileOpen(false);
@@ -40,6 +44,14 @@ export default function Header() {
   };
 
   const unreadCount = notifications?.filter(n => !n.read).length || 0;
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      navigate('/price', { state: { searchQuery: searchQuery.trim() } });
+      setSearchQuery('');
+      setSearchOpen(false);
+    }
+  };
 
   return (
     <>
@@ -70,6 +82,15 @@ export default function Header() {
               aria-label="검색"
             >
               <Search size={20} />
+            </button>
+
+            <button
+              className={s.iconBtn}
+              onClick={toggleTheme}
+              aria-label={theme === 'light' ? '다크 모드' : '라이트 모드'}
+              title={theme === 'light' ? '다크 모드로 전환' : '라이트 모드로 전환'}
+            >
+              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
             </button>
 
             <button className={s.iconBtn} aria-label="알림">
@@ -103,6 +124,9 @@ export default function Header() {
                 className={s.searchInput}
                 placeholder="상품, 가격, 핫딜 검색..."
                 autoFocus
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
               />
               <button className={s.searchClose} onClick={() => setSearchOpen(false)}>
                 <X size={18} />

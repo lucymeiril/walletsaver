@@ -1,10 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import BottomNav from './components/layout/BottomNav';
 import ToastContainer from './components/common/ToastContainer';
 import LoginModal from './components/modals/LoginModal';
+import useStore from './stores/appStore';
+import ShoppingListPanel from './components/common/ShoppingListPanel';
 
 // Lazy-load 페이지 (코드 스플리팅 — 초기 로드 최소화)
 const HomePage      = lazy(() => import('./pages/Home/HomePage'));
@@ -23,6 +25,12 @@ function PageLoader() {
 }
 
 export default function App() {
+  const theme = useStore((s) => s.theme);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
   return (
     <>
       <Header />
@@ -43,6 +51,7 @@ export default function App() {
       <BottomNav />
       <ToastContainer />
       <LoginModal />
+      <ShoppingListPanel />
     </>
   );
 }

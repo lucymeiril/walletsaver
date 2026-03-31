@@ -22,6 +22,7 @@ export default function HomePage() {
     setSelectedProduct,
     favorites, addFavorite, removeFavorite, isFavorite,
     recentSearches, addRecentSearch, clearRecentSearches,
+    addToShoppingList, addToast,
   } = useStore();
 
   const [query, setQuery] = useState('');
@@ -185,7 +186,7 @@ export default function HomePage() {
               else tierClass = s.ok;
             }
             return (
-              <div key={d.id} className={s.dealCard} onClick={() => navigate('/hotdeal')}>
+              <div key={d.id} className={s.dealCard} onClick={() => navigate('/hotdeal', { state: { openDealId: d.id } })}>
                 <div className={s.dealHead}>
                   <span className={s.dealSource}>{d.source}</span>
                   <span className={s.dealTime}>{d.time}</span>
@@ -221,13 +222,26 @@ export default function HomePage() {
               <div key={p.id} className={s.priceCard} onClick={() => selectProduct(p)}>
                 <div className={s.priceCardTop}>
                   <span className={s.priceCardIcon}>{p.icon}</span>
-                  <button
-                    className={`${s.favBtn} ${fav ? s.favActive : ''}`}
-                    onClick={(e) => { e.stopPropagation(); fav ? removeFavorite(p.id) : addFavorite(p.id); }}
-                    title={fav ? '관심 해제' : '관심 등록'}
-                  >
-                    <Heart size={14} fill={fav ? 'currentColor' : 'none'} />
-                  </button>
+                  <div className={s.priceCardBtns}>
+                    <button
+                      className={s.cartSmall}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addToShoppingList({ productId: p.id, name: p.name, price: p.cur, unit: p.unit, icon: p.icon });
+                        addToast(`${p.name}을(를) 장보기 리스트에 추가했어요`, 'success');
+                      }}
+                      title="장보기에 추가"
+                    >
+                      🛒
+                    </button>
+                    <button
+                      className={`${s.favBtn} ${fav ? s.favActive : ''}`}
+                      onClick={(e) => { e.stopPropagation(); fav ? removeFavorite(p.id) : addFavorite(p.id); }}
+                      title={fav ? '관심 해제' : '관심 등록'}
+                    >
+                      <Heart size={14} fill={fav ? 'currentColor' : 'none'} />
+                    </button>
+                  </div>
                 </div>
                 <div className={s.priceCardName}>{p.name} ({p.unit})</div>
                 <div className={s.priceCardPrice}>{fmt(p.cur)}원</div>
@@ -268,7 +282,20 @@ export default function HomePage() {
                 <span className={s.martSaleOrig}>{fmt(item.orig)}원</span>
                 <span className={s.martSaleDisc}>-{item.disc}%</span>
               </div>
-              <span className={s.martSaleEvent}>{activeMart.name} · {item.event}</span>
+              <div className={s.martSaleBottom}>
+                <span className={s.martSaleEvent}>{activeMart.name} · {item.event}</span>
+                <button
+                  className={s.cartSmall}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addToShoppingList({ name: item.name, price: item.sale, icon: '🏪' });
+                    addToast(`${item.name}을(를) 장보기 리스트에 추가했어요`, 'success');
+                  }}
+                  title="장보기에 추가"
+                >
+                  🛒
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -308,7 +335,7 @@ export default function HomePage() {
         </div>
         <div className={s.communityList}>
           {COMMUNITY_POSTS.slice(0, 5).map(p => (
-            <div key={p.id} className={s.communityItem} onClick={() => navigate('/community')}>
+            <div key={p.id} className={s.communityItem} onClick={() => navigate('/community', { state: { openPostId: p.id } })}>
               <span className={s.comCat}>{p.cat}</span>
               <div className={s.comBody}>
                 <div className={s.comTitle}>{p.title}</div>

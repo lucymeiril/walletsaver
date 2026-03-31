@@ -309,6 +309,24 @@
   color: var(--text2);
 }
 
+/* Source link button */
+.sourceLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: .78rem;
+  font-weight: var(--fw-semi);
+  color: var(--accent);
+  background: rgba(56,189,248,.08);
+  border: 1px solid rgba(56,189,248,.2);
+  text-decoration: none;
+  transition: all var(--dur) var(--ease);
+  margin-left: auto;
+}
+.sourceLink:hover { background: rgba(56,189,248,.15); border-color: var(--accent); }
+
 /* Responsive */
 @media(max-width:768px) {
   .grid { grid-template-columns: 1fr; padding: 0 12px 100px; }
