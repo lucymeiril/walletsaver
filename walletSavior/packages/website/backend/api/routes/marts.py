@@ -4,11 +4,15 @@
 엔드포인트:
     GET /api/marts                    — 마트 목록
     GET /api/marts/{name}/promotions  — 마트별 프로모션
+    GET /api/marts/{store}/flyers     — 마트별 전단지 이미지/링크
+    GET /api/marts/flyers             — 전체 마트 전단지 정보
 """
 
+import logging
 from fastapi import APIRouter, Request, HTTPException
 from api.schemas.common import ApiResponse
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
@@ -43,6 +47,28 @@ async def list_marts(request: Request):
 
 # 프론트엔드 key → DB source 매핑 (프론트엔드는 "lotte", DB는 "lottemart")
 _STORE_ALIAS = {"lotte": "lottemart"}
+
+
+@router.get("/flyers")
+async def get_all_flyers():
+    """전체 마트 전단지 정보."""
+    from services.flyer_service import get_all_flyer_data
+    try:
+        data = await get_all_flyer_data()
+        return ApiResponse(data=data)
+    except Exception as e:
+        logger.error("전단지 전체 조회 실패: %s", e)
+        raise HTTPException(status_code=500, detail="전단지 데이터를 불러올 수 없습니다")
+
+
+@router.get("/{store}/flyers")
+async def get_store_flyers(store: str):
+    """마트별 전단지 이미지/링크."""
+    from services.flyer_service import get_flyer_data
+    data = await get_flyer_data(store)
+    if data is None:
+        raise HTTPException(status_code=404, detail=f"마트 '{store}'의 전단지를 찾을 수 없습니다")
+    return ApiResponse(data=data)
 
 
 @router.get("/{store}/promotions")
