@@ -31,24 +31,40 @@ export default function DataReviewPage() {
   const [memo, setMemo] = useState('');
   const [showRejectInput, setShowRejectInput] = useState(null);
   const [showMemoInput, setShowMemoInput] = useState(null);
+  const [detailCache, setDetailCache] = useState({});
 
   useEffect(() => {
     fetchIngestions();
   }, [fetchIngestions]);
+
+  // 카드 확장 시 상세 데이터(items 포함)를 fetch하여 캐시
+  const expandCard = async (id) => {
+    if (expandedId === id) {
+      setExpandedId(null);
+      return;
+    }
+    setExpandedId(id);
+    if (!detailCache[id]) {
+      try {
+        const detail = await fetch(`/api/ingestions/${id}`).then(r => r.json());
+        setDetailCache(prev => ({ ...prev, [id]: detail }));
+      } catch { /* 실패 시 summary만 표시 */ }
+    }
+  };
 
   const filtered = filter === 'all'
     ? ingestions
     : ingestions.filter((item) => item.status === filter);
 
   const handleApprove = async (id) => {
-    await reviewIngestion(id, { action: 'approve', memo });
+    await reviewIngestion(id, { action: 'approve', notes: memo || undefined });
     setMemo('');
     setExpandedId(null);
   };
 
   const handleReject = async (id) => {
     if (!rejectReason.trim()) return;
-    await reviewIngestion(id, { action: 'reject', reason: rejectReason });
+    await reviewIngestion(id, { action: 'reject', notes: rejectReason, rejected_reason: rejectReason });
     setRejectReason('');
     setShowRejectInput(null);
     setExpandedId(null);
@@ -56,7 +72,7 @@ export default function DataReviewPage() {
 
   const handleMemo = async (id) => {
     if (!memo.trim()) return;
-    await reviewIngestion(id, { action: 'memo', memo });
+    await reviewIngestion(id, { action: 'approve', notes: memo });
     setMemo('');
     setShowMemoInput(null);
   };
@@ -113,14 +129,16 @@ export default function DataReviewPage() {
           {filtered.map((item) => {
             const st = STATUS_MAP[item.status] || STATUS_MAP.pending;
             const isExpanded = expandedId === item.id;
-            const items = item.items || item.data || [];
-            const qualityScore = item.qualityScore ?? item.quality_score ?? 0;
+            // 확장 시 상세 데이터에서 items를 가져옴 (list 응답에는 items가 없음)
+            const detail = detailCache[item.id];
+            const items = detail?.items || item.items || item.data || [];
+            const qualityScore = detail?.quality_score ?? item.qualityScore ?? item.quality_score ?? 0;
             const schemaType = item.schemaType ?? item.schema_type ?? 'Unknown';
 
             return (
               <div key={item.id} className={styles.card}>
                 {/* Card Header */}
-                <div className={styles.cardHeader} onClick={() => setExpandedId(isExpanded ? null : item.id)}>
+                <div className={styles.cardHeader} onClick={() => expandCard(item.id)}>
                   <div className={styles.cardInfo}>
                     <span className={styles.crawlerName}>{item.crawlerName || item.crawler_name || item.crawler_id || '알 수 없음'}</span>
                     <span className={styles.timestamp}>

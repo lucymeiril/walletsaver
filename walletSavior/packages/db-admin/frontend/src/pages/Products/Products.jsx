@@ -14,7 +14,7 @@ export default function Products() {
   const [modal, setModal] = useState(null); // null | { mode: 'add'|'edit'|'detail', product? }
   const [form, setForm] = useState({});
 
-  const allCategories = useMemo(() => [...new Set(products.map(p => p.category))].sort(), [products]);
+  const allCategories = useMemo(() => [...new Set(products.map(p => p.category).filter(Boolean))].sort(), [products]);
 
   useEffect(() => {
     fetchProducts();

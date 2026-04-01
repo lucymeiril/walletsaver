@@ -64,7 +64,27 @@ def add_keyword(
     synonyms: Optional[list[str]] = None,
     category_id: Optional[str] = None,
 ) -> dict:
-    """키워드 추가"""
+    """키워드 추가 — 이미 존재하는 단어라면 동의어/카테고리를 병합하여 갱신한다."""
+    existing = session.execute(
+        select(Keyword).where(Keyword.word == word)
+    ).scalar_one_or_none()
+
+    if existing:
+        # 기존 키워드에 동의어 병합, 카테고리 갱신
+        merged_syns = list(set((existing.synonyms or []) + (synonyms or [])))
+        existing.synonyms = merged_syns
+        if category_id:
+            existing.category_id = category_id
+        session.commit()
+        session.refresh(existing)
+        return {
+            "id": existing.id,
+            "word": existing.word,
+            "synonyms": existing.synonyms,
+            "category_id": existing.category_id,
+            "merged": True,
+        }
+
     kw = Keyword(
         word=word,
         synonyms=synonyms or [],

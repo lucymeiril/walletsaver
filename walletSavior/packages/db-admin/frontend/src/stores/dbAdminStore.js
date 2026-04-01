@@ -313,7 +313,14 @@ const useDbAdminStore = create((set, get) => ({
   reviewIngestion: async (id, reviewData) => {
     set({ loading: true, error: null });
     try {
-      const result = await api.reviewIngestion(id, reviewData);
+      // 프론트엔드 필드명 → 백엔드 ReviewRequest 스키마 변환
+      const apiData = {
+        action: reviewData.action,
+        notes: reviewData.notes || reviewData.memo || undefined,
+        approved_item_indices: reviewData.approved_item_indices || reviewData.selectedItems || undefined,
+        rejected_reason: reviewData.rejected_reason || reviewData.reason || undefined,
+      };
+      const result = await api.reviewIngestion(id, apiData);
       await get().fetchIngestions();
       return result;
     } catch (err) {

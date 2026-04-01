@@ -121,7 +121,7 @@ export default function Crawlers() {
 
       <div className={styles.grid}>
         {runResult && (
-          <div style={{
+          <div key="run-result" style={{
             gridColumn: '1 / -1',
             padding: '12px 16px',
             borderRadius: '8px',

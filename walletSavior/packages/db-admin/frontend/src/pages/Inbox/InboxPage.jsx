@@ -24,8 +24,19 @@ export default function InboxPage() {
     fetchIngestionStats();
   }, [fetchIngestions, fetchIngestionStats]);
 
+  // 카드 클릭 시 상세 데이터(items 포함)를 fetch
+  const openDetail = async (item) => {
+    setCheckedItems(new Set());
+    try {
+      const detail = await fetch(`/api/ingestions/${item.id}`).then(r => r.json());
+      setDetailItem(detail);
+    } catch {
+      setDetailItem(item);
+    }
+  };
+
   const handleApproveAll = async (id) => {
-    await reviewIngestion(id, { action: 'approve_all', memo });
+    await reviewIngestion(id, { action: 'approve', notes: memo || undefined });
     setDetailItem(null);
     setMemo('');
   };
@@ -33,7 +44,7 @@ export default function InboxPage() {
   const handlePartialApprove = async (id) => {
     const selectedIndices = [...checkedItems];
     if (selectedIndices.length === 0) return;
-    await reviewIngestion(id, { action: 'partial_approve', selectedItems: selectedIndices, memo });
+    await reviewIngestion(id, { action: 'partial', approved_item_indices: selectedIndices, notes: memo || undefined });
     setDetailItem(null);
     setCheckedItems(new Set());
     setMemo('');
@@ -41,7 +52,7 @@ export default function InboxPage() {
 
   const handleReject = async (id) => {
     if (!rejectReason.trim()) return;
-    await reviewIngestion(id, { action: 'reject', reason: rejectReason });
+    await reviewIngestion(id, { action: 'reject', notes: rejectReason, rejected_reason: rejectReason });
     setDetailItem(null);
     setRejectReason('');
     setShowReject(false);
@@ -115,7 +126,7 @@ export default function InboxPage() {
             const crawlerMemo = item.crawlerMemo ?? item.crawler_memo ?? '';
 
             return (
-              <div key={item.id} className={styles.card} onClick={() => { setDetailItem(item); setCheckedItems(new Set()); }}>
+              <div key={item.id} className={styles.card} onClick={() => openDetail(item)}>
                 <div className={styles.cardContent}>
                   <div className={styles.cardLeft}>
                     <span className={styles.crawlerName}>{item.crawlerName || item.crawler_name || item.crawler_id || '알 수 없음'}</span>
