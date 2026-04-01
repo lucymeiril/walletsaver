@@ -206,6 +206,29 @@
   display: inline-block;
 }
 
+/* Petrol prices in Naver search results */
+.petrolPrices { display: flex; flex-direction: column; gap: 2px; text-align: right; }
+.petrolLine { display: flex; gap: 6px; align-items: center; justify-content: flex-end; }
+.petrolLineSub { display: flex; gap: 6px; align-items: center; justify-content: flex-end; opacity: .7; font-size: .75rem; }
+.petrolLabel { font-size: .68rem; color: var(--text3); min-width: 32px; }
+.petrolVal { font-weight: var(--fw-bold); font-size: .95rem; color: var(--accent); white-space: nowrap; }
+.petrolVal::after { content: '원'; font-size: .72rem; font-weight: normal; color: var(--text3); margin-left: 1px; }
+
+/* External link in modal */
+.externalLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: rgba(99,102,241,.12);
+  color: var(--accent);
+  text-decoration: none;
+  font-size: .85rem;
+  transition: background .2s;
+}
+.externalLink:hover { background: rgba(99,102,241,.2); }
+
 /* Average */
 .avg {
   display: flex;

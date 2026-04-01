@@ -21,6 +21,16 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+
+def _parse_fuel_price(value) -> int | None:
+    """'1,785' 형태의 연료 가격 문자열 → 정수 변환."""
+    if not value:
+        return None
+    try:
+        return int(str(value).replace(",", "").replace("원", "").strip())
+    except (ValueError, TypeError):
+        return None
+
 # Playwright는 브라우저 인스턴스 생성 비용이 크므로 스레드 풀을 재사용
 _executor = ThreadPoolExecutor(max_workers=2)
 
@@ -113,6 +123,21 @@ def _search_via_playwright_sync(query: str, lat: float, lng: float, max_items: i
                 "rating": place.get("reviewCount", 0),
                 "menu_info": place.get("menuInfo", ""),
             }
+
+            # 주유소: petrolInfo에서 연료 가격 추출
+            petrol = place.get("petrolInfo")
+            if petrol and isinstance(petrol, dict):
+                item["petrol_info"] = {
+                    "gasoline": _parse_fuel_price(petrol.get("gasPrice")),
+                    "premium_gasoline": _parse_fuel_price(petrol.get("hGasPrice")),
+                    "diesel": _parse_fuel_price(petrol.get("dieselPrice")),
+                    "lpg": _parse_fuel_price(petrol.get("lpgPrice")),
+                    "is_self": bool(petrol.get("isSelf")),
+                    "is_24h": bool(petrol.get("is24Opened")),
+                    "has_car_wash": bool(petrol.get("hasCarWash")),
+                    "brand": (petrol.get("petrolCompany") or {}).get("name", "").strip(),
+                }
+
             if item["name"]:
                 items.append(item)
 

@@ -280,21 +280,33 @@ export default function LocalPage() {
               <div className={s.list}>
                 {naverResults.map((r, i) => {
                   const priceInfo = getRepresentativePrice(r.menu_info);
+                  const petrol = r.petrol_info;
                   return (
-                    <div key={i} className={s.item} onClick={() => setSelectedNaverPlace(r)}>
+                    <div key={i} className={s.item} onClick={() => petrol ? setSelectedGas({ name: r.name, addr: r.address, brand: petrol.brand, gasoline: petrol.gasoline, diesel: petrol.diesel, lpg: petrol.lpg, is_self: petrol.is_self, is_24h: petrol.is_24h, has_car_wash: petrol.has_car_wash, premium_gasoline: petrol.premium_gasoline, naverUrl: r.url, image_url: r.image_url, tel: r.tel, distance: r.distance }) : setSelectedNaverPlace(r)}>
                       <span className={`${s.rank} ${i === 0 ? s.rank1 : i === 1 ? s.rank2 : i === 2 ? s.rank3 : ''}`}>
                         {i + 1}
                       </span>
                       <div className={s.itemBody}>
-                        <div className={s.itemName}>{r.name}</div>
+                        <div className={s.itemName}>
+                          {r.name}
+                          {petrol?.brand && <span className={s.itemBrand}>{petrol.brand}</span>}
+                        </div>
                         <div className={s.itemAddr}>
                           {r.category}
+                          {petrol?.is_self && <span className={s.selfTag}>셀프</span>}
+                          {petrol?.is_24h && <span className={s.selfTag}>24h</span>}
                           {r.rating > 0 && <span className={s.rating}> ⭐ {r.rating}</span>}
                         </div>
                         {r.address && <div className={s.itemAddr}>{r.address}</div>}
                       </div>
                       <div className={s.itemRight}>
-                        {priceInfo ? (
+                        {petrol ? (
+                          <div className={s.petrolPrices}>
+                            {petrol.gasoline && <div className={s.petrolLine}><span className={s.petrolLabel}>휘발유</span><span className={s.petrolVal}>{fmt(petrol.gasoline)}</span></div>}
+                            {petrol.diesel && <div className={s.petrolLine}><span className={s.petrolLabel}>경유</span><span className={s.petrolVal}>{fmt(petrol.diesel)}</span></div>}
+                            {petrol.lpg && <div className={s.petrolLineSub}><span className={s.petrolLabel}>LPG</span><span>{fmt(petrol.lpg)}</span></div>}
+                          </div>
+                        ) : priceInfo ? (
                           <>
                             <span className={s.itemPrice}>평균 {fmt(priceInfo.avg)}원</span>
                             {priceInfo.count > 1 && (
@@ -512,11 +524,12 @@ export default function LocalPage() {
 }
 
 function GasDetailContent({ station, avgGas, avgGasoline, avgDiesel, onFocusMap }) {
-  const isSelf = station.name.includes('셀프');
-  const dist = station.distance != null ? (station.distance / 1000).toFixed(1) : (0.5 + station.idx * 0.3).toFixed(1);
+  const isSelf = station.is_self || station.name.includes('셀프');
+  const dist = station.distance != null ? (parseFloat(station.distance) > 100 ? (parseFloat(station.distance) / 1000).toFixed(1) : parseFloat(station.distance).toFixed(1)) : (station.idx != null ? (0.5 + station.idx * 0.3).toFixed(1) : '?');
 
   const fuelRows = [
     { label: '휘발유', key: 'gasoline', avg: avgGasoline || avgGas },
+    { label: '고급 휘발유', key: 'premium_gasoline', avg: Math.round((avgGasoline || avgGas) * 1.15) },
     { label: '경유', key: 'diesel', avg: avgDiesel || Math.round(avgGas * 0.9) },
     { label: 'LPG', key: 'lpg', avg: Math.round((avgGasoline || avgGas) * 0.62) },
   ];
@@ -525,10 +538,12 @@ function GasDetailContent({ station, avgGas, avgGasoline, avgDiesel, onFocusMap 
     <div className={s.modalDetail}>
       <div className={s.detailHeader}>
         <h3 className={s.detailName}>{station.name}</h3>
-        <span className={s.detailBrand}>{station.brand}</span>
+        {station.brand && <span className={s.detailBrand}>{station.brand}</span>}
         {isSelf && <span className={s.selfTag}>셀프</span>}
+        {station.is_24h && <span className={s.selfTag}>24h</span>}
       </div>
-      <p className={s.detailAddr}>📍 {station.addr}</p>
+      <p className={s.detailAddr}>📍 {station.addr || station.address}</p>
+      {station.tel && <p className={s.detailDist}>📞 {station.tel}</p>}
       <p className={s.detailDist}>📏 현재 위치에서 ~{dist}km</p>
 
       <div className={s.detailSection}>
@@ -547,9 +562,11 @@ function GasDetailContent({ station, avgGas, avgGasoline, avgDiesel, onFocusMap 
               <div key={f.key} className={s.fuelRow}>
                 <span className={s.fuelLabel}>{f.label}</span>
                 <span className={s.fuelPrice}>{fmt(price)}원/L</span>
-                <span className={s.fuelDiff} style={{ color: diff <= 0 ? 'var(--green)' : 'var(--red)' }}>
-                  지역 평균 대비 {diff <= 0 ? fmt(diff) : `+${fmt(diff)}`}원
-                </span>
+                {f.avg > 0 && (
+                  <span className={s.fuelDiff} style={{ color: diff <= 0 ? 'var(--green)' : 'var(--red)' }}>
+                    지역 평균 대비 {diff <= 0 ? fmt(diff) : `+${fmt(diff)}`}원
+                  </span>
+                )}
               </div>
             );
           })}
@@ -565,12 +582,20 @@ function GasDetailContent({ station, avgGas, avgGasoline, avgDiesel, onFocusMap 
           </div>
           <div className={s.infoItem}>
             <span className={s.infoLabel}>운영 시간</span>
-            <span className={s.infoValue}>{isSelf ? '24시간' : '06:00 ~ 23:00'}</span>
+            <span className={s.infoValue}>{station.is_24h ? '24시간' : '06:00 ~ 23:00'}</span>
           </div>
-          <div className={s.infoItem}>
-            <span className={s.infoLabel}>브랜드</span>
-            <span className={s.infoValue}>{station.brand}</span>
-          </div>
+          {station.has_car_wash && (
+            <div className={s.infoItem}>
+              <span className={s.infoLabel}>세차장</span>
+              <span className={s.infoValue}>✅ 있음</span>
+            </div>
+          )}
+          {station.brand && (
+            <div className={s.infoItem}>
+              <span className={s.infoLabel}>브랜드</span>
+              <span className={s.infoValue}>{station.brand}</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -578,6 +603,11 @@ function GasDetailContent({ station, avgGas, avgGasoline, avgDiesel, onFocusMap 
         <button className={s.mapFocusBtn} onClick={() => onFocusMap(station.name)}>
           🗺️ 지도에서 위치 보기
         </button>
+        {station.naverUrl && (
+          <a href={station.naverUrl} target="_blank" rel="noopener noreferrer" className={s.externalLink}>
+            📍 네이버 지도에서 보기 →
+          </a>
+        )}
       </div>
     </div>
   );
