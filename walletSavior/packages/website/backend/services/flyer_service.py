@@ -6,6 +6,7 @@
 """
 
 import logging
+import re
 import asyncio
 from datetime import datetime, timedelta
 from typing import Optional
@@ -13,12 +14,18 @@ from urllib.parse import urljoin
 
 logger = logging.getLogger(__name__)
 
+# ── 이마트 전단지 URL ────────────────────────────────────────
+# http://emart.kr/Wl7I 의 최종 리다이렉트 목적지
+EMART_LEAFLET_URL = (
+    "https://eapp.emart.com/leaflet/leafletView_EL.do?trcknCode=main_leaflet"
+)
+
 # ── 마트별 전단지 소스 정보 ──────────────────────────────────
 MART_FLYER_SOURCES = {
     "emart": {
         "name": "이마트",
         "color": "#FFD700",
-        "web_url": "https://emart.ssg.com/event/leaflet.ssg",
+        "web_url": EMART_LEAFLET_URL,
         "description": "이마트 디지털 전단지 — 주간 할인 행사",
     },
     "homeplus": {
@@ -62,7 +69,12 @@ def _weekday_kr(dt: datetime) -> str:
 
 
 async def _try_scrape_emart_flyer() -> list[dict]:
-    """이마트 SSG 전단지 이미지 URL 스크래핑을 시도한다."""
+    """이마트 전단지 이미지 URL을 스크래핑한다.
+
+    eapp.emart.com 전단지 페이지는 서버 사이드 렌더링(SSR)으로,
+    <img data-src="..."> 태그에 모든 전단지 페이지 이미지가 포함되어 있다.
+    Playwright 없이 httpx만으로 충분하다.
+    """
     try:
         import httpx
 
@@ -74,32 +86,21 @@ async def _try_scrape_emart_flyer() -> list[dict]:
             ),
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.8",
+            "Referer": "https://eapp.emart.com/",
         }
 
-        async with httpx.AsyncClient(timeout=15, follow_redirects=True) as client:
-            resp = await client.get(
-                "https://emart.ssg.com/event/leaflet.ssg", headers=headers
-            )
+        async with httpx.AsyncClient(timeout=20, follow_redirects=True) as client:
+            resp = await client.get(EMART_LEAFLET_URL, headers=headers)
             if resp.status_code != 200:
                 logger.warning("Emart flyer page returned %d", resp.status_code)
                 return []
 
-            html = resp.text
-            images = _extract_flyer_images_from_html(html, "https://emart.ssg.com")
+            images = _extract_emart_leaflet_images(resp.text)
             if images:
-                return images
-
-            # Try SSG event/leaflet API patterns
-            resp2 = await client.get(
-                "https://emart.ssg.com/disp/leaflet.ssg",
-                headers=headers,
-            )
-            if resp2.status_code == 200:
-                images = _extract_flyer_images_from_html(
-                    resp2.text, "https://emart.ssg.com"
-                )
-                if images:
-                    return images
+                logger.info("Emart flyer: scraped %d page images", len(images))
+            else:
+                logger.warning("Emart flyer: no images found in HTML")
+            return images
 
     except ImportError:
         logger.debug("httpx not installed — skipping Emart flyer scraping")
@@ -108,49 +109,54 @@ async def _try_scrape_emart_flyer() -> list[dict]:
     return []
 
 
-def _extract_flyer_images_from_html(html: str, base_url: str) -> list[dict]:
-    """HTML에서 전단지 이미지 URL을 추출."""
-    import re
+def _extract_emart_leaflet_images(html: str) -> list[dict]:
+    """이마트 전단지 HTML에서 페이지별 이미지 URL을 추출한다.
 
-    images = []
-    # SSG/Emart leaflet images are typically large JPGs in the page
-    # Pattern 1: img tags with leaflet/flyer-related src
-    img_pattern = re.compile(
-        r'<img[^>]+src=["\']([^"\']+(?:leaflet|flyer|event|전단)[^"\']*\.(?:jpg|jpeg|png|webp))["\']',
+    이마트 전단지 페이지 구조:
+      <div class="img_detail d-content" data-width="..." data-height="...">
+        <img src="" data-src="https://stimg.emart.com/upload/news_leaflet/..."
+             alt="전단 10 면 중 1면 (자세한 내용 아래 참조)" class="none">
+        ...
+      </div>
+
+    data-src 속성에 실제 이미지 URL이, alt 텍스트에 페이지 번호가 들어있다.
+    """
+    images: list[dict] = []
+    seen_urls: set[str] = set()
+
+    # 패턴: data-src에 news_leaflet 이미지 + alt에 페이지 번호
+    # alt 텍스트가 data-src 앞/뒤에 올 수 있으므로 전체 img 태그를 파싱
+    img_tag_pattern = re.compile(r"<img\s[^>]*>", re.IGNORECASE | re.DOTALL)
+    data_src_pattern = re.compile(
+        r'data-src=["\']'
+        r"(https?://stimg\.emart\.com/upload/news_leaflet/[^\"']+)"
+        r'["\']',
         re.IGNORECASE,
     )
-    for match in img_pattern.finditer(html):
-        url = match.group(1)
-        if not url.startswith("http"):
-            url = urljoin(base_url, url)
-        images.append({"image_url": url, "page_number": len(images) + 1})
-
-    # Pattern 2: Background images in style attributes
-    bg_pattern = re.compile(
-        r'url\(["\']?([^"\')\s]+(?:leaflet|flyer|event)[^"\')\s]*\.(?:jpg|jpeg|png|webp))["\']?\)',
+    alt_page_pattern = re.compile(
+        r'alt=["\'][^"\']*전단\s*\d+\s*면\s*중\s*(\d+)\s*면',
         re.IGNORECASE,
     )
-    for match in bg_pattern.finditer(html):
-        url = match.group(1)
-        if not url.startswith("http"):
-            url = urljoin(base_url, url)
-        images.append({"image_url": url, "page_number": len(images) + 1})
 
-    # Pattern 3: Large images (likely flyer pages) from CDN
-    cdn_pattern = re.compile(
-        r'["\']?(https?://[^"\'>\s]+ssgcdn\.com[^"\'>\s]*\.(?:jpg|jpeg|png|webp))["\']?',
-        re.IGNORECASE,
-    )
-    seen = set()
-    for match in cdn_pattern.finditer(html):
-        url = match.group(1)
-        if url not in seen and any(
-            kw in url.lower()
-            for kw in ["leaflet", "event", "flyer", "1200", "800", "banner"]
-        ):
-            seen.add(url)
-            images.append({"image_url": url, "page_number": len(images) + 1})
+    for tag_match in img_tag_pattern.finditer(html):
+        tag = tag_match.group(0)
+        src_match = data_src_pattern.search(tag)
+        if not src_match:
+            continue
 
+        url = src_match.group(1)
+        if url in seen_urls:
+            continue
+        seen_urls.add(url)
+
+        # alt 텍스트에서 페이지 번호 추출
+        page_match = alt_page_pattern.search(tag)
+        page_num = int(page_match.group(1)) if page_match else len(images) + 1
+
+        images.append({"image_url": url, "page_number": page_num})
+
+    # 페이지 번호로 정렬
+    images.sort(key=lambda x: x["page_number"])
     return images
 
 
