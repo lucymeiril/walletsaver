@@ -66,6 +66,8 @@ function parseMenuItems(menuInfo) {
 export default function LocalPage() {
   const [tab, setTab] = useState('gas');
   const [fuel, setFuel] = useState('gasoline');
+  const [sortBy, setSortBy] = useState('gasoline');
+  const [sortDir, setSortDir] = useState('asc');
   const [restCat, setRestCat] = useState('all');
   const [selfOnly, setSelfOnly] = useState(false);
   const [location, setLocation] = useState('');
@@ -79,6 +81,8 @@ export default function LocalPage() {
   const { addToast } = useStore();
   const [selectedNaverPlace, setSelectedNaverPlace] = useState(null);
   const [mapFocusUrl, setMapFocusUrl] = useState(null);
+  const [apiStations, setApiStations] = useState(null);
+  const [gasLoading, setGasLoading] = useState(false);
 
   // 네이버 지도 iframe URL — 사용자 위치 기반
   const naverMapUrl = useMemo(() => {
@@ -86,6 +90,32 @@ export default function LocalPage() {
   }, [mapLat, mapLng]);
 
   const currentMapUrl = mapFocusUrl || naverMapUrl;
+
+  // Fetch gas stations from API, fallback to mock data
+  useEffect(() => {
+    let cancelled = false;
+    async function fetchGasStations() {
+      setGasLoading(true);
+      try {
+        const sortParam = sortBy === 'distance' ? 'distance'
+          : sortDir === 'desc' ? 'price_desc' : 'price_asc';
+        const fuelParam = sortBy === 'distance' ? fuel : sortBy;
+        const res = await fetch(
+          `/api/gas/nearby?lat=${mapLat}&lng=${mapLng}&fuel_type=${fuelParam}&sort=${sortParam}`
+        );
+        const json = await res.json();
+        if (!cancelled && json.data) {
+          setApiStations(json.data);
+        }
+      } catch {
+        if (!cancelled) setApiStations(null);
+      } finally {
+        if (!cancelled) setGasLoading(false);
+      }
+    }
+    fetchGasStations();
+    return () => { cancelled = true; };
+  }, [mapLat, mapLng, sortBy, sortDir, fuel]);
 
   const focusMapOnPlace = useCallback((name, placeUrl) => {
     if (placeUrl) {
@@ -126,15 +156,29 @@ export default function LocalPage() {
   };
 
   const gasStations = useMemo(() => {
-    let stations = [...GAS_STATIONS].filter(g => g[fuel]);
+    const raw = apiStations || GAS_STATIONS.map((g, i) => ({
+      ...g,
+      distance: Math.round(500 + i * 300),
+    }));
+    let stations = [...raw].filter(g => g[fuel]);
     if (selfOnly) stations = stations.filter(g => g.name.includes('셀프'));
-    stations.sort((a, b) => a[fuel] - b[fuel]);
-    return stations;
-  }, [fuel, selfOnly]);
 
-  const avgGas = gasStations.length
-    ? Math.round(gasStations.reduce((sum, g) => sum + g[fuel], 0) / gasStations.length)
+    const key = sortBy === 'distance' ? 'distance' : sortBy;
+    stations.sort((a, b) => {
+      const va = key === 'distance' ? (a.distance ?? Infinity) : (a[key] ?? Infinity);
+      const vb = key === 'distance' ? (b.distance ?? Infinity) : (b[key] ?? Infinity);
+      return sortDir === 'asc' ? va - vb : vb - va;
+    });
+    return stations;
+  }, [fuel, selfOnly, apiStations, sortBy, sortDir]);
+
+  const avgGasoline = gasStations.length
+    ? Math.round(gasStations.filter(g => g.gasoline).reduce((sum, g) => sum + g.gasoline, 0) / gasStations.filter(g => g.gasoline).length)
     : 0;
+  const avgDiesel = gasStations.length
+    ? Math.round(gasStations.filter(g => g.diesel).reduce((sum, g) => sum + g.diesel, 0) / gasStations.filter(g => g.diesel).length)
+    : 0;
+  const avgGas = fuel === 'diesel' ? avgDiesel : avgGasoline;
 
   const filteredRest = restCat === 'all' ? RESTAURANTS : RESTAURANTS.filter(r => r.cat === restCat);
 
@@ -272,13 +316,22 @@ export default function LocalPage() {
 
           {tab === 'gas' ? (
             <>
-              {/* Fuel type */}
-              <div className={s.fuelToggle}>
-                {[['gasoline', '휘발유'], ['diesel', '경유'], ['lpg', 'LPG']].map(([k, l]) => (
-                  <button key={k} className={`${s.fuelBtn} ${fuel === k ? s.fuelActive : ''}`} onClick={() => setFuel(k)}>
-                    {l}
-                  </button>
-                ))}
+              {/* Sort controls */}
+              <div className={s.sortControls}>
+                <div className={s.sortByGroup}>
+                  {[['gasoline', '휘발유'], ['diesel', '경유'], ['distance', '거리']].map(([k, l]) => (
+                    <button key={k} className={`${s.sortByBtn} ${sortBy === k ? s.sortByActive : ''}`} onClick={() => setSortBy(k)}>
+                      {l}순
+                    </button>
+                  ))}
+                </div>
+                <button
+                  className={s.sortDirBtn}
+                  onClick={() => setSortDir(d => d === 'asc' ? 'desc' : 'asc')}
+                  title={sortDir === 'asc' ? '오름차순' : '내림차순'}
+                >
+                  {sortDir === 'asc' ? '↑ 오름차순' : '↓ 내림차순'}
+                </button>
               </div>
 
               {/* Self filter */}
@@ -289,14 +342,31 @@ export default function LocalPage() {
                 >
                   {selfOnly ? '✅' : '⬜'} 셀프 주유소만
                 </button>
+                {gasLoading && <span className={s.gasLoadingTag}>불러오는 중…</span>}
+              </div>
+
+              {/* Average summary */}
+              <div className={s.avgSummary}>
+                <div className={s.avgItem}>
+                  <span className={s.avgLabel}>⛽ 휘발유 평균</span>
+                  <strong className={s.avgValue}>{fmt(avgGasoline)}원</strong>
+                </div>
+                <div className={s.avgDivider} />
+                <div className={s.avgItem}>
+                  <span className={s.avgLabel}>🛢️ 경유 평균</span>
+                  <strong className={s.avgValue}>{fmt(avgDiesel)}원</strong>
+                </div>
               </div>
 
               {/* Station list */}
               <div className={s.list}>
                 {gasStations.map((g, i) => {
                   const isSelf = g.name.includes('셀프');
+                  const gasDiff = g.gasoline ? g.gasoline - avgGasoline : null;
+                  const dieselDiff = g.diesel ? g.diesel - avgDiesel : null;
+                  const distKm = g.distance != null ? (g.distance / 1000).toFixed(1) : null;
                   return (
-                    <div key={i} className={s.item} onClick={() => setSelectedGas({ ...g, idx: i })}>
+                    <div key={g.id || i} className={s.item} onClick={() => setSelectedGas({ ...g, idx: i })}>
                       <span className={`${s.rank} ${i === 0 ? s.rank1 : i === 1 ? s.rank2 : i === 2 ? s.rank3 : ''}`}>
                         {i + 1}
                       </span>
@@ -308,18 +378,40 @@ export default function LocalPage() {
                         <div className={s.itemAddr}>{g.addr}</div>
                         {isSelf && <span className={s.selfTag}>셀프</span>}
                       </div>
-                      <div className={s.itemRight}>
-                        <span className={s.itemPrice}>{fmt(g[fuel])}원</span>
-                        <div className={s.itemDist}>~{(0.5 + i * 0.3).toFixed(1)}km</div>
+                      <div className={s.dualPriceWrap}>
+                        {g.gasoline != null && (
+                          <div className={`${s.dualPriceLine} ${sortBy === 'gasoline' ? s.dualPricePrimary : s.dualPriceSecondary}`}>
+                            <span className={s.dualPriceLabel}>휘발유</span>
+                            <span className={s.dualPriceValue}>{fmt(g.gasoline)}</span>
+                            {gasDiff !== null && (
+                              <span className={s.dualPriceDiff} style={{ color: gasDiff <= 0 ? 'var(--green)' : 'var(--red)' }}>
+                                {gasDiff <= 0 ? fmt(gasDiff) : `+${fmt(gasDiff)}`}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                        {g.diesel != null && (
+                          <div className={`${s.dualPriceLine} ${sortBy === 'diesel' ? s.dualPricePrimary : s.dualPriceSecondary}`}>
+                            <span className={s.dualPriceLabel}>경유</span>
+                            <span className={s.dualPriceValue}>{fmt(g.diesel)}</span>
+                            {dieselDiff !== null && (
+                              <span className={s.dualPriceDiff} style={{ color: dieselDiff <= 0 ? 'var(--green)' : 'var(--red)' }}>
+                                {dieselDiff <= 0 ? fmt(dieselDiff) : `+${fmt(dieselDiff)}`}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                        {g.lpg != null && (
+                          <div className={`${s.dualPriceLine} ${s.dualPriceLpg}`}>
+                            <span className={s.dualPriceLabel}>LPG</span>
+                            <span className={s.dualPriceValue}>{fmt(g.lpg)}</span>
+                          </div>
+                        )}
+                        {distKm && <div className={s.itemDist}>📏 {distKm}km</div>}
                       </div>
                     </div>
                   );
                 })}
-              </div>
-
-              <div className={s.avg}>
-                <span>전국 평균</span>
-                <strong>{fmt(avgGas)}원/L</strong>
               </div>
             </>
           ) : (
@@ -389,6 +481,8 @@ export default function LocalPage() {
           <GasDetailContent
             station={selectedGas}
             avgGas={avgGas}
+            avgGasoline={avgGasoline}
+            avgDiesel={avgDiesel}
             onFocusMap={(name) => { focusMapOnPlace(name); setSelectedGas(null); }}
           />
         )}
@@ -417,14 +511,14 @@ export default function LocalPage() {
   );
 }
 
-function GasDetailContent({ station, avgGas, onFocusMap }) {
+function GasDetailContent({ station, avgGas, avgGasoline, avgDiesel, onFocusMap }) {
   const isSelf = station.name.includes('셀프');
-  const dist = (0.5 + station.idx * 0.3).toFixed(1);
+  const dist = station.distance != null ? (station.distance / 1000).toFixed(1) : (0.5 + station.idx * 0.3).toFixed(1);
 
   const fuelRows = [
-    { label: '휘발유', key: 'gasoline', avg: avgGas },
-    { label: '경유', key: 'diesel', avg: Math.round(avgGas * 0.9) },
-    { label: 'LPG', key: 'lpg', avg: Math.round(avgGas * 0.62) },
+    { label: '휘발유', key: 'gasoline', avg: avgGasoline || avgGas },
+    { label: '경유', key: 'diesel', avg: avgDiesel || Math.round(avgGas * 0.9) },
+    { label: 'LPG', key: 'lpg', avg: Math.round((avgGasoline || avgGas) * 0.62) },
   ];
 
   return (

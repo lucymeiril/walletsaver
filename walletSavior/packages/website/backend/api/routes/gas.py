@@ -40,11 +40,11 @@ async def nearby_gas_stations(
             if dist <= radius:
                 stations.append({**s, "distance": round(dist)})
 
-        if sort == "price_asc":
+        if sort in ("price_asc", "price_desc"):
             def sort_key(s):
                 price = s.get(fuel_type)
                 return price if price is not None else float("inf")
-            stations.sort(key=sort_key)
+            stations.sort(key=sort_key, reverse=(sort == "price_desc"))
         elif sort == "distance":
             stations.sort(key=lambda s: s["distance"])
 

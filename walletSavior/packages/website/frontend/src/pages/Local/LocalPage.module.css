@@ -264,6 +264,9 @@
   .map { min-height: 250px; }
   .hdr { padding: 20px 12px 14px; }
   .layout { padding: 0 12px 100px; }
+  .sortControls { flex-direction: column; gap: 6px; }
+  .avgSummary { flex-direction: column; }
+  .avgDivider { width: 100%; height: 1px; }
 }
 
 /* Detail Modal Content */
@@ -543,3 +546,134 @@
   transition: all var(--dur) var(--ease);
 }
 .naverLinkBtn:hover { background: rgba(56,189,248,.06); }
+
+/* ============================================================
+   Sort Controls
+   ============================================================ */
+.sortControls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sortByGroup {
+  display: flex;
+  gap: 3px;
+  flex: 1;
+}
+.sortByBtn {
+  flex: 1;
+  padding: 7px 4px;
+  border-radius: 8px;
+  font-size: .78rem;
+  font-weight: var(--fw-medium);
+  text-align: center;
+  color: var(--text3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.sortByBtn:hover { border-color: var(--border2); }
+.sortByActive {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(56,189,248,.06);
+}
+.sortDirBtn {
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: .78rem;
+  font-weight: var(--fw-semi);
+  color: var(--accent);
+  background: var(--glass);
+  border: 1px solid var(--accent);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--dur) var(--ease);
+}
+.sortDirBtn:hover { background: rgba(56,189,248,.1); }
+
+/* ============================================================
+   Average Summary
+   ============================================================ */
+.avgSummary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--glass);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.avgItem {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+.avgLabel { font-size: .75rem; color: var(--text3); white-space: nowrap; }
+.avgValue { font-size: .9rem; color: var(--yellow); white-space: nowrap; }
+.avgDivider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* Loading indicator */
+.gasLoadingTag {
+  font-size: .75rem;
+  color: var(--accent);
+  margin-left: auto;
+}
+
+/* ============================================================
+   Dual Price Display (gasoline + diesel side by side)
+   ============================================================ */
+.dualPriceWrap {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 120px;
+  flex-shrink: 0;
+}
+.dualPriceLine {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+}
+.dualPricePrimary .dualPriceLabel {
+  font-size: .65rem;
+  color: var(--accent);
+  font-weight: var(--fw-semi);
+}
+.dualPricePrimary .dualPriceValue {
+  font-size: .95rem;
+  font-weight: var(--fw-bold);
+  color: var(--accent);
+}
+.dualPriceSecondary .dualPriceLabel {
+  font-size: .62rem;
+  color: var(--text3);
+}
+.dualPriceSecondary .dualPriceValue {
+  font-size: .82rem;
+  font-weight: var(--fw-medium);
+  color: var(--text2);
+}
+.dualPriceLpg .dualPriceLabel {
+  font-size: .6rem;
+  color: var(--text3);
+}
+.dualPriceLpg .dualPriceValue {
+  font-size: .75rem;
+  color: var(--text3);
+}
+.dualPriceDiff {
+  font-size: .65rem;
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+}
