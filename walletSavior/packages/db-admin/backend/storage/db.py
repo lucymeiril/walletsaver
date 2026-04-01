@@ -348,12 +348,17 @@ class DBStorage(StorageContract):
                 source = item.source
                 if source not in grouped:
                     grouped[source] = []
+                raw = item.raw_data or {}
                 grouped[source].append({
                     "name": self._get_product_name(session, item.product_id) or "",
                     "orig": item.original_price,
                     "sale": item.price,
                     "disc": round(item.discount_rate) if item.discount_rate else 0,
                     "source_url": item.source_url or "",
+                    "image_url": raw.get("image_url", ""),
+                    "event_name": raw.get("event_name", ""),
+                    "unit": raw.get("unit", ""),
+                    "category": raw.get("category", ""),
                 })
 
             result = {}
@@ -660,6 +665,12 @@ class DBStorage(StorageContract):
                     valid_from=item.get("valid_from"),
                     valid_to=item.get("valid_to", item.get("valid_until")),
                     source_url=item.get("source_url", ""),
+                    raw_data={
+                        "image_url": item.get("image_url", ""),
+                        "event_name": item.get("event_name", ""),
+                        "unit": item.get("unit", ""),
+                        "category": item.get("category", ""),
+                    },
                 )
                 session.add(record)
                 count += 1

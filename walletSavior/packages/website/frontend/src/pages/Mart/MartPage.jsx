@@ -1,13 +1,10 @@
-import { useState, useMemo, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
+import { ChevronLeft, ChevronRight, ExternalLink, RefreshCw } from 'lucide-react';
 import { MARTS, fmt } from '../../data/mockData';
 import useStore from '../../stores/appStore';
 import Modal from '../../components/common/Modal';
 import Spinner from '../../components/common/Spinner';
 import s from './MartPage.module.css';
-
-const img = (w, h, text, bg = '1e293b', fg = '94a3b8') =>
-  `https://placehold.co/${w}x${h}/${bg}/${fg}?text=${encodeURIComponent(text)}`;
 
 function getCategories(items) {
   const events = new Set(items.map(i => i.event));
@@ -43,6 +40,12 @@ export default function MartPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Flyer state
+  const [flyerData, setFlyerData] = useState({});
+  const [flyerLoading, setFlyerLoading] = useState(false);
+  const [flyerError, setFlyerError] = useState(null);
+  const [flyerMart, setFlyerMart] = useState('emart');
+
   // Fetch all mart deals on mount (needed for compare view)
   useEffect(() => {
     const martKeys = MARTS.map(m => m.key);
@@ -56,8 +59,11 @@ export default function MartPage() {
               sale: d.price ?? d.sale,
               orig: d.original_price ?? d.orig,
               disc: d.discount_rate ?? d.disc,
-              event: d.event || '할인',
-              img: d.img,
+              event: d.event_name ?? (d.event || '할인'),
+              img: d.image_url ?? d.img ?? '',
+              detailUrl: d.source_url ?? d.detail_url ?? '',
+              unit: d.unit ?? '',
+              store: d.store ?? '',
             })),
           }))
       )
@@ -75,6 +81,43 @@ export default function MartPage() {
       .catch(console.error);
   }, []);
 
+  // Fetch flyer data when entering flyer mode or switching mart
+  const fetchFlyerData = useCallback((store) => {
+    if (flyerData[store]) return; // already loaded
+    setFlyerLoading(true);
+    setFlyerError(null);
+    fetch(`/api/marts/${store}/flyers`)
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      .then(res => {
+        setFlyerData(prev => ({ ...prev, [store]: res.data }));
+      })
+      .catch(err => {
+        console.error('Flyer fetch error:', err);
+        setFlyerError(`${store} 전단지를 불러올 수 없습니다`);
+      })
+      .finally(() => setFlyerLoading(false));
+  }, [flyerData]);
+
+  useEffect(() => {
+    if (mode === 'flyer') {
+      fetchFlyerData(flyerMart);
+      // Preload other marts' flyer data for quick links
+      MARTS.forEach(m => {
+        if (m.key !== flyerMart && !flyerData[m.key]) {
+          fetch(`/api/marts/${m.key}/flyers`)
+            .then(r => r.ok ? r.json() : null)
+            .then(res => {
+              if (res?.data) setFlyerData(prev => ({ ...prev, [m.key]: res.data }));
+            })
+            .catch(() => {});
+        }
+      });
+    }
+  }, [mode, flyerMart, fetchFlyerData]);
+
   const martInfo = MARTS.find(m => m.key === activeMart);
   const martItems = martDeals[activeMart] || [];
   const categories = useMemo(() => getCategories(martItems), [martItems]);
@@ -87,11 +130,9 @@ export default function MartPage() {
   const endOfWeek = new Date(startOfWeek); endOfWeek.setDate(startOfWeek.getDate() + 6);
   const martPeriod = `${startOfWeek.getMonth()+1}/${startOfWeek.getDate()} ~ ${endOfWeek.getMonth()+1}/${endOfWeek.getDate()}`;
 
-  const flyerImages = MARTS.map(m => ({
-    key: m.key,
-    name: m.name,
-    img: img(800, 1200, `${m.name} 전단지`, '1e293b', '94a3b8'),
-  }));
+  const currentFlyer = flyerData[flyerMart];
+  const flyerPages = currentFlyer?.flyer_pages || [];
+  const flyerHasImages = flyerPages.length > 0;
 
   return (
     <div>
@@ -136,36 +177,153 @@ export default function MartPage() {
       {/* Flyer Viewer */}
       {mode === 'flyer' && (
         <div className={s.flyerSection}>
-          <div className={s.flyerViewer}>
-            <img
-              src={flyerImages[flyerIdx].img}
-              alt={`${flyerImages[flyerIdx].name} 전단지`}
-              className={`${s.flyerImg} ${flyerZoomed ? s.flyerImgZoomed : ''}`}
-              onClick={() => setFlyerZoomed(!flyerZoomed)}
-            />
-            <button
-              className={`${s.flyerNav} ${s.flyerPrev}`}
-              onClick={() => setFlyerIdx(prev => (prev - 1 + flyerImages.length) % flyerImages.length)}
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <button
-              className={`${s.flyerNav} ${s.flyerNext}`}
-              onClick={() => setFlyerIdx(prev => (prev + 1) % flyerImages.length)}
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div>
-          <div className={s.flyerDots}>
-            {flyerImages.map((f, i) => (
+          {/* Mart selector for flyer */}
+          <div className={s.flyerMartTabs}>
+            {MARTS.map(m => (
               <button
-                key={f.key}
-                className={`${s.flyerDot} ${i === flyerIdx ? s.flyerDotActive : ''}`}
-                onClick={() => setFlyerIdx(i)}
-                title={f.name}
-              />
+                key={m.key}
+                className={`${s.flyerMartTab} ${flyerMart === m.key ? s.flyerMartTabActive : ''}`}
+                style={flyerMart === m.key ? { borderColor: m.color, color: m.color } : {}}
+                onClick={() => { setFlyerMart(m.key); setFlyerIdx(0); setFlyerZoomed(false); }}
+              >
+                <span className={s.dot} style={{ background: m.color }} />{m.name}
+              </button>
             ))}
           </div>
+
+          {/* Flyer period info */}
+          {currentFlyer && (
+            <div className={s.flyerPeriod}>
+              <span>📅 행사 기간: {currentFlyer.display_period}</span>
+              <a
+                href={currentFlyer.web_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={s.flyerWebLink}
+              >
+                원본 사이트에서 보기 <ExternalLink size={14} />
+              </a>
+            </div>
+          )}
+
+          {/* Loading state */}
+          {flyerLoading && (
+            <div className={s.flyerLoading}>
+              <Spinner />
+              <span>전단지를 불러오는 중...</span>
+            </div>
+          )}
+
+          {/* Error state */}
+          {flyerError && !flyerLoading && (
+            <div className={s.flyerError}>
+              <p>⚠️ {flyerError}</p>
+              <button
+                className={s.flyerRetryBtn}
+                onClick={() => {
+                  setFlyerData(prev => { const next = { ...prev }; delete next[flyerMart]; return next; });
+                  fetchFlyerData(flyerMart);
+                }}
+              >
+                <RefreshCw size={14} /> 다시 시도
+              </button>
+            </div>
+          )}
+
+          {/* Flyer content: images carousel if available */}
+          {!flyerLoading && !flyerError && flyerHasImages && (
+            <>
+              <div className={s.flyerViewer}>
+                <img
+                  src={flyerPages[flyerIdx]?.image_url}
+                  alt={`${currentFlyer.name} 전단지 ${flyerIdx + 1}페이지`}
+                  className={`${s.flyerImg} ${flyerZoomed ? s.flyerImgZoomed : ''}`}
+                  onClick={() => setFlyerZoomed(!flyerZoomed)}
+                />
+                {flyerPages.length > 1 && (
+                  <>
+                    <button
+                      className={`${s.flyerNav} ${s.flyerPrev}`}
+                      onClick={() => setFlyerIdx(prev => (prev - 1 + flyerPages.length) % flyerPages.length)}
+                    >
+                      <ChevronLeft size={20} />
+                    </button>
+                    <button
+                      className={`${s.flyerNav} ${s.flyerNext}`}
+                      onClick={() => setFlyerIdx(prev => (prev + 1) % flyerPages.length)}
+                    >
+                      <ChevronRight size={20} />
+                    </button>
+                  </>
+                )}
+                <div className={s.flyerPageBadge}>
+                  {flyerIdx + 1} / {flyerPages.length}
+                </div>
+              </div>
+              {flyerPages.length > 1 && (
+                <div className={s.flyerDots}>
+                  {flyerPages.map((_, i) => (
+                    <button
+                      key={i}
+                      className={`${s.flyerDot} ${i === flyerIdx ? s.flyerDotActive : ''}`}
+                      onClick={() => setFlyerIdx(i)}
+                      title={`${i + 1}페이지`}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+
+          {/* No images: show link card to view flyer on mart's website */}
+          {!flyerLoading && !flyerError && currentFlyer && !flyerHasImages && (
+            <div className={s.flyerLinkCard}>
+              <div className={s.flyerLinkIcon}>📰</div>
+              <h3 className={s.flyerLinkTitle}>{currentFlyer.name} 전단지</h3>
+              <p className={s.flyerLinkDesc}>{currentFlyer.description}</p>
+              {currentFlyer.display_period && (
+                <p className={s.flyerLinkPeriod}>📅 {currentFlyer.display_period}</p>
+              )}
+              <a
+                href={currentFlyer.web_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={s.flyerLinkBtn}
+              >
+                전단지 보러가기 <ExternalLink size={16} />
+              </a>
+              <p className={s.flyerLinkNote}>
+                {currentFlyer.name} 공식 사이트에서 최신 전단지를 확인하세요
+              </p>
+            </div>
+          )}
+
+          {/* All marts quick links */}
+          {!flyerLoading && (
+            <div className={s.flyerQuickLinks}>
+              <h4 className={s.flyerQuickTitle}>🔗 마트별 전단지 바로가기</h4>
+              <div className={s.flyerQuickGrid}>
+                {MARTS.map(m => {
+                  const data = flyerData[m.key];
+                  const webUrl = data?.web_url;
+                  if (!webUrl) return null;
+                  return (
+                    <a
+                      key={m.key}
+                      href={webUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={s.flyerQuickItem}
+                    >
+                      <span className={s.dot} style={{ background: m.color }} />
+                      <span>{m.name}</span>
+                      <ExternalLink size={12} />
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -237,7 +395,14 @@ export default function MartPage() {
                   <div className={s.compareProductName}>{name}</div>
                   <div className={s.comparePrices}>
                     {Object.entries(martPrices).map(([key, item]) => (
-                      <div key={key} className={`${s.compareMart} ${item.sale === lowest ? s.compareLowest : ''}`}>
+                      <div
+                        key={key}
+                        className={`${s.compareMart} ${item.sale === lowest ? s.compareLowest : ''} ${s.compareMartClickable}`}
+                        onClick={() => {
+                          const mInfo = MARTS.find(m => m.key === key);
+                          setSaleDetail({ ...item, martName: mInfo?.name || item.mart, period: martPeriod });
+                        }}
+                      >
                         <span className={s.compareMartName}>
                           <span className={s.compareMartDot} style={{ background: item.color }} />
                           {item.mart}
@@ -269,9 +434,14 @@ export default function MartPage() {
         return (
           <Modal isOpen={!!saleDetail} onClose={() => setSaleDetail(null)} title={saleDetail.name} size="sm">
             <div className={s.detailBody}>
-              <div className={s.detailImgWrap}>
-                <img src={saleDetail.img} alt={saleDetail.name} className={s.detailImg} />
-              </div>
+              {saleDetail.img && (
+                <div className={s.detailImgWrap}>
+                  <img src={saleDetail.img} alt={saleDetail.name} className={s.detailImg} />
+                  {saleDetail.disc > 0 && (
+                    <span className={s.detailDiscBadge}>-{saleDetail.disc}%</span>
+                  )}
+                </div>
+              )}
               <div className={s.detailRow}>
                 <span className={s.detailLabel}>판매가</span>
                 <span className={s.detailSale}>{fmt(saleDetail.sale)}원</span>
@@ -285,16 +455,28 @@ export default function MartPage() {
                 <span className={s.detailDisc}>-{saleDetail.disc}%</span>
               </div>
               <div className={s.detailRow}>
-                <span className={s.detailLabel}>행사 기간</span>
-                <span>{periodParts[0]?.trim() || ''} ~ {periodParts[1]?.trim() || ''}</span>
+                <span className={s.detailLabel}>행사 유형</span>
+                <span className={s.detailEvent}>{saleDetail.event}</span>
               </div>
+              {saleDetail.unit && (
+                <div className={s.detailRow}>
+                  <span className={s.detailLabel}>규격/단위</span>
+                  <span>{saleDetail.unit}</span>
+                </div>
+              )}
+              {saleDetail.store && (
+                <div className={s.detailRow}>
+                  <span className={s.detailLabel}>판매 매장</span>
+                  <span>{saleDetail.store}</span>
+                </div>
+              )}
               <div className={s.detailRow}>
                 <span className={s.detailLabel}>마트</span>
                 <span>{saleDetail.martName}</span>
               </div>
               <div className={s.detailRow}>
-                <span className={s.detailLabel}>행사 유형</span>
-                <span className={s.detailEvent}>{saleDetail.event}</span>
+                <span className={s.detailLabel}>행사 기간</span>
+                <span>{periodParts[0]?.trim() || ''} ~ {periodParts[1]?.trim() || ''}</span>
               </div>
               {diffVsAvg !== null && (
                 <div className={s.detailRow}>
@@ -305,6 +487,17 @@ export default function MartPage() {
                 </div>
               )}
               <div className={s.detailActions}>
+                {saleDetail.detailUrl && (
+                  <a
+                    href={saleDetail.detailUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={s.detailLinkBtn}
+                  >
+                    <ExternalLink size={16} />
+                    상품 페이지로 이동
+                  </a>
+                )}
                 <button
                   className={s.detailCartBtn}
                   onClick={() => {
