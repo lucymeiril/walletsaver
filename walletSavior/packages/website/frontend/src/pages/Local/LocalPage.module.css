@@ -448,3 +448,98 @@
 /* Spin animation */
 @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
 .spin { animation: spin .8s linear infinite; }
+
+/* Price range in list */
+.priceRange {
+  font-size: .72rem;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+/* Map reset button */
+.mapResetBtn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: .75rem;
+  font-weight: var(--fw-semi);
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+  backdrop-filter: blur(8px);
+}
+.mapResetBtn:hover { background: rgba(56,189,248,.1); }
+
+/* Detail image */
+.detailImageWrap {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  max-height: 200px;
+}
+.detailImage {
+  width: 100%;
+  height: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Phone number */
+.detailTel { font-size: .85rem; color: var(--text2); margin: 0; }
+
+/* Price summary bar */
+.priceSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: rgba(56,189,248,.06);
+  border: 1px solid rgba(56,189,248,.15);
+  border-radius: 10px;
+}
+.priceSummaryLabel { font-size: .82rem; color: var(--text3); }
+.priceSummaryValue { font-size: 1rem; font-weight: var(--fw-bold); color: var(--accent); }
+
+/* Button group */
+.btnGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mapFocusBtn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-weight: var(--fw-semi);
+  font-size: .95rem;
+  border: none;
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease);
+}
+.mapFocusBtn:hover { transform: translateY(-1px); }
+.naverLinkBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 11px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-weight: var(--fw-semi);
+  font-size: .9rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.naverLinkBtn:hover { background: rgba(56,189,248,.06); }

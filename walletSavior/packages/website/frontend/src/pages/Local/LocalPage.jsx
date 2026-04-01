@@ -1,9 +1,56 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
-import { MapPin, Search, RefreshCw, X } from 'lucide-react';
+import { MapPin, Search, RefreshCw, X, ExternalLink } from 'lucide-react';
 import { GAS_STATIONS, RESTAURANTS, LOCAL_AVGS, RECIPES, fmt, calcRecipeCost } from '../../data/mockData';
 import Modal from '../../components/common/Modal';
 import useStore from '../../stores/appStore';
 import s from './LocalPage.module.css';
+
+/** Extract representative price from menu_info (string or array) */
+function getRepresentativePrice(menuInfo) {
+  if (!menuInfo) return null;
+  let prices = [];
+  if (Array.isArray(menuInfo)) {
+    prices = menuInfo
+      .map(m => {
+        if (typeof m.price === 'number') return m.price;
+        const str = String(m.price || '').replace(/[,원\s]/g, '');
+        return parseInt(str, 10);
+      })
+      .filter(p => !isNaN(p) && p > 0);
+  } else if (typeof menuInfo === 'string' && menuInfo.trim()) {
+    const matches = menuInfo.match(/[\d,]+/g);
+    if (matches) {
+      prices = matches.map(m => parseInt(m.replace(/,/g, ''), 10)).filter(p => !isNaN(p) && p >= 1000);
+    }
+  }
+  if (prices.length === 0) return null;
+  const avg = Math.round(prices.reduce((a, b) => a + b, 0) / prices.length);
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+  return { avg, min, max, count: prices.length };
+}
+
+/** Parse menu_info into structured [{name, price}] array */
+function parseMenuItems(menuInfo) {
+  if (!menuInfo) return [];
+  if (Array.isArray(menuInfo)) {
+    return menuInfo
+      .map(m => ({
+        name: m.name || m.menu || '메뉴',
+        price: typeof m.price === 'number' ? m.price
+          : parseInt(String(m.price || '').replace(/[,원\s]/g, ''), 10) || 0,
+      }))
+      .filter(m => m.price > 0);
+  }
+  if (typeof menuInfo === 'string' && menuInfo.trim()) {
+    return menuInfo.split(/\n/).map(line => {
+      const match = line.trim().match(/^(.+?)\s+([\d,]+)\s*원?$/);
+      if (match) return { name: match[1].trim(), price: parseInt(match[2].replace(/,/g, ''), 10) };
+      return null;
+    }).filter(Boolean);
+  }
+  return [];
+}
 
 /**
  * LocalPage — 우리 동네 물가 지도.
@@ -30,11 +77,23 @@ export default function LocalPage() {
   const [mapLat, setMapLat] = useState(37.4979);
   const [mapLng, setMapLng] = useState(127.0276);
   const { addToast } = useStore();
+  const [selectedNaverPlace, setSelectedNaverPlace] = useState(null);
+  const [mapFocusUrl, setMapFocusUrl] = useState(null);
 
   // 네이버 지도 iframe URL — 사용자 위치 기반
   const naverMapUrl = useMemo(() => {
     return `https://map.naver.com/p?c=${mapLng},${mapLat},15,0,0,0,dh`;
   }, [mapLat, mapLng]);
+
+  const currentMapUrl = mapFocusUrl || naverMapUrl;
+
+  const focusMapOnPlace = useCallback((name, placeUrl) => {
+    if (placeUrl) {
+      setMapFocusUrl(placeUrl);
+    } else if (name) {
+      setMapFocusUrl(`https://map.naver.com/p/search/${encodeURIComponent(name)}`);
+    }
+  }, []);
 
   // 네이버 플레이스 실시간 검색 — 백엔드 API 호출
   const searchNaverPlaces = useCallback(async (query) => {
@@ -113,7 +172,7 @@ export default function LocalPage() {
         {/* 네이버 지도 iframe */}
         <div className={s.map}>
           <iframe
-            src={naverMapUrl}
+            src={currentMapUrl}
             className={s.naverIframe}
             title="네이버 지도"
             allow="geolocation"
@@ -122,6 +181,11 @@ export default function LocalPage() {
           <div className={s.mapOverlay}>
             <span className={s.mapTag}>🗺️ 네이버 지도 — 지도에서 직접 검색/이동 가능</span>
           </div>
+          {mapFocusUrl && (
+            <button className={s.mapResetBtn} onClick={() => setMapFocusUrl(null)}>
+              ↩️ 기본 지도로 돌아가기
+            </button>
+          )}
         </div>
 
         {/* Sidebar */}
@@ -170,23 +234,38 @@ export default function LocalPage() {
                 </button>
               </div>
               <div className={s.list}>
-                {naverResults.map((r, i) => (
-                  <div key={i} className={s.item}>
-                    <span className={`${s.rank} ${i === 0 ? s.rank1 : i === 1 ? s.rank2 : i === 2 ? s.rank3 : ''}`}>
-                      {i + 1}
-                    </span>
-                    <div className={s.itemBody}>
-                      <div className={s.itemName}>{r.name}</div>
-                      <div className={s.itemAddr}>
-                        {r.addr || r.category}
-                        {r.rating > 0 && <span className={s.rating}> ⭐ {r.rating}</span>}
+                {naverResults.map((r, i) => {
+                  const priceInfo = getRepresentativePrice(r.menu_info);
+                  return (
+                    <div key={i} className={s.item} onClick={() => setSelectedNaverPlace(r)}>
+                      <span className={`${s.rank} ${i === 0 ? s.rank1 : i === 1 ? s.rank2 : i === 2 ? s.rank3 : ''}`}>
+                        {i + 1}
+                      </span>
+                      <div className={s.itemBody}>
+                        <div className={s.itemName}>{r.name}</div>
+                        <div className={s.itemAddr}>
+                          {r.category}
+                          {r.rating > 0 && <span className={s.rating}> ⭐ {r.rating}</span>}
+                        </div>
+                        {r.address && <div className={s.itemAddr}>{r.address}</div>}
+                      </div>
+                      <div className={s.itemRight}>
+                        {priceInfo ? (
+                          <>
+                            <span className={s.itemPrice}>평균 {fmt(priceInfo.avg)}원</span>
+                            {priceInfo.count > 1 && (
+                              <div className={s.priceRange}>
+                                {fmt(priceInfo.min)}~{fmt(priceInfo.max)}원
+                              </div>
+                            )}
+                          </>
+                        ) : r.price > 0 ? (
+                          <span className={s.itemPrice}>{fmt(r.price)}원</span>
+                        ) : null}
                       </div>
                     </div>
-                    <div className={s.itemRight}>
-                      {r.price > 0 && <span className={s.itemPrice}>{fmt(r.price)}원</span>}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
@@ -306,18 +385,39 @@ export default function LocalPage() {
 
       {/* Gas Station Detail Modal */}
       <Modal isOpen={!!selectedGas} onClose={() => setSelectedGas(null)} title="⛽ 주유소 상세 정보" size="md">
-        {selectedGas && <GasDetailContent station={selectedGas} avgGas={avgGas} />}
+        {selectedGas && (
+          <GasDetailContent
+            station={selectedGas}
+            avgGas={avgGas}
+            onFocusMap={(name) => { focusMapOnPlace(name); setSelectedGas(null); }}
+          />
+        )}
       </Modal>
 
       {/* Restaurant Detail Modal */}
       <Modal isOpen={!!selectedRest} onClose={() => setSelectedRest(null)} title="🍽️ 식당 상세 정보" size="md">
-        {selectedRest && <RestDetailContent restaurant={selectedRest} />}
+        {selectedRest && (
+          <RestDetailContent
+            restaurant={selectedRest}
+            onFocusMap={(name) => { focusMapOnPlace(name); setSelectedRest(null); }}
+          />
+        )}
+      </Modal>
+
+      {/* Naver Place Detail Modal */}
+      <Modal isOpen={!!selectedNaverPlace} onClose={() => setSelectedNaverPlace(null)} title="📍 가게 상세 정보" size="md">
+        {selectedNaverPlace && (
+          <NaverPlaceDetailContent
+            place={selectedNaverPlace}
+            onFocusMap={(name, url) => { focusMapOnPlace(name, url); setSelectedNaverPlace(null); }}
+          />
+        )}
       </Modal>
     </div>
   );
 }
 
-function GasDetailContent({ station, avgGas }) {
+function GasDetailContent({ station, avgGas, onFocusMap }) {
   const isSelf = station.name.includes('셀프');
   const dist = (0.5 + station.idx * 0.3).toFixed(1);
 
@@ -380,14 +480,16 @@ function GasDetailContent({ station, avgGas }) {
         </div>
       </div>
 
-      <button className={s.directionBtn} onClick={() => alert('길찾기 기능은 지도 API 연동 후 제공됩니다.')}>
-        🧭 길찾기
-      </button>
+      <div className={s.btnGroup}>
+        <button className={s.mapFocusBtn} onClick={() => onFocusMap(station.name)}>
+          🗺️ 지도에서 위치 보기
+        </button>
+      </div>
     </div>
   );
 }
 
-function RestDetailContent({ restaurant }) {
+function RestDetailContent({ restaurant, onFocusMap }) {
   const avg = LOCAL_AVGS[restaurant.menu];
   const diff = avg ? restaurant.price - avg : null;
   const dist = (0.3 + restaurant.idx * 0.25).toFixed(1);
@@ -454,9 +556,71 @@ function RestDetailContent({ restaurant }) {
         </div>
       )}
 
-      <button className={s.directionBtn} onClick={() => alert('길찾기 기능은 지도 API 연동 후 제공됩니다.')}>
-        🧭 길찾기
-      </button>
+      <div className={s.btnGroup}>
+        <button className={s.mapFocusBtn} onClick={() => onFocusMap(restaurant.name)}>
+          🗺️ 지도에서 위치 보기
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function NaverPlaceDetailContent({ place, onFocusMap }) {
+  const menuItems = parseMenuItems(place.menu_info);
+  const priceInfo = getRepresentativePrice(place.menu_info);
+
+  return (
+    <div className={s.modalDetail}>
+      <div className={s.detailHeader}>
+        <h3 className={s.detailName}>{place.name}</h3>
+        {place.category && <span className={s.detailCat}>{place.category}</span>}
+      </div>
+
+      {place.image_url && (
+        <div className={s.detailImageWrap}>
+          <img src={place.image_url} alt={place.name} className={s.detailImage} />
+        </div>
+      )}
+
+      {place.address && <p className={s.detailAddr}>📍 {place.address}</p>}
+      {place.tel && <p className={s.detailTel}>📞 {place.tel}</p>}
+      {place.distance && <p className={s.detailDist}>📏 {place.distance}</p>}
+      {place.rating > 0 && <p className={s.detailRating}>⭐ 리뷰 {place.rating}개</p>}
+
+      {priceInfo && (
+        <div className={s.priceSummary}>
+          <span className={s.priceSummaryLabel}>메뉴 가격</span>
+          <span className={s.priceSummaryValue}>
+            평균 {fmt(priceInfo.avg)}원
+            {priceInfo.count > 1 && ` (${fmt(priceInfo.min)}~${fmt(priceInfo.max)}원)`}
+          </span>
+        </div>
+      )}
+
+      {menuItems.length > 0 && (
+        <div className={s.detailSection}>
+          <h4>📋 메뉴 및 가격</h4>
+          <div className={s.menuTable}>
+            {menuItems.map((m, i) => (
+              <div key={i} className={s.menuRow}>
+                <span className={s.menuName}>{m.name}</span>
+                <span className={s.menuPrice}>{fmt(m.price)}원</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className={s.btnGroup}>
+        <button className={s.mapFocusBtn} onClick={() => onFocusMap(place.name, place.url)}>
+          🗺️ 지도에서 위치 보기
+        </button>
+        {place.url && (
+          <a href={place.url} target="_blank" rel="noopener noreferrer" className={s.naverLinkBtn}>
+            <ExternalLink size={14} /> 네이버 지도에서 보기
+          </a>
+        )}
+      </div>
     </div>
   );
 }
