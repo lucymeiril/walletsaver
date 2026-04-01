@@ -1,24 +1,35 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Plus, Pencil, Trash2, X, Search } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import useDbAdminStore from '../../stores/dbAdminStore';
+import SearchableSelect from '../../components/SearchableSelect';
+import TagInput from '../../components/TagInput';
+import { api } from '../../api/client';
 import s from './Products.module.css';
 
 const TIER_LABEL = { ultra: '초특가', great: '특가', good: '적정', wait: '관망', bad: '비쌈' };
 const TIER_CLASS = { ultra: 'tierUltra', great: 'tierGreat', good: 'tierGood', wait: 'tierWait', bad: 'tierBad' };
 
 export default function Products() {
-  const { products, addProduct, updateProduct, deleteProduct, priceHistories, fetchProducts, loading } = useDbAdminStore();
+  const {
+    products, addProduct, updateProduct, deleteProduct,
+    priceHistories, fetchProducts, loading,
+    categories, fetchCategories, addCategory,
+    keywords, fetchKeywords, addKeyword,
+  } = useDbAdminStore();
   const [search, setSearch] = useState('');
   const [catFilter, setCatFilter] = useState('');
-  const [modal, setModal] = useState(null); // null | { mode: 'add'|'edit'|'detail', product? }
+  const [modal, setModal] = useState(null);
   const [form, setForm] = useState({});
+  const [formKeywords, setFormKeywords] = useState([]);
 
   const allCategories = useMemo(() => [...new Set(products.map(p => p.category).filter(Boolean))].sort(), [products]);
 
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts]);
+    fetchCategories();
+    fetchKeywords();
+  }, [fetchProducts, fetchCategories, fetchKeywords]);
 
   const filtered = useMemo(() => {
     return products.filter(p => {
@@ -29,12 +40,19 @@ export default function Products() {
   }, [products, search, catFilter]);
 
   const openAdd = () => {
-    setForm({ name: '', category: '', unit: '', basePrice: '', currentAvg: '', tier: 'good' });
+    setForm({ name: '', category: '', categoryId: '', unit: '', basePrice: '', currentAvg: '', tier: 'good' });
+    setFormKeywords([]);
     setModal({ mode: 'add' });
   };
 
   const openEdit = (p) => {
     setForm({ ...p, basePrice: String(p.basePrice), currentAvg: String(p.currentAvg) });
+    const productKws = (p.keywords || []).map(k =>
+      typeof k === 'string'
+        ? { id: k, keyword: keywords.find(kw => kw.id === k)?.keyword || k }
+        : k,
+    );
+    setFormKeywords(productKws);
     setModal({ mode: 'edit', product: p });
   };
 
@@ -42,16 +60,58 @@ export default function Products() {
     setModal({ mode: 'detail', product: p });
   };
 
-  const handleSave = () => {
-    const data = { ...form, basePrice: Number(form.basePrice), currentAvg: Number(form.currentAvg) };
-    if (modal.mode === 'add') addProduct(data);
-    else updateProduct(modal.product.id, data);
+  const handleSave = async () => {
+    const data = {
+      ...form,
+      basePrice: Number(form.basePrice),
+      currentAvg: Number(form.currentAvg),
+      keywords: formKeywords.map(k => k.id),
+    };
+    if (modal.mode === 'add') await addProduct(data);
+    else await updateProduct(modal.product.id, data);
+
+    // Link keywords to the product's category
+    if (form.categoryId && formKeywords.length > 0) {
+      for (const kw of formKeywords) {
+        if (kw.id.startsWith('kw-new-')) continue;
+        try {
+          await api.updateKeyword(kw.id, { category_id: form.categoryId });
+        } catch { /* best-effort */ }
+      }
+    }
+
     setModal(null);
   };
 
   const handleDelete = (id) => {
     if (confirm('정말 삭제하시겠습니까?')) deleteProduct(id);
   };
+
+  const handleCategoryChange = (id, name) => {
+    setForm(prev => ({ ...prev, category: name, categoryId: id }));
+  };
+
+  const handleCreateCategory = async (parentId, catData) => {
+    await addCategory(parentId, catData);
+  };
+
+  const searchKeywordsApi = useCallback(async (q) => {
+    try {
+      const results = await api.searchKeywords(q);
+      const arr = Array.isArray(results) ? results : results?.keywords ?? results?.data ?? [];
+      return arr.map(kw => ({
+        ...kw,
+        keyword: kw.keyword || kw.word || '',
+      }));
+    } catch {
+      const q2 = q.toLowerCase();
+      return keywords.filter(kw => (kw.keyword || kw.word || '').toLowerCase().includes(q2));
+    }
+  }, [keywords]);
+
+  const handleCreateKeyword = useCallback(async (word) => {
+    await addKeyword({ word, category_id: form.categoryId || null });
+  }, [addKeyword, form.categoryId]);
 
   return (
     <div className={s.page}>
@@ -131,6 +191,18 @@ export default function Products() {
                   <div><span className={s.label}>현재 평균가</span><span>{(modal.product.currentAvg ?? 0).toLocaleString()}원</span></div>
                   <div><span className={s.label}>가격 티어</span><span className={`${s.tier} ${s[TIER_CLASS[modal.product.tier]]}`}>{TIER_LABEL[modal.product.tier]}</span></div>
                 </div>
+                {modal.product.keywords?.length > 0 && (
+                  <div className={s.detailKeywords}>
+                    <span className={s.label}>키워드</span>
+                    <div className={s.keywordTags}>
+                      {modal.product.keywords.map((kw, i) => (
+                        <span key={i} className={s.keywordTag}>
+                          {typeof kw === 'string' ? (keywords.find(k => k.id === kw)?.keyword || kw) : kw.keyword}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <h4 className={s.chartTitle}>가격 이력 (90일)</h4>
                 <div className={s.chartWrap}>
                   <ResponsiveContainer width="100%" height={250}>
@@ -148,7 +220,15 @@ export default function Products() {
             ) : (
               <div className={s.form}>
                 <label>이름<input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /></label>
-                <label>카테고리<input value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} /></label>
+                <label>
+                  카테고리
+                  <SearchableSelect
+                    categories={categories}
+                    value={form.categoryId || form.category}
+                    onChange={handleCategoryChange}
+                    onCreateCategory={handleCreateCategory}
+                  />
+                </label>
                 <label>단위<input value={form.unit} onChange={e => setForm({ ...form, unit: e.target.value })} /></label>
                 <label>기준가<input type="number" value={form.basePrice} onChange={e => setForm({ ...form, basePrice: e.target.value })} /></label>
                 <label>현재 평균가<input type="number" value={form.currentAvg} onChange={e => setForm({ ...form, currentAvg: e.target.value })} /></label>
@@ -156,6 +236,15 @@ export default function Products() {
                   <select value={form.tier} onChange={e => setForm({ ...form, tier: e.target.value })}>
                     {Object.entries(TIER_LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                   </select>
+                </label>
+                <label>
+                  키워드
+                  <TagInput
+                    value={formKeywords}
+                    onChange={setFormKeywords}
+                    onSearch={searchKeywordsApi}
+                    onCreateKeyword={handleCreateKeyword}
+                  />
                 </label>
                 <div className={s.formActions}>
                   <button className={s.cancelBtn} onClick={() => setModal(null)}>취소</button>
