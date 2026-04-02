@@ -1,11 +1,18 @@
 """
 홈플러스 크롤러 — 전단지 및 할인 행사 상품 정보 수집.
 
-홈플러스 행사 상품 페이지에서 전단지/할인 데이터를 수집한다.
-홈플러스는 행사 상품 목록을 내부 API(JSON) 또는 SSR HTML로 제공하므로
-cloudscraper 전략으로 접근한다.
+홈플러스는 mfront.homeplus.co.kr SPA로 전환되어
+서버사이드 HTML만으로는 상품 데이터를 추출할 수 없다.
+Playwright 브라우저 렌더링으로 검색 결과를 수집하고,
+.unitItemInner 카드에서 상품 정보를 파싱한다.
 
-데이터 흐름: API JSON/HTML → DiscountItem → ProductPrice → DB
+봇 탐지 회피 전략:
+  - 검색어별 1~3초 랜덤 딜레이 (AntiDetect)
+  - User-Agent 로테이션
+  - Playwright stealth 모드로 자동화 탐지 우회
+  - 검색어 간 점진적 크롤링
+
+데이터 흐름: Playwright HTML → DiscountItem → ProductPrice → DB
 용도: 할인 이력 DB 구축 (discount_history)
 의존: core/ 만
 """
@@ -17,6 +24,7 @@ import logging
 import re
 from datetime import datetime
 from typing import Optional
+from urllib.parse import quote
 
 import requests
 
@@ -31,14 +39,19 @@ logger = logging.getLogger(__name__)
 
 
 class HomeplusCrawler(CrawlerContract):
-    """홈플러스 크롤러 — 전단지/할인 행사 상품 수집."""
+    """홈플러스 크롤러 — mfront.homeplus.co.kr SPA Playwright 기반 상품 수집.
+
+    봇 탐지 회피 전략:
+      - 검색어별 1~3초 랜덤 딜레이 (AntiDetect)
+      - User-Agent 로테이션
+      - Playwright stealth 모드로 봇 탐지 우회
+      - 스크롤로 lazy-load 상품 트리거
+    """
 
     BASE_URL = "https://www.homeplus.co.kr"
     MFRONT_URL = "https://mfront.homeplus.co.kr"
-    EVENT_URL = "https://www.homeplus.co.kr/event/eventMain.do"
-    # 홈플러스 전단지 API (모바일)
-    LEAFLET_API = "https://www.homeplus.co.kr/app/event/leaflet.do"
-    SEARCH_QUERIES = ["세일", "특가", "할인"]
+    # 다양한 검색어로 더 많은 할인 상품 수집
+    SEARCH_QUERIES = ["할인", "특가", "세일", "1+1", "행사", "과일", "정육", "우유"]
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=1.0, delay_max=3.0)
@@ -47,92 +60,52 @@ class HomeplusCrawler(CrawlerContract):
     def info(self) -> CrawlerInfo:
         return CrawlerInfo(
             name="홈플러스",
-            version="1.0.0",
+            version="2.0.0",
             group=CrawlerGroup.MART,
-            description="홈플러스 전단지 및 할인 행사 상품 정보 수집",
+            description="홈플러스 할인 상품 정보 수집 (mfront SPA Playwright 기반)",
             target_url=self.BASE_URL,
-            strategies=["cloudscraper", "requests"],
+            strategies=["playwright", "requests"],
         )
 
     async def crawl(self) -> CrawlResult:
-        """홈플러스 행사 상품 페이지를 크롤링한다.
+        """홈플러스 할인 상품을 크롤링한다.
 
-        전략 순서:
-          1차: HTTP 직접 요청 (JSON/HTML)
-          2차: Playwright 브라우저 렌더링 — mfront.homeplus.co.kr SPA 완전 렌더링
-
-        2025년 기준 homeplus.co.kr → mfront.homeplus.co.kr(SPA)로 전환됨.
+        전략:
+          mfront.homeplus.co.kr은 완전한 SPA이므로 Playwright 렌더링이 필수.
+          /search?keyword= 검색 URL로 검색어별 상품을 수집한다.
+          HTTP 요청은 SPA 셸만 반환하므로 Playwright를 기본 전략으로 사용한다.
         """
         started_at = datetime.now()
         logger.info("[홈플러스] 크롤링 시작")
 
         try:
-            headers = self._anti_detect.get_random_headers()
-            headers.update({
-                "Referer": "https://www.homeplus.co.kr/",
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            })
+            # Playwright 기반 크롤링 (SPA이므로 항상 Playwright 우선)
+            items = await self._fetch_via_playwright()
 
-            response = requests.get(
-                self.EVENT_URL, headers=headers, timeout=20,
-                allow_redirects=True,
-            )
+            # Playwright 실패 시 HTTP fallback 시도
+            if not items:
+                logger.info("[홈플러스] Playwright 수집 실패, HTTP fallback 시도")
+                items = await self._fetch_via_http()
 
-            # SPA 감지 → Playwright로 전환
-            is_spa = "mfront.homeplus" in response.url or len(response.text) < 15000
-            if is_spa:
-                from bs4 import BeautifulSoup
-                soup = BeautifulSoup(response.text, "html.parser")
-                product_markers = soup.select(".product-item, .goods_item, .event_item")
-                if not product_markers:
-                    logger.info("[홈플러스] SPA 셸 감지 → Playwright 렌더링")
-                    items = await self._fetch_via_playwright()
-                    valid_items = await self.validate(items)
-                    items_as_dict = [item.model_dump(mode="json") for item in valid_items]
-                    finished_at = datetime.now()
-                    duration = (finished_at - started_at).total_seconds()
-                    logger.info(f"[홈플러스] Playwright 크롤링 완료: {len(valid_items)}개, {duration:.2f}초")
-                    return CrawlResult(
-                        status=CrawlStatus.SUCCESS if valid_items else CrawlStatus.PARTIAL,
-                        crawler_name=self.info.name,
-                        strategy_used="playwright",
-                        items_count=len(valid_items),
-                        items=items_as_dict,
-                        started_at=started_at,
-                        finished_at=finished_at,
-                        duration_seconds=duration,
-                        error_msg="Playwright 렌더링 사용 (SPA)" if not valid_items else None,
-                    )
-
-            if response.status_code != 200:
-                logger.error(f"[홈플러스] HTTP {response.status_code}")
-                return CrawlResult(
-                    status=CrawlStatus.FAILED,
-                    crawler_name=self.info.name,
-                    error_msg=f"HTTP {response.status_code}",
-                    started_at=started_at,
-                    finished_at=datetime.now(),
-                )
-
-            raw_data = response.text
-            items = await self.parse(raw_data)
             valid_items = await self.validate(items)
-
             items_as_dict = [item.model_dump(mode="json") for item in valid_items]
 
             finished_at = datetime.now()
             duration = (finished_at - started_at).total_seconds()
+            status = CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED
+            strategy = "playwright" if items else "requests"
             logger.info(f"[홈플러스] 크롤링 완료: {len(valid_items)}개, {duration:.2f}초")
 
             return CrawlResult(
-                status=CrawlStatus.SUCCESS,
+                status=status,
                 crawler_name=self.info.name,
-                strategy_used="cloudscraper",
+                strategy_used=strategy,
                 items_count=len(valid_items),
                 items=items_as_dict,
                 started_at=started_at,
                 finished_at=finished_at,
                 duration_seconds=duration,
+                error_msg=None if valid_items else "상품 수집 실패",
             )
 
         except Exception as e:
@@ -145,11 +118,37 @@ class HomeplusCrawler(CrawlerContract):
                 finished_at=datetime.now(),
             )
 
+    async def _fetch_via_http(self) -> list[DiscountItem]:
+        """HTTP 요청으로 홈플러스 상품 데이터를 수집한다 (fallback).
+
+        mfront SPA가 아닌 front.homeplus.co.kr의 이벤트 페이지에서
+        JSON/HTML 데이터 추출을 시도한다.
+        """
+        items: list[DiscountItem] = []
+        headers = self._anti_detect.get_random_headers()
+        headers.update({
+            "Referer": "https://www.homeplus.co.kr/",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        })
+
+        try:
+            response = requests.get(
+                f"{self.BASE_URL}/event/eventMain.do",
+                headers=headers, timeout=20, allow_redirects=True,
+            )
+            if response.status_code == 200:
+                items = await self.parse(response.text)
+        except Exception as e:
+            logger.debug(f"[홈플러스] HTTP fallback 실패: {e}")
+
+        return items
+
     async def _fetch_via_playwright(self) -> list[DiscountItem]:
         """Playwright로 mfront.homeplus.co.kr 검색 페이지를 렌더링하여 상품 데이터를 추출한다.
 
         2025년 기준 홈플러스는 mfront.homeplus.co.kr SPA로 전환되어
         /search?keyword= 검색 URL이 유일하게 상품을 반환한다.
+        .unitItemInner 카드에서 상품 정보를 파싱한다.
         """
         items: list[DiscountItem] = []
         seen_keys: set[str] = set()
@@ -159,7 +158,7 @@ class HomeplusCrawler(CrawlerContract):
 
             async with PlaywrightHelper() as helper:
                 for query in self.SEARCH_QUERIES:
-                    url = f"{self.MFRONT_URL}/search?keyword={query}"
+                    url = f"{self.MFRONT_URL}/search?keyword={quote(query)}"
                     try:
                         html = await helper.get_rendered_html(
                             url,
@@ -176,7 +175,7 @@ class HomeplusCrawler(CrawlerContract):
                                 seen_keys.add(key)
                                 items.append(item)
                                 new_count += 1
-                        logger.info(f"[홈플러스] '{query}' 검색: {new_count}개 신규")
+                        logger.info(f"[홈플러스] '{query}' 검색: {new_count}개 신규 ({len(page_items)}개 중)")
                     except Exception as e:
                         logger.debug(f"[홈플러스] '{query}' 검색 실패: {e}")
                         continue

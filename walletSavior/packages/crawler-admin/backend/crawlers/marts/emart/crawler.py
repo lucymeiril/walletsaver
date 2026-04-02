@@ -31,13 +31,22 @@ logger = logging.getLogger(__name__)
 
 
 class EmartCrawler(CrawlerContract):
-    """이마트 크롤러 — SSG __NEXT_DATA__ 기반 할인 상품 수집."""
+    """이마트 크롤러 — SSG __NEXT_DATA__ 기반 할인 상품 수집.
+
+    봇 탐지 회피 전략:
+      - 검색어별 1~3초 랜덤 딜레이 (AntiDetect)
+      - User-Agent 로테이션
+      - Referer 헤더로 정상 브라우저 흉내
+      - 페이지 간 점진적 크롤링 (한 번에 최대 MAX_PAGES 페이지)
+    """
 
     BASE_URL = "https://emart.ssg.com"
     # SSG 검색 페이지 — __NEXT_DATA__에 상품 JSON이 포함됨
     SEARCH_URL = "https://emart.ssg.com/search.ssg"
-    # 할인 상품이 많은 기본 검색어 목록
-    SEARCH_QUERIES = ["행사", "할인", "특가"]
+    # 다양한 검색어로 더 많은 할인 상품 수집
+    SEARCH_QUERIES = ["행사", "할인", "특가", "1+1", "반값", "세일"]
+    # 페이지네이션: 각 검색어당 최대 페이지 수 (페이지당 ~40개)
+    MAX_PAGES = 3
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=1.0, delay_max=3.0)
@@ -54,42 +63,54 @@ class EmartCrawler(CrawlerContract):
         )
 
     async def crawl(self) -> CrawlResult:
-        """이마트 할인 상품을 크롤링한다."""
+        """이마트 할인 상품을 크롤링한다.
+
+        페이지네이션 전략:
+          각 검색어(SEARCH_QUERIES)에 대해 MAX_PAGES 페이지까지 순회하며
+          __NEXT_DATA__에서 상품을 추출한다. 중복은 validate()에서 제거한다.
+          사이트 부하를 줄이기 위해 각 요청 사이에 AntiDetect 딜레이를 적용한다.
+        """
         started_at = datetime.now()
         logger.info("[이마트] 크롤링 시작")
 
         all_items: list[DiscountItem] = []
         errors: list[str] = []
+        import asyncio as _asyncio
 
         try:
             for query in self.SEARCH_QUERIES:
-                try:
-                    url = f"{self.SEARCH_URL}?target=all&query={quote(query)}"
-                    headers = self._anti_detect.get_random_headers()
-                    headers.update({
-                        "Referer": "https://emart.ssg.com/",
-                    })
+                for page_num in range(1, self.MAX_PAGES + 1):
+                    try:
+                        url = f"{self.SEARCH_URL}?target=all&query={quote(query)}&page={page_num}"
+                        headers = self._anti_detect.get_random_headers()
+                        headers.update({
+                            "Referer": "https://emart.ssg.com/",
+                        })
 
-                    response = requests.get(url, headers=headers, timeout=20)
-                    response.encoding = "utf-8"
+                        # 봇 탐지 회피 딜레이 — 페이지 간 1~3초 랜덤 대기
+                        delay = self._anti_detect.get_random_delay()
+                        await _asyncio.sleep(delay)
 
-                    if response.status_code != 200:
-                        logger.warning(f"[이마트] 검색 '{query}' HTTP {response.status_code}")
-                        errors.append(f"검색 '{query}' HTTP {response.status_code}")
-                        continue
+                        response = requests.get(url, headers=headers, timeout=20)
+                        response.encoding = "utf-8"
 
-                    items = await self.parse(response.text)
-                    logger.info(f"[이마트] 검색 '{query}': {len(items)}개 수집")
-                    all_items.extend(items)
+                        if response.status_code != 200:
+                            logger.warning(f"[이마트] 검색 '{query}' p{page_num} HTTP {response.status_code}")
+                            errors.append(f"검색 '{query}' p{page_num} HTTP {response.status_code}")
+                            break  # 이 검색어의 다음 페이지 스킵
 
-                except Exception as e:
-                    logger.warning(f"[이마트] 검색 '{query}' 실패: {e}")
-                    errors.append(f"검색 '{query}': {e}")
-                    continue
+                        items = await self.parse(response.text)
+                        logger.info(f"[이마트] 검색 '{query}' p{page_num}: {len(items)}개 수집")
+                        all_items.extend(items)
 
-                # 첫 검색어에서 충분히 수집되면 중단 (사이트 부하 방지)
-                if len(all_items) >= 30:
-                    break
+                        # 결과가 없으면 이 검색어의 마지막 페이지
+                        if not items:
+                            break
+
+                    except Exception as e:
+                        logger.warning(f"[이마트] 검색 '{query}' p{page_num} 실패: {e}")
+                        errors.append(f"검색 '{query}' p{page_num}: {e}")
+                        break
 
             valid_items = await self.validate(all_items)
             items_as_dict = [item.model_dump(mode="json") for item in valid_items]
