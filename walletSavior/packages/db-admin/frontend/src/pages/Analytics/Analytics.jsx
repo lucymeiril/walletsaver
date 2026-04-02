@@ -8,14 +8,31 @@ import useDbAdminStore from '../../stores/dbAdminStore';
 import s from './Analytics.module.css';
 
 export default function Analytics() {
-  const { products, priceHistories, categoryAvgPrices, qualityReport, sourceStats, fetchAnalytics, fetchProducts } = useDbAdminStore();
-  const [selectedProduct, setSelectedProduct] = useState(products[0]?.id || '');
+  const {
+    products, priceHistories, categoryAvgPrices, qualityReport, sourceStats,
+    fetchAnalytics, fetchProducts, fetchProductPriceHistory,
+  } = useDbAdminStore();
+  const [selectedProduct, setSelectedProduct] = useState('');
   const [period, setPeriod] = useState(30);
 
   useEffect(() => {
     fetchAnalytics();
     fetchProducts();
   }, [fetchAnalytics, fetchProducts]);
+
+  // 상품 목록 로드 후 첫 상품 선택
+  useEffect(() => {
+    if (products.length > 0 && !selectedProduct) {
+      setSelectedProduct(products[0]?.id || '');
+    }
+  }, [products, selectedProduct]);
+
+  // 선택한 상품의 가격 이력 로드
+  useEffect(() => {
+    if (selectedProduct) {
+      fetchProductPriceHistory(selectedProduct, period);
+    }
+  }, [selectedProduct, period, fetchProductPriceHistory]);
 
   const trendData = useMemo(() => {
     const history = priceHistories[selectedProduct] || [];

@@ -11,11 +11,19 @@ const del = (url) => fetch(url, { method: 'DELETE' }).then(json);
 // 307 리다이렉트로 인한 POST body 손실을 방지한다.
 export const api = {
   // Products
-  getProducts: () => fetch(`${API_BASE}/products/`).then(json),
+  getProducts: (params) => {
+    const qs = params ? `?${new URLSearchParams(params)}` : '';
+    return fetch(`${API_BASE}/products/${qs}`).then(json);
+  },
   getProduct: (id) => fetch(`${API_BASE}/products/${id}`).then(json),
+  getProductStats: () => fetch(`${API_BASE}/products/stats`).then(json),
+  getProductHistory: (id, days = 30) => fetch(`${API_BASE}/products/${id}/history?days=${days}`).then(json),
+  getProductComparison: (id) => fetch(`${API_BASE}/products/${id}/comparison`).then(json),
   createProduct: (data) => postJson(`${API_BASE}/products/`, data),
   updateProduct: (id, data) => putJson(`${API_BASE}/products/${id}`, data),
   deleteProduct: (id) => del(`${API_BASE}/products/${id}`),
+  bulkDeleteProducts: (ids) => postJson(`${API_BASE}/products/bulk-delete`, { ids }),
+  bulkUpdateCategory: (ids, categoryId) => postJson(`${API_BASE}/products/bulk-category`, { ids, category_id: categoryId }),
   // Categories
   getCategories: () => fetch(`${API_BASE}/categories/`).then(json),
   createCategory: (data) => postJson(`${API_BASE}/categories/`, data),
@@ -31,6 +39,16 @@ export const api = {
   // Analytics
   getQualityReport: () => fetch(`${API_BASE}/analytics/quality-report`).then(json),
   getSummary: () => fetch(`${API_BASE}/analytics/summary`).then(json),
+  // Prices
+  getPriceStats: () => fetch(`${API_BASE}/prices/stats`).then(json),
+  getProductPrices: (id, days = 90) => fetch(`${API_BASE}/prices/product/${id}?days=${days}`).then(json),
+  getTierConfig: () => fetch(`${API_BASE}/prices/tier-config`).then(json),
+  saveTierConfig: (tiers) => postJson(`${API_BASE}/prices/tier-config`, { tiers }),
+  getGlobalOutliers: (limit = 20) => fetch(`${API_BASE}/prices/outliers?limit=${limit}`).then(json),
+  getPriceHistory: (params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return fetch(`${API_BASE}/prices/history?${qs}`).then(json);
+  },
   // Ingestions (pending queue) — ingestion router는 "" 패턴이라 trailing slash 불필요
   getIngestions: (params) => fetch(`${API_BASE}/ingestions?${new URLSearchParams(params)}`).then(json),
   getIngestion: (id) => fetch(`${API_BASE}/ingestions/${id}`).then(json),

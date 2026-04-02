@@ -2,6 +2,9 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import Optional
+from datetime import datetime, timedelta
+
+from sqlalchemy import select, func, case, and_
 
 from services.base import get_session
 from services.data_quality import (
@@ -15,6 +18,9 @@ from services.export import (
     export_prices_csv,
     export_products_json,
     get_statistics_summary,
+)
+from storage.models import (
+    Product, BaselinePrice, DiscountHistory, Category, CrawlLog, CrawlStatus,
 )
 
 router = APIRouter(prefix="/analytics", tags=["analytics"])
@@ -94,6 +100,81 @@ def export_products(category_id: Optional[str] = None):
 def summary():
     session = get_session()
     try:
-        return get_statistics_summary(session)
+        base = get_statistics_summary(session)
+
+        # ── 카테고리별 평균 가격 ──
+        cat_rows = session.execute(
+            select(
+                Category.name.label("category"),
+                func.avg(BaselinePrice.price).label("avg_price"),
+            )
+            .join(Product, Product.category_id == Category.id)
+            .join(BaselinePrice, BaselinePrice.product_id == Product.id)
+            .group_by(Category.name)
+            .order_by(func.avg(BaselinePrice.price).desc())
+        ).all()
+
+        category_avg_prices = [
+            {"category": r.category, "avgPrice": round(r.avg_price, 1)}
+            for r in cat_rows
+        ] if cat_rows else []
+
+        # ── 크롤 출처별 통계 ──
+        now = datetime.utcnow()
+        source_rows = session.execute(
+            select(
+                CrawlLog.crawler_name.label("source"),
+                func.count().label("records"),
+                func.max(CrawlLog.started_at).label("last_crawl"),
+                func.sum(case((CrawlLog.status == CrawlStatus.FAILED, 1), else_=0)).label("fail_count"),
+                func.count().label("total_count"),
+            )
+            .group_by(CrawlLog.crawler_name)
+            .order_by(func.count().desc())
+        ).all()
+
+        source_stats = []
+        for r in source_rows:
+            fail_ratio = (r.fail_count or 0) / max(r.total_count, 1)
+            hours_since = (now - r.last_crawl).total_seconds() / 3600 if r.last_crawl else 999
+            if fail_ratio > 0.5 or hours_since > 72:
+                status = "error"
+            elif fail_ratio > 0.2 or hours_since > 24:
+                status = "warning"
+            else:
+                status = "active"
+            source_stats.append({
+                "source": r.source,
+                "records": r.records,
+                "lastCrawl": r.last_crawl.isoformat() if r.last_crawl else None,
+                "status": status,
+            })
+
+        # ── 최근 수집 활동 ──
+        recent_rows = session.execute(
+            select(CrawlLog)
+            .order_by(CrawlLog.started_at.desc())
+            .limit(10)
+        ).scalars().all()
+
+        recent_ingestions = []
+        for r in recent_rows:
+            st = "success"
+            if r.status == CrawlStatus.FAILED:
+                st = "error"
+            elif r.status == CrawlStatus.PARTIAL:
+                st = "warning"
+            recent_ingestions.append({
+                "id": f"ri-{r.id}",
+                "source": r.crawler_name,
+                "count": r.items_saved or r.items_found or 0,
+                "date": r.started_at.strftime("%Y-%m-%d") if r.started_at else "",
+                "status": st,
+            })
+
+        base["categoryAvgPrices"] = category_avg_prices
+        base["sourceStats"] = source_stats
+        base["recentIngestions"] = recent_ingestions
+        return base
     finally:
         session.close()

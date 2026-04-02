@@ -1,17 +1,5 @@
 import { create } from 'zustand';
 import { api } from '../api/client';
-import {
-  products as mockProducts,
-  categories as mockCategories,
-  keywords as mockKeywords,
-  priceHistories as mockPriceHistories,
-  priceOutliers as mockOutliers,
-  dashboardStats as mockDashboardStats,
-  categoryAvgPrices as mockCategoryAvgPrices,
-  qualityReport as mockQualityReport,
-  sourceStats as mockSourceStats,
-  priceTiers as mockPriceTiers,
-} from '../data/mockData';
 
 const useDbAdminStore = create((set, get) => ({
   // Loading / Error
@@ -19,83 +7,122 @@ const useDbAdminStore = create((set, get) => ({
   error: null,
 
   /* ── 상품 ── */
-  products: mockProducts,
+  products: [],
+  productStats: null,
+  productPagination: { total: 0, page: 1, per_page: 20, total_pages: 1 },
+
   addProduct: async (product) => {
     try {
       const result = await api.createProduct(product);
       await get().fetchProducts();
       return result;
-    } catch {
-      // 오프라인 모드: 로컬 상태만 업데이트
-      set((s) => ({ products: [...s.products, { ...product, id: `p-${Date.now()}` }] }));
+    } catch (err) {
+      set({ error: `상품 추가 실패: ${err.message}` });
+      throw err;
     }
   },
   updateProduct: async (id, data) => {
     try {
       await api.updateProduct(id, data);
       await get().fetchProducts();
-    } catch {
-      set((s) => ({ products: s.products.map((p) => (p.id === id ? { ...p, ...data } : p)) }));
+    } catch (err) {
+      set({ error: `상품 수정 실패: ${err.message}` });
+      throw err;
     }
   },
   deleteProduct: async (id) => {
     try {
       await api.deleteProduct(id);
       await get().fetchProducts();
-    } catch {
-      set((s) => ({ products: s.products.filter((p) => p.id !== id) }));
+    } catch (err) {
+      set({ error: `상품 삭제 실패: ${err.message}` });
+      throw err;
+    }
+  },
+  bulkDeleteProducts: async (ids) => {
+    try {
+      await api.bulkDeleteProducts(ids);
+      await get().fetchProducts();
+    } catch (err) {
+      set({ error: `일괄 삭제 실패: ${err.message}` });
+      throw err;
+    }
+  },
+  bulkUpdateCategory: async (ids, categoryId) => {
+    try {
+      await api.bulkUpdateCategory(ids, categoryId);
+      await get().fetchProducts();
+    } catch (err) {
+      set({ error: `일괄 카테고리 변경 실패: ${err.message}` });
+      throw err;
     }
   },
 
-  fetchProducts: async () => {
+  fetchProducts: async (params = {}) => {
     set({ loading: true, error: null });
     try {
-      const data = await api.getProducts();
-      const list = Array.isArray(data) ? data : data.products ?? data.data ?? [];
-      // API 상품 → 프론트엔드 형식으로 변환 (basePrice/currentAvg/tier 기본값)
-      const mapped = list.map((p) => ({
+      const data = await api.getProducts(params);
+      const items = data.items ?? (Array.isArray(data) ? data : []);
+      const mapped = items.map((p) => ({
         ...p,
-        category: p.category || p.category_id || '',
-        basePrice: p.basePrice ?? p.base_price ?? 0,
-        currentAvg: p.currentAvg ?? p.current_avg ?? 0,
+        category: p.category_name || p.category || p.category_id || '',
+        basePrice: p.basePrice ?? p.base_price ?? p.original_price ?? 0,
+        currentAvg: p.currentAvg ?? p.current_avg ?? p.current_price ?? 0,
+        currentPrice: p.current_price ?? 0,
+        originalPrice: p.original_price ?? 0,
+        discountRate: p.discount_rate ?? 0,
         tier: p.tier || 'good',
       }));
-      if (mapped.length > 0) set({ products: mapped });
+      set({
+        products: mapped,
+        productPagination: {
+          total: data.total ?? mapped.length,
+          page: data.page ?? 1,
+          per_page: data.per_page ?? 20,
+          total_pages: data.total_pages ?? 1,
+        },
+      });
     } catch {
-      // mock 유지
+      set({ products: [], error: '⚠️ 데이터를 불러올 수 없습니다' });
     } finally {
       set({ loading: false });
     }
   },
 
+  fetchProductStats: async () => {
+    try {
+      const data = await api.getProductStats();
+      set({ productStats: data });
+    } catch {
+      // stats are optional, don't show error
+    }
+  },
+
   /* ── 카테고리 (트리 구조) ── */
-  categories: mockCategories,
+  categories: [],
   addCategory: async (parentId, category) => {
-    // 백엔드 CategoryCreate 스키마에는 id가 필수 — 이름 기반으로 자동 생성
     const autoId = category.id || `cat-${category.name.replace(/\s+/g, '-')}-${Date.now()}`;
     try {
       await api.createCategory({ ...category, id: autoId, parent_id: parentId });
       await get().fetchCategories();
-    } catch {
-      set((s) => ({
-        categories: addToTree(s.categories, parentId, { ...category, id: autoId, children: [], productCount: 0 }),
-      }));
+    } catch (err) {
+      set({ error: `카테고리 추가 실패: ${err.message}` });
     }
   },
   updateCategory: async (id, data) => {
     try {
       await api.updateCategory(id, data);
       await get().fetchCategories();
-    } catch {
-      set((s) => ({ categories: updateInTree(s.categories, id, data) }));
+    } catch (err) {
+      set({ error: `카테고리 수정 실패: ${err.message}` });
     }
   },
   deleteCategory: async (id) => {
     try {
       await api.deleteCategory(id);
       await get().fetchCategories();
-    } catch {
-      set((s) => ({ categories: removeFromTree(s.categories, id) }));
+    } catch (err) {
+      set({ error: `카테고리 삭제 실패: ${err.message}` });
     }
   },
 
@@ -104,18 +131,17 @@ const useDbAdminStore = create((set, get) => ({
     try {
       const data = await api.getCategories();
       const list = Array.isArray(data) ? data : data.categories ?? data.data ?? [];
-      if (list.length > 0) set({ categories: list });
-    } catch {
-      // mock 유지
+      set({ categories: list });
+    } catch (err) {
+      set({ error: `카테고리 로드 실패: ${err.message}` });
     } finally {
       set({ loading: false });
     }
   },
 
   /* ── 키워드 ── */
-  keywords: mockKeywords,
+  keywords: [],
   addKeyword: async (kw) => {
-    // 프론트엔드 필드명 → 백엔드 필드명 변환
     const word = (kw.keyword ?? kw.word ?? '').trim();
     if (!word) return;
     const apiData = {
@@ -126,12 +152,11 @@ const useDbAdminStore = create((set, get) => ({
     try {
       await api.createKeyword(apiData);
       await get().fetchKeywords();
-    } catch {
-      set((s) => ({ keywords: [...s.keywords, { ...kw, id: `kw-${Date.now()}` }] }));
+    } catch (err) {
+      set({ error: `키워드 추가 실패: ${err.message}` });
     }
   },
   updateKeyword: async (id, data) => {
-    // 프론트엔드 필드명 → 백엔드 필드명 변환
     const apiData = {};
     if (data.keyword !== undefined) apiData.word = data.keyword;
     if (data.word !== undefined) apiData.word = data.word;
@@ -141,24 +166,24 @@ const useDbAdminStore = create((set, get) => ({
     try {
       await api.updateKeyword(id, apiData);
       await get().fetchKeywords();
-    } catch {
-      set((s) => ({ keywords: s.keywords.map((k) => (k.id === id ? { ...k, ...data } : k)) }));
+    } catch (err) {
+      set({ error: `키워드 수정 실패: ${err.message}` });
     }
   },
   deleteKeyword: async (id) => {
     try {
       await api.deleteKeyword(id);
       set((s) => ({ keywords: s.keywords.filter((k) => k.id !== id) }));
-    } catch {
-      set((s) => ({ keywords: s.keywords.filter((k) => k.id !== id) }));
+    } catch (err) {
+      set({ error: `키워드 삭제 실패: ${err.message}` });
     }
   },
 
   fetchKeywords: async () => {
+    set({ loading: true, error: null });
     try {
       const data = await api.getKeywords();
       const list = Array.isArray(data) ? data : data.keywords ?? data.data ?? [];
-      // 백엔드 필드명 → 프론트엔드 필드명 변환
       const mapped = list.map((kw) => ({
         ...kw,
         keyword: kw.keyword || kw.word || '',
@@ -166,25 +191,114 @@ const useDbAdminStore = create((set, get) => ({
         synonyms: kw.synonyms || [],
         categoryId: kw.categoryId || kw.category_id || '',
       }));
-      if (mapped.length > 0) set({ keywords: mapped });
-    } catch {
-      // mock 유지
+      set({ keywords: mapped });
+    } catch (err) {
+      set({ error: `키워드 로드 실패: ${err.message}` });
+    } finally {
+      set({ loading: false });
     }
   },
 
   /* ── 가격 ── */
-  priceHistories: mockPriceHistories,
-  priceOutliers: mockOutliers,
-  priceTiers: mockPriceTiers,
+  priceHistories: {},
+  priceOutliers: [],
+  priceTiers: {
+    ultra: { label: '초특가', threshold: 70, color: 'var(--tier-ultra)' },
+    great: { label: '특가',   threshold: 85, color: 'var(--tier-great)' },
+    good:  { label: '적정',   threshold: 105, color: 'var(--tier-good)' },
+    wait:  { label: '관망',   threshold: 120, color: 'var(--tier-wait)' },
+    bad:   { label: '비쌈',   threshold: Infinity, color: 'var(--tier-bad)' },
+  },
+  priceStats: null,
+  priceHistoryPage: { items: [], total: 0, page: 1, per_page: 50, total_pages: 0 },
+  tierSaving: false,
+
   updatePriceTier: (tier, threshold) =>
     set((s) => ({
       priceTiers: { ...s.priceTiers, [tier]: { ...s.priceTiers[tier], threshold } },
     })),
 
+  fetchTierConfig: async () => {
+    try {
+      const data = await api.getTierConfig();
+      if (data && typeof data === 'object') {
+        const tiers = {};
+        for (const [k, v] of Object.entries(data)) {
+          tiers[k] = { ...v, threshold: v.threshold === null ? Infinity : v.threshold };
+        }
+        set({ priceTiers: tiers });
+      }
+    } catch {
+      // 기본값 유지
+    }
+  },
+
+  saveTierConfig: async () => {
+    set({ tierSaving: true });
+    try {
+      const tiers = { ...get().priceTiers };
+      const payload = {};
+      for (const [k, v] of Object.entries(tiers)) {
+        payload[k] = { ...v, threshold: v.threshold === Infinity ? null : v.threshold };
+      }
+      await api.saveTierConfig(payload);
+      return true;
+    } catch (err) {
+      set({ error: `티어 저장 실패: ${err.message}` });
+      return false;
+    } finally {
+      set({ tierSaving: false });
+    }
+  },
+
+  fetchOutliers: async (limit = 20) => {
+    try {
+      const data = await api.getGlobalOutliers(limit);
+      const list = Array.isArray(data) ? data : [];
+      set({ priceOutliers: list });
+    } catch {
+      set({ priceOutliers: [] });
+    }
+  },
+
+  fetchPriceHistory: async (params = {}) => {
+    try {
+      const data = await api.getPriceHistory(params);
+      set({ priceHistoryPage: data || { items: [], total: 0, page: 1, per_page: 50, total_pages: 0 } });
+    } catch {
+      set({ priceHistoryPage: { items: [], total: 0, page: 1, per_page: 50, total_pages: 0 } });
+    }
+  },
+
+  fetchProductPriceHistory: async (productId, days = 90) => {
+    if (!productId) return;
+    try {
+      const data = await api.getPriceHistory({ product_id: productId, days, per_page: 200 });
+      const items = data?.items || [];
+      set((s) => ({
+        priceHistories: {
+          ...s.priceHistories,
+          [productId]: items.map((i) => ({ date: i.date, price: i.price, source: i.source })),
+        },
+      }));
+    } catch {
+      // 이력 없음
+    }
+  },
+
+  fetchPriceStats: async () => {
+    try {
+      const data = await api.getPriceStats();
+      set({ priceStats: data });
+    } catch {
+      set({ priceStats: null });
+    }
+  },
+
   /* ── 분석 ── */
-  categoryAvgPrices: mockCategoryAvgPrices,
-  qualityReport: mockQualityReport,
-  sourceStats: mockSourceStats,
+  categoryAvgPrices: [],
+  qualityReport: { outliers: 0, duplicates: 0, missingFields: 0, totalRecords: 0, completeness: 0, accuracy: 0 },
+  sourceStats: [],
 
   fetchAnalytics: async () => {
     set({ loading: true, error: null });
@@ -215,15 +329,23 @@ const useDbAdminStore = create((set, get) => ({
         if (s.categoryAvgPrices) set({ categoryAvgPrices: s.categoryAvgPrices });
         if (s.sourceStats) set({ sourceStats: s.sourceStats });
       }
-    } catch {
-      // mock 유지
+    } catch (err) {
+      set({ error: `분석 데이터 로드 실패: ${err.message}` });
     } finally {
       set({ loading: false });
     }
   },
 
   /* ── 대시보드 ── */
-  dashboardStats: mockDashboardStats,
+  dashboardStats: {
+    totalProducts: 0,
+    totalPriceRecords: 0,
+    totalCategories: 0,
+    totalKeywords: 0,
+    lastUpdated: null,
+    qualityScore: 0,
+    recentIngestions: [],
+  },
 
   fetchDashboard: async () => {
     set({ loading: true, error: null });
@@ -232,29 +354,36 @@ const useDbAdminStore = create((set, get) => ({
         api.getProducts(),
         api.getSummary(),
       ]);
-      const products = productsData.status === 'fulfilled'
-        ? (Array.isArray(productsData.value) ? productsData.value : productsData.value.products ?? productsData.value.data ?? [])
+      const rawProducts = productsData.status === 'fulfilled'
+        ? (Array.isArray(productsData.value) ? productsData.value : productsData.value?.items ?? productsData.value?.products ?? productsData.value?.data ?? [])
         : [];
-      if (products.length > 0) set({ products });
+      const mapped = rawProducts.map((p) => ({
+        ...p,
+        category: p.category_name || p.category || p.category_id || '',
+        basePrice: p.basePrice ?? p.base_price ?? p.original_price ?? 0,
+        currentAvg: p.currentAvg ?? p.current_avg ?? p.current_price ?? 0,
+        tier: p.tier || 'good',
+      }));
+      if (mapped.length > 0) set({ products: mapped });
 
       if (summaryData.status === 'fulfilled' && summaryData.value) {
         const s = summaryData.value;
-        // API 필드명 → 프론트엔드 필드명 변환
         set({
           dashboardStats: {
-            ...get().dashboardStats,
-            totalProducts: s.totalProducts ?? s.products ?? products.length ?? get().dashboardStats.totalProducts,
-            totalPriceRecords: s.totalPriceRecords ?? s.baseline_prices ?? get().dashboardStats.totalPriceRecords,
-            totalCategories: s.totalCategories ?? s.categories ?? get().dashboardStats.totalCategories,
-            totalKeywords: s.totalKeywords ?? s.keywords ?? get().dashboardStats.totalKeywords,
-            lastUpdated: s.lastUpdated ?? s.generated_at ?? new Date().toISOString(),
-            qualityScore: s.qualityScore ?? s.quality_score ?? get().dashboardStats.qualityScore,
-            recentIngestions: s.recentIngestions ?? get().dashboardStats.recentIngestions,
+            totalProducts: s.totalProducts ?? s.products ?? mapped.length ?? 0,
+            totalPriceRecords: s.totalPriceRecords ?? s.baseline_prices ?? 0,
+            totalCategories: s.totalCategories ?? s.categories ?? 0,
+            totalKeywords: s.totalKeywords ?? s.keywords ?? 0,
+            lastUpdated: s.lastUpdated ?? s.generated_at ?? null,
+            qualityScore: s.qualityScore ?? s.quality_score ?? 0,
+            recentIngestions: s.recentIngestions ?? [],
           },
         });
+        if (s.categoryAvgPrices) set({ categoryAvgPrices: s.categoryAvgPrices });
+        if (s.sourceStats) set({ sourceStats: s.sourceStats });
       }
-    } catch {
-      // mock 유지
+    } catch (err) {
+      set({ error: `대시보드 로드 실패: ${err.message}` });
     } finally {
       set({ loading: false });
     }
@@ -306,7 +435,7 @@ const useDbAdminStore = create((set, get) => ({
         });
       }
     } catch {
-      // mock 유지
+      // 통계 없음
     }
   },
 
