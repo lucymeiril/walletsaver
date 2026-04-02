@@ -317,8 +317,36 @@ class OpinetCrawler(CrawlerContract):
     # ------------------------------------------------------------------
 
     async def _crawl_via_web(self, errors: list[str]) -> list[dict]:
-        """메인 페이지 스크레이핑으로 유가 정보 수집."""
+        """메인 페이지 스크레이핑으로 유가 정보 수집.
+
+        오피넷은 NetFunnel(대기열) JS가 필요하므로 Playwright 우선,
+        plain HTTP는 fallback으로만 사용한다.
+        """
         items: list[dict] = []
+
+        # 1차: Playwright 렌더링 (NetFunnel JS 처리 가능)
+        try:
+            from engine.playwright_helper import PlaywrightHelper
+
+            async with PlaywrightHelper() as helper:
+                html = await helper.get_rendered_html(
+                    self.MAIN_PAGE,
+                    wait_selector="body",
+                    wait_timeout=20000,
+                )
+                if html and len(html) > 10000:
+                    items = await self._parse_web_page(html)
+                    logger.info(f"[오피넷] Playwright 웹 스크레이핑: {len(items)}개")
+                    if items:
+                        return items
+
+        except ImportError:
+            logger.warning("[오피넷] playwright 미설치")
+        except Exception as e:
+            logger.warning(f"[오피넷] Playwright 스크레이핑 실패: {e}")
+            errors.append(f"Playwright: {e}")
+
+        # 2차: plain HTTP fallback (NetFunnel 미통과 시 빈 페이지일 수 있음)
         try:
             headers = self._anti_detect.get_random_headers()
             headers["Referer"] = self.BASE_URL
@@ -331,16 +359,21 @@ class OpinetCrawler(CrawlerContract):
                 return items
 
             items = await self._parse_web_page(resp.text)
-            logger.info(f"[오피넷] 웹 스크레이핑 수집: {len(items)}개")
+            logger.info(f"[오피넷] HTTP 웹 스크레이핑 수집: {len(items)}개")
 
         except Exception as e:
-            logger.warning(f"[오피넷] 웹 스크레이핑 실패: {e}")
+            logger.warning(f"[오피넷] HTTP 웹 스크레이핑 실패: {e}")
             errors.append(f"웹 스크레이핑: {e}")
 
         return items
 
     async def _parse_web_page(self, html: str) -> list[dict]:
-        """HTML에서 유가 정보 추출."""
+        """HTML에서 유가 정보 추출.
+
+        오피넷 메인 페이지에서:
+          1. 전국 평균 유가 (휘발유/경유/LPG)
+          2. 시도별 최저가 주유소 테이블
+        """
         items: list[dict] = []
 
         try:
@@ -352,7 +385,7 @@ class OpinetCrawler(CrawlerContract):
         try:
             soup = BeautifulSoup(html, "html.parser")
 
-            # 전국 평균 유가 추출 (메인 페이지)
+            # --- 1. 전국 평균 유가 추출 ---
             gasoline = self._find_price_in_soup(
                 soup,
                 "#gasoline_price, .gasoline .price, .oil_price_gasoline, "
@@ -382,7 +415,72 @@ class OpinetCrawler(CrawlerContract):
                     "is_self": False,
                 })
 
-            # 텍스트에서 가격 패턴 추출 (fallback)
+            # --- 2. 최저가 주유소 테이블에서 개별 주유소 추출 ---
+            # 오피넷 메인 페이지의 table에 주유소명과 가격이 나열된다
+            tables = soup.select("table")
+            for table in tables:
+                text = table.get_text(" ", strip=True)
+                if not re.search(r"\d{1,2},\d{3}", text):
+                    continue
+
+                rows = table.select("tr")
+                for row in rows:
+                    cells = row.select("td")
+                    if not cells:
+                        continue
+
+                    row_text = row.get_text(" ", strip=True)
+                    # 주유소명 + 가격 패턴: "SK에너지 XXX주유소 1,775"
+                    station_match = re.search(
+                        r"(.+?주유소|.+?충전소)\s*(\d{1,2},\d{3})", row_text
+                    )
+                    if station_match:
+                        name = station_match.group(1).strip()
+                        price = float(station_match.group(2).replace(",", ""))
+
+                        # 브랜드 추출
+                        brand = ""
+                        for brand_keyword, brand_name in [
+                            ("SK에너지", "SK에너지"),
+                            ("GS칼텍스", "GS칼텍스"),
+                            ("현대오일뱅크", "현대오일뱅크"),
+                            ("HD현대", "현대오일뱅크"),
+                            ("S-OIL", "S-OIL"),
+                            ("에쓰오일", "S-OIL"),
+                            ("알뜰", "알뜰주유소"),
+                        ]:
+                            if brand_keyword in row_text:
+                                brand = brand_name
+                                # 브랜드를 이름에서 제거하여 깔끔하게
+                                name = re.sub(
+                                    r"^(SK에너지|GS칼텍스|HD?현대오일뱅크|S-OIL|에쓰오일)"
+                                    r"[㈜(주)]*\s*(직영\s*)?",
+                                    "", name,
+                                ).strip()
+                                break
+
+                        # 시도명 추출 (행 텍스트 앞부분에 있을 수 있음)
+                        sido_match = re.match(
+                            r"(서울|부산|대구|인천|광주|대전|울산|세종|경기|강원|충북|충남"
+                            r"|전북|전남|경북|경남|제주)\s",
+                            row_text,
+                        )
+                        address = sido_match.group(1) if sido_match else ""
+
+                        if 500 <= price <= 3000 and name and len(name) >= 2:
+                            items.append({
+                                "name": name,
+                                "brand": brand,
+                                "address": address,
+                                "lat": None,
+                                "lng": None,
+                                "gasoline_price": price,
+                                "diesel_price": None,
+                                "lpg_price": None,
+                                "is_self": "셀프" in name,
+                            })
+
+            # --- 3. 텍스트 기반 fallback (전국 평균) ---
             if not items:
                 prices = re.findall(
                     r"(\d{1,2}[,.]?\d{3}(?:\.\d{1,2})?)\s*원?",

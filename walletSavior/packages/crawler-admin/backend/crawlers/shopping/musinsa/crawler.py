@@ -37,8 +37,8 @@ class MusinsaCrawler(CrawlerContract):
     """무신사 크롤러 — 할인율 높은 패션 상품 수집."""
 
     BASE_URL = "https://www.musinsa.com"
-    # PLP API — 할인율 순 정렬, 세일 상품만 필터
-    API_URL = "https://www.musinsa.com/api2/dp/v1/plp/goods"
+    # PLP API — 할인율 순 정렬, 세일 상품만 필터 (api.musinsa.com v2)
+    API_URL = "https://api.musinsa.com/api2/dp/v2/plp/goods"
     # 랭킹 API (fallback)
     RANKING_URL = "https://www.musinsa.com/api2/dp/v1/ranking/goods"
 
@@ -213,7 +213,8 @@ class MusinsaCrawler(CrawlerContract):
                     "gf": "A",
                     "sortCode": "SALE_RATE",
                     "page": 1,
-                    "size": 30,
+                    "size": 60,
+                    "caller": "CATEGORY",
                 }
                 headers = self._get_headers()
                 resp = requests.get(
@@ -294,12 +295,22 @@ class MusinsaCrawler(CrawlerContract):
             discount_pct = round((1 - sale_price / original_price) * 100, 1)
 
         brand = product.get("brandName") or product.get("brand", "")
-        image_url = product.get("imageUrl") or product.get("thumbnailImageUrl", "")
+        # v2 API: thumbnail 필드가 URL 문자열
+        image_url = (
+            product.get("thumbnail")
+            or product.get("imageUrl")
+            or product.get("thumbnailImageUrl", "")
+        )
         if image_url and not image_url.startswith("http"):
             image_url = f"https://image.musinsa.com{image_url}"
 
         goods_no = product.get("goodsNo") or product.get("goodsId", "")
-        detail_url = f"https://www.musinsa.com/products/{goods_no}" if goods_no else ""
+        detail_url = (
+            product.get("goodsLinkUrl")
+            or (f"https://www.musinsa.com/products/{goods_no}" if goods_no else "")
+        )
+        if detail_url and not detail_url.startswith("http"):
+            detail_url = f"https://www.musinsa.com{detail_url}"
 
         category_map = {
             "001": "상의", "002": "아우터", "003": "하의",
