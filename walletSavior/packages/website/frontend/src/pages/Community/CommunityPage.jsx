@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Pencil, ImagePlus, X, Send, Eye, MessageSquare, Clock, Search } from 'lucide-react';
-import { fmt, verifyPrice } from '../../data/mockData';
+import { fmt, verifyPrice } from '../../utils/helpers';
 import useStore from '../../stores/appStore';
 import Spinner from '../../components/common/Spinner';
 import s from './CommunityPage.module.css';

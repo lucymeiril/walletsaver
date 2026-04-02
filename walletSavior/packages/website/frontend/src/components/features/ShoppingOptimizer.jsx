@@ -1,16 +1,17 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { X, Share2, ShoppingCart, Sparkles } from 'lucide-react';
-import { PRODUCTS, MARTS, fmt } from '../../data/mockData';
+import { MARTS } from '../../utils/constants';
+import { fmt } from '../../utils/helpers';
 import useStore from '../../stores/appStore';
 import s from './ShoppingOptimizer.module.css';
 
-function calcOptimalCombo(items) {
+function calcOptimalCombo(items, products) {
   // 각 마트별 총합 계산
   const martTotals = MARTS.map(m => {
     const total = items.reduce((sum, item) => {
-      const product = PRODUCTS.find(p => p.id === item.productId);
-      if (!product) return sum;
-      return sum + product.stores[m.key] * item.quantity;
+      const product = products.find(p => p.id === item.productId);
+      if (!product || !product.stores) return sum;
+      return sum + (product.stores[m.key] || 0) * item.quantity;
     }, 0);
     return { ...m, total };
   });
@@ -20,14 +21,15 @@ function calcOptimalCombo(items) {
   let optimalTotal = 0;
 
   items.forEach(item => {
-    const product = PRODUCTS.find(p => p.id === item.productId);
-    if (!product) return;
+    const product = products.find(p => p.id === item.productId);
+    if (!product || !product.stores) return;
 
     let bestMart = MARTS[0];
-    let bestPrice = product.stores[MARTS[0].key];
+    let bestPrice = product.stores[MARTS[0].key] || Infinity;
     MARTS.forEach(m => {
-      if (product.stores[m.key] < bestPrice) {
-        bestPrice = product.stores[m.key];
+      const price = product.stores[m.key];
+      if (price && price < bestPrice) {
+        bestPrice = price;
         bestMart = m;
       }
     });
@@ -53,9 +55,17 @@ export default function ShoppingOptimizer() {
   const [searchQuery, setSearchQuery] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [dropOpen, setDropOpen] = useState(false);
+  const [products, setProducts] = useState([]);
+
+  // 상품 목록을 API에서 조회
+  useEffect(() => {
+    fetch('/api/products/search?per_page=50').then(r => r.json())
+      .then(res => setProducts(res.data || []))
+      .catch(console.error);
+  }, []);
 
   const matches = searchQuery.length > 0
-    ? PRODUCTS.filter(p => p.name.includes(searchQuery) || p.cat.includes(searchQuery))
+    ? products.filter(p => p.name?.includes(searchQuery) || p.cat?.includes(searchQuery))
     : [];
 
   const handleAdd = (product) => {
@@ -67,14 +77,14 @@ export default function ShoppingOptimizer() {
 
   const listProducts = shoppingList
     .map(item => {
-      const product = PRODUCTS.find(p => p.id === item.productId);
+      const product = products.find(p => p.id === item.productId);
       return product ? { ...item, product } : null;
     })
     .filter(Boolean);
 
   const result = useMemo(
-    () => listProducts.length > 0 ? calcOptimalCombo(shoppingList) : null,
-    [shoppingList, listProducts.length]
+    () => listProducts.length > 0 ? calcOptimalCombo(shoppingList, products) : null,
+    [shoppingList, listProducts.length, products]
   );
 
   const handleShare = () => {

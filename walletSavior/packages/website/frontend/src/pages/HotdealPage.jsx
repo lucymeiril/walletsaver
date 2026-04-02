@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Info } from 'lucide-react';
-import { HOTDEALS, HOTDEAL_FILTERS, PRODUCTS, fmt } from '../data/mockData';
+import { HOTDEAL_FILTERS } from '../utils/constants';
+import { fmt } from '../utils/helpers';
 import ShareButton from '../components/common/ShareButton';
 import DetailModal from '../components/modals/DetailModal';
 import s from './HotdealPage.module.css';

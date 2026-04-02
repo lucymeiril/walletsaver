@@ -2,7 +2,8 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useMemo, useState, useEffect } from 'react';
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { Heart, Search, TrendingUp, TrendingDown, Minus } from 'lucide-react';
-import { MARTS, PRODUCT_VARIANTS, fmt } from '../../data/mockData';
+import { MARTS } from '../../utils/constants';
+import { fmt } from '../../utils/helpers';
 import useStore from '../../stores/appStore';
 import useDebounce from '../../hooks/useDebounce';
 import Spinner from '../../components/common/Spinner';
@@ -151,8 +152,8 @@ export default function PricePage() {
     );
   }
 
-  // Product selected — show detail
-  const variants = PRODUCT_VARIANTS[product.id] || [];
+  // 상품 상세 — 속성 변형은 DB에서 조회 (현재 미구현 시 빈 배열)
+  const variants = productData?.variants || [];
   const activeVariant = variants[variantIdx] || null;
   const displayAvg = activeVariant?.avg ?? product.avg;
   const displayCur = activeVariant?.cur ?? product.cur;

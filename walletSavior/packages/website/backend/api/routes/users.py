@@ -60,57 +60,44 @@ async def update_my_profile(body: ProfileUpdate, user: dict = Depends(require_au
 
 @router.get("/me/favorites")
 async def get_favorites(request: Request, user: dict = Depends(require_auth)):
-    """즐겨찾기 목록."""
+    """즐겨찾기 목록 — DB에서 조회."""
     storage = request.app.state.storage
     if storage is None:
-        from api.mock_responses import MOCK_FAVORITES
-        return ApiResponse(data=MOCK_FAVORITES)
+        return ApiResponse(data=[])
     return ApiResponse(data=storage.get_user_favorites(user["id"]))
 
 
 @router.post("/me/favorites")
 async def add_favorite(request: Request, body: FavoriteRequest, user: dict = Depends(require_auth)):
-    """즐겨찾기 추가."""
+    """즐겨찾기 추가 — DB에 저장."""
     storage = request.app.state.storage
     if storage is None:
-        return ApiResponse(data={
-            "id": 99,
-            "product_id": body.product_id,
-            "user_id": user["id"],
-            "status": "added",
-        })
+        return ApiResponse(data={"status": "error", "message": "DB 미연결"})
     return ApiResponse(data=storage.add_user_favorite(user["id"], body.product_id))
 
 
 @router.delete("/me/favorites/{favorite_id}")
 async def remove_favorite(request: Request, favorite_id: int, user: dict = Depends(require_auth)):
-    """즐겨찾기 삭제."""
+    """즐겨찾기 삭제 — DB에서 삭제."""
     storage = request.app.state.storage
     if storage is None:
-        return ApiResponse(data={"id": favorite_id, "status": "removed"})
+        return ApiResponse(data={"status": "error", "message": "DB 미연결"})
     return ApiResponse(data=storage.remove_user_favorite(user["id"], favorite_id))
 
 
 @router.get("/me/alerts")
 async def get_alerts(request: Request, user: dict = Depends(require_auth)):
-    """가격 알림 목록."""
+    """가격 알림 목록 — DB에서 조회."""
     storage = request.app.state.storage
     if storage is None:
-        from api.mock_responses import MOCK_ALERTS
-        return ApiResponse(data=MOCK_ALERTS)
+        return ApiResponse(data=[])
     return ApiResponse(data=storage.get_user_alerts(user["id"]))
 
 
 @router.post("/me/alerts")
 async def create_alert(request: Request, body: AlertRequest, user: dict = Depends(require_auth)):
-    """가격 알림 설정."""
+    """가격 알림 설정 — DB에 저장."""
     storage = request.app.state.storage
     if storage is None:
-        return ApiResponse(data={
-            "id": 99,
-            "product_id": body.product_id,
-            "target_price": body.target_price,
-            "user_id": user["id"],
-            "status": "active",
-        })
+        return ApiResponse(data={"status": "error", "message": "DB 미연결"})
     return ApiResponse(data=storage.add_price_alert(user["id"], body.product_id, body.target_price))

@@ -20,8 +20,8 @@ async def list_crawlers(request: Request):
     """
     storage = request.app.state.storage
     if storage is None:
-        # mock: 등록된 크롤러 목록 (Phase 3~6에서 실제 크롤러 추가 예정)
-        return [
+        # DB 미연결: 기본 크롤러 목록만 반환 (상태 없음)
+        default_crawlers = [
             {"name": "kamis",    "group": "public",  "status": "idle", "last_run": None, "items_count": 0, "description": "농산물유통정보 공공 API"},
             {"name": "opinet",   "group": "public",  "status": "idle", "last_run": None, "items_count": 0, "description": "오피넷 주유소 가격"},
             {"name": "emart",    "group": "marts",   "status": "idle", "last_run": None, "items_count": 0, "description": "이마트 전단 할인"},
@@ -31,6 +31,7 @@ async def list_crawlers(request: Request):
             {"name": "ppomppu",  "group": "hotdeals", "status": "idle", "last_run": None, "items_count": 0, "description": "뽐뿌 핫딜"},
             {"name": "eomisae",  "group": "hotdeals", "status": "idle", "last_run": None, "items_count": 0, "description": "어미새 핫딜"},
         ]
+        return default_crawlers
 
     # DB에서 크롤러별 최근 로그 조회
     logs = await storage.get_crawl_logs(limit=100)

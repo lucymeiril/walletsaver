@@ -22,7 +22,7 @@ async def search(
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
 ):
-    """통합 검색."""
+    """통합 검색 — DB에서 실제 데이터 검색."""
     storage = request.app.state.storage
     results = []
     q_lower = q.lower() if q else ""
@@ -32,19 +32,6 @@ async def search(
         if storage:
             products = storage.search_products(q)
             for p in products:
-                results.append({
-                    "type": "product",
-                    "id": p["id"],
-                    "title": p["name"],
-                    "description": f"{p['unit']} / 현재가 {p['cur']}원",
-                    "price": p["cur"],
-                    "image": p.get("img"),
-                })
-        else:
-            from api.mock_responses import MOCK_PRODUCTS
-            for p in MOCK_PRODUCTS:
-                if q_lower and q_lower not in p["name"].lower() and q_lower not in p.get("cat", "").lower():
-                    continue
                 results.append({
                     "type": "product",
                     "id": p["id"],
@@ -69,34 +56,29 @@ async def search(
                     "price": h.get("price"),
                     "image": h.get("thumb"),
                 })
-        else:
-            from api.mock_responses import MOCK_HOTDEALS
-            for h in MOCK_HOTDEALS:
-                if q_lower and q_lower not in h["title"].lower():
-                    continue
-                results.append({
-                    "type": "hotdeal",
-                    "id": h["id"],
-                    "title": h["title"],
-                    "description": f"{h['source']} / {h['time']}",
-                    "price": h.get("price"),
-                    "image": h.get("thumb"),
-                })
 
-    # 게시글 검색
+    # 게시글 검색 — DB에서 커뮤니티 게시글 조회
     if not type or type == "post":
-        from api.mock_responses import MOCK_POSTS
-        for p in MOCK_POSTS:
-            if q_lower and q_lower not in p["title"].lower() and q_lower not in p.get("content", "").lower():
-                continue
-            results.append({
-                "type": "post",
-                "id": p["id"],
-                "title": p["title"],
-                "description": p["content"][:100],
-                "price": p.get("price"),
-                "image": None,
-            })
+        if storage:
+            try:
+                from sqlalchemy import select
+                from storage.models import Post as PostModel
+                with storage.SessionLocal() as session:
+                    stmt = select(PostModel).where(PostModel.is_deleted == False)
+                    if q_lower:
+                        stmt = stmt.where(PostModel.title.contains(q))
+                    posts = session.execute(stmt.limit(20)).scalars().all()
+                    for p in posts:
+                        results.append({
+                            "type": "post",
+                            "id": p.id,
+                            "title": p.title,
+                            "description": (p.content or "")[:100],
+                            "price": p.deal_price,
+                            "image": None,
+                        })
+            except Exception:
+                pass
 
     if sort == "popular":
         results.sort(key=lambda x: x.get("price") or 0, reverse=True)
@@ -138,16 +120,5 @@ async def autocomplete(
                 "type": "product",
                 "id": p["id"],
             })
-    else:
-        from api.mock_responses import MOCK_PRODUCTS
-        for p in MOCK_PRODUCTS:
-            if q_lower in p["name"].lower():
-                suggestions.append({
-                    "text": p["name"],
-                    "type": "product",
-                    "id": p["id"],
-                })
-            if len(suggestions) >= limit:
-                break
 
     return ApiResponse(data=suggestions)

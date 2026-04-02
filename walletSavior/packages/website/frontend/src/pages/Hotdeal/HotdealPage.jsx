@@ -2,15 +2,14 @@ import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { X, Info, Eye, MessageSquare, Clock, Send } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { HOTDEAL_FILTERS, fmt } from '../../data/mockData';
-import { HOTDEAL_SOURCES } from '../../data/seedData';
+import { HOTDEAL_FILTERS } from '../../utils/constants';
+import { fmt } from '../../utils/helpers';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import Badge from '../../components/common/Badge';
 import Spinner from '../../components/common/Spinner';
 import useStore from '../../stores/appStore';
 import s from './HotdealPage.module.css';
 
-const SOURCES = HOTDEAL_SOURCES;
 const PAGE_SIZE = 8;
 
 function getTier(price, origPrice) {
@@ -34,7 +33,15 @@ export default function HotdealPage() {
 
   const [allDeals, setAllDeals] = useState([]);
   const [products, setProducts] = useState([]);
+  const [sources, setSources] = useState(['전체']);
   const [loading, setLoading] = useState(true);
+
+  // 핫딜 출처 목록 API에서 조회
+  useEffect(() => {
+    fetch('/api/hotdeals/sources').then(r => r.json())
+      .then(res => setSources(res.data || ['전체']))
+      .catch(() => setSources(['전체']));
+  }, []);
 
   useEffect(() => {
     fetch('/api/products/search?per_page=50').then(r => r.json())
@@ -128,7 +135,7 @@ export default function HotdealPage() {
         </div>
         <div className={s.sourceRow}>
           <span className={s.sourceLabel}>출처:</span>
-          {SOURCES.map(src => (
+          {sources.map(src => (
             <button
               key={src}
               className={`${s.sourceBtn} ${source === src ? s.sourceBtnActive : ''}`}

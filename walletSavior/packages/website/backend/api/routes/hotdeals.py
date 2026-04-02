@@ -25,39 +25,10 @@ async def list_hotdeals(
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
 ):
-    """핫딜 목록."""
+    """핫딜 목록 — DB에서 실제 핫딜 데이터 조회."""
     storage = request.app.state.storage
     if storage is None:
-        from api.mock_responses import MOCK_HOTDEALS
-        filtered = list(MOCK_HOTDEALS)
-        if category != "all":
-            filtered = [h for h in filtered if h["cat"] == category]
-        if source:
-            filtered = [h for h in filtered if h["source"] == source]
-        if sort == "popular":
-            filtered.sort(key=lambda x: x["views"], reverse=True)
-        elif sort == "price_asc":
-            filtered.sort(key=lambda x: x["price"] if x["price"] is not None else float("inf"))
-        elif sort == "discount":
-            def disc_key(h):
-                if h["price"] and h["origPrice"]:
-                    return h["price"] / h["origPrice"]
-                return 1.0
-            filtered.sort(key=disc_key)
-
-        total = len(filtered)
-        start = (page - 1) * per_page
-        paginated = filtered[start:start + per_page]
-
-        return ApiResponse(
-            data=paginated,
-            meta=PaginationMeta(
-                page=page,
-                per_page=per_page,
-                total=total,
-                total_pages=math.ceil(total / per_page) if total > 0 else 0,
-            ),
-        )
+        return ApiResponse(data=[], meta=PaginationMeta(page=page, per_page=per_page, total=0, total_pages=0))
 
     return ApiResponse(data=storage.get_hotdeals(category=category, source=source, sort=sort, page=page, per_page=per_page))
 
@@ -77,16 +48,28 @@ async def get_hotdeal_categories(request: Request):
     return ApiResponse(data=categories)
 
 
-@router.get("/{hotdeal_id}")
-async def get_hotdeal(request: Request, hotdeal_id: int):
-    """핫딜 상세."""
+@router.get("/sources")
+async def get_hotdeal_sources(request: Request):
+    """핫딜 출처(커뮤니티) 목록 — DB에서 고유 source 값 조회."""
     storage = request.app.state.storage
     if storage is None:
-        from api.mock_responses import MOCK_HOTDEALS
-        deal = next((h for h in MOCK_HOTDEALS if h["id"] == hotdeal_id), None)
-        if not deal:
-            raise HTTPException(status_code=404, detail="핫딜을 찾을 수 없습니다")
-        return ApiResponse(data=deal)
+        return ApiResponse(data=["전체"])
+
+    # DB에서 핫딜 출처 목록 추출
+    try:
+        all_deals = storage.get_hotdeals(per_page=200)
+        sources = sorted(set(d.get("source", "") for d in all_deals if d.get("source")))
+        return ApiResponse(data=["전체"] + sources)
+    except Exception:
+        return ApiResponse(data=["전체"])
+
+
+@router.get("/{hotdeal_id}")
+async def get_hotdeal(request: Request, hotdeal_id: int):
+    """핫딜 상세 — DB에서 조회."""
+    storage = request.app.state.storage
+    if storage is None:
+        raise HTTPException(status_code=503, detail="DB 미연결")
 
     result = storage.get_hotdeal_detail(hotdeal_id)
     if not result:

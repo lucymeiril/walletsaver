@@ -18,19 +18,10 @@ router = APIRouter()
 
 @router.get("")
 async def list_marts(request: Request):
-    """마트 목록."""
+    """마트 목록 — DB에서 조회."""
     storage = request.app.state.storage
     if storage is None:
-        from api.mock_responses import MOCK_MARTS, MOCK_MART_DATA
-        result = []
-        for mart in MOCK_MARTS:
-            data = MOCK_MART_DATA.get(mart["key"], {})
-            result.append({
-                **mart,
-                "deals_count": len(data.get("items", [])),
-                "period": data.get("period", ""),
-            })
-        return ApiResponse(data=result)
+        return ApiResponse(data=[])
 
     mart_data = storage.get_mart_deals()
     result = []
@@ -73,15 +64,19 @@ async def get_store_flyers(store: str):
 
 @router.get("/{store}/promotions")
 async def get_mart_promotions(request: Request, store: str):
-    """마트별 프로모션/세일."""
+    """마트별 프로모션/세일 — DB에서 조회."""
     db_store = _STORE_ALIAS.get(store, store)
     storage = request.app.state.storage
     if storage is None:
-        from api.mock_responses import MOCK_MART_DATA
-        data = MOCK_MART_DATA.get(store)
-        if not data:
-            raise HTTPException(status_code=404, detail=f"마트 '{store}'를 찾을 수 없습니다")
-        return ApiResponse(data=data)
+        # DB 미연결 시 빈 결과 반환
+        mart_meta = {
+            "emart": {"name": "이마트", "color": "#FFD700"},
+            "homeplus": {"name": "홈플러스", "color": "#FF6B35"},
+            "lotte": {"name": "롯데마트", "color": "#E4002B"},
+            "costco": {"name": "코스트코", "color": "#E31837"},
+        }
+        meta = mart_meta.get(store, {"name": store, "color": "#666"})
+        return ApiResponse(data={"name": meta["name"], "color": meta["color"], "items": [], "last_crawled_at": ""})
 
     # DB 조회 — 데이터가 없으면 빈 items 반환 (404 대신)
     mart_meta = {

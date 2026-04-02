@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Pencil, ImagePlus, X } from 'lucide-react';
-import { COMMUNITY_POSTS, PRODUCTS, fmt, verifyPrice } from '../data/mockData';
+import { fmt, verifyPrice } from '../utils/helpers';
 import useStore from '../stores/appStore';
 import DetailModal from '../components/modals/DetailModal';
 import s from './CommunityPage.module.css';

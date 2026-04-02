@@ -31,30 +31,54 @@ async def nearby_restaurants(
     category: str = Query(None, description="카테고리 필터"),
     sort: str = Query("distance", description="정렬 (distance, rating, price_asc)"),
 ):
-    """주변 식당 조회."""
-    from api.mock_responses import MOCK_RESTAURANTS
+    """주변 식당 조회 — DB에서 실제 데이터 조회."""
+    storage = request.app.state.storage
+    # DB에서 식당 데이터 조회 시도
+    if storage is not None:
+        try:
+            from sqlalchemy import select
+            from storage.models import Restaurant
+            with storage.SessionLocal() as session:
+                stmt = select(Restaurant)
+                rows = session.execute(stmt).scalars().all()
+                results = []
+                for r in rows:
+                    if r.lat and r.lng:
+                        dist = _haversine(lat, lng, r.lat, r.lng)
+                        if dist > radius:
+                            continue
+                    else:
+                        dist = 0
+                    entry = {
+                        "id": r.id,
+                        "name": r.name,
+                        "category": r.category or "",
+                        "address": r.address or "",
+                        "lat": r.lat,
+                        "lng": r.lng,
+                        "avg_price": 0,
+                        "rating": r.rating or 0,
+                        "review_count": r.review_count or 0,
+                        "distance": round(dist),
+                    }
+                    if category and entry["category"] != category:
+                        continue
+                    results.append(entry)
+                if sort == "rating":
+                    results.sort(key=lambda x: x.get("rating", 0), reverse=True)
+                elif sort == "price_asc":
+                    results.sort(key=lambda x: x.get("avg_price", float("inf")))
+                else:
+                    results.sort(key=lambda x: x["distance"])
+                return ApiResponse(data=results)
+        except Exception:
+            pass
 
-    results = []
-    for r in MOCK_RESTAURANTS:
-        dist = _haversine(lat, lng, r["lat"], r["lng"])
-        if dist <= radius:
-            results.append({**r, "distance": round(dist)})
-
-    if category:
-        results = [r for r in results if r["category"] == category]
-
-    if sort == "rating":
-        results.sort(key=lambda x: x.get("rating", 0), reverse=True)
-    elif sort == "price_asc":
-        results.sort(key=lambda x: x.get("avg_price", float("inf")))
-    else:
-        results.sort(key=lambda x: x["distance"])
-
-    return ApiResponse(data=results)
+    # DB 미연결 또는 조회 실패 시 빈 배열 반환
+    return ApiResponse(data=[])
 
 
 @router.get("/recipes/compare")
 async def compare_recipes(request: Request):
-    """레시피 가격 비교 (직접 해먹기 vs 배달 vs 외식)."""
-    from api.mock_responses import MOCK_RECIPE_COMPARE
-    return ApiResponse(data=MOCK_RECIPE_COMPARE)
+    """레시피 가격 비교 — 현재 DB에 레시피 데이터가 없으므로 빈 배열 반환."""
+    return ApiResponse(data=[])

@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X, TrendingUp, TrendingDown, Minus, ArrowRight, Heart, Clock } from 'lucide-react';
-import { PRODUCTS, HOTDEALS, MART_DATA, MARTS, fmt } from '../data/mockData';
+import { MARTS } from '../utils/constants';
+import { fmt } from '../utils/helpers';
 import useStore from '../stores/appStore';
 import RecipeCalculator from '../components/features/RecipeCalculator';
 import FavoritesDashboard from '../components/features/FavoritesDashboard';

@@ -1,5 +1,5 @@
 """
-커뮤니티 API — 게시글, 댓글, 투표.
+커뮤니티 API — 게시글, 댓글, 투표. DB 기반으로 동작.
 
 엔드포인트:
     GET    /api/posts                    — 게시글 목록
@@ -16,7 +16,6 @@
 import os
 import sys
 import math
-import copy
 from datetime import datetime
 from fastapi import APIRouter, Request, HTTPException, Depends, Query
 from api.schemas.common import ApiResponse, PaginationMeta
@@ -57,104 +56,11 @@ try:
     Base.metadata.create_all(_db_engine)
     _SessionLocal = sessionmaker(bind=_db_engine)
 
-    # 커뮤니티 초기 데이터가 없으면 mock 데이터로 시드
-    try:
-        _tmp_session = _SessionLocal()
-        _post_count = _tmp_session.query(PostModel).count()
-        if _post_count == 0:
-            from api.mock_responses import MOCK_POSTS, MOCK_COMMENTS
-            # 먼저 사용자 생성
-            _authors = {}
-            for p in MOCK_POSTS:
-                aid = p["author_id"]
-                if aid not in _authors:
-                    existing = _tmp_session.get(UserModel, aid)
-                    if not existing:
-                        u = UserModel(
-                            id=aid,
-                            email=f"{p['author_nickname']}@seed.local",
-                            nickname=p["author_nickname"],
-                        )
-                        _tmp_session.add(u)
-                    _authors[aid] = True
-            _tmp_session.commit()
-
-            # 게시글 생성
-            for p in MOCK_POSTS:
-                try:
-                    pt = DBPostType(p["post_type"])
-                except ValueError:
-                    pt = DBPostType.FREE
-                post_obj = PostModel(
-                    id=p["id"],
-                    author_id=p["author_id"],
-                    post_type=pt,
-                    title=p["title"],
-                    content=p["content"],
-                    custom_category=p.get("category"),
-                    deal_price=p.get("price"),
-                    deal_url=p.get("url"),
-                    view_count=p.get("views", 0),
-                )
-                _tmp_session.add(post_obj)
-            _tmp_session.commit()
-
-            # 댓글 생성
-            for post_id, comments in MOCK_COMMENTS.items():
-                for c in comments:
-                    aid = c["author_id"]
-                    if aid not in _authors:
-                        existing = _tmp_session.get(UserModel, aid)
-                        if not existing:
-                            u = UserModel(
-                                id=aid,
-                                email=f"{c['author_nickname']}@seed.local",
-                                nickname=c["author_nickname"],
-                            )
-                            _tmp_session.add(u)
-                        _authors[aid] = True
-                    _tmp_session.commit()
-                    comment_obj = CommentModel(
-                        id=c["id"],
-                        post_id=post_id,
-                        author_id=c["author_id"],
-                        content=c["content"],
-                        parent_id=c.get("parent_id"),
-                    )
-                    _tmp_session.add(comment_obj)
-            _tmp_session.commit()
-        _tmp_session.close()
-    except Exception as _seed_err:
-        import logging
-        logging.warning(f"커뮤니티 시드 실패: {_seed_err}")
-
     _use_db = True
 except Exception as _e:
     import logging
-    logging.warning(f"커뮤니티 DB 연결 실패, mock 사용: {_e}")
+    logging.warning(f"커뮤니티 DB 연결 실패: {_e}")
     _use_db = False
-
-# ── 인메모리 fallback ──
-_posts_db: list[dict] = []
-_comments_db: dict[int, list[dict]] = {}
-_votes_db: dict[str, str] = {}
-_next_post_id = 100
-_next_comment_id = 100
-_initialized = False
-
-
-def _ensure_init():
-    """lazy init from mock data (fallback)."""
-    global _posts_db, _comments_db, _initialized, _next_post_id, _next_comment_id
-    if _initialized:
-        return
-    from api.mock_responses import MOCK_POSTS, MOCK_COMMENTS
-    _posts_db = copy.deepcopy(MOCK_POSTS)
-    _comments_db = copy.deepcopy(MOCK_COMMENTS)
-    _next_post_id = max((p["id"] for p in _posts_db), default=0) + 1
-    all_cids = [c["id"] for cs in _comments_db.values() for c in cs]
-    _next_comment_id = max(all_cids, default=0) + 1
-    _initialized = True
 
 
 def _post_to_dict(post: "PostModel") -> dict:
@@ -256,29 +162,10 @@ async def list_posts(
                 ),
             )
 
-    # fallback: in-memory mock
-    _ensure_init()
-    results = list(_posts_db)
-    if post_type:
-        results = [p for p in results if p["post_type"] == post_type]
-    if category:
-        results = [p for p in results if p.get("category") == category]
-    if sort == "popular":
-        results.sort(key=lambda x: x["views"], reverse=True)
-    elif sort == "comments":
-        results.sort(key=lambda x: x["comments_count"], reverse=True)
-    else:
-        results.sort(key=lambda x: x["created_at"], reverse=True)
-
-    total = len(results)
-    start = (page - 1) * per_page
-    paginated = results[start:start + per_page]
+    # DB 미연결 시 빈 결과 반환
     return ApiResponse(
-        data=paginated,
-        meta=PaginationMeta(
-            page=page, per_page=per_page, total=total,
-            total_pages=math.ceil(total / per_page) if total > 0 else 0,
-        ),
+        data=[],
+        meta=PaginationMeta(page=page, per_page=per_page, total=0, total_pages=0),
     )
 
 
@@ -309,30 +196,8 @@ async def create_post(body: PostCreate, user: dict = Depends(get_current_user)):
             data = _post_to_dict(post)
             return ApiResponse(data=data)
 
-    global _next_post_id
-    _ensure_init()
-    now = datetime.now().isoformat()
-    post = {
-        "id": _next_post_id,
-        "title": body.title,
-        "content": body.content,
-        "post_type": body.post_type.value,
-        "category": body.category,
-        "author_id": user["id"],
-        "author_nickname": user.get("nickname", user["email"].split("@")[0]),
-        "views": 0,
-        "comments_count": 0,
-        "hot_votes": 0,
-        "not_votes": 0,
-        "price": body.price,
-        "original_price": body.original_price,
-        "url": body.url,
-        "created_at": now,
-        "updated_at": now,
-    }
-    _posts_db.insert(0, post)
-    _next_post_id += 1
-    return ApiResponse(data=post)
+    # DB 미연결 시 에러
+    raise HTTPException(status_code=503, detail="DB 미연결")
 
 
 @router.get("/{post_id}")
@@ -348,12 +213,7 @@ async def get_post(post_id: int):
             session.refresh(post)
             return ApiResponse(data=_post_to_dict(post))
 
-    _ensure_init()
-    post = next((p for p in _posts_db if p["id"] == post_id), None)
-    if not post:
-        raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
-    post["views"] += 1
-    return ApiResponse(data=post)
+    raise HTTPException(status_code=503, detail="DB 미연결")
 
 
 @router.put("/{post_id}")
@@ -377,20 +237,7 @@ async def update_post(post_id: int, body: PostUpdate, user: dict = Depends(requi
             session.refresh(post)
             return ApiResponse(data=_post_to_dict(post))
 
-    _ensure_init()
-    post = next((p for p in _posts_db if p["id"] == post_id), None)
-    if not post:
-        raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
-    if post["author_id"] != user["id"]:
-        raise HTTPException(status_code=403, detail="수정 권한이 없습니다")
-    if body.title is not None:
-        post["title"] = body.title
-    if body.content is not None:
-        post["content"] = body.content
-    if body.category is not None:
-        post["category"] = body.category
-    post["updated_at"] = datetime.now().isoformat()
-    return ApiResponse(data=post)
+    raise HTTPException(status_code=503, detail="DB 미연결")
 
 
 @router.delete("/{post_id}")
@@ -407,15 +254,7 @@ async def delete_post(post_id: int, user: dict = Depends(require_auth)):
             session.commit()
             return ApiResponse(data={"id": post_id, "status": "deleted"})
 
-    _ensure_init()
-    post = next((p for p in _posts_db if p["id"] == post_id), None)
-    if not post:
-        raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
-    if post["author_id"] != user["id"] and user.get("role") not in ("admin", "moderator"):
-        raise HTTPException(status_code=403, detail="삭제 권한이 없습니다")
-    _posts_db.remove(post)
-    _comments_db.pop(post_id, None)
-    return ApiResponse(data={"id": post_id, "status": "deleted"})
+    raise HTTPException(status_code=503, detail="DB 미연결")
 
 
 @router.post("/{post_id}/comments")
@@ -438,23 +277,7 @@ async def create_comment(post_id: int, body: CommentCreate, user: dict = Depends
             session.refresh(comment)
             return ApiResponse(data=_comment_to_dict(comment))
 
-    global _next_comment_id
-    _ensure_init()
-    post = next((p for p in _posts_db if p["id"] == post_id), None)
-    if not post:
-        raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
-    comment = {
-        "id": _next_comment_id,
-        "content": body.content,
-        "author_id": user["id"],
-        "author_nickname": user.get("nickname", user["email"].split("@")[0]),
-        "parent_id": body.parent_id,
-        "created_at": datetime.now().isoformat(),
-    }
-    _comments_db.setdefault(post_id, []).append(comment)
-    post["comments_count"] += 1
-    _next_comment_id += 1
-    return ApiResponse(data=comment)
+    raise HTTPException(status_code=503, detail="DB 미연결")
 
 
 @router.get("/{post_id}/comments")
@@ -473,12 +296,7 @@ async def list_comments(post_id: int):
             )
             return ApiResponse(data=[_comment_to_dict(c) for c in comments])
 
-    _ensure_init()
-    post = next((p for p in _posts_db if p["id"] == post_id), None)
-    if not post:
-        raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
-    comments = _comments_db.get(post_id, [])
-    return ApiResponse(data=comments)
+    return ApiResponse(data=[])
 
 
 @router.post("/{post_id}/vote")
@@ -531,41 +349,7 @@ async def vote_post(post_id: int, body: VoteRequest, user: dict = Depends(requir
                 "user_vote": body.vote_type,
             })
 
-    # fallback: in-memory
-    _ensure_init()
-    post = next((p for p in _posts_db if p["id"] == post_id), None)
-    if not post:
-        raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
-
-    vote_key = f"{user['id']}:{post_id}"
-    prev = _votes_db.get(vote_key)
-
-    if prev == "hot":
-        post["hot_votes"] -= 1
-    elif prev == "not":
-        post["not_votes"] -= 1
-
-    if prev == body.vote_type:
-        _votes_db.pop(vote_key, None)
-        return ApiResponse(data={
-            "post_id": post_id,
-            "hot_votes": post["hot_votes"],
-            "not_votes": post["not_votes"],
-            "user_vote": None,
-        })
-
-    _votes_db[vote_key] = body.vote_type
-    if body.vote_type == "hot":
-        post["hot_votes"] += 1
-    else:
-        post["not_votes"] += 1
-
-    return ApiResponse(data={
-        "post_id": post_id,
-        "hot_votes": post["hot_votes"],
-        "not_votes": post["not_votes"],
-        "user_vote": body.vote_type,
-    })
+    raise HTTPException(status_code=503, detail="DB 미연결")
 
 
 @router.get("/{post_id}/suggested-tier")
@@ -582,12 +366,7 @@ async def suggested_tier(post_id: int):
             price = post.deal_price
             orig = None
     else:
-        _ensure_init()
-        post = next((p for p in _posts_db if p["id"] == post_id), None)
-        if not post:
-            raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
-        price = post.get("price")
-        orig = post.get("original_price")
+        raise HTTPException(status_code=503, detail="DB 미연결")
 
     if price and orig and orig > 0:
         ratio = price / orig

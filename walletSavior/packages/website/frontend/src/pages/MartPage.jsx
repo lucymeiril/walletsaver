@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { MART_DATA, PRODUCTS, MARTS, fmt } from '../data/mockData';
+import { MARTS } from '../utils/constants';
+import { fmt } from '../utils/helpers';
 import s from './MartPage.module.css';
 
 export default function MartPage() {

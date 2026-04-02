@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, ExternalLink, RefreshCw } from 'lucide-react';
-import { MARTS, fmt } from '../../data/mockData';
+import { MARTS } from '../../utils/constants';
+import { fmt } from '../../utils/helpers';
 import useStore from '../../stores/appStore';
 import Modal from '../../components/common/Modal';
 import Spinner from '../../components/common/Spinner';

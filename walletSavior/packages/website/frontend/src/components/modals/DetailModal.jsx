@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { X, ImagePlus, Send, MessageSquare, Eye, Clock } from 'lucide-react';
-import { fmt } from '../../data/mockData';
+import { fmt } from '../../utils/helpers';
 import s from './DetailModal.module.css';
 
 export default function DetailModal({ item, type, onClose }) {

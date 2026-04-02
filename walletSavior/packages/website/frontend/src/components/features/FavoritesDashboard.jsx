@@ -1,10 +1,12 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, TrendingUp, TrendingDown, Minus } from 'lucide-react';
-import { PRODUCTS, fmt } from '../../data/mockData';
+import { fmt } from '../../utils/helpers';
 import useStore from '../../stores/appStore';
 import s from './FavoritesDashboard.module.css';
 
 function getTimingBadge(product) {
+  if (!product.cur || !product.avg) return { cls: s.badgeOk, label: '✅ 가격 정보 없음' };
   const ratio = product.cur / product.avg;
   if (ratio <= 0.7)  return { cls: s.badgeUltra, label: '🔥 지금 당장 사세요!' };
   if (ratio <= 0.85) return { cls: s.badgeGreat, label: '💙 좋은 가격이에요' };
@@ -15,9 +17,17 @@ function getTimingBadge(product) {
 export default function FavoritesDashboard() {
   const navigate = useNavigate();
   const { favorites, removeFavorite, setSelectedProduct } = useStore();
+  const [products, setProducts] = useState([]);
+
+  // 상품 목록을 API에서 조회
+  useEffect(() => {
+    fetch('/api/products/search?per_page=50').then(r => r.json())
+      .then(res => setProducts(res.data || []))
+      .catch(console.error);
+  }, []);
 
   const favProducts = favorites
-    .map(id => PRODUCTS.find(p => p.id === id))
+    .map(id => products.find(p => p.id === id))
     .filter(Boolean);
 
   if (favProducts.length === 0) {

@@ -1,8 +1,8 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X, TrendingUp, TrendingDown, Minus, ArrowRight, Heart, Clock, Fuel } from 'lucide-react';
-import { MARTS, GAS_STATIONS, fmt } from '../../data/mockData';
-import { TRENDING } from '../../data/seedData';
+import { MARTS } from '../../utils/constants';
+import { fmt } from '../../utils/helpers';
 import useStore from '../../stores/appStore';
 import Spinner from '../../components/common/Spinner';
 import s from './HomePage.module.css';
@@ -34,17 +34,24 @@ export default function HomePage() {
   const [hotdeals, setHotdeals] = useState([]);
   const [martDeals, setMartDeals] = useState({});
   const [communityPosts, setCommunityPosts] = useState([]);
+  const [gasStations, setGasStations] = useState([]);
+  const [trending, setTrending] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // 모든 데이터를 API에서 실시간 조회
   useEffect(() => {
     Promise.all([
       fetch('/api/products/search?per_page=50').then(r => r.json()),
       fetch('/api/hotdeals?per_page=4').then(r => r.json()),
       fetch('/api/posts?board=hotdeal&per_page=5').then(r => r.json()),
-    ]).then(([prodRes, dealRes, postRes]) => {
+      fetch('/api/gas/nearby?sort=price_asc').then(r => r.json()),        // 주유소 실시간 조회
+      fetch('/api/products/trending').then(r => r.json()),                 // 인기 검색어 조회
+    ]).then(([prodRes, dealRes, postRes, gasRes, trendRes]) => {
       setProducts(prodRes.data || []);
       setHotdeals(dealRes.data || []);
       setCommunityPosts(postRes.data || []);
+      setGasStations(gasRes.data || []);
+      setTrending(trendRes.data || []);
     }).catch(err => {
       console.error(err);
       addToast('데이터를 불러오는데 실패했습니다', 'error');
@@ -82,7 +89,7 @@ export default function HomePage() {
 
   const activeMartInfo = MARTS.find(m => m.key === martTab);
   const activeMartItems = martDeals[martTab] || [];
-  const topGas = [...GAS_STATIONS].sort((a, b) => a.gasoline - b.gasoline).slice(0, 4);
+  const topGas = [...gasStations].sort((a, b) => (a.gasoline || Infinity) - (b.gasoline || Infinity)).slice(0, 4);
 
   if (loading) {
     return <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}><Spinner size="lg" /></div>;
@@ -160,7 +167,7 @@ export default function HomePage() {
                 )}
                 <span className={s.trendTitle}>🔥 인기 검색어</span>
                 <div className={s.trendList}>
-                  {TRENDING.map((t, i) => (
+                  {trending.map((t, i) => (
                     <button key={t} className={s.trendItem} onClick={() => {
                       setQuery(t);
                       const p = products.find(pr => pr.name === t || t.includes(pr.name));
