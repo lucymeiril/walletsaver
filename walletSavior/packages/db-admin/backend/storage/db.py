@@ -344,13 +344,16 @@ class DBStorage(StorageContract):
             items = session.execute(stmt).scalars().all()
 
             grouped: dict[str, list] = {}
+            latest_crawled: dict[str, datetime] = {}
             for item in items:
                 source = item.source
                 if source not in grouped:
                     grouped[source] = []
                 raw = item.raw_data or {}
+                # product_name 결정: Product 테이블 우선, raw_data 백업
+                product_name = self._get_product_name(session, item.product_id) or raw.get("product_name", "")
                 grouped[source].append({
-                    "name": self._get_product_name(session, item.product_id) or "",
+                    "name": product_name,
                     "orig": item.original_price,
                     "sale": item.price,
                     "disc": round(item.discount_rate) if item.discount_rate else 0,
@@ -359,15 +362,21 @@ class DBStorage(StorageContract):
                     "event_name": raw.get("event_name", ""),
                     "unit": raw.get("unit", ""),
                     "category": raw.get("category", ""),
+                    "crawled_at": item.crawled_at.isoformat() if item.crawled_at else "",
                 })
+                # 마트별 최신 크롤 시각 추적
+                if source not in latest_crawled or (item.crawled_at and item.crawled_at > latest_crawled[source]):
+                    latest_crawled[source] = item.crawled_at
 
             result = {}
             for source_key, deal_items in grouped.items():
                 meta = mart_meta.get(source_key, {"name": source_key, "color": "#666"})
+                lc = latest_crawled.get(source_key)
                 result[source_key] = {
                     "name": meta["name"],
                     "color": meta["color"],
                     "items": deal_items,
+                    "last_crawled_at": lc.isoformat() if lc else "",
                 }
             return result
 

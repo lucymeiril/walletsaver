@@ -6,7 +6,7 @@ from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
-from sqlalchemy import func
+from sqlalchemy import func, select
 
 from services.base import get_session
 from storage.models import (
@@ -15,6 +15,7 @@ from storage.models import (
     BaselinePrice,
     DiscountHistory,
     HotdealPrice,
+    Product,
 )
 
 router = APIRouter(prefix="/api/ingestions", tags=["ingestions"])
@@ -377,6 +378,40 @@ def delete_ingestion(ingestion_id: int):
 
 # --- 내부 헬퍼 ---
 
+# 한국어 마트명 → DB source 키 매핑
+_STORE_NAME_MAP = {
+    "이마트": "emart",
+    "홈플러스": "homeplus",
+    "롯데마트": "lottemart",
+    "코스트코": "costco",
+}
+
+
+def _resolve_source(item: dict) -> str:
+    """크롤러 항목에서 source 키를 결정 (한국어 → 영문 변환 포함)."""
+    raw = (
+        item.get("source")
+        or item.get("_source")
+        or item.get("store")
+        or "mart_discount"
+    )
+    return _STORE_NAME_MAP.get(raw, raw)
+
+
+def _ensure_product(session, name: str) -> int:
+    """Product 레코드가 없으면 자동 생성하고 id를 반환."""
+    if not name:
+        return 1
+    product = session.execute(
+        select(Product).where(Product.name == name)
+    ).scalar_one_or_none()
+    if product:
+        return product.id
+    new_product = Product(name=name, unit="개")
+    session.add(new_product)
+    session.flush()
+    return new_product.id
+
 
 def _insert_items(session, items: list[dict], schema_type: str) -> int:
     """승인된 항목을 최종 DB 테이블에 삽입."""
@@ -384,19 +419,23 @@ def _insert_items(session, items: list[dict], schema_type: str) -> int:
     for item in items:
         try:
             if schema_type == "HotdealPost":
+                product_name = item.get("title", "")
+                pid = _ensure_product(session, product_name)
                 row = HotdealPrice(
-                    product_id=item.get("product_id", 1),
+                    product_id=pid,
                     price=float(item.get("price", 0)),
                     source=item.get("source_community", "hotdeal"),
                     source_url=item.get("url", ""),
-                    title=item.get("title", ""),
+                    title=product_name,
                     crawled_at=datetime.utcnow(),
                 )
             else:
-                source = item.get("source", "mart_discount")
+                source = _resolve_source(item)
                 if source in ("government", "mart_regular"):
+                    product_name = item.get("name", "")
+                    pid = _ensure_product(session, product_name)
                     row = BaselinePrice(
-                        product_id=item.get("product_id", 1),
+                        product_id=pid,
                         price=float(
                             item.get("sale_price") or item.get("price", 0)
                         ),
@@ -406,16 +445,29 @@ def _insert_items(session, items: list[dict], schema_type: str) -> int:
                         region=item.get("region"),
                     )
                 else:
+                    # 마트 할인 데이터 → DiscountHistory
+                    product_name = item.get("name", "")
+                    pid = _ensure_product(session, product_name)
                     row = DiscountHistory(
-                        product_id=item.get("product_id", 1),
+                        product_id=pid,
                         price=float(
                             item.get("sale_price") or item.get("price", 0)
                         ),
                         original_price=item.get("original_price"),
-                        discount_rate=item.get("discount_percent"),
+                        discount_rate=item.get("discount_percent")
+                            or item.get("discount_rate"),
                         source=source,
-                        source_url=item.get("detail_url", ""),
+                        source_url=item.get("detail_url")
+                            or item.get("source_url", ""),
                         crawled_at=datetime.utcnow(),
+                        raw_data={
+                            "image_url": item.get("image_url", ""),
+                            "event_name": item.get("event_name", ""),
+                            "unit": item.get("unit", ""),
+                            "category": item.get("category", ""),
+                            "product_name": product_name,
+                            "store": item.get("store", ""),
+                        },
                     )
             session.add(row)
             saved += 1

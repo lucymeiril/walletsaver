@@ -42,6 +42,17 @@
   color: var(--text3);
   display: flex;
   gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.crawlBadge {
+  font-size: .72rem;
+  background: var(--bg2, #f0f0f0);
+  color: var(--text2, #555);
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
 }
 
 /* Mode Toggle */

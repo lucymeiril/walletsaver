@@ -83,7 +83,20 @@ async def get_mart_promotions(request: Request, store: str):
             raise HTTPException(status_code=404, detail=f"마트 '{store}'를 찾을 수 없습니다")
         return ApiResponse(data=data)
 
+    # DB 조회 — 데이터가 없으면 빈 items 반환 (404 대신)
+    mart_meta = {
+        "emart": {"name": "이마트", "color": "#FFD700"},
+        "homeplus": {"name": "홈플러스", "color": "#FF6B35"},
+        "lottemart": {"name": "롯데마트", "color": "#E4002B"},
+        "costco": {"name": "코스트코", "color": "#E31837"},
+    }
     mart_data = storage.get_mart_deals(store=db_store)
     if db_store not in mart_data:
-        raise HTTPException(status_code=404, detail=f"마트 '{store}'를 찾을 수 없습니다")
+        meta = mart_meta.get(db_store, {"name": store, "color": "#666"})
+        return ApiResponse(data={
+            "name": meta["name"],
+            "color": meta["color"],
+            "items": [],
+            "last_crawled_at": "",
+        })
     return ApiResponse(data=mart_data[db_store])

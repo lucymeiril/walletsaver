@@ -37,6 +37,7 @@ export default function MartPage() {
   const { addToShoppingList, addToast } = useStore();
 
   const [martDeals, setMartDeals] = useState({});
+  const [martMeta, setMartMeta] = useState({});
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -54,6 +55,7 @@ export default function MartPage() {
         fetch(`/api/marts/${key}/promotions`).then(r => r.json())
           .then(res => ({
             key,
+            lastCrawledAt: res.data?.last_crawled_at || '',
             items: (Array.isArray(res.data) ? res.data : res.data?.items || []).map(d => ({
               name: d.name,
               sale: d.price ?? d.sale,
@@ -64,13 +66,19 @@ export default function MartPage() {
               detailUrl: d.source_url ?? d.detail_url ?? '',
               unit: d.unit ?? '',
               store: d.store ?? '',
+              crawledAt: d.crawled_at ?? '',
             })),
           }))
       )
     ).then(results => {
       const deals = {};
-      results.forEach(r => { deals[r.key] = r.items; });
+      const meta = {};
+      results.forEach(r => {
+        deals[r.key] = r.items;
+        meta[r.key] = { lastCrawledAt: r.lastCrawledAt };
+      });
       setMartDeals(deals);
+      setMartMeta(meta);
     }).catch(err => {
       console.error(err);
       addToast('마트 데이터를 불러오는데 실패했습니다', 'error');
@@ -159,6 +167,14 @@ export default function MartPage() {
       <div className={s.info}>
         <span>행사 기간: {martPeriod}</span>
         <span>총 {martItems.length}개 상품</span>
+        {martMeta[activeMart]?.lastCrawledAt && (
+          <span className={s.crawlBadge} title="크롤링된 실제 데이터">
+            🔄 {(() => {
+              const d = new Date(martMeta[activeMart].lastCrawledAt);
+              return `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')} 수집`;
+            })()}
+          </span>
+        )}
       </div>
 
       {/* Mode Toggle */}
@@ -344,6 +360,14 @@ export default function MartPage() {
           </div>
 
           <div className={s.grid}>
+            {filteredItems.length === 0 && !loading && (
+              <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '3rem 1rem', color: 'var(--text3)' }}>
+                <p style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>📭 데이터가 없습니다</p>
+                <p style={{ fontSize: '0.85rem' }}>
+                  크롤러에서 수집 → 크롤러 관리자 승인 → DB 관리자 승인 후 표시됩니다.
+                </p>
+              </div>
+            )}
             {filteredItems.map((item, i) => {
               const matched = products.find(p => item.name?.includes(p.name));
               const diff = matched ? item.sale - matched.avg : null;
