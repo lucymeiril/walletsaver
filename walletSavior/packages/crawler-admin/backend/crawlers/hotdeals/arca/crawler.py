@@ -2,25 +2,31 @@
 아카라이브 핫딜 크롤러.
 
 https://arca.live/b/hotdeal 에서 핫딜 게시글을 수집한다.
-아카라이브는 Cloudflare 보호가 강해 cloudscraper가 필수이다.
+아카라이브는 Cloudflare 보호가 강해 cloudscraper + Playwright 폴백이 필수이다.
 
-데이터 구조 (2026 기준):
-  <a class="vrow column" href="/b/hotdeal/...">
-    <span class="vrow-top">
-      <span class="vcol col-title">
-        <span class="title">
-          <span class="deal-store badge">[G마켓]</span>
-          제목 텍스트
+데이터 구조 (2026-07 기준):
+  <div class="vrow hybrid">
+    <div class="vrow-inner">
+      <div class="vrow-top deal">
+        <span class="vcol col-title">
+          <span class="badges">
+            <span class="deal-store">G마켓</span>
+            <a class="badge" href="...">전자제품</a>
+          </span>
+          <a class="title hybrid-title" href="/b/hotdeal/12345?p=1">
+            제목 텍스트
+            <span class="info"><span class="comment-count">[5]</span></span>
+          </a>
         </span>
-      </span>
-    </span>
-    <span class="vrow-bottom">
-      <span class="vcol col-author">작성자</span>
-      <span class="vcol col-time">시간</span>
-      <span class="vcol col-view">조회</span>
-      <span class="vcol col-rate">추천</span>
-    </span>
-  </a>
+      </div>
+      <a class="title hybrid-bottom" href="/b/hotdeal/12345?p=1">
+        <div class="vrow-bottom deal">
+          <span class="deal-price">29,900원</span>
+          <span class="deal-delivery">무료</span>
+        </div>
+      </a>
+    </div>
+  </div>
 
 용도: 핫딜 참고 데이터 (baseline 오염 방지 — HotdealPost로 저장)
 의존: core/ 만
@@ -60,7 +66,7 @@ class ArcaCrawler(CrawlerContract):
             group=CrawlerGroup.HOTDEAL,
             description="아카라이브 핫딜 채널 크롤러 — 커뮤니티 핫딜 정보",
             target_url=self.DEAL_URL,
-            strategies=["cloudscraper"],
+            strategies=["cloudscraper", "playwright"],
         )
 
     async def crawl(self) -> CrawlResult:
@@ -113,7 +119,9 @@ class ArcaCrawler(CrawlerContract):
             )
 
     def _fetch_page(self) -> Optional[str]:
-        """cloudscraper로 페이지를 가져온다. Cloudflare 우회 시도."""
+        """cloudscraper → Playwright 순서로 페이지를 가져온다. Cloudflare 우회 시도."""
+
+        # 1차: cloudscraper (Cloudflare JS Challenge 우회)
         try:
             import cloudscraper
             scraper = cloudscraper.create_scraper(
@@ -125,14 +133,21 @@ class ArcaCrawler(CrawlerContract):
             }
             response = scraper.get(self.DEAL_URL, headers=headers, timeout=20)
             if response.status_code == 200 and len(response.text) > 1000:
-                return response.text
-            logger.warning(f"[아카라이브] HTTP {response.status_code}, 본문 길이: {len(response.text)}")
+                # Cloudflare 차단 페이지가 아닌지 확인 — 실제 게시글 목록(a.vrow)이 있어야 함
+                if "vrow" in response.text and "col-title" in response.text:
+                    return response.text
+            logger.warning(f"[아카라이브] cloudscraper 응답 부족: HTTP {response.status_code}, len={len(response.text)}")
         except ImportError:
             logger.warning("[아카라이브] cloudscraper 미설치 — pip install cloudscraper")
         except Exception as e:
             logger.warning(f"[아카라이브] cloudscraper 예외: {e}")
 
-        # 폴백: 일반 requests
+        # 2차: Playwright stealth 모드 (Cloudflare 완전 우회)
+        html = self._fetch_with_playwright()
+        if html:
+            return html
+
+        # 3차: 일반 requests 폴백 (Cloudflare가 없을 때만 성공)
         try:
             import requests as req
             headers = self._anti_detect.get_random_headers()
@@ -144,19 +159,77 @@ class ArcaCrawler(CrawlerContract):
 
         return None
 
+    def _fetch_with_playwright(self) -> Optional[str]:
+        """Playwright stealth 모드로 아카라이브를 렌더링한다.
+
+        Cloudflare 보호가 강한 사이트에서 cloudscraper가 실패할 때 사용.
+        실제 브라우저로 JS Challenge를 통과한 뒤 HTML을 반환한다.
+        """
+        try:
+            from playwright.sync_api import sync_playwright
+        except ImportError:
+            logger.warning("[아카라이브] playwright 미설치 — pip install playwright && playwright install")
+            return None
+
+        try:
+            with sync_playwright() as p:
+                browser = p.chromium.launch(headless=True)
+                context = browser.new_context(
+                    user_agent=self._anti_detect.get_random_user_agent(),
+                    locale="ko-KR",
+                    viewport={"width": 1920, "height": 1080},
+                )
+                page = context.new_page()
+
+                # Cloudflare 감지 회피: webdriver 속성 제거
+                page.add_init_script("""
+                    Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+                """)
+
+                page.goto(self.DEAL_URL, wait_until="networkidle", timeout=30000)
+
+                # Cloudflare challenge 대기 (최대 10초)
+                page.wait_for_timeout(3000)
+
+                # 게시글 목록이 로드될 때까지 대기
+                try:
+                    page.wait_for_selector("a.vrow", timeout=10000)
+                except Exception:
+                    logger.warning("[아카라이브] Playwright: a.vrow 셀렉터 대기 타임아웃")
+
+                html = page.content()
+                browser.close()
+
+                if html and len(html) > 1000 and "vrow" in html:
+                    logger.info(f"[아카라이브] Playwright 성공: HTML {len(html)}자")
+                    return html
+                else:
+                    logger.warning(f"[아카라이브] Playwright: 게시글 미발견 (HTML {len(html)}자)")
+
+        except Exception as e:
+            logger.warning(f"[아카라이브] Playwright 예외: {e}")
+
+        return None
+
     async def parse(self, raw_data: str) -> list[HotdealPost]:
         """HTML에서 핫딜 게시글을 파싱한다.
 
-        아카라이브는 a.vrow 기반의 게시글 구조를 사용한다.
+        아카라이브 2026 구조:
+          - 실제 핫딜 게시글: div.vrow.hybrid (새 하이브리드 레이아웃)
+          - 공지/광고: a.vrow.notice (스킵)
         """
         soup = BeautifulSoup(raw_data, "html.parser")
         items: list[HotdealPost] = []
 
-        # 게시글 행 — a.vrow (공지 제외)
-        rows = soup.select("a.vrow.column")
+        # 1차: div.vrow.hybrid — 2026 신규 하이브리드 레이아웃
+        rows = soup.select("div.vrow.hybrid")
+        logger.info(f"[아카라이브] div.vrow.hybrid 항목: {len(rows)}개")
+
+        # 2차 폴백: a.vrow.column (구형 레이아웃)
         if not rows:
-            rows = soup.select("a.vrow")
-        logger.info(f"[아카라이브] 게시글 항목: {len(rows)}개")
+            rows = soup.select("a.vrow.column")
+            rows = [r for r in rows if "notice" not in " ".join(r.get("class", []))]
+            logger.info(f"[아카라이브] a.vrow.column 폴백: {len(rows)}개")
 
         for row in rows:
             try:
@@ -170,42 +243,75 @@ class ArcaCrawler(CrawlerContract):
         return items
 
     def _parse_item(self, row) -> Optional[HotdealPost]:
-        """개별 게시글 항목을 파싱한다."""
+        """개별 핫딜 게시글을 파싱한다.
 
-        # 공지 스킵
+        2026 하이브리드 구조 (div.vrow.hybrid):
+          <a class="title hybrid-title" href="/b/hotdeal/12345?p=1">제목</a>
+          <span class="deal-store">G마켓</span>
+          <a class="badge" href="...">전자제품</a>
+          <span class="deal-price">29,900원</span>
+        """
+
+        # 공지/광고 스킵
         row_classes = " ".join(row.get("class", []))
-        if "notice" in row_classes:
+        if "notice" in row_classes or "head" in row_classes:
             return None
 
-        # 1) URL 추출
-        href = row.get("href", "")
-        if not href or "/b/hotdeal/" not in href:
-            return None
-        url = href if href.startswith("http") else urljoin(self.BASE_URL, href)
-
-        # 2) 제목 추출
-        title_el = row.select_one("span.title") or row.select_one("span.col-title")
+        # 1) 제목 + URL 추출 — a.title.hybrid-title 또는 a.title
+        title_el = (
+            row.select_one("a.title.hybrid-title")
+            or row.select_one("a.title")
+            or row.select_one("span.title")
+        )
         if not title_el:
             return None
 
-        title = title_el.get_text(strip=True)
+        # 제목 텍스트 — comment-count 등 부가 정보 제외
+        # clone 후 info 스팬 제거
+        title_text_parts = []
+        for child in title_el.children:
+            if hasattr(child, 'get') and child.get("class"):
+                child_classes = " ".join(child.get("class", []))
+                if "info" in child_classes or "comment-count" in child_classes or "media-icon" in child_classes:
+                    continue
+            text = child.string if hasattr(child, 'string') and child.string else str(child) if isinstance(child, str) else ""
+            text = text.strip()
+            if text:
+                title_text_parts.append(text)
+
+        title = " ".join(title_text_parts).strip()
         if not title or len(title) < 3:
             return None
 
-        # 3) 카테고리 — 스토어 배지에서 추출
+        href = title_el.get("href", "")
+        if not href:
+            # hybrid-bottom 링크에서 URL 가져오기
+            bottom_el = row.select_one("a.hybrid-bottom, a.title.hybrid-bottom")
+            if bottom_el:
+                href = bottom_el.get("href", "")
+        url = href if href.startswith("http") else urljoin(self.BASE_URL, href)
+
+        # 2) 카테고리 — deal-store 배지에서 추출
         category = ""
-        badge_el = row.select_one("span.deal-store, span.badge")
+        store_el = row.select_one("span.deal-store")
+        if store_el:
+            category = store_el.get_text(strip=True)
+
+        # 서브 카테고리 — badge 링크에서 (식품, 전자제품 등)
+        sub_category = ""
+        badge_el = row.select_one("a.badge")
         if badge_el:
-            category = badge_el.get_text(strip=True).strip("[]")
-            # 제목에서 카테고리 태그 제거
-            title = title.replace(badge_el.get_text(strip=True), "").strip()
+            sub_category = badge_el.get_text(strip=True)
 
-        # 4) 가격 추출 — 제목에서
-        price = self._extract_price(title)
+        # 3) 가격 추출 — deal-price 스팬에서 직접 추출
+        price = None
+        price_el = row.select_one("span.deal-price")
+        if price_el:
+            price = self._extract_price(price_el.get_text(strip=True))
 
-        # 5) 추천수 — col-rate에서
-        vote_el = row.select_one("span.col-rate")
-        # 추천수는 HotdealPost에 별도 필드 없으므로 패스
+        # 폴백: 제목에서 가격 추출
+        if price is None:
+            price = self._extract_price(title)
 
         return HotdealPost(
             title=title,

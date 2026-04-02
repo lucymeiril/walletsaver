@@ -236,11 +236,6 @@ class PpomppuCrawler(CrawlerContract):
             return 0
 
         return None
-        for pattern in patterns:
-            match = re.search(pattern, text)
-            if match:
-                return int(match.group(1).replace(",", ""))
-        return None
 
     async def validate(self, items: list[HotdealPost]) -> list[HotdealPost]:
         """유효한 핫딜만 필터링한다."""
