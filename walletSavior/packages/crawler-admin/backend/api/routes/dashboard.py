@@ -52,8 +52,6 @@ async def get_dashboard_stats():
     error_trend = []
     for days_ago in range(6, -1, -1):
         day = now - timedelta(days=days_ago)
-        day_str = day.strftime("%-m/%-d") if hasattr(day, "strftime") else f"{day.month}/{day.day}"
-        # Windows strftime doesn't support %-m
         day_str = f"{day.month}/{day.day}"
         day_date = day.date()
 
