@@ -69,24 +69,21 @@ function parseMenuItems(menuInfo) {
   return [];
 }
 
-/** Build subcategory map from items' classifications */
+/** 네이버 원본 카테고리 기반 서브카테고리 맵 생성 */
 function buildSubcategories(items) {
   const map = {};
   items.forEach(item => {
-    if (item.classifications) {
-      item.classifications.forEach(cls => {
-        (cls.subcategories || []).forEach(sub => {
-          if (!map[sub]) map[sub] = [];
-          map[sub].push(item);
-        });
-      });
-    }
-    if (item.category) {
-      const cat = item.category;
+    // 네이버 원본 카테고리 사용 (예: "카페,디저트", "중식당")
+    const cat = item.category || '';
+    if (cat) {
       if (!map[cat]) map[cat] = [];
       if (!map[cat].includes(item)) map[cat].push(item);
     }
   });
+  // "전체" 항목 추가 - 서브카테고리가 2개 이상일 때만
+  if (Object.keys(map).length > 1) {
+    map['전체'] = items;
+  }
   return map;
 }
 
@@ -181,6 +178,8 @@ export default function LocalPage() {
 
   const { addToast } = useStore();
   const searchInputRef = useRef(null);
+  const iframeRef = useRef(null);
+  const iframeLoadCount = useRef(0);
 
   const currentMapUrl = mapFocusUrl || iframeUrl || `https://map.naver.com/p?c=${lng},${lat},15,0,0,0,dh`;
 
@@ -208,7 +207,7 @@ export default function LocalPage() {
 
   const areaExplore = useCallback(async (locName) => {
     const res = await fetch(
-      `/api/local/area-explore?location_name=${encodeURIComponent(locName)}&categories=${encodeURIComponent(EXPLORE_CATEGORIES)}&max_items=15`
+      `/api/local/area-explore?location_name=${encodeURIComponent(locName)}&categories=${encodeURIComponent(EXPLORE_CATEGORIES)}&max_items=30`
     );
     const data = await res.json();
     if (data.success && data.data) return data.data;
@@ -236,7 +235,7 @@ export default function LocalPage() {
       setLng(geo.lng);
       setLocationName(geo.name || locQuery);
       setIframeUrl(`https://map.naver.com/p/search/${encodeURIComponent(locQuery)}`);
-      addToast(`📍 ${geo.name || locQuery} 위치 설정 완료`, 'success');
+      iframeLoadCount.current = 0; // 우리가 URL 변경 시 카운터 리셋      addToast(`📍 ${geo.name || locQuery} 위치 설정 완료`, 'success');
 
       // Auto-trigger area explore
       setPhase('exploring');
@@ -295,9 +294,34 @@ export default function LocalPage() {
     }
   };
 
+  // 서브카테고리 재검색 API 호출
+  const fetchSubcategoryResults = useCallback(async (location, subcategory, latVal, lngVal) => {
+    const params = new URLSearchParams({
+      location, subcategory,
+      ...(latVal && { lat: latVal }),
+      ...(lngVal && { lng: lngVal }),
+      max_items: 30
+    });
+    const res = await fetch(`/api/local/subcategory-search?${params}`);
+    const data = await res.json();
+    return data.data?.items || data.items || [];
+  }, []);
+
   const handleCategoryClick = (cat) => {
     setSelectedCategoryName(cat.name);
-    const items = cat.items || [];
+    let items = [...(cat.items || [])];
+
+    // 음식 카테고리 선택 시 카페 결과도 병합
+    if (cat.name === '음식' && exploreData?.categories) {
+      const cafeCategory = exploreData.categories.find(c => c.name === '카페');
+      if (cafeCategory?.items) {
+        const existingNames = new Set(items.map(i => i.name));
+        cafeCategory.items.forEach(i => {
+          if (!existingNames.has(i.name)) items.push(i);
+        });
+      }
+    }
+
     setSelectedCategoryItems(items);
     const subMap = buildSubcategories(items);
     setSubcategoryMap(subMap);
@@ -323,13 +347,44 @@ export default function LocalPage() {
     setMapFocusUrl(null);
   };
 
-  const handleSubcategoryClick = (subName) => {
+  const handleSubcategoryClick = async (subName) => {
     setSelectedSubcategory(subName);
-    const items = subName === '전체' ? selectedCategoryItems : (subcategoryMap[subName] || []);
-    setDisplayItems(items);
+
+    if (subName === '전체') {
+      // 전체 보기 - 기존 아이템 모두 표시
+      setDisplayItems(selectedCategoryItems);
+      setPhase('items');
+      setMapFocusUrl(null);
+      setIframeUrl(`https://map.naver.com/p/search/${encodeURIComponent(locationName + ' ' + (CATEGORY_SEARCH_MAP[selectedCategoryName] || selectedCategoryName))}`);
+      return;
+    }
+
+    // 먼저 기존 필터링 결과 즉시 표시
+    const filtered = subcategoryMap[subName] || [];
+    setDisplayItems(filtered);
     setPhase('items');
-    setIframeUrl(`https://map.naver.com/p/search/${encodeURIComponent(locationName + ' ' + subName)}`);
+    setIframeUrl(`https://map.naver.com/p/search/${encodeURIComponent(`${locationName} ${subName}`)}`);
     setMapFocusUrl(null);
+
+    // 백그라운드에서 서브카테고리 추가 검색하여 결과 보강
+    if (locationName && subName !== '전체') {
+      setLoading(true);
+      try {
+        const moreItems = await fetchSubcategoryResults(locationName, subName, lat, lng);
+        if (moreItems.length > 0) {
+          // 기존 + 새로운 결과 병합 (중복 제거)
+          const existingNames = new Set(filtered.map(i => i.name));
+          const newItems = moreItems.filter(i => !existingNames.has(i.name));
+          if (newItems.length > 0) {
+            setDisplayItems(prev => [...prev, ...newItems]);
+          }
+        }
+      } catch (e) {
+        console.warn('서브카테고리 추가 검색 실패:', e);
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   const handleDirectSearch = useCallback(async (e) => {
@@ -371,7 +426,17 @@ export default function LocalPage() {
     } else if (target === 'category') {
       const cat = exploreData?.categories?.find(c => c.name === selectedCategoryName);
       if (cat) {
-        const items = cat.items || [];
+        let items = [...(cat.items || [])];
+        // 음식 카테고리 복귀 시에도 카페 병합
+        if (selectedCategoryName === '음식' && exploreData?.categories) {
+          const cafeCategory = exploreData.categories.find(c => c.name === '카페');
+          if (cafeCategory?.items) {
+            const existingNames = new Set(items.map(i => i.name));
+            cafeCategory.items.forEach(i => {
+              if (!existingNames.has(i.name)) items.push(i);
+            });
+          }
+        }
         setSelectedCategoryItems(items);
         const subMap = buildSubcategories(items);
         setSubcategoryMap(subMap);
@@ -419,6 +484,15 @@ export default function LocalPage() {
     }
   };
 
+  /* iframe 내부 탐색 감지 — 사용자가 iframe에서 검색하면 사이드바 검색 안내 */
+  const handleIframeLoad = useCallback(() => {
+    iframeLoadCount.current += 1;
+    // 최초 로드(1회)와 우리가 src를 바꾼 것(2회째)은 무시, 3회 이상이면 유저 탐색
+    if (iframeLoadCount.current > 2 && locationName) {
+      addToast('💡 지도에서 검색하셨나요? 왼쪽 검색창에 입력하면 결과를 함께 보여드립니다!', 'info');
+    }
+  }, [locationName, addToast]);
+
   /* ── Sort options based on current items ── */
   const sortOptions = useMemo(() => {
     if (isGas) {
@@ -456,11 +530,13 @@ export default function LocalPage() {
         <div className={s.map}>
           {currentMapUrl ? (
             <iframe
+              ref={iframeRef}
               src={currentMapUrl}
               className={s.naverIframe}
               title="네이버 지도"
               allow="geolocation"
               loading="lazy"
+              onLoad={handleIframeLoad}
             />
           ) : (
             <div className={s.mapPlaceholder}>
@@ -528,7 +604,7 @@ export default function LocalPage() {
                 className={s.directSearchInput}
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                placeholder={`${locationName} 주변 검색 (예: 삼겹살, 카페)`}
+                placeholder={`🔍 ${locationName} 주변 검색 — 지도와 동시 반영 (예: 삼겹살, 카페)`}
               />
               <button type="submit" className={s.directSearchBtn} disabled={loading}>
                 {loading && phase === 'search' ? <RefreshCw size={14} className={s.spin} /> : <Search size={14} />}
@@ -598,7 +674,9 @@ export default function LocalPage() {
                 📋 전체 보기 ({selectedCategoryItems.length})
               </button>
               <div className={s.subcategoryGrid}>
-                {Object.entries(subcategoryMap).map(([name, items]) => (
+                {Object.entries(subcategoryMap)
+                  .filter(([name]) => name !== '전체')
+                  .map(([name, items]) => (
                   <button
                     key={name}
                     className={s.subcategoryBtn}
@@ -732,6 +810,11 @@ export default function LocalPage() {
                   );
                 })}
               </div>
+
+              {/* 서브카테고리 추가 검색 중 로딩 표시 */}
+              {loading && displayItems.length > 0 && (
+                <div className={s.loadingMore}>추가 검색 중...</div>
+              )}
             </>
           )}
         </div>

@@ -8,9 +8,10 @@ sync API + ThreadPoolExecutor 조합으로 해결한다.
 --disable-blink-features=AutomationControlled 등 stealth 설정이 필수다.
 
 엔드포인트:
-    GET /api/local/naver-search  — 네이버 지도 기반 주변 가게 검색
-    GET /api/local/geocode       — 장소명 → 좌표 변환
-    GET /api/local/area-explore  — 위치 + 반경 기반 카테고리별 탐색
+    GET /api/local/naver-search       — 네이버 지도 기반 주변 가게 검색
+    GET /api/local/subcategory-search  — 서브카테고리 드릴다운 재검색
+    GET /api/local/geocode             — 장소명 → 좌표 변환
+    GET /api/local/area-explore        — 위치 + 반경 기반 카테고리별 탐색
 """
 
 import asyncio
@@ -258,9 +259,10 @@ def _extract_place_items(data: dict, max_items: int) -> list[dict]:
     place_list = place_data.get("list") or []
 
     for place in place_list[:max_items]:
+        # 네이버 카테고리 배열을 콤마로 연결하여 전체 보존 (truncation 방지)
         cat = place.get("category", "")
         if isinstance(cat, list):
-            cat = cat[0] if cat else ""
+            cat = ",".join(cat) if cat else ""
         item = {
             "name": place.get("name", ""),
             "category": cat,
@@ -338,6 +340,62 @@ async def naver_place_search(
     )
 
 
+@router.get("/subcategory-search")
+async def subcategory_search(
+    location: str = Query(..., description="위치명 (예: 오리역)"),
+    subcategory: str = Query(..., description="서브카테고리 검색어 (예: 카페)"),
+    lat: float = Query(None, description="위도"),
+    lng: float = Query(None, description="경도"),
+    max_items: int = Query(30, ge=1, le=50, description="최대 결과 수"),
+):
+    """서브카테고리 드릴다운 검색 — 특정 서브카테고리로 네이버 재검색하여 더 많은 결과 반환.
+
+    예: location="오리역", subcategory="카페" → "오리역 카페" 검색
+    기존 area-explore 결과를 필터링하는 대신 네이버에 직접 재검색한다.
+    """
+    # 좌표가 없으면 geocode로 보완
+    if lat is None or lng is None:
+        loop = asyncio.get_event_loop()
+        geo = await loop.run_in_executor(_executor, _geocode_sync, location)
+        if geo and geo.get("lat") and geo.get("lng"):
+            lat = geo["lat"]
+            lng = geo["lng"]
+        else:
+            lat = lat or 37.5665
+            lng = lng or 126.9780
+
+    query = f"{location} {subcategory}"
+    loop = asyncio.get_event_loop()
+    try:
+        items = await loop.run_in_executor(
+            _executor,
+            _search_via_playwright_sync,
+            query, lat, lng, max_items,
+        )
+        # 각 아이템에 분류 정보 추가
+        for item in items:
+            item["classifications"] = _classify_item(item)
+        source = "playwright"
+    except Exception as e:
+        logger.error(f"[서브카테고리 검색] 실패: {e}")
+        items = []
+        source = "error"
+
+    return ApiResponse(
+        success=len(items) > 0,
+        data={
+            "items": items,
+            "count": len(items),
+            "query": query,
+            "location": location,
+            "subcategory": subcategory,
+            "lat": lat,
+            "lng": lng,
+            "source": source,
+        },
+        message=f"'{query}' 검색 결과 {len(items)}건" if items else "검색 결과 없음",
+    )
+
 # ──────────────────────────────────────────────
 # Geocode 엔드포인트
 # ──────────────────────────────────────────────
@@ -397,33 +455,53 @@ _CATEGORY_SEARCH_KEYWORDS: dict[str, str] = {
     "카페": "카페",
     "병원": "병원",
     "미용": "미용실",
-    "편의시설": "편의점",
-    "숙소": "숙소",
+    "편의시설": "편의점 마트",
+    "숙소": "숙소 호텔",
 }
 
 
 def _classify_item(item: dict) -> list[dict]:
-    """아이템의 category 필드를 기반으로 카테고리 트리에서 분류한다.
+    """네이버가 제공하는 category 필드를 직접 사용하여 상위 카테고리로 분류한다.
 
-    Returns:
-        매칭된 (카테고리명, 서브카테고리명 or None) 리스트.
+    CATEGORY_TREE 키워드 매칭 대신, 네이버 원본 카테고리 문자열을 그대로 서브카테고리로 보존한다.
+    예: category="카페,디저트" → [{"category": "음식", "subcategories": ["카페,디저트"]}]
     """
-    cat_str = (item.get("category") or "") + " " + (item.get("name") or "")
-    cat_str = cat_str.lower()
+    cat_str = item.get("category") or ""
     matches: list[dict] = []
 
-    for cat_name, cat_info in CATEGORY_TREE.items():
-        matched = any(kw in cat_str for kw in cat_info["keywords"])
-        sub_matches: list[str] = []
-        for sub_name, sub_keywords in cat_info.get("subcategories", {}).items():
-            if any(kw in cat_str for kw in sub_keywords):
-                sub_matches.append(sub_name)
-                matched = True
-        if matched:
-            matches.append({
-                "category": cat_name,
-                "subcategories": sub_matches if sub_matches else None,
-            })
+    # 주유소/충전소 판별
+    if any(kw in cat_str for kw in ("주유소", "충전소")):
+        matches.append({"category": "주유소", "subcategories": [cat_str]})
+        return matches
+
+    # 음식 관련 키워드 (카페 포함)
+    _FOOD_KEYWORDS = (
+        "카페", "식당", "음식점", "한식", "중식", "일식", "분식",
+        "고기", "치킨", "피자", "빵", "디저트", "커피", "베이커리",
+        "뷔페", "패밀리레스토랑", "패스트푸드", "국수", "면",
+        "해산물", "맛집", "삼겹살", "갈비", "곱창", "양식",
+        "초밥", "스시", "돈까스", "라멘", "우동", "떡볶이",
+        "김밥", "버거", "통닭", "한정식", "불고기", "비빔밥",
+        "중국집", "짜장", "짬뽕", "소고기", "돼지고기", "양고기",
+    )
+    if any(kw in cat_str for kw in _FOOD_KEYWORDS):
+        matches.append({"category": "음식", "subcategories": [cat_str]})
+
+    # 병원/의료 판별
+    if any(kw in cat_str for kw in ("병원", "의원", "약국", "치과", "한의원", "안과", "피부과", "내과", "클리닉")):
+        matches.append({"category": "병원", "subcategories": [cat_str]})
+
+    # 미용 판별
+    if any(kw in cat_str for kw in ("미용", "헤어", "네일", "뷰티")):
+        matches.append({"category": "미용", "subcategories": [cat_str]})
+
+    # 편의시설 판별
+    if any(kw in cat_str for kw in ("편의점", "마트", "슈퍼", "지하철", "역")):
+        matches.append({"category": "편의시설", "subcategories": [cat_str]})
+
+    # 숙소 판별
+    if any(kw in cat_str for kw in ("호텔", "모텔", "펜션", "게스트하우스", "숙소")):
+        matches.append({"category": "숙소", "subcategories": [cat_str]})
 
     return matches
 
@@ -484,7 +562,7 @@ async def area_explore(
     lng: float = Query(None, description="경도"),
     radius: float = Query(2, description="반경 (km) — 참고 정보, 네이버 검색 범위는 자동"),
     categories: str = Query(_DEFAULT_CATEGORIES, description="콤마 구분 카테고리"),
-    max_items: int = Query(15, ge=1, le=50, description="카테고리당 최대 결과 수"),
+    max_items: int = Query(30, ge=1, le=50, description="카테고리당 최대 결과 수"),
 ):
     """위치 + 반경 기반 카테고리별 장소 탐색.
 
