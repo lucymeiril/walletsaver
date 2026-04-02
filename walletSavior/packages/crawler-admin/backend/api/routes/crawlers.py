@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import logging
 from datetime import datetime
-from typing import Any
+from pathlib import Path
+from typing import Any, Optional
 
 from fastapi import APIRouter, HTTPException
-from pathlib import Path
+from pydantic import BaseModel
 
 from crawlers.registry.registry import CrawlerRegistry
 from pipeline.pipeline import CrawlPipeline
@@ -20,6 +22,29 @@ router = APIRouter(prefix="/api/crawlers", tags=["crawlers"])
 _registry: CrawlerRegistry | None = None
 _pipeline: CrawlPipeline | None = None
 _crawl_results: dict[str, dict[str, Any]] = {}
+
+_BACKEND_DIR = Path(__file__).resolve().parent.parent.parent
+_STATUS_FILE = _BACKEND_DIR / "crawler_status.json"
+
+
+def _load_status() -> dict[str, str]:
+    """크롤러 활성/비활성 상태를 파일에서 로드."""
+    if _STATUS_FILE.exists():
+        try:
+            with open(_STATUS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+
+def _save_status(status: dict[str, str]) -> None:
+    """크롤러 상태를 파일에 저장."""
+    try:
+        with open(_STATUS_FILE, "w", encoding="utf-8") as f:
+            json.dump(status, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        logger.error(f"크롤러 상태 저장 실패: {e}")
 
 
 def _get_registry() -> CrawlerRegistry:
@@ -40,9 +65,15 @@ def _get_pipeline() -> CrawlPipeline:
 
 @router.get("")
 async def list_crawlers():
-    """등록된 크롤러 목록."""
+    """등록된 크롤러 목록 (활성/비활성 상태 포함)."""
     reg = _get_registry()
-    return {"crawlers": reg.list_crawlers()}
+    crawlers = reg.list_crawlers()
+    status_map = _load_status()
+
+    for c in crawlers:
+        c["status"] = status_map.get(c["name"], "active")
+
+    return {"crawlers": crawlers}
 
 
 @router.get("/{crawler_id}/status")
@@ -62,6 +93,94 @@ async def get_crawler_status(crawler_id: str):
         "status": "idle",
         "last_run": None,
     }
+
+
+class CrawlerToggleRequest(BaseModel):
+    status: str  # "active" or "inactive"
+
+
+@router.put("/{crawler_id}/toggle")
+async def toggle_crawler(crawler_id: str, body: CrawlerToggleRequest):
+    """크롤러 활성/비활성 토글 — 상태를 파일에 저장."""
+    if body.status not in ("active", "inactive"):
+        raise HTTPException(400, "status must be 'active' or 'inactive'")
+
+    status_map = _load_status()
+    status_map[crawler_id] = body.status
+    _save_status(status_map)
+
+    return {"crawler_id": crawler_id, "status": body.status}
+
+
+class CrawlerSettingsUpdate(BaseModel):
+    target_url: Optional[str] = None
+    delay: Optional[float] = None
+    max_items: Optional[int] = None
+
+
+_SETTINGS_FILE = _BACKEND_DIR / "crawler_settings.json"
+
+
+def _load_settings() -> dict[str, dict]:
+    if _SETTINGS_FILE.exists():
+        try:
+            with open(_SETTINGS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+
+def _save_settings(settings: dict[str, dict]) -> None:
+    try:
+        with open(_SETTINGS_FILE, "w", encoding="utf-8") as f:
+            json.dump(settings, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        logger.error(f"크롤러 설정 저장 실패: {e}")
+
+
+@router.get("/{crawler_id}/settings")
+async def get_crawler_settings(crawler_id: str):
+    """크롤러 설정 조회."""
+    reg = _get_registry()
+    info = reg._registry.get(crawler_id)
+    if not info:
+        raise HTTPException(404, f"Crawler '{crawler_id}' not found")
+
+    config = info.get("config", {})
+    target = config.get("target", {})
+    if isinstance(target, str):
+        target = {"url": target}
+
+    overrides = _load_settings().get(crawler_id, {})
+
+    return {
+        "crawler_id": crawler_id,
+        "target_url": overrides.get("target_url", target.get("url", "")),
+        "delay": overrides.get("delay", 1.0),
+        "max_items": overrides.get("max_items", 100),
+        "strategy": target.get("strategy", "requests"),
+        "difficulty": target.get("difficulty", 1),
+    }
+
+
+@router.put("/{crawler_id}/settings")
+async def update_crawler_settings(crawler_id: str, body: CrawlerSettingsUpdate):
+    """크롤러 설정 업데이트 — 파일에 저장."""
+    settings = _load_settings()
+    current = settings.get(crawler_id, {})
+
+    if body.target_url is not None:
+        current["target_url"] = body.target_url
+    if body.delay is not None:
+        current["delay"] = body.delay
+    if body.max_items is not None:
+        current["max_items"] = body.max_items
+
+    settings[crawler_id] = current
+    _save_settings(settings)
+
+    return {"crawler_id": crawler_id, "settings": current}
 
 
 @router.post("/{crawler_id}/run")

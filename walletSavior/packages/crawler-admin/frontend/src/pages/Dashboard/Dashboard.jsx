@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import useAdminStore from '../../stores/adminStore';
-import { errorTrend, statusDistribution } from '../../data/mockData';
 import {
   PieChart,
   Pie,
@@ -17,18 +16,27 @@ import {
 import styles from './Dashboard.module.css';
 
 const STATUS_LABEL = { success: '성공', failure: '실패', partial: '부분' };
+const STATUS_COLORS = { '성공': 'var(--green)', '실패': 'var(--red)', '부분': 'var(--yellow)' };
 
 export default function Dashboard() {
   const stats = useAdminStore((s) => s.dashboardStats);
-  const logs = useAdminStore((s) => s.logs);
   const loading = useAdminStore((s) => s.loading);
+  const error = useAdminStore((s) => s.error);
   const fetchDashboard = useAdminStore((s) => s.fetchDashboard);
 
   useEffect(() => {
     fetchDashboard();
   }, [fetchDashboard]);
 
-  const recentLogs = logs.slice(0, 7);
+  // 실시간 데이터로 파이 차트 데이터 구성
+  const dist = stats.statusDistribution || {};
+  const statusDistributionData = [
+    { name: '성공', value: dist.success || 0, color: 'var(--green)' },
+    { name: '실패', value: dist.failure || 0, color: 'var(--red)' },
+    { name: '부분', value: dist.partial || 0, color: 'var(--yellow)' },
+  ].filter((d) => d.value > 0);
+
+  const errorTrendData = stats.errorTrend || [];
 
   if (loading && !stats.totalCrawlers) {
     return (
@@ -44,6 +52,16 @@ export default function Dashboard() {
   return (
     <div className={styles.page}>
       <h1 className={styles.pageTitle}>대시보드</h1>
+
+      {error && (
+        <div style={{
+          padding: '12px 16px', borderRadius: '8px', marginBottom: '16px',
+          background: 'rgba(248,113,113,0.15)', color: 'var(--red)',
+          fontSize: 'var(--fs-sm)',
+        }}>
+          {error}
+        </div>
+      )}
 
       {/* Summary Cards */}
       <div className={styles.statsGrid}>
@@ -69,99 +87,72 @@ export default function Dashboard() {
       <div className={styles.chartsGrid}>
         <div className={styles.chartCard}>
           <h3 className={styles.chartTitle}>크롤러 상태 분포</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <PieChart>
-              <Pie
-                data={statusDistribution}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={90}
-                dataKey="value"
-                label={({ name, value }) => `${name}: ${value}`}
-              >
-                {statusDistribution.map((entry, i) => (
-                  <Cell key={i} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip
-                contentStyle={{
-                  background: '#1e293b',
-                  border: '1px solid rgba(148,163,184,0.12)',
-                  borderRadius: '8px',
-                  color: '#f1f5f9',
-                }}
-              />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+          {statusDistributionData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie
+                  data={statusDistributionData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={90}
+                  dataKey="value"
+                  label={({ name, value }) => `${name}: ${value}`}
+                >
+                  {statusDistributionData.map((entry, i) => (
+                    <Cell key={i} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{
+                    background: '#1e293b',
+                    border: '1px solid rgba(148,163,184,0.12)',
+                    borderRadius: '8px',
+                    color: '#f1f5f9',
+                  }}
+                />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          ) : (
+            <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text3)' }}>
+              아직 실행 데이터가 없습니다
+            </div>
+          )}
         </div>
 
         <div className={styles.chartCard}>
           <h3 className={styles.chartTitle}>에러 추이 (최근 7일)</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={errorTrend}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.12)" />
-              <XAxis dataKey="date" stroke="#64748b" fontSize={12} />
-              <YAxis stroke="#64748b" fontSize={12} />
-              <Tooltip
-                contentStyle={{
-                  background: '#1e293b',
-                  border: '1px solid rgba(148,163,184,0.12)',
-                  borderRadius: '8px',
-                  color: '#f1f5f9',
-                }}
-              />
-              <Line
-                type="monotone"
-                dataKey="errors"
-                stroke="#f87171"
-                strokeWidth={2}
-                dot={{ fill: '#f87171', r: 4 }}
-                name="에러 수"
-              />
-            </LineChart>
-          </ResponsiveContainer>
+          {errorTrendData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={250}>
+              <LineChart data={errorTrendData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.12)" />
+                <XAxis dataKey="date" stroke="#64748b" fontSize={12} />
+                <YAxis stroke="#64748b" fontSize={12} />
+                <Tooltip
+                  contentStyle={{
+                    background: '#1e293b',
+                    border: '1px solid rgba(148,163,184,0.12)',
+                    borderRadius: '8px',
+                    color: '#f1f5f9',
+                  }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="errors"
+                  stroke="#f87171"
+                  strokeWidth={2}
+                  dot={{ fill: '#f87171', r: 4 }}
+                  name="에러 수"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text3)' }}>
+              아직 에러 데이터가 없습니다
+            </div>
+          )}
         </div>
-      </div>
-
-      {/* Recent Activity */}
-      <div className={styles.tableCard}>
-        <h3 className={styles.tableTitle}>최근 크롤 활동</h3>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>시간</th>
-              <th>크롤러명</th>
-              <th>상태</th>
-              <th>수집 건수</th>
-              <th>소요 시간</th>
-            </tr>
-          </thead>
-          <tbody>
-            {recentLogs.map((log) => (
-              <tr key={log.id}>
-                <td>{new Date(log.startTime).toLocaleTimeString('ko-KR')}</td>
-                <td>{log.crawlerName}</td>
-                <td>
-                  <span
-                    className={
-                      log.status === 'success'
-                        ? styles.statusSuccess
-                        : log.status === 'failure'
-                        ? styles.statusFailure
-                        : styles.statusPartial
-                    }
-                  >
-                    {STATUS_LABEL[log.status]}
-                  </span>
-                </td>
-                <td>{log.collected}</td>
-                <td>{log.duration}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
     </div>
   );

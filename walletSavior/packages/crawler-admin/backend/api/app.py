@@ -22,11 +22,15 @@ def create_app() -> FastAPI:
     from api.routes.schedules import router as schedules_router
     from api.routes.logs import router as logs_router
     from api.routes.ingestion import router as ingestion_router
+    from api.routes.dashboard import router as dashboard_router
+    from api.routes.plugins import router as plugins_router
 
     app.include_router(crawlers_router)
     app.include_router(schedules_router)
     app.include_router(logs_router)
     app.include_router(ingestion_router)
+    app.include_router(dashboard_router)
+    app.include_router(plugins_router)
 
     @app.get("/health")
     async def health():

@@ -1,20 +1,15 @@
 import { create } from 'zustand';
 import { api } from '../api/client';
-import {
-  crawlers as mockCrawlers,
-  crawlLogs as mockLogs,
-  schedules as mockSchedules,
-  plugins as mockPlugins,
-  dashboardStats as mockStats,
-} from '../data/mockData';
 
 const useAdminStore = create((set, get) => ({
   // Loading / Error
   loading: false,
   error: null,
 
+  clearError: () => set({ error: null }),
+
   // Crawlers
-  crawlers: mockCrawlers,
+  crawlers: [],
   selectedCrawler: null,
   crawlerFilter: 'all',
 
@@ -26,22 +21,21 @@ const useAdminStore = create((set, get) => ({
     try {
       const data = await api.getCrawlers();
       const list = Array.isArray(data) ? data : data.crawlers ?? data.data ?? [];
-      // API 크롤러 → 프론트엔드 형식으로 변환 (name을 id로 사용)
       const mapped = list.map((c) => ({
         id: c.name,
         name: c.display_name || c.name,
         category: c.category || 'etc',
         difficulty: c.difficulty ?? '중',
         status: c.status || 'active',
-        lastCrawl: c.lastCrawl || c.last_run || new Date().toISOString(),
-        successRate: c.successRate ?? c.success_rate ?? 100,
+        lastCrawl: c.lastCrawl || c.last_run || '',
+        successRate: c.successRate ?? c.success_rate ?? 0,
         totalRuns: c.totalRuns ?? c.total_runs ?? 0,
         description: c.description || '',
         schedule: c.schedule || '',
       }));
-      if (mapped.length > 0) set({ crawlers: mapped });
-    } catch {
-      // API 실패 시 mock 데이터 유지
+      set({ crawlers: mapped });
+    } catch (err) {
+      set({ error: `⚠️ 서버 연결 실패: 크롤러 목록을 불러올 수 없습니다 (${err.message})` });
     } finally {
       set({ loading: false });
     }
@@ -60,14 +54,28 @@ const useAdminStore = create((set, get) => ({
     }
   },
 
-  toggleCrawlerStatus: (id) =>
-    set((state) => ({
-      crawlers: state.crawlers.map((c) =>
-        c.id === id
-          ? { ...c, status: c.status === 'active' ? 'inactive' : 'active' }
-          : c
+  toggleCrawlerStatus: async (id) => {
+    const { crawlers } = get();
+    const crawler = crawlers.find((c) => c.id === id);
+    if (!crawler) return;
+
+    const newStatus = crawler.status === 'active' ? 'inactive' : 'active';
+    // 낙관적 업데이트
+    set({
+      crawlers: crawlers.map((c) =>
+        c.id === id ? { ...c, status: newStatus } : c
       ),
-    })),
+    });
+    try {
+      await api.toggleCrawler(id, newStatus);
+    } catch (err) {
+      // 롤백
+      set({
+        crawlers: crawlers,
+        error: `상태 변경 실패: ${err.message}`,
+      });
+    }
+  },
 
   getFilteredCrawlers: () => {
     const { crawlers, crawlerFilter } = get();
@@ -76,7 +84,7 @@ const useAdminStore = create((set, get) => ({
   },
 
   // Logs
-  logs: mockLogs,
+  logs: [],
   logFilters: {
     crawlerName: '',
     status: 'all',
@@ -91,11 +99,25 @@ const useAdminStore = create((set, get) => ({
     try {
       const data = await api.getLogs(params);
       const list = Array.isArray(data) ? data : data.logs ?? data.data ?? [];
-      if (list.length > 0) set({ logs: list });
-    } catch {
-      // mock 유지
+      set({ logs: list });
+    } catch (err) {
+      set({ error: `⚠️ 서버 연결 실패: 로그를 불러올 수 없습니다 (${err.message})` });
     } finally {
       set({ loading: false });
+    }
+  },
+
+  exportLogs: async (params = {}) => {
+    try {
+      const blob = await api.exportLogsCsv(params);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'crawl_logs.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      set({ error: `CSV 내보내기 실패: ${err.message}` });
     }
   },
 
@@ -110,7 +132,8 @@ const useAdminStore = create((set, get) => ({
   getFilteredLogs: () => {
     const { logs, logFilters } = get();
     return logs.filter((log) => {
-      if (logFilters.crawlerName && !log.crawlerName.includes(logFilters.crawlerName))
+      const name = log.crawlerName || log.job_id || '';
+      if (logFilters.crawlerName && !name.includes(logFilters.crawlerName))
         return false;
       if (logFilters.status !== 'all' && log.status !== logFilters.status)
         return false;
@@ -119,16 +142,16 @@ const useAdminStore = create((set, get) => ({
   },
 
   // Schedules
-  schedules: mockSchedules,
+  schedules: [],
 
   fetchSchedules: async () => {
     set({ loading: true, error: null });
     try {
       const data = await api.getSchedules();
       const list = Array.isArray(data) ? data : data.schedules ?? data.data ?? [];
-      if (list.length > 0) set({ schedules: list });
-    } catch {
-      // mock 유지
+      set({ schedules: list });
+    } catch (err) {
+      set({ error: `⚠️ 서버 연결 실패: 스케줄을 불러올 수 없습니다 (${err.message})` });
     } finally {
       set({ loading: false });
     }
@@ -165,12 +188,31 @@ const useAdminStore = create((set, get) => ({
     }
   },
 
-  toggleSchedule: (id) =>
-    set((state) => ({
-      schedules: state.schedules.map((s) =>
-        s.id === id ? { ...s, enabled: !s.enabled } : s
+  toggleSchedule: async (id) => {
+    const { schedules } = get();
+    const schedule = schedules.find((s) => s.id === id);
+    if (!schedule) return;
+
+    const newEnabled = !schedule.enabled;
+    const crawlerName = schedule.crawlerId || schedule.crawlerName;
+
+    // 낙관적 업데이트
+    set({
+      schedules: schedules.map((s) =>
+        s.id === id ? { ...s, enabled: newEnabled } : s
       ),
-    })),
+    });
+
+    try {
+      await api.toggleSchedule(crawlerName, newEnabled);
+    } catch (err) {
+      // 롤백
+      set({
+        schedules: schedules,
+        error: `스케줄 토글 실패: ${err.message}`,
+      });
+    }
+  },
 
   updateScheduleCron: (id, cron, description) =>
     set((state) => ({
@@ -190,8 +232,8 @@ const useAdminStore = create((set, get) => ({
       const data = await api.getIngestions(params);
       const list = Array.isArray(data) ? data : data.items ?? data.ingestions ?? data.data ?? [];
       set({ ingestions: list });
-    } catch {
-      set({ ingestions: [] });
+    } catch (err) {
+      set({ ingestions: [], error: `⚠️ 서버 연결 실패: 데이터 검토 목록을 불러올 수 없습니다 (${err.message})` });
     } finally {
       set({ loading: false });
     }
@@ -228,50 +270,71 @@ const useAdminStore = create((set, get) => ({
   setIngestionFilter: (filter) => set({ ingestionFilter: filter }),
 
   // Plugins
-  plugins: mockPlugins,
+  plugins: [],
 
-  togglePlugin: (id) =>
-    set((state) => ({
-      plugins: state.plugins.map((p) =>
-        p.id === id
-          ? { ...p, status: p.status === 'active' ? 'inactive' : 'active' }
-          : p
+  fetchPlugins: async () => {
+    set({ loading: true, error: null });
+    try {
+      const data = await api.getPlugins();
+      const list = Array.isArray(data) ? data : data.plugins ?? data.data ?? [];
+      set({ plugins: list });
+    } catch (err) {
+      set({ error: `⚠️ 서버 연결 실패: 플러그인 목록을 불러올 수 없습니다 (${err.message})` });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  togglePlugin: async (id) => {
+    const { plugins } = get();
+    const plugin = plugins.find((p) => p.id === id);
+    if (!plugin) return;
+
+    const newStatus = plugin.status === 'active' ? 'inactive' : 'active';
+    // 낙관적 업데이트
+    set({
+      plugins: plugins.map((p) =>
+        p.id === id ? { ...p, status: newStatus } : p
       ),
-    })),
+    });
+
+    try {
+      await api.togglePlugin(id, newStatus);
+    } catch (err) {
+      // 롤백
+      set({
+        plugins: plugins,
+        error: `플러그인 토글 실패: ${err.message}`,
+      });
+    }
+  },
 
   // Dashboard
-  dashboardStats: mockStats,
+  dashboardStats: {
+    totalCrawlers: 0,
+    activeCrawlers: 0,
+    todayCrawls: 0,
+    successRate: 0,
+    statusDistribution: { success: 0, failure: 0, partial: 0 },
+    errorTrend: [],
+  },
 
   fetchDashboard: async () => {
-    set({ loading: true });
+    set({ loading: true, error: null });
     try {
-      const [crawlersData, logsData] = await Promise.allSettled([
-        api.getCrawlers(),
-        api.getLogs({}),
-      ]);
-      const crawlers = crawlersData.status === 'fulfilled'
-        ? (Array.isArray(crawlersData.value) ? crawlersData.value : crawlersData.value.crawlers ?? crawlersData.value.data ?? [])
-        : [];
-      const logs = logsData.status === 'fulfilled'
-        ? (Array.isArray(logsData.value) ? logsData.value : logsData.value.logs ?? logsData.value.data ?? [])
-        : [];
-
-      if (crawlers.length > 0) {
-        const active = crawlers.filter(c => c.status === 'active').length;
-        const successLogs = logs.filter(l => l.status === 'success').length;
-        set({
-          crawlers,
-          logs: logs.length > 0 ? logs : get().logs,
-          dashboardStats: {
-            totalCrawlers: crawlers.length,
-            activeCrawlers: active,
-            todayCrawls: logs.length,
-            successRate: logs.length > 0 ? Math.round((successLogs / logs.length) * 1000) / 10 : get().dashboardStats.successRate,
-          },
-        });
-      }
-    } catch {
-      // mock 유지
+      const stats = await api.getDashboardStats();
+      set({
+        dashboardStats: {
+          totalCrawlers: stats.totalCrawlers ?? 0,
+          activeCrawlers: stats.activeCrawlers ?? 0,
+          todayCrawls: stats.todayCrawls ?? 0,
+          successRate: stats.successRate ?? 0,
+          statusDistribution: stats.statusDistribution ?? { success: 0, failure: 0, partial: 0 },
+          errorTrend: stats.errorTrend ?? [],
+        },
+      });
+    } catch (err) {
+      set({ error: `⚠️ 서버 연결 실패: 대시보드 데이터를 불러올 수 없습니다 (${err.message})` });
     } finally {
       set({ loading: false });
     }

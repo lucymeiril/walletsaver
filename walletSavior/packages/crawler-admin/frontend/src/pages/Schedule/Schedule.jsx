@@ -13,6 +13,7 @@ const CRON_PRESETS = {
   '0 */6 * * *': '매 6시간마다',
   '0 0 * * *': '매일 자정',
   '0 0 */6 * *': '매 6시간마다',
+  '0 7 * * *': '매일 오전 7시',
 };
 
 function cronToHuman(cron) {
@@ -26,6 +27,7 @@ export default function Schedule() {
   const fetchSchedules = useAdminStore((s) => s.fetchSchedules);
   const updateScheduleApi = useAdminStore((s) => s.updateScheduleApi);
   const loading = useAdminStore((s) => s.loading);
+  const error = useAdminStore((s) => s.error);
 
   const [editing, setEditing] = useState(null);
   const [editCron, setEditCron] = useState('');
@@ -34,13 +36,17 @@ export default function Schedule() {
     fetchSchedules();
   }, [fetchSchedules]);
 
-  const formatDateTime = (iso) =>
-    new Date(iso).toLocaleString('ko-KR', {
+  const formatDateTime = (iso) => {
+    if (!iso) return '-';
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return '-';
+    return d.toLocaleString('ko-KR', {
       month: 'numeric',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
     });
+  };
 
   const handleEdit = (schedule) => {
     setEditing(schedule);
@@ -50,8 +56,7 @@ export default function Schedule() {
   const handleSave = () => {
     if (editing) {
       updateScheduleCron(editing.id, editCron, cronToHuman(editCron));
-      // API 호출 시도 (실패해도 로컬 상태는 이미 업데이트됨)
-      updateScheduleApi(editing.crawlerName || editing.crawlerId, { cron: editCron, description: cronToHuman(editCron) });
+      updateScheduleApi(editing.crawlerId || editing.crawlerName, { cron: editCron, description: cronToHuman(editCron) });
       setEditing(null);
     }
   };
@@ -60,65 +65,85 @@ export default function Schedule() {
     <div className={styles.page}>
       <h1 className={styles.pageTitle}>스케줄 관리</h1>
 
-      <div className={styles.tableCard}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>크롤러</th>
-              <th>Cron 표현식</th>
-              <th>다음 실행</th>
-              <th>상태</th>
-              <th>작업</th>
-            </tr>
-          </thead>
-          <tbody>
-            {schedules.map((schedule) => (
-              <tr key={schedule.id}>
-                <td>
-                  <span className={styles.crawlerName}>
-                    {schedule.crawlerName}
-                  </span>
-                </td>
-                <td>
-                  <code className={styles.cronCode}>{schedule.cron}</code>
-                  <div className={styles.cronDescription}>
-                    {schedule.description}
-                  </div>
-                </td>
-                <td>
-                  <span className={styles.nextRun}>
-                    {formatDateTime(schedule.nextRun)}
-                  </span>
-                </td>
-                <td>
-                  <button
-                    className={
-                      schedule.enabled ? styles.toggleOn : styles.toggle
-                    }
-                    onClick={() => toggleSchedule(schedule.id)}
-                    aria-label={schedule.enabled ? '비활성화' : '활성화'}
-                  />
-                </td>
-                <td>
-                  <div className={styles.actionsCell}>
-                    <button
-                      className={styles.actionBtn}
-                      onClick={() => handleEdit(schedule)}
-                    >
-                      <Edit3 size={14} />
-                      편집
-                    </button>
-                    <button className={styles.actionBtn}>
-                      <Play size={14} />
-                      실행
-                    </button>
-                  </div>
-                </td>
+      {error && (
+        <div style={{
+          padding: '12px 16px', borderRadius: '8px', marginBottom: '16px',
+          background: 'rgba(248,113,113,0.15)', color: 'var(--red)',
+          fontSize: 'var(--fs-sm)',
+        }}>
+          {error}
+        </div>
+      )}
+
+      {loading && schedules.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text3)' }}>
+          스케줄 로딩 중...
+        </div>
+      ) : schedules.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text3)' }}>
+          등록된 스케줄이 없습니다. 크롤러에서 스케줄을 설정하세요.
+        </div>
+      ) : (
+        <div className={styles.tableCard}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>크롤러</th>
+                <th>Cron 표현식</th>
+                <th>다음 실행</th>
+                <th>상태</th>
+                <th>작업</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {schedules.map((schedule) => (
+                <tr key={schedule.id}>
+                  <td>
+                    <span className={styles.crawlerName}>
+                      {schedule.crawlerName}
+                    </span>
+                  </td>
+                  <td>
+                    <code className={styles.cronCode}>{schedule.cron}</code>
+                    <div className={styles.cronDescription}>
+                      {schedule.description || cronToHuman(schedule.cron)}
+                    </div>
+                  </td>
+                  <td>
+                    <span className={styles.nextRun}>
+                      {formatDateTime(schedule.nextRun)}
+                    </span>
+                  </td>
+                  <td>
+                    <button
+                      className={
+                        schedule.enabled ? styles.toggleOn : styles.toggle
+                      }
+                      onClick={() => toggleSchedule(schedule.id)}
+                      aria-label={schedule.enabled ? '비활성화' : '활성화'}
+                    />
+                  </td>
+                  <td>
+                    <div className={styles.actionsCell}>
+                      <button
+                        className={styles.actionBtn}
+                        onClick={() => handleEdit(schedule)}
+                      >
+                        <Edit3 size={14} />
+                        편집
+                      </button>
+                      <button className={styles.actionBtn}>
+                        <Play size={14} />
+                        실행
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {/* Edit Modal */}
       {editing && (
