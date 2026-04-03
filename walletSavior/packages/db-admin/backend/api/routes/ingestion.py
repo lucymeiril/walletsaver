@@ -188,6 +188,9 @@ def bulk_approve(body: BulkApproveRequest):
         }
     finally:
         session.close()
+
+
+@router.post("")
 def submit_ingestion(body: IngestionSubmit):
     """크롤러가 데이터를 대기열에 제출."""
     session = get_session()

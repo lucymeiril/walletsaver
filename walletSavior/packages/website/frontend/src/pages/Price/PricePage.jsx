@@ -109,7 +109,56 @@ export default function PricePage() {
     navigate(`/price/${p.id}`);
   };
 
-  // No product selected — show search
+  // 상품 상세 — 속성 변형은 DB에서 조회
+  const variants = productData?.variants || [];
+  const activeVariant = variants[variantIdx] || null;
+  const displayAvg = product ? (activeVariant?.avg ?? product.avg) : 0;
+  const displayCur = product ? (activeVariant?.cur ?? product.cur) : 0;
+  const displayLow = product ? (activeVariant?.low ?? product.low) : 0;
+  const displayHigh = product ? (activeVariant?.high ?? product.high) : 0;
+
+  const ratio = displayAvg > 0 ? displayCur / displayAvg : 1;
+  const diff = displayCur - displayAvg;
+
+  const timing = useMemo(() => {
+    if (ratio <= 0.7) return { cls: 'ultra', icon: '🔥', title: '역대급 기회!', desc: `현재 ${fmt(displayCur)}원은 평균보다 ${Math.round((1 - ratio) * 100)}% 저렴합니다.` };
+    if (ratio <= 0.85) return { cls: 'great', icon: '💙', title: '좋은 가격이에요!', desc: `현재 ${fmt(displayCur)}원은 평균(${fmt(displayAvg)}원)보다 ${Math.round((1 - ratio) * 100)}% 저렴합니다.` };
+    if (ratio <= 1.05) return { cls: 'good', icon: '✅', title: '지금 사도 괜찮아요!', desc: `현재 ${fmt(displayCur)}원은 평균(${fmt(displayAvg)}원) 수준입니다. (${diff >= 0 ? '+' : ''}${fmt(diff)}원)` };
+    return { cls: 'wait', icon: '⏳', title: '조금 기다려보세요', desc: `현재 ${fmt(displayCur)}원은 평균보다 ${Math.round((ratio - 1) * 100)}% 비쌉니다.` };
+  }, [ratio, displayCur, displayAvg, diff]);
+
+  const tierPos = (displayHigh - displayLow) > 0
+    ? Math.max(3, Math.min(97, ((displayCur - displayLow) / (displayHigh - displayLow)) * 100))
+    : 50;
+
+  const fairPrice = Math.round(displayAvg * 0.8);
+
+  const hasData = displayCur != null && displayAvg != null && displayAvg > 0;
+
+  // 마트별 최저가 계산 — 모든 훅은 early return 전에 호출해야 함
+  const cheapestMart = useMemo(() => {
+    if (!product?.stores) return null;
+    let min = Infinity, name = '', key = '';
+    MARTS.forEach(m => {
+      const p = product.stores[m.key];
+      if (p != null && p < min) { min = p; name = m.name; key = m.key; }
+    });
+    return min < Infinity ? { name, price: min, key } : null;
+  }, [product]);
+
+  const martBarData = useMemo(() => {
+    if (!product?.stores) return [];
+    const prices = MARTS.map(m => product.stores[m.key]).filter(p => p != null);
+    const minP = prices.length > 0 ? Math.min(...prices) : 0;
+    return MARTS.map(m => ({
+      name: m.name,
+      price: product.stores?.[m.key],
+      color: m.color,
+      isCheapest: product.stores?.[m.key] === minP,
+    }));
+  }, [product]);
+
+  // --- Early returns (after all hooks) ---
   if (loading) {
     return <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}><Spinner size="lg" /></div>;
   }
@@ -147,12 +196,12 @@ export default function PricePage() {
         </div>
         <div className={s.resultGrid}>
           {products.map(p => {
-            const diff = p.cur - p.avg;
-            const pct = ((diff / p.avg) * 100).toFixed(1);
+            const d = (p.cur || 0) - (p.avg || 1);
+            const pct = p.avg ? ((d / p.avg) * 100).toFixed(1) : '0.0';
             let changeClass = s.changeSame;
             let icon = <Minus size={12} />;
-            if (diff < -p.avg * 0.03) { changeClass = s.changeDown; icon = <TrendingDown size={12} />; }
-            else if (diff > p.avg * 0.03) { changeClass = s.changeUp; icon = <TrendingUp size={12} />; }
+            if (d < -(p.avg || 1) * 0.03) { changeClass = s.changeDown; icon = <TrendingDown size={12} />; }
+            else if (d > (p.avg || 1) * 0.03) { changeClass = s.changeUp; icon = <TrendingUp size={12} />; }
             return (
               <div key={p.id} className={s.resultCard} onClick={() => handleSelectProduct(p)}>
                 <div className={s.resultIcon}>{p.icon}</div>
@@ -169,50 +218,6 @@ export default function PricePage() {
       </div>
     );
   }
-
-  // 상품 상세 — 속성 변형은 DB에서 조회 (현재 미구현 시 빈 배열)
-  const variants = productData?.variants || [];
-  const activeVariant = variants[variantIdx] || null;
-  const displayAvg = activeVariant?.avg ?? product.avg;
-  const displayCur = activeVariant?.cur ?? product.cur;
-  const displayLow = activeVariant?.low ?? product.low;
-  const displayHigh = activeVariant?.high ?? product.high;
-
-  const ratio = displayCur / displayAvg;
-  const diff = displayCur - displayAvg;
-
-  let timing = {};
-  if (ratio <= 0.7) timing = { cls: 'ultra', icon: '🔥', title: '역대급 기회!', desc: `현재 ${fmt(displayCur)}원은 평균보다 ${Math.round((1 - ratio) * 100)}% 저렴합니다.` };
-  else if (ratio <= 0.85) timing = { cls: 'great', icon: '💙', title: '좋은 가격이에요!', desc: `현재 ${fmt(displayCur)}원은 평균(${fmt(displayAvg)}원)보다 ${Math.round((1 - ratio) * 100)}% 저렴합니다.` };
-  else if (ratio <= 1.05) timing = { cls: 'good', icon: '✅', title: '지금 사도 괜찮아요!', desc: `현재 ${fmt(displayCur)}원은 평균(${fmt(displayAvg)}원) 수준입니다. (${diff >= 0 ? '+' : ''}${fmt(diff)}원)` };
-  else timing = { cls: 'wait', icon: '⏳', title: '조금 기다려보세요', desc: `현재 ${fmt(displayCur)}원은 평균보다 ${Math.round((ratio - 1) * 100)}% 비쌉니다.` };
-
-  const tierPos = Math.max(3, Math.min(97, ((displayCur - displayLow) / (displayHigh - displayLow)) * 100));
-
-  const fairPrice = Math.round(displayAvg * 0.8);
-
-  // 데이터 유무 확인
-  const hasData = displayCur != null && displayAvg != null && displayAvg > 0;
-
-  // 마트별 최저가 계산
-  const cheapestMart = useMemo(() => {
-    if (!product?.stores) return null;
-    let min = Infinity, name = '', key = '';
-    MARTS.forEach(m => {
-      const p = product.stores[m.key];
-      if (p != null && p < min) { min = p; name = m.name; key = m.key; }
-    });
-    return min < Infinity ? { name, price: min, key } : null;
-  }, [product]);
-
-  // Mart comparison bar chart data
-  const minMartPrice = Math.min(...MARTS.map(m => product.stores?.[m.key]).filter(p => p != null));
-  const martBarData = MARTS.map(m => ({
-    name: m.name,
-    price: product.stores[m.key],
-    color: m.color,
-    isCheapest: product.stores[m.key] === minMartPrice,
-  }));
 
   return (
     <div>
