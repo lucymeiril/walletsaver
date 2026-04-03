@@ -1,7 +1,7 @@
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useMemo, useState, useEffect } from 'react';
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { Heart, Search, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { Heart, Search, TrendingUp, TrendingDown, Minus, ChevronDown, ChevronUp } from 'lucide-react';
 import { MARTS } from '../../utils/constants';
 import { fmt } from '../../utils/helpers';
 import useStore from '../../stores/appStore';
@@ -20,6 +20,8 @@ export default function PricePage() {
   const [chartData, setChartData] = useState([]);
   const [relatedHotdeals, setRelatedHotdeals] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const [detailOpen, setDetailOpen] = useState(false);
 
   // Fetch all products for search
   useEffect(() => {
@@ -57,12 +59,25 @@ export default function PricePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [range, setRange] = useState(30);
   const [variantIdx, setVariantIdx] = useState(0);
-  const [expertMode, setExpertMode] = useState(false);
 
   const debouncedQuery = useDebounce(searchQuery, 300);
 
+  // 검색 자동완성 — DB 키워드 연동
+  useEffect(() => {
+    if (debouncedQuery.length < 2) { setSuggestions([]); return; }
+    fetch(`/api/search/autocomplete?q=${encodeURIComponent(debouncedQuery)}&limit=10`)
+      .then(r => r.json())
+      .then(res => setSuggestions(res.data || []))
+      .catch(() => setSuggestions([]));
+  }, [debouncedQuery]);
+
   const searchResults = debouncedQuery.length > 0
-    ? products.filter(p => p.name?.includes(debouncedQuery) || p.cat?.includes(debouncedQuery))
+    ? (suggestions.length > 0
+      ? suggestions.map(sg => {
+          const found = products.find(p => p.id === sg.id);
+          return found || { id: sg.id, name: sg.text, cat: '', cur: null, icon: '🔍' };
+        })
+      : products.filter(p => p.name?.includes(debouncedQuery) || p.cat?.includes(debouncedQuery)))
     : [];
 
   const product = productData || (id ? products.find(p => p.id === Number(id)) : null) || selectedProduct;
@@ -76,13 +91,16 @@ export default function PricePage() {
       .catch(console.error);
   }, [product?.id, range]);
 
-  // Fetch related hotdeals
+  // Fetch related hotdeals — 상품 카테고리에 맞는 핫딜 동적 연결
   useEffect(() => {
     if (!product) return;
-    fetch('/api/hotdeals?category=food&per_page=3').then(r => r.json())
+    const CAT_MAP = { '농산물': 'food', '축산물': 'food', '수산물': 'food', '가공식품': 'food', '생활용품': 'living', '전자제품': 'electronics', '패션': 'fashion' };
+    const hotdealCat = CAT_MAP[product.cat] || '';
+    const catParam = hotdealCat ? `category=${hotdealCat}&` : '';
+    fetch(`/api/hotdeals?${catParam}per_page=3`).then(r => r.json())
       .then(res => setRelatedHotdeals(res.data || []))
       .catch(console.error);
-  }, [product?.id]);
+  }, [product?.id, product?.cat]);
 
   const handleSelectProduct = (p) => {
     setSelectedProduct(p);
@@ -173,11 +191,27 @@ export default function PricePage() {
 
   const fairPrice = Math.round(displayAvg * 0.8);
 
+  // 데이터 유무 확인
+  const hasData = displayCur != null && displayAvg != null && displayAvg > 0;
+
+  // 마트별 최저가 계산
+  const cheapestMart = useMemo(() => {
+    if (!product?.stores) return null;
+    let min = Infinity, name = '', key = '';
+    MARTS.forEach(m => {
+      const p = product.stores[m.key];
+      if (p != null && p < min) { min = p; name = m.name; key = m.key; }
+    });
+    return min < Infinity ? { name, price: min, key } : null;
+  }, [product]);
+
   // Mart comparison bar chart data
+  const minMartPrice = Math.min(...MARTS.map(m => product.stores?.[m.key]).filter(p => p != null));
   const martBarData = MARTS.map(m => ({
     name: m.name,
     price: product.stores[m.key],
     color: m.color,
+    isCheapest: product.stores[m.key] === minMartPrice,
   }));
 
   return (
@@ -212,6 +246,16 @@ export default function PricePage() {
           )}
         </div>
       </div>
+
+      {/* 결론형 요약 */}
+      {hasData && cheapestMart && (
+        <div className={s.summaryBar}>
+          <span className={s.summaryIcon}>{product.icon}</span>
+          <span className={s.summaryText}>
+            {product.name} {product.unit}: <strong>{cheapestMart.name}</strong>가 가장 싸요 (<strong>{fmt(cheapestMart.price)}원</strong>) — {timing.title}
+          </span>
+        </div>
+      )}
 
       <div className={s.layout}>
         <div className={s.left}>
@@ -257,93 +301,106 @@ export default function PricePage() {
             </div>
           )}
 
-          {/* 타이밍 뱃지 */}
-          <div className={`${s.timing} ${s[timing.cls]}`}>
-            <span className={s.timingIcon}>{timing.icon}</span>
-            <div><strong>{timing.title}</strong><p>{timing.desc}</p></div>
-          </div>
-
-          {/* 적정 핫딜가 안내 */}
-          <div className={s.fairPrice}>
-            <span className={s.fairIcon}>🎯</span>
-            <div>
-              <div className={s.fairLabel}>적정 핫딜가 (평균의 80%)</div>
-              <div className={s.fairVal}>{fmt(fairPrice)}원 이하면 구매 추천!</div>
-            </div>
-          </div>
-
-          {/* 가격 박스 4칸 */}
-          <div className={s.prices}>
-            <div className={`${s.priceBox} ${s.current}`}><span className={s.label}>현재 평균</span><span className={s.val}>{fmt(displayCur)}원</span></div>
-            <div className={s.priceBox}><span className={s.label}>30일 평균</span><span className={s.val}>{fmt(displayAvg)}원</span></div>
-            <div className={`${s.priceBox} ${s.low}`}><span className={s.label}>최근 최저</span><span className={s.val}>{fmt(displayLow)}원</span></div>
-            <div className={`${s.priceBox} ${s.high}`}><span className={s.label}>최근 최고</span><span className={s.val}>{fmt(displayHigh)}원</span></div>
-          </div>
-
-          {/* 가격 등급 바 */}
-          <div className={s.tierBar}>
-            <div className={s.tierLabel}>가격 등급</div>
-            <div className={s.tierTrack}>
-              <div className={`${s.zone} ${s.zoneUltra}`} style={{ width: '15%' }}>역대급</div>
-              <div className={`${s.zone} ${s.zoneGreat}`} style={{ width: '20%' }}>좋은 가격</div>
-              <div className={`${s.zone} ${s.zoneOk}`} style={{ width: '30%' }}>평균 수준</div>
-              <div className={`${s.zone} ${s.zoneWait}`} style={{ width: '20%' }}>조금 비쌈</div>
-              <div className={`${s.zone} ${s.zoneBad}`} style={{ width: '15%' }}>비쌈</div>
-              <div className={s.marker} style={{ left: `${tierPos}%` }} />
-            </div>
-          </div>
-
-          {/* 차트 */}
-          <div className={s.chartBox}>
-            <div className={s.chartHead}>
-              <h4>{range}일 가격 추이</h4>
-              <div className={s.chartBtns}>
-                {[30, 90, 365].map(r => (
-                  <button key={r} className={`${s.chartBtn} ${range === r ? s.chartBtnActive : ''}`} onClick={() => setRange(r)}>
-                    {r === 365 ? '1년' : `${r}일`}
-                  </button>
-                ))}
+          {hasData ? (
+            <>
+              {/* 타이밍 뱃지 */}
+              <div className={`${s.timing} ${s[timing.cls]}`}>
+                <span className={s.timingIcon}>{timing.icon}</span>
+                <div><strong>{timing.title}</strong><p>{timing.desc}</p></div>
               </div>
-            </div>
-            <ResponsiveContainer width="100%" height={220}>
-              <AreaChart data={chartData}>
-                <defs>
-                  <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.2} />
-                    <stop offset="95%" stopColor="#38bdf8" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="date" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} width={50} tickFormatter={v => fmt(v)} />
-                <Tooltip
-                  contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: '.85rem' }}
-                  formatter={v => [`${fmt(v)}원`, '가격']}
-                />
-                <Area type="monotone" dataKey="price" stroke="#38bdf8" strokeWidth={2} fill="url(#colorPrice)" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
 
-          {/* 상세 분석 모드 */}
-          <div className={s.expertToggle} onClick={() => setExpertMode(!expertMode)}>
-            <div>
-              <div className={s.expertLabel}>📊 상세 분석 모드</div>
-              <div className={s.expertDesc}>상세 필터와 통계 패널 열기</div>
-            </div>
-            <div className={`${s.toggleSwitch} ${expertMode ? s.toggleActive : ''}`} />
-          </div>
-
-          {expertMode && (
-            <div className={s.expertPanel}>
-              <h5>📊 상세 통계</h5>
-              <div className={s.statsGrid}>
-                <div className={s.stat}><span className={s.statLabel}>평균 할인율</span><span className={s.statVal}>{product.stats?.avgDiscount ?? Math.round((1 - displayCur / displayHigh) * 100)}%</span></div>
-                <div className={s.stat}><span className={s.statLabel}>할인 빈도</span><span className={s.statVal}>월 {product.stats?.discFreq?.toFixed?.(1) ?? (product.stats?.discFreq || ((displayAvg - displayLow) / displayAvg * 5).toFixed(1))}회</span></div>
-                <div className={s.stat}><span className={s.statLabel}>데이터 기간</span><span className={s.statVal}>{product.stats?.dataDays ?? 180}일</span></div>
-                <div className={s.stat}><span className={s.statLabel}>수집 레코드</span><span className={s.statVal}>{fmt(product.stats?.records ?? Math.round(displayAvg / 2))}건</span></div>
-                <div className={s.stat}><span className={s.statLabel}>이상치 제거</span><span className={s.statVal}>{product.stats?.outliers ?? Math.round((displayHigh - displayLow) / displayAvg * 10)}건</span></div>
-                <div className={s.stat}><span className={s.statLabel}>신뢰 구간</span><span className={s.statVal}>{fmt(product.stats?.confidence?.[0] ?? displayLow)}~{fmt(product.stats?.confidence?.[1] ?? displayHigh)}원</span></div>
+              {/* 점진적 공개 — 상세 분석 접기/펼치기 */}
+              <div className={s.detailToggle} onClick={() => setDetailOpen(!detailOpen)}>
+                <span>📊 상세 가격 분석</span>
+                {detailOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
               </div>
+
+              {detailOpen && (
+                <div className={s.detailPanel}>
+                  {/* 적정 핫딜가 안내 */}
+                  <div className={s.fairPrice}>
+                    <span className={s.fairIcon}>🎯</span>
+                    <div>
+                      <div className={s.fairLabel}>적정 핫딜가 (평균의 80%)</div>
+                      <div className={s.fairVal}>{fmt(fairPrice)}원 이하면 구매 추천!</div>
+                    </div>
+                  </div>
+
+                  {/* 가격 박스 4칸 */}
+                  <div className={s.prices}>
+                    <div className={`${s.priceBox} ${s.current}`}><span className={s.label}>현재 평균</span><span className={s.val}>{fmt(displayCur)}원</span></div>
+                    <div className={s.priceBox}><span className={s.label}>30일 평균</span><span className={s.val}>{fmt(displayAvg)}원</span></div>
+                    <div className={`${s.priceBox} ${s.low}`}><span className={s.label}>최근 최저</span><span className={s.val}>{fmt(displayLow)}원</span></div>
+                    <div className={`${s.priceBox} ${s.high}`}><span className={s.label}>최근 최고</span><span className={s.val}>{fmt(displayHigh)}원</span></div>
+                  </div>
+
+                  {/* 가격 등급 바 */}
+                  <div className={s.tierBar}>
+                    <div className={s.tierLabel}>가격 등급</div>
+                    <div className={s.tierTrack}>
+                      <div className={`${s.zone} ${s.zoneUltra}`} style={{ width: '15%' }}>역대급</div>
+                      <div className={`${s.zone} ${s.zoneGreat}`} style={{ width: '20%' }}>좋은 가격</div>
+                      <div className={`${s.zone} ${s.zoneOk}`} style={{ width: '30%' }}>평균 수준</div>
+                      <div className={`${s.zone} ${s.zoneWait}`} style={{ width: '20%' }}>조금 비쌈</div>
+                      <div className={`${s.zone} ${s.zoneBad}`} style={{ width: '15%' }}>비쌈</div>
+                      <div className={s.marker} style={{ left: `${tierPos}%` }} />
+                    </div>
+                  </div>
+
+                  {/* 차트 */}
+                  <div className={s.chartBox}>
+                    <div className={s.chartHead}>
+                      <h4>{range}일 가격 추이</h4>
+                      <div className={s.chartBtns}>
+                        {[30, 90, 365].map(r => (
+                          <button key={r} className={`${s.chartBtn} ${range === r ? s.chartBtnActive : ''}`} onClick={() => setRange(r)}>
+                            {r === 365 ? '1년' : `${r}일`}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <ResponsiveContainer width="100%" height={220}>
+                      <AreaChart data={chartData}>
+                        <defs>
+                          <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.2} />
+                            <stop offset="95%" stopColor="#38bdf8" stopOpacity={0} />
+                          </linearGradient>
+                        </defs>
+                        <XAxis dataKey="date" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
+                        <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} width={50} tickFormatter={v => fmt(v)} />
+                        <Tooltip
+                          contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: '.85rem' }}
+                          formatter={v => [`${fmt(v)}원`, '가격']}
+                        />
+                        <Area type="monotone" dataKey="price" stroke="#38bdf8" strokeWidth={2} fill="url(#colorPrice)" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  {/* 상세 통계 */}
+                  <div className={s.expertPanel}>
+                    <h5>📊 상세 통계</h5>
+                    <div className={s.statsGrid}>
+                      <div className={s.stat}><span className={s.statLabel}>평균 할인율</span><span className={s.statVal}>{product.stats?.avgDiscount ?? Math.round((1 - displayCur / displayHigh) * 100)}%</span></div>
+                      <div className={s.stat}><span className={s.statLabel}>할인 빈도</span><span className={s.statVal}>월 {product.stats?.discFreq?.toFixed?.(1) ?? (product.stats?.discFreq || ((displayAvg - displayLow) / displayAvg * 5).toFixed(1))}회</span></div>
+                      <div className={s.stat}><span className={s.statLabel}>데이터 기간</span><span className={s.statVal}>{product.stats?.dataDays ?? 180}일</span></div>
+                      <div className={s.stat}><span className={s.statLabel}>수집 레코드</span><span className={s.statVal}>{fmt(product.stats?.records ?? Math.round(displayAvg / 2))}건</span></div>
+                      <div className={s.stat}><span className={s.statLabel}>이상치 제거</span><span className={s.statVal}>{product.stats?.outliers ?? Math.round((displayHigh - displayLow) / displayAvg * 10)}건</span></div>
+                      <div className={s.stat}><span className={s.statLabel}>신뢰 구간</span><span className={s.statVal}>{fmt(product.stats?.confidence?.[0] ?? displayLow)}~{fmt(product.stats?.confidence?.[1] ?? displayHigh)}원</span></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className={s.noData}>
+              <div className={s.noDataIcon}>📊</div>
+              <p className={s.noDataText}>아직 가격 데이터가 충분하지 않습니다</p>
+              <p className={s.noDataSub}>데이터가 수집되면 가격 추이, 적정가, 마트별 비교를 확인할 수 있어요</p>
+              <button className={s.requestBtn} onClick={() => addToast('데이터 수집 요청이 접수되었습니다', 'success')}>
+                📥 데이터 수집 요청
+              </button>
             </div>
           )}
         </div>
@@ -361,9 +418,14 @@ export default function PricePage() {
                   contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: '.85rem' }}
                   formatter={v => [`${fmt(v)}원`, '가격']}
                 />
-                <Bar dataKey="price" radius={[0, 6, 6, 0]} barSize={20}>
+                <Bar dataKey="price" radius={[0, 6, 6, 0]} barSize={20} label={({ x, y, width, height, index }) => {
+                    const entry = martBarData[index];
+                    return entry?.isCheapest ? (
+                      <text x={x + width + 4} y={y + height / 2 + 4} fill="#22c55e" fontSize={11} fontWeight="bold">최저</text>
+                    ) : null;
+                  }}>
                   {martBarData.map((entry, index) => (
-                    <Cell key={index} fill={entry.color} fillOpacity={0.7} />
+                    <Cell key={index} fill={entry.isCheapest ? '#22c55e' : entry.color} fillOpacity={entry.isCheapest ? 1 : 0.7} />
                   ))}
                 </Bar>
               </BarChart>
@@ -375,11 +437,13 @@ export default function PricePage() {
             {MARTS.map(m => {
               const price = product.stores[m.key];
               const d = price - product.avg;
+              const isCheapest = price === minMartPrice;
               return (
-                <div key={m.key} className={s.mlItem}>
+                <div key={m.key} className={`${s.mlItem} ${isCheapest ? s.mlCheapest : ''}`}>
                   <div className={s.mlLeft}>
-                    <span className={s.mlDot} style={{ background: m.color }} />
+                    <span className={s.mlDot} style={{ background: isCheapest ? '#22c55e' : m.color }} />
                     <span className={s.mlName}>{m.name}</span>
+                    {isCheapest && <span className={s.mlBadge}>최저</span>}
                   </div>
                   <div>
                     <span className={s.mlPrice}>{fmt(price)}원</span>
