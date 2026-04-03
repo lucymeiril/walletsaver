@@ -109,6 +109,20 @@ export default function PricePage() {
     navigate(`/price/${p.id}`);
   };
 
+  // 엔터 누르면 검색 결과 페이지로 이동 (자동완성에서 선택 안 했을 때)
+  const handleSearchKeyDown = (e) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      // 자동완성 결과 중 정확히 매칭되는 게 있으면 바로 이동
+      const exact = searchResults.find(p => p.name === searchQuery.trim());
+      if (exact) {
+        handleSelectProduct(exact);
+      } else {
+        // 유사 매칭 목록을 보여주기 위해 검색 페이지로 이동
+        navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      }
+    }
+  };
+
   // 상품 상세 — 속성 변형은 DB에서 조회
   const variants = productData?.variants || [];
   const activeVariant = variants[variantIdx] || null;
@@ -146,17 +160,21 @@ export default function PricePage() {
     return min < Infinity ? { name, price: min, key } : null;
   }, [product]);
 
+  const minMartPrice = useMemo(() => {
+    if (!product?.stores) return 0;
+    const prices = MARTS.map(m => product.stores[m.key]).filter(p => p != null);
+    return prices.length > 0 ? Math.min(...prices) : 0;
+  }, [product]);
+
   const martBarData = useMemo(() => {
     if (!product?.stores) return [];
-    const prices = MARTS.map(m => product.stores[m.key]).filter(p => p != null);
-    const minP = prices.length > 0 ? Math.min(...prices) : 0;
     return MARTS.map(m => ({
       name: m.name,
       price: product.stores?.[m.key],
       color: m.color,
-      isCheapest: product.stores?.[m.key] === minP,
+      isCheapest: product.stores?.[m.key] === minMartPrice,
     }));
-  }, [product]);
+  }, [product, minMartPrice]);
 
   // --- Early returns (after all hooks) ---
   if (loading) {
@@ -177,6 +195,7 @@ export default function PricePage() {
               className={s.searchInput}
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
+              onKeyDown={handleSearchKeyDown}
               placeholder="상품명을 검색하세요 (양파, 삼겹살, 계란...)"
               autoComplete="off"
             />
@@ -234,6 +253,7 @@ export default function PricePage() {
             className={s.searchInput}
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
+            onKeyDown={handleSearchKeyDown}
             placeholder="다른 상품 검색..."
             autoComplete="off"
           />
