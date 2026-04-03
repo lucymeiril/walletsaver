@@ -303,6 +303,11 @@
   font-size: .72rem;
   color: var(--text3);
 }
+.categoryLoading {
+  cursor: default;
+  opacity: .6;
+  pointer-events: none;
+}
 
 /* ============================================================
    Subcategory Section (Step 3)

@@ -80,26 +80,14 @@ export default function LocalPage() {
     return gs.length ? Math.round(gs.reduce((s, i) => s + i.petrol_info.diesel, 0) / gs.length) : 0;
   }, [displayItems]);
 
+  const [streamingCats, setStreamingCats] = useState(new Set());
+
   /* ── API calls ── */
   const geocodeLocation = useCallback(async (query) => {
     const res = await fetch(`/api/local/geocode?query=${encodeURIComponent(query)}`);
     const data = await res.json();
     if (data.success && data.data) return data.data;
     throw new Error(data.message || '위치를 찾을 수 없습니다');
-  }, []);
-
-  const areaExplore = useCallback(async (locName, latVal, lngVal) => {
-    const params = new URLSearchParams({
-      categories: EXPLORE_CATEGORIES,
-      max_items: '30',
-    });
-    if (locName) params.set('location_name', locName);
-    if (latVal != null) params.set('lat', String(latVal));
-    if (lngVal != null) params.set('lng', String(lngVal));
-    const res = await fetch(`/api/local/area-explore?${params}`);
-    const data = await res.json();
-    if (data.success && data.data) return data.data;
-    throw new Error(data.message || '탐색 실패');
   }, []);
 
   const naverSearch = useCallback(async (query) => {
@@ -114,16 +102,63 @@ export default function LocalPage() {
   /* ── Handlers ── */
   const runAreaExplore = useCallback(async (locName, latVal, lngVal) => {
     setPhase('exploring');
+    setExploreData({ categories: [] });
+    setStreamingCats(new Set(EXPLORE_CATEGORIES.split(',')));
+
+    const params = new URLSearchParams({ max_items: '30' });
+    params.set('categories', EXPLORE_CATEGORIES);
+    if (locName) params.set('location_name', locName);
+    if (latVal != null) params.set('lat', String(latVal));
+    if (lngVal != null) params.set('lng', String(lngVal));
+    const url = `/api/local/area-explore-stream?${params}`;
+
     try {
-      const explore = await areaExplore(locName, latVal, lngVal);
-      setExploreData(explore);
+      const response = await fetch(url);
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const jsonStr = line.slice(6).trim();
+          if (!jsonStr) continue;
+          try {
+            const data = JSON.parse(jsonStr);
+            if (data.done) {
+              setPhase('categories');
+              setStreamingCats(new Set());
+              return;
+            }
+            if (data.error && !data.name) continue;
+            setExploreData(prev => ({
+              ...prev,
+              categories: [...(prev?.categories || []), data],
+            }));
+            setStreamingCats(prev => {
+              const next = new Set(prev);
+              next.delete(data.name);
+              return next;
+            });
+          } catch { /* skip malformed */ }
+        }
+      }
       setPhase('categories');
+      setStreamingCats(new Set());
     } catch {
       addToast('주변 탐색에 실패했습니다. 직접 검색해 주세요.', 'warning');
       setPhase('categories');
       setExploreData({ categories: [] });
+      setStreamingCats(new Set());
     }
-  }, [areaExplore, addToast]);
+  }, [addToast]);
 
   const handleLocationSearch = useCallback(async (locQuery) => {
     if (!locQuery.trim()) return;
@@ -534,10 +569,10 @@ export default function LocalPage() {
           )}
 
           {/* 스켈레톤 로딩 */}
-          {loading && (phase === 'exploring' || phase === 'locating') && (
+          {loading && phase === 'locating' && (
             <SkeletonLoader
               count={4}
-              message={phase === 'locating' ? '위치를 검색하고 있습니다...' : '주변 업소를 찾고 있습니다...'}
+              message="위치를 검색하고 있습니다..."
             />
           )}
 
@@ -552,22 +587,31 @@ export default function LocalPage() {
             </div>
           )}
 
-          {/* Category grid — 빈 카테고리 숨김 */}
-          {phase === 'categories' && exploreData && (
+          {/* Category grid — 스트리밍 중에도 카테고리 점진 표시 */}
+          {(phase === 'categories' || phase === 'exploring') && exploreData && (
             <div className={s.categoryGrid}>
-              {visibleCategories.length > 0 ? (
-                visibleCategories.map(cat => (
-                  <button
-                    key={cat.name}
-                    className={s.categoryCard}
-                    onClick={() => handleCategoryClick(cat)}
-                  >
-                    <span className={s.categoryIcon}>{CATEGORY_ICONS[cat.name] || '📌'}</span>
-                    <span className={s.categoryName}>{cat.name}</span>
-                    <span className={s.categoryCount}>({cat.count || cat.items?.length || 0})</span>
-                  </button>
-                ))
-              ) : (
+              {visibleCategories.length > 0 && visibleCategories.map(cat => (
+                <button
+                  key={cat.name}
+                  className={s.categoryCard}
+                  onClick={() => handleCategoryClick(cat)}
+                >
+                  <span className={s.categoryIcon}>{CATEGORY_ICONS[cat.name] || '📌'}</span>
+                  <span className={s.categoryName}>{cat.name}</span>
+                  <span className={s.categoryCount}>({cat.count || cat.items?.length || 0})</span>
+                </button>
+              ))}
+              {/* 아직 로딩 중인 카테고리 스피너 */}
+              {streamingCats.size > 0 && [...streamingCats].map(catName => (
+                <div key={catName} className={`${s.categoryCard} ${s.categoryLoading}`}>
+                  <span className={s.categoryIcon}>
+                    <RefreshCw size={20} className={s.spin} />
+                  </span>
+                  <span className={s.categoryName}>{catName}</span>
+                  <span className={s.categoryCount}>검색 중...</span>
+                </div>
+              ))}
+              {visibleCategories.length === 0 && streamingCats.size === 0 && (
                 <div className={s.emptyMsg}>
                   카테고리 결과가 없습니다. 직접 검색해 보세요.
                 </div>

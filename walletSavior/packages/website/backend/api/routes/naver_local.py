@@ -15,6 +15,7 @@ sync API + ThreadPoolExecutor 조합으로 해결한다.
 """
 
 import asyncio
+import json
 import logging
 import threading
 import time
@@ -22,6 +23,7 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import Optional
 
 from fastapi import APIRouter, Query
+from fastapi.responses import StreamingResponse
 from api.schemas.common import ApiResponse
 
 logger = logging.getLogger(__name__)
@@ -516,34 +518,14 @@ def _area_explore_sync(
     """위치 기반 카테고리별 탐색. 순차 검색 (ban 방지)."""
     result_categories: list[dict] = []
 
-    for cat in categories:
-        cache_key = f"area:{location_name}:{cat}"
-        cached = _cache_get(cache_key)
-        if cached is not None:
-            result_categories.append(cached)
-            continue
-
-        search_keyword = _CATEGORY_SEARCH_KEYWORDS.get(cat, cat)
-        query = f"{location_name} {search_keyword}"
-        items = _search_via_playwright_sync(query, lat, lng, max_items_per_category)
-
-        # 각 아이템에 분류 정보 추가
-        for item in items:
-            item["classifications"] = _classify_item(item)
-
-        tree_info = CATEGORY_TREE.get(cat, {})
-        cat_result = {
-            "name": cat,
-            "icon": tree_info.get("icon", "📍"),
-            "count": len(items),
-            "items": items,
-        }
-
-        _cache_set(cache_key, cat_result)
+    for i, cat in enumerate(categories):
+        cat_result = _search_single_category_sync(
+            location_name, lat, lng, cat, max_items_per_category,
+        )
         result_categories.append(cat_result)
 
         # ban 방지: 카테고리 간 1초 간격
-        if cat != categories[-1]:
+        if i < len(categories) - 1:
             time.sleep(1)
 
     return {
@@ -553,6 +535,93 @@ def _area_explore_sync(
         "categories": result_categories,
         "total_count": sum(c["count"] for c in result_categories),
     }
+
+
+def _search_single_category_sync(
+    location_name: str,
+    lat: float,
+    lng: float,
+    cat: str,
+    max_items: int,
+) -> dict:
+    """단일 카테고리 검색 — SSE 스트리밍에서 사용."""
+    cache_key = f"area:{location_name}:{cat}"
+    cached = _cache_get(cache_key)
+    if cached is not None:
+        return cached
+
+    search_keyword = _CATEGORY_SEARCH_KEYWORDS.get(cat, cat)
+    query = f"{location_name} {search_keyword}"
+    items = _search_via_playwright_sync(query, lat, lng, max_items)
+
+    for item in items:
+        item["classifications"] = _classify_item(item)
+
+    tree_info = CATEGORY_TREE.get(cat, {})
+    cat_result = {
+        "name": cat,
+        "icon": tree_info.get("icon", "📍"),
+        "count": len(items),
+        "items": items,
+    }
+    _cache_set(cache_key, cat_result)
+    return cat_result
+
+
+@router.get("/area-explore-stream")
+async def area_explore_stream(
+    location_name: str = Query(None, description="장소명"),
+    lat: float = Query(None, description="위도"),
+    lng: float = Query(None, description="경도"),
+    categories: str = Query(_DEFAULT_CATEGORIES, description="콤마 구분 카테고리"),
+    max_items: int = Query(30, ge=1, le=50, description="카테고리당 최대 결과 수"),
+):
+    """SSE 스트리밍: 카테고리별 결과를 하나씩 반환하여 프론트엔드에서 점진적 로딩."""
+    if not location_name and (lat is None or lng is None):
+        async def error_gen():
+            yield f"data: {json.dumps({'error': 'location_name 또는 lat/lng 좌표를 제공해야 합니다'}, ensure_ascii=False)}\n\n"
+        return StreamingResponse(error_gen(), media_type="text/event-stream")
+
+    if location_name and (lat is None or lng is None):
+        loop = asyncio.get_event_loop()
+        geo = await loop.run_in_executor(_executor, _geocode_sync, location_name)
+        if geo and geo.get("lat") and geo.get("lng"):
+            lat = geo["lat"]
+            lng = geo["lng"]
+        else:
+            lat = lat or 37.5665
+            lng = lng or 126.9780
+
+    if not location_name:
+        location_name = ""
+
+    cat_list = [c.strip() for c in categories.split(",") if c.strip()]
+
+    async def event_generator():
+        loop = asyncio.get_event_loop()
+        for i, cat in enumerate(cat_list):
+            try:
+                result = await loop.run_in_executor(
+                    _executor,
+                    _search_single_category_sync,
+                    location_name, lat, lng, cat, max_items,
+                )
+                yield f"data: {json.dumps(result, ensure_ascii=False)}\n\n"
+            except Exception as exc:
+                logger.error(f"[SSE] 카테고리 '{cat}' 검색 실패: {exc}")
+                yield f"data: {json.dumps({'name': cat, 'icon': '❌', 'count': 0, 'items': [], 'error': str(exc)}, ensure_ascii=False)}\n\n"
+
+            # ban 방지: 카테고리 간 1초 간격
+            if i < len(cat_list) - 1:
+                await asyncio.sleep(1)
+
+        yield f"data: {json.dumps({'done': True, 'location_name': location_name, 'lat': lat, 'lng': lng}, ensure_ascii=False)}\n\n"
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
 
 
 @router.get("/area-explore")
