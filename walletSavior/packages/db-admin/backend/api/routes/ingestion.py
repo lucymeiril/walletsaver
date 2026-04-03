@@ -42,6 +42,12 @@ class ReviewRequest(BaseModel):
     rejected_reason: Optional[str] = None
 
 
+class BulkApproveRequest(BaseModel):
+    ids: list[int]
+    reviewer: Optional[str] = None
+    notes: Optional[str] = None
+
+
 # --- 품질 점수 계산 ---
 
 
@@ -147,7 +153,41 @@ def ingestion_stats():
         session.close()
 
 
-@router.post("", status_code=201)
+@router.post("/bulk-approve")
+def bulk_approve(body: BulkApproveRequest):
+    """선택된 여러 수집을 일괄 승인."""
+    if not body.ids:
+        raise HTTPException(400, "ids가 비어 있습니다")
+    session = get_session()
+    try:
+        results = []
+        for ingestion_id in body.ids:
+            row = session.get(PendingIngestion, ingestion_id)
+            if not row:
+                results.append({"id": ingestion_id, "status": "not_found"})
+                continue
+            if row.status != IngestionStatus.CRAWLER_APPROVED:
+                results.append({
+                    "id": ingestion_id,
+                    "status": "skipped",
+                    "reason": f"상태가 {row.status.value if hasattr(row.status, 'value') else row.status}",
+                })
+                continue
+            items = json.loads(row.items_json) if row.items_json else []
+            saved = _insert_items(session, items, row.schema_type)
+            row.status = IngestionStatus.APPROVED
+            row.db_reviewer_notes = body.notes or f"벌크 승인 (reviewer: {body.reviewer or 'system'})"
+            row.db_reviewed_at = datetime.utcnow()
+            results.append({"id": ingestion_id, "status": "approved", "saved": saved})
+        session.commit()
+        approved_count = sum(1 for r in results if r["status"] == "approved")
+        return {
+            "approved": approved_count,
+            "total_requested": len(body.ids),
+            "results": results,
+        }
+    finally:
+        session.close()
 def submit_ingestion(body: IngestionSubmit):
     """크롤러가 데이터를 대기열에 제출."""
     session = get_session()
@@ -186,10 +226,12 @@ def submit_ingestion(body: IngestionSubmit):
 def list_ingestions(
     status: Optional[str] = Query(None, description="상태 필터"),
     crawler_name: Optional[str] = Query(None, description="크롤러 필터"),
-    limit: int = Query(50, ge=1, le=500),
-    offset: int = Query(0, ge=0),
+    page: int = Query(1, ge=1, description="페이지 번호"),
+    per_page: int = Query(20, ge=1, le=100, description="페이지당 항목 수"),
+    limit: int = Query(None, ge=1, le=500, description="(하위호환) limit"),
+    offset: int = Query(None, ge=0, description="(하위호환) offset"),
 ):
-    """대기열 목록 조회 (summary)."""
+    """대기열 목록 조회 (summary) — page/per_page 또는 limit/offset."""
     session = get_session()
     try:
         q = session.query(PendingIngestion)
@@ -199,9 +241,24 @@ def list_ingestions(
             q = q.filter(PendingIngestion.crawler_name == crawler_name)
         q = q.order_by(PendingIngestion.crawled_at.desc())
         total = q.count()
-        rows = q.offset(offset).limit(limit).all()
+
+        if limit is not None or offset is not None:
+            real_limit = limit or 50
+            real_offset = offset or 0
+            rows = q.offset(real_offset).limit(real_limit).all()
+            total_pages = max(1, -(-total // real_limit))
+            current_page = (real_offset // real_limit) + 1
+        else:
+            real_offset = (page - 1) * per_page
+            rows = q.offset(real_offset).limit(per_page).all()
+            total_pages = max(1, -(-total // per_page))
+            current_page = page
+
         return {
             "total": total,
+            "page": current_page,
+            "per_page": per_page if limit is None else (limit or 50),
+            "total_pages": total_pages,
             "items": [
                 {
                     "id": r.id,
@@ -210,6 +267,7 @@ def list_ingestions(
                     "items_count": r.items_count,
                     "schema_type": r.schema_type,
                     "quality_score": r.quality_score,
+                    "quality_details": r.quality_details,
                     "status": r.status.value
                     if hasattr(r.status, "value")
                     else r.status,
@@ -217,6 +275,7 @@ def list_ingestions(
                     if r.crawled_at
                     else None,
                     "duration_seconds": r.duration_seconds,
+                    "source_url": r.source_url,
                 }
                 for r in rows
             ],
@@ -227,26 +286,42 @@ def list_ingestions(
 
 @router.get("/{ingestion_id}")
 def get_ingestion(ingestion_id: int):
-    """대기열 항목 상세 조회 — 항목 미리보기 포함."""
+    """대기열 항목 상세 조회 — 항목 미리보기 + 품질 breakdown + 이전 비교."""
     session = get_session()
     try:
         row = session.get(PendingIngestion, ingestion_id)
         if not row:
             raise HTTPException(404, "대기열 항목을 찾을 수 없습니다")
+
+        items = json.loads(row.items_json) if row.items_json else []
+        schema_type = row.schema_type or "DiscountItem"
+
+        # 품질 breakdown 계산
+        quality_breakdown = _build_quality_breakdown(items, schema_type, row)
+
+        # 문제 항목 인덱스 표시
+        problem_indices = _find_problem_items(items, schema_type)
+
+        # 이전 수집과 비교
+        prev_comparison = _compare_with_previous(session, row)
+
         return {
             "id": row.id,
             "crawler_name": row.crawler_name,
             "crawl_status": row.crawl_status,
             "items_count": row.items_count,
-            "schema_type": row.schema_type,
+            "schema_type": schema_type,
             "quality_score": row.quality_score,
             "status": row.status.value
             if hasattr(row.status, "value")
             else row.status,
             "crawled_at": row.crawled_at.isoformat() if row.crawled_at else None,
             "duration_seconds": row.duration_seconds,
-            "items": json.loads(row.items_json) if row.items_json else [],
+            "items": items,
             "quality_details": row.quality_details,
+            "quality_breakdown": quality_breakdown,
+            "problem_indices": problem_indices,
+            "previous_comparison": prev_comparison,
             "errors": json.loads(row.errors_json) if row.errors_json else [],
             "crawler_reviewer_notes": row.crawler_reviewer_notes,
             "db_reviewer_notes": row.db_reviewer_notes,
@@ -377,6 +452,174 @@ def delete_ingestion(ingestion_id: int):
 
 
 # --- 내부 헬퍼 ---
+
+
+def _build_quality_breakdown(
+    items: list[dict], schema_type: str, row
+) -> dict:
+    """품질 점수의 상세 breakdown을 반환."""
+    if not items:
+        return {"field_completeness": 0, "duplicates": 0, "outliers": 0, "format_errors": 0}
+
+    if schema_type == "HotdealPost":
+        required = ["title", "url", "price"]
+        price_field = "price"
+    else:
+        required = ["name", "sale_price", "source"]
+        price_field = "sale_price"
+
+    # 필드 완성도
+    total_fields = len(required) * len(items)
+    filled = 0
+    missing_fields_detail = []
+    for idx, item in enumerate(items):
+        item_missing = []
+        for f in required:
+            if item.get(f):
+                filled += 1
+            else:
+                item_missing.append(f)
+        if item_missing:
+            missing_fields_detail.append({"index": idx, "fields": item_missing})
+    completeness = round(filled / total_fields * 100, 1) if total_fields > 0 else 0
+
+    # 이상치
+    prices = [
+        item[price_field]
+        for item in items
+        if isinstance(item.get(price_field), (int, float)) and item[price_field] > 0
+    ]
+    outlier_indices = []
+    if len(prices) >= 3:
+        avg = sum(prices) / len(prices)
+        for idx, item in enumerate(items):
+            p = item.get(price_field)
+            if isinstance(p, (int, float)) and p > 0:
+                if p > avg * 5 or p < avg * 0.05:
+                    outlier_indices.append(idx)
+
+    # 중복
+    name_field = "title" if schema_type == "HotdealPost" else "name"
+    seen: dict[tuple, int] = {}
+    dup_indices = []
+    for idx, item in enumerate(items):
+        key = (item.get(name_field, ""), item.get(price_field))
+        if key in seen:
+            dup_indices.append(idx)
+            if seen[key] not in dup_indices:
+                dup_indices.append(seen[key])
+        else:
+            seen[key] = idx
+
+    # 형식 오류 (가격이 숫자가 아닌 경우 등)
+    format_errors = []
+    for idx, item in enumerate(items):
+        p = item.get(price_field)
+        if p is not None and not isinstance(p, (int, float)):
+            format_errors.append({"index": idx, "field": price_field, "value": str(p)[:50]})
+
+    return {
+        "field_completeness": completeness,
+        "missing_fields": len(missing_fields_detail),
+        "missing_fields_detail": missing_fields_detail[:20],
+        "duplicates": len(set(dup_indices)),
+        "duplicate_indices": sorted(set(dup_indices))[:50],
+        "outliers": len(outlier_indices),
+        "outlier_indices": outlier_indices[:50],
+        "format_errors": len(format_errors),
+        "format_errors_detail": format_errors[:20],
+        "total_items": len(items),
+    }
+
+
+def _find_problem_items(items: list[dict], schema_type: str) -> list[dict]:
+    """각 항목의 문제점을 식별하여 인덱스별 문제 목록 반환."""
+    if not items:
+        return []
+
+    if schema_type == "HotdealPost":
+        required = ["title", "url"]
+        price_field = "price"
+    else:
+        required = ["name", "sale_price"]
+        price_field = "sale_price"
+
+    prices = [
+        item[price_field]
+        for item in items
+        if isinstance(item.get(price_field), (int, float)) and item[price_field] > 0
+    ]
+    avg_price = sum(prices) / len(prices) if prices else 0
+
+    name_field = "title" if schema_type == "HotdealPost" else "name"
+    seen: dict[tuple, int] = {}
+    dup_map: dict[int, bool] = {}
+    for idx, item in enumerate(items):
+        key = (item.get(name_field, ""), item.get(price_field))
+        if key in seen:
+            dup_map[idx] = True
+            dup_map[seen[key]] = True
+        else:
+            seen[key] = idx
+
+    problems = []
+    for idx, item in enumerate(items):
+        item_problems = []
+        # 필수 필드 누락
+        for f in required:
+            if not item.get(f):
+                item_problems.append(f"missing:{f}")
+        # 가격 이상치
+        p = item.get(price_field)
+        if isinstance(p, (int, float)) and avg_price > 0:
+            if p > avg_price * 5 or p < avg_price * 0.05:
+                item_problems.append("outlier")
+        # 형식 오류
+        if p is not None and not isinstance(p, (int, float)):
+            item_problems.append("format_error")
+        # 중복
+        if dup_map.get(idx):
+            item_problems.append("duplicate")
+
+        if item_problems:
+            problems.append({"index": idx, "issues": item_problems})
+    return problems
+
+
+def _compare_with_previous(session, current_row) -> Optional[dict]:
+    """같은 크롤러의 이전 수집과 비교."""
+    try:
+        prev = (
+            session.query(PendingIngestion)
+            .filter(
+                PendingIngestion.crawler_name == current_row.crawler_name,
+                PendingIngestion.id != current_row.id,
+                PendingIngestion.crawled_at < current_row.crawled_at,
+            )
+            .order_by(PendingIngestion.crawled_at.desc())
+            .first()
+        )
+        if not prev:
+            return None
+
+        prev_items = json.loads(prev.items_json) if prev.items_json else []
+        curr_items = json.loads(current_row.items_json) if current_row.items_json else []
+
+        return {
+            "previous_id": prev.id,
+            "previous_crawled_at": prev.crawled_at.isoformat() if prev.crawled_at else None,
+            "previous_items_count": len(prev_items),
+            "current_items_count": len(curr_items),
+            "items_diff": len(curr_items) - len(prev_items),
+            "previous_quality_score": prev.quality_score,
+            "current_quality_score": current_row.quality_score,
+            "quality_diff": round(
+                (current_row.quality_score or 0) - (prev.quality_score or 0), 3
+            ),
+            "previous_status": prev.status.value if hasattr(prev.status, "value") else prev.status,
+        }
+    except Exception:
+        return None
 
 # 한국어 마트명 → DB source 키 매핑
 _STORE_NAME_MAP = {

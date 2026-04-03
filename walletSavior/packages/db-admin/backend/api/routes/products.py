@@ -1,10 +1,10 @@
-"""상품 CRUD + 가격 조회 + 통계 라우트"""
+"""상품 CRUD + 가격 조회 + 통계 + 유사 상품 라우트"""
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime, timedelta
 
-from sqlalchemy import func, desc, asc, distinct, case
+from sqlalchemy import func, desc, asc, distinct, case, or_
 from sqlalchemy.orm import Session
 
 from services.base import get_session
@@ -116,6 +116,20 @@ def product_stats():
         )
         by_category = [{"name": row[0], "count": row[1]} for row in cat_counts_q]
 
+        # 가격 없는 상품 수 (DiscountHistory 없는 활성 상품)
+        products_with_price = (
+            session.query(distinct(DiscountHistory.product_id))
+            .join(Product, Product.id == DiscountHistory.product_id)
+            .filter(Product.is_active == True)
+            .subquery()
+        )
+        no_price = (
+            session.query(func.count(Product.id))
+            .filter(Product.is_active == True)
+            .filter(~Product.id.in_(session.query(products_with_price)))
+            .scalar()
+        ) or 0
+
         # 마지막 크롤 날짜 (DiscountHistory 기준)
         last_crawl_q = (
             session.query(
@@ -134,6 +148,7 @@ def product_stats():
             "total": total,
             "by_source": by_source,
             "by_category": by_category,
+            "no_price": no_price,
             "last_crawl": last_crawl,
         }
     finally:
@@ -356,5 +371,54 @@ def product_comparison(product_id: int):
     session = get_session()
     try:
         return get_price_comparison(session, product_id)
+    finally:
+        session.close()
+
+
+@router.get("/{product_id}/similar")
+def similar_products(product_id: int, limit: int = 10):
+    """유사 상품 감지 — 이름 포함 관계 기반 중복 후보 반환."""
+    session = get_session()
+    try:
+        product = session.get(Product, product_id)
+        if not product:
+            raise HTTPException(404, "Product not found")
+
+        name = product.name.strip()
+        # 이름에서 핵심 토큰 추출 (2글자 이상)
+        tokens = [t for t in name.replace("(", " ").replace(")", " ").split() if len(t) >= 2]
+
+        if not tokens:
+            return []
+
+        # 각 토큰을 포함하는 다른 상품 검색
+        filters = [Product.name.contains(token) for token in tokens[:5]]
+        candidates = (
+            session.query(Product)
+            .filter(Product.id != product_id, Product.is_active == True)
+            .filter(or_(*filters))
+            .limit(limit * 3)
+            .all()
+        )
+
+        # 토큰 매칭 점수 계산
+        scored = []
+        for c in candidates:
+            cname = c.name.lower()
+            matched = sum(1 for t in tokens if t.lower() in cname)
+            score = matched / len(tokens) if tokens else 0
+            if score >= 0.4:  # 40% 이상 토큰 일치
+                scored.append((c, score))
+
+        scored.sort(key=lambda x: x[1], reverse=True)
+        result = []
+        for c, score in scored[:limit]:
+            result.append({
+                "id": c.id,
+                "name": c.name,
+                "category_id": c.category_id,
+                "similarity": round(score, 2),
+            })
+        return result
     finally:
         session.close()

@@ -1,6 +1,15 @@
 const API_BASE = '/api';
 
-const json = (r) => r.json();
+const json = async (r) => {
+  const data = await r.json();
+  if (!r.ok) {
+    const msg = data.detail || data.message || `HTTP ${r.status}`;
+    const err = new Error(msg);
+    err.status = r.status;
+    throw err;
+  }
+  return data;
+};
 const postJson = (url, data) =>
   fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(json);
 const putJson = (url, data) =>
@@ -19,6 +28,7 @@ export const api = {
   getProductStats: () => fetch(`${API_BASE}/products/stats`).then(json),
   getProductHistory: (id, days = 30) => fetch(`${API_BASE}/products/${id}/history?days=${days}`).then(json),
   getProductComparison: (id) => fetch(`${API_BASE}/products/${id}/comparison`).then(json),
+  getProductSimilar: (id, limit = 10) => fetch(`${API_BASE}/products/${id}/similar?limit=${limit}`).then(json),
   createProduct: (data) => postJson(`${API_BASE}/products/`, data),
   updateProduct: (id, data) => putJson(`${API_BASE}/products/${id}`, data),
   deleteProduct: (id) => del(`${API_BASE}/products/${id}`),
@@ -29,16 +39,26 @@ export const api = {
   createCategory: (data) => postJson(`${API_BASE}/categories/`, data),
   updateCategory: (id, data) => putJson(`${API_BASE}/categories/${id}`, data),
   deleteCategory: (id) => del(`${API_BASE}/categories/${id}`),
+  moveCategory: (id, newParentId) => putJson(`${API_BASE}/categories/${id}/move`, { new_parent_id: newParentId }),
+  getCategoryProducts: (id) => fetch(`${API_BASE}/categories/${id}/products`).then(json),
+  getCategoryProductCount: (id) => fetch(`${API_BASE}/categories/${id}/product-count`).then(json),
   // Keywords
-  getKeywords: () => fetch(`${API_BASE}/keywords/`).then(json),
+  getKeywords: (params) => {
+    const qs = params ? `?${new URLSearchParams(params)}` : '';
+    return fetch(`${API_BASE}/keywords/${qs}`).then(json);
+  },
+  getKeywordStats: () => fetch(`${API_BASE}/keywords/stats`).then(json),
   searchKeywords: (q) => fetch(`${API_BASE}/keywords/search?q=${q}`).then(json),
   getPopularKeywords: () => fetch(`${API_BASE}/keywords/popular`).then(json),
   createKeyword: (data) => postJson(`${API_BASE}/keywords/`, data),
   updateKeyword: (id, data) => putJson(`${API_BASE}/keywords/${id}`, data),
   deleteKeyword: (id) => del(`${API_BASE}/keywords/${id}`),
+  bulkDeleteKeywords: (ids) => postJson(`${API_BASE}/keywords/bulk-delete`, ids ? { ids } : {}),
   // Analytics
   getQualityReport: () => fetch(`${API_BASE}/analytics/quality-report`).then(json),
   getSummary: () => fetch(`${API_BASE}/analytics/summary`).then(json),
+  // Dashboard
+  getDashboardStats: () => fetch(`${API_BASE}/dashboard/stats`).then(json),
   // Prices
   getPriceStats: () => fetch(`${API_BASE}/prices/stats`).then(json),
   getProductPrices: (id, days = 90) => fetch(`${API_BASE}/prices/product/${id}?days=${days}`).then(json),
@@ -53,5 +73,6 @@ export const api = {
   getIngestions: (params) => fetch(`${API_BASE}/ingestions?${new URLSearchParams(params)}`).then(json),
   getIngestion: (id) => fetch(`${API_BASE}/ingestions/${id}`).then(json),
   reviewIngestion: (id, data) => postJson(`${API_BASE}/ingestions/${id}/db-review`, data),
+  bulkApproveIngestions: (ids, reviewer, notes) => postJson(`${API_BASE}/ingestions/bulk-approve`, { ids, reviewer, notes }),
   getIngestionStats: () => fetch(`${API_BASE}/ingestions/stats`).then(json),
 };

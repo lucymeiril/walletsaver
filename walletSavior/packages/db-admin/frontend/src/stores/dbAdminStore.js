@@ -125,6 +125,14 @@ const useDbAdminStore = create((set, get) => ({
       set({ error: `카테고리 삭제 실패: ${err.message}` });
     }
   },
+  moveCategory: async (id, newParentId) => {
+    try {
+      await api.moveCategory(id, newParentId);
+      await get().fetchCategories();
+    } catch (err) {
+      set({ error: `카테고리 이동 실패: ${err.message}` });
+    }
+  },
 
   fetchCategories: async () => {
     set({ loading: true, error: null });
@@ -141,9 +149,12 @@ const useDbAdminStore = create((set, get) => ({
 
   /* ── 키워드 ── */
   keywords: [],
+  keywordPagination: { total: 0, page: 1, per_page: 20, total_pages: 1 },
+  keywordStats: { total: 0, unused_count: 0 },
+
   addKeyword: async (kw) => {
     const word = (kw.keyword ?? kw.word ?? '').trim();
-    if (!word) return;
+    if (!word) return { ok: false };
     const apiData = {
       word,
       synonyms: kw.synonyms || [],
@@ -152,8 +163,14 @@ const useDbAdminStore = create((set, get) => ({
     try {
       await api.createKeyword(apiData);
       await get().fetchKeywords();
+      await get().fetchKeywordStats();
+      return { ok: true };
     } catch (err) {
-      set({ error: `키워드 추가 실패: ${err.message}` });
+      const msg = err.status === 409
+        ? err.message
+        : `키워드 추가 실패: ${err.message}`;
+      set({ error: msg });
+      return { ok: false, status: err.status, message: msg };
     }
   },
   updateKeyword: async (id, data) => {
@@ -174,28 +191,58 @@ const useDbAdminStore = create((set, get) => ({
     try {
       await api.deleteKeyword(id);
       set((s) => ({ keywords: s.keywords.filter((k) => k.id !== id) }));
+      await get().fetchKeywordStats();
     } catch (err) {
       set({ error: `키워드 삭제 실패: ${err.message}` });
     }
   },
+  bulkDeleteKeywords: async (ids) => {
+    try {
+      const result = await api.bulkDeleteKeywords(ids);
+      await get().fetchKeywords();
+      await get().fetchKeywordStats();
+      return result;
+    } catch (err) {
+      set({ error: `벌크 삭제 실패: ${err.message}` });
+      return null;
+    }
+  },
 
-  fetchKeywords: async () => {
+  fetchKeywords: async (params = {}) => {
     set({ loading: true, error: null });
     try {
-      const data = await api.getKeywords();
-      const list = Array.isArray(data) ? data : data.keywords ?? data.data ?? [];
+      const data = await api.getKeywords(params);
+      const list = data.items ?? (Array.isArray(data) ? data : data.keywords ?? data.data ?? []);
       const mapped = list.map((kw) => ({
         ...kw,
         keyword: kw.keyword || kw.word || '',
         searchCount: kw.searchCount ?? kw.search_count ?? 0,
         synonyms: kw.synonyms || [],
         categoryId: kw.categoryId || kw.category_id || '',
+        productCount: kw.productCount ?? kw.product_count ?? 0,
       }));
-      set({ keywords: mapped });
+      set({
+        keywords: mapped,
+        keywordPagination: {
+          total: data.total ?? mapped.length,
+          page: data.page ?? 1,
+          per_page: data.per_page ?? 20,
+          total_pages: data.total_pages ?? 1,
+        },
+      });
     } catch (err) {
       set({ error: `키워드 로드 실패: ${err.message}` });
     } finally {
       set({ loading: false });
+    }
+  },
+
+  fetchKeywordStats: async () => {
+    try {
+      const data = await api.getKeywordStats();
+      set({ keywordStats: data });
+    } catch {
+      // stats are optional
     }
   },
 
@@ -344,43 +391,33 @@ const useDbAdminStore = create((set, get) => ({
     totalKeywords: 0,
     lastUpdated: null,
     qualityScore: 0,
+    qualityDetails: { fillRate: 0, dupRate: 0, noCategoryRate: 0 },
     recentIngestions: [],
+    alerts: [],
+    freshness: [],
+    changes: { products: 0, priceRecords: 0, categories: 0, keywords: 0 },
   },
 
   fetchDashboard: async () => {
     set({ loading: true, error: null });
     try {
-      const [productsData, summaryData] = await Promise.allSettled([
-        api.getProducts(),
-        api.getSummary(),
-      ]);
-      const rawProducts = productsData.status === 'fulfilled'
-        ? (Array.isArray(productsData.value) ? productsData.value : productsData.value?.items ?? productsData.value?.products ?? productsData.value?.data ?? [])
-        : [];
-      const mapped = rawProducts.map((p) => ({
-        ...p,
-        category: p.category_name || p.category || p.category_id || '',
-        basePrice: p.basePrice ?? p.base_price ?? p.original_price ?? 0,
-        currentAvg: p.currentAvg ?? p.current_avg ?? p.current_price ?? 0,
-        tier: p.tier || 'good',
-      }));
-      if (mapped.length > 0) set({ products: mapped });
-
-      if (summaryData.status === 'fulfilled' && summaryData.value) {
-        const s = summaryData.value;
+      const data = await api.getDashboardStats();
+      if (data) {
         set({
           dashboardStats: {
-            totalProducts: s.totalProducts ?? s.products ?? mapped.length ?? 0,
-            totalPriceRecords: s.totalPriceRecords ?? s.baseline_prices ?? 0,
-            totalCategories: s.totalCategories ?? s.categories ?? 0,
-            totalKeywords: s.totalKeywords ?? s.keywords ?? 0,
-            lastUpdated: s.lastUpdated ?? s.generated_at ?? null,
-            qualityScore: s.qualityScore ?? s.quality_score ?? 0,
-            recentIngestions: s.recentIngestions ?? [],
+            totalProducts: data.totalProducts ?? 0,
+            totalPriceRecords: data.totalPriceRecords ?? 0,
+            totalCategories: data.totalCategories ?? 0,
+            totalKeywords: data.totalKeywords ?? 0,
+            lastUpdated: data.lastUpdated ?? null,
+            qualityScore: data.qualityScore ?? 0,
+            qualityDetails: data.qualityDetails ?? { fillRate: 0, dupRate: 0, noCategoryRate: 0 },
+            recentIngestions: data.recentIngestions ?? [],
+            alerts: data.alerts ?? [],
+            freshness: data.freshness ?? [],
+            changes: data.changes ?? { products: 0, priceRecords: 0, categories: 0, keywords: 0 },
           },
         });
-        if (s.categoryAvgPrices) set({ categoryAvgPrices: s.categoryAvgPrices });
-        if (s.sourceStats) set({ sourceStats: s.sourceStats });
       }
     } catch (err) {
       set({ error: `대시보드 로드 실패: ${err.message}` });
@@ -394,15 +431,24 @@ const useDbAdminStore = create((set, get) => ({
   selectedIngestion: null,
   ingestionFilter: 'all',
   ingestionStats: { pending: 0, approved: 0, rejected: 0 },
+  ingestionPagination: { total: 0, page: 1, per_page: 20, total_pages: 1 },
 
   fetchIngestions: async (params = {}) => {
     set({ loading: true, error: null });
     try {
       const data = await api.getIngestions(params);
       const list = Array.isArray(data) ? data : data.items ?? data.ingestions ?? data.data ?? [];
-      set({ ingestions: list });
+      set({
+        ingestions: list,
+        ingestionPagination: {
+          total: data.total ?? list.length,
+          page: data.page ?? 1,
+          per_page: data.per_page ?? 20,
+          total_pages: data.total_pages ?? 1,
+        },
+      });
     } catch {
-      set({ ingestions: [] });
+      set({ ingestions: [], ingestionPagination: { total: 0, page: 1, per_page: 20, total_pages: 1 } });
     } finally {
       set({ loading: false });
     }
@@ -442,7 +488,6 @@ const useDbAdminStore = create((set, get) => ({
   reviewIngestion: async (id, reviewData) => {
     set({ loading: true, error: null });
     try {
-      // 프론트엔드 필드명 → 백엔드 ReviewRequest 스키마 변환
       const apiData = {
         action: reviewData.action,
         notes: reviewData.notes || reviewData.memo || undefined,
@@ -454,6 +499,21 @@ const useDbAdminStore = create((set, get) => ({
       return result;
     } catch (err) {
       set({ error: `리뷰 실패: ${err.message}` });
+      return null;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  bulkApproveIngestions: async (ids, reviewer, notes) => {
+    set({ loading: true, error: null });
+    try {
+      const result = await api.bulkApproveIngestions(ids, reviewer, notes);
+      await get().fetchIngestions();
+      await get().fetchIngestionStats();
+      return result;
+    } catch (err) {
+      set({ error: `벌크 승인 실패: ${err.message}` });
       return null;
     } finally {
       set({ loading: false });
