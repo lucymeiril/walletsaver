@@ -502,6 +502,29 @@ class DBStorage(StorageContract):
                 cat = p.category
                 avg = price_stats["avg"]
                 cur = price_stats["cur"]
+
+                # DiscountHistory에서 최신 가격/이미지 보강
+                latest_discount = session.execute(
+                    select(DiscountHistory)
+                    .where(DiscountHistory.product_id == p.id)
+                    .order_by(desc(DiscountHistory.crawled_at))
+                    .limit(1)
+                ).scalar_one_or_none()
+
+                current_price = cur
+                original_price = None
+                discount_pct = None
+                img = p.image_url or ""
+
+                if latest_discount:
+                    if current_price == 0 and latest_discount.price:
+                        current_price = round(latest_discount.price)
+                    original_price = latest_discount.original_price
+                    if current_price and original_price and original_price > 0:
+                        discount_pct = round((1 - current_price / original_price) * 100)
+                    if not img and latest_discount.raw_data:
+                        img = latest_discount.raw_data.get("image_url", "") if isinstance(latest_discount.raw_data, dict) else ""
+
                 result.append({
                     "id": p.id,
                     "name": p.name,
@@ -509,11 +532,14 @@ class DBStorage(StorageContract):
                     "cat": cat.name if cat else "",
                     "unit": p.unit,
                     "avg": avg,
-                    "cur": cur,
+                    "cur": current_price,
                     "low": price_stats["low"],
                     "high": price_stats["high"],
-                    "price_tier": self._compute_price_tier(cur, avg),
-                    "img": p.image_url or "",
+                    "price_tier": self._compute_price_tier(current_price, avg),
+                    "img": img,
+                    "original_price": original_price,
+                    "discount_pct": discount_pct,
+                    "source": latest_discount.source if latest_discount else None,
                     "stores": store_prices,
                     "stats": {
                         "dataDays": price_stats["data_days"],
@@ -786,7 +812,7 @@ class DBStorage(StorageContract):
         """
         상품의 가격 통계 계산 — avg, cur(최신), low, high, 레코드 수 등.
 
-        baseline_prices 테이블만 사용하여 왜곡 없는 통계를 보장.
+        baseline_prices 우선 사용, 없으면 discount_history 폴백.
         """
         stats = session.execute(
             select(
@@ -797,6 +823,11 @@ class DBStorage(StorageContract):
             ).where(BaselinePrice.product_id == product_id)
         ).one()
 
+        avg_val = round(stats.avg) if stats.avg else 0
+        low_val = stats.low or 0
+        high_val = stats.high or 0
+        records_val = stats.records or 0
+
         # 최신 가격 (가장 최근 recorded_at의 평균)
         latest = session.execute(
             select(func.avg(BaselinePrice.price))
@@ -804,6 +835,33 @@ class DBStorage(StorageContract):
             .order_by(desc(BaselinePrice.recorded_at))
             .limit(4)
         ).scalar()
+        cur_val = round(latest) if latest else 0
+
+        # BaselinePrice가 비어있으면 DiscountHistory에서 통계 폴백
+        if avg_val == 0:
+            d_stats = session.execute(
+                select(
+                    func.avg(DiscountHistory.price).label("avg"),
+                    func.min(DiscountHistory.price).label("low"),
+                    func.max(DiscountHistory.price).label("high"),
+                    func.count(DiscountHistory.id).label("records"),
+                ).where(DiscountHistory.product_id == product_id)
+            ).one()
+            if d_stats.avg:
+                avg_val = round(d_stats.avg)
+                low_val = d_stats.low or low_val
+                high_val = d_stats.high or high_val
+                records_val = d_stats.records or records_val
+
+        if cur_val == 0:
+            d_latest = session.execute(
+                select(DiscountHistory.price)
+                .where(DiscountHistory.product_id == product_id)
+                .order_by(desc(DiscountHistory.crawled_at))
+                .limit(1)
+            ).scalar()
+            if d_latest:
+                cur_val = round(d_latest)
 
         # 할인 통계
         disc_count = session.execute(
@@ -817,22 +875,26 @@ class DBStorage(StorageContract):
         ).scalar()
 
         return {
-            "avg": round(stats.avg) if stats.avg else 0,
-            "cur": round(latest) if latest else 0,
-            "low": stats.low or 0,
-            "high": stats.high or 0,
-            "records": stats.records or 0,
+            "avg": avg_val,
+            "cur": cur_val,
+            "low": low_val,
+            "high": high_val,
+            "records": records_val,
             "data_days": 180,
             "avg_discount": round(disc_avg, 1) if disc_avg else 0.0,
             "disc_freq": round(disc_count / 26, 1) if disc_count else 0.0,  # ~6개월 기준 주간 빈도
         }
 
     def _get_store_prices(self, session: Session, product_id: int) -> dict:
-        """매장별 최신 가격 조회 — stores: {emart: 2280, homeplus: 2380, ...}."""
+        """매장별 최신 가격 조회 — stores: {emart: 2280, homeplus: 2380, ...}.
+
+        BaselinePrice 우선, 없으면 DiscountHistory 폴백.
+        """
         store_keys = ["emart", "homeplus", "lottemart", "costco"]
 
         result = {}
         for key in store_keys:
+            # BaselinePrice 먼저 조회
             price = session.execute(
                 select(BaselinePrice.price)
                 .where(
@@ -842,6 +904,17 @@ class DBStorage(StorageContract):
                 .order_by(desc(BaselinePrice.recorded_at))
                 .limit(1)
             ).scalar()
+            # BaselinePrice 없으면 DiscountHistory 폴백
+            if price is None:
+                price = session.execute(
+                    select(DiscountHistory.price)
+                    .where(
+                        DiscountHistory.product_id == product_id,
+                        DiscountHistory.source == key,
+                    )
+                    .order_by(desc(DiscountHistory.crawled_at))
+                    .limit(1)
+                ).scalar()
             if price is not None:
                 result[key] = price
 

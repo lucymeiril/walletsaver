@@ -78,7 +78,9 @@ export default function HomePage() {
   const debounceRef = useRef(null);
 
   const [products, setProducts] = useState([]);
+  const [categorySummary, setCategorySummary] = useState([]);
   const [hotdeals, setHotdeals] = useState([]);
+  const [fashionDeals, setFashionDeals] = useState([]);
   const [martDeals, setMartDeals] = useState({});
   const [communityPosts, setCommunityPosts] = useState([]);
   const [gasStations, setGasStations] = useState([]);
@@ -87,10 +89,10 @@ export default function HomePage() {
 
   // 섹션별 로딩/에러 상태
   const [sectionLoading, setSectionLoading] = useState({
-    products: true, hotdeals: true, community: true, gas: true, trending: true,
+    products: true, hotdeals: true, community: true, gas: true, trending: true, fashion: true,
   });
   const [sectionError, setSectionError] = useState({
-    products: false, hotdeals: false, community: false, gas: false, trending: false,
+    products: false, hotdeals: false, community: false, gas: false, trending: false, fashion: false,
   });
 
   const [coords, setCoords] = useState(null);
@@ -546,11 +548,11 @@ export default function HomePage() {
         ) : (
           <div className={s.priceGrid}>
             {products.slice(0, 8).map(p => {
-              const diff = p.cur - p.avg;
-              const pct = ((diff / p.avg) * 100).toFixed(1);
+              const diff = (p.cur || 0) - (p.avg || 0);
+              const pct = p.avg > 0 ? ((diff / p.avg) * 100).toFixed(1) : '0.0';
               let trend = 'same', icon = <Minus size={12} />;
-              if (diff < -p.avg * 0.03) { trend = 'down'; icon = <TrendingDown size={12} />; }
-              else if (diff > p.avg * 0.03) { trend = 'up'; icon = <TrendingUp size={12} />; }
+              if (p.avg > 0 && diff < -p.avg * 0.03) { trend = 'down'; icon = <TrendingDown size={12} />; }
+              else if (p.avg > 0 && diff > p.avg * 0.03) { trend = 'up'; icon = <TrendingUp size={12} />; }
               const fav = isFavorite(p.id);
               return (
                 <div key={p.id} className={s.priceCard} onClick={() => selectProduct(p)}>
@@ -578,7 +580,7 @@ export default function HomePage() {
                     </div>
                   </div>
                   <div className={s.priceCardName}>{p.name} ({p.unit})</div>
-                  <div className={s.priceCardPrice}>{fmt(p.cur)}원</div>
+                  <div className={s.priceCardPrice}>{p.cur ? `${fmt(p.cur)}원` : '가격 미정'}</div>
                   <span className={`${s.change} ${s[trend]}`}>{icon} {trend !== 'same' ? `${Math.abs(pct)}%` : '→'}</span>
                 </div>
               );
@@ -620,9 +622,9 @@ export default function HomePage() {
               <div key={i} className={s.martSaleCard} onClick={() => navigate('/mart')}>
                 <div className={s.martSaleName}>{item.name}</div>
                 <div className={s.martSalePrices}>
-                  <span className={s.martSalePrice}>{fmt(item.sale)}원</span>
-                  <span className={s.martSaleOrig}>{fmt(item.orig)}원</span>
-                  <span className={s.martSaleDisc}>-{item.disc}%</span>
+                  <span className={s.martSalePrice}>{item.sale ? `${fmt(item.sale)}원` : '가격 미정'}</span>
+                  {item.orig > 0 && <span className={s.martSaleOrig}>{fmt(item.orig)}원</span>}
+                  {item.disc > 0 && <span className={s.martSaleDisc}>-{item.disc}%</span>}
                 </div>
                 <div className={s.martSaleBottom}>
                   <span className={s.martSaleEvent}>{activeMartInfo?.name} · {item.event}</span>

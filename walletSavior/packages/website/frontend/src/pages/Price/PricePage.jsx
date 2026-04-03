@@ -625,8 +625,9 @@ export default function PricePage() {
           <h4>마트별 현재 가격</h4>
           <div className={s.martList}>
             {MARTS.map(m => {
-              const price = product.stores[m.key];
-              const d = price - product.avg;
+              const price = product.stores?.[m.key];
+              if (price == null) return null;
+              const d = (price || 0) - (product.avg || 0);
               const isCheapest = price === minMartPrice;
               return (
                 <div key={m.key} className={`${s.mlItem} ${isCheapest ? s.mlCheapest : ''}`}>
@@ -637,9 +638,11 @@ export default function PricePage() {
                   </div>
                   <div>
                     <span className={s.mlPrice}>{fmt(price)}원</span>
-                    <span className={`${s.mlVs} ${d <= 0 ? s.cheap : s.expensive}`}>
-                      {d <= 0 ? fmt(d) : `+${fmt(d)}`}원
-                    </span>
+                    {product.avg > 0 && (
+                      <span className={`${s.mlVs} ${d <= 0 ? s.cheap : s.expensive}`}>
+                        {d <= 0 ? fmt(d) : `+${fmt(d)}`}원
+                      </span>
+                    )}
                   </div>
                 </div>
               );
