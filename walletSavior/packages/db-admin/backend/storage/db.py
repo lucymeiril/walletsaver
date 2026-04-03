@@ -11,6 +11,7 @@ DB 저장소 구현 — StorageContract의 구체 구현체.
     성능 문제 없음. 트래픽 증가 시 async SQLAlchemy로 마이그레이션 가능.
 """
 
+import json
 import os
 from datetime import datetime, timedelta
 from typing import Any, Optional
@@ -21,7 +22,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from storage.models import (
     Base, Product, BaselinePrice, DiscountHistory,
     HotdealPrice, GasStation, CrawlLog, Favorite, PriceAlert,
-    CrawlStatus,
+    CrawlStatus, Category, Keyword,
 )
 
 try:
@@ -928,3 +929,182 @@ class DBStorage(StorageContract):
         if ratio >= 0.7:
             return "great"
         return "ultra"
+
+    # ──────────────────────────────────────────
+    # 키워드 자동완성 / 인기검색어
+    # ──────────────────────────────────────────
+
+    def _build_category_path(self, session: Session, category_id: str | None) -> str:
+        """카테고리 경로를 구성한다. 예: '축산 > 돼지고기 > 삼겹살'"""
+        if not category_id:
+            return ""
+        parts: list[str] = []
+        current_id = category_id
+        visited: set[str] = set()
+        while current_id and current_id not in visited:
+            visited.add(current_id)
+            cat = session.get(Category, current_id)
+            if not cat:
+                break
+            parts.append(cat.name)
+            current_id = cat.parent_id
+        parts.reverse()
+        return " > ".join(parts)
+
+    def search_autocomplete(self, query: str, limit: int = 10) -> dict:
+        """4단계 키워드 자동완성 파이프라인.
+
+        Returns {"keywords": [...], "products": [...],
+                 "total_keyword_count": N, "total_product_count": N}
+        """
+        keyword_limit = 3
+        product_limit = 5
+
+        with self.SessionLocal() as session:
+            found_keyword_ids: set[int] = set()
+            keyword_results: list[dict] = []
+
+            def _add_keyword(kw: Keyword, match_type: str, matched_synonym: str = ""):
+                if kw.id in found_keyword_ids:
+                    return
+                found_keyword_ids.add(kw.id)
+                cat = session.get(Category, kw.category_id) if kw.category_id else None
+                keyword_results.append({
+                    "type": "keyword",
+                    "match_type": match_type,
+                    "id": kw.id,
+                    "word": kw.word,
+                    "category_id": kw.category_id,
+                    "category_name": cat.name if cat else "",
+                    "category_path": self._build_category_path(session, kw.category_id),
+                    "search_count": kw.search_count or 0,
+                    "matched_synonym": matched_synonym,
+                    "icon": cat.icon if cat else "",
+                })
+
+            # Stage 1: 키워드 직접 매칭 (prefix)
+            stage1 = (
+                session.execute(
+                    select(Keyword)
+                    .where(Keyword.is_active == True, Keyword.word.like(f"{query}%"))
+                    .order_by(desc(Keyword.search_count))
+                )
+                .scalars()
+                .all()
+            )
+            for kw in stage1:
+                _add_keyword(kw, "keyword_direct")
+
+            # Stage 2: 동의어 매칭
+            all_active = (
+                session.execute(
+                    select(Keyword).where(Keyword.is_active == True)
+                )
+                .scalars()
+                .all()
+            )
+            for kw in all_active:
+                if kw.id in found_keyword_ids:
+                    continue
+                synonyms_raw = kw.synonyms
+                if not synonyms_raw:
+                    continue
+                # JSON 필드가 문자열로 저장될 수 있음
+                if isinstance(synonyms_raw, str):
+                    try:
+                        synonyms_raw = json.loads(synonyms_raw)
+                    except (json.JSONDecodeError, TypeError):
+                        continue
+                if not isinstance(synonyms_raw, list):
+                    continue
+                for syn in synonyms_raw:
+                    if isinstance(syn, str) and syn.startswith(query):
+                        _add_keyword(kw, "synonym", matched_synonym=syn)
+                        break
+
+            # Stage 3: 카테고리 이름 매칭
+            cat_keywords = (
+                session.execute(
+                    select(Keyword)
+                    .join(Category, Keyword.category_id == Category.id)
+                    .where(
+                        Keyword.is_active == True,
+                        Category.name.contains(query),
+                    )
+                    .order_by(desc(Keyword.search_count))
+                )
+                .scalars()
+                .all()
+            )
+            for kw in cat_keywords:
+                _add_keyword(kw, "category_match")
+
+            total_keyword_count = len(keyword_results)
+
+            # Stage 4: 상품 이름 매칭
+            product_stmt = (
+                select(Product)
+                .where(Product.is_active == True, Product.name.contains(query))
+            )
+            total_product_count = session.execute(
+                select(func.count()).select_from(product_stmt.subquery())
+            ).scalar() or 0
+
+            products = (
+                session.execute(product_stmt.limit(product_limit))
+                .scalars()
+                .all()
+            )
+            product_results: list[dict] = []
+            for p in products:
+                cat = p.category
+                price_stats = self._compute_product_stats(session, p.id)
+                product_results.append({
+                    "type": "product",
+                    "match_type": "product_name",
+                    "id": p.id,
+                    "name": p.name,
+                    "category_id": p.category_id,
+                    "unit": p.unit,
+                    "icon": cat.icon if cat else "",
+                    "current_price": price_stats["cur"],
+                })
+
+            return {
+                "keywords": keyword_results[:keyword_limit],
+                "products": product_results,
+                "total_keyword_count": total_keyword_count,
+                "total_product_count": total_product_count,
+            }
+
+    def get_trending_keywords(self, limit: int = 8) -> list[dict]:
+        """실제 search_count 기반 인기 검색어."""
+        with self.SessionLocal() as session:
+            keywords = (
+                session.execute(
+                    select(Keyword)
+                    .where(Keyword.is_active == True)
+                    .order_by(desc(Keyword.search_count))
+                    .limit(limit)
+                )
+                .scalars()
+                .all()
+            )
+            results = []
+            for kw in keywords:
+                cat = session.get(Category, kw.category_id) if kw.category_id else None
+                results.append({
+                    "word": kw.word,
+                    "search_count": kw.search_count or 0,
+                    "category_id": kw.category_id,
+                    "icon": cat.icon if cat else "",
+                })
+            return results
+
+    def increment_keyword_count(self, keyword_id: int) -> None:
+        """키워드 검색 횟수 증가."""
+        with self.SessionLocal() as session:
+            kw = session.get(Keyword, keyword_id)
+            if kw:
+                kw.search_count = (kw.search_count or 0) + 1
+                session.commit()

@@ -3,7 +3,9 @@
 
 엔드포인트:
     GET /api/search             — 통합 검색
-    GET /api/search/autocomplete — 자동완성
+    GET /api/search/autocomplete — 자동완성 (키워드 + 동의어 + 상품)
+    GET /api/search/trending     — 인기 검색어
+    POST /api/search/track       — 검색 횟수 추적
 """
 
 import math
@@ -125,21 +127,36 @@ async def autocomplete(
     q: str = Query("", description="검색어"),
     limit: int = Query(10, ge=1, le=50),
 ):
-    """자동완성."""
-    if not q:
-        return ApiResponse(data=[])
-
+    """자동완성 — 키워드·동의어·카테고리·상품 4단계 파이프라인."""
     storage = request.app.state.storage
-    q_lower = q.lower()
-    suggestions = []
+    empty = {"keywords": [], "products": [], "total_keyword_count": 0, "total_product_count": 0}
+    if not q or not storage:
+        return ApiResponse(data=empty)
 
+    result = storage.search_autocomplete(q, limit=limit)
+    return ApiResponse(data=result)
+
+
+@router.get("/trending")
+async def trending(
+    request: Request,
+    limit: int = Query(8, ge=1, le=50),
+):
+    """인기 검색어 — search_count 기반."""
+    storage = request.app.state.storage
+    if not storage:
+        return ApiResponse(data=[])
+    keywords = storage.get_trending_keywords(limit)
+    return ApiResponse(data=keywords)
+
+
+@router.post("/track")
+async def track_search(
+    request: Request,
+    keyword_id: int = Query(..., description="키워드 ID"),
+):
+    """검색 횟수 추적."""
+    storage = request.app.state.storage
     if storage:
-        products = storage.search_products(q)
-        for p in products[:limit]:
-            suggestions.append({
-                "text": p["name"],
-                "type": "product",
-                "id": p["id"],
-            })
-
-    return ApiResponse(data=suggestions)
+        storage.increment_keyword_count(keyword_id)
+    return {"ok": True}
