@@ -1,19 +1,18 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import {
   LayoutDashboard, Package, DollarSign,
-  FolderTree, Search, BarChart3, Menu, X, Database, Inbox,
+  FolderTree, BarChart3, Menu, X, Database, Inbox,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import s from './AdminLayout.module.css';
 
 const NAV = [
-  { to: '/',           label: '대시보드', icon: LayoutDashboard },
-  { to: '/inbox',      label: '📥 수신함', icon: Inbox },
-  { to: '/products',   label: '상품',     icon: Package },
-  { to: '/prices',     label: '가격',     icon: DollarSign },
-  { to: '/categories', label: '카테고리', icon: FolderTree },
-  { to: '/keywords',   label: '키워드',   icon: Search },
-  { to: '/analytics',  label: '분석',     icon: BarChart3 },
+  { to: '/',               label: '대시보드',   icon: LayoutDashboard },
+  { to: '/inbox',          label: '📥 수신함',  icon: Inbox },
+  { to: '/products',       label: '상품',       icon: Package },
+  { to: '/prices',         label: '가격',       icon: DollarSign },
+  { to: '/classification', label: '분류 관리',  icon: FolderTree },
+  { to: '/analytics',      label: '분석',       icon: BarChart3 },
 ];
 
 export default function AdminLayout() {

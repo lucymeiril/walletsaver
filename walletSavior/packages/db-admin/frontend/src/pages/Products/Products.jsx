@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Plus, Package, AlertTriangle } from 'lucide-react';
+import { Plus, Package, AlertTriangle, Database } from 'lucide-react';
 import useDbAdminStore from '../../stores/dbAdminStore';
 import { api } from '../../api/client';
 import ProductStats from './ProductStats';
 import ProductFilters from './ProductFilters';
 import ProductTable from './ProductTable';
 import ProductModal, { BulkCategoryModal } from './ProductModal';
+import AdminResetModal from './AdminResetModal';
 import s from './Products.module.css';
 
 export default function Products() {
@@ -33,6 +34,7 @@ export default function Products() {
   const [rowHistory, setRowHistory] = useState(null);
   const [bulkCatModal, setBulkCatModal] = useState(false);
   const [bulkCatId, setBulkCatId] = useState('');
+  const [adminResetOpen, setAdminResetOpen] = useState(false);
 
   /* ─── 데이터 페칭 ─── */
   const doFetch = useCallback((overrides = {}) => {
@@ -139,7 +141,12 @@ export default function Products() {
     <div className={s.page}>
       <div className={s.header}>
         <h2 className={s.title}>상품 관리</h2>
-        <button className={s.addBtn} onClick={openAdd}><Plus size={16} /> 상품 추가</button>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button className={s.adminResetBtn} onClick={() => setAdminResetOpen(true)}>
+            <Database size={16} /> DB 초기화
+          </button>
+          <button className={s.addBtn} onClick={openAdd}><Plus size={16} /> 상품 추가</button>
+        </div>
       </div>
 
       <ProductStats stats={productStats} />
@@ -190,6 +197,12 @@ export default function Products() {
         categories={categories} keywords={keywords}
         onSave={handleSave} onEdit={openEdit} onDelete={handleDelete}
         onCreateCategory={handleCreateCategory} addKeyword={addKeyword}
+      />
+
+      <AdminResetModal
+        open={adminResetOpen}
+        onClose={() => setAdminResetOpen(false)}
+        onComplete={() => { doFetch(); fetchProductStats(); }}
       />
     </div>
   );

@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, ExternalLink, RefreshCw, ZoomIn, ZoomOut } from 'lucide-react';
+import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
+import { ChevronLeft, ChevronRight, ExternalLink, RefreshCw, ZoomIn, ZoomOut, Maximize, Minimize2 } from 'lucide-react';
 import { MARTS } from '../../utils/constants';
 import { fmt } from '../../utils/helpers';
 import useStore from '../../stores/appStore';
@@ -103,6 +103,11 @@ export default function MartPage() {
   const [catFilter, setCatFilter] = useState('전체');
   const [flyerIdx, setFlyerIdx] = useState(0);
   const [flyerZoom, setFlyerZoom] = useState(1);
+  const [flyerPan, setFlyerPan] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStart = useRef({ x: 0, y: 0, panX: 0, panY: 0 });
+  const flyerViewerRef = useRef(null);
+  const flyerImgRef = useRef(null);
   const [saleDetail, setSaleDetail] = useState(null);
 
   const { addToShoppingList, addToast } = useStore();
@@ -196,6 +201,87 @@ export default function MartPage() {
   const flyerPages = currentFlyer?.flyer_pages || [];
   const flyerHasImages = flyerPages.length > 0;
 
+  const resetFlyerView = useCallback(() => {
+    setFlyerZoom(1);
+    setFlyerPan({ x: 0, y: 0 });
+  }, []);
+
+  const clampPan = useCallback((px, py, z) => {
+    if (z <= 1) return { x: 0, y: 0 };
+    const viewer = flyerViewerRef.current;
+    const img = flyerImgRef.current;
+    if (!viewer || !img) return { x: px, y: py };
+    const vw = viewer.clientWidth;
+    const vh = viewer.clientHeight;
+    const iw = img.clientWidth;
+    const ih = img.clientHeight;
+    // pan is applied inside the scale, so effective pixel shift = pan * zoom
+    // max pan so the image edge doesn't go past the viewer edge
+    const maxPanX = Math.max(0, (iw * z - vw) / (2 * z));
+    const maxPanY = Math.max(0, (ih * z - vh) / (2 * z));
+    return {
+      x: Math.max(-maxPanX, Math.min(maxPanX, px)),
+      y: Math.max(-maxPanY, Math.min(maxPanY, py)),
+    };
+  }, []);
+
+  const handleFlyerMouseDown = useCallback((e) => {
+    if (flyerZoom <= 1) return;
+    e.preventDefault();
+    setIsDragging(true);
+    dragStart.current = { x: e.clientX, y: e.clientY, panX: flyerPan.x, panY: flyerPan.y };
+  }, [flyerZoom, flyerPan]);
+
+  const handleFlyerMouseMove = useCallback((e) => {
+    if (!isDragging) return;
+    const dx = (e.clientX - dragStart.current.x) / flyerZoom;
+    const dy = (e.clientY - dragStart.current.y) / flyerZoom;
+    setFlyerPan(clampPan(dragStart.current.panX + dx, dragStart.current.panY + dy, flyerZoom));
+  }, [isDragging, flyerZoom, clampPan]);
+
+  const handleFlyerMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  const handleFlyerWheel = useCallback((e) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.1 : 0.1;
+    setFlyerZoom(prev => {
+      const next = Math.min(3, Math.max(0.5, +(prev + delta).toFixed(2)));
+      if (next <= 1) {
+        setFlyerPan({ x: 0, y: 0 });
+      } else {
+        setFlyerPan(p => clampPan(p.x, p.y, next));
+      }
+      return next;
+    });
+  }, [clampPan]);
+
+  const handleFlyerDoubleClick = useCallback((e) => {
+    e.preventDefault();
+    if (flyerZoom > 1) {
+      resetFlyerView();
+    } else {
+      setFlyerZoom(2);
+      // pan toward click position
+      const viewer = flyerViewerRef.current;
+      if (viewer) {
+        const rect = viewer.getBoundingClientRect();
+        const cx = (e.clientX - rect.left - rect.width / 2) / 2;
+        const cy = (e.clientY - rect.top - rect.height / 2) / 2;
+        setFlyerPan(clampPan(-cx, -cy, 2));
+      }
+    }
+  }, [flyerZoom, resetFlyerView, clampPan]);
+
+  // attach wheel listener with { passive: false } so preventDefault works
+  useEffect(() => {
+    const el = flyerViewerRef.current;
+    if (!el) return;
+    el.addEventListener('wheel', handleFlyerWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleFlyerWheel);
+  }, [handleFlyerWheel]);
+
   return (
     <div>
       <div className={s.hdr}>
@@ -248,7 +334,7 @@ export default function MartPage() {
                 key={m.key}
                 className={`${s.flyerMartTab} ${flyerMart === m.key ? s.flyerMartTabActive : ''}`}
                 style={flyerMart === m.key ? { borderColor: m.color, color: m.color } : {}}
-                onClick={() => { setFlyerMart(m.key); setFlyerIdx(0); setFlyerZoom(1); }}
+                onClick={() => { setFlyerMart(m.key); setFlyerIdx(0); resetFlyerView(); }}
               >
                 <span className={s.dot} style={{ background: m.color }} />{m.name}
               </button>
@@ -290,25 +376,39 @@ export default function MartPage() {
 
           {!flyerLoading && !flyerError && flyerHasImages && (
             <>
-              <div className={s.flyerViewer}>
+              <div
+                className={s.flyerViewer}
+                ref={flyerViewerRef}
+                onMouseDown={handleFlyerMouseDown}
+                onMouseMove={handleFlyerMouseMove}
+                onMouseUp={handleFlyerMouseUp}
+                onMouseLeave={handleFlyerMouseUp}
+                onDoubleClick={handleFlyerDoubleClick}
+              >
                 <img
                   src={flyerPages[flyerIdx]?.image_url}
                   alt={`${currentFlyer?.name || flyerMart} 전단지 ${flyerIdx + 1}페이지`}
                   className={s.flyerImg}
-                  style={{ transform: `scale(${flyerZoom})`, cursor: flyerZoom > 1 ? 'zoom-out' : 'zoom-in' }}
-                  onClick={() => setFlyerZoom(z => z > 1 ? 1 : 1.8)}
+                  ref={flyerImgRef}
+                  draggable={false}
+                  style={{
+                    transform: `scale(${flyerZoom}) translate(${flyerPan.x}px, ${flyerPan.y}px)`,
+                    cursor: flyerZoom > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
+                    userSelect: 'none',
+                    transition: isDragging ? 'none' : 'transform .3s var(--ease)',
+                  }}
                 />
                 {flyerPages.length > 1 && (
                   <>
                     <button
                       className={`${s.flyerNav} ${s.flyerPrev}`}
-                      onClick={() => setFlyerIdx(prev => (prev - 1 + flyerPages.length) % flyerPages.length)}
+                      onClick={() => { setFlyerIdx(prev => (prev - 1 + flyerPages.length) % flyerPages.length); resetFlyerView(); }}
                     >
                       <ChevronLeft size={20} />
                     </button>
                     <button
                       className={`${s.flyerNav} ${s.flyerNext}`}
-                      onClick={() => setFlyerIdx(prev => (prev + 1) % flyerPages.length)}
+                      onClick={() => { setFlyerIdx(prev => (prev + 1) % flyerPages.length); resetFlyerView(); }}
                     >
                       <ChevronRight size={20} />
                     </button>
@@ -320,7 +420,7 @@ export default function MartPage() {
                 <div className={s.flyerZoomControls}>
                   <button
                     className={s.flyerZoomBtn}
-                    onClick={e => { e.stopPropagation(); setFlyerZoom(z => Math.max(0.5, z - 0.25)); }}
+                    onClick={e => { e.stopPropagation(); setFlyerZoom(z => { const next = Math.max(0.5, z - 0.25); if (next <= 1) setFlyerPan({ x: 0, y: 0 }); return next; }); }}
                     title="축소"
                   >
                     <ZoomOut size={16} />
@@ -333,6 +433,20 @@ export default function MartPage() {
                   >
                     <ZoomIn size={16} />
                   </button>
+                  <button
+                    className={s.flyerZoomBtn}
+                    onClick={e => { e.stopPropagation(); resetFlyerView(); }}
+                    title="맞춤"
+                  >
+                    <Maximize size={16} />
+                  </button>
+                  <button
+                    className={s.flyerZoomBtn}
+                    onClick={e => { e.stopPropagation(); setFlyerZoom(1); setFlyerPan({ x: 0, y: 0 }); }}
+                    title="원본 (100%)"
+                  >
+                    <Minimize2 size={16} />
+                  </button>
                 </div>
               </div>
               {flyerPages.length > 1 && (
@@ -341,7 +455,7 @@ export default function MartPage() {
                     <button
                       key={i}
                       className={`${s.flyerDot} ${i === flyerIdx ? s.flyerDotActive : ''}`}
-                      onClick={() => setFlyerIdx(i)}
+                      onClick={() => { setFlyerIdx(i); resetFlyerView(); }}
                       title={`${i + 1}페이지`}
                     />
                   ))}

@@ -185,7 +185,7 @@
 }
 .writeRow {
   display: grid;
-  grid-template-columns: auto 1fr 1fr;
+  grid-template-columns: auto 1fr;
   gap: 10px;
   margin-bottom: 14px;
 }
@@ -350,6 +350,37 @@
 .modalTime { font-size: .78rem; color: var(--text3); }
 .modalTitle { font-size: 1.2rem; font-weight: var(--fw-bold); margin-bottom: 16px; line-height: 1.5; }
 .modalContent { font-size: .9rem; line-height: 1.7; color: var(--text2); margin-bottom: 16px; white-space: pre-line; }
+
+/* Rich HTML content in modal */
+.richContent { white-space: normal; }
+.richContent img { max-width: 100%; height: auto; border-radius: 8px; margin: 8px 0; }
+.richContent h2 { font-size: 1.2rem; font-weight: 700; margin: 14px 0 6px; }
+.richContent h3 { font-size: 1.05rem; font-weight: 600; margin: 10px 0 4px; }
+.richContent blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 14px;
+  margin: 8px 0;
+  color: var(--text3);
+  font-style: italic;
+}
+.richContent pre {
+  background: rgba(0, 0, 0, .3);
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: .82rem;
+  overflow-x: auto;
+  margin: 8px 0;
+}
+.richContent code {
+  background: rgba(0, 0, 0, .2);
+  border-radius: 3px;
+  padding: 2px 4px;
+  font-size: .85em;
+}
+.richContent ul, .richContent ol { padding-left: 24px; margin: 8px 0; }
+.richContent a { color: var(--accent); text-decoration: underline; }
+.richContent hr { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+.richContent s { opacity: .7; }
 .modalImages { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
 .modalImages img {
   max-width: 280px;
