@@ -8,6 +8,7 @@ import Spinner from '../../components/common/Spinner';
 import EmptyState from '../../components/common/EmptyState';
 import ErrorFallback from '../../components/common/ErrorFallback';
 import Card from '../../components/common/Card';
+import SearchAutocomplete from '../../components/search/SearchAutocomplete';
 import s from './SearchPage.module.css';
 
 const TABS = [
@@ -42,9 +43,8 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [meta, setMeta] = useState(null);
-  const [inputValue, setInputValue] = useState(query);
 
-  const addRecentSearch = useStore((s) => s.addRecentSearch);
+  const addRecentSearch = useStore((st) => st.addRecentSearch);
 
   const fetchResults = useCallback(async () => {
     if (!query) return;
@@ -69,8 +69,6 @@ export default function SearchPage() {
     if (query) addRecentSearch(query);
   }, [fetchResults]);
 
-  useEffect(() => { setInputValue(query); }, [query]);
-
   const handleTabChange = (tabId) => {
     const params = new URLSearchParams(searchParams);
     if (tabId === 'all') params.delete('type');
@@ -84,13 +82,10 @@ export default function SearchPage() {
     setSearchParams(params);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (inputValue.trim()) {
-      const params = new URLSearchParams(searchParams);
-      params.set('q', inputValue.trim());
-      setSearchParams(params);
-    }
+  const handleSearchSubmit = (q) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('q', q);
+    setSearchParams(params);
   };
 
   const handleItemClick = (item) => {
@@ -120,16 +115,13 @@ export default function SearchPage() {
   return (
     <div className={s.page}>
       <div className={s.container}>
-        <form className={s.searchForm} onSubmit={handleSubmit}>
-          <Search size={20} className={s.formIcon} />
-          <input
-            type="search"
-            className={s.searchInput}
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="상품, 핫딜, 커뮤니티 검색..."
-          />
-        </form>
+        <SearchAutocomplete
+          variant="page"
+          placeholder="상품, 핫딜, 커뮤니티 검색..."
+          initialValue={query}
+          onSearch={handleSearchSubmit}
+          className={s.searchForm}
+        />
 
         {query && (
           <>

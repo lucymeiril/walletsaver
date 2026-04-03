@@ -4,6 +4,8 @@ import { Pencil, ImagePlus, X, Send, Eye, MessageSquare, Clock, Search, Trash2, 
 import { fmt, verifyPrice } from '../../utils/helpers';
 import useStore from '../../stores/appStore';
 import Spinner from '../../components/common/Spinner';
+import RichTextEditor from '../../components/community/RichTextEditor';
+import ProductPicker from '../../components/community/ProductPicker';
 import s from './CommunityPage.module.css';
 
 const BOARD_TABS = [
@@ -34,6 +36,11 @@ function formatRelativeTime(isoString) {
   if (diff < 86400) return `${Math.floor(diff / 3600)}시간 전`;
   if (diff < 604800) return `${Math.floor(diff / 86400)}일 전`;
   return date.toLocaleDateString('ko-KR');
+}
+
+function stripHtml(html) {
+  if (!html) return '';
+  return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
 }
 
 function mapApiPost(raw, products = []) {
@@ -122,6 +129,7 @@ export default function CommunityPage() {
   const [wBody, setWBody] = useState('');
   const [wCat, setWCat] = useState('마트');
   const [wProduct, setWProduct] = useState('');
+  const [wSelectedProducts, setWSelectedProducts] = useState([]);
   const [wPrice, setWPrice] = useState('');
   const [wLink, setWLink] = useState('');
   const [wTag, setWTag] = useState('잡담');
@@ -171,7 +179,9 @@ export default function CommunityPage() {
   const safePage = Math.min(page, totalPages);
   const paginatedPosts = nonPinnedPosts.slice((safePage - 1) * POSTS_PER_PAGE, safePage * POSTS_PER_PAGE);
 
-  const matchedProduct = products.find(p => wProduct.includes(p.name));
+  const matchedProduct = wSelectedProducts.length > 0
+    ? wSelectedProducts[0]
+    : products.find(p => wProduct.includes(p.name));
   const verification = wPrice && matchedProduct ? verifyPrice(Number(wPrice), matchedProduct.avg) : null;
 
   const handleImageAdd = (e) => {
@@ -186,7 +196,7 @@ export default function CommunityPage() {
   const handleWrite = async () => {
     if (!wTitle.trim()) { addToast('제목을 입력해주세요.', 'error'); return; }
     if (board === 'hotdeal') {
-      if (!wProduct.trim()) { addToast('품목명을 입력해주세요.', 'error'); return; }
+      if (!wProduct.trim() && wSelectedProducts.length === 0) { addToast('품목명을 입력해주세요.', 'error'); return; }
       if (!wPrice.trim()) { addToast('가격을 입력해주세요.', 'error'); return; }
       if (!wLink.trim()) { addToast('핫딜 링크를 입력해주세요.', 'error'); return; }
     }
@@ -227,13 +237,13 @@ export default function CommunityPage() {
       console.error(err);
       addToast('처리 중 오류가 발생했습니다.', 'error');
     }
-    setWTitle(''); setWBody(''); setWProduct(''); setWPrice(''); setWLink(''); setWImages([]);
+    setWTitle(''); setWBody(''); setWProduct(''); setWSelectedProducts([]); setWPrice(''); setWLink(''); setWImages([]);
   };
 
   const handleWriteBtn = () => {
     if (showWrite && editPostId) {
       setEditPostId(null);
-      setWTitle(''); setWBody(''); setWProduct(''); setWPrice(''); setWLink(''); setWImages([]);
+      setWTitle(''); setWBody(''); setWProduct(''); setWSelectedProducts([]); setWPrice(''); setWLink(''); setWImages([]);
     }
     setShowWrite(!showWrite);
   };
@@ -244,6 +254,7 @@ export default function CommunityPage() {
     setWBody(post.body || post.content || '');
     setWCat(post.cat || post.category || '마트');
     setWProduct(post.product_name || '');
+    setWSelectedProducts([]);
     setWPrice(post.price ? String(post.price) : '');
     setWLink(post.url || '');
     setWImages(post.images || []);
@@ -316,14 +327,12 @@ export default function CommunityPage() {
             value={wTitle}
             onChange={e => setWTitle(e.target.value)}
           />
-          <textarea
-            className={s.bodyInput}
+          <RichTextEditor
+            content={wBody}
+            onChange={setWBody}
             placeholder={board === 'hotdeal'
               ? '내용을 입력하세요 (가격, 매장 위치, 수량 제한 등)'
               : '자유롭게 내용을 입력하세요'}
-            rows={5}
-            value={wBody}
-            onChange={e => setWBody(e.target.value)}
           />
 
           {board === 'hotdeal' ? (
@@ -333,21 +342,16 @@ export default function CommunityPage() {
                   {WRITE_CATS.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
                 <input
-                  placeholder="품목명 (필수 — 자동 시세 비교)"
-                  value={wProduct}
-                  onChange={e => setWProduct(e.target.value)}
-                  list="product-list"
-                />
-                <datalist id="product-list">
-                  {products.map(p => <option key={p.id} value={p.name} />)}
-                </datalist>
-                <input
                   type="number"
                   placeholder="가격 (원, 필수)"
                   value={wPrice}
                   onChange={e => setWPrice(e.target.value)}
                 />
               </div>
+              <ProductPicker
+                selected={wSelectedProducts}
+                onChange={setWSelectedProducts}
+              />
               <input
                 className={s.linkInput}
                 placeholder="핫딜 링크 (필수)"
@@ -496,7 +500,7 @@ export default function CommunityPage() {
                   )}
                   {p.title}
                 </div>
-                {p.body && <p className={s.postExcerpt}>{p.body.slice(0, 60)}...</p>}
+                {p.body && <p className={s.postExcerpt}>{stripHtml(p.body).slice(0, 60)}...</p>}
                 <div className={s.postMeta}>
                   <span className={s.postCatInline}>{p.cat}</span>
                   <span>{p.author}</span>
@@ -541,7 +545,7 @@ export default function CommunityPage() {
                   )}
                   {p.title}
                 </div>
-                {p.body && <p className={s.postExcerpt}>{p.body.slice(0, 60)}...</p>}
+                {p.body && <p className={s.postExcerpt}>{stripHtml(p.body).slice(0, 60)}...</p>}
                 <div className={s.postMeta}>
                   <span className={s.postCatInline}>{p.cat}</span>
                   <span>{p.author}</span>
@@ -565,7 +569,7 @@ export default function CommunityPage() {
                   {p.tag && <span className={`${s.tagLabel} ${s[`tag_${p.tag}`] || ''}`}>#{p.tag}</span>}
                   {p.title}
                 </div>
-                {p.body && <p className={s.postExcerpt}>{p.body.slice(0, 80)}...</p>}
+                {p.body && <p className={s.postExcerpt}>{stripHtml(p.body).slice(0, 80)}...</p>}
                 <div className={s.postMeta}>
                   <span>{p.author}</span>
                   <span>{p.time}</span>
@@ -766,7 +770,7 @@ function PostDetailModal({ post, onClose, board, products, user, onRefresh, onEd
             </div>
           )}
 
-          {post.body && <div className={s.modalContent}>{post.body}</div>}
+          {post.body && <div className={`${s.modalContent} ${s.richContent}`} dangerouslySetInnerHTML={{ __html: post.body }} />}
 
           {post.url && (
             <a href={post.url} target="_blank" rel="noopener noreferrer" className={s.dealLink}>
