@@ -17,6 +17,38 @@ from api.schemas.common import ApiResponse, PaginationMeta
 router = APIRouter()
 
 
+@router.get("")
+@router.get("/")
+async def list_products(
+    request: Request,
+    q: str = Query("", description="검색어"),
+    category: str = Query(None, description="카테고리 필터"),
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=1, le=100),
+):
+    """상품 목록 — /search와 동일하게 작동."""
+    return await search_products(request, q=q, category=category, page=page, per_page=per_page)
+
+
+@router.get("/stats")
+async def product_stats(request: Request):
+    """상품 통계 요약."""
+    storage = request.app.state.storage
+    if storage is None:
+        return ApiResponse(data={"total": 0, "by_category": [], "by_source": {}})
+    try:
+        products = storage.search_products("")
+        total = len(products) if isinstance(products, list) else 0
+        categories = storage.get_categories()
+        return ApiResponse(data={
+            "total": total,
+            "categories_count": len(categories) if isinstance(categories, list) else 0,
+            "by_category": categories[:10] if isinstance(categories, list) else [],
+        })
+    except Exception:
+        return ApiResponse(data={"total": 0, "by_category": [], "by_source": {}})
+
+
 @router.get("/search")
 async def search_products(
     request: Request,

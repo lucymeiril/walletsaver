@@ -20,6 +20,72 @@ from storage.models import BaselinePrice, DiscountHistory, Product, Category
 
 router = APIRouter(prefix="/prices", tags=["prices"])
 
+
+# ── 가격 목록 (기본 페이징) ──
+
+@router.get("/")
+def list_prices(
+    product_id: Optional[int] = None,
+    source: Optional[str] = None,
+    page: int = Query(1, ge=1),
+    per_page: int = Query(50, ge=1, le=200),
+):
+    """가격 목록 — 기본 페이징 + 필터."""
+    session = get_session()
+    try:
+        conditions = []
+        if product_id:
+            conditions.append(BaselinePrice.product_id == product_id)
+        if source:
+            conditions.append(BaselinePrice.source.ilike(f"%{source}%"))
+
+        total = session.execute(
+            select(func.count()).select_from(BaselinePrice).where(and_(*conditions)) if conditions
+            else select(func.count()).select_from(BaselinePrice)
+        ).scalar() or 0
+
+        offset = (page - 1) * per_page
+        q = (
+            select(
+                BaselinePrice.id,
+                BaselinePrice.product_id,
+                BaselinePrice.price,
+                BaselinePrice.source,
+                BaselinePrice.unit,
+                BaselinePrice.recorded_at,
+                Product.name.label("product_name"),
+            )
+            .join(Product, BaselinePrice.product_id == Product.id, isouter=True)
+            .order_by(BaselinePrice.recorded_at.desc())
+            .offset(offset)
+            .limit(per_page)
+        )
+        if conditions:
+            q = q.where(and_(*conditions))
+
+        rows = session.execute(q).all()
+        items = [
+            {
+                "id": r.id,
+                "product_id": r.product_id,
+                "product_name": r.product_name or "",
+                "price": r.price,
+                "source": r.source or "",
+                "unit": r.unit or "",
+                "recorded_at": r.recorded_at.strftime("%Y-%m-%d %H:%M") if r.recorded_at else "",
+            }
+            for r in rows
+        ]
+        return {
+            "items": items,
+            "total": total,
+            "page": page,
+            "per_page": per_page,
+            "total_pages": math.ceil(total / per_page) if total else 0,
+        }
+    finally:
+        session.close()
+
 TIER_CONFIG_PATH = Path(__file__).resolve().parent.parent.parent / "tier_config.json"
 WHITELIST_PATH = Path(__file__).resolve().parent.parent.parent / "outlier_whitelist.json"
 

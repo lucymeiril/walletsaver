@@ -96,6 +96,40 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     app.include_router(restaurants_router, prefix="/api", tags=["Restaurants"])
     app.include_router(naver_local_router, prefix="/api/local", tags=["Local / Naver"])
 
+    # ── 편의 별칭 라우트 (테스트·호환성) ──
+    from fastapi import Request as _Req, Query as _Q
+
+    @app.get("/api/categories/", tags=["Categories"])
+    async def categories_alias(request: _Req):
+        """카테고리 독립 경로 — /api/products/categories 별칭."""
+        from api.routes.products import get_categories
+        return await get_categories(request)
+
+    @app.get("/api/keywords/", tags=["Keywords"])
+    async def keywords_alias(request: _Req):
+        """키워드 독립 경로 — /api/products/trending 별칭."""
+        from api.routes.products import get_trending_keywords
+        return await get_trending_keywords(request)
+
+    @app.get("/api/mart/discounts", tags=["Marts"])
+    async def mart_discounts_alias(request: _Req):
+        """마트 할인 — /api/marts 별칭."""
+        from api.routes.marts import list_marts
+        return await list_marts(request)
+
+    @app.get("/api/prices/compare", tags=["Prices"])
+    async def price_compare(request: _Req, product: str = ""):
+        """상품명으로 가격 비교 — 이름 검색 후 출처별 비교."""
+        s = request.app.state.storage
+        if s is None:
+            return {"success": True, "data": [], "error": None}
+        products = s.search_products(product)
+        if not products:
+            return {"success": True, "data": [], "error": None}
+        pid = products[0]["id"]
+        compare = s.get_price_compare(pid)
+        return {"success": True, "data": {"product": products[0], "prices": compare}, "error": None}
+
     @app.get("/api/health")
     def health():
         """헬스체크 — 로드밸런서·모니터링용."""
