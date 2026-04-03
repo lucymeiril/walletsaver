@@ -13,6 +13,12 @@ export const api = {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status }),
   }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  // 크롤러 벌크 실행
+  bulkRunCrawlers: (ids) => fetch(`${API_BASE}/crawlers/bulk-run`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ crawler_ids: ids }),
+  }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
   // 크롤러 설정
   getCrawlerSettings: (id) => fetch(`${API_BASE}/crawlers/${id}/settings`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
   updateCrawlerSettings: (id, data) => fetch(`${API_BASE}/crawlers/${id}/settings`, {
@@ -21,7 +27,7 @@ export const api = {
     body: JSON.stringify(data),
   }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
   // 대시보드 통계
-  getDashboardStats: () => fetch(`${API_BASE}/dashboard/stats`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  getDashboardStats: (params = {}) => fetch(`${API_BASE}/dashboard/stats?${new URLSearchParams(params)}`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
   // 로그
   getLogs: (params) => fetch(`${API_BASE}/logs?${new URLSearchParams(params)}`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
   // 로그 CSV 내보내기
@@ -53,6 +59,11 @@ export const api = {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status }),
+  }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  updatePluginSettings: (id, data) => fetch(`${API_BASE}/plugins/${id}/settings`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
   }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
   // 대기열
   getIngestions: (params) => fetch(`${API_BASE}/ingestions?${new URLSearchParams(params)}`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),

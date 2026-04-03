@@ -32,6 +32,7 @@ const useAdminStore = create((set, get) => ({
         totalRuns: c.totalRuns ?? c.total_runs ?? 0,
         description: c.description || '',
         schedule: c.schedule || '',
+        recentRuns: c.recentRuns ?? c.recent_runs ?? [],
       }));
       set({ crawlers: mapped });
     } catch (err) {
@@ -137,6 +138,22 @@ const useAdminStore = create((set, get) => ({
         return false;
       if (logFilters.status !== 'all' && log.status !== logFilters.status)
         return false;
+      // 날짜 범위 필터
+      const started = log.startTime || log.started_at;
+      if (started && (logFilters.dateFrom || logFilters.dateTo)) {
+        const ts = new Date(started);
+        if (isNaN(ts.getTime())) return false;
+        if (logFilters.dateFrom) {
+          const from = new Date(logFilters.dateFrom);
+          from.setHours(0, 0, 0, 0);
+          if (ts < from) return false;
+        }
+        if (logFilters.dateTo) {
+          const to = new Date(logFilters.dateTo);
+          to.setHours(23, 59, 59, 999);
+          if (ts > to) return false;
+        }
+      }
       return true;
     });
   },
@@ -309,6 +326,19 @@ const useAdminStore = create((set, get) => ({
     }
   },
 
+  updatePluginSettings: async (id, settings) => {
+    set({ loading: true, error: null });
+    try {
+      await api.updatePluginSettings(id, settings);
+      // 설정 변경 후 목록 새로고침
+      await get().fetchPlugins();
+    } catch (err) {
+      set({ error: `설정 저장 실패: ${err.message}` });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
   // Dashboard
   dashboardStats: {
     totalCrawlers: 0,
@@ -317,12 +347,20 @@ const useAdminStore = create((set, get) => ({
     successRate: 0,
     statusDistribution: { success: 0, failure: 0, partial: 0 },
     errorTrend: [],
+    alerts: [],
+    crawlerCards: [],
+    freshness: [],
   },
+  errorTrendDays: 7,
+  lastRefreshed: null,
 
-  fetchDashboard: async () => {
+  setErrorTrendDays: (days) => set({ errorTrendDays: days }),
+
+  fetchDashboard: async (days) => {
+    const d = days ?? get().errorTrendDays;
     set({ loading: true, error: null });
     try {
-      const stats = await api.getDashboardStats();
+      const stats = await api.getDashboardStats({ days: d });
       set({
         dashboardStats: {
           totalCrawlers: stats.totalCrawlers ?? 0,
@@ -331,7 +369,11 @@ const useAdminStore = create((set, get) => ({
           successRate: stats.successRate ?? 0,
           statusDistribution: stats.statusDistribution ?? { success: 0, failure: 0, partial: 0 },
           errorTrend: stats.errorTrend ?? [],
+          alerts: stats.alerts ?? [],
+          crawlerCards: stats.crawlerCards ?? [],
+          freshness: stats.freshness ?? [],
         },
+        lastRefreshed: new Date().toISOString(),
       });
     } catch (err) {
       set({ error: `⚠️ 서버 연결 실패: 대시보드 데이터를 불러올 수 없습니다 (${err.message})` });
