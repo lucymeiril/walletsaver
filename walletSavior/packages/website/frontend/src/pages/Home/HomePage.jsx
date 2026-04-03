@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Search, X, TrendingUp, TrendingDown, Minus, ArrowRight, Heart, Clock, MapPin, RefreshCw } from 'lucide-react';
 import { MARTS } from '../../utils/constants';
 import { fmt } from '../../utils/helpers';
+import { searchService } from '../../services/searchService';
 import useStore from '../../stores/appStore';
 import s from './HomePage.module.css';
 
@@ -14,6 +15,13 @@ const CATEGORIES = [
 ];
 
 const DEFAULT_COORDS = { lat: 37.4004, lng: 127.1055 };
+
+function highlightMatch(text, query) {
+  if (!query || !text) return text;
+  const idx = text.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return text;
+  return <>{text.slice(0, idx)}<strong>{text.slice(idx, idx + query.length)}</strong>{text.slice(idx + query.length)}</>;
+}
 
 function normalizeMartItems(data) {
   const raw = Array.isArray(data) ? data : data?.items || data?.data || [];
@@ -59,8 +67,13 @@ export default function HomePage() {
 
   const [query, setQuery] = useState('');
   const [acOpen, setAcOpen] = useState(false);
+  const [acKeywords, setAcKeywords] = useState([]);
+  const [acProducts, setAcProducts] = useState([]);
+  const [totalKeywords, setTotalKeywords] = useState(0);
+  const [totalProducts, setTotalProducts] = useState(0);
   const [martTab, setMartTab] = useState('emart');
   const inputRef = useRef(null);
+  const debounceRef = useRef(null);
 
   const [products, setProducts] = useState([]);
   const [hotdeals, setHotdeals] = useState([]);
@@ -68,6 +81,7 @@ export default function HomePage() {
   const [communityPosts, setCommunityPosts] = useState([]);
   const [gasStations, setGasStations] = useState([]);
   const [trending, setTrending] = useState([]);
+  const [trendingKeywords, setTrendingKeywords] = useState([]);
 
   // 섹션별 로딩/에러 상태
   const [sectionLoading, setSectionLoading] = useState({
@@ -115,7 +129,8 @@ export default function HomePage() {
       fetch('/api/posts?board=hotdeal&per_page=5').then(r => r.json()),
       fetch(`/api/gas/nearby?${gasQuery}`).then(r => r.json()),
       fetch('/api/products/trending').then(r => r.json()),
-    ]).then(([dealRes, prodRes, postRes, gasRes, trendRes]) => {
+      searchService.trending(8),
+    ]).then(([dealRes, prodRes, postRes, gasRes, trendRes, trendApiRes]) => {
       // 핫딜 (우선 표시)
       if (dealRes.status === 'fulfilled') {
         setHotdeals(dealRes.value.data || []);
@@ -148,13 +163,18 @@ export default function HomePage() {
       }
       setSectionLoading(prev => ({ ...prev, gas: false }));
 
-      // 인기 검색어
+      // 인기 검색어 (기존 /api/products/trending)
       if (trendRes.status === 'fulfilled') {
         setTrending(trendRes.value.data || []);
       } else {
         setSectionError(prev => ({ ...prev, trending: true }));
       }
       setSectionLoading(prev => ({ ...prev, trending: false }));
+
+      // 인기 키워드 (새 API — 자동완성용)
+      if (trendApiRes.status === 'fulfilled') {
+        setTrendingKeywords(trendApiRes.value.data || []);
+      }
     });
   }, []);
 
@@ -177,9 +197,52 @@ export default function HomePage() {
 
   useEffect(() => { fetchMart(martTab); }, [martTab, fetchMart]);
 
-  const matches = query.length > 0
-    ? products.filter(p => p.name?.includes(query) || p.cat?.includes(query))
-    : [];
+  // 자동완성 API (200ms 디바운스)
+  const fetchAutocomplete = useCallback((value) => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (!value || value.length < 1) {
+      setAcKeywords([]);
+      setAcProducts([]);
+      setTotalKeywords(0);
+      setTotalProducts(0);
+      return;
+    }
+    debounceRef.current = setTimeout(async () => {
+      try {
+        const res = await searchService.autocomplete(value);
+        const d = res.data || {};
+        setAcKeywords(d.keywords || []);
+        setAcProducts(d.products || []);
+        setTotalKeywords(d.total_keyword_count || 0);
+        setTotalProducts(d.total_product_count || 0);
+      } catch {
+        setAcKeywords([]);
+        setAcProducts([]);
+      }
+    }, 200);
+  }, []);
+
+  useEffect(() => {
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+  }, []);
+
+  const handleKeywordClick = useCallback((kw) => {
+    addRecentSearch(kw.word);
+    searchService.trackKeyword(kw.id);
+    setQuery('');
+    setAcOpen(false);
+    setAcKeywords([]);
+    setAcProducts([]);
+    navigate(`/search?q=${encodeURIComponent(kw.word)}`);
+  }, [navigate, addRecentSearch]);
+
+  const handleProductClick = useCallback((p) => {
+    setQuery('');
+    setAcOpen(false);
+    setAcKeywords([]);
+    setAcProducts([]);
+    navigate(`/price/${p.id}`);
+  }, [navigate]);
 
   const selectProduct = useCallback((p) => {
     setSelectedProduct(p);
@@ -228,36 +291,72 @@ export default function HomePage() {
                 ref={inputRef}
                 className={s.searchInput}
                 value={query}
-                onChange={(e) => { setQuery(e.target.value); setAcOpen(true); }}
+                onChange={(e) => { setQuery(e.target.value); setAcOpen(true); fetchAutocomplete(e.target.value); }}
                 onFocus={() => setAcOpen(true)}
                 placeholder="무엇을 찾으시나요?"
                 autoComplete="off"
               />
               {query && (
-                <button className={s.searchClear} onClick={() => { setQuery(''); setAcOpen(false); }}>
+                <button className={s.searchClear} onClick={() => { setQuery(''); setAcOpen(false); setAcKeywords([]); setAcProducts([]); }}>
                   <X size={16} />
                 </button>
               )}
             </div>
 
-            {acOpen && query.length > 0 && matches.length > 0 && (
+            {acOpen && (acKeywords.length > 0 || acProducts.length > 0) && (
               <div className={s.acList}>
-                {matches.map(p => (
-                  <div key={p.id} className={s.acItem} onClick={() => selectProduct(p)}>
-                    <span className={s.acIcon}>{p.icon}</span>
-                    <div className={s.acInfo}>
-                      <div className={s.acName}>{p.name}</div>
-                      <div className={s.acCat}>{p.cat}</div>
-                    </div>
-                    <span className={s.acPrice}>{fmt(p.cur)}원</span>
+                {acKeywords.length > 0 && (
+                  <>
+                    <div className={s.acSectionLabel}>키워드</div>
+                    {acKeywords.map(kw => (
+                      <div key={`kw-${kw.id}`} className={s.acItem} onClick={() => handleKeywordClick(kw)}>
+                        <span className={s.acIcon}>🔍</span>
+                        <div className={s.acInfo}>
+                          <div className={s.acName}>{highlightMatch(kw.word, query)}</div>
+                          {kw.matched_synonym && <div className={s.acHint}>← &ldquo;{kw.matched_synonym}&rdquo; 포함</div>}
+                          <div className={s.acCat}>{kw.category_path}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                )}
+                {acKeywords.length > 0 && acProducts.length > 0 && <div className={s.acDivider} />}
+                {acProducts.length > 0 && (
+                  <>
+                    <div className={s.acSectionLabel}>상품</div>
+                    {acProducts.map(p => (
+                      <div key={`p-${p.id}`} className={s.acItem} onClick={() => handleProductClick(p)}>
+                        <span className={s.acIcon}>{p.icon || '📦'}</span>
+                        <div className={s.acInfo}>
+                          <div className={s.acName}>{highlightMatch(p.name, query)}</div>
+                          <div className={s.acCat}>{p.unit} {p.current_price ? `· ${fmt(p.current_price)}원` : ''}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                )}
+                {(totalKeywords > 3 || totalProducts > 5) && (
+                  <div className={s.acFooter} onClick={() => { addRecentSearch(query); navigate(`/search?q=${encodeURIComponent(query)}`); setQuery(''); setAcOpen(false); }}>
+                    🔍 &ldquo;{query}&rdquo; 전체 검색 결과 보기 ({totalKeywords + totalProducts}건)
                   </div>
-                ))}
+                )}
               </div>
             )}
 
-            {acOpen && query.length > 0 && matches.length === 0 && (
+            {acOpen && query.length > 0 && acKeywords.length === 0 && acProducts.length === 0 && (
               <div className={s.acList}>
-                <div className={s.acEmpty}>검색 결과가 없습니다</div>
+                <div className={s.acEmpty}>
+                  😅 &ldquo;{query}&rdquo;에 대한 결과가 없습니다.
+                  {trendingKeywords.length > 0 && (
+                    <div className={s.acTrending}>
+                      {trendingKeywords.map(t => (
+                        <button key={t.word} className={s.acTrendBtn} onClick={() => { setQuery(t.word); fetchAutocomplete(t.word); }}>
+                          🔥 {t.word}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
@@ -272,9 +371,9 @@ export default function HomePage() {
                     <div className={s.trendList}>
                       {recentSearches.slice(0, 5).map(rs => (
                         <button key={rs.timestamp} className={s.trendItem} onClick={() => {
-                          const p = products.find(pr => pr.name === rs.query);
-                          if (p) selectProduct(p);
-                          else { setQuery(rs.query); setAcOpen(true); }
+                          setQuery(rs.query);
+                          setAcOpen(true);
+                          fetchAutocomplete(rs.query);
                         }}>
                           <Clock size={12} /> {rs.query}
                         </button>
@@ -282,18 +381,37 @@ export default function HomePage() {
                     </div>
                   </>
                 )}
-                <span className={s.trendTitle}>🔥 인기 검색어</span>
-                <div className={s.trendList}>
-                  {trending.map((t, i) => (
-                    <button key={t} className={s.trendItem} onClick={() => {
-                      setQuery(t);
-                      const p = products.find(pr => pr.name === t || t.includes(pr.name));
-                      if (p) selectProduct(p);
-                    }}>
-                      <span className={s.trendRank}>{i + 1}</span> {t}
-                    </button>
-                  ))}
-                </div>
+                {trendingKeywords.length > 0 && (
+                  <>
+                    <span className={s.trendTitle}>🔥 인기 검색어</span>
+                    <div className={s.trendList}>
+                      {trendingKeywords.map((t, i) => (
+                        <button key={t.word} className={s.trendItem} onClick={() => {
+                          setQuery(t.word);
+                          fetchAutocomplete(t.word);
+                        }}>
+                          <span className={s.trendRank}>{i + 1}</span> {t.icon || '🔥'} {t.word}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+                {trendingKeywords.length === 0 && trending.length > 0 && (
+                  <>
+                    <span className={s.trendTitle}>🔥 인기 검색어</span>
+                    <div className={s.trendList}>
+                      {trending.map((t, i) => (
+                        <button key={typeof t === 'string' ? t : t.word || i} className={s.trendItem} onClick={() => {
+                          const word = typeof t === 'string' ? t : t.word;
+                          setQuery(word);
+                          fetchAutocomplete(word);
+                        }}>
+                          <span className={s.trendRank}>{i + 1}</span> {typeof t === 'string' ? t : t.word}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>
@@ -301,8 +419,9 @@ export default function HomePage() {
           <div className={s.tags}>
             {quickTags.map(t => (
               <button key={t} className={s.tag} onClick={() => {
-                const p = products.find(pr => pr.name === t);
-                if (p) selectProduct(p);
+                setQuery(t);
+                setAcOpen(true);
+                fetchAutocomplete(t);
               }}>{t}</button>
             ))}
           </div>
@@ -311,9 +430,9 @@ export default function HomePage() {
             <div className={s.recentChips}>
               {recentSearches.slice(0, 6).map(rs => (
                 <button key={rs.timestamp} className={s.recentChip} onClick={() => {
-                  const p = products.find(pr => pr.name === rs.query);
-                  if (p) selectProduct(p);
-                  else { setQuery(rs.query); setAcOpen(true); }
+                  setQuery(rs.query);
+                  setAcOpen(true);
+                  fetchAutocomplete(rs.query);
                 }}>
                   <Clock size={11} /> {rs.query}
                 </button>

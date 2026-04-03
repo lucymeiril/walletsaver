@@ -4,10 +4,18 @@ import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContai
 import { Heart, Search, TrendingUp, TrendingDown, Minus, ChevronDown, ChevronUp } from 'lucide-react';
 import { MARTS } from '../../utils/constants';
 import { fmt } from '../../utils/helpers';
+import { searchService } from '../../services/searchService';
 import useStore from '../../stores/appStore';
 import useDebounce from '../../hooks/useDebounce';
 import Spinner from '../../components/common/Spinner';
 import s from './PricePage.module.css';
+
+function highlightMatch(text, query) {
+  if (!query || !text) return text;
+  const idx = text.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return text;
+  return <>{text.slice(0, idx)}<strong>{text.slice(idx, idx + query.length)}</strong>{text.slice(idx + query.length)}</>;
+}
 
 export default function PricePage() {
   const { id } = useParams();
@@ -20,7 +28,11 @@ export default function PricePage() {
   const [chartData, setChartData] = useState([]);
   const [relatedHotdeals, setRelatedHotdeals] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [suggestions, setSuggestions] = useState([]);
+  const [acKeywords, setAcKeywords] = useState([]);
+  const [acProducts, setAcProducts] = useState([]);
+  const [totalKeywords, setTotalKeywords] = useState(0);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [trendingKeywords, setTrendingKeywords] = useState([]);
   const [detailOpen, setDetailOpen] = useState(false);
 
   // Fetch all products for search
@@ -60,24 +72,43 @@ export default function PricePage() {
   const [range, setRange] = useState(30);
   const [variantIdx, setVariantIdx] = useState(0);
 
-  const debouncedQuery = useDebounce(searchQuery, 300);
+  const debouncedQuery = useDebounce(searchQuery, 200);
 
-  // 검색 자동완성 — DB 키워드 연동
+  // 인기 검색어 로드
   useEffect(() => {
-    if (debouncedQuery.length < 2) { setSuggestions([]); return; }
-    fetch(`/api/search/autocomplete?q=${encodeURIComponent(debouncedQuery)}&limit=10`)
-      .then(r => r.json())
-      .then(res => setSuggestions(res.data || []))
-      .catch(() => setSuggestions([]));
+    searchService.trending(8)
+      .then(res => setTrendingKeywords(res.data || []))
+      .catch(() => {});
+  }, []);
+
+  // 검색 자동완성 — 키워드+상품 2섹션
+  useEffect(() => {
+    if (debouncedQuery.length < 1) {
+      setAcKeywords([]);
+      setAcProducts([]);
+      setTotalKeywords(0);
+      setTotalProducts(0);
+      return;
+    }
+    searchService.autocomplete(debouncedQuery)
+      .then(res => {
+        const d = res.data || {};
+        setAcKeywords(d.keywords || []);
+        setAcProducts(d.products || []);
+        setTotalKeywords(d.total_keyword_count || 0);
+        setTotalProducts(d.total_product_count || 0);
+      })
+      .catch(() => {
+        setAcKeywords([]);
+        setAcProducts([]);
+      });
   }, [debouncedQuery]);
 
-  const searchResults = debouncedQuery.length > 0
-    ? (suggestions.length > 0
-      ? suggestions.map(sg => {
-          const found = products.find(p => p.id === sg.id);
-          return found || { id: sg.id, name: sg.text, cat: '', cur: null, icon: '🔍' };
-        })
-      : products.filter(p => p.name?.includes(debouncedQuery) || p.cat?.includes(debouncedQuery)))
+  const hasAcResults = acKeywords.length > 0 || acProducts.length > 0;
+
+  // 기존 product 검색 결과 (products 목록 기반 — fallback)
+  const searchResults = debouncedQuery.length > 0 && !hasAcResults
+    ? products.filter(p => p.name?.includes(debouncedQuery) || p.cat?.includes(debouncedQuery))
     : [];
 
   const product = productData || (id ? products.find(p => p.id === Number(id)) : null) || selectedProduct;
@@ -105,6 +136,18 @@ export default function PricePage() {
   const handleSelectProduct = (p) => {
     setSelectedProduct(p);
     addRecentSearch(p.name);
+    setSearchQuery('');
+    navigate(`/price/${p.id}`);
+  };
+
+  const handleKeywordClick = (kw) => {
+    addRecentSearch(kw.word);
+    searchService.trackKeyword(kw.id);
+    setSearchQuery('');
+    navigate(`/search?q=${encodeURIComponent(kw.word)}`);
+  };
+
+  const handleAcProductClick = (p) => {
     setSearchQuery('');
     navigate(`/price/${p.id}`);
   };
@@ -199,9 +242,39 @@ export default function PricePage() {
               placeholder="상품명을 검색하세요 (양파, 삼겹살, 계란...)"
               autoComplete="off"
             />
-            {searchResults.length > 0 && (
+            {(hasAcResults || searchResults.length > 0) && (
               <div className={s.acList}>
-                {searchResults.map(p => (
+                {acKeywords.length > 0 && (
+                  <>
+                    <div className={s.acSectionLabel}>키워드</div>
+                    {acKeywords.map(kw => (
+                      <div key={`kw-${kw.id}`} className={s.acItem} onClick={() => handleKeywordClick(kw)}>
+                        <span className={s.acIcon}>🔍</span>
+                        <div className={s.acContent}>
+                          <span className={s.acName}>{highlightMatch(kw.word, searchQuery)}</span>
+                          {kw.matched_synonym && <span className={s.acHint}>← &ldquo;{kw.matched_synonym}&rdquo; 포함</span>}
+                          <span className={s.acPath}>{kw.category_path}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                )}
+                {acKeywords.length > 0 && acProducts.length > 0 && <div className={s.acDivider} />}
+                {acProducts.length > 0 && (
+                  <>
+                    <div className={s.acSectionLabel}>상품</div>
+                    {acProducts.map(p => (
+                      <div key={`p-${p.id}`} className={s.acItem} onClick={() => handleAcProductClick(p)}>
+                        <span className={s.acIcon}>{p.icon || '📦'}</span>
+                        <div className={s.acContent}>
+                          <span className={s.acName}>{highlightMatch(p.name, searchQuery)}</span>
+                          <span className={s.acMeta}>{p.unit} {p.current_price ? `· ${fmt(p.current_price)}원` : ''}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                )}
+                {!hasAcResults && searchResults.map(p => (
                   <div key={p.id} className={s.acItem} onClick={() => handleSelectProduct(p)}>
                     <span className={s.acIcon}>{p.icon}</span>
                     <span className={s.acName}>{p.name}</span>
@@ -209,6 +282,25 @@ export default function PricePage() {
                     <span className={s.acPrice}>{fmt(p.cur)}원</span>
                   </div>
                 ))}
+                {(totalKeywords > 3 || totalProducts > 5) && (
+                  <div className={s.acFooter} onClick={() => navigate(`/search?q=${encodeURIComponent(searchQuery)}`)}>
+                    🔍 &ldquo;{searchQuery}&rdquo; 전체 검색 결과 보기 ({totalKeywords + totalProducts}건)
+                  </div>
+                )}
+              </div>
+            )}
+            {debouncedQuery.length > 0 && !hasAcResults && searchResults.length === 0 && (
+              <div className={s.acList}>
+                <div className={s.acEmpty}>
+                  😅 &ldquo;{searchQuery}&rdquo;에 대한 결과가 없습니다.
+                  {trendingKeywords.length > 0 && (
+                    <div className={s.acTrending}>
+                      {trendingKeywords.map(t => (
+                        <button key={t.word} className={s.acTrendBtn} onClick={() => setSearchQuery(t.word)}>🔥 {t.word}</button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -257,9 +349,39 @@ export default function PricePage() {
             placeholder="다른 상품 검색..."
             autoComplete="off"
           />
-          {searchResults.length > 0 && (
+          {(hasAcResults || searchResults.length > 0) && (
             <div className={s.acList}>
-              {searchResults.map(p => (
+              {acKeywords.length > 0 && (
+                <>
+                  <div className={s.acSectionLabel}>키워드</div>
+                  {acKeywords.map(kw => (
+                    <div key={`kw-${kw.id}`} className={s.acItem} onClick={() => handleKeywordClick(kw)}>
+                      <span className={s.acIcon}>🔍</span>
+                      <div className={s.acContent}>
+                        <span className={s.acName}>{highlightMatch(kw.word, searchQuery)}</span>
+                        {kw.matched_synonym && <span className={s.acHint}>← &ldquo;{kw.matched_synonym}&rdquo; 포함</span>}
+                        <span className={s.acPath}>{kw.category_path}</span>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
+              {acKeywords.length > 0 && acProducts.length > 0 && <div className={s.acDivider} />}
+              {acProducts.length > 0 && (
+                <>
+                  <div className={s.acSectionLabel}>상품</div>
+                  {acProducts.map(p => (
+                    <div key={`p-${p.id}`} className={s.acItem} onClick={() => handleAcProductClick(p)}>
+                      <span className={s.acIcon}>{p.icon || '📦'}</span>
+                      <div className={s.acContent}>
+                        <span className={s.acName}>{highlightMatch(p.name, searchQuery)}</span>
+                        <span className={s.acMeta}>{p.unit} {p.current_price ? `· ${fmt(p.current_price)}원` : ''}</span>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
+              {!hasAcResults && searchResults.map(p => (
                 <div key={p.id} className={s.acItem} onClick={() => handleSelectProduct(p)}>
                   <span className={s.acIcon}>{p.icon}</span>
                   <span className={s.acName}>{p.name}</span>
@@ -267,6 +389,25 @@ export default function PricePage() {
                   <span className={s.acPrice}>{fmt(p.cur)}원</span>
                 </div>
               ))}
+              {(totalKeywords > 3 || totalProducts > 5) && (
+                <div className={s.acFooter} onClick={() => navigate(`/search?q=${encodeURIComponent(searchQuery)}`)}>
+                  🔍 &ldquo;{searchQuery}&rdquo; 전체 검색 결과 보기 ({totalKeywords + totalProducts}건)
+                </div>
+              )}
+            </div>
+          )}
+          {debouncedQuery.length > 0 && !hasAcResults && searchResults.length === 0 && (
+            <div className={s.acList}>
+              <div className={s.acEmpty}>
+                😅 &ldquo;{searchQuery}&rdquo;에 대한 결과가 없습니다.
+                {trendingKeywords.length > 0 && (
+                  <div className={s.acTrending}>
+                    {trendingKeywords.map(t => (
+                      <button key={t.word} className={s.acTrendBtn} onClick={() => setSearchQuery(t.word)}>🔥 {t.word}</button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </div>
