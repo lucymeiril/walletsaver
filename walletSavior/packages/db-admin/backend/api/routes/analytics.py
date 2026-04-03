@@ -1,5 +1,5 @@
 """분석 데이터 라우트"""
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime, timedelta
@@ -20,7 +20,8 @@ from services.export import (
     get_statistics_summary,
 )
 from storage.models import (
-    Product, BaselinePrice, DiscountHistory, Category, CrawlLog, CrawlStatus,
+    Product, BaselinePrice, DiscountHistory, HotdealPrice,
+    Category, CrawlLog, CrawlStatus,
 )
 
 router = APIRouter(prefix="/analytics", tags=["analytics"])
@@ -176,5 +177,184 @@ def summary():
         base["sourceStats"] = source_stats
         base["recentIngestions"] = recent_ingestions
         return base
+    finally:
+        session.close()
+
+
+@router.get("/price-trends")
+def price_trends(
+    product_ids: list[int] = Query(default=[]),
+    days: int = 30,
+):
+    """복수 상품 가격 추이 — 같은 차트에 여러 상품 라인 비교"""
+    session = get_session()
+    try:
+        cutoff = datetime.utcnow() - timedelta(days=days)
+        result = {}
+
+        for pid in product_ids[:5]:
+            product = session.execute(
+                select(Product).where(Product.id == pid)
+            ).scalar_one_or_none()
+            if not product:
+                continue
+
+            # 기준가 이력
+            baseline_rows = session.execute(
+                select(BaselinePrice.price, BaselinePrice.recorded_at)
+                .where(and_(
+                    BaselinePrice.product_id == pid,
+                    BaselinePrice.recorded_at >= cutoff,
+                ))
+                .order_by(BaselinePrice.recorded_at)
+            ).all()
+
+            # 할인가 이력
+            discount_rows = session.execute(
+                select(DiscountHistory.price, DiscountHistory.crawled_at)
+                .where(and_(
+                    DiscountHistory.product_id == pid,
+                    DiscountHistory.crawled_at >= cutoff,
+                ))
+                .order_by(DiscountHistory.crawled_at)
+            ).all()
+
+            # 날짜별 가격 병합 (기준가 우선)
+            date_prices: dict[str, float] = {}
+            for r in baseline_rows:
+                d = r.recorded_at.strftime("%Y-%m-%d") if r.recorded_at else None
+                if d:
+                    date_prices[d] = r.price
+            for r in discount_rows:
+                d = r.crawled_at.strftime("%Y-%m-%d") if r.crawled_at else None
+                if d and d not in date_prices:
+                    date_prices[d] = r.price
+
+            data = [{"date": d, "price": p} for d, p in sorted(date_prices.items())]
+
+            # 최신 기준가 (수평선용)
+            latest_baseline = session.execute(
+                select(BaselinePrice.price)
+                .where(BaselinePrice.product_id == pid)
+                .order_by(BaselinePrice.recorded_at.desc())
+                .limit(1)
+            ).scalar()
+
+            # 최저 핫딜가 (수평선용)
+            hotdeal_min = session.execute(
+                select(func.min(HotdealPrice.price))
+                .where(HotdealPrice.product_id == pid)
+            ).scalar()
+
+            result[str(pid)] = {
+                "name": product.name,
+                "data": data,
+                "baselinePrice": latest_baseline,
+                "hotdealPrice": float(hotdeal_min) if hotdeal_min else None,
+            }
+
+        return result
+    finally:
+        session.close()
+
+
+@router.get("/source-stats")
+def source_stats_detail():
+    """소스별 상세 통계 — 상품 수, 평균 가격, 최근 업데이트"""
+    session = get_session()
+    try:
+        now = datetime.utcnow()
+        stats: dict[str, dict] = {}
+
+        # 기준가 소스별
+        baseline_rows = session.execute(
+            select(
+                BaselinePrice.source,
+                func.count(func.distinct(BaselinePrice.product_id)).label("product_count"),
+                func.avg(BaselinePrice.price).label("avg_price"),
+                func.max(BaselinePrice.recorded_at).label("last_update"),
+                func.count().label("total_records"),
+            ).group_by(BaselinePrice.source)
+        ).all()
+
+        for r in baseline_rows:
+            hours = (
+                (now - r.last_update).total_seconds() / 3600
+                if r.last_update else 999
+            )
+            status = "error" if hours > 72 else ("warning" if hours > 24 else "active")
+            stats[r.source] = {
+                "source": r.source,
+                "productCount": r.product_count,
+                "avgPrice": round(float(r.avg_price or 0)),
+                "lastUpdate": r.last_update.isoformat() if r.last_update else None,
+                "totalRecords": r.total_records,
+                "status": status,
+            }
+
+        # 할인가 소스별
+        discount_rows = session.execute(
+            select(
+                DiscountHistory.source,
+                func.count(func.distinct(DiscountHistory.product_id)).label("product_count"),
+                func.avg(DiscountHistory.price).label("avg_price"),
+                func.max(DiscountHistory.crawled_at).label("last_update"),
+                func.count().label("total_records"),
+            ).group_by(DiscountHistory.source)
+        ).all()
+
+        for r in discount_rows:
+            hours = (
+                (now - r.last_update).total_seconds() / 3600
+                if r.last_update else 999
+            )
+            status = "error" if hours > 72 else ("warning" if hours > 24 else "active")
+            if r.source in stats:
+                existing = stats[r.source]
+                existing["productCount"] += r.product_count
+                existing["avgPrice"] = round(
+                    (existing["avgPrice"] + float(r.avg_price or 0)) / 2
+                )
+                existing["totalRecords"] += r.total_records
+                # 최신 업데이트 일시 갱신
+                if r.last_update:
+                    iso = r.last_update.isoformat()
+                    if not existing["lastUpdate"] or iso > existing["lastUpdate"]:
+                        existing["lastUpdate"] = iso
+                # 상태 재계산
+                lu = existing["lastUpdate"]
+                if lu:
+                    h = (now - datetime.fromisoformat(lu)).total_seconds() / 3600
+                    existing["status"] = (
+                        "error" if h > 72 else ("warning" if h > 24 else "active")
+                    )
+            else:
+                stats[r.source] = {
+                    "source": r.source,
+                    "productCount": r.product_count,
+                    "avgPrice": round(float(r.avg_price or 0)),
+                    "lastUpdate": r.last_update.isoformat() if r.last_update else None,
+                    "totalRecords": r.total_records,
+                    "status": status,
+                }
+
+        return sorted(stats.values(), key=lambda x: x["totalRecords"], reverse=True)
+    finally:
+        session.close()
+
+
+@router.get("/products/search")
+def search_products_autocomplete(q: str = "", limit: int = 10):
+    """상품 검색 자동완성"""
+    session = get_session()
+    try:
+        stmt = (
+            select(Product.id, Product.name)
+            .where(Product.is_active == True, Product.name.ilike(f"%{q}%"))
+            .order_by(Product.name)
+            .limit(limit)
+        )
+        rows = session.execute(stmt).all()
+        return [{"id": r.id, "name": r.name} for r in rows]
     finally:
         session.close()

@@ -53,6 +53,9 @@ export const api = {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ enabled }),
   }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  runScheduleNow: (name) => fetch(`${API_BASE}/schedules/${name}/run-now`, {
+    method: 'POST',
+  }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
   // 플러그인
   getPlugins: () => fetch(`${API_BASE}/plugins`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
   togglePlugin: (id, status) => fetch(`${API_BASE}/plugins/${id}/status`, {

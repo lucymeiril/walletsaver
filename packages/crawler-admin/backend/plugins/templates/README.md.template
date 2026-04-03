@@ -1,0 +1,41 @@
+# {display_name} 크롤러
+
+## 개요
+{description}
+
+## 설정
+
+| 항목 | 값 |
+|------|-----|
+| 카테고리 | {category} |
+| 대상 URL | {target_url} |
+| 난이도 | {difficulty} |
+| 기본 전략 | {strategy} |
+| 스케줄 | {cron} |
+
+## 데이터 모델
+출력 모델: `{output_model}`
+
+### 필수 필드
+- `title` — 제목
+- `url` — 원본 링크
+
+## 파일 구조
+```
+{name}/
+├── __init__.py
+├── crawler.py      # 크롤러 구현
+├── plugin.yaml     # 메타데이터
+├── tests/
+│   └── test_crawler.py
+└── README.md
+```
+
+## 테스트
+```bash
+cd E:\pdf\capston01\walletSavior
+py -m pytest packages/crawler-admin/backend/crawlers/{category}/{name}/tests/ -v
+```
+
+## 변경 이력
+- v1.0.0: 최초 작성

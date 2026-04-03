@@ -11,6 +11,8 @@ from services.category_mgmt import (
     update_category,
     delete_category,
     get_category_products,
+    get_category_product_count,
+    move_category,
 )
 
 router = APIRouter(prefix="/categories", tags=["categories"])
@@ -31,6 +33,10 @@ class CategoryUpdate(BaseModel):
     sort_order: Optional[int] = None
     attributes: Optional[dict] = None
     is_active: Optional[bool] = None
+
+
+class CategoryMove(BaseModel):
+    new_parent_id: Optional[str] = None
 
 
 @router.get("/")
@@ -95,5 +101,27 @@ def category_products(category_id: str):
     session = get_session()
     try:
         return get_category_products(session, category_id)
+    finally:
+        session.close()
+
+
+@router.get("/{category_id}/product-count")
+def category_product_count(category_id: str):
+    session = get_session()
+    try:
+        count = get_category_product_count(session, category_id)
+        return {"category_id": category_id, "product_count": count}
+    finally:
+        session.close()
+
+
+@router.put("/{category_id}/move")
+def move_cat(category_id: str, body: CategoryMove):
+    session = get_session()
+    try:
+        result = move_category(session, category_id, body.new_parent_id)
+        if not result:
+            raise HTTPException(400, "이동 실패: 대상을 찾을 수 없거나 순환 참조가 발생합니다")
+        return result
     finally:
         session.close()

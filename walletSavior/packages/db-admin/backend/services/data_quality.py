@@ -6,7 +6,7 @@ import os
 from datetime import datetime, timedelta
 from typing import Any
 
-from sqlalchemy import select, func, text, inspect
+from sqlalchemy import select, func, text, inspect, and_
 from sqlalchemy.orm import Session
 
 from storage.models import (
@@ -117,7 +117,7 @@ def validate_crawl_data(items: list[dict]) -> dict:
 
 
 def generate_quality_report(session: Session) -> dict:
-    """전체 데이터 품질 리포트"""
+    """전체 데이터 품질 리포트 — 실데이터 기반 지표 계산"""
     product_count = session.execute(
         select(func.count()).select_from(Product)
     ).scalar() or 0
@@ -138,7 +138,7 @@ def generate_quality_report(session: Session) -> dict:
         select(func.count()).select_from(Category)
     ).scalar() or 0
 
-    # 상품 without 가격 데이터
+    # 가격 데이터 없는 상품
     products_no_price = session.execute(
         select(func.count()).select_from(Product).where(
             ~Product.id.in_(
@@ -154,6 +154,58 @@ def generate_quality_report(session: Session) -> dict:
         )
     ).scalar() or 0
 
+    # ── 품질 지표 실계산 ──
+
+    # 필드 완성도: 필수 필드(name, category_id, unit)가 모두 채워진 비율
+    products_all_fields = session.execute(
+        select(func.count()).select_from(Product).where(
+            and_(
+                Product.name.isnot(None),
+                Product.name != "",
+                Product.category_id.isnot(None),
+                Product.unit.isnot(None),
+                Product.unit != "",
+            )
+        )
+    ).scalar() or 0
+    field_completeness = round(
+        products_all_fields / max(product_count, 1) * 100, 1
+    )
+
+    # 가격 데이터 커버리지: 가격 이력이 있는 상품 비율
+    price_coverage = round(
+        (product_count - products_no_price) / max(product_count, 1) * 100, 1
+    )
+
+    # 카테고리 분류율: 카테고리가 지정된 상품 비율
+    category_rate = round(
+        (product_count - products_no_category) / max(product_count, 1) * 100, 1
+    )
+
+    # 종합 완성도: 세 지표의 평균
+    completeness = round(
+        (field_completeness + price_coverage + category_rate) / 3, 1
+    )
+
+    # 정확도: 유효한 가격 데이터(price > 0) 비율
+    valid_prices = session.execute(
+        select(func.count()).select_from(BaselinePrice).where(
+            BaselinePrice.price > 0
+        )
+    ).scalar() or 0
+    accuracy = round(valid_prices / max(baseline_count, 1) * 100, 1)
+
+    # 중복 상품 수 (이름 기준)
+    dup_subq = (
+        select(Product.name)
+        .group_by(Product.name)
+        .having(func.count() > 1)
+        .subquery()
+    )
+    duplicate_count = session.execute(
+        select(func.count()).select_from(dup_subq)
+    ).scalar() or 0
+
     return {
         "counts": {
             "products": product_count,
@@ -165,6 +217,12 @@ def generate_quality_report(session: Session) -> dict:
         "quality": {
             "products_without_prices": products_no_price,
             "products_without_category": products_no_category,
+            "field_completeness": field_completeness,
+            "price_coverage": price_coverage,
+            "category_rate": category_rate,
+            "completeness": completeness,
+            "accuracy": accuracy,
+            "duplicates": duplicate_count,
         },
         "generated_at": datetime.utcnow().isoformat(),
     }

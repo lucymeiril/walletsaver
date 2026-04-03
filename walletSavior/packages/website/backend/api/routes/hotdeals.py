@@ -108,3 +108,69 @@ async def report_hotdeal(request: Request, hotdeal_id: int):
             pass
 
     return ApiResponse(data={"success": True, "message": "신고가 접수되었습니다"})
+
+
+# --------------- 핫딜 댓글 API ---------------
+
+_hotdeal_comments: dict[int, list] = {}
+_comment_id_seq = 0
+
+
+@router.get("/{hotdeal_id}/comments")
+async def get_hotdeal_comments(request: Request, hotdeal_id: int):
+    """핫딜 댓글 목록."""
+    storage = request.app.state.storage
+    if storage is not None:
+        try:
+            result = storage.get_hotdeal_comments(hotdeal_id)
+            return ApiResponse(data=result)
+        except Exception:
+            pass
+    return ApiResponse(data=_hotdeal_comments.get(hotdeal_id, []))
+
+
+@router.post("/{hotdeal_id}/comments")
+async def add_hotdeal_comment(request: Request, hotdeal_id: int):
+    """핫딜 댓글 작성."""
+    global _comment_id_seq
+    body = await request.json()
+    content = body.get("content", "").strip()
+    author = body.get("author", "익명")
+
+    if not content:
+        raise HTTPException(status_code=400, detail="댓글 내용을 입력해주세요")
+
+    storage = request.app.state.storage
+    if storage is not None:
+        try:
+            result = storage.add_hotdeal_comment(hotdeal_id, content, author)
+            return ApiResponse(data=result)
+        except Exception:
+            pass
+
+    _comment_id_seq += 1
+    comment = {
+        "id": _comment_id_seq,
+        "author": author,
+        "text": content,
+        "time": "방금 전",
+        "hotdeal_id": hotdeal_id,
+    }
+    _hotdeal_comments.setdefault(hotdeal_id, []).append(comment)
+    return ApiResponse(data=comment)
+
+
+@router.delete("/{hotdeal_id}/comments/{comment_id}")
+async def delete_hotdeal_comment(request: Request, hotdeal_id: int, comment_id: int):
+    """핫딜 댓글 삭제."""
+    storage = request.app.state.storage
+    if storage is not None:
+        try:
+            storage.delete_hotdeal_comment(comment_id)
+            return ApiResponse(data={"success": True})
+        except Exception:
+            pass
+
+    comments = _hotdeal_comments.get(hotdeal_id, [])
+    _hotdeal_comments[hotdeal_id] = [c for c in comments if c["id"] != comment_id]
+    return ApiResponse(data={"success": True})

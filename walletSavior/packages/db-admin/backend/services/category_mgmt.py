@@ -2,17 +2,26 @@
 from __future__ import annotations
 
 from typing import Optional
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 
 from storage.models import Category, Product
 
 
 def get_category_tree(session: Session) -> list[dict]:
-    """전체 카테고리 트리 반환"""
+    """전체 카테고리 트리 반환 (product_count 포함)"""
     categories = session.execute(
         select(Category).where(Category.is_active == True).order_by(Category.sort_order)
     ).scalars().all()
+
+    # 카테고리별 직접 소속 상품 수 집계
+    product_counts = dict(
+        session.execute(
+            select(Product.category_id, func.count(Product.id))
+            .where(Product.is_active == True, Product.category_id.isnot(None))
+            .group_by(Product.category_id)
+        ).all()
+    )
 
     by_id: dict[str, dict] = {}
     for cat in categories:
@@ -23,6 +32,7 @@ def get_category_tree(session: Session) -> list[dict]:
             "depth": cat.depth,
             "icon": cat.icon,
             "attributes": cat.attributes,
+            "productCount": product_counts.get(cat.id, 0),
             "children": [],
         }
 
@@ -167,3 +177,72 @@ def get_category_products(session: Session, category_id: str) -> list[dict]:
         }
         for p in products
     ]
+
+
+def get_category_product_count(session: Session, category_id: str) -> int:
+    """카테고리 소속 상품 수"""
+    count = session.execute(
+        select(func.count(Product.id)).where(
+            Product.category_id == category_id,
+            Product.is_active == True,
+        )
+    ).scalar()
+    return count or 0
+
+
+def move_category(
+    session: Session, category_id: str, new_parent_id: Optional[str]
+) -> Optional[dict]:
+    """카테고리 부모 변경 (이동)"""
+    cat = session.get(Category, category_id)
+    if not cat:
+        return None
+
+    # 자기 자신을 부모로 설정 불가
+    if new_parent_id == category_id:
+        return None
+
+    # 순환 참조 방지: new_parent가 category_id의 하위인지 확인
+    if new_parent_id:
+        parent = session.get(Category, new_parent_id)
+        if not parent:
+            return None
+        # 상위 체인을 따라가며 순환 확인
+        check_id = new_parent_id
+        while check_id:
+            if check_id == category_id:
+                return None
+            check_cat = session.get(Category, check_id)
+            check_id = check_cat.parent_id if check_cat else None
+
+    # 부모 변경
+    cat.parent_id = new_parent_id
+
+    # depth 재계산
+    if new_parent_id:
+        new_parent = session.get(Category, new_parent_id)
+        cat.depth = (new_parent.depth + 1) if new_parent else 0
+    else:
+        cat.depth = 0
+
+    # 하위 카테고리 depth도 재귀적으로 갱신
+    _update_children_depth(session, cat)
+
+    session.commit()
+    session.refresh(cat)
+    return {
+        "id": cat.id,
+        "name": cat.name,
+        "parent_id": cat.parent_id,
+        "depth": cat.depth,
+    }
+
+
+def _update_children_depth(session: Session, parent: Category) -> None:
+    """하위 카테고리 depth 재귀 갱신"""
+    children = session.execute(
+        select(Category).where(Category.parent_id == parent.id)
+    ).scalars().all()
+    for child in children:
+        child.depth = parent.depth + 1
+        _update_children_depth(session, child)

@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+ENV/
+env/
+
+# Data
+!proj/.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.zip
+*.log
+
+crawl_results/
+

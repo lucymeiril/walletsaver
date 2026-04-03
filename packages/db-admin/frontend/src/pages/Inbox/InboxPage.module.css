@@ -1,0 +1,390 @@
+.page {
+  max-width: 1200px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+}
+
+.title {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+}
+
+.refreshBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.refreshBtn:hover { color: var(--text); border-color: var(--accent); }
+.refreshBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.errorBanner {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(248, 113, 113, 0.12);
+  color: var(--red);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--space-md);
+}
+
+/* Stats bar */
+.statsBar {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.stat {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 12px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.statValue {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--accent);
+}
+
+.statValueGreen {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--green);
+}
+
+.statValueRed {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--red);
+}
+
+.statLabel {
+  font-size: var(--fs-sm);
+  color: var(--text2);
+}
+
+/* List */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.empty {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--text3);
+  font-size: var(--fs-sm);
+}
+
+/* Card */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.card:hover { border-color: var(--accent); }
+
+.cardContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cardLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.crawlerName {
+  font-weight: var(--fw-semi);
+  color: var(--text);
+  font-size: var(--fs-base);
+}
+
+.cardTimestamp {
+  font-size: var(--fs-xs);
+  color: var(--text3);
+}
+
+.cardRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.itemCount {
+  font-size: var(--fs-sm);
+  color: var(--text2);
+  font-weight: var(--fw-medium);
+}
+
+.qualityBadge {
+  padding: 2px 10px;
+  border-radius: 100px;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semi);
+}
+
+.qualityHigh { background: rgba(52, 211, 153, 0.15); color: var(--green); }
+.qualityMid { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+.qualityLow { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+
+.memoIcon {
+  font-size: 16px;
+  cursor: help;
+}
+
+.crawlerMemoPreview {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  font-size: var(--fs-xs);
+  color: var(--text3);
+  font-style: italic;
+}
+
+/* Modal */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 900px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.modalHeader h3 {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semi);
+  color: var(--text);
+}
+.modalHeader button {
+  color: var(--text3);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.modalHeader button:hover { color: var(--text); }
+
+.modalBody {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Table */
+.tableActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.checkAll {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-sm);
+  color: var(--text2);
+  cursor: pointer;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  margin-bottom: var(--space-md);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-xs);
+}
+
+.table th {
+  text-align: left;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text3);
+  font-weight: var(--fw-semi);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 6px 10px;
+  color: var(--text2);
+  border-bottom: 1px solid var(--border);
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.table tr:last-child td { border-bottom: none; }
+
+.table tr.normal { }
+.table tr.suspect { background: rgba(251, 191, 36, 0.06); }
+.table tr.outlier { background: rgba(248, 113, 113, 0.06); }
+
+.devBadge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: var(--fw-semi);
+}
+.devBadge.normal { background: rgba(52, 211, 153, 0.15); color: var(--green); }
+.devBadge.suspect { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+.devBadge.outlier { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+
+.normalBadge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 100px;
+  font-size: 10px;
+  background: rgba(52, 211, 153, 0.1);
+  color: var(--green);
+}
+
+/* Memo */
+.memoSection {
+  margin-bottom: var(--space-md);
+}
+
+.memoInput {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-family: inherit;
+  resize: vertical;
+}
+.memoInput:focus { outline: none; border-color: var(--accent); }
+
+/* Actions */
+.modalActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.approveAllBtn, .partialBtn, .rejectBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+}
+
+.approveAllBtn {
+  background: rgba(52, 211, 153, 0.15);
+  color: var(--green);
+}
+.approveAllBtn:hover { background: rgba(52, 211, 153, 0.25); }
+
+.partialBtn {
+  background: rgba(251, 191, 36, 0.15);
+  color: var(--yellow);
+}
+.partialBtn:hover { background: rgba(251, 191, 36, 0.25); }
+.partialBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.rejectBtn {
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--red);
+}
+.rejectBtn:hover { background: rgba(248, 113, 113, 0.25); }
+
+.rejectForm {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rejectInput {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  min-width: 180px;
+}
+.rejectInput:focus { outline: none; border-color: var(--accent); }
+
+.rejectConfirmBtn, .cancelBtn {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  border: none;
+}
+.rejectConfirmBtn { background: var(--red); color: white; }
+.cancelBtn { background: rgba(255,255,255,0.06); color: var(--text2); }
+
+@media (max-width: 768px) {
+  .statsBar { flex-direction: column; }
+  .cardContent { flex-direction: column; gap: 8px; align-items: flex-start; }
+  .cardRight { flex-wrap: wrap; }
+  .modalActions { flex-direction: column; align-items: stretch; }
+  .rejectForm { flex-direction: column; }
+  .rejectInput { width: 100%; min-width: 0; }
+}

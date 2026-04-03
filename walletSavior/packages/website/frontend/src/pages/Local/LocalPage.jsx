@@ -1,8 +1,13 @@
-import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
-import { MapPin, Search, RefreshCw, X, ExternalLink, ChevronRight, ArrowLeft, Filter, ArrowUpDown } from 'lucide-react';
-import { GAS_STATIONS, RESTAURANTS, LOCAL_AVGS, RECIPES, fmt, calcRecipeCost } from '../../data/mockData';
+import { useState, useMemo, useCallback, useRef } from 'react';
+import { MapPin, Search, RefreshCw, ChevronRight } from 'lucide-react';
+import { RECIPES, fmt, calcRecipeCost } from '../../data/mockData';
 import Modal from '../../components/common/Modal';
 import useStore from '../../stores/appStore';
+import { getRepresentativePrice, buildSubcategories, sortItems, isGasCategory } from './utils';
+import GasDetailContent from './components/GasDetailContent';
+import RestDetailContent from './components/RestDetailContent';
+import NaverPlaceDetailContent from './components/NaverPlaceDetailContent';
+import SkeletonLoader from './components/SkeletonLoader';
 import s from './LocalPage.module.css';
 
 /* ── Category config ── */
@@ -17,162 +22,42 @@ const CATEGORY_SEARCH_MAP = {
   '미용': '미용실', '편의시설': '편의점',
 };
 const RADIUS_OPTIONS = [
-  { label: '500m', value: 500 }, { label: '1km', value: 1000 },
-  { label: '2km', value: 2000 }, { label: '3km', value: 3000 },
+  { label: '1km', value: 1000 },
+  { label: '3km', value: 3000 },
   { label: '5km', value: 5000 },
+  { label: '10km', value: 10000 },
 ];
 
-/** Extract representative price from menu_info (string or array) */
-function getRepresentativePrice(menuInfo) {
-  if (!menuInfo) return null;
-  let prices = [];
-  if (Array.isArray(menuInfo)) {
-    prices = menuInfo
-      .map(m => {
-        if (typeof m.price === 'number') return m.price;
-        const str = String(m.price || '').replace(/[,원\s]/g, '');
-        return parseInt(str, 10);
-      })
-      .filter(p => !isNaN(p) && p > 0);
-  } else if (typeof menuInfo === 'string' && menuInfo.trim()) {
-    const matches = menuInfo.match(/[\d,]+/g);
-    if (matches) {
-      prices = matches.map(m => parseInt(m.replace(/,/g, ''), 10)).filter(p => !isNaN(p) && p >= 1000);
-    }
-  }
-  if (prices.length === 0) return null;
-  const avg = Math.round(prices.reduce((a, b) => a + b, 0) / prices.length);
-  const min = Math.min(...prices);
-  const max = Math.max(...prices);
-  return { avg, min, max, count: prices.length };
-}
-
-/** Parse menu_info into structured [{name, price}] array */
-function parseMenuItems(menuInfo) {
-  if (!menuInfo) return [];
-  if (Array.isArray(menuInfo)) {
-    return menuInfo
-      .map(m => ({
-        name: m.name || m.menu || '메뉴',
-        price: typeof m.price === 'number' ? m.price
-          : parseInt(String(m.price || '').replace(/[,원\s]/g, ''), 10) || 0,
-      }))
-      .filter(m => m.price > 0);
-  }
-  if (typeof menuInfo === 'string' && menuInfo.trim()) {
-    return menuInfo.split(/\n/).map(line => {
-      const match = line.trim().match(/^(.+?)\s+([\d,]+)\s*원?$/);
-      if (match) return { name: match[1].trim(), price: parseInt(match[2].replace(/,/g, ''), 10) };
-      return null;
-    }).filter(Boolean);
-  }
-  return [];
-}
-
-/** 네이버 원본 카테고리 기반 서브카테고리 맵 생성 */
-function buildSubcategories(items) {
-  const map = {};
-  items.forEach(item => {
-    // 네이버 원본 카테고리 사용 (예: "카페,디저트", "중식당")
-    const cat = item.category || '';
-    if (cat) {
-      if (!map[cat]) map[cat] = [];
-      if (!map[cat].includes(item)) map[cat].push(item);
-    }
-  });
-  // "전체" 항목 추가 - 서브카테고리가 2개 이상일 때만
-  if (Object.keys(map).length > 1) {
-    map['전체'] = items;
-  }
-  return map;
-}
-
-/** Sort items by given criteria */
-function sortItems(items, sortBy, sortDir) {
-  const sorted = [...items];
-  sorted.sort((a, b) => {
-    let va, vb;
-    switch (sortBy) {
-      case 'gasoline':
-        va = a.petrol_info?.gasoline ?? Infinity;
-        vb = b.petrol_info?.gasoline ?? Infinity;
-        break;
-      case 'diesel':
-        va = a.petrol_info?.diesel ?? Infinity;
-        vb = b.petrol_info?.diesel ?? Infinity;
-        break;
-      case 'price': {
-        const pa = getRepresentativePrice(a.menu_info);
-        const pb = getRepresentativePrice(b.menu_info);
-        va = pa?.avg ?? (a.petrol_info?.gasoline ?? Infinity);
-        vb = pb?.avg ?? (b.petrol_info?.gasoline ?? Infinity);
-        break;
-      }
-      case 'rating':
-        va = -(a.rating || 0);
-        vb = -(b.rating || 0);
-        break;
-      case 'distance': {
-        const da = typeof a.distance === 'string'
-          ? parseFloat(a.distance.replace(/[^\d.]/g, '')) || Infinity
-          : (a.distance ?? Infinity);
-        const db = typeof b.distance === 'string'
-          ? parseFloat(b.distance.replace(/[^\d.]/g, '')) || Infinity
-          : (b.distance ?? Infinity);
-        va = da; vb = db;
-        break;
-      }
-      default:
-        va = 0; vb = 0;
-    }
-    return sortDir === 'asc' ? va - vb : vb - va;
-  });
-  return sorted;
-}
-
-/** Detect if items are gas-station-heavy */
-function isGasCategory(items) {
-  if (!items || items.length === 0) return false;
-  return items.filter(i => i.petrol_info).length > items.length * 0.3;
-}
-
 export default function LocalPage() {
-  // Phase: idle | locating | exploring | categories | subcategory | items | search
   const [phase, setPhase] = useState('idle');
   const [locationInput, setLocationInput] = useState('');
   const [locationName, setLocationName] = useState('');
   const [lat, setLat] = useState(37.4979);
   const [lng, setLng] = useState(127.0276);
-  const [radius, setRadius] = useState(2000);
-  const [customRadius, setCustomRadius] = useState('');
+  const [radius, setRadius] = useState(3000);
   const [loading, setLoading] = useState(false);
+  const [gpsStatus, setGpsStatus] = useState('idle'); // idle | requesting | success | denied
 
-  // Area-explore data
   const [exploreData, setExploreData] = useState(null);
   const [selectedCategoryName, setSelectedCategoryName] = useState('');
   const [selectedCategoryItems, setSelectedCategoryItems] = useState([]);
   const [subcategoryMap, setSubcategoryMap] = useState({});
   const [selectedSubcategory, setSelectedSubcategory] = useState('');
 
-  // Item list & sorting
   const [displayItems, setDisplayItems] = useState([]);
   const [sortBy, setSortBy] = useState('price');
   const [sortDir, setSortDir] = useState('asc');
 
-  // Direct search
   const [searchQuery, setSearchQuery] = useState('');
   const [searchLabel, setSearchLabel] = useState('');
 
-  // iframe
   const [iframeUrl, setIframeUrl] = useState('');
   const [mapFocusUrl, setMapFocusUrl] = useState(null);
 
-  // Modals
   const [selectedGas, setSelectedGas] = useState(null);
   const [selectedRest, setSelectedRest] = useState(null);
   const [selectedNaverPlace, setSelectedNaverPlace] = useState(null);
 
-  // Cook vs eat
   const cookExample = RECIPES.find(r => r.name === '짜장면');
   const cookCost = cookExample ? calcRecipeCost(cookExample) : null;
 
@@ -183,11 +68,9 @@ export default function LocalPage() {
 
   const currentMapUrl = mapFocusUrl || iframeUrl || `https://map.naver.com/p?c=${lng},${lat},15,0,0,0,dh`;
 
-  // Sorted items for display
   const sortedItems = useMemo(() => sortItems(displayItems, sortBy, sortDir), [displayItems, sortBy, sortDir]);
   const isGas = useMemo(() => isGasCategory(displayItems), [displayItems]);
 
-  // Avg prices for gas modals
   const avgGasoline = useMemo(() => {
     const gs = displayItems.filter(i => i.petrol_info?.gasoline);
     return gs.length ? Math.round(gs.reduce((s, i) => s + i.petrol_info.gasoline, 0) / gs.length) : 0;
@@ -205,10 +88,15 @@ export default function LocalPage() {
     throw new Error(data.message || '위치를 찾을 수 없습니다');
   }, []);
 
-  const areaExplore = useCallback(async (locName) => {
-    const res = await fetch(
-      `/api/local/area-explore?location_name=${encodeURIComponent(locName)}&categories=${encodeURIComponent(EXPLORE_CATEGORIES)}&max_items=30`
-    );
+  const areaExplore = useCallback(async (locName, latVal, lngVal) => {
+    const params = new URLSearchParams({
+      categories: EXPLORE_CATEGORIES,
+      max_items: '30',
+    });
+    if (locName) params.set('location_name', locName);
+    if (latVal != null) params.set('lat', String(latVal));
+    if (lngVal != null) params.set('lng', String(lngVal));
+    const res = await fetch(`/api/local/area-explore?${params}`);
     const data = await res.json();
     if (data.success && data.data) return data.data;
     throw new Error(data.message || '탐색 실패');
@@ -224,6 +112,19 @@ export default function LocalPage() {
   }, [lat, lng]);
 
   /* ── Handlers ── */
+  const runAreaExplore = useCallback(async (locName, latVal, lngVal) => {
+    setPhase('exploring');
+    try {
+      const explore = await areaExplore(locName, latVal, lngVal);
+      setExploreData(explore);
+      setPhase('categories');
+    } catch {
+      addToast('주변 탐색에 실패했습니다. 직접 검색해 주세요.', 'warning');
+      setPhase('categories');
+      setExploreData({ categories: [] });
+    }
+  }, [areaExplore, addToast]);
+
   const handleLocationSearch = useCallback(async (locQuery) => {
     if (!locQuery.trim()) return;
     setPhase('locating');
@@ -235,66 +136,69 @@ export default function LocalPage() {
       setLng(geo.lng);
       setLocationName(geo.name || locQuery);
       setIframeUrl(`https://map.naver.com/p/search/${encodeURIComponent(locQuery)}`);
-      iframeLoadCount.current = 0; // 우리가 URL 변경 시 카운터 리셋      addToast(`📍 ${geo.name || locQuery} 위치 설정 완료`, 'success');
-
-      // Auto-trigger area explore
-      setPhase('exploring');
-      try {
-        const explore = await areaExplore(geo.name || locQuery);
-        setExploreData(explore);
-        setPhase('categories');
-      } catch {
-        addToast('주변 탐색에 실패했습니다. 직접 검색해 주세요.', 'warning');
-        setPhase('categories');
-        setExploreData({ categories: [] });
-      }
+      iframeLoadCount.current = 0;
+      addToast(`📍 ${geo.name || locQuery} 위치 설정 완료`, 'success');
+      await runAreaExplore(geo.name || locQuery, geo.lat, geo.lng);
     } catch (err) {
       addToast(err.message || '위치 검색 실패', 'error');
       setPhase('idle');
     } finally {
       setLoading(false);
     }
-  }, [geocodeLocation, areaExplore, addToast]);
+  }, [geocodeLocation, runAreaExplore, addToast]);
 
   const handleLocationSubmit = (e) => {
     e.preventDefault();
     handleLocationSearch(locationInput);
   };
 
-  const handleCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setLat(pos.coords.latitude);
-          setLng(pos.coords.longitude);
+  const handleCurrentLocation = useCallback(() => {
+    if (!navigator.geolocation) {
+      addToast('이 브라우저에서는 GPS를 지원하지 않습니다. 위치를 직접 입력해 주세요.', 'warning');
+      searchInputRef.current?.focus();
+      return;
+    }
+    setGpsStatus('requesting');
+    addToast('📡 GPS 위치를 가져오는 중...', 'info');
+
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const newLat = pos.coords.latitude;
+        const newLng = pos.coords.longitude;
+        setLat(newLat);
+        setLng(newLng);
+        setGpsStatus('success');
+        setIframeUrl(`https://map.naver.com/p?c=${newLng},${newLat},15,0,0,0,dh`);
+        addToast('✅ 현재 위치를 가져왔습니다', 'success');
+
+        // 역 geocode로 위치명 가져오기
+        setLoading(true);
+        try {
+          const geo = await geocodeLocation(`${newLat},${newLng}`);
+          const locLabel = geo?.name || '현재 위치';
+          setLocationName(locLabel);
+          setLocationInput(locLabel);
+          await runAreaExplore(locLabel, newLat, newLng);
+        } catch {
           setLocationName('현재 위치');
           setLocationInput('현재 위치');
-          setIframeUrl(`https://map.naver.com/p?c=${pos.coords.longitude},${pos.coords.latitude},15,0,0,0,dh`);
-          addToast('현재 위치를 가져왔습니다', 'success');
-          // Auto explore
-          (async () => {
-            setPhase('exploring');
-            setLoading(true);
-            try {
-              const explore = await areaExplore('현재 위치');
-              setExploreData(explore);
-              setPhase('categories');
-            } catch {
-              setPhase('categories');
-              setExploreData({ categories: [] });
-            } finally {
-              setLoading(false);
-            }
-          })();
-        },
-        () => {
-          addToast('위치 권한이 거부되었습니다', 'warning');
+          await runAreaExplore(null, newLat, newLng);
+        } finally {
+          setLoading(false);
         }
-      );
-    }
-  };
+      },
+      (err) => {
+        setGpsStatus('denied');
+        const msg = err.code === 1
+          ? '위치 권한이 거부되었습니다. 위치를 직접 입력해 주세요.'
+          : '위치를 가져올 수 없습니다. 위치를 직접 입력해 주세요.';
+        addToast(msg, 'warning');
+        searchInputRef.current?.focus();
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    );
+  }, [geocodeLocation, runAreaExplore, addToast]);
 
-  // 서브카테고리 재검색 API 호출
   const fetchSubcategoryResults = useCallback(async (location, subcategory, latVal, lngVal) => {
     const params = new URLSearchParams({
       location, subcategory,
@@ -311,7 +215,6 @@ export default function LocalPage() {
     setSelectedCategoryName(cat.name);
     let items = [...(cat.items || [])];
 
-    // 음식 카테고리 선택 시 카페 결과도 병합
     if (cat.name === '음식' && exploreData?.categories) {
       const cafeCategory = exploreData.categories.find(c => c.name === '카페');
       if (cafeCategory?.items) {
@@ -326,7 +229,6 @@ export default function LocalPage() {
     const subMap = buildSubcategories(items);
     setSubcategoryMap(subMap);
     setSelectedSubcategory('');
-    // Default sort for gas stations
     if (isGasCategory(items)) {
       setSortBy('gasoline');
     } else {
@@ -351,7 +253,6 @@ export default function LocalPage() {
     setSelectedSubcategory(subName);
 
     if (subName === '전체') {
-      // 전체 보기 - 기존 아이템 모두 표시
       setDisplayItems(selectedCategoryItems);
       setPhase('items');
       setMapFocusUrl(null);
@@ -359,20 +260,17 @@ export default function LocalPage() {
       return;
     }
 
-    // 먼저 기존 필터링 결과 즉시 표시
     const filtered = subcategoryMap[subName] || [];
     setDisplayItems(filtered);
     setPhase('items');
     setIframeUrl(`https://map.naver.com/p/search/${encodeURIComponent(`${locationName} ${subName}`)}`);
     setMapFocusUrl(null);
 
-    // 백그라운드에서 서브카테고리 추가 검색하여 결과 보강
     if (locationName && subName !== '전체') {
       setLoading(true);
       try {
         const moreItems = await fetchSubcategoryResults(locationName, subName, lat, lng);
         if (moreItems.length > 0) {
-          // 기존 + 새로운 결과 병합 (중복 제거)
           const existingNames = new Set(filtered.map(i => i.name));
           const newItems = moreItems.filter(i => !existingNames.has(i.name));
           if (newItems.length > 0) {
@@ -427,7 +325,6 @@ export default function LocalPage() {
       const cat = exploreData?.categories?.find(c => c.name === selectedCategoryName);
       if (cat) {
         let items = [...(cat.items || [])];
-        // 음식 카테고리 복귀 시에도 카페 병합
         if (selectedCategoryName === '음식' && exploreData?.categories) {
           const cafeCategory = exploreData.categories.find(c => c.name === '카페');
           if (cafeCategory?.items) {
@@ -484,16 +381,14 @@ export default function LocalPage() {
     }
   };
 
-  /* iframe 내부 탐색 감지 — 사용자가 iframe에서 검색하면 사이드바 검색 안내 */
   const handleIframeLoad = useCallback(() => {
     iframeLoadCount.current += 1;
-    // 최초 로드(1회)와 우리가 src를 바꾼 것(2회째)은 무시, 3회 이상이면 유저 탐색
     if (iframeLoadCount.current > 2 && locationName) {
       addToast('💡 지도에서 검색하셨나요? 왼쪽 검색창에 입력하면 결과를 함께 보여드립니다!', 'info');
     }
   }, [locationName, addToast]);
 
-  /* ── Sort options based on current items ── */
+  /* ── Sort options ── */
   const sortOptions = useMemo(() => {
     if (isGas) {
       return [['gasoline', '휘발유'], ['diesel', '경유'], ['distance', '거리']];
@@ -516,6 +411,12 @@ export default function LocalPage() {
     }
     return crumbs;
   }, [locationName, phase, selectedCategoryName, selectedSubcategory, searchLabel]);
+
+  // 빈 카테고리 제외한 목록
+  const visibleCategories = useMemo(() => {
+    if (!exploreData?.categories) return [];
+    return exploreData.categories.filter(cat => (cat.count || cat.items?.length || 0) > 0);
+  }, [exploreData]);
 
   /* ── Render ── */
   return (
@@ -556,7 +457,7 @@ export default function LocalPage() {
 
         {/* Sidebar */}
         <div className={s.sidebar}>
-          {/* Step 1: Location + Radius */}
+          {/* Location + GPS */}
           <form onSubmit={handleLocationSubmit} className={s.locationRow}>
             <input
               ref={searchInputRef}
@@ -565,11 +466,25 @@ export default function LocalPage() {
               onChange={e => setLocationInput(e.target.value)}
               placeholder="위치를 입력하세요 (예: 정자역, 강남역)"
             />
-            <button type="button" className={s.locationBtn} onClick={handleCurrentLocation}>📍 현위치</button>
+            <button
+              type="button"
+              className={`${s.locationBtn} ${gpsStatus === 'requesting' ? s.spin : ''}`}
+              onClick={handleCurrentLocation}
+              disabled={gpsStatus === 'requesting'}
+            >
+              {gpsStatus === 'requesting' ? '📡' : '📍'} 현위치
+            </button>
             <button type="submit" className={s.searchBtn} disabled={loading || !locationInput.trim()}>
               {loading && phase === 'locating' ? <RefreshCw size={16} className={s.spin} /> : <Search size={16} />}
             </button>
           </form>
+
+          {/* GPS 실패 안내 */}
+          {gpsStatus === 'denied' && (
+            <div className={s.gpsHint}>
+              📍 위치 권한이 거부되었습니다. 위치를 직접 입력해 주세요.
+            </div>
+          )}
 
           {/* Radius selector */}
           <div className={s.radiusRow}>
@@ -578,22 +493,12 @@ export default function LocalPage() {
               {RADIUS_OPTIONS.map(opt => (
                 <button
                   key={opt.value}
-                  className={`${s.radiusBtn} ${radius === opt.value && !customRadius ? s.radiusActive : ''}`}
-                  onClick={() => { setRadius(opt.value); setCustomRadius(''); }}
+                  className={`${s.radiusBtn} ${radius === opt.value ? s.radiusActive : ''}`}
+                  onClick={() => setRadius(opt.value)}
                 >
                   {opt.label}
                 </button>
               ))}
-              <input
-                className={s.radiusInput}
-                value={customRadius}
-                onChange={e => {
-                  setCustomRadius(e.target.value);
-                  const v = parseInt(e.target.value, 10);
-                  if (v > 0) setRadius(v);
-                }}
-                placeholder="직접 입력(m)"
-              />
             </div>
           </div>
 
@@ -604,7 +509,7 @@ export default function LocalPage() {
                 className={s.directSearchInput}
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                placeholder={`🔍 ${locationName} 주변 검색 — 지도와 동시 반영 (예: 삼겹살, 카페)`}
+                placeholder={`🔍 ${locationName} 주변 검색 (예: 삼겹살, 카페)`}
               />
               <button type="submit" className={s.directSearchBtn} disabled={loading}>
                 {loading && phase === 'search' ? <RefreshCw size={14} className={s.spin} /> : <Search size={14} />}
@@ -628,12 +533,12 @@ export default function LocalPage() {
             </div>
           )}
 
-          {/* Loading */}
+          {/* 스켈레톤 로딩 */}
           {loading && (phase === 'exploring' || phase === 'locating') && (
-            <div className={s.loadingBox}>
-              <RefreshCw size={20} className={s.spin} />
-              <span>{phase === 'locating' ? '위치 검색 중...' : '주변 탐색 중...'}</span>
-            </div>
+            <SkeletonLoader
+              count={4}
+              message={phase === 'locating' ? '위치를 검색하고 있습니다...' : '주변 업소를 찾고 있습니다...'}
+            />
           )}
 
           {/* IDLE state */}
@@ -641,14 +546,17 @@ export default function LocalPage() {
             <div className={s.idleBox}>
               <MapPin size={36} />
               <p>위치를 입력하고 검색하면<br/>주변 가게 정보를 탐색할 수 있어요</p>
+              <button className={s.gpsStartBtn} onClick={handleCurrentLocation}>
+                📍 현재 위치로 시작하기
+              </button>
             </div>
           )}
 
-          {/* Step 2: Category grid */}
+          {/* Category grid — 빈 카테고리 숨김 */}
           {phase === 'categories' && exploreData && (
             <div className={s.categoryGrid}>
-              {exploreData.categories && exploreData.categories.length > 0 ? (
-                exploreData.categories.map(cat => (
+              {visibleCategories.length > 0 ? (
+                visibleCategories.map(cat => (
                   <button
                     key={cat.name}
                     className={s.categoryCard}
@@ -667,7 +575,7 @@ export default function LocalPage() {
             </div>
           )}
 
-          {/* Step 3: Subcategory buttons */}
+          {/* Subcategory buttons */}
           {phase === 'subcategory' && (
             <div className={s.subcategorySection}>
               <button className={s.allItemsBtn} onClick={() => handleSubcategoryClick('전체')}>
@@ -689,7 +597,7 @@ export default function LocalPage() {
             </div>
           )}
 
-          {/* Step 4 / Direct Search: Item list */}
+          {/* Item list */}
           {(phase === 'items' || phase === 'search') && (
             <>
               {/* Sort controls */}
@@ -713,7 +621,7 @@ export default function LocalPage() {
                 </button>
               </div>
 
-              {/* Cook vs eat (shown when viewing restaurant category) */}
+              {/* Cook vs eat */}
               {selectedCategoryName === '음식' && cookCost && phase === 'items' && (
                 <div className={s.cookBanner}>
                   <div className={s.cookTitle}>🍳 외식 vs 직접 해먹기</div>
@@ -737,6 +645,11 @@ export default function LocalPage() {
               <div className={s.resultCount}>
                 {sortedItems.length}건의 결과
               </div>
+
+              {/* 검색 중 스켈레톤 (항목 없을 때) */}
+              {loading && sortedItems.length === 0 && (
+                <SkeletonLoader count={5} message="검색 결과를 불러오고 있습니다..." />
+              )}
 
               {/* Item list */}
               <div className={s.list}>
@@ -811,7 +724,7 @@ export default function LocalPage() {
                 })}
               </div>
 
-              {/* 서브카테고리 추가 검색 중 로딩 표시 */}
+              {/* 추가 검색 중 로딩 */}
               {loading && displayItems.length > 0 && (
                 <div className={s.loadingMore}>추가 검색 중...</div>
               )}
@@ -852,232 +765,6 @@ export default function LocalPage() {
           />
         )}
       </Modal>
-    </div>
-  );
-}
-
-function GasDetailContent({ station, avgGas, avgGasoline, avgDiesel, onFocusMap }) {
-  const isSelf = station.is_self || station.name.includes('셀프');
-  const dist = station.distance != null ? (parseFloat(station.distance) > 100 ? (parseFloat(station.distance) / 1000).toFixed(1) : parseFloat(station.distance).toFixed(1)) : (station.idx != null ? (0.5 + station.idx * 0.3).toFixed(1) : '?');
-
-  const fuelRows = [
-    { label: '휘발유', key: 'gasoline', avg: avgGasoline || avgGas },
-    { label: '고급 휘발유', key: 'premium_gasoline', avg: Math.round((avgGasoline || avgGas) * 1.15) },
-    { label: '경유', key: 'diesel', avg: avgDiesel || Math.round(avgGas * 0.9) },
-    { label: 'LPG', key: 'lpg', avg: Math.round((avgGasoline || avgGas) * 0.62) },
-  ];
-
-  return (
-    <div className={s.modalDetail}>
-      <div className={s.detailHeader}>
-        <h3 className={s.detailName}>{station.name}</h3>
-        {station.brand && <span className={s.detailBrand}>{station.brand}</span>}
-        {isSelf && <span className={s.selfTag}>셀프</span>}
-        {station.is_24h && <span className={s.selfTag}>24h</span>}
-      </div>
-      <p className={s.detailAddr}>📍 {station.addr || station.address}</p>
-      {station.tel && <p className={s.detailDist}>📞 {station.tel}</p>}
-      <p className={s.detailDist}>📏 현재 위치에서 ~{dist}km</p>
-
-      <div className={s.detailSection}>
-        <h4>⛽ 유종별 가격</h4>
-        <div className={s.fuelTable}>
-          {fuelRows.map(f => {
-            const price = station[f.key];
-            if (!price) return (
-              <div key={f.key} className={s.fuelRow}>
-                <span className={s.fuelLabel}>{f.label}</span>
-                <span className={s.fuelNA}>취급 안 함</span>
-              </div>
-            );
-            const diff = price - f.avg;
-            return (
-              <div key={f.key} className={s.fuelRow}>
-                <span className={s.fuelLabel}>{f.label}</span>
-                <span className={s.fuelPrice}>{fmt(price)}원/L</span>
-                {f.avg > 0 && (
-                  <span className={s.fuelDiff} style={{ color: diff <= 0 ? 'var(--green)' : 'var(--red)' }}>
-                    지역 평균 대비 {diff <= 0 ? fmt(diff) : `+${fmt(diff)}`}원
-                  </span>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className={s.detailSection}>
-        <h4>ℹ️ 운영 정보</h4>
-        <div className={s.infoGrid}>
-          <div className={s.infoItem}>
-            <span className={s.infoLabel}>셀프 여부</span>
-            <span className={s.infoValue}>{isSelf ? '✅ 셀프 주유' : '❌ 일반 주유'}</span>
-          </div>
-          <div className={s.infoItem}>
-            <span className={s.infoLabel}>운영 시간</span>
-            <span className={s.infoValue}>{station.is_24h ? '24시간' : '06:00 ~ 23:00'}</span>
-          </div>
-          {station.has_car_wash && (
-            <div className={s.infoItem}>
-              <span className={s.infoLabel}>세차장</span>
-              <span className={s.infoValue}>✅ 있음</span>
-            </div>
-          )}
-          {station.brand && (
-            <div className={s.infoItem}>
-              <span className={s.infoLabel}>브랜드</span>
-              <span className={s.infoValue}>{station.brand}</span>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className={s.btnGroup}>
-        <button className={s.mapFocusBtn} onClick={() => onFocusMap(station.name)}>
-          🗺️ 지도에서 위치 보기
-        </button>
-        {station.naverUrl && (
-          <a href={station.naverUrl} target="_blank" rel="noopener noreferrer" className={s.externalLink}>
-            📍 네이버 지도에서 보기 →
-          </a>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function RestDetailContent({ restaurant, onFocusMap }) {
-  const avg = LOCAL_AVGS[restaurant.menu];
-  const diff = avg ? restaurant.price - avg : null;
-  const dist = (0.3 + restaurant.idx * 0.25).toFixed(1);
-
-  const matchedRecipe = RECIPES.find(r =>
-    restaurant.menu.includes(r.name) || r.name.includes(restaurant.menu.replace('(1인분)', '').trim())
-  );
-  const recipeCost = matchedRecipe ? calcRecipeCost(matchedRecipe) : null;
-
-  const mockMenuItems = [
-    { name: restaurant.menu, price: restaurant.price },
-    { name: restaurant.cat === '카페' ? '카페라떼' : '공기밥', price: restaurant.cat === '카페' ? restaurant.price + 1000 : 1000 },
-    { name: restaurant.cat === '카페' ? '녹차라떼' : restaurant.cat === '중식' ? '짬뽕' : '된장찌개', price: restaurant.price + (restaurant.cat === '카페' ? 500 : 1500) },
-  ];
-
-  return (
-    <div className={s.modalDetail}>
-      <div className={s.detailHeader}>
-        <h3 className={s.detailName}>{restaurant.name}</h3>
-        <span className={s.detailCat}>{restaurant.cat}</span>
-      </div>
-      <p className={s.detailAddr}>📍 {restaurant.addr}</p>
-      <p className={s.detailDist}>📏 현재 위치에서 ~{dist}km</p>
-      <p className={s.detailRating}>⭐ {restaurant.rating} / 5.0</p>
-
-      <div className={s.detailSection}>
-        <h4>📋 메뉴 및 가격</h4>
-        <div className={s.menuTable}>
-          {mockMenuItems.map((m, i) => {
-            const menuAvg = LOCAL_AVGS[m.name];
-            const menuDiff = menuAvg ? m.price - menuAvg : null;
-            return (
-              <div key={i} className={s.menuRow}>
-                <span className={s.menuName}>{m.name}</span>
-                <span className={s.menuPrice}>{fmt(m.price)}원</span>
-                {menuDiff !== null && (
-                  <span className={s.menuDiff} style={{ color: menuDiff <= 0 ? 'var(--green)' : 'var(--red)' }}>
-                    시세 대비 {menuDiff <= 0 ? fmt(menuDiff) : `+${fmt(menuDiff)}`}원
-                  </span>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {recipeCost && (
-        <div className={s.detailSection}>
-          <h4>🍳 외식 vs 직접 조리</h4>
-          <div className={s.cookCompareModal}>
-            <div className={s.cookCompareItem}>
-              <span className={s.cookCompareLabel}>🍽️ 외식 (이 식당)</span>
-              <span className={s.cookComparePrice}>{fmt(restaurant.price)}원</span>
-            </div>
-            <span className={s.cookVs}>vs</span>
-            <div className={s.cookCompareItem}>
-              <span className={s.cookCompareLabel}>🏠 직접 조리</span>
-              <span className={s.cookComparePrice} style={{ color: 'var(--green)' }}>{fmt(recipeCost.total)}원</span>
-            </div>
-          </div>
-          <p className={s.cookSavingsModal}>
-            💰 직접 해먹으면 {fmt(recipeCost.savings)}원 절약 ({recipeCost.pct}%)
-          </p>
-        </div>
-      )}
-
-      <div className={s.btnGroup}>
-        <button className={s.mapFocusBtn} onClick={() => onFocusMap(restaurant.name)}>
-          🗺️ 지도에서 위치 보기
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function NaverPlaceDetailContent({ place, onFocusMap }) {
-  const menuItems = parseMenuItems(place.menu_info);
-  const priceInfo = getRepresentativePrice(place.menu_info);
-
-  return (
-    <div className={s.modalDetail}>
-      <div className={s.detailHeader}>
-        <h3 className={s.detailName}>{place.name}</h3>
-        {place.category && <span className={s.detailCat}>{place.category}</span>}
-      </div>
-
-      {place.image_url && (
-        <div className={s.detailImageWrap}>
-          <img src={place.image_url} alt={place.name} className={s.detailImage} />
-        </div>
-      )}
-
-      {place.address && <p className={s.detailAddr}>📍 {place.address}</p>}
-      {place.tel && <p className={s.detailTel}>📞 {place.tel}</p>}
-      {place.distance && <p className={s.detailDist}>📏 {place.distance}</p>}
-      {place.rating > 0 && <p className={s.detailRating}>⭐ 리뷰 {place.rating}개</p>}
-
-      {priceInfo && (
-        <div className={s.priceSummary}>
-          <span className={s.priceSummaryLabel}>메뉴 가격</span>
-          <span className={s.priceSummaryValue}>
-            평균 {fmt(priceInfo.avg)}원
-            {priceInfo.count > 1 && ` (${fmt(priceInfo.min)}~${fmt(priceInfo.max)}원)`}
-          </span>
-        </div>
-      )}
-
-      {menuItems.length > 0 && (
-        <div className={s.detailSection}>
-          <h4>📋 메뉴 및 가격</h4>
-          <div className={s.menuTable}>
-            {menuItems.map((m, i) => (
-              <div key={i} className={s.menuRow}>
-                <span className={s.menuName}>{m.name}</span>
-                <span className={s.menuPrice}>{fmt(m.price)}원</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div className={s.btnGroup}>
-        <button className={s.mapFocusBtn} onClick={() => onFocusMap(place.name, place.url)}>
-          🗺️ 지도에서 위치 보기
-        </button>
-        {place.url && (
-          <a href={place.url} target="_blank" rel="noopener noreferrer" className={s.naverLinkBtn}>
-            <ExternalLink size={14} /> 네이버 지도에서 보기
-          </a>
-        )}
-      </div>
     </div>
   );
 }

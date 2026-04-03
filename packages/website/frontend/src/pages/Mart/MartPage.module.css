@@ -1,0 +1,625 @@
+/* ============================================================
+   MartPage — Tabs, Flyer Viewer, Sale Grid, Category Filter, Compare
+   ============================================================ */
+
+.hdr { max-width: var(--max-w); margin: 0 auto; padding: 28px 20px 20px; }
+.hdr h2 { font-size: 1.5rem; font-weight: var(--fw-bold); }
+.hdr p { color: var(--text3); font-size: .9rem; }
+
+/* Tabs */
+.tabs {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: .9rem;
+  font-weight: var(--fw-semi);
+  color: var(--text2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: all var(--dur) var(--ease);
+  cursor: pointer;
+}
+.tab:hover { border-color: var(--border2); }
+.tabActive { color: var(--text); border-color: var(--accent); background: rgba(56,189,248,.06); }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+
+/* Info */
+.info {
+  max-width: var(--max-w);
+  margin: 12px auto 16px;
+  padding: 0 20px;
+  font-size: .82rem;
+  color: var(--text3);
+  display: flex;
+  gap: 16px;
+}
+
+/* Mode Toggle */
+.modeRow {
+  max-width: var(--max-w);
+  margin: 0 auto 16px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.modeBtn {
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: .85rem;
+  font-weight: var(--fw-medium);
+  color: var(--text2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.modeBtn:hover { border-color: var(--border2); }
+.modeBtnActive { color: var(--accent); border-color: var(--accent); background: rgba(56,189,248,.06); }
+
+/* Category Filter */
+.catRow {
+  max-width: var(--max-w);
+  margin: 0 auto 16px;
+  padding: 0 20px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.catLabel { font-size: .82rem; color: var(--text3); font-weight: var(--fw-semi); margin-right: 4px; }
+.catBtn {
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: .8rem;
+  color: var(--text3);
+  background: var(--glass);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.catBtn:hover { color: var(--text2); border-color: var(--border2); }
+.catBtnActive { color: var(--accent2); border-color: var(--accent2); background: rgba(129,140,248,.08); }
+
+/* Flyer Viewer */
+.flyerSection {
+  max-width: var(--max-w);
+  margin: 0 auto 20px;
+  padding: 0 20px;
+}
+.flyerMartTabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.flyerMartTab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: .85rem;
+  font-weight: var(--fw-medium);
+  color: var(--text2);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.flyerMartTab:hover { border-color: var(--border2); }
+.flyerMartTabActive {
+  background: rgba(56,189,248,.06);
+  font-weight: var(--fw-semi);
+}
+.flyerPeriod {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  font-size: .82rem;
+  color: var(--text2);
+}
+.flyerWebLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: var(--fw-medium);
+  font-size: .8rem;
+  transition: opacity var(--dur) var(--ease);
+}
+.flyerWebLink:hover { opacity: 0.8; }
+.flyerViewer {
+  position: relative;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+.flyerImg {
+  max-width: 100%;
+  max-height: 600px;
+  object-fit: contain;
+  cursor: zoom-in;
+  transition: transform .3s var(--ease);
+}
+.flyerImgZoomed {
+  transform: scale(1.8);
+  cursor: zoom-out;
+}
+.flyerNav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.flyerNav:hover { background: var(--surface); }
+.flyerPrev { left: 12px; }
+.flyerNext { right: 12px; }
+.flyerPageBadge {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: rgba(0,0,0,.6);
+  color: #fff;
+  font-size: .75rem;
+  font-weight: var(--fw-medium);
+}
+.flyerDots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  padding: 12px;
+}
+.flyerDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.flyerDotActive { background: var(--accent); border-color: var(--accent); }
+
+/* Flyer loading / error */
+.flyerLoading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 60px 20px;
+  color: var(--text3);
+  font-size: .9rem;
+}
+.flyerError {
+  text-align: center;
+  padding: 40px 20px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  color: var(--text2);
+}
+.flyerError p { margin-bottom: 12px; font-size: .9rem; }
+.flyerRetryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  font-size: .85rem;
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.flyerRetryBtn:hover { background: var(--surface); border-color: var(--accent); }
+
+/* Flyer link card (when no images are available) */
+.flyerLinkCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 24px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+.flyerLinkIcon { font-size: 3rem; }
+.flyerLinkTitle {
+  font-size: 1.15rem;
+  font-weight: var(--fw-bold);
+  color: var(--text);
+}
+.flyerLinkDesc {
+  font-size: .88rem;
+  color: var(--text2);
+  max-width: 400px;
+  line-height: 1.5;
+}
+.flyerLinkPeriod {
+  font-size: .82rem;
+  color: var(--text3);
+}
+.flyerLinkBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+  color: #fff;
+  font-size: .95rem;
+  font-weight: var(--fw-bold);
+  text-decoration: none;
+  transition: opacity var(--dur) var(--ease);
+  margin-top: 4px;
+}
+.flyerLinkBtn:hover { opacity: 0.9; }
+.flyerLinkNote {
+  font-size: .75rem;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+/* Flyer quick links to all marts */
+.flyerQuickLinks {
+  margin-top: 20px;
+  padding: 16px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+.flyerQuickTitle {
+  font-size: .85rem;
+  font-weight: var(--fw-semi);
+  color: var(--text2);
+  margin-bottom: 12px;
+}
+.flyerQuickGrid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.flyerQuickItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-size: .82rem;
+  font-weight: var(--fw-medium);
+  text-decoration: none;
+  transition: all var(--dur) var(--ease);
+}
+.flyerQuickItem:hover {
+  border-color: var(--border2);
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* Sale Grid */
+.grid {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 20px 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 1px solid var(--border);
+  transition: transform var(--dur) var(--ease);
+  cursor: pointer;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.2); }
+.cardName { font-size: .95rem; font-weight: var(--fw-semi); margin-bottom: 8px; line-height: 1.3; }
+.cardPrices { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+.sale { font-size: 1.2rem; font-weight: var(--fw-bold); color: var(--accent); }
+.orig { font-size: .85rem; color: var(--text3); text-decoration: line-through; }
+.disc {
+  font-size: .78rem;
+  font-weight: var(--fw-semi);
+  color: var(--red);
+  background: rgba(248,113,113,.1);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.vs { font-size: .75rem; color: var(--text3); margin-top: 4px; }
+.vs em { font-style: normal; font-weight: var(--fw-semi); }
+.cheap { color: var(--green); }
+.expensive { color: var(--red); }
+.event {
+  margin-top: 6px;
+  font-size: .72rem;
+  color: var(--accent2);
+  background: rgba(129,140,248,.08);
+  padding: 3px 8px;
+  border-radius: 6px;
+  display: inline-block;
+}
+.validity {
+  margin-top: 4px;
+  font-size: .72rem;
+  color: var(--text3);
+}
+
+/* Compare View */
+.compareSection {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+.compareTitle {
+  font-size: 1.1rem;
+  font-weight: var(--fw-bold);
+  margin-bottom: 16px;
+}
+.compareGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.compareRow {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+.compareProductName {
+  font-size: .95rem;
+  font-weight: var(--fw-semi);
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.comparePrices {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+.compareMart {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+}
+.compareMartName {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .82rem;
+  font-weight: var(--fw-medium);
+}
+.compareMartDot { width: 6px; height: 6px; border-radius: 50%; }
+.compareMartPrice { font-size: .9rem; font-weight: var(--fw-bold); color: var(--accent); }
+.compareLowest {
+  background: rgba(52,211,153,.06);
+  border-color: rgba(52,211,153,.2);
+}
+.compareLowest .compareMartPrice { color: var(--green); }
+
+/* Responsive */
+@media(max-width:768px) {
+  .hdr { padding: 20px 12px 14px; }
+  .tabs { padding: 0 12px; }
+  .info { padding: 0 12px; }
+  .modeRow { padding: 0 12px; }
+  .catRow { padding: 0 12px; }
+  .flyerSection { padding: 0 12px; }
+  .flyerMartTabs { gap: 6px; }
+  .flyerMartTab { padding: 6px 12px; font-size: .8rem; }
+  .flyerPeriod { flex-direction: column; align-items: flex-start; }
+  .flyerQuickGrid { flex-direction: column; }
+  .grid { grid-template-columns: repeat(2, 1fr); padding: 0 12px 40px; }
+  .compareSection { padding: 0 12px 40px; }
+  .comparePrices { grid-template-columns: repeat(2, 1fr); }
+}
+@media(max-width:480px) {
+  .grid { grid-template-columns: 1fr; }
+  .comparePrices { grid-template-columns: 1fr; }
+  .flyerMartTabs { gap: 4px; }
+  .flyerMartTab { padding: 5px 10px; font-size: .75rem; }
+}
+
+/* Card bottom (event + cart) */
+.cardBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+.cartMini {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  cursor: pointer;
+  font-size: .85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--dur) var(--ease);
+  flex-shrink: 0;
+}
+.cartMini:hover {
+  background: rgba(56, 189, 248, 0.18);
+  border-color: var(--color-primary);
+  transform: scale(1.1);
+}
+
+/* Compare mart clickable */
+.compareMartClickable {
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.compareMartClickable:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+
+/* Sale Detail Modal */
+.detailBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.detailImgWrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: var(--space-md);
+  background: var(--glass);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+.detailImg {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  border-radius: var(--radius);
+}
+.detailDiscBadge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: .85rem;
+  font-weight: var(--fw-bold);
+  color: #fff;
+  background: var(--red);
+}
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--fs-sm);
+  color: var(--text);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.detailLabel {
+  color: var(--text3);
+  font-weight: var(--fw-medium);
+}
+.detailSale {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--accent);
+}
+.detailOrig {
+  text-decoration: line-through;
+  color: var(--text3);
+}
+.detailDisc {
+  font-weight: var(--fw-bold);
+  color: var(--red);
+}
+.detailEvent {
+  color: var(--accent2);
+  font-weight: var(--fw-semi);
+}
+.detailActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+.detailLinkBtn {
+  flex: 1 1 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(129, 140, 248, .1);
+  border: 1px solid rgba(129, 140, 248, .25);
+  color: var(--accent2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.detailLinkBtn:hover {
+  background: rgba(129, 140, 248, .18);
+  border-color: var(--accent2);
+  color: #fff;
+}
+.detailCartBtn {
+  flex: 1;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+  border: none;
+  color: #fff;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: opacity var(--dur) var(--ease);
+}
+.detailCartBtn:hover { opacity: 0.9; }
+.detailCloseBtn {
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  background: var(--glass2);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.detailCloseBtn:hover {
+  background: var(--glass);
+  color: var(--text);
+}

@@ -1,28 +1,25 @@
-import { useState, useMemo, useEffect } from 'react';
-import { Plus, Pencil, Trash2, X, Tag } from 'lucide-react';
+import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
+import { Plus, Pencil, Trash2, X, Tag, ChevronLeft, ChevronRight, AlertTriangle, Package } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import useDbAdminStore from '../../stores/dbAdminStore';
 import s from './Keywords.module.css';
 
 export default function Keywords() {
-  const { keywords, addKeyword, updateKeyword, deleteKeyword, categories, fetchKeywords, fetchCategories } = useDbAdminStore();
+  const {
+    keywords, addKeyword, updateKeyword, deleteKeyword, bulkDeleteKeywords,
+    categories, fetchKeywords, fetchCategories, fetchKeywordStats,
+    keywordPagination, keywordStats, loading, error,
+  } = useDbAdminStore();
+
   const [search, setSearch] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [showUnused, setShowUnused] = useState(false);
+  const [page, setPage] = useState(1);
   const [modal, setModal] = useState(null);
   const [form, setForm] = useState({});
   const [synonymInput, setSynonymInput] = useState('');
-
-  useEffect(() => {
-    fetchKeywords();
-    fetchCategories();
-  }, [fetchKeywords, fetchCategories]);
-
-  const sorted = useMemo(() => {
-    const list = [...keywords].sort((a, b) => (b.searchCount ?? 0) - (a.searchCount ?? 0));
-    if (!search) return list;
-    return list.filter(k => (k.keyword || '').includes(search) || (k.synonyms || []).some(s => s.includes(search)));
-  }, [keywords, search]);
-
-  const chartData = useMemo(() => sorted.slice(0, 15).map(k => ({ name: k.keyword, 검색수: k.searchCount ?? 0 })), [sorted]);
+  const [toast, setToast] = useState(null);
+  const debounceRef = useRef(null);
 
   const flatCategories = useMemo(() => {
     const flat = [];
@@ -36,6 +33,46 @@ export default function Keywords() {
     return flat;
   }, [categories]);
 
+  const loadKeywords = useCallback((p = page) => {
+    const params = { page: p, per_page: 20 };
+    if (search) params.q = search;
+    if (categoryFilter) params.category_id = categoryFilter;
+    if (showUnused) params.show_unused = true;
+    params.sort_by = 'search_count';
+    params.sort_dir = 'desc';
+    fetchKeywords(params);
+  }, [search, categoryFilter, showUnused, page, fetchKeywords]);
+
+  useEffect(() => {
+    fetchCategories();
+    fetchKeywordStats();
+  }, [fetchCategories, fetchKeywordStats]);
+
+  useEffect(() => {
+    loadKeywords(page);
+  }, [page]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // 검색·필터 변경 시 디바운스 후 1페이지로 리셋
+  useEffect(() => {
+    clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setPage(1);
+      loadKeywords(1);
+    }, 300);
+    return () => clearTimeout(debounceRef.current);
+  }, [search, categoryFilter, showUnused]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const chartData = useMemo(
+    () => keywords.slice(0, 15).map(k => ({ name: k.keyword, 검색수: k.searchCount ?? 0 })),
+    [keywords],
+  );
+
+  const showToast = (msg, type = 'info') => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  /* ── 모달 ── */
   const openAdd = () => {
     setForm({ keyword: '', searchCount: 0, synonyms: [], categoryId: '' });
     setSynonymInput('');
@@ -49,36 +86,92 @@ export default function Keywords() {
   };
 
   const addSynonym = () => {
-    const val = synonymInput.trim();
+    // 콤마 구분 다중 입력 지원
+    const values = synonymInput.split(',').map(v => v.trim()).filter(Boolean);
     const syns = form.synonyms || [];
-    if (val && !syns.includes(val)) {
-      setForm({ ...form, synonyms: [...syns, val] });
-    }
+    const newSyns = [...syns];
+    values.forEach(val => {
+      if (!newSyns.includes(val)) newSyns.push(val);
+    });
+    setForm({ ...form, synonyms: newSyns });
     setSynonymInput('');
   };
 
   const removeSynonym = (syn) => {
-    setForm({ ...form, synonyms: (form.synonyms || []).filter(s => s !== syn) });
+    setForm({ ...form, synonyms: (form.synonyms || []).filter(v => v !== syn) });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const data = { ...form, searchCount: Number(form.searchCount) };
-    if (modal.mode === 'add') addKeyword(data);
-    else updateKeyword(modal.keyword.id, data);
+    if (modal.mode === 'add') {
+      const result = await addKeyword(data);
+      if (result?.status === 409) {
+        showToast(result.message, 'error');
+        return;
+      }
+      if (result?.ok) {
+        showToast('키워드가 추가되었습니다.', 'success');
+      }
+    } else {
+      await updateKeyword(modal.keyword.id, data);
+      showToast('키워드가 수정되었습니다.', 'success');
+    }
     setModal(null);
   };
 
-  const handleDelete = (id) => {
-    if (confirm('키워드를 삭제하시겠습니까?')) deleteKeyword(id);
+  const handleDelete = async (id) => {
+    if (confirm('키워드를 삭제하시겠습니까?')) {
+      await deleteKeyword(id);
+      showToast('키워드가 삭제되었습니다.', 'success');
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (!confirm(`미사용 키워드 ${keywordStats.unused_count}개를 모두 삭제하시겠습니까?`)) return;
+    const result = await bulkDeleteKeywords();
+    if (result) {
+      showToast(`${result.deleted}개 키워드가 삭제되었습니다.`, 'success');
+      loadKeywords(1);
+      setPage(1);
+    }
   };
 
   const getCategoryName = (id) => flatCategories.find(c => c.id === id)?.label || '-';
 
+  const { total, total_pages } = keywordPagination;
+
   return (
     <div className={s.page}>
+      {/* 토스트 */}
+      {toast && (
+        <div className={`${s.toast} ${s[toast.type]}`}>{toast.msg}</div>
+      )}
+
       <div className={s.header}>
         <h2 className={s.title}>키워드 관리</h2>
-        <button className={s.addBtn} onClick={openAdd}><Plus size={16} /> 키워드 추가</button>
+        <div className={s.headerActions}>
+          {keywordStats.unused_count > 0 && (
+            <button className={s.unusedBtn} onClick={handleBulkDelete}>
+              <AlertTriangle size={14} />
+              미사용 {keywordStats.unused_count}개 삭제
+            </button>
+          )}
+          <button className={s.addBtn} onClick={openAdd}><Plus size={16} /> 키워드 추가</button>
+        </div>
+      </div>
+
+      {/* 통계 카드 */}
+      <div className={s.statsRow}>
+        <div className={s.statCard}>
+          <span className={s.statLabel}>전체 키워드</span>
+          <span className={s.statValue}>{keywordStats.total?.toLocaleString()}</span>
+        </div>
+        <div className={s.statCard}>
+          <span className={s.statLabel}>미사용 키워드</span>
+          <span className={`${s.statValue} ${keywordStats.unused_count > 0 ? s.unusedValue : ''}`}>
+            {keywordStats.unused_count?.toLocaleString()}
+          </span>
+        </div>
       </div>
 
       {/* 인기 검색어 차트 */}
@@ -95,14 +188,30 @@ export default function Keywords() {
         </ResponsiveContainer>
       </div>
 
-      {/* 검색 */}
-      <div className={s.searchWrap}>
+      {/* 필터 바 */}
+      <div className={s.filterBar}>
         <input
           placeholder="키워드 또는 동의어 검색..."
           value={search}
           onChange={e => setSearch(e.target.value)}
           className={s.searchInput}
         />
+        <select
+          value={categoryFilter}
+          onChange={e => setCategoryFilter(e.target.value)}
+          className={s.filterSelect}
+        >
+          <option value="">모든 카테고리</option>
+          {flatCategories.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
+        </select>
+        <label className={s.checkLabel}>
+          <input
+            type="checkbox"
+            checked={showUnused}
+            onChange={e => setShowUnused(e.target.checked)}
+          />
+          미사용만
+        </label>
       </div>
 
       {/* 테이블 */}
@@ -114,13 +223,17 @@ export default function Keywords() {
               <th>검색 횟수</th>
               <th>동의어</th>
               <th>연결 카테고리</th>
+              <th>연결 상품</th>
               <th>관리</th>
             </tr>
           </thead>
           <tbody>
-            {sorted.map(kw => (
-              <tr key={kw.id}>
-                <td className={s.bold}>{kw.keyword}</td>
+            {keywords.map(kw => (
+              <tr key={kw.id} className={kw.searchCount === 0 ? s.unusedRow : ''}>
+                <td className={s.bold}>
+                  {kw.keyword}
+                  {kw.searchCount === 0 && <span className={s.unusedBadge}>미사용</span>}
+                </td>
                 <td>{(kw.searchCount ?? 0).toLocaleString()}</td>
                 <td>
                   <div className={s.synonyms}>
@@ -131,6 +244,11 @@ export default function Keywords() {
                 </td>
                 <td className={s.catCol}>{getCategoryName(kw.categoryId)}</td>
                 <td>
+                  <span className={s.productCount}>
+                    <Package size={12} /> {kw.productCount ?? 0}
+                  </span>
+                </td>
+                <td>
                   <div className={s.actions}>
                     <button className={s.iconBtn} onClick={() => openEdit(kw)}><Pencil size={14} /></button>
                     <button className={s.iconBtn} onClick={() => handleDelete(kw.id)}><Trash2 size={14} /></button>
@@ -138,10 +256,34 @@ export default function Keywords() {
                 </td>
               </tr>
             ))}
+            {keywords.length === 0 && !loading && (
+              <tr><td colSpan={6} className={s.empty}>키워드가 없습니다.</td></tr>
+            )}
           </tbody>
         </table>
       </div>
-      <p className={s.count}>{sorted.length}개 키워드</p>
+
+      {/* 페이지네이션 */}
+      <div className={s.pagination}>
+        <span className={s.count}>총 {total.toLocaleString()}개</span>
+        <div className={s.pageControls}>
+          <button
+            className={s.pageBtn}
+            disabled={page <= 1}
+            onClick={() => setPage(p => p - 1)}
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <span className={s.pageInfo}>{page} / {total_pages}</span>
+          <button
+            className={s.pageBtn}
+            disabled={page >= total_pages}
+            onClick={() => setPage(p => p + 1)}
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
+      </div>
 
       {/* 모달 */}
       {modal && (
@@ -175,7 +317,7 @@ export default function Keywords() {
                   <input
                     value={synonymInput}
                     onChange={e => setSynonymInput(e.target.value)}
-                    placeholder="동의어 입력"
+                    placeholder="동의어 입력 (콤마로 구분)"
                     onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addSynonym())}
                   />
                   <button type="button" onClick={addSynonym}><Tag size={14} /> 추가</button>

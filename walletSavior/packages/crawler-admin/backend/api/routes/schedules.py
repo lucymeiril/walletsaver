@@ -2,13 +2,17 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+
+from apscheduler.triggers.cron import CronTrigger
 
 from scheduler.scheduler import CrawlScheduler
 
@@ -85,6 +89,23 @@ def _get_scheduler() -> CrawlScheduler:
     return _scheduler
 
 
+def _compute_next_runs(cron_expr: str, count: int = 3) -> list[str]:
+    """cron 표현식에서 다음 N회 실행 시간 계산."""
+    try:
+        trigger = CronTrigger.from_crontab(cron_expr)
+        runs: list[str] = []
+        current = datetime.now(timezone.utc)
+        for _ in range(count):
+            next_time = trigger.get_next_fire_time(None, current)
+            if next_time is None:
+                break
+            runs.append(next_time.isoformat())
+            current = next_time + timedelta(seconds=1)
+        return runs
+    except Exception:
+        return []
+
+
 class ScheduleCreate(BaseModel):
     crawler_name: str
     cron: str
@@ -124,26 +145,30 @@ async def list_schedules():
         name = s["crawler_name"]
         seen.add(name)
         job = job_map.get(name)
+        cron_expr = s.get("cron", "")
         result.append({
             "id": s.get("job_id", f"crawl_{name}"),
             "crawlerId": name,
             "crawlerName": s.get("display_name", name),
-            "cron": s.get("cron", ""),
+            "cron": cron_expr,
             "description": s.get("description", ""),
             "nextRun": job["next_run"] if job else s.get("next_run"),
+            "nextRuns": _compute_next_runs(cron_expr) if cron_expr else [],
             "enabled": s.get("enabled", True),
         })
 
     # APScheduler에만 있는 작업 추가
     for name, job in job_map.items():
         if name not in seen:
+            job_cron = str(job.get("trigger", ""))
             result.append({
                 "id": job.get("job_id", f"crawl_{name}"),
                 "crawlerId": name,
                 "crawlerName": name,
-                "cron": str(job.get("trigger", "")),
+                "cron": job_cron,
                 "description": "",
                 "nextRun": job.get("next_run"),
+                "nextRuns": _compute_next_runs(job_cron) if job_cron else [],
                 "enabled": True,
             })
 
@@ -258,3 +283,34 @@ async def toggle_schedule(crawler_name: str, body: ScheduleToggle):
     _save_schedules(saved)
 
     return {"crawler_name": crawler_name, "enabled": body.enabled}
+
+
+@router.post("/{crawler_name}/run-now")
+async def run_schedule_now(crawler_name: str):
+    """스케줄된 크롤러를 즉시 실행."""
+    sched = _get_scheduler()
+
+    saved = _load_saved_schedules()
+    exists = any(s["crawler_name"] == crawler_name for s in saved)
+    if not exists:
+        jobs = sched.list_jobs()
+        exists = any(
+            j.get("name", "").replace("crawl:", "") == crawler_name
+            or j.get("job_id", "").replace("crawl_", "") == crawler_name
+            for j in jobs
+        )
+    if not exists:
+        raise HTTPException(
+            status_code=404,
+            detail=f"스케줄 '{crawler_name}'을(를) 찾을 수 없습니다",
+        )
+
+    try:
+        asyncio.create_task(sched.run_now(crawler_name))
+        return {
+            "status": "started",
+            "crawler_name": crawler_name,
+            "message": f"'{crawler_name}' 즉시 실행 시작",
+        }
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"즉시 실행 실패: {exc}")

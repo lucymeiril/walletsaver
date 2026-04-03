@@ -57,6 +57,14 @@ export const api = {
   // Analytics
   getQualityReport: () => fetch(`${API_BASE}/analytics/quality-report`).then(json),
   getSummary: () => fetch(`${API_BASE}/analytics/summary`).then(json),
+  getPriceTrends: (productIds, days = 30) => {
+    const params = new URLSearchParams();
+    productIds.forEach(id => params.append('product_ids', id));
+    params.set('days', days);
+    return fetch(`${API_BASE}/analytics/price-trends?${params}`).then(json);
+  },
+  getSourceStatsDetail: () => fetch(`${API_BASE}/analytics/source-stats`).then(json),
+  searchProducts: (q) => fetch(`${API_BASE}/analytics/products/search?q=${encodeURIComponent(q)}`).then(json),
   // Dashboard
   getDashboardStats: () => fetch(`${API_BASE}/dashboard/stats`).then(json),
   // Prices
@@ -69,6 +77,13 @@ export const api = {
     const qs = new URLSearchParams(params).toString();
     return fetch(`${API_BASE}/prices/history?${qs}`).then(json);
   },
+  whitelistOutlier: (id) => postJson(`${API_BASE}/prices/outliers/${id}/whitelist`, {}),
+  getTierPreview: (params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return fetch(`${API_BASE}/prices/tier-preview?${qs}`).then(json);
+  },
+  getOutlierDistribution: (productId, days = 90) =>
+    fetch(`${API_BASE}/prices/outliers/${productId}/distribution?days=${days}`).then(json),
   // Ingestions (pending queue) — ingestion router는 "" 패턴이라 trailing slash 불필요
   getIngestions: (params) => fetch(`${API_BASE}/ingestions?${new URLSearchParams(params)}`).then(json),
   getIngestion: (id) => fetch(`${API_BASE}/ingestions/${id}`).then(json),

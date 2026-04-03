@@ -1,20 +1,52 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, X, TrendingUp, TrendingDown, Minus, ArrowRight, Heart, Clock, Fuel } from 'lucide-react';
+import { Search, X, TrendingUp, TrendingDown, Minus, ArrowRight, Heart, Clock, MapPin, RefreshCw } from 'lucide-react';
 import { MARTS } from '../../utils/constants';
 import { fmt } from '../../utils/helpers';
 import useStore from '../../stores/appStore';
-import Spinner from '../../components/common/Spinner';
 import s from './HomePage.module.css';
 
 const CATEGORIES = [
-  { icon: '🥩', name: '농축산물', path: '/price' },
-  { icon: '🏪', name: '마트',     path: '/mart' },
-  { icon: '⛽', name: '주유소',   path: '/local' },
-  { icon: '🍽️', name: '식당',     path: '/local' },
-  { icon: '👗', name: '의류',     path: '/hotdeal' },
-  { icon: '🛵', name: '배달',     path: '/community' },
+  { icon: '🥩', name: '식품',   path: '/price' },
+  { icon: '🏪', name: '마트',   path: '/mart' },
+  { icon: '⛽', name: '주유소', path: '/local' },
+  { icon: '🔥', name: '핫딜',   path: '/hotdeal' },
 ];
+
+const DEFAULT_COORDS = { lat: 37.4004, lng: 127.1055 };
+
+function normalizeMartItems(data) {
+  const raw = Array.isArray(data) ? data : data?.items || data?.data || [];
+  const list = Array.isArray(raw) ? raw : [];
+  return list.map(d => ({
+    name: d.name || d.title || '',
+    sale: d.price ?? d.sale ?? d.sale_price ?? 0,
+    orig: d.original_price ?? d.orig ?? d.origin_price ?? 0,
+    disc: d.discount_rate ?? d.disc ?? d.discount ?? 0,
+    event: d.event || d.promotion || '할인',
+  }));
+}
+
+function SectionError({ onRetry }) {
+  return (
+    <div className={s.sectionError}>
+      <p>데이터를 불러오지 못했습니다.</p>
+      {onRetry && (
+        <button className={s.retryBtn} onClick={onRetry}>
+          <RefreshCw size={14} /> 다시 시도
+        </button>
+      )}
+    </div>
+  );
+}
+
+function SkeletonCard({ className }) {
+  return <div className={`${s.skeleton} ${className || ''}`}><div className={s.shimmer} /></div>;
+}
+
+function SkeletonRow() {
+  return <div className={`${s.skeleton} ${s.skeletonRow}`}><div className={s.shimmer} /></div>;
+}
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -22,7 +54,7 @@ export default function HomePage() {
     setSelectedProduct,
     favorites, addFavorite, removeFavorite, isFavorite,
     recentSearches, addRecentSearch, clearRecentSearches,
-    addToShoppingList, addToast,
+    addToShoppingList, addToast, setLocation,
   } = useStore();
 
   const [query, setQuery] = useState('');
@@ -36,42 +68,114 @@ export default function HomePage() {
   const [communityPosts, setCommunityPosts] = useState([]);
   const [gasStations, setGasStations] = useState([]);
   const [trending, setTrending] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  // 모든 데이터를 API에서 실시간 조회
+  // 섹션별 로딩/에러 상태
+  const [sectionLoading, setSectionLoading] = useState({
+    products: true, hotdeals: true, community: true, gas: true, trending: true,
+  });
+  const [sectionError, setSectionError] = useState({
+    products: false, hotdeals: false, community: false, gas: false, trending: false,
+  });
+
+  const [coords, setCoords] = useState(null);
+  const [martLoading, setMartLoading] = useState(false);
+  const [martError, setMartError] = useState(false);
+
+  // 1) GPS 위치 연동
   useEffect(() => {
-    Promise.all([
+    if (!navigator.geolocation) {
+      setCoords(DEFAULT_COORDS);
+      setLocation(DEFAULT_COORDS.lat, DEFAULT_COORDS.lng);
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const c = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        setCoords(c);
+        setLocation(c.lat, c.lng);
+      },
+      () => {
+        setCoords(DEFAULT_COORDS);
+        setLocation(DEFAULT_COORDS.lat, DEFAULT_COORDS.lng);
+      },
+      { timeout: 5000, maximumAge: 300000 }
+    );
+  }, [setLocation]);
+
+  // 2) API 병렬 최적화 — Promise.allSettled, 위치 확정 후 실행
+  const fetchAllData = useCallback((loc) => {
+    const gasQuery = loc ? `lat=${loc.lat}&lng=${loc.lng}&sort=price_asc` : 'sort=price_asc';
+
+    setSectionLoading({ products: true, hotdeals: true, community: true, gas: true, trending: true });
+    setSectionError({ products: false, hotdeals: false, community: false, gas: false, trending: false });
+
+    Promise.allSettled([
+      fetch('/api/hotdeals?per_page=10').then(r => r.json()),
       fetch('/api/products/search?per_page=50').then(r => r.json()),
-      fetch('/api/hotdeals?per_page=4').then(r => r.json()),
       fetch('/api/posts?board=hotdeal&per_page=5').then(r => r.json()),
-      fetch('/api/gas/nearby?sort=price_asc').then(r => r.json()),        // 주유소 실시간 조회
-      fetch('/api/products/trending').then(r => r.json()),                 // 인기 검색어 조회
-    ]).then(([prodRes, dealRes, postRes, gasRes, trendRes]) => {
-      setProducts(prodRes.data || []);
-      setHotdeals(dealRes.data || []);
-      setCommunityPosts(postRes.data || []);
-      setGasStations(gasRes.data || []);
-      setTrending(trendRes.data || []);
-    }).catch(err => {
-      console.error(err);
-      addToast('데이터를 불러오는데 실패했습니다', 'error');
-    }).finally(() => setLoading(false));
+      fetch(`/api/gas/nearby?${gasQuery}`).then(r => r.json()),
+      fetch('/api/products/trending').then(r => r.json()),
+    ]).then(([dealRes, prodRes, postRes, gasRes, trendRes]) => {
+      // 핫딜 (우선 표시)
+      if (dealRes.status === 'fulfilled') {
+        setHotdeals(dealRes.value.data || []);
+      } else {
+        setSectionError(prev => ({ ...prev, hotdeals: true }));
+      }
+      setSectionLoading(prev => ({ ...prev, hotdeals: false }));
+
+      // 물가 (우선 표시)
+      if (prodRes.status === 'fulfilled') {
+        setProducts(prodRes.value.data || []);
+      } else {
+        setSectionError(prev => ({ ...prev, products: true }));
+      }
+      setSectionLoading(prev => ({ ...prev, products: false }));
+
+      // 커뮤니티
+      if (postRes.status === 'fulfilled') {
+        setCommunityPosts(postRes.value.data || []);
+      } else {
+        setSectionError(prev => ({ ...prev, community: true }));
+      }
+      setSectionLoading(prev => ({ ...prev, community: false }));
+
+      // 주유소
+      if (gasRes.status === 'fulfilled') {
+        setGasStations(gasRes.value.data || []);
+      } else {
+        setSectionError(prev => ({ ...prev, gas: true }));
+      }
+      setSectionLoading(prev => ({ ...prev, gas: false }));
+
+      // 인기 검색어
+      if (trendRes.status === 'fulfilled') {
+        setTrending(trendRes.value.data || []);
+      } else {
+        setSectionError(prev => ({ ...prev, trending: true }));
+      }
+      setSectionLoading(prev => ({ ...prev, trending: false }));
+    });
   }, []);
 
   useEffect(() => {
-    fetch(`/api/marts/${martTab}/promotions`).then(r => r.json())
+    if (coords) fetchAllData(coords);
+  }, [coords, fetchAllData]);
+
+  // 5) 마트 데이터 정규화
+  const fetchMart = useCallback((tab) => {
+    setMartLoading(true);
+    setMartError(false);
+    fetch(`/api/marts/${tab}/promotions`).then(r => r.json())
       .then(res => {
-        const items = (Array.isArray(res.data) ? res.data : res.data?.items || []).map(d => ({
-          name: d.name,
-          sale: d.price ?? d.sale,
-          orig: d.original_price ?? d.orig,
-          disc: d.discount_rate ?? d.disc,
-          event: d.event || '할인',
-        }));
-        setMartDeals(prev => ({ ...prev, [martTab]: items }));
+        const items = normalizeMartItems(res.data ?? res);
+        setMartDeals(prev => ({ ...prev, [tab]: items }));
       })
-      .catch(console.error);
-  }, [martTab]);
+      .catch(() => setMartError(true))
+      .finally(() => setMartLoading(false));
+  }, []);
+
+  useEffect(() => { fetchMart(martTab); }, [martTab, fetchMart]);
 
   const matches = query.length > 0
     ? products.filter(p => p.name?.includes(query) || p.cat?.includes(query))
@@ -91,9 +195,15 @@ export default function HomePage() {
   const activeMartItems = martDeals[martTab] || [];
   const topGas = [...gasStations].sort((a, b) => (a.gasoline || Infinity) - (b.gasoline || Infinity)).slice(0, 4);
 
-  if (loading) {
-    return <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}><Spinner size="lg" /></div>;
-  }
+  // 3) 오늘의 핫딜 TOP 3 — 할인율 기준
+  const topHotdeals = [...hotdeals]
+    .map(d => {
+      const discountRate = d.price && d.origPrice && d.origPrice > 0
+        ? Math.round((1 - d.price / d.origPrice) * 100) : 0;
+      return { ...d, discountRate };
+    })
+    .sort((a, b) => b.discountRate - a.discountRate)
+    .slice(0, 3);
 
   return (
     <div>
@@ -103,6 +213,13 @@ export default function HomePage() {
         <div className={s.heroContent}>
           <h1 className={s.title}>이 가격,<br />진짜 싼 건가요?</h1>
           <p className={s.sub}>정부 공식 물가 + 마트 전단 데이터로<br />지금 사도 될지 알려드립니다</p>
+
+          {coords && (
+            <div className={s.locationBadge}>
+              <MapPin size={12} />
+              <span>{coords === DEFAULT_COORDS ? '기본 위치 (판교)' : '내 위치 기준'}</span>
+            </div>
+          )}
 
           <div className={s.search}>
             <div className={s.searchWrap}>
@@ -206,7 +323,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 카테고리 퀵 링크 */}
+      {/* 카테고리 퀵 링크 — 핵심 4개 + 더보기 */}
       <section className={s.sec}>
         <h2 className={s.secTitle}>카테고리</h2>
         <p className={s.secDesc}>원하는 정보에 3클릭 이내로 접근하세요</p>
@@ -217,93 +334,114 @@ export default function HomePage() {
               <span className={s.catName}>{cat.name}</span>
             </button>
           ))}
+          <button className={`${s.catLink} ${s.catMore}`} onClick={() => navigate('/community')}>
+            <span className={s.catIcon}>➕</span>
+            <span className={s.catName}>더보기</span>
+          </button>
         </div>
       </section>
 
-      {/* 오늘의 핫딜 */}
+      {/* 오늘의 핫딜 TOP 3 — 할인율 기준 대형 카드 */}
       <section className={s.sec}>
         <div className={s.secHead}>
           <div>
-            <h2 className={s.secTitle}>🔥 오늘의 핫딜</h2>
-            <p className={s.secDesc}>실시간 커뮤니티 핫딜 모아보기</p>
+            <h2 className={s.secTitle}>🔥 오늘의 핫딜 TOP 3</h2>
+            <p className={s.secDesc}>할인율 기준 실시간 최고의 딜</p>
           </div>
           <button className={s.secMore} onClick={() => navigate('/hotdeal')}>전체보기 <ArrowRight size={14} /></button>
         </div>
-        <div className={s.dealGrid}>
-          {hotdeals.slice(0, 4).map(d => {
-            const ratio = d.price && d.origPrice ? d.price / d.origPrice : null;
-            let tierClass = '';
-            if (ratio !== null) {
-              if (ratio <= 0.5) tierClass = s.ultra;
-              else if (ratio <= 0.65) tierClass = s.great;
-              else if (ratio <= 0.8) tierClass = s.good;
-              else tierClass = s.ok;
-            }
-            return (
-              <div key={d.id} className={s.dealCard} onClick={() => navigate('/hotdeal', { state: { openDealId: d.id } })}>
-                <div className={s.dealHead}>
-                  <span className={s.dealSource}>{d.source}</span>
-                  <span className={s.dealTime}>{d.time}</span>
+        {sectionLoading.hotdeals ? (
+          <div className={s.topDealGrid}>
+            {[0, 1, 2].map(i => <SkeletonCard key={i} className={s.skeletonTopDeal} />)}
+          </div>
+        ) : sectionError.hotdeals ? (
+          <SectionError onRetry={() => fetchAllData(coords)} />
+        ) : (
+          <div className={s.topDealGrid}>
+            {topHotdeals.map((d, i) => {
+              const ratio = d.price && d.origPrice ? d.price / d.origPrice : null;
+              let tierClass = '';
+              if (ratio !== null) {
+                if (ratio <= 0.5) tierClass = s.ultra;
+                else if (ratio <= 0.65) tierClass = s.great;
+                else if (ratio <= 0.8) tierClass = s.good;
+                else tierClass = s.ok;
+              }
+              return (
+                <div key={d.id} className={s.topDealCard} onClick={() => navigate('/hotdeal', { state: { openDealId: d.id } })}>
+                  <span className={s.topDealRank}>TOP {i + 1}</span>
+                  <div className={s.dealHead}>
+                    <span className={s.dealSource}>{d.source}</span>
+                    <span className={s.dealTime}>{d.time}</span>
+                  </div>
+                  <div className={s.topDealTitle}>{d.title}</div>
+                  <div className={s.dealBottom}>
+                    <span className={s.dealPrice}>{d.price ? `${fmt(d.price)}원` : ''}</span>
+                    {d.discountRate > 0 && (
+                      <span className={`${s.dealBadge} ${tierClass}`}>
+                        {d.discountRate}% 할인
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <div className={s.dealTitle}>{d.title}</div>
-                <div className={s.dealBottom}>
-                  <span className={s.dealPrice}>{d.price ? `${fmt(d.price)}원` : ''}</span>
-                  {ratio !== null && (
-                    <span className={`${s.dealBadge} ${tierClass}`}>
-                      {Math.round((1 - ratio) * 100)}% 할인
-                    </span>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </section>
 
       {/* 오늘의 물가 */}
       <section className={s.sec}>
         <h2 className={s.secTitle}>오늘의 물가</h2>
         <p className={s.secDesc}>정부 공시 + 마트 평균 기준</p>
-        <div className={s.priceGrid}>
-          {products.slice(0, 8).map(p => {
-            const diff = p.cur - p.avg;
-            const pct = ((diff / p.avg) * 100).toFixed(1);
-            let trend = 'same', icon = <Minus size={12} />;
-            if (diff < -p.avg * 0.03) { trend = 'down'; icon = <TrendingDown size={12} />; }
-            else if (diff > p.avg * 0.03) { trend = 'up'; icon = <TrendingUp size={12} />; }
-            const fav = isFavorite(p.id);
-            return (
-              <div key={p.id} className={s.priceCard} onClick={() => selectProduct(p)}>
-                <div className={s.priceCardTop}>
-                  <span className={s.priceCardIcon}>{p.icon}</span>
-                  <div className={s.priceCardBtns}>
-                    <button
-                      className={s.cartSmall}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        addToShoppingList({ productId: p.id, name: p.name, price: p.cur, unit: p.unit, icon: p.icon });
-                        addToast(`${p.name}을(를) 장보기 리스트에 추가했어요`, 'success');
-                      }}
-                      title="장보기에 추가"
-                    >
-                      🛒
-                    </button>
-                    <button
-                      className={`${s.favBtn} ${fav ? s.favActive : ''}`}
-                      onClick={(e) => { e.stopPropagation(); fav ? removeFavorite(p.id) : addFavorite(p.id); }}
-                      title={fav ? '관심 해제' : '관심 등록'}
-                    >
-                      <Heart size={14} fill={fav ? 'currentColor' : 'none'} />
-                    </button>
+        {sectionLoading.products ? (
+          <div className={s.priceGrid}>
+            {[...Array(8)].map((_, i) => <SkeletonCard key={i} className={s.skeletonPrice} />)}
+          </div>
+        ) : sectionError.products ? (
+          <SectionError onRetry={() => fetchAllData(coords)} />
+        ) : (
+          <div className={s.priceGrid}>
+            {products.slice(0, 8).map(p => {
+              const diff = p.cur - p.avg;
+              const pct = ((diff / p.avg) * 100).toFixed(1);
+              let trend = 'same', icon = <Minus size={12} />;
+              if (diff < -p.avg * 0.03) { trend = 'down'; icon = <TrendingDown size={12} />; }
+              else if (diff > p.avg * 0.03) { trend = 'up'; icon = <TrendingUp size={12} />; }
+              const fav = isFavorite(p.id);
+              return (
+                <div key={p.id} className={s.priceCard} onClick={() => selectProduct(p)}>
+                  <div className={s.priceCardTop}>
+                    <span className={s.priceCardIcon}>{p.icon}</span>
+                    <div className={s.priceCardBtns}>
+                      <button
+                        className={s.cartSmall}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToShoppingList({ productId: p.id, name: p.name, price: p.cur, unit: p.unit, icon: p.icon });
+                          addToast(`${p.name}을(를) 장보기 리스트에 추가했어요`, 'success');
+                        }}
+                        title="장보기에 추가"
+                      >
+                        🛒
+                      </button>
+                      <button
+                        className={`${s.favBtn} ${fav ? s.favActive : ''}`}
+                        onClick={(e) => { e.stopPropagation(); fav ? removeFavorite(p.id) : addFavorite(p.id); }}
+                        title={fav ? '관심 해제' : '관심 등록'}
+                      >
+                        <Heart size={14} fill={fav ? 'currentColor' : 'none'} />
+                      </button>
+                    </div>
                   </div>
+                  <div className={s.priceCardName}>{p.name} ({p.unit})</div>
+                  <div className={s.priceCardPrice}>{fmt(p.cur)}원</div>
+                  <span className={`${s.change} ${s[trend]}`}>{icon} {trend !== 'same' ? `${Math.abs(pct)}%` : '→'}</span>
                 </div>
-                <div className={s.priceCardName}>{p.name} ({p.unit})</div>
-                <div className={s.priceCardPrice}>{fmt(p.cur)}원</div>
-                <span className={`${s.change} ${s[trend]}`}>{icon} {trend !== 'same' ? `${Math.abs(pct)}%` : '→'}</span>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </section>
 
       {/* 마트 세일 미리보기 */}
@@ -327,32 +465,40 @@ export default function HomePage() {
             </button>
           ))}
         </div>
-        <div className={s.martSaleGrid}>
-          {activeMartItems.slice(0, 4).map((item, i) => (
-            <div key={i} className={s.martSaleCard} onClick={() => navigate('/mart')}>
-              <div className={s.martSaleName}>{item.name}</div>
-              <div className={s.martSalePrices}>
-                <span className={s.martSalePrice}>{fmt(item.sale)}원</span>
-                <span className={s.martSaleOrig}>{fmt(item.orig)}원</span>
-                <span className={s.martSaleDisc}>-{item.disc}%</span>
+        {martLoading ? (
+          <div className={s.martSaleGrid}>
+            {[...Array(4)].map((_, i) => <SkeletonCard key={i} className={s.skeletonMart} />)}
+          </div>
+        ) : martError ? (
+          <SectionError onRetry={() => fetchMart(martTab)} />
+        ) : (
+          <div className={s.martSaleGrid}>
+            {activeMartItems.slice(0, 4).map((item, i) => (
+              <div key={i} className={s.martSaleCard} onClick={() => navigate('/mart')}>
+                <div className={s.martSaleName}>{item.name}</div>
+                <div className={s.martSalePrices}>
+                  <span className={s.martSalePrice}>{fmt(item.sale)}원</span>
+                  <span className={s.martSaleOrig}>{fmt(item.orig)}원</span>
+                  <span className={s.martSaleDisc}>-{item.disc}%</span>
+                </div>
+                <div className={s.martSaleBottom}>
+                  <span className={s.martSaleEvent}>{activeMartInfo?.name} · {item.event}</span>
+                  <button
+                    className={s.cartSmall}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToShoppingList({ name: item.name, price: item.sale, icon: '🏪' });
+                      addToast(`${item.name}을(를) 장보기 리스트에 추가했어요`, 'success');
+                    }}
+                    title="장보기에 추가"
+                  >
+                    🛒
+                  </button>
+                </div>
               </div>
-              <div className={s.martSaleBottom}>
-                <span className={s.martSaleEvent}>{activeMartInfo?.name} · {item.event}</span>
-                <button
-                  className={s.cartSmall}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    addToShoppingList({ name: item.name, price: item.sale, icon: '🏪' });
-                    addToast(`${item.name}을(를) 장보기 리스트에 추가했어요`, 'success');
-                  }}
-                  title="장보기에 추가"
-                >
-                  🛒
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* 주변 최저가 주유소 */}
@@ -364,18 +510,26 @@ export default function HomePage() {
           </div>
           <button className={s.secMore} onClick={() => navigate('/local')}>전체보기 <ArrowRight size={14} /></button>
         </div>
-        <div className={s.gasGrid}>
-          {topGas.map((g, i) => (
-            <div key={i} className={s.gasCard}>
-              <span className={s.gasRank}>{i + 1}</span>
-              <div className={s.gasInfo}>
-                <div className={s.gasName}>{g.name}</div>
-                <div className={s.gasAddr}>{g.addr}</div>
+        {sectionLoading.gas ? (
+          <div className={s.gasGrid}>
+            {[...Array(4)].map((_, i) => <SkeletonRow key={i} />)}
+          </div>
+        ) : sectionError.gas ? (
+          <SectionError onRetry={() => fetchAllData(coords)} />
+        ) : (
+          <div className={s.gasGrid}>
+            {topGas.map((g, i) => (
+              <div key={i} className={s.gasCard}>
+                <span className={s.gasRank}>{i + 1}</span>
+                <div className={s.gasInfo}>
+                  <div className={s.gasName}>{g.name}</div>
+                  <div className={s.gasAddr}>{g.addr}</div>
+                </div>
+                <span className={s.gasPrice}>{fmt(g.gasoline)}원</span>
               </div>
-              <span className={s.gasPrice}>{fmt(g.gasoline)}원</span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* 커뮤니티 인기글 */}
@@ -387,27 +541,35 @@ export default function HomePage() {
           </div>
           <button className={s.secMore} onClick={() => navigate('/community')}>전체보기 <ArrowRight size={14} /></button>
         </div>
-        <div className={s.communityList}>
-          {communityPosts.slice(0, 5).map(p => (
-            <div key={p.id} className={s.communityItem} onClick={() => navigate('/community', { state: { openPostId: p.id } })}>
-              <span className={s.comCat}>{p.cat}</span>
-              <div className={s.comBody}>
-                <div className={s.comTitle}>{p.title}</div>
-                <div className={s.comMeta}>
-                  <span>{p.author}</span>
-                  <span>{p.time}</span>
-                  <span>👁️ {p.views}</span>
-                  <span>💬 {p.commentData?.length || p.comments}</span>
+        {sectionLoading.community ? (
+          <div className={s.communityList}>
+            {[...Array(5)].map((_, i) => <SkeletonRow key={i} />)}
+          </div>
+        ) : sectionError.community ? (
+          <SectionError onRetry={() => fetchAllData(coords)} />
+        ) : (
+          <div className={s.communityList}>
+            {communityPosts.slice(0, 5).map(p => (
+              <div key={p.id} className={s.communityItem} onClick={() => navigate('/community', { state: { openPostId: p.id } })}>
+                <span className={s.comCat}>{p.cat}</span>
+                <div className={s.comBody}>
+                  <div className={s.comTitle}>{p.title}</div>
+                  <div className={s.comMeta}>
+                    <span>{p.author}</span>
+                    <span>{p.time}</span>
+                    <span>👁️ {p.views}</span>
+                    <span>💬 {p.commentData?.length || p.comments}</span>
+                  </div>
                 </div>
+                {p.priceVsAvg !== null && (
+                  <span className={`${s.comBadge} ${p.priceVsAvg < -20 ? s.cheap : ''}`}>
+                    평균 대비 {p.priceVsAvg}%
+                  </span>
+                )}
               </div>
-              {p.priceVsAvg !== null && (
-                <span className={`${s.comBadge} ${p.priceVsAvg < -20 ? s.cheap : ''}`}>
-                  평균 대비 {p.priceVsAvg}%
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

@@ -298,6 +298,16 @@ const useDbAdminStore = create((set, get) => ({
     }
   },
 
+  whitelistOutlier: async (id) => {
+    try {
+      await api.whitelistOutlier(id);
+      await get().fetchOutliers();
+    } catch (err) {
+      set({ error: `화이트리스트 추가 실패: ${err.message}` });
+      throw err;
+    }
+  },
+
   fetchOutliers: async (limit = 20) => {
     try {
       const data = await api.getGlobalOutliers(limit);
@@ -344,7 +354,7 @@ const useDbAdminStore = create((set, get) => ({
 
   /* ── 분석 ── */
   categoryAvgPrices: [],
-  qualityReport: { outliers: 0, duplicates: 0, missingFields: 0, totalRecords: 0, completeness: 0, accuracy: 0 },
+  qualityReport: { outliers: 0, duplicates: 0, missingFields: 0, totalRecords: 0, completeness: 0, accuracy: 0, fieldCompleteness: 0, priceCoverage: 0, categoryRate: 0 },
   sourceStats: [],
 
   fetchAnalytics: async () => {
@@ -368,6 +378,9 @@ const useDbAdminStore = create((set, get) => ({
             missingFields: quality.products_without_prices ?? quality.missingFields ?? qr.missingFields ?? 0,
             completeness: quality.completeness ?? qr.completeness ?? (totalRecords > 0 ? 95 : 0),
             accuracy: quality.accuracy ?? qr.accuracy ?? (totalRecords > 0 ? 90 : 0),
+            fieldCompleteness: quality.field_completeness ?? 0,
+            priceCoverage: quality.price_coverage ?? 0,
+            categoryRate: quality.category_rate ?? 0,
           },
         });
       }

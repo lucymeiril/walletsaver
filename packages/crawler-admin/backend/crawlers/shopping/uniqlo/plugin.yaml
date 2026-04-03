@@ -1,0 +1,8 @@
+name: uniqlo
+display_name: 유니클로
+category: shopping
+module: crawlers.shopping.uniqlo.crawler
+class_name: UniqloCrawler
+schedule: "0 */4 * * *"
+difficulty: hard
+notes: "Fast Retailing SPA — Selenium/Playwright 필요"

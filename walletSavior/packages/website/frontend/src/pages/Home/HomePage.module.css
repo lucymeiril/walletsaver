@@ -180,9 +180,11 @@
 /* Category Quick Links */
 .catGrid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 12px;
 }
+.catMore { opacity: .7; border-style: dashed; }
+.catMore:hover { opacity: 1; }
 .catLink {
   display: flex;
   flex-direction: column;
@@ -481,6 +483,7 @@
   .catGrid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .priceGrid { gap: 10px; }
   .dealGrid { grid-template-columns: 1fr; }
+  .topDealGrid { grid-template-columns: 1fr; }
   .gasGrid { grid-template-columns: 1fr; }
   .martSaleGrid { grid-template-columns: repeat(2, 1fr); }
   .priceCard { padding: 14px; min-height: 44px; }
@@ -497,4 +500,107 @@
   .martSaleGrid { grid-template-columns: 1fr; }
   .trendList { gap: 6px; }
   .trendItem { padding: 7px 12px; font-size: .82rem; }
+  .topDealGrid { grid-template-columns: 1fr; }
 }
+
+/* Location Badge */
+.locationBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 14px;
+  border-radius: 16px;
+  font-size: .78rem;
+  color: var(--text2);
+  background: var(--glass);
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+/* Top Deal (핫딜 TOP 3) — 대형 카드 */
+.topDealGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.topDealCard {
+  position: relative;
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  border: 1px solid var(--border);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  cursor: pointer;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.topDealCard:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.3); border-color: var(--accent); }
+.topDealRank {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: .7rem;
+  font-weight: var(--fw-bold);
+  color: var(--accent);
+  background: rgba(56,189,248,.1);
+  padding: 3px 10px;
+  border-radius: 8px;
+  letter-spacing: .5px;
+}
+.topDealTitle {
+  font-size: 1.05rem;
+  font-weight: var(--fw-semi);
+  line-height: 1.5;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Skeleton Loading */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--glass);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+.shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.04) 40%, rgba(255,255,255,.08) 50%, rgba(255,255,255,.04) 60%, transparent 100%);
+  animation: shimmerAnim 1.8s infinite;
+}
+@keyframes shimmerAnim {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.skeletonTopDeal { min-height: 160px; }
+.skeletonPrice { min-height: 120px; }
+.skeletonMart { min-height: 100px; }
+.skeletonRow { min-height: 56px; border-radius: var(--radius); }
+
+/* Section Error */
+.sectionError {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 32px 16px;
+  color: var(--text3);
+  font-size: .9rem;
+}
+.retryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: .85rem;
+  font-weight: var(--fw-semi);
+  color: var(--accent);
+  background: rgba(56,189,248,.08);
+  border: 1px solid rgba(56,189,248,.18);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.retryBtn:hover { background: rgba(56,189,248,.16); }

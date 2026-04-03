@@ -7,7 +7,7 @@ import json
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, List, Optional
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
@@ -25,6 +25,9 @@ _crawl_results: dict[str, dict[str, Any]] = {}
 
 _BACKEND_DIR = Path(__file__).resolve().parent.parent.parent
 _STATUS_FILE = _BACKEND_DIR / "crawler_status.json"
+_RUN_HISTORY_FILE = _BACKEND_DIR / "crawler_run_history.json"
+
+MAX_RECENT_RUNS = 5
 
 
 def _load_status() -> dict[str, str]:
@@ -47,6 +50,39 @@ def _save_status(status: dict[str, str]) -> None:
         logger.error(f"크롤러 상태 저장 실패: {e}")
 
 
+def _load_run_history() -> dict[str, list[dict]]:
+    """크롤러 실행 이력을 파일에서 로드."""
+    if _RUN_HISTORY_FILE.exists():
+        try:
+            with open(_RUN_HISTORY_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+
+def _save_run_history(history: dict[str, list[dict]]) -> None:
+    """크롤러 실행 이력을 파일에 저장."""
+    try:
+        with open(_RUN_HISTORY_FILE, "w", encoding="utf-8") as f:
+            json.dump(history, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        logger.error(f"크롤러 실행 이력 저장 실패: {e}")
+
+
+def _append_run_history(crawler_id: str, status: str, duration: float | None = None) -> None:
+    """크롤러 실행 결과를 이력에 추가 (최근 5회 유지)."""
+    history = _load_run_history()
+    runs = history.get(crawler_id, [])
+    runs.append({
+        "status": status,
+        "duration": duration,
+        "timestamp": datetime.now().isoformat(),
+    })
+    history[crawler_id] = runs[-MAX_RECENT_RUNS:]
+    _save_run_history(history)
+
+
 def _get_registry() -> CrawlerRegistry:
     global _registry
     if _registry is None:
@@ -65,13 +101,15 @@ def _get_pipeline() -> CrawlPipeline:
 
 @router.get("")
 async def list_crawlers():
-    """등록된 크롤러 목록 (활성/비활성 상태 포함)."""
+    """등록된 크롤러 목록 (활성/비활성 상태 + 최근 실행 이력 포함)."""
     reg = _get_registry()
     crawlers = reg.list_crawlers()
     status_map = _load_status()
+    run_history = _load_run_history()
 
     for c in crawlers:
         c["status"] = status_map.get(c["name"], "active")
+        c["recentRuns"] = run_history.get(c["name"], [])
 
     return {"crawlers": crawlers}
 
@@ -183,6 +221,57 @@ async def update_crawler_settings(crawler_id: str, body: CrawlerSettingsUpdate):
     return {"crawler_id": crawler_id, "settings": current}
 
 
+class BulkRunRequest(BaseModel):
+    crawler_ids: List[str]
+
+
+@router.post("/bulk-run")
+async def bulk_run_crawlers(body: BulkRunRequest):
+    """여러 크롤러 순차 실행, 결과 배열 반환."""
+    reg = _get_registry()
+    pipeline = _get_pipeline()
+    results: list[dict[str, Any]] = []
+
+    for cid in body.crawler_ids:
+        try:
+            reg.get_crawler(cid)
+        except KeyError:
+            results.append({
+                "crawler_id": cid,
+                "status": "failed",
+                "error": f"Crawler '{cid}' not found",
+            })
+            continue
+
+        current = _crawl_results.get(cid)
+        if current and current.get("status") == "running":
+            results.append({
+                "crawler_id": cid,
+                "status": "skipped",
+                "message": f"Crawler '{cid}' is already running",
+            })
+            continue
+
+        _crawl_results[cid] = {
+            "crawler_id": cid,
+            "status": "running",
+            "started_at": datetime.now().isoformat(),
+            "items_found": 0,
+            "items_valid": 0,
+            "items_saved": 0,
+            "errors": [],
+        }
+
+        asyncio.create_task(_run_and_store(cid, pipeline))
+        results.append({
+            "crawler_id": cid,
+            "status": "running",
+            "message": f"Crawler '{cid}' started",
+        })
+
+    return {"results": results}
+
+
 @router.post("/{crawler_id}/run")
 async def run_crawler(crawler_id: str):
     """크롤러 즉시 실행 — 백그라운드에서 파이프라인 실행 후 DB Admin 대기열에 제출."""
@@ -221,7 +310,7 @@ async def run_crawler(crawler_id: str):
 
 
 async def _run_and_store(crawler_id: str, pipeline: CrawlPipeline):
-    """백그라운드: 크롤러 실행 → 파이프라인 → DB Admin 대기열 제출."""
+    """백그라운드: 크롤러 실행 → 파이프라인 → DB Admin 대기열 제출 → 이력 기록."""
     try:
         result = await pipeline.run_crawler(crawler_id)
         _crawl_results[crawler_id] = {
@@ -234,6 +323,7 @@ async def _run_and_store(crawler_id: str, pipeline: CrawlPipeline):
             "errors": result.errors,
             "finished_at": datetime.now().isoformat(),
         }
+        _append_run_history(crawler_id, result.status, result.duration)
         logger.info(
             f"Crawler '{crawler_id}' completed: {result.status} "
             f"(found={result.items_found}, saved={result.items_saved})"
@@ -246,4 +336,5 @@ async def _run_and_store(crawler_id: str, pipeline: CrawlPipeline):
             "finished_at": datetime.now().isoformat(),
             "errors": [str(e)],
         }
+        _append_run_history(crawler_id, "failed")
         logger.error(f"Crawler '{crawler_id}' failed: {e}", exc_info=True)

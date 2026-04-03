@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  db:
+    ports:
+      - "5432:5432"
+
+  api:
+    build:
+      context: ./proj
+      dockerfile: Dockerfile
+    volumes:
+      - ./proj:/app
+    ports:
+      - "8000:8000"
+    command: uvicorn api.app:create_app --host 0.0.0.0 --port 8000 --reload
+    environment:
+      DEBUG: "true"
+
+  frontend:
+    build:
+      context: ./proj/frontend-react
+      dockerfile: Dockerfile
+      target: dev
+    volumes:
+      - ./proj/frontend-react/src:/app/src
+    ports:
+      - "5173:5173"
+    command: npm run dev -- --host 0.0.0.0

@@ -1,0 +1,545 @@
+/* ============================================================
+   LocalPage — Gas Stations + Restaurants, Location, Filters
+   ============================================================ */
+
+.hdr { max-width: var(--max-w); margin: 0 auto; padding: 28px 20px 20px; }
+.hdr h2 { font-size: 1.5rem; font-weight: var(--fw-bold); }
+.hdr p { color: var(--text3); font-size: .9rem; }
+
+/* Layout */
+.layout {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 20px 40px;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 20px;
+}
+.map {
+  border-radius: var(--radius2);
+  overflow: hidden;
+  min-height: 400px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  position: relative;
+}
+.naverIframe {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  border: none;
+}
+.mapOverlay {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  z-index: 2;
+  pointer-events: none;
+}
+.mapPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 40px;
+  text-align: center;
+  color: var(--text3);
+}
+.mapPlaceholder p { margin-top: 12px; font-size: .9rem; }
+.mapTag {
+  font-size: .72rem;
+  background: var(--glass);
+  padding: 4px 12px;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+/* Sidebar */
+.sidebar { display: flex; flex-direction: column; gap: 12px; }
+
+/* Main Toggle */
+.mainToggle { display: flex; gap: 4px; }
+.toggleBtn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: .9rem;
+  font-weight: var(--fw-semi);
+  text-align: center;
+  color: var(--text2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.toggleActive { color: var(--accent); border-color: var(--accent); background: rgba(56,189,248,.06); }
+
+/* Location Input */
+.locationRow {
+  display: flex;
+  gap: 8px;
+}
+.locationInput {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: .85rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.locationInput::placeholder { color: var(--text3); }
+.locationBtn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: .82rem;
+  font-weight: var(--fw-semi);
+  background: var(--glass);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--dur) var(--ease);
+}
+.locationBtn:hover { background: rgba(56,189,248,.08); }
+
+/* Fuel Toggle */
+.fuelToggle { display: flex; gap: 4px; }
+.fuelBtn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: .85rem;
+  font-weight: var(--fw-medium);
+  text-align: center;
+  color: var(--text3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.fuelActive { color: var(--accent); border-color: var(--accent); background: rgba(56,189,248,.06); }
+
+/* Self filter */
+.filterRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.filterCheck {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .82rem;
+  color: var(--text2);
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  transition: all var(--dur) var(--ease);
+}
+.filterCheck:hover { border-color: var(--border2); }
+.filterCheckActive { color: var(--accent); border-color: var(--accent); background: rgba(56,189,248,.06); }
+
+/* List */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 420px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border var(--dur) var(--ease);
+}
+.item:hover { border-color: var(--border2); }
+.rank {
+  font-size: .72rem;
+  font-weight: var(--fw-bold);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: var(--glass);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.rank1 { background: rgba(251,191,36,.12); color: var(--yellow); }
+.rank2 { background: rgba(148,163,184,.12); color: var(--text2); }
+.rank3 { background: rgba(205,127,50,.12); color: #CD7F32; }
+.itemBody { flex: 1; min-width: 0; }
+.itemName { font-size: .9rem; font-weight: var(--fw-semi); }
+.itemAddr { font-size: .75rem; color: var(--text3); margin-top: 2px; }
+.itemBrand {
+  font-size: .68rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--glass);
+  color: var(--text3);
+  margin-left: 6px;
+}
+.itemRight { text-align: right; }
+.itemPrice { font-weight: var(--fw-bold); font-size: 1.05rem; color: var(--accent); white-space: nowrap; }
+.itemDist { font-size: .72rem; color: var(--text3); margin-top: 2px; }
+.itemVs { margin-top: 2px; font-size: .72rem; }
+.selfTag {
+  font-size: .65rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(52,211,153,.1);
+  color: var(--green);
+  margin-top: 2px;
+  display: inline-block;
+}
+
+/* Average */
+.avg {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--glass);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.avg span { font-size: .82rem; color: var(--text3); }
+.avg strong { font-size: 1rem; color: var(--yellow); }
+
+/* Cook vs Eat comparison */
+.cookBanner {
+  background: linear-gradient(135deg, rgba(52,211,153,.08), rgba(56,189,248,.08));
+  border: 1px solid rgba(52,211,153,.2);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.cookTitle {
+  font-size: .9rem;
+  font-weight: var(--fw-semi);
+  color: var(--green);
+  margin-bottom: 8px;
+}
+.cookCompare {
+  display: flex;
+  gap: 12px;
+}
+.cookItem {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-align: center;
+}
+.cookLabel { font-size: .75rem; color: var(--text3); display: block; margin-bottom: 4px; }
+.cookPrice { font-size: 1.1rem; font-weight: var(--fw-bold); }
+.cookEat { background: var(--glass); color: var(--text); }
+.cookHome { background: rgba(52,211,153,.1); }
+.cookHome .cookPrice { color: var(--green); }
+.cookSavings {
+  margin-top: 10px;
+  text-align: center;
+  font-size: .85rem;
+  font-weight: var(--fw-semi);
+  color: var(--green);
+}
+
+/* Restaurant rating */
+.rating { color: var(--yellow); font-size: .82rem; }
+
+/* Responsive */
+@media(max-width:768px) {
+  .layout { grid-template-columns: 1fr; }
+  .map { min-height: 250px; }
+  .hdr { padding: 20px 12px 14px; }
+  .layout { padding: 0 12px 100px; }
+}
+
+/* Detail Modal Content */
+.modalDetail { display: flex; flex-direction: column; gap: 16px; }
+.detailHeader { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.detailName { font-size: 1.15rem; font-weight: var(--fw-bold); margin: 0; }
+.detailBrand {
+  font-size: .72rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--glass);
+  color: var(--text3);
+}
+.detailCat {
+  font-size: .75rem;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: rgba(56,189,248,.08);
+  color: var(--accent);
+  font-weight: var(--fw-semi);
+}
+.detailAddr { font-size: .85rem; color: var(--text2); margin: 0; }
+.detailDist { font-size: .82rem; color: var(--text3); margin: 0; }
+.detailRating { font-size: .9rem; color: var(--yellow); margin: 0; font-weight: var(--fw-semi); }
+
+.detailSection {
+  background: var(--glass);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  padding: 14px;
+}
+.detailSection h4 {
+  font-size: .9rem;
+  font-weight: var(--fw-semi);
+  margin: 0 0 12px 0;
+  color: var(--text);
+}
+
+/* Fuel table */
+.fuelTable { display: flex; flex-direction: column; gap: 8px; }
+.fuelRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--surface);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.fuelLabel { font-size: .85rem; font-weight: var(--fw-semi); min-width: 50px; }
+.fuelPrice { font-size: 1rem; font-weight: var(--fw-bold); color: var(--accent); }
+.fuelDiff { font-size: .78rem; margin-left: auto; }
+.fuelNA { font-size: .82rem; color: var(--text3); font-style: italic; }
+
+/* Info grid */
+.infoGrid { display: flex; flex-direction: column; gap: 8px; }
+.infoItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--surface);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.infoLabel { font-size: .82rem; color: var(--text3); }
+.infoValue { font-size: .85rem; font-weight: var(--fw-semi); }
+
+/* Menu table */
+.menuTable { display: flex; flex-direction: column; gap: 8px; }
+.menuRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--surface);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.menuName { font-size: .85rem; font-weight: var(--fw-semi); flex: 1; }
+.menuPrice { font-size: .95rem; font-weight: var(--fw-bold); color: var(--accent); }
+.menuDiff { font-size: .75rem; min-width: 100px; text-align: right; }
+
+/* Cook comparison in modal */
+.cookCompareModal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+}
+.cookCompareItem {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  background: var(--surface);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.cookCompareLabel { display: block; font-size: .78rem; color: var(--text3); margin-bottom: 4px; }
+.cookComparePrice { font-size: 1.1rem; font-weight: var(--fw-bold); }
+.cookVs { font-size: .85rem; color: var(--text3); font-weight: var(--fw-semi); }
+.cookSavingsModal {
+  text-align: center;
+  font-size: .85rem;
+  font-weight: var(--fw-semi);
+  color: var(--green);
+  margin-top: 8px;
+}
+
+/* Direction button */
+.directionBtn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-weight: var(--fw-semi);
+  font-size: .95rem;
+  border: none;
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease);
+}
+.directionBtn:hover { transform: translateY(-1px); }
+
+/* Naver Search Row */
+.naverSearchRow {
+  display: flex;
+  gap: 6px;
+}
+.naverSearchInput {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: .85rem;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  color: var(--text);
+}
+.naverSearchInput::placeholder { color: var(--text3); }
+.naverSearchBtn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity var(--dur) var(--ease);
+}
+.naverSearchBtn:disabled { opacity: .6; cursor: not-allowed; }
+.naverSearchBtn:hover:not(:disabled) { opacity: .85; }
+
+/* Naver Results */
+.naverResults {
+  background: rgba(56,189,248,.04);
+  border: 1px solid rgba(56,189,248,.2);
+  border-radius: 10px;
+  padding: 10px;
+}
+.naverResultsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: .82rem;
+  font-weight: var(--fw-semi);
+  color: var(--accent);
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+.naverClearBtn {
+  background: none;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 4px;
+}
+.naverClearBtn:hover { color: var(--red); }
+
+/* Spin animation */
+@keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+.spin { animation: spin .8s linear infinite; }
+
+/* Price range in list */
+.priceRange {
+  font-size: .72rem;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+/* Map reset button */
+.mapResetBtn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: .75rem;
+  font-weight: var(--fw-semi);
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+  backdrop-filter: blur(8px);
+}
+.mapResetBtn:hover { background: rgba(56,189,248,.1); }
+
+/* Detail image */
+.detailImageWrap {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  max-height: 200px;
+}
+.detailImage {
+  width: 100%;
+  height: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Phone number */
+.detailTel { font-size: .85rem; color: var(--text2); margin: 0; }
+
+/* Price summary bar */
+.priceSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: rgba(56,189,248,.06);
+  border: 1px solid rgba(56,189,248,.15);
+  border-radius: 10px;
+}
+.priceSummaryLabel { font-size: .82rem; color: var(--text3); }
+.priceSummaryValue { font-size: 1rem; font-weight: var(--fw-bold); color: var(--accent); }
+
+/* Button group */
+.btnGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mapFocusBtn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-weight: var(--fw-semi);
+  font-size: .95rem;
+  border: none;
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease);
+}
+.mapFocusBtn:hover { transform: translateY(-1px); }
+.naverLinkBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 11px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-weight: var(--fw-semi);
+  font-size: .9rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.naverLinkBtn:hover { background: rgba(56,189,248,.06); }

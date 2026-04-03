@@ -1,5 +1,6 @@
 .page { animation: fadeSlideUp 0.3s var(--ease); }
-.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+.headerActions { display: flex; gap: 8px; align-items: center; }
 .title { font-size: var(--fs-2xl); font-weight: var(--fw-bold); }
 .addBtn {
   display: flex; align-items: center; gap: 6px;
@@ -10,10 +11,52 @@
 }
 .addBtn:hover { transform: translateY(-1px); }
 
+/* 툴바 */
+.toolbar {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;
+}
+.searchWrap {
+  position: relative; display: flex; align-items: center; flex: 1; min-width: 200px;
+}
+.searchIcon {
+  position: absolute; left: 12px; color: var(--text3); pointer-events: none;
+}
+.searchInput {
+  width: 100%; padding: 8px 36px 8px 36px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text); font-size: var(--fs-sm);
+  transition: border-color var(--dur-fast) var(--ease);
+}
+.searchInput::placeholder { color: var(--text3); }
+.searchInput:focus { border-color: var(--accent); outline: none; }
+.clearBtn {
+  position: absolute; right: 8px; color: var(--text3);
+  display: flex; align-items: center;
+}
+.clearBtn:hover { color: var(--text); }
+.toggleBtns { display: flex; gap: 6px; }
+.toolBtn {
+  padding: 6px 14px; border-radius: var(--radius-sm);
+  background: var(--glass2); color: var(--text2); font-size: var(--fs-xs);
+  transition: all var(--dur-fast) var(--ease); white-space: nowrap;
+}
+.toolBtn:hover { background: var(--glass); color: var(--text); }
+
+/* 빈 카테고리 배너 */
+.emptyBanner {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px; margin-bottom: 12px;
+  background: rgba(251,191,36,.08); border: 1px solid rgba(251,191,36,.2);
+  border-radius: var(--radius-sm); color: var(--yellow); font-size: var(--fs-sm);
+}
+
 /* 트리 */
 .treeWrap {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius); overflow: hidden;
+}
+.emptyTree {
+  padding: 40px; text-align: center; color: var(--text3); font-size: var(--fs-sm);
 }
 .treeNode { border-bottom: 1px solid var(--border); }
 .treeNode:last-child { border-bottom: none; }
@@ -23,10 +66,18 @@
   transition: background var(--dur-fast) var(--ease);
 }
 .nodeRow:hover { background: var(--glass2); }
+.emptyNode { opacity: 0.55; }
 
 .expandBtn { color: var(--text3); flex-shrink: 0; display: flex; }
 .expandBtn:hover { color: var(--text); }
 .nodeName { font-weight: var(--fw-medium); font-size: var(--fs-sm); }
+.emptyName { color: var(--text3); }
+
+.childBadge {
+  padding: 2px 8px; border-radius: 99px;
+  font-size: var(--fs-xs); color: var(--accent2);
+  background: rgba(129,140,248,.1);
+}
 
 .badge {
   display: flex; align-items: center; gap: 3px;
@@ -34,6 +85,7 @@
   font-size: var(--fs-xs); color: var(--text3);
   background: var(--glass2);
 }
+.badgeEmpty { color: var(--text3); opacity: 0.6; }
 
 .attrs { display: flex; gap: 4px; margin-left: auto; }
 .attr {
@@ -76,6 +128,21 @@
 
 .form { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
 .form label { display: flex; flex-direction: column; gap: 6px; font-size: var(--fs-sm); color: var(--text2); }
+.form select {
+  padding: 8px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text); font-size: var(--fs-sm);
+}
+.idPreview {
+  padding: 8px 12px; background: var(--glass2);
+  border-radius: var(--radius-sm); font-size: var(--fs-xs); color: var(--text2);
+}
+.idPreview code {
+  padding: 2px 6px; background: var(--surface); border-radius: 4px;
+  color: var(--accent); font-family: monospace;
+}
+.moveInfo {
+  font-size: var(--fs-sm); color: var(--text2); margin: 0;
+}
 .formActions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }
 .cancelBtn {
   padding: 8px 20px; border-radius: var(--radius-sm);
@@ -85,3 +152,4 @@
   padding: 8px 20px; border-radius: var(--radius-sm);
   background: var(--accent); color: #fff; font-weight: var(--fw-semi); font-size: var(--fs-sm);
 }
+.saveBtn:disabled { opacity: 0.5; cursor: not-allowed; }

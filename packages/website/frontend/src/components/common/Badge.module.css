@@ -1,0 +1,98 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: var(--fw-semi);
+  border-radius: 9999px;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* Sizes */
+.sm {
+  padding: 2px 8px;
+  font-size: var(--fs-xs);
+}
+
+.md {
+  padding: 4px 12px;
+  font-size: var(--fs-sm);
+}
+
+/* Solid variants */
+.solid.primary {
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--accent);
+}
+
+.solid.success {
+  background: rgba(52, 211, 153, 0.15);
+  color: var(--green);
+}
+
+.solid.warning {
+  background: rgba(251, 191, 36, 0.15);
+  color: var(--yellow);
+}
+
+.solid.danger {
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--red);
+}
+
+.solid.neutral {
+  background: var(--glass2);
+  color: var(--text3);
+}
+
+/* Outline variants */
+.outline.primary {
+  background: transparent;
+  border: 1px solid currentColor;
+  color: var(--accent);
+}
+
+.outline.success {
+  background: transparent;
+  border: 1px solid currentColor;
+  color: var(--green);
+}
+
+.outline.warning {
+  background: transparent;
+  border: 1px solid currentColor;
+  color: var(--yellow);
+}
+
+.outline.danger {
+  background: transparent;
+  border: 1px solid currentColor;
+  color: var(--red);
+}
+
+.outline.neutral {
+  background: transparent;
+  border: 1px solid currentColor;
+  color: var(--text3);
+}
+
+/* Price tier badges */
+.ultra {
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--red);
+}
+
+.great {
+  background: rgba(251, 146, 60, 0.15);
+  color: var(--orange);
+}
+
+.good {
+  background: rgba(52, 211, 153, 0.15);
+  color: var(--green);
+}
+
+.wait {
+  background: var(--glass2);
+  color: var(--text3);
+}

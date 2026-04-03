@@ -1,0 +1,233 @@
+.page {
+  max-width: 1200px;
+}
+
+.pageTitle {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  margin-bottom: var(--space-lg);
+}
+
+/* Schedule Table */
+.tableCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semi);
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: var(--space-md) var(--space-md);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+}
+
+.table td {
+  padding: var(--space-md);
+  font-size: var(--fs-sm);
+  color: var(--text2);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.crawlerName {
+  font-weight: var(--fw-semi);
+  color: var(--text);
+}
+
+.cronCode {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: var(--fs-xs);
+  background: var(--bg2);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--accent);
+}
+
+.cronDescription {
+  font-size: var(--fs-xs);
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+.nextRun {
+  font-size: var(--fs-sm);
+  color: var(--text2);
+}
+
+/* Toggle */
+.toggle {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  background: var(--border2);
+  border-radius: 11px;
+  border: none;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease);
+  padding: 0;
+}
+
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.toggleOn {
+  composes: toggle;
+  background: var(--green);
+}
+
+.toggleOn::after {
+  transform: translateX(18px);
+}
+
+/* Actions */
+.actionsCell {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.actionBtn {
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text2);
+  font-size: var(--fs-xs);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all var(--dur-fast) var(--ease);
+}
+
+.actionBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Edit Modal */
+.editOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+}
+
+.editModal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-xl);
+  width: 400px;
+  max-width: 90vw;
+}
+
+.editTitle {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semi);
+  color: var(--text);
+  margin-bottom: var(--space-lg);
+}
+
+.editField {
+  margin-bottom: var(--space-md);
+}
+
+.editLabel {
+  display: block;
+  font-size: var(--fs-sm);
+  color: var(--text2);
+  margin-bottom: var(--space-xs);
+}
+
+.editInput {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: var(--fs-sm);
+  outline: none;
+}
+
+.editInput:focus {
+  border-color: var(--accent);
+}
+
+.editPreview {
+  font-size: var(--fs-sm);
+  color: var(--text3);
+  margin-top: var(--space-xs);
+}
+
+.editActions {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+  margin-top: var(--space-lg);
+}
+
+.cancelBtn {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text2);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.saveBtn {
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--bg);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semi);
+  cursor: pointer;
+}
+
+.saveBtn:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .tableCard {
+    overflow-x: auto;
+  }
+  .table {
+    min-width: 700px;
+  }
+}

@@ -1,0 +1,58 @@
+/* ============================================================
+   Design Tokens — 전체 앱의 색상, 폰트, 간격, 애니메이션 정의
+   이 파일만 수정하면 앱 전체 테마가 바뀜.
+   ============================================================ */
+
+:root {
+  /* 색상 — 다크 글라스모피즘 */
+  --bg:      #0b0f19;
+  --bg2:     #111827;
+  --bg3:     #1a2035;
+  --surface: #1e293b;
+  --glass:   rgba(30, 41, 59, 0.55);
+  --glass2:  rgba(30, 41, 59, 0.35);
+  --border:  rgba(148, 163, 184, 0.12);
+  --border2: rgba(148, 163, 184, 0.22);
+  --text:    #f1f5f9;
+  --text2:   #94a3b8;
+  --text3:   #64748b;
+
+  /* 포인트 색상 */
+  --accent:  #38bdf8;
+  --accent2: #818cf8;
+  --green:   #34d399;
+  --yellow:  #fbbf24;
+  --orange:  #fb923c;
+  --red:     #f87171;
+  --pink:    #f472b6;
+
+  /* 가격 등급 */
+  --tier-ultra: #34d399;
+  --tier-great: #38bdf8;
+  --tier-ok:    #a78bfa;
+  --tier-wait:  #fbbf24;
+  --tier-bad:   #f87171;
+
+  /* 소셜 */
+  --kakao: #FEE500;
+  --naver: #03C75A;
+
+  /* 레이아웃 */
+  --max-w:   1200px;
+  --hdr-h:   60px;
+  --radius:  12px;
+  --radius2: 16px;
+
+  /* 폰트 */
+  --ff: 'Noto Sans KR', 'Inter', system-ui, -apple-system, sans-serif;
+  --fw-light:   300;
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-semi:    600;
+  --fw-bold:    700;
+  --fw-black:   800;
+
+  /* 애니메이션 */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur:  0.25s;
+}

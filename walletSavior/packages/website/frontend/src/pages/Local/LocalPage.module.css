@@ -749,6 +749,132 @@
 .directionBtn:hover { transform: translateY(-1px); }
 
 /* ============================================================
+   Skeleton Loader
+   ============================================================ */
+.skeletonWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 0;
+}
+.skeletonMsg {
+  text-align: center;
+  font-size: .85rem;
+  color: var(--accent);
+  font-weight: var(--fw-semi);
+  margin: 0 0 8px 0;
+}
+.skeletonItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.skeletonRank {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--glass) 25%, var(--border) 50%, var(--glass) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  flex-shrink: 0;
+}
+.skeletonBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.skeletonLine {
+  height: 12px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--glass) 25%, var(--border) 50%, var(--glass) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+.skeletonLineWide { width: 65%; }
+.skeletonLineNarrow { width: 40%; }
+.skeletonPrice {
+  width: 60px;
+  height: 18px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--glass) 25%, var(--border) 50%, var(--glass) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  flex-shrink: 0;
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ============================================================
+   GPS Hint & Start Button
+   ============================================================ */
+.gpsHint {
+  font-size: .78rem;
+  color: var(--yellow);
+  padding: 8px 12px;
+  background: rgba(251,191,36,.08);
+  border: 1px solid rgba(251,191,36,.2);
+  border-radius: 8px;
+}
+.gpsStartBtn {
+  margin-top: 16px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: .85rem;
+  font-weight: var(--fw-semi);
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease);
+}
+.gpsStartBtn:hover { transform: translateY(-1px); }
+
+/* ============================================================
+   Tel Link
+   ============================================================ */
+.telLink {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: var(--fw-semi);
+  transition: opacity var(--dur) var(--ease);
+}
+.telLink:hover { opacity: .75; text-decoration: underline; }
+
+/* ============================================================
+   Menu Raw Text Fallback
+   ============================================================ */
+.menuRawText {
+  font-size: .82rem;
+  color: var(--text2);
+  background: var(--surface);
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+  line-height: 1.5;
+  font-family: inherit;
+}
+.menuRawHint {
+  margin-top: 4px;
+}
+.menuRawHint summary {
+  font-size: .78rem;
+  color: var(--text3);
+  cursor: pointer;
+  padding: 4px 0;
+}
+.menuRawHint summary:hover { color: var(--accent); }
+
+/* ============================================================
    Responsive
    ============================================================ */
 @media(max-width:768px) {
