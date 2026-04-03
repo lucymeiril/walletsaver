@@ -9,6 +9,14 @@
   transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
 .addBtn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(56,189,248,.3); }
+.adminResetBtn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 18px; border-radius: var(--radius-sm);
+  background: rgba(248,113,113,.08); border: 1px solid rgba(248,113,113,.2);
+  color: var(--red); font-weight: var(--fw-semi); font-size: var(--fs-sm);
+  transition: transform var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.adminResetBtn:hover { background: rgba(248,113,113,.15); transform: translateY(-1px); }
 
 /* 통계 바 */
 .statsBar {
@@ -134,6 +142,17 @@
   font-size: var(--fs-xs); font-weight: var(--fw-semi);
   background: rgba(52,211,153,.12); color: var(--green);
 }
+
+/* 상태 배지 */
+.dealStatus {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 2px 8px; border-radius: 99px; font-size: 11px;
+  font-weight: var(--fw-semi); white-space: nowrap;
+}
+.statusActive { background: rgba(52,211,153,.12); color: var(--green); }
+.statusUrgent { background: rgba(251,191,36,.12); color: var(--yellow); }
+.statusExpired { background: rgba(248,113,113,.12); color: var(--red); }
+.statusAlways { background: rgba(148,163,184,.12); color: var(--text3); }
 
 /* 확장 행 */
 .expandedRow td { padding: 0 !important; background: var(--bg2); }

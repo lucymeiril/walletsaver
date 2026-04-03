@@ -1,9 +1,12 @@
+import { useState, useEffect } from 'react';
 import { Search, Trash2, Package } from 'lucide-react';
+import { api } from '../../api/client';
 import s from './Products.module.css';
 
-const SOURCE_LABELS = {
-  all: '전체', emart: '이마트', homeplus: '홈플러스',
+const DEFAULT_SOURCE_LABELS = {
+  emart: '이마트', homeplus: '홈플러스',
   lottemart: '롯데마트', costco: '코스트코', hotdeal: '핫딜', government: '정부데이터',
+  musinsa: '무신사', giordano: '지오다노', community: '커뮤니티',
 };
 
 const SORT_OPTIONS = [
@@ -27,6 +30,35 @@ export default function ProductFilters({
   onBulkCategoryOpen,
   onClearSelection,
 }) {
+  const [dynamicSources, setDynamicSources] = useState([]);
+
+  useEffect(() => {
+    api.getSourceTypes()
+      .then(data => { if (Array.isArray(data)) setDynamicSources(data); })
+      .catch(() => {});
+  }, []);
+
+  const sourceEntries = [['all', '전체']];
+  const seen = new Set(['all']);
+
+  // DB에서 가져온 동적 소스 우선
+  for (const src of dynamicSources) {
+    if (!seen.has(src)) {
+      seen.add(src);
+      sourceEntries.push([src, DEFAULT_SOURCE_LABELS[src] || src]);
+    }
+  }
+
+  // stats.by_source의 키도 추가 (DB 소스 타입 API 실패 시 폴백)
+  if (stats?.by_source) {
+    for (const src of Object.keys(stats.by_source)) {
+      if (!seen.has(src)) {
+        seen.add(src);
+        sourceEntries.push([src, DEFAULT_SOURCE_LABELS[src] || src]);
+      }
+    }
+  }
+
   const handleSearchKey = (e) => {
     if (e.key === 'Enter') onSearch();
   };
@@ -35,7 +67,7 @@ export default function ProductFilters({
     <>
       {/* 소스 필터 탭 */}
       <div className={s.sourceTabs}>
-        {Object.entries(SOURCE_LABELS).map(([key, label]) => (
+        {sourceEntries.map(([key, label]) => (
           <button
             key={key}
             className={`${s.sourceTab} ${sourceFilter === key ? s.sourceTabActive : ''}`}

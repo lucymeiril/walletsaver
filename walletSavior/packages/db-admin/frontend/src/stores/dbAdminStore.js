@@ -72,6 +72,9 @@ const useDbAdminStore = create((set, get) => ({
         originalPrice: p.original_price ?? 0,
         discountRate: p.discount_rate ?? 0,
         tier: p.tier || 'good',
+        valid_from: p.valid_from ?? null,
+        valid_to: p.valid_to ?? null,
+        crawled_at: p.crawled_at ?? null,
       }));
       set({
         products: mapped,

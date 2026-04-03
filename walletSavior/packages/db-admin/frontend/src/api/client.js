@@ -65,6 +65,12 @@ export const api = {
   },
   getSourceStatsDetail: () => fetch(`${API_BASE}/analytics/source-stats`).then(json),
   searchProducts: (q) => fetch(`${API_BASE}/analytics/products/search?q=${encodeURIComponent(q)}`).then(json),
+  getSourceDistribution: () => fetch(`${API_BASE}/analytics/source-distribution`).then(json),
+  getCategoryDistribution: () => fetch(`${API_BASE}/analytics/category-distribution`).then(json),
+  getDailyTrend: (days = 30) => fetch(`${API_BASE}/analytics/daily-trend?days=${days}`).then(json),
+  getDataQualitySummary: () => fetch(`${API_BASE}/analytics/data-quality-summary`).then(json),
+  outlierAction: (id, action, newPrice) => postJson(`${API_BASE}/analytics/outliers/${id}/action`, { action, new_price: newPrice }),
+  getSourceTypes: () => fetch(`${API_BASE}/analytics/source-types`).then(json),
   // Dashboard
   getDashboardStats: () => fetch(`${API_BASE}/dashboard/stats`).then(json),
   // Prices
@@ -90,4 +96,9 @@ export const api = {
   reviewIngestion: (id, data) => postJson(`${API_BASE}/ingestions/${id}/db-review`, data),
   bulkApproveIngestions: (ids, reviewer, notes) => postJson(`${API_BASE}/ingestions/bulk-approve`, { ids, reviewer, notes }),
   getIngestionStats: () => fetch(`${API_BASE}/ingestions/stats`).then(json),
+  // Admin
+  getDataSummary: () => fetch(`${API_BASE}/admin/data-summary`).then(json),
+  resetSource: (source, confirm) => postJson(`${API_BASE}/admin/reset-source`, { source, confirm }),
+  resetProducts: (confirm) => postJson(`${API_BASE}/admin/reset-products`, { confirm }),
+  resetAll: (confirm) => postJson(`${API_BASE}/admin/reset-all`, { confirm }),
 };

@@ -12,7 +12,32 @@ function SortIcon({ col, sortBy, sortDir }) {
   return sortDir === 'asc' ? <ChevronUp size={12} /> : <ChevronDown size={12} />;
 }
 
+function getStatusBadge(p) {
+  const now = new Date();
+  if (!p.valid_from && !p.valid_to) return { emoji: '⚪', label: '상시', cls: 'statusAlways' };
+  if (p.valid_to) {
+    const expiry = new Date(p.valid_to);
+    if (expiry < now) return { emoji: '🔴', label: '만료', cls: 'statusExpired' };
+    const diffMs = expiry - now;
+    const diffDays = diffMs / (1000 * 60 * 60 * 24);
+    if (diffDays <= 2) return { emoji: '🟡', label: '임박', cls: 'statusUrgent' };
+    return { emoji: '🟢', label: '활성', cls: 'statusActive' };
+  }
+  return { emoji: '🟢', label: '활성', cls: 'statusActive' };
+}
+
+function formatDate(iso) {
+  if (!iso) return '-';
+  return new Date(iso).toLocaleDateString('ko-KR', { year: '2-digit', month: '2-digit', day: '2-digit' });
+}
+
+function formatDateRange(from, to) {
+  if (!from && !to) return '-';
+  return `${formatDate(from)} ~ ${formatDate(to)}`;
+}
+
 function ProductRow({ p, selected, onToggleSelect, expanded, onToggleExpand, rowHistory, onDetail, onEdit, onDelete }) {
+  const badge = getStatusBadge(p);
   return (
     <>
       <tr className={`${s.row} ${selected ? s.rowSelected : ''}`}>
@@ -26,13 +51,19 @@ function ProductRow({ p, selected, onToggleSelect, expanded, onToggleExpand, row
           </div>
         </td>
         <td onClick={onDetail}>{p.category}</td>
-        <td onClick={onDetail}>{p.unit}</td>
         <td onClick={onDetail}>{p.currentPrice ? `${p.currentPrice.toLocaleString()}원` : '-'}</td>
-        <td onClick={onDetail}>{p.originalPrice ? `${p.originalPrice.toLocaleString()}원` : '-'}</td>
         <td onClick={onDetail}>
           {p.discountRate ? (
             <span className={s.discountBadge}>{p.discountRate.toFixed(1)}%</span>
           ) : '-'}
+        </td>
+        <td onClick={onDetail}>{formatDate(p.created_at)}</td>
+        <td onClick={onDetail}>{formatDate(p.updated_at)}</td>
+        <td onClick={onDetail}>{formatDateRange(p.valid_from, p.valid_to)}</td>
+        <td onClick={onDetail}>
+          <span className={`${s.dealStatus} ${s[badge.cls]}`} title={badge.label}>
+            {badge.emoji} {badge.label}
+          </span>
         </td>
         <td onClick={onDetail}>
           <div className={s.sourceTags}>
@@ -53,7 +84,7 @@ function ProductRow({ p, selected, onToggleSelect, expanded, onToggleExpand, row
       </tr>
       {expanded && (
         <tr className={s.expandedRow}>
-          <td colSpan={9}>
+          <td colSpan={11}>
             <div className={s.expandedContent}>
               <h4 className={s.expandTitle}>가격 이력 (30일)</h4>
               {rowHistory && rowHistory.length > 0 ? (
@@ -101,14 +132,18 @@ export default function ProductTable({
                 이름 <SortIcon col="name" sortBy={sortBy} sortDir={sortDir} />
               </th>
               <th>카테고리</th>
-              <th>단위</th>
               <th className={s.sortableCol} onClick={() => onToggleSort('price')}>
                 현재가 <SortIcon col="price" sortBy={sortBy} sortDir={sortDir} />
               </th>
-              <th>원래가</th>
               <th className={s.sortableCol} onClick={() => onToggleSort('discount_rate')}>
                 할인율 <SortIcon col="discount_rate" sortBy={sortBy} sortDir={sortDir} />
               </th>
+              <th className={s.sortableCol} onClick={() => onToggleSort('created_at')}>
+                등록일 <SortIcon col="created_at" sortBy={sortBy} sortDir={sortDir} />
+              </th>
+              <th>업데이트</th>
+              <th>할인 기간</th>
+              <th>상태</th>
               <th>소스</th>
               <th>관리</th>
             </tr>

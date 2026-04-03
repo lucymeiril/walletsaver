@@ -78,6 +78,9 @@ def _enrich_product(session: Session, p: Product) -> dict:
         "discount_rate": latest.discount_rate if latest else None,
         "source": latest.source if latest else None,
         "sources": [s[0] for s in sources],
+        "valid_from": latest.valid_from.isoformat() if latest and latest.valid_from else None,
+        "valid_to": latest.valid_to.isoformat() if latest and latest.valid_to else None,
+        "crawled_at": latest.crawled_at.isoformat() if latest and latest.crawled_at else None,
     }
 
 

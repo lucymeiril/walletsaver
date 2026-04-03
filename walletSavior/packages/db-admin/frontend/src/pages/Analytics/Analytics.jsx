@@ -1,20 +1,23 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
-import { Download, AlertTriangle, Database, TrendingUp, Search, X } from 'lucide-react';
+import { Download, AlertTriangle, Database, TrendingUp, Search, X, CheckCircle, Trash2, Pencil, Archive } from 'lucide-react';
 import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip,
   ResponsiveContainer, CartesianGrid, Legend, ReferenceLine,
+  PieChart, Pie, Cell,
 } from 'recharts';
 import useDbAdminStore from '../../stores/dbAdminStore';
 import { api } from '../../api/client';
 import s from './Analytics.module.css';
 
 const CHART_COLORS = ['#38bdf8', '#f472b6', '#a3e635', '#fb923c', '#c084fc'];
+const DONUT_COLORS = ['#38bdf8', '#f472b6', '#a3e635', '#fb923c', '#c084fc', '#22d3ee', '#e879f9', '#facc15'];
 const MAX_PRODUCTS = 5;
 
 export default function Analytics() {
   const {
     products, qualityReport, categoryAvgPrices, sourceStats,
     fetchAnalytics, fetchProducts,
+    priceOutliers, fetchOutliers,
   } = useDbAdminStore();
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -22,15 +25,36 @@ export default function Analytics() {
   const [period, setPeriod] = useState(30);
   const [priceTrends, setPriceTrends] = useState({});
   const [sourceStatsDetail, setSourceStatsDetail] = useState([]);
+  const [sourceDistribution, setSourceDistribution] = useState([]);
+  const [categoryDistribution, setCategoryDistribution] = useState([]);
+  const [dailyTrend, setDailyTrend] = useState([]);
+  const [qualitySummary, setQualitySummary] = useState(null);
+  const [outlierSelected, setOutlierSelected] = useState(new Set());
+  const [editingOutlier, setEditingOutlier] = useState(null);
+  const [editPrice, setEditPrice] = useState('');
+  const [outlierLoading, setOutlierLoading] = useState(false);
   const searchRef = useRef(null);
 
   useEffect(() => {
     fetchAnalytics();
     fetchProducts();
+    fetchOutliers(50);
     api.getSourceStatsDetail()
       .then(data => { if (Array.isArray(data)) setSourceStatsDetail(data); })
       .catch(() => {});
-  }, [fetchAnalytics, fetchProducts]);
+    api.getSourceDistribution()
+      .then(data => { if (Array.isArray(data)) setSourceDistribution(data); })
+      .catch(() => {});
+    api.getCategoryDistribution()
+      .then(data => { if (Array.isArray(data)) setCategoryDistribution(data); })
+      .catch(() => {});
+    api.getDailyTrend(30)
+      .then(data => { if (Array.isArray(data)) setDailyTrend(data); })
+      .catch(() => {});
+    api.getDataQualitySummary()
+      .then(data => { if (data) setQualitySummary(data); })
+      .catch(() => {});
+  }, [fetchAnalytics, fetchProducts, fetchOutliers]);
 
   // 첫 상품 자동 선택
   useEffect(() => {
@@ -57,7 +81,7 @@ export default function Analytics() {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  // 상품 검색 (클라이언트사이드 필터)
+  // 상품 검색
   const filteredProducts = useMemo(() => {
     if (!searchQuery.trim()) return [];
     const q = searchQuery.toLowerCase();
@@ -93,7 +117,6 @@ export default function Analytics() {
     });
   }, [priceTrends, selectedProducts]);
 
-  // 기준가/핫딜가 수평선 (단일 상품 선택 시)
   const refLines = useMemo(() => {
     if (selectedProducts.length !== 1) return {};
     const pid = selectedProducts[0].id;
@@ -103,7 +126,6 @@ export default function Analytics() {
     };
   }, [priceTrends, selectedProducts]);
 
-  // Export 데이터
   const exportTrendData = useMemo(() => {
     return chartData.map(row => {
       const out = { 날짜: row.date };
@@ -114,9 +136,190 @@ export default function Analytics() {
 
   const effectiveSourceStats = sourceStatsDetail.length > 0 ? sourceStatsDetail : sourceStats;
 
+  // 이상치 관리 함수
+  const handleOutlierAction = async (id, action, newPrice) => {
+    setOutlierLoading(true);
+    try {
+      await api.outlierAction(id, action, newPrice || undefined);
+      await fetchOutliers(50);
+      setOutlierSelected(prev => { const n = new Set(prev); n.delete(id); return n; });
+      setEditingOutlier(null);
+      setEditPrice('');
+    } catch (e) {
+      alert(`처리 실패: ${e.message}`);
+    } finally {
+      setOutlierLoading(false);
+    }
+  };
+
+  const handleBulkOutlierAction = async (action) => {
+    if (outlierSelected.size === 0) return;
+    const msg = action === 'delete' ? `선택한 ${outlierSelected.size}개를 삭제하시겠습니까?` : `선택한 ${outlierSelected.size}개를 정상 처리하시겠습니까?`;
+    if (!confirm(msg)) return;
+    setOutlierLoading(true);
+    try {
+      for (const id of outlierSelected) {
+        await api.outlierAction(id, action);
+      }
+      await fetchOutliers(50);
+      setOutlierSelected(new Set());
+    } catch (e) {
+      alert(`처리 실패: ${e.message}`);
+    } finally {
+      setOutlierLoading(false);
+    }
+  };
+
+  const toggleOutlierSelect = (id) => {
+    setOutlierSelected(prev => {
+      const n = new Set(prev);
+      n.has(id) ? n.delete(id) : n.add(id);
+      return n;
+    });
+  };
+
+  const toggleOutlierSelectAll = () => {
+    if (outlierSelected.size === priceOutliers.length) {
+      setOutlierSelected(new Set());
+    } else {
+      setOutlierSelected(new Set(priceOutliers.map(o => o.id)));
+    }
+  };
+
+  // 도넛 차트 커스텀 라벨
+  const renderDonutLabel = ({ source, percentage, cx, cy, midAngle, innerRadius, outerRadius }) => {
+    const RADIAN = Math.PI / 180;
+    const radius = outerRadius + 24;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    return (
+      <text x={x} y={y} fill="var(--text2)" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" fontSize={11}>
+        {source} ({percentage}%)
+      </text>
+    );
+  };
+
   return (
     <div className={s.page}>
       <h2 className={s.title}>분석</h2>
+
+      {/* ── 데이터 품질 요약 ── */}
+      {qualitySummary && (
+        <div className={s.card}>
+          <h3 className={s.cardTitle}><Database size={16} /> 데이터 품질 요약</h3>
+          <div className={s.summaryGrid}>
+            <div className={s.summaryItem}>
+              <span className={s.summaryValue}>{qualitySummary.total?.toLocaleString()}개</span>
+              <span className={s.summaryLabel}>총 상품</span>
+            </div>
+            <div className={s.summaryItem}>
+              <span className={s.summaryValue} style={{ color: 'var(--green)' }}>
+                {qualitySummary.withPrice?.toLocaleString()}개 ({qualitySummary.withPriceRate}%)
+              </span>
+              <span className={s.summaryLabel}>가격 정보 있음</span>
+              <div className={s.progressBar}>
+                <div className={s.progressFill} style={{ width: `${qualitySummary.withPriceRate}%`, background: 'var(--green)' }} />
+              </div>
+            </div>
+            <div className={s.summaryItem}>
+              <span className={s.summaryValue} style={{ color: 'var(--accent)' }}>
+                {qualitySummary.withCategory?.toLocaleString()}개 ({qualitySummary.withCategoryRate}%)
+              </span>
+              <span className={s.summaryLabel}>카테고리 매핑됨</span>
+              <div className={s.progressBar}>
+                <div className={s.progressFill} style={{ width: `${qualitySummary.withCategoryRate}%`, background: 'var(--accent)' }} />
+              </div>
+            </div>
+            <div className={s.summaryItem}>
+              <span className={s.summaryValue} style={{ color: 'var(--accent2)' }}>
+                {qualitySummary.withImage?.toLocaleString()}개 ({qualitySummary.withImageRate}%)
+              </span>
+              <span className={s.summaryLabel}>이미지 있음</span>
+              <div className={s.progressBar}>
+                <div className={s.progressFill} style={{ width: `${qualitySummary.withImageRate}%`, background: 'var(--accent2)' }} />
+              </div>
+            </div>
+            {qualitySummary.expired > 0 && (
+              <div className={s.summaryItem}>
+                <span className={s.summaryValue} style={{ color: 'var(--red)' }}>
+                  {qualitySummary.expired}개
+                </span>
+                <span className={s.summaryLabel}>
+                  <Archive size={12} style={{ verticalAlign: 'middle', marginRight: 4 }} />
+                  만료 상품
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ── 소스별 분포 + 카테고리별 상품 수 ── */}
+      <div className={s.grid}>
+        {sourceDistribution.length > 0 && (
+          <div className={s.card}>
+            <h3 className={s.cardTitle}>소스별 데이터 분포</h3>
+            <ResponsiveContainer width="100%" height={280}>
+              <PieChart>
+                <Pie
+                  data={sourceDistribution}
+                  dataKey="count"
+                  nameKey="source"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={55}
+                  outerRadius={90}
+                  paddingAngle={2}
+                  label={renderDonutLabel}
+                >
+                  {sourceDistribution.map((_, i) => (
+                    <Cell key={i} fill={DONUT_COLORS[i % DONUT_COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text)' }}
+                  formatter={(val, name) => [`${val}개`, name]}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+
+        {categoryDistribution.length > 0 && (
+          <div className={s.card}>
+            <h3 className={s.cardTitle}>카테고리별 상품 수</h3>
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={categoryDistribution} layout="vertical" margin={{ top: 5, right: 20, bottom: 5, left: 60 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                <XAxis type="number" tick={{ fill: 'var(--text3)', fontSize: 11 }} />
+                <YAxis type="category" dataKey="category" tick={{ fill: 'var(--text3)', fontSize: 11 }} width={80} />
+                <Tooltip contentStyle={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text)' }} />
+                <Bar dataKey="count" fill="var(--accent2)" radius={[0, 4, 4, 0]} name="상품 수" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+      </div>
+
+      {/* ── 일별 크롤링 추이 ── */}
+      {dailyTrend.length > 0 && (
+        <div className={s.card}>
+          <h3 className={s.cardTitle}><TrendingUp size={16} /> 일별 크롤링 추이 (최근 30일)</h3>
+          <ResponsiveContainer width="100%" height={220}>
+            <LineChart data={dailyTrend} margin={{ top: 10, right: 20, bottom: 5, left: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+              <XAxis dataKey="date" tick={{ fill: 'var(--text3)', fontSize: 11 }} tickFormatter={v => v.slice(5)} />
+              <YAxis tick={{ fill: 'var(--text3)', fontSize: 11 }} />
+              <Tooltip
+                contentStyle={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text)' }}
+                formatter={(val) => [`${val}개`, '추가 상품']}
+                labelFormatter={l => l}
+              />
+              <Line type="monotone" dataKey="count" stroke="var(--accent)" strokeWidth={2} dot={false} name="일별 추가" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      )}
 
       {/* ── 가격 추이 비교 차트 ── */}
       <div className={s.card}>
@@ -234,7 +437,7 @@ export default function Analytics() {
           </ResponsiveContainer>
         </div>
 
-        {/* ── 데이터 품질 리포트 (실데이터) ── */}
+        {/* ── 데이터 품질 리포트 ── */}
         <div className={s.card}>
           <h3 className={s.cardTitle}><AlertTriangle size={16} /> 데이터 품질 리포트</h3>
           <div className={s.qualityGrid}>
@@ -246,6 +449,105 @@ export default function Analytics() {
             <QualityStat label="정확도" value={`${qualityReport.accuracy ?? 0}%`} color="var(--accent2)" />
           </div>
         </div>
+      </div>
+
+      {/* ── 이상치 관리 ── */}
+      <div className={s.card}>
+        <div className={s.cardHeader}>
+          <h3 className={s.cardTitle}><AlertTriangle size={16} /> 이상치 관리</h3>
+          {outlierSelected.size > 0 && (
+            <div className={s.outlierBulkActions}>
+              <span className={s.outlierBulkCount}>{outlierSelected.size}개 선택</span>
+              <button className={s.outlierActionBtn} onClick={() => handleBulkOutlierAction('whitelist')} disabled={outlierLoading}>
+                <CheckCircle size={13} /> 일괄 정상
+              </button>
+              <button className={`${s.outlierActionBtn} ${s.outlierDeleteBtn}`} onClick={() => handleBulkOutlierAction('delete')} disabled={outlierLoading}>
+                <Trash2 size={13} /> 일괄 삭제
+              </button>
+            </div>
+          )}
+        </div>
+        {priceOutliers.length > 0 ? (
+          <div className={s.tableWrap}>
+            <table className={s.table}>
+              <thead>
+                <tr>
+                  <th style={{ width: 36, textAlign: 'center' }}>
+                    <input type="checkbox" checked={outlierSelected.size === priceOutliers.length && priceOutliers.length > 0} onChange={toggleOutlierSelectAll} />
+                  </th>
+                  <th>상품</th>
+                  <th>날짜</th>
+                  <th>가격</th>
+                  <th>평균가</th>
+                  <th>편차</th>
+                  <th>소스</th>
+                  <th>관리</th>
+                </tr>
+              </thead>
+              <tbody>
+                {priceOutliers.map(o => (
+                  <tr key={o.id}>
+                    <td style={{ textAlign: 'center' }}>
+                      <input type="checkbox" checked={outlierSelected.has(o.id)} onChange={() => toggleOutlierSelect(o.id)} />
+                    </td>
+                    <td className={s.bold}>{o.productName}</td>
+                    <td>{o.date}</td>
+                    <td>
+                      {editingOutlier === o.id ? (
+                        <input
+                          type="number"
+                          className={s.editPriceInput}
+                          value={editPrice}
+                          onChange={e => setEditPrice(e.target.value)}
+                          autoFocus
+                        />
+                      ) : (
+                        <span style={{ color: Math.abs(o.deviation) > 50 ? 'var(--red)' : 'var(--yellow)' }}>
+                          {o.price?.toLocaleString()}원
+                        </span>
+                      )}
+                    </td>
+                    <td>{o.avgPrice?.toLocaleString()}원</td>
+                    <td>
+                      <span className={`${s.status} ${Math.abs(o.deviation) > 50 ? s.error : s.warning}`}>
+                        {o.deviation > 0 ? '+' : ''}{o.deviation}%
+                      </span>
+                    </td>
+                    <td>{o.source}</td>
+                    <td>
+                      <div className={s.outlierActions}>
+                        {editingOutlier === o.id ? (
+                          <>
+                            <button className={s.outlierSmBtn} onClick={() => handleOutlierAction(o.id, 'edit', parseFloat(editPrice))} disabled={outlierLoading} title="저장">
+                              <CheckCircle size={13} />
+                            </button>
+                            <button className={s.outlierSmBtn} onClick={() => { setEditingOutlier(null); setEditPrice(''); }} title="취소">
+                              <X size={13} />
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button className={s.outlierSmBtn} onClick={() => handleOutlierAction(o.id, 'whitelist')} disabled={outlierLoading} title="정상">
+                              <CheckCircle size={13} />
+                            </button>
+                            <button className={s.outlierSmBtn} onClick={() => { setEditingOutlier(o.id); setEditPrice(String(o.avgPrice || o.price)); }} title="수정">
+                              <Pencil size={13} />
+                            </button>
+                            <button className={`${s.outlierSmBtn} ${s.outlierDeleteBtn}`} onClick={() => handleOutlierAction(o.id, 'delete')} disabled={outlierLoading} title="삭제">
+                              <Trash2 size={13} />
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className={s.noOutliers}>이상치가 없습니다.</p>
+        )}
       </div>
 
       {/* ── 출처별 통계 ── */}

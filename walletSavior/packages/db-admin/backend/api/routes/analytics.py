@@ -1,10 +1,10 @@
 """분석 데이터 라우트"""
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Literal
 from datetime import datetime, timedelta
 
-from sqlalchemy import select, func, case, and_
+from sqlalchemy import select, func, case, and_, distinct
 
 from services.base import get_session
 from services.data_quality import (
@@ -34,6 +34,11 @@ class DuplicateRequest(BaseModel):
 
 class ValidateRequest(BaseModel):
     items: list[dict]
+
+
+class OutlierActionRequest(BaseModel):
+    action: Literal["whitelist", "delete", "edit"]
+    new_price: Optional[float] = None
 
 
 @router.get("/outliers/{product_id}")
@@ -356,5 +361,184 @@ def search_products_autocomplete(q: str = "", limit: int = 10):
         )
         rows = session.execute(stmt).all()
         return [{"id": r.id, "name": r.name} for r in rows]
+    finally:
+        session.close()
+
+
+@router.get("/source-distribution")
+def source_distribution():
+    """소스별 상품 수 분포 (도넛 차트용)"""
+    session = get_session()
+    try:
+        rows = session.execute(
+            select(
+                DiscountHistory.source.label("source"),
+                func.count(distinct(DiscountHistory.product_id)).label("count"),
+            )
+            .join(Product, Product.id == DiscountHistory.product_id)
+            .filter(Product.is_active == True)
+            .group_by(DiscountHistory.source)
+            .order_by(func.count(distinct(DiscountHistory.product_id)).desc())
+        ).all()
+        total = sum(r.count for r in rows) or 1
+        return [
+            {"source": r.source, "count": r.count, "percentage": round(r.count / total * 100, 1)}
+            for r in rows
+        ]
+    finally:
+        session.close()
+
+
+@router.get("/category-distribution")
+def category_distribution():
+    """카테고리별 상품 수 (가로 막대 차트용)"""
+    session = get_session()
+    try:
+        rows = session.execute(
+            select(
+                Category.name.label("category"),
+                func.count(Product.id).label("count"),
+            )
+            .join(Product, Product.category_id == Category.id)
+            .filter(Product.is_active == True)
+            .group_by(Category.name)
+            .order_by(func.count(Product.id).desc())
+        ).all()
+        return [{"category": r.category, "count": r.count} for r in rows]
+    finally:
+        session.close()
+
+
+@router.get("/daily-trend")
+def daily_trend(days: int = Query(30, ge=1, le=90)):
+    """일별 상품 추가 추이 (라인 차트용)"""
+    session = get_session()
+    try:
+        cutoff = datetime.utcnow() - timedelta(days=days)
+        rows = session.execute(
+            select(
+                func.date(Product.created_at).label("date"),
+                func.count(Product.id).label("count"),
+            )
+            .filter(Product.created_at >= cutoff)
+            .group_by(func.date(Product.created_at))
+            .order_by(func.date(Product.created_at))
+        ).all()
+
+        date_counts = {str(r.date): r.count for r in rows}
+        result = []
+        for i in range(days):
+            d = (datetime.utcnow() - timedelta(days=days - 1 - i)).strftime("%Y-%m-%d")
+            result.append({"date": d, "count": date_counts.get(d, 0)})
+        return result
+    finally:
+        session.close()
+
+
+@router.get("/data-quality-summary")
+def data_quality_summary():
+    """데이터 품질 요약 — 완성도 메트릭"""
+    session = get_session()
+    try:
+        total = session.execute(
+            select(func.count(Product.id)).filter(Product.is_active == True)
+        ).scalar() or 0
+
+        with_price = session.execute(
+            select(func.count(distinct(DiscountHistory.product_id)))
+            .join(Product, Product.id == DiscountHistory.product_id)
+            .filter(Product.is_active == True)
+        ).scalar() or 0
+
+        with_category = session.execute(
+            select(func.count(Product.id))
+            .filter(Product.is_active == True, Product.category_id.isnot(None))
+        ).scalar() or 0
+
+        with_image = session.execute(
+            select(func.count(Product.id))
+            .filter(Product.is_active == True, Product.image_url.isnot(None), Product.image_url != "")
+        ).scalar() or 0
+
+        now = datetime.utcnow()
+        expired = session.execute(
+            select(func.count(distinct(DiscountHistory.product_id)))
+            .filter(
+                DiscountHistory.valid_to.isnot(None),
+                DiscountHistory.valid_to < now,
+            )
+        ).scalar() or 0
+
+        return {
+            "total": total,
+            "withPrice": with_price,
+            "withPriceRate": round(with_price / total * 100, 1) if total else 0,
+            "withCategory": with_category,
+            "withCategoryRate": round(with_category / total * 100, 1) if total else 0,
+            "withImage": with_image,
+            "withImageRate": round(with_image / total * 100, 1) if total else 0,
+            "expired": expired,
+        }
+    finally:
+        session.close()
+
+
+@router.post("/outliers/{outlier_id}/action")
+def outlier_action(outlier_id: str, body: OutlierActionRequest):
+    """이상치 관리 — 정상/삭제/수정"""
+    raw_id = outlier_id.replace("o-", "") if outlier_id.startswith("o-") else outlier_id
+    try:
+        bp_id = int(raw_id)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="잘못된 이상치 ID입니다")
+
+    session = get_session()
+    try:
+        bp = session.get(BaselinePrice, bp_id)
+        if not bp:
+            raise HTTPException(status_code=404, detail="해당 가격 레코드를 찾을 수 없습니다")
+
+        if body.action == "whitelist":
+            from api.routes.prices import _load_whitelist, _save_whitelist
+            whitelist = _load_whitelist()
+            whitelist.add(bp_id)
+            _save_whitelist(whitelist)
+            return {"status": "ok", "action": "whitelist", "id": outlier_id}
+
+        elif body.action == "delete":
+            session.delete(bp)
+            session.commit()
+            return {"status": "ok", "action": "delete", "id": outlier_id}
+
+        elif body.action == "edit":
+            if body.new_price is None or body.new_price <= 0:
+                raise HTTPException(status_code=400, detail="수정할 가격을 입력하세요")
+            bp.price = body.new_price
+            session.commit()
+            return {"status": "ok", "action": "edit", "id": outlier_id, "newPrice": body.new_price}
+
+        else:
+            raise HTTPException(status_code=400, detail="잘못된 액션입니다")
+    finally:
+        session.close()
+
+
+@router.get("/source-types")
+def source_types():
+    """DB에 존재하는 모든 소스 타입 목록"""
+    session = get_session()
+    try:
+        discount_sources = session.execute(
+            select(distinct(DiscountHistory.source))
+            .filter(DiscountHistory.source.isnot(None))
+        ).scalars().all()
+
+        product_sources = session.execute(
+            select(distinct(Product.source_type))
+            .filter(Product.source_type.isnot(None))
+        ).scalars().all()
+
+        all_sources = sorted(set(discount_sources) | set(product_sources) - {"unknown", None, ""})
+        return all_sources
     finally:
         session.close()
