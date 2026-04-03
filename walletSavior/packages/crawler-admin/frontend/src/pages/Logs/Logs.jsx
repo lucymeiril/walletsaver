@@ -35,25 +35,34 @@ export default function Logs() {
     if (!iso) return '-';
     const d = new Date(iso);
     if (isNaN(d.getTime())) return '-';
-    return d.toLocaleString('ko-KR', {
-      month: 'numeric',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    });
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const h = String(d.getHours()).padStart(2, '0');
+    const min = String(d.getMinutes()).padStart(2, '0');
+    return `${y}.${m}.${day} ${h}:${min}`;
   };
 
+  const isError = (status) => status === 'failure' || status === 'failed';
+
   const getEntryClass = (status) => {
-    if (status === 'failure' || status === 'failed') return styles.logEntryError;
+    if (isError(status)) return styles.logEntryError;
     if (status === 'partial') return styles.logEntryPartial;
     return styles.logEntrySuccess;
   };
 
   const getStatusClass = (status) => {
-    if (status === 'failure' || status === 'failed') return styles.statusFailure;
+    if (isError(status)) return styles.statusFailure;
     if (status === 'partial') return styles.statusPartial;
     return styles.statusSuccess;
+  };
+
+  const handleExport = () => {
+    const params = {};
+    if (logFilters.status !== 'all') params.status = logFilters.status;
+    if (logFilters.dateFrom) params.date_from = logFilters.dateFrom;
+    if (logFilters.dateTo) params.date_to = logFilters.dateTo;
+    exportLogs(params);
   };
 
   return (
@@ -61,7 +70,7 @@ export default function Logs() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <h1 className={styles.pageTitle} style={{ marginBottom: 0 }}>크롤 로그</h1>
         <button
-          onClick={() => exportLogs()}
+          onClick={handleExport}
           style={{
             display: 'flex', alignItems: 'center', gap: '6px',
             padding: '8px 16px', borderRadius: '6px', border: '1px solid var(--border)',
@@ -84,7 +93,7 @@ export default function Logs() {
         </div>
       )}
 
-      {/* Filters */}
+      {/* Filters — 크롤러명 + 상태 + 날짜 복합 필터 */}
       <div className={styles.filtersBar}>
         <input
           className={styles.filterInput}
@@ -104,6 +113,21 @@ export default function Logs() {
           <option value="failed">실패 (failed)</option>
           <option value="partial">부분</option>
         </select>
+        <input
+          className={styles.filterDate}
+          type="date"
+          value={logFilters.dateFrom}
+          onChange={(e) => setLogFilters({ dateFrom: e.target.value })}
+          title="시작일"
+        />
+        <span className={styles.dateSep}>~</span>
+        <input
+          className={styles.filterDate}
+          type="date"
+          value={logFilters.dateTo}
+          onChange={(e) => setLogFilters({ dateTo: e.target.value })}
+          title="종료일"
+        />
       </div>
 
       {/* Log List */}
@@ -126,8 +150,11 @@ export default function Logs() {
             >
               <div className={styles.logHeader}>
                 <span className={styles.logCrawlerName}>{logName}</span>
-                <span className={getStatusClass(log.status)}>
+                <span className={`${getStatusClass(log.status)} ${log.status === 'partial' ? styles.partialBadge : ''}`}>
                   {STATUS_LABEL[log.status] || log.status}
+                  {log.status === 'partial' && (
+                    <span className={styles.tooltip}>일부 항목만 수집 성공</span>
+                  )}
                 </span>
               </div>
 
@@ -177,7 +204,34 @@ export default function Logs() {
                       <div className={styles.detailLabel}>소요 시간</div>
                       <div className={styles.detailValue}>{log.duration || (log.result?.duration ? `${log.result.duration.toFixed(1)}초` : '-')}</div>
                     </div>
+                    {log.result?.quality_score != null && (
+                      <div className={styles.detailItem}>
+                        <div className={styles.detailLabel}>품질 점수</div>
+                        <div className={styles.detailValue}>{log.result.quality_score}</div>
+                      </div>
+                    )}
                   </div>
+
+                  {/* 데이터 샘플 상위 5건 미리보기 */}
+                  {log.dataSample && log.dataSample.length > 0 && (
+                    <div className={styles.sampleSection}>
+                      <div className={styles.sampleTitle}>수집 데이터 샘플 (상위 {log.dataSample.length}건)</div>
+                      <div className={styles.sampleList}>
+                        {log.dataSample.map((item, i) => (
+                          <div key={i} className={styles.sampleItem}>
+                            {typeof item === 'object'
+                              ? Object.entries(item).slice(0, 4).map(([k, v]) => (
+                                  <span key={k} className={styles.sampleField}>
+                                    <span className={styles.sampleKey}>{k}:</span> {String(v).slice(0, 60)}
+                                  </span>
+                                ))
+                              : String(item).slice(0, 120)}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   {(log.error || log.result?.error) && (
                     <div className={styles.errorMsg}>{log.error || log.result?.error}</div>
                   )}
