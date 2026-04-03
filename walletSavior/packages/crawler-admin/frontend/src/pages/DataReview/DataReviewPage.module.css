@@ -9,6 +9,12 @@
   margin-bottom: var(--space-lg);
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .pageTitle {
   font-size: var(--fs-2xl);
   font-weight: var(--fw-bold);
@@ -201,6 +207,12 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.cardInfoRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .crawlerName {
@@ -621,6 +633,185 @@
   color: var(--text3);
 }
 
+/* Cleanup Button */
+.cleanupBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  color: var(--red);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease);
+}
+.cleanupBtn:hover { background: rgba(248, 113, 113, 0.2); border-color: var(--red); }
+.cleanupBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Cleanup Modal */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  min-width: 400px;
+  max-width: 500px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+}
+.modalTitle {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  margin: 0 0 12px;
+}
+.modalDesc {
+  font-size: var(--fs-sm);
+  color: var(--text2);
+  margin: 0 0 20px;
+  line-height: 1.6;
+}
+.modalActions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.modalBtnApproved, .modalBtnRejected, .modalBtnAll {
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  border: none;
+  transition: all var(--dur-fast) var(--ease);
+  text-align: left;
+}
+.modalBtnApproved {
+  background: rgba(52, 211, 153, 0.12);
+  color: var(--green);
+}
+.modalBtnApproved:hover { background: rgba(52, 211, 153, 0.25); }
+.modalBtnRejected {
+  background: rgba(248, 113, 113, 0.12);
+  color: var(--red);
+}
+.modalBtnRejected:hover { background: rgba(248, 113, 113, 0.25); }
+.modalBtnAll {
+  background: rgba(251, 191, 36, 0.12);
+  color: var(--yellow);
+}
+.modalBtnAll:hover { background: rgba(251, 191, 36, 0.25); }
+.modalBtnApproved:disabled, .modalBtnRejected:disabled, .modalBtnAll:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.modalClose {
+  width: 100%;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  background: var(--glass);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease);
+}
+.modalClose:hover { color: var(--text); border-color: var(--accent); }
+
+/* Freshness Badge */
+.freshnessBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+}
+.freshness_green { background: rgba(52, 211, 153, 0.12); color: var(--green); }
+.freshness_yellow { background: rgba(251, 191, 36, 0.12); color: var(--yellow); }
+.freshness_orange { background: rgba(255, 159, 67, 0.15); color: #ff9f43; }
+.freshness_red { background: rgba(248, 113, 113, 0.12); color: var(--red); }
+.freshness_gray { background: var(--glass); color: var(--text3); }
+
+/* Processed At timestamp */
+.processedAt {
+  color: var(--text3);
+  font-size: var(--fs-xs);
+}
+
+/* Field Quality Checklist */
+.cardFieldQuality {
+  padding: 6px 20px 10px;
+  border-top: 1px solid var(--border);
+}
+.fieldQuality {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.fieldChecklist {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.fieldCheckItem {
+  font-size: var(--fs-xs);
+  color: var(--text2);
+  white-space: nowrap;
+}
+.fieldSummary {
+  font-size: var(--fs-xs);
+  color: var(--text3);
+  font-weight: var(--fw-medium);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* Date Range / Discount Period */
+.dateRange {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+.dateRangeLabel {
+  font-size: var(--fs-xs);
+  color: var(--text3);
+}
+.dateRangeValue {
+  font-size: var(--fs-xs);
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ddayBadge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  background: rgba(108, 92, 231, 0.15);
+  color: #6c5ce7;
+  font-size: 10px;
+  font-weight: var(--fw-semi);
+}
+
 @media (max-width: 768px) {
   .cardHeader { flex-direction: column; gap: 8px; align-items: flex-start; }
   .cardClickArea { flex-direction: column; align-items: flex-start; gap: 8px; }
@@ -633,4 +824,8 @@
   .reasonInput { width: 100%; min-width: 0; }
   .bulkBar { flex-direction: column; align-items: flex-start; }
   .pagination { flex-wrap: wrap; }
+  .headerActions { flex-direction: column; align-items: flex-end; }
+  .modal { min-width: auto; margin: 16px; }
+  .fieldQuality { flex-direction: column; align-items: flex-start; }
+  .fieldSummary { margin-left: 0; }
 }

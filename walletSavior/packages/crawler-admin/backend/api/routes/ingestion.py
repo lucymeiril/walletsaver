@@ -76,3 +76,20 @@ async def crawler_review(ingestion_id: int, body: ReviewRequest):
         raise HTTPException(exc.response.status_code, exc.response.text)
     except Exception as exc:
         raise HTTPException(502, f"DB 관리 API 연결 실패: {exc}")
+
+
+@router.post("/cleanup")
+async def cleanup_ingestions(body: dict):
+    """처리 완료 항목 정리 — DB 관리 API 프록시."""
+    try:
+        async with httpx.AsyncClient(timeout=30) as client:
+            resp = await client.post(
+                f"{DB_ADMIN_URL}/cleanup",
+                json=body,
+            )
+            resp.raise_for_status()
+            return resp.json()
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(exc.response.status_code, exc.response.text)
+    except Exception as exc:
+        raise HTTPException(502, f"DB 관리 API 연결 실패: {exc}")

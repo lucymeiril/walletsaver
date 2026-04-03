@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import useAdminStore from '../../stores/adminStore';
-import { CheckCircle, XCircle, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, RefreshCw, Info } from 'lucide-react';
+import { CheckCircle, XCircle, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, RefreshCw, Info, Trash2 } from 'lucide-react';
 import styles from './DataReviewPage.module.css';
 
 const STATUS_MAP = {
@@ -27,10 +27,57 @@ const isOutlierValue = (key, val) => {
   return (k.includes('price') || k.includes('가격')) && (val < 0 || val > 10000000);
 };
 
+const FIELD_STATUS_ICON = { ok: '✅', warn: '⚠️', missing: '❌' };
+
+function getRelativeTime(dateStr) {
+  if (!dateStr) return null;
+  const now = Date.now();
+  const then = new Date(dateStr).getTime();
+  if (isNaN(then)) return null;
+  const diffMs = now - then;
+  const diffMin = Math.floor(diffMs / 60000);
+  if (diffMin < 1) return '방금 전';
+  if (diffMin < 60) return `${diffMin}분 전`;
+  const diffHr = Math.floor(diffMin / 60);
+  if (diffHr < 24) return `${diffHr}시간 전`;
+  const diffDay = Math.floor(diffHr / 24);
+  return `${diffDay}일 전`;
+}
+
+function getFreshnessTier(dateStr) {
+  if (!dateStr) return { color: 'gray', emoji: '⚪' };
+  const diffHr = (Date.now() - new Date(dateStr).getTime()) / 3600000;
+  if (diffHr < 24) return { color: 'green', emoji: '🟢' };
+  if (diffHr < 72) return { color: 'yellow', emoji: '🟡' };
+  if (diffHr < 168) return { color: 'orange', emoji: '🟠' };
+  return { color: 'red', emoji: '🔴' };
+}
+
+function getDDay(dateStr) {
+  if (!dateStr) return null;
+  const target = new Date(dateStr);
+  if (isNaN(target.getTime())) return null;
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  target.setHours(0, 0, 0, 0);
+  const diff = Math.ceil((target - now) / 86400000);
+  if (diff > 0) return `D-${diff}`;
+  if (diff === 0) return 'D-Day';
+  return `D+${Math.abs(diff)}`;
+}
+
+function formatShortDate(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  return `${d.getMonth() + 1}/${d.getDate()}`;
+}
+
 export default function DataReviewPage() {
   const ingestions = useAdminStore((s) => s.ingestions);
   const fetchIngestions = useAdminStore((s) => s.fetchIngestions);
   const reviewIngestion = useAdminStore((s) => s.reviewIngestion);
+  const cleanupIngestions = useAdminStore((s) => s.cleanupIngestions);
   const loading = useAdminStore((s) => s.loading);
   const error = useAdminStore((s) => s.error);
 
@@ -49,6 +96,9 @@ export default function DataReviewPage() {
   const [bulkRejectMode, setBulkRejectMode] = useState(false);
   const [bulkRejectReason, setBulkRejectReason] = useState('');
 
+  const [showCleanupModal, setShowCleanupModal] = useState(false);
+  const [cleanupLoading, setCleanupLoading] = useState(false);
+
   useEffect(() => {
     fetchIngestions();
   }, [fetchIngestions]);
@@ -57,6 +107,10 @@ export default function DataReviewPage() {
     setCurrentPage(1);
     setSelectedIds(new Set());
   }, [filter]);
+
+  const approvedCount = useMemo(() => ingestions.filter(i => i.status === 'approved').length, [ingestions]);
+  const rejectedCount = useMemo(() => ingestions.filter(i => i.status === 'rejected').length, [ingestions]);
+  const processedCount = approvedCount + rejectedCount;
 
   const expandCard = async (id) => {
     if (expandedId === id) { setExpandedId(null); return; }
@@ -139,6 +193,16 @@ export default function DataReviewPage() {
     setBulkRejectReason('');
   };
 
+  const handleCleanup = useCallback(async (statusList) => {
+    setCleanupLoading(true);
+    try {
+      await cleanupIngestions({ status: statusList, confirm: true });
+    } finally {
+      setCleanupLoading(false);
+      setShowCleanupModal(false);
+    }
+  }, [cleanupIngestions]);
+
   const getQualityColor = (score) => {
     if (score >= 90) return styles.qualityHigh;
     if (score >= 70) return styles.qualityMid;
@@ -165,6 +229,52 @@ export default function DataReviewPage() {
       if (item.priceOutliers != null) parts.push({ label: '가격 이상치', value: `${item.priceOutliers}건`, raw: true });
     }
     return parts;
+  };
+
+  const renderFieldQuality = (item) => {
+    const fq = item.field_quality;
+    if (!fq || !fq.fields || fq.fields.length === 0) return null;
+    const gradeLabel = fq.filled >= fq.total ? '우수' : fq.filled >= fq.total * 0.6 ? '양호' : '부족';
+    return (
+      <div className={styles.fieldQuality}>
+        <div className={styles.fieldChecklist}>
+          {fq.fields.map((f) => (
+            <span key={f.key} className={styles.fieldCheckItem} title={`${f.label}: ${Math.round(f.ratio * 100)}%`}>
+              {FIELD_STATUS_ICON[f.status]} {f.label}
+            </span>
+          ))}
+        </div>
+        <span className={styles.fieldSummary}>종합: {gradeLabel} ({fq.filled}/{fq.total})</span>
+      </div>
+    );
+  };
+
+  const renderFreshness = (item) => {
+    const dateStr = item.crawled_at || item.timestamp;
+    const tier = getFreshnessTier(dateStr);
+    const relative = getRelativeTime(dateStr);
+    if (!relative) return null;
+    return (
+      <span className={`${styles.freshnessBadge} ${styles[`freshness_${tier.color}`]}`}>
+        {tier.emoji} {relative}
+      </span>
+    );
+  };
+
+  const renderDateRange = (item) => {
+    const from = item.valid_from;
+    const to = item.valid_to;
+    if (!from && !to) return null;
+    const dday = to ? getDDay(to) : null;
+    return (
+      <div className={styles.dateRange}>
+        <span className={styles.dateRangeLabel}>할인기간:</span>
+        <span className={styles.dateRangeValue}>
+          {from ? formatShortDate(from) : '?'} ~ {to ? formatShortDate(to) : '?'}
+          {dday && <span className={styles.ddayBadge}>{dday}</span>}
+        </span>
+      </div>
+    );
   };
 
   const renderError = (err, itemId) => {
@@ -232,11 +342,57 @@ export default function DataReviewPage() {
     <div className={styles.page}>
       <div className={styles.header}>
         <h1 className={styles.pageTitle}>데이터 검토</h1>
-        <button className={styles.refreshBtn} onClick={() => fetchIngestions()} disabled={loading}>
-          <RefreshCw size={16} className={loading ? styles.spin : ''} />
-          새로고침
-        </button>
+        <div className={styles.headerActions}>
+          {processedCount > 0 && (
+            <button className={styles.cleanupBtn} onClick={() => setShowCleanupModal(true)} disabled={loading}>
+              <Trash2 size={16} />
+              처리 완료 정리 ({processedCount})
+            </button>
+          )}
+          <button className={styles.refreshBtn} onClick={() => fetchIngestions()} disabled={loading}>
+            <RefreshCw size={16} className={loading ? styles.spin : ''} />
+            새로고침
+          </button>
+        </div>
       </div>
+
+      {/* Cleanup Modal */}
+      {showCleanupModal && (
+        <div className={styles.modalOverlay} onClick={() => setShowCleanupModal(false)}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <h3 className={styles.modalTitle}>🗑️ 처리 완료 항목 정리</h3>
+            <p className={styles.modalDesc}>
+              승인 <strong>{approvedCount}</strong>건, 거부 <strong>{rejectedCount}</strong>건을 삭제합니다.
+            </p>
+            <div className={styles.modalActions}>
+              <button
+                className={styles.modalBtnApproved}
+                onClick={() => handleCleanup(['approved'])}
+                disabled={cleanupLoading || approvedCount === 0}
+              >
+                승인만 삭제 ({approvedCount})
+              </button>
+              <button
+                className={styles.modalBtnRejected}
+                onClick={() => handleCleanup(['rejected'])}
+                disabled={cleanupLoading || rejectedCount === 0}
+              >
+                거부만 삭제 ({rejectedCount})
+              </button>
+              <button
+                className={styles.modalBtnAll}
+                onClick={() => handleCleanup(['approved', 'rejected'])}
+                disabled={cleanupLoading || processedCount === 0}
+              >
+                전부 삭제 ({processedCount})
+              </button>
+            </div>
+            <button className={styles.modalClose} onClick={() => setShowCleanupModal(false)} disabled={cleanupLoading}>
+              취소
+            </button>
+          </div>
+        </div>
+      )}
 
       {error && <div className={styles.errorBanner}>{error}</div>}
 
@@ -332,12 +488,19 @@ export default function DataReviewPage() {
                     )}
                     <div className={styles.cardClickArea} onClick={() => expandCard(item.id)}>
                       <div className={styles.cardInfo}>
-                        <span className={styles.crawlerName}>
-                          {item.crawlerName || item.crawler_name || item.crawler_id || '알 수 없음'}
-                        </span>
+                        <div className={styles.cardInfoRow}>
+                          <span className={styles.crawlerName}>
+                            {item.crawlerName || item.crawler_name || item.crawler_id || '알 수 없음'}
+                          </span>
+                          {renderFreshness(item)}
+                        </div>
                         <span className={styles.timestamp}>
                           {(item.timestamp || item.crawled_at) ? new Date(item.timestamp || item.crawled_at).toLocaleString('ko-KR') : ''}
+                          {item.processed_at && (
+                            <span className={styles.processedAt}> · 처리: {new Date(item.processed_at).toLocaleString('ko-KR')}</span>
+                          )}
                         </span>
+                        {renderDateRange(item)}
                       </div>
                       <div className={styles.cardMeta}>
                         <span className={styles.itemCount}>
@@ -370,6 +533,13 @@ export default function DataReviewPage() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Field Quality (on card, not expanded) */}
+                  {item.field_quality && item.field_quality.fields && item.field_quality.fields.length > 0 && (
+                    <div className={styles.cardFieldQuality}>
+                      {renderFieldQuality(item)}
+                    </div>
+                  )}
 
                   {/* Expanded Detail */}
                   {isExpanded && (

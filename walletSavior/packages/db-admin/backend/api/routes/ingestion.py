@@ -1,7 +1,7 @@
 """대기열(Pending Ingestion) API — 크롤 결과 수신, 검토, 승인/거부"""
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Query
@@ -46,6 +46,12 @@ class BulkApproveRequest(BaseModel):
     ids: list[int]
     reviewer: Optional[str] = None
     notes: Optional[str] = None
+
+
+class CleanupRequest(BaseModel):
+    status: list[str] = ["approved", "rejected"]
+    older_than_days: Optional[int] = None
+    confirm: bool = False
 
 
 # --- 품질 점수 계산 ---
@@ -190,6 +196,44 @@ def bulk_approve(body: BulkApproveRequest):
         session.close()
 
 
+@router.post("/cleanup")
+def cleanup_ingestions(body: CleanupRequest):
+    """처리 완료(승인/거부)된 대기열 항목 일괄 삭제."""
+    if not body.confirm:
+        raise HTTPException(400, "confirm이 true여야 삭제를 진행합니다")
+
+    status_map = {
+        "approved": IngestionStatus.APPROVED,
+        "rejected": IngestionStatus.REJECTED,
+        "partial": IngestionStatus.PARTIAL,
+    }
+    target_statuses = []
+    for s in body.status:
+        if s not in status_map:
+            raise HTTPException(400, f"잘못된 상태: {s} (approved, rejected, partial 중 선택)")
+        target_statuses.append(status_map[s])
+
+    if not target_statuses:
+        return {"deleted": 0}
+
+    session = get_session()
+    try:
+        q = session.query(PendingIngestion).filter(
+            PendingIngestion.status.in_(target_statuses)
+        )
+        if body.older_than_days is not None:
+            cutoff = datetime.utcnow() - timedelta(days=body.older_than_days)
+            q = q.filter(PendingIngestion.crawled_at < cutoff)
+
+        count = q.count()
+        if count > 0:
+            q.delete(synchronize_session="fetch")
+            session.commit()
+        return {"deleted": count}
+    finally:
+        session.close()
+
+
 @router.post("")
 def submit_ingestion(body: IngestionSubmit):
     """크롤러가 데이터를 대기열에 제출."""
@@ -263,23 +307,7 @@ def list_ingestions(
             "per_page": per_page if limit is None else (limit or 50),
             "total_pages": total_pages,
             "items": [
-                {
-                    "id": r.id,
-                    "crawler_name": r.crawler_name,
-                    "crawl_status": r.crawl_status,
-                    "items_count": r.items_count,
-                    "schema_type": r.schema_type,
-                    "quality_score": r.quality_score,
-                    "quality_details": r.quality_details,
-                    "status": r.status.value
-                    if hasattr(r.status, "value")
-                    else r.status,
-                    "crawled_at": r.crawled_at.isoformat()
-                    if r.crawled_at
-                    else None,
-                    "duration_seconds": r.duration_seconds,
-                    "source_url": r.source_url,
-                }
+                _build_list_item(r)
                 for r in rows
             ],
         }
@@ -455,6 +483,111 @@ def delete_ingestion(ingestion_id: int):
 
 
 # --- 내부 헬퍼 ---
+
+
+def _build_list_item(r) -> dict:
+    """목록 조회용 요약 딕셔너리 (freshness + field quality 포함)."""
+    items_data = json.loads(r.items_json) if r.items_json else []
+    field_quality = _compute_field_quality(items_data, r.schema_type or "DiscountItem")
+    date_range = _extract_date_range(items_data)
+
+    processed_at = None
+    if r.db_reviewed_at:
+        processed_at = r.db_reviewed_at.isoformat()
+    elif r.crawler_reviewed_at:
+        processed_at = r.crawler_reviewed_at.isoformat()
+
+    return {
+        "id": r.id,
+        "crawler_name": r.crawler_name,
+        "crawl_status": r.crawl_status,
+        "items_count": r.items_count,
+        "schema_type": r.schema_type,
+        "quality_score": r.quality_score,
+        "quality_details": r.quality_details,
+        "field_quality": field_quality,
+        "status": r.status.value if hasattr(r.status, "value") else r.status,
+        "crawled_at": r.crawled_at.isoformat() if r.crawled_at else None,
+        "processed_at": processed_at,
+        "crawler_reviewed_at": (
+            r.crawler_reviewed_at.isoformat() if r.crawler_reviewed_at else None
+        ),
+        "db_reviewed_at": (
+            r.db_reviewed_at.isoformat() if r.db_reviewed_at else None
+        ),
+        "valid_from": date_range.get("valid_from"),
+        "valid_to": date_range.get("valid_to"),
+        "duration_seconds": r.duration_seconds,
+        "source_url": r.source_url,
+    }
+
+
+def _compute_field_quality(items: list[dict], schema_type: str) -> dict:
+    """필드별 완성도 체크리스트를 반환."""
+    if not items:
+        return {"fields": [], "filled": 0, "total": 0}
+
+    if schema_type == "HotdealPost":
+        check_fields = [
+            ("title", "제목"),
+            ("url", "URL"),
+            ("price", "가격"),
+            ("source_community", "출처"),
+        ]
+    else:
+        check_fields = [
+            ("name", "상품명"),
+            ("sale_price", "가격"),
+            ("original_price", "원래가"),
+            ("image_url", "이미지"),
+            ("unit", "단위"),
+            ("source", "출처"),
+        ]
+
+    result_fields = []
+    filled = 0
+    for key, label in check_fields:
+        present_count = sum(1 for item in items if item.get(key))
+        ratio = present_count / len(items) if items else 0
+        if ratio >= 0.9:
+            status = "ok"
+        elif ratio >= 0.3:
+            status = "warn"
+        else:
+            status = "missing"
+        if status == "ok":
+            filled += 1
+        result_fields.append({
+            "key": key,
+            "label": label,
+            "status": status,
+            "ratio": round(ratio, 2),
+        })
+
+    return {
+        "fields": result_fields,
+        "filled": filled,
+        "total": len(check_fields),
+    }
+
+
+def _extract_date_range(items: list[dict]) -> dict:
+    """아이템에서 할인 기간 정보를 추출."""
+    date_fields = [
+        ("valid_from", "start_date", "event_start", "sale_start"),
+        ("valid_to", "end_date", "event_end", "sale_end"),
+    ]
+    result = {"valid_from": None, "valid_to": None}
+    for result_key, *candidates in date_fields:
+        for item in items:
+            for field in [result_key] + candidates:
+                val = item.get(field)
+                if val:
+                    result[result_key] = str(val)
+                    break
+            if result[result_key]:
+                break
+    return result
 
 
 def _build_quality_breakdown(

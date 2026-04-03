@@ -284,6 +284,20 @@ const useAdminStore = create((set, get) => ({
     }
   },
 
+  cleanupIngestions: async (cleanupData) => {
+    set({ loading: true, error: null });
+    try {
+      const result = await api.cleanupIngestions(cleanupData);
+      await get().fetchIngestions();
+      return result;
+    } catch (err) {
+      set({ error: `정리 실패: ${err.message}` });
+      return null;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
   setIngestionFilter: (filter) => set({ ingestionFilter: filter }),
 
   // Plugins

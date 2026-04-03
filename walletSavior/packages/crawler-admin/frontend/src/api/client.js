@@ -76,4 +76,9 @@ export const api = {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  cleanupIngestions: (data) => fetch(`${API_BASE}/ingestions/cleanup`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
 };
