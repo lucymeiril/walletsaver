@@ -149,6 +149,12 @@ class Product(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    source_type: Mapped[Optional[str]] = mapped_column(String(20), default="unknown")
+    # "mart_crawl" | "community_deal" | "baseline" | "user_submitted" | "unknown"
+    categorization_confidence: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    categorization_method: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
+    # "auto" | "suggested" | "manual" | "corrected"
+
     category: Mapped[Optional["Category"]] = relationship(back_populates="products")
     baseline_prices: Mapped[list["BaselinePrice"]] = relationship(back_populates="product", cascade="all, delete-orphan")
     discount_history: Mapped[list["DiscountHistory"]] = relationship(back_populates="product", cascade="all, delete-orphan")
@@ -549,3 +555,44 @@ class PendingIngestion(Base):
         Index("ix_pending_crawler", "crawler_name"),
         Index("ix_pending_crawled_at", "crawled_at"),
     )
+
+
+# ═══════════════════════════════════════════════
+# 자동 카테고리 분류
+# ═══════════════════════════════════════════════
+
+class PendingCategorization(Base):
+    """자동 분류 대기열 — 신뢰도 부족 시 관리자 확인 대기."""
+    __tablename__ = "pending_categorizations"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"), nullable=False)
+    suggested_category_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    confidence: Mapped[float] = mapped_column(Float, default=0.0)
+    candidates_json: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    parsed_keywords: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    parsed_attributes: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    status: Mapped[str] = mapped_column(String(20), default="pending")
+    # "pending" | "approved" | "corrected" | "skipped"
+    admin_category_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    product: Mapped["Product"] = relationship("Product", backref="pending_categorizations")
+
+    __table_args__ = (
+        Index("ix_pending_cat_status", "status"),
+        Index("ix_pending_cat_product", "product_id"),
+    )
+
+
+class CategoryCorrection(Base):
+    """관리자 보정 이력 — 피드백 루프용."""
+    __tablename__ = "category_corrections"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    product_name_pattern: Mapped[str] = mapped_column(String(500), nullable=False)
+    wrong_category_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    correct_category_id: Mapped[str] = mapped_column(String(100), nullable=False)
+    tokens: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)

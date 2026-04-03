@@ -127,6 +127,35 @@ async def get_popular_products(
     return ApiResponse(data=results)
 
 
+@router.get("/category/{category_id}/compare")
+async def compare_category(
+    request: Request,
+    category_id: str,
+    sort: str = Query("price_asc"),
+    storage_filter: str = Query(None, alias="storage"),
+    origin: str = Query(None),
+    usage: str = Query(None),
+    source: str = Query(None),
+    normalize: str = Query("per_100g"),
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=1, le=100),
+):
+    """카테고리별 상품 비교 — 정규화 가격 + 필터 + 정렬."""
+    storage_db = request.app.state.storage
+    if storage_db is None:
+        return ApiResponse(data={"summary": {}, "products": [], "total": 0})
+
+    try:
+        result = storage_db.get_category_comparison(
+            category_id,
+            filters={"storage": storage_filter, "origin": origin, "usage": usage, "source": source},
+            sort=sort, page=page, per_page=per_page,
+        )
+        return ApiResponse(data=result)
+    except Exception:
+        return ApiResponse(data={"summary": {}, "products": [], "total": 0})
+
+
 @router.get("/{product_id}")
 async def get_product(request: Request, product_id: int):
     """단일 상품 상세 — DB에서 조회."""

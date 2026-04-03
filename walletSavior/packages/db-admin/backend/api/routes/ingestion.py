@@ -644,8 +644,26 @@ def _resolve_source(item: dict) -> str:
     return _STORE_NAME_MAP.get(raw, raw)
 
 
-def _ensure_product(session, name: str) -> int:
-    """Product 레코드가 없으면 자동 생성하고 id를 반환."""
+# 크롤러 소스 → source_type 매핑
+_SOURCE_TYPE_MAP = {
+    "emart": "mart_crawl",
+    "homeplus": "mart_crawl",
+    "lottemart": "mart_crawl",
+    "costco": "mart_crawl",
+    "ppomppu": "community_deal",
+    "fmkorea": "community_deal",
+    "clien": "community_deal",
+    "government": "baseline",
+    "mart_regular": "baseline",
+}
+
+
+def _ensure_product(session, name: str, crawler_source: str | None = None) -> int:
+    """Product 레코드가 없으면 자동 생성하고 id를 반환.
+
+    새 상품 생성 시 source_type을 설정하고 자동 카테고리 분류를 시도한다.
+    분류 실패는 상품 생성을 차단하지 않는다.
+    """
     if not name:
         return 1
     product = session.execute(
@@ -653,9 +671,22 @@ def _ensure_product(session, name: str) -> int:
     ).scalar_one_or_none()
     if product:
         return product.id
-    new_product = Product(name=name, unit="개")
+
+    # Determine source_type from crawler source
+    source_type = _SOURCE_TYPE_MAP.get(crawler_source, "unknown") if crawler_source else "unknown"
+
+    new_product = Product(name=name, unit="개", source_type=source_type)
     session.add(new_product)
     session.flush()
+
+    # Auto-categorize — must never crash product creation
+    try:
+        from storage.db import DBStorage
+        storage = DBStorage()
+        storage.categorize_product(new_product.id, source=crawler_source)
+    except Exception:
+        pass
+
     return new_product.id
 
 
@@ -666,11 +697,12 @@ def _insert_items(session, items: list[dict], schema_type: str) -> int:
         try:
             if schema_type == "HotdealPost":
                 product_name = item.get("title", "")
-                pid = _ensure_product(session, product_name)
+                hotdeal_source = item.get("source_community", "hotdeal")
+                pid = _ensure_product(session, product_name, crawler_source=hotdeal_source)
                 row = HotdealPrice(
                     product_id=pid,
                     price=float(item.get("price", 0)),
-                    source=item.get("source_community", "hotdeal"),
+                    source=hotdeal_source,
                     source_url=item.get("url", ""),
                     title=product_name,
                     crawled_at=datetime.utcnow(),
@@ -679,7 +711,7 @@ def _insert_items(session, items: list[dict], schema_type: str) -> int:
                 source = _resolve_source(item)
                 if source in ("government", "mart_regular"):
                     product_name = item.get("name", "")
-                    pid = _ensure_product(session, product_name)
+                    pid = _ensure_product(session, product_name, crawler_source=source)
                     row = BaselinePrice(
                         product_id=pid,
                         price=float(
@@ -693,7 +725,7 @@ def _insert_items(session, items: list[dict], schema_type: str) -> int:
                 else:
                     # 마트 할인 데이터 → DiscountHistory
                     product_name = item.get("name", "")
-                    pid = _ensure_product(session, product_name)
+                    pid = _ensure_product(session, product_name, crawler_source=source)
                     row = DiscountHistory(
                         product_id=pid,
                         price=float(

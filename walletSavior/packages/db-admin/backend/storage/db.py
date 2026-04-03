@@ -22,8 +22,13 @@ from sqlalchemy.orm import Session, sessionmaker
 from storage.models import (
     Base, Product, BaselinePrice, DiscountHistory,
     HotdealPrice, GasStation, CrawlLog, Favorite, PriceAlert,
-    CrawlStatus, Category, Keyword,
+    CrawlStatus, Category, Keyword, PendingCategorization, CategoryCorrection,
 )
+
+try:
+    from services.auto_categorize import auto_categorize
+except ImportError:
+    auto_categorize = None
 
 try:
     from core.contracts.storage import StorageContract
@@ -969,6 +974,15 @@ class DBStorage(StorageContract):
                     return
                 found_keyword_ids.add(kw.id)
                 cat = session.get(Category, kw.category_id) if kw.category_id else None
+
+                # Determine suggested_action and action_url for keyword
+                if kw.category_id:
+                    kw_action = "category_page"
+                    kw_action_url = f"/price/category/{kw.category_id}"
+                else:
+                    kw_action = "search_page"
+                    kw_action_url = None
+
                 keyword_results.append({
                     "type": "keyword",
                     "match_type": match_type,
@@ -980,6 +994,8 @@ class DBStorage(StorageContract):
                     "search_count": kw.search_count or 0,
                     "matched_synonym": matched_synonym,
                     "icon": cat.icon if cat else "",
+                    "suggested_action": kw_action,
+                    "action_url": kw_action_url,
                 })
 
             # Stage 1: 키워드 직접 매칭 (prefix)
@@ -1059,6 +1075,49 @@ class DBStorage(StorageContract):
             for p in products:
                 cat = p.category
                 price_stats = self._compute_product_stats(session, p.id)
+
+                # Check has_baseline
+                has_baseline = session.execute(
+                    select(func.count(BaselinePrice.id))
+                    .where(BaselinePrice.product_id == p.id)
+                ).scalar() > 0
+
+                # Get current/original price from DiscountHistory if available
+                latest_discount = session.execute(
+                    select(DiscountHistory)
+                    .where(DiscountHistory.product_id == p.id)
+                    .order_by(desc(DiscountHistory.crawled_at))
+                    .limit(1)
+                ).scalar_one_or_none()
+
+                if latest_discount:
+                    current_price = latest_discount.price
+                    original_price = latest_discount.original_price
+                elif has_baseline:
+                    current_price = price_stats["cur"]
+                    original_price = None
+                else:
+                    current_price = price_stats["cur"]
+                    original_price = None
+
+                # Calculate discount percentage
+                discount_pct = None
+                if current_price and original_price and original_price > 0:
+                    discount_pct = round((1 - current_price / original_price) * 100)
+
+                # Determine source_type
+                source_type = getattr(p, "source_type", None) or "unknown"
+
+                # Determine suggested_action
+                if source_type == "mart_crawl":
+                    suggested_action = "mart_modal"
+                elif source_type == "community_deal":
+                    suggested_action = "hotdeal_modal"
+                elif source_type == "baseline" or has_baseline:
+                    suggested_action = "price_page"
+                else:
+                    suggested_action = "product_modal"
+
                 product_results.append({
                     "type": "product",
                     "match_type": "product_name",
@@ -1067,7 +1126,12 @@ class DBStorage(StorageContract):
                     "category_id": p.category_id,
                     "unit": p.unit,
                     "icon": cat.icon if cat else "",
-                    "current_price": price_stats["cur"],
+                    "current_price": current_price,
+                    "original_price": original_price,
+                    "discount_pct": discount_pct,
+                    "source_type": source_type,
+                    "has_baseline": has_baseline,
+                    "suggested_action": suggested_action,
                 })
 
             return {
@@ -1108,3 +1172,236 @@ class DBStorage(StorageContract):
             if kw:
                 kw.search_count = (kw.search_count or 0) + 1
                 session.commit()
+
+    # ──────────────────────────────────────────
+    # 카테고리 비교 / 자동 분류
+    # ──────────────────────────────────────────
+
+    def _get_descendant_category_ids(self, session: Session, category_id: str) -> list[str]:
+        """주어진 카테고리와 그 하위 카테고리 ID를 모두 반환."""
+        ids = [category_id]
+        children = session.execute(
+            select(Category.id).where(Category.parent_id == category_id)
+        ).scalars().all()
+        for child_id in children:
+            ids.extend(self._get_descendant_category_ids(session, child_id))
+        return ids
+
+    def get_category_comparison(
+        self,
+        category_id: str,
+        filters: dict | None = None,
+        sort: str = "price_asc",
+        page: int = 1,
+        per_page: int = 20,
+    ) -> dict:
+        """카테고리별 상품 비교 — 정규화 가격, 가격 등급, 필터, 정렬."""
+        filters = filters or {}
+        with self.SessionLocal() as session:
+            # Resolve category + descendants
+            cat = session.get(Category, category_id)
+            if not cat:
+                return {"summary": {}, "products": [], "total": 0, "page": page, "per_page": per_page}
+
+            all_cat_ids = self._get_descendant_category_ids(session, category_id)
+
+            # Base query: products in these categories
+            stmt = select(Product).where(
+                Product.is_active == True,
+                Product.category_id.in_(all_cat_ids),
+            )
+
+            # Apply attribute-based filters
+            products_raw = session.execute(stmt).scalars().all()
+
+            # Enrich products with price data and apply filters
+            enriched = []
+            for p in products_raw:
+                attrs = p.attributes or {}
+
+                # Filter by storage
+                if filters.get("storage") and attrs.get("storage") != filters["storage"]:
+                    continue
+                # Filter by origin
+                if filters.get("origin") and attrs.get("origin") != filters["origin"]:
+                    continue
+                # Filter by usage
+                if filters.get("usage") and attrs.get("usage") != filters["usage"]:
+                    continue
+                # Filter by source
+                source_type = getattr(p, "source_type", None) or "unknown"
+                if filters.get("source") and source_type != filters["source"]:
+                    continue
+
+                # Latest price (from DiscountHistory or BaselinePrice)
+                latest_discount = session.execute(
+                    select(DiscountHistory)
+                    .where(DiscountHistory.product_id == p.id)
+                    .order_by(desc(DiscountHistory.crawled_at))
+                    .limit(1)
+                ).scalar_one_or_none()
+
+                latest_baseline = session.execute(
+                    select(BaselinePrice)
+                    .where(BaselinePrice.product_id == p.id)
+                    .order_by(desc(BaselinePrice.recorded_at))
+                    .limit(1)
+                ).scalar_one_or_none()
+
+                if latest_discount:
+                    current_price = latest_discount.price
+                    original_price = latest_discount.original_price
+                    source = latest_discount.source
+                elif latest_baseline:
+                    current_price = latest_baseline.price
+                    original_price = None
+                    source = latest_baseline.source
+                else:
+                    current_price = None
+                    original_price = None
+                    source = None
+
+                # Normalized price (per 100g)
+                weight_g = attrs.get("weight_g") or attrs.get("weight", 0)
+                if isinstance(weight_g, str):
+                    try:
+                        weight_g = float(weight_g)
+                    except (ValueError, TypeError):
+                        weight_g = 0
+                per_100g = round(current_price / weight_g * 100) if current_price and weight_g > 0 else None
+
+                enriched.append({
+                    "id": p.id,
+                    "name": p.name,
+                    "category_id": p.category_id,
+                    "source_type": source_type,
+                    "source": source,
+                    "current_price": current_price,
+                    "original_price": original_price,
+                    "per_100g": per_100g,
+                    "weight_g": weight_g if weight_g else None,
+                    "attributes": attrs,
+                    "image_url": p.image_url,
+                })
+
+            # Compute price tiers
+            prices_for_tier = [e["per_100g"] for e in enriched if e["per_100g"] is not None]
+            prices_for_tier.sort()
+            for item in enriched:
+                if item["per_100g"] is not None and len(prices_for_tier) >= 5:
+                    # Percentile-based tiers
+                    rank = prices_for_tier.index(item["per_100g"])
+                    pct = rank / len(prices_for_tier)
+                    if pct <= 0.25:
+                        item["price_tier"] = "ultra"
+                    elif pct <= 0.50:
+                        item["price_tier"] = "great"
+                    elif pct <= 0.75:
+                        item["price_tier"] = "good"
+                    else:
+                        item["price_tier"] = "wait"
+                elif item["per_100g"] is not None and len(prices_for_tier) >= 2:
+                    # Range-based tiers
+                    low, high = prices_for_tier[0], prices_for_tier[-1]
+                    mid = (low + high) / 2
+                    if item["per_100g"] <= low + (mid - low) * 0.5:
+                        item["price_tier"] = "great"
+                    elif item["per_100g"] <= mid:
+                        item["price_tier"] = "good"
+                    else:
+                        item["price_tier"] = "wait"
+                else:
+                    item["price_tier"] = "good"
+
+            # Sort
+            if sort == "price_asc":
+                enriched.sort(key=lambda x: x["per_100g"] if x["per_100g"] is not None else float("inf"))
+            elif sort == "price_desc":
+                enriched.sort(key=lambda x: x["per_100g"] if x["per_100g"] is not None else 0, reverse=True)
+            elif sort == "name":
+                enriched.sort(key=lambda x: x["name"])
+
+            total = len(enriched)
+            start = (page - 1) * per_page
+            page_items = enriched[start:start + per_page]
+
+            # Summary
+            summary = {
+                "category_id": category_id,
+                "category_name": cat.name,
+                "category_path": self._build_category_path(session, category_id),
+                "total_products": total,
+                "avg_per_100g": round(sum(prices_for_tier) / len(prices_for_tier)) if prices_for_tier else None,
+                "min_per_100g": prices_for_tier[0] if prices_for_tier else None,
+                "max_per_100g": prices_for_tier[-1] if prices_for_tier else None,
+            }
+
+            return {
+                "summary": summary,
+                "products": page_items,
+                "total": total,
+                "page": page,
+                "per_page": per_page,
+            }
+
+    def categorize_product(self, product_id: int, source: str | None = None) -> None:
+        """자동 카테고리 분류 — 실패해도 상품 저장에 영향 없음."""
+        if auto_categorize is None:
+            return
+
+        try:
+            with self.SessionLocal() as session:
+                product = session.get(Product, product_id)
+                if not product:
+                    return
+
+                result = auto_categorize(product.name, source)
+                if result is None:
+                    return
+
+                confidence = getattr(result, "confidence", 0.0)
+                cat_id = getattr(result, "category_id", None)
+                candidates = getattr(result, "candidates", [])
+                parsed_kw = getattr(result, "parsed_keywords", [])
+                parsed_attrs = getattr(result, "attributes", {})
+
+                product.categorization_confidence = confidence
+
+                if confidence >= 0.85:
+                    # Auto-assign
+                    if cat_id:
+                        product.category_id = cat_id
+                    product.categorization_method = "auto"
+                elif confidence >= 0.50:
+                    # Tentative assignment + pending review
+                    if cat_id:
+                        product.category_id = cat_id
+                    product.categorization_method = "suggested"
+                    pending = PendingCategorization(
+                        product_id=product_id,
+                        suggested_category_id=cat_id,
+                        confidence=confidence,
+                        candidates_json=[{"category_id": c[0], "score": c[1]} for c in candidates[:5]] if candidates else None,
+                        parsed_keywords=parsed_kw if parsed_kw else None,
+                        parsed_attributes=parsed_attrs if parsed_attrs else None,
+                        status="pending",
+                    )
+                    session.add(pending)
+                else:
+                    # Low confidence — leave category_id unchanged, create pending
+                    product.categorization_method = "suggested"
+                    pending = PendingCategorization(
+                        product_id=product_id,
+                        suggested_category_id=cat_id,
+                        confidence=confidence,
+                        candidates_json=[{"category_id": c[0], "score": c[1]} for c in candidates[:5]] if candidates else None,
+                        parsed_keywords=parsed_kw if parsed_kw else None,
+                        parsed_attributes=parsed_attrs if parsed_attrs else None,
+                        status="pending",
+                    )
+                    session.add(pending)
+
+                session.commit()
+        except Exception:
+            # Categorization failure must NEVER block data storage
+            pass
