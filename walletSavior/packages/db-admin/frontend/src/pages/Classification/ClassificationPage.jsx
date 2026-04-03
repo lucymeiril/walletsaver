@@ -56,18 +56,56 @@ function countKeywordsForCategory(keywords, categoryId) {
   return keywords.filter(k => (k.categoryId || k.category_id) === categoryId).length;
 }
 
+/* ── 한국어 동의어 매핑 (확장 가능) ── */
+const SYNONYM_MAP = {
+  '닭고기': ['닭', '치킨', '닭가슴살', '닭다리', '닭날개', '닭안심'],
+  '돼지고기': ['돼지', '삼겹살', '목살', '앞다리', '뒷다리', '갈비', '등심'],
+  '소고기': ['소', '한우', '육우', '수입소', '등심', '안심', '갈비', '차돌박이'],
+  '삼겹살': ['삼겹', '오겹살', '대패삼겹살', '구이용'],
+  '우유': ['흰우유', '저지방우유', '멸균우유'],
+  '계란': ['달걀', '유정란', '무정란'],
+  '쌀': ['백미', '현미', '찹쌀', '잡곡'],
+  '라면': ['컵라면', '봉지라면', '인스턴트'],
+  '커피': ['원두', '커피믹스', '캡슐커피', '아메리카노'],
+  '과일': ['사과', '배', '귤', '감귤', '포도', '딸기', '바나나', '수박', '참외'],
+  '채소': ['배추', '무', '양파', '대파', '마늘', '고추', '감자', '당근', '시금치'],
+  '생수': ['물', '탄산수', '미네랄워터'],
+  '두부': ['순두부', '연두부', '부침두부'],
+  '김치': ['배추김치', '총각김치', '깍두기', '열무김치'],
+  '빵': ['식빵', '모닝빵', '바게트', '크로아상'],
+  '생선': ['고등어', '갈치', '연어', '참치', '광어', '우럭'],
+  '새우': ['대하', '꽃새우', '냉동새우', '건새우'],
+  '오징어': ['한치', '꼴뚜기', '냉동오징어'],
+  '버터': ['무염버터', '가염버터', '식물성버터'],
+  '치즈': ['슬라이스치즈', '모짜렐라', '크림치즈', '체다치즈'],
+  '요거트': ['요구르트', '그릭요거트', '떠먹는요거트'],
+};
+
+const KNOWN_SUFFIXES = ['고기', '가격', '할인', '세일', '특가'];
+
 /* ── 카테고리 이름으로 키워드 자동 생성 ── */
 function generateKeywordsFromCategory(node, categories) {
   const suggestions = new Set();
   const name = node.name.trim();
   if (!name) return [];
 
+  // 1. 원래 이름
   suggestions.add(name);
 
-  // 2자 이상이면 앞 2글자도 추가
-  if (name.length > 2) suggestions.add(name.slice(0, 2));
+  // 2. 동의어 매핑
+  if (SYNONYM_MAP[name]) {
+    SYNONYM_MAP[name].forEach(s => suggestions.add(s));
+  }
 
-  // 부모 이름 + 현재 이름 조합
+  // 3. 복합어 분리 (알려진 접미사 기반)
+  for (const suffix of KNOWN_SUFFIXES) {
+    if (name.endsWith(suffix) && name.length > suffix.length) {
+      const prefix = name.slice(0, -suffix.length);
+      if (prefix.length >= 1) suggestions.add(prefix);
+    }
+  }
+
+  // 4. 부모 이름 + 현재 이름 조합
   if (node.parent_id) {
     const parent = findNode(categories, node.parent_id);
     if (parent) {
@@ -76,7 +114,7 @@ function generateKeywordsFromCategory(node, categories) {
     }
   }
 
-  // 가격 키워드
+  // 5. 가격 키워드
   suggestions.add(`${name} 가격`);
 
   return [...suggestions];

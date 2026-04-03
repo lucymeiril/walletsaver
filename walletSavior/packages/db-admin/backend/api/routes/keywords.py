@@ -149,7 +149,7 @@ def keyword_search(q: str = "", limit: int = 10):
 
 @router.post("/", status_code=201)
 def create_keyword(body: KeywordCreate):
-    """키워드 추가 — 중복 시 409 반환."""
+    """키워드 추가 — 유효성 검사 실패 시 422, 중복 시 409 반환."""
     session = get_session()
     try:
         existing = session.execute(
@@ -162,7 +162,10 @@ def create_keyword(body: KeywordCreate):
                 detail=f"'{body.word}' 키워드가 이미 존재합니다.",
             )
 
-        return add_keyword(session, body.word, body.synonyms, body.category_id)
+        try:
+            return add_keyword(session, body.word, body.synonyms, body.category_id)
+        except ValueError as e:
+            raise HTTPException(status_code=422, detail=str(e))
     finally:
         session.close()
 

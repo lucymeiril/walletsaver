@@ -16,6 +16,7 @@ from storage.models import (
     DiscountHistory,
     HotdealPrice,
     Product,
+    PendingCategorization,
 )
 
 router = APIRouter(prefix="/api/ingestions", tags=["ingestions"])
@@ -812,11 +813,51 @@ def _ensure_product(session, name: str, crawler_source: str | None = None) -> in
     session.add(new_product)
     session.flush()
 
-    # Auto-categorize — must never crash product creation
+    # Auto-categorize inline (같은 세션 사용) — must never crash product creation
     try:
-        from storage.db import DBStorage
-        storage = DBStorage()
-        storage.categorize_product(new_product.id, source=crawler_source)
+        from services.auto_categorize import auto_categorize
+
+        result = auto_categorize(new_product.name, crawler_source)
+        if result is not None:
+            confidence = getattr(result, "confidence", 0.0)
+            cat_id = getattr(result, "category_id", None)
+            candidates = getattr(result, "candidates", [])
+            parsed_kw = getattr(result, "parsed_keywords", [])
+            parsed_attrs = getattr(result, "attributes", {})
+
+            new_product.categorization_confidence = confidence
+
+            if confidence >= 0.85 and cat_id:
+                new_product.category_id = cat_id
+                new_product.categorization_method = "auto"
+            elif confidence >= 0.50:
+                if cat_id:
+                    new_product.category_id = cat_id
+                new_product.categorization_method = "suggested"
+                pending = PendingCategorization(
+                    product_id=new_product.id,
+                    suggested_category_id=cat_id,
+                    confidence=confidence,
+                    candidates_json=[{"category_id": c[0], "score": c[1]} for c in candidates[:5]] if candidates else None,
+                    parsed_keywords=parsed_kw if parsed_kw else None,
+                    parsed_attributes=parsed_attrs if parsed_attrs else None,
+                    status="pending",
+                )
+                session.add(pending)
+            else:
+                # Low confidence — 상품은 저장하되 미분류 상태로 유지
+                new_product.categorization_method = "none"
+                if cat_id:
+                    pending = PendingCategorization(
+                        product_id=new_product.id,
+                        suggested_category_id=cat_id,
+                        confidence=confidence,
+                        candidates_json=[{"category_id": c[0], "score": c[1]} for c in candidates[:5]] if candidates else None,
+                        parsed_keywords=parsed_kw if parsed_kw else None,
+                        parsed_attributes=parsed_attrs if parsed_attrs else None,
+                        status="pending",
+                    )
+                    session.add(pending)
     except Exception:
         pass
 
