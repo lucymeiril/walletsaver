@@ -7,10 +7,12 @@ import ToastContainer from './components/common/ToastContainer';
 import LoginModal from './components/modals/LoginModal';
 import useStore from './stores/appStore';
 import ShoppingListPanel from './components/common/ShoppingListPanel';
+import ModalManager from './components/modals/ModalManager';
 
 // Lazy-load 페이지 (코드 스플리팅 — 초기 로드 최소화)
 const HomePage      = lazy(() => import('./pages/Home/HomePage'));
 const PricePage     = lazy(() => import('./pages/Price/PricePage'));
+const CategoryComparePage = lazy(() => import('./pages/Price/CategoryComparePage'));
 const HotdealPage   = lazy(() => import('./pages/Hotdeal/HotdealPage'));
 const MartPage      = lazy(() => import('./pages/Mart/MartPage'));
 const LocalPage     = lazy(() => import('./pages/Local/LocalPage'));
@@ -42,6 +44,7 @@ export default function App() {
             <Route path="/"          element={<HomePage />} />
             <Route path="/search"    element={<SearchPage />} />
             <Route path="/price"     element={<PricePage />} />
+            <Route path="/price/category/:categoryId" element={<CategoryComparePage />} />
             <Route path="/price/:id" element={<PricePage />} />
             <Route path="/hotdeal"   element={<HotdealPage />} />
             <Route path="/mart"      element={<MartPage />} />
@@ -56,6 +59,7 @@ export default function App() {
       <ToastContainer />
       <LoginModal />
       <ShoppingListPanel />
+      <ModalManager />
     </>
   );
 }

@@ -5,6 +5,7 @@ import { MARTS } from '../../utils/constants';
 import { fmt } from '../../utils/helpers';
 import { searchService } from '../../services/searchService';
 import useStore from '../../stores/appStore';
+import useModalStore from '../../stores/modalStore';
 import s from './HomePage.module.css';
 
 const CATEGORIES = [
@@ -58,6 +59,7 @@ function SkeletonRow() {
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const { openMartModal, openHotdealModal, openProductModal } = useModalStore();
   const {
     setSelectedProduct,
     favorites, addFavorite, removeFavorite, isFavorite,
@@ -233,16 +235,38 @@ export default function HomePage() {
     setAcOpen(false);
     setAcKeywords([]);
     setAcProducts([]);
-    navigate(`/search?q=${encodeURIComponent(kw.word)}`);
+
+    if (kw.suggested_action === 'category_page' && kw.category_id) {
+      navigate(`/price/category/${kw.category_id}`);
+    } else {
+      navigate(`/search?q=${encodeURIComponent(kw.word)}`);
+    }
   }, [navigate, addRecentSearch]);
 
   const handleProductClick = useCallback((p) => {
+    if (p.id) searchService.trackKeyword(p.id);
     setQuery('');
     setAcOpen(false);
     setAcKeywords([]);
     setAcProducts([]);
-    navigate(`/price/${p.id}`);
-  }, [navigate]);
+
+    const action = p.suggested_action || 'price_page';
+    switch (action) {
+      case 'mart_modal':
+        openMartModal(p);
+        break;
+      case 'hotdeal_modal':
+        openHotdealModal(p);
+        break;
+      case 'product_modal':
+        openProductModal(p);
+        break;
+      case 'price_page':
+      default:
+        navigate(`/price/${p.id}`);
+        break;
+    }
+  }, [navigate, openMartModal, openHotdealModal, openProductModal]);
 
   const selectProduct = useCallback((p) => {
     setSelectedProduct(p);

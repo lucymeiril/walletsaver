@@ -2,6 +2,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Wallet, Bell, User, X, Search, Sun, Moon, Clock } from 'lucide-react';
 import useStore from '../../stores/appStore';
+import useModalStore from '../../stores/modalStore';
 import { searchService } from '../../services/searchService';
 import { fmt } from '../../utils/helpers';
 import s from './Header.module.css';
@@ -44,6 +45,7 @@ export default function Header() {
   const addRecentSearch = useStore((st) => st.addRecentSearch);
   const location = useLocation();
   const navigate = useNavigate();
+  const { openMartModal, openHotdealModal, openProductModal } = useModalStore();
 
   useEffect(() => {
     setMobileOpen(false);
@@ -135,7 +137,13 @@ export default function Header() {
   const handleKeywordClick = (kw) => {
     addRecentSearch(kw.word);
     searchService.trackKeyword(kw.id);
-    navigate(`/search?q=${encodeURIComponent(kw.word)}`);
+
+    if (kw.suggested_action === 'category_page' && kw.category_id) {
+      navigate(`/price/category/${kw.category_id}`);
+    } else {
+      navigate(`/search?q=${encodeURIComponent(kw.word)}`);
+    }
+
     setSearchOpen(false);
     setShowDropdown(false);
     setSearchQuery('');
@@ -144,7 +152,25 @@ export default function Header() {
   };
 
   const handleProductClick = (p) => {
-    navigate(`/price/${p.id}`);
+    if (p.id) searchService.trackKeyword(p.id);
+
+    const action = p.suggested_action || 'price_page';
+    switch (action) {
+      case 'mart_modal':
+        openMartModal(p);
+        break;
+      case 'hotdeal_modal':
+        openHotdealModal(p);
+        break;
+      case 'product_modal':
+        openProductModal(p);
+        break;
+      case 'price_page':
+      default:
+        navigate(`/price/${p.id}`);
+        break;
+    }
+
     setSearchOpen(false);
     setShowDropdown(false);
     setSearchQuery('');

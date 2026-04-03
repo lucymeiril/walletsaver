@@ -33,6 +33,26 @@ export const searchService = {
   },
 
   /**
+   * 카테고리 비교 — 동일 카테고리 상품 비교 데이터.
+   * @param {string} categoryId 카테고리 ID (예: livestock.pork.neck)
+   * @param {{ sort?: string, storage?: string, origin?: string, usage?: string, source?: string, page?: number, perPage?: number }} params
+   */
+  async categoryCompare(categoryId, { sort, storage, origin, usage, source, page, perPage } = {}) {
+    const params = new URLSearchParams();
+    if (sort) params.set('sort', sort);
+    if (storage) params.set('storage', storage);
+    if (origin) params.set('origin', origin);
+    if (usage) params.set('usage', usage);
+    if (source) params.set('source', source);
+    if (page) params.set('page', page);
+    if (perPage) params.set('per_page', perPage);
+
+    const res = await api.get(`/api/products/category/${categoryId}/compare`, Object.fromEntries(params));
+    const data = await res.json();
+    return data.data || data;
+  },
+
+  /**
    * 키워드 검색 횟수 추적.
    * @param {number} keywordId
    */

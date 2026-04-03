@@ -6,6 +6,7 @@ import { MARTS } from '../../utils/constants';
 import { fmt } from '../../utils/helpers';
 import { searchService } from '../../services/searchService';
 import useStore from '../../stores/appStore';
+import useModalStore from '../../stores/modalStore';
 import useDebounce from '../../hooks/useDebounce';
 import Spinner from '../../components/common/Spinner';
 import s from './PricePage.module.css';
@@ -21,6 +22,7 @@ export default function PricePage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const { openMartModal, openHotdealModal, openProductModal } = useModalStore();
   const { selectedProduct, setSelectedProduct, addFavorite, removeFavorite, isFavorite, addRecentSearch, addToShoppingList, addToast } = useStore();
 
   const [products, setProducts] = useState([]);
@@ -144,12 +146,34 @@ export default function PricePage() {
     addRecentSearch(kw.word);
     searchService.trackKeyword(kw.id);
     setSearchQuery('');
-    navigate(`/search?q=${encodeURIComponent(kw.word)}`);
+
+    if (kw.suggested_action === 'category_page' && kw.category_id) {
+      navigate(`/price/category/${kw.category_id}`);
+    } else {
+      navigate(`/search?q=${encodeURIComponent(kw.word)}`);
+    }
   };
 
   const handleAcProductClick = (p) => {
+    if (p.id) searchService.trackKeyword(p.id);
     setSearchQuery('');
-    navigate(`/price/${p.id}`);
+
+    const action = p.suggested_action || 'price_page';
+    switch (action) {
+      case 'mart_modal':
+        openMartModal(p);
+        break;
+      case 'hotdeal_modal':
+        openHotdealModal(p);
+        break;
+      case 'product_modal':
+        openProductModal(p);
+        break;
+      case 'price_page':
+      default:
+        navigate(`/price/${p.id}`);
+        break;
+    }
   };
 
   // 엔터 누르면 검색 결과 페이지로 이동 (자동완성에서 선택 안 했을 때)
