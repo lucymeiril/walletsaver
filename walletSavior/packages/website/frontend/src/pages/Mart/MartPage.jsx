@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, ExternalLink, RefreshCw } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ExternalLink, RefreshCw, ZoomIn, ZoomOut } from 'lucide-react';
 import { MARTS } from '../../utils/constants';
 import { fmt } from '../../utils/helpers';
 import useStore from '../../stores/appStore';
@@ -7,24 +7,94 @@ import Modal from '../../components/common/Modal';
 import Spinner from '../../components/common/Spinner';
 import s from './MartPage.module.css';
 
+const COMPARE_MARTS = ['emart', 'homeplus', 'lotte'];
+
+const MART_ONLINE_URLS = {
+  emart: { name: 'SSG.COM', url: 'https://www.ssg.com', searchUrl: 'https://www.ssg.com/search.ssg?query=' },
+  homeplus: { name: '홈플러스몰', url: 'https://mfront.homeplus.co.kr', searchUrl: 'https://mfront.homeplus.co.kr/search?keyword=' },
+  lotte: { name: '롯데온', url: 'https://www.lottemart.com', searchUrl: 'https://www.lottemart.com/search/search/search.do?keyword=' },
+  costco: { name: '코스트코', url: 'https://www.costco.co.kr', searchUrl: 'https://www.costco.co.kr/search?text=' },
+};
+
+function getOnlineMallUrl(martKey, productName) {
+  const mall = MART_ONLINE_URLS[martKey];
+  if (!mall) return null;
+  return productName ? `${mall.searchUrl}${encodeURIComponent(productName)}` : mall.url;
+}
+
+function safePrice(val) {
+  if (val == null) return 0;
+  const n = typeof val === 'string' ? parseInt(val.replace(/[^0-9]/g, ''), 10) : Number(val);
+  return isNaN(n) ? 0 : n;
+}
+
+function safeDiscount(val) {
+  if (val == null) return 0;
+  const n = typeof val === 'string' ? parseFloat(val.replace(/[^0-9.]/g, '')) : Number(val);
+  return isNaN(n) ? 0 : n;
+}
+
+function normalizeItem(d) {
+  if (!d) return null;
+  return {
+    name: d.name || d.product_name || '상품명 없음',
+    sale: safePrice(d.price ?? d.sale ?? d.sale_price),
+    orig: safePrice(d.original_price ?? d.orig ?? d.regular_price),
+    disc: safeDiscount(d.discount_rate ?? d.disc ?? d.discount),
+    event: d.event_name ?? d.event ?? d.promotion ?? '할인',
+    img: d.image_url ?? d.img ?? d.thumbnail ?? '',
+    detailUrl: d.source_url ?? d.detail_url ?? d.url ?? '',
+    unit: d.unit ?? d.spec ?? '',
+    store: d.store ?? d.branch ?? '',
+    crawledAt: d.crawled_at ?? d.updated_at ?? '',
+  };
+}
+
 function getCategories(items) {
-  const events = new Set(items.map(i => i.event));
+  if (!Array.isArray(items) || items.length === 0) return ['전체'];
+  const events = new Set(items.map(i => i.event).filter(Boolean));
   return ['전체', ...events];
 }
 
-function findCommonProducts(martDeals) {
+function normalizeProductName(name) {
+  if (!name) return '';
+  return name
+    .replace(/\s+\d+.*$/, '')
+    .replace(/\s+(1kg|100g|1L|5P|2입|24입|30구|12|21포|500g|1통|1포기|2마리|1망|793g|1\.5kg|2\.3L|600g).*$/i, '')
+    .trim();
+}
+
+function findCommonProducts(martDeals, targetMarts = COMPARE_MARTS) {
   const productNames = {};
-  for (const [martKey, items] of Object.entries(martDeals)) {
+  for (const martKey of targetMarts) {
+    const items = martDeals[martKey];
+    if (!Array.isArray(items)) continue;
     const martInfo = MARTS.find(m => m.key === martKey);
-    for (const item of (items || [])) {
-      const base = item.name.replace(/\s+\d+.*$/, '').replace(/\s+(1kg|100g|1L|5P|2입|24입|30구|12|21포|500g|1통|1포기|2마리|1망|793g|1.5kg|2.3L|600g).*$/i, '').trim();
+    for (const item of items) {
+      if (!item?.name) continue;
+      const base = normalizeProductName(item.name);
+      if (!base) continue;
       if (!productNames[base]) productNames[base] = {};
-      productNames[base][martKey] = { ...item, mart: martInfo?.name, color: martInfo?.color };
+      productNames[base][martKey] = {
+        ...item,
+        mart: martInfo?.name || martKey,
+        color: martInfo?.color || '#666',
+      };
     }
   }
   return Object.entries(productNames)
     .filter(([, marts]) => Object.keys(marts).length >= 2)
-    .map(([name, marts]) => ({ name, marts }));
+    .map(([name, marts]) => ({ name, marts }))
+    .sort((a, b) => Object.keys(b.marts).length - Object.keys(a.marts).length);
+}
+
+function formatLastUpdate(dateStr) {
+  if (!dateStr) return null;
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return null;
+    return `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
+  } catch { return null; }
 }
 
 export default function MartPage() {
@@ -32,7 +102,7 @@ export default function MartPage() {
   const [mode, setMode] = useState('sale');
   const [catFilter, setCatFilter] = useState('전체');
   const [flyerIdx, setFlyerIdx] = useState(0);
-  const [flyerZoomed, setFlyerZoomed] = useState(false);
+  const [flyerZoom, setFlyerZoom] = useState(1);
   const [saleDetail, setSaleDetail] = useState(null);
 
   const { addToShoppingList, addToast } = useStore();
@@ -42,41 +112,33 @@ export default function MartPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Flyer state
   const [flyerData, setFlyerData] = useState({});
   const [flyerLoading, setFlyerLoading] = useState(false);
   const [flyerError, setFlyerError] = useState(null);
   const [flyerMart, setFlyerMart] = useState('emart');
 
-  // Fetch all mart deals on mount (needed for compare view)
   useEffect(() => {
     const martKeys = MARTS.map(m => m.key);
-    Promise.all(
+    Promise.allSettled(
       martKeys.map(key =>
         fetch(`/api/marts/${key}/promotions`).then(r => r.json())
-          .then(res => ({
-            key,
-            lastCrawledAt: res.data?.last_crawled_at || '',
-            items: (Array.isArray(res.data) ? res.data : res.data?.items || []).map(d => ({
-              name: d.name,
-              sale: d.price ?? d.sale,
-              orig: d.original_price ?? d.orig,
-              disc: d.discount_rate ?? d.disc,
-              event: d.event_name ?? (d.event || '할인'),
-              img: d.image_url ?? d.img ?? '',
-              detailUrl: d.source_url ?? d.detail_url ?? '',
-              unit: d.unit ?? '',
-              store: d.store ?? '',
-              crawledAt: d.crawled_at ?? '',
-            })),
-          }))
+          .then(res => {
+            const rawItems = Array.isArray(res?.data) ? res.data : (res?.data?.items || []);
+            return {
+              key,
+              lastCrawledAt: res?.data?.last_crawled_at || '',
+              items: rawItems.map(normalizeItem).filter(Boolean),
+            };
+          })
       )
     ).then(results => {
       const deals = {};
       const meta = {};
       results.forEach(r => {
-        deals[r.key] = r.items;
-        meta[r.key] = { lastCrawledAt: r.lastCrawledAt };
+        if (r.status === 'fulfilled' && r.value) {
+          deals[r.value.key] = r.value.items;
+          meta[r.value.key] = { lastCrawledAt: r.value.lastCrawledAt };
+        }
       });
       setMartDeals(deals);
       setMartMeta(meta);
@@ -85,24 +147,19 @@ export default function MartPage() {
       addToast('마트 데이터를 불러오는데 실패했습니다', 'error');
     }).finally(() => setLoading(false));
 
-    fetch('/api/products/search?per_page=50').then(r => r.json())
-      .then(res => setProducts(res.data || []))
+    fetch('/api/products/search?per_page=50')
+      .then(r => r.json())
+      .then(res => setProducts(Array.isArray(res?.data) ? res.data : []))
       .catch(console.error);
   }, []);
 
-  // Fetch flyer data when entering flyer mode or switching mart
   const fetchFlyerData = useCallback((store) => {
-    if (flyerData[store]) return; // already loaded
+    if (flyerData[store]) return;
     setFlyerLoading(true);
     setFlyerError(null);
     fetch(`/api/marts/${store}/flyers`)
-      .then(r => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json();
-      })
-      .then(res => {
-        setFlyerData(prev => ({ ...prev, [store]: res.data }));
-      })
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+      .then(res => { if (res?.data) setFlyerData(prev => ({ ...prev, [store]: res.data })); })
       .catch(err => {
         console.error('Flyer fetch error:', err);
         setFlyerError(`${store} 전단지를 불러올 수 없습니다`);
@@ -113,14 +170,11 @@ export default function MartPage() {
   useEffect(() => {
     if (mode === 'flyer') {
       fetchFlyerData(flyerMart);
-      // Preload other marts' flyer data for quick links
       MARTS.forEach(m => {
         if (m.key !== flyerMart && !flyerData[m.key]) {
           fetch(`/api/marts/${m.key}/flyers`)
             .then(r => r.ok ? r.json() : null)
-            .then(res => {
-              if (res?.data) setFlyerData(prev => ({ ...prev, [m.key]: res.data }));
-            })
+            .then(res => { if (res?.data) setFlyerData(prev => ({ ...prev, [m.key]: res.data })); })
             .catch(() => {});
         }
       });
@@ -128,12 +182,11 @@ export default function MartPage() {
   }, [mode, flyerMart, fetchFlyerData]);
 
   const martInfo = MARTS.find(m => m.key === activeMart);
-  const martItems = martDeals[activeMart] || [];
+  const martItems = Array.isArray(martDeals[activeMart]) ? martDeals[activeMart] : [];
   const categories = useMemo(() => getCategories(martItems), [martItems]);
   const filteredItems = catFilter === '전체' ? martItems : martItems.filter(i => i.event === catFilter);
   const commonProducts = useMemo(() => findCommonProducts(martDeals), [martDeals]);
 
-  // Generate period from current week
   const now = new Date();
   const startOfWeek = new Date(now); startOfWeek.setDate(now.getDate() - now.getDay());
   const endOfWeek = new Date(startOfWeek); endOfWeek.setDate(startOfWeek.getDate() + 6);
@@ -150,7 +203,6 @@ export default function MartPage() {
         <p>이마트 · 홈플러스 · 롯데마트 · 코스트코 이번 주 할인</p>
       </div>
 
-      {/* Mart Tabs */}
       <div className={s.tabs}>
         {MARTS.map(m => (
           <button
@@ -170,15 +222,11 @@ export default function MartPage() {
         <span>총 {martItems.length}개 상품</span>
         {martMeta[activeMart]?.lastCrawledAt && (
           <span className={s.crawlBadge} title="크롤링된 실제 데이터">
-            🔄 {(() => {
-              const d = new Date(martMeta[activeMart].lastCrawledAt);
-              return `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')} 수집`;
-            })()}
+            🔄 {formatLastUpdate(martMeta[activeMart].lastCrawledAt)} 수집
           </span>
         )}
       </div>
 
-      {/* Mode Toggle */}
       <div className={s.modeRow}>
         <button className={`${s.modeBtn} ${mode === 'sale' ? s.modeBtnActive : ''}`} onClick={() => setMode('sale')}>
           📋 세일 상품
@@ -191,39 +239,33 @@ export default function MartPage() {
         </button>
       </div>
 
-      {/* Flyer Viewer */}
+      {/* ===== FLYER VIEWER ===== */}
       {mode === 'flyer' && (
         <div className={s.flyerSection}>
-          {/* Mart selector for flyer */}
           <div className={s.flyerMartTabs}>
             {MARTS.map(m => (
               <button
                 key={m.key}
                 className={`${s.flyerMartTab} ${flyerMart === m.key ? s.flyerMartTabActive : ''}`}
                 style={flyerMart === m.key ? { borderColor: m.color, color: m.color } : {}}
-                onClick={() => { setFlyerMart(m.key); setFlyerIdx(0); setFlyerZoomed(false); }}
+                onClick={() => { setFlyerMart(m.key); setFlyerIdx(0); setFlyerZoom(1); }}
               >
                 <span className={s.dot} style={{ background: m.color }} />{m.name}
               </button>
             ))}
           </div>
 
-          {/* Flyer period info */}
           {currentFlyer && (
             <div className={s.flyerPeriod}>
-              <span>📅 행사 기간: {currentFlyer.display_period}</span>
-              <a
-                href={currentFlyer.web_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={s.flyerWebLink}
-              >
-                원본 사이트에서 보기 <ExternalLink size={14} />
-              </a>
+              <span>📅 행사 기간: {currentFlyer.display_period || '정보 없음'}</span>
+              {currentFlyer.web_url && (
+                <a href={currentFlyer.web_url} target="_blank" rel="noopener noreferrer" className={s.flyerWebLink}>
+                  원본 사이트에서 보기 <ExternalLink size={14} />
+                </a>
+              )}
             </div>
           )}
 
-          {/* Loading state */}
           {flyerLoading && (
             <div className={s.flyerLoading}>
               <Spinner />
@@ -231,7 +273,6 @@ export default function MartPage() {
             </div>
           )}
 
-          {/* Error state */}
           {flyerError && !flyerLoading && (
             <div className={s.flyerError}>
               <p>⚠️ {flyerError}</p>
@@ -247,15 +288,15 @@ export default function MartPage() {
             </div>
           )}
 
-          {/* Flyer content: images carousel if available */}
           {!flyerLoading && !flyerError && flyerHasImages && (
             <>
               <div className={s.flyerViewer}>
                 <img
                   src={flyerPages[flyerIdx]?.image_url}
-                  alt={`${currentFlyer.name} 전단지 ${flyerIdx + 1}페이지`}
-                  className={`${s.flyerImg} ${flyerZoomed ? s.flyerImgZoomed : ''}`}
-                  onClick={() => setFlyerZoomed(!flyerZoomed)}
+                  alt={`${currentFlyer?.name || flyerMart} 전단지 ${flyerIdx + 1}페이지`}
+                  className={s.flyerImg}
+                  style={{ transform: `scale(${flyerZoom})`, cursor: flyerZoom > 1 ? 'zoom-out' : 'zoom-in' }}
+                  onClick={() => setFlyerZoom(z => z > 1 ? 1 : 1.8)}
                 />
                 {flyerPages.length > 1 && (
                   <>
@@ -276,6 +317,23 @@ export default function MartPage() {
                 <div className={s.flyerPageBadge}>
                   {flyerIdx + 1} / {flyerPages.length}
                 </div>
+                <div className={s.flyerZoomControls}>
+                  <button
+                    className={s.flyerZoomBtn}
+                    onClick={e => { e.stopPropagation(); setFlyerZoom(z => Math.max(0.5, z - 0.25)); }}
+                    title="축소"
+                  >
+                    <ZoomOut size={16} />
+                  </button>
+                  <span className={s.flyerZoomLevel}>{Math.round(flyerZoom * 100)}%</span>
+                  <button
+                    className={s.flyerZoomBtn}
+                    onClick={e => { e.stopPropagation(); setFlyerZoom(z => Math.min(3, z + 0.25)); }}
+                    title="확대"
+                  >
+                    <ZoomIn size={16} />
+                  </button>
+                </div>
               </div>
               {flyerPages.length > 1 && (
                 <div className={s.flyerDots}>
@@ -292,46 +350,60 @@ export default function MartPage() {
             </>
           )}
 
-          {/* No images: show link card to view flyer on mart's website */}
           {!flyerLoading && !flyerError && currentFlyer && !flyerHasImages && (
             <div className={s.flyerLinkCard}>
               <div className={s.flyerLinkIcon}>📰</div>
-              <h3 className={s.flyerLinkTitle}>{currentFlyer.name} 전단지</h3>
-              <p className={s.flyerLinkDesc}>{currentFlyer.description}</p>
+              <h3 className={s.flyerLinkTitle}>{currentFlyer.name || '전단지'}</h3>
+              <p className={s.flyerLinkDesc}>{currentFlyer.description || '이번 주 전단지를 확인하세요'}</p>
               {currentFlyer.display_period && (
                 <p className={s.flyerLinkPeriod}>📅 {currentFlyer.display_period}</p>
               )}
-              <a
-                href={currentFlyer.web_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={s.flyerLinkBtn}
-              >
-                전단지 보러가기 <ExternalLink size={16} />
-              </a>
+              {currentFlyer.web_url ? (
+                <a href={currentFlyer.web_url} target="_blank" rel="noopener noreferrer" className={s.flyerLinkBtn}>
+                  전단지 보러가기 <ExternalLink size={16} />
+                </a>
+              ) : (
+                <p className={s.emptyHint}>이번 주 전단지가 아직 등록되지 않았습니다</p>
+              )}
               <p className={s.flyerLinkNote}>
-                {currentFlyer.name} 공식 사이트에서 최신 전단지를 확인하세요
+                {currentFlyer.name || MARTS.find(m => m.key === flyerMart)?.name} 공식 사이트에서 최신 전단지를 확인하세요
               </p>
             </div>
           )}
 
-          {/* All marts quick links */}
+          {!flyerLoading && !flyerError && !currentFlyer && (
+            <div className={s.emptyState}>
+              <div className={s.emptyIcon}>📭</div>
+              <p className={s.emptyTitle}>이번 주 전단지가 아직 등록되지 않았습니다</p>
+              <p className={s.emptyDesc}>
+                데이터가 업데이트되면 자동으로 표시됩니다.
+                {formatLastUpdate(martMeta[flyerMart]?.lastCrawledAt) && (
+                  <> 마지막 업데이트: {formatLastUpdate(martMeta[flyerMart]?.lastCrawledAt)}</>
+                )}
+              </p>
+              {MART_ONLINE_URLS[flyerMart] && (
+                <a
+                  href={MART_ONLINE_URLS[flyerMart].url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={s.emptyLink}
+                >
+                  {MART_ONLINE_URLS[flyerMart].name}에서 직접 확인하기 <ExternalLink size={14} />
+                </a>
+              )}
+            </div>
+          )}
+
           {!flyerLoading && (
             <div className={s.flyerQuickLinks}>
               <h4 className={s.flyerQuickTitle}>🔗 마트별 전단지 바로가기</h4>
               <div className={s.flyerQuickGrid}>
                 {MARTS.map(m => {
                   const data = flyerData[m.key];
-                  const webUrl = data?.web_url;
+                  const webUrl = data?.web_url || MART_ONLINE_URLS[m.key]?.url;
                   if (!webUrl) return null;
                   return (
-                    <a
-                      key={m.key}
-                      href={webUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={s.flyerQuickItem}
-                    >
+                    <a key={m.key} href={webUrl} target="_blank" rel="noopener noreferrer" className={s.flyerQuickItem}>
                       <span className={s.dot} style={{ background: m.color }} />
                       <span>{m.name}</span>
                       <ExternalLink size={12} />
@@ -344,7 +416,7 @@ export default function MartPage() {
         </div>
       )}
 
-      {/* Sale Grid */}
+      {/* ===== SALE GRID ===== */}
       {mode === 'sale' && (
         <>
           <div className={s.catRow}>
@@ -362,23 +434,38 @@ export default function MartPage() {
 
           <div className={s.grid}>
             {filteredItems.length === 0 && !loading && (
-              <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '3rem 1rem', color: 'var(--text3)' }}>
-                <p style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>📭 데이터가 없습니다</p>
-                <p style={{ fontSize: '0.85rem' }}>
-                  크롤러에서 수집 → 크롤러 관리자 승인 → DB 관리자 승인 후 표시됩니다.
+              <div className={s.emptyState} style={{ gridColumn: '1 / -1' }}>
+                <div className={s.emptyIcon}>📭</div>
+                <p className={s.emptyTitle}>이번 주 세일 상품이 아직 등록되지 않았습니다</p>
+                <p className={s.emptyDesc}>
+                  크롤러에서 수집 → 관리자 승인 후 표시됩니다.
+                  {formatLastUpdate(martMeta[activeMart]?.lastCrawledAt) && (
+                    <> 마지막 업데이트: {formatLastUpdate(martMeta[activeMart]?.lastCrawledAt)}</>
+                  )}
                 </p>
+                {MART_ONLINE_URLS[activeMart] && (
+                  <a
+                    href={MART_ONLINE_URLS[activeMart].url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={s.emptyLink}
+                  >
+                    {MART_ONLINE_URLS[activeMart].name}에서 직접 확인하기 <ExternalLink size={14} />
+                  </a>
+                )}
               </div>
             )}
             {filteredItems.map((item, i) => {
               const matched = products.find(p => item.name?.includes(p.name));
               const diff = matched ? item.sale - matched.avg : null;
+              const onlineUrl = getOnlineMallUrl(activeMart, item.name);
               return (
-                <div key={i} className={s.card} onClick={() => setSaleDetail({ ...item, martName: martInfo?.name, period: martPeriod })}>
+                <div key={i} className={s.card} onClick={() => setSaleDetail({ ...item, martKey: activeMart, martName: martInfo?.name, period: martPeriod })}>
                   <div className={s.cardName}>{item.name}</div>
                   <div className={s.cardPrices}>
                     <span className={s.sale}>{fmt(item.sale)}원</span>
-                    <span className={s.orig}>{fmt(item.orig)}원</span>
-                    <span className={s.disc}>-{item.disc}%</span>
+                    {item.orig > 0 && <span className={s.orig}>{fmt(item.orig)}원</span>}
+                    {item.disc > 0 && <span className={s.disc}>-{item.disc}%</span>}
                   </div>
                   {diff !== null && (
                     <div className={s.vs}>
@@ -387,17 +474,31 @@ export default function MartPage() {
                   )}
                   <div className={s.cardBottom}>
                     <span className={s.event}>{item.event}</span>
-                    <button
-                      className={s.cartMini}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        addToShoppingList({ name: item.name, price: item.sale, icon: '🏪' });
-                        addToast(`${item.name}을(를) 장보기 리스트에 추가했어요`, 'success');
-                      }}
-                      title="장보기에 추가"
-                    >
-                      🛒
-                    </button>
+                    <div className={s.cardActions}>
+                      {onlineUrl && (
+                        <a
+                          href={onlineUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={s.mallMini}
+                          onClick={e => e.stopPropagation()}
+                          title={`${MART_ONLINE_URLS[activeMart]?.name}에서 보기`}
+                        >
+                          🛍️
+                        </a>
+                      )}
+                      <button
+                        className={s.cartMini}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToShoppingList({ name: item.name, price: item.sale, icon: '🏪' });
+                          addToast(`${item.name}을(를) 장보기 리스트에 추가했어요`, 'success');
+                        }}
+                        title="장보기에 추가"
+                      >
+                        🛒
+                      </button>
+                    </div>
                   </div>
                   <div className={s.validity}>~ {martPeriod.split('~')[1]?.trim() || martPeriod}</div>
                 </div>
@@ -407,55 +508,103 @@ export default function MartPage() {
         </>
       )}
 
-      {/* Compare View */}
+      {/* ===== COMPARE TABLE ===== */}
       {mode === 'compare' && (
         <div className={s.compareSection}>
-          <h3 className={s.compareTitle}>⚖️ 같은 상품 마트별 가격 비교</h3>
-          <div className={s.compareGrid}>
-            {commonProducts.map(({ name, marts: martPrices }) => {
-              const prices = Object.values(martPrices).map(m => m.sale);
-              const lowest = Math.min(...prices);
-              return (
-                <div key={name} className={s.compareRow}>
-                  <div className={s.compareProductName}>{name}</div>
-                  <div className={s.comparePrices}>
-                    {Object.entries(martPrices).map(([key, item]) => (
-                      <div
-                        key={key}
-                        className={`${s.compareMart} ${item.sale === lowest ? s.compareLowest : ''} ${s.compareMartClickable}`}
-                        onClick={() => {
-                          const mInfo = MARTS.find(m => m.key === key);
-                          setSaleDetail({ ...item, martName: mInfo?.name || item.mart, period: martPeriod });
-                        }}
-                      >
-                        <span className={s.compareMartName}>
-                          <span className={s.compareMartDot} style={{ background: item.color }} />
-                          {item.mart}
-                        </span>
-                        <span className={s.compareMartPrice}>
-                          {fmt(item.sale)}원
-                          {item.sale === lowest && ' 🏆'}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-            {commonProducts.length === 0 && (
-              <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text3)' }}>
-                비교 가능한 동일 상품이 없습니다.
-              </div>
-            )}
-          </div>
+          <h3 className={s.compareTitle}>⚖️ 이마트 · 홈플러스 · 롯데마트 가격 비교</h3>
+          <p className={s.compareDesc}>동일 상품을 한눈에 비교하세요. 최저가 마트가 강조 표시됩니다.</p>
+
+          {commonProducts.length > 0 ? (
+            <div className={s.compareTableWrap}>
+              <table className={s.compareTable}>
+                <thead>
+                  <tr>
+                    <th className={s.compareThProduct}>상품명</th>
+                    {COMPARE_MARTS.map(key => {
+                      const m = MARTS.find(mart => mart.key === key);
+                      return (
+                        <th key={key} className={s.compareTh}>
+                          <span className={s.compareMartDot} style={{ background: m?.color }} />
+                          {m?.name || key}
+                        </th>
+                      );
+                    })}
+                    <th className={s.compareTh}>최저가</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {commonProducts.map(({ name, marts: martPrices }) => {
+                    const prices = COMPARE_MARTS
+                      .filter(key => martPrices[key])
+                      .map(key => ({ key, sale: safePrice(martPrices[key]?.sale) }))
+                      .filter(p => p.sale > 0);
+                    const lowestPrice = prices.length > 0 ? Math.min(...prices.map(p => p.sale)) : 0;
+                    const lowestMartInfo = prices.length > 0
+                      ? MARTS.find(m => m.key === prices.find(p => p.sale === lowestPrice)?.key)
+                      : null;
+                    return (
+                      <tr key={name} className={s.compareTr}>
+                        <td className={s.compareTdProduct}>{name}</td>
+                        {COMPARE_MARTS.map(key => {
+                          const item = martPrices[key];
+                          const price = item ? safePrice(item.sale) : 0;
+                          const isLowest = item && price > 0 && price === lowestPrice;
+                          return (
+                            <td
+                              key={key}
+                              className={`${s.compareTd} ${isLowest ? s.compareTdLowest : ''} ${item ? s.compareTdClickable : ''}`}
+                              onClick={() => {
+                                if (item) {
+                                  const mInfo = MARTS.find(m => m.key === key);
+                                  setSaleDetail({ ...item, martKey: key, martName: mInfo?.name || item.mart, period: martPeriod });
+                                }
+                              }}
+                            >
+                              {item && price > 0 ? (
+                                <>
+                                  <span className={s.compareCellPrice}>{fmt(price)}원</span>
+                                  {isLowest && <span className={s.compareCellBadge}>🏆</span>}
+                                </>
+                              ) : (
+                                <span className={s.compareCellEmpty}>—</span>
+                              )}
+                            </td>
+                          );
+                        })}
+                        <td className={s.compareTdBest}>
+                          {lowestMartInfo && (
+                            <span className={s.compareBestMart} style={{ color: lowestMartInfo.color }}>
+                              {lowestMartInfo.name}
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className={s.emptyState}>
+              <div className={s.emptyIcon}>⚖️</div>
+              <p className={s.emptyTitle}>비교 가능한 동일 상품이 없습니다</p>
+              <p className={s.emptyDesc}>
+                각 마트에서 동일한 상품이 세일 중일 때 비교 결과가 표시됩니다.
+              </p>
+            </div>
+          )}
         </div>
       )}
 
-      {/* Sale Detail Modal */}
+      {/* ===== SALE DETAIL MODAL ===== */}
       {saleDetail && (() => {
         const matched = products.find(p => saleDetail.name?.includes(p.name));
         const diffVsAvg = matched ? saleDetail.sale - matched.avg : null;
         const periodParts = saleDetail.period?.split('~') || [];
+        const martKey = saleDetail.martKey || null;
+        const onlineUrl = getOnlineMallUrl(martKey, saleDetail.name);
+        const mallInfo = martKey ? MART_ONLINE_URLS[martKey] : null;
+
         return (
           <Modal isOpen={!!saleDetail} onClose={() => setSaleDetail(null)} title={saleDetail.name} size="sm">
             <div className={s.detailBody}>
@@ -471,14 +620,18 @@ export default function MartPage() {
                 <span className={s.detailLabel}>판매가</span>
                 <span className={s.detailSale}>{fmt(saleDetail.sale)}원</span>
               </div>
-              <div className={s.detailRow}>
-                <span className={s.detailLabel}>정가</span>
-                <span className={s.detailOrig}>{fmt(saleDetail.orig)}원</span>
-              </div>
-              <div className={s.detailRow}>
-                <span className={s.detailLabel}>할인율</span>
-                <span className={s.detailDisc}>-{saleDetail.disc}%</span>
-              </div>
+              {saleDetail.orig > 0 && (
+                <div className={s.detailRow}>
+                  <span className={s.detailLabel}>정가</span>
+                  <span className={s.detailOrig}>{fmt(saleDetail.orig)}원</span>
+                </div>
+              )}
+              {saleDetail.disc > 0 && (
+                <div className={s.detailRow}>
+                  <span className={s.detailLabel}>할인율</span>
+                  <span className={s.detailDisc}>-{saleDetail.disc}%</span>
+                </div>
+              )}
               <div className={s.detailRow}>
                 <span className={s.detailLabel}>행사 유형</span>
                 <span className={s.detailEvent}>{saleDetail.event}</span>
@@ -513,14 +666,14 @@ export default function MartPage() {
               )}
               <div className={s.detailActions}>
                 {saleDetail.detailUrl && (
-                  <a
-                    href={saleDetail.detailUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={s.detailLinkBtn}
-                  >
+                  <a href={saleDetail.detailUrl} target="_blank" rel="noopener noreferrer" className={s.detailLinkBtn}>
                     <ExternalLink size={16} />
                     상품 페이지로 이동
+                  </a>
+                )}
+                {onlineUrl && mallInfo && (
+                  <a href={onlineUrl} target="_blank" rel="noopener noreferrer" className={s.detailMallBtn}>
+                    🛍️ {mallInfo.name}에서 검색
                   </a>
                 )}
                 <button
