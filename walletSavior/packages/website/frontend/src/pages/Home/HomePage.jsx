@@ -124,17 +124,19 @@ export default function HomePage() {
   const fetchAllData = useCallback((loc) => {
     const gasQuery = loc ? `lat=${loc.lat}&lng=${loc.lng}&sort=price_asc` : 'sort=price_asc';
 
-    setSectionLoading({ products: true, hotdeals: true, community: true, gas: true, trending: true });
-    setSectionError({ products: false, hotdeals: false, community: false, gas: false, trending: false });
+    setSectionLoading({ products: true, hotdeals: true, community: true, gas: true, trending: true, fashion: true });
+    setSectionError({ products: false, hotdeals: false, community: false, gas: false, trending: false, fashion: false });
 
     Promise.allSettled([
       fetch('/api/hotdeals?per_page=10').then(r => r.json()),
+      fetch('/api/products/category-summary?per_page=8').then(r => r.json()),
       fetch('/api/products/search?per_page=50').then(r => r.json()),
       fetch('/api/posts?board=hotdeal&per_page=5').then(r => r.json()),
       fetch(`/api/gas/nearby?${gasQuery}`).then(r => r.json()),
       fetch('/api/products/trending').then(r => r.json()),
       searchService.trending(8),
-    ]).then(([dealRes, prodRes, postRes, gasRes, trendRes, trendApiRes]) => {
+      fetch('/api/hotdeals?category=fashion&per_page=6').then(r => r.json()),
+    ]).then(([dealRes, catSumRes, prodRes, postRes, gasRes, trendRes, trendApiRes, fashionRes]) => {
       // 핫딜 (우선 표시)
       if (dealRes.status === 'fulfilled') {
         setHotdeals(dealRes.value.data || []);
@@ -143,13 +145,26 @@ export default function HomePage() {
       }
       setSectionLoading(prev => ({ ...prev, hotdeals: false }));
 
-      // 물가 (우선 표시)
+      // 카테고리 요약 (오늘의 물가)
+      if (catSumRes.status === 'fulfilled') {
+        setCategorySummary(catSumRes.value.data || []);
+      }
+
+      // 물가 (개별 상품 — 카테고리 요약 없을 때 폴백)
       if (prodRes.status === 'fulfilled') {
         setProducts(prodRes.value.data || []);
       } else {
         setSectionError(prev => ({ ...prev, products: true }));
       }
       setSectionLoading(prev => ({ ...prev, products: false }));
+
+      // 패션 핫딜
+      if (fashionRes.status === 'fulfilled') {
+        setFashionDeals(fashionRes.value.data || []);
+      } else {
+        setSectionError(prev => ({ ...prev, fashion: true }));
+      }
+      setSectionLoading(prev => ({ ...prev, fashion: false }));
 
       // 커뮤니티
       if (postRes.status === 'fulfilled') {
@@ -535,35 +550,69 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* 오늘의 물가 */}
+      {/* 오늘의 물가 — 카테고리별 집계 */}
       <section className={s.sec}>
-        <h2 className={s.secTitle}>오늘의 물가</h2>
-        <p className={s.secDesc}>정부 공시 + 마트 평균 기준</p>
+        <div className={s.secHead}>
+          <div>
+            <h2 className={s.secTitle}>오늘의 물가</h2>
+            <p className={s.secDesc}>카테고리별 평균 · 최저가 비교</p>
+          </div>
+          <button className={s.secMore} onClick={() => navigate('/price')}>전체보기 <ArrowRight size={14} /></button>
+        </div>
         {sectionLoading.products ? (
           <div className={s.priceGrid}>
             {[...Array(8)].map((_, i) => <SkeletonCard key={i} className={s.skeletonPrice} />)}
           </div>
         ) : sectionError.products ? (
           <SectionError onRetry={() => fetchAllData(coords)} />
+        ) : categorySummary.length > 0 ? (
+          <div className={s.priceGrid}>
+            {categorySummary.slice(0, 8).map(cat => (
+              <div key={cat.category_id} className={s.priceCard} onClick={() => navigate(`/price/category/${cat.category_id}`)}>
+                <div className={s.priceCardTop}>
+                  <span className={s.priceCardIcon}>{cat.icon}</span>
+                  {cat.count > 0 && (
+                    <span className={s.catCount}>{cat.count}개 품목</span>
+                  )}
+                </div>
+                <div className={s.priceCardName}>{cat.name}</div>
+                <div className={s.priceCardPrice}>
+                  {cat.avg_price > 0 ? `평균 ${fmt(cat.avg_price)}원` : '가격 미정'}
+                </div>
+                {cat.min_price > 0 && (
+                  <div className={s.catMinPrice}>
+                    최저 {fmt(cat.min_price)}원
+                    {cat.min_source && <span className={s.catMinSource}> ({cat.min_source})</span>}
+                  </div>
+                )}
+                {cat.unit && <div className={s.catUnit}>/{cat.unit}</div>}
+              </div>
+            ))}
+          </div>
         ) : (
           <div className={s.priceGrid}>
-            {products.slice(0, 8).map(p => {
-              const diff = (p.cur || 0) - (p.avg || 0);
-              const pct = p.avg > 0 ? ((diff / p.avg) * 100).toFixed(1) : '0.0';
+            {products.filter(p => {
+              const price = p.cur ?? p.price ?? p.sale_price ?? p.current_price ?? 0;
+              return price > 0;
+            }).slice(0, 8).map(p => {
+              const price = p.cur ?? p.price ?? p.sale_price ?? p.current_price ?? 0;
+              const avg = p.avg ?? price;
+              const diff = price - avg;
+              const pct = avg > 0 ? ((diff / avg) * 100).toFixed(1) : '0.0';
               let trend = 'same', icon = <Minus size={12} />;
-              if (p.avg > 0 && diff < -p.avg * 0.03) { trend = 'down'; icon = <TrendingDown size={12} />; }
-              else if (p.avg > 0 && diff > p.avg * 0.03) { trend = 'up'; icon = <TrendingUp size={12} />; }
+              if (avg > 0 && diff < -avg * 0.03) { trend = 'down'; icon = <TrendingDown size={12} />; }
+              else if (avg > 0 && diff > avg * 0.03) { trend = 'up'; icon = <TrendingUp size={12} />; }
               const fav = isFavorite(p.id);
               return (
                 <div key={p.id} className={s.priceCard} onClick={() => selectProduct(p)}>
                   <div className={s.priceCardTop}>
-                    <span className={s.priceCardIcon}>{p.icon}</span>
+                    <span className={s.priceCardIcon}>{p.icon || '📦'}</span>
                     <div className={s.priceCardBtns}>
                       <button
                         className={s.cartSmall}
                         onClick={(e) => {
                           e.stopPropagation();
-                          addToShoppingList({ productId: p.id, name: p.name, price: p.cur, unit: p.unit, icon: p.icon });
+                          addToShoppingList({ productId: p.id, name: p.name, price: price, unit: p.unit, icon: p.icon });
                           addToast(`${p.name}을(를) 장보기 리스트에 추가했어요`, 'success');
                         }}
                         title="장보기에 추가"
@@ -580,14 +629,81 @@ export default function HomePage() {
                     </div>
                   </div>
                   <div className={s.priceCardName}>{p.name} ({p.unit})</div>
-                  <div className={s.priceCardPrice}>{p.cur ? `${fmt(p.cur)}원` : '가격 미정'}</div>
-                  <span className={`${s.change} ${s[trend]}`}>{icon} {trend !== 'same' ? `${Math.abs(pct)}%` : '→'}</span>
+                  <div className={s.priceCardPrice}>
+                    {price > 0 ? `${fmt(price)}원` : '가격 미정'}
+                  </div>
+                  {price > 0 && avg > 0 && (
+                    <span className={`${s.change} ${s[trend]}`}>{icon} {trend !== 'same' ? `${Math.abs(pct)}%` : '→'}</span>
+                  )}
                 </div>
               );
             })}
+            {products.filter(p => (p.cur ?? p.price ?? p.sale_price ?? p.current_price ?? 0) > 0).length === 0 && (
+              <div className={s.sectionError}>
+                <p>물가 데이터를 수집 중입니다.</p>
+              </div>
+            )}
           </div>
         )}
       </section>
+
+      {/* 🛍️ 패션 할인 */}
+      {(sectionLoading.fashion || fashionDeals.length > 0) && (
+        <section className={s.sec}>
+          <div className={s.secHead}>
+            <div>
+              <h2 className={s.secTitle}>🛍️ 패션 할인</h2>
+              <p className={s.secDesc}>무신사 · 지오다노 등 인기 패션 할인</p>
+            </div>
+            <button className={s.secMore} onClick={() => navigate('/hotdeal', { state: { category: 'fashion' } })}>전체보기 <ArrowRight size={14} /></button>
+          </div>
+          {sectionLoading.fashion ? (
+            <div className={s.fashionGrid}>
+              {[...Array(4)].map((_, i) => <SkeletonCard key={i} className={s.skeletonMart} />)}
+            </div>
+          ) : (
+            <div className={s.fashionGrid}>
+              {fashionDeals.slice(0, 6).map((d, i) => {
+                const salePrice = d.price ?? d.sale_price ?? 0;
+                const origPrice = d.origPrice ?? d.original_price ?? 0;
+                const discRate = d.discountRate ?? d.discount_rate ?? d.discount_percent
+                  ?? (origPrice > 0 && salePrice > 0 ? Math.round((1 - salePrice / origPrice) * 100) : 0);
+                const source = d.source || d.store || d.platform || '';
+                return (
+                  <div key={d.id || i} className={s.fashionCard} onClick={() => {
+                    if (d.detail_url || d.url) {
+                      window.open(d.detail_url || d.url, '_blank', 'noopener');
+                    } else {
+                      navigate('/hotdeal', { state: { openDealId: d.id } });
+                    }
+                  }}>
+                    {(d.image_url || d.thumb) && (
+                      <div className={s.fashionImgWrap}>
+                        <img src={d.image_url || d.thumb} alt={d.title || d.name} className={s.fashionImg} loading="lazy" />
+                      </div>
+                    )}
+                    <div className={s.fashionInfo}>
+                      {source && <span className={s.fashionSource}>{source}</span>}
+                      <div className={s.fashionName}>{d.title || d.name}</div>
+                      <div className={s.fashionPrices}>
+                        <span className={s.fashionSalePrice}>
+                          {salePrice > 0 ? `${fmt(salePrice)}원` : '가격 미정'}
+                        </span>
+                        {origPrice > 0 && origPrice !== salePrice && (
+                          <span className={s.fashionOrigPrice}>{fmt(origPrice)}원</span>
+                        )}
+                      </div>
+                      {discRate > 0 && (
+                        <span className={s.fashionDiscount}>-{discRate}%</span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </section>
+      )}
 
       {/* 마트 세일 미리보기 */}
       <section className={s.sec}>

@@ -127,6 +127,214 @@ async def get_popular_products(
     return ApiResponse(data=results)
 
 
+@router.get("/category-summary")
+async def get_category_summary(
+    request: Request,
+    per_page: int = Query(8, ge=1, le=20),
+):
+    """카테고리별 물가 요약 — 평균, 최저, 최고 가격.
+
+    홈페이지 '오늘의 물가' 섹션에서 사용.
+    개별 상품 대신 카테고리 단위 집계를 반환한다.
+    """
+    CATEGORY_META = {
+        "livestock":    {"icon": "🥩", "display": "축산물"},
+        "meat":         {"icon": "🥩", "display": "축산물"},
+        "agricultural": {"icon": "🥬", "display": "농산물"},
+        "seafood":      {"icon": "🐟", "display": "수산물"},
+        "processed":    {"icon": "🥫", "display": "가공식품"},
+        "living":       {"icon": "🧴", "display": "생활용품"},
+        "dairy":        {"icon": "🥛", "display": "유제품"},
+        "eggs":         {"icon": "🥚", "display": "계란/난류"},
+        "grain":        {"icon": "🌾", "display": "곡류"},
+        "fruit":        {"icon": "🍎", "display": "과일"},
+        "vegetable":    {"icon": "🥬", "display": "채소"},
+    }
+
+    storage = request.app.state.storage
+    if storage is None:
+        return ApiResponse(data=_default_category_summary())
+
+    try:
+        all_products = storage.search_products("", per_page=500)
+        items = []
+        if isinstance(all_products, dict) and "items" in all_products:
+            items = all_products["items"]
+        elif isinstance(all_products, list):
+            items = all_products
+        else:
+            return ApiResponse(data=_default_category_summary())
+
+        # 유효한 가격만 필터
+        items = [p for p in items if _safe_price(p) > 0]
+        if not items:
+            return ApiResponse(data=_default_category_summary())
+
+        # 카테고리별 그룹핑
+        from collections import defaultdict
+        groups = defaultdict(list)
+        for p in items:
+            cat_id = (p.get("category_id") or p.get("category") or "etc")
+            # 계층형 카테고리 → 최상위 키 사용
+            top_cat = cat_id.split(".")[0] if "." in cat_id else cat_id
+            groups[top_cat].append(p)
+
+        summaries = []
+        for cat_id, prods in groups.items():
+            prices = [_safe_price(p) for p in prods]
+            prices = [pr for pr in prices if pr > 0]
+            if not prices:
+                continue
+
+            avg_price = round(sum(prices) / len(prices))
+            min_price = min(prices)
+            max_price = max(prices)
+            min_product = min(prods, key=lambda p: _safe_price(p) if _safe_price(p) > 0 else float('inf'))
+            meta = CATEGORY_META.get(cat_id, {"icon": "📦", "display": cat_id})
+
+            summaries.append({
+                "category_id": cat_id,
+                "name": meta["display"],
+                "icon": meta["icon"],
+                "avg_price": avg_price,
+                "min_price": round(min_price),
+                "max_price": round(max_price),
+                "min_source": min_product.get("source") or min_product.get("store") or "",
+                "unit": min_product.get("unit") or "",
+                "count": len(prods),
+            })
+
+        summaries.sort(key=lambda x: x["count"], reverse=True)
+        return ApiResponse(data=summaries[:per_page])
+
+    except Exception:
+        return ApiResponse(data=_default_category_summary())
+
+
+def _safe_price(p):
+    """상품 딕셔너리에서 유효한 가격을 추출."""
+    for key in ("cur", "price", "sale_price", "current_price"):
+        val = p.get(key)
+        if val and isinstance(val, (int, float)) and val > 0:
+            return val
+    return 0
+
+
+def _default_category_summary():
+    """DB 미연결 / 빈 데이터일 때 기본 카테고리 요약."""
+    return [
+        {"category_id": "livestock", "name": "축산물", "icon": "🥩",
+         "avg_price": 0, "min_price": 0, "max_price": 0,
+         "min_source": "", "unit": "100g", "count": 0},
+        {"category_id": "agricultural", "name": "농산물", "icon": "🥬",
+         "avg_price": 0, "min_price": 0, "max_price": 0,
+         "min_source": "", "unit": "1kg", "count": 0},
+        {"category_id": "seafood", "name": "수산물", "icon": "🐟",
+         "avg_price": 0, "min_price": 0, "max_price": 0,
+         "min_source": "", "unit": "1kg", "count": 0},
+        {"category_id": "processed", "name": "가공식품", "icon": "🥫",
+         "avg_price": 0, "min_price": 0, "max_price": 0,
+         "min_source": "", "unit": "1개", "count": 0},
+    ]
+
+
+@router.get("/by-source/{source_type}")
+async def get_products_by_source(
+    request: Request,
+    source_type: str,
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=1, le=100),
+):
+    """소스별 상품 조회 (무신사, 지오다노, emart 등)."""
+    storage = request.app.state.storage
+    if storage is None:
+        return ApiResponse(data=[], meta=PaginationMeta(page=page, per_page=per_page, total=0, total_pages=0))
+
+    try:
+        all_products = storage.search_products("", per_page=500)
+        items = []
+        if isinstance(all_products, dict) and "items" in all_products:
+            items = all_products["items"]
+        elif isinstance(all_products, list):
+            items = all_products
+
+        source_lower = source_type.lower()
+        filtered = [
+            p for p in items
+            if source_lower in (p.get("source") or "").lower()
+            or source_lower in (p.get("store") or "").lower()
+            or source_lower in (p.get("source_type") or "").lower()
+            or source_lower in (p.get("platform") or "").lower()
+        ]
+
+        total = len(filtered)
+        start = (page - 1) * per_page
+        paged = filtered[start:start + per_page]
+        return ApiResponse(
+            data=paged,
+            meta=PaginationMeta(
+                page=page, per_page=per_page, total=total,
+                total_pages=math.ceil(total / per_page) if per_page else 0,
+            ),
+        )
+    except Exception:
+        return ApiResponse(data=[], meta=PaginationMeta(page=page, per_page=per_page, total=0, total_pages=0))
+
+
+@router.get("/fashion")
+async def get_fashion_products(
+    request: Request,
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=1, le=100),
+):
+    """패션 상품 조회 — 무신사, 지오다노 등 패션 데이터 전용."""
+    storage = request.app.state.storage
+    if storage is None:
+        return ApiResponse(data=[])
+
+    try:
+        all_products = storage.search_products("", category="패션", per_page=200)
+        items = []
+        if isinstance(all_products, dict) and "items" in all_products:
+            items = all_products["items"]
+        elif isinstance(all_products, list):
+            items = all_products
+
+        # 패션 관련 소스 필터
+        fashion_sources = {"무신사", "지오다노", "musinsa", "giordano"}
+        fashion_items = [
+            p for p in items
+            if any(src in (p.get("source") or "").lower() or src in (p.get("store") or "").lower()
+                   for src in fashion_sources)
+            or (p.get("category") or "").lower() in ("패션", "fashion")
+            or (p.get("category_id") or "").lower().startswith("fashion")
+        ]
+
+        # 패션 카테고리 상품이 없으면 핫딜에서 패션 검색
+        if not fashion_items:
+            try:
+                hotdeals = storage.get_hotdeals(category="fashion", per_page=per_page)
+                if isinstance(hotdeals, dict) and "items" in hotdeals:
+                    fashion_items = hotdeals["items"]
+                elif isinstance(hotdeals, list):
+                    fashion_items = hotdeals
+            except Exception:
+                pass
+
+        total = len(fashion_items)
+        start = (page - 1) * per_page
+        paged = fashion_items[start:start + per_page]
+        return ApiResponse(
+            data=paged,
+            meta=PaginationMeta(
+                page=page, per_page=per_page, total=total,
+                total_pages=math.ceil(total / per_page) if per_page else 0,
+            ),
+        )
+    except Exception:
+        return ApiResponse(data=[])
+
+
 @router.get("/category/{category_id}/compare")
 async def compare_category(
     request: Request,
