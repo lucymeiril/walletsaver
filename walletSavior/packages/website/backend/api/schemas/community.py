@@ -19,12 +19,15 @@ class PostCreate(BaseModel):
     price: Optional[float] = None
     original_price: Optional[float] = None
     url: Optional[str] = None
+    images: Optional[list] = None
 
 
 class PostUpdate(BaseModel):
     title: Optional[str] = None
     content: Optional[str] = None
     category: Optional[str] = None
+    price: Optional[float] = None
+    url: Optional[str] = None
 
 
 class CommentCreate(BaseModel):

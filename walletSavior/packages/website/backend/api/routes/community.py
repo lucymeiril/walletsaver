@@ -39,6 +39,7 @@ try:
     from storage.models import (
         Base,
         Post as PostModel,
+        PostImage as PostImageModel,
         Comment as CommentModel,
         Vote as VoteModel,
         User as UserModel,
@@ -83,6 +84,7 @@ def _post_to_dict(post: "PostModel") -> dict:
         "price": post.deal_price,
         "original_price": None,
         "url": post.deal_url,
+        "images": [img.image_url for img in post.images] if post.images else [],
         "created_at": post.created_at.isoformat() if post.created_at else "",
         "updated_at": post.updated_at.isoformat() if post.updated_at else "",
     }
@@ -193,6 +195,17 @@ async def create_post(body: PostCreate, user: dict = Depends(get_current_user)):
             session.add(post)
             session.commit()
             session.refresh(post)
+            if body.images:
+                for i, img_data in enumerate(body.images):
+                    if isinstance(img_data, str) and img_data:
+                        img = PostImageModel(
+                            post_id=post.id,
+                            image_url=img_data,
+                            position=i,
+                        )
+                        session.add(img)
+                session.commit()
+                session.refresh(post)
             data = _post_to_dict(post)
             return ApiResponse(data=data)
 
@@ -232,6 +245,10 @@ async def update_post(post_id: int, body: PostUpdate, user: dict = Depends(requi
                 post.content = body.content
             if body.category is not None:
                 post.custom_category = body.category
+            if body.price is not None:
+                post.deal_price = body.price
+            if body.url is not None:
+                post.deal_url = body.url
             post.updated_at = datetime.utcnow()
             session.commit()
             session.refresh(post)
