@@ -1,7 +1,8 @@
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { Wallet, Bell, User, X, Search, Sun, Moon } from 'lucide-react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { Wallet, Bell, User, X, Search, Sun, Moon, Clock } from 'lucide-react';
 import useStore from '../../stores/appStore';
+import { searchService } from '../../services/searchService';
 import s from './Header.module.css';
 
 const NAV = [
@@ -18,9 +19,17 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const debounceRef = useRef(null);
+  const dropdownRef = useRef(null);
+
   const { isLoggedIn, logout, notifications } = useStore();
   const theme = useStore((s) => s.theme);
   const toggleTheme = useStore((s) => s.toggleTheme);
+  const recentSearches = useStore((s) => s.recentSearches);
+  const addRecentSearch = useStore((s) => s.addRecentSearch);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -39,6 +48,38 @@ export default function Header() {
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
+  // 외부 클릭 시 드롭다운 닫기
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  // 자동완성 API 호출 (2글자 이상, 300ms 디바운스)
+  const fetchAutocomplete = useCallback((value) => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (!value || value.length < 2) {
+      setSuggestions([]);
+      return;
+    }
+    debounceRef.current = setTimeout(async () => {
+      try {
+        const res = await searchService.autocomplete(value);
+        setSuggestions(res.data || []);
+      } catch {
+        setSuggestions([]);
+      }
+    }, 300);
+  }, []);
+
+  useEffect(() => {
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+  }, []);
+
   const openLoginModal = useStore((s) => s.openLoginModal);
   const openLogin = () => openLoginModal();
 
@@ -46,11 +87,57 @@ export default function Header() {
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
-      navigate('/price', { state: { searchQuery: searchQuery.trim() } });
+      addRecentSearch(searchQuery.trim());
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery('');
       setSearchOpen(false);
+      setShowDropdown(false);
+      setSuggestions([]);
     }
   };
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    setActiveIndex(-1);
+    setShowDropdown(true);
+    fetchAutocomplete(value);
+  };
+
+  const handleSelectSuggestion = (text) => {
+    setSearchQuery(text);
+    addRecentSearch(text);
+    navigate(`/search?q=${encodeURIComponent(text)}`);
+    setSearchOpen(false);
+    setShowDropdown(false);
+    setSuggestions([]);
+  };
+
+  const handleKeyDown = (e) => {
+    const items = suggestions.length > 0
+      ? suggestions.map((s) => s.text || s)
+      : recentSearches.map((r) => r.query);
+    if (!items.length) {
+      if (e.key === 'Enter') handleSearch();
+      return;
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveIndex((p) => (p < items.length - 1 ? p + 1 : 0));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveIndex((p) => (p > 0 ? p - 1 : items.length - 1));
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeIndex >= 0) handleSelectSuggestion(items[activeIndex]);
+      else handleSearch();
+    } else if (e.key === 'Escape') {
+      setShowDropdown(false);
+    }
+  };
+
+  const recentList = recentSearches.map((r) => r.query);
+  const hasDropdownContent = suggestions.length > 0 || (searchQuery === '' && recentList.length > 0);
 
   return (
     <>
@@ -116,7 +203,7 @@ export default function Header() {
         </div>
 
         {searchOpen && (
-          <div className={s.searchBar}>
+          <div className={s.searchBar} ref={dropdownRef}>
             <div className={s.searchInner}>
               <input
                 type="search"
@@ -124,13 +211,44 @@ export default function Header() {
                 placeholder="상품, 가격, 핫딜 검색..."
                 autoFocus
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                onFocus={() => setShowDropdown(true)}
+                autoComplete="off"
               />
               <button className={s.searchClose} onClick={() => setSearchOpen(false)}>
                 <X size={18} />
               </button>
             </div>
+
+            {showDropdown && hasDropdownContent && (
+              <div className={s.searchDropdown}>
+                {suggestions.length > 0
+                  ? suggestions.map((item, i) => (
+                      <button
+                        key={i}
+                        className={`${s.dropItem} ${i === activeIndex ? s.dropItemActive : ''}`}
+                        onClick={() => handleSelectSuggestion(item.text || item)}
+                        onMouseEnter={() => setActiveIndex(i)}
+                      >
+                        <Search size={14} className={s.dropItemIcon} />
+                        <span>{item.text || item}</span>
+                      </button>
+                    ))
+                  : recentList.map((item, i) => (
+                      <button
+                        key={i}
+                        className={`${s.dropItem} ${i === activeIndex ? s.dropItemActive : ''}`}
+                        onClick={() => handleSelectSuggestion(item)}
+                        onMouseEnter={() => setActiveIndex(i)}
+                      >
+                        <Clock size={14} className={s.dropItemIcon} />
+                        <span>{item}</span>
+                      </button>
+                    ))
+                }
+              </div>
+            )}
           </div>
         )}
       </header>

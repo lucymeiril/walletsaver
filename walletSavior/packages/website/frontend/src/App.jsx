@@ -15,6 +15,7 @@ const HotdealPage   = lazy(() => import('./pages/Hotdeal/HotdealPage'));
 const MartPage      = lazy(() => import('./pages/Mart/MartPage'));
 const LocalPage     = lazy(() => import('./pages/Local/LocalPage'));
 const CommunityPage = lazy(() => import('./pages/Community/CommunityPage'));
+const SearchPage    = lazy(() => import('./pages/Search/SearchPage'));
 const NotFoundPage  = lazy(() => import('./pages/NotFound/NotFoundPage'));
 
 function PageLoader() {
@@ -39,6 +40,7 @@ export default function App() {
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/"          element={<HomePage />} />
+            <Route path="/search"    element={<SearchPage />} />
             <Route path="/price"     element={<PricePage />} />
             <Route path="/price/:id" element={<PricePage />} />
             <Route path="/hotdeal"   element={<HotdealPage />} />

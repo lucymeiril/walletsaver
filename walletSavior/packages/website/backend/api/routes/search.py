@@ -80,6 +80,27 @@ async def search(
             except Exception:
                 pass
 
+    # 마트/동네 검색
+    if not type or type == "mart":
+        if storage:
+            try:
+                mart_data = storage.get_mart_deals()
+                for key, data in mart_data.items():
+                    for item in data.get("items", []):
+                        title = item.get("name") or item.get("title", "")
+                        if q_lower and q_lower not in title.lower():
+                            continue
+                        results.append({
+                            "type": "mart",
+                            "id": f"{key}_{item.get('id', '')}",
+                            "title": title,
+                            "description": f"{data['name']} / {item.get('unit', '')}",
+                            "price": item.get("price"),
+                            "image": item.get("img"),
+                        })
+            except Exception:
+                pass
+
     if sort == "popular":
         results.sort(key=lambda x: x.get("price") or 0, reverse=True)
 
