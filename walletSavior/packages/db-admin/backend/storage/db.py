@@ -527,6 +527,7 @@ class DBStorage(StorageContract):
                 select(
                     func.strftime("%m-%d", BaselinePrice.recorded_at).label("date"),
                     func.avg(BaselinePrice.price).label("price"),
+                    func.min(BaselinePrice.source).label("source"),
                 )
                 .where(
                     BaselinePrice.product_id == product_id,
@@ -536,7 +537,7 @@ class DBStorage(StorageContract):
                 .order_by(BaselinePrice.recorded_at)
             )
             rows = session.execute(stmt).all()
-            return [{"date": row.date, "price": round(row.price)} for row in rows]
+            return [{"date": row.date, "price": round(row.price), "source": row.source} for row in rows]
 
     def search_products(
         self,
@@ -681,7 +682,7 @@ class DBStorage(StorageContract):
             stmt = (
                 select(Favorite, Product)
                 .join(Product, Favorite.product_id == Product.id)
-                .where(Favorite.user_id == int(user_id) if user_id.isdigit() else False)
+                .where(Favorite.user_id == (int(user_id) if isinstance(user_id, str) else user_id))
             )
             rows = session.execute(stmt).all()
             return [
@@ -695,21 +696,23 @@ class DBStorage(StorageContract):
                 for fav, prod in rows
             ]
 
-    def add_user_favorite(self, user_id: str, product_id: int) -> dict:
+    def add_user_favorite(self, user_id, product_id: int) -> dict:
         """즐겨찾기 추가."""
+        uid = int(user_id) if isinstance(user_id, str) else user_id
         with self.SessionLocal() as session:
-            fav = Favorite(user_id=int(user_id), product_id=product_id)
+            fav = Favorite(user_id=uid, product_id=product_id)
             session.add(fav)
             session.commit()
-            return {"user_id": user_id, "product_id": product_id, "status": "added"}
+            return {"id": fav.id, "user_id": uid, "product_id": product_id, "status": "added"}
 
-    def remove_user_favorite(self, user_id: str, product_id: int) -> dict:
+    def remove_user_favorite(self, user_id, product_id: int) -> dict:
         """즐겨찾기 제거."""
+        uid = int(user_id) if isinstance(user_id, str) else user_id
         with self.SessionLocal() as session:
             stmt = select(Favorite).where(
-                Favorite.user_id == int(user_id),
+                Favorite.user_id == uid,
                 Favorite.product_id == product_id,
-            )
+            ).limit(1)
             fav = session.execute(stmt).scalar_one_or_none()
             if fav:
                 session.delete(fav)

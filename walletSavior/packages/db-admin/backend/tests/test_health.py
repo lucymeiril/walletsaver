@@ -73,9 +73,11 @@ class TestRunHealthCheck:
 
     def test_degraded_on_memory_warn(self):
         """Health check returns 200 degraded on memory warning."""
+        # Reimport to avoid stale reference from module cache cleanup
+        from api.health import run_health_check as _rhc
         mock_session = MagicMock()
         with patch("api.health.MEMORY_WARN_MB", 0):
-            status, payload = run_health_check(lambda: mock_session, ".")
+            status, payload = _rhc(lambda: mock_session, ".")
         assert status == 200
         assert payload["status"] == "degraded"
 

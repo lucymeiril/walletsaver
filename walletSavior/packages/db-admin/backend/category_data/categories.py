@@ -872,7 +872,7 @@ def validate_tree() -> list[str]:
     반환: 오류 메시지 리스트 (빈 리스트 = OK).
     """
     errors = []
-    idx = _build_index()
+    idx = _CATEGORY_INDEX
     seen_ids: set[str] = set()
 
     for cat in CATEGORIES:

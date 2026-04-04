@@ -58,7 +58,10 @@ async def list_hotdeals(
     if cached is not None:
         return cached
 
-    resp = ApiResponse(data=storage.get_hotdeals(category=category, source=source, sort=sort, page=page, per_page=per_page))
+    data = storage.get_hotdeals(category=category, source=source, sort=sort, page=page, per_page=per_page)
+    total = (page - 1) * per_page + len(data) if len(data) < per_page else page * per_page + 1
+    total_pages = math.ceil(total / per_page) if per_page else 0
+    resp = ApiResponse(data=data, meta=PaginationMeta(page=page, per_page=per_page, total=total, total_pages=total_pages))
     _listing_cache.set(cache_key, resp)
     return resp
 

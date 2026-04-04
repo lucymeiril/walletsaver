@@ -293,16 +293,26 @@ class TestCommunity:
         assert resp.status_code == 200
         assert resp.json()["data"]["status"] == "deleted"
 
-    def test_delete_post_admin(self, client, admin_headers):
+    def test_delete_post_admin(self, client, auth_headers, admin_headers):
         """관리자는 다른 사람의 글도 삭제 가능."""
-        resp = client.delete("/api/posts/1", headers=admin_headers)
+        # Create a post as regular user, then delete as admin
+        create_resp = client.post("/api/posts", json={
+            "title": "관리자 삭제 테스트", "content": "삭제 대상", "post_type": "free"
+        }, headers=auth_headers)
+        post_id = create_resp.json()["data"]["id"]
+        resp = client.delete(f"/api/posts/{post_id}", headers=admin_headers)
         assert resp.status_code == 200
 
-    def test_delete_post_forbidden(self, client):
+    def test_delete_post_forbidden(self, client, auth_headers):
         """다른 일반 유저가 삭제 시도 → 403."""
+        # Create a post as user 1, try to delete as user 999
+        create_resp = client.post("/api/posts", json={
+            "title": "삭제 금지 테스트", "content": "삭제 불가", "post_type": "free"
+        }, headers=auth_headers)
+        post_id = create_resp.json()["data"]["id"]
         other_tokens = create_token_pair(999, "other@example.com", "user")
         headers = {"Authorization": f"Bearer {other_tokens['access_token']}"}
-        resp = client.delete("/api/posts/1", headers=headers)
+        resp = client.delete(f"/api/posts/{post_id}", headers=headers)
         assert resp.status_code == 403
 
     def test_create_comment(self, client, auth_headers):
@@ -326,7 +336,12 @@ class TestCommunity:
         assert isinstance(body["data"], list)
 
     def test_vote_post(self, client, auth_headers):
-        resp = client.post("/api/posts/1/vote", json={
+        # Create a fresh post to avoid prior vote state
+        cr = client.post("/api/posts", json={
+            "title": "투표 테스트", "content": "투표 확인", "post_type": "hotdeal"
+        }, headers=auth_headers)
+        pid = cr.json()["data"]["id"]
+        resp = client.post(f"/api/posts/{pid}/vote", json={
             "vote_type": "hot"
         }, headers=auth_headers)
         assert resp.status_code == 200
@@ -336,8 +351,15 @@ class TestCommunity:
 
     def test_vote_toggle(self, client, auth_headers):
         """같은 투표 두 번 → 취소."""
-        client.post("/api/posts/1/vote", json={"vote_type": "hot"}, headers=auth_headers)
-        resp = client.post("/api/posts/1/vote", json={"vote_type": "hot"}, headers=auth_headers)
+        # Create a fresh post to avoid leftover vote state
+        cr = client.post("/api/posts", json={
+            "title": "투표 토글 테스트", "content": "토글 확인", "post_type": "hotdeal"
+        }, headers=auth_headers)
+        pid = cr.json()["data"]["id"]
+        # First vote
+        client.post(f"/api/posts/{pid}/vote", json={"vote_type": "hot"}, headers=auth_headers)
+        # Same vote again → toggle off
+        resp = client.post(f"/api/posts/{pid}/vote", json={"vote_type": "hot"}, headers=auth_headers)
         body = resp.json()
         assert body["data"]["user_vote"] is None
 
@@ -498,7 +520,10 @@ class TestUsers:
         assert resp.json()["data"]["product_id"] == 5
 
     def test_remove_favorite(self, client, auth_headers):
-        resp = client.delete("/api/users/me/favorites/1", headers=auth_headers)
+        # First add a favorite
+        client.post("/api/users/me/favorites", json={"product_id": 5}, headers=auth_headers)
+        # Remove by product_id (the URL param is treated as product_id)
+        resp = client.delete("/api/users/me/favorites/5", headers=auth_headers)
         assert resp.status_code == 200
         assert resp.json()["data"]["status"] == "removed"
 

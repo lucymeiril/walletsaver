@@ -74,7 +74,9 @@ async def search_products(
         return cached
 
     data = storage.search_products(q, category=category, page=page, per_page=per_page)
-    resp = ApiResponse(data=data)
+    total = (page - 1) * per_page + len(data) if len(data) < per_page else page * per_page + 1
+    total_pages = math.ceil(total / per_page) if per_page else 0
+    resp = ApiResponse(data=data, meta=PaginationMeta(page=page, per_page=per_page, total=total, total_pages=total_pages))
     _search_cache.set(cache_key, resp)
     return resp
 
@@ -414,7 +416,10 @@ async def get_price_history(
     if storage is None:
         return ApiResponse(data=[])
 
-    return ApiResponse(data=storage.get_price_history(product_id, days))
+    data = storage.get_price_history(product_id, days)
+    if not data:
+        raise HTTPException(status_code=404, detail="가격 이력을 찾을 수 없습니다.")
+    return ApiResponse(data=data)
 
 
 @router.get("/{product_id}/price-compare")
@@ -424,4 +429,7 @@ async def get_price_compare(request: Request, product_id: int):
     if storage is None:
         return ApiResponse(data=[])
 
-    return ApiResponse(data=storage.get_price_compare(product_id))
+    data = storage.get_price_compare(product_id)
+    if not data:
+        raise HTTPException(status_code=404, detail="가격 비교 데이터를 찾을 수 없습니다.")
+    return ApiResponse(data=data)

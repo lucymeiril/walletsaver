@@ -35,12 +35,18 @@ def test_production_rejects_default_password(monkeypatch):
         "postgresql://user:changeme@localhost/db",
     )
     for mod in list(sys.modules):
-        if mod.startswith(("config", "api.app", "api.middleware")):
+        if mod.startswith(("config", "api.")):
             del sys.modules[mod]
     from api.app import create_app
     app = create_app()
 
     from fastapi.testclient import TestClient
-    with pytest.raises((RuntimeError, Exception)):
-        with TestClient(app):
-            pass
+    try:
+        with pytest.raises((RuntimeError, Exception)):
+            with TestClient(app):
+                pass
+    finally:
+        # Clean up polluted modules so subsequent tests get fresh config
+        for mod in list(sys.modules):
+            if mod.startswith(("config", "api.")):
+                del sys.modules[mod]

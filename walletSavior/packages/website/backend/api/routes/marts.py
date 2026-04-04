@@ -16,20 +16,27 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
+_ALL_MARTS = {
+    "emart": {"name": "이마트", "color": "#FFD700"},
+    "homeplus": {"name": "홈플러스", "color": "#FF6B35"},
+    "lottemart": {"name": "롯데마트", "color": "#E4002B"},
+    "costco": {"name": "코스트코", "color": "#E31837"},
+}
+
+
 @router.get("")
 async def list_marts(request: Request):
-    """마트 목록 — DB에서 조회."""
+    """마트 목록 — 항상 4개 마트를 반환 (데이터 없는 마트는 deals_count=0)."""
     storage = request.app.state.storage
-    if storage is None:
-        return ApiResponse(data=[])
+    mart_data = storage.get_mart_deals() if storage else {}
 
-    mart_data = storage.get_mart_deals()
     result = []
-    for key, data in mart_data.items():
+    for key, meta in _ALL_MARTS.items():
+        data = mart_data.get(key, {})
         result.append({
             "key": key,
-            "name": data["name"],
-            "color": data["color"],
+            "name": data.get("name", meta["name"]),
+            "color": data.get("color", meta["color"]),
             "deals_count": len(data.get("items", [])),
             "period": data.get("period", ""),
         })
@@ -87,6 +94,8 @@ async def get_mart_promotions(request: Request, store: str):
     }
     mart_data = storage.get_mart_deals(store=db_store)
     if db_store not in mart_data:
+        if db_store not in mart_meta:
+            raise HTTPException(status_code=404, detail=f"마트 '{store}'를 찾을 수 없습니다.")
         meta = mart_meta.get(db_store, {"name": store, "color": "#666"})
         return ApiResponse(data={
             "name": meta["name"],

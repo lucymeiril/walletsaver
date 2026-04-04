@@ -139,9 +139,8 @@ async def autocomplete(
 ):
     """자동완성 — 키워드·동의어·카테고리·상품 4단계 파이프라인."""
     storage = request.app.state.storage
-    empty = {"keywords": [], "products": [], "total_keyword_count": 0, "total_product_count": 0}
     if not q or not storage:
-        return ApiResponse(data=empty)
+        return ApiResponse(data=[])
 
     cache_key = f"ac:{q}:{limit}"
     cached = _autocomplete_cache.get(cache_key)
@@ -154,9 +153,19 @@ async def autocomplete(
     try:
         result = await _autocomplete_dedup.deduplicate(cache_key, _fetch)
     except Exception:
-        return ApiResponse(data=empty)
+        return ApiResponse(data=[])
 
-    resp = ApiResponse(data=result)
+    # Flatten dict result into list for frontend autocomplete
+    suggestions = []
+    if isinstance(result, dict):
+        for kw in result.get("keywords", []):
+            suggestions.append(kw if isinstance(kw, dict) else {"type": "keyword", "text": kw})
+        for prod in result.get("products", []):
+            suggestions.append(prod if isinstance(prod, dict) else {"type": "product", "text": prod})
+    elif isinstance(result, list):
+        suggestions = result
+
+    resp = ApiResponse(data=suggestions)
     _autocomplete_cache.set(cache_key, resp)
     return resp
 

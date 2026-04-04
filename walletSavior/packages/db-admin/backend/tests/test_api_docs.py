@@ -10,7 +10,7 @@ from fastapi.testclient import TestClient
 def _reload_and_create_app():
     """Flush cached modules and create a fresh app."""
     for mod in list(sys.modules):
-        if mod.startswith(("config", "api.app", "api.middleware")):
+        if mod.startswith(("config", "api.")):
             del sys.modules[mod]
     from api.app import create_app
     return create_app()
