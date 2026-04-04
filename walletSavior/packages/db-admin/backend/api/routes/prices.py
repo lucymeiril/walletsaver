@@ -13,7 +13,7 @@ import statistics as pystats
 
 from sqlalchemy import select, func, and_
 
-from services.base import get_session
+from services.base import get_session, managed_session
 from api.auth import require_viewer, require_moderator, require_admin
 from services.audit import log_action
 from services.price_calc import calculate_baseline_average, get_price_history
@@ -165,8 +165,7 @@ class TierConfigRequest(BaseModel):
 
 @router.post("/bulk", status_code=201)
 def bulk_save_prices(body: BulkPriceRequest, identity: dict = Depends(require_moderator)):
-    session = get_session()
-    try:
+    with managed_session() as session:
         saved = 0
         for item in body.items:
             if body.data_type == "baseline":
@@ -187,10 +186,7 @@ def bulk_save_prices(body: BulkPriceRequest, identity: dict = Depends(require_mo
                 )
             session.add(row)
             saved += 1
-        session.commit()
         return {"saved": saved}
-    finally:
-        session.close()
 
 
 # ── 통계 ──

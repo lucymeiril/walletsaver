@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException, Request, Depends
 from pydantic import BaseModel, Field, field_validator
 from typing import Optional
 
-from services.base import get_session
+from services.base import get_session, managed_session
 from services.audit import log_action
 from api.auth import require_viewer, require_moderator, require_admin
 from services.category_mgmt import (
@@ -75,38 +75,29 @@ def read_category(category_id: str, identity: dict = Depends(require_viewer)):
 
 @router.post("/", status_code=201)
 def add_category(body: CategoryCreate, identity: dict = Depends(require_moderator)):
-    session = get_session()
-    try:
+    with managed_session() as session:
         return create_category(
             session, body.id, body.name, body.parent_id,
             body.attributes, body.icon, body.sort_order,
         )
-    finally:
-        session.close()
 
 
 @router.put("/{category_id}")
 def modify_category(category_id: str, body: CategoryUpdate, identity: dict = Depends(require_moderator)):
-    session = get_session()
-    try:
+    with managed_session() as session:
         result = update_category(session, category_id, body.model_dump(exclude_unset=True))
         if not result:
             raise HTTPException(404, "Category not found")
         return result
-    finally:
-        session.close()
 
 
 @router.delete("/{category_id}")
 def remove_category(category_id: str, identity: dict = Depends(require_admin)):
-    session = get_session()
-    try:
+    with managed_session() as session:
         ok = delete_category(session, category_id)
         if not ok:
             raise HTTPException(404, "Category not found")
         return {"deleted": True}
-    finally:
-        session.close()
 
 
 @router.get("/{category_id}/products")
@@ -130,11 +121,8 @@ def category_product_count(category_id: str, identity: dict = Depends(require_vi
 
 @router.put("/{category_id}/move")
 def move_cat(category_id: str, body: CategoryMove, identity: dict = Depends(require_moderator)):
-    session = get_session()
-    try:
+    with managed_session() as session:
         result = move_category(session, category_id, body.new_parent_id)
         if not result:
             raise HTTPException(400, "이동 실패: 대상을 찾을 수 없거나 순환 참조가 발생합니다")
         return result
-    finally:
-        session.close()

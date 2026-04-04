@@ -7,7 +7,7 @@ from typing import Optional
 
 from sqlalchemy import select, func, or_, String as SAString
 
-from services.base import get_session
+from services.base import get_session, managed_session
 from api.auth import require_viewer, require_moderator, require_admin
 from services.audit import log_action
 from services.autocomplete import (
@@ -162,8 +162,7 @@ def keyword_search(q: str = "", limit: int = 10, identity: dict = Depends(requir
 @router.post("/", status_code=201)
 def create_keyword(body: KeywordCreate, identity: dict = Depends(require_moderator)):
     """키워드 추가 — 유효성 검사 실패 시 422, 중복 시 409 반환."""
-    session = get_session()
-    try:
+    with managed_session() as session:
         existing = session.execute(
             select(Keyword).where(Keyword.word == body.word)
         ).scalar_one_or_none()
@@ -178,15 +177,12 @@ def create_keyword(body: KeywordCreate, identity: dict = Depends(require_moderat
             return add_keyword(session, body.word, body.synonyms, body.category_id)
         except ValueError:
             raise HTTPException(**make_error("VALIDATION_ERROR", 422))
-    finally:
-        session.close()
 
 
 @router.post("/bulk-delete")
 def bulk_delete_keywords(body: BulkDeleteRequest, identity: dict = Depends(require_admin)):
     """미사용 키워드 벌크 삭제. ids가 없으면 search_count=0인 키워드 전부 삭제."""
-    session = get_session()
-    try:
+    with managed_session() as session:
         if body.ids:
             keywords = session.execute(
                 select(Keyword).where(Keyword.id.in_(body.ids))
@@ -202,22 +198,16 @@ def bulk_delete_keywords(body: BulkDeleteRequest, identity: dict = Depends(requi
         count = len(keywords)
         for kw in keywords:
             session.delete(kw)
-        session.commit()
         return {"deleted": count}
-    finally:
-        session.close()
 
 
 @router.post("/{keyword_id}/count")
 def increment_count(keyword_id: int, identity: dict = Depends(require_viewer)):
-    session = get_session()
-    try:
+    with managed_session() as session:
         ok = update_search_count(session, keyword_id)
         if not ok:
             raise HTTPException(404, "Keyword not found")
         return {"success": True}
-    finally:
-        session.close()
 
 
 @router.get("/popular")
@@ -241,14 +231,13 @@ def suggest(q: str = "", identity: dict = Depends(require_viewer)):
 @router.put("/{keyword_id}")
 def update_keyword(keyword_id: int, body: KeywordUpdate, identity: dict = Depends(require_moderator)):
     """키워드 수정."""
-    session = get_session()
-    try:
+    with managed_session() as session:
         kw = session.get(Keyword, keyword_id)
         if not kw:
             raise HTTPException(404, "Keyword not found")
         for key, val in body.model_dump(exclude_unset=True).items():
             setattr(kw, key, val)
-        session.commit()
+        session.flush()
         session.refresh(kw)
         return {
             "id": kw.id,
@@ -257,20 +246,14 @@ def update_keyword(keyword_id: int, body: KeywordUpdate, identity: dict = Depend
             "category_id": kw.category_id,
             "search_count": kw.search_count,
         }
-    finally:
-        session.close()
 
 
 @router.delete("/{keyword_id}")
 def delete_keyword(keyword_id: int, identity: dict = Depends(require_admin)):
     """키워드 삭제."""
-    session = get_session()
-    try:
+    with managed_session() as session:
         kw = session.get(Keyword, keyword_id)
         if not kw:
             raise HTTPException(404, "Keyword not found")
         session.delete(kw)
-        session.commit()
         return {"deleted": True, "id": keyword_id}
-    finally:
-        session.close()

@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import func, desc, asc, distinct, case, or_
 from sqlalchemy.orm import Session
 
-from services.base import get_session
+from services.base import get_session, managed_session
 from api.auth import require_viewer, require_moderator, require_admin
 from services.audit import log_action
 from services.price_calc import (
@@ -282,76 +282,57 @@ def get_product(product_id: int, identity: dict = Depends(require_viewer)):
 
 @router.post("/", status_code=201)
 def create_product(body: ProductCreate, request: Request, identity: dict = Depends(require_moderator)):
-    session = get_session()
-    try:
+    with managed_session() as session:
         p = Product(
             name=body.name, category_id=body.category_id,
             unit=body.unit, description=body.description, image_url=body.image_url,
         )
         session.add(p)
-        session.commit()
+        session.flush()
         session.refresh(p)
         return {"id": p.id, "name": p.name}
-    finally:
-        session.close()
 
 
 @router.put("/{product_id}")
 def update_product(product_id: int, body: ProductUpdate, request: Request, identity: dict = Depends(require_moderator)):
-    session = get_session()
-    try:
+    with managed_session() as session:
         p = session.get(Product, product_id)
         if not p:
             raise HTTPException(404, "Product not found")
         for key, val in body.model_dump(exclude_unset=True).items():
             setattr(p, key, val)
-        session.commit()
         return {"id": p.id, "name": p.name}
-    finally:
-        session.close()
 
 
 @router.delete("/{product_id}")
 def delete_product(product_id: int, request: Request, identity: dict = Depends(require_admin)):
     """상품 삭제."""
-    session = get_session()
-    try:
+    with managed_session() as session:
         p = session.get(Product, product_id)
         if not p:
             raise HTTPException(404, "Product not found")
         session.delete(p)
-        session.commit()
         return {"deleted": True, "id": product_id}
-    finally:
-        session.close()
 
 
 @router.post("/bulk-delete")
 def bulk_delete_products(body: BulkDeleteRequest, request: Request, identity: dict = Depends(require_admin)):
     """여러 상품 일괄 삭제."""
-    session = get_session()
-    try:
+    with managed_session() as session:
         count = session.query(Product).filter(Product.id.in_(body.ids)).delete(synchronize_session=False)
-        session.commit()
         return {"deleted": count, "ids": body.ids}
-    finally:
-        session.close()
 
 
 @router.post("/bulk-category")
 def bulk_update_category(body: BulkCategoryRequest, request: Request, identity: dict = Depends(require_moderator)):
     """여러 상품의 카테고리 일괄 변경."""
-    session = get_session()
-    try:
+    with managed_session() as session:
         count = (
             session.query(Product)
             .filter(Product.id.in_(body.ids))
             .update({"category_id": body.category_id}, synchronize_session=False)
         )
-        session.commit()
         return {"updated": count, "category_id": body.category_id}
-    finally:
-        session.close()
 
 
 @router.get("/{product_id}/baseline")

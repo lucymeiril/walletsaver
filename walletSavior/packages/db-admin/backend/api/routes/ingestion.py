@@ -8,7 +8,7 @@ from fastapi import APIRouter, HTTPException, Query, Request, Depends
 from pydantic import BaseModel, Field, field_validator
 from sqlalchemy import func, select
 
-from services.base import get_session
+from services.base import get_session, managed_session
 from api.auth import require_viewer, require_moderator, require_admin, get_current_identity
 from services.audit import log_action
 from api.middleware.rate_limit import limiter, INGESTION_LIMIT
@@ -209,8 +209,7 @@ def bulk_approve(body: BulkApproveRequest, identity: dict = Depends(require_mode
     """선택된 여러 수집을 일괄 승인."""
     if not body.ids:
         raise HTTPException(400, "ids가 비어 있습니다")
-    session = get_session()
-    try:
+    with managed_session() as session:
         results = []
         for ingestion_id in body.ids:
             row = session.get(PendingIngestion, ingestion_id)
@@ -230,15 +229,12 @@ def bulk_approve(body: BulkApproveRequest, identity: dict = Depends(require_mode
             row.db_reviewer_notes = body.notes or f"벌크 승인 (reviewer: {body.reviewer or 'system'})"
             row.db_reviewed_at = datetime.utcnow()
             results.append({"id": ingestion_id, "status": "approved", "saved": saved})
-        session.commit()
         approved_count = sum(1 for r in results if r["status"] == "approved")
         return {
             "approved": approved_count,
             "total_requested": len(body.ids),
             "results": results,
         }
-    finally:
-        session.close()
 
 
 @router.post("/cleanup")
@@ -261,8 +257,7 @@ def cleanup_ingestions(body: CleanupRequest, identity: dict = Depends(require_ad
     if not target_statuses:
         return {"deleted": 0}
 
-    session = get_session()
-    try:
+    with managed_session() as session:
         q = session.query(PendingIngestion).filter(
             PendingIngestion.status.in_(target_statuses)
         )
@@ -273,10 +268,7 @@ def cleanup_ingestions(body: CleanupRequest, identity: dict = Depends(require_ad
         count = q.count()
         if count > 0:
             q.delete(synchronize_session="fetch")
-            session.commit()
         return {"deleted": count}
-    finally:
-        session.close()
 
 
 @router.post("")
@@ -285,8 +277,7 @@ def submit_ingestion(request: StarletteRequest, body: IngestionSubmit, identity:
     """크롤러가 데이터를 대기열에 제출."""
     if identity["role"] not in ("service", "moderator", "admin"):
         raise HTTPException(403, "크롤러 서비스 또는 관리자 권한이 필요합니다.")
-    session = get_session()
-    try:
+    with managed_session() as session:
         quality_score, quality_details = _calculate_quality(
             body.items, body.schema_type
         )
@@ -310,11 +301,9 @@ def submit_ingestion(request: StarletteRequest, body: IngestionSubmit, identity:
             source_url=body.source_url,
         )
         session.add(row)
-        session.commit()
+        session.flush()
         session.refresh(row)
         return {"id": row.id, "status": "pending", "quality_score": quality_score}
-    finally:
-        session.close()
 
 
 @router.get("")
@@ -429,8 +418,7 @@ def get_ingestion(ingestion_id: int, identity: dict = Depends(require_viewer)):
 @router.post("/{ingestion_id}/crawler-review")
 def crawler_review(ingestion_id: int, body: ReviewRequest, identity: dict = Depends(require_moderator)):
     """크롤러 관리자 1차 검토 — 승인/거부."""
-    session = get_session()
-    try:
+    with managed_session() as session:
         row = session.get(PendingIngestion, ingestion_id)
         if not row:
             raise HTTPException(404, "대기열 항목을 찾을 수 없습니다")
@@ -452,17 +440,13 @@ def crawler_review(ingestion_id: int, body: ReviewRequest, identity: dict = Depe
 
         row.crawler_reviewer_notes = body.notes
         row.crawler_reviewed_at = datetime.utcnow()
-        session.commit()
         return {"id": row.id, "status": row.status.value}
-    finally:
-        session.close()
 
 
 @router.post("/{ingestion_id}/db-review")
 def db_review(ingestion_id: int, body: ReviewRequest, identity: dict = Depends(require_moderator)):
     """DB 관리자 최종 검토 — 승인 시 실제 DB 테이블에 삽입."""
-    session = get_session()
-    try:
+    with managed_session() as session:
         row = session.get(PendingIngestion, ingestion_id)
         if not row:
             raise HTTPException(404, "대기열 항목을 찾을 수 없습니다")
@@ -479,7 +463,6 @@ def db_review(ingestion_id: int, body: ReviewRequest, identity: dict = Depends(r
             row.status = IngestionStatus.APPROVED
             row.db_reviewer_notes = body.notes
             row.db_reviewed_at = datetime.utcnow()
-            session.commit()
             return {"id": row.id, "status": "approved", "saved": saved}
 
         elif body.action == "reject":
@@ -487,7 +470,6 @@ def db_review(ingestion_id: int, body: ReviewRequest, identity: dict = Depends(r
             row.rejected_reason = body.rejected_reason or body.notes
             row.db_reviewer_notes = body.notes
             row.db_reviewed_at = datetime.utcnow()
-            session.commit()
             return {"id": row.id, "status": "rejected"}
 
         elif body.action == "partial":
@@ -507,28 +489,21 @@ def db_review(ingestion_id: int, body: ReviewRequest, identity: dict = Depends(r
             )
             row.db_reviewer_notes = body.notes
             row.db_reviewed_at = datetime.utcnow()
-            session.commit()
             return {"id": row.id, "status": "partial", "saved": saved}
 
         else:
             raise HTTPException(400, f"잘못된 액션: {body.action}")
-    finally:
-        session.close()
 
 
 @router.delete("/{ingestion_id}")
 def delete_ingestion(ingestion_id: int, identity: dict = Depends(require_admin)):
     """대기열 항목 삭제."""
-    session = get_session()
-    try:
+    with managed_session() as session:
         row = session.get(PendingIngestion, ingestion_id)
         if not row:
             raise HTTPException(404, "대기열 항목을 찾을 수 없습니다")
         session.delete(row)
-        session.commit()
         return {"status": "deleted", "id": ingestion_id}
-    finally:
-        session.close()
 
 
 # --- 내부 헬퍼 ---

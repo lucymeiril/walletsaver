@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 from sqlalchemy import select, func, case, and_, distinct
 
-from services.base import get_session
+from services.base import get_session, managed_session
 from api.auth import require_viewer, require_moderator, require_admin
 from services.data_quality import (
     check_price_outliers,
@@ -97,11 +97,8 @@ def quality_report(identity: dict = Depends(require_viewer)):
 
 @router.post("/cleanup")
 def cleanup(days: int = 180, identity: dict = Depends(require_admin)):
-    session = get_session()
-    try:
+    with managed_session() as session:
         return cleanup_stale_data(session, days)
-    finally:
-        session.close()
 
 
 @router.get("/export/prices/{product_id}")

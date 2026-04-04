@@ -67,9 +67,10 @@ async def lifespan(app: FastAPI):
     # ── Shutdown ──
     _lifecycle_logger.info("Shutdown: closing database connections")
 
-    # 5. Dispose engine (closes all pooled connections)
+    # 5. Dispose engine via reset_engine (closes all pooled connections + clears singleton)
     try:
-        engine.dispose()
+        from services.base import reset_engine
+        reset_engine()
         _lifecycle_logger.info("Shutdown: engine disposed successfully")
     except Exception as e:
         _lifecycle_logger.error("Shutdown: engine disposal failed — %s", e)
