@@ -15,7 +15,9 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
+import os
 import time
 from datetime import datetime
 from typing import Optional
@@ -37,8 +39,12 @@ from core.models import (
     Event,
 )
 from core.exceptions import CrawlError
+from engine.rate_limiter import get_domain_limiter
 
 logger = logging.getLogger(__name__)
+
+_DEFAULT_STRATEGY_TIMEOUT = 60
+_MAX_CUMULATIVE_TIMEOUT = int(os.getenv("CRAWL_CUMULATIVE_TIMEOUT", "180"))
 
 
 class StrategyExecutor:
@@ -57,10 +63,14 @@ class StrategyExecutor:
         self,
         strategies: list,
         event_bus: Optional[EventBus] = None,
+        strategy_timeout: Optional[int] = None,
+        cumulative_timeout: Optional[int] = None,
     ) -> None:
         # difficulty 순 정렬: 낮을수록 가벼운 전략 → 리소스 절약
         self._strategies = sorted(strategies, key=lambda s: s.difficulty)
         self._event_bus = event_bus or EventBus()
+        self._strategy_timeout = strategy_timeout or _DEFAULT_STRATEGY_TIMEOUT
+        self._cumulative_timeout = cumulative_timeout or _MAX_CUMULATIVE_TIMEOUT
 
     async def execute(
         self,
@@ -79,6 +89,31 @@ class StrategyExecutor:
         Returns:
             CrawlResult: 성공 또는 실패 결과
         """
+        try:
+            return await asyncio.wait_for(
+                self._execute_cascade(url, force_strategy=force_strategy, **options),
+                timeout=self._cumulative_timeout,
+            )
+        except asyncio.TimeoutError:
+            logger.error(f"Cumulative timeout ({self._cumulative_timeout}s) exceeded for {url}")
+            return CrawlResult(
+                status=CrawlStatus.FAILED,
+                crawler_name="",
+                strategy_used=None,
+                started_at=datetime.now(),
+                finished_at=datetime.now(),
+                duration_seconds=self._cumulative_timeout,
+                errors=[],
+                error_msg=f"Cumulative timeout ({self._cumulative_timeout}s) exceeded",
+            )
+
+    async def _execute_cascade(
+        self,
+        url: str,
+        force_strategy: Optional[str] = None,
+        **options,
+    ) -> CrawlResult:
+        """전략 cascade 실행 (cumulative timeout에 의해 래핑됨)."""
         started_at = datetime.now()
         start_time = time.monotonic()
 
@@ -124,7 +159,11 @@ class StrategyExecutor:
                 ))
 
             try:
-                raw_data = await strategy.fetch(url, **options)
+                await get_domain_limiter().wait(url)
+                raw_data = await asyncio.wait_for(
+                    strategy.fetch(url, **options),
+                    timeout=self._strategy_timeout,
+                )
 
                 # 성공
                 result = CrawlResult(

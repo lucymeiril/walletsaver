@@ -63,6 +63,9 @@ class SeleniumStrategy(BaseStrategy):
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-gpu")
+        options.add_argument("--js-flags=--max-old-space-size=256")
+        options.add_argument("--single-process")
+        options.add_argument("--disable-extensions")
         options.add_argument(f"--user-agent={self._anti_detect.get_random_user_agent()}")
 
         # 프록시 설정

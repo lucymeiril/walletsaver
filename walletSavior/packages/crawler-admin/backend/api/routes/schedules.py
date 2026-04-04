@@ -9,11 +9,13 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 
 from apscheduler.triggers.cron import CronTrigger
 
+from api.app import limiter
+from audit import audit_log, AuditEventType
 from scheduler.scheduler import CrawlScheduler
 
 logger = logging.getLogger(__name__)
@@ -176,13 +178,14 @@ async def list_schedules():
 
 
 @router.post("")
-async def create_schedule(body: ScheduleCreate):
+async def create_schedule(request: Request, body: ScheduleCreate):
     """스케줄 추가 + 파일 저장."""
     sched = _get_scheduler()
     try:
         result = sched.add_job(body.crawler_name, body.cron)
     except Exception as exc:
-        raise HTTPException(status_code=400, detail=str(exc))
+        logger.warning("스케줄 생성 실패 %s: %s", body.crawler_name, exc)
+        raise HTTPException(status_code=400, detail="스케줄 생성에 실패했습니다. 입력값을 확인하세요.")
 
     # 파일에 저장
     saved = _load_saved_schedules()
@@ -195,17 +198,25 @@ async def create_schedule(body: ScheduleCreate):
     })
     _save_schedules(saved)
 
+    audit_log(
+        AuditEventType.SCHEDULE_CREATE,
+        request=request,
+        resource=body.crawler_name,
+        detail={"cron": body.cron},
+    )
+
     return result
 
 
 @router.put("/{crawler_name}")
-async def update_schedule(crawler_name: str, body: ScheduleUpdate):
+async def update_schedule(crawler_name: str, request: Request, body: ScheduleUpdate):
     """스케줄 변경 + 파일 저장."""
     sched = _get_scheduler()
     try:
         result = sched.update_job(crawler_name, body.cron)
     except Exception as exc:
-        raise HTTPException(status_code=400, detail=str(exc))
+        logger.warning("스케줄 변경 실패 %s: %s", crawler_name, exc)
+        raise HTTPException(status_code=400, detail="스케줄 변경에 실패했습니다. 입력값을 확인하세요.")
 
     # 파일 업데이트
     saved = _load_saved_schedules()
@@ -231,7 +242,7 @@ async def update_schedule(crawler_name: str, body: ScheduleUpdate):
 
 
 @router.delete("/{crawler_name}")
-async def delete_schedule(crawler_name: str):
+async def delete_schedule(crawler_name: str, request: Request):
     """스케줄 삭제 + 파일에서 제거."""
     sched = _get_scheduler()
     removed = sched.remove_job(crawler_name)
@@ -243,11 +254,17 @@ async def delete_schedule(crawler_name: str):
     saved = [s for s in saved if s["crawler_name"] != crawler_name]
     _save_schedules(saved)
 
+    audit_log(
+        AuditEventType.SCHEDULE_DELETE,
+        request=request,
+        resource=crawler_name,
+    )
+
     return {"status": "removed", "crawler_name": crawler_name}
 
 
 @router.put("/{crawler_name}/toggle")
-async def toggle_schedule(crawler_name: str, body: ScheduleToggle):
+async def toggle_schedule(crawler_name: str, request: Request, body: ScheduleToggle):
     """스케줄 활성/비활성 토글 — 파일에 저장하고 APScheduler에 반영."""
     sched = _get_scheduler()
     saved = _load_saved_schedules()
@@ -266,7 +283,8 @@ async def toggle_schedule(crawler_name: str, body: ScheduleToggle):
         try:
             sched.add_job(crawler_name, cron)
         except Exception as e:
-            raise HTTPException(400, str(e))
+            logger.warning("스케줄 활성화 실패 %s: %s", crawler_name, e)
+            raise HTTPException(400, "스케줄 활성화에 실패했습니다.")
     else:
         # 비활성화: APScheduler에서 제거
         sched.remove_job(crawler_name)
@@ -281,6 +299,13 @@ async def toggle_schedule(crawler_name: str, body: ScheduleToggle):
             "enabled": body.enabled,
         })
     _save_schedules(saved)
+
+    audit_log(
+        AuditEventType.SCHEDULE_TOGGLE,
+        request=request,
+        resource=crawler_name,
+        detail={"enabled": body.enabled},
+    )
 
     return {"crawler_name": crawler_name, "enabled": body.enabled}
 
@@ -313,4 +338,5 @@ async def run_schedule_now(crawler_name: str):
             "message": f"'{crawler_name}' 즉시 실행 시작",
         }
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"즉시 실행 실패: {exc}")
+        logger.error("즉시 실행 실패 %s: %s", crawler_name, exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="즉시 실행에 실패했습니다.")

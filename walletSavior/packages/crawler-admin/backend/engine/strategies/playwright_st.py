@@ -66,6 +66,10 @@ class PlaywrightStrategy(BaseStrategy):
             args=[
                 "--disable-blink-features=AutomationControlled",
                 "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--js-flags=--max-old-space-size=256",
+                "--disable-extensions",
+                "--disable-gpu",
             ],
         )
         self._browser = browser

@@ -25,6 +25,7 @@ from pipeline.transformer import (
     to_hotdeal_prices,
     enrich_with_category,
 )
+from audit import audit_log, AuditEventType
 
 logger = logging.getLogger(__name__)
 
@@ -142,6 +143,12 @@ class CrawlPipeline:
 
         # 2. Parse — 이미 dict 리스트이므로 pass-through
         items = list(raw_items)
+
+        # Sanitize raw items before they enter the pipeline
+        for item in items:
+            for key, val in list(item.items()):
+                if isinstance(val, str) and len(val) > 5000:
+                    item[key] = val[:5000]
 
         # 3. Validate
         required = config.get("output", {}).get("required_fields", [])
@@ -262,6 +269,15 @@ class CrawlPipeline:
             async with httpx.AsyncClient(timeout=30) as client:
                 resp = await client.post(INGESTION_API_URL, json=payload)
                 resp.raise_for_status()
+                audit_log(
+                    AuditEventType.DATA_SUBMISSION,
+                    resource=crawler_name,
+                    detail={
+                        "item_count": len(items),
+                        "schema_type": schema_type,
+                        "strategy": strategy_used,
+                    },
+                )
                 return len(items)
         except Exception as exc:
             errors.append(f"ingestion_submit: {exc}")

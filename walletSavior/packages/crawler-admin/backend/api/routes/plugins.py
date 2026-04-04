@@ -8,8 +8,11 @@ from pathlib import Path
 from typing import Any, Optional
 
 import yaml
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
+
+from api.app import limiter
+from audit import audit_log, AuditEventType
 
 logger = logging.getLogger(__name__)
 
@@ -127,7 +130,7 @@ class PluginToggleRequest(BaseModel):
 
 
 @router.put("/{plugin_id}/status")
-async def toggle_plugin(plugin_id: str, body: PluginToggleRequest):
+async def toggle_plugin(plugin_id: str, request: Request, body: PluginToggleRequest):
     """플러그인 활성/비활성 토글 — 상태를 파일에 저장."""
     if body.status not in ("active", "inactive"):
         raise HTTPException(400, "status must be 'active' or 'inactive'")
@@ -135,6 +138,13 @@ async def toggle_plugin(plugin_id: str, body: PluginToggleRequest):
     state = _load_state()
     state[plugin_id] = body.status
     _save_state(state)
+
+    audit_log(
+        AuditEventType.PLUGIN_TOGGLE,
+        request=request,
+        resource=plugin_id,
+        detail={"status": body.status},
+    )
 
     return {"plugin_id": plugin_id, "status": body.status}
 
@@ -146,24 +156,31 @@ class PluginSettingsUpdate(BaseModel):
 
 
 @router.put("/{plugin_id}/settings")
-async def update_plugin_settings(plugin_id: str, body: PluginSettingsUpdate):
+async def update_plugin_settings(plugin_id: str, request: Request, body: PluginSettingsUpdate):
     """플러그인 설정 업데이트 — plugin.yaml 파일 직접 수정."""
+    import re
+    if not re.match(r'^[a-zA-Z0-9_\-]+$', plugin_id):
+        raise HTTPException(400, "Invalid plugin ID format: only alphanumeric, dash, underscore allowed")
+
     yaml_path = _find_plugin_yaml(plugin_id)
     if not yaml_path:
-        raise HTTPException(404, f"Plugin '{plugin_id}' not found")
+        raise HTTPException(404, "Plugin not found")
 
     try:
         with open(yaml_path, "r", encoding="utf-8") as f:
             config = yaml.safe_load(f) or {}
     except Exception as e:
-        raise HTTPException(500, f"plugin.yaml 읽기 실패: {e}")
+        logger.error("plugin.yaml 읽기 실패 %s: %s", plugin_id, e)
+        raise HTTPException(500, "플러그인 설정 파일을 읽을 수 없습니다.")
 
     # target 블록 업데이트
     if body.target_url is not None:
+        from api.security.url_validator import validate_target_url
+        validated_url = validate_target_url(body.target_url)
         target = config.get("target", {})
         if isinstance(target, str):
             target = {"url": target}
-        target["url"] = body.target_url
+        target["url"] = validated_url
         config["target"] = target
 
     if body.delay is not None:
@@ -176,7 +193,14 @@ async def update_plugin_settings(plugin_id: str, body: PluginSettingsUpdate):
         with open(yaml_path, "w", encoding="utf-8") as f:
             yaml.dump(config, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
     except Exception as e:
-        raise HTTPException(500, f"plugin.yaml 저장 실패: {e}")
+        logger.error("plugin.yaml 저장 실패 %s: %s", plugin_id, e)
+        raise HTTPException(500, "플러그인 설정 저장에 실패했습니다.")
+
+    audit_log(
+        AuditEventType.PLUGIN_SETTINGS_UPDATE,
+        request=request,
+        resource=plugin_id,
+    )
 
     return {"plugin_id": plugin_id, "settings": {
         "target_url": body.target_url,
