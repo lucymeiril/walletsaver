@@ -1,104 +1,208 @@
 const API_BASE = '/api';
 
+// ─── Timeout defaults (ms) ───
+const DEFAULT_TIMEOUT = 15000;
+const LONG_TIMEOUT    = 45000;
+
+// ─── Core: fetch with AbortController timeout ───
+function fetchWithTimeout(url, options = {}, timeoutMs = DEFAULT_TIMEOUT) {
+  const controller = new AbortController();
+  const existingSignal = options.signal;
+
+  if (existingSignal) {
+    existingSignal.addEventListener('abort', () => controller.abort(existingSignal.reason));
+  }
+
+  const timer = setTimeout(
+    () => controller.abort(new DOMException('요청 시간이 초과되었습니다 (15초)', 'TimeoutError')),
+    timeoutMs
+  );
+
+  return fetch(url, { ...options, signal: controller.signal })
+    .finally(() => clearTimeout(timer));
+}
+
+// ─── Retry with exponential backoff (network errors + 5xx only) ───
+async function fetchWithRetry(url, options = {}, {
+  timeout = DEFAULT_TIMEOUT,
+  maxRetries = 3,
+  signal,
+} = {}) {
+  let lastError;
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fetchWithTimeout(url, { ...options, signal }, timeout);
+    } catch (err) {
+      lastError = err;
+
+      if (err.name === 'AbortError') throw err;
+
+      const isRetryable =
+        !err.status ||
+        err.status >= 500 ||
+        err.status === 408 ||
+        err.status === 429;
+
+      if (!isRetryable || attempt === maxRetries) throw err;
+
+      const delay = Math.min(1000 * Math.pow(2, attempt), 4000);
+      await new Promise(r => setTimeout(r, delay));
+    }
+  }
+
+  throw lastError;
+}
+
+// ─── Response parser ───
 const json = async (r) => {
-  const data = await r.json();
   if (!r.ok) {
-    const msg = data.detail || data.message || `HTTP ${r.status}`;
+    let data;
+    try { data = await r.json(); } catch { data = {}; }
+    const msg = data.detail || data.message || data.error?.message || `HTTP ${r.status}`;
     const err = new Error(msg);
     err.status = r.status;
     throw err;
   }
-  return data;
+  const text = await r.text();
+  return text ? JSON.parse(text) : {};
 };
-const postJson = (url, data) =>
-  fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(json);
-const putJson = (url, data) =>
-  fetch(url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(json);
-const del = (url) => fetch(url, { method: 'DELETE' }).then(json);
+
+// ─── Method helpers (accept signal + timeout) ───
+const get = (url, { signal, timeout, maxRetries = 3 } = {}) =>
+  fetchWithRetry(url, { signal }, { timeout, maxRetries, signal }).then(json);
+
+const postJson = (url, data, { signal, timeout } = {}) =>
+  fetchWithTimeout(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+    signal,
+  }, timeout).then(json);
+
+const putJson = (url, data, { signal, timeout } = {}) =>
+  fetchWithTimeout(url, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+    signal,
+  }, timeout).then(json);
+
+const del = (url, { signal, timeout } = {}) =>
+  fetchWithTimeout(url, { method: 'DELETE', signal }, timeout).then(json);
 
 // 모든 URL에 trailing slash를 사용 — FastAPI의 router.get("/") 패턴과 일치시켜
 // 307 리다이렉트로 인한 POST body 손실을 방지한다.
 export const api = {
   // Products
-  getProducts: (params) => {
+  getProducts: (params, opts) => {
     const qs = params ? `?${new URLSearchParams(params)}` : '';
-    return fetch(`${API_BASE}/products/${qs}`).then(json);
+    return get(`${API_BASE}/products/${qs}`, opts);
   },
-  getProduct: (id) => fetch(`${API_BASE}/products/${id}`).then(json),
-  getProductStats: () => fetch(`${API_BASE}/products/stats`).then(json),
-  getProductHistory: (id, days = 30) => fetch(`${API_BASE}/products/${id}/history?days=${days}`).then(json),
-  getProductComparison: (id) => fetch(`${API_BASE}/products/${id}/comparison`).then(json),
-  getProductSimilar: (id, limit = 10) => fetch(`${API_BASE}/products/${id}/similar?limit=${limit}`).then(json),
-  createProduct: (data) => postJson(`${API_BASE}/products/`, data),
-  updateProduct: (id, data) => putJson(`${API_BASE}/products/${id}`, data),
-  deleteProduct: (id) => del(`${API_BASE}/products/${id}`),
-  bulkDeleteProducts: (ids) => postJson(`${API_BASE}/products/bulk-delete`, { ids }),
-  bulkUpdateCategory: (ids, categoryId) => postJson(`${API_BASE}/products/bulk-category`, { ids, category_id: categoryId }),
+  getProduct: (id, opts) => get(`${API_BASE}/products/${id}`, opts),
+  getProductStats: (opts) => get(`${API_BASE}/products/stats`, opts),
+  getProductHistory: (id, days = 30, opts) =>
+    get(`${API_BASE}/products/${id}/history?days=${days}`, opts),
+  getProductComparison: (id, opts) =>
+    get(`${API_BASE}/products/${id}/comparison`, opts),
+  getProductSimilar: (id, limit = 10, opts) =>
+    get(`${API_BASE}/products/${id}/similar?limit=${limit}`, opts),
+  createProduct: (data, opts) => postJson(`${API_BASE}/products/`, data, opts),
+  updateProduct: (id, data, opts) => putJson(`${API_BASE}/products/${id}`, data, opts),
+  deleteProduct: (id, opts) => del(`${API_BASE}/products/${id}`, opts),
+  bulkDeleteProducts: (ids, opts) =>
+    postJson(`${API_BASE}/products/bulk-delete`, { ids }, opts),
+  bulkUpdateCategory: (ids, categoryId, opts) =>
+    postJson(`${API_BASE}/products/bulk-category`, { ids, category_id: categoryId }, opts),
   // Categories
-  getCategories: () => fetch(`${API_BASE}/categories/`).then(json),
-  createCategory: (data) => postJson(`${API_BASE}/categories/`, data),
-  updateCategory: (id, data) => putJson(`${API_BASE}/categories/${id}`, data),
-  deleteCategory: (id) => del(`${API_BASE}/categories/${id}`),
-  moveCategory: (id, newParentId) => putJson(`${API_BASE}/categories/${id}/move`, { new_parent_id: newParentId }),
-  getCategoryProducts: (id) => fetch(`${API_BASE}/categories/${id}/products`).then(json),
-  getCategoryProductCount: (id) => fetch(`${API_BASE}/categories/${id}/product-count`).then(json),
+  getCategories: (opts) => get(`${API_BASE}/categories/`, opts),
+  createCategory: (data, opts) => postJson(`${API_BASE}/categories/`, data, opts),
+  updateCategory: (id, data, opts) => putJson(`${API_BASE}/categories/${id}`, data, opts),
+  deleteCategory: (id, opts) => del(`${API_BASE}/categories/${id}`, opts),
+  moveCategory: (id, newParentId, opts) =>
+    putJson(`${API_BASE}/categories/${id}/move`, { new_parent_id: newParentId }, opts),
+  getCategoryProducts: (id, opts) =>
+    get(`${API_BASE}/categories/${id}/products`, opts),
+  getCategoryProductCount: (id, opts) =>
+    get(`${API_BASE}/categories/${id}/product-count`, opts),
   // Keywords
-  getKeywords: (params) => {
+  getKeywords: (params, opts) => {
     const qs = params ? `?${new URLSearchParams(params)}` : '';
-    return fetch(`${API_BASE}/keywords/${qs}`).then(json);
+    return get(`${API_BASE}/keywords/${qs}`, opts);
   },
-  getKeywordStats: () => fetch(`${API_BASE}/keywords/stats`).then(json),
-  searchKeywords: (q) => fetch(`${API_BASE}/keywords/search?q=${q}`).then(json),
-  getPopularKeywords: () => fetch(`${API_BASE}/keywords/popular`).then(json),
-  createKeyword: (data) => postJson(`${API_BASE}/keywords/`, data),
-  updateKeyword: (id, data) => putJson(`${API_BASE}/keywords/${id}`, data),
-  deleteKeyword: (id) => del(`${API_BASE}/keywords/${id}`),
-  bulkDeleteKeywords: (ids) => postJson(`${API_BASE}/keywords/bulk-delete`, ids ? { ids } : {}),
-  // Analytics
-  getQualityReport: () => fetch(`${API_BASE}/analytics/quality-report`).then(json),
-  getSummary: () => fetch(`${API_BASE}/analytics/summary`).then(json),
-  getPriceTrends: (productIds, days = 30) => {
+  getKeywordStats: (opts) => get(`${API_BASE}/keywords/stats`, opts),
+  searchKeywords: (q, opts) =>
+    get(`${API_BASE}/keywords/search?q=${q}`, opts),
+  getPopularKeywords: (opts) => get(`${API_BASE}/keywords/popular`, opts),
+  createKeyword: (data, opts) => postJson(`${API_BASE}/keywords/`, data, opts),
+  updateKeyword: (id, data, opts) => putJson(`${API_BASE}/keywords/${id}`, data, opts),
+  deleteKeyword: (id, opts) => del(`${API_BASE}/keywords/${id}`, opts),
+  bulkDeleteKeywords: (ids, opts) =>
+    postJson(`${API_BASE}/keywords/bulk-delete`, ids ? { ids } : {}, opts),
+  // Analytics — use LONG_TIMEOUT
+  getQualityReport: (opts) =>
+    get(`${API_BASE}/analytics/quality-report`, { ...opts, timeout: LONG_TIMEOUT }),
+  getSummary: (opts) =>
+    get(`${API_BASE}/analytics/summary`, { ...opts, timeout: LONG_TIMEOUT }),
+  getPriceTrends: (productIds, days = 30, opts) => {
     const params = new URLSearchParams();
     productIds.forEach(id => params.append('product_ids', id));
     params.set('days', days);
-    return fetch(`${API_BASE}/analytics/price-trends?${params}`).then(json);
+    return get(`${API_BASE}/analytics/price-trends?${params}`, { ...opts, timeout: LONG_TIMEOUT });
   },
-  getSourceStatsDetail: () => fetch(`${API_BASE}/analytics/source-stats`).then(json),
-  searchProducts: (q) => fetch(`${API_BASE}/analytics/products/search?q=${encodeURIComponent(q)}`).then(json),
-  getSourceDistribution: () => fetch(`${API_BASE}/analytics/source-distribution`).then(json),
-  getCategoryDistribution: () => fetch(`${API_BASE}/analytics/category-distribution`).then(json),
-  getDailyTrend: (days = 30) => fetch(`${API_BASE}/analytics/daily-trend?days=${days}`).then(json),
-  getDataQualitySummary: () => fetch(`${API_BASE}/analytics/data-quality-summary`).then(json),
-  outlierAction: (id, action, newPrice) => postJson(`${API_BASE}/analytics/outliers/${id}/action`, { action, new_price: newPrice }),
-  getSourceTypes: () => fetch(`${API_BASE}/analytics/source-types`).then(json),
+  getSourceStatsDetail: (opts) =>
+    get(`${API_BASE}/analytics/source-stats`, { ...opts, timeout: LONG_TIMEOUT }),
+  searchProducts: (q, opts) =>
+    get(`${API_BASE}/analytics/products/search?q=${encodeURIComponent(q)}`, opts),
+  getSourceDistribution: (opts) =>
+    get(`${API_BASE}/analytics/source-distribution`, { ...opts, timeout: LONG_TIMEOUT }),
+  getCategoryDistribution: (opts) =>
+    get(`${API_BASE}/analytics/category-distribution`, { ...opts, timeout: LONG_TIMEOUT }),
+  getDailyTrend: (days = 30, opts) =>
+    get(`${API_BASE}/analytics/daily-trend?days=${days}`, { ...opts, timeout: LONG_TIMEOUT }),
+  getDataQualitySummary: (opts) =>
+    get(`${API_BASE}/analytics/data-quality-summary`, { ...opts, timeout: LONG_TIMEOUT }),
+  outlierAction: (id, action, newPrice, opts) =>
+    postJson(`${API_BASE}/analytics/outliers/${id}/action`, { action, new_price: newPrice }, opts),
+  getSourceTypes: (opts) =>
+    get(`${API_BASE}/analytics/source-types`, opts),
   // Dashboard
-  getDashboardStats: () => fetch(`${API_BASE}/dashboard/stats`).then(json),
+  getDashboardStats: (opts) => get(`${API_BASE}/dashboard/stats`, opts),
   // Prices
-  getPriceStats: () => fetch(`${API_BASE}/prices/stats`).then(json),
-  getProductPrices: (id, days = 90) => fetch(`${API_BASE}/prices/product/${id}?days=${days}`).then(json),
-  getTierConfig: () => fetch(`${API_BASE}/prices/tier-config`).then(json),
-  saveTierConfig: (tiers) => postJson(`${API_BASE}/prices/tier-config`, { tiers }),
-  getGlobalOutliers: (limit = 20) => fetch(`${API_BASE}/prices/outliers?limit=${limit}`).then(json),
-  getPriceHistory: (params = {}) => {
+  getPriceStats: (opts) => get(`${API_BASE}/prices/stats`, opts),
+  getProductPrices: (id, days = 90, opts) =>
+    get(`${API_BASE}/prices/product/${id}?days=${days}`, opts),
+  getTierConfig: (opts) => get(`${API_BASE}/prices/tier-config`, opts),
+  saveTierConfig: (tiers, opts) => postJson(`${API_BASE}/prices/tier-config`, { tiers }, opts),
+  getGlobalOutliers: (limit = 20, opts) =>
+    get(`${API_BASE}/prices/outliers?limit=${limit}`, opts),
+  getPriceHistory: (params = {}, opts) => {
     const qs = new URLSearchParams(params).toString();
-    return fetch(`${API_BASE}/prices/history?${qs}`).then(json);
+    return get(`${API_BASE}/prices/history?${qs}`, opts);
   },
-  whitelistOutlier: (id) => postJson(`${API_BASE}/prices/outliers/${id}/whitelist`, {}),
-  getTierPreview: (params = {}) => {
+  whitelistOutlier: (id, opts) =>
+    postJson(`${API_BASE}/prices/outliers/${id}/whitelist`, {}, opts),
+  getTierPreview: (params = {}, opts) => {
     const qs = new URLSearchParams(params).toString();
-    return fetch(`${API_BASE}/prices/tier-preview?${qs}`).then(json);
+    return get(`${API_BASE}/prices/tier-preview?${qs}`, { ...opts, timeout: LONG_TIMEOUT });
   },
-  getOutlierDistribution: (productId, days = 90) =>
-    fetch(`${API_BASE}/prices/outliers/${productId}/distribution?days=${days}`).then(json),
+  getOutlierDistribution: (productId, days = 90, opts) =>
+    get(`${API_BASE}/prices/outliers/${productId}/distribution?days=${days}`, opts),
   // Ingestions (pending queue) — ingestion router는 "" 패턴이라 trailing slash 불필요
-  getIngestions: (params) => fetch(`${API_BASE}/ingestions?${new URLSearchParams(params)}`).then(json),
-  getIngestion: (id) => fetch(`${API_BASE}/ingestions/${id}`).then(json),
-  reviewIngestion: (id, data) => postJson(`${API_BASE}/ingestions/${id}/db-review`, data),
-  bulkApproveIngestions: (ids, reviewer, notes) => postJson(`${API_BASE}/ingestions/bulk-approve`, { ids, reviewer, notes }),
-  getIngestionStats: () => fetch(`${API_BASE}/ingestions/stats`).then(json),
+  getIngestions: (params, opts) =>
+    get(`${API_BASE}/ingestions?${new URLSearchParams(params)}`, opts),
+  getIngestion: (id, opts) => get(`${API_BASE}/ingestions/${id}`, opts),
+  reviewIngestion: (id, data, opts) =>
+    postJson(`${API_BASE}/ingestions/${id}/db-review`, data, opts),
+  bulkApproveIngestions: (ids, reviewer, notes, opts) =>
+    postJson(`${API_BASE}/ingestions/bulk-approve`, { ids, reviewer, notes }, { ...opts, timeout: LONG_TIMEOUT }),
+  getIngestionStats: (opts) => get(`${API_BASE}/ingestions/stats`, opts),
   // Admin
-  getDataSummary: () => fetch(`${API_BASE}/admin/data-summary`).then(json),
-  resetSource: (source, confirm) => postJson(`${API_BASE}/admin/reset-source`, { source, confirm }),
-  resetProducts: (confirm) => postJson(`${API_BASE}/admin/reset-products`, { confirm }),
-  resetAll: (confirm) => postJson(`${API_BASE}/admin/reset-all`, { confirm }),
+  getDataSummary: (opts) => get(`${API_BASE}/admin/data-summary`, opts),
+  resetSource: (source, confirm, opts) =>
+    postJson(`${API_BASE}/admin/reset-source`, { source, confirm }, { ...opts, timeout: LONG_TIMEOUT }),
+  resetProducts: (confirm, opts) =>
+    postJson(`${API_BASE}/admin/reset-products`, { confirm }, { ...opts, timeout: LONG_TIMEOUT }),
+  resetAll: (confirm, opts) =>
+    postJson(`${API_BASE}/admin/reset-all`, { confirm }, { ...opts, timeout: LONG_TIMEOUT }),
 };

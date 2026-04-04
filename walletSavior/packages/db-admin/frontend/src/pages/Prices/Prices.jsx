@@ -6,6 +6,8 @@ import {
 } from 'recharts';
 import useDbAdminStore from '../../stores/dbAdminStore';
 import { api } from '../../api/client';
+import { useAbortController } from '../../hooks/useAbortController';
+import LastUpdated from '../../components/LastUpdated';
 import s from './Prices.module.css';
 
 const TOOLTIP_STYLE = {
@@ -18,10 +20,10 @@ const TOOLTIP_STYLE = {
 export default function Prices() {
   const {
     products, priceOutliers, priceTiers, priceStats,
-    priceHistoryPage, tierSaving,
+    priceHistoryPage, tierSaving, loadingPrices,
     updatePriceTier, fetchTierConfig, saveTierConfig,
     fetchOutliers, fetchPriceHistory, fetchPriceStats, fetchProducts,
-    whitelistOutlier,
+    whitelistOutlier, lastFetchedAt,
   } = useDbAdminStore();
 
   const [tab, setTab] = useState('tiers');
@@ -30,6 +32,7 @@ export default function Prices() {
   const [historyPage, setHistoryPage] = useState(1);
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
+  const getSignal = useAbortController([tab, historyPage, selectedProduct, priceSearch, dateFrom, dateTo]);
 
   // 토스트
   const [toast, setToast] = useState(null);
@@ -57,14 +60,16 @@ export default function Prices() {
   }, [priceTiers]);
 
   useEffect(() => {
-    fetchProducts();
-    fetchTierConfig();
-  }, [fetchProducts, fetchTierConfig]);
+    const signal = getSignal();
+    fetchProducts({}, { signal });
+    fetchTierConfig({ signal });
+  }, [fetchProducts, fetchTierConfig, getSignal]);
 
   useEffect(() => {
-    if (tab === 'outliers') fetchOutliers();
-    if (tab === 'stats') fetchPriceStats();
-  }, [tab, fetchOutliers, fetchPriceStats]);
+    const signal = getSignal();
+    if (tab === 'outliers') fetchOutliers(20, { signal });
+    if (tab === 'stats') fetchPriceStats({ signal });
+  }, [tab, fetchOutliers, fetchPriceStats, getSignal]);
 
   useEffect(() => {
     if (tab === 'data') {
@@ -73,9 +78,10 @@ export default function Prices() {
       if (priceSearch) params.source = priceSearch;
       if (dateFrom) params.date_from = dateFrom;
       if (dateTo) params.date_to = dateTo;
-      fetchPriceHistory(params);
+      const signal = getSignal();
+      fetchPriceHistory(params, { signal });
     }
-  }, [tab, historyPage, selectedProduct, priceSearch, dateFrom, dateTo, fetchPriceHistory]);
+  }, [tab, historyPage, selectedProduct, priceSearch, dateFrom, dateTo, fetchPriceHistory, getSignal]);
 
   /* 통계 — API 데이터 직접 사용 */
   const stats = useMemo(() => {
@@ -160,6 +166,11 @@ export default function Prices() {
   return (
     <div className={s.page}>
       <h2 className={s.title}>가격 관리</h2>
+      <LastUpdated
+        timestamp={lastFetchedAt.prices}
+        onRefresh={() => { fetchTierConfig(); fetchOutliers(); fetchPriceStats(); }}
+        isLoading={loadingPrices}
+      />
 
       {/* 토스트 */}
       {toast && (

@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { Plus, Package, AlertTriangle, Database } from 'lucide-react';
 import useDbAdminStore from '../../stores/dbAdminStore';
 import { api } from '../../api/client';
+import { useAbortController } from '../../hooks/useAbortController';
+import LastUpdated from '../../components/LastUpdated';
 import ProductStats from './ProductStats';
 import ProductFilters from './ProductFilters';
 import ProductTable from './ProductTable';
@@ -13,12 +15,14 @@ export default function Products() {
   const {
     products, addProduct, updateProduct, deleteProduct,
     bulkDeleteProducts, bulkUpdateCategory,
-    fetchProducts, loading, error,
+    fetchProducts, loadingProducts, error,
     productStats, fetchProductStats,
     productPagination,
     categories, fetchCategories, addCategory,
     keywords, fetchKeywords, addKeyword,
+    lastFetchedAt,
   } = useDbAdminStore();
+  const loading = loadingProducts;
 
   const [search, setSearch] = useState('');
   const [sourceFilter, setSourceFilter] = useState('all');
@@ -35,6 +39,7 @@ export default function Products() {
   const [bulkCatModal, setBulkCatModal] = useState(false);
   const [bulkCatId, setBulkCatId] = useState('');
   const [adminResetOpen, setAdminResetOpen] = useState(false);
+  const getSignal = useAbortController([sourceFilter, catFilter, sortBy, sortDir, page]);
 
   /* ─── 데이터 페칭 ─── */
   const doFetch = useCallback((overrides = {}) => {
@@ -47,8 +52,9 @@ export default function Products() {
     params.sort_dir = overrides.sort_dir ?? sortDir;
     params.page = overrides.page ?? page;
     params.per_page = 20;
-    fetchProducts(params);
-  }, [sourceFilter, catFilter, search, sortBy, sortDir, page, fetchProducts]);
+    const signal = getSignal();
+    fetchProducts(params, { signal });
+  }, [sourceFilter, catFilter, search, sortBy, sortDir, page, fetchProducts, getSignal]);
 
   useEffect(() => {
     doFetch(); fetchProductStats(); fetchCategories(); fetchKeywords();
@@ -140,7 +146,14 @@ export default function Products() {
   return (
     <div className={s.page}>
       <div className={s.header}>
-        <h2 className={s.title}>상품 관리</h2>
+        <div>
+          <h2 className={s.title}>상품 관리</h2>
+          <LastUpdated
+            timestamp={lastFetchedAt.products}
+            onRefresh={() => { doFetch(); fetchProductStats(); }}
+            isLoading={loading}
+          />
+        </div>
         <div style={{ display: 'flex', gap: 8 }}>
           <button className={s.adminResetBtn} onClick={() => setAdminResetOpen(true)}>
             <Database size={16} /> DB 초기화

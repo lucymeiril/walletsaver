@@ -5,6 +5,9 @@ import {
   Sparkles, FolderTree,
 } from 'lucide-react';
 import useDbAdminStore from '../../stores/dbAdminStore';
+import { useAbortController } from '../../hooks/useAbortController';
+import LastUpdated from '../../components/LastUpdated';
+import EmptyState from '../../components/EmptyState';
 import s from './ClassificationPage.module.css';
 
 /* ── 트리 유틸 ── */
@@ -126,8 +129,9 @@ export default function ClassificationPage() {
     categories, addCategory, updateCategory, deleteCategory, moveCategory, fetchCategories,
     keywords, addKeyword, updateKeyword, deleteKeyword,
     fetchKeywords, fetchKeywordStats, keywordStats,
-    loading,
+    loadingCategories, loadingKeywords, lastFetchedAt,
   } = useDbAdminStore();
+  const loading = loadingCategories || loadingKeywords;
 
   // 카테고리 트리 상태
   const [expanded, setExpanded] = useState(new Set());
@@ -149,19 +153,22 @@ export default function ClassificationPage() {
   // 토스트
   const [toast, setToast] = useState(null);
   const debounceRef = useRef(null);
+  const getSignal = useAbortController([selectedCatId]);
 
   // 데이터 로드
   useEffect(() => {
-    fetchCategories();
-    fetchKeywordStats();
-  }, [fetchCategories, fetchKeywordStats]);
+    const signal = getSignal();
+    fetchCategories({ signal });
+    fetchKeywordStats({ signal });
+  }, [fetchCategories, fetchKeywordStats, getSignal]);
 
   // 카테고리 선택 시 키워드 로드
   useEffect(() => {
     if (selectedCatId) {
-      fetchKeywords({ category_id: selectedCatId, per_page: 100, sort_by: 'search_count', sort_dir: 'desc' });
+      const signal = getSignal();
+      fetchKeywords({ category_id: selectedCatId, per_page: 100, sort_by: 'search_count', sort_dir: 'desc' }, { signal });
     }
-  }, [selectedCatId, fetchKeywords]);
+  }, [selectedCatId, fetchKeywords, getSignal]);
 
   // 트리 필터
   const filteredCategories = useMemo(
@@ -398,16 +405,33 @@ export default function ClassificationPage() {
       {toast && <div className={`${s.toast} ${s[toast.type]}`}>{toast.msg}</div>}
 
       <div className={s.header}>
-        <h2 className={s.title}>
-          <FolderTree size={22} />
-          분류 관리
-        </h2>
+        <div>
+          <h2 className={s.title}>
+            <FolderTree size={22} />
+            분류 관리
+          </h2>
+          <LastUpdated
+            timestamp={lastFetchedAt.categories}
+            onRefresh={() => { fetchCategories(); fetchKeywordStats(); }}
+            isLoading={loading}
+          />
+        </div>
         <div className={s.headerActions}>
           <button className={s.addBtn} onClick={() => openAddCat(null)}>
             <Plus size={16} /> 최상위 카테고리 추가
           </button>
         </div>
       </div>
+
+      {!loading && categories.length === 0 && (
+        <EmptyState
+          icon={FolderTree}
+          title="카테고리 없음"
+          description="카테고리를 추가하여 상품을 분류하세요."
+          action={() => openAddCat(null)}
+          actionLabel="+ 카테고리 추가"
+        />
+      )}
 
       {/* 빈 카테고리 안내 */}
       {emptyCount > 0 && (

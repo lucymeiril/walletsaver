@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
-import { Download, AlertTriangle, Database, TrendingUp, Search, X, CheckCircle, Trash2, Pencil, Archive } from 'lucide-react';
+import { Download, AlertTriangle, Database, TrendingUp, Search, X, CheckCircle, Trash2, Pencil, Archive, BarChart3 } from 'lucide-react';
 import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip,
   ResponsiveContainer, CartesianGrid, Legend, ReferenceLine,
@@ -7,6 +7,9 @@ import {
 } from 'recharts';
 import useDbAdminStore from '../../stores/dbAdminStore';
 import { api } from '../../api/client';
+import { useAbortController } from '../../hooks/useAbortController';
+import LastUpdated from '../../components/LastUpdated';
+import EmptyState from '../../components/EmptyState';
 import s from './Analytics.module.css';
 
 const CHART_COLORS = ['#38bdf8', '#f472b6', '#a3e635', '#fb923c', '#c084fc'];
@@ -18,6 +21,7 @@ export default function Analytics() {
     products, qualityReport, categoryAvgPrices, sourceStats,
     fetchAnalytics, fetchProducts,
     priceOutliers, fetchOutliers,
+    loadingAnalytics, lastFetchedAt,
   } = useDbAdminStore();
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -34,27 +38,29 @@ export default function Analytics() {
   const [editPrice, setEditPrice] = useState('');
   const [outlierLoading, setOutlierLoading] = useState(false);
   const searchRef = useRef(null);
+  const getSignal = useAbortController([]);
 
   useEffect(() => {
-    fetchAnalytics();
-    fetchProducts();
-    fetchOutliers(50);
-    api.getSourceStatsDetail()
+    const signal = getSignal();
+    fetchAnalytics({ signal });
+    fetchProducts({}, { signal });
+    fetchOutliers(50, { signal });
+    api.getSourceStatsDetail({ signal })
       .then(data => { if (Array.isArray(data)) setSourceStatsDetail(data); })
       .catch(() => {});
-    api.getSourceDistribution()
+    api.getSourceDistribution({ signal })
       .then(data => { if (Array.isArray(data)) setSourceDistribution(data); })
       .catch(() => {});
-    api.getCategoryDistribution()
+    api.getCategoryDistribution({ signal })
       .then(data => { if (Array.isArray(data)) setCategoryDistribution(data); })
       .catch(() => {});
-    api.getDailyTrend(30)
+    api.getDailyTrend(30, { signal })
       .then(data => { if (Array.isArray(data)) setDailyTrend(data); })
       .catch(() => {});
-    api.getDataQualitySummary()
+    api.getDataQualitySummary({ signal })
       .then(data => { if (data) setQualitySummary(data); })
       .catch(() => {});
-  }, [fetchAnalytics, fetchProducts, fetchOutliers]);
+  }, [fetchAnalytics, fetchProducts, fetchOutliers, getSignal]);
 
   // 첫 상품 자동 선택
   useEffect(() => {
@@ -201,7 +207,22 @@ export default function Analytics() {
 
   return (
     <div className={s.page}>
-      <h2 className={s.title}>분석</h2>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+        <h2 className={s.title} style={{ margin: 0 }}>분석</h2>
+        <LastUpdated
+          timestamp={lastFetchedAt.analytics}
+          onRefresh={() => { fetchAnalytics(); fetchProducts(); fetchOutliers(50); }}
+          isLoading={loadingAnalytics}
+        />
+      </div>
+
+      {!loadingAnalytics && !qualitySummary && products.length === 0 && (
+        <EmptyState
+          icon={BarChart3}
+          title="분석 데이터 없음"
+          description="충분한 가격 데이터가 쌓이면 분석 결과가 표시됩니다."
+        />
+      )}
 
       {/* ── 데이터 품질 요약 ── */}
       {qualitySummary && (

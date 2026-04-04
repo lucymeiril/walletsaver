@@ -1,27 +1,47 @@
 import { useEffect, useCallback } from 'react';
-import { Package, DollarSign, FolderTree, Search, Clock, Activity, Inbox, RefreshCw, AlertTriangle, Zap } from 'lucide-react';
+import { Package, DollarSign, FolderTree, Search, Clock, Activity, Inbox, RefreshCw, AlertTriangle, Zap, LayoutDashboard } from 'lucide-react';
 import useDbAdminStore from '../../stores/dbAdminStore';
 import { useNavigate } from 'react-router-dom';
+import { useAbortController } from '../../hooks/useAbortController';
+import LastUpdated from '../../components/LastUpdated';
+import EmptyState from '../../components/EmptyState';
 import s from './Dashboard.module.css';
 
+const AUTO_REFRESH_MS = 60_000;
+
 export default function Dashboard() {
-  const { dashboardStats, loading, ingestionStats, fetchDashboard, fetchIngestionStats } = useDbAdminStore();
+  const {
+    dashboardStats, loadingDashboard, ingestionStats,
+    fetchDashboard, fetchIngestionStats, lastFetchedAt,
+  } = useDbAdminStore();
+  const loading = loadingDashboard;
   const {
     totalProducts, totalPriceRecords, totalCategories, totalKeywords,
     lastUpdated, qualityScore, qualityDetails, recentIngestions,
     alerts, freshness, changes,
   } = dashboardStats;
   const navigate = useNavigate();
+  const getSignal = useAbortController([]);
 
   useEffect(() => {
-    fetchDashboard();
-    fetchIngestionStats();
-  }, [fetchDashboard, fetchIngestionStats]);
+    const signal = getSignal();
+    fetchDashboard({ signal });
+    fetchIngestionStats({ signal });
+
+    const interval = setInterval(() => {
+      const sig = getSignal();
+      fetchDashboard({ signal: sig });
+      fetchIngestionStats({ signal: sig });
+    }, AUTO_REFRESH_MS);
+
+    return () => clearInterval(interval);
+  }, [fetchDashboard, fetchIngestionStats, getSignal]);
 
   const handleRefresh = useCallback(() => {
-    fetchDashboard();
-    fetchIngestionStats();
-  }, [fetchDashboard, fetchIngestionStats]);
+    const signal = getSignal();
+    fetchDashboard({ signal });
+    fetchIngestionStats({ signal });
+  }, [fetchDashboard, fetchIngestionStats, getSignal]);
 
   const timeSince = getTimeSince(lastUpdated);
   const overallFreshness = timeSince.hours < 1 ? 'fresh' : timeSince.hours < 6 ? 'normal' : 'stale';
@@ -32,11 +52,28 @@ export default function Dashboard() {
     <div className={s.page}>
       <div className={s.titleRow}>
         <h2 className={s.title}>대시보드</h2>
-        <button className={s.refreshBtn} onClick={handleRefresh} disabled={loading} title="새로고침">
-          <RefreshCw size={16} className={loading ? s.spin : ''} />
-          새로고침
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <LastUpdated
+            timestamp={lastFetchedAt.dashboard}
+            onRefresh={handleRefresh}
+            isLoading={loading}
+          />
+          <button className={s.refreshBtn} onClick={handleRefresh} disabled={loading} title="새로고침">
+            <RefreshCw size={16} className={loading ? s.spin : ''} />
+            새로고침
+          </button>
+        </div>
       </div>
+
+      {!loading && totalProducts === 0 && totalPriceRecords === 0 && (
+        <EmptyState
+          icon={LayoutDashboard}
+          title="데이터 없음"
+          description="아직 등록된 데이터가 없습니다. 수신함에서 데이터를 승인해 주세요."
+          action={() => navigate('/inbox')}
+          actionLabel="수신함으로 이동"
+        />
+      )}
 
       {/* 긴급 알림 배너 */}
       {hasAlerts && (

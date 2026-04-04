@@ -2,9 +2,27 @@ import { create } from 'zustand';
 import { api } from '../api/client';
 
 const useDbAdminStore = create((set, get) => ({
-  // Loading / Error
+  // Loading / Error — per-domain flags
   loading: false,
   error: null,
+  loadingProducts: false,
+  loadingCategories: false,
+  loadingKeywords: false,
+  loadingPrices: false,
+  loadingAnalytics: false,
+  loadingDashboard: false,
+  loadingIngestions: false,
+
+  // Stale data timestamps
+  lastFetchedAt: {
+    products: null,
+    categories: null,
+    keywords: null,
+    prices: null,
+    analytics: null,
+    dashboard: null,
+    ingestions: null,
+  },
 
   /* ── 상품 ── */
   products: [],
@@ -58,10 +76,10 @@ const useDbAdminStore = create((set, get) => ({
     }
   },
 
-  fetchProducts: async (params = {}) => {
-    set({ loading: true, error: null });
+  fetchProducts: async (params = {}, { signal } = {}) => {
+    set({ loadingProducts: true, error: null });
     try {
-      const data = await api.getProducts(params);
+      const data = await api.getProducts(params, { signal });
       const items = data.items ?? (Array.isArray(data) ? data : []);
       const mapped = items.map((p) => ({
         ...p,
@@ -84,19 +102,22 @@ const useDbAdminStore = create((set, get) => ({
           per_page: data.per_page ?? 20,
           total_pages: data.total_pages ?? 1,
         },
+        lastFetchedAt: { ...get().lastFetchedAt, products: Date.now() },
       });
-    } catch {
+    } catch (err) {
+      if (err.name === 'AbortError') return;
       set({ products: [], error: '⚠️ 데이터를 불러올 수 없습니다' });
     } finally {
-      set({ loading: false });
+      set({ loadingProducts: false });
     }
   },
 
-  fetchProductStats: async () => {
+  fetchProductStats: async ({ signal } = {}) => {
     try {
-      const data = await api.getProductStats();
+      const data = await api.getProductStats({ signal });
       set({ productStats: data });
-    } catch {
+    } catch (err) {
+      if (err.name === 'AbortError') return;
       // stats are optional, don't show error
     }
   },
@@ -137,16 +158,20 @@ const useDbAdminStore = create((set, get) => ({
     }
   },
 
-  fetchCategories: async () => {
-    set({ loading: true, error: null });
+  fetchCategories: async ({ signal } = {}) => {
+    set({ loadingCategories: true, error: null });
     try {
-      const data = await api.getCategories();
+      const data = await api.getCategories({ signal });
       const list = Array.isArray(data) ? data : data.categories ?? data.data ?? [];
-      set({ categories: list });
+      set({
+        categories: list,
+        lastFetchedAt: { ...get().lastFetchedAt, categories: Date.now() },
+      });
     } catch (err) {
+      if (err.name === 'AbortError') return;
       set({ error: `카테고리 로드 실패: ${err.message}` });
     } finally {
-      set({ loading: false });
+      set({ loadingCategories: false });
     }
   },
 
@@ -211,10 +236,10 @@ const useDbAdminStore = create((set, get) => ({
     }
   },
 
-  fetchKeywords: async (params = {}) => {
-    set({ loading: true, error: null });
+  fetchKeywords: async (params = {}, { signal } = {}) => {
+    set({ loadingKeywords: true, error: null });
     try {
-      const data = await api.getKeywords(params);
+      const data = await api.getKeywords(params, { signal });
       const list = data.items ?? (Array.isArray(data) ? data : data.keywords ?? data.data ?? []);
       const mapped = list.map((kw) => ({
         ...kw,
@@ -232,19 +257,22 @@ const useDbAdminStore = create((set, get) => ({
           per_page: data.per_page ?? 20,
           total_pages: data.total_pages ?? 1,
         },
+        lastFetchedAt: { ...get().lastFetchedAt, keywords: Date.now() },
       });
     } catch (err) {
+      if (err.name === 'AbortError') return;
       set({ error: `키워드 로드 실패: ${err.message}` });
     } finally {
-      set({ loading: false });
+      set({ loadingKeywords: false });
     }
   },
 
-  fetchKeywordStats: async () => {
+  fetchKeywordStats: async ({ signal } = {}) => {
     try {
-      const data = await api.getKeywordStats();
+      const data = await api.getKeywordStats({ signal });
       set({ keywordStats: data });
-    } catch {
+    } catch (err) {
+      if (err.name === 'AbortError') return;
       // stats are optional
     }
   },
@@ -268,9 +296,9 @@ const useDbAdminStore = create((set, get) => ({
       priceTiers: { ...s.priceTiers, [tier]: { ...s.priceTiers[tier], threshold } },
     })),
 
-  fetchTierConfig: async () => {
+  fetchTierConfig: async ({ signal } = {}) => {
     try {
-      const data = await api.getTierConfig();
+      const data = await api.getTierConfig({ signal });
       if (data && typeof data === 'object') {
         const tiers = {};
         for (const [k, v] of Object.entries(data)) {
@@ -278,7 +306,8 @@ const useDbAdminStore = create((set, get) => ({
         }
         set({ priceTiers: tiers });
       }
-    } catch {
+    } catch (err) {
+      if (err.name === 'AbortError') return;
       // 기본값 유지
     }
   },
@@ -311,29 +340,37 @@ const useDbAdminStore = create((set, get) => ({
     }
   },
 
-  fetchOutliers: async (limit = 20) => {
+  fetchOutliers: async (limit = 20, { signal } = {}) => {
+    set({ loadingPrices: true });
     try {
-      const data = await api.getGlobalOutliers(limit);
+      const data = await api.getGlobalOutliers(limit, { signal });
       const list = Array.isArray(data) ? data : [];
-      set({ priceOutliers: list });
-    } catch {
+      set({
+        priceOutliers: list,
+        lastFetchedAt: { ...get().lastFetchedAt, prices: Date.now() },
+      });
+    } catch (err) {
+      if (err.name === 'AbortError') return;
       set({ priceOutliers: [] });
+    } finally {
+      set({ loadingPrices: false });
     }
   },
 
-  fetchPriceHistory: async (params = {}) => {
+  fetchPriceHistory: async (params = {}, { signal } = {}) => {
     try {
-      const data = await api.getPriceHistory(params);
+      const data = await api.getPriceHistory(params, { signal });
       set({ priceHistoryPage: data || { items: [], total: 0, page: 1, per_page: 50, total_pages: 0 } });
-    } catch {
+    } catch (err) {
+      if (err.name === 'AbortError') return;
       set({ priceHistoryPage: { items: [], total: 0, page: 1, per_page: 50, total_pages: 0 } });
     }
   },
 
-  fetchProductPriceHistory: async (productId, days = 90) => {
+  fetchProductPriceHistory: async (productId, days = 90, { signal } = {}) => {
     if (!productId) return;
     try {
-      const data = await api.getPriceHistory({ product_id: productId, days, per_page: 200 });
+      const data = await api.getPriceHistory({ product_id: productId, days, per_page: 200 }, { signal });
       const items = data?.items || [];
       set((s) => ({
         priceHistories: {
@@ -341,16 +378,18 @@ const useDbAdminStore = create((set, get) => ({
           [productId]: items.map((i) => ({ date: i.date, price: i.price, source: i.source })),
         },
       }));
-    } catch {
+    } catch (err) {
+      if (err.name === 'AbortError') return;
       // 이력 없음
     }
   },
 
-  fetchPriceStats: async () => {
+  fetchPriceStats: async ({ signal } = {}) => {
     try {
-      const data = await api.getPriceStats();
+      const data = await api.getPriceStats({ signal });
       set({ priceStats: data });
-    } catch {
+    } catch (err) {
+      if (err.name === 'AbortError') return;
       set({ priceStats: null });
     }
   },
@@ -360,12 +399,12 @@ const useDbAdminStore = create((set, get) => ({
   qualityReport: { outliers: 0, duplicates: 0, missingFields: 0, totalRecords: 0, completeness: 0, accuracy: 0, fieldCompleteness: 0, priceCoverage: 0, categoryRate: 0 },
   sourceStats: [],
 
-  fetchAnalytics: async () => {
-    set({ loading: true, error: null });
+  fetchAnalytics: async ({ signal } = {}) => {
+    set({ loadingAnalytics: true, error: null });
     try {
       const [qualityData, summaryData] = await Promise.allSettled([
-        api.getQualityReport(),
-        api.getSummary(),
+        api.getQualityReport({ signal }),
+        api.getSummary({ signal }),
       ]);
       if (qualityData.status === 'fulfilled' && qualityData.value) {
         const qr = qualityData.value;
@@ -392,10 +431,12 @@ const useDbAdminStore = create((set, get) => ({
         if (s.categoryAvgPrices) set({ categoryAvgPrices: s.categoryAvgPrices });
         if (s.sourceStats) set({ sourceStats: s.sourceStats });
       }
+      set({ lastFetchedAt: { ...get().lastFetchedAt, analytics: Date.now() } });
     } catch (err) {
+      if (err.name === 'AbortError') return;
       set({ error: `분석 데이터 로드 실패: ${err.message}` });
     } finally {
-      set({ loading: false });
+      set({ loadingAnalytics: false });
     }
   },
 
@@ -414,10 +455,10 @@ const useDbAdminStore = create((set, get) => ({
     changes: { products: 0, priceRecords: 0, categories: 0, keywords: 0 },
   },
 
-  fetchDashboard: async () => {
-    set({ loading: true, error: null });
+  fetchDashboard: async ({ signal } = {}) => {
+    set({ loadingDashboard: true, error: null });
     try {
-      const data = await api.getDashboardStats();
+      const data = await api.getDashboardStats({ signal });
       if (data) {
         set({
           dashboardStats: {
@@ -433,12 +474,14 @@ const useDbAdminStore = create((set, get) => ({
             freshness: data.freshness ?? [],
             changes: data.changes ?? { products: 0, priceRecords: 0, categories: 0, keywords: 0 },
           },
+          lastFetchedAt: { ...get().lastFetchedAt, dashboard: Date.now() },
         });
       }
     } catch (err) {
+      if (err.name === 'AbortError') return;
       set({ error: `대시보드 로드 실패: ${err.message}` });
     } finally {
-      set({ loading: false });
+      set({ loadingDashboard: false });
     }
   },
 
@@ -449,10 +492,10 @@ const useDbAdminStore = create((set, get) => ({
   ingestionStats: { pending: 0, approved: 0, rejected: 0 },
   ingestionPagination: { total: 0, page: 1, per_page: 20, total_pages: 1 },
 
-  fetchIngestions: async (params = {}) => {
-    set({ loading: true, error: null });
+  fetchIngestions: async (params = {}, { signal } = {}) => {
+    set({ loadingIngestions: true, error: null });
     try {
-      const data = await api.getIngestions(params);
+      const data = await api.getIngestions(params, { signal });
       const list = Array.isArray(data) ? data : data.items ?? data.ingestions ?? data.data ?? [];
       set({
         ingestions: list,
@@ -462,31 +505,34 @@ const useDbAdminStore = create((set, get) => ({
           per_page: data.per_page ?? 20,
           total_pages: data.total_pages ?? 1,
         },
+        lastFetchedAt: { ...get().lastFetchedAt, ingestions: Date.now() },
       });
-    } catch {
+    } catch (err) {
+      if (err.name === 'AbortError') return;
       set({ ingestions: [], ingestionPagination: { total: 0, page: 1, per_page: 20, total_pages: 1 } });
     } finally {
-      set({ loading: false });
+      set({ loadingIngestions: false });
     }
   },
 
-  fetchIngestion: async (id) => {
-    set({ loading: true, error: null });
+  fetchIngestion: async (id, { signal } = {}) => {
+    set({ loadingIngestions: true, error: null });
     try {
-      const data = await api.getIngestion(id);
+      const data = await api.getIngestion(id, { signal });
       set({ selectedIngestion: data });
       return data;
-    } catch {
+    } catch (err) {
+      if (err.name === 'AbortError') return null;
       set({ selectedIngestion: null });
       return null;
     } finally {
-      set({ loading: false });
+      set({ loadingIngestions: false });
     }
   },
 
-  fetchIngestionStats: async () => {
+  fetchIngestionStats: async ({ signal } = {}) => {
     try {
-      const data = await api.getIngestionStats();
+      const data = await api.getIngestionStats({ signal });
       if (data) {
         set({
           ingestionStats: {
@@ -496,7 +542,8 @@ const useDbAdminStore = create((set, get) => ({
           },
         });
       }
-    } catch {
+    } catch (err) {
+      if (err.name === 'AbortError') return;
       // 통계 없음
     }
   },

@@ -1,7 +1,10 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import useDbAdminStore from '../../stores/dbAdminStore';
 import { api } from '../../api/client';
-import { CheckCircle, XCircle, AlertTriangle, RefreshCw, ChevronLeft, ChevronRight, X, Info } from 'lucide-react';
+import { CheckCircle, XCircle, AlertTriangle, RefreshCw, ChevronLeft, ChevronRight, X, Info, Inbox } from 'lucide-react';
+import { useAbortController } from '../../hooks/useAbortController';
+import LastUpdated from '../../components/LastUpdated';
+import EmptyState from '../../components/EmptyState';
 import styles from './InboxPage.module.css';
 
 export default function InboxPage() {
@@ -12,8 +15,10 @@ export default function InboxPage() {
   const ingestionPagination = useDbAdminStore((s) => s.ingestionPagination);
   const reviewIngestion = useDbAdminStore((s) => s.reviewIngestion);
   const bulkApproveIngestions = useDbAdminStore((s) => s.bulkApproveIngestions);
-  const loading = useDbAdminStore((s) => s.loading);
+  const loadingIngestions = useDbAdminStore((s) => s.loadingIngestions);
+  const loading = loadingIngestions;
   const error = useDbAdminStore((s) => s.error);
+  const lastFetchedAt = useDbAdminStore((s) => s.lastFetchedAt);
 
   const [detailItem, setDetailItem] = useState(null);
   const [checkedItems, setCheckedItems] = useState(new Set());
@@ -27,16 +32,28 @@ export default function InboxPage() {
   const [qualityPopover, setQualityPopover] = useState(null);
 
   const PER_PAGE = 20;
+  const AUTO_REFRESH_MS = 30_000;
+  const getSignal = useAbortController([currentPage]);
 
   const loadPage = useCallback((page) => {
     setCurrentPage(page);
-    fetchIngestions({ status: 'crawler_approved', page, per_page: PER_PAGE });
-  }, [fetchIngestions]);
+    const signal = getSignal();
+    fetchIngestions({ status: 'crawler_approved', page, per_page: PER_PAGE }, { signal });
+  }, [fetchIngestions, getSignal]);
 
   useEffect(() => {
-    loadPage(1);
-    fetchIngestionStats();
-  }, [loadPage, fetchIngestionStats]);
+    const signal = getSignal();
+    fetchIngestions({ status: 'crawler_approved', page: 1, per_page: PER_PAGE }, { signal });
+    fetchIngestionStats({ signal });
+
+    const interval = setInterval(() => {
+      const sig = getSignal();
+      fetchIngestions({ status: 'crawler_approved', page: currentPage, per_page: PER_PAGE }, { signal: sig });
+      fetchIngestionStats({ signal: sig });
+    }, AUTO_REFRESH_MS);
+
+    return () => clearInterval(interval);
+  }, [fetchIngestions, fetchIngestionStats, getSignal, currentPage]);
 
   const openDetail = async (item) => {
     setCheckedItems(new Set());
@@ -169,7 +186,14 @@ export default function InboxPage() {
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <h2 className={styles.title}>📥 수신함 — 크롤러에서 1차 승인된 데이터</h2>
+        <div>
+          <h2 className={styles.title}>📥 수신함 — 크롤러에서 1차 승인된 데이터</h2>
+          <LastUpdated
+            timestamp={lastFetchedAt.ingestions}
+            onRefresh={() => loadPage(currentPage)}
+            isLoading={loading}
+          />
+        </div>
         <button className={styles.refreshBtn} onClick={() => loadPage(currentPage)} disabled={loading}>
           <RefreshCw size={16} className={loading ? styles.spin : ''} />
           새로고침
@@ -211,7 +235,11 @@ export default function InboxPage() {
       {loading && ingestions.length === 0 ? (
         <div className={styles.empty}>데이터를 불러오는 중...</div>
       ) : ingestions.length === 0 ? (
-        <div className={styles.empty}>현재 1차 승인 대기 중인 데이터가 없습니다.</div>
+        <EmptyState
+          icon={Inbox}
+          title="대기 중인 항목 없음"
+          description="크롤러에서 수집된 새 데이터가 없습니다."
+        />
       ) : (
         <>
           <div className={styles.list}>
