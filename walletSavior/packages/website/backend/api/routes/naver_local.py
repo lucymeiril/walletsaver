@@ -710,7 +710,7 @@ async def area_explore(
         )
     except Exception as e:
         logger.error(f"[Area Explore] 실패: {e}")
-        return ApiResponse(success=False, error=str(e))
+        return ApiResponse(success=False, error="지역 탐색 중 오류가 발생했습니다")
 
     return ApiResponse(
         success=data["total_count"] > 0,

@@ -27,7 +27,7 @@ _trending_cache = TTLCache(ttl_seconds=120, max_size=8)
 @router.get("/")
 async def list_products(
     request: Request,
-    q: str = Query("", description="검색어"),
+    q: str = Query("", description="검색어", max_length=200),
     category: str = Query(None, description="카테고리 필터"),
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
@@ -58,7 +58,7 @@ async def product_stats(request: Request):
 @router.get("/search")
 async def search_products(
     request: Request,
-    q: str = Query("", description="검색어"),
+    q: str = Query("", description="검색어", max_length=200),
     category: str = Query(None, description="카테고리 필터"),
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),

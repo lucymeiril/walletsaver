@@ -97,8 +97,8 @@ async def oauth_login(provider: str):
     try:
         url = get_oauth_login_url(provider)
         return RedirectResponse(url=url)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    except ValueError:
+        raise HTTPException(status_code=400, detail="지원하지 않는 OAuth 제공자입니다")
 
 
 @router.get("/oauth/{provider}/callback")

@@ -12,6 +12,7 @@ import math
 from fastapi import APIRouter, Request, Query
 from api.schemas.common import ApiResponse, PaginationMeta
 from api.utils.cache import TTLCache, RequestDeduplicator
+from api.middleware.rate_limit import limiter
 
 router = APIRouter()
 
@@ -23,9 +24,10 @@ _trending_cache = TTLCache(ttl_seconds=120, max_size=8)
 
 
 @router.get("")
+@limiter.limit("30/minute")
 async def search(
     request: Request,
-    q: str = Query("", description="검색어"),
+    q: str = Query("", description="검색어", max_length=200),
     type: str = Query(None, description="결과 유형 (product, hotdeal, post, mart)"),
     sort: str = Query("relevant", description="정렬 (relevant, recent, popular)"),
     page: int = Query(1, ge=1),
@@ -129,9 +131,10 @@ async def search(
 
 
 @router.get("/autocomplete")
+@limiter.limit("30/minute")
 async def autocomplete(
     request: Request,
-    q: str = Query("", description="검색어"),
+    q: str = Query("", description="검색어", max_length=200),
     limit: int = Query(10, ge=1, le=50),
 ):
     """자동완성 — 키워드·동의어·카테고리·상품 4단계 파이프라인."""
