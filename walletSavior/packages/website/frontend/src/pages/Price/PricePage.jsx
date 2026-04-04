@@ -8,7 +8,9 @@ import { searchService } from '../../services/searchService';
 import useStore from '../../stores/appStore';
 import useModalStore from '../../stores/modalStore';
 import useDebounce from '../../hooks/useDebounce';
+import useAbortController from '../../hooks/useAbortController';
 import Spinner from '../../components/common/Spinner';
+import EmptyState from '../../components/common/EmptyState';
 import s from './PricePage.module.css';
 
 function highlightMatch(text, query) {
@@ -30,32 +32,38 @@ export default function PricePage() {
   const [chartData, setChartData] = useState([]);
   const [relatedHotdeals, setRelatedHotdeals] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [chartLoading, setChartLoading] = useState(false);
   const [acKeywords, setAcKeywords] = useState([]);
   const [acProducts, setAcProducts] = useState([]);
   const [totalKeywords, setTotalKeywords] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [trendingKeywords, setTrendingKeywords] = useState([]);
   const [detailOpen, setDetailOpen] = useState(false);
+  const getSignal = useAbortController();
 
   // Fetch all products for search
   useEffect(() => {
-    fetch('/api/products/search?per_page=50').then(r => r.json())
+    const signal = getSignal();
+    fetch('/api/products/search?per_page=50', { signal }).then(r => r.json())
       .then(res => setProducts(res.data || []))
-      .catch(console.error);
-  }, []);
+      .catch(err => { if (err.name !== 'AbortError') console.error(err); });
+  }, [getSignal]);
 
   // Fetch product detail by ID
   useEffect(() => {
     if (!id) { setProductData(null); return; }
+    const controller = new AbortController();
     setLoading(true);
-    fetch(`/api/products/${id}`).then(r => r.json())
+    fetch(`/api/products/${id}`, { signal: controller.signal }).then(r => r.json())
       .then(res => setProductData(res.data))
       .catch(err => {
+        if (err.name === 'AbortError') return;
         console.error(err);
         addToast('상품 정보를 불러오는데 실패했습니다', 'error');
       })
       .finally(() => setLoading(false));
-  }, [id]);
+    return () => controller.abort();
+  }, [id, addToast]);
 
   // Navigate from search query in location state
   useEffect(() => {
@@ -68,7 +76,7 @@ export default function PricePage() {
         navigate(`/price/${match.id}`, { replace: true });
       }
     }
-  }, [location.state, products]);
+  }, [location.state, products, navigate, setSelectedProduct, addRecentSearch]);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [range, setRange] = useState(30);
@@ -121,21 +129,27 @@ export default function PricePage() {
   // Fetch price history from API
   useEffect(() => {
     if (!product) return;
-    fetch(`/api/products/${product.id}/price-history?days=${range}`)
+    const controller = new AbortController();
+    setChartLoading(true);
+    fetch(`/api/products/${product.id}/price-history?days=${range}`, { signal: controller.signal })
       .then(r => r.json())
       .then(res => setChartData(res.data || []))
-      .catch(console.error);
+      .catch(err => { if (err.name !== 'AbortError') console.error(err); })
+      .finally(() => setChartLoading(false));
+    return () => controller.abort();
   }, [product?.id, range]);
 
   // Fetch related hotdeals — 상품 카테고리에 맞는 핫딜 동적 연결
   useEffect(() => {
     if (!product) return;
+    const controller = new AbortController();
     const CAT_MAP = { '농산물': 'food', '축산물': 'food', '수산물': 'food', '가공식품': 'food', '생활용품': 'living', '전자제품': 'electronics', '패션': 'fashion' };
     const hotdealCat = CAT_MAP[product.cat] || '';
     const catParam = hotdealCat ? `category=${hotdealCat}&` : '';
-    fetch(`/api/hotdeals?${catParam}per_page=3`).then(r => r.json())
+    fetch(`/api/hotdeals?${catParam}per_page=3`, { signal: controller.signal }).then(r => r.json())
       .then(res => setRelatedHotdeals(res.data || []))
-      .catch(console.error);
+      .catch(err => { if (err.name !== 'AbortError') console.error(err); });
+    return () => controller.abort();
   }, [product?.id, product?.cat]);
 
   const handleSelectProduct = useCallback((p) => {
@@ -554,6 +568,17 @@ export default function PricePage() {
                         ))}
                       </div>
                     </div>
+                    {chartLoading ? (
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 220 }}>
+                        <Spinner />
+                        <p style={{ marginTop: 8, color: 'var(--text3)', fontSize: '.85rem' }}>차트 데이터 로딩 중...</p>
+                      </div>
+                    ) : chartData.length === 0 ? (
+                      <EmptyState
+                        title="가격 이력이 없습니다"
+                        description="아직 수집된 가격 데이터가 없습니다."
+                      />
+                    ) : (
                     <ResponsiveContainer width="100%" height={220}>
                       <AreaChart data={chartData}>
                         <defs>
@@ -571,6 +596,7 @@ export default function PricePage() {
                         <Area type="monotone" dataKey="price" stroke="#38bdf8" strokeWidth={2} fill="url(#colorPrice)" />
                       </AreaChart>
                     </ResponsiveContainer>
+                    )}
                   </div>
 
                   {/* 상세 통계 */}
@@ -656,7 +682,12 @@ export default function PricePage() {
 
           <h4>관련 핫딜</h4>
           <div className={s.relatedDeals}>
-            {relatedHotdeals.slice(0, 3).map(d => (
+            {relatedHotdeals.length === 0 ? (
+              <EmptyState
+                title="관련 핫딜이 없습니다"
+                description="현재 이 상품의 핫딜 정보가 없습니다."
+              />
+            ) : relatedHotdeals.slice(0, 3).map(d => (
               <div key={d.id} className={s.rdItem}>
                 <div className={s.rdTitle}>{d.title}</div>
                 <div className={s.rdMeta}><span>{d.source}</span><span>{d.time}</span></div>

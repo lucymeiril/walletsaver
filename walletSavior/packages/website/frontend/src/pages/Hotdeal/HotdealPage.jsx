@@ -5,9 +5,12 @@ import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'rec
 import { HOTDEAL_FILTERS } from '../../utils/constants';
 import { fmt } from '../../utils/helpers';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
+import useAbortController from '../../hooks/useAbortController';
+import useThrottledCallback from '../../hooks/useThrottledCallback';
 import Badge from '../../components/common/Badge';
 import Spinner from '../../components/common/Spinner';
 import SafeImage from '../../components/common/SafeImage';
+import EmptyState from '../../components/common/EmptyState';
 import useStore from '../../stores/appStore';
 import s from './HotdealPage.module.css';
 
@@ -38,35 +41,45 @@ export default function HotdealPage() {
   const [loading, setLoading] = useState(true);
   const [newDealCount, setNewDealCount] = useState(0);
   const lastDealIdsRef = useRef(null);
+  const [voteLoading, setVoteLoading] = useState({});
+  const getSignal = useAbortController();
 
   // 핫딜 출처 목록 API에서 조회
   useEffect(() => {
-    fetch('/api/hotdeals/sources').then(r => r.json())
+    const signal = getSignal();
+    fetch('/api/hotdeals/sources', { signal }).then(r => r.json())
       .then(res => setSources(res.data || ['전체']))
-      .catch(() => setSources(['전체']));
-  }, []);
+      .catch(err => {
+        if (err.name !== 'AbortError') setSources(['전체']);
+      });
+  }, [getSignal]);
 
   useEffect(() => {
-    fetch('/api/products/search?per_page=50').then(r => r.json())
+    const signal = getSignal();
+    fetch('/api/products/search?per_page=50', { signal }).then(r => r.json())
       .then(res => setProducts(res.data || []))
-      .catch(console.error);
-  }, []);
+      .catch(err => { if (err.name !== 'AbortError') console.error(err); });
+  }, [getSignal]);
 
   useEffect(() => {
     setLoading(true);
     setVisibleCount(PAGE_SIZE);
+    const controller = new AbortController();
     const params = new URLSearchParams({ per_page: '50' });
     if (filter !== 'all') params.set('category', filter);
     if (sort) params.set('sort', sort);
 
-    fetch(`/api/hotdeals?${params}`).then(r => r.json())
+    fetch(`/api/hotdeals?${params}`, { signal: controller.signal }).then(r => r.json())
       .then(res => setAllDeals(res.data || []))
       .catch(err => {
+        if (err.name === 'AbortError') return;
         console.error(err);
         addToast('핫딜 데이터를 불러오는데 실패했습니다', 'error');
       })
       .finally(() => setLoading(false));
-  }, [filter, sort]);
+
+    return () => controller.abort();
+  }, [filter, sort, addToast]);
 
   useEffect(() => {
     const openDealId = location.state?.openDealId;
@@ -90,15 +103,21 @@ export default function HotdealPage() {
 
   // 60초마다 새 핫딜 폴링
   useEffect(() => {
+    let currentController = null;
     const interval = setInterval(() => {
+      if (currentController) currentController.abort();
+      currentController = new AbortController();
       const params = new URLSearchParams({ per_page: '50' });
       if (filter !== 'all') params.set('category', filter);
       if (sort) params.set('sort', sort);
-      fetch(`/api/hotdeals?${params}`).then(r => r.json())
+      fetch(`/api/hotdeals?${params}`, { signal: currentController.signal }).then(r => r.json())
         .then(res => { if (res.data?.length) setAllDeals(res.data); })
         .catch(() => {});
     }, 60000);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      if (currentController) currentController.abort();
+    };
   }, [filter, sort]);
 
   const allItems = useMemo(() => {
@@ -124,6 +143,8 @@ export default function HotdealPage() {
   const sentinelRef = useInfiniteScroll(loadMore, { enabled: hasMore });
 
   const handleVote = useCallback(async (id, type) => {
+    if (voteLoading[id]) return;
+    setVoteLoading(prev => ({ ...prev, [id]: true }));
     const prev = votes[id];
     const newType = prev === type ? null : type;
     setVotes(p => ({ ...p, [id]: newType }));
@@ -142,8 +163,12 @@ export default function HotdealPage() {
     } catch {
       addToast('투표 처리에 실패했습니다', 'error');
       setVotes(p => ({ ...p, [id]: prev }));
+    } finally {
+      setVoteLoading(prev => ({ ...prev, [id]: false }));
     }
-  }, [votes, addToast]);
+  }, [votes, addToast, voteLoading]);
+
+  const throttledVote = useThrottledCallback(handleVote, 1000);
 
   return (
     <div>
@@ -195,6 +220,12 @@ export default function HotdealPage() {
       </div>
 
       <div className={s.grid}>
+        {!loading && items.length === 0 && (
+          <EmptyState
+            title="핫딜이 없습니다"
+            description="다른 카테고리나 필터를 선택해 보세요."
+          />
+        )}
         {items.map(d => {
           const tier = getTier(d.price, d.origPrice);
           const matchedProduct = products.find(p => d.title?.includes(p.name));
@@ -239,12 +270,16 @@ export default function HotdealPage() {
                 <div className={s.voteRow} onClick={e => e.stopPropagation()}>
                   <button
                     className={`${s.voteBtn} ${vote === 'hot' ? s.voteBtnHot : ''}`}
-                    onClick={() => handleVote(d.id, 'hot')}
-                  >🔥 핫딜</button>
+                    onClick={() => throttledVote(d.id, 'hot')}
+                    disabled={voteLoading[d.id]}
+                    aria-busy={voteLoading[d.id]}
+                  >{voteLoading[d.id] ? '⏳' : '🔥'} 핫딜</button>
                   <button
                     className={`${s.voteBtn} ${vote === 'cold' ? s.voteBtnCold : ''}`}
-                    onClick={() => handleVote(d.id, 'cold')}
-                  >❄️ 아니다</button>
+                    onClick={() => throttledVote(d.id, 'cold')}
+                    disabled={voteLoading[d.id]}
+                    aria-busy={voteLoading[d.id]}
+                  >{voteLoading[d.id] ? '⏳' : '❄️'} 아니다</button>
                 </div>
                 {d.url && (
                   <a href={d.url} target="_blank" rel="noopener noreferrer" className={s.ctaBtn} onClick={e => e.stopPropagation()}>

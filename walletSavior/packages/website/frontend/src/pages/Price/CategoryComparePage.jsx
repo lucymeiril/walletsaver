@@ -288,7 +288,7 @@ export default function CategoryComparePage() {
   const [viewMode, setViewMode] = useState('card');
   const [page, setPage] = useState(1);
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (signal) => {
     if (!categoryId) return;
     setLoading(true);
     setError(null);
@@ -302,11 +302,13 @@ export default function CategoryComparePage() {
         page,
         perPage: 20,
       });
+      if (signal?.aborted) return;
       setSummary(data.summary || null);
       setProducts(data.products || []);
       setAlternatives(data.alternatives || []);
       setPagination(data.pagination || null);
     } catch (err) {
+      if (err.name === 'AbortError') return;
       console.error('CategoryCompare fetch error:', err);
       setError(err.message || '카테고리 비교 데이터를 불러오는 중 오류가 발생했습니다');
       setSummary(null);
@@ -318,7 +320,9 @@ export default function CategoryComparePage() {
   }, [categoryId, sort, filters, page]);
 
   useEffect(() => {
-    fetchData();
+    const controller = new AbortController();
+    fetchData(controller.signal);
+    return () => controller.abort();
   }, [fetchData]);
 
   // Reset page when filters or sort change

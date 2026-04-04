@@ -1,7 +1,8 @@
-import { useState, useMemo, useCallback, useRef } from 'react';
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { MapPin, Search, RefreshCw, ChevronRight } from 'lucide-react';
 import { RECIPES, fmt, calcRecipeCost } from '../../data/mockData';
 import Modal from '../../components/common/Modal';
+import EmptyState from '../../components/common/EmptyState';
 import useStore from '../../stores/appStore';
 import { getRepresentativePrice, buildSubcategories, sortItems, isGasCategory } from './utils';
 import GasDetailContent from './components/GasDetailContent';
@@ -65,6 +66,14 @@ export default function LocalPage() {
   const searchInputRef = useRef(null);
   const iframeRef = useRef(null);
   const iframeLoadCount = useRef(0);
+  const streamAbortRef = useRef(null);
+
+  // Cleanup stream on unmount
+  useEffect(() => {
+    return () => {
+      if (streamAbortRef.current) streamAbortRef.current.abort();
+    };
+  }, []);
 
   const currentMapUrl = useMemo(() => mapFocusUrl || iframeUrl || `https://map.naver.com/p?c=${lng},${lat},15,0,0,0,dh`, [mapFocusUrl, iframeUrl, lng, lat]);
 
@@ -101,6 +110,10 @@ export default function LocalPage() {
 
   /* ── Handlers ── */
   const runAreaExplore = useCallback(async (locName, latVal, lngVal) => {
+    if (streamAbortRef.current) streamAbortRef.current.abort();
+    const controller = new AbortController();
+    streamAbortRef.current = controller;
+
     setPhase('exploring');
     setExploreData({ categories: [] });
     setStreamingCats(new Set(EXPLORE_CATEGORIES.split(',')));
@@ -113,46 +126,51 @@ export default function LocalPage() {
     const url = `/api/local/area-explore-stream?${params}`;
 
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, { signal: controller.signal });
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
 
-        const lines = buffer.split('\n');
-        buffer = lines.pop() || '';
+          const lines = buffer.split('\n');
+          buffer = lines.pop() || '';
 
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue;
-          const jsonStr = line.slice(6).trim();
-          if (!jsonStr) continue;
-          try {
-            const data = JSON.parse(jsonStr);
-            if (data.done) {
-              setPhase('categories');
-              setStreamingCats(new Set());
-              return;
-            }
-            if (data.error && !data.name) continue;
-            setExploreData(prev => ({
-              ...prev,
-              categories: [...(prev?.categories || []), data],
-            }));
-            setStreamingCats(prev => {
-              const next = new Set(prev);
-              next.delete(data.name);
-              return next;
-            });
-          } catch { /* skip malformed */ }
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue;
+            const jsonStr = line.slice(6).trim();
+            if (!jsonStr) continue;
+            try {
+              const data = JSON.parse(jsonStr);
+              if (data.done) {
+                setPhase('categories');
+                setStreamingCats(new Set());
+                return;
+              }
+              if (data.error && !data.name) continue;
+              setExploreData(prev => ({
+                ...prev,
+                categories: [...(prev?.categories || []), data],
+              }));
+              setStreamingCats(prev => {
+                const next = new Set(prev);
+                next.delete(data.name);
+                return next;
+              });
+            } catch { /* skip malformed */ }
+          }
         }
+      } finally {
+        reader.releaseLock();
       }
       setPhase('categories');
       setStreamingCats(new Set());
-    } catch {
+    } catch (err) {
+      if (err.name === 'AbortError') return;
       addToast('주변 탐색에 실패했습니다. 직접 검색해 주세요.', 'warning');
       setPhase('categories');
       setExploreData({ categories: [] });

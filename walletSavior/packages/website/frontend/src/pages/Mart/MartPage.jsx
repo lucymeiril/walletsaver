@@ -6,6 +6,7 @@ import useStore from '../../stores/appStore';
 import Modal from '../../components/common/Modal';
 import Spinner from '../../components/common/Spinner';
 import SafeImage from '../../components/common/SafeImage';
+import EmptyState from '../../components/common/EmptyState';
 import s from './MartPage.module.css';
 
 const COMPARE_MARTS = ['emart', 'homeplus', 'lotte'];
@@ -124,10 +125,12 @@ export default function MartPage() {
   const [flyerMart, setFlyerMart] = useState('emart');
 
   useEffect(() => {
+    const controller = new AbortController();
+    const { signal } = controller;
     const martKeys = MARTS.map(m => m.key);
     Promise.allSettled(
       martKeys.map(key =>
-        fetch(`/api/marts/${key}/promotions`).then(r => r.json())
+        fetch(`/api/marts/${key}/promotions`, { signal }).then(r => r.json())
           .then(res => {
             const rawItems = Array.isArray(res?.data) ? res.data : (res?.data?.items || []);
             return {
@@ -149,42 +152,53 @@ export default function MartPage() {
       setMartDeals(deals);
       setMartMeta(meta);
     }).catch(err => {
+      if (err.name === 'AbortError') return;
       console.error(err);
       addToast('마트 데이터를 불러오는데 실패했습니다', 'error');
     }).finally(() => setLoading(false));
 
-    fetch('/api/products/search?per_page=50')
+    fetch('/api/products/search?per_page=50', { signal })
       .then(r => r.json())
       .then(res => setProducts(Array.isArray(res?.data) ? res.data : []))
-      .catch(console.error);
-  }, []);
+      .catch(err => { if (err.name !== 'AbortError') console.error(err); });
 
-  const fetchFlyerData = useCallback((store) => {
-    if (flyerData[store]) return;
+    return () => controller.abort();
+  }, [addToast]);
+
+  const flyerDataRef = useRef(flyerData);
+  flyerDataRef.current = flyerData;
+
+  const fetchFlyerData = useCallback((store, signal) => {
+    if (flyerDataRef.current[store]) return;
     setFlyerLoading(true);
     setFlyerError(null);
-    fetch(`/api/marts/${store}/flyers`)
+    fetch(`/api/marts/${store}/flyers`, { signal })
       .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
       .then(res => { if (res?.data) setFlyerData(prev => ({ ...prev, [store]: res.data })); })
       .catch(err => {
+        if (err.name === 'AbortError') return;
         console.error('Flyer fetch error:', err);
         setFlyerError(`${store} 전단지를 불러올 수 없습니다`);
       })
       .finally(() => setFlyerLoading(false));
-  }, [flyerData]);
+  }, []);
 
   useEffect(() => {
-    if (mode === 'flyer') {
-      fetchFlyerData(flyerMart);
-      MARTS.forEach(m => {
-        if (m.key !== flyerMart && !flyerData[m.key]) {
-          fetch(`/api/marts/${m.key}/flyers`)
-            .then(r => r.ok ? r.json() : null)
-            .then(res => { if (res?.data) setFlyerData(prev => ({ ...prev, [m.key]: res.data })); })
-            .catch(() => {});
-        }
-      });
-    }
+    if (mode !== 'flyer') return;
+    const controller = new AbortController();
+    const { signal } = controller;
+
+    fetchFlyerData(flyerMart, signal);
+    MARTS.forEach(m => {
+      if (m.key !== flyerMart && !flyerDataRef.current[m.key]) {
+        fetch(`/api/marts/${m.key}/flyers`, { signal })
+          .then(r => r.ok ? r.json() : null)
+          .then(res => { if (res?.data) setFlyerData(prev => ({ ...prev, [m.key]: res.data })); })
+          .catch(() => {});
+      }
+    });
+
+    return () => controller.abort();
   }, [mode, flyerMart, fetchFlyerData]);
 
   const martInfo = useMemo(() => MARTS.find(m => m.key === activeMart), [activeMart]);
@@ -572,6 +586,12 @@ export default function MartPage() {
                   </a>
                 )}
               </div>
+            )}
+            {!loading && filteredItems.length === 0 && (
+              <EmptyState
+                title="할인 상품이 없습니다"
+                description="다른 마트나 카테고리를 선택해 보세요."
+              />
             )}
             {filteredItems.map((item, i) => {
               const matched = products.find(p => item.name?.includes(p.name));

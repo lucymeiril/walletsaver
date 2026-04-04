@@ -4,7 +4,9 @@ import { Pencil, ImagePlus, X, Send, Eye, MessageSquare, Clock, Search, Trash2, 
 import { fmt, verifyPrice } from '../../utils/helpers';
 import { sanitizeHTML, sanitizeURL } from '../../utils/sanitize';
 import useStore from '../../stores/appStore';
+import useDebounce from '../../hooks/useDebounce';
 import Spinner from '../../components/common/Spinner';
+import EmptyState from '../../components/common/EmptyState';
 import RichTextEditor from '../../components/community/RichTextEditor';
 import ProductPicker from '../../components/community/ProductPicker';
 import s from './CommunityPage.module.css';
@@ -83,30 +85,38 @@ export default function CommunityPage() {
   const [posts, setPosts] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const postsControllerRef = useRef(null);
 
   // Fetch products for price verification
   useEffect(() => {
-    fetch('/api/products/search?per_page=50').then(r => r.json())
+    const controller = new AbortController();
+    fetch('/api/products/search?per_page=50', { signal: controller.signal }).then(r => r.json())
       .then(res => setProducts(res.data || []))
-      .catch(console.error);
+      .catch(err => { if (err.name !== 'AbortError') console.error(err); });
+    return () => controller.abort();
   }, []);
 
   // Fetch posts from API when board changes
-  const refreshPosts = () => {
+  const refreshPosts = useCallback(() => {
+    if (postsControllerRef.current) postsControllerRef.current.abort();
+    postsControllerRef.current = new AbortController();
     setLoading(true);
     const params = new URLSearchParams({ post_type: board, per_page: '50' });
-    fetch(`/api/posts?${params}`).then(r => r.json())
+    fetch(`/api/posts?${params}`, { signal: postsControllerRef.current.signal }).then(r => r.json())
       .then(res => setPosts((res.data || []).map(p => mapApiPost(p, products))))
       .catch(err => {
+        if (err.name === 'AbortError') return;
         console.error(err);
         addToast('게시글을 불러오는데 실패했습니다', 'error');
       })
       .finally(() => setLoading(false));
-  };
+  }, [board, products, addToast]);
 
   useEffect(() => {
     refreshPosts();
-  }, [board, products]);
+    return () => { if (postsControllerRef.current) postsControllerRef.current.abort(); };
+  }, [refreshPosts]);
 
   useEffect(() => {
     const openPostId = location.state?.openPostId;
@@ -137,6 +147,7 @@ export default function CommunityPage() {
   const [wImages, setWImages] = useState([]);
   const [editPostId, setEditPostId] = useState(null);
   const fileRef = useRef(null);
+  const debouncedSearch = useDebounce(searchQuery, 200);
 
   const filteredAndSorted = useMemo(() => {
     let items = [...posts];
@@ -147,8 +158,8 @@ export default function CommunityPage() {
       if (freeTag !== '전체') items = items.filter(p => p.tag === freeTag);
     }
 
-    if (searchQuery.trim()) {
-      const q = searchQuery.trim().toLowerCase();
+    if (debouncedSearch.trim()) {
+      const q = debouncedSearch.trim().toLowerCase();
       items = items.filter(p =>
         p.title?.toLowerCase().includes(q) || (p.body && p.body.toLowerCase().includes(q))
       );
@@ -161,7 +172,7 @@ export default function CommunityPage() {
     }
 
     return items;
-  }, [posts, board, filter, freeTag, searchQuery, sortBy]);
+  }, [posts, board, filter, freeTag, debouncedSearch, sortBy]);
 
   // 인기 게시글 상단 고정 — 핫딜 게시판에서 투표 수 상위 3개
   const pinnedPosts = useMemo(() => {
@@ -195,6 +206,7 @@ export default function CommunityPage() {
   }, []);
 
   const handleWrite = async () => {
+    if (submitting) return;
     if (!wTitle.trim()) { addToast('제목을 입력해주세요.', 'error'); return; }
     if (board === 'hotdeal') {
       if (!wProduct.trim() && wSelectedProducts.length === 0) { addToast('품목명을 입력해주세요.', 'error'); return; }
@@ -206,6 +218,7 @@ export default function CommunityPage() {
       return;
     }
     try {
+      setSubmitting(true);
       const headers = { 'Content-Type': 'application/json' };
       const token = sessionStorage.getItem('access_token');
       if (token) headers['Authorization'] = `Bearer ${token}`;
@@ -237,6 +250,8 @@ export default function CommunityPage() {
     } catch (err) {
       console.error(err);
       addToast('처리 중 오류가 발생했습니다.', 'error');
+    } finally {
+      setSubmitting(false);
     }
     setWTitle(''); setWBody(''); setWProduct(''); setWSelectedProducts([]); setWPrice(''); setWLink(''); setWImages([]);
   };
@@ -411,8 +426,8 @@ export default function CommunityPage() {
             <div className={s.blocked}>⛔ 등록 차단됨 — 허위 가격이 의심됩니다.</div>
           )}
 
-          <button className={s.submitBtn} onClick={handleWrite} disabled={board === 'hotdeal' && verification?.canPost === false}>
-            {editPostId ? '수정' : '등록'}
+          <button className={s.submitBtn} onClick={handleWrite} disabled={submitting || (board === 'hotdeal' && verification?.canPost === false)} aria-busy={submitting}>
+            {submitting ? '게시 중...' : (editPostId ? '수정' : '등록')}
           </button>
         </div>
       )}
@@ -523,6 +538,12 @@ export default function CommunityPage() {
 
       {/* Post List */}
       <div className={s.list}>
+        {!loading && paginatedPosts.length === 0 && (
+          <EmptyState
+            title="게시글이 없습니다"
+            description="첫 번째 게시글을 작성해 보세요!"
+          />
+        )}
         {board === 'hotdeal' ? (
           paginatedPosts.map(p => (
             <div

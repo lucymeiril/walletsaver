@@ -35,8 +35,16 @@ const useStore = create(
 
       // 토스트 메시지
       toasts: [],
-      addToast: (msg, type = 'info') => set((state) => ({
-        toasts: [...state.toasts, { id: Date.now(), msg, type }]
+      _toastSeq: 0,
+      addToast: (msg, type = 'info', duration = 4000) => set((state) => ({
+        _toastSeq: state._toastSeq + 1,
+        toasts: [...state.toasts, {
+          id: state._toastSeq + 1,
+          msg,
+          type,
+          duration,
+          createdAt: Date.now(),
+        }]
       })),
       removeToast: (id) => set((state) => ({
         toasts: state.toasts.filter(t => t.id !== id)

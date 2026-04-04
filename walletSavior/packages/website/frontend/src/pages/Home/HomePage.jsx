@@ -6,6 +6,8 @@ import { fmt } from '../../utils/helpers';
 import { searchService } from '../../services/searchService';
 import useStore from '../../stores/appStore';
 import useModalStore from '../../stores/modalStore';
+import useAbortController from '../../hooks/useAbortController';
+import EmptyState from '../../components/common/EmptyState';
 import s from './HomePage.module.css';
 
 const CATEGORIES = [
@@ -99,6 +101,9 @@ export default function HomePage() {
   const [martLoading, setMartLoading] = useState(false);
   const [martError, setMartError] = useState(false);
 
+  const getMainSignal = useAbortController();
+  const getMartSignal = useAbortController();
+
   // 1) GPS 위치 연동
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -121,21 +126,21 @@ export default function HomePage() {
   }, [setLocation]);
 
   // 2) API 병렬 최적화 — Promise.allSettled, 위치 확정 후 실행
-  const fetchAllData = useCallback((loc) => {
+  const fetchAllData = useCallback((loc, signal) => {
     const gasQuery = loc ? `lat=${loc.lat}&lng=${loc.lng}&sort=price_asc` : 'sort=price_asc';
 
     setSectionLoading({ products: true, hotdeals: true, community: true, gas: true, trending: true, fashion: true });
     setSectionError({ products: false, hotdeals: false, community: false, gas: false, trending: false, fashion: false });
 
     Promise.allSettled([
-      fetch('/api/hotdeals?per_page=10').then(r => r.json()),
-      fetch('/api/products/category-summary?per_page=8').then(r => r.json()),
-      fetch('/api/products/search?per_page=50').then(r => r.json()),
-      fetch('/api/posts?board=hotdeal&per_page=5').then(r => r.json()),
-      fetch(`/api/gas/nearby?${gasQuery}`).then(r => r.json()),
-      fetch('/api/products/trending').then(r => r.json()),
+      fetch('/api/hotdeals?per_page=10', { signal }).then(r => r.json()),
+      fetch('/api/products/category-summary?per_page=8', { signal }).then(r => r.json()),
+      fetch('/api/products/search?per_page=50', { signal }).then(r => r.json()),
+      fetch('/api/posts?board=hotdeal&per_page=5', { signal }).then(r => r.json()),
+      fetch(`/api/gas/nearby?${gasQuery}`, { signal }).then(r => r.json()),
+      fetch('/api/products/trending', { signal }).then(r => r.json()),
       searchService.trending(8),
-      fetch('/api/hotdeals?category=fashion&per_page=6').then(r => r.json()),
+      fetch('/api/hotdeals?category=fashion&per_page=6', { signal }).then(r => r.json()),
     ]).then(([dealRes, catSumRes, prodRes, postRes, gasRes, trendRes, trendApiRes, fashionRes]) => {
       // 핫딜 (우선 표시)
       if (dealRes.status === 'fulfilled') {
@@ -198,23 +203,31 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    if (coords) fetchAllData(coords);
-  }, [coords, fetchAllData]);
+    if (coords) {
+      const signal = getMainSignal();
+      fetchAllData(coords, signal);
+    }
+  }, [coords, fetchAllData, getMainSignal]);
 
   // 5) 마트 데이터 정규화
-  const fetchMart = useCallback((tab) => {
+  const fetchMart = useCallback((tab, signal) => {
     setMartLoading(true);
     setMartError(false);
-    fetch(`/api/marts/${tab}/promotions`).then(r => r.json())
+    fetch(`/api/marts/${tab}/promotions`, { signal }).then(r => r.json())
       .then(res => {
         const items = normalizeMartItems(res.data ?? res);
         setMartDeals(prev => ({ ...prev, [tab]: items }));
       })
-      .catch(() => setMartError(true))
+      .catch(err => {
+        if (err.name !== 'AbortError') setMartError(true);
+      })
       .finally(() => setMartLoading(false));
   }, []);
 
-  useEffect(() => { fetchMart(martTab); }, [martTab, fetchMart]);
+  useEffect(() => {
+    const signal = getMartSignal();
+    fetchMart(martTab, signal);
+  }, [martTab, fetchMart, getMartSignal]);
 
   // 자동완성 API (200ms 디바운스)
   const fetchAutocomplete = useCallback((value) => {
@@ -784,6 +797,11 @@ export default function HomePage() {
           </div>
         ) : sectionError.gas ? (
           <SectionError onRetry={() => fetchAllData(coords)} />
+        ) : topGas.length === 0 ? (
+          <EmptyState
+            title="주변 주유소 정보가 없습니다"
+            description="위치 권한을 허용하면 주변 주유소를 찾을 수 있습니다."
+          />
         ) : (
           <div className={s.gasGrid}>
             {topGas.map((g, i) => (
