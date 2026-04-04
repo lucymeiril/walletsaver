@@ -1,5 +1,5 @@
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { Heart, Search, TrendingUp, TrendingDown, Minus, ChevronDown, ChevronUp } from 'lucide-react';
 import { MARTS } from '../../utils/constants';
@@ -109,9 +109,12 @@ export default function PricePage() {
   const hasAcResults = acKeywords.length > 0 || acProducts.length > 0;
 
   // 기존 product 검색 결과 (products 목록 기반 — fallback)
-  const searchResults = debouncedQuery.length > 0 && !hasAcResults
-    ? products.filter(p => p.name?.includes(debouncedQuery) || p.cat?.includes(debouncedQuery))
-    : [];
+  const searchResults = useMemo(() =>
+    debouncedQuery.length > 0 && !hasAcResults
+      ? products.filter(p => p.name?.includes(debouncedQuery) || p.cat?.includes(debouncedQuery))
+      : [],
+    [debouncedQuery, hasAcResults, products]
+  );
 
   const product = productData || (id ? products.find(p => p.id === Number(id)) : null) || selectedProduct;
 
@@ -135,14 +138,14 @@ export default function PricePage() {
       .catch(console.error);
   }, [product?.id, product?.cat]);
 
-  const handleSelectProduct = (p) => {
+  const handleSelectProduct = useCallback((p) => {
     setSelectedProduct(p);
     addRecentSearch(p.name);
     setSearchQuery('');
     navigate(`/price/${p.id}`);
-  };
+  }, [setSelectedProduct, addRecentSearch, navigate]);
 
-  const handleKeywordClick = (kw) => {
+  const handleKeywordClick = useCallback((kw) => {
     addRecentSearch(kw.word);
     searchService.trackKeyword(kw.id);
     setSearchQuery('');
@@ -152,9 +155,9 @@ export default function PricePage() {
     } else {
       navigate(`/search?q=${encodeURIComponent(kw.word)}`);
     }
-  };
+  }, [addRecentSearch, navigate]);
 
-  const handleAcProductClick = (p) => {
+  const handleAcProductClick = useCallback((p) => {
     if (p.id) searchService.trackKeyword(p.id);
     setSearchQuery('');
 
@@ -174,10 +177,10 @@ export default function PricePage() {
         navigate(`/price/${p.id}`);
         break;
     }
-  };
+  }, [navigate, openMartModal, openHotdealModal, openProductModal]);
 
   // 엔터 누르면 검색 결과 페이지로 이동 (자동완성에서 선택 안 했을 때)
-  const handleSearchKeyDown = (e) => {
+  const handleSearchKeyDown = useCallback((e) => {
     if (e.key === 'Enter' && searchQuery.trim()) {
       // 자동완성 결과 중 정확히 매칭되는 게 있으면 바로 이동
       const exact = searchResults.find(p => p.name === searchQuery.trim());
@@ -188,7 +191,7 @@ export default function PricePage() {
         navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
       }
     }
-  };
+  }, [searchQuery, searchResults, handleSelectProduct, navigate]);
 
   // 상품 상세 — 속성 변형은 DB에서 조회
   const variants = productData?.variants || [];
@@ -198,8 +201,8 @@ export default function PricePage() {
   const displayLow = product ? (activeVariant?.low ?? product.low) : 0;
   const displayHigh = product ? (activeVariant?.high ?? product.high) : 0;
 
-  const ratio = displayAvg > 0 ? displayCur / displayAvg : 1;
-  const diff = displayCur - displayAvg;
+  const ratio = useMemo(() => displayAvg > 0 ? displayCur / displayAvg : 1, [displayCur, displayAvg]);
+  const diff = useMemo(() => displayCur - displayAvg, [displayCur, displayAvg]);
 
   const timing = useMemo(() => {
     if (ratio <= 0.7) return { cls: 'ultra', icon: '🔥', title: '역대급 기회!', desc: `현재 ${fmt(displayCur)}원은 평균보다 ${Math.round((1 - ratio) * 100)}% 저렴합니다.` };
@@ -208,11 +211,11 @@ export default function PricePage() {
     return { cls: 'wait', icon: '⏳', title: '조금 기다려보세요', desc: `현재 ${fmt(displayCur)}원은 평균보다 ${Math.round((ratio - 1) * 100)}% 비쌉니다.` };
   }, [ratio, displayCur, displayAvg, diff]);
 
-  const tierPos = (displayHigh - displayLow) > 0
+  const tierPos = useMemo(() => (displayHigh - displayLow) > 0
     ? Math.max(3, Math.min(97, ((displayCur - displayLow) / (displayHigh - displayLow)) * 100))
-    : 50;
+    : 50, [displayCur, displayLow, displayHigh]);
 
-  const fairPrice = Math.round(displayAvg * 0.8);
+  const fairPrice = useMemo(() => Math.round(displayAvg * 0.8), [displayAvg]);
 
   const hasData = displayCur != null && displayAvg != null && displayAvg > 0;
 

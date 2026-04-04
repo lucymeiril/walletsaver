@@ -186,19 +186,21 @@ export default function MartPage() {
     }
   }, [mode, flyerMart, fetchFlyerData]);
 
-  const martInfo = MARTS.find(m => m.key === activeMart);
-  const martItems = Array.isArray(martDeals[activeMart]) ? martDeals[activeMart] : [];
+  const martInfo = useMemo(() => MARTS.find(m => m.key === activeMart), [activeMart]);
+  const martItems = useMemo(() => Array.isArray(martDeals[activeMart]) ? martDeals[activeMart] : [], [martDeals, activeMart]);
   const categories = useMemo(() => getCategories(martItems), [martItems]);
-  const filteredItems = catFilter === '전체' ? martItems : martItems.filter(i => i.event === catFilter);
+  const filteredItems = useMemo(() => catFilter === '전체' ? martItems : martItems.filter(i => i.event === catFilter), [martItems, catFilter]);
   const commonProducts = useMemo(() => findCommonProducts(martDeals), [martDeals]);
 
-  const now = new Date();
-  const startOfWeek = new Date(now); startOfWeek.setDate(now.getDate() - now.getDay());
-  const endOfWeek = new Date(startOfWeek); endOfWeek.setDate(startOfWeek.getDate() + 6);
-  const martPeriod = `${startOfWeek.getMonth()+1}/${startOfWeek.getDate()} ~ ${endOfWeek.getMonth()+1}/${endOfWeek.getDate()}`;
+  const martPeriod = useMemo(() => {
+    const now = new Date();
+    const startOfWeek = new Date(now); startOfWeek.setDate(now.getDate() - now.getDay());
+    const endOfWeek = new Date(startOfWeek); endOfWeek.setDate(startOfWeek.getDate() + 6);
+    return `${startOfWeek.getMonth()+1}/${startOfWeek.getDate()} ~ ${endOfWeek.getMonth()+1}/${endOfWeek.getDate()}`;
+  }, []);
 
-  const currentFlyer = flyerData[flyerMart];
-  const flyerPages = currentFlyer?.flyer_pages || [];
+  const currentFlyer = useMemo(() => flyerData[flyerMart], [flyerData, flyerMart]);
+  const flyerPages = useMemo(() => currentFlyer?.flyer_pages || [], [currentFlyer]);
   const flyerHasImages = flyerPages.length > 0;
 
   const resetFlyerView = useCallback(() => {

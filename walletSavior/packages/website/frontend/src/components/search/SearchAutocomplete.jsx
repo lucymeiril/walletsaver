@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Clock } from 'lucide-react';
 import useStore from '../../stores/appStore';
@@ -33,7 +33,7 @@ function highlightMatch(text, query) {
  * @param {string}   className       — extra wrapper class
  * @param {function} onAfterAction   — called after any navigation / click (e.g. to close header search bar)
  */
-export default function SearchAutocomplete({
+const SearchAutocomplete = memo(function SearchAutocomplete({
   variant = 'inline',
   placeholder = '검색어를 입력하세요...',
   onSearch,
@@ -55,6 +55,7 @@ export default function SearchAutocomplete({
   const [activeIndex, setActiveIndex] = useState(-1);
 
   const debounceRef = useRef(null);
+  const abortRef = useRef(null);
   const wrapperRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -87,16 +88,19 @@ export default function SearchAutocomplete({
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
-  // cleanup debounce timer
+  // cleanup debounce timer and abort controller on unmount
   useEffect(() => {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
+      if (abortRef.current) abortRef.current.abort();
     };
   }, []);
 
-  /* ── Autocomplete fetch (200ms debounce, min 1 char) ── */
+  /* ── Autocomplete fetch (200ms debounce, with abort controller) ── */
   const fetchAutocomplete = useCallback((value) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (abortRef.current) abortRef.current.abort();
+
     if (!value || value.length < 1) {
       setKeywords([]);
       setProducts([]);
@@ -105,14 +109,18 @@ export default function SearchAutocomplete({
       return;
     }
     debounceRef.current = setTimeout(async () => {
+      const controller = new AbortController();
+      abortRef.current = controller;
       try {
-        const res = await searchService.autocomplete(value);
+        const res = await searchService.autocomplete(value, 10, { signal: controller.signal });
+        if (controller.signal.aborted) return;
         const d = res.data || {};
         setKeywords(d.keywords || []);
         setProducts(d.products || []);
         setTotalKeywords(d.total_keyword_count || 0);
         setTotalProducts(d.total_product_count || 0);
-      } catch {
+      } catch (err) {
+        if (err?.name === 'AbortError') return;
         setKeywords([]);
         setProducts([]);
       }
@@ -141,13 +149,13 @@ export default function SearchAutocomplete({
   }, [searchQuery, addRecentSearch, onSearch, navigate, resetState]);
 
   /* ── input change ── */
-  const handleInputChange = (e) => {
+  const handleInputChange = useCallback((e) => {
     const value = e.target.value;
     setSearchQuery(value);
     setActiveIndex(-1);
     setShowDropdown(true);
     fetchAutocomplete(value);
-  };
+  }, [fetchAutocomplete]);
 
   /* ── keyword click ── */
   const handleKeywordClick = useCallback(
@@ -214,9 +222,9 @@ export default function SearchAutocomplete({
   );
 
   /* ── keyboard navigation ── */
-  const allItems = [...keywords, ...products];
+  const allItems = useMemo(() => [...keywords, ...products], [keywords, products]);
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = useCallback((e) => {
     const hasResults = allItems.length > 0;
     const recentList = recentSearches.map((r) => r.query);
     const totalLen = hasResults ? allItems.length : recentList.length;
@@ -251,16 +259,18 @@ export default function SearchAutocomplete({
     } else if (e.key === 'Escape') {
       setShowDropdown(false);
     }
-  };
+  }, [allItems, recentSearches, activeIndex, handleSearch, handleKeywordClick, handleProductClick, handleSelectRecent]);
 
   /* ── form submit for page variant ── */
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = useCallback((e) => {
     e.preventDefault();
     handleSearch();
-  };
+  }, [handleSearch]);
+
+  const handleFocus = useCallback(() => setShowDropdown(true), []);
 
   /* ── derived state ── */
-  const recentList = recentSearches.map((r) => r.query);
+  const recentList = useMemo(() => recentSearches.map((r) => r.query), [recentSearches]);
   const hasAcResults = keywords.length > 0 || products.length > 0;
   const showRecent = searchQuery === '' && recentList.length > 0;
   const showTrending = searchQuery === '' && trendingKeywords.length > 0;
@@ -295,7 +305,7 @@ export default function SearchAutocomplete({
             value={searchQuery}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            onFocus={() => setShowDropdown(true)}
+            onFocus={handleFocus}
             autoComplete="off"
           />
         </form>
@@ -310,7 +320,7 @@ export default function SearchAutocomplete({
             value={searchQuery}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            onFocus={() => setShowDropdown(true)}
+            onFocus={handleFocus}
             autoComplete="off"
           />
         </div>
@@ -379,7 +389,7 @@ export default function SearchAutocomplete({
               {(totalKeywords > 3 || totalProducts > 5) && (
                 <div
                   className={s.acFooter}
-                  onClick={() => handleSearch()}
+                  onClick={handleSearch}
                 >
                   🔍 &ldquo;{searchQuery}&rdquo; 전체 검색 결과 보기 (
                   {totalKeywords + totalProducts}건)
@@ -452,4 +462,6 @@ export default function SearchAutocomplete({
       )}
     </div>
   );
-}
+});
+
+export default SearchAutocomplete;

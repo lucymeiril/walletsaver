@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { fmt } from '../../utils/helpers';
 import { searchService } from '../../services/searchService';
 import Spinner from '../../components/common/Spinner';
@@ -52,7 +52,7 @@ function getPercentile(product, summary) {
 
 /* ── Sub-components ── */
 
-function PricePositionBar({ percentile, rank }) {
+const PricePositionBar = React.memo(function PricePositionBar({ percentile, rank }) {
   const cfg = RANK_CONFIG[rank] || RANK_CONFIG.fair;
   return (
     <div className={s.priceBar}>
@@ -68,7 +68,7 @@ function PricePositionBar({ percentile, rank }) {
       <span className={s.priceBarLabel}>하위 {percentile}%</span>
     </div>
   );
-}
+});
 
 function CategoryBreadcrumb({ categoryPath, categoryId, navigate }) {
   if (!categoryPath && !categoryId) return null;
@@ -113,7 +113,7 @@ function CategoryBreadcrumb({ categoryPath, categoryId, navigate }) {
   );
 }
 
-function SummaryCards({ summary }) {
+const SummaryCards = React.memo(function SummaryCards({ summary }) {
   if (!summary) return null;
   return (
     <div className={s.summaryCards}>
@@ -135,9 +135,9 @@ function SummaryCards({ summary }) {
       </div>
     </div>
   );
-}
+});
 
-function ProductCard({ product, summary, rank, percentile, onClick }) {
+const ProductCard = React.memo(function ProductCard({ product, summary, rank, percentile, onClick }) {
   const cfg = RANK_CONFIG[rank] || RANK_CONFIG.fair;
   const isBest = percentile <= 10 || rank === 'ultra';
   const price100g = product.normalized?.per_100g ?? product.price?.current;
@@ -184,9 +184,9 @@ function ProductCard({ product, summary, rank, percentile, onClick }) {
       <PricePositionBar percentile={percentile} rank={rank} />
     </div>
   );
-}
+});
 
-function ProductTable({ products, summary, onRowClick }) {
+const ProductTable = React.memo(function ProductTable({ products, summary, onRowClick }) {
   return (
     <table className={s.table}>
       <thead>
@@ -228,9 +228,9 @@ function ProductTable({ products, summary, onRowClick }) {
       </tbody>
     </table>
   );
-}
+});
 
-function AlternativesSection({ alternatives, navigate, currentAvg }) {
+const AlternativesSection = React.memo(function AlternativesSection({ alternatives, navigate, currentAvg }) {
   if (!alternatives || alternatives.length === 0) return null;
 
   return (
@@ -262,7 +262,7 @@ function AlternativesSection({ alternatives, navigate, currentAvg }) {
       })}
     </div>
   );
-}
+});
 
 /* ── Main Component ── */
 

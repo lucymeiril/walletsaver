@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../common/Modal';
 import useStore from '../../stores/appStore';
@@ -17,7 +17,7 @@ function getSourceInfo(type) {
   return SOURCE_LABELS[type] || SOURCE_LABELS.unknown;
 }
 
-export default function ProductQuickView({ data, onClose }) {
+function ProductQuickViewContent({ data, onClose }) {
   const navigate = useNavigate();
   const addToShoppingList = useStore((st) => st.addToShoppingList);
   const addToast = useStore((st) => st.addToast);
@@ -43,8 +43,6 @@ export default function ProductQuickView({ data, onClose }) {
     return () => { cancelled = true; };
   }, [productId]);
 
-  if (!data) return null;
-
   // Merge autocomplete data with full detail (detail takes precedence for richer fields)
   const d = detail || {};
   const name = d.name || data.name || data.product_name || '상품';
@@ -62,19 +60,19 @@ export default function ProductQuickView({ data, onClose }) {
   const hasDiscount = discountPct != null && discountPct > 0;
   const hasOrigPrice = origPrice != null && origPrice > 0;
 
-  const handlePriceCompare = () => {
+  const handlePriceCompare = useCallback(() => {
     onClose();
     if (productId) navigate(`/price/${productId}`);
-  };
+  }, [onClose, productId, navigate]);
 
-  const handleCategoryCompare = () => {
+  const handleCategoryCompare = useCallback(() => {
     if (categoryId) {
       onClose();
       navigate(`/price/category/${categoryId}`);
     }
-  };
+  }, [onClose, categoryId, navigate]);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = useCallback(() => {
     addToShoppingList({
       productId,
       name,
@@ -84,7 +82,7 @@ export default function ProductQuickView({ data, onClose }) {
     });
     addToast(`${name}을(를) 장보기 리스트에 추가했어요`, 'success');
     onClose();
-  };
+  }, [addToShoppingList, productId, name, salePrice, unit, src.icon, addToast, onClose]);
 
   return (
     <Modal isOpen onClose={onClose} title={name} size="sm">
@@ -178,3 +176,11 @@ export default function ProductQuickView({ data, onClose }) {
     </Modal>
   );
 }
+
+const ProductQuickView = memo(function ProductQuickView({ data, onClose }) {
+  // Lazy render: skip all content when there's no data
+  if (!data) return null;
+  return <ProductQuickViewContent data={data} onClose={onClose} />;
+});
+
+export default ProductQuickView;

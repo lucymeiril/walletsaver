@@ -66,7 +66,7 @@ export default function LocalPage() {
   const iframeRef = useRef(null);
   const iframeLoadCount = useRef(0);
 
-  const currentMapUrl = mapFocusUrl || iframeUrl || `https://map.naver.com/p?c=${lng},${lat},15,0,0,0,dh`;
+  const currentMapUrl = useMemo(() => mapFocusUrl || iframeUrl || `https://map.naver.com/p?c=${lng},${lat},15,0,0,0,dh`, [mapFocusUrl, iframeUrl, lng, lat]);
 
   const sortedItems = useMemo(() => sortItems(displayItems, sortBy, sortDir), [displayItems, sortBy, sortDir]);
   const isGas = useMemo(() => isGasCategory(displayItems), [displayItems]);
@@ -394,7 +394,7 @@ export default function LocalPage() {
     }
   }, []);
 
-  const handleItemClick = (item) => {
+  const handleItemClick = useCallback((item) => {
     const petrol = item.petrol_info;
     if (petrol) {
       setSelectedGas({
@@ -407,14 +407,14 @@ export default function LocalPage() {
     } else {
       setSelectedNaverPlace(item);
     }
-  };
+  }, []);
 
-  const handleMapReset = () => {
+  const handleMapReset = useCallback(() => {
     setMapFocusUrl(null);
     if (locationName) {
       setIframeUrl(`https://map.naver.com/p/search/${encodeURIComponent(locationName)}`);
     }
-  };
+  }, [locationName]);
 
   const handleIframeLoad = useCallback(() => {
     iframeLoadCount.current += 1;

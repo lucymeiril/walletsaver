@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X, TrendingUp, TrendingDown, Minus, ArrowRight, Heart, Clock, MapPin, RefreshCw } from 'lucide-react';
 import { MARTS } from '../../utils/constants';
@@ -295,19 +295,25 @@ export default function HomePage() {
 
   const quickTags = ['양파', '삼겹살', '계란', '휘발유', '사과', '우유'];
 
-  const activeMartInfo = MARTS.find(m => m.key === martTab);
-  const activeMartItems = martDeals[martTab] || [];
-  const topGas = [...gasStations].sort((a, b) => (a.gasoline || Infinity) - (b.gasoline || Infinity)).slice(0, 4);
+  const activeMartInfo = useMemo(() => MARTS.find(m => m.key === martTab), [martTab]);
+  const activeMartItems = useMemo(() => martDeals[martTab] || [], [martDeals, martTab]);
+  const topGas = useMemo(() =>
+    [...gasStations].sort((a, b) => (a.gasoline || Infinity) - (b.gasoline || Infinity)).slice(0, 4),
+    [gasStations]
+  );
 
   // 3) 오늘의 핫딜 TOP 3 — 할인율 기준
-  const topHotdeals = [...hotdeals]
-    .map(d => {
-      const discountRate = d.price && d.origPrice && d.origPrice > 0
-        ? Math.round((1 - d.price / d.origPrice) * 100) : 0;
-      return { ...d, discountRate };
-    })
-    .sort((a, b) => b.discountRate - a.discountRate)
-    .slice(0, 3);
+  const topHotdeals = useMemo(() =>
+    [...hotdeals]
+      .map(d => {
+        const discountRate = d.price && d.origPrice && d.origPrice > 0
+          ? Math.round((1 - d.price / d.origPrice) * 100) : 0;
+        return { ...d, discountRate };
+      })
+      .sort((a, b) => b.discountRate - a.discountRate)
+      .slice(0, 3),
+    [hotdeals]
+  );
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback, memo } from 'react';
 import { X, Share2, ShoppingCart, Sparkles } from 'lucide-react';
 import { MARTS } from '../../utils/constants';
 import { fmt } from '../../utils/helpers';
@@ -6,10 +6,12 @@ import useStore from '../../stores/appStore';
 import s from './ShoppingOptimizer.module.css';
 
 function calcOptimalCombo(items, products) {
+  const productMap = new Map(products.map(p => [p.id, p]));
+
   // 각 마트별 총합 계산
   const martTotals = MARTS.map(m => {
     const total = items.reduce((sum, item) => {
-      const product = products.find(p => p.id === item.productId);
+      const product = productMap.get(item.productId);
       if (!product || !product.stores) return sum;
       return sum + (product.stores[m.key] || 0) * item.quantity;
     }, 0);
@@ -21,7 +23,7 @@ function calcOptimalCombo(items, products) {
   let optimalTotal = 0;
 
   items.forEach(item => {
-    const product = products.find(p => p.id === item.productId);
+    const product = productMap.get(item.productId);
     if (!product || !product.stores) return;
 
     let bestMart = MARTS[0];
@@ -50,8 +52,11 @@ function calcOptimalCombo(items, products) {
   return { martTotals, optimalByMart: Object.values(optimalByMart), optimalTotal, worstTotal, savings };
 }
 
-export default function ShoppingOptimizer() {
-  const { shoppingList, addToShoppingList, removeFromShoppingList, clearShoppingList } = useStore();
+const ShoppingOptimizer = memo(function ShoppingOptimizer() {
+  const shoppingList = useStore((st) => st.shoppingList);
+  const addToShoppingList = useStore((st) => st.addToShoppingList);
+  const removeFromShoppingList = useStore((st) => st.removeFromShoppingList);
+  const clearShoppingList = useStore((st) => st.clearShoppingList);
   const [searchQuery, setSearchQuery] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [dropOpen, setDropOpen] = useState(false);
@@ -64,30 +69,36 @@ export default function ShoppingOptimizer() {
       .catch(console.error);
   }, []);
 
-  const matches = searchQuery.length > 0
-    ? products.filter(p => p.name?.includes(searchQuery) || p.cat?.includes(searchQuery))
-    : [];
+  const matches = useMemo(
+    () => searchQuery.length > 0
+      ? products.filter(p => p.name?.includes(searchQuery) || p.cat?.includes(searchQuery))
+      : [],
+    [searchQuery, products],
+  );
 
-  const handleAdd = (product) => {
+  const handleAdd = useCallback((product) => {
     addToShoppingList(product.id, quantity);
     setSearchQuery('');
     setQuantity(1);
     setDropOpen(false);
-  };
+  }, [addToShoppingList, quantity]);
 
-  const listProducts = shoppingList
-    .map(item => {
-      const product = products.find(p => p.id === item.productId);
-      return product ? { ...item, product } : null;
-    })
-    .filter(Boolean);
+  const listProducts = useMemo(
+    () => shoppingList
+      .map(item => {
+        const product = products.find(p => p.id === item.productId);
+        return product ? { ...item, product } : null;
+      })
+      .filter(Boolean),
+    [shoppingList, products],
+  );
 
   const result = useMemo(
     () => listProducts.length > 0 ? calcOptimalCombo(shoppingList, products) : null,
     [shoppingList, listProducts.length, products]
   );
 
-  const handleShare = () => {
+  const handleShare = useCallback(() => {
     const text = listProducts.map(item =>
       `${item.product.icon} ${item.product.name} x${item.quantity}`
     ).join('\n');
@@ -102,11 +113,14 @@ export default function ShoppingOptimizer() {
       navigator.clipboard.writeText(shareText);
       alert('장보기 리스트가 복사되었습니다!');
     }
-  };
+  }, [listProducts, result]);
 
-  const cheapestKey = result
-    ? result.martTotals.reduce((a, b) => a.total < b.total ? a : b).key
-    : null;
+  const cheapestKey = useMemo(
+    () => result
+      ? result.martTotals.reduce((a, b) => a.total < b.total ? a : b).key
+      : null,
+    [result],
+  );
 
   return (
     <section className={s.sec}>
@@ -241,4 +255,6 @@ export default function ShoppingOptimizer() {
       )}
     </section>
   );
-}
+});
+
+export default ShoppingOptimizer;

@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { X, Info, Eye, MessageSquare, Clock, Send } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
@@ -122,7 +122,7 @@ export default function HotdealPage() {
 
   const sentinelRef = useInfiniteScroll(loadMore, { enabled: hasMore });
 
-  const handleVote = async (id, type) => {
+  const handleVote = useCallback(async (id, type) => {
     const prev = votes[id];
     const newType = prev === type ? null : type;
     setVotes(p => ({ ...p, [id]: newType }));
@@ -142,7 +142,7 @@ export default function HotdealPage() {
       addToast('투표 처리에 실패했습니다', 'error');
       setVotes(p => ({ ...p, [id]: prev }));
     }
-  };
+  }, [votes, addToast]);
 
   return (
     <div>
@@ -267,7 +267,7 @@ export default function HotdealPage() {
   );
 }
 
-function HotdealDetailModal({ item, votes, onVote, onClose, products, addToast }) {
+const HotdealDetailModal = React.memo(function HotdealDetailModal({ item, votes, onVote, onClose, products, addToast }) {
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState([]);
   const [commentsLoading, setCommentsLoading] = useState(true);
@@ -455,4 +455,4 @@ function HotdealDetailModal({ item, votes, onVote, onClose, products, addToast }
       </div>
     </div>
   );
-}
+});

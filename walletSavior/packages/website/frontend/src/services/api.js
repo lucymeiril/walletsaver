@@ -41,6 +41,27 @@ function getErrorMessage(status) {
   return ERROR_MESSAGES.unknown;
 }
 
+// In-flight request deduplication for GET requests
+const _inflight = new Map();
+
+// Simple response cache with TTL for GET requests
+const _cache = new Map();
+const DEFAULT_CACHE_TTL = 30_000; // 30 seconds
+
+function getCached(key) {
+  const entry = _cache.get(key);
+  if (!entry) return undefined;
+  if (Date.now() > entry.expiry) {
+    _cache.delete(key);
+    return undefined;
+  }
+  return entry.value;
+}
+
+function setCache(key, value, ttl = DEFAULT_CACHE_TTL) {
+  _cache.set(key, { value, expiry: Date.now() + ttl });
+}
+
 class ApiClient {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
@@ -48,6 +69,7 @@ class ApiClient {
   }
 
   setToken(token) {
+    if (this.token === token) return;
     this.token = token;
     localStorage.setItem('access_token', token);
   }
@@ -58,7 +80,7 @@ class ApiClient {
   }
 
   async request(path, options = {}) {
-    const { timeout = DEFAULT_TIMEOUT, ...fetchOptions } = options;
+    const { timeout = DEFAULT_TIMEOUT, signal: externalSignal, ...fetchOptions } = options;
     const headers = {
       'Content-Type': 'application/json',
       ...fetchOptions.headers,
@@ -70,6 +92,16 @@ class ApiClient {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
 
+    // Link external signal (e.g. from component abort controller)
+    if (externalSignal) {
+      if (externalSignal.aborted) {
+        clearTimeout(timeoutId);
+        controller.abort();
+      } else {
+        externalSignal.addEventListener('abort', () => controller.abort(), { once: true });
+      }
+    }
+
     let response;
     try {
       response = await fetch(`${this.baseUrl}${path}`, {
@@ -80,6 +112,7 @@ class ApiClient {
     } catch (err) {
       clearTimeout(timeoutId);
       if (err.name === 'AbortError') {
+        if (externalSignal?.aborted) throw err;
         throw new ApiError(ERROR_MESSAGES.timeout, 0, 'timeout');
       }
       throw new ApiError(ERROR_MESSAGES.network, 0, 'network');
@@ -119,7 +152,16 @@ class ApiClient {
 
   async get(path, params, options = {}) {
     const query = params ? '?' + new URLSearchParams(params).toString() : '';
-    return this.request(`${path}${query}`, options);
+    const fullPath = `${path}${query}`;
+    const method = options.method || 'GET';
+    const dedupKey = `${method}:${fullPath}`;
+
+    // Dedup identical in-flight GET requests
+    if (_inflight.has(dedupKey)) return _inflight.get(dedupKey);
+
+    const promise = this.request(fullPath, options).finally(() => _inflight.delete(dedupKey));
+    _inflight.set(dedupKey, promise);
+    return promise;
   }
 
   async post(path, data, options = {}) {
@@ -138,10 +180,17 @@ class ApiClient {
     return this.request(path, { method: 'DELETE', ...options });
   }
 
-  /** JSON 파싱 포함 편의 메서드 */
+  /** JSON 파싱 포함 편의 메서드 (GET — with response caching) */
   async getJson(path, params, options = {}) {
+    const query = params ? '?' + new URLSearchParams(params).toString() : '';
+    const cacheKey = `${path}${query}`;
+    const cached = getCached(cacheKey);
+    if (cached !== undefined) return cached;
+
     const res = await this.get(path, params, options);
-    return res.json();
+    const json = await res.json();
+    setCache(cacheKey, json);
+    return json;
   }
 
   async postJson(path, data, options = {}) {

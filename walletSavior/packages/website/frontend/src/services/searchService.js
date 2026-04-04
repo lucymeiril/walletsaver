@@ -15,11 +15,12 @@ export const searchService = {
    * 자동완성 — 키워드+상품 2섹션 응답.
    * @param {string} query 검색어 (최소 1글자)
    * @param {number} [limit=10]
+   * @param {{ signal?: AbortSignal }} [options]
    * @returns {{ data: { keywords: Array, products: Array, total_keyword_count: number, total_product_count: number } }}
    */
-  async autocomplete(query, limit = 10) {
+  async autocomplete(query, limit = 10, options = {}) {
     if (!query || query.length < 1) return { data: { keywords: [], products: [], total_keyword_count: 0, total_product_count: 0 } };
-    const res = await api.get('/api/search/autocomplete', { q: query, limit });
+    const res = await api.get('/api/search/autocomplete', { q: query, limit }, options);
     return res.json();
   },
 

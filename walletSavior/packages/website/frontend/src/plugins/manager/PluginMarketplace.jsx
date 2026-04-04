@@ -2,7 +2,7 @@
  * PluginMarketplace — 플러그인 마켓플레이스 UI
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, memo } from 'react';
 import { Search, Download, Trash2, Star, Package, Filter } from 'lucide-react';
 import { usePluginStore } from './PluginStore.js';
 import s from './PluginMarketplace.module.css';
@@ -116,7 +116,49 @@ function StarRating({ rating }) {
   );
 }
 
-export default function PluginMarketplace() {
+const PluginCard = memo(function PluginCard({ plugin, isInstalled, onInstall, onUninstall }) {
+  return (
+    <div className={s.card}>
+      <div className={s.cardIcon}>{plugin.icon}</div>
+      <div className={s.cardBody}>
+        <h3 className={s.cardTitle}>{plugin.name}</h3>
+        <p className={s.cardDesc}>{plugin.description}</p>
+        <div className={s.cardMeta}>
+          <span className={s.author}>{plugin.author}</span>
+          <span className={s.version}>v{plugin.version}</span>
+        </div>
+        <div className={s.cardFooter}>
+          <StarRating rating={plugin.rating} />
+          <span className={s.downloads}>
+            <Download size={12} />
+            {plugin.downloads.toLocaleString()}
+          </span>
+        </div>
+      </div>
+      <div className={s.cardActions}>
+        {isInstalled ? (
+          <button
+            className={`${s.actionBtn} ${s.uninstallBtn}`}
+            onClick={() => onUninstall(plugin.id)}
+          >
+            <Trash2 size={14} />
+            제거
+          </button>
+        ) : (
+          <button
+            className={`${s.actionBtn} ${s.installBtn}`}
+            onClick={() => onInstall(plugin)}
+          >
+            <Download size={14} />
+            설치
+          </button>
+        )}
+      </div>
+    </div>
+  );
+});
+
+export default memo(function PluginMarketplace() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const { plugins, installPlugin, uninstallPlugin } = usePluginStore();
@@ -138,7 +180,7 @@ export default function PluginMarketplace() {
     });
   }, [searchQuery, selectedCategory]);
 
-  const handleInstall = (plugin) => {
+  const handleInstall = useCallback((plugin) => {
     installPlugin({
       id: plugin.id,
       name: plugin.name,
@@ -150,11 +192,11 @@ export default function PluginMarketplace() {
       entry: `plugins/examples/${plugin.id}/index.html`,
       config: {},
     });
-  };
+  }, [installPlugin]);
 
-  const handleUninstall = (pluginId) => {
+  const handleUninstall = useCallback((pluginId) => {
     uninstallPlugin(pluginId);
-  };
+  }, [uninstallPlugin]);
 
   return (
     <div className={s.marketplace}>
@@ -194,48 +236,15 @@ export default function PluginMarketplace() {
 
       {/* 플러그인 그리드 */}
       <div className={s.grid}>
-        {filteredPlugins.map((plugin) => {
-          const isInstalled = installedIds.has(plugin.id);
-          return (
-            <div key={plugin.id} className={s.card}>
-              <div className={s.cardIcon}>{plugin.icon}</div>
-              <div className={s.cardBody}>
-                <h3 className={s.cardTitle}>{plugin.name}</h3>
-                <p className={s.cardDesc}>{plugin.description}</p>
-                <div className={s.cardMeta}>
-                  <span className={s.author}>{plugin.author}</span>
-                  <span className={s.version}>v{plugin.version}</span>
-                </div>
-                <div className={s.cardFooter}>
-                  <StarRating rating={plugin.rating} />
-                  <span className={s.downloads}>
-                    <Download size={12} />
-                    {plugin.downloads.toLocaleString()}
-                  </span>
-                </div>
-              </div>
-              <div className={s.cardActions}>
-                {isInstalled ? (
-                  <button
-                    className={`${s.actionBtn} ${s.uninstallBtn}`}
-                    onClick={() => handleUninstall(plugin.id)}
-                  >
-                    <Trash2 size={14} />
-                    제거
-                  </button>
-                ) : (
-                  <button
-                    className={`${s.actionBtn} ${s.installBtn}`}
-                    onClick={() => handleInstall(plugin)}
-                  >
-                    <Download size={14} />
-                    설치
-                  </button>
-                )}
-              </div>
-            </div>
-          );
-        })}
+        {filteredPlugins.map((plugin) => (
+          <PluginCard
+            key={plugin.id}
+            plugin={plugin}
+            isInstalled={installedIds.has(plugin.id)}
+            onInstall={handleInstall}
+            onUninstall={handleUninstall}
+          />
+        ))}
         {filteredPlugins.length === 0 && (
           <div className={s.empty}>
             <Package size={48} />
@@ -245,6 +254,6 @@ export default function PluginMarketplace() {
       </div>
     </div>
   );
-}
+})
 
 export { DEMO_PLUGINS, CATEGORIES };

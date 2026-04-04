@@ -1,5 +1,5 @@
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { Wallet, Bell, User, X, Search, Sun, Moon } from 'lucide-react';
 import useStore from '../../stores/appStore';
 import SearchAutocomplete from '../search/SearchAutocomplete';
@@ -14,14 +14,17 @@ const NAV = [
   { to: '/community', label: '커뮤니티' },
 ];
 
-export default function Header() {
+const Header = memo(function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
-  const { isLoggedIn, logout, notifications } = useStore();
+  const isLoggedIn = useStore((st) => st.isLoggedIn);
+  const logout = useStore((st) => st.logout);
+  const notifications = useStore((st) => st.notifications);
   const theme = useStore((st) => st.theme);
   const toggleTheme = useStore((st) => st.toggleTheme);
+  const openLoginModal = useStore((st) => st.openLoginModal);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -40,17 +43,26 @@ export default function Header() {
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
-  const openLoginModal = useStore((st) => st.openLoginModal);
-  const openLogin = () => openLoginModal();
+  const openLogin = useCallback(() => openLoginModal(), [openLoginModal]);
 
-  const unreadCount = notifications?.filter(n => !n.read).length || 0;
+  const unreadCount = useMemo(
+    () => notifications?.filter(n => !n.read).length || 0,
+    [notifications],
+  );
 
-  const closeSearch = () => setSearchOpen(false);
+  const closeSearch = useCallback(() => setSearchOpen(false), []);
 
-  const handleHeaderSearch = (query) => {
+  const handleHeaderSearch = useCallback((query) => {
     navigate(`/search?q=${encodeURIComponent(query)}`);
-    closeSearch();
-  };
+    setSearchOpen(false);
+  }, [navigate]);
+
+  const toggleSearch = useCallback(() => setSearchOpen(prev => !prev), []);
+  const toggleMobile = useCallback(() => setMobileOpen(prev => !prev), []);
+  const closeMobile = useCallback(() => setMobileOpen(false), []);
+
+  const handleDrawerLogout = useCallback(() => { logout(); setMobileOpen(false); }, [logout]);
+  const handleDrawerLogin = useCallback(() => { openLoginModal(); setMobileOpen(false); }, [openLoginModal]);
 
   return (
     <>
@@ -77,7 +89,7 @@ export default function Header() {
           <div className={s.right}>
             <button
               className={s.iconBtn}
-              onClick={() => setSearchOpen(!searchOpen)}
+              onClick={toggleSearch}
               aria-label="검색"
             >
               <Search size={20} />
@@ -107,7 +119,7 @@ export default function Header() {
 
             <button
               className={`${s.mobileBtn} ${mobileOpen ? s.mobileBtnOpen : ''}`}
-              onClick={() => setMobileOpen(!mobileOpen)}
+              onClick={toggleMobile}
               aria-label="메뉴"
             >
               <span /><span /><span />
@@ -136,12 +148,12 @@ export default function Header() {
       {/* Mobile drawer */}
       <div
         className={`${s.overlay} ${mobileOpen ? s.overlayOpen : ''}`}
-        onClick={() => setMobileOpen(false)}
+        onClick={closeMobile}
       />
       <aside className={`${s.drawer} ${mobileOpen ? s.drawerOpen : ''}`}>
         <div className={s.drawerHeader}>
           <span className={s.drawerTitle}>메뉴</span>
-          <button className={s.drawerClose} onClick={() => setMobileOpen(false)}>
+          <button className={s.drawerClose} onClick={closeMobile}>
             <X size={20} />
           </button>
         </div>
@@ -152,7 +164,7 @@ export default function Header() {
               to={n.to}
               end={n.to === '/'}
               className={({ isActive }) => `${s.drawerLink} ${isActive ? s.drawerLinkActive : ''}`}
-              onClick={() => setMobileOpen(false)}
+              onClick={closeMobile}
             >
               {n.label}
             </NavLink>
@@ -160,12 +172,14 @@ export default function Header() {
         </nav>
         <div className={s.drawerFooter}>
           {isLoggedIn ? (
-            <button className={s.drawerBtn} onClick={() => { logout(); setMobileOpen(false); }}>로그아웃</button>
+            <button className={s.drawerBtn} onClick={handleDrawerLogout}>로그아웃</button>
           ) : (
-            <button className={s.drawerBtn} onClick={() => { openLogin(); setMobileOpen(false); }}>로그인</button>
+            <button className={s.drawerBtn} onClick={handleDrawerLogin}>로그인</button>
           )}
         </div>
       </aside>
     </>
   );
-}
+});
+
+export default Header;

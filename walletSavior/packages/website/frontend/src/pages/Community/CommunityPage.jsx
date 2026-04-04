@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Pencil, ImagePlus, X, Send, Eye, MessageSquare, Clock, Search, Trash2, Edit3 } from 'lucide-react';
 import { fmt, verifyPrice } from '../../utils/helpers';
@@ -173,25 +173,25 @@ export default function CommunityPage() {
     return scored;
   }, [posts, board]);
 
-  const pinnedIds = new Set(pinnedPosts.map(p => p.id));
-  const nonPinnedPosts = filteredAndSorted.filter(p => !pinnedIds.has(p.id));
-  const totalPages = Math.max(1, Math.ceil(nonPinnedPosts.length / POSTS_PER_PAGE));
+  const pinnedIds = useMemo(() => new Set(pinnedPosts.map(p => p.id)), [pinnedPosts]);
+  const nonPinnedPosts = useMemo(() => filteredAndSorted.filter(p => !pinnedIds.has(p.id)), [filteredAndSorted, pinnedIds]);
+  const totalPages = useMemo(() => Math.max(1, Math.ceil(nonPinnedPosts.length / POSTS_PER_PAGE)), [nonPinnedPosts.length]);
   const safePage = Math.min(page, totalPages);
-  const paginatedPosts = nonPinnedPosts.slice((safePage - 1) * POSTS_PER_PAGE, safePage * POSTS_PER_PAGE);
+  const paginatedPosts = useMemo(() => nonPinnedPosts.slice((safePage - 1) * POSTS_PER_PAGE, safePage * POSTS_PER_PAGE), [nonPinnedPosts, safePage]);
 
   const matchedProduct = wSelectedProducts.length > 0
     ? wSelectedProducts[0]
     : products.find(p => wProduct.includes(p.name));
   const verification = wPrice && matchedProduct ? verifyPrice(Number(wPrice), matchedProduct.avg) : null;
 
-  const handleImageAdd = (e) => {
+  const handleImageAdd = useCallback((e) => {
     const files = Array.from(e.target.files);
     files.forEach(f => {
       const reader = new FileReader();
       reader.onload = (ev) => setWImages(prev => [...prev, ev.target.result]);
       reader.readAsDataURL(f);
     });
-  };
+  }, []);
 
   const handleWrite = async () => {
     if (!wTitle.trim()) { addToast('제목을 입력해주세요.', 'error'); return; }
@@ -261,30 +261,30 @@ export default function CommunityPage() {
     setShowWrite(true);
   };
 
-  const handleFilterChange = (f) => {
+  const handleFilterChange = useCallback((f) => {
     setFilter(f);
     setPage(1);
-  };
+  }, []);
 
-  const handleTagChange = (t) => {
+  const handleTagChange = useCallback((t) => {
     setFreeTag(t);
     setPage(1);
-  };
+  }, []);
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = useCallback((e) => {
     setSearchQuery(e.target.value);
     setPage(1);
-  };
+  }, []);
 
-  const handleSortChange = (e) => {
+  const handleSortChange = useCallback((e) => {
     setSortBy(e.target.value);
     setPage(1);
-  };
+  }, []);
 
-  const getVerifyBorderColor = (verified) => {
+  const getVerifyBorderColor = useCallback((verified) => {
     if (!verified) return 'var(--border)';
     return VERIFY_STYLES[verified]?.border || 'var(--border)';
-  };
+  }, []);
 
   return (
     <div>
@@ -632,7 +632,7 @@ export default function CommunityPage() {
   );
 }
 
-function PostDetailModal({ post, onClose, board, products, user, onRefresh, onEdit }) {
+const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, board, products, user, onRefresh, onEdit }) {
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState([]);
   const [loadingComments, setLoadingComments] = useState(true);
@@ -843,4 +843,4 @@ function PostDetailModal({ post, onClose, board, products, user, onRefresh, onEd
       </div>
     </div>
   );
-}
+});
