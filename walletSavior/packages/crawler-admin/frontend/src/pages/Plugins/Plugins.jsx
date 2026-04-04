@@ -36,6 +36,7 @@ export default function Plugins() {
   const [search, setSearch] = useState('');
   const [editPlugin, setEditPlugin] = useState(null);
   const [editForm, setEditForm] = useState({ target_url: '', delay: 1, max_items: 100 });
+  const [editErrors, setEditErrors] = useState({});
   const debounceRef = useRef(null);
 
   useEffect(() => {
@@ -76,11 +77,38 @@ export default function Plugins() {
       delay: plugin.delay ?? 1,
       max_items: plugin.max_items ?? 100,
     });
+    setEditErrors({});
     setEditPlugin(plugin);
+  };
+
+  const validateEditForm = (data) => {
+    const errors = {};
+    if (data.target_url) {
+      try {
+        const url = new URL(data.target_url);
+        if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+          errors.target_url = 'http:// 또는 https://로 시작하는 URL을 입력하세요';
+        }
+      } catch {
+        errors.target_url = '올바른 URL 형식이 아닙니다';
+      }
+    }
+    if (data.delay < 0 || data.delay > 60) {
+      errors.delay = '지연은 0~60초 범위여야 합니다';
+    }
+    if (!Number.isInteger(data.max_items) || data.max_items < 1 || data.max_items > 10000) {
+      errors.max_items = '최대 수집 수는 1~10000 범위의 정수여야 합니다';
+    }
+    return errors;
   };
 
   const handleSaveSettings = async () => {
     if (!editPlugin) return;
+    const errors = validateEditForm(editForm);
+    if (Object.keys(errors).length > 0) {
+      setEditErrors(errors);
+      return;
+    }
     await updatePluginSettings(editPlugin.id, editForm);
     setEditPlugin(null);
   };
@@ -262,9 +290,13 @@ export default function Plugins() {
                   type="url"
                   className={styles.fieldInput}
                   value={editForm.target_url}
-                  onChange={(e) => setEditForm({ ...editForm, target_url: e.target.value })}
+                  onChange={(e) => {
+                    setEditForm({ ...editForm, target_url: e.target.value });
+                    setEditErrors((prev) => ({ ...prev, target_url: undefined }));
+                  }}
                   placeholder="https://example.com"
                 />
+                {editErrors.target_url && <span style={{ color: 'var(--red, #ef4444)', fontSize: '0.8rem' }}>{editErrors.target_url}</span>}
               </label>
 
               <label className={styles.fieldLabel}>
@@ -273,10 +305,15 @@ export default function Plugins() {
                   type="number"
                   className={styles.fieldInput}
                   value={editForm.delay}
-                  onChange={(e) => setEditForm({ ...editForm, delay: parseFloat(e.target.value) || 0 })}
+                  onChange={(e) => {
+                    setEditForm({ ...editForm, delay: parseFloat(e.target.value) || 0 });
+                    setEditErrors((prev) => ({ ...prev, delay: undefined }));
+                  }}
                   min="0"
+                  max="60"
                   step="0.5"
                 />
+                {editErrors.delay && <span style={{ color: 'var(--red, #ef4444)', fontSize: '0.8rem' }}>{editErrors.delay}</span>}
               </label>
 
               <label className={styles.fieldLabel}>
@@ -285,9 +322,14 @@ export default function Plugins() {
                   type="number"
                   className={styles.fieldInput}
                   value={editForm.max_items}
-                  onChange={(e) => setEditForm({ ...editForm, max_items: parseInt(e.target.value, 10) || 0 })}
+                  onChange={(e) => {
+                    setEditForm({ ...editForm, max_items: parseInt(e.target.value, 10) || 0 });
+                    setEditErrors((prev) => ({ ...prev, max_items: undefined }));
+                  }}
                   min="1"
+                  max="10000"
                 />
+                {editErrors.max_items && <span style={{ color: 'var(--red, #ef4444)', fontSize: '0.8rem' }}>{editErrors.max_items}</span>}
               </label>
             </div>
 

@@ -101,6 +101,20 @@ function getNextCronRuns(cronExpr, count = 3) {
   }
 }
 
+function isValidCron(expr) {
+  if (!expr || typeof expr !== 'string') return false;
+  const parts = expr.trim().split(/\s+/);
+  if (parts.length !== 5) return false;
+  const patterns = [
+    /^(\*|(\d+)([-/]\d+)?(,(\d+)([-/]\d+)?)*)$/,
+    /^(\*|(\d+)([-/]\d+)?(,(\d+)([-/]\d+)?)*)$/,
+    /^(\*|(\d+)([-/]\d+)?(,(\d+)([-/]\d+)?)*)$/,
+    /^(\*|(\d+)([-/]\d+)?(,(\d+)([-/]\d+)?)*)$/,
+    /^(\*|(\d+)([-/]\d+)?(,(\d+)([-/]\d+)?)*)$/,
+  ];
+  return parts.every((p, i) => patterns[i].test(p));
+}
+
 export default function Schedule() {
   const schedules = useAdminStore((s) => s.schedules);
   const crawlers = useAdminStore((s) => s.crawlers);
@@ -121,6 +135,7 @@ export default function Schedule() {
   const [addCron, setAddCron] = useState('0 7 * * *');
   const [deleting, setDeleting] = useState(null);
   const [runningId, setRunningId] = useState(null);
+  const [cronError, setCronError] = useState('');
 
   useEffect(() => {
     fetchSchedules();
@@ -146,6 +161,11 @@ export default function Schedule() {
 
   const handleSave = () => {
     if (editing) {
+      if (!isValidCron(editCron)) {
+        setCronError('올바른 Cron 표현식을 입력하세요 (예: 0 9 * * *)');
+        return;
+      }
+      setCronError('');
       updateScheduleCron(editing.id, editCron, cronToHuman(editCron));
       updateScheduleApi(editing.crawlerId || editing.crawlerName, {
         cron: editCron,
@@ -180,6 +200,11 @@ export default function Schedule() {
 
   const handleAdd = () => {
     if (addCrawler && addCron) {
+      if (!isValidCron(addCron)) {
+        setCronError('올바른 Cron 표현식을 입력하세요 (예: 0 9 * * *)');
+        return;
+      }
+      setCronError('');
       createSchedule({ crawler_name: addCrawler, cron: addCron });
       setAdding(false);
       setAddCrawler('');
@@ -376,6 +401,11 @@ export default function Schedule() {
               <div className={styles.editPreview}>
                 미리보기: {cronToHuman(editCron)}
               </div>
+              {cronError && (
+                <div style={{ color: 'var(--red, #ef4444)', fontSize: '0.8rem', marginTop: '4px' }}>
+                  {cronError}
+                </div>
+              )}
             </div>
 
             {editNextRuns.length > 0 && (
@@ -400,7 +430,7 @@ export default function Schedule() {
             <div className={styles.editActions}>
               <button
                 className={styles.cancelBtn}
-                onClick={() => setEditing(null)}
+                onClick={() => { setEditing(null); setCronError(''); }}
               >
                 취소
               </button>
@@ -483,6 +513,11 @@ export default function Schedule() {
               <div className={styles.editPreview}>
                 미리보기: {cronToHuman(addCron)}
               </div>
+              {cronError && (
+                <div style={{ color: 'var(--red, #ef4444)', fontSize: '0.8rem', marginTop: '4px' }}>
+                  {cronError}
+                </div>
+              )}
             </div>
 
             {addNextRuns.length > 0 && (
@@ -507,7 +542,7 @@ export default function Schedule() {
             <div className={styles.editActions}>
               <button
                 className={styles.cancelBtn}
-                onClick={() => setAdding(false)}
+                onClick={() => { setAdding(false); setCronError(''); }}
               >
                 취소
               </button>

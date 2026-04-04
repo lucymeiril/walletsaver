@@ -273,7 +273,7 @@ export default function Crawlers() {
       }
     } catch (err) {
       for (const id of ids) {
-        setRunState(id, { phase: 'done', success: false, message: `벌크 실행 실패: ${err.message}` });
+        setRunState(id, { phase: 'done', success: false, message: '벌크 실행에 실패했습니다. 잠시 후 다시 시도해 주세요.' });
         clearRunState(id, 4000);
       }
     }
@@ -339,7 +339,7 @@ export default function Crawlers() {
       setSettingsModal(null);
       setSettingsErrors({});
     } catch (err) {
-      alert(`설정 저장 실패: ${err.message}`);
+      alert('설정 저장에 실패했습니다. 잠시 후 다시 시도해 주세요.');
     }
     setSettingsLoading(false);
   };
