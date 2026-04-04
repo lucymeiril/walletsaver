@@ -72,14 +72,16 @@ class TestJobTracker:
 
 
 class TestCrawlScheduler:
-    def test_start_stop(self):
+    @pytest.mark.asyncio
+    async def test_start_stop(self):
         sched = CrawlScheduler()
         sched.start()
         assert sched.is_running is True
         sched.stop()
         assert sched.is_running is False
 
-    def test_double_start_idempotent(self):
+    @pytest.mark.asyncio
+    async def test_double_start_idempotent(self):
         sched = CrawlScheduler()
         sched.start()
         sched.start()
@@ -91,7 +93,8 @@ class TestCrawlScheduler:
         sched.stop()
         assert sched.is_running is False
 
-    def test_add_job(self):
+    @pytest.mark.asyncio
+    async def test_add_job(self):
         sched = CrawlScheduler()
         sched.start()
         result = sched.add_job("emart", "0 7 * * *")
@@ -102,7 +105,8 @@ class TestCrawlScheduler:
         assert jobs[0]["job_id"] == "crawl_emart"
         sched.stop()
 
-    def test_remove_job(self):
+    @pytest.mark.asyncio
+    async def test_remove_job(self):
         sched = CrawlScheduler()
         sched.start()
         sched.add_job("emart", "0 7 * * *")
@@ -111,14 +115,16 @@ class TestCrawlScheduler:
         assert len(sched.list_jobs()) == 0
         sched.stop()
 
-    def test_remove_nonexistent(self):
+    @pytest.mark.asyncio
+    async def test_remove_nonexistent(self):
         sched = CrawlScheduler()
         sched.start()
         removed = sched.remove_job("nope")
         assert removed is False
         sched.stop()
 
-    def test_update_job(self):
+    @pytest.mark.asyncio
+    async def test_update_job(self):
         sched = CrawlScheduler()
         sched.start()
         sched.add_job("emart", "0 7 * * *")
@@ -126,7 +132,8 @@ class TestCrawlScheduler:
         assert result["cron"] == "0 12 * * *"
         sched.stop()
 
-    def test_list_jobs_empty(self):
+    @pytest.mark.asyncio
+    async def test_list_jobs_empty(self):
         sched = CrawlScheduler()
         sched.start()
         assert sched.list_jobs() == []
@@ -161,7 +168,8 @@ class TestCrawlScheduler:
         assert len(history) == 1
         assert history[0]["status"] == "success"
 
-    def test_init_from_registry(self):
+    @pytest.mark.asyncio
+    async def test_init_from_registry(self):
         mock_reg = MagicMock()
         mock_reg.list_crawlers.return_value = [
             {"name": "emart", "schedule": "0 7 * * *"},

@@ -41,3 +41,14 @@ def get_semaphore() -> asyncio.Semaphore:
 
 def active_count() -> int:
     return len(_running_crawlers)
+
+
+async def clear_running_crawlers() -> int:
+    """Clear all running crawler slots (for shutdown). Returns count cleared.
+
+    GS-R5: Clean up stale state on shutdown.
+    """
+    async with _lock:
+        count = len(_running_crawlers)
+        _running_crawlers.clear()
+    return count

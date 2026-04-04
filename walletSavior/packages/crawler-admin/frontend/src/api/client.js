@@ -85,25 +85,37 @@ async function fetchWithETag(url, options = {}) {
 
 /**
  * SSE 연결 헬퍼 — 크롤러 실행 상태를 실시간 수신.
- * 네트워크 끊김 시 지수 백오프로 자동 재연결 (최대 5회).
+ *
+ * SSE reconnection with exponential backoff (audit fix).
+ * - On transient error: retry up to MAX_RETRIES times with backoff
+ * - On successful message: reset retry counter
+ * - On terminal status (success/failed): close cleanly
+ *
  * @returns {{ close: () => void }} 연결 해제 핸들
  */
 function subscribeCrawlerStatus(crawlerId, { onData, onError, onComplete }) {
   const MAX_RETRIES = 5;
-  let retries = 0;
-  let currentEs = null;
+  const BASE_DELAY_MS = 1000;
+  const MAX_DELAY_MS = 10000;
+
+  let retryCount = 0;
+  let currentSource = null;
   let closed = false;
   let retryTimer = null;
+  let lastEventId = null;
 
   function connect() {
     if (closed) return;
 
     const url = `${API_BASE}/crawlers/${crawlerId}/status/stream`;
     const eventSource = new EventSource(url);
-    currentEs = eventSource;
+    currentSource = eventSource;
 
     eventSource.onmessage = (event) => {
-      retries = 0; // reset on successful message
+      retryCount = 0;   // Reset on successful message
+      if (event.lastEventId) {
+        lastEventId = event.lastEventId;
+      }
       try {
         const data = JSON.parse(event.data);
         onData?.(data);
@@ -118,14 +130,19 @@ function subscribeCrawlerStatus(crawlerId, { onData, onError, onComplete }) {
 
     eventSource.onerror = () => {
       eventSource.close();
-      currentEs = null;
+      currentSource = null;
+
       if (closed) return;
-      if (retries < MAX_RETRIES) {
-        retries++;
-        const delay = Math.min(1000 * Math.pow(2, retries - 1) + Math.random() * 500, 10000);
+
+      if (retryCount < MAX_RETRIES) {
+        retryCount++;
+        const delay = Math.min(
+          BASE_DELAY_MS * Math.pow(2, retryCount - 1) + Math.random() * 500,
+          MAX_DELAY_MS,
+        );
         retryTimer = setTimeout(connect, delay);
       } else {
-        onError?.(new Error('SSE 연결이 재시도 후에도 실패했습니다'));
+        onError?.(new Error('SSE connection failed after ' + MAX_RETRIES + ' retries'));
       }
     };
   }
@@ -136,14 +153,13 @@ function subscribeCrawlerStatus(crawlerId, { onData, onError, onComplete }) {
       clearTimeout(retryTimer);
       retryTimer = null;
     }
-    if (currentEs) {
-      currentEs.close();
-      currentEs = null;
+    if (currentSource) {
+      currentSource.close();
+      currentSource = null;
     }
   }
 
   connect();
-
   return { close: cleanup };
 }
 
