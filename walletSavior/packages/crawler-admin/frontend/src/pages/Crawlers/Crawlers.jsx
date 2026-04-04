@@ -136,12 +136,13 @@ export default function Crawlers() {
   const startPolling = useCallback((id) => {
     // SSE 우선 시도 — 실시간 push로 폴링 대비 지연·트래픽 대폭 감소
     const startTime = Date.now();
-    if (pollRefs.current[id]) {
-      if (typeof pollRefs.current[id] === 'object' && pollRefs.current[id].close) {
-        pollRefs.current[id].close();
-      } else {
-        clearTimeout(pollRefs.current[id]);
-      }
+
+    // Always fully close previous SSE/timer before opening new one
+    const oldRef = pollRefs.current[id];
+    if (oldRef) {
+      if (typeof oldRef === 'object' && oldRef.close) oldRef.close();
+      else if (typeof oldRef === 'number') clearTimeout(oldRef);
+      delete pollRefs.current[id];
     }
 
     try {
@@ -190,12 +191,14 @@ export default function Crawlers() {
   const startPollingFallback = useCallback((id, startTime) => {
     let pollCount = 0;
     let currentInterval = POLL_INTERVAL_BASE;
+    let consecutiveFailures = 0;
 
     const poll = async () => {
       pollCount++;
       const elapsed = ((Date.now() - startTime) / 1000).toFixed(0);
       try {
         const data = await api.getCrawlerStatus(id);
+        consecutiveFailures = 0;
         if (data.status === 'success') {
           setRunState(id, {
             phase: 'done',
@@ -216,7 +219,16 @@ export default function Crawlers() {
           clearRunState(id);
           return;
         }
-      } catch { /* 폴링 실패 무시 */ }
+      } catch {
+        consecutiveFailures++;
+        if (consecutiveFailures >= 3) {
+          setRunState(id, {
+            phase: 'running',
+            success: false,
+            message: `⚠️ 상태 확인 연결 불안정 (${consecutiveFailures}회 실패)`,
+          });
+        }
+      }
 
       setRunState(id, {
         phase: 'running',
@@ -244,16 +256,19 @@ export default function Crawlers() {
   }, [setRunState, clearRunState, fetchCrawlers]);
 
   const handleRun = useCallback(async (id) => {
+    // Prevent duplicate runs — ignore if crawler is already running
+    if (runStates[id]?.phase === 'running') return;
+
     setRunState(id, { phase: 'starting', success: true, message: '크롤러 실행 요청 중...' });
     const result = await runCrawler(id);
     if (result) {
       setRunState(id, { phase: 'running', success: true, message: '⏳ 크롤링 실행 중... (0초 경과)' });
       startPolling(id);
     } else {
-      setRunState(id, { phase: 'done', success: false, message: '크롤러 실행 요청 실패' });
+      setRunState(id, { phase: 'done', success: false, message: '❌ 실행 실패: 요청을 처리할 수 없습니다.' });
       clearRunState(id, 4000);
     }
-  }, [runCrawler, setRunState, startPolling, clearRunState]);
+  }, [runStates, runCrawler, setRunState, startPolling, clearRunState]);
 
   const handleBulkRun = useCallback(async () => {
     if (checkedIds.size === 0) return;
@@ -473,7 +488,9 @@ export default function Crawlers() {
       </div>
 
       {error && (
-        <div className={styles.errorBanner}>{error}</div>
+        <div className={styles.errorBanner}>
+          ⚠️ {error.startsWith('HTTP') ? '서버와 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.' : error}
+        </div>
       )}
 
       <div className={styles.filters}>
@@ -488,8 +505,17 @@ export default function Crawlers() {
         ))}
       </div>
 
+      {loading && filtered.length === 0 && (
+        <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text3, #64748b)' }}>
+          <Loader size={24} className={styles.spinner} style={{ marginBottom: '8px' }} />
+          <div>크롤러 목록을 불러오는 중...</div>
+        </div>
+      )}
+
       {filtered.length === 0 && !loading && (
-        <div className={styles.emptyState}>등록된 크롤러가 없습니다</div>
+        <div className={styles.emptyState}>
+          {error ? '크롤러 목록을 불러올 수 없습니다. 잠시 후 다시 시도해 주세요.' : '등록된 크롤러가 없습니다'}
+        </div>
       )}
 
       {/* 카테고리 그룹 모드 (전체 필터) */}

@@ -1,4 +1,58 @@
 const API_BASE = '/api';
+const FETCH_TIMEOUT_MS = 30000;
+
+// HTTP 상태 코드별 사용자 친화적 에러 메시지
+const HTTP_ERROR_MESSAGES = {
+  400: '잘못된 요청입니다.',
+  401: '인증이 필요합니다. 다시 로그인해 주세요.',
+  403: '접근 권한이 없습니다.',
+  404: '요청한 리소스를 찾을 수 없습니다.',
+  408: '요청 시간이 초과되었습니다.',
+  429: '요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.',
+  500: '서버 내부 오류가 발생했습니다.',
+  502: '서버에 연결할 수 없습니다.',
+  503: '서비스를 일시적으로 사용할 수 없습니다.',
+};
+
+function getHttpErrorMessage(status) {
+  return HTTP_ERROR_MESSAGES[status] || `서버 오류가 발생했습니다 (HTTP ${status})`;
+}
+
+/**
+ * AbortController 기반 fetch — 타임아웃 및 컴포넌트 언마운트 시 정리 지원.
+ * @param {string} url
+ * @param {RequestInit & { timeoutMs?: number, signal?: AbortSignal }} options
+ */
+async function fetchWithTimeout(url, options = {}) {
+  const { timeoutMs = FETCH_TIMEOUT_MS, signal: externalSignal, ...fetchOptions } = options;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  // 외부 signal이 있으면 연결
+  if (externalSignal) {
+    if (externalSignal.aborted) {
+      controller.abort();
+    } else {
+      externalSignal.addEventListener('abort', () => controller.abort(), { once: true });
+    }
+  }
+
+  try {
+    const resp = await fetch(url, { ...fetchOptions, signal: controller.signal });
+    if (!resp.ok) throw new Error(getHttpErrorMessage(resp.status));
+    return resp;
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      throw new Error('요청 시간이 초과되었습니다. 네트워크 연결을 확인해 주세요.');
+    }
+    if (err.message && !err.message.startsWith('서버')) {
+      throw err;
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
 
 // ETag 캐시: 상태 폴링 시 304 응답으로 불필요한 JSON 파싱 방지
 const _etagCache = new Map();
@@ -19,7 +73,7 @@ async function fetchWithETag(url, options = {}) {
     return cached.data;
   }
 
-  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  if (!resp.ok) throw new Error(getHttpErrorMessage(resp.status));
 
   const data = await resp.json();
   const etag = resp.headers.get('etag');
@@ -30,115 +84,147 @@ async function fetchWithETag(url, options = {}) {
 }
 
 /**
- * SSE 연결 헬퍼 — 크롤러 실행 상태를 실시간 수신 (폴링 대체).
+ * SSE 연결 헬퍼 — 크롤러 실행 상태를 실시간 수신.
+ * 네트워크 끊김 시 지수 백오프로 자동 재연결 (최대 5회).
  * @returns {{ close: () => void }} 연결 해제 핸들
  */
 function subscribeCrawlerStatus(crawlerId, { onData, onError, onComplete }) {
-  const url = `${API_BASE}/crawlers/${crawlerId}/status/stream`;
-  const eventSource = new EventSource(url);
+  const MAX_RETRIES = 5;
+  let retries = 0;
+  let currentEs = null;
+  let closed = false;
+  let retryTimer = null;
 
-  eventSource.onmessage = (event) => {
-    try {
-      const data = JSON.parse(event.data);
-      onData?.(data);
-      if (data.status === 'success' || data.status === 'failed') {
-        eventSource.close();
-        onComplete?.(data);
+  function connect() {
+    if (closed) return;
+
+    const url = `${API_BASE}/crawlers/${crawlerId}/status/stream`;
+    const eventSource = new EventSource(url);
+    currentEs = eventSource;
+
+    eventSource.onmessage = (event) => {
+      retries = 0; // reset on successful message
+      try {
+        const data = JSON.parse(event.data);
+        onData?.(data);
+        if (data.status === 'success' || data.status === 'failed') {
+          cleanup();
+          onComplete?.(data);
+        }
+      } catch (e) {
+        onError?.(e);
       }
-    } catch (e) {
-      onError?.(e);
+    };
+
+    eventSource.onerror = () => {
+      eventSource.close();
+      currentEs = null;
+      if (closed) return;
+      if (retries < MAX_RETRIES) {
+        retries++;
+        const delay = Math.min(1000 * Math.pow(2, retries - 1) + Math.random() * 500, 10000);
+        retryTimer = setTimeout(connect, delay);
+      } else {
+        onError?.(new Error('SSE 연결이 재시도 후에도 실패했습니다'));
+      }
+    };
+  }
+
+  function cleanup() {
+    closed = true;
+    if (retryTimer) {
+      clearTimeout(retryTimer);
+      retryTimer = null;
     }
-  };
+    if (currentEs) {
+      currentEs.close();
+      currentEs = null;
+    }
+  }
 
-  eventSource.onerror = () => {
-    eventSource.close();
-    onError?.(new Error('SSE connection failed'));
-  };
+  connect();
 
-  return { close: () => eventSource.close() };
+  return { close: cleanup };
 }
 
 export const api = {
   // 크롤러 목록
-  getCrawlers: () => fetch(`${API_BASE}/crawlers`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  getCrawlers: () => fetchWithTimeout(`${API_BASE}/crawlers`).then(r => r.json()),
   // 크롤러 실행
-  runCrawler: (id) => fetch(`${API_BASE}/crawlers/${id}/run`, { method: 'POST' }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  runCrawler: (id) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/run`, { method: 'POST' }).then(r => r.json()),
   // 크롤러 상태 — ETag 기반 캐시로 변경 없으면 304 반환
   getCrawlerStatus: (id) => fetchWithETag(`${API_BASE}/crawlers/${id}/status`),
   // 크롤러 상태 SSE 구독
   subscribeCrawlerStatus,
   // 크롤러 토글
-  toggleCrawler: (id, status) => fetch(`${API_BASE}/crawlers/${id}/toggle`, {
+  toggleCrawler: (id, status) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/toggle`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status }),
-  }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  }).then(r => r.json()),
   // 크롤러 벌크 실행
-  bulkRunCrawlers: (ids) => fetch(`${API_BASE}/crawlers/bulk-run`, {
+  bulkRunCrawlers: (ids) => fetchWithTimeout(`${API_BASE}/crawlers/bulk-run`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ crawler_ids: ids }),
-  }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  }).then(r => r.json()),
   // 크롤러 설정
-  getCrawlerSettings: (id) => fetch(`${API_BASE}/crawlers/${id}/settings`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
-  updateCrawlerSettings: (id, data) => fetch(`${API_BASE}/crawlers/${id}/settings`, {
+  getCrawlerSettings: (id) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/settings`).then(r => r.json()),
+  updateCrawlerSettings: (id, data) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/settings`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-  }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  }).then(r => r.json()),
   // 대시보드 통계
-  getDashboardStats: (params = {}) => fetch(`${API_BASE}/dashboard/stats?${new URLSearchParams(params)}`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  getDashboardStats: (params = {}) => fetchWithTimeout(`${API_BASE}/dashboard/stats?${new URLSearchParams(params)}`).then(r => r.json()),
   // 로그
-  getLogs: (params) => fetch(`${API_BASE}/logs?${new URLSearchParams(params)}`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  getLogs: (params) => fetchWithTimeout(`${API_BASE}/logs?${new URLSearchParams(params)}`).then(r => r.json()),
   // 로그 CSV 내보내기
-  exportLogsCsv: (params = {}) => fetch(`${API_BASE}/logs/export?${new URLSearchParams(params)}`).then(r => {
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    return r.blob();
-  }),
+  exportLogsCsv: (params = {}) => fetchWithTimeout(`${API_BASE}/logs/export?${new URLSearchParams(params)}`).then(r => r.blob()),
   // 스케줄
-  getSchedules: () => fetch(`${API_BASE}/schedules`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
-  createSchedule: (data) => fetch(`${API_BASE}/schedules`, {
+  getSchedules: () => fetchWithTimeout(`${API_BASE}/schedules`).then(r => r.json()),
+  createSchedule: (data) => fetchWithTimeout(`${API_BASE}/schedules`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-  }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
-  updateSchedule: (name, data) => fetch(`${API_BASE}/schedules/${name}`, {
+  }).then(r => r.json()),
+  updateSchedule: (name, data) => fetchWithTimeout(`${API_BASE}/schedules/${name}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-  }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
-  deleteSchedule: (name) => fetch(`${API_BASE}/schedules/${name}`, { method: 'DELETE' }),
-  toggleSchedule: (name, enabled) => fetch(`${API_BASE}/schedules/${name}/toggle`, {
+  }).then(r => r.json()),
+  deleteSchedule: (name) => fetchWithTimeout(`${API_BASE}/schedules/${name}`, { method: 'DELETE' }),
+  toggleSchedule: (name, enabled) => fetchWithTimeout(`${API_BASE}/schedules/${name}/toggle`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ enabled }),
-  }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
-  runScheduleNow: (name) => fetch(`${API_BASE}/schedules/${name}/run-now`, {
+  }).then(r => r.json()),
+  runScheduleNow: (name) => fetchWithTimeout(`${API_BASE}/schedules/${name}/run-now`, {
     method: 'POST',
-  }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  }).then(r => r.json()),
   // 플러그인
-  getPlugins: () => fetch(`${API_BASE}/plugins`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
-  togglePlugin: (id, status) => fetch(`${API_BASE}/plugins/${id}/status`, {
+  getPlugins: () => fetchWithTimeout(`${API_BASE}/plugins`).then(r => r.json()),
+  togglePlugin: (id, status) => fetchWithTimeout(`${API_BASE}/plugins/${id}/status`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status }),
-  }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
-  updatePluginSettings: (id, data) => fetch(`${API_BASE}/plugins/${id}/settings`, {
+  }).then(r => r.json()),
+  updatePluginSettings: (id, data) => fetchWithTimeout(`${API_BASE}/plugins/${id}/settings`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-  }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  }).then(r => r.json()),
   // 대기열
-  getIngestions: (params) => fetch(`${API_BASE}/ingestions?${new URLSearchParams(params)}`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
-  getIngestion: (id) => fetch(`${API_BASE}/ingestions/${id}`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
-  reviewIngestion: (id, data) => fetch(`${API_BASE}/ingestions/${id}/crawler-review`, {
+  getIngestions: (params) => fetchWithTimeout(`${API_BASE}/ingestions?${new URLSearchParams(params)}`).then(r => r.json()),
+  getIngestion: (id) => fetchWithTimeout(`${API_BASE}/ingestions/${id}`).then(r => r.json()),
+  reviewIngestion: (id, data) => fetchWithTimeout(`${API_BASE}/ingestions/${id}/crawler-review`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-  }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
-  cleanupIngestions: (data) => fetch(`${API_BASE}/ingestions/cleanup`, {
+  }).then(r => r.json()),
+  cleanupIngestions: (data) => fetchWithTimeout(`${API_BASE}/ingestions/cleanup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-  }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  }).then(r => r.json()),
 };
