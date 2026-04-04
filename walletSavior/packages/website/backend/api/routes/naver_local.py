@@ -17,17 +17,35 @@ sync API + ThreadPoolExecutor 조합으로 해결한다.
 import asyncio
 import json
 import logging
+import re
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
 from typing import Optional
+from urllib.parse import quote
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, HTTPException
 from fastapi.responses import StreamingResponse
 from api.schemas.common import ApiResponse
 from api.utils.cache import TTLCache, RequestDeduplicator
 
 logger = logging.getLogger(__name__)
+
+# ── Search query sanitization ──
+MAX_QUERY_LENGTH = 100
+QUERY_PATTERN = re.compile(r'^[\w가-힣\s,.\-()]+$')
+
+
+def sanitize_search_query(query: str) -> str:
+    """Sanitize and validate search query for Naver scraping."""
+    query = query.strip()
+    if len(query) > MAX_QUERY_LENGTH:
+        raise HTTPException(400, f"검색어는 {MAX_QUERY_LENGTH}자 이하여야 합니다")
+    if len(query) == 0:
+        raise HTTPException(400, "검색어를 입력해주세요")
+    if not QUERY_PATTERN.match(query):
+        raise HTTPException(400, "검색어에 허용되지 않는 문자가 포함되어 있습니다")
+    return query
 
 router = APIRouter()
 
@@ -233,7 +251,7 @@ def _search_via_playwright_sync(query: str, lat: float, lng: float, max_items: i
         )
         page.on("response", handle_response)
 
-        url = f"https://map.naver.com/p/search/{query}"
+        url = f"https://map.naver.com/p/search/{quote(query)}"
         page.goto(url, timeout=20000)
 
         # allSearch 응답 도착까지 100ms 간격 폴링 (최대 10초)
@@ -320,6 +338,7 @@ async def naver_place_search(
     Windows asyncio 호환 문제를 스레드 풀 실행으로 해결하고,
     네이버의 봇 감지는 stealth 브라우저 설정으로 우회한다.
     """
+    query = sanitize_search_query(query)
     # TTL cache + request deduplication
     cache_key = f"naver:{query}:{lat:.4f}:{lng:.4f}:{max_items}"
     cached = _search_cache.get(cache_key)
@@ -370,6 +389,8 @@ async def subcategory_search(
     예: location="오리역", subcategory="카페" → "오리역 카페" 검색
     기존 area-explore 결과를 필터링하는 대신 네이버에 직접 재검색한다.
     """
+    location = sanitize_search_query(location)
+    subcategory = sanitize_search_query(subcategory)
     # 좌표가 없으면 geocode로 보완
     if lat is None or lng is None:
         loop = asyncio.get_event_loop()
@@ -447,6 +468,7 @@ async def geocode(
     네이버 지도 검색 결과의 첫 번째 항목 좌표를 반환한다.
     5분 TTL 캐시로 중복 요청을 최소화한다.
     """
+    query = sanitize_search_query(query)
     loop = asyncio.get_event_loop()
     try:
         result = await loop.run_in_executor(_executor, _geocode_sync, query)

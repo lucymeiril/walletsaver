@@ -93,7 +93,7 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     # storage가 없으면 db-admin의 DBStorage로 자동 연결 시도
     if storage is None:
         try:
-            import sys, os, logging
+            import sys
             db_admin_path = os.path.normpath(os.path.join(
                 os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))),
                 "db-admin", "backend"
@@ -108,7 +108,6 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
             storage.init_db()
             logging.info(f"✅ DB 연결 성공: {db_path}")
         except Exception as e:
-            import logging
             logging.warning(f"DB 연결 실패, mock 데이터 사용: {e}")
             storage = None
 

@@ -16,12 +16,18 @@
 import os
 import sys
 import math
+import logging
 from datetime import datetime
 from fastapi import APIRouter, Request, HTTPException, Depends, Query
 from api.schemas.common import ApiResponse, PaginationMeta
 from api.schemas.community import PostCreate, PostUpdate, CommentCreate, VoteRequest
 from api.middleware.auth import require_auth, get_current_user
+from api.middleware.rate_limit import limiter
 from api.utils.cache import TTLCache
+from api.utils.sanitize import sanitize_html, strip_html, validate_url, validate_image_url
+from services.audit_logger import log_content_event
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -183,7 +189,8 @@ async def list_posts(
 
 
 @router.post("")
-async def create_post(body: PostCreate, user: dict = Depends(get_current_user)):
+@limiter.limit("10/minute")
+async def create_post(request: Request, body: PostCreate, user: dict = Depends(get_current_user)):
     """게시글 작성 — 로그인 시 사용자 정보 사용, 비로그인 시 게스트로 작성."""
     if not user:
         user = {"id": 0, "email": "guest@wallet.local", "nickname": "게스트", "role": "guest"}
@@ -197,18 +204,18 @@ async def create_post(body: PostCreate, user: dict = Depends(get_current_user)):
             post = PostModel(
                 author_id=user["id"],
                 post_type=pt,
-                title=body.title,
-                content=body.content,
+                title=strip_html(body.title),
+                content=sanitize_html(body.content),
                 custom_category=body.category,
                 deal_price=body.price,
-                deal_url=body.url,
+                deal_url=validate_url(body.url) if body.url else None,
             )
             session.add(post)
             session.commit()
             session.refresh(post)
             if body.images:
                 for i, img_data in enumerate(body.images):
-                    if isinstance(img_data, str) and img_data:
+                    if isinstance(img_data, str) and img_data and validate_image_url(img_data):
                         img = PostImageModel(
                             post_id=post.id,
                             image_url=img_data,
@@ -218,6 +225,9 @@ async def create_post(body: PostCreate, user: dict = Depends(get_current_user)):
                 session.commit()
                 session.refresh(post)
             _posts_list_cache.clear()
+            log_content_event("post_created", user_id=user["id"], resource="post",
+                              resource_id=post.id,
+                              ip=request.client.host if request.client else "unknown")
             data = _post_to_dict(post)
             return ApiResponse(data=data)
 
@@ -252,15 +262,17 @@ async def update_post(post_id: int, body: PostUpdate, user: dict = Depends(requi
             if post.author_id != user["id"]:
                 raise HTTPException(status_code=403, detail="수정 권한이 없습니다")
             if body.title is not None:
-                post.title = body.title
+                post.title = strip_html(body.title)
             if body.content is not None:
-                post.content = body.content
+                post.content = sanitize_html(body.content)
             if body.category is not None:
                 post.custom_category = body.category
             if body.price is not None:
                 post.deal_price = body.price
             if body.url is not None:
                 post.deal_url = body.url
+            if body.url is not None:
+                post.deal_url = validate_url(body.url)
             post.updated_at = datetime.utcnow()
             session.commit()
             session.refresh(post)
@@ -289,7 +301,8 @@ async def delete_post(post_id: int, user: dict = Depends(require_auth)):
 
 
 @router.post("/{post_id}/comments")
-async def create_comment(post_id: int, body: CommentCreate, user: dict = Depends(require_auth)):
+@limiter.limit("10/minute")
+async def create_comment(request: Request, post_id: int, body: CommentCreate, user: dict = Depends(require_auth)):
     """댓글 작성."""
     if _use_db and _SessionLocal:
         with _SessionLocal() as session:
@@ -300,12 +313,15 @@ async def create_comment(post_id: int, body: CommentCreate, user: dict = Depends
             comment = CommentModel(
                 post_id=post_id,
                 author_id=user["id"],
-                content=body.content,
+                content=strip_html(body.content),
                 parent_id=body.parent_id,
             )
             session.add(comment)
             session.commit()
             session.refresh(comment)
+            log_content_event("comment_created", user_id=user["id"], resource="comment",
+                              resource_id=comment.id,
+                              ip=request.client.host if request.client else "unknown")
             return ApiResponse(data=_comment_to_dict(comment))
 
     raise HTTPException(status_code=503, detail="DB 미연결")
@@ -331,7 +347,8 @@ async def list_comments(post_id: int):
 
 
 @router.post("/{post_id}/vote")
-async def vote_post(post_id: int, body: VoteRequest, user: dict = Depends(require_auth)):
+@limiter.limit("10/minute")
+async def vote_post(request: Request, post_id: int, body: VoteRequest, user: dict = Depends(require_auth)):
     """핫딜 투표 (hot/not)."""
     if body.vote_type not in ("hot", "not"):
         raise HTTPException(status_code=400, detail="vote_type은 'hot' 또는 'not'이어야 합니다")

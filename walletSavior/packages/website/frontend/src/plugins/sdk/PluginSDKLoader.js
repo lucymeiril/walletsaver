@@ -39,7 +39,7 @@
           direction: 'request',
           source: 'wallet-savior',
         },
-        '*'
+        document.referrer ? new URL(document.referrer).origin : window.location.origin
       );
     });
   }
