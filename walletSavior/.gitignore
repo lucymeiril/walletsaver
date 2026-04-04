@@ -9,6 +9,10 @@ ENV/
 env/
 
 # Data
+.env
+.env.local
+.env.production
+!**/.env.example
 !proj/.env.example
 
 # OS

@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import random
 import re
 import time
@@ -245,15 +246,17 @@ class YogiyoCrawler(CrawlerContract):
 
     def _get_headers(self) -> dict:
         """요기요 API 요청용 헤더."""
+        yogiyo_api_key = os.getenv("YOGIYO_API_KEY", "")
+        yogiyo_api_secret = os.getenv("YOGIYO_API_SECRET", "")
+
         base_headers = self._anti_detect.get_random_headers()
         base_headers.update({
             "Referer": "https://www.yogiyo.co.kr/",
             "Accept": "application/json",
             "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
             "Origin": "https://www.yogiyo.co.kr",
-            # 요기요 API 키 (웹 앱에서 공개적으로 사용하는 키)
-            "x-apikey": "iphoneap",
-            "x-apisecret": "fe5183cc3dea12bd0ce299cf110a75a2",
+            "x-apikey": yogiyo_api_key,
+            "x-apisecret": yogiyo_api_secret,
         })
         return base_headers
 
