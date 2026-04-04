@@ -13,6 +13,7 @@ from pydantic import BaseModel
 from api.app import limiter
 from api.security.input_schemas import CleanupRequest
 from audit import audit_log, AuditEventType
+from pipeline.circuit_breaker import CircuitBreaker, CircuitOpenError
 
 logger = logging.getLogger(__name__)
 
@@ -22,12 +23,35 @@ DB_ADMIN_URL = os.getenv(
     "DB_ADMIN_INGESTION_URL", "http://localhost:8002/api/ingestions"
 )
 
+# Circuit breaker: fast-fail after 3 consecutive failures, 30s cooldown
+_cb = CircuitBreaker(service_name="db-admin", failure_threshold=3, recovery_timeout=30.0)
+
 
 class ReviewRequest(BaseModel):
     action: str  # "approve", "reject"
     notes: Optional[str] = None
     approved_item_indices: Optional[list[int]] = None
     rejected_reason: Optional[str] = None
+
+
+async def _proxy(method: str, url: str, **kwargs):
+    """Execute a proxied HTTP request with circuit breaker protection."""
+    try:
+        async with _cb:
+            async with httpx.AsyncClient(timeout=15) as client:
+                resp = await getattr(client, method)(url, **kwargs)
+                resp.raise_for_status()
+                return resp.json()
+    except CircuitOpenError:
+        raise HTTPException(
+            status_code=503,
+            detail="DB 관리 서비스가 일시적으로 사용 불가합니다. 잠시 후 다시 시도해 주세요.",
+        )
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(exc.response.status_code, exc.response.text)
+    except (httpx.ConnectError, httpx.TimeoutException) as exc:
+        logger.error("DB 관리 API 연결 실패: %s", exc)
+        raise HTTPException(502, "DB 관리 API에 연결할 수 없습니다.")
 
 
 @router.get("")
@@ -43,31 +67,13 @@ async def list_ingestions(
         params["status"] = status
     if crawler_name:
         params["crawler_name"] = crawler_name
-    try:
-        async with httpx.AsyncClient(timeout=15) as client:
-            resp = await client.get(DB_ADMIN_URL, params=params)
-            resp.raise_for_status()
-            return resp.json()
-    except httpx.HTTPStatusError as exc:
-        raise HTTPException(exc.response.status_code, exc.response.text)
-    except Exception as exc:
-        logger.error("DB 관리 API 연결 실패 (list): %s", exc)
-        raise HTTPException(502, "DB 관리 API에 연결할 수 없습니다.")
+    return await _proxy("get", DB_ADMIN_URL, params=params)
 
 
 @router.get("/{ingestion_id}")
 async def get_ingestion(ingestion_id: int):
     """대기열 상세 — DB 관리 API 프록시."""
-    try:
-        async with httpx.AsyncClient(timeout=15) as client:
-            resp = await client.get(f"{DB_ADMIN_URL}/{ingestion_id}")
-            resp.raise_for_status()
-            return resp.json()
-    except httpx.HTTPStatusError as exc:
-        raise HTTPException(exc.response.status_code, exc.response.text)
-    except Exception as exc:
-        logger.error("DB 관리 API 연결 실패 (get %s): %s", ingestion_id, exc)
-        raise HTTPException(502, "DB 관리 API에 연결할 수 없습니다.")
+    return await _proxy("get", f"{DB_ADMIN_URL}/{ingestion_id}")
 
 
 @router.post("/{ingestion_id}/crawler-review")
@@ -78,34 +84,18 @@ async def crawler_review(ingestion_id: int, request: Request, body: ReviewReques
         request=request,
         detail={"ingestion_id": ingestion_id, "action": body.action},
     )
-    try:
-        async with httpx.AsyncClient(timeout=15) as client:
-            resp = await client.post(
-                f"{DB_ADMIN_URL}/{ingestion_id}/crawler-review",
-                json=body.model_dump(),
-            )
-            resp.raise_for_status()
-            return resp.json()
-    except httpx.HTTPStatusError as exc:
-        raise HTTPException(exc.response.status_code, exc.response.text)
-    except Exception as exc:
-        logger.error("DB 관리 API 연결 실패 (review %s): %s", ingestion_id, exc)
-        raise HTTPException(502, "DB 관리 API에 연결할 수 없습니다.")
+    return await _proxy(
+        "post",
+        f"{DB_ADMIN_URL}/{ingestion_id}/crawler-review",
+        json=body.model_dump(),
+    )
 
 
 @router.post("/cleanup")
 async def cleanup_ingestions(body: CleanupRequest):
     """처리 완료 항목 정리 — DB 관리 API 프록시."""
-    try:
-        async with httpx.AsyncClient(timeout=30) as client:
-            resp = await client.post(
-                f"{DB_ADMIN_URL}/cleanup",
-                json=body.model_dump(exclude_none=True),
-            )
-            resp.raise_for_status()
-            return resp.json()
-    except httpx.HTTPStatusError as exc:
-        raise HTTPException(exc.response.status_code, exc.response.text)
-    except Exception as exc:
-        logger.error("DB 관리 API 연결 실패 (cleanup): %s", exc)
-        raise HTTPException(502, "DB 관리 API에 연결할 수 없습니다.")
+    return await _proxy(
+        "post",
+        f"{DB_ADMIN_URL}/cleanup",
+        json=body.model_dump(exclude_none=True),
+    )

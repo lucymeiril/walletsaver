@@ -187,9 +187,18 @@ class CrawlPipeline:
             )
 
         duration = time.monotonic() - start
+
+        # Determine status based on actual persistence outcome
+        if items_saved == 0 and items_valid > 0:
+            final_status = "partial_failure"
+        elif 0 < items_saved < items_valid:
+            final_status = "partial_failure"
+        else:
+            final_status = "success"
+
         result = PipelineResult(
             crawler_name=crawler_name,
-            status="success",
+            status=final_status,
             items_found=items_found,
             items_valid=items_valid,
             items_saved=items_saved,
@@ -204,9 +213,15 @@ class CrawlPipeline:
         ))
 
         logger.info(
-            f"[Pipeline] {crawler_name}: "
-            f"found={items_found} valid={items_valid} saved={items_saved} "
-            f"duration={duration:.2f}s"
+            "[Pipeline] %s: found=%d valid=%d saved=%d duration=%.2fs",
+            crawler_name, items_found, items_valid, items_saved, duration,
+            extra={
+                "crawler_name": crawler_name,
+                "items_found": items_found,
+                "items_saved": items_saved,
+                "duration": round(duration, 2),
+                "status": final_status,
+            },
         )
         return result
 
@@ -221,27 +236,59 @@ class CrawlPipeline:
         return await self.run_batch(names)
 
     async def run_batch(self, crawler_names: list[str]) -> list[PipelineResult]:
-        """지정된 크롤러들을 동시 실행."""
+        """지정된 크롤러들을 동시 실행. 개별 실패가 다른 크롤러에 영향을 주지 않는다."""
         tasks = [self.run_crawler(name) for name in crawler_names]
-        return list(await asyncio.gather(*tasks, return_exceptions=False))
+        raw_results = await asyncio.gather(*tasks, return_exceptions=True)
+        results: list[PipelineResult] = []
+        for name, r in zip(crawler_names, raw_results):
+            if isinstance(r, PipelineResult):
+                results.append(r)
+            elif isinstance(r, BaseException):
+                logger.error("[Pipeline] batch: %s raised %s", name, r)
+                results.append(PipelineResult(
+                    crawler_name=name,
+                    status="failed",
+                    errors=[f"unhandled: {r}"],
+                ))
+        return results
 
     # --- internal helpers ---
 
     async def _store(
-        self, records: list[dict[str, Any]], errors: list[str]
+        self, records: list[dict[str, Any]], errors: list[str],
+        *, _max_retries: int = 3,
     ) -> int:
-        """DB-Admin API 로 레코드 전송. 실패 시 0 반환."""
+        """DB-Admin API 로 레코드 전송. 재시도 후 실패 시 DLQ에 기록."""
+        import random
+        from pipeline.dead_letter import write_dead_letter
+
         if not records:
             return 0
-        try:
-            async with httpx.AsyncClient(timeout=30) as client:
-                resp = await client.post(self.db_api_url, json=records)
-                resp.raise_for_status()
-                return len(records)
-        except Exception as exc:
-            errors.append(f"store: {exc}")
-            logger.warning(f"[Pipeline] store failed: {exc}")
-            return 0
+
+        last_exc: Exception | None = None
+        for attempt in range(1, _max_retries + 1):
+            try:
+                async with httpx.AsyncClient(timeout=30) as client:
+                    resp = await client.post(self.db_api_url, json=records)
+                    resp.raise_for_status()
+                    return len(records)
+            except httpx.HTTPStatusError as exc:
+                last_exc = exc
+                if exc.response.status_code < 500:
+                    break  # client error — no retry
+                if attempt < _max_retries:
+                    await asyncio.sleep(2 ** attempt + random.random())
+            except (httpx.ConnectError, httpx.TimeoutException) as exc:
+                last_exc = exc
+                if attempt < _max_retries:
+                    await asyncio.sleep(2 ** attempt + random.random())
+
+        # All retries exhausted — write to DLQ
+        err_msg = str(last_exc) if last_exc else "unknown"
+        errors.append(f"store: {err_msg}")
+        logger.warning("[Pipeline] store failed after %d retries: %s", _max_retries, err_msg)
+        write_dead_letter(records, target="db_admin", error_msg=err_msg)
+        return 0
 
     async def _store_to_ingestion(
         self,
@@ -252,10 +299,16 @@ class CrawlPipeline:
         strategy_used: str | None,
         duration_seconds: float,
         errors: list[str],
+        *,
+        _max_retries: int = 3,
     ) -> int:
-        """대기열(Pending Ingestion)에 크롤 결과 제출."""
+        """대기열(Pending Ingestion)에 크롤 결과 제출. 재시도 후 실패 시 DLQ에 기록."""
+        import random
+        from pipeline.dead_letter import write_dead_letter
+
         if not items:
             return 0
+
         payload = {
             "crawler_name": crawler_name,
             "crawl_status": crawl_status,
@@ -265,24 +318,44 @@ class CrawlPipeline:
             "duration_seconds": round(duration_seconds, 2),
             "errors": [{"message": e} for e in errors],
         }
-        try:
-            async with httpx.AsyncClient(timeout=30) as client:
-                resp = await client.post(INGESTION_API_URL, json=payload)
-                resp.raise_for_status()
-                audit_log(
-                    AuditEventType.DATA_SUBMISSION,
-                    resource=crawler_name,
-                    detail={
-                        "item_count": len(items),
-                        "schema_type": schema_type,
-                        "strategy": strategy_used,
-                    },
-                )
-                return len(items)
-        except Exception as exc:
-            errors.append(f"ingestion_submit: {exc}")
-            logger.warning(f"[Pipeline] ingestion submit failed: {exc}")
-            return 0
+
+        last_exc: Exception | None = None
+        for attempt in range(1, _max_retries + 1):
+            try:
+                async with httpx.AsyncClient(timeout=30) as client:
+                    resp = await client.post(INGESTION_API_URL, json=payload)
+                    resp.raise_for_status()
+                    audit_log(
+                        AuditEventType.DATA_SUBMISSION,
+                        resource=crawler_name,
+                        detail={
+                            "item_count": len(items),
+                            "schema_type": schema_type,
+                            "strategy": strategy_used,
+                        },
+                    )
+                    return len(items)
+            except httpx.HTTPStatusError as exc:
+                last_exc = exc
+                if exc.response.status_code < 500:
+                    break
+                if attempt < _max_retries:
+                    await asyncio.sleep(2 ** attempt + random.random())
+            except (httpx.ConnectError, httpx.TimeoutException) as exc:
+                last_exc = exc
+                if attempt < _max_retries:
+                    await asyncio.sleep(2 ** attempt + random.random())
+
+        err_msg = str(last_exc) if last_exc else "unknown"
+        errors.append(f"ingestion_submit: {err_msg}")
+        logger.warning("[Pipeline] ingestion submit failed after %d retries: %s", _max_retries, err_msg)
+        write_dead_letter(
+            payload.get("items", []),
+            crawler_name=crawler_name,
+            target="ingestion",
+            error_msg=err_msg,
+        )
+        return 0
 
     def _fail(
         self,

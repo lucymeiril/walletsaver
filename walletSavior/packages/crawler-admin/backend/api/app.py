@@ -14,6 +14,7 @@ from slowapi.util import get_remote_address
 from starlette.middleware.gzip import GZipMiddleware
 
 from api.error_codes import ErrorCode, safe_error_response
+from logging_config import setup_logging
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +23,8 @@ limiter = Limiter(key_func=get_remote_address)
 
 def create_app() -> FastAPI:
     is_debug = os.getenv("DEBUG", "").lower() in ("1", "true", "yes")
+
+    setup_logging(level=os.getenv("LOG_LEVEL", "INFO"))
 
     app = FastAPI(
         title="WalletSavior 크롤러 관리",
@@ -103,8 +106,155 @@ def create_app() -> FastAPI:
     app.include_router(dashboard_router, dependencies=_auth)
     app.include_router(plugins_router, dependencies=_auth)
 
+    # ── Health Check ─────────────────────────────────────────
+
     @app.get("/health")
     async def health():
-        return {"status": "ok", "service": "crawler-admin"}
+        """HC-R1: enriched with scheduler, browser, memory, crawl status."""
+        import time as _time
+        import os as _os
+
+        result = {
+            "status": "ok",
+            "service": "crawler-admin",
+        }
+
+        # Scheduler status
+        try:
+            scheduler = getattr(app.state, "scheduler", None)
+            if scheduler:
+                result["scheduler_running"] = scheduler.is_running
+                result["scheduled_jobs"] = scheduler.get_pending_job_count()
+
+                history = scheduler.tracker.get_history(limit=1)
+                result["last_crawl"] = history[0] if history else None
+            else:
+                result["scheduler_running"] = False
+                result["scheduled_jobs"] = 0
+                result["last_crawl"] = None
+        except Exception:
+            result["scheduler_running"] = False
+
+        # Active crawls from concurrency module
+        try:
+            from concurrency import active_count
+            result["active_crawls"] = active_count()
+        except Exception:
+            result["active_crawls"] = 0
+
+        # Browser process count from watchdog
+        try:
+            from engine.browser_watchdog import get_browser_watchdog
+            result["browser_processes"] = get_browser_watchdog().get_tracked_count()
+        except Exception:
+            result["browser_processes"] = 0
+
+        # Memory usage (RSS)
+        try:
+            import psutil
+            proc = psutil.Process(_os.getpid())
+            mem = proc.memory_info()
+            result["memory_mb"] = round(mem.rss / (1024 * 1024), 1)
+        except (ImportError, Exception):
+            result["memory_mb"] = None
+
+        # Uptime
+        try:
+            result["uptime_seconds"] = round(
+                _time.monotonic() - app.state.start_time, 1
+            )
+        except AttributeError:
+            result["uptime_seconds"] = None
+
+        # Set degraded status if scheduler is down
+        if result.get("scheduler_running") is False and result.get("scheduled_jobs", 0) > 0:
+            result["status"] = "degraded"
+
+        return result
+
+    # ── Graceful Shutdown (GS-R1, GS-R2) ────────────────────
+
+    @app.on_event("startup")
+    async def _startup():
+        """Initialize watchdog and track start time."""
+        import time as _time
+        app.state.start_time = _time.monotonic()
+
+        from engine.browser_watchdog import get_browser_watchdog
+        get_browser_watchdog().start()
+        logger.info("[App] browser watchdog started")
+
+    @app.on_event("shutdown")
+    async def _shutdown():
+        """Graceful shutdown: scheduler → plugins → browsers → logs.
+
+        GS-R1: Proper shutdown sequence.
+        GS-R2: Signal-safe browser cleanup.
+        """
+        import logging as _logging
+
+        logger.info("[App] shutdown sequence started")
+
+        # 1. Stop scheduler (wait for running jobs, max 30s)
+        try:
+            scheduler = getattr(app.state, "scheduler", None)
+            if scheduler and scheduler.is_running:
+                scheduler.stop(wait=True)
+                logger.info("[App] scheduler stopped")
+        except Exception:
+            logger.exception("[App] scheduler shutdown error")
+
+        # 2. Cancel all running crawl tasks
+        try:
+            from concurrency import clear_running_crawlers
+            cleared = await clear_running_crawlers()
+            if cleared:
+                logger.info("[App] cleared %d running crawler slots", cleared)
+        except Exception:
+            logger.exception("[App] concurrency cleanup error")
+
+        # 3. Shutdown plugins
+        try:
+            plugin_mgr = getattr(app.state, "plugin_manager", None)
+            if plugin_mgr:
+                await plugin_mgr.shutdown()
+                logger.info("[App] plugins shut down")
+        except Exception:
+            logger.exception("[App] plugin shutdown error")
+
+        # 4. Kill all browser processes via watchdog
+        try:
+            from engine.browser_watchdog import get_browser_watchdog
+            watchdog = get_browser_watchdog()
+            killed = watchdog.kill_all()
+            watchdog.stop()
+            if killed:
+                logger.info("[App] killed %d browser processes", killed)
+        except Exception:
+            logger.exception("[App] browser cleanup error")
+
+        # 5. Flush log handlers
+        for handler in _logging.root.handlers:
+            try:
+                handler.flush()
+            except Exception:
+                pass
+
+        logger.info("[App] shutdown complete")
+
+    # ── Signal Handlers (GS-R2) ──────────────────────────────
+
+    import signal
+
+    def _handle_signal(signum, frame):
+        """Handle SIGTERM/SIGINT — trigger FastAPI's graceful shutdown."""
+        sig_name = signal.Signals(signum).name
+        logger.info("[App] received %s, initiating graceful shutdown", sig_name)
+        raise SystemExit(0)
+
+    try:
+        signal.signal(signal.SIGTERM, _handle_signal)
+    except (OSError, ValueError):
+        pass  # Can't set signal handler in non-main thread
 
     return app
