@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react';
 import useAdminStore from '../../stores/adminStore';
 import { api } from '../../api/client';
 import { Play, Settings, Plus, Power, X, CheckSquare, Square, Loader, ChevronDown, ChevronRight } from 'lucide-react';
@@ -23,8 +23,11 @@ const STATUS_MAP = {
 };
 
 const TIMEOUT_SEC = 120;
-const POLL_INTERVAL = 2000;
-const MAX_POLLS = Math.ceil(TIMEOUT_SEC / (POLL_INTERVAL / 1000));
+// 지수 백오프 폴링: 활성 시 2초 → 최대 10초로 점진적 증가 (트래픽 절감)
+const POLL_INTERVAL_BASE = 2000;
+const POLL_INTERVAL_MAX = 10000;
+const POLL_BACKOFF_FACTOR = 1.5;
+const MAX_POLLS = 120;
 
 function isValidUrl(str) {
   try {
@@ -49,7 +52,8 @@ function validateSettings(data) {
   return errors;
 }
 
-function MiniTimeline({ runs }) {
+// React.memo: 동일 runs 배열이면 리렌더 방지 — 카드 목록 성능 향상
+const MiniTimeline = memo(function MiniTimeline({ runs }) {
   if (!runs || runs.length === 0) {
     return (
       <div className={styles.timeline} title="실행 이력 없음">
@@ -75,7 +79,7 @@ function MiniTimeline({ runs }) {
       })}
     </div>
   );
-}
+});
 
 function Spinner() {
   return <Loader size={14} className={styles.spinner} />;
@@ -88,8 +92,8 @@ export default function Crawlers() {
   const toggleCrawlerStatus = useAdminStore((s) => s.toggleCrawlerStatus);
   const fetchCrawlers = useAdminStore((s) => s.fetchCrawlers);
   const runCrawler = useAdminStore((s) => s.runCrawler);
-  const loading = useAdminStore((s) => s.loading);
-  const error = useAdminStore((s) => s.error);
+  const loading = useAdminStore((s) => s.crawlersLoading);
+  const error = useAdminStore((s) => s.crawlersError);
   const filtered = getFilteredCrawlers();
 
   const [runStates, setRunStates] = useState({});
@@ -109,7 +113,11 @@ export default function Crawlers() {
 
   useEffect(() => {
     return () => {
-      Object.values(pollRefs.current).forEach(clearInterval);
+      // SSE 연결 및 폴링 타이머 모두 정리
+      Object.values(pollRefs.current).forEach((ref) => {
+        if (typeof ref === 'object' && ref.close) ref.close();
+        else if (typeof ref === 'number') clearTimeout(ref);
+      });
     };
   }, []);
 
@@ -126,39 +134,87 @@ export default function Crawlers() {
   }, []);
 
   const startPolling = useCallback((id) => {
-    let pollCount = 0;
+    // SSE 우선 시도 — 실시간 push로 폴링 대비 지연·트래픽 대폭 감소
     const startTime = Date.now();
-    if (pollRefs.current[id]) clearInterval(pollRefs.current[id]);
+    if (pollRefs.current[id]) {
+      if (typeof pollRefs.current[id] === 'object' && pollRefs.current[id].close) {
+        pollRefs.current[id].close();
+      } else {
+        clearTimeout(pollRefs.current[id]);
+      }
+    }
 
-    pollRefs.current[id] = setInterval(async () => {
-      pollCount++;
-      const elapsed = ((Date.now() - startTime) / 1000).toFixed(0);
-      try {
-        const resp = await fetch(`/api/crawlers/${id}/status`);
-        if (resp.ok) {
-          const data = await resp.json();
+    try {
+      const sse = api.subscribeCrawlerStatus(id, {
+        onData: (data) => {
+          const elapsed = ((Date.now() - startTime) / 1000).toFixed(0);
           if (data.status === 'success') {
             setRunState(id, {
               phase: 'done',
               success: true,
               message: `✅ 크롤링 완료 — ${data.items_found ?? 0}건 발견, ${data.items_saved ?? 0}건 저장 (${(data.duration ?? 0).toFixed(1)}초)`,
             });
-            clearInterval(pollRefs.current[id]);
-            delete pollRefs.current[id];
             fetchCrawlers();
             clearRunState(id);
-            return;
           } else if (data.status === 'failed') {
             setRunState(id, {
               phase: 'done',
               success: false,
               message: `❌ 크롤링 실패: ${(data.errors || []).join(', ') || '알 수 없는 오류'}`,
             });
-            clearInterval(pollRefs.current[id]);
-            delete pollRefs.current[id];
             clearRunState(id);
-            return;
+          } else {
+            setRunState(id, {
+              phase: 'running',
+              success: true,
+              message: `⏳ 크롤링 실행 중... (${elapsed}초 경과)`,
+            });
           }
+        },
+        onError: () => {
+          // SSE 실패 시 지수 백오프 폴링으로 폴백
+          startPollingFallback(id, startTime);
+        },
+        onComplete: () => {
+          delete pollRefs.current[id];
+        },
+      });
+      pollRefs.current[id] = sse;
+    } catch {
+      // SSE 미지원 시 지수 백오프 폴링 사용
+      startPollingFallback(id, startTime);
+    }
+  }, [setRunState, clearRunState, fetchCrawlers]);
+
+  // 지수 백오프 폴링: 2초 → 3초 → 4.5초 → ... 최대 10초 (SSE 폴백)
+  const startPollingFallback = useCallback((id, startTime) => {
+    let pollCount = 0;
+    let currentInterval = POLL_INTERVAL_BASE;
+
+    const poll = async () => {
+      pollCount++;
+      const elapsed = ((Date.now() - startTime) / 1000).toFixed(0);
+      try {
+        const data = await api.getCrawlerStatus(id);
+        if (data.status === 'success') {
+          setRunState(id, {
+            phase: 'done',
+            success: true,
+            message: `✅ 크롤링 완료 — ${data.items_found ?? 0}건 발견, ${data.items_saved ?? 0}건 저장 (${(data.duration ?? 0).toFixed(1)}초)`,
+          });
+          delete pollRefs.current[id];
+          fetchCrawlers();
+          clearRunState(id);
+          return;
+        } else if (data.status === 'failed') {
+          setRunState(id, {
+            phase: 'done',
+            success: false,
+            message: `❌ 크롤링 실패: ${(data.errors || []).join(', ') || '알 수 없는 오류'}`,
+          });
+          delete pollRefs.current[id];
+          clearRunState(id);
+          return;
         }
       } catch { /* 폴링 실패 무시 */ }
 
@@ -169,7 +225,6 @@ export default function Crawlers() {
       });
 
       if (pollCount >= MAX_POLLS) {
-        clearInterval(pollRefs.current[id]);
         delete pollRefs.current[id];
         setRunState(id, {
           phase: 'done',
@@ -177,8 +232,15 @@ export default function Crawlers() {
           message: `⏱ ${TIMEOUT_SEC}초 초과 — 타임아웃`,
         });
         clearRunState(id, 6000);
+        return;
       }
-    }, POLL_INTERVAL);
+
+      // 지수 백오프: 점진적으로 간격 증가
+      currentInterval = Math.min(currentInterval * POLL_BACKOFF_FACTOR, POLL_INTERVAL_MAX);
+      pollRefs.current[id] = setTimeout(poll, currentInterval);
+    };
+
+    pollRefs.current[id] = setTimeout(poll, currentInterval);
   }, [setRunState, clearRunState, fetchCrawlers]);
 
   const handleRun = useCallback(async (id) => {

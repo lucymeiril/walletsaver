@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import logging
+import time
 from collections import Counter, defaultdict
 from datetime import datetime, timedelta
+from typing import Any
 
 from fastapi import APIRouter, Query
 
@@ -13,6 +15,11 @@ from scheduler.job_tracker import JobTracker
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/dashboard", tags=["dashboard"])
+
+# 대시보드 캐시: 빈번한 새로고침 시 DB/파일 재조회 방지 (60초 TTL)
+_stats_cache: dict[str, Any] = {}
+_cache_ts: float = 0
+_CACHE_TTL = 60  # seconds
 
 _tracker: JobTracker | None = None
 
@@ -66,6 +73,14 @@ def _resolve_category(job_id: str) -> str:
 @router.get("/stats")
 async def get_dashboard_stats(days: int = Query(7, ge=1, le=90)):
     """대시보드 통계 — 상태 분포, 에러 추이, 알림, 크롤러 카드, 데이터 신선도."""
+    global _stats_cache, _cache_ts
+
+    cache_key = f"stats_{days}"
+    now_ts = time.time()
+    # 캐시 유효 시 즉시 반환 — 60초 내 동일 요청은 재계산 생략
+    if cache_key in _stats_cache and (now_ts - _cache_ts) < _CACHE_TTL:
+        return _stats_cache[cache_key]
+
     tracker = _get_tracker()
     history = tracker.get_history(limit=500)
     now = datetime.now()
@@ -188,7 +203,7 @@ async def get_dashboard_stats(days: int = Query(7, ge=1, le=90)):
             "status": status,
         })
 
-    return {
+    result = {
         "statusDistribution": status_distribution,
         "errorTrend": error_trend,
         "totalCrawlers": total_crawlers,
@@ -199,3 +214,9 @@ async def get_dashboard_stats(days: int = Query(7, ge=1, le=90)):
         "crawlerCards": crawler_cards,
         "freshness": freshness,
     }
+
+    # 캐시 저장
+    _stats_cache[cache_key] = result
+    _cache_ts = now_ts
+
+    return result

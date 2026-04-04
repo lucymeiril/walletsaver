@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import useAdminStore from '../../stores/adminStore';
 import { Code, ChevronDown, ChevronUp, Search, Settings, X } from 'lucide-react';
 import styles from './Plugins.module.css';
@@ -19,23 +19,40 @@ const DIFFICULTY_LABELS = {
   4: '매우 어려움 — 안티봇 우회',
 };
 
+// 검색 디바운스 지연 (ms)
+const DEBOUNCE_MS = 300;
+
 export default function Plugins() {
   const plugins = useAdminStore((s) => s.plugins);
   const fetchPlugins = useAdminStore((s) => s.fetchPlugins);
   const togglePlugin = useAdminStore((s) => s.togglePlugin);
   const updatePluginSettings = useAdminStore((s) => s.updatePluginSettings);
-  const loading = useAdminStore((s) => s.loading);
-  const error = useAdminStore((s) => s.error);
+  const loading = useAdminStore((s) => s.pluginsLoading);
+  const error = useAdminStore((s) => s.pluginsError);
 
   const [expandedYaml, setExpandedYaml] = useState(null);
   const [category, setCategory] = useState('all');
+  const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
   const [editPlugin, setEditPlugin] = useState(null);
   const [editForm, setEditForm] = useState({ target_url: '', delay: 1, max_items: 100 });
+  const debounceRef = useRef(null);
 
   useEffect(() => {
     fetchPlugins();
   }, [fetchPlugins]);
+
+  // 디바운스: 검색 입력 시 300ms 후에만 필터 반영
+  useEffect(() => {
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+  }, []);
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchInput(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => setSearch(value), DEBOUNCE_MS);
+  };
 
   const filtered = useMemo(() => {
     let list = plugins;
@@ -95,8 +112,8 @@ export default function Plugins() {
             type="text"
             className={styles.searchInput}
             placeholder="플러그인 검색..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={searchInput}
+            onChange={handleSearchChange}
           />
         </div>
       </div>

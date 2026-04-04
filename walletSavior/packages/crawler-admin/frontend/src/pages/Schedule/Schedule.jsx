@@ -111,8 +111,8 @@ export default function Schedule() {
   const updateScheduleApi = useAdminStore((s) => s.updateScheduleApi);
   const createSchedule = useAdminStore((s) => s.createSchedule);
   const deleteScheduleApi = useAdminStore((s) => s.deleteScheduleApi);
-  const loading = useAdminStore((s) => s.loading);
-  const error = useAdminStore((s) => s.error);
+  const loading = useAdminStore((s) => s.schedulesLoading);
+  const error = useAdminStore((s) => s.schedulesError);
 
   const [editing, setEditing] = useState(null);
   const [editCron, setEditCron] = useState('');

@@ -2,11 +2,24 @@ import { create } from 'zustand';
 import { api } from '../api/client';
 
 const useAdminStore = create((set, get) => ({
-  // Loading / Error
-  loading: false,
-  error: null,
+  // 도메인별 로딩/에러 — 다른 도메인 상태 변경 시 불필요한 리렌더 방지
+  crawlersLoading: false,
+  crawlersError: null,
+  logsLoading: false,
+  logsError: null,
+  schedulesLoading: false,
+  schedulesError: null,
+  dashboardLoading: false,
+  dashboardError: null,
+  pluginsLoading: false,
+  pluginsError: null,
+  ingestionsLoading: false,
+  ingestionsError: null,
 
-  clearError: () => set({ error: null }),
+  clearError: () => set({
+    crawlersError: null, logsError: null, schedulesError: null,
+    dashboardError: null, pluginsError: null, ingestionsError: null,
+  }),
 
   // Crawlers
   crawlers: [],
@@ -17,7 +30,7 @@ const useAdminStore = create((set, get) => ({
   setSelectedCrawler: (crawler) => set({ selectedCrawler: crawler }),
 
   fetchCrawlers: async () => {
-    set({ loading: true, error: null });
+    set({ crawlersLoading: true, crawlersError: null });
     try {
       const data = await api.getCrawlers();
       const list = Array.isArray(data) ? data : data.crawlers ?? data.data ?? [];
@@ -36,22 +49,22 @@ const useAdminStore = create((set, get) => ({
       }));
       set({ crawlers: mapped });
     } catch (err) {
-      set({ error: `⚠️ 서버 연결 실패: 크롤러 목록을 불러올 수 없습니다 (${err.message})` });
+      set({ crawlersError: `⚠️ 서버 연결 실패: 크롤러 목록을 불러올 수 없습니다 (${err.message})` });
     } finally {
-      set({ loading: false });
+      set({ crawlersLoading: false });
     }
   },
 
   runCrawler: async (id) => {
-    set({ loading: true, error: null });
+    set({ crawlersLoading: true, crawlersError: null });
     try {
       const result = await api.runCrawler(id);
       return result;
     } catch (err) {
-      set({ error: `크롤러 실행 실패: ${err.message}` });
+      set({ crawlersError: `크롤러 실행 실패: ${err.message}` });
       return null;
     } finally {
-      set({ loading: false });
+      set({ crawlersLoading: false });
     }
   },
 
@@ -73,7 +86,7 @@ const useAdminStore = create((set, get) => ({
       // 롤백
       set({
         crawlers: crawlers,
-        error: `상태 변경 실패: ${err.message}`,
+        crawlersError: `상태 변경 실패: ${err.message}`,
       });
     }
   },
@@ -96,15 +109,15 @@ const useAdminStore = create((set, get) => ({
   logsPerPage: 8,
 
   fetchLogs: async (params = {}) => {
-    set({ loading: true, error: null });
+    set({ logsLoading: true, logsError: null });
     try {
       const data = await api.getLogs(params);
       const list = Array.isArray(data) ? data : data.logs ?? data.data ?? [];
       set({ logs: list });
     } catch (err) {
-      set({ error: `⚠️ 서버 연결 실패: 로그를 불러올 수 없습니다 (${err.message})` });
+      set({ logsError: `⚠️ 서버 연결 실패: 로그를 불러올 수 없습니다 (${err.message})` });
     } finally {
-      set({ loading: false });
+      set({ logsLoading: false });
     }
   },
 
@@ -118,7 +131,7 @@ const useAdminStore = create((set, get) => ({
       a.click();
       URL.revokeObjectURL(url);
     } catch (err) {
-      set({ error: `CSV 내보내기 실패: ${err.message}` });
+      set({ logsError: `CSV 내보내기 실패: ${err.message}` });
     }
   },
 
@@ -162,15 +175,15 @@ const useAdminStore = create((set, get) => ({
   schedules: [],
 
   fetchSchedules: async () => {
-    set({ loading: true, error: null });
+    set({ schedulesLoading: true, schedulesError: null });
     try {
       const data = await api.getSchedules();
       const list = Array.isArray(data) ? data : data.schedules ?? data.data ?? [];
       set({ schedules: list });
     } catch (err) {
-      set({ error: `⚠️ 서버 연결 실패: 스케줄을 불러올 수 없습니다 (${err.message})` });
+      set({ schedulesError: `⚠️ 서버 연결 실패: 스케줄을 불러올 수 없습니다 (${err.message})` });
     } finally {
-      set({ loading: false });
+      set({ schedulesLoading: false });
     }
   },
 
@@ -180,7 +193,7 @@ const useAdminStore = create((set, get) => ({
       await get().fetchSchedules();
       return result;
     } catch (err) {
-      set({ error: `스케줄 생성 실패: ${err.message}` });
+      set({ schedulesError: `스케줄 생성 실패: ${err.message}` });
       return null;
     }
   },
@@ -191,7 +204,7 @@ const useAdminStore = create((set, get) => ({
       await get().fetchSchedules();
       return result;
     } catch (err) {
-      set({ error: `스케줄 수정 실패: ${err.message}` });
+      set({ schedulesError: `스케줄 수정 실패: ${err.message}` });
       return null;
     }
   },
@@ -201,7 +214,7 @@ const useAdminStore = create((set, get) => ({
       await api.deleteSchedule(name);
       await get().fetchSchedules();
     } catch (err) {
-      set({ error: `스케줄 삭제 실패: ${err.message}` });
+      set({ schedulesError: `스케줄 삭제 실패: ${err.message}` });
     }
   },
 
@@ -226,7 +239,7 @@ const useAdminStore = create((set, get) => ({
       // 롤백
       set({
         schedules: schedules,
-        error: `스케줄 토글 실패: ${err.message}`,
+        schedulesError: `스케줄 토글 실패: ${err.message}`,
       });
     }
   },
@@ -244,20 +257,20 @@ const useAdminStore = create((set, get) => ({
   ingestionFilter: 'all',
 
   fetchIngestions: async (params = {}) => {
-    set({ loading: true, error: null });
+    set({ ingestionsLoading: true, ingestionsError: null });
     try {
       const data = await api.getIngestions(params);
       const list = Array.isArray(data) ? data : data.items ?? data.ingestions ?? data.data ?? [];
       set({ ingestions: list });
     } catch (err) {
-      set({ ingestions: [], error: `⚠️ 서버 연결 실패: 데이터 검토 목록을 불러올 수 없습니다 (${err.message})` });
+      set({ ingestions: [], ingestionsError: `⚠️ 서버 연결 실패: 데이터 검토 목록을 불러올 수 없습니다 (${err.message})` });
     } finally {
-      set({ loading: false });
+      set({ ingestionsLoading: false });
     }
   },
 
   fetchIngestion: async (id) => {
-    set({ loading: true, error: null });
+    set({ ingestionsLoading: true, ingestionsError: null });
     try {
       const data = await api.getIngestion(id);
       set({ selectedIngestion: data });
@@ -266,35 +279,35 @@ const useAdminStore = create((set, get) => ({
       set({ selectedIngestion: null });
       return null;
     } finally {
-      set({ loading: false });
+      set({ ingestionsLoading: false });
     }
   },
 
   reviewIngestion: async (id, reviewData) => {
-    set({ loading: true, error: null });
+    set({ ingestionsLoading: true, ingestionsError: null });
     try {
       const result = await api.reviewIngestion(id, reviewData);
       await get().fetchIngestions();
       return result;
     } catch (err) {
-      set({ error: `리뷰 실패: ${err.message}` });
+      set({ ingestionsError: `리뷰 실패: ${err.message}` });
       return null;
     } finally {
-      set({ loading: false });
+      set({ ingestionsLoading: false });
     }
   },
 
   cleanupIngestions: async (cleanupData) => {
-    set({ loading: true, error: null });
+    set({ ingestionsLoading: true, ingestionsError: null });
     try {
       const result = await api.cleanupIngestions(cleanupData);
       await get().fetchIngestions();
       return result;
     } catch (err) {
-      set({ error: `정리 실패: ${err.message}` });
+      set({ ingestionsError: `정리 실패: ${err.message}` });
       return null;
     } finally {
-      set({ loading: false });
+      set({ ingestionsLoading: false });
     }
   },
 
@@ -304,15 +317,15 @@ const useAdminStore = create((set, get) => ({
   plugins: [],
 
   fetchPlugins: async () => {
-    set({ loading: true, error: null });
+    set({ pluginsLoading: true, pluginsError: null });
     try {
       const data = await api.getPlugins();
       const list = Array.isArray(data) ? data : data.plugins ?? data.data ?? [];
       set({ plugins: list });
     } catch (err) {
-      set({ error: `⚠️ 서버 연결 실패: 플러그인 목록을 불러올 수 없습니다 (${err.message})` });
+      set({ pluginsError: `⚠️ 서버 연결 실패: 플러그인 목록을 불러올 수 없습니다 (${err.message})` });
     } finally {
-      set({ loading: false });
+      set({ pluginsLoading: false });
     }
   },
 
@@ -335,21 +348,21 @@ const useAdminStore = create((set, get) => ({
       // 롤백
       set({
         plugins: plugins,
-        error: `플러그인 토글 실패: ${err.message}`,
+        pluginsError: `플러그인 토글 실패: ${err.message}`,
       });
     }
   },
 
   updatePluginSettings: async (id, settings) => {
-    set({ loading: true, error: null });
+    set({ pluginsLoading: true, pluginsError: null });
     try {
       await api.updatePluginSettings(id, settings);
       // 설정 변경 후 목록 새로고침
       await get().fetchPlugins();
     } catch (err) {
-      set({ error: `설정 저장 실패: ${err.message}` });
+      set({ pluginsError: `설정 저장 실패: ${err.message}` });
     } finally {
-      set({ loading: false });
+      set({ pluginsLoading: false });
     }
   },
 
@@ -372,7 +385,7 @@ const useAdminStore = create((set, get) => ({
 
   fetchDashboard: async (days) => {
     const d = days ?? get().errorTrendDays;
-    set({ loading: true, error: null });
+    set({ dashboardLoading: true, dashboardError: null });
     try {
       const stats = await api.getDashboardStats({ days: d });
       set({
@@ -390,9 +403,9 @@ const useAdminStore = create((set, get) => ({
         lastRefreshed: new Date().toISOString(),
       });
     } catch (err) {
-      set({ error: `⚠️ 서버 연결 실패: 대시보드 데이터를 불러올 수 없습니다 (${err.message})` });
+      set({ dashboardError: `⚠️ 서버 연결 실패: 대시보드 데이터를 불러올 수 없습니다 (${err.message})` });
     } finally {
-      set({ loading: false });
+      set({ dashboardLoading: false });
     }
   },
 }));

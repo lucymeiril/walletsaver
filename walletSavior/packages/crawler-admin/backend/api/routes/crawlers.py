@@ -3,13 +3,15 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 import logging
 from datetime import datetime
 from pathlib import Path
 from typing import Any, List, Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
+from fastapi.responses import JSONResponse, Response, StreamingResponse
 from pydantic import BaseModel
 
 from crawlers.registry.registry import CrawlerRegistry
@@ -115,8 +117,8 @@ async def list_crawlers():
 
 
 @router.get("/{crawler_id}/status")
-async def get_crawler_status(crawler_id: str):
-    """크롤러 상태 조회."""
+async def get_crawler_status(crawler_id: str, request: Request):
+    """크롤러 상태 조회 — ETag 기반 304 지원으로 폴링 시 불필요한 데이터 전송 방지."""
     reg = _get_registry()
     try:
         reg.get_crawler(crawler_id)
@@ -124,13 +126,20 @@ async def get_crawler_status(crawler_id: str):
         raise HTTPException(status_code=404, detail=f"Crawler '{crawler_id}' not found")
 
     result = _crawl_results.get(crawler_id)
-    if result:
-        return result
-    return {
-        "crawler_id": crawler_id,
-        "status": "idle",
-        "last_run": None,
-    }
+    if not result:
+        result = {
+            "crawler_id": crawler_id,
+            "status": "idle",
+            "last_run": None,
+        }
+
+    # ETag: 상태 해시로 변경 없으면 304 반환 — 폴링 시 대역폭 절약
+    etag = hashlib.md5(json.dumps(result, sort_keys=True, default=str).encode()).hexdigest()
+    if_none_match = request.headers.get("if-none-match")
+    if if_none_match and if_none_match.strip('"') == etag:
+        return Response(status_code=304)
+
+    return JSONResponse(content=result, headers={"ETag": f'"{etag}"'})
 
 
 class CrawlerToggleRequest(BaseModel):
@@ -338,3 +347,48 @@ async def _run_and_store(crawler_id: str, pipeline: CrawlPipeline):
         }
         _append_run_history(crawler_id, "failed")
         logger.error(f"Crawler '{crawler_id}' failed: {e}", exc_info=True)
+
+
+@router.get("/{crawler_id}/status/stream")
+async def stream_crawler_status(crawler_id: str, request: Request):
+    """SSE 스트림: 크롤러 실행 상태를 실시간 push — 폴링 대비 지연·트래픽 대폭 감소."""
+    reg = _get_registry()
+    try:
+        reg.get_crawler(crawler_id)
+    except KeyError:
+        raise HTTPException(status_code=404, detail=f"Crawler '{crawler_id}' not found")
+
+    async def event_generator():
+        last_hash = None
+        while True:
+            if await request.is_disconnected():
+                break
+
+            result = _crawl_results.get(crawler_id, {
+                "crawler_id": crawler_id,
+                "status": "idle",
+            })
+
+            current_json = json.dumps(result, sort_keys=True, default=str)
+            current_hash = hashlib.md5(current_json.encode()).hexdigest()
+
+            # 상태 변경 시에만 이벤트 전송
+            if current_hash != last_hash:
+                last_hash = current_hash
+                yield f"data: {current_json}\n\n"
+
+            # 완료 상태면 스트림 종료
+            if result.get("status") in ("success", "failed"):
+                break
+
+            await asyncio.sleep(1)
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+        },
+    )

@@ -39,8 +39,8 @@ function formatTime(iso) {
 
 export default function Dashboard() {
   const stats = useAdminStore((s) => s.dashboardStats);
-  const loading = useAdminStore((s) => s.loading);
-  const error = useAdminStore((s) => s.error);
+  const loading = useAdminStore((s) => s.dashboardLoading);
+  const error = useAdminStore((s) => s.dashboardError);
   const fetchDashboard = useAdminStore((s) => s.fetchDashboard);
   const lastRefreshed = useAdminStore((s) => s.lastRefreshed);
   const errorTrendDays = useAdminStore((s) => s.errorTrendDays);

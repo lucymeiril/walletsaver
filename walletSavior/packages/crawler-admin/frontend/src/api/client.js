@@ -1,12 +1,72 @@
 const API_BASE = '/api';
 
+// ETag 캐시: 상태 폴링 시 304 응답으로 불필요한 JSON 파싱 방지
+const _etagCache = new Map();
+
+/**
+ * ETag 지원 fetch — 변경 없으면 캐시된 데이터 반환 (폴링 최적화).
+ */
+async function fetchWithETag(url, options = {}) {
+  const cached = _etagCache.get(url);
+  const headers = { ...options.headers };
+  if (cached?.etag) {
+    headers['If-None-Match'] = cached.etag;
+  }
+
+  const resp = await fetch(url, { ...options, headers });
+
+  if (resp.status === 304 && cached?.data) {
+    return cached.data;
+  }
+
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+  const data = await resp.json();
+  const etag = resp.headers.get('etag');
+  if (etag) {
+    _etagCache.set(url, { etag, data });
+  }
+  return data;
+}
+
+/**
+ * SSE 연결 헬퍼 — 크롤러 실행 상태를 실시간 수신 (폴링 대체).
+ * @returns {{ close: () => void }} 연결 해제 핸들
+ */
+function subscribeCrawlerStatus(crawlerId, { onData, onError, onComplete }) {
+  const url = `${API_BASE}/crawlers/${crawlerId}/status/stream`;
+  const eventSource = new EventSource(url);
+
+  eventSource.onmessage = (event) => {
+    try {
+      const data = JSON.parse(event.data);
+      onData?.(data);
+      if (data.status === 'success' || data.status === 'failed') {
+        eventSource.close();
+        onComplete?.(data);
+      }
+    } catch (e) {
+      onError?.(e);
+    }
+  };
+
+  eventSource.onerror = () => {
+    eventSource.close();
+    onError?.(new Error('SSE connection failed'));
+  };
+
+  return { close: () => eventSource.close() };
+}
+
 export const api = {
   // 크롤러 목록
   getCrawlers: () => fetch(`${API_BASE}/crawlers`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
   // 크롤러 실행
   runCrawler: (id) => fetch(`${API_BASE}/crawlers/${id}/run`, { method: 'POST' }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
-  // 크롤러 상태
-  getCrawlerStatus: (id) => fetch(`${API_BASE}/crawlers/${id}/status`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+  // 크롤러 상태 — ETag 기반 캐시로 변경 없으면 304 반환
+  getCrawlerStatus: (id) => fetchWithETag(`${API_BASE}/crawlers/${id}/status`),
+  // 크롤러 상태 SSE 구독
+  subscribeCrawlerStatus,
   // 크롤러 토글
   toggleCrawler: (id, status) => fetch(`${API_BASE}/crawlers/${id}/toggle`, {
     method: 'PUT',

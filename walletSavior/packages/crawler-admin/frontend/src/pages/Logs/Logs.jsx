@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import useAdminStore from '../../stores/adminStore';
 import { ChevronLeft, ChevronRight, Download } from 'lucide-react';
 import styles from './Logs.module.css';
 
 const STATUS_LABEL = { success: '성공', failure: '실패', failed: '실패', partial: '부분' };
+// 디바운스 지연: 검색 입력 시 매 키스트로크마다 필터링하지 않고 300ms 후 반영
+const DEBOUNCE_MS = 300;
 
 export default function Logs() {
   const logs = useAdminStore((s) => s.logs);
@@ -15,10 +17,13 @@ export default function Logs() {
   const getFilteredLogs = useAdminStore((s) => s.getFilteredLogs);
   const fetchLogs = useAdminStore((s) => s.fetchLogs);
   const exportLogs = useAdminStore((s) => s.exportLogs);
-  const loading = useAdminStore((s) => s.loading);
-  const error = useAdminStore((s) => s.error);
+  const loading = useAdminStore((s) => s.logsLoading);
+  const error = useAdminStore((s) => s.logsError);
 
   const [expandedLog, setExpandedLog] = useState(null);
+  // 검색 디바운스용 로컬 상태
+  const [searchInput, setSearchInput] = useState(logFilters.crawlerName);
+  const debounceRef = useRef(null);
 
   useEffect(() => {
     fetchLogs();
@@ -65,6 +70,20 @@ export default function Logs() {
     exportLogs(params);
   };
 
+  // 디바운스된 크롤러명 검색 — 매 키스트로크마다 필터링하지 않음
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchInput(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setLogFilters({ crawlerName: value });
+    }, DEBOUNCE_MS);
+  };
+
+  useEffect(() => {
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+  }, []);
+
   return (
     <div className={styles.page}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
@@ -99,8 +118,8 @@ export default function Logs() {
           className={styles.filterInput}
           type="text"
           placeholder="크롤러명 검색..."
-          value={logFilters.crawlerName}
-          onChange={(e) => setLogFilters({ crawlerName: e.target.value })}
+          value={searchInput}
+          onChange={handleSearchChange}
         />
         <select
           className={styles.filterSelect}

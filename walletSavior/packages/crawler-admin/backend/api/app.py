@@ -2,6 +2,7 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.gzip import GZipMiddleware
 
 
 def create_app() -> FastAPI:
@@ -10,6 +11,8 @@ def create_app() -> FastAPI:
         description="크롤러 관리 및 모니터링 API",
         version="0.1.0",
     )
+    # GZip 압축: JSON 응답 전송 크기 50-80% 감소 (500바이트 이상만 압축)
+    app.add_middleware(GZipMiddleware, minimum_size=500)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, memo, useRef } from 'react';
 import useAdminStore from '../../stores/adminStore';
 import { CheckCircle, XCircle, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, RefreshCw, Info, Trash2 } from 'lucide-react';
 import styles from './DataReviewPage.module.css';
@@ -78,8 +78,8 @@ export default function DataReviewPage() {
   const fetchIngestions = useAdminStore((s) => s.fetchIngestions);
   const reviewIngestion = useAdminStore((s) => s.reviewIngestion);
   const cleanupIngestions = useAdminStore((s) => s.cleanupIngestions);
-  const loading = useAdminStore((s) => s.loading);
-  const error = useAdminStore((s) => s.error);
+  const loading = useAdminStore((s) => s.ingestionsLoading);
+  const error = useAdminStore((s) => s.ingestionsError);
 
   const [filter, setFilter] = useState('all');
   const [expandedId, setExpandedId] = useState(null);
@@ -108,9 +108,21 @@ export default function DataReviewPage() {
     setSelectedIds(new Set());
   }, [filter]);
 
+  // useMemo: 탭별 건수 계산을 ingestions 변경 시에만 수행
   const approvedCount = useMemo(() => ingestions.filter(i => i.status === 'approved').length, [ingestions]);
   const rejectedCount = useMemo(() => ingestions.filter(i => i.status === 'rejected').length, [ingestions]);
   const processedCount = approvedCount + rejectedCount;
+
+  // 탭별 건수 캐시 — 매 렌더마다 재계산 방지
+  const tabCounts = useMemo(() => {
+    const counts = {};
+    for (const tab of FILTER_TABS) {
+      if (tab.key !== 'all') {
+        counts[tab.key] = ingestions.filter((i) => i.status === tab.key).length;
+      }
+    }
+    return counts;
+  }, [ingestions]);
 
   const expandCard = async (id) => {
     if (expandedId === id) { setExpandedId(null); return; }
@@ -123,9 +135,12 @@ export default function DataReviewPage() {
     }
   };
 
-  const filtered = filter === 'all'
-    ? ingestions
-    : ingestions.filter((item) => item.status === filter);
+  // useMemo: 필터 변경 시에만 재계산
+  const filtered = useMemo(() => {
+    return filter === 'all'
+      ? ingestions
+      : ingestions.filter((item) => item.status === filter);
+  }, [ingestions, filter]);
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
   const paginatedItems = filtered.slice(
@@ -407,7 +422,7 @@ export default function DataReviewPage() {
             {tab.label}
             {tab.key !== 'all' && (
               <span className={styles.tabCount}>
-                {ingestions.filter((i) => i.status === tab.key).length}
+                {tabCounts[tab.key] || 0}
               </span>
             )}
           </button>
