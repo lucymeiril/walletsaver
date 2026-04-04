@@ -17,7 +17,9 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import random
 import re
+import time
 from datetime import datetime
 from typing import Any, Optional
 
@@ -66,6 +68,38 @@ class OpinetCrawler(CrawlerContract):
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=0.5, delay_max=1.5)
         self._api_key = OPINET_API_KEY
+
+    # ------------------------------------------------------------------
+    # Retry helper — exponential backoff for transient failures
+    # ------------------------------------------------------------------
+
+    def _retry_request(self, url: str, *, headers: dict | None = None,
+                       params: dict | None = None,
+                       session: requests.Session | None = None,
+                       timeout: int = 15, max_retries: int = 3) -> requests.Response:
+        """HTTP GET with exponential backoff for transient failures."""
+        requester = session or requests
+        last_exc = None
+        for attempt in range(max_retries):
+            try:
+                resp = requester.get(url, headers=headers, params=params, timeout=timeout)
+                if resp.status_code == 429:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    time.sleep(wait)
+                    continue
+                return resp
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.Timeout) as e:
+                last_exc = e
+                if attempt < max_retries - 1:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
+                                   f"retrying in {wait:.1f}s: {e}")
+                    time.sleep(wait)
+                else:
+                    raise
+        raise last_exc  # type: ignore[misc]
 
     # ------------------------------------------------------------------
     # CrawlerContract 구현
@@ -244,47 +278,53 @@ class OpinetCrawler(CrawlerContract):
         """오피넷 lowTop10 API로 시도별 최저가 주유소 수집."""
         station_map: dict[str, dict] = {}
 
-        for fuel_type, prod_code, price_key in [
-            ("휘발유", self.PROD_GASOLINE, "gasoline_price"),
-            ("경유", self.PROD_DIESEL, "diesel_price"),
-        ]:
-            for sido in self.SIDO_CODES:
-                try:
-                    data = self._api_request(
-                        "lowTop10.do",
-                        prodcd=prod_code,
-                        area=sido,
-                        cnt="10",
-                    )
-                    if data is None:
-                        continue
+        # Session 재사용으로 TCP 연결 오버헤드 절감
+        session = requests.Session()
+        try:
+            for fuel_type, prod_code, price_key in [
+                ("휘발유", self.PROD_GASOLINE, "gasoline_price"),
+                ("경유", self.PROD_DIESEL, "diesel_price"),
+            ]:
+                for sido in self.SIDO_CODES:
+                    try:
+                        data = self._api_request(
+                            "lowTop10.do",
+                            session=session,
+                            prodcd=prod_code,
+                            area=sido,
+                            cnt="10",
+                        )
+                        if data is None:
+                            continue
 
-                    parsed = await self.parse(json.dumps(data))
-                    for item in parsed:
-                        uid = item.get("_uni_id", item.get("name", ""))
-                        if uid in station_map:
-                            # 기존 주유소에 가격 병합
-                            price = item.get("gasoline_price")
-                            if price:
-                                station_map[uid][price_key] = price
-                        else:
-                            # 새 주유소 등록
-                            if price_key != "gasoline_price":
-                                item[price_key] = item.pop("gasoline_price", None)
-                            station_map[uid] = item
+                        parsed = await self.parse(json.dumps(data))
+                        for item in parsed:
+                            uid = item.get("_uni_id", item.get("name", ""))
+                            if uid in station_map:
+                                # 기존 주유소에 가격 병합
+                                price = item.get("gasoline_price")
+                                if price:
+                                    station_map[uid][price_key] = price
+                            else:
+                                # 새 주유소 등록
+                                if price_key != "gasoline_price":
+                                    item[price_key] = item.pop("gasoline_price", None)
+                                station_map[uid] = item
 
-                    await asyncio.sleep(self._anti_detect.get_random_delay())
+                        await asyncio.sleep(self._anti_detect.get_random_delay())
 
-                except Exception as e:
-                    msg = f"시도 {sido} {fuel_type}: {e}"
-                    logger.debug(f"[오피넷] {msg}")
-                    errors.append(msg)
+                    except Exception as e:
+                        msg = f"시도 {sido} {fuel_type}: {e}"
+                        logger.debug(f"[오피넷] {msg}")
+                        errors.append(msg)
+        finally:
+            session.close()
 
         results = list(station_map.values())
         logger.info(f"[오피넷] API 수집 완료: {len(results)}개 주유소")
         return results
 
-    def _api_request(self, endpoint: str, **params) -> Optional[dict]:
+    def _api_request(self, endpoint: str, *, session: requests.Session | None = None, **params) -> Optional[dict]:
         """오피넷 API 단일 호출."""
         url = f"{self.API_BASE}/{endpoint}"
         params.update({
@@ -293,7 +333,7 @@ class OpinetCrawler(CrawlerContract):
         })
         headers = self._anti_detect.get_random_headers()
 
-        resp = requests.get(url, params=params, headers=headers, timeout=15)
+        resp = self._retry_request(url, params=params, headers=headers, session=session, timeout=15)
         if resp.status_code != 200:
             logger.warning(f"[오피넷] API {endpoint} HTTP {resp.status_code}")
             return None
@@ -351,7 +391,7 @@ class OpinetCrawler(CrawlerContract):
             headers = self._anti_detect.get_random_headers()
             headers["Referer"] = self.BASE_URL
 
-            resp = requests.get(self.MAIN_PAGE, headers=headers, timeout=20)
+            resp = self._retry_request(self.MAIN_PAGE, headers=headers, timeout=20)
             resp.encoding = "utf-8"
 
             if resp.status_code != 200:
@@ -507,6 +547,12 @@ class OpinetCrawler(CrawlerContract):
 
         except Exception as e:
             logger.warning(f"[오피넷] HTML 파싱 실패: {e}")
+        finally:
+            # 메모리 해제 — soup가 정의된 경우에만
+            try:
+                del soup
+            except NameError:
+                pass
 
         return items
 
