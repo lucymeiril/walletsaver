@@ -12,6 +12,9 @@ from api.schemas.common import ApiResponse
 
 router = APIRouter()
 
+_MAX_RESTAURANT_RESULTS = 200
+_DEFAULT_RESTAURANT_LIMIT = 50
+
 
 def _haversine(lat1, lng1, lat2, lng2):
     """두 좌표 간 거리 (미터)."""
@@ -30,6 +33,7 @@ async def nearby_restaurants(
     radius: int = Query(5000, ge=100, le=50000, description="반경 (미터)"),
     category: str = Query(None, description="카테고리 필터"),
     sort: str = Query("distance", description="정렬 (distance, rating, price_asc)"),
+    limit: int = Query(_DEFAULT_RESTAURANT_LIMIT, ge=1, le=_MAX_RESTAURANT_RESULTS, description="최대 결과 수"),
 ):
     """주변 식당 조회 — DB에서 실제 데이터 조회."""
     storage = request.app.state.storage
@@ -39,7 +43,7 @@ async def nearby_restaurants(
             from sqlalchemy import select
             from storage.models import Restaurant
             with storage.SessionLocal() as session:
-                stmt = select(Restaurant)
+                stmt = select(Restaurant).limit(1000)  # DB-level safety cap
                 rows = session.execute(stmt).scalars().all()
                 results = []
                 for r in rows:
@@ -70,6 +74,9 @@ async def nearby_restaurants(
                     results.sort(key=lambda x: x.get("avg_price", float("inf")))
                 else:
                     results.sort(key=lambda x: x["distance"])
+
+                # 클라이언트 요청 limit 적용
+                results = results[:limit]
                 return ApiResponse(data=results)
         except Exception:
             pass

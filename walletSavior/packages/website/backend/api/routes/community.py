@@ -70,7 +70,7 @@ try:
     _use_db = True
 except Exception as _e:
     import logging
-    logging.warning(f"커뮤니티 DB 연결 실패: {_e}")
+    logging.warning("커뮤니티 DB 연결 실패: %s", _e)
     _use_db = False
 
 

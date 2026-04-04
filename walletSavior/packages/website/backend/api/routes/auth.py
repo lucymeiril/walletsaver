@@ -1,5 +1,6 @@
 """인증 API 라우트"""
 import logging
+import threading
 from fastapi import APIRouter, HTTPException, status, Request
 from api.schemas.auth import (
     UserRegister, UserLogin, TokenResponse, TokenRefresh, UserProfile
@@ -19,9 +20,26 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/auth", tags=["인증"])
 
-# 임시 인메모리 저장소 (DB 연결 전까지 사용)
+# ═══════════════════════════════════════════════════════════════════
+# ⚠️  TECH DEBT: In-memory user store
+#
+# Known issues (audit S-19):
+#   - _users_db is a plain dict — data lost on restart
+#   - _next_id has no lock — concurrent registrations can get same ID
+#   - No duplicate email check is atomic (TOCTOU race)
+#
+# Proper fix requires:
+#   1. SQLAlchemy User model (like community.py's UserModel)
+#   2. DB migration via Alembic
+#   3. Unique constraint on email column
+#   4. Auto-increment PK replaces _next_id
+#
+# This is OUT OF SCOPE for the current stability sprint.
+# Tracked as: WALLET-AUTH-DB-MIGRATION
+# ═══════════════════════════════════════════════════════════════════
 _users_db: dict[str, dict] = {}
 _next_id = 1
+_users_lock = threading.Lock()
 
 
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
@@ -30,23 +48,24 @@ async def register(request: Request, data: UserRegister):
     """회원가입 — 이메일/비밀번호"""
     global _next_id
 
-    if data.email in _users_db:
-        raise HTTPException(status_code=400, detail="이미 등록된 이메일입니다")
+    with _users_lock:
+        if data.email in _users_db:
+            raise HTTPException(status_code=400, detail="이미 등록된 이메일입니다")
 
-    # 닉네임 중복 체크
-    for user in _users_db.values():
-        if user["nickname"] == data.nickname:
-            raise HTTPException(status_code=400, detail="이미 사용 중인 닉네임입니다")
+        # 닉네임 중복 체크
+        for user in _users_db.values():
+            if user["nickname"] == data.nickname:
+                raise HTTPException(status_code=400, detail="이미 사용 중인 닉네임입니다")
 
-    user = {
-        "id": _next_id,
-        "email": data.email,
-        "nickname": data.nickname,
-        "hashed_password": hash_password(data.password),
-        "role": "user",
-    }
-    _users_db[data.email] = user
-    _next_id += 1
+        user = {
+            "id": _next_id,
+            "email": data.email,
+            "nickname": data.nickname,
+            "hashed_password": hash_password(data.password),
+            "role": "user",
+        }
+        _users_db[data.email] = user
+        _next_id += 1
 
     log_auth_event("register", user_id=user["id"], email=data.email,
                    ip=request.client.host if request.client else "unknown")

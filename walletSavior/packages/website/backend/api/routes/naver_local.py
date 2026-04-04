@@ -17,6 +17,7 @@ sync API + ThreadPoolExecutor 조합으로 해결한다.
 import asyncio
 import json
 import logging
+import random
 import re
 import threading
 import time
@@ -26,8 +27,9 @@ from urllib.parse import quote
 
 from fastapi import APIRouter, Query, HTTPException
 from fastapi.responses import StreamingResponse
+from starlette.requests import Request as StarletteRequest
 from api.schemas.common import ApiResponse
-from api.utils.cache import TTLCache, RequestDeduplicator
+from api.utils.cache import TTLCache, RequestDeduplicator, CircuitBreaker
 
 logger = logging.getLogger(__name__)
 
@@ -133,20 +135,48 @@ class _BrowserPool:
         self._cleanup_timer: Optional[threading.Timer] = None
 
     def get_browser(self):
-        """브라우저 인스턴스를 반환한다. 없으면 새로 생성. Thread-safe."""
+        """Return a connected browser. Recreate on crash. Raise on launch failure."""
         with self._lock:
             self._last_used = time.time()
-            if self._browser and self._browser.is_connected():
-                return self._browser
+            if self._browser:
+                try:
+                    if self._browser.is_connected():
+                        return self._browser
+                except Exception:
+                    pass  # is_connected() 자체가 크래시 → 브라우저 사망
+            # 브라우저 사망 또는 없음 → 전체 재시작
             self._cleanup()
-            from playwright.sync_api import sync_playwright
-            self._pw = sync_playwright().start()
-            self._browser = self._pw.chromium.launch(
-                headless=True,
-                args=["--disable-blink-features=AutomationControlled"],
-            )
+            try:
+                from playwright.sync_api import sync_playwright
+                self._pw = sync_playwright().start()
+                self._browser = self._pw.chromium.launch(
+                    headless=True,
+                    args=["--disable-blink-features=AutomationControlled"],
+                )
+            except Exception as exc:
+                logger.error("[BrowserPool] 브라우저 시작 실패: %s", exc)
+                self._cleanup()
+                raise
             self._schedule_cleanup()
             return self._browser
+
+    def is_healthy(self) -> bool:
+        """Check if the browser pool can serve requests (for health check)."""
+        with self._lock:
+            if self._browser is None:
+                return True  # 브라우저 미실행 상태는 OK (lazy-start)
+            try:
+                return self._browser.is_connected()
+            except Exception:
+                return False
+
+    def force_cleanup(self):
+        """Public cleanup for shutdown hook. Cancels timer + closes browser."""
+        with self._lock:
+            if self._cleanup_timer:
+                self._cleanup_timer.cancel()
+                self._cleanup_timer = None
+            self._cleanup()
 
     def _schedule_cleanup(self):
         if self._cleanup_timer:
@@ -180,29 +210,71 @@ _pool = _BrowserPool(idle_timeout=300)
 # Playwright는 브라우저 인스턴스 생성 비용이 크므로 스레드 풀을 재사용
 _executor = ThreadPoolExecutor(max_workers=4)
 
+# Circuit breaker: 5 consecutive Playwright failures → 120s cooldown
+_naver_circuit = CircuitBreaker(failure_threshold=5, recovery_timeout=120)
+
 # ──────────────────────────────────────────────
-# 캐시 (geocode + area-explore, TTL 5분)
+# Retry with exponential backoff
 # ──────────────────────────────────────────────
-_cache: dict[str, tuple[float, object]] = {}
-_cache_lock = threading.Lock()
-_CACHE_TTL = 300  # 5분
+
+_MAX_RETRIES = 3
+_BASE_BACKOFF = 1.0
+_MAX_BACKOFF = 8.0
+
+
+def _search_with_retry(
+    query: str, lat: float, lng: float, max_items: int
+) -> list[dict]:
+    """Retry-wrapper around _search_via_playwright_sync with exponential backoff.
+
+    서킷브레이커 확인 → 재시도 루프 → 성공/실패 기록.
+    서킷 OPEN이거나 모든 재시도 실패 시 [] 반환.
+    """
+    if not _naver_circuit.allow_request():
+        logger.warning("[네이버 검색] 서킷브레이커 OPEN — 스크래핑 건너뜀")
+        return []
+
+    last_exc = None
+    for attempt in range(_MAX_RETRIES):
+        try:
+            items = _search_via_playwright_sync(query, lat, lng, max_items)
+            _naver_circuit.record_success()
+            return items
+        except Exception as exc:
+            last_exc = exc
+            logger.warning(
+                "[네이버 검색] attempt %d/%d failed: %s",
+                attempt + 1, _MAX_RETRIES, exc,
+            )
+            if attempt < _MAX_RETRIES - 1:
+                backoff = min(
+                    _BASE_BACKOFF * (2 ** attempt) + random.uniform(0, 0.5),
+                    _MAX_BACKOFF,
+                )
+                time.sleep(backoff)
+
+    # 모든 재시도 실패
+    _naver_circuit.record_failure()
+    logger.error(
+        "[네이버 검색] %d회 재시도 모두 실패: %s", _MAX_RETRIES, last_exc
+    )
+    return []
+
+
+# ──────────────────────────────────────────────
+# 캐시 (geocode + area-explore, TTL 5분) — bounded TTLCache
+# ──────────────────────────────────────────────
+_geo_area_cache = TTLCache(ttl_seconds=300, max_size=256)
 
 
 def _cache_get(key: str):
-    """TTL 기반 캐시 조회. 만료 시 None 반환."""
-    with _cache_lock:
-        entry = _cache.get(key)
-        if entry and time.time() - entry[0] < _CACHE_TTL:
-            return entry[1]
-        if entry:
-            del _cache[key]
-    return None
+    """TTL cache lookup — delegates to bounded TTLCache."""
+    return _geo_area_cache.get(key)
 
 
 def _cache_set(key: str, value):
-    """캐시에 값 저장."""
-    with _cache_lock:
-        _cache[key] = (time.time(), value)
+    """TTL cache store — delegates to bounded TTLCache."""
+    _geo_area_cache.set(key, value)
 
 
 def _search_via_playwright_sync(query: str, lat: float, lng: float, max_items: int) -> list[dict]:
@@ -260,8 +332,8 @@ def _search_via_playwright_sync(query: str, lat: float, lng: float, max_items: i
             page.wait_for_timeout(100)
 
     except Exception as exc:
-        logger.warning(f"[네이버 검색] Playwright 크롤링 실패: {exc}")
-        return items
+        logger.warning("[네이버 검색] Playwright 크롤링 실패: %s", exc)
+        raise  # 재시도 wrapper가 처리
     finally:
         if context:
             try:
@@ -348,14 +420,14 @@ async def naver_place_search(
     async def _do_search():
         loop = asyncio.get_event_loop()
         return await loop.run_in_executor(
-            _executor, _search_via_playwright_sync, query, lat, lng, max_items,
+            _executor, _search_with_retry, query, lat, lng, max_items,
         )
 
     try:
         items = await _search_dedup.deduplicate(cache_key, _do_search)
         source = "playwright"
     except Exception as e:
-        logger.error(f"[네이버 검색] 검색 실패: {e}")
+        logger.error("[네이버 검색] 검색 실패: %s", e)
         items = []
         source = "error"
 
@@ -407,7 +479,7 @@ async def subcategory_search(
     try:
         items = await loop.run_in_executor(
             _executor,
-            _search_via_playwright_sync,
+            _search_with_retry,
             query, lat, lng, max_items,
         )
         # 각 아이템에 분류 정보 추가
@@ -415,7 +487,7 @@ async def subcategory_search(
             item["classifications"] = _classify_item(item)
         source = "playwright"
     except Exception as e:
-        logger.error(f"[서브카테고리 검색] 실패: {e}")
+        logger.error("[서브카테고리 검색] 실패: %s", e)
         items = []
         source = "error"
 
@@ -444,7 +516,7 @@ def _geocode_sync(query: str) -> dict | None:
     if cached is not None:
         return cached
 
-    items = _search_via_playwright_sync(query, lat=37.5665, lng=126.9780, max_items=1)
+    items = _search_with_retry(query, lat=37.5665, lng=126.9780, max_items=1)
     if not items:
         return None
 
@@ -473,7 +545,7 @@ async def geocode(
     try:
         result = await loop.run_in_executor(_executor, _geocode_sync, query)
     except Exception as e:
-        logger.error(f"[Geocode] 실패: {e}")
+        logger.error("[Geocode] 실패: %s", e)
         result = None
 
     if result:
@@ -589,7 +661,7 @@ def _search_single_category_sync(
 
     search_keyword = _CATEGORY_SEARCH_KEYWORDS.get(cat, cat)
     query = f"{location_name} {search_keyword}"
-    items = _search_via_playwright_sync(query, lat, lng, max_items)
+    items = _search_with_retry(query, lat, lng, max_items)
 
     for item in items:
         item["classifications"] = _classify_item(item)
@@ -607,6 +679,7 @@ def _search_single_category_sync(
 
 @router.get("/area-explore-stream")
 async def area_explore_stream(
+    request: StarletteRequest,
     location_name: str = Query(None, description="장소명"),
     lat: float = Query(None, description="위도"),
     lng: float = Query(None, description="경도"),
@@ -637,15 +710,30 @@ async def area_explore_stream(
     async def event_generator():
         loop = asyncio.get_event_loop()
         for i, cat in enumerate(cat_list):
+            # ── Disconnect check: 클라이언트 연결 끊김 감지 ──
+            if await request.is_disconnected():
+                logger.info("[SSE] 클라이언트 연결 끊김, 스트림 중단")
+                return
+
             try:
-                result = await loop.run_in_executor(
-                    _executor,
-                    _search_single_category_sync,
-                    location_name, lat, lng, cat, max_items,
+                # ── Per-category timeout: 35s max per category ──
+                result = await asyncio.wait_for(
+                    loop.run_in_executor(
+                        _executor,
+                        _search_single_category_sync,
+                        location_name, lat, lng, cat, max_items,
+                    ),
+                    timeout=35.0,
                 )
                 yield f"data: {json.dumps(result, ensure_ascii=False)}\n\n"
+            except asyncio.TimeoutError:
+                logger.warning("[SSE] 카테고리 '%s' 타임아웃 (35s)", cat)
+                yield f"data: {json.dumps({'name': cat, 'icon': '⏰', 'count': 0, 'items': [], 'error': 'timeout'}, ensure_ascii=False)}\n\n"
+            except asyncio.CancelledError:
+                logger.info("[SSE] 클라이언트 연결 끊김 (CancelledError), 스트림 중단")
+                return
             except Exception as exc:
-                logger.error(f"[SSE] 카테고리 '{cat}' 검색 실패: {exc}")
+                logger.error("[SSE] 카테고리 '%s' 검색 실패: %s", cat, exc)
                 yield f"data: {json.dumps({'name': cat, 'icon': '❌', 'count': 0, 'items': [], 'error': str(exc)}, ensure_ascii=False)}\n\n"
 
             # ban 방지: 카테고리 간 1초 간격
@@ -709,7 +797,7 @@ async def area_explore(
             location_name, lat, lng, cat_list, max_items,
         )
     except Exception as e:
-        logger.error(f"[Area Explore] 실패: {e}")
+        logger.error("[Area Explore] 실패: %s", e)
         return ApiResponse(success=False, error="지역 탐색 중 오류가 발생했습니다")
 
     return ApiResponse(

@@ -179,7 +179,8 @@ async def get_category_summary(
         return cached
 
     try:
-        all_products = storage.search_products("", per_page=500)
+        # Cap at 100 products for aggregation — sufficient for category summary
+        all_products = storage.search_products("", per_page=100)
         items = []
         if isinstance(all_products, dict) and "items" in all_products:
             items = all_products["items"]

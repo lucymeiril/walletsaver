@@ -5,6 +5,9 @@ Usage:
     uvicorn main:app --reload --host 0.0.0.0 --port 8000
 """
 
+from api.logging_config import setup_logging
+setup_logging()
+
 from api.app import create_app
 from config import API_HOST, API_PORT
 

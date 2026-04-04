@@ -15,6 +15,8 @@ FastAPI 앱 팩토리 — container.py가 의존성을 주입하여 앱을 생�
 
 import os
 import logging
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
@@ -42,6 +44,32 @@ async def _rate_limit_handler(request: Request, exc: RateLimitExceeded) -> JSONR
     )
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Application startup/shutdown lifecycle."""
+    logger.info("서버 시작 — 리소스 초기화")
+    yield
+    # ── Shutdown ──
+    logger.info("서버 종료 — 리소스 정리 시작")
+
+    # 1. Shutdown Playwright browser pool
+    try:
+        from api.routes.naver_local import _pool, _executor
+        _pool.force_cleanup()
+        logger.info("Playwright 브라우저 풀 정리 완료")
+    except Exception:
+        logger.exception("Playwright 정리 중 오류")
+
+    # 2. Shutdown ThreadPoolExecutor
+    try:
+        _executor.shutdown(wait=True, cancel_futures=True)
+        logger.info("ThreadPoolExecutor 종료 완료")
+    except Exception:
+        logger.exception("ThreadPoolExecutor 종료 중 오류")
+
+    logger.info("서버 종료 — 리소스 정리 완료")
+
+
 def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     """
     팩토리 패턴 — container.py가 의존성 주입하여 앱 생성.
@@ -58,6 +86,7 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
         docs_url="/docs" if is_debug else None,
         redoc_url="/redoc" if is_debug else None,
         openapi_url="/openapi.json" if is_debug else None,
+        lifespan=lifespan,
     )
 
     # ── 에러 핸들러 등록 ──
@@ -106,9 +135,13 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
             db_path = os.path.join(db_admin_path, "walletguardian.db")
             storage = DBStorage(f"sqlite:///{db_path}")
             storage.init_db()
-            logging.info(f"✅ DB 연결 성공: {db_path}")
+            logging.info("DB 연결 성공: %s", db_path)
+
+            # Wrap with circuit breaker proxy
+            from api.utils.storage_proxy import StorageProxy
+            storage = StorageProxy(storage)
         except Exception as e:
-            logging.warning(f"DB 연결 실패, mock 데이터 사용: {e}")
+            logging.warning("DB 연결 실패, mock 데이터 사용: %s", e)
             storage = None
 
     # 의존성을 app.state에 저장 — 라우터에서 request.app.state.storage로 접근
@@ -176,9 +209,67 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
         return {"success": True, "data": {"product": products[0], "prices": compare}, "error": None}
 
     @app.get("/api/health")
-    def health():
-        """헬스체크 — 로드밸런서·모니터링용."""
-        return {"status": "ok", "version": "0.1.0"}
+    async def health():
+        """헬스체크 — DB, Playwright 브라우저, 메모리 상태 확인."""
+        checks: dict = {}
+        overall = "ok"
+
+        # 1. DB connectivity
+        storage = app.state.storage
+        if storage is not None:
+            try:
+                circuit = getattr(storage, "circuit_state", "unknown")
+                if circuit == "open":
+                    checks["db"] = {"status": "degraded", "circuit": "open"}
+                    overall = "degraded"
+                else:
+                    checks["db"] = {"status": "ok", "circuit": circuit}
+            except Exception as e:
+                checks["db"] = {"status": "error", "error": str(e)}
+                overall = "error"
+        else:
+            checks["db"] = {"status": "disconnected"}
+            overall = "degraded"
+
+        # 2. Playwright browser pool
+        try:
+            from api.routes.naver_local import _pool, _naver_circuit
+            browser_ok = _pool.is_healthy()
+            naver_circuit = _naver_circuit.state
+            checks["playwright"] = {
+                "status": "ok" if browser_ok else "error",
+                "circuit": naver_circuit,
+            }
+            if not browser_ok or naver_circuit == "open":
+                overall = "degraded" if overall == "ok" else overall
+        except Exception as e:
+            checks["playwright"] = {"status": "error", "error": str(e)}
+
+        # 3. Memory usage
+        try:
+            import psutil
+            process = psutil.Process()
+            mem_info = process.memory_info()
+            mem_mb = round(mem_info.rss / (1024 * 1024), 1)
+            mem_status = "ok" if mem_mb < 512 else ("warning" if mem_mb < 1024 else "critical")
+            checks["memory"] = {
+                "status": mem_status,
+                "rss_mb": mem_mb,
+            }
+            if mem_status != "ok":
+                overall = "degraded" if overall == "ok" else overall
+        except Exception:
+            checks["memory"] = {"status": "unknown"}
+
+        status_code = 200 if overall in ("ok", "degraded") else 503
+        return JSONResponse(
+            status_code=status_code,
+            content={
+                "status": overall,
+                "version": "0.1.0",
+                "checks": checks,
+            },
+        )
 
     # ── Dashboard: 홈페이지 데이터 통합 (8 calls → 1) ──
     from api.utils.cache import TTLCache as _TTLCache
