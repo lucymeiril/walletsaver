@@ -342,6 +342,7 @@ export default function HomePage() {
                 onFocus={() => setAcOpen(true)}
                 placeholder="무엇을 찾으시나요?"
                 autoComplete="off"
+                aria-label="상품 검색"
               />
               {query && (
                 <button className={s.searchClear} onClick={() => { setQuery(''); setAcOpen(false); setAcKeywords([]); setAcProducts([]); }}>
@@ -685,7 +686,7 @@ export default function HomePage() {
                   }}>
                     {(d.image_url || d.thumb) && (
                       <div className={s.fashionImgWrap}>
-                        <img src={d.image_url || d.thumb} alt={d.title || d.name} className={s.fashionImg} loading="lazy" />
+                        <img src={d.image_url || d.thumb} alt={d.title || d.name} className={s.fashionImg} loading="lazy" onError={(e) => { e.target.style.display = 'none'; }} />
                       </div>
                     )}
                     <div className={s.fashionInfo}>
@@ -741,7 +742,7 @@ export default function HomePage() {
         ) : (
           <div className={s.martSaleGrid}>
             {activeMartItems.slice(0, 4).map((item, i) => (
-              <div key={i} className={s.martSaleCard} onClick={() => navigate('/mart')}>
+              <div key={item.id || item.name || `mart-${i}`} className={s.martSaleCard} onClick={() => navigate('/mart')}>
                 <div className={s.martSaleName}>{item.name}</div>
                 <div className={s.martSalePrices}>
                   <span className={s.martSalePrice}>{item.sale ? `${fmt(item.sale)}원` : '가격 미정'}</span>
@@ -786,7 +787,7 @@ export default function HomePage() {
         ) : (
           <div className={s.gasGrid}>
             {topGas.map((g, i) => (
-              <div key={i} className={s.gasCard}>
+              <div key={g.id || g.name || `gas-${i}`} className={s.gasCard}>
                 <span className={s.gasRank}>{i + 1}</span>
                 <div className={s.gasInfo}>
                   <div className={s.gasName}>{g.name}</div>

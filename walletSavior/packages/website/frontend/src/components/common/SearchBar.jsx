@@ -103,7 +103,7 @@ export default function SearchBar({
                 const label = typeof item === 'string' ? item : item.label;
                 return (
                   <button
-                    key={i}
+                    key={item.id || label || `sug-${i}`}
                     className={`${s.item} ${i === activeIndex ? s.active : ''}`}
                     onClick={() => handleSelect(label)}
                     onMouseEnter={() => setActiveIndex(i)}
@@ -115,7 +115,7 @@ export default function SearchBar({
               })
             : recentSearches.map((item, i) => (
                 <button
-                  key={i}
+                  key={`recent-${item}`}
                   className={`${s.item} ${i === activeIndex ? s.active : ''}`}
                   onClick={() => handleSelect(item)}
                   onMouseEnter={() => setActiveIndex(i)}

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { X, ImagePlus, Send, MessageSquare, Eye, Clock } from 'lucide-react';
 import { fmt } from '../../utils/helpers';
+import SafeImage from '../common/SafeImage';
 import s from './DetailModal.module.css';
 
 export default function DetailModal({ item, type, onClose }) {
@@ -16,14 +17,14 @@ export default function DetailModal({ item, type, onClose }) {
   };
 
   return (
-    <div className={s.overlay} onClick={onClose}>
-      <div className={s.modal} onClick={e => e.stopPropagation()}>
-        <button className={s.close} onClick={onClose}><X size={20} /></button>
+    <div className={s.overlay} onClick={onClose} role="presentation">
+      <div className={s.modal} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="detail-modal-title">
+        <button className={s.close} onClick={onClose} aria-label="닫기"><X size={20} /></button>
 
         {/* 핫딜 상세 */}
         {type === 'hotdeal' && (
           <>
-            {item.thumb && <img src={item.thumb} alt="" className={s.hero} />}
+            {item.thumb && <SafeImage src={item.thumb} alt={item.title || '핫딜 이미지'} className={s.hero} />}
             <div className={s.body}>
               <div className={s.meta}><span className={s.source}>{item.source}</span><span className={s.time}><Clock size={12} /> {item.time}</span></div>
               <h3 className={s.title}>{item.title}</h3>
@@ -45,8 +46,8 @@ export default function DetailModal({ item, type, onClose }) {
         {/* 마트 상세 */}
         {type === 'mart' && (
           <div className={s.body}>
-            {item.img && <img src={item.img} alt="" className={s.martImg} />}
-            <h3 className={s.title}>{item.name}</h3>
+            {item.img && <SafeImage src={item.img} alt={item.name || '마트 상품'} className={s.martImg} />}
+            <h3 id="detail-modal-title" className={s.title}>{item.name}</h3>
             <div className={s.priceRow}>
               <span className={s.price}>{fmt(item.sale)}원</span>
               <span className={s.orig}>{fmt(item.orig)}원</span>
@@ -70,7 +71,7 @@ export default function DetailModal({ item, type, onClose }) {
             <h3 className={s.title}>{item.title}</h3>
             {item.body && <p className={s.postBody}>{item.body}</p>}
             {item.images?.length > 0 && (
-              <div className={s.imgGrid}>{item.images.map((url, i) => <img key={i} src={url} alt="" className={s.postImg} />)}</div>
+              <div className={s.imgGrid}>{item.images.map((url) => <SafeImage key={url} src={url} alt="게시물 이미지" className={s.postImg} />)}</div>
             )}
             {item.priceVsAvg !== null && (
               <div className={s.priceBadge} style={{color: item.priceVsAvg < -20 ? 'var(--green)' : 'var(--text3)'}}>

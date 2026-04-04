@@ -11,7 +11,7 @@ export default function EmptyState({
   className = '',
 }) {
   return (
-    <div className={`${s.empty} ${className}`}>
+    <div className={`${s.empty} ${className}`} role="status" aria-live="polite">
       <Icon className={s.icon} size={48} />
       <h3 className={s.title}>{title}</h3>
       {description && <p className={s.desc}>{description}</p>}

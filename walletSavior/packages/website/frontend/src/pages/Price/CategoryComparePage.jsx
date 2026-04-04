@@ -92,7 +92,7 @@ function CategoryBreadcrumb({ categoryPath, categoryId, navigate }) {
         const isLast = i === parts.length - 1;
         const linkId = idParts.slice(0, i + 1).join('.');
         return (
-          <span key={i}>
+          <span key={linkId || `bc-${i}`}>
             {isLast ? (
               <span className={s.breadcrumbCurrent}>{part}</span>
             ) : (
@@ -176,7 +176,7 @@ const ProductCard = React.memo(function ProductCard({ product, summary, rank, pe
       {tags.length > 0 && (
         <div className={s.cardTags}>
           {tags.map((t, i) => (
-            <span key={i} className={s.cardTag}>{t}</span>
+            <span key={t} className={s.cardTag}>{t}</span>
           ))}
         </div>
       )}
@@ -244,7 +244,7 @@ const AlternativesSection = React.memo(function AlternativesSection({ alternativ
 
         return (
           <div
-            key={i}
+            key={alt.category_id || alt.name || `alt-${i}`}
             className={s.altItem}
             onClick={() => alt.category_id && navigate(`/price/category/${alt.category_id}`)}
           >

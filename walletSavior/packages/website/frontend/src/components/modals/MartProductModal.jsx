@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { ExternalLink } from 'lucide-react';
 import Modal from '../common/Modal';
+import SafeImage from '../common/SafeImage';
 import useStore from '../../stores/appStore';
 import { fmt } from '../../utils/helpers';
 import s from './MartProductModal.module.css';
@@ -62,7 +63,7 @@ export default function MartProductModal({ data, onClose }) {
       <div className={s.body}>
         {image && (
           <div className={s.imgWrap}>
-            <img src={image} alt={name} className={s.img} />
+            <SafeImage src={image} alt={name} className={s.img} />
             {discountPct > 0 && (
               <span className={s.discBadge}>-{discountPct}%</span>
             )}

@@ -1,0 +1,41 @@
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--text3, #9ca3af);
+}
+
+.text {
+  white-space: nowrap;
+}
+
+.refreshBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border: none;
+  background: none;
+  color: var(--text3, #9ca3af);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+
+.refreshBtn:hover:not(:disabled) {
+  color: var(--primary, #3b82f6);
+}
+
+.refreshBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

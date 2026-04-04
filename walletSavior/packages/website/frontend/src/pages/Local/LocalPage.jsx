@@ -556,7 +556,7 @@ export default function LocalPage() {
           {breadcrumb.length > 0 && (
             <div className={s.breadcrumb}>
               {breadcrumb.map((c, i) => (
-                <span key={i} className={s.breadcrumbItem}>
+                <span key={c.label || `bc-${i}`} className={s.breadcrumbItem}>
                   {i > 0 && <ChevronRight size={12} className={s.breadcrumbSep} />}
                   {c.action ? (
                     <button className={s.breadcrumbLink} onClick={c.action}>{c.label}</button>
@@ -704,7 +704,7 @@ export default function LocalPage() {
                   const priceInfo = getRepresentativePrice(item.menu_info);
                   const petrol = item.petrol_info;
                   return (
-                    <div key={i} className={s.item} onClick={() => handleItemClick(item)}>
+                    <div key={item.id || item.place_id || item.name || `item-${i}`} className={s.item} onClick={() => handleItemClick(item)}>
                       <span className={`${s.rank} ${i === 0 ? s.rank1 : i === 1 ? s.rank2 : i === 2 ? s.rank3 : ''}`}>
                         {i + 1}
                       </span>

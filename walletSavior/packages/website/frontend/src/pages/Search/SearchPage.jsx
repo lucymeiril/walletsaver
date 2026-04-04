@@ -167,7 +167,7 @@ export default function SearchPage() {
                     <Card key={`${item.type}-${item.id}-${i}`} variant="interactive" onClick={() => handleItemClick(item)}>
                       <div className={s.resultItem}>
                         {item.image && (
-                          <img src={item.image} alt="" className={s.thumb} loading="lazy" />
+                          <img src={item.image} alt={item.name || '검색 결과'} className={s.thumb} loading="lazy" onError={(e) => { e.target.style.display = 'none'; }} />
                         )}
                         <div className={s.resultBody}>
                           <div className={s.resultTop}>

@@ -425,7 +425,7 @@ const SearchAutocomplete = memo(function SearchAutocomplete({
                   <div className={s.acSectionLabel}>최근 검색</div>
                   {recentList.slice(0, 5).map((item, i) => (
                     <button
-                      key={i}
+                      key={`recent-${item}`}
                       className={`${s.dropItem} ${i === activeIndex ? s.dropItemActive : ''}`}
                       onClick={() => handleSelectRecent(item)}
                       onMouseEnter={() => setActiveIndex(i)}

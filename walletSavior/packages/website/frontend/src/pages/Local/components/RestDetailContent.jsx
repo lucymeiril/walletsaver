@@ -38,7 +38,7 @@ export default function RestDetailContent({ restaurant, onFocusMap }) {
             const menuAvg = LOCAL_AVGS[m.name];
             const menuDiff = menuAvg ? m.price - menuAvg : null;
             return (
-              <div key={i} className={s.menuRow}>
+              <div key={`${m.name}-${m.price}`} className={s.menuRow}>
                 <span className={s.menuName}>{m.name}</span>
                 <span className={s.menuPrice}>{fmt(m.price)}원</span>
                 {menuDiff !== null && (

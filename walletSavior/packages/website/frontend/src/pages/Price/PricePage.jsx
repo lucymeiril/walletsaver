@@ -268,6 +268,7 @@ export default function PricePage() {
               onKeyDown={handleSearchKeyDown}
               placeholder="상품명을 검색하세요 (양파, 삼겹살, 계란...)"
               autoComplete="off"
+              aria-label="물가 검색"
             />
             {(hasAcResults || searchResults.length > 0) && (
               <div className={s.acList}>
@@ -375,6 +376,7 @@ export default function PricePage() {
             onKeyDown={handleSearchKeyDown}
             placeholder="다른 상품 검색..."
             autoComplete="off"
+            aria-label="물가 검색"
           />
           {(hasAcResults || searchResults.length > 0) && (
             <div className={s.acList}>
@@ -484,7 +486,7 @@ export default function PricePage() {
               <span className={s.variantLabel}>속성 분류</span>
               <div className={s.variantChips}>
                 {variants.map((v, i) => (
-                  <button key={i} className={`${s.variantChip} ${variantIdx === i ? s.variantActive : ''}`} onClick={() => setVariantIdx(i)}>
+                  <button key={v.label || v.name || `var-${i}`} className={`${s.variantChip} ${variantIdx === i ? s.variantActive : ''}`} onClick={() => setVariantIdx(i)}>
                     {v.label}
                     {v.storage !== '-' && <span className={s.variantTag}>{v.storage}</span>}
                     {v.grade !== '-' && v.grade !== '1등급' && <span className={s.variantTag}>{v.grade}</span>}
@@ -618,7 +620,7 @@ export default function PricePage() {
                     ) : null;
                   }}>
                   {martBarData.map((entry, index) => (
-                    <Cell key={index} fill={entry.isCheapest ? '#22c55e' : entry.color} fillOpacity={entry.isCheapest ? 1 : 0.7} />
+                    <Cell key={entry.name || entry.mart || `cell-${index}`} fill={entry.isCheapest ? '#22c55e' : entry.color} fillOpacity={entry.isCheapest ? 1 : 0.7} />
                   ))}
                 </Bar>
               </BarChart>

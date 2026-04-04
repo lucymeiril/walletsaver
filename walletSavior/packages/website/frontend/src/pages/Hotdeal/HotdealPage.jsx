@@ -7,6 +7,7 @@ import { fmt } from '../../utils/helpers';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import Badge from '../../components/common/Badge';
 import Spinner from '../../components/common/Spinner';
+import SafeImage from '../../components/common/SafeImage';
 import useStore from '../../stores/appStore';
 import s from './HotdealPage.module.css';
 
@@ -204,7 +205,7 @@ export default function HotdealPage() {
 
           return (
             <div key={d.id} className={s.card} onClick={() => setDetail(d)}>
-              {d.thumb && <img src={d.thumb} alt={d.title} className={s.thumb} loading="lazy" />}
+              {d.thumb && <SafeImage src={d.thumb} alt={d.title} className={s.thumb} />}
               <div className={s.cardBody}>
                 <div className={s.cardHead}>
                   <span className={s.source}>{d.source}</span>
@@ -325,11 +326,11 @@ const HotdealDetailModal = React.memo(function HotdealDetailModal({ item, votes,
   };
 
   return (
-    <div className={s.modalOverlay} onClick={onClose}>
-      <div className={s.modal} onClick={e => e.stopPropagation()}>
-        <button className={s.modalClose} onClick={onClose}><X size={20} /></button>
+    <div className={s.modalOverlay} onClick={onClose} role="presentation">
+      <div className={s.modal} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="핫딜 상세">
+        <button className={s.modalClose} onClick={onClose} aria-label="닫기"><X size={20} /></button>
 
-        {item.thumb && <img src={item.thumb} alt="" className={s.modalHero} />}
+        {item.thumb && <SafeImage src={item.thumb} alt={item.title || '핫딜 이미지'} className={s.modalHero} />}
 
         <div className={s.modalBody}>
           <div className={s.modalMeta}>

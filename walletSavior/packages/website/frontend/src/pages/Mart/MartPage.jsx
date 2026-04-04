@@ -5,6 +5,7 @@ import { fmt } from '../../utils/helpers';
 import useStore from '../../stores/appStore';
 import Modal from '../../components/common/Modal';
 import Spinner from '../../components/common/Spinner';
+import SafeImage from '../../components/common/SafeImage';
 import s from './MartPage.module.css';
 
 const COMPARE_MARTS = ['emart', 'homeplus', 'lotte'];
@@ -393,6 +394,7 @@ export default function MartPage() {
                   className={s.flyerImg}
                   ref={flyerImgRef}
                   draggable={false}
+                  onError={(e) => { e.target.style.opacity = '0.3'; }}
                   style={{
                     transform: `scale(${flyerZoom}) translate(${flyerPan.x}px, ${flyerPan.y}px)`,
                     cursor: flyerZoom > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
@@ -455,7 +457,7 @@ export default function MartPage() {
                 <div className={s.flyerDots}>
                   {flyerPages.map((_, i) => (
                     <button
-                      key={i}
+                      key={`dot-${i}`}
                       className={`${s.flyerDot} ${i === flyerIdx ? s.flyerDotActive : ''}`}
                       onClick={() => { setFlyerIdx(i); resetFlyerView(); }}
                       title={`${i + 1}페이지`}
@@ -576,7 +578,7 @@ export default function MartPage() {
               const diff = matched ? item.sale - matched.avg : null;
               const onlineUrl = getOnlineMallUrl(activeMart, item.name);
               return (
-                <div key={i} className={s.card} onClick={() => setSaleDetail({ ...item, martKey: activeMart, martName: martInfo?.name, period: martPeriod })}>
+                <div key={item.id || item.name || `sale-${i}`} className={s.card} onClick={() => setSaleDetail({ ...item, martKey: activeMart, martName: martInfo?.name, period: martPeriod })}>
                   <div className={s.cardName}>{item.name}</div>
                   <div className={s.cardPrices}>
                     <span className={s.sale}>{fmt(item.sale)}원</span>
@@ -726,7 +728,7 @@ export default function MartPage() {
             <div className={s.detailBody}>
               {saleDetail.img && (
                 <div className={s.detailImgWrap}>
-                  <img src={saleDetail.img} alt={saleDetail.name} className={s.detailImg} />
+                  <SafeImage src={saleDetail.img} alt={saleDetail.name} className={s.detailImg} />
                   {saleDetail.disc > 0 && (
                     <span className={s.detailDiscBadge}>-{saleDetail.disc}%</span>
                   )}

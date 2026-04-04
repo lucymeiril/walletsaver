@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../common/Modal';
+import SafeImage from '../common/SafeImage';
 import useStore from '../../stores/appStore';
 import { productService } from '../../services/productService';
 import { fmt } from '../../utils/helpers';
@@ -95,7 +96,7 @@ function ProductQuickViewContent({ data, onClose }) {
         {/* Image area */}
         <div className={s.imgWrap}>
           {image ? (
-            <img src={image} alt={name} className={s.img} />
+            <SafeImage src={image} alt={name} className={s.img} />
           ) : (
             <div className={s.imgPlaceholder}>📷</div>
           )}

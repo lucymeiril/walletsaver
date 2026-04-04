@@ -61,12 +61,23 @@ export default function RichTextEditor({ content, onChange, placeholder }) {
 
   if (!editor) return null;
 
+  const ARIA_LABELS = {
+    'B': '굵게', 'I': '기울임', 'S': '취소선',
+    'H2': '제목 2', 'H3': '제목 3',
+    '•': '글머리 기호', '1.': '번호 매기기',
+    '🔗': '링크', '📷': '이미지',
+    '❝': '인용', '</>': '코드 블록', '─': '구분선',
+    '↶': '실행 취소', '↷': '다시 실행',
+  };
+
   const btn = (label, action, active) => (
     <button
       type="button"
       className={`${s.tbBtn} ${active ? s.tbBtnActive : ''}`}
       onClick={action}
-      title={label}
+      title={ARIA_LABELS[label] || label}
+      aria-label={ARIA_LABELS[label] || label}
+      aria-pressed={active || undefined}
     >
       {label}
     </button>
@@ -74,7 +85,7 @@ export default function RichTextEditor({ content, onChange, placeholder }) {
 
   return (
     <div className={s.editorWrap}>
-      <div className={s.toolbar}>
+      <div className={s.toolbar} role="toolbar" aria-label="텍스트 서식">
         {btn('B', () => editor.chain().focus().toggleBold().run(), editor.isActive('bold'))}
         {btn('I', () => editor.chain().focus().toggleItalic().run(), editor.isActive('italic'))}
         {btn('S', () => editor.chain().focus().toggleStrike().run(), editor.isActive('strike'))}

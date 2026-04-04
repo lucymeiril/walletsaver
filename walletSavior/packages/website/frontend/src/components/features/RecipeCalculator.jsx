@@ -67,8 +67,8 @@ export default function RecipeCalculator() {
       <div className={s.ingredients}>
         <h4>재료 상세</h4>
         <div className={s.ingGrid}>
-          {recipe.ingredients.map((ing, i) => (
-            <div key={i} className={s.ingItem}>
+          {recipe.ingredients.map((ing) => (
+            <div key={`${ing.name}-${ing.amount}`} className={s.ingItem}>
               <span className={s.ingName}>{ing.name}</span>
               <span className={s.ingAmount}>{ing.amount}</span>
               <span className={s.ingCost}>{fmt(ing.cost)}원</span>

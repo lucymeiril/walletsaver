@@ -1,4 +1,5 @@
 import useStore from '../stores/appStore';
+import { isTokenExpiringSoon } from '../utils/tokenUtils';
 
 const API_BASE = import.meta.env.VITE_API_URL || '';
 const DEFAULT_TIMEOUT = 15000;
@@ -81,6 +82,12 @@ class ApiClient {
 
   async request(path, options = {}) {
     const { timeout = DEFAULT_TIMEOUT, signal: externalSignal, ...fetchOptions } = options;
+
+    // Proactive token refresh: if token expires within 60 s, refresh before request
+    if (this.token && isTokenExpiringSoon(this.token)) {
+      await this.refreshToken();
+    }
+
     const headers = {
       'Content-Type': 'application/json',
       ...fetchOptions.headers,
@@ -131,7 +138,10 @@ class ApiClient {
         }
       } else {
         this.clearToken();
-        useStore.getState().openLoginModal();
+        sessionStorage.removeItem('refresh_token');
+        const store = useStore.getState();
+        store.logout();
+        store.openLoginModal();
         throw new ApiError(ERROR_MESSAGES.unauthorized, 401, 'unauthorized');
       }
     }

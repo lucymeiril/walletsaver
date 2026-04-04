@@ -384,8 +384,8 @@ export default function CommunityPage() {
             {wImages.length > 0 && (
               <div className={s.imgPreview}>
                 {wImages.map((src, i) => (
-                  <div key={i} className={s.previewWrap}>
-                    <img src={src} alt="" />
+                  <div key={src} className={s.previewWrap}>
+                    <img src={src} alt="업로드 미리보기" onError={(e) => { e.target.style.display = 'none'; }} />
                     <button className={s.removeImg} onClick={() => setWImages(prev => prev.filter((_, j) => j !== i))}>×</button>
                   </div>
                 ))}
@@ -427,6 +427,7 @@ export default function CommunityPage() {
             onChange={handleSearchChange}
             placeholder="게시글 검색..."
             autoComplete="off"
+            aria-label="게시글 검색"
           />
         </div>
         <select className={s.sortSel} value={sortBy} onChange={handleSortChange}>
@@ -781,8 +782,8 @@ const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, boa
 
           {post.images?.length > 0 && (
             <div className={s.modalImages}>
-              {post.images.filter(url => sanitizeURL(url)).map((url, i) => (
-                <img key={i} src={sanitizeURL(url)} alt="" loading="lazy" />
+              {post.images.filter(url => sanitizeURL(url)).map((url) => (
+                <img key={url} src={sanitizeURL(url)} alt="게시물 이미지" loading="lazy" onError={(e) => { e.target.style.display = 'none'; }} />
               ))}
             </div>
           )}

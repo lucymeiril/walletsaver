@@ -1,6 +1,7 @@
 import { ExternalLink } from 'lucide-react';
 import { fmt } from '../../../data/mockData';
 import { parseMenuItems, getRepresentativePrice } from '../utils';
+import SafeImage from '../../../components/common/SafeImage';
 import s from '../LocalPage.module.css';
 
 export default function NaverPlaceDetailContent({ place, onFocusMap }) {
@@ -16,7 +17,7 @@ export default function NaverPlaceDetailContent({ place, onFocusMap }) {
 
       {place.image_url && (
         <div className={s.detailImageWrap}>
-          <img src={place.image_url} alt={place.name} className={s.detailImage} />
+          <SafeImage src={place.image_url} alt={place.name} className={s.detailImage} />
         </div>
       )}
 
@@ -43,8 +44,8 @@ export default function NaverPlaceDetailContent({ place, onFocusMap }) {
         <div className={s.detailSection}>
           <h4>📋 메뉴 및 가격</h4>
           <div className={s.menuTable}>
-            {menuItems.map((m, i) => (
-              <div key={i} className={s.menuRow}>
+            {menuItems.map((m) => (
+              <div key={`${m.name}-${m.price}`} className={s.menuRow}>
                 <span className={s.menuName}>{m.name}</span>
                 <span className={s.menuPrice}>{fmt(m.price)}원</span>
               </div>
