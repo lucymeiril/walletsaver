@@ -107,6 +107,15 @@ def check_price_outliers_batch(
     return results
 
 
+ALLOWED_DUPLICATE_FIELDS = {
+    "products": {"name", "category_id"},
+    "baseline_prices": {"product_id", "source", "price"},
+    "discount_history": {"product_id", "source", "price"},
+    "hotdeal_prices": {"product_id", "source", "price"},
+    "categories": {"name", "parent_id"},
+    "keywords": {"word"},
+}
+
 def find_duplicates(session: Session, table_name: str, fields: list[str]) -> list[dict]:
     """중복 데이터 탐지"""
     model_map = {
@@ -122,7 +131,12 @@ def find_duplicates(session: Session, table_name: str, fields: list[str]) -> lis
     if not model:
         return []
 
-    columns = [getattr(model, f) for f in fields if hasattr(model, f)]
+    allowed = ALLOWED_DUPLICATE_FIELDS.get(table_name, set())
+    validated_fields = [f for f in fields if f in allowed]
+    if not validated_fields:
+        return []
+
+    columns = [getattr(model, f) for f in validated_fields]
     if not columns:
         return []
 

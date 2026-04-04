@@ -4,11 +4,13 @@ import json
 from datetime import datetime, timedelta
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException, Query
-from pydantic import BaseModel
+from fastapi import APIRouter, HTTPException, Query, Request, Depends
+from pydantic import BaseModel, Field, field_validator
 from sqlalchemy import func, select
 
 from services.base import get_session
+from api.auth import require_viewer, require_moderator, require_admin, get_current_identity
+from services.audit import log_action
 from api.middleware.rate_limit import limiter, INGESTION_LIMIT
 from starlette.requests import Request as StarletteRequest
 from storage.models import (
@@ -21,6 +23,13 @@ from storage.models import (
     PendingCategorization,
 )
 
+from api.security import (
+    MAX_INGESTION_ITEMS, MAX_INGESTION_ERRORS, MAX_CRAWLER_NAME_LEN,
+    MAX_STRATEGY_LEN, MAX_URL_LEN, MAX_NOTES_LEN, MAX_REASON_LEN,
+    MAX_BULK_IDS, MAX_NAME_LEN, ALLOWED_SCHEMA_TYPES, ALLOWED_CRAWL_STATUSES,
+    MAX_REVIEW_ACTION_VALUES, MAX_CLEANUP_STATUS_VALUES,
+)
+
 router = APIRouter(prefix="/api/ingestions", tags=["ingestions"])
 
 
@@ -28,33 +37,66 @@ router = APIRouter(prefix="/api/ingestions", tags=["ingestions"])
 
 
 class IngestionSubmit(BaseModel):
-    crawler_name: str
-    crawl_status: str = "success"
-    items: list[dict] = []
-    schema_type: str = "DiscountItem"
-    strategy_used: Optional[str] = None
-    duration_seconds: Optional[float] = None
-    errors: list[dict] = []
-    source_url: Optional[str] = None
+    crawler_name: str = Field(..., min_length=1, max_length=MAX_CRAWLER_NAME_LEN)
+    crawl_status: str = Field("success", max_length=20)
+    items: list[dict] = Field(default_factory=list, max_length=MAX_INGESTION_ITEMS)
+    schema_type: str = Field("DiscountItem", max_length=50)
+    strategy_used: Optional[str] = Field(None, max_length=MAX_STRATEGY_LEN)
+    duration_seconds: Optional[float] = Field(None, ge=0, le=86_400)
+    errors: list[dict] = Field(default_factory=list, max_length=MAX_INGESTION_ERRORS)
+    source_url: Optional[str] = Field(None, max_length=MAX_URL_LEN)
+
+    @field_validator("crawl_status")
+    @classmethod
+    def validate_crawl_status(cls, v: str) -> str:
+        if v not in ALLOWED_CRAWL_STATUSES:
+            raise ValueError(f"crawl_status는 {ALLOWED_CRAWL_STATUSES} 중 하나여야 합니다.")
+        return v
+
+    @field_validator("schema_type")
+    @classmethod
+    def validate_schema_type(cls, v: str) -> str:
+        if v not in ALLOWED_SCHEMA_TYPES:
+            raise ValueError(f"schema_type은 {ALLOWED_SCHEMA_TYPES} 중 하나여야 합니다.")
+        return v
 
 
 class ReviewRequest(BaseModel):
-    action: str  # "approve", "reject", "partial"
-    notes: Optional[str] = None
-    approved_item_indices: Optional[list[int]] = None
-    rejected_reason: Optional[str] = None
+    action: str = Field(..., max_length=20)
+    notes: Optional[str] = Field(None, max_length=MAX_NOTES_LEN)
+    approved_item_indices: Optional[list[int]] = Field(None, max_length=MAX_INGESTION_ITEMS)
+    rejected_reason: Optional[str] = Field(None, max_length=MAX_REASON_LEN)
+
+    @field_validator("action")
+    @classmethod
+    def validate_action(cls, v: str) -> str:
+        if v not in MAX_REVIEW_ACTION_VALUES:
+            raise ValueError(f"action은 {MAX_REVIEW_ACTION_VALUES} 중 하나여야 합니다.")
+        return v
 
 
 class BulkApproveRequest(BaseModel):
-    ids: list[int]
-    reviewer: Optional[str] = None
-    notes: Optional[str] = None
+    ids: list[int] = Field(..., min_length=1, max_length=MAX_BULK_IDS)
+    reviewer: Optional[str] = Field(None, max_length=MAX_NAME_LEN)
+    notes: Optional[str] = Field(None, max_length=MAX_NOTES_LEN)
 
 
 class CleanupRequest(BaseModel):
-    status: list[str] = ["approved", "rejected"]
-    older_than_days: Optional[int] = None
+    status: list[str] = Field(
+        default=["approved", "rejected"],
+        min_length=1,
+        max_length=5,
+    )
+    older_than_days: Optional[int] = Field(None, ge=1, le=3650)
     confirm: bool = False
+
+    @field_validator("status")
+    @classmethod
+    def validate_status_values(cls, v: list[str]) -> list[str]:
+        invalid = set(v) - MAX_CLEANUP_STATUS_VALUES
+        if invalid:
+            raise ValueError(f"허용되지 않는 status 값: {invalid}")
+        return v
 
 
 # --- 품질 점수 계산 ---
@@ -129,7 +171,7 @@ def _calculate_quality(items: list[dict], schema_type: str) -> tuple[float, dict
 
 
 @router.get("/stats")
-def ingestion_stats():
+def ingestion_stats(identity: dict = Depends(require_viewer)):
     """대기열 통계 — 상태별 건수, 크롤러별 건수."""
     session = get_session()
     try:
@@ -163,7 +205,7 @@ def ingestion_stats():
 
 
 @router.post("/bulk-approve")
-def bulk_approve(body: BulkApproveRequest):
+def bulk_approve(body: BulkApproveRequest, identity: dict = Depends(require_moderator)):
     """선택된 여러 수집을 일괄 승인."""
     if not body.ids:
         raise HTTPException(400, "ids가 비어 있습니다")
@@ -200,7 +242,7 @@ def bulk_approve(body: BulkApproveRequest):
 
 
 @router.post("/cleanup")
-def cleanup_ingestions(body: CleanupRequest):
+def cleanup_ingestions(body: CleanupRequest, identity: dict = Depends(require_admin)):
     """처리 완료(승인/거부)된 대기열 항목 일괄 삭제."""
     if not body.confirm:
         raise HTTPException(400, "confirm이 true여야 삭제를 진행합니다")
@@ -239,8 +281,10 @@ def cleanup_ingestions(body: CleanupRequest):
 
 @router.post("")
 @limiter.limit(INGESTION_LIMIT)
-def submit_ingestion(request: StarletteRequest, body: IngestionSubmit):
+def submit_ingestion(request: StarletteRequest, body: IngestionSubmit, identity: dict = Depends(get_current_identity)):
     """크롤러가 데이터를 대기열에 제출."""
+    if identity["role"] not in ("service", "moderator", "admin"):
+        raise HTTPException(403, "크롤러 서비스 또는 관리자 권한이 필요합니다.")
     session = get_session()
     try:
         quality_score, quality_details = _calculate_quality(
@@ -281,6 +325,7 @@ def list_ingestions(
     per_page: int = Query(20, ge=1, le=100, description="페이지당 항목 수"),
     limit: int = Query(None, ge=1, le=500, description="(하위호환) limit"),
     offset: int = Query(None, ge=0, description="(하위호환) offset"),
+    identity: dict = Depends(require_viewer),
 ):
     """대기열 목록 조회 (summary) — page/per_page 또는 limit/offset."""
     session = get_session()
@@ -320,7 +365,7 @@ def list_ingestions(
 
 
 @router.get("/{ingestion_id}")
-def get_ingestion(ingestion_id: int):
+def get_ingestion(ingestion_id: int, identity: dict = Depends(require_viewer)):
     """대기열 항목 상세 조회 — 항목 미리보기 + 품질 breakdown + 이전 비교."""
     session = get_session()
     try:
@@ -382,7 +427,7 @@ def get_ingestion(ingestion_id: int):
 
 
 @router.post("/{ingestion_id}/crawler-review")
-def crawler_review(ingestion_id: int, body: ReviewRequest):
+def crawler_review(ingestion_id: int, body: ReviewRequest, identity: dict = Depends(require_moderator)):
     """크롤러 관리자 1차 검토 — 승인/거부."""
     session = get_session()
     try:
@@ -414,7 +459,7 @@ def crawler_review(ingestion_id: int, body: ReviewRequest):
 
 
 @router.post("/{ingestion_id}/db-review")
-def db_review(ingestion_id: int, body: ReviewRequest):
+def db_review(ingestion_id: int, body: ReviewRequest, identity: dict = Depends(require_moderator)):
     """DB 관리자 최종 검토 — 승인 시 실제 DB 테이블에 삽입."""
     session = get_session()
     try:
@@ -472,7 +517,7 @@ def db_review(ingestion_id: int, body: ReviewRequest):
 
 
 @router.delete("/{ingestion_id}")
-def delete_ingestion(ingestion_id: int):
+def delete_ingestion(ingestion_id: int, identity: dict = Depends(require_admin)):
     """대기열 항목 삭제."""
     session = get_session()
     try:

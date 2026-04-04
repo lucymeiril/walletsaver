@@ -1,7 +1,7 @@
 """가격 대량 저장 + 통계 + 티어설정 + 이상치 + 이력 + CSV 내보내기 라우트"""
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Request, Depends
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -14,11 +14,20 @@ import statistics as pystats
 from sqlalchemy import select, func, and_
 
 from services.base import get_session
+from api.auth import require_viewer, require_moderator, require_admin
+from services.audit import log_action
 from services.price_calc import calculate_baseline_average, get_price_history
 from services.export import get_statistics_summary
 from api.middleware.rate_limit import limiter, EXPORT_LIMIT
 from starlette.requests import Request as StarletteRequest
 from storage.models import BaselinePrice, DiscountHistory, Product, Category
+
+from api.security import (
+    escape_like, MAX_BULK_PRICE_ITEMS, MAX_SOURCE_LEN, MAX_UNIT_LEN,
+    ALLOWED_DATA_TYPES,
+)
+
+ALLOWED_TIER_KEYS = {"ultra", "great", "good", "wait", "bad"}
 
 router = APIRouter(prefix="/prices", tags=["prices"])
 
@@ -31,6 +40,7 @@ def list_prices(
     source: Optional[str] = None,
     page: int = Query(1, ge=1),
     per_page: int = Query(50, ge=1, le=200),
+    identity: dict = Depends(require_viewer),
 ):
     """가격 목록 — 기본 페이징 + 필터."""
     session = get_session()
@@ -39,7 +49,7 @@ def list_prices(
         if product_id:
             conditions.append(BaselinePrice.product_id == product_id)
         if source:
-            conditions.append(BaselinePrice.source.ilike(f"%{source}%"))
+            conditions.append(BaselinePrice.source.ilike(f"%{escape_like(source)}%"))
 
         total = session.execute(
             select(func.count()).select_from(BaselinePrice).where(and_(*conditions)) if conditions
@@ -120,26 +130,41 @@ def _save_whitelist(ids: set):
 
 
 class PriceItem(BaseModel):
-    product_id: int
-    price: float
-    source: str
-    unit: str = "개"
-    region: Optional[str] = None
+    product_id: int = Field(..., gt=0)
+    price: float = Field(..., gt=0, le=100_000_000)
+    source: str = Field(..., min_length=1, max_length=MAX_SOURCE_LEN)
+    unit: str = Field("개", min_length=1, max_length=MAX_UNIT_LEN)
+    region: Optional[str] = Field(None, max_length=100)
 
 
 class BulkPriceRequest(BaseModel):
-    items: list[PriceItem]
-    data_type: str = "baseline"
+    items: list[PriceItem] = Field(..., min_length=1, max_length=MAX_BULK_PRICE_ITEMS)
+    data_type: str = Field("baseline", max_length=20)
+
+    @field_validator("data_type")
+    @classmethod
+    def validate_data_type(cls, v: str) -> str:
+        if v not in ALLOWED_DATA_TYPES:
+            raise ValueError(f"data_type은 {ALLOWED_DATA_TYPES} 중 하나여야 합니다.")
+        return v
 
 
 class TierConfigRequest(BaseModel):
     tiers: dict
 
+    @field_validator("tiers")
+    @classmethod
+    def validate_tier_keys(cls, v: dict) -> dict:
+        invalid_keys = set(v.keys()) - ALLOWED_TIER_KEYS
+        if invalid_keys:
+            raise ValueError(f"허용되지 않는 티어 키: {invalid_keys}")
+        return v
+
 
 # ── 대량 저장 ──
 
 @router.post("/bulk", status_code=201)
-def bulk_save_prices(body: BulkPriceRequest):
+def bulk_save_prices(body: BulkPriceRequest, identity: dict = Depends(require_moderator)):
     session = get_session()
     try:
         saved = 0
@@ -171,7 +196,7 @@ def bulk_save_prices(body: BulkPriceRequest):
 # ── 통계 ──
 
 @router.get("/stats")
-def price_statistics():
+def price_statistics(identity: dict = Depends(require_viewer)):
     """실제 DB 기반 전체 가격 통계 (median, std_dev, min, max, 소스별, 카테고리별)"""
     session = get_session()
     try:
@@ -228,7 +253,7 @@ def price_statistics():
 
 
 @router.get("/product/{product_id}")
-def product_prices(product_id: int, days: int = 90):
+def product_prices(product_id: int, days: int = 90, identity: dict = Depends(require_viewer)):
     session = get_session()
     try:
         return calculate_baseline_average(session, product_id, days)
@@ -239,7 +264,7 @@ def product_prices(product_id: int, days: int = 90):
 # ── 티어 설정 ──
 
 @router.get("/tier-config")
-def get_tier_config():
+def get_tier_config(identity: dict = Depends(require_viewer)):
     """저장된 티어 설정 로드 (없으면 기본값)"""
     if TIER_CONFIG_PATH.exists():
         try:
@@ -250,7 +275,7 @@ def get_tier_config():
 
 
 @router.post("/tier-config")
-def save_tier_config(body: TierConfigRequest):
+def save_tier_config(body: TierConfigRequest, identity: dict = Depends(require_admin)):
     """티어 설정 저장"""
     TIER_CONFIG_PATH.write_text(
         json.dumps(body.tiers, ensure_ascii=False, indent=2),
@@ -265,6 +290,7 @@ def tier_preview(
     great: float = Query(85),
     good: float = Query(105),
     wait: float = Query(120),
+    identity: dict = Depends(require_viewer),
 ):
     """티어 기준값 변경 시 각 등급에 해당하는 상품 수 미리보기"""
     session = get_session()
@@ -312,7 +338,7 @@ def tier_preview(
 # ── 글로벌 이상치 ──
 
 @router.get("/outliers")
-def global_outliers(limit: int = Query(20, ge=1, le=200)):
+def global_outliers(limit: int = Query(20, ge=1, le=200), identity: dict = Depends(require_viewer)):
     """전체 상품에 대한 글로벌 이상치 탐지 (IQR), 화이트리스트 제외"""
     session = get_session()
     try:
@@ -366,7 +392,7 @@ def global_outliers(limit: int = Query(20, ge=1, le=200)):
 
 
 @router.post("/outliers/{outlier_id}/whitelist")
-def whitelist_outlier(outlier_id: str):
+def whitelist_outlier(outlier_id: str, identity: dict = Depends(require_moderator)):
     """이상치를 정상으로 표시 (화이트리스트 추가)"""
     raw_id = outlier_id.replace("o-", "") if outlier_id.startswith("o-") else outlier_id
     try:
@@ -381,7 +407,7 @@ def whitelist_outlier(outlier_id: str):
 
 
 @router.get("/outliers/{product_id}/distribution")
-def outlier_distribution(product_id: int, days: int = Query(90, ge=1)):
+def outlier_distribution(product_id: int, days: int = Query(90, ge=1), identity: dict = Depends(require_viewer)):
     """특정 상품의 가격 분포 (이상치 상세 미니차트용)"""
     session = get_session()
     try:
@@ -439,6 +465,7 @@ def price_history_list(
     page: int = Query(1, ge=1),
     per_page: int = Query(50, ge=1, le=200),
     days: int = Query(90, ge=1),
+    identity: dict = Depends(require_viewer),
 ):
     """페이지네이션 + 필터가 가능한 가격 이력 조회"""
     session = get_session()
@@ -446,7 +473,7 @@ def price_history_list(
         conditions = _build_date_conditions(date_from, date_to, days)
 
         if source:
-            conditions.append(BaselinePrice.source.ilike(f"%{source}%"))
+            conditions.append(BaselinePrice.source.ilike(f"%{escape_like(source)}%"))
         if product_id:
             conditions.append(BaselinePrice.product_id == product_id)
 
@@ -504,6 +531,7 @@ def export_csv(
     date_from: Optional[str] = None,
     date_to: Optional[str] = None,
     days: int = Query(90, ge=1),
+    identity: dict = Depends(require_moderator),
 ):
     """가격 데이터 CSV 내보내기"""
     session = get_session()
@@ -511,7 +539,7 @@ def export_csv(
         conditions = _build_date_conditions(date_from, date_to, days)
 
         if source:
-            conditions.append(BaselinePrice.source.ilike(f"%{source}%"))
+            conditions.append(BaselinePrice.source.ilike(f"%{escape_like(source)}%"))
         if product_id:
             conditions.append(BaselinePrice.product_id == product_id)
 

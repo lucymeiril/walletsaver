@@ -2,10 +2,11 @@
 
 from datetime import datetime, timedelta
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from sqlalchemy import select, func, case, or_
 
 from services.base import get_session
+from api.auth import require_viewer
 from storage.models import (
     Product,
     BaselinePrice,
@@ -21,7 +22,7 @@ router = APIRouter(prefix="/dashboard", tags=["dashboard"])
 
 
 @router.get("/stats")
-def dashboard_stats():
+def dashboard_stats(identity: dict = Depends(require_viewer)):
     """대시보드 통합 통계 — 한 번의 호출로 모든 데이터 반환."""
     session = get_session()
     try:

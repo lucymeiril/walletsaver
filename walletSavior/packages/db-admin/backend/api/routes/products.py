@@ -1,6 +1,6 @@
 """상품 CRUD + 가격 조회 + 통계 + 유사 상품 라우트"""
-from fastapi import APIRouter, HTTPException, Query
-from pydantic import BaseModel
+from fastapi import APIRouter, HTTPException, Query, Request, Depends
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional
 from datetime import datetime, timedelta
 
@@ -8,6 +8,8 @@ from sqlalchemy import func, desc, asc, distinct, case, or_
 from sqlalchemy.orm import Session
 
 from services.base import get_session
+from api.auth import require_viewer, require_moderator, require_admin
+from services.audit import log_action
 from services.price_calc import (
     calculate_baseline_average,
     calculate_hotdeal_price,
@@ -16,33 +18,51 @@ from services.price_calc import (
     get_price_comparison,
 )
 from storage.models import Product, DiscountHistory, Category, CrawlLog, BaselinePrice
+from api.security import (
+    escape_like, MAX_NAME_LEN, MAX_CATEGORY_ID_LEN, MAX_UNIT_LEN,
+    MAX_DESCRIPTION_LEN, MAX_URL_LEN, MAX_BULK_IDS,
+)
 
 router = APIRouter(prefix="/products", tags=["products"])
 
 
 class ProductCreate(BaseModel):
-    name: str
-    category_id: Optional[str] = None
-    unit: str = "개"
-    description: Optional[str] = None
-    image_url: Optional[str] = None
+    name: str = Field(..., min_length=1, max_length=MAX_NAME_LEN)
+    category_id: Optional[str] = Field(None, max_length=MAX_CATEGORY_ID_LEN)
+    unit: str = Field("개", min_length=1, max_length=MAX_UNIT_LEN)
+    description: Optional[str] = Field(None, max_length=MAX_DESCRIPTION_LEN)
+    image_url: Optional[str] = Field(None, max_length=MAX_URL_LEN)
+
+    @field_validator("name")
+    @classmethod
+    def name_not_blank(cls, v: str) -> str:
+        if not v.strip():
+            raise ValueError("상품명은 공백만으로 구성될 수 없습니다.")
+        return v.strip()
+
+    @field_validator("image_url")
+    @classmethod
+    def validate_url(cls, v: str | None) -> str | None:
+        if v is not None and not v.startswith(("http://", "https://")):
+            raise ValueError("URL은 http:// 또는 https://로 시작해야 합니다.")
+        return v
 
 
 class ProductUpdate(BaseModel):
-    name: Optional[str] = None
-    category_id: Optional[str] = None
-    unit: Optional[str] = None
-    description: Optional[str] = None
+    name: Optional[str] = Field(None, min_length=1, max_length=MAX_NAME_LEN)
+    category_id: Optional[str] = Field(None, max_length=MAX_CATEGORY_ID_LEN)
+    unit: Optional[str] = Field(None, min_length=1, max_length=MAX_UNIT_LEN)
+    description: Optional[str] = Field(None, max_length=MAX_DESCRIPTION_LEN)
     is_active: Optional[bool] = None
 
 
 class BulkDeleteRequest(BaseModel):
-    ids: list[int]
+    ids: list[int] = Field(..., min_length=1, max_length=MAX_BULK_IDS)
 
 
 class BulkCategoryRequest(BaseModel):
-    ids: list[int]
-    category_id: str
+    ids: list[int] = Field(..., min_length=1, max_length=MAX_BULK_IDS)
+    category_id: str = Field(..., min_length=1, max_length=MAX_CATEGORY_ID_LEN)
 
 
 def _enrich_product(session: Session, p: Product) -> dict:
@@ -85,7 +105,7 @@ def _enrich_product(session: Session, p: Product) -> dict:
 
 
 @router.get("/stats")
-def product_stats():
+def product_stats(identity: dict = Depends(require_viewer)):
     """통계 — 소스별·카테고리별 상품 수, 마지막 크롤 날짜."""
     session = get_session()
     try:
@@ -167,6 +187,7 @@ def list_products(
     sort_dir: str = Query("asc", description="정렬 방향 (asc, desc)"),
     page: int = Query(1, ge=1, description="페이지 번호"),
     per_page: int = Query(20, ge=1, le=100, description="페이지당 항목 수"),
+    identity: dict = Depends(require_viewer),
 ):
     """상품 목록 — 필터·정렬·페이지네이션 지원."""
     session = get_session()
@@ -190,7 +211,7 @@ def list_products(
 
         # 검색
         if search:
-            query = query.filter(Product.name.contains(search))
+            query = query.filter(Product.name.ilike(f"%{escape_like(search)}%"))
 
         # 총 개수
         total = query.count()
@@ -248,7 +269,7 @@ def list_products(
 
 
 @router.get("/{product_id}")
-def get_product(product_id: int):
+def get_product(product_id: int, identity: dict = Depends(require_viewer)):
     session = get_session()
     try:
         p = session.get(Product, product_id)
@@ -260,7 +281,7 @@ def get_product(product_id: int):
 
 
 @router.post("/", status_code=201)
-def create_product(body: ProductCreate):
+def create_product(body: ProductCreate, request: Request, identity: dict = Depends(require_moderator)):
     session = get_session()
     try:
         p = Product(
@@ -276,7 +297,7 @@ def create_product(body: ProductCreate):
 
 
 @router.put("/{product_id}")
-def update_product(product_id: int, body: ProductUpdate):
+def update_product(product_id: int, body: ProductUpdate, request: Request, identity: dict = Depends(require_moderator)):
     session = get_session()
     try:
         p = session.get(Product, product_id)
@@ -291,7 +312,7 @@ def update_product(product_id: int, body: ProductUpdate):
 
 
 @router.delete("/{product_id}")
-def delete_product(product_id: int):
+def delete_product(product_id: int, request: Request, identity: dict = Depends(require_admin)):
     """상품 삭제."""
     session = get_session()
     try:
@@ -306,7 +327,7 @@ def delete_product(product_id: int):
 
 
 @router.post("/bulk-delete")
-def bulk_delete_products(body: BulkDeleteRequest):
+def bulk_delete_products(body: BulkDeleteRequest, request: Request, identity: dict = Depends(require_admin)):
     """여러 상품 일괄 삭제."""
     session = get_session()
     try:
@@ -318,7 +339,7 @@ def bulk_delete_products(body: BulkDeleteRequest):
 
 
 @router.post("/bulk-category")
-def bulk_update_category(body: BulkCategoryRequest):
+def bulk_update_category(body: BulkCategoryRequest, request: Request, identity: dict = Depends(require_moderator)):
     """여러 상품의 카테고리 일괄 변경."""
     session = get_session()
     try:
@@ -334,7 +355,7 @@ def bulk_update_category(body: BulkCategoryRequest):
 
 
 @router.get("/{product_id}/baseline")
-def product_baseline(product_id: int, days: int = 90):
+def product_baseline(product_id: int, days: int = 90, identity: dict = Depends(require_viewer)):
     session = get_session()
     try:
         return calculate_baseline_average(session, product_id, days)
@@ -343,7 +364,7 @@ def product_baseline(product_id: int, days: int = 90):
 
 
 @router.get("/{product_id}/hotdeal-price")
-def product_hotdeal(product_id: int):
+def product_hotdeal(product_id: int, identity: dict = Depends(require_viewer)):
     session = get_session()
     try:
         return calculate_hotdeal_price(session, product_id)
@@ -352,7 +373,7 @@ def product_hotdeal(product_id: int):
 
 
 @router.get("/{product_id}/tier")
-def product_tier(product_id: int, price: float):
+def product_tier(product_id: int, price: float, identity: dict = Depends(require_viewer)):
     session = get_session()
     try:
         return get_price_tier(session, price, product_id)
@@ -361,7 +382,7 @@ def product_tier(product_id: int, price: float):
 
 
 @router.get("/{product_id}/history")
-def product_history(product_id: int, days: int = 30):
+def product_history(product_id: int, days: int = 30, identity: dict = Depends(require_viewer)):
     session = get_session()
     try:
         return get_price_history(session, product_id, days)
@@ -370,7 +391,7 @@ def product_history(product_id: int, days: int = 30):
 
 
 @router.get("/{product_id}/comparison")
-def product_comparison(product_id: int):
+def product_comparison(product_id: int, identity: dict = Depends(require_viewer)):
     session = get_session()
     try:
         return get_price_comparison(session, product_id)
@@ -379,7 +400,7 @@ def product_comparison(product_id: int):
 
 
 @router.get("/{product_id}/similar")
-def similar_products(product_id: int, limit: int = 10):
+def similar_products(product_id: int, limit: int = 10, identity: dict = Depends(require_viewer)):
     """유사 상품 감지 — 이름 포함 관계 기반 중복 후보 반환."""
     session = get_session()
     try:
@@ -395,7 +416,7 @@ def similar_products(product_id: int, limit: int = 10):
             return []
 
         # 각 토큰을 포함하는 다른 상품 검색
-        filters = [Product.name.contains(token) for token in tokens[:5]]
+        filters = [Product.name.ilike(f"%{escape_like(token)}%") for token in tokens[:5]]
         candidates = (
             session.query(Product)
             .filter(Product.id != product_id, Product.is_active == True)

@@ -618,3 +618,31 @@ class CategoryCorrection(Base):
     correct_category_id: Mapped[str] = mapped_column(String(100), nullable=False)
     tokens: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+
+# ═══════════════════════════════════════════════
+# 감사 로그
+# ═══════════════════════════════════════════════
+
+class AuditLog(Base):
+    """관리자 작업 감사 로그."""
+    __tablename__ = "audit_logs"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    timestamp: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    user_id: Mapped[str] = mapped_column(String(100), default="anonymous")
+    action: Mapped[str] = mapped_column(String(50), nullable=False)
+    entity_type: Mapped[str] = mapped_column(String(50), nullable=False)
+    entity_id: Mapped[Optional[str]] = mapped_column(String(100))
+    old_value: Mapped[Optional[dict]] = mapped_column(JSON)
+    new_value: Mapped[Optional[dict]] = mapped_column(JSON)
+    ip_address: Mapped[Optional[str]] = mapped_column(String(45))
+    user_agent: Mapped[Optional[str]] = mapped_column(String(500))
+    request_id: Mapped[Optional[str]] = mapped_column(String(50))
+    metadata_: Mapped[Optional[dict]] = mapped_column("metadata", JSON)
+
+    __table_args__ = (
+        Index("ix_audit_timestamp", "timestamp"),
+        Index("ix_audit_entity", "entity_type", "entity_id"),
+        Index("ix_audit_user", "user_id"),
+    )

@@ -1,13 +1,15 @@
 """자동완성 키워드 라우트"""
 import math
 
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from fastapi import APIRouter, HTTPException, Request, Depends
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional
 
 from sqlalchemy import select, func, or_, String as SAString
 
 from services.base import get_session
+from api.auth import require_viewer, require_moderator, require_admin
+from services.audit import log_action
 from services.autocomplete import (
     search_keywords,
     add_keyword,
@@ -17,24 +19,31 @@ from services.autocomplete import (
 )
 from storage.models import Keyword, Product
 
+from api.security import (
+    escape_like, make_error,
+    MAX_KEYWORD_LEN, MAX_CATEGORY_ID_LEN, MAX_SYNONYM_COUNT, MAX_BULK_IDS,
+)
+
+ALLOWED_KEYWORD_SORT_FIELDS = {"word", "search_count", "is_active", "id", "category_id"}
+
 router = APIRouter(prefix="/keywords", tags=["keywords"])
 
 
 class KeywordCreate(BaseModel):
-    word: str
-    synonyms: Optional[list[str]] = None
-    category_id: Optional[str] = None
+    word: str = Field(..., min_length=1, max_length=MAX_KEYWORD_LEN)
+    synonyms: Optional[list[str]] = Field(None, max_length=MAX_SYNONYM_COUNT)
+    category_id: Optional[str] = Field(None, max_length=MAX_CATEGORY_ID_LEN)
 
 
 class KeywordUpdate(BaseModel):
-    word: Optional[str] = None
-    synonyms: Optional[list[str]] = None
-    category_id: Optional[str] = None
+    word: Optional[str] = Field(None, min_length=1, max_length=MAX_KEYWORD_LEN)
+    synonyms: Optional[list[str]] = Field(None, max_length=MAX_SYNONYM_COUNT)
+    category_id: Optional[str] = Field(None, max_length=MAX_CATEGORY_ID_LEN)
     is_active: Optional[bool] = None
 
 
 class BulkDeleteRequest(BaseModel):
-    ids: Optional[list[int]] = None
+    ids: Optional[list[int]] = Field(None, max_length=MAX_BULK_IDS)
 
 
 @router.get("/")
@@ -46,6 +55,7 @@ def list_keywords(
     sort_by: str = "search_count",
     sort_dir: str = "desc",
     show_unused: bool = False,
+    identity: dict = Depends(require_viewer),
 ):
     """키워드 전체 목록 — 서버 사이드 검색·페이지네이션·필터."""
     session = get_session()
@@ -55,8 +65,8 @@ def list_keywords(
         if q:
             base = base.where(
                 or_(
-                    Keyword.word.ilike(f"%{q}%"),
-                    Keyword.synonyms.cast(SAString).ilike(f"%{q}%"),
+                    Keyword.word.ilike(f"%{escape_like(q)}%"),
+                    Keyword.synonyms.cast(SAString).ilike(f"%{escape_like(q)}%"),
                 )
             )
 
@@ -66,7 +76,9 @@ def list_keywords(
         if show_unused:
             base = base.where(Keyword.search_count == 0)
 
-        sort_col = getattr(Keyword, sort_by, Keyword.search_count)
+        if sort_by not in ALLOWED_KEYWORD_SORT_FIELDS:
+            sort_by = "search_count"
+        sort_col = getattr(Keyword, sort_by)
         base = base.order_by(
             sort_col.desc() if sort_dir == "desc" else sort_col.asc()
         )
@@ -116,7 +128,7 @@ def list_keywords(
 
 
 @router.get("/stats")
-def keyword_stats():
+def keyword_stats(identity: dict = Depends(require_viewer)):
     """키워드 통계 — 미사용 키워드 수, 총 키워드 수."""
     session = get_session()
     try:
@@ -139,7 +151,7 @@ def keyword_stats():
 
 
 @router.get("/search")
-def keyword_search(q: str = "", limit: int = 10):
+def keyword_search(q: str = "", limit: int = 10, identity: dict = Depends(require_viewer)):
     session = get_session()
     try:
         return search_keywords(session, q, limit)
@@ -148,7 +160,7 @@ def keyword_search(q: str = "", limit: int = 10):
 
 
 @router.post("/", status_code=201)
-def create_keyword(body: KeywordCreate):
+def create_keyword(body: KeywordCreate, identity: dict = Depends(require_moderator)):
     """키워드 추가 — 유효성 검사 실패 시 422, 중복 시 409 반환."""
     session = get_session()
     try:
@@ -164,14 +176,14 @@ def create_keyword(body: KeywordCreate):
 
         try:
             return add_keyword(session, body.word, body.synonyms, body.category_id)
-        except ValueError as e:
-            raise HTTPException(status_code=422, detail=str(e))
+        except ValueError:
+            raise HTTPException(**make_error("VALIDATION_ERROR", 422))
     finally:
         session.close()
 
 
 @router.post("/bulk-delete")
-def bulk_delete_keywords(body: BulkDeleteRequest):
+def bulk_delete_keywords(body: BulkDeleteRequest, identity: dict = Depends(require_admin)):
     """미사용 키워드 벌크 삭제. ids가 없으면 search_count=0인 키워드 전부 삭제."""
     session = get_session()
     try:
@@ -197,7 +209,7 @@ def bulk_delete_keywords(body: BulkDeleteRequest):
 
 
 @router.post("/{keyword_id}/count")
-def increment_count(keyword_id: int):
+def increment_count(keyword_id: int, identity: dict = Depends(require_viewer)):
     session = get_session()
     try:
         ok = update_search_count(session, keyword_id)
@@ -209,7 +221,7 @@ def increment_count(keyword_id: int):
 
 
 @router.get("/popular")
-def popular_keywords(limit: int = 20):
+def popular_keywords(limit: int = 20, identity: dict = Depends(require_viewer)):
     session = get_session()
     try:
         return get_popular_keywords(session, limit)
@@ -218,7 +230,7 @@ def popular_keywords(limit: int = 20):
 
 
 @router.get("/suggest")
-def suggest(q: str = ""):
+def suggest(q: str = "", identity: dict = Depends(require_viewer)):
     session = get_session()
     try:
         return suggest_categories(session, q)
@@ -227,7 +239,7 @@ def suggest(q: str = ""):
 
 
 @router.put("/{keyword_id}")
-def update_keyword(keyword_id: int, body: KeywordUpdate):
+def update_keyword(keyword_id: int, body: KeywordUpdate, identity: dict = Depends(require_moderator)):
     """키워드 수정."""
     session = get_session()
     try:
@@ -250,7 +262,7 @@ def update_keyword(keyword_id: int, body: KeywordUpdate):
 
 
 @router.delete("/{keyword_id}")
-def delete_keyword(keyword_id: int):
+def delete_keyword(keyword_id: int, identity: dict = Depends(require_admin)):
     """키워드 삭제."""
     session = get_session()
     try:

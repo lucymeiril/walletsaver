@@ -1,12 +1,13 @@
 """분석 데이터 라우트"""
-from fastapi import APIRouter, HTTPException, Query
-from pydantic import BaseModel
+from fastapi import APIRouter, HTTPException, Query, Depends
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional, Literal
 from datetime import datetime, timedelta
 
 from sqlalchemy import select, func, case, and_, distinct
 
 from services.base import get_session
+from api.auth import require_viewer, require_moderator, require_admin
 from services.data_quality import (
     check_price_outliers,
     find_duplicates,
@@ -26,16 +27,35 @@ from storage.models import (
     Category, CrawlLog, CrawlStatus,
 )
 
+from api.security import escape_like, make_error, MAX_VALIDATE_ITEMS
+
+ALLOWED_DUPLICATE_FIELDS = {
+    "products": {"name", "category_id"},
+    "baseline_prices": {"product_id", "source", "price"},
+    "discount_history": {"product_id", "source", "price"},
+    "hotdeal_prices": {"product_id", "source", "price"},
+    "categories": {"name", "parent_id"},
+    "keywords": {"word"},
+}
+ALLOWED_TABLE_NAMES = set(ALLOWED_DUPLICATE_FIELDS.keys())
+
 router = APIRouter(prefix="/analytics", tags=["analytics"])
 
 
 class DuplicateRequest(BaseModel):
-    table_name: str
-    fields: list[str]
+    table_name: str = Field(..., max_length=50)
+    fields: list[str] = Field(..., min_length=1, max_length=5)
+
+    @field_validator("table_name")
+    @classmethod
+    def validate_table(cls, v: str) -> str:
+        if v not in ALLOWED_TABLE_NAMES:
+            raise ValueError(f"허용되지 않는 테이블: {v}")
+        return v
 
 
 class ValidateRequest(BaseModel):
-    items: list[dict]
+    items: list[dict] = Field(..., min_length=1, max_length=MAX_VALIDATE_ITEMS)
 
 
 class OutlierActionRequest(BaseModel):
@@ -44,7 +64,7 @@ class OutlierActionRequest(BaseModel):
 
 
 @router.get("/outliers/{product_id}")
-def outliers(product_id: int):
+def outliers(product_id: int, identity: dict = Depends(require_viewer)):
     session = get_session()
     try:
         return check_price_outliers(session, product_id)
@@ -53,7 +73,7 @@ def outliers(product_id: int):
 
 
 @router.post("/duplicates")
-def duplicates(body: DuplicateRequest):
+def duplicates(body: DuplicateRequest, identity: dict = Depends(require_viewer)):
     session = get_session()
     try:
         return find_duplicates(session, body.table_name, body.fields)
@@ -62,12 +82,12 @@ def duplicates(body: DuplicateRequest):
 
 
 @router.post("/validate")
-def validate(body: ValidateRequest):
+def validate(body: ValidateRequest, identity: dict = Depends(require_viewer)):
     return validate_crawl_data(body.items)
 
 
 @router.get("/quality-report")
-def quality_report():
+def quality_report(identity: dict = Depends(require_viewer)):
     session = get_session()
     try:
         return generate_quality_report(session)
@@ -76,7 +96,7 @@ def quality_report():
 
 
 @router.post("/cleanup")
-def cleanup(days: int = 180):
+def cleanup(days: int = 180, identity: dict = Depends(require_admin)):
     session = get_session()
     try:
         return cleanup_stale_data(session, days)
@@ -86,7 +106,7 @@ def cleanup(days: int = 180):
 
 @router.get("/export/prices/{product_id}")
 @limiter.limit(EXPORT_LIMIT)
-def export_prices(request: StarletteRequest, product_id: int, days: int = 30):
+def export_prices(request: StarletteRequest, product_id: int, days: int = 30, identity: dict = Depends(require_moderator)):
     session = get_session()
     try:
         csv_data = export_prices_csv(session, product_id, days)
@@ -97,7 +117,7 @@ def export_prices(request: StarletteRequest, product_id: int, days: int = 30):
 
 @router.get("/export/products")
 @limiter.limit(EXPORT_LIMIT)
-def export_products(request: StarletteRequest, category_id: Optional[str] = None):
+def export_products(request: StarletteRequest, category_id: Optional[str] = None, identity: dict = Depends(require_moderator)):
     session = get_session()
     try:
         json_data = export_products_json(session, category_id)
@@ -107,7 +127,7 @@ def export_products(request: StarletteRequest, category_id: Optional[str] = None
 
 
 @router.get("/summary")
-def summary():
+def summary(identity: dict = Depends(require_viewer)):
     session = get_session()
     try:
         base = get_statistics_summary(session)
@@ -194,6 +214,7 @@ def summary():
 def price_trends(
     product_ids: list[int] = Query(default=[]),
     days: int = 30,
+    identity: dict = Depends(require_viewer),
 ):
     """복수 상품 가격 추이 — 같은 차트에 여러 상품 라인 비교"""
     session = get_session()
@@ -268,7 +289,7 @@ def price_trends(
 
 
 @router.get("/source-stats")
-def source_stats_detail():
+def source_stats_detail(identity: dict = Depends(require_viewer)):
     """소스별 상세 통계 — 상품 수, 평균 가격, 최근 업데이트"""
     session = get_session()
     try:
@@ -353,13 +374,13 @@ def source_stats_detail():
 
 
 @router.get("/products/search")
-def search_products_autocomplete(q: str = "", limit: int = 10):
+def search_products_autocomplete(q: str = "", limit: int = 10, identity: dict = Depends(require_viewer)):
     """상품 검색 자동완성"""
     session = get_session()
     try:
         stmt = (
             select(Product.id, Product.name)
-            .where(Product.is_active == True, Product.name.ilike(f"%{q}%"))
+            .where(Product.is_active == True, Product.name.ilike(f"%{escape_like(q)}%"))
             .order_by(Product.name)
             .limit(limit)
         )
@@ -370,7 +391,7 @@ def search_products_autocomplete(q: str = "", limit: int = 10):
 
 
 @router.get("/source-distribution")
-def source_distribution():
+def source_distribution(identity: dict = Depends(require_viewer)):
     """소스별 상품 수 분포 (도넛 차트용)"""
     session = get_session()
     try:
@@ -394,7 +415,7 @@ def source_distribution():
 
 
 @router.get("/category-distribution")
-def category_distribution():
+def category_distribution(identity: dict = Depends(require_viewer)):
     """카테고리별 상품 수 (가로 막대 차트용)"""
     session = get_session()
     try:
@@ -414,7 +435,7 @@ def category_distribution():
 
 
 @router.get("/daily-trend")
-def daily_trend(days: int = Query(30, ge=1, le=90)):
+def daily_trend(days: int = Query(30, ge=1, le=90), identity: dict = Depends(require_viewer)):
     """일별 상품 추가 추이 (라인 차트용)"""
     session = get_session()
     try:
@@ -440,7 +461,7 @@ def daily_trend(days: int = Query(30, ge=1, le=90)):
 
 
 @router.get("/data-quality-summary")
-def data_quality_summary():
+def data_quality_summary(identity: dict = Depends(require_viewer)):
     """데이터 품질 요약 — 완성도 메트릭"""
     session = get_session()
     try:
@@ -488,7 +509,7 @@ def data_quality_summary():
 
 
 @router.post("/outliers/{outlier_id}/action")
-def outlier_action(outlier_id: str, body: OutlierActionRequest):
+def outlier_action(outlier_id: str, body: OutlierActionRequest, identity: dict = Depends(require_viewer)):
     """이상치 관리 — 정상/삭제/수정"""
     raw_id = outlier_id.replace("o-", "") if outlier_id.startswith("o-") else outlier_id
     try:
@@ -528,7 +549,7 @@ def outlier_action(outlier_id: str, body: OutlierActionRequest):
 
 
 @router.get("/source-types")
-def source_types():
+def source_types(identity: dict = Depends(require_viewer)):
     """DB에 존재하는 모든 소스 타입 목록"""
     session = get_session()
     try:

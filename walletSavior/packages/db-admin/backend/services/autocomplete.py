@@ -7,6 +7,7 @@ from sqlalchemy import select, or_, func, update
 from sqlalchemy.orm import Session
 
 from storage.models import Keyword, Category
+from api.security import escape_like
 
 
 # ── 한국어 키워드 유효성 검사 ──
@@ -56,7 +57,7 @@ def search_keywords(session: Session, query: str, limit: int = 10) -> list[dict]
     prefix_rows = session.execute(
         select(Keyword).where(
             Keyword.is_active == True,
-            Keyword.word.like(f"{query}%"),
+            Keyword.word.like(f"{escape_like(query)}%"),
         ).order_by(Keyword.search_count.desc()).limit(limit)
     ).scalars().all()
 
@@ -199,7 +200,7 @@ def suggest_categories(session: Session, query: str) -> list[dict]:
     keywords = session.execute(
         select(Keyword).where(
             Keyword.is_active == True,
-            Keyword.word.like(f"%{query}%"),
+            Keyword.word.like(f"%{escape_like(query)}%"),
             Keyword.category_id.isnot(None),
         )
     ).scalars().all()
@@ -210,7 +211,7 @@ def suggest_categories(session: Session, query: str) -> list[dict]:
         categories = session.execute(
             select(Category).where(
                 Category.is_active == True,
-                Category.name.like(f"%{query}%"),
+                Category.name.like(f"%{escape_like(query)}%"),
             )
         ).scalars().all()
         return [
