@@ -1,0 +1,34 @@
+{"timestamp": "2026-04-04T05:02:20.651930+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "127.0.0.1", "detail": {"mode": "manual"}}
+{"timestamp": "2026-04-04T05:02:20.667016+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "192.168.1.1", "method": "POST", "path": "/api/crawlers/test/run"}
+{"timestamp": "2026-04-04T05:02:45.512688+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "127.0.0.1", "detail": {"mode": "manual"}}
+{"timestamp": "2026-04-04T05:02:45.524786+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "192.168.1.1", "method": "POST", "path": "/api/crawlers/test/run"}
+{"timestamp": "2026-04-04T05:12:59.531787+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "127.0.0.1", "detail": {"mode": "manual"}}
+{"timestamp": "2026-04-04T05:12:59.544327+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "192.168.1.1", "method": "POST", "path": "/api/crawlers/test/run"}
+{"timestamp": "2026-04-04T05:23:37.331180+00:00", "event": "schedule.create", "result": "success", "resource": "test_cron", "actor_ip": "testclient", "method": "POST", "path": "/api/schedules", "detail": {"cron": "0 8 * * *"}}
+{"timestamp": "2026-04-04T05:23:57.820078+00:00", "event": "schedule.create", "result": "success", "resource": "test_cron", "actor_ip": "testclient", "method": "POST", "path": "/api/schedules", "detail": {"cron": "0 8 * * *"}}
+{"timestamp": "2026-04-04T05:24:44.337144+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "127.0.0.1", "detail": {"mode": "manual"}}
+{"timestamp": "2026-04-04T05:24:44.349941+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "192.168.1.1", "method": "POST", "path": "/api/crawlers/test/run"}
+{"timestamp": "2026-04-04T05:24:45.576880+00:00", "event": "schedule.create", "result": "success", "resource": "test_cron", "actor_ip": "testclient", "method": "POST", "path": "/api/schedules", "detail": {"cron": "0 8 * * *"}}
+{"timestamp": "2026-04-04T05:25:44.888315+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "127.0.0.1", "detail": {"mode": "manual"}}
+{"timestamp": "2026-04-04T05:25:44.900749+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "192.168.1.1", "method": "POST", "path": "/api/crawlers/test/run"}
+{"timestamp": "2026-04-04T05:25:46.094311+00:00", "event": "schedule.create", "result": "success", "resource": "test_cron", "actor_ip": "testclient", "method": "POST", "path": "/api/schedules", "detail": {"cron": "0 8 * * *"}}
+{"timestamp": "2026-04-04T05:36:50.592545+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "127.0.0.1", "detail": {"mode": "manual"}}
+{"timestamp": "2026-04-04T05:36:50.607680+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "192.168.1.1", "method": "POST", "path": "/api/crawlers/test/run"}
+{"timestamp": "2026-04-04T05:36:52.257166+00:00", "event": "schedule.create", "result": "success", "resource": "test_cron", "actor_ip": "testclient", "method": "POST", "path": "/api/schedules", "detail": {"cron": "0 8 * * *"}}
+{"timestamp": "2026-04-04T07:35:05.704351+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "127.0.0.1", "detail": {"mode": "manual"}}
+{"timestamp": "2026-04-04T07:35:05.718687+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "192.168.1.1", "method": "POST", "path": "/api/crawlers/test/run"}
+{"timestamp": "2026-04-04T07:44:52.314446+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "127.0.0.1", "detail": {"mode": "manual"}}
+{"timestamp": "2026-04-04T07:44:52.328948+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "192.168.1.1", "method": "POST", "path": "/api/crawlers/test/run"}
+{"timestamp": "2026-04-04T07:47:31.951686+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "127.0.0.1", "detail": {"mode": "manual"}}
+{"timestamp": "2026-04-04T07:47:31.963890+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "192.168.1.1", "method": "POST", "path": "/api/crawlers/test/run"}
+{"timestamp": "2026-04-04T07:47:33.217921+00:00", "event": "schedule.create", "result": "success", "resource": "test_cron", "actor_ip": "testclient", "method": "POST", "path": "/api/schedules", "detail": {"cron": "0 8 * * *"}}
+{"timestamp": "2026-04-04T07:50:57.191051+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "127.0.0.1", "detail": {"mode": "manual"}}
+{"timestamp": "2026-04-04T07:50:57.204965+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "192.168.1.1", "method": "POST", "path": "/api/crawlers/test/run"}
+{"timestamp": "2026-04-04T07:50:58.461501+00:00", "event": "schedule.create", "result": "success", "resource": "test_cron", "actor_ip": "testclient", "method": "POST", "path": "/api/schedules", "detail": {"cron": "0 8 * * *"}}
+{"timestamp": "2026-04-04T07:54:44.569832+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "127.0.0.1", "detail": {"mode": "manual"}}
+{"timestamp": "2026-04-04T07:54:44.582156+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "192.168.1.1", "method": "POST", "path": "/api/crawlers/test/run"}
+{"timestamp": "2026-04-04T07:54:45.856754+00:00", "event": "schedule.create", "result": "success", "resource": "test_cron", "actor_ip": "testclient", "method": "POST", "path": "/api/schedules", "detail": {"cron": "0 8 * * *"}}
+{"timestamp": "2026-04-04T07:56:55.832674+00:00", "event": "schedule.create", "result": "success", "resource": "test_cron", "actor_ip": "testclient", "method": "POST", "path": "/api/schedules", "detail": {"cron": "0 8 * * *"}}
+{"timestamp": "2026-04-04T07:59:32.408453+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "127.0.0.1", "detail": {"mode": "manual"}}
+{"timestamp": "2026-04-04T07:59:32.421362+00:00", "event": "crawler.run", "result": "success", "resource": "test-crawler", "actor_ip": "192.168.1.1", "method": "POST", "path": "/api/crawlers/test/run"}
+{"timestamp": "2026-04-04T07:59:33.666184+00:00", "event": "schedule.create", "result": "success", "resource": "test_cron", "actor_ip": "testclient", "method": "POST", "path": "/api/schedules", "detail": {"cron": "0 8 * * *"}}
