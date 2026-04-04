@@ -29,7 +29,9 @@ Cloudflare 보호가 있을 수 있어 cloudscraper 폴백을 지원한다.
 from __future__ import annotations
 
 import logging
+import random
 import re
+import time
 from datetime import datetime
 from typing import Optional
 from urllib.parse import urljoin
@@ -63,6 +65,33 @@ class FmkoreaCrawler(CrawlerContract):
             target_url=self.DEAL_URL,
             strategies=["requests", "cloudscraper"],
         )
+
+    def _retry_request(self, url: str, *, headers: dict | None = None,
+                       session: requests.Session | None = None,
+                       timeout: int = 15, max_retries: int = 3) -> requests.Response:
+        """HTTP GET with exponential backoff for transient failures."""
+        requester = session or requests
+        last_exc = None
+        for attempt in range(max_retries):
+            try:
+                resp = requester.get(url, headers=headers, timeout=timeout)
+                if resp.status_code == 429:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    time.sleep(wait)
+                    continue
+                return resp
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.Timeout) as e:
+                last_exc = e
+                if attempt < max_retries - 1:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
+                                   f"retrying in {wait:.1f}s: {e}")
+                    time.sleep(wait)
+                else:
+                    raise
+        raise last_exc  # type: ignore[misc]
 
     async def crawl(self) -> CrawlResult:
         """FM코리아 핫딜 목록을 크롤링한다."""
@@ -119,7 +148,8 @@ class FmkoreaCrawler(CrawlerContract):
         try:
             import cloudscraper
             scraper = cloudscraper.create_scraper()
-            response = scraper.get(self.DEAL_URL, timeout=20)
+            # Retry via session-based backoff (cloudscraper extends requests.Session)
+            response = self._retry_request(self.DEAL_URL, session=scraper, timeout=20)
             if response.status_code == 200 and len(response.text) > 5000:
                 return response.text
             logger.warning(f"[FM코리아] cloudscraper 응답 부족: HTTP {response.status_code}, len={len(response.text)}")
@@ -131,7 +161,7 @@ class FmkoreaCrawler(CrawlerContract):
         # 2차: 일반 requests 폴백
         try:
             headers = self._anti_detect.get_random_headers()
-            response = requests.get(self.DEAL_URL, headers=headers, timeout=15)
+            response = self._retry_request(self.DEAL_URL, headers=headers, timeout=15)
             if response.status_code == 200 and len(response.text) > 5000:
                 return response.text
             logger.warning(f"[FM코리아] requests 응답 부족: HTTP {response.status_code}, len={len(response.text)}")
@@ -189,6 +219,7 @@ class FmkoreaCrawler(CrawlerContract):
                 logger.debug(f"[FM코리아] 테이블 파싱 오류: {e}")
                 continue
 
+        del soup  # Free DOM tree memory
         return items
 
     def _parse_list_item(self, li) -> Optional[HotdealPost]:

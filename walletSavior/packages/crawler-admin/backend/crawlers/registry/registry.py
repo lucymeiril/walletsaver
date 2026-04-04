@@ -16,9 +16,12 @@ class CrawlerRegistry:
     def __init__(self, crawlers_dir: Optional[Path] = None):
         self.crawlers_dir = crawlers_dir or Path(__file__).parent.parent
         self._registry: Dict[str, dict] = {}
+        self._instance_cache: Dict[str, object] = {}  # Cached crawler instances
+        self._metadata_cache: Optional[list[dict]] = None  # Cached list_crawlers result
 
     def discover(self) -> Dict[str, dict]:
         """crawlers/ 디렉토리에서 plugin.yaml을 가진 크롤러 자동 발견."""
+        self._metadata_cache = None  # Invalidate cache on re-discovery
         for plugin_yaml in self.crawlers_dir.rglob("plugin.yaml"):
             try:
                 with open(plugin_yaml, "r", encoding="utf-8") as f:
@@ -38,12 +41,21 @@ class CrawlerRegistry:
         return self._registry
 
     def get_crawler(self, name: str):
-        """이름으로 크롤러 인스턴스 가져오기."""
+        """이름으로 크롤러 인스턴스 가져오기 (인스턴스 캐시 사용)."""
+        # Return cached instance if available
+        if name in self._instance_cache:
+            return self._instance_cache[name]
+
         info = self._registry.get(name)
         if not info:
             raise KeyError(f"크롤러 '{name}' 을 찾을 수 없습니다")
 
-        module = importlib.import_module(info["module_path"])
+        try:
+            module = importlib.import_module(info["module_path"])
+        except Exception as e:
+            logger.error(f"[Registry] 모듈 임포트 실패 '{info['module_path']}': {e}", exc_info=True)
+            raise ImportError(f"크롤러 모듈 로드 실패: {info['module_path']} — {e}") from e
+
         crawler_class = getattr(module, "Crawler", None)
         if not crawler_class:
             for attr_name in dir(module):
@@ -55,10 +67,15 @@ class CrawlerRegistry:
         if not crawler_class:
             raise ImportError(f"크롤러 클래스를 찾을 수 없습니다: {info['module_path']}")
 
-        return crawler_class()
+        instance = crawler_class()
+        self._instance_cache[name] = instance  # Cache for reuse
+        return instance
 
     def list_crawlers(self) -> list[dict]:
-        """등록된 모든 크롤러 목록."""
+        """등록된 모든 크롤러 목록 (메타데이터 캐시 사용)."""
+        if self._metadata_cache is not None:
+            return self._metadata_cache
+
         result = []
         for name, info in self._registry.items():
             sched = info["config"].get("schedule", {})
@@ -84,6 +101,7 @@ class CrawlerRegistry:
                 "difficulty": difficulty,
                 "schedule": schedule_str,
             })
+        self._metadata_cache = result  # Cache metadata
         return result
 
     def _resolve_module_path(self, crawler_dir: Path) -> str:

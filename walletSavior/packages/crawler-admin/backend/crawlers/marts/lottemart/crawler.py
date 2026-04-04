@@ -21,7 +21,9 @@ from __future__ import annotations
 
 import json
 import logging
+import random
 import re
+import time
 from datetime import datetime
 from typing import Optional
 from urllib.parse import quote
@@ -55,6 +57,34 @@ class LottemartCrawler(CrawlerContract):
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=1.0, delay_max=3.0)
 
+    def _retry_request(self, url: str, *, headers: dict | None = None,
+                       session: requests.Session | None = None,
+                       timeout: int = 15, max_retries: int = 3,
+                       **kwargs) -> requests.Response:
+        """HTTP GET with exponential backoff for transient failures."""
+        requester = session or requests
+        last_exc = None
+        for attempt in range(max_retries):
+            try:
+                resp = requester.get(url, headers=headers, timeout=timeout, **kwargs)
+                if resp.status_code == 429:  # Rate limited — back off
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    time.sleep(wait)
+                    continue
+                return resp
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.Timeout) as e:
+                last_exc = e
+                if attempt < max_retries - 1:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
+                                   f"retrying in {wait:.1f}s: {e}")
+                    time.sleep(wait)
+                else:
+                    raise
+        raise last_exc  # type: ignore[misc]
+
     @property
     def info(self) -> CrawlerInfo:
         return CrawlerInfo(
@@ -82,6 +112,8 @@ class LottemartCrawler(CrawlerContract):
         errors: list[str] = []
         seen_ids: set[str] = set()
 
+        # Reuse TCP connections across multiple search queries
+        session = requests.Session()
         try:
             # 1차: __INITIAL_STATE__ 기반 추출 (HTTP 요청)
             for query in self.SEARCH_QUERIES:
@@ -93,11 +125,11 @@ class LottemartCrawler(CrawlerContract):
                         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
                     })
 
-                    # 봇 탐지 회피 딜레이
+                    # 봇 탐지 회피 딜레이 + jitter
                     delay = self._anti_detect.get_random_delay()
-                    await _asyncio.sleep(delay)
+                    await _asyncio.sleep(delay + random.uniform(0, 0.5))
 
-                    response = requests.get(url, headers=headers, timeout=20, allow_redirects=True)
+                    response = self._retry_request(url, headers=headers, session=session, timeout=20, allow_redirects=True)
 
                     if response.status_code != 200:
                         logger.warning(f"[롯데마트] 검색 '{query}' HTTP {response.status_code}")
@@ -189,6 +221,8 @@ class LottemartCrawler(CrawlerContract):
                 started_at=started_at,
                 finished_at=datetime.now(),
             )
+        finally:
+            session.close()  # Release TCP connections
 
     def _extract_from_initial_state(self, html: str) -> list[DiscountItem]:
         """window.__INITIAL_STATE__ Redux 상태에서 productEntities를 추출한다.
@@ -224,6 +258,7 @@ class LottemartCrawler(CrawlerContract):
         )
 
         if not product_entities:
+            del data  # Free large JSON from memory
             return items
 
         logger.info(f"[롯데마트] __INITIAL_STATE__ productEntities: {len(product_entities)}개")
@@ -233,6 +268,7 @@ class LottemartCrawler(CrawlerContract):
             if item:
                 items.append(item)
 
+        del data  # Free large JSON from memory
         return items
 
     def _entity_to_discount_item(self, product: dict, product_id: str = "") -> Optional[DiscountItem]:
@@ -478,6 +514,7 @@ class LottemartCrawler(CrawlerContract):
             from bs4 import BeautifulSoup
             soup = BeautifulSoup(raw_data, "html.parser")
             items = self._parse_html(soup)
+            del soup  # Free parsed HTML tree from memory
         except Exception as e:
             logger.warning(f"[롯데마트] HTML 파싱 실패: {e}")
 

@@ -16,7 +16,9 @@ from __future__ import annotations
 
 import json
 import logging
+import random
 import re
+import time
 from datetime import datetime
 from typing import Optional
 from urllib.parse import urljoin
@@ -58,6 +60,34 @@ class MusinsaCrawler(CrawlerContract):
             target_url=self.BASE_URL,
             strategies=["requests"],
         )
+
+    def _retry_request(self, url: str, *, headers: dict | None = None,
+                       params: dict | None = None,
+                       session: requests.Session | None = None,
+                       timeout: int = 15, max_retries: int = 3) -> requests.Response:
+        """HTTP GET with exponential backoff for transient failures."""
+        requester = session or requests
+        last_exc = None
+        for attempt in range(max_retries):
+            try:
+                resp = requester.get(url, headers=headers, params=params, timeout=timeout)
+                if resp.status_code == 429:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    time.sleep(wait)
+                    continue
+                return resp
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.Timeout) as e:
+                last_exc = e
+                if attempt < max_retries - 1:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
+                                   f"retrying in {wait:.1f}s: {e}")
+                    time.sleep(wait)
+                else:
+                    raise
+        raise last_exc  # type: ignore[misc]
 
     async def crawl(self) -> CrawlResult:
         """무신사 할인 상품을 크롤링한다.
@@ -206,42 +236,48 @@ class MusinsaCrawler(CrawlerContract):
         """PLP API로 할인 상품 목록을 가져온다."""
         items: list[DiscountItem] = []
 
-        for cat_code in self.CATEGORY_CODES:
-            try:
-                params = {
-                    "category": cat_code,
-                    "gf": "A",
-                    "sortCode": "SALE_RATE",
-                    "page": 1,
-                    "size": 60,
-                    "caller": "CATEGORY",
-                }
-                headers = self._get_headers()
-                resp = requests.get(
-                    self.API_URL, params=params, headers=headers, timeout=15
-                )
+        # Session으로 TCP 커넥션 재사용 — 카테고리 반복 요청 최적화
+        session = requests.Session()
+        try:
+            for cat_code in self.CATEGORY_CODES:
+                try:
+                    params = {
+                        "category": cat_code,
+                        "gf": "A",
+                        "sortCode": "SALE_RATE",
+                        "page": 1,
+                        "size": 60,
+                        "caller": "CATEGORY",
+                    }
+                    headers = self._get_headers()
+                    resp = self._retry_request(
+                        self.API_URL, params=params, headers=headers,
+                        session=session, timeout=15,
+                    )
 
-                if resp.status_code != 200:
-                    logger.warning(f"[무신사] API HTTP {resp.status_code} (카테고리 {cat_code})")
+                    if resp.status_code != 200:
+                        logger.warning(f"[무신사] API HTTP {resp.status_code} (카테고리 {cat_code})")
+                        continue
+
+                    data = resp.json()
+                    goods_list = self._extract_goods_from_api(data)
+
+                    for product in goods_list:
+                        item = self._api_product_to_item(product, cat_code)
+                        if item:
+                            items.append(item)
+
+                    logger.info(f"[무신사] 카테고리 {cat_code}: {len(goods_list)}개 발견")
+
+                    # 충분한 데이터 수집 시 중단
+                    if len(items) >= 50:
+                        break
+
+                except Exception as e:
+                    logger.warning(f"[무신사] API 요청 실패 (카테고리 {cat_code}): {e}")
                     continue
-
-                data = resp.json()
-                goods_list = self._extract_goods_from_api(data)
-
-                for product in goods_list:
-                    item = self._api_product_to_item(product, cat_code)
-                    if item:
-                        items.append(item)
-
-                logger.info(f"[무신사] 카테고리 {cat_code}: {len(goods_list)}개 발견")
-
-                # 충분한 데이터 수집 시 중단
-                if len(items) >= 50:
-                    break
-
-            except Exception as e:
-                logger.warning(f"[무신사] API 요청 실패 (카테고리 {cat_code}): {e}")
-                continue
+        finally:
+            session.close()
 
         return items
 
@@ -337,7 +373,7 @@ class MusinsaCrawler(CrawlerContract):
         try:
             headers = self._get_headers()
             headers["Accept"] = "text/html,application/xhtml+xml"
-            resp = requests.get(url, headers=headers, timeout=15)
+            resp = self._retry_request(url, headers=headers, timeout=15)
             resp.encoding = "utf-8"
 
             if resp.status_code != 200:
@@ -474,6 +510,7 @@ class MusinsaCrawler(CrawlerContract):
                 item = self._parse_html_card(card)
                 if item:
                     items.append(item)
+            del soup  # 메모리 해제 — 대형 HTML 트리 조기 GC
         except Exception as e:
             logger.warning(f"[무신사] parse 실패: {e}")
 

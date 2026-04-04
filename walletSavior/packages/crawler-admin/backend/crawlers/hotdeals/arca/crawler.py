@@ -35,11 +35,14 @@ https://arca.live/b/hotdeal 에서 핫딜 게시글을 수집한다.
 from __future__ import annotations
 
 import logging
+import random
 import re
+import time
 from datetime import datetime
 from typing import Optional
 from urllib.parse import urljoin
 
+import requests
 from bs4 import BeautifulSoup
 
 from core.contracts.crawler import CrawlerContract
@@ -68,6 +71,33 @@ class ArcaCrawler(CrawlerContract):
             target_url=self.DEAL_URL,
             strategies=["cloudscraper", "playwright"],
         )
+
+    def _retry_request(self, url: str, *, headers: dict | None = None,
+                       session: requests.Session | None = None,
+                       timeout: int = 15, max_retries: int = 3) -> requests.Response:
+        """HTTP GET with exponential backoff for transient failures."""
+        requester = session or requests
+        last_exc = None
+        for attempt in range(max_retries):
+            try:
+                resp = requester.get(url, headers=headers, timeout=timeout)
+                if resp.status_code == 429:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    time.sleep(wait)
+                    continue
+                return resp
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.Timeout) as e:
+                last_exc = e
+                if attempt < max_retries - 1:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
+                                   f"retrying in {wait:.1f}s: {e}")
+                    time.sleep(wait)
+                else:
+                    raise
+        raise last_exc  # type: ignore[misc]
 
     async def crawl(self) -> CrawlResult:
         """아카라이브 핫딜 목록을 크롤링한다."""
@@ -131,7 +161,8 @@ class ArcaCrawler(CrawlerContract):
                 "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
                 "Referer": "https://www.google.co.kr/",
             }
-            response = scraper.get(self.DEAL_URL, headers=headers, timeout=20)
+            # Retry via session-based backoff (cloudscraper extends requests.Session)
+            response = self._retry_request(self.DEAL_URL, headers=headers, session=scraper, timeout=20)
             if response.status_code == 200 and len(response.text) > 1000:
                 # Cloudflare 차단 페이지가 아닌지 확인 — 실제 게시글 목록(a.vrow)이 있어야 함
                 if "vrow" in response.text and "col-title" in response.text:
@@ -149,9 +180,8 @@ class ArcaCrawler(CrawlerContract):
 
         # 3차: 일반 requests 폴백 (Cloudflare가 없을 때만 성공)
         try:
-            import requests as req
             headers = self._anti_detect.get_random_headers()
-            response = req.get(self.DEAL_URL, headers=headers, timeout=15)
+            response = self._retry_request(self.DEAL_URL, headers=headers, timeout=15)
             if response.status_code == 200 and len(response.text) > 1000:
                 return response.text
         except Exception as e:
@@ -174,31 +204,33 @@ class ArcaCrawler(CrawlerContract):
         try:
             with sync_playwright() as p:
                 browser = p.chromium.launch(headless=True)
-                context = browser.new_context(
-                    user_agent=self._anti_detect.get_random_user_agent(),
-                    locale="ko-KR",
-                    viewport={"width": 1920, "height": 1080},
-                )
-                page = context.new_page()
-
-                # Cloudflare 감지 회피: webdriver 속성 제거
-                page.add_init_script("""
-                    Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
-                """)
-
-                page.goto(self.DEAL_URL, wait_until="networkidle", timeout=30000)
-
-                # Cloudflare challenge 대기 (최대 10초)
-                page.wait_for_timeout(3000)
-
-                # 게시글 목록이 로드될 때까지 대기
                 try:
-                    page.wait_for_selector("a.vrow", timeout=10000)
-                except Exception:
-                    logger.warning("[아카라이브] Playwright: a.vrow 셀렉터 대기 타임아웃")
+                    context = browser.new_context(
+                        user_agent=self._anti_detect.get_random_user_agent(),
+                        locale="ko-KR",
+                        viewport={"width": 1920, "height": 1080},
+                    )
+                    page = context.new_page()
 
-                html = page.content()
-                browser.close()
+                    # Cloudflare 감지 회피: webdriver 속성 제거
+                    page.add_init_script("""
+                        Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+                    """)
+
+                    page.goto(self.DEAL_URL, wait_until="networkidle", timeout=30000)
+
+                    # Cloudflare challenge 대기 (최대 10초)
+                    page.wait_for_timeout(3000)
+
+                    # 게시글 목록이 로드될 때까지 대기
+                    try:
+                        page.wait_for_selector("a.vrow", timeout=10000)
+                    except Exception:
+                        logger.warning("[아카라이브] Playwright: a.vrow 셀렉터 대기 타임아웃")
+
+                    html = page.content()
+                finally:
+                    browser.close()  # Ensure browser is always closed
 
                 if html and len(html) > 1000 and "vrow" in html:
                     logger.info(f"[아카라이브] Playwright 성공: HTML {len(html)}자")
@@ -240,6 +272,7 @@ class ArcaCrawler(CrawlerContract):
                 logger.debug(f"[아카라이브] 항목 파싱 오류: {e}")
                 continue
 
+        del soup  # Free DOM tree memory
         return items
 
     def _parse_item(self, row) -> Optional[HotdealPost]:

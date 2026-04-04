@@ -21,7 +21,9 @@ from __future__ import annotations
 
 import json
 import logging
+import random
 import re
+import time
 from datetime import datetime
 from typing import Optional
 from urllib.parse import quote
@@ -55,6 +57,34 @@ class HomeplusCrawler(CrawlerContract):
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=1.0, delay_max=3.0)
+
+    def _retry_request(self, url: str, *, headers: dict | None = None,
+                       session: requests.Session | None = None,
+                       timeout: int = 15, max_retries: int = 3,
+                       **kwargs) -> requests.Response:
+        """HTTP GET with exponential backoff for transient failures."""
+        requester = session or requests
+        last_exc = None
+        for attempt in range(max_retries):
+            try:
+                resp = requester.get(url, headers=headers, timeout=timeout, **kwargs)
+                if resp.status_code == 429:  # Rate limited — back off
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    time.sleep(wait)
+                    continue
+                return resp
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.Timeout) as e:
+                last_exc = e
+                if attempt < max_retries - 1:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
+                                   f"retrying in {wait:.1f}s: {e}")
+                    time.sleep(wait)
+                else:
+                    raise
+        raise last_exc  # type: ignore[misc]
 
     @property
     def info(self) -> CrawlerInfo:
@@ -132,7 +162,7 @@ class HomeplusCrawler(CrawlerContract):
         })
 
         try:
-            response = requests.get(
+            response = self._retry_request(
                 f"{self.BASE_URL}/event/eventMain.do",
                 headers=headers, timeout=20, allow_redirects=True,
             )
@@ -207,6 +237,7 @@ class HomeplusCrawler(CrawlerContract):
             from bs4 import BeautifulSoup
             soup = BeautifulSoup(raw_data, "html.parser")
             items = self._parse_html(soup)
+            del soup  # Free parsed HTML tree from memory
         except Exception as e:
             logger.warning(f"[홈플러스] HTML 파싱 실패: {e}")
 

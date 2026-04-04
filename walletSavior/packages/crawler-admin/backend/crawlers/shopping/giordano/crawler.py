@@ -23,7 +23,9 @@
 from __future__ import annotations
 
 import logging
+import random
 import re
+import time
 from datetime import datetime
 from typing import Optional
 from urllib.parse import urljoin
@@ -72,6 +74,34 @@ class GiordanoCrawler(CrawlerContract):
             strategies=["requests", "playwright"],
         )
 
+    def _retry_request(self, url: str, *, headers: dict | None = None,
+                       params: dict | None = None,
+                       session: requests.Session | None = None,
+                       timeout: int = 15, max_retries: int = 3) -> requests.Response:
+        """HTTP GET with exponential backoff for transient failures."""
+        requester = session or requests
+        last_exc = None
+        for attempt in range(max_retries):
+            try:
+                resp = requester.get(url, headers=headers, params=params, timeout=timeout)
+                if resp.status_code == 429:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    time.sleep(wait)
+                    continue
+                return resp
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.Timeout) as e:
+                last_exc = e
+                if attempt < max_retries - 1:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
+                                   f"retrying in {wait:.1f}s: {e}")
+                    time.sleep(wait)
+                else:
+                    raise
+        raise last_exc  # type: ignore[misc]
+
     async def crawl(self) -> CrawlResult:
         """지오다노 할인 상품을 크롤링한다.
 
@@ -96,25 +126,31 @@ class GiordanoCrawler(CrawlerContract):
             else:
                 logger.info(f"[지오다노] 세일 URL {len(sale_urls)}개 발견")
 
-            # 2단계: HTTP로 세일 페이지 크롤링
-            for url in sale_urls:
-                try:
-                    headers = self._get_headers()
-                    resp = requests.get(url, headers=headers, timeout=30)
-                    resp.encoding = "utf-8"
+            # 2단계: HTTP로 세일 페이지 크롤링 — Session으로 TCP 커넥션 재사용
+            session = requests.Session()
+            try:
+                for url in sale_urls:
+                    try:
+                        headers = self._get_headers()
+                        resp = self._retry_request(
+                            url, headers=headers, session=session, timeout=30,
+                        )
+                        resp.encoding = "utf-8"
 
-                    if resp.status_code != 200:
-                        logger.warning(f"[지오다노] HTTP {resp.status_code}: {url}")
-                        errors.append(f"HTTP {resp.status_code}: {url}")
-                        continue
+                        if resp.status_code != 200:
+                            logger.warning(f"[지오다노] HTTP {resp.status_code}: {url}")
+                            errors.append(f"HTTP {resp.status_code}: {url}")
+                            continue
 
-                    items = await self.parse(resp.text)
-                    logger.info(f"[지오다노] {url}: {len(items)}개 수집")
-                    all_items.extend(items)
+                        items = await self.parse(resp.text)
+                        logger.info(f"[지오다노] {url}: {len(items)}개 수집")
+                        all_items.extend(items)
 
-                except Exception as e:
-                    logger.warning(f"[지오다노] 요청 실패 ({url}): {e}")
-                    errors.append(f"{url}: {e}")
+                    except Exception as e:
+                        logger.warning(f"[지오다노] 요청 실패 ({url}): {e}")
+                        errors.append(f"{url}: {e}")
+            finally:
+                session.close()
 
             # 3단계: HTTP 실패 시 Playwright fallback
             if not all_items:
@@ -167,7 +203,7 @@ class GiordanoCrawler(CrawlerContract):
         """메인 페이지에서 세일 키워드가 포함된 big_section.php URL을 발견한다."""
         try:
             headers = self._get_headers()
-            resp = requests.get(self.BASE_URL, headers=headers, timeout=15)
+            resp = self._retry_request(self.BASE_URL, headers=headers, timeout=15)
             resp.encoding = "utf-8"
             if resp.status_code != 200:
                 return []
@@ -291,6 +327,8 @@ class GiordanoCrawler(CrawlerContract):
             # 2차: 범용 .info + .price fallback
             if not items:
                 items = self._parse_info_price_fallback(soup)
+
+            del soup  # 메모리 해제 — 대형 HTML 트리 조기 GC
 
         except Exception as e:
             logger.warning(f"[지오다노] 파싱 실패: {e}")
