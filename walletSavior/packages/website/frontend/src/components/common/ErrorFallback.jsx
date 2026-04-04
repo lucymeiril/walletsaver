@@ -20,7 +20,7 @@ export default function ErrorFallback({
   const showRetry = onRetry && (error?.retryable !== false);
 
   return (
-    <div className={`${s.wrapper} ${className}`}>
+    <div className={`${s.wrapper} ${className}`} role="alert">
       <Icon className={s.icon} size={44} />
       <p className={s.message}>{displayMessage}</p>
       {showRetry && (

@@ -8,6 +8,7 @@ import LoginModal from './components/modals/LoginModal';
 import useStore from './stores/appStore';
 import ShoppingListPanel from './components/common/ShoppingListPanel';
 import ModalManager from './components/modals/ModalManager';
+import ErrorBoundary from './components/common/ErrorBoundary';
 
 // Lazy-load 페이지 (코드 스플리팅 — 초기 로드 최소화)
 const HomePage      = lazy(() => import('./pages/Home/HomePage'));
@@ -28,6 +29,18 @@ function PageLoader() {
   );
 }
 
+function Guarded({ children, name }) {
+  return (
+    <ErrorBoundary
+      key={name}
+      fallbackMessage={`${name} 페이지에서 오류가 발생했습니다.`}
+      onReset={() => window.location.reload()}
+    >
+      {children}
+    </ErrorBoundary>
+  );
+}
+
 export default function App() {
   const theme = useStore((s) => s.theme);
 
@@ -39,20 +52,22 @@ export default function App() {
     <>
       <Header />
       <main style={{ paddingTop: 'var(--hdr-h)' }}>
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/"          element={<HomePage />} />
-            <Route path="/search"    element={<SearchPage />} />
-            <Route path="/price"     element={<PricePage />} />
-            <Route path="/price/category/:categoryId" element={<CategoryComparePage />} />
-            <Route path="/price/:id" element={<PricePage />} />
-            <Route path="/hotdeal"   element={<HotdealPage />} />
-            <Route path="/mart"      element={<MartPage />} />
-            <Route path="/local"     element={<LocalPage />} />
-            <Route path="/community" element={<CommunityPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Suspense>
+        <ErrorBoundary fallbackMessage="앱에서 오류가 발생했습니다. 페이지를 새로고침 해주세요.">
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/"          element={<Guarded name="홈"><HomePage /></Guarded>} />
+              <Route path="/search"    element={<Guarded name="검색"><SearchPage /></Guarded>} />
+              <Route path="/price"     element={<Guarded name="물가비교"><PricePage /></Guarded>} />
+              <Route path="/price/category/:categoryId" element={<Guarded name="카테고리"><CategoryComparePage /></Guarded>} />
+              <Route path="/price/:id" element={<Guarded name="물가비교"><PricePage /></Guarded>} />
+              <Route path="/hotdeal"   element={<Guarded name="핫딜"><HotdealPage /></Guarded>} />
+              <Route path="/mart"      element={<Guarded name="마트"><MartPage /></Guarded>} />
+              <Route path="/local"     element={<Guarded name="내주변"><LocalPage /></Guarded>} />
+              <Route path="/community" element={<Guarded name="커뮤니티"><CommunityPage /></Guarded>} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
       </main>
       <Footer />
       <BottomNav />
