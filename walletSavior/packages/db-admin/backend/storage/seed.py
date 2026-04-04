@@ -345,10 +345,10 @@ def seed_all(engine=None, database_url: str | None = None) -> None:
 
 
 def _seed_categories(session: Session) -> int:
-    """카테고리 트리 등록."""
-    count = 0
-    for data in SEED_CATEGORIES:
-        cat = Category(
+    """카테고리 트리 등록 — bulk insert로 메모리 효율 개선."""
+    # bulk_save_objects 대신 add_all로 배치 삽입 — 건별 add 대비 flush 횟수 감소
+    cats = [
+        Category(
             id=data["id"],
             name=data["name"],
             parent_id=data["parent_id"],
@@ -356,30 +356,34 @@ def _seed_categories(session: Session) -> int:
             sort_order=data["sort_order"],
             icon=data.get("icon"),
         )
-        session.add(cat)
-        count += 1
+        for data in SEED_CATEGORIES
+    ]
+    session.add_all(cats)
     session.flush()
-    return count
+    return len(cats)
 
 
 def _seed_products(session: Session) -> list[Product]:
-    """품목 마스터 등록."""
-    products = []
-    for data in SEED_PRODUCTS:
-        p = Product(
+    """품목 마스터 등록 — add_all 배치 삽입."""
+    products = [
+        Product(
             name=data["name"],
             category_id=data["category_id"],
             unit=data["unit"],
         )
-        session.add(p)
-        session.flush()
-        products.append(p)
+        for data in SEED_PRODUCTS
+    ]
+    session.add_all(products)
+    session.flush()  # flush 1회로 모든 product.id 확정
     return products
 
 
 def _seed_baseline_prices(session: Session, products: list[Product]) -> int:
-    """최근 30일간의 매장별 기준 가격 시뮬레이션."""
-    count = 0
+    """최근 30일간의 매장별 기준 가격 시뮬레이션.
+
+    최적화: 모든 레코드를 리스트에 모은 뒤 add_all로 일괄 삽입 — flush 1회.
+    """
+    records: list[BaselinePrice] = []
     for idx, p in enumerate(products):
         seed_data = SEED_PRODUCTS[idx]
         for store_name, base_price in seed_data["stores"].items():
@@ -387,38 +391,35 @@ def _seed_baseline_prices(session: Session, products: list[Product]) -> int:
                 date = datetime.now() - timedelta(days=day_offset)
                 variation = random.uniform(-0.05, 0.05)
                 price = round(base_price * (1 + variation))
-                record = BaselinePrice(
+                records.append(BaselinePrice(
                     product_id=p.id,
                     source=store_name,
                     price=price,
                     unit=p.unit,
                     recorded_at=date,
-                )
-                session.add(record)
-                count += 1
+                ))
 
         # KAMIS 공식 가격
         for day_offset in range(30, -1, -1):
             date = datetime.now() - timedelta(days=day_offset)
             variation = random.uniform(-0.03, 0.03)
             price = round(seed_data["avg"] * (1 + variation))
-            record = BaselinePrice(
+            records.append(BaselinePrice(
                 product_id=p.id,
                 source="kamis",
                 price=price,
                 unit=p.unit,
                 recorded_at=date,
-            )
-            session.add(record)
-            count += 1
+            ))
 
-    return count
+    session.add_all(records)
+    return len(records)
 
 
 def _seed_discounts(session: Session, products: list[Product]) -> int:
-    """할인 이력 샘플 — 각 품목당 2~4건."""
+    """할인 이력 샘플 — 각 품목당 2~4건. 배치 삽입으로 최적화."""
     stores = ["emart", "homeplus", "lottemart", "costco"]
-    count = 0
+    records: list[DiscountHistory] = []
 
     for idx, p in enumerate(products):
         seed_data = SEED_PRODUCTS[idx]
@@ -430,7 +431,7 @@ def _seed_discounts(session: Session, products: list[Product]) -> int:
             sale_price = round(base_price * (1 - discount_pct / 100))
             days_ago = random.randint(1, 60)
 
-            record = DiscountHistory(
+            records.append(DiscountHistory(
                 product_id=p.id,
                 source=store,
                 original_price=base_price,
@@ -438,21 +439,20 @@ def _seed_discounts(session: Session, products: list[Product]) -> int:
                 discount_rate=round(discount_pct, 1),
                 valid_from=datetime.now() - timedelta(days=days_ago),
                 valid_to=datetime.now() - timedelta(days=max(0, days_ago - 7)),
-            )
-            session.add(record)
-            count += 1
+            ))
 
-    return count
+    session.add_all(records)
+    return len(records)
 
 
 def _seed_hotdeal_prices(session: Session, products: list[Product]) -> int:
-    """핫딜 가격 샘플."""
+    """핫딜 가격 샘플 — 배치 삽입."""
     communities = ["ppomppu", "fmkorea", "arca", "ruliweb"]
-    count = 0
+    records: list[HotdealPrice] = []
 
     for p in products[:8]:
         hours_ago = random.randint(0, 48)
-        hp = HotdealPrice(
+        records.append(HotdealPrice(
             product_id=p.id,
             price=round(random.uniform(0.5, 0.8) * 2000),
             source=random.choice(communities),
@@ -461,18 +461,16 @@ def _seed_hotdeal_prices(session: Session, products: list[Product]) -> int:
             votes_hot=random.randint(10, 200),
             votes_not=random.randint(0, 30),
             crawled_at=datetime.now() - timedelta(hours=hours_ago),
-        )
-        session.add(hp)
-        count += 1
+        ))
 
-    return count
+    session.add_all(records)
+    return len(records)
 
 
 def _seed_gas_stations(session: Session) -> int:
-    """주유소 데이터 등록."""
-    count = 0
-    for data in SEED_GAS_STATIONS:
-        station = GasStation(
+    """주유소 데이터 등록 — 배치 삽입."""
+    stations = [
+        GasStation(
             name=data["name"],
             brand=data["brand"],
             address=data["address"],
@@ -483,24 +481,25 @@ def _seed_gas_stations(session: Session) -> int:
             lpg_price=data["lpg"],
             is_self=data.get("is_self", False),
         )
-        session.add(station)
-        count += 1
-    return count
+        for data in SEED_GAS_STATIONS
+    ]
+    session.add_all(stations)
+    return len(stations)
 
 
 def _seed_keywords(session: Session) -> int:
-    """자동완성 키워드 등록."""
-    count = 0
-    for data in SEED_KEYWORDS:
-        kw = Keyword(
+    """자동완성 키워드 등록 — 배치 삽입."""
+    keywords = [
+        Keyword(
             word=data["word"],
             synonyms=data.get("synonyms"),
             category_id=data.get("category_id"),
             search_count=random.randint(10, 500),
         )
-        session.add(kw)
-        count += 1
-    return count
+        for data in SEED_KEYWORDS
+    ]
+    session.add_all(keywords)
+    return len(keywords)
 
 
 if __name__ == "__main__":

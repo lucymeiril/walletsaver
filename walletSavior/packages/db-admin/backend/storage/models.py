@@ -156,13 +156,23 @@ class Product(Base):
     # "auto" | "suggested" | "manual" | "corrected"
 
     category: Mapped[Optional["Category"]] = relationship(back_populates="products")
-    baseline_prices: Mapped[list["BaselinePrice"]] = relationship(back_populates="product", cascade="all, delete-orphan")
-    discount_history: Mapped[list["DiscountHistory"]] = relationship(back_populates="product", cascade="all, delete-orphan")
-    hotdeal_prices: Mapped[list["HotdealPrice"]] = relationship(back_populates="product", cascade="all, delete-orphan")
+    # lazy="selectin" — 상품 목록 조회 시 N+1 방지, 필요할 때만 서브쿼리로 일괄 로딩
+    baseline_prices: Mapped[list["BaselinePrice"]] = relationship(
+        back_populates="product", cascade="all, delete-orphan", lazy="selectin",
+    )
+    discount_history: Mapped[list["DiscountHistory"]] = relationship(
+        back_populates="product", cascade="all, delete-orphan", lazy="selectin",
+    )
+    hotdeal_prices: Mapped[list["HotdealPrice"]] = relationship(
+        back_populates="product", cascade="all, delete-orphan", lazy="selectin",
+    )
 
     __table_args__ = (
         Index("ix_products_name", "name"),
         Index("ix_products_category", "category_id"),
+        # source_type 필터 빈번 — 핫딜/마트/기준가 분류 필터링용
+        Index("ix_products_source_type", "source_type"),
+        Index("ix_products_active", "is_active"),
     )
 
 
@@ -187,6 +197,8 @@ class BaselinePrice(Base):
 
     __table_args__ = (
         Index("ix_baseline_product_date", "product_id", "recorded_at"),
+        # 매장별 최신 기준가 조회 최적화
+        Index("ix_baseline_product_source", "product_id", "source"),
     )
 
 
@@ -211,6 +223,10 @@ class DiscountHistory(Base):
     __table_args__ = (
         Index("ix_discount_product_date", "product_id", "crawled_at"),
         Index("ix_discount_source", "source"),
+        # 복합 인덱스: 매장별 최신 가격 조회 최적화 (source + product_id)
+        Index("ix_discount_product_source", "product_id", "source"),
+        # crawled_at 단독 인덱스: 최신 할인 목록 정렬용
+        Index("ix_discount_crawled_at", "crawled_at"),
     )
 
 
@@ -233,6 +249,10 @@ class HotdealPrice(Base):
 
     __table_args__ = (
         Index("ix_hotdeal_product_date", "product_id", "crawled_at"),
+        # source 단독 인덱스: 출처별 핫딜 필터링용
+        Index("ix_hotdeal_source", "source"),
+        # crawled_at 단독: 최신 핫딜 정렬용
+        Index("ix_hotdeal_crawled_at", "crawled_at"),
     )
 
 
@@ -446,6 +466,8 @@ class Keyword(Base):
 
     __table_args__ = (
         Index("ix_keywords_word", "word"),
+        # 인기 검색어 정렬용 — search_count DESC 빈번 사용
+        Index("ix_keywords_active_count", "is_active", "search_count"),
     )
 
 
