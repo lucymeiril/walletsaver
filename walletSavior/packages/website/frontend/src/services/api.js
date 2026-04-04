@@ -65,18 +65,18 @@ function setCache(key, value, ttl = DEFAULT_CACHE_TTL) {
 class ApiClient {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
-    this.token = localStorage.getItem('access_token');
+    this.token = sessionStorage.getItem('access_token');
   }
 
   setToken(token) {
     if (this.token === token) return;
     this.token = token;
-    localStorage.setItem('access_token', token);
+    sessionStorage.setItem('access_token', token);
   }
 
   clearToken() {
     this.token = null;
-    localStorage.removeItem('access_token');
+    sessionStorage.removeItem('access_token');
   }
 
   async request(path, options = {}) {
@@ -200,7 +200,7 @@ class ApiClient {
 
   async refreshToken() {
     try {
-      const refreshToken = localStorage.getItem('refresh_token');
+      const refreshToken = sessionStorage.getItem('refresh_token');
       if (!refreshToken) return false;
 
       const response = await fetch(`${this.baseUrl}/api/auth/refresh`, {
@@ -213,7 +213,7 @@ class ApiClient {
 
       const data = await response.json();
       this.setToken(data.access_token);
-      localStorage.setItem('refresh_token', data.refresh_token);
+      sessionStorage.setItem('refresh_token', data.refresh_token);
       return true;
     } catch {
       return false;

@@ -4,9 +4,28 @@ from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 import os
+import logging
 
-# 설정
-SECRET_KEY = os.getenv("JWT_SECRET_KEY", "dev-secret-key-change-in-production")
+logger = logging.getLogger(__name__)
+
+# --- JWT Secret 설정 ---
+_DEFAULT_DEV_SECRET = "dev-secret-key-change-in-production"
+SECRET_KEY = os.getenv("JWT_SECRET_KEY", _DEFAULT_DEV_SECRET)
+_ENV = os.getenv("ENV", "development").lower()
+
+if _ENV == "production":
+    if not SECRET_KEY or SECRET_KEY == _DEFAULT_DEV_SECRET:
+        raise RuntimeError(
+            "FATAL: JWT_SECRET_KEY environment variable is required in production. "
+            "Generate one with: python -c \"import secrets; print(secrets.token_hex(32))\""
+        )
+    if len(SECRET_KEY) < 32:
+        raise RuntimeError("JWT_SECRET_KEY must be at least 32 characters (256 bits)")
+elif SECRET_KEY == _DEFAULT_DEV_SECRET:
+    logger.warning(
+        "⚠️  Using default JWT secret — set JWT_SECRET_KEY env var before deploying"
+    )
+
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 7

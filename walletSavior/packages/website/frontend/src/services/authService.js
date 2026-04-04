@@ -6,7 +6,7 @@ export const authService = {
     if (!res.ok) throw new Error('로그인에 실패했습니다');
     const data = await res.json();
     api.setToken(data.access_token);
-    localStorage.setItem('refresh_token', data.refresh_token);
+    sessionStorage.setItem('refresh_token', data.refresh_token);
     return data;
   },
 
@@ -24,7 +24,7 @@ export const authService = {
       await api.post('/api/auth/logout');
     } finally {
       api.clearToken();
-      localStorage.removeItem('refresh_token');
+      sessionStorage.removeItem('refresh_token');
     }
   },
 
@@ -45,7 +45,7 @@ export const authService = {
     if (!res.ok) throw new Error('소셜 로그인에 실패했습니다');
     const data = await res.json();
     api.setToken(data.access_token);
-    localStorage.setItem('refresh_token', data.refresh_token);
+    sessionStorage.setItem('refresh_token', data.refresh_token);
     return data;
   },
 };

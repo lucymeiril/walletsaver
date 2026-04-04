@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { useLocation } from 'react-router-dom';
 import { Pencil, ImagePlus, X, Send, Eye, MessageSquare, Clock, Search, Trash2, Edit3 } from 'lucide-react';
 import { fmt, verifyPrice } from '../../utils/helpers';
+import { sanitizeHTML, sanitizeURL } from '../../utils/sanitize';
 import useStore from '../../stores/appStore';
 import Spinner from '../../components/common/Spinner';
 import RichTextEditor from '../../components/community/RichTextEditor';
@@ -206,7 +207,7 @@ export default function CommunityPage() {
     }
     try {
       const headers = { 'Content-Type': 'application/json' };
-      const token = localStorage.getItem('access_token');
+      const token = sessionStorage.getItem('access_token');
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
       const isEdit = !!editPostId;
@@ -666,7 +667,7 @@ const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, boa
       return;
     }
     try {
-      const token = localStorage.getItem('access_token');
+      const token = sessionStorage.getItem('access_token');
       const resp = await fetch(`/api/posts/${post.id}/comments`, {
         method: 'POST',
         headers: {
@@ -701,7 +702,7 @@ const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, boa
     }
     const voteType = type === 'hot' ? 'hot' : 'not';
     try {
-      const token = localStorage.getItem('access_token');
+      const token = sessionStorage.getItem('access_token');
       const resp = await fetch(`/api/posts/${post.id}/vote`, {
         method: 'POST',
         headers: {
@@ -724,7 +725,7 @@ const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, boa
   const handleDelete = async () => {
     if (!window.confirm('정말 삭제하시겠습니까?')) return;
     try {
-      const token = localStorage.getItem('access_token');
+      const token = sessionStorage.getItem('access_token');
       const resp = await fetch(`/api/posts/${post.id}`, {
         method: 'DELETE',
         headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -770,17 +771,19 @@ const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, boa
             </div>
           )}
 
-          {post.body && <div className={`${s.modalContent} ${s.richContent}`} dangerouslySetInnerHTML={{ __html: post.body }} />}
+          {post.body && <div className={`${s.modalContent} ${s.richContent}`} dangerouslySetInnerHTML={{ __html: sanitizeHTML(post.body) }} />}
 
-          {post.url && (
-            <a href={post.url} target="_blank" rel="noopener noreferrer" className={s.dealLink}>
+          {post.url && sanitizeURL(post.url) && (
+            <a href={sanitizeURL(post.url)} target="_blank" rel="noopener noreferrer" className={s.dealLink}>
               🔗 핫딜 링크로 이동
             </a>
           )}
 
           {post.images?.length > 0 && (
             <div className={s.modalImages}>
-              {post.images.map((url, i) => <img key={i} src={url} alt="" />)}
+              {post.images.filter(url => sanitizeURL(url)).map((url, i) => (
+                <img key={i} src={sanitizeURL(url)} alt="" loading="lazy" />
+              ))}
             </div>
           )}
 

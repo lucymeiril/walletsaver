@@ -1,6 +1,7 @@
 """OAuth 서비스 — Google, Kakao, Naver OAuth 2.0 처리"""
 import httpx
 import os
+import secrets
 from typing import Optional
 from dataclasses import dataclass
 
@@ -60,15 +61,52 @@ class OAuthConfig:
 
 REDIRECT_BASE = os.getenv("OAUTH_REDIRECT_BASE", "http://localhost:8000")
 
+# In-memory OAuth state store for CSRF protection (TTL: 10 minutes)
+_oauth_states: dict[str, float] = {}
+_OAUTH_STATE_TTL = 600  # seconds
+
+
+def _cleanup_expired_states():
+    """Remove expired OAuth state tokens."""
+    import time
+    now = time.time()
+    expired = [k for k, v in _oauth_states.items() if now - v > _OAUTH_STATE_TTL]
+    for k in expired:
+        _oauth_states.pop(k, None)
+
+
+def generate_oauth_state() -> str:
+    """Generate a cryptographic random state token for CSRF protection."""
+    _cleanup_expired_states()
+    import time
+    state = secrets.token_urlsafe(32)
+    _oauth_states[state] = time.time()
+    return state
+
+
+def validate_oauth_state(state: str | None) -> bool:
+    """Validate and consume an OAuth state token. Returns False if invalid/expired."""
+    if not state:
+        return False
+    import time
+    ts = _oauth_states.pop(state, None)
+    if ts is None:
+        return False
+    if time.time() - ts > _OAUTH_STATE_TTL:
+        return False
+    return True
+
 
 def get_oauth_login_url(provider: str) -> str:
-    """OAuth 로그인 URL 생성"""
+    """OAuth 로그인 URL 생성 (with CSRF state parameter)"""
     config = OAuthConfig.get(provider)
+    state = generate_oauth_state()
     params = {
         "client_id": config["client_id"],
         "redirect_uri": f"{REDIRECT_BASE}/api/auth/oauth/{provider}/callback",
         "response_type": "code",
         "scope": config["scope"],
+        "state": state,
     }
     query = "&".join(f"{k}={v}" for k, v in params.items() if v)
     return f"{config['auth_url']}?{query}"

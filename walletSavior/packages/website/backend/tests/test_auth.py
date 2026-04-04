@@ -34,7 +34,7 @@ class TestPasswordHashing:
 
     def test_verify_wrong_password(self):
         hashed = hash_password("MySecure1")
-        assert verify_password("WrongPass1", hashed) is False
+        assert verify_password("Wrongpass1", hashed) is False
 
     def test_different_hashes_for_same_password(self):
         h1 = hash_password("SamePass1")
@@ -104,34 +104,44 @@ class TestJWTTokens:
 class TestSchemaValidation:
     def test_valid_registration(self):
         from api.schemas.auth import UserRegister
-        user = UserRegister(email="test@example.com", password="secure123", nickname="테스터")
+        user = UserRegister(email="test@example.com", password="Secure123", nickname="테스터")
         assert user.email == "test@example.com"
         assert user.nickname == "테스터"
 
     def test_invalid_email(self):
         from api.schemas.auth import UserRegister
         with pytest.raises(Exception):
-            UserRegister(email="not-an-email", password="secure123", nickname="테스터")
+            UserRegister(email="not-an-email", password="Secure123", nickname="테스터")
 
     def test_short_password(self):
         from api.schemas.auth import UserRegister
         with pytest.raises(Exception):
-            UserRegister(email="a@b.com", password="short1", nickname="테스터")
+            UserRegister(email="a@b.com", password="Short1", nickname="테스터")
 
     def test_password_without_digit(self):
         from api.schemas.auth import UserRegister
         with pytest.raises(Exception):
-            UserRegister(email="a@b.com", password="nodigitshere", nickname="테스터")
+            UserRegister(email="a@b.com", password="NoDigitsHere", nickname="테스터")
+
+    def test_password_without_uppercase(self):
+        from api.schemas.auth import UserRegister
+        with pytest.raises(Exception):
+            UserRegister(email="a@b.com", password="nouppercase1", nickname="테스터")
+
+    def test_password_without_lowercase(self):
+        from api.schemas.auth import UserRegister
+        with pytest.raises(Exception):
+            UserRegister(email="a@b.com", password="NOLOWERCASE1", nickname="테스터")
 
     def test_nickname_too_short(self):
         from api.schemas.auth import UserRegister
         with pytest.raises(Exception):
-            UserRegister(email="a@b.com", password="secure123", nickname="X")
+            UserRegister(email="a@b.com", password="Secure123", nickname="X")
 
     def test_nickname_too_long(self):
         from api.schemas.auth import UserRegister
         with pytest.raises(Exception):
-            UserRegister(email="a@b.com", password="secure123", nickname="A" * 21)
+            UserRegister(email="a@b.com", password="Secure123", nickname="A" * 21)
 
     def test_valid_login(self):
         from api.schemas.auth import UserLogin
@@ -171,15 +181,22 @@ class TestAuthRoutes:
         from fastapi import FastAPI
         from fastapi.testclient import TestClient
         from api.routes.auth import router
+        from api.middleware.rate_limit import limiter
 
         app = FastAPI()
+        app.state.limiter = limiter
         app.include_router(router)
+        # Reset rate limiter state between tests
+        try:
+            limiter.reset()
+        except Exception:
+            pass
         return TestClient(app)
 
     def test_register_success(self, client):
         resp = client.post("/api/auth/register", json={
             "email": "new@example.com",
-            "password": "password123",
+            "password": "Password123",
             "nickname": "뉴유저",
         })
         assert resp.status_code == 201
@@ -189,52 +206,52 @@ class TestAuthRoutes:
         assert data["token_type"] == "bearer"
 
     def test_register_duplicate_email(self, client):
-        payload = {"email": "dup@example.com", "password": "password123", "nickname": "유저A"}
+        payload = {"email": "dup@example.com", "password": "Password123", "nickname": "유저A"}
         client.post("/api/auth/register", json=payload)
         resp = client.post("/api/auth/register", json={
-            "email": "dup@example.com", "password": "password456", "nickname": "유저B"
+            "email": "dup@example.com", "password": "Password456", "nickname": "유저B"
         })
         assert resp.status_code == 400
         assert "이미 등록된 이메일" in resp.json()["detail"]
 
     def test_register_duplicate_nickname(self, client):
         client.post("/api/auth/register", json={
-            "email": "a@example.com", "password": "password123", "nickname": "같은닉네임"
+            "email": "a@example.com", "password": "Password123", "nickname": "같은닉네임"
         })
         resp = client.post("/api/auth/register", json={
-            "email": "b@example.com", "password": "password123", "nickname": "같은닉네임"
+            "email": "b@example.com", "password": "Password123", "nickname": "같은닉네임"
         })
         assert resp.status_code == 400
         assert "닉네임" in resp.json()["detail"]
 
     def test_login_success(self, client):
         client.post("/api/auth/register", json={
-            "email": "login@example.com", "password": "password123", "nickname": "로그인유저"
+            "email": "login@example.com", "password": "Password123", "nickname": "로그인유저"
         })
         resp = client.post("/api/auth/login", json={
-            "email": "login@example.com", "password": "password123"
+            "email": "login@example.com", "password": "Password123"
         })
         assert resp.status_code == 200
         assert "access_token" in resp.json()
 
     def test_login_wrong_password(self, client):
         client.post("/api/auth/register", json={
-            "email": "wrong@example.com", "password": "password123", "nickname": "유저"
+            "email": "wrong@example.com", "password": "Password123", "nickname": "유저"
         })
         resp = client.post("/api/auth/login", json={
-            "email": "wrong@example.com", "password": "wrongpass1"
+            "email": "wrong@example.com", "password": "Wrongpass1"
         })
         assert resp.status_code == 401
 
     def test_login_nonexistent_user(self, client):
         resp = client.post("/api/auth/login", json={
-            "email": "nobody@example.com", "password": "password123"
+            "email": "nobody@example.com", "password": "Password123"
         })
         assert resp.status_code == 401
 
     def test_refresh_token_flow(self, client):
         reg = client.post("/api/auth/register", json={
-            "email": "refresh@example.com", "password": "password123", "nickname": "리프레시유저"
+            "email": "refresh@example.com", "password": "Password123", "nickname": "리프레시유저"
         })
         refresh_token = reg.json()["refresh_token"]
         resp = client.post("/api/auth/refresh", json={"refresh_token": refresh_token})
@@ -248,7 +265,7 @@ class TestAuthRoutes:
     def test_refresh_with_access_token_fails(self, client):
         """액세스 토큰으로 리프레시 요청 시 거부"""
         reg = client.post("/api/auth/register", json={
-            "email": "norefresh@example.com", "password": "password123", "nickname": "거부유저"
+            "email": "norefresh@example.com", "password": "Password123", "nickname": "거부유저"
         })
         access_token = reg.json()["access_token"]
         resp = client.post("/api/auth/refresh", json={"refresh_token": access_token})
@@ -272,6 +289,10 @@ class TestOAuthURLGeneration:
         url = get_oauth_login_url("google")
         assert "accounts.google.com" in url
         assert "response_type=code" in url
+
+    def test_google_login_url_has_state(self):
+        url = get_oauth_login_url("google")
+        assert "state=" in url
 
     def test_kakao_login_url(self):
         url = get_oauth_login_url("kakao")
@@ -312,7 +333,117 @@ class TestOAuthRoutes:
         resp = client.get("/api/auth/oauth/google")
         assert resp.status_code == 307
         assert "accounts.google.com" in resp.headers["location"]
+        assert "state=" in resp.headers["location"]
 
     def test_oauth_invalid_provider(self, client):
         resp = client.get("/api/auth/oauth/facebook")
         assert resp.status_code == 400
+
+
+# ── OAuth State (CSRF) 테스트 ────────────────────────────────────
+
+class TestOAuthState:
+    def test_generate_and_validate_state(self):
+        from services.oauth_service import generate_oauth_state, validate_oauth_state
+        state = generate_oauth_state()
+        assert isinstance(state, str)
+        assert len(state) > 20
+        assert validate_oauth_state(state) is True
+
+    def test_state_single_use(self):
+        from services.oauth_service import generate_oauth_state, validate_oauth_state
+        state = generate_oauth_state()
+        assert validate_oauth_state(state) is True
+        assert validate_oauth_state(state) is False  # consumed
+
+    def test_invalid_state_rejected(self):
+        from services.oauth_service import validate_oauth_state
+        assert validate_oauth_state("invalid_state") is False
+        assert validate_oauth_state(None) is False
+        assert validate_oauth_state("") is False
+
+    def test_oauth_callback_rejects_missing_state(self):
+        from fastapi import FastAPI
+        from fastapi.testclient import TestClient
+        from api.routes.auth import router
+
+        app = FastAPI()
+        app.include_router(router)
+        client = TestClient(app, follow_redirects=False)
+
+        resp = client.get("/api/auth/oauth/google/callback?code=test_code")
+        assert resp.status_code == 400
+
+    def test_oauth_callback_rejects_bad_state(self):
+        from fastapi import FastAPI
+        from fastapi.testclient import TestClient
+        from api.routes.auth import router
+
+        app = FastAPI()
+        app.include_router(router)
+        client = TestClient(app, follow_redirects=False)
+
+        resp = client.get("/api/auth/oauth/google/callback?code=test_code&state=forged_state")
+        assert resp.status_code == 400
+
+
+# ── Password Strength Validation 테스트 ──────────────────────────
+
+class TestPasswordStrength:
+    def test_password_requires_uppercase(self):
+        from api.schemas.auth import UserRegister
+        with pytest.raises(Exception, match="대문자"):
+            UserRegister(email="a@b.com", password="alllower1", nickname="테스터")
+
+    def test_password_requires_lowercase(self):
+        from api.schemas.auth import UserRegister
+        with pytest.raises(Exception, match="소문자"):
+            UserRegister(email="a@b.com", password="ALLUPPER1", nickname="테스터")
+
+    def test_password_requires_digit(self):
+        from api.schemas.auth import UserRegister
+        with pytest.raises(Exception, match="숫자"):
+            UserRegister(email="a@b.com", password="NoDigitHere", nickname="테스터")
+
+    def test_password_requires_min_length(self):
+        from api.schemas.auth import UserRegister
+        with pytest.raises(Exception, match="8자"):
+            UserRegister(email="a@b.com", password="Short1", nickname="테스터")
+
+    def test_valid_password_passes(self):
+        from api.schemas.auth import UserRegister
+        user = UserRegister(email="a@b.com", password="ValidPass1", nickname="테스터")
+        assert user.password == "ValidPass1"
+
+
+# ── JWT Secret Configuration 테스트 ──────────────────────────────
+
+class TestJWTSecretConfig:
+    def test_production_rejects_default_secret(self):
+        """프로덕션에서 기본 시크릿 사용 시 RuntimeError"""
+        with patch.dict(os.environ, {"ENV": "production", "JWT_SECRET_KEY": "dev-secret-key-change-in-production"}):
+            with pytest.raises(RuntimeError, match="JWT_SECRET_KEY"):
+                import importlib
+                import services.auth_service as mod
+                importlib.reload(mod)
+
+    def test_production_rejects_short_secret(self):
+        """프로덕션에서 짧은 시크릿 사용 시 RuntimeError"""
+        with patch.dict(os.environ, {"ENV": "production", "JWT_SECRET_KEY": "tooshort"}):
+            with pytest.raises(RuntimeError, match="32 characters"):
+                import importlib
+                import services.auth_service as mod
+                importlib.reload(mod)
+
+    def test_production_accepts_valid_secret(self):
+        """프로덕션에서 충분히 긴 시크릿 허용"""
+        valid_key = "a" * 64
+        with patch.dict(os.environ, {"ENV": "production", "JWT_SECRET_KEY": valid_key}):
+            import importlib
+            import services.auth_service as mod
+            importlib.reload(mod)
+            assert mod.SECRET_KEY == valid_key
+
+        # Restore for other tests
+        with patch.dict(os.environ, {"ENV": "development", "JWT_SECRET_KEY": "dev-secret-key-change-in-production"}):
+            importlib.reload(mod)

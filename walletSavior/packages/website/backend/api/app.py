@@ -13,9 +13,33 @@ FastAPI 앱 팩토리 — container.py가 의존성을 주입하여 앱을 생�
     (routes/products.py, routes/hotdeals.py, routes/marts.py, routes/gas.py, routes/crawlers.py, routes/users.py)
 """
 
+import os
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
+from starlette.requests import Request
+from starlette.responses import JSONResponse
+
+from api.middleware.security_headers import SecurityHeadersMiddleware
+from api.middleware.request_size import RequestSizeLimitMiddleware
+from api.middleware.error_handler import register_error_handlers
+from api.middleware.rate_limit import limiter
+from slowapi.errors import RateLimitExceeded
+
+logger = logging.getLogger(__name__)
+
+
+async def _rate_limit_handler(request: Request, exc: RateLimitExceeded) -> JSONResponse:
+    return JSONResponse(
+        status_code=429,
+        content={
+            "success": False,
+            "error": "요청이 너무 많습니다. 잠시 후 다시 시도해주세요.",
+            "detail": str(exc.detail),
+        },
+        headers={"Retry-After": str(getattr(exc, "retry_after", 60))},
+    )
 
 
 def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
@@ -25,28 +49,46 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     storage가 None이면 각 라우터가 mock 데이터를 반환하므로
     DB 없이도 즉시 프론트엔드 개발이 가능하다.
     """
+    is_debug = os.getenv("DEBUG", "").lower() == "true"
+
     app = FastAPI(
         title="지갑 지키미 API",
         description="물가 비교 서비스 백엔드 — 정부 공공데이터 + 마트 할인 + 커뮤니티 핫딜",
         version="0.1.0",
+        docs_url="/docs" if is_debug else None,
+        redoc_url="/redoc" if is_debug else None,
+        openapi_url="/openapi.json" if is_debug else None,
     )
 
-    # CORS — 프론트엔드 개발 서버 허용
+    # ── 에러 핸들러 등록 ──
+    register_error_handlers(app)
+
+    # ── 레이트 리밋 ──
+    app.state.limiter = limiter
+    app.add_exception_handler(RateLimitExceeded, _rate_limit_handler)
+
+    # ── 미들웨어 (LIFO: 마지막 추가 = 먼저 실행) ──
+
+    # 1. CORS — 프론트엔드 개발 서버 허용
+    _DEFAULT_ORIGINS = "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173,http://127.0.0.1:3000"
+    allowed_origins = [o.strip() for o in os.getenv("CORS_ORIGINS", _DEFAULT_ORIGINS).split(",")]
+
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=[
-            "http://localhost:5173",   # Vite dev server
-            "http://localhost:3000",   # CRA / Next.js dev
-            "http://127.0.0.1:5173",
-            "http://127.0.0.1:3000",
-        ],
+        allow_origins=allowed_origins,
         allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allow_headers=["Authorization", "Content-Type", "X-CSRF-Token"],
     )
 
-    # GZip compression for responses > 500 bytes
+    # 2. GZip compression for responses > 500 bytes
     app.add_middleware(GZipMiddleware, minimum_size=500)
+
+    # 3. 보안 헤더
+    app.add_middleware(SecurityHeadersMiddleware)
+
+    # 4. 요청 크기 제한 (10 MB)
+    app.add_middleware(RequestSizeLimitMiddleware, max_body_size=10 * 1024 * 1024)
 
     # storage가 없으면 db-admin의 DBStorage로 자동 연결 시도
     if storage is None:
@@ -162,7 +204,8 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
             try:
                 result["hotdeals"] = s.get_hotdeals(sort="recent", per_page=10)
             except Exception:
-                pass
+                logger.exception("Failed to load hotdeals for dashboard")
+                result["hotdeals"] = []
             try:
                 from api.routes.products import get_category_summary
                 summary_resp = await get_category_summary(request)
@@ -171,7 +214,8 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
                 elif isinstance(summary_resp, dict):
                     result["category_summary"] = summary_resp.get("data", [])
             except Exception:
-                pass
+                logger.exception("Failed to load category_summary for dashboard")
+                result["category_summary"] = []
             try:
                 from api.routes.products import get_trending_keywords
                 trend_resp = await get_trending_keywords(request)
@@ -180,7 +224,8 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
                 elif isinstance(trend_resp, dict):
                     result["trending_keywords"] = trend_resp.get("data", [])
             except Exception:
-                pass
+                logger.exception("Failed to load trending_keywords for dashboard")
+                result["trending_keywords"] = []
             try:
                 products = s.search_products("", per_page=10)
                 if isinstance(products, list):
@@ -188,7 +233,8 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
                 elif isinstance(products, dict) and "items" in products:
                     result["recent_products"] = products["items"][:10]
             except Exception:
-                pass
+                logger.exception("Failed to load recent_products for dashboard")
+                result["recent_products"] = []
 
         resp = {"success": True, "data": result, "error": None}
         _dashboard_cache.set("dashboard", resp)
