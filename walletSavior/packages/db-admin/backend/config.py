@@ -40,6 +40,10 @@ class Settings:
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("JWT_ACCESS_EXPIRE_MIN", "60"))
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = int(os.getenv("JWT_REFRESH_EXPIRE_DAYS", "7"))
 
+    # ── Logging 설정 ──
+    LOG_FORMAT: str = os.getenv("LOG_FORMAT", "text" if os.getenv("DEBUG", "false").lower() == "true" else "json")
+    LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
+
     # ── CORS 설정 ──
     CORS_ALLOWED_ORIGINS: list = []
 

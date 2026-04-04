@@ -1,4 +1,6 @@
 """DB 관리 API 팩토리"""
+import signal
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
@@ -6,25 +8,80 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from starlette.middleware.base import BaseHTTPMiddleware
 import uuid
-import logging
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from slowapi.errors import RateLimitExceeded
+from sqlalchemy import text
 
 from config import settings
 from api.middleware.security_headers import SecurityHeadersMiddleware
 from api.middleware.rate_limit import limiter, rate_limit_exceeded_handler, GLOBAL_LIMIT
 
+_lifecycle_logger = logging.getLogger("lifecycle")
+
+
+def _signal_handler(signum, frame):
+    """Handle SIGTERM/SIGINT for graceful shutdown."""
+    sig_name = signal.Signals(signum).name
+    _lifecycle_logger.info("Received %s — initiating graceful shutdown", sig_name)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # ── Startup ──
+
+    # 1. Security check
     if not settings.DEBUG:
         if "changeme" in settings.DATABASE_URL:
             raise RuntimeError(
                 "SECURITY: Default database password detected. "
                 "Set a strong DATABASE_URL for production."
             )
+
+    # 2. Register signal handlers
+    for sig in (signal.SIGTERM, signal.SIGINT):
+        try:
+            signal.signal(sig, _signal_handler)
+        except (OSError, ValueError):
+            pass
+
+    # 3. Verify DB connectivity (fail-fast)
+    from services.base import get_engine
+    engine = get_engine()
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        _lifecycle_logger.info("Startup: database connection verified")
+    except Exception as e:
+        _lifecycle_logger.critical("Startup: database unreachable — %s", e)
+        raise
+
+    # 4. Log startup summary
+    _lifecycle_logger.info(
+        "Startup complete — host=%s port=%s debug=%s",
+        settings.API_HOST, settings.API_PORT, settings.DEBUG,
+    )
+
     yield
+
+    # ── Shutdown ──
+    _lifecycle_logger.info("Shutdown: closing database connections")
+
+    # 5. Dispose engine (closes all pooled connections)
+    try:
+        engine.dispose()
+        _lifecycle_logger.info("Shutdown: engine disposed successfully")
+    except Exception as e:
+        _lifecycle_logger.error("Shutdown: engine disposal failed — %s", e)
+
+    # 6. Flush all log handlers
+    for handler in logging.root.handlers:
+        try:
+            handler.flush()
+        except Exception:
+            pass
+
+    _lifecycle_logger.info("Shutdown: complete")
 
 
 MAX_REQUEST_BODY_BYTES = 10 * 1024 * 1024  # 10MB
@@ -157,6 +214,22 @@ def create_app() -> FastAPI:
     @app.get("/health")
     @limiter.limit(GLOBAL_LIMIT)
     async def health(request: Request):
-        return {"status": "ok", "service": "db-admin"}
+        from api.health import run_health_check
+        from services.base import get_session
+        import os
+
+        # Resolve DB file path for disk check
+        db_url = settings.DATABASE_URL
+        if db_url.startswith("sqlite"):
+            db_path = os.path.dirname(db_url.replace("sqlite:///", ""))
+            if not db_path:
+                db_path = "."
+        else:
+            db_path = "."
+
+        status_code, payload = run_health_check(get_session, db_path)
+        if status_code != 200:
+            return JSONResponse(status_code=status_code, content=payload)
+        return payload
 
     return app

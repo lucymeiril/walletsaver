@@ -8,6 +8,9 @@ Usage:
 import argparse
 import sys
 import os
+import logging
+
+logger = logging.getLogger("scripts.create_admin")
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -21,12 +24,12 @@ def create_admin_user(email: str, password: str, nickname: str):
     try:
         existing = session.query(User).filter(User.email == email).first()
         if existing:
-            print(f"User {email} already exists (role={existing.role.value}). Updating to admin...")
+            logger.info("User %s already exists (role=%s). Updating to admin...", email, existing.role.value)
             existing.hashed_password = hash_password(password)
             existing.role = UserRole.ADMIN
             existing.is_active = True
             session.commit()
-            print(f"Updated: {email} → admin")
+            logger.info("Updated: %s → admin", email)
             return
 
         user = User(
@@ -38,7 +41,7 @@ def create_admin_user(email: str, password: str, nickname: str):
         )
         session.add(user)
         session.commit()
-        print(f"Created admin user: {email} (nickname={nickname})")
+        logger.info("Created admin user: %s (nickname=%s)", email, nickname)
     finally:
         session.close()
 
@@ -47,8 +50,8 @@ def generate_service_key():
     """Print a random service API key."""
     import secrets
     key = secrets.token_urlsafe(32)
-    print(f"\nGenerated service API key: {key}")
-    print(f"Add to SERVICE_API_KEYS env var as: {key}:service")
+    logger.info("Generated service API key: %s", key)
+    logger.info("Add to SERVICE_API_KEYS env var as: %s:service", key)
 
 
 if __name__ == "__main__":

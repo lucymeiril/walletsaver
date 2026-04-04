@@ -15,6 +15,10 @@ from datetime import datetime, timedelta
 
 from sqlalchemy.orm import Session
 
+import logging
+
+logger = logging.getLogger("seed")
+
 from storage.models import (
     Base, Category, Product, BaselinePrice, DiscountHistory,
     HotdealPrice, GasStation, Keyword,
@@ -314,34 +318,34 @@ def seed_all(engine=None, database_url: str | None = None) -> None:
     with SessionLocal() as session:
         existing = session.query(Product).count()
         if existing > 0:
-            print(f"이미 {existing}개 품목이 존재합니다. 시드 스킵.")
+            logger.info("이미 %d개 품목이 존재합니다. 시드 스킵.", existing)
             return
 
-        print("시드 데이터 투입 시작...")
+        logger.info("시드 데이터 투입 시작...")
 
         cat_count = _seed_categories(session)
-        print(f"  카테고리 {cat_count}개 등록")
+        logger.info("  카테고리 %d개 등록", cat_count)
 
         products = _seed_products(session)
-        print(f"  품목 {len(products)}개 등록")
+        logger.info("  품목 %d개 등록", len(products))
 
         price_count = _seed_baseline_prices(session, products)
-        print(f"  기준 가격 {price_count}건 등록")
+        logger.info("  기준 가격 %d건 등록", price_count)
 
         disc_count = _seed_discounts(session, products)
-        print(f"  할인 이력 {disc_count}건 등록")
+        logger.info("  할인 이력 %d건 등록", disc_count)
 
         hotdeal_count = _seed_hotdeal_prices(session, products)
-        print(f"  핫딜 가격 {hotdeal_count}건 등록")
+        logger.info("  핫딜 가격 %d건 등록", hotdeal_count)
 
         gas_count = _seed_gas_stations(session)
-        print(f"  주유소 {gas_count}개 등록")
+        logger.info("  주유소 %d개 등록", gas_count)
 
         kw_count = _seed_keywords(session)
-        print(f"  키워드 {kw_count}개 등록")
+        logger.info("  키워드 %d개 등록", kw_count)
 
         session.commit()
-        print("시드 데이터 투입 완료!")
+        logger.info("시드 데이터 투입 완료!")
 
 
 def _seed_categories(session: Session) -> int:

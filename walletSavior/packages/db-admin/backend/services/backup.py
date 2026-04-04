@@ -28,7 +28,22 @@ def backup_sqlite(db_path: str, *, reason: str = "manual") -> str:
     Create a hot backup of a SQLite database using the backup API.
     Returns the path to the backup file.
     """
+    from services.disk_monitor import require_disk_space, InsufficientDiskSpaceError
+
     _ensure_backup_dir()
+
+    # Pre-flight: require 2× the DB file size in free space
+    db_size_mb = os.path.getsize(db_path) / (1024 * 1024)
+    try:
+        require_disk_space(BACKUP_DIR, db_size_mb * 2)
+    except InsufficientDiskSpaceError:
+        logger.error(
+            "Backup aborted: insufficient disk space "
+            "(need %.1f MB, DB size: %.1f MB)",
+            db_size_mb * 2, db_size_mb,
+        )
+        raise
+
     ts = _timestamp()
     backup_name = f"walletguardian_{reason}_{ts}.db"
     backup_path = BACKUP_DIR / backup_name

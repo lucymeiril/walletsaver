@@ -1,5 +1,9 @@
 """DB 관리 백엔드 진입점"""
 import uvicorn
+from logging_config import setup_logging
+
+setup_logging()
+
 from api.app import create_app
 
 app = create_app()
