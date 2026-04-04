@@ -11,8 +11,15 @@
 import math
 from fastapi import APIRouter, Request, Query
 from api.schemas.common import ApiResponse, PaginationMeta
+from api.utils.cache import TTLCache, RequestDeduplicator
 
 router = APIRouter()
+
+# Autocomplete cache (10 min TTL)
+_autocomplete_cache = TTLCache(ttl_seconds=600, max_size=128)
+_autocomplete_dedup = RequestDeduplicator()
+# Trending cache (2 min TTL)
+_trending_cache = TTLCache(ttl_seconds=120, max_size=8)
 
 
 @router.get("")
@@ -133,8 +140,22 @@ async def autocomplete(
     if not q or not storage:
         return ApiResponse(data=empty)
 
-    result = storage.search_autocomplete(q, limit=limit)
-    return ApiResponse(data=result)
+    cache_key = f"ac:{q}:{limit}"
+    cached = _autocomplete_cache.get(cache_key)
+    if cached is not None:
+        return cached
+
+    async def _fetch():
+        return storage.search_autocomplete(q, limit=limit)
+
+    try:
+        result = await _autocomplete_dedup.deduplicate(cache_key, _fetch)
+    except Exception:
+        return ApiResponse(data=empty)
+
+    resp = ApiResponse(data=result)
+    _autocomplete_cache.set(cache_key, resp)
+    return resp
 
 
 @router.get("/trending")
@@ -146,8 +167,13 @@ async def trending(
     storage = request.app.state.storage
     if not storage:
         return ApiResponse(data=[])
+    cached = _trending_cache.get(f"trending:{limit}")
+    if cached is not None:
+        return cached
     keywords = storage.get_trending_keywords(limit)
-    return ApiResponse(data=keywords)
+    resp = ApiResponse(data=keywords)
+    _trending_cache.set(f"trending:{limit}", resp)
+    return resp
 
 
 @router.post("/track")

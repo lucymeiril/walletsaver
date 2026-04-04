@@ -10,10 +10,33 @@
 """
 
 import math
+import time
 from fastapi import APIRouter, Request, Query, HTTPException
 from api.schemas.common import ApiResponse, PaginationMeta
+from api.utils.cache import TTLCache
 
 router = APIRouter()
+
+# Listing cache (60s TTL)
+_listing_cache = TTLCache(ttl_seconds=60, max_size=32)
+
+# Simple per-IP rate limiter for vote/report (max 10 per minute)
+_rate_limit_store: dict[str, list[float]] = {}
+_RATE_LIMIT_WINDOW = 60
+_RATE_LIMIT_MAX = 10
+
+
+def _check_rate_limit(client_ip: str) -> bool:
+    """Returns True if request is allowed, False if rate-limited."""
+    now = time.time()
+    hits = _rate_limit_store.get(client_ip, [])
+    hits = [t for t in hits if now - t < _RATE_LIMIT_WINDOW]
+    if len(hits) >= _RATE_LIMIT_MAX:
+        _rate_limit_store[client_ip] = hits
+        return False
+    hits.append(now)
+    _rate_limit_store[client_ip] = hits
+    return True
 
 
 @router.get("")
@@ -30,7 +53,14 @@ async def list_hotdeals(
     if storage is None:
         return ApiResponse(data=[], meta=PaginationMeta(page=page, per_page=per_page, total=0, total_pages=0))
 
-    return ApiResponse(data=storage.get_hotdeals(category=category, source=source, sort=sort, page=page, per_page=per_page))
+    cache_key = f"hotdeals:{category}:{source}:{sort}:{page}:{per_page}"
+    cached = _listing_cache.get(cache_key)
+    if cached is not None:
+        return cached
+
+    resp = ApiResponse(data=storage.get_hotdeals(category=category, source=source, sort=sort, page=page, per_page=per_page))
+    _listing_cache.set(cache_key, resp)
+    return resp
 
 
 @router.get("/categories")
@@ -80,6 +110,10 @@ async def get_hotdeal(request: Request, hotdeal_id: int):
 @router.post("/{hotdeal_id}/vote")
 async def vote_hotdeal(request: Request, hotdeal_id: int):
     """핫딜 투표 (hot/not)."""
+    client_ip = request.client.host if request.client else "unknown"
+    if not _check_rate_limit(f"vote:{client_ip}"):
+        raise HTTPException(status_code=429, detail="Too many requests")
+
     body = await request.json()
     vote_type = body.get("vote_type", "hot")
 
@@ -97,6 +131,10 @@ async def vote_hotdeal(request: Request, hotdeal_id: int):
 @router.post("/{hotdeal_id}/report")
 async def report_hotdeal(request: Request, hotdeal_id: int):
     """핫딜 신고."""
+    client_ip = request.client.host if request.client else "unknown"
+    if not _check_rate_limit(f"report:{client_ip}"):
+        raise HTTPException(status_code=429, detail="Too many requests")
+
     body = await request.json()
     reason = body.get("reason", "")
 

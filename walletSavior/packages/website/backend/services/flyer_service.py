@@ -12,7 +12,12 @@ from datetime import datetime, timedelta
 from typing import Optional
 from urllib.parse import urljoin
 
+from api.utils.cache import CircuitBreaker
+
 logger = logging.getLogger(__name__)
+
+# Circuit breaker for external scraping (3 failures → open for 60s)
+_emart_circuit = CircuitBreaker(failure_threshold=3, recovery_timeout=60)
 
 # ── 이마트 전단지 URL ────────────────────────────────────────
 # http://emart.kr/Wl7I 의 최종 리다이렉트 목적지
@@ -71,10 +76,12 @@ def _weekday_kr(dt: datetime) -> str:
 async def _try_scrape_emart_flyer() -> list[dict]:
     """이마트 전단지 이미지 URL을 스크래핑한다.
 
-    eapp.emart.com 전단지 페이지는 서버 사이드 렌더링(SSR)으로,
-    <img data-src="..."> 태그에 모든 전단지 페이지 이미지가 포함되어 있다.
-    Playwright 없이 httpx만으로 충분하다.
+    Circuit breaker로 반복 실패 시 빠르게 차단한다.
     """
+    if not _emart_circuit.allow_request():
+        logger.info("Emart flyer circuit breaker OPEN — skipping scrape")
+        return []
+
     try:
         import httpx
 
@@ -98,14 +105,17 @@ async def _try_scrape_emart_flyer() -> list[dict]:
             images = _extract_emart_leaflet_images(resp.text)
             if images:
                 logger.info("Emart flyer: scraped %d page images", len(images))
+                _emart_circuit.record_success()
             else:
                 logger.warning("Emart flyer: no images found in HTML")
+                _emart_circuit.record_failure()
             return images
 
     except ImportError:
         logger.debug("httpx not installed — skipping Emart flyer scraping")
     except Exception as e:
         logger.warning("Emart flyer scrape failed: %s", e)
+        _emart_circuit.record_failure()
     return []
 
 

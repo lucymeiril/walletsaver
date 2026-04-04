@@ -21,8 +21,12 @@ from fastapi import APIRouter, Request, HTTPException, Depends, Query
 from api.schemas.common import ApiResponse, PaginationMeta
 from api.schemas.community import PostCreate, PostUpdate, CommentCreate, VoteRequest
 from api.middleware.auth import require_auth, get_current_user
+from api.utils.cache import TTLCache
 
 router = APIRouter()
+
+# TTL cache for post listings (30s)
+_posts_list_cache = TTLCache(ttl_seconds=30, max_size=64)
 
 # ── DB 연결 설정 ──
 _db_admin_path = os.path.normpath(os.path.join(
@@ -131,6 +135,11 @@ async def list_posts(
 ):
     """게시글 목록."""
     if _use_db and _SessionLocal:
+        cache_key = f"posts:{post_type}:{category}:{sort}:{page}:{per_page}"
+        cached = _posts_list_cache.get(cache_key)
+        if cached is not None:
+            return cached
+
         with _SessionLocal() as session:
             stmt = session.query(PostModel).filter(PostModel.is_deleted == False)
             if post_type:
@@ -156,13 +165,15 @@ async def list_posts(
             posts = stmt.offset(offset).limit(per_page).all()
             data = [_post_to_dict(p) for p in posts]
 
-            return ApiResponse(
+            resp = ApiResponse(
                 data=data,
                 meta=PaginationMeta(
                     page=page, per_page=per_page, total=total,
                     total_pages=math.ceil(total / per_page) if total > 0 else 0,
                 ),
             )
+            _posts_list_cache.set(cache_key, resp)
+            return resp
 
     # DB 미연결 시 빈 결과 반환
     return ApiResponse(
@@ -206,6 +217,7 @@ async def create_post(body: PostCreate, user: dict = Depends(get_current_user)):
                         session.add(img)
                 session.commit()
                 session.refresh(post)
+            _posts_list_cache.clear()
             data = _post_to_dict(post)
             return ApiResponse(data=data)
 
@@ -252,6 +264,7 @@ async def update_post(post_id: int, body: PostUpdate, user: dict = Depends(requi
             post.updated_at = datetime.utcnow()
             session.commit()
             session.refresh(post)
+            _posts_list_cache.clear()
             return ApiResponse(data=_post_to_dict(post))
 
     raise HTTPException(status_code=503, detail="DB 미연결")
@@ -269,6 +282,7 @@ async def delete_post(post_id: int, user: dict = Depends(require_auth)):
                 raise HTTPException(status_code=403, detail="삭제 권한이 없습니다")
             post.is_deleted = True
             session.commit()
+            _posts_list_cache.clear()
             return ApiResponse(data={"id": post_id, "status": "deleted"})
 
     raise HTTPException(status_code=503, detail="DB 미연결")

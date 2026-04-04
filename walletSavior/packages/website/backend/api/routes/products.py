@@ -13,8 +13,14 @@
 import math
 from fastapi import APIRouter, Request, HTTPException, Query
 from api.schemas.common import ApiResponse, PaginationMeta
+from api.utils.cache import TTLCache
 
 router = APIRouter()
+
+# TTL caches for expensive endpoints
+_category_summary_cache = TTLCache(ttl_seconds=120, max_size=32)
+_search_cache = TTLCache(ttl_seconds=60, max_size=64)
+_trending_cache = TTLCache(ttl_seconds=120, max_size=8)
 
 
 @router.get("")
@@ -60,11 +66,17 @@ async def search_products(
     """상품 검색 — DB에서 이름/카테고리에 검색어가 포함된 상품 조회."""
     storage = request.app.state.storage
     if storage is None:
-        # DB 미연결 시 빈 결과 반환
         return ApiResponse(data=[], meta=PaginationMeta(page=page, per_page=per_page, total=0, total_pages=0))
 
+    cache_key = f"search:{q}:{category}:{page}:{per_page}"
+    cached = _search_cache.get(cache_key)
+    if cached is not None:
+        return cached
+
     data = storage.search_products(q, category=category, page=page, per_page=per_page)
-    return ApiResponse(data=data)
+    resp = ApiResponse(data=data)
+    _search_cache.set(cache_key, resp)
+    return resp
 
 
 @router.get("/categories")
@@ -99,11 +111,17 @@ async def get_trending_keywords(request: Request):
     if storage is None:
         return ApiResponse(data=default_keywords)
 
+    cached = _trending_cache.get("trending")
+    if cached is not None:
+        return cached
+
     try:
         products = storage.search_products("")
         if products:
             keywords = [p["name"] for p in products[:8]]
-            return ApiResponse(data=keywords if keywords else default_keywords)
+            resp = ApiResponse(data=keywords if keywords else default_keywords)
+            _trending_cache.set("trending", resp)
+            return resp
     except Exception:
         pass
     return ApiResponse(data=default_keywords)
@@ -155,6 +173,11 @@ async def get_category_summary(
     if storage is None:
         return ApiResponse(data=_default_category_summary())
 
+    cache_key = f"cat_summary:{per_page}"
+    cached = _category_summary_cache.get(cache_key)
+    if cached is not None:
+        return cached
+
     try:
         all_products = storage.search_products("", per_page=500)
         items = []
@@ -205,7 +228,9 @@ async def get_category_summary(
             })
 
         summaries.sort(key=lambda x: x["count"], reverse=True)
-        return ApiResponse(data=summaries[:per_page])
+        resp = ApiResponse(data=summaries[:per_page])
+        _category_summary_cache.set(cache_key, resp)
+        return resp
 
     except Exception:
         return ApiResponse(data=_default_category_summary())

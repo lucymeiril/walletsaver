@@ -15,6 +15,7 @@ FastAPI 앱 팩토리 — container.py가 의존성을 주입하여 앱을 생�
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 
 
 def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
@@ -43,6 +44,9 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    # GZip compression for responses > 500 bytes
+    app.add_middleware(GZipMiddleware, minimum_size=500)
 
     # storage가 없으면 db-admin의 DBStorage로 자동 연결 시도
     if storage is None:
@@ -134,5 +138,60 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     def health():
         """헬스체크 — 로드밸런서·모니터링용."""
         return {"status": "ok", "version": "0.1.0"}
+
+    # ── Dashboard: 홈페이지 데이터 통합 (8 calls → 1) ──
+    from api.utils.cache import TTLCache as _TTLCache
+    _dashboard_cache = _TTLCache(ttl_seconds=60, max_size=4)
+
+    @app.get("/api/dashboard", tags=["Dashboard"])
+    async def dashboard(request: _Req):
+        """홈페이지 통합 데이터 — hotdeals, category-summary, trending, recent products를 한 번에 반환."""
+        cached = _dashboard_cache.get("dashboard")
+        if cached is not None:
+            return cached
+
+        s = request.app.state.storage
+        result = {
+            "hotdeals": [],
+            "category_summary": [],
+            "trending_keywords": [],
+            "recent_products": [],
+        }
+
+        if s is not None:
+            try:
+                result["hotdeals"] = s.get_hotdeals(sort="recent", per_page=10)
+            except Exception:
+                pass
+            try:
+                from api.routes.products import get_category_summary
+                summary_resp = await get_category_summary(request)
+                if hasattr(summary_resp, "data"):
+                    result["category_summary"] = summary_resp.data
+                elif isinstance(summary_resp, dict):
+                    result["category_summary"] = summary_resp.get("data", [])
+            except Exception:
+                pass
+            try:
+                from api.routes.products import get_trending_keywords
+                trend_resp = await get_trending_keywords(request)
+                if hasattr(trend_resp, "data"):
+                    result["trending_keywords"] = trend_resp.data
+                elif isinstance(trend_resp, dict):
+                    result["trending_keywords"] = trend_resp.get("data", [])
+            except Exception:
+                pass
+            try:
+                products = s.search_products("", per_page=10)
+                if isinstance(products, list):
+                    result["recent_products"] = products
+                elif isinstance(products, dict) and "items" in products:
+                    result["recent_products"] = products["items"][:10]
+            except Exception:
+                pass
+
+        resp = {"success": True, "data": result, "error": None}
+        _dashboard_cache.set("dashboard", resp)
+        return resp
 
     return app

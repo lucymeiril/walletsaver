@@ -25,10 +25,15 @@ from typing import Optional
 from fastapi import APIRouter, Query
 from fastapi.responses import StreamingResponse
 from api.schemas.common import ApiResponse
+from api.utils.cache import TTLCache, RequestDeduplicator
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+# Search result cache: same query+location within 5 min → cached
+_search_cache = TTLCache(ttl_seconds=300, max_size=128)
+_search_dedup = RequestDeduplicator()
 
 # ──────────────────────────────────────────────
 # 카테고리 트리 (area-explore에서 자동 분류에 사용)
@@ -155,7 +160,7 @@ class _BrowserPool:
 _pool = _BrowserPool(idle_timeout=300)
 
 # Playwright는 브라우저 인스턴스 생성 비용이 크므로 스레드 풀을 재사용
-_executor = ThreadPoolExecutor(max_workers=2)
+_executor = ThreadPoolExecutor(max_workers=4)
 
 # ──────────────────────────────────────────────
 # 캐시 (geocode + area-explore, TTL 5분)
@@ -315,20 +320,27 @@ async def naver_place_search(
     Windows asyncio 호환 문제를 스레드 풀 실행으로 해결하고,
     네이버의 봇 감지는 stealth 브라우저 설정으로 우회한다.
     """
-    loop = asyncio.get_event_loop()
-    try:
-        items = await loop.run_in_executor(
-            _executor,
-            _search_via_playwright_sync,
-            query, lat, lng, max_items,
+    # TTL cache + request deduplication
+    cache_key = f"naver:{query}:{lat:.4f}:{lng:.4f}:{max_items}"
+    cached = _search_cache.get(cache_key)
+    if cached is not None:
+        return cached
+
+    async def _do_search():
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(
+            _executor, _search_via_playwright_sync, query, lat, lng, max_items,
         )
+
+    try:
+        items = await _search_dedup.deduplicate(cache_key, _do_search)
         source = "playwright"
     except Exception as e:
         logger.error(f"[네이버 검색] 검색 실패: {e}")
         items = []
         source = "error"
 
-    return ApiResponse(
+    resp = ApiResponse(
         success=len(items) > 0,
         data={
             "items": items,
@@ -340,6 +352,9 @@ async def naver_place_search(
         },
         message=f"'{query}' 검색 결과 {len(items)}건" if items else "검색 결과 없음",
     )
+    if items:
+        _search_cache.set(cache_key, resp)
+    return resp
 
 
 @router.get("/subcategory-search")
