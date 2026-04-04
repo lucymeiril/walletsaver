@@ -778,41 +778,45 @@ CATEGORIES: list[dict] = [
 
 
 # ──────────────────────────────────────────────
-# 유틸리티 함수
+# 유틸리티 — 모듈 레벨 인덱스 (O(1) 조회)
 # ──────────────────────────────────────────────
 
-def _build_index() -> dict[str, dict]:
-    """ID → 카테고리 딕셔너리 인덱스."""
-    return {c["id"]: c for c in CATEGORIES}
+# 한 번만 빌드하여 모든 조회를 O(1)로 만든다
+_CATEGORY_INDEX: dict[str, dict] = {c["id"]: c for c in CATEGORIES}
+
+# parent_id → [children] 사전 매핑 (get_children/get_descendants O(1) 조회)
+_CHILDREN_INDEX: dict[str | None, list[dict]] = {}
+for _c in CATEGORIES:
+    _CHILDREN_INDEX.setdefault(_c["parent_id"], []).append(_c)
 
 
 def find_category(category_id: str) -> Optional[dict]:
     """ID 로 카테고리 검색. 없으면 None."""
-    idx = _build_index()
-    return idx.get(category_id)
+    return _CATEGORY_INDEX.get(category_id)
 
 
 def get_children(category_id: str) -> list[dict]:
-    """직접 자식 카테고리 목록."""
-    return [c for c in CATEGORIES if c["parent_id"] == category_id]
+    """직접 자식 카테고리 목록. 사전 인덱스로 O(1) 조회."""
+    return list(_CHILDREN_INDEX.get(category_id, []))
 
 
 def get_descendants(category_id: str) -> list[dict]:
-    """모든 하위 카테고리 (재귀)."""
-    children = get_children(category_id)
-    result = list(children)
-    for child in children:
-        result.extend(get_descendants(child["id"]))
+    """모든 하위 카테고리 (반복 방식 — 재귀 스택 제거)."""
+    result: list[dict] = []
+    stack = list(_CHILDREN_INDEX.get(category_id, []))
+    while stack:
+        child = stack.pop()
+        result.append(child)
+        stack.extend(_CHILDREN_INDEX.get(child["id"], []))
     return result
 
 
 def get_ancestors(category_id: str) -> list[dict]:
     """루트까지 상위 카테고리 목록 (가까운 순)."""
-    idx = _build_index()
     ancestors = []
-    current = idx.get(category_id)
+    current = _CATEGORY_INDEX.get(category_id)
     while current and current["parent_id"]:
-        parent = idx.get(current["parent_id"])
+        parent = _CATEGORY_INDEX.get(current["parent_id"])
         if parent:
             ancestors.append(parent)
         current = parent
@@ -820,13 +824,13 @@ def get_ancestors(category_id: str) -> list[dict]:
 
 
 def get_root_categories() -> list[dict]:
-    """최상위 카테고리 목록."""
-    return [c for c in CATEGORIES if c["parent_id"] is None]
+    """최상위 카테고리 목록. 사전 인덱스로 O(1) 조회."""
+    return list(_CHILDREN_INDEX.get(None, []))
 
 
 def get_all_ids() -> list[str]:
     """모든 카테고리 ID 목록."""
-    return [c["id"] for c in CATEGORIES]
+    return list(_CATEGORY_INDEX.keys())
 
 
 def get_category_tree() -> list[dict]:

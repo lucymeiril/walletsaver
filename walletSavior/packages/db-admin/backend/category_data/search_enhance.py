@@ -16,6 +16,18 @@ from .categories import CATEGORIES, find_category, get_descendants
 from .keywords import KEYWORDS, SYNONYMS, resolve_synonym
 
 
+# ── 사전 캐시: 활성 키워드 단어 목록 (반복 필터링 방지) ──
+_ACTIVE_KEYWORD_WORDS: list[str] | None = None
+
+
+def _get_active_words() -> list[str]:
+    """활성 키워드 단어 목록을 한 번만 빌드하여 캐시."""
+    global _ACTIVE_KEYWORD_WORDS
+    if _ACTIVE_KEYWORD_WORDS is None:
+        _ACTIVE_KEYWORD_WORDS = [kw["word"] for kw in KEYWORDS if kw["is_active"]]
+    return _ACTIVE_KEYWORD_WORDS
+
+
 # ──────────────────────────────────────────────
 # 한글 자모 상수
 # ──────────────────────────────────────────────
@@ -121,10 +133,10 @@ def chosung_search(query: str, candidates: Optional[list[str]] = None,
     """
     초성 검색. 예: "ㄱㄹ" → ["계란", "갈비", "귤", ...]
 
-    candidates 가 None 이면 KEYWORDS 의 word 를 사용.
+    candidates 가 None 이면 KEYWORDS 의 word 를 사용 (캐시됨).
     """
     if candidates is None:
-        candidates = [kw["word"] for kw in KEYWORDS if kw["is_active"]]
+        candidates = _get_active_words()
 
     query_chosung = query if _is_all_chosung(query) else extract_chosung(query)
 
@@ -176,14 +188,14 @@ def fuzzy_match(query: str, candidates: Optional[list[str]] = None,
 
     Args:
         query: 검색어
-        candidates: 후보 목록 (None 이면 KEYWORDS 사용)
+        candidates: 후보 목록 (None 이면 KEYWORDS 사용, 캐시됨)
         threshold: 최소 유사도 (0~1)
         limit: 결과 수 제한
 
     Returns: [(word, similarity), ...] 유사도 내림차순
     """
     if candidates is None:
-        candidates = [kw["word"] for kw in KEYWORDS if kw["is_active"]]
+        candidates = _get_active_words()
 
     query_decomposed = decompose_string(query)
     results = []

@@ -313,18 +313,42 @@ PRODUCT_MAPPINGS: list[dict] = [
 
 
 # ──────────────────────────────────────────────
+# 사전 인덱스 — 모듈 로드 시 한 번만 빌드 (선형 탐색 → O(1) 조회)
+# ──────────────────────────────────────────────
+
+# name → mapping dict (정확 일치)
+_MAPPING_BY_NAME: dict[str, dict] = {pm["name"]: pm for pm in PRODUCT_MAPPINGS}
+
+# alias → mapping dict (별칭 역매핑)
+_MAPPING_BY_ALIAS: dict[str, dict] = {}
+for _pm_entry in PRODUCT_MAPPINGS:
+    for _alias in _pm_entry.get("aliases", []):
+        if _alias not in _MAPPING_BY_ALIAS:
+            _MAPPING_BY_ALIAS[_alias] = _pm_entry
+
+# category_id → [mapping dicts] 역인덱스 (get_products_for_category 최적화)
+_MAPPINGS_BY_CATEGORY: dict[str, list[dict]] = {}
+for _pm_entry in PRODUCT_MAPPINGS:
+    for _cat_id in _pm_entry.get("categories", []):
+        _MAPPINGS_BY_CATEGORY.setdefault(_cat_id, []).append(_pm_entry)
+
+
+# ──────────────────────────────────────────────
 # 유틸리티 함수
 # ──────────────────────────────────────────────
 
 def get_categories_for_product(product_name: str) -> list[str]:
     """상품명으로 매핑된 카테고리 ID 목록 반환."""
+    # 1) 정확 이름 매칭 (O(1))
+    pm = _MAPPING_BY_NAME.get(product_name)
+    if pm:
+        return pm["categories"]
+    # 2) 별칭 매칭 (O(1))
+    pm = _MAPPING_BY_ALIAS.get(product_name)
+    if pm:
+        return pm["categories"]
+    # 3) 부분 매칭 (fallback — 선형 탐색)
     name_lower = product_name.lower()
-    for pm in PRODUCT_MAPPINGS:
-        if pm["name"] == product_name:
-            return pm["categories"]
-        if product_name in pm["aliases"]:
-            return pm["categories"]
-    # 부분 매칭
     for pm in PRODUCT_MAPPINGS:
         if name_lower in pm["name"].lower() or pm["name"].lower() in name_lower:
             return pm["categories"]
@@ -332,27 +356,27 @@ def get_categories_for_product(product_name: str) -> list[str]:
 
 
 def get_products_for_category(category_id: str) -> list[dict]:
-    """특정 카테고리에 매핑된 상품 목록 반환."""
-    return [pm for pm in PRODUCT_MAPPINGS if category_id in pm["categories"]]
+    """특정 카테고리에 매핑된 상품 목록 반환. 사전 인덱스로 O(1) 조회."""
+    return list(_MAPPINGS_BY_CATEGORY.get(category_id, []))
 
 
 def get_price_range(product_name: str) -> Optional[dict]:
-    """상품의 예상 가격 범위 반환."""
-    for pm in PRODUCT_MAPPINGS:
-        if pm["name"] == product_name or product_name in pm["aliases"]:
-            return {
-                "min_price": pm["min_price"],
-                "max_price": pm["max_price"],
-                "unit": pm["unit"],
-            }
+    """상품의 예상 가격 범위 반환. O(1) 인덱스 조회 우선."""
+    pm = _MAPPING_BY_NAME.get(product_name) or _MAPPING_BY_ALIAS.get(product_name)
+    if pm:
+        return {
+            "min_price": pm["min_price"],
+            "max_price": pm["max_price"],
+            "unit": pm["unit"],
+        }
     return None
 
 
 def get_unit(product_name: str) -> Optional[str]:
-    """상품의 표준 단위 반환."""
-    for pm in PRODUCT_MAPPINGS:
-        if pm["name"] == product_name or product_name in pm["aliases"]:
-            return pm["unit"]
+    """상품의 표준 단위 반환. O(1) 인덱스 조회 우선."""
+    pm = _MAPPING_BY_NAME.get(product_name) or _MAPPING_BY_ALIAS.get(product_name)
+    if pm:
+        return pm["unit"]
     return None
 
 

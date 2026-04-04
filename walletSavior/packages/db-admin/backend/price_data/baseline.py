@@ -7,6 +7,7 @@ price_calc.py가 DB 세션 기반이라면, 이 모듈은 순수 데이터(리�
 
 from __future__ import annotations
 
+import functools
 import math
 from collections import Counter
 from datetime import datetime, timedelta
@@ -91,14 +92,15 @@ def calculate_percentile(values: list[float], percentile: float) -> float:
 def full_statistics(prices: list[float]) -> dict:
     """
     가격 리스트의 종합 통계를 계산한다.
-
-    Returns: {
-        "count", "mean", "median", "mode", "std",
-        "min", "max", "q1", "q3", "iqr",
-        "p10", "p25", "p75", "p90",
-        "cv" (변동계수), "skewness"
-    }
+    LRU 캐시로 동일 입력에 대한 재계산을 방지한다.
     """
+    return _full_statistics_cached(tuple(prices))
+
+
+@functools.lru_cache(maxsize=512)
+def _full_statistics_cached(prices_tuple: tuple[float, ...]) -> dict:
+    """캐시 가능한 내부 통계 계산 함수."""
+    prices = list(prices_tuple)
     if not prices:
         return {
             "count": 0, "mean": 0, "median": 0, "mode": None, "std": 0,

@@ -44,7 +44,11 @@ def validate_keyword(word: str) -> tuple[bool, str]:
 
 
 def search_keywords(session: Session, query: str, limit: int = 10) -> list[dict]:
-    """접두어 매칭 + 동의어 검색"""
+    """접두어 매칭 + 동의어 검색.
+
+    동의어 검색은 DB의 모든 키워드를 로드하는 대신,
+    접두어 매칭 결과가 부족할 때만 수행하며 결과를 제한한다.
+    """
     if not query:
         return []
 
@@ -68,26 +72,31 @@ def search_keywords(session: Session, query: str, limit: int = 10) -> list[dict]
             "match_type": "prefix",
         })
 
-    # 동의어 검색 (JSON 배열에서 검색)
-    all_keywords = session.execute(
-        select(Keyword).where(Keyword.is_active == True)
-    ).scalars().all()
+    # 동의어 검색 — 접두어로 부족할 때만 (limit 미달 시)
+    remaining = limit - len(results)
+    if remaining > 0:
+        all_keywords = session.execute(
+            select(Keyword).where(Keyword.is_active == True)
+        ).scalars().all()
 
-    for kw in all_keywords:
-        if kw.id in seen_ids:
-            continue
-        synonyms = kw.synonyms or []
-        for syn in synonyms:
-            if isinstance(syn, str) and syn.startswith(query):
-                results.append({
-                    "id": kw.id,
-                    "word": kw.word,
-                    "search_count": kw.search_count,
-                    "category_id": kw.category_id,
-                    "match_type": "synonym",
-                    "matched_synonym": syn,
-                })
-                seen_ids.add(kw.id)
+        for kw in all_keywords:
+            if kw.id in seen_ids:
+                continue
+            synonyms = kw.synonyms or []
+            for syn in synonyms:
+                if isinstance(syn, str) and syn.startswith(query):
+                    results.append({
+                        "id": kw.id,
+                        "word": kw.word,
+                        "search_count": kw.search_count,
+                        "category_id": kw.category_id,
+                        "match_type": "synonym",
+                        "matched_synonym": syn,
+                    })
+                    seen_ids.add(kw.id)
+                    remaining -= 1
+                    break
+            if remaining <= 0:
                 break
 
     return results[:limit]

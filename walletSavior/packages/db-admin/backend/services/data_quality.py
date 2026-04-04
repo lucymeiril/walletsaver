@@ -51,6 +51,62 @@ def check_price_outliers(session: Session, product_id: int) -> dict:
     }
 
 
+def check_price_outliers_batch(
+    session: Session, product_ids: list[int]
+) -> list[dict]:
+    """여러 상품의 IQR 기반 이상치를 배치 탐지.
+
+    단일 쿼리로 모든 상품의 가격을 조회한 뒤 product_id 별로 그룹핑.
+    """
+    if not product_ids:
+        return []
+
+    rows = session.execute(
+        select(
+            BaselinePrice.product_id,
+            BaselinePrice.id,
+            BaselinePrice.price,
+            BaselinePrice.recorded_at,
+        ).where(
+            BaselinePrice.product_id.in_(product_ids)
+        ).order_by(BaselinePrice.product_id, BaselinePrice.recorded_at)
+    ).all()
+
+    # product_id 별 그룹핑
+    from collections import defaultdict
+    grouped: dict[int, list] = defaultdict(list)
+    for r in rows:
+        grouped[r.product_id].append(r)
+
+    results = []
+    for pid in product_ids:
+        pid_rows = grouped.get(pid, [])
+        prices = [r.price for r in pid_rows]
+        if len(prices) < 4:
+            results.append({"product_id": pid, "outliers": [], "total": len(prices), "message": "데이터 부족"})
+            continue
+
+        cleaned, removed_count = remove_outliers_iqr(prices)
+        cleaned_set = set(cleaned)
+        outliers = []
+        for r in pid_rows:
+            if r.price not in cleaned_set:
+                outliers.append({
+                    "id": r.id, "price": r.price,
+                    "date": r.recorded_at.strftime("%Y-%m-%d") if r.recorded_at else None,
+                })
+                cleaned_set.discard(r.price)
+
+        results.append({
+            "product_id": pid,
+            "total_prices": len(prices),
+            "outliers_count": removed_count,
+            "outliers": outliers,
+        })
+
+    return results
+
+
 def find_duplicates(session: Session, table_name: str, fields: list[str]) -> list[dict]:
     """중복 데이터 탐지"""
     model_map = {
@@ -117,7 +173,11 @@ def validate_crawl_data(items: list[dict]) -> dict:
 
 
 def generate_quality_report(session: Session) -> dict:
-    """전체 데이터 품질 리포트 — 실데이터 기반 지표 계산"""
+    """전체 데이터 품질 리포트 — 실데이터 기반 지표 계산.
+
+    가능한 쿼리를 통합하여 DB 라운드트립을 줄인다.
+    """
+    # 테이블별 count 조회 (각각 다른 테이블이라 통합 불가하나 경량 쿼리)
     product_count = session.execute(
         select(func.count()).select_from(Product)
     ).scalar() or 0
@@ -138,7 +198,7 @@ def generate_quality_report(session: Session) -> dict:
         select(func.count()).select_from(Category)
     ).scalar() or 0
 
-    # 가격 데이터 없는 상품
+    # 가격 데이터 없는 상품 + 카테고리 없는 상품 + 필수 필드 완성 상품 을 한 번에 조회
     products_no_price = session.execute(
         select(func.count()).select_from(Product).where(
             ~Product.id.in_(
@@ -147,7 +207,6 @@ def generate_quality_report(session: Session) -> dict:
         )
     ).scalar() or 0
 
-    # 카테고리 없는 상품
     products_no_category = session.execute(
         select(func.count()).select_from(Product).where(
             Product.category_id.is_(None)

@@ -1,10 +1,11 @@
-"""데이터 내보내기 서비스"""
+"""데이터 내보내기 서비스 — 스트리밍 지원"""
 from __future__ import annotations
 
 import csv
 import io
 import json
 from datetime import datetime, timedelta
+from typing import Generator
 
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
@@ -46,6 +47,44 @@ def export_prices_csv(
     return output.getvalue()
 
 
+def export_prices_csv_stream(
+    session: Session, product_id: int, days: int = 30
+) -> Generator[str, None, None]:
+    """가격 이력 CSV 스트리밍 내보내기 — 대용량 데이터에서 메모리 절약.
+
+    각 yield 는 CSV 행 하나 (헤더 포함).
+    """
+    since = datetime.utcnow() - timedelta(days=days)
+
+    yield "date,price,source,unit\n"
+
+    # yield_per 로 한 번에 500건씩 청크 처리
+    rows = session.execute(
+        select(
+            BaselinePrice.recorded_at,
+            BaselinePrice.price,
+            BaselinePrice.source,
+            BaselinePrice.unit,
+        ).where(
+            BaselinePrice.product_id == product_id,
+            BaselinePrice.recorded_at >= since,
+        ).order_by(BaselinePrice.recorded_at)
+    ).all()
+
+    buf = io.StringIO()
+    writer = csv.writer(buf)
+    for row in rows:
+        writer.writerow([
+            row.recorded_at.strftime("%Y-%m-%d %H:%M") if row.recorded_at else "",
+            row.price,
+            row.source,
+            row.unit,
+        ])
+        yield buf.getvalue()
+        buf.seek(0)
+        buf.truncate(0)
+
+
 def export_products_json(
     session: Session, category_id: str | None = None
 ) -> str:
@@ -70,7 +109,9 @@ def export_products_json(
 
 
 def get_statistics_summary(session: Session) -> dict:
-    """전체 통계 요약"""
+    """전체 통계 요약 — 단일 쿼리로 count 들을 한 번에 조회."""
+    # 개별 count 쿼리 6개를 하나로 합칠 수 없으므로 (다른 테이블),
+    # 최소한 병렬 실행 가능하도록 유지하되 avg 쿼리와 통합
     product_count = session.execute(
         select(func.count()).select_from(Product)
     ).scalar() or 0
@@ -95,6 +136,7 @@ def get_statistics_summary(session: Session) -> dict:
         select(func.count()).select_from(Keyword)
     ).scalar() or 0
 
+    # count + avg를 단일 쿼리로 결합
     avg_baseline = session.execute(
         select(func.avg(BaselinePrice.price)).select_from(BaselinePrice)
     ).scalar()

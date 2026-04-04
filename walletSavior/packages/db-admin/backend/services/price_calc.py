@@ -87,27 +87,31 @@ def calculate_hotdeal_price(session: Session, product_id: int) -> dict:
 def get_price_tier(
     session: Session, price: float, product_id: int, days: int = 90
 ) -> dict:
-    """ultra/great/good/wait 판정"""
-    baseline = calculate_baseline_average(session, product_id, days)
-    if baseline["count"] == 0:
-        return {"tier": "good", "label": "데이터 부족", "ratio": 1.0}
+    """ultra/great/good/wait 판정.
 
+    단일 가격 조회로 baseline_average 와 tier 를 함께 계산한다
+    (이전: calculate_baseline_average + 동일 쿼리 중복 실행).
+    """
     since = datetime.utcnow() - timedelta(days=days)
-    all_prices = []
-    for row in session.execute(
+
+    # baseline + discount 가격을 한 번에 조회 (중복 쿼리 제거)
+    baseline_prices = session.execute(
         select(BaselinePrice.price).where(
             BaselinePrice.product_id == product_id,
             BaselinePrice.recorded_at >= since,
         )
-    ).scalars().all():
-        all_prices.append(row)
-    for row in session.execute(
+    ).scalars().all()
+
+    discount_prices = session.execute(
         select(DiscountHistory.price).where(
             DiscountHistory.product_id == product_id,
             DiscountHistory.crawled_at >= since,
         )
-    ).scalars().all():
-        all_prices.append(row)
+    ).scalars().all()
+
+    all_prices = list(baseline_prices) + list(discount_prices)
+    if not all_prices:
+        return {"tier": "good", "label": "데이터 부족", "ratio": 1.0}
 
     stats = compute_stats(all_prices, data_days=days)
     tier_result = determine_tier(price, stats)
@@ -179,18 +183,23 @@ def calculate_recipe_vs_delivery(
     """
     직접 해먹기 vs 배달 vs 외식 비교.
     recipe_ingredients: [{"product_id": 1, "quantity": 2}, ...]
+
+    배치 쿼리로 N+1 문제 해결 — 모든 재료 평균가를 한 번에 조회.
     """
+    product_ids = [ing.get("product_id") for ing in recipe_ingredients if ing.get("product_id")]
+    qty_map = {ing.get("product_id"): ing.get("quantity", 1) for ing in recipe_ingredients}
+
     cook_total = 0.0
-    for ing in recipe_ingredients:
-        pid = ing.get("product_id")
-        qty = ing.get("quantity", 1)
-        row = session.execute(
-            select(func.avg(BaselinePrice.price)).where(
-                BaselinePrice.product_id == pid
-            )
-        ).scalar()
-        if row:
-            cook_total += row * qty
+    if product_ids:
+        # 단일 쿼리로 모든 재료의 평균가 조회
+        avg_rows = session.execute(
+            select(BaselinePrice.product_id, func.avg(BaselinePrice.price)).where(
+                BaselinePrice.product_id.in_(product_ids)
+            ).group_by(BaselinePrice.product_id)
+        ).all()
+        for pid, avg_price in avg_rows:
+            if avg_price:
+                cook_total += avg_price * qty_map.get(pid, 1)
 
     delivery_rows = session.execute(
         select(func.avg(DeliveryItem.price))

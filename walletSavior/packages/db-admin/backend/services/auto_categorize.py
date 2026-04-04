@@ -11,6 +11,7 @@
 
 from __future__ import annotations
 
+import functools
 import re
 from dataclasses import dataclass, field
 from typing import Optional
@@ -59,10 +60,24 @@ _KEYWORDS: list[dict] | None = None
 _PRODUCT_MAPPINGS: list[dict] | None = None
 _CATEGORY_MAP: dict[str, dict] | None = None
 
+# ── 사전 빌드 인덱스 (핫패스 최적화) ──
+# keyword word → category_id (O(1) 직접 매칭)
+_KW_WORD_TO_CAT: dict[str, str] | None = None
+# synonym → (category_id, keyword_word) (O(1) 동의어 매칭)
+_KW_SYN_TO_CAT: dict[str, tuple[str, str]] | None = None
+# mapping name → mapping dict (O(1))
+_MAPPING_BY_NAME: dict[str, dict] | None = None
+# mapping alias → mapping dict (O(1))
+_MAPPING_BY_ALIAS: dict[str, dict] | None = None
+# category name → list of (cat_id, depth) (카테고리명 매칭)
+_CATNAME_TO_IDS: dict[str, list[tuple[str, int]]] | None = None
+
 
 def _load_data():
-    """카테고리/키워드/매핑 데이터를 한 번만 로드."""
+    """카테고리/키워드/매핑 데이터를 한 번만 로드하고 인덱스를 빌드."""
     global _CATEGORIES, _KEYWORDS, _PRODUCT_MAPPINGS, _CATEGORY_MAP
+    global _KW_WORD_TO_CAT, _KW_SYN_TO_CAT
+    global _MAPPING_BY_NAME, _MAPPING_BY_ALIAS, _CATNAME_TO_IDS
     if _CATEGORIES is not None:
         return
     try:
@@ -73,11 +88,42 @@ def _load_data():
         _KEYWORDS = KEYWORDS
         _PRODUCT_MAPPINGS = PRODUCT_MAPPINGS
         _CATEGORY_MAP = {c["id"]: c for c in CATEGORIES}
+
+        # ── 인덱스 빌드: 선형 스캔을 O(1) 해시 조회로 대체 ──
+        _KW_WORD_TO_CAT = {}
+        _KW_SYN_TO_CAT = {}
+        for entry in KEYWORDS:
+            cat_id = entry.get("category_id")
+            if cat_id:
+                _KW_WORD_TO_CAT[entry["word"]] = cat_id
+                for syn in entry.get("synonyms", []):
+                    if syn not in _KW_SYN_TO_CAT:
+                        _KW_SYN_TO_CAT[syn] = (cat_id, entry["word"])
+
+        _MAPPING_BY_NAME = {pm["name"]: pm for pm in PRODUCT_MAPPINGS}
+        _MAPPING_BY_ALIAS = {}
+        for pm in PRODUCT_MAPPINGS:
+            for alias in pm.get("aliases", []):
+                if alias not in _MAPPING_BY_ALIAS:
+                    _MAPPING_BY_ALIAS[alias] = pm
+
+        _CATNAME_TO_IDS = {}
+        for cat in CATEGORIES:
+            name = cat["name"]
+            _CATNAME_TO_IDS.setdefault(name, []).append(
+                (cat["id"], cat.get("depth", 0))
+            )
+
     except ImportError:
         _CATEGORIES = []
         _KEYWORDS = []
         _PRODUCT_MAPPINGS = []
         _CATEGORY_MAP = {}
+        _KW_WORD_TO_CAT = {}
+        _KW_SYN_TO_CAT = {}
+        _MAPPING_BY_NAME = {}
+        _MAPPING_BY_ALIAS = {}
+        _CATNAME_TO_IDS = {}
 
 
 # ──────────────────────────────────────────────
@@ -166,6 +212,14 @@ _PROMO_STANDALONE_RE = re.compile(
     r"\b(특가|행사|인기|할인|무료배송|SALE|HOT)\b", re.IGNORECASE
 )
 
+# 이모지 제거 — 한 번만 컴파일 (per-call 컴파일 방지)
+_EMOJI_RE = re.compile(
+    r"[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF"
+    r"\U0001F680-\U0001F6FF\U0001F900-\U0001F9FF"
+    r"\U00002702-\U000027B0\U0000FE00-\U0000FE0F"
+    r"\U0001FA00-\U0001FA6F\U0001FA70-\U0001FAFF]+"
+)
+
 
 # ──────────────────────────────────────────────
 # Step 1: Remove noise
@@ -174,14 +228,8 @@ _PROMO_STANDALONE_RE = re.compile(
 def _remove_noise(name: str) -> str:
     """Remove emojis, stars, promotional bracket tags."""
     result = _NOISE_RE.sub("", name)
-    # Remove emoji unicode ranges
-    result = re.sub(
-        r"[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF"
-        r"\U0001F680-\U0001F6FF\U0001F900-\U0001F9FF"
-        r"\U00002702-\U000027B0\U0000FE00-\U0000FE0F"
-        r"\U0001FA00-\U0001FA6F\U0001FA70-\U0001FAFF]+",
-        "", result,
-    )
+    # Remove emoji unicode ranges (모듈 레벨 컴파일된 정규식 사용)
+    result = _EMOJI_RE.sub("", result)
     result = _PROMO_STANDALONE_RE.sub("", result)
     return result.strip()
 
@@ -211,12 +259,14 @@ def _extract_brackets(name: str) -> tuple[list[str], str]:
 
 
 # ──────────────────────────────────────────────
-# Step 3: Split separators
+# Step 3: Split separators (모듈 레벨 정규식)
 # ──────────────────────────────────────────────
+
+_SEPARATOR_RE = re.compile(r"[/·|+\s]+")
 
 def _split_separators(text: str) -> list[str]:
     """Split on /, ·, |, + and whitespace. Returns non-empty tokens."""
-    parts = re.split(r"[/·|+\s]+", text)
+    parts = _SEPARATOR_RE.split(text)
     return [p.strip() for p in parts if p.strip()]
 
 
@@ -273,14 +323,22 @@ def extract_attributes(name: str) -> dict:
     return attrs
 
 
+# 속성 토큰 판별용 정규식 (모듈 레벨 컴파일)
+_ATTR_WEIGHT_RE = re.compile(
+    r"^\d+(?:\.\d+)?\s*(?:g|kg|ml|l|리터|개|입|팩|봉|세트|T|매|장|병|캔|포)$",
+    re.IGNORECASE,
+)
+_ATTR_STORAGE_RE = re.compile(r"^(?:냉장|냉동|상온|실온|해동)$")
+_ATTR_NUMBER_RE = re.compile(r"^\d+(?:\.\d+)?$")
+
+
 def _is_attribute_token(token: str) -> bool:
     """Check if a token is purely an attribute (weight, count, etc.)."""
-    if re.match(r"^\d+(?:\.\d+)?\s*(?:g|kg|ml|l|리터|개|입|팩|봉|세트|T|매|장|병|캔|포)$",
-                token, re.IGNORECASE):
+    if _ATTR_WEIGHT_RE.match(token):
         return True
-    if re.match(r"^(?:냉장|냉동|상온|실온|해동)$", token):
+    if _ATTR_STORAGE_RE.match(token):
         return True
-    if re.match(r"^\d+(?:\.\d+)?$", token):
+    if _ATTR_NUMBER_RE.match(token):
         return True
     return False
 
@@ -289,21 +347,26 @@ def _is_attribute_token(token: str) -> bool:
 # Step 5: Brand filtering
 # ──────────────────────────────────────────────
 
+# 브랜드명 대소문자 무관 조회용 인덱스 (모듈 레벨에서 한 번 빌드)
+_BRAND_UPPER_MAP: dict[str, str] = {name.upper(): name for name in KNOWN_BRANDS}
+
+
 def _identify_brand(tokens: list[str]) -> tuple[Optional[str], list[str]]:
-    """Identify and remove brand from tokens. Returns (brand, remaining_tokens)."""
+    """Identify and remove brand from tokens. O(1) dict lookup."""
     brand_found: Optional[str] = None
     remaining: list[str] = []
 
     for token in tokens:
-        token_upper = token.upper()
-        matched = False
-        for brand_name in KNOWN_BRANDS:
-            if token == brand_name or token_upper == brand_name.upper():
-                brand_found = brand_name
-                matched = True
-                break
-        if not matched:
-            remaining.append(token)
+        if not brand_found:
+            # 정확 매칭 또는 대소문자 무관 매칭 — O(1)
+            if token in KNOWN_BRANDS:
+                brand_found = token
+                continue
+            upper_match = _BRAND_UPPER_MAP.get(token.upper())
+            if upper_match:
+                brand_found = upper_match
+                continue
+        remaining.append(token)
 
     return brand_found, remaining
 
@@ -311,6 +374,9 @@ def _identify_brand(tokens: list[str]) -> tuple[Optional[str], list[str]]:
 # ──────────────────────────────────────────────
 # Step 6: Extract pure product keywords
 # ──────────────────────────────────────────────
+
+_USAGE_SUFFIX_RE = re.compile(r"용$")
+
 
 def _extract_keywords(tokens: list[str]) -> list[str]:
     """Filter out attribute-only tokens, return pure product keywords."""
@@ -321,7 +387,7 @@ def _extract_keywords(tokens: list[str]) -> list[str]:
         if _is_attribute_token(token):
             continue
         # remove usage suffix (e.g., "수육용" → "수육" already captured in attributes)
-        cleaned = re.sub(r"용$", "", token)
+        cleaned = _USAGE_SUFFIX_RE.sub("", token)
         if cleaned and len(cleaned) >= 1:
             keywords.append(cleaned)
     return keywords
@@ -330,6 +396,12 @@ def _extract_keywords(tokens: list[str]) -> list[str]:
 # ──────────────────────────────────────────────
 # Full parsing pipeline
 # ──────────────────────────────────────────────
+
+# 브래킷 내 필터링 패턴 (모듈 레벨 컴파일)
+_SOURCE_TAG_RE = re.compile(r"^(GS25|이마트|롯데마트|홈플러스|코스트코|쿠팡|SSG)$")
+_BRACKET_ATTR_RE = re.compile(r"^(냉장|냉동|상온|실온|해동)$")
+_BRACKET_ORIGIN_RE = re.compile(r"^(제주직송|국산|수입|수입산)$")
+
 
 def parse_product_name(name: str) -> ParseResult:
     """6-step parsing pipeline for product names."""
@@ -359,13 +431,12 @@ def parse_product_name(name: str) -> ParseResult:
         # Also tokenize bracket info and add to pool
         bracket_tokens: list[str] = []
         for info in bracket_info:
-            # Skip source tags like GS25, 이마트, etc.
-            if re.match(r"^(GS25|이마트|롯데마트|홈플러스|코스트코|쿠팡|SSG)$", info):
+            # Skip source tags, attribute tags, origin tags (pre-compiled)
+            if _SOURCE_TAG_RE.match(info):
                 continue
-            # Skip pure attribute bracket info (already extracted)
-            if re.match(r"^(냉장|냉동|상온|실온|해동)$", info):
+            if _BRACKET_ATTR_RE.match(info):
                 continue
-            if re.match(r"^(제주직송|국산|수입|수입산)$", info):
+            if _BRACKET_ORIGIN_RE.match(info):
                 continue
             sub_tokens = _split_separators(info)
             bracket_tokens.extend(sub_tokens)
@@ -412,82 +483,130 @@ def parse_product_name(name: str) -> ParseResult:
 # ──────────────────────────────────────────────
 
 def match_category(keywords: list[str], source: str | None = None) -> list[CategoryMatch]:
-    """5-stage matching pipeline. Returns list of CategoryMatch candidates."""
+    """5-stage matching pipeline. Uses pre-built hash indices for O(1) lookups."""
     _load_data()
     matches: list[CategoryMatch] = []
 
     if not keywords:
         return matches
 
-    # Stage 1: Exact keyword match from KEYWORDS table
+    # Stage 1: Exact keyword match — O(1) dict lookup per keyword
     for kw in keywords:
-        for entry in _KEYWORDS or []:
-            if entry["word"] == kw and entry.get("category_id"):
-                matches.append(CategoryMatch(
-                    category_id=entry["category_id"],
-                    score=0.5,
-                    match_type="keyword_direct",
-                    matched_token=kw,
-                ))
+        cat_id = (_KW_WORD_TO_CAT or {}).get(kw)
+        if cat_id:
+            matches.append(CategoryMatch(
+                category_id=cat_id,
+                score=0.5,
+                match_type="keyword_direct",
+                matched_token=kw,
+            ))
 
-    # Stage 2: Synonym match
+    # Stage 2: Synonym match — O(1) exact + partial substring scan
     for kw in keywords:
+        # Exact synonym lookup (O(1))
+        syn_result = (_KW_SYN_TO_CAT or {}).get(kw)
+        if syn_result:
+            matches.append(CategoryMatch(
+                category_id=syn_result[0],
+                score=0.4,
+                match_type="synonym",
+                matched_token=kw,
+            ))
+            continue
+
+        # Partial synonym match (substring) — must scan, but only keywords with synonyms
         for entry in _KEYWORDS or []:
             if not entry.get("category_id"):
                 continue
             for syn in entry.get("synonyms", []):
-                if syn == kw or kw in syn or syn in kw:
-                    # Exact synonym match gets full score; partial gets less
-                    score = 0.4 if (syn == kw or kw == syn) else 0.3
+                if kw in syn or syn in kw:
                     matches.append(CategoryMatch(
                         category_id=entry["category_id"],
-                        score=score,
+                        score=0.3,
                         match_type="synonym",
                         matched_token=kw,
                     ))
-                    break  # one match per keyword per entry
+                    break
+            else:
+                continue
+            break
 
-    # Stage 3: Product mappings match
-    for mapping in _PRODUCT_MAPPINGS or []:
-        mapping_name = mapping["name"]
-        mapping_aliases = mapping.get("aliases", [])
-        mapping_cats = mapping.get("categories", [])
-
-        if not mapping_cats:
+    # Stage 3: Product mappings — O(1) name/alias + partial substring
+    seen_mapping_kws: set[tuple[str, str]] = set()
+    for kw in keywords:
+        # O(1) exact name match
+        pm = (_MAPPING_BY_NAME or {}).get(kw)
+        if pm:
+            for cat_id in pm.get("categories", []):
+                key = (kw, cat_id)
+                if key not in seen_mapping_kws:
+                    seen_mapping_kws.add(key)
+                    matches.append(CategoryMatch(
+                        category_id=cat_id, score=0.45,
+                        match_type="mapping", matched_token=kw,
+                    ))
             continue
 
-        for kw in keywords:
-            matched = False
-            if kw == mapping_name or mapping_name in kw or kw in mapping_name:
-                matched = True
-            else:
-                for alias in mapping_aliases:
-                    if kw == alias or alias in kw or kw in alias:
+        # O(1) exact alias match
+        pm = (_MAPPING_BY_ALIAS or {}).get(kw)
+        if pm:
+            for cat_id in pm.get("categories", []):
+                key = (kw, cat_id)
+                if key not in seen_mapping_kws:
+                    seen_mapping_kws.add(key)
+                    matches.append(CategoryMatch(
+                        category_id=cat_id, score=0.45,
+                        match_type="mapping", matched_token=kw,
+                    ))
+            continue
+
+        # Partial substring match (fallback)
+        for mapping in _PRODUCT_MAPPINGS or []:
+            mapping_name = mapping["name"]
+            mapping_cats = mapping.get("categories", [])
+            if not mapping_cats:
+                continue
+            matched = mapping_name in kw or kw in mapping_name
+            if not matched:
+                for alias in mapping.get("aliases", []):
+                    if alias in kw or kw in alias:
                         matched = True
                         break
-
             if matched:
                 for cat_id in mapping_cats:
-                    matches.append(CategoryMatch(
-                        category_id=cat_id,
-                        score=0.45,
-                        match_type="mapping",
-                        matched_token=kw,
-                    ))
+                    key = (kw, cat_id)
+                    if key not in seen_mapping_kws:
+                        seen_mapping_kws.add(key)
+                        matches.append(CategoryMatch(
+                            category_id=cat_id, score=0.45,
+                            match_type="mapping", matched_token=kw,
+                        ))
 
-    # Stage 4: Category name substring match
+    # Stage 4: Category name substring match — O(1) exact + partial
     for kw in keywords:
         if len(kw) < 2:
             continue
+        # Exact category name match (O(1))
+        exact_cats = (_CATNAME_TO_IDS or {}).get(kw)
+        if exact_cats:
+            for cat_id, depth in exact_cats:
+                matches.append(CategoryMatch(
+                    category_id=cat_id,
+                    score=0.3 + depth * 0.1,
+                    match_type="category_name",
+                    matched_token=kw,
+                ))
+        # Partial name substring (must scan)
         for cat in _CATEGORIES or []:
             cat_name = cat["name"]
             cat_id = cat["id"]
             depth = cat.get("depth", 0)
-            if kw == cat_name or (len(kw) >= 2 and kw in cat_name) or (len(cat_name) >= 2 and cat_name in kw):
-                score = 0.3 + depth * 0.1
+            if cat_name == kw:
+                continue  # already handled above
+            if (len(kw) >= 2 and kw in cat_name) or (len(cat_name) >= 2 and cat_name in kw):
                 matches.append(CategoryMatch(
                     category_id=cat_id,
-                    score=score,
+                    score=0.3 + depth * 0.1,
                     match_type="category_name",
                     matched_token=kw,
                 ))
@@ -552,44 +671,59 @@ def _aggregate_scores(
     candidates: list[CategoryMatch],
     keywords: list[str],
 ) -> dict[str, float]:
-    """Aggregate scores per category_id with multi-token bonus."""
-    scores: dict[str, float] = {}
-    cat_tokens: dict[str, set[str]] = {}
+    """Aggregate scores per category_id with multi-token bonus.
 
+    Uses a pre-grouped dict to find best score per (category, token) pair
+    in O(n) instead of O(n²).
+    """
+    # 1단계: (category_id, matched_token) 별 최대 점수를 한 번에 계산
+    best_per_pair: dict[tuple[str, str], float] = {}
     for c in candidates:
-        # Use max score per (category, token) pair to avoid double-counting
         key = (c.category_id, c.matched_token)
-        if c.category_id not in scores:
-            scores[c.category_id] = 0.0
-            cat_tokens[c.category_id] = set()
+        if key not in best_per_pair or c.score > best_per_pair[key]:
+            best_per_pair[key] = c.score
 
-        # Only add score for this token if it's new for this category
-        if c.matched_token not in cat_tokens[c.category_id]:
-            # Take the highest score for this category-token pair
-            best_score = max(
-                m.score for m in candidates
-                if m.category_id == c.category_id and m.matched_token == c.matched_token
-            )
-            scores[c.category_id] += best_score
-            cat_tokens[c.category_id].add(c.matched_token)
+    # 2단계: 카테고리별 점수 합산
+    scores: dict[str, float] = {}
+    cat_token_count: dict[str, int] = {}
+    for (cat_id, _token), best_score in best_per_pair.items():
+        scores[cat_id] = scores.get(cat_id, 0.0) + best_score
+        cat_token_count[cat_id] = cat_token_count.get(cat_id, 0) + 1
 
     # Multi-token bonus: +0.15 per additional token matching same category
-    for cat_id, tokens in cat_tokens.items():
-        token_count = len(tokens)
-        if token_count > 1:
-            scores[cat_id] += 0.15 * (token_count - 1)
+    for cat_id, count in cat_token_count.items():
+        if count > 1:
+            scores[cat_id] += 0.15 * (count - 1)
 
     return scores
 
 
 # ──────────────────────────────────────────────
-# Main entry point
+# Main entry point (LRU 캐시로 동일 상품명 재계산 방지)
 # ──────────────────────────────────────────────
+
+# 내부 캐시 함수 — hashable 인자만 받는다
+@functools.lru_cache(maxsize=2048)
+def _auto_categorize_cached(product_name: str, source: str | None) -> tuple:
+    """캐시 가능한 내부 분류 함수. 결과를 tuple로 반환."""
+    return _auto_categorize_impl(product_name, source)
+
 
 def auto_categorize(product_name: str, source: str | None = None) -> CategorizeResult:
     """Main auto-categorization entry point.
 
     NEVER raises exceptions. Always returns a CategorizeResult.
+    LRU 캐시로 동일 (product_name, source) 쌍의 재계산을 방지.
+    """
+    cached = _auto_categorize_cached(product_name, source)
+    # 캐시된 tuple → CategorizeResult 복원
+    return CategorizeResult(*cached)
+
+
+def _auto_categorize_impl(product_name: str, source: str | None) -> tuple:
+    """Internal implementation. Returns tuple matching CategorizeResult fields.
+
+    NEVER raises exceptions.
     """
     _empty_parse = ParseResult(
         original_name=product_name or "",
@@ -599,20 +733,11 @@ def auto_categorize(product_name: str, source: str | None = None) -> CategorizeR
         brand=None,
         bracket_info=[],
     )
-    _empty_result = CategorizeResult(
-        category_id=None,
-        confidence=0.0,
-        auto_assigned=False,
-        attributes={},
-        candidates=[],
-        parsed_keywords=[],
-        brand=None,
-        parse_result=_empty_parse,
-    )
+    _empty_tuple = (None, 0.0, False, {}, [], [], None, _empty_parse)
 
     try:
         if not product_name or not product_name.strip():
-            return _empty_result
+            return _empty_tuple
 
         # Phase 1: Parse
         parsed = parse_product_name(product_name)
@@ -653,21 +778,10 @@ def auto_categorize(product_name: str, source: str | None = None) -> CategorizeR
         # Phase 4: Aggregate scores
         scored = _aggregate_scores(candidates, extra_keywords)
 
-        # Source context food bonus (on top of stage 5 already applied in match_category)
-        # Already handled in match_category Stage 5
-
         # Phase 5: Select best
         if not scored:
-            return CategorizeResult(
-                category_id=None,
-                confidence=0.0,
-                auto_assigned=False,
-                attributes=parsed.attributes,
-                candidates=[],
-                parsed_keywords=parsed.keywords,
-                brand=parsed.brand,
-                parse_result=parsed,
-            )
+            return (None, 0.0, False, parsed.attributes, [],
+                    parsed.keywords, parsed.brand, parsed)
 
         # Prefer deeper (more specific) categories when scores are close
         sorted_cats = sorted(scored.items(), key=lambda x: (-x[1], -_get_depth(x[0])))
@@ -676,19 +790,19 @@ def auto_categorize(product_name: str, source: str | None = None) -> CategorizeR
 
         top_candidates = [(cat_id, min(s, 1.0)) for cat_id, s in sorted_cats[:5]]
 
-        return CategorizeResult(
-            category_id=best_cat if confidence >= 0.50 else None,
-            confidence=confidence,
-            auto_assigned=(confidence >= 0.85),
-            attributes=parsed.attributes,
-            candidates=top_candidates,
-            parsed_keywords=parsed.keywords,
-            brand=parsed.brand,
-            parse_result=parsed,
+        return (
+            best_cat if confidence >= 0.50 else None,
+            confidence,
+            confidence >= 0.85,
+            parsed.attributes,
+            top_candidates,
+            parsed.keywords,
+            parsed.brand,
+            parsed,
         )
 
     except Exception:
-        return _empty_result
+        return _empty_tuple
 
 
 def _get_depth(category_id: str) -> int:
