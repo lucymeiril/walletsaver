@@ -6,10 +6,17 @@
 
 import logging
 from datetime import datetime
-from pydantic import BaseModel
-from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel, Field
+from fastapi import APIRouter, HTTPException, Depends
+from starlette.requests import Request
 
 from services.base import get_session
+from api.auth import require_admin, require_moderator
+from services.audit import log_action
+from api.security import make_error, MAX_SOURCE_LEN
+from services.backup import create_backup, list_backups
+from api.middleware.rate_limit import limiter, DESTRUCTIVE_LIMIT, ADMIN_LIMIT
+from config import settings
 from storage.models import (
     Product, BaselinePrice, DiscountHistory, HotdealPrice,
     Category, Keyword, CrawlLog,
@@ -24,22 +31,23 @@ router = APIRouter(prefix="/admin", tags=["admin"])
 # ── Request 스키마 ──
 
 class ResetSourceRequest(BaseModel):
-    source: str
-    confirm: str
+    source: str = Field(..., min_length=1, max_length=MAX_SOURCE_LEN)
+    confirm: str = Field(..., min_length=1, max_length=100)
 
 
 class ResetProductsRequest(BaseModel):
-    confirm: str
+    confirm: str = Field(..., min_length=1, max_length=100)
 
 
 class ResetAllRequest(BaseModel):
-    confirm: str
+    confirm: str = Field(..., min_length=1, max_length=100)
 
 
 # ── GET /admin/data-summary ──
 
 @router.get("/data-summary")
-def data_summary():
+@limiter.limit(ADMIN_LIMIT)
+def data_summary(request: Request, identity: dict = Depends(require_moderator)):
     """소스별 상품·가격 건수를 반환한다."""
     session = get_session()
     try:
@@ -110,13 +118,21 @@ def data_summary():
 # ── POST /admin/reset-source ──
 
 @router.post("/reset-source")
-def reset_source(body: ResetSourceRequest):
+@limiter.limit(DESTRUCTIVE_LIMIT)
+def reset_source(request: Request, body: ResetSourceRequest, identity: dict = Depends(require_admin)):
     """특정 소스의 가격 데이터와 관련 상품을 삭제한다."""
     expected = f"DELETE_{body.source.upper()}"
     if body.confirm != expected:
+        raise HTTPException(status_code=400, detail="확인 문자열이 올바르지 않습니다.")
+
+    try:
+        backup_path = create_backup(settings.DATABASE_URL, reason="pre_reset_source")
+        logger.warning("Pre-reset backup created: %s", backup_path)
+    except Exception as e:
+        logger.error("Backup failed, aborting reset: %s", e)
         raise HTTPException(
-            status_code=400,
-            detail=f"확인 문자열이 올바르지 않습니다. '{expected}'를 입력하세요.",
+            status_code=500,
+            detail="백업 실패로 리셋이 중단되었습니다.",
         )
 
     session = get_session()
@@ -168,12 +184,20 @@ def reset_source(body: ResetSourceRequest):
 # ── POST /admin/reset-products ──
 
 @router.post("/reset-products")
-def reset_products(body: ResetProductsRequest):
+@limiter.limit(DESTRUCTIVE_LIMIT)
+def reset_products(request: Request, body: ResetProductsRequest, identity: dict = Depends(require_admin)):
     """모든 상품·가격 데이터를 삭제한다. 카테고리·키워드는 보존."""
     if body.confirm != "DELETE_ALL_PRODUCTS":
+        raise HTTPException(status_code=400, detail="확인 문자열이 올바르지 않습니다.")
+
+    try:
+        backup_path = create_backup(settings.DATABASE_URL, reason="pre_reset_products")
+        logger.warning("Pre-reset backup created: %s", backup_path)
+    except Exception as e:
+        logger.error("Backup failed, aborting reset: %s", e)
         raise HTTPException(
-            status_code=400,
-            detail="확인 문자열이 올바르지 않습니다. 'DELETE_ALL_PRODUCTS'를 입력하세요.",
+            status_code=500,
+            detail="백업 실패로 리셋이 중단되었습니다.",
         )
 
     session = get_session()
@@ -221,12 +245,20 @@ def reset_products(body: ResetProductsRequest):
 # ── POST /admin/reset-all ──
 
 @router.post("/reset-all")
-def reset_all(body: ResetAllRequest):
+@limiter.limit(DESTRUCTIVE_LIMIT)
+def reset_all(request: Request, body: ResetAllRequest, identity: dict = Depends(require_admin)):
     """모든 데이터를 삭제하고 시드 데이터(카테고리·키워드)만 남긴다."""
     if body.confirm != "RESET_ALL_DATA":
+        raise HTTPException(status_code=400, detail="확인 문자열이 올바르지 않습니다.")
+
+    try:
+        backup_path = create_backup(settings.DATABASE_URL, reason="pre_reset_all")
+        logger.warning("Pre-reset backup created: %s", backup_path)
+    except Exception as e:
+        logger.error("Backup failed, aborting reset: %s", e)
         raise HTTPException(
-            status_code=400,
-            detail="확인 문자열이 올바르지 않습니다. 'RESET_ALL_DATA'를 입력하세요.",
+            status_code=500,
+            detail="백업 실패로 리셋이 중단되었습니다.",
         )
 
     session = get_session()
@@ -270,3 +302,20 @@ def reset_all(body: ResetAllRequest):
         raise
     finally:
         session.close()
+
+
+# ── Backup Management ──
+
+@router.post("/backup")
+@limiter.limit(ADMIN_LIMIT)
+def create_manual_backup(request: Request, identity: dict = Depends(require_admin)):
+    """Create an on-demand database backup."""
+    backup_path = create_backup(settings.DATABASE_URL, reason="manual")
+    return {"status": "ok", "backup": backup_path}
+
+
+@router.get("/backups")
+@limiter.limit(ADMIN_LIMIT)
+def get_backups(request: Request, identity: dict = Depends(require_moderator)):
+    """List all available backups."""
+    return {"backups": list_backups()}

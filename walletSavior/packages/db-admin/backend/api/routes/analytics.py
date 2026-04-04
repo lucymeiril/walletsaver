@@ -19,6 +19,8 @@ from services.export import (
     export_products_json,
     get_statistics_summary,
 )
+from api.middleware.rate_limit import limiter, EXPORT_LIMIT
+from starlette.requests import Request as StarletteRequest
 from storage.models import (
     Product, BaselinePrice, DiscountHistory, HotdealPrice,
     Category, CrawlLog, CrawlStatus,
@@ -83,7 +85,8 @@ def cleanup(days: int = 180):
 
 
 @router.get("/export/prices/{product_id}")
-def export_prices(product_id: int, days: int = 30):
+@limiter.limit(EXPORT_LIMIT)
+def export_prices(request: StarletteRequest, product_id: int, days: int = 30):
     session = get_session()
     try:
         csv_data = export_prices_csv(session, product_id, days)
@@ -93,7 +96,8 @@ def export_prices(product_id: int, days: int = 30):
 
 
 @router.get("/export/products")
-def export_products(category_id: Optional[str] = None):
+@limiter.limit(EXPORT_LIMIT)
+def export_products(request: StarletteRequest, category_id: Optional[str] = None):
     session = get_session()
     try:
         json_data = export_products_json(session, category_id)

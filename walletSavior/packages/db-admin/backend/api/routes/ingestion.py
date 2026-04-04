@@ -9,6 +9,8 @@ from pydantic import BaseModel
 from sqlalchemy import func, select
 
 from services.base import get_session
+from api.middleware.rate_limit import limiter, INGESTION_LIMIT
+from starlette.requests import Request as StarletteRequest
 from storage.models import (
     PendingIngestion,
     IngestionStatus,
@@ -236,7 +238,8 @@ def cleanup_ingestions(body: CleanupRequest):
 
 
 @router.post("")
-def submit_ingestion(body: IngestionSubmit):
+@limiter.limit(INGESTION_LIMIT)
+def submit_ingestion(request: StarletteRequest, body: IngestionSubmit):
     """크롤러가 데이터를 대기열에 제출."""
     session = get_session()
     try:

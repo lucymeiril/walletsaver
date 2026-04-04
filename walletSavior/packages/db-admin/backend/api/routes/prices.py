@@ -16,6 +16,8 @@ from sqlalchemy import select, func, and_
 from services.base import get_session
 from services.price_calc import calculate_baseline_average, get_price_history
 from services.export import get_statistics_summary
+from api.middleware.rate_limit import limiter, EXPORT_LIMIT
+from starlette.requests import Request as StarletteRequest
 from storage.models import BaselinePrice, DiscountHistory, Product, Category
 
 router = APIRouter(prefix="/prices", tags=["prices"])
@@ -494,7 +496,9 @@ def price_history_list(
 # ── CSV 내보내기 ──
 
 @router.get("/export")
+@limiter.limit(EXPORT_LIMIT)
 def export_csv(
+    request: StarletteRequest,
     source: Optional[str] = None,
     product_id: Optional[int] = None,
     date_from: Optional[str] = None,
