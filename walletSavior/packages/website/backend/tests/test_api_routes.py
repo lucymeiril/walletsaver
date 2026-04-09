@@ -444,7 +444,9 @@ class TestSearch:
         resp = client.get("/api/search/autocomplete?q=삼")
         body = resp.json()
         assert body["success"] is True
-        assert isinstance(body["data"], list)
+        assert isinstance(body["data"], dict)
+        assert "keywords" in body["data"]
+        assert "products" in body["data"]
 
     def test_autocomplete_empty(self, client):
         resp = client.get("/api/search/autocomplete?q=")

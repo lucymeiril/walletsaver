@@ -41,12 +41,23 @@ export default function PricePage() {
   const [detailOpen, setDetailOpen] = useState(false);
   const getSignal = useAbortController();
 
+  const [listLoading, setListLoading] = useState(true);
+  const [listError, setListError] = useState(null);
+
   // Fetch all products for search
   useEffect(() => {
     const signal = getSignal();
+    setListLoading(true);
+    setListError(null);
     fetch('/api/products/search?per_page=50', { signal }).then(r => r.json())
       .then(res => setProducts(res.data || []))
-      .catch(err => { if (err.name !== 'AbortError') console.error(err); });
+      .catch(err => {
+        if (err.name !== 'AbortError') {
+          console.error(err);
+          setListError(err);
+        }
+      })
+      .finally(() => setListLoading(false));
   }, [getSignal]);
 
   // Fetch product detail by ID
@@ -272,6 +283,16 @@ export default function PricePage() {
           <h2>물가 비교</h2>
           <p>정부 공식 + 마트 전단 기반 — 진짜 적정 가격을 확인하세요</p>
         </div>
+        {listLoading && (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem 0' }}><Spinner /></div>
+        )}
+        {listError && !listLoading && (
+          <EmptyState
+            icon={Search}
+            title="상품 목록을 불러오지 못했습니다"
+            description="잠시 후 다시 시도해주세요."
+          />
+        )}
         <div className={s.searchSection}>
           <div className={s.searchWrap}>
             <Search size={18} className={s.searchIcon} />

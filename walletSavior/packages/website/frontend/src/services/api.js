@@ -167,11 +167,14 @@ class ApiClient {
     const dedupKey = `${method}:${fullPath}`;
 
     // Dedup identical in-flight GET requests
-    if (_inflight.has(dedupKey)) return _inflight.get(dedupKey);
+    if (!_inflight.has(dedupKey)) {
+      const promise = this.request(fullPath, options)
+        .finally(() => _inflight.delete(dedupKey));
+      _inflight.set(dedupKey, promise);
+    }
 
-    const promise = this.request(fullPath, options).finally(() => _inflight.delete(dedupKey));
-    _inflight.set(dedupKey, promise);
-    return promise;
+    const res = await _inflight.get(dedupKey);
+    return res.clone();
   }
 
   async post(path, data, options = {}) {

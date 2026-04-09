@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Search, ShoppingBag, Zap, Users, MapPin } from 'lucide-react';
 import { searchService } from '../../services/searchService';
 import useStore from '../../stores/appStore';
+import useModalStore from '../../stores/modalStore';
 import Tabs from '../../components/common/Tabs';
 import Spinner from '../../components/common/Spinner';
 import EmptyState from '../../components/common/EmptyState';
@@ -45,6 +46,7 @@ export default function SearchPage() {
   const [meta, setMeta] = useState(null);
 
   const addRecentSearch = useStore((st) => st.addRecentSearch);
+  const { openMartModal, openProductModal } = useModalStore();
 
   const fetchResults = useCallback(async () => {
     if (!query) return;
@@ -89,10 +91,10 @@ export default function SearchPage() {
   };
 
   const handleItemClick = (item) => {
-    if (item.type === 'product') navigate(`/price/${item.id}`);
+    if (item.type === 'product') openProductModal(item);
+    else if (item.type === 'mart') openMartModal(item);
     else if (item.type === 'hotdeal') navigate('/hotdeal');
     else if (item.type === 'post') navigate('/community');
-    else if (item.type === 'mart') navigate('/mart');
   };
 
   const categorized = {};

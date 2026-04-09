@@ -155,17 +155,13 @@ async def autocomplete(
     except Exception:
         return ApiResponse(data=[])
 
-    # Flatten dict result into list for frontend autocomplete
-    suggestions = []
+    # Return structured dict for frontend (keywords + products sections)
     if isinstance(result, dict):
-        for kw in result.get("keywords", []):
-            suggestions.append(kw if isinstance(kw, dict) else {"type": "keyword", "text": kw})
-        for prod in result.get("products", []):
-            suggestions.append(prod if isinstance(prod, dict) else {"type": "product", "text": prod})
+        resp = ApiResponse(data=result)
     elif isinstance(result, list):
-        suggestions = result
-
-    resp = ApiResponse(data=suggestions)
+        resp = ApiResponse(data=result)
+    else:
+        resp = ApiResponse(data=[])
     _autocomplete_cache.set(cache_key, resp)
     return resp
 

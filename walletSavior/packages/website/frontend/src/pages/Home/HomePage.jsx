@@ -353,6 +353,14 @@ export default function HomePage() {
                 value={query}
                 onChange={(e) => { setQuery(e.target.value); setAcOpen(true); fetchAutocomplete(e.target.value); }}
                 onFocus={() => setAcOpen(true)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && query.trim()) {
+                    e.preventDefault();
+                    addRecentSearch(query.trim());
+                    setAcOpen(false);
+                    navigate(`/search?q=${encodeURIComponent(query.trim())}`);
+                  }
+                }}
                 placeholder="무엇을 찾으시나요?"
                 autoComplete="off"
                 aria-label="상품 검색"
