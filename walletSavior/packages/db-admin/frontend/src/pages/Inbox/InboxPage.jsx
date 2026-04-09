@@ -30,6 +30,10 @@ export default function InboxPage() {
   const [bulkChecked, setBulkChecked] = useState(new Set());
   // 품질 점수 breakdown 팝오버
   const [qualityPopover, setQualityPopover] = useState(null);
+  // 카드 레벨 빠른 거부
+  const [quickRejectId, setQuickRejectId] = useState(null);
+
+  const REJECT_PRESETS = ['중복', '잘못된 데이터', '카테고리 불일치', '가격 이상'];
 
   const PER_PAGE = 20;
   const AUTO_REFRESH_MS = 30_000;
@@ -73,6 +77,7 @@ export default function InboxPage() {
     setDetailItem(null);
     setMemo('');
     fetchIngestionStats();
+    loadPage(currentPage);
   };
 
   const handlePartialApprove = async (id) => {
@@ -83,6 +88,7 @@ export default function InboxPage() {
     setCheckedItems(new Set());
     setMemo('');
     fetchIngestionStats();
+    loadPage(currentPage);
   };
 
   const handleReject = async (id) => {
@@ -92,6 +98,14 @@ export default function InboxPage() {
     setRejectReason('');
     setShowReject(false);
     fetchIngestionStats();
+    loadPage(currentPage);
+  };
+
+  const handleQuickReject = async (id, reason) => {
+    await reviewIngestion(id, { action: 'reject', notes: reason, rejected_reason: reason });
+    setQuickRejectId(null);
+    fetchIngestionStats();
+    loadPage(currentPage);
   };
 
   const handleBulkApprove = async () => {
@@ -280,6 +294,13 @@ export default function InboxPage() {
                           품질 {qualityScore}점
                         </span>
                         {crawlerMemo && <span className={styles.memoIcon} title={crawlerMemo}>📝</span>}
+                        <button
+                          className={styles.quickRejectToggle}
+                          onClick={(e) => { e.stopPropagation(); setQuickRejectId(quickRejectId === item.id ? null : item.id); }}
+                          title="빠른 거부"
+                        >
+                          <XCircle size={14} />
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -321,6 +342,22 @@ export default function InboxPage() {
                         <span className={styles.legendItem}><span className={styles.legendDotYellow} /> ≥70 보통</span>
                         <span className={styles.legendItem}><span className={styles.legendDotRed} /> &lt;70 낮음</span>
                       </div>
+                    </div>
+                  )}
+                  {/* 빠른 거부 프리셋 버튼 */}
+                  {quickRejectId === item.id && (
+                    <div className={styles.quickRejectBar} onClick={(e) => e.stopPropagation()}>
+                      <span className={styles.quickRejectLabel}>거부 사유:</span>
+                      {REJECT_PRESETS.map((reason) => (
+                        <button
+                          key={reason}
+                          className={styles.quickRejectBtn}
+                          onClick={() => handleQuickReject(item.id, reason)}
+                        >
+                          {reason}
+                        </button>
+                      ))}
+                      <button className={styles.quickRejectCancel} onClick={() => setQuickRejectId(null)}>취소</button>
                     </div>
                   )}
                 </div>
@@ -556,6 +593,17 @@ export default function InboxPage() {
                 </button>
                 {showReject ? (
                   <div className={styles.rejectForm}>
+                    <div className={styles.rejectPresets}>
+                      {REJECT_PRESETS.map((reason) => (
+                        <button
+                          key={reason}
+                          className={styles.quickRejectBtn}
+                          onClick={() => setRejectReason(reason)}
+                        >
+                          {reason}
+                        </button>
+                      ))}
+                    </div>
                     <input
                       className={styles.rejectInput}
                       placeholder="거부 사유..."

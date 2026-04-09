@@ -155,9 +155,9 @@ def _calculate_quality(items: list[dict], schema_type: str) -> tuple[float, dict
 
     dup_ratio = dup_count / len(items)
 
-    # 점수 계산
+    # 점수 계산 (0-100 스케일)
     score = 1.0 - (missing_ratio * 0.4) - (outlier_ratio * 0.3) - (dup_ratio * 0.3)
-    score = max(0.0, min(1.0, round(score, 3)))
+    score = max(0, min(100, round(score * 100, 1)))
 
     details = {
         "total_items": len(items),

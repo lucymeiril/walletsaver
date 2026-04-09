@@ -536,7 +536,7 @@ const useDbAdminStore = create((set, get) => ({
       if (data) {
         set({
           ingestionStats: {
-            pending: data.pending ?? data.total_pending ?? 0,
+            pending: data.total_crawler_approved ?? data.crawler_approved ?? data.pending ?? data.total_pending ?? 0,
             approved: data.approved ?? data.total_approved ?? 0,
             rejected: data.rejected ?? data.total_rejected ?? 0,
           },

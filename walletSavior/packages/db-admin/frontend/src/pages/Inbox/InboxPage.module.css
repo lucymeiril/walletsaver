@@ -204,6 +204,60 @@
   cursor: help;
 }
 
+.quickRejectToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  background: rgba(248, 113, 113, 0.1);
+  color: var(--red);
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.quickRejectToggle:hover { background: rgba(248, 113, 113, 0.25); }
+
+.quickRejectBar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.quickRejectLabel {
+  font-size: var(--fs-xs);
+  color: var(--text3);
+  font-weight: var(--fw-medium);
+}
+
+.quickRejectBtn {
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  background: rgba(248, 113, 113, 0.12);
+  color: var(--red);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.quickRejectBtn:hover { background: rgba(248, 113, 113, 0.3); border-color: var(--red); }
+
+.quickRejectCancel {
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: var(--fs-xs);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text3);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+.quickRejectCancel:hover { color: var(--text); }
+
 .crawlerMemoPreview {
   margin-top: 8px;
   padding-top: 8px;
@@ -622,6 +676,15 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-wrap: wrap;
+}
+
+.rejectPresets {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-bottom: 4px;
 }
 
 .rejectInput {
