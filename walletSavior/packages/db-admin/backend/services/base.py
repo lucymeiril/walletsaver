@@ -13,7 +13,7 @@ from contextlib import contextmanager
 
 from sqlalchemy import create_engine, event, text
 from sqlalchemy.orm import sessionmaker, scoped_session, Session
-from sqlalchemy.pool import StaticPool
+from sqlalchemy.pool import StaticPool, NullPool
 
 from storage.models import Base
 
@@ -30,7 +30,7 @@ def get_engine(url: str | None = None):
     싱글턴 SQLAlchemy 엔진을 반환한다.
 
     첫 호출에서 엔진을 생성하고 이후 호출에서는 동일 인스턴스를 반환.
-    SQLite: StaticPool + WAL 모드 + busy_timeout 5초
+    SQLite: NullPool + WAL 모드 + busy_timeout 5초
     PostgreSQL: QueuePool + pool_size/max_overflow/pool_recycle
     """
     global _engine
@@ -47,7 +47,10 @@ def get_engine(url: str | None = None):
 
     if is_sqlite:
         connect_args["check_same_thread"] = False
-        pool_kwargs["poolclass"] = StaticPool
+        # In-memory SQLite must share one connection (StaticPool);
+        # file-based SQLite needs per-request connections (NullPool) for thread safety.
+        is_memory = url in ("sqlite://", "sqlite:///:memory:")
+        pool_kwargs["poolclass"] = StaticPool if is_memory else NullPool
     else:
         from config import settings
         pool_kwargs.update(

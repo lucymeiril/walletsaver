@@ -7,7 +7,11 @@ from datetime import datetime, timedelta
 from sqlalchemy import func, desc, asc, distinct, case, or_
 from sqlalchemy.orm import Session
 
+import logging
+
 from services.base import get_session, managed_session
+
+logger = logging.getLogger(__name__)
 from api.auth import require_viewer, require_moderator, require_admin
 from services.audit import log_action
 from services.price_calc import (
@@ -67,44 +71,73 @@ class BulkCategoryRequest(BaseModel):
 
 def _enrich_product(session: Session, p: Product) -> dict:
     """상품에 최신 가격 정보를 추가하여 반환."""
-    latest = (
-        session.query(DiscountHistory)
-        .filter(DiscountHistory.product_id == p.id)
-        .order_by(desc(DiscountHistory.crawled_at))
-        .first()
-    )
-    # distinct()를 column wrapper가 아닌 query modifier로 사용
-    # (cyextension resultproxy가 UnaryExpression 언팩 시 tuple index error 발생 방지)
-    sources = (
-        session.query(DiscountHistory.source)
-        .filter(DiscountHistory.product_id == p.id)
-        .distinct()
-        .all()
-    )
-    cat_name = ""
-    if p.category_id and p.category:
-        cat_name = p.category.name
+    try:
+        latest = (
+            session.query(DiscountHistory)
+            .filter(DiscountHistory.product_id == p.id)
+            .order_by(desc(DiscountHistory.crawled_at))
+            .first()
+        )
+        # distinct()를 column wrapper가 아닌 query modifier로 사용
+        # (cyextension resultproxy가 UnaryExpression 언팩 시 tuple index error 발생 방지)
+        sources = (
+            session.query(DiscountHistory.source)
+            .filter(DiscountHistory.product_id == p.id)
+            .distinct()
+            .all()
+        )
+        cat_name = ""
+        if p.category_id and p.category:
+            cat_name = p.category.name
 
-    return {
-        "id": p.id,
-        "name": p.name,
-        "category_id": p.category_id,
-        "category_name": cat_name,
-        "unit": p.unit,
-        "description": p.description,
-        "image_url": p.image_url,
-        "is_active": p.is_active,
-        "created_at": p.created_at.isoformat() if p.created_at else None,
-        "updated_at": p.updated_at.isoformat() if p.updated_at else None,
-        "current_price": latest.price if latest else None,
-        "original_price": latest.original_price if latest else None,
-        "discount_rate": latest.discount_rate if latest else None,
-        "source": latest.source if latest else None,
-        "sources": [s[0] for s in sources],
-        "valid_from": latest.valid_from.isoformat() if latest and latest.valid_from else None,
-        "valid_to": latest.valid_to.isoformat() if latest and latest.valid_to else None,
-        "crawled_at": latest.crawled_at.isoformat() if latest and latest.crawled_at else None,
-    }
+        return {
+            "id": p.id,
+            "name": p.name,
+            "category_id": p.category_id,
+            "category_name": cat_name,
+            "unit": p.unit,
+            "description": p.description,
+            "image_url": p.image_url,
+            "is_active": p.is_active,
+            "created_at": p.created_at.isoformat() if p.created_at else None,
+            "updated_at": p.updated_at.isoformat() if p.updated_at else None,
+            "current_price": latest.price if latest else None,
+            "original_price": latest.original_price if latest else None,
+            "discount_rate": latest.discount_rate if latest else None,
+            "source": latest.source if latest else None,
+            "sources": [s[0] for s in sources],
+            "valid_from": latest.valid_from.isoformat() if latest and latest.valid_from else None,
+            "valid_to": latest.valid_to.isoformat() if latest and latest.valid_to else None,
+            "crawled_at": latest.crawled_at.isoformat() if latest and latest.crawled_at else None,
+        }
+    except Exception as e:
+        logger.warning("_enrich_product failed for product %d: %s", p.id, str(e)[:200])
+        cat_name = ""
+        if p.category_id and p.category:
+            try:
+                cat_name = p.category.name
+            except Exception:
+                pass
+        return {
+            "id": p.id,
+            "name": p.name,
+            "category_id": p.category_id,
+            "category_name": cat_name,
+            "unit": p.unit,
+            "description": getattr(p, "description", None),
+            "image_url": getattr(p, "image_url", None),
+            "is_active": getattr(p, "is_active", None),
+            "created_at": p.created_at.isoformat() if getattr(p, "created_at", None) else None,
+            "updated_at": p.updated_at.isoformat() if getattr(p, "updated_at", None) else None,
+            "current_price": None,
+            "original_price": None,
+            "discount_rate": None,
+            "source": None,
+            "sources": [],
+            "valid_from": None,
+            "valid_to": None,
+            "crawled_at": None,
+        }
 
 
 @router.get("/stats")

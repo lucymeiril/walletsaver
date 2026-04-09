@@ -24,7 +24,7 @@ class Settings:
     ]
 
     # ── Connection Pool 설정 ──
-    # pool_size: 동시 유지할 연결 수 (SQLite는 StaticPool 사용으로 무시됨)
+    # pool_size: 동시 유지할 연결 수 (SQLite는 NullPool 사용으로 무시됨)
     # max_overflow: pool_size 초과 시 허용할 추가 연결 수
     # pool_timeout: 풀에서 연결 대기 최대 초 (초과 시 TimeoutError)
     # pool_recycle: 연결 재활용 주기 (초) — MySQL/PG의 wait_timeout 대비

@@ -66,7 +66,7 @@ class DBStorage(StorageContract):
             connect_args["check_same_thread"] = False
 
         # ── Connection Pool 설정 ──
-        # SQLite: 단일 파일 DB이므로 StaticPool(기본), pool 옵션 불필요
+        # SQLite: 단일 파일 DB이므로 QueuePool(기본), pool 옵션 불필요
         # PostgreSQL: pool_size/max_overflow로 커넥션 재사용, pool_recycle로 stale 방지
         pool_kwargs: dict[str, Any] = {}
         if not is_sqlite:
