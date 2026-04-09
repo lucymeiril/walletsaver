@@ -18,6 +18,7 @@ from storage.models import (
     PendingIngestion,
     IngestionStatus,
     BaselinePrice,
+    Category,
     DiscountHistory,
     HotdealPrice,
     Product,
@@ -851,6 +852,18 @@ def _ensure_product(session, name: str, crawler_source: str | None = None) -> in
             parsed_kw = getattr(result, "parsed_keywords", [])
             parsed_attrs = getattr(result, "attributes", {})
 
+            # FK 제약 조건 위반 방지: 카테고리 존재 여부 확인
+            if cat_id is not None:
+                cat_exists = session.execute(
+                    select(Category.id).where(Category.id == cat_id)
+                ).scalar_one_or_none()
+                if cat_exists is None:
+                    logger.warning(
+                        "_ensure_product: category_id=%s does not exist for product '%s', skipping categorization",
+                        cat_id, name,
+                    )
+                    cat_id = None
+
             new_product.categorization_confidence = confidence
 
             if confidence >= 0.85 and cat_id:
@@ -884,8 +897,11 @@ def _ensure_product(session, name: str, crawler_source: str | None = None) -> in
                         status="pending",
                     )
                     session.add(pending)
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(
+            "_ensure_product: auto-categorization failed for '%s': %s — %s",
+            name, type(e).__name__, str(e)[:200],
+        )
 
     return new_product.id
 
