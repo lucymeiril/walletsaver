@@ -333,12 +333,17 @@ class TestInputValidation:
     def test_cleanup_request_rejects_invalid_status(self):
         from api.security.input_schemas import CleanupRequest
         with pytest.raises(Exception):
-            CleanupRequest(status="drop_all_tables")
+            CleanupRequest(status=["drop_all_tables"])
 
     def test_cleanup_request_accepts_valid(self):
         from api.security.input_schemas import CleanupRequest
-        m = CleanupRequest(status="processed", older_than_days=30)
-        assert m.status == "processed"
+        m = CleanupRequest(status=["processed"], older_than_days=30)
+        assert m.status == ["processed"]
+
+    def test_cleanup_request_accepts_approved_rejected(self):
+        from api.security.input_schemas import CleanupRequest
+        m = CleanupRequest(status=["approved", "rejected"])
+        assert m.status == ["approved", "rejected"]
 
     def test_url_rejects_too_long(self):
         from api.security.input_schemas import CrawlerSettingsUpdate

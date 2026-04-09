@@ -29,10 +29,18 @@ const FRESHNESS_CLASS = { fresh: 'Fresh', stale: 'Stale', expired: 'Expired', un
 const FRESHNESS_LABEL = { fresh: '최신', stale: '주의', expired: '만료', unknown: '없음' };
 const DAYS_OPTIONS = [7, 14, 30];
 
+function parseAsUTC(iso) {
+  if (!iso) return null;
+  if (!iso.endsWith('Z') && !iso.includes('+') && !/[-+]\d{2}:\d{2}$/.test(iso)) {
+    return new Date(iso + 'Z');
+  }
+  return new Date(iso);
+}
+
 function formatTime(iso) {
   if (!iso) return '-';
   try {
-    const d = new Date(iso);
+    const d = parseAsUTC(iso);
     return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
   } catch { return iso; }
 }
@@ -73,7 +81,7 @@ export default function Dashboard() {
   const crawlerCards = stats.crawlerCards || [];
   const freshness = stats.freshness || [];
 
-  if (loading && !stats.totalCrawlers) {
+  if (loading) {
     return (
       <div className={styles.page}>
         <h1 className={styles.pageTitle}>대시보드</h1>

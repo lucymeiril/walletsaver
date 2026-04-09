@@ -99,3 +99,14 @@ async def cleanup_ingestions(body: CleanupRequest):
         f"{DB_ADMIN_URL}/cleanup",
         json=body.model_dump(exclude_none=True),
     )
+
+
+@router.delete("/{ingestion_id}")
+async def delete_ingestion(ingestion_id: int, request: Request):
+    """개별 대기열 항목 삭제 — DB 관리 API 프록시."""
+    audit_log(
+        AuditEventType.DATA_INGESTION,
+        request=request,
+        detail={"ingestion_id": ingestion_id, "action": "delete"},
+    )
+    return await _proxy("delete", f"{DB_ADMIN_URL}/{ingestion_id}")

@@ -128,5 +128,17 @@ class BulkRunRequest(BaseModel):
 class CleanupRequest(BaseModel):
     """Validated cleanup request for ingestion endpoint."""
 
-    status: str = Field(..., pattern=r"^(processed|failed|expired)$")
+    status: list[str] = Field(...)
     older_than_days: Optional[int] = Field(None, ge=1, le=365)
+    confirm: Optional[bool] = None
+
+    @field_validator("status")
+    @classmethod
+    def validate_status(cls, v: list[str]) -> list[str]:
+        allowed = {"processed", "failed", "expired", "approved", "rejected"}
+        for s in v:
+            if s not in allowed:
+                raise ValueError(
+                    f"Invalid status: {s}. Allowed: {', '.join(sorted(allowed))}"
+                )
+        return v

@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import time
 from collections import Counter, defaultdict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 from fastapi import APIRouter, Query
@@ -57,7 +57,10 @@ def _parse_dt(value: str) -> datetime | None:
     if not value:
         return None
     try:
-        return datetime.fromisoformat(value)
+        dt = datetime.fromisoformat(value)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
     except (ValueError, TypeError):
         return None
 
@@ -83,7 +86,7 @@ async def get_dashboard_stats(days: int = Query(7, ge=1, le=90)):
 
     tracker = _get_tracker()
     history = tracker.get_history(limit=500)
-    now = datetime.now()
+    now = datetime.now(timezone.utc)
     today = now.date()
 
     # --- 상태 분포 (전체 실행 기록 기준) ---

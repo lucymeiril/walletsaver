@@ -324,6 +324,20 @@ const useAdminStore = create((set, get) => ({
     }
   },
 
+  deleteIngestion: async (id) => {
+    set({ ingestionsLoading: true, ingestionsError: null });
+    try {
+      const result = await api.deleteIngestion(id);
+      await get().fetchIngestions();
+      return result;
+    } catch (err) {
+      set({ ingestionsError: toUserMessage(err, '항목 삭제에 실패했습니다.') });
+      return null;
+    } finally {
+      set({ ingestionsLoading: false });
+    }
+  },
+
   setIngestionFilter: (filter) => set({ ingestionFilter: filter }),
 
   // Plugins

@@ -226,7 +226,7 @@ export default function Logs() {
                     {log.result?.quality_score != null && (
                       <div className={styles.detailItem}>
                         <div className={styles.detailLabel}>품질 점수</div>
-                        <div className={styles.detailValue}>{log.result.quality_score}</div>
+                        <div className={styles.detailValue}>{log.result.quality_score > 0 && log.result.quality_score <= 1 ? Math.round(log.result.quality_score * 100) : log.result.quality_score}점</div>
                       </div>
                     )}
                   </div>

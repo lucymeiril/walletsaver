@@ -243,4 +243,7 @@ export const api = {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   }).then(r => r.json()),
+  deleteIngestion: (id) => fetchWithTimeout(`${API_BASE}/ingestions/${id}`, {
+    method: 'DELETE',
+  }).then(r => r.json()),
 };

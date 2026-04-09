@@ -8,7 +8,7 @@ import json
 import logging
 import os
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, List, Optional
 
@@ -91,7 +91,7 @@ def _append_run_history(crawler_id: str, status: str, duration: float | None = N
     runs.append({
         "status": status,
         "duration": duration,
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
     })
     history[crawler_id] = runs[-MAX_RECENT_RUNS:]
     _save_run_history(history)
@@ -305,7 +305,7 @@ async def bulk_run_crawlers(request: Request, body: BulkRunRequest):
         _crawl_results[cid] = {
             "crawler_id": cid,
             "status": "running",
-            "started_at": datetime.now().isoformat(),
+            "started_at": datetime.now(timezone.utc).isoformat(),
             "items_found": 0,
             "items_valid": 0,
             "items_saved": 0,
@@ -342,7 +342,7 @@ async def run_crawler(crawler_id: str, request: Request):
     _crawl_results[crawler_id] = {
         "crawler_id": crawler_id,
         "status": "running",
-        "started_at": datetime.now().isoformat(),
+        "started_at": datetime.now(timezone.utc).isoformat(),
         "items_found": 0,
         "items_valid": 0,
         "items_saved": 0,
@@ -379,7 +379,7 @@ async def _run_and_store(crawler_id: str, pipeline: CrawlPipeline):
             "items_saved": result.items_saved,
             "duration": result.duration,
             "errors": result.errors,
-            "finished_at": datetime.now().isoformat(),
+            "finished_at": datetime.now(timezone.utc).isoformat(),
         }
         _append_run_history(crawler_id, result.status, result.duration)
         logger.info(
@@ -401,7 +401,7 @@ async def _run_and_store(crawler_id: str, pipeline: CrawlPipeline):
             "crawler_id": crawler_id,
             "status": "failed",
             "error": "Crawler execution failed",
-            "finished_at": datetime.now().isoformat(),
+            "finished_at": datetime.now(timezone.utc).isoformat(),
             "errors": ["internal error"],
         }
         _append_run_history(crawler_id, "failed")

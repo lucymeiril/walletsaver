@@ -29,10 +29,18 @@ const isOutlierValue = (key, val) => {
 
 const FIELD_STATUS_ICON = { ok: '✅', warn: '⚠️', missing: '❌' };
 
+function parseAsUTC(dateStr) {
+  if (!dateStr) return NaN;
+  if (!dateStr.endsWith('Z') && !dateStr.includes('+') && !/[-+]\d{2}:\d{2}$/.test(dateStr)) {
+    return new Date(dateStr + 'Z').getTime();
+  }
+  return new Date(dateStr).getTime();
+}
+
 function getRelativeTime(dateStr) {
   if (!dateStr) return null;
   const now = Date.now();
-  const then = new Date(dateStr).getTime();
+  const then = parseAsUTC(dateStr);
   if (isNaN(then)) return null;
   const diffMs = now - then;
   const diffMin = Math.floor(diffMs / 60000);
@@ -46,7 +54,7 @@ function getRelativeTime(dateStr) {
 
 function getFreshnessTier(dateStr) {
   if (!dateStr) return { color: 'gray', emoji: '⚪' };
-  const diffHr = (Date.now() - new Date(dateStr).getTime()) / 3600000;
+  const diffHr = (Date.now() - parseAsUTC(dateStr)) / 3600000;
   if (diffHr < 24) return { color: 'green', emoji: '🟢' };
   if (diffHr < 72) return { color: 'yellow', emoji: '🟡' };
   if (diffHr < 168) return { color: 'orange', emoji: '🟠' };
@@ -78,6 +86,7 @@ export default function DataReviewPage() {
   const fetchIngestions = useAdminStore((s) => s.fetchIngestions);
   const reviewIngestion = useAdminStore((s) => s.reviewIngestion);
   const cleanupIngestions = useAdminStore((s) => s.cleanupIngestions);
+  const deleteIngestion = useAdminStore((s) => s.deleteIngestion);
   const loading = useAdminStore((s) => s.ingestionsLoading);
   const error = useAdminStore((s) => s.ingestionsError);
 
@@ -218,6 +227,12 @@ export default function DataReviewPage() {
     }
   }, [cleanupIngestions]);
 
+  const handleDeleteItem = useCallback(async (id) => {
+    if (!window.confirm('이 항목을 삭제하시겠습니까?')) return;
+    await deleteIngestion(id);
+    if (expandedId === id) setExpandedId(null);
+  }, [deleteIngestion, expandedId]);
+
   const getQualityColor = (score) => {
     if (score >= 90) return styles.qualityHigh;
     if (score >= 70) return styles.qualityMid;
@@ -230,14 +245,16 @@ export default function DataReviewPage() {
     return '';
   };
 
+  const normalizeScore = (s) => s > 0 && s <= 1 ? Math.round(s * 100) : s;
+
   const getQualityBreakdown = (item, detail) => {
     const bd = detail?.quality_breakdown || item.quality_breakdown || {};
     const parts = [];
-    if (bd.completeness != null) parts.push({ label: '완전성', score: bd.completeness });
-    if (bd.accuracy != null) parts.push({ label: '정확성', score: bd.accuracy });
-    if (bd.consistency != null) parts.push({ label: '일관성', score: bd.consistency });
-    if (bd.freshness != null) parts.push({ label: '신선도', score: bd.freshness });
-    if (bd.uniqueness != null) parts.push({ label: '고유성', score: bd.uniqueness });
+    if (bd.completeness != null) parts.push({ label: '완전성', score: normalizeScore(bd.completeness) });
+    if (bd.accuracy != null) parts.push({ label: '정확성', score: normalizeScore(bd.accuracy) });
+    if (bd.consistency != null) parts.push({ label: '일관성', score: normalizeScore(bd.consistency) });
+    if (bd.freshness != null) parts.push({ label: '신선도', score: normalizeScore(bd.freshness) });
+    if (bd.uniqueness != null) parts.push({ label: '고유성', score: normalizeScore(bd.uniqueness) });
     if (parts.length === 0) {
       if (item.missingFields != null) parts.push({ label: '누락 필드', value: `${item.missingFields}개`, raw: true });
       if (item.duplicates != null) parts.push({ label: '중복 항목', value: `${item.duplicates}건`, raw: true });
@@ -483,7 +500,8 @@ export default function DataReviewPage() {
               const isExpanded = expandedId === item.id;
               const detail = detailCache[item.id];
               const items = detail?.items || item.items || item.data || [];
-              const qualityScore = detail?.quality_score ?? item.qualityScore ?? item.quality_score ?? 0;
+              const rawQuality = detail?.quality_score ?? item.qualityScore ?? item.quality_score ?? 0;
+              const qualityScore = rawQuality > 0 && rawQuality <= 1 ? Math.round(rawQuality * 100) : rawQuality;
               const schemaType = item.schemaType ?? item.schema_type ?? 'Unknown';
               const allKeys = items.length > 0 ? Object.keys(items[0]) : [];
               const qualityBreakdown = getQualityBreakdown(item, detail);
@@ -655,7 +673,6 @@ export default function DataReviewPage() {
                         </div>
                       )}
 
-                      {/* Actions */}
                       {item.status === 'pending' && (
                         <div className={styles.actions}>
                           <button className={styles.approveBtn} onClick={() => handleApprove(item.id)}>
@@ -695,6 +712,15 @@ export default function DataReviewPage() {
                               <MessageSquare size={16} /> 메모 추가
                             </button>
                           )}
+                        </div>
+                      )}
+
+                      {/* 개별 삭제 버튼 (처리 완료 항목) */}
+                      {item.status !== 'pending' && (
+                        <div className={styles.actions}>
+                          <button className={styles.rejectBtn} onClick={() => handleDeleteItem(item.id)} disabled={loading}>
+                            <Trash2 size={16} /> 삭제
+                          </button>
                         </div>
                       )}
 
