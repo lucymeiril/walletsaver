@@ -96,6 +96,14 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     app.state.limiter = limiter
     app.add_exception_handler(RateLimitExceeded, _rate_limit_handler)
 
+    # ── Error Logging (outermost — catches everything) ──
+    from error_middleware import ErrorLoggingMiddleware
+    app.add_middleware(ErrorLoggingMiddleware, server_name="website")
+
+    # ── Error Log API ──
+    from error_api import router as error_router
+    app.include_router(error_router)
+
     # ── 미들웨어 (LIFO: 마지막 추가 = 먼저 실행) ──
 
     # 1. CORS — 프론트엔드 개발 서버 허용

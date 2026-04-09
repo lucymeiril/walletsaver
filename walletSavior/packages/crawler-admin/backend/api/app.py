@@ -85,6 +85,14 @@ def create_app() -> FastAPI:
             },
         )
 
+    # ── Error Logging (outermost — catches everything) ──
+    from error_middleware import ErrorLoggingMiddleware
+    app.add_middleware(ErrorLoggingMiddleware, server_name="crawler-admin")
+
+    # ── Error Log API ──
+    from error_api import router as error_router
+    app.include_router(error_router)
+
     # ── Routers ──────────────────────────────────────────────
 
     from api.routes.crawlers import router as crawlers_router

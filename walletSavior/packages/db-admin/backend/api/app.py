@@ -142,6 +142,10 @@ def create_app() -> FastAPI:
         allow_headers=["Content-Type", "Authorization", "X-API-Key"],
     )
 
+    # ── Error Logging (outermost — catches everything) ──
+    from error_middleware import ErrorLoggingMiddleware
+    app.add_middleware(ErrorLoggingMiddleware, server_name="db-admin")
+
     from api.routes.products import router as products_router
     from api.routes.prices import router as prices_router
     from api.routes.categories import router as categories_router
@@ -154,6 +158,10 @@ def create_app() -> FastAPI:
 
     # Payload size limit
     app.add_middleware(RequestSizeLimitMiddleware)
+
+    # ── Error Log API ──
+    from error_api import router as error_router
+    app.include_router(error_router)
 
     # /api 접두어 — 프론트엔드 client.js가 /api/products 등으로 호출
     app.include_router(products_router, prefix="/api")
