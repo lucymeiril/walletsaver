@@ -3,7 +3,7 @@
 from datetime import datetime, timedelta
 
 from fastapi import APIRouter, Depends
-from sqlalchemy import select, func, case, or_
+from sqlalchemy import select, func, case, or_, literal
 
 from services.base import get_session
 from api.auth import require_viewer
@@ -183,12 +183,14 @@ def dashboard_stats(identity: dict = Depends(require_viewer)):
         )
         fill_rate = (products_with_any_price / max(total_products, 1)) * 100
 
+        # Python 3.13 sqlite3에서 HAVING 절의 파라미터 바인딩 버그 회피:
+        # count(*) > ? 대신 count(*) > 1 리터럴 사용
         dup_count = (
             session.execute(
                 select(func.count()).select_from(
                     select(Product.name)
                     .group_by(Product.name)
-                    .having(func.count() > 1)
+                    .having(func.count() > literal(1))
                     .subquery()
                 )
             ).scalar()

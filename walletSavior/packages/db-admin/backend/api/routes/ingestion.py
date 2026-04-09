@@ -1,6 +1,7 @@
 """대기열(Pending Ingestion) API — 크롤 결과 수신, 검토, 승인/거부"""
 
 import json
+import logging
 from datetime import datetime, timedelta
 from typing import Optional
 
@@ -32,6 +33,8 @@ from api.security import (
 
 router = APIRouter(prefix="/api/ingestions", tags=["ingestions"])
 
+
+logger = logging.getLogger(__name__)
 
 # --- Request 모델 ---
 
@@ -890,7 +893,7 @@ def _ensure_product(session, name: str, crawler_source: str | None = None) -> in
 def _insert_items(session, items: list[dict], schema_type: str) -> int:
     """승인된 항목을 최종 DB 테이블에 삽입."""
     saved = 0
-    for item in items:
+    for idx, item in enumerate(items):
         try:
             if schema_type == "HotdealPost":
                 product_name = item.get("title", "")
@@ -945,7 +948,14 @@ def _insert_items(session, items: list[dict], schema_type: str) -> int:
                         },
                     )
             session.add(row)
+            # 개별 flush로 어느 항목에서 오류가 발생하는지 추적 가능
+            session.flush()
             saved += 1
-        except Exception:
+        except Exception as e:
+            logger.warning(
+                "[_insert_items] 항목 %d 삽입 실패 (schema=%s): %s — %s",
+                idx, schema_type, type(e).__name__, str(e)[:200],
+            )
+            session.rollback()
             continue
     return saved

@@ -73,9 +73,12 @@ def _enrich_product(session: Session, p: Product) -> dict:
         .order_by(desc(DiscountHistory.crawled_at))
         .first()
     )
+    # distinct()를 column wrapper가 아닌 query modifier로 사용
+    # (cyextension resultproxy가 UnaryExpression 언팩 시 tuple index error 발생 방지)
     sources = (
-        session.query(distinct(DiscountHistory.source))
+        session.query(DiscountHistory.source)
         .filter(DiscountHistory.product_id == p.id)
+        .distinct()
         .all()
     )
     cat_name = ""

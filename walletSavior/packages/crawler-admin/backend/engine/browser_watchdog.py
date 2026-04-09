@@ -124,7 +124,11 @@ class BrowserWatchdog:
             self._schedule_reap()
 
     def _reap_orphans(self) -> int:
-        """Find and kill un-tracked browser processes spawned by this process tree."""
+        """Find and kill un-tracked browser processes spawned by this server's process tree.
+
+        IMPORTANT: Only kills browser processes that are descendants of this server process.
+        Never touches the user's own Chrome browser or other unrelated browser instances.
+        """
         killed = 0
         try:
             import psutil
@@ -132,17 +136,26 @@ class BrowserWatchdog:
             return 0
 
         my_pid = os.getpid()
+        # 서버 프로세스 트리의 모든 자식 PID를 수집 (사용자 브라우저 오살 방지)
+        try:
+            my_process = psutil.Process(my_pid)
+            descendant_pids = {c.pid for c in my_process.children(recursive=True)}
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            descendant_pids = set()
+
         try:
             for proc in psutil.process_iter(["pid", "name", "ppid", "create_time"]):
                 try:
                     pinfo = proc.info
+                    pid = pinfo["pid"]
                     name = (pinfo.get("name") or "").lower()
                     if name not in _BROWSER_PROCESS_NAMES:
                         continue
-                    # Only kill processes that have been running longer than max age
+                    # 이 서버의 자식 프로세스가 아니면 절대 건드리지 않음
+                    if pid not in descendant_pids:
+                        continue
                     age = time.time() - (pinfo.get("create_time") or time.time())
                     if age > _MAX_BROWSER_AGE:
-                        pid = pinfo["pid"]
                         with self._lock:
                             if pid in self._tracked_pids:
                                 continue  # Already tracked, handled above
