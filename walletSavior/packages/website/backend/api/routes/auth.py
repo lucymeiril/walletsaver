@@ -2,6 +2,7 @@
 import logging
 import os
 from fastapi import APIRouter, Depends, HTTPException, status, Request
+from fastapi.responses import JSONResponse, RedirectResponse
 from sqlalchemy import select
 from api.schemas.auth import (
     UserRegister, UserLogin, TokenResponse, TokenRefresh, UserProfile
@@ -17,9 +18,30 @@ from services.oauth_service import (
 from services.audit_logger import log_auth_event
 from api.middleware.rate_limit import limiter
 from api.middleware.auth import require_auth
-from fastapi.responses import RedirectResponse
 from services.db import managed_session
 from storage.models import User, OAuthAccount, OAuthProvider
+
+_COOKIE_SECURE = os.getenv("COOKIE_SECURE", "false").lower() == "true"
+
+
+def _set_auth_cookies(response, tokens: dict):
+    """Set httpOnly auth cookies on a response object."""
+    response.set_cookie(
+        key="access_token", value=tokens["access_token"],
+        httponly=True, secure=_COOKIE_SECURE, samesite="lax", path="/",
+        max_age=tokens["expires_in"],
+    )
+    response.set_cookie(
+        key="refresh_token", value=tokens["refresh_token"],
+        httponly=True, secure=_COOKIE_SECURE, samesite="lax", path="/api/auth",
+        max_age=7 * 24 * 3600,
+    )
+
+
+def _clear_auth_cookies(response):
+    """Clear auth cookies."""
+    response.delete_cookie(key="access_token", path="/")
+    response.delete_cookie(key="refresh_token", path="/api/auth")
 
 logger = logging.getLogger(__name__)
 
@@ -56,7 +78,9 @@ async def register(request: Request, data: UserRegister):
 
         tokens = create_token_pair(user.id, user.email, user.role.value)
 
-    return TokenResponse(**tokens)
+    response = JSONResponse(content=TokenResponse(**tokens).model_dump(), status_code=201)
+    _set_auth_cookies(response, tokens)
+    return response
 
 
 @router.post("/login", response_model=TokenResponse)
@@ -79,7 +103,9 @@ async def login(request: Request, data: UserLogin):
 
         tokens = create_token_pair(user.id, user.email, user.role.value)
 
-    return TokenResponse(**tokens)
+    response = JSONResponse(content=TokenResponse(**tokens).model_dump())
+    _set_auth_cookies(response, tokens)
+    return response
 
 
 @router.post("/refresh", response_model=TokenResponse)
@@ -97,13 +123,17 @@ async def refresh(request: Request, data: TokenRefresh):
                    ip=request.client.host if request.client else "unknown")
 
     tokens = create_token_pair(int(payload["sub"]), payload["email"], payload["role"])
-    return TokenResponse(**tokens)
+    response = JSONResponse(content=TokenResponse(**tokens).model_dump())
+    _set_auth_cookies(response, tokens)
+    return response
 
 
 @router.post("/logout")
 async def logout():
-    """로그아웃 — JWT는 클라이언트에서 토큰 삭제로 처리"""
-    return ApiResponse(data={"message": "로그아웃 되었습니다"})
+    """로그아웃 — httpOnly 쿠키 제거"""
+    response = JSONResponse(content=ApiResponse(data={"message": "로그아웃 되었습니다"}).model_dump())
+    _clear_auth_cookies(response)
+    return response
 
 
 @router.get("/oauth/{provider}")
@@ -200,9 +230,9 @@ async def oauth_callback(request: Request, provider: str, code: str, state: str 
             tokens = create_token_pair(user.id, user.email, user.role.value)
 
         frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
-        return RedirectResponse(
-            url=f"{frontend_url}/auth/callback?access_token={tokens['access_token']}&refresh_token={tokens['refresh_token']}"
-        )
+        response = RedirectResponse(url=f"{frontend_url}/auth/callback")
+        _set_auth_cookies(response, tokens)
+        return response
     except HTTPException:
         raise
     except Exception as e:

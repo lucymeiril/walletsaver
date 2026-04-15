@@ -158,7 +158,15 @@ async def list_posts(
             if sort == "popular":
                 stmt = stmt.order_by(desc(PostModel.view_count))
             elif sort == "comments":
-                stmt = stmt.order_by(desc(PostModel.created_at))
+                comment_count = (
+                    func.count(CommentModel.id).label("comment_count")
+                )
+                stmt = (
+                    stmt
+                    .outerjoin(CommentModel, (CommentModel.post_id == PostModel.id) & (CommentModel.is_deleted == False))
+                    .group_by(PostModel.id)
+                    .order_by(desc(comment_count))
+                )
             else:
                 stmt = stmt.order_by(desc(PostModel.created_at))
 
@@ -408,7 +416,32 @@ async def suggested_tier(post_id: int):
             if not post or post.is_deleted:
                 raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
             price = post.deal_price
-            orig = None
+
+            # Query baseline price from linked product (latest recorded price)
+            if post.product_id:
+                from storage.models import BaselinePrice
+                latest_bp = (
+                    session.query(BaselinePrice)
+                    .filter(BaselinePrice.product_id == post.product_id)
+                    .order_by(desc(BaselinePrice.recorded_at))
+                    .first()
+                )
+                if latest_bp:
+                    orig = latest_bp.price
+                else:
+                    # Fallback: use latest discount_history original_price
+                    from storage.models import DiscountHistory
+                    latest_dh = (
+                        session.query(DiscountHistory)
+                        .filter(
+                            DiscountHistory.product_id == post.product_id,
+                            DiscountHistory.original_price.isnot(None),
+                        )
+                        .order_by(desc(DiscountHistory.crawled_at))
+                        .first()
+                    )
+                    if latest_dh:
+                        orig = latest_dh.original_price
     else:
         raise HTTPException(status_code=503, detail="DB 미연결")
 

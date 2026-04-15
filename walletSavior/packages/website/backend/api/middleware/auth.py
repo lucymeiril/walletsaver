@@ -1,5 +1,5 @@
-"""인증 미들웨어 — JWT 토큰 검증 및 사용자 추출"""
-from fastapi import Depends, HTTPException, status
+"""인증 미들웨어 — JWT 토큰 검증 및 사용자 추출 (Bearer header + httpOnly cookie)"""
+from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Optional
 from services.auth_service import decode_token
@@ -8,13 +8,20 @@ security = HTTPBearer(auto_error=False)
 
 
 async def get_current_user(
+    request: Request,
     credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
 ) -> Optional[dict]:
-    """현재 인증된 사용자 정보 추출 (선택적 인증)"""
-    if not credentials:
+    """현재 인증된 사용자 정보 추출 (선택적 인증) — Bearer header 우선, cookie fallback"""
+    token = None
+    if credentials:
+        token = credentials.credentials
+    elif request.cookies.get("access_token"):
+        token = request.cookies["access_token"]
+
+    if not token:
         return None
 
-    payload = decode_token(credentials.credentials)
+    payload = decode_token(token)
     if not payload:
         return None
 

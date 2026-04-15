@@ -156,7 +156,6 @@ async def vote_hotdeal(request: Request, hotdeal_id: int):
             ).scalar() or 0
 
             return ApiResponse(data={
-                "success": True,
                 "votes_hot": votes_hot,
                 "votes_not": votes_not,
             })
@@ -182,7 +181,7 @@ async def report_hotdeal(request: Request, hotdeal_id: int):
         except Exception:
             logger.warning("report_hotdeal storage error for hotdeal_id=%s", hotdeal_id)
 
-    return ApiResponse(data={"success": True, "message": "신고가 접수되었습니다"})
+    return ApiResponse(data={"message": "신고가 접수되었습니다"})
 
 
 # --------------- 핫딜 댓글 API ---------------
@@ -269,7 +268,7 @@ async def delete_hotdeal_comment(request: Request, hotdeal_id: int, comment_id: 
     if storage is not None:
         try:
             storage.delete_hotdeal_comment(comment_id)
-            return ApiResponse(data={"success": True})
+            return ApiResponse(data={"deleted": True})
         except Exception:
             logger.debug("storage.delete_hotdeal_comment failed, falling back to DB")
 
@@ -278,7 +277,7 @@ async def delete_hotdeal_comment(request: Request, hotdeal_id: int, comment_id: 
             comment = session.get(HotDealComment, comment_id)
             if comment and comment.hotdeal_id == hotdeal_id:
                 session.delete(comment)
-            return ApiResponse(data={"success": True})
+            return ApiResponse(data={"deleted": True})
     except Exception:
         logger.exception("hotdeal comment delete DB error for comment_id=%s", comment_id)
         raise HTTPException(status_code=500, detail="댓글 삭제 중 오류가 발생했습니다")

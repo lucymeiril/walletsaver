@@ -115,6 +115,7 @@ class ApiClient {
         ...fetchOptions,
         headers,
         signal: controller.signal,
+        credentials: 'include',
       });
     } catch (err) {
       clearTimeout(timeoutId);
@@ -132,7 +133,7 @@ class ApiClient {
       if (refreshed) {
         headers['Authorization'] = `Bearer ${this.token}`;
         try {
-          response = await fetch(`${this.baseUrl}${path}`, { ...fetchOptions, headers });
+          response = await fetch(`${this.baseUrl}${path}`, { ...fetchOptions, headers, credentials: 'include' });
         } catch {
           throw new ApiError(ERROR_MESSAGES.network, 0, 'network');
         }
@@ -220,6 +221,7 @@ class ApiClient {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ refresh_token: refreshToken }),
+        credentials: 'include',
       });
 
       if (!response.ok) return false;

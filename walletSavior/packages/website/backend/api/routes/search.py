@@ -58,7 +58,7 @@ async def search(
     # 핫딜 검색
     if not type or type == "hotdeal":
         if storage:
-            hotdeals = storage.get_hotdeals(sort="recent", per_page=50)
+            hotdeals = storage.get_hotdeals(sort="recent", per_page=500)
             for h in hotdeals:
                 if q_lower and q_lower not in h.get("title", "").lower():
                     continue
@@ -69,6 +69,8 @@ async def search(
                     "description": f"{h['source']} / {h['time']}",
                     "price": h.get("price"),
                     "image": h.get("thumb"),
+                    "views": h.get("views", 0),
+                    "votes": h.get("votes_hot", 0),
                 })
 
     # 게시글 검색 — DB에서 커뮤니티 게시글 조회
@@ -81,7 +83,7 @@ async def search(
                     stmt = select(PostModel).where(PostModel.is_deleted == False)
                     if q_lower:
                         stmt = stmt.where(PostModel.title.contains(q))
-                    posts = session.execute(stmt.limit(20)).scalars().all()
+                    posts = session.execute(stmt).scalars().all()
                     for p in posts:
                         results.append({
                             "type": "post",
@@ -90,6 +92,7 @@ async def search(
                             "description": (p.content or "")[:100],
                             "price": p.deal_price,
                             "image": None,
+                            "views": p.view_count or 0,
                         })
             except Exception:
                 logger.exception("search: post query error for q=%r", q)
@@ -116,7 +119,7 @@ async def search(
                 logger.exception("search: mart query error for q=%r", q)
 
     if sort == "popular":
-        results.sort(key=lambda x: x.get("price") or 0, reverse=True)
+        results.sort(key=lambda x: (x.get("views") or 0) + (x.get("votes") or 0), reverse=True)
 
     total = len(results)
     start = (page - 1) * per_page
