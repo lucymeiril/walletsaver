@@ -13,7 +13,6 @@ env/
 .env.local
 .env.production
 !**/.env.example
-!proj/.env.example
 
 # OS
 .DS_Store
@@ -25,5 +24,15 @@ Thumbs.db
 
 crawl_results/
 
+# Archived (unused files moved here for cleanup)
+_archived/
 
+# Tools
 copilot.exe
+copilot.exe.old
+
+# Secrets (should never be committed)
+client_secret_*.json
+
+# Session files
+copilot-session-*.md

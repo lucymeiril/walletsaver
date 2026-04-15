@@ -1,9 +1,16 @@
-"""OAuth 서비스 — Google, Kakao, Naver OAuth 2.0 처리"""
+"""OAuth 서비스 — Google, Kakao, Naver OAuth 2.0 처리
+
+중요: OAuthConfig는 env 변수를 lazy하게 읽는다.
+main.py의 import 순서상 oauth_service가 config.py(load_dotenv)보다
+먼저 import되므로, 클래스 body에서 os.getenv()하면 빈 문자열이 된다.
+get() 호출 시점에는 dotenv가 이미 로드된 상태이므로 안전하다.
+"""
 import httpx
 import os
 import secrets
 from typing import Optional
 from dataclasses import dataclass
+from urllib.parse import urlencode
 
 
 @dataclass
@@ -17,49 +24,51 @@ class OAuthUserInfo:
 
 
 class OAuthConfig:
-    """OAuth 공급자별 설정"""
+    """OAuth 공급자별 설정 — env 변수는 get() 호출 시 lazy 로드"""
 
-    GOOGLE = {
-        "client_id": os.getenv("GOOGLE_CLIENT_ID", ""),
-        "client_secret": os.getenv("GOOGLE_CLIENT_SECRET", ""),
-        "auth_url": "https://accounts.google.com/o/oauth2/v2/auth",
-        "token_url": "https://oauth2.googleapis.com/token",
-        "userinfo_url": "https://www.googleapis.com/oauth2/v2/userinfo",
-        "scope": "openid email profile",
-    }
-
-    KAKAO = {
-        "client_id": os.getenv("KAKAO_CLIENT_ID", ""),
-        "client_secret": os.getenv("KAKAO_CLIENT_SECRET", ""),
-        "auth_url": "https://kauth.kakao.com/oauth/authorize",
-        "token_url": "https://kauth.kakao.com/oauth/token",
-        "userinfo_url": "https://kapi.kakao.com/v2/user/me",
-        "scope": "profile_nickname account_email",
-    }
-
-    NAVER = {
-        "client_id": os.getenv("NAVER_CLIENT_ID", ""),
-        "client_secret": os.getenv("NAVER_CLIENT_SECRET", ""),
-        "auth_url": "https://nid.naver.com/oauth2.0/authorize",
-        "token_url": "https://nid.naver.com/oauth2.0/token",
-        "userinfo_url": "https://openapi.naver.com/v1/nid/me",
-        "scope": "",
+    # 정적 설정만 클래스 body에 둔다 (env 변수 제외)
+    _PROVIDERS = {
+        "google": {
+            "auth_url": "https://accounts.google.com/o/oauth2/v2/auth",
+            "token_url": "https://oauth2.googleapis.com/token",
+            "userinfo_url": "https://www.googleapis.com/oauth2/v2/userinfo",
+            "scope": "openid email profile",
+            "client_id_env": "GOOGLE_CLIENT_ID",
+            "client_secret_env": "GOOGLE_CLIENT_SECRET",
+        },
+        "kakao": {
+            "auth_url": "https://kauth.kakao.com/oauth/authorize",
+            "token_url": "https://kauth.kakao.com/oauth/token",
+            "userinfo_url": "https://kapi.kakao.com/v2/user/me",
+            "scope": "profile_nickname account_email",
+            "client_id_env": "KAKAO_CLIENT_ID",
+            "client_secret_env": "KAKAO_CLIENT_SECRET",
+        },
+        "naver": {
+            "auth_url": "https://nid.naver.com/oauth2.0/authorize",
+            "token_url": "https://nid.naver.com/oauth2.0/token",
+            "userinfo_url": "https://openapi.naver.com/v1/nid/me",
+            "scope": "",
+            "client_id_env": "NAVER_CLIENT_ID",
+            "client_secret_env": "NAVER_CLIENT_SECRET",
+        },
     }
 
     @classmethod
     def get(cls, provider: str) -> dict:
-        configs = {
-            "google": cls.GOOGLE,
-            "kakao": cls.KAKAO,
-            "naver": cls.NAVER,
-        }
-        config = configs.get(provider)
-        if not config:
+        """env 변수를 호출 시점에 읽어 반환 (lazy load)"""
+        tmpl = cls._PROVIDERS.get(provider)
+        if not tmpl:
             raise ValueError(f"지원하지 않는 OAuth 공급자: {provider}")
-        return config
+        return {
+            "client_id": os.getenv(tmpl["client_id_env"], ""),
+            "client_secret": os.getenv(tmpl["client_secret_env"], ""),
+            "auth_url": tmpl["auth_url"],
+            "token_url": tmpl["token_url"],
+            "userinfo_url": tmpl["userinfo_url"],
+            "scope": tmpl["scope"],
+        }
 
-
-REDIRECT_BASE = os.getenv("OAUTH_REDIRECT_BASE", "http://localhost:8000")
 
 # In-memory OAuth state store for CSRF protection (TTL: 10 minutes)
 _oauth_states: dict[str, float] = {}
@@ -98,23 +107,29 @@ def validate_oauth_state(state: str | None) -> bool:
 
 
 def get_oauth_login_url(provider: str) -> str:
-    """OAuth 로그인 URL 생성 (with CSRF state parameter)"""
+    """OAuth 로그인 URL 생성 (with CSRF state parameter)
+
+    urlencode를 사용하여 scope 공백, redirect_uri 슬래시 등을 안전하게 인코딩한다.
+    """
     config = OAuthConfig.get(provider)
+    redirect_base = os.getenv("OAUTH_REDIRECT_BASE", "http://localhost:8000")
     state = generate_oauth_state()
     params = {
         "client_id": config["client_id"],
-        "redirect_uri": f"{REDIRECT_BASE}/api/auth/oauth/{provider}/callback",
+        "redirect_uri": f"{redirect_base}/api/auth/oauth/{provider}/callback",
         "response_type": "code",
         "scope": config["scope"],
         "state": state,
     }
-    query = "&".join(f"{k}={v}" for k, v in params.items() if v)
-    return f"{config['auth_url']}?{query}"
+    # 빈 값 제거 후 urlencode로 안전한 쿼리스트링 생성
+    filtered = {k: v for k, v in params.items() if v}
+    return f"{config['auth_url']}?{urlencode(filtered)}"
 
 
 async def exchange_code_for_token(provider: str, code: str) -> dict:
     """인가 코드를 액세스 토큰으로 교환"""
     config = OAuthConfig.get(provider)
+    redirect_base = os.getenv("OAUTH_REDIRECT_BASE", "http://localhost:8000")
     async with httpx.AsyncClient() as client:
         response = await client.post(
             config["token_url"],
@@ -123,7 +138,7 @@ async def exchange_code_for_token(provider: str, code: str) -> dict:
                 "client_id": config["client_id"],
                 "client_secret": config["client_secret"],
                 "code": code,
-                "redirect_uri": f"{REDIRECT_BASE}/api/auth/oauth/{provider}/callback",
+                "redirect_uri": f"{redirect_base}/api/auth/oauth/{provider}/callback",
             },
         )
         response.raise_for_status()
