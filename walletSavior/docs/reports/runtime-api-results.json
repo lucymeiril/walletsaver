@@ -1,0 +1,632 @@
+[
+  {
+    "project": "website",
+    "name": "health",
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/api/health",
+    "expected_status": [
+      200
+    ],
+    "status_code": 200,
+    "ok": true,
+    "note": "JSON 응답 확인",
+    "body_preview": "{\"status\":\"ok\",\"version\":\"0.1.0\",\"checks\":{\"db\":{\"status\":\"ok\",\"circuit\":\"closed\"},\"playwright\":{\"status\":\"ok\",\"circuit\":\"closed\"},\"memory\":{\"status\":\"ok\",\"rss_mb\":92.2}}}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "website",
+    "name": "products-prices",
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/api/products/prices",
+    "expected_status": [
+      200
+    ],
+    "status_code": 422,
+    "ok": false,
+    "note": "예상 상태코드 200와 다름; JSON 응답 확인",
+    "body_preview": "{\"success\":false,\"error\":\"입력값 유효성 검사 실패\",\"details\":[{\"field\":\"path → product_id\",\"message\":\"Input should be a valid integer, unable to parse string as an integer\"}]}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "website",
+    "name": "hotdeals-list",
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/api/hotdeals",
+    "expected_status": [
+      200
+    ],
+    "status_code": 200,
+    "ok": true,
+    "note": "JSON 응답 확인; hotdeal_id=20 확보",
+    "body_preview": "{\"success\":true,\"data\":[{\"id\":20,\"title\":\"test item\",\"source\":\"hotdeal\",\"price\":1000.0,\"origPrice\":null,\"time\":\"13일 전\",\"cat\":\"\",\"views\":0,\"comments\":0,\"thumb\":null,\"votes_hot\":0,\"votes_not\":0,\"is_verified\":false},{\"id\":19,\"title\":\"[네이버] 삼성 65인치 Neo QLED KQ65QNF80AFXKR TV(카드1,745,160원/무배)\",\"source\":\"클리앙\",\"price\":1745160.0,\"origPrice\":null,\"time\":\"13일 전\",\"cat\":\"\",\"views\":0,\"comments\":0,\"thumb\":null,",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "website",
+    "name": "hotdeal-vote",
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/api/hotdeals/{id}/vote",
+    "expected_status": [
+      200,
+      201
+    ],
+    "status_code": null,
+    "ok": false,
+    "note": "핫딜 목록에서 ID를 찾지 못해 테스트 불가",
+    "body_preview": null,
+    "body_type": null
+  },
+  {
+    "project": "website",
+    "name": "hotdeal-comments-list",
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/api/hotdeals/{id}/comments",
+    "expected_status": [
+      200
+    ],
+    "status_code": null,
+    "ok": false,
+    "note": "핫딜 목록에서 ID를 찾지 못해 테스트 불가",
+    "body_preview": null,
+    "body_type": null
+  },
+  {
+    "project": "website",
+    "name": "hotdeal-comment-create",
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/api/hotdeals/{id}/comments",
+    "expected_status": [
+      200,
+      201
+    ],
+    "status_code": null,
+    "ok": false,
+    "note": "핫딜 목록에서 ID를 찾지 못해 테스트 불가",
+    "body_preview": null,
+    "body_type": null
+  },
+  {
+    "project": "website",
+    "name": "posts-hotdeal",
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/api/posts?post_type=hotdeal",
+    "expected_status": [
+      200
+    ],
+    "status_code": 200,
+    "ok": true,
+    "note": "hotdeal 필터 JSON 확인",
+    "body_preview": "{\"success\":true,\"data\":[{\"id\":183,\"title\":\"투표 토글 테스트\",\"content\":\"토글 확인\",\"post_type\":\"hotdeal\",\"category\":\"\",\"author_id\":1,\"author_nickname\":\"새닉네임\",\"views\":0,\"comments_count\":0,\"hot_votes\":0,\"not_votes\":0,\"price\":null,\"original_price\":null,\"url\":null,\"images\":[],\"tags\":[],\"created_at\":\"2026-04-15T04:24:32.611061\",\"updated_at\":\"2026-04-15T04:24:32.611068\"},{\"id\":182,\"title\":\"투표 테스트\",\"content\":\"투표 확인",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "website",
+    "name": "posts-free",
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/api/posts?post_type=free",
+    "expected_status": [
+      200
+    ],
+    "status_code": 200,
+    "ok": true,
+    "note": "free 필터 JSON 확인",
+    "body_preview": "{\"success\":true,\"data\":[{\"id\":181,\"title\":\"삭제 금지 테스트\",\"content\":\"삭제 불가\",\"post_type\":\"free\",\"category\":\"\",\"author_id\":1,\"author_nickname\":\"새닉네임\",\"views\":0,\"comments_count\":0,\"hot_votes\":0,\"not_votes\":0,\"price\":null,\"original_price\":null,\"url\":null,\"images\":[],\"tags\":[],\"created_at\":\"2026-04-15T04:24:32.224546\",\"updated_at\":\"2026-04-15T04:24:32.224553\"},{\"id\":178,\"title\":\"수정된 제목\",\"content\":\"원본 내용\",\"",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "website",
+    "name": "post-create",
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/api/posts",
+    "expected_status": [
+      200,
+      201
+    ],
+    "status_code": 401,
+    "ok": false,
+    "note": "예상 상태코드 200,201와 다름; 게시글 작성 응답 확인",
+    "body_preview": "{\"success\":false,\"error\":\"인증이 필요합니다\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "website",
+    "name": "search",
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/api/search?q=%EC%82%AC%EA%B3%BC",
+    "expected_status": [
+      200
+    ],
+    "status_code": 200,
+    "ok": true,
+    "note": "검색 JSON 확인",
+    "body_preview": "{\"success\":true,\"data\":[{\"type\":\"product\",\"id\":4,\"title\":\"사과\",\"description\":\"1kg / 현재가 5117원\",\"price\":5117,\"image\":\"\"},{\"type\":\"product\",\"id\":483,\"title\":\"12Brix 맛난이 부사사과 3-7입(봉)\",\"description\":\"개 / 현재가 12990원\",\"price\":12990,\"image\":\"https://image.homeplus.kr/it/070368535s0320?lastmod=20240112181103\"},{\"type\":\"product\",\"id\":493,\"title\":\"12Brix 유명산지 부사사과 3-7입(봉)\",\"description\":\"개 / 현재가 13990원\",\"pri",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "website",
+    "name": "search-autocomplete",
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/api/search/autocomplete?q=%EC%82%AC",
+    "expected_status": [
+      200
+    ],
+    "status_code": 200,
+    "ok": true,
+    "note": "자동완성 JSON 확인",
+    "body_preview": "{\"success\":true,\"data\":{\"keywords\":[{\"type\":\"keyword\",\"match_type\":\"keyword_direct\",\"id\":41,\"word\":\"사과\",\"category_id\":\"fruit.apple\",\"category_name\":\"사과\",\"category_path\":\"과일류 > 사과\",\"search_count\":417,\"matched_synonym\":\"\",\"icon\":\"🍎\",\"suggested_action\":\"category_page\",\"action_url\":\"/price/category/fruit.apple\"}],\"products\":[{\"type\":\"product\",\"match_type\":\"product_name\",\"id\":4,\"name\":\"사과\",\"category_i",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "website",
+    "name": "auth-register",
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/api/auth/register",
+    "expected_status": [
+      200,
+      201,
+      400,
+      409
+    ],
+    "status_code": 201,
+    "ok": true,
+    "note": "회원가입 응답 확인",
+    "body_preview": "{\"access_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5IiwiZW1haWwiOiJxYV82MjhhZDcyNUB0ZXN0LmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzc2MjMxMTU3LCJ0eXBlIjoiYWNjZXNzIn0.mYsGpAqXmcCxz2cpXL9lauSwpXK0BetEZwcJsHW8VhI\",\"refresh_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5IiwiZW1haWwiOiJxYV82MjhhZDcyNUB0ZXN0LmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzc2ODM0MTU3LCJ0eXBlIjoicmVmcmVzaCJ9.JyLb-E",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "website",
+    "name": "auth-login",
+    "method": "POST",
+    "url": "http://127.0.0.1:8000/api/auth/login",
+    "expected_status": [
+      200
+    ],
+    "status_code": 200,
+    "ok": true,
+    "note": "토큰 확보",
+    "body_preview": "{\"access_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5IiwiZW1haWwiOiJxYV82MjhhZDcyNUB0ZXN0LmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzc2MjMxMTU3LCJ0eXBlIjoiYWNjZXNzIn0.mYsGpAqXmcCxz2cpXL9lauSwpXK0BetEZwcJsHW8VhI\",\"refresh_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5IiwiZW1haWwiOiJxYV82MjhhZDcyNUB0ZXN0LmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzc2ODM0MTU3LCJ0eXBlIjoicmVmcmVzaCJ9.JyLb-E",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "website",
+    "name": "auth-me",
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/api/auth/me",
+    "expected_status": [
+      200
+    ],
+    "status_code": null,
+    "ok": false,
+    "note": "로그인 토큰 미확보",
+    "body_preview": null,
+    "body_type": null
+  },
+  {
+    "project": "website",
+    "name": "users-me-get",
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/api/users/me",
+    "expected_status": [
+      200
+    ],
+    "status_code": null,
+    "ok": false,
+    "note": "로그인 토큰 미확보",
+    "body_preview": null,
+    "body_type": null
+  },
+  {
+    "project": "website",
+    "name": "users-me-put",
+    "method": "PUT",
+    "url": "http://127.0.0.1:8000/api/users/me",
+    "expected_status": [
+      200
+    ],
+    "status_code": null,
+    "ok": false,
+    "note": "로그인 토큰 미확보",
+    "body_preview": null,
+    "body_type": null
+  },
+  {
+    "project": "website",
+    "name": "crawlers",
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/api/crawlers",
+    "expected_status": [
+      200
+    ],
+    "status_code": 200,
+    "ok": true,
+    "note": "크롤러 상태 JSON 확인",
+    "body_preview": "{\"success\":true,\"data\":[],\"error\":null,\"meta\":null}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "website",
+    "name": "marts",
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/api/marts",
+    "expected_status": [
+      200
+    ],
+    "status_code": 200,
+    "ok": true,
+    "note": "마트 JSON 확인",
+    "body_preview": "{\"success\":true,\"data\":[{\"key\":\"emart\",\"name\":\"이마트\",\"color\":\"#FFD700\",\"deals_count\":21,\"period\":\"\"},{\"key\":\"homeplus\",\"name\":\"홈플러스\",\"color\":\"#FF6B35\",\"deals_count\":0,\"period\":\"\"},{\"key\":\"lottemart\",\"name\":\"롯데마트\",\"color\":\"#E4002B\",\"deals_count\":0,\"period\":\"\"},{\"key\":\"costco\",\"name\":\"코스트코\",\"color\":\"#E31837\",\"deals_count\":29,\"period\":\"\"}],\"error\":null,\"meta\":null}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "website",
+    "name": "restaurants",
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/api/restaurants?lat=37.5665&lng=126.978",
+    "expected_status": [
+      200
+    ],
+    "status_code": 404,
+    "ok": false,
+    "note": "예상 상태코드 200와 다름; 식당 JSON 확인",
+    "body_preview": "{\"success\":false,\"error\":\"Not Found\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "website",
+    "name": "gas-stations",
+    "method": "GET",
+    "url": "http://127.0.0.1:8000/api/gas-stations?lat=37.5665&lng=126.978",
+    "expected_status": [
+      200
+    ],
+    "status_code": 404,
+    "ok": false,
+    "note": "예상 상태코드 200와 다름; 주유소 JSON 확인",
+    "body_preview": "{\"success\":false,\"error\":\"Not Found\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "db-admin",
+    "name": "auth-login",
+    "method": "POST",
+    "url": "http://127.0.0.1:8002/api/auth/login",
+    "expected_status": [
+      200,
+      401,
+      404
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "기본 관리자 로그인 실패(환경 이슈 가능)",
+    "body_preview": "{\"detail\":\"이메일 또는 비밀번호가 올바르지 않습니다.\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "db-admin",
+    "name": "health",
+    "method": "GET",
+    "url": "http://127.0.0.1:8002/api/health",
+    "expected_status": [
+      200
+    ],
+    "status_code": 404,
+    "ok": false,
+    "note": "예상 상태코드 200와 다름; 헬스체크 응답 확인",
+    "body_preview": "{\"detail\":\"Not Found\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "db-admin",
+    "name": "products",
+    "method": "GET",
+    "url": "http://127.0.0.1:8002/api/products/",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "인증 필요",
+    "body_preview": "{\"detail\":\"인증이 필요합니다. Authorization 헤더 또는 X-API-Key를 제공하세요.\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "db-admin",
+    "name": "products-stats",
+    "method": "GET",
+    "url": "http://127.0.0.1:8002/api/products/stats",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "인증 필요",
+    "body_preview": "{\"detail\":\"인증이 필요합니다. Authorization 헤더 또는 X-API-Key를 제공하세요.\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "db-admin",
+    "name": "categories",
+    "method": "GET",
+    "url": "http://127.0.0.1:8002/api/categories/",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "인증 필요",
+    "body_preview": "{\"detail\":\"인증이 필요합니다. Authorization 헤더 또는 X-API-Key를 제공하세요.\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "db-admin",
+    "name": "keywords",
+    "method": "GET",
+    "url": "http://127.0.0.1:8002/api/keywords/",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "인증 필요",
+    "body_preview": "{\"detail\":\"인증이 필요합니다. Authorization 헤더 또는 X-API-Key를 제공하세요.\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "db-admin",
+    "name": "keywords-stats",
+    "method": "GET",
+    "url": "http://127.0.0.1:8002/api/keywords/stats",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "인증 필요",
+    "body_preview": "{\"detail\":\"인증이 필요합니다. Authorization 헤더 또는 X-API-Key를 제공하세요.\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "db-admin",
+    "name": "keywords-popular",
+    "method": "GET",
+    "url": "http://127.0.0.1:8002/api/keywords/popular",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "인증 필요",
+    "body_preview": "{\"detail\":\"인증이 필요합니다. Authorization 헤더 또는 X-API-Key를 제공하세요.\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "db-admin",
+    "name": "dashboard-stats",
+    "method": "GET",
+    "url": "http://127.0.0.1:8002/api/dashboard/stats",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "인증 필요",
+    "body_preview": "{\"detail\":\"인증이 필요합니다. Authorization 헤더 또는 X-API-Key를 제공하세요.\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "db-admin",
+    "name": "prices-stats",
+    "method": "GET",
+    "url": "http://127.0.0.1:8002/api/prices/stats",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "인증 필요",
+    "body_preview": "{\"detail\":\"인증이 필요합니다. Authorization 헤더 또는 X-API-Key를 제공하세요.\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "db-admin",
+    "name": "prices-tier-config",
+    "method": "GET",
+    "url": "http://127.0.0.1:8002/api/prices/tier-config",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "인증 필요",
+    "body_preview": "{\"detail\":\"인증이 필요합니다. Authorization 헤더 또는 X-API-Key를 제공하세요.\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "db-admin",
+    "name": "analytics-summary",
+    "method": "GET",
+    "url": "http://127.0.0.1:8002/api/analytics/summary",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "인증 필요",
+    "body_preview": "{\"detail\":\"인증이 필요합니다. Authorization 헤더 또는 X-API-Key를 제공하세요.\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "db-admin",
+    "name": "analytics-quality-report",
+    "method": "GET",
+    "url": "http://127.0.0.1:8002/api/analytics/quality-report",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "인증 필요",
+    "body_preview": "{\"detail\":\"인증이 필요합니다. Authorization 헤더 또는 X-API-Key를 제공하세요.\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "db-admin",
+    "name": "ingestions-pending",
+    "method": "GET",
+    "url": "http://127.0.0.1:8002/api/ingestions?status=pending",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "인증 필요",
+    "body_preview": "{\"detail\":\"인증이 필요합니다. Authorization 헤더 또는 X-API-Key를 제공하세요.\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "db-admin",
+    "name": "ingestions-stats",
+    "method": "GET",
+    "url": "http://127.0.0.1:8002/api/ingestions/stats",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "인증 필요",
+    "body_preview": "{\"detail\":\"인증이 필요합니다. Authorization 헤더 또는 X-API-Key를 제공하세요.\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "db-admin",
+    "name": "admin-data-summary",
+    "method": "GET",
+    "url": "http://127.0.0.1:8002/api/admin/data-summary",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "인증 필요",
+    "body_preview": "{\"detail\":\"인증이 필요합니다. Authorization 헤더 또는 X-API-Key를 제공하세요.\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "crawler-admin",
+    "name": "health",
+    "method": "GET",
+    "url": "http://127.0.0.1:8001/health",
+    "expected_status": [
+      200
+    ],
+    "status_code": 200,
+    "ok": true,
+    "note": "헬스체크 응답 확인",
+    "body_preview": "{\"status\":\"ok\",\"service\":\"crawler-admin\",\"scheduler_running\":false,\"scheduled_jobs\":0,\"last_crawl\":null,\"active_crawls\":0,\"browser_processes\":0,\"memory_mb\":65.2,\"uptime_seconds\":199.0}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "crawler-admin",
+    "name": "crawlers-without-key",
+    "method": "GET",
+    "url": "http://127.0.0.1:8001/api/crawlers",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "무인증 401 확인",
+    "body_preview": "{\"detail\":\"Missing X-API-Key header\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "crawler-admin",
+    "name": "dashboard-stats",
+    "method": "GET",
+    "url": "http://127.0.0.1:8001/api/dashboard/stats",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "API 키 필요",
+    "body_preview": "{\"detail\":\"Missing X-API-Key header\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "crawler-admin",
+    "name": "logs",
+    "method": "GET",
+    "url": "http://127.0.0.1:8001/api/logs?page=1&per_page=10",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "API 키 필요",
+    "body_preview": "{\"detail\":\"Missing X-API-Key header\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "crawler-admin",
+    "name": "schedules",
+    "method": "GET",
+    "url": "http://127.0.0.1:8001/api/schedules",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "API 키 필요",
+    "body_preview": "{\"detail\":\"Missing X-API-Key header\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "crawler-admin",
+    "name": "plugins",
+    "method": "GET",
+    "url": "http://127.0.0.1:8001/api/plugins",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "API 키 필요",
+    "body_preview": "{\"detail\":\"Missing X-API-Key header\"}",
+    "body_type": "PSCustomObject"
+  },
+  {
+    "project": "crawler-admin",
+    "name": "ingestions-pending",
+    "method": "GET",
+    "url": "http://127.0.0.1:8001/api/ingestions?status=pending",
+    "expected_status": [
+      200,
+      401
+    ],
+    "status_code": 401,
+    "ok": true,
+    "note": "API 키 필요",
+    "body_preview": "{\"detail\":\"Missing X-API-Key header\"}",
+    "body_type": "PSCustomObject"
+  }
+]
