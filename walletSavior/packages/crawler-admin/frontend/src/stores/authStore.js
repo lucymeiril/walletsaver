@@ -12,9 +12,9 @@ function notify() {
   listeners.forEach(fn => fn());
 }
 
-/** API 키로 /health 호출하여 유효성 검증 후 저장 */
+/** API 키로 보호된 엔드포인트 호출하여 유효성 검증 후 저장 */
 export async function login(apiKey) {
-  const resp = await fetch(`${API_BASE}/health`, {
+  const resp = await fetch(`${API_BASE}/crawlers`, {
     headers: { 'X-API-Key': apiKey },
   });
 

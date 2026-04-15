@@ -125,7 +125,7 @@ export default function HomePage() {
     );
   }, [setLocation]);
 
-  // 2) API 병렬 최적화 — Promise.allSettled, 위치 확정 후 실행
+  // 2) API 병렬 최적화 — /api/dashboard 통합 + 나머지 개별 요청
   const fetchAllData = useCallback((loc, signal) => {
     const gasQuery = loc ? `lat=${loc.lat}&lng=${loc.lng}&sort=price_asc` : 'sort=price_asc';
 
@@ -133,35 +133,23 @@ export default function HomePage() {
     setSectionError({ products: false, hotdeals: false, community: false, gas: false, trending: false, fashion: false });
 
     Promise.allSettled([
-      fetch('/api/hotdeals?per_page=10', { signal }).then(r => r.json()),
-      fetch('/api/products/category-summary?per_page=8', { signal }).then(r => r.json()),
-      fetch('/api/products/search?per_page=50', { signal }).then(r => r.json()),
+      fetch('/api/dashboard', { signal }).then(r => r.json()),
       fetch('/api/posts?post_type=hotdeal&per_page=5', { signal }).then(r => r.json()),
       fetch(`/api/gas/nearby?${gasQuery}`, { signal }).then(r => r.json()),
-      fetch('/api/products/trending', { signal }).then(r => r.json()),
-      searchService.trending(8),
       fetch('/api/hotdeals?category=fashion&per_page=6', { signal }).then(r => r.json()),
-    ]).then(([dealRes, catSumRes, prodRes, postRes, gasRes, trendRes, trendApiRes, fashionRes]) => {
-      // 핫딜 (우선 표시)
-      if (dealRes.status === 'fulfilled') {
-        setHotdeals(dealRes.value.data || []);
+    ]).then(([dashRes, postRes, gasRes, fashionRes]) => {
+      // 대시보드 통합 응답 (hotdeals + category_summary + recent_products + trending_keywords)
+      if (dashRes.status === 'fulfilled' && dashRes.value?.data) {
+        const d = dashRes.value.data;
+        setHotdeals(d.hotdeals || []);
+        setCategorySummary(d.category_summary || []);
+        setProducts(d.recent_products || []);
+        setTrending(d.trending_keywords || []);
+        setTrendingKeywords(d.trending_keywords || []);
       } else {
-        setSectionError(prev => ({ ...prev, hotdeals: true }));
+        setSectionError(prev => ({ ...prev, hotdeals: true, products: true, trending: true }));
       }
-      setSectionLoading(prev => ({ ...prev, hotdeals: false }));
-
-      // 카테고리 요약 (오늘의 물가)
-      if (catSumRes.status === 'fulfilled') {
-        setCategorySummary(catSumRes.value.data || []);
-      }
-
-      // 물가 (개별 상품 — 카테고리 요약 없을 때 폴백)
-      if (prodRes.status === 'fulfilled') {
-        setProducts(prodRes.value.data || []);
-      } else {
-        setSectionError(prev => ({ ...prev, products: true }));
-      }
-      setSectionLoading(prev => ({ ...prev, products: false }));
+      setSectionLoading(prev => ({ ...prev, hotdeals: false, products: false, trending: false }));
 
       // 패션 핫딜
       if (fashionRes.status === 'fulfilled') {
@@ -186,19 +174,6 @@ export default function HomePage() {
         setSectionError(prev => ({ ...prev, gas: true }));
       }
       setSectionLoading(prev => ({ ...prev, gas: false }));
-
-      // 인기 검색어 (기존 /api/products/trending)
-      if (trendRes.status === 'fulfilled') {
-        setTrending(trendRes.value.data || []);
-      } else {
-        setSectionError(prev => ({ ...prev, trending: true }));
-      }
-      setSectionLoading(prev => ({ ...prev, trending: false }));
-
-      // 인기 키워드 (새 API — 자동완성용)
-      if (trendApiRes.status === 'fulfilled') {
-        setTrendingKeywords(trendApiRes.value.data || []);
-      }
     });
   }, []);
 

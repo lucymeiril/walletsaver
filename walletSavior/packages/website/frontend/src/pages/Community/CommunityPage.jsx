@@ -85,6 +85,7 @@ export default function CommunityPage() {
   const [posts, setPosts] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const postsControllerRef = useRef(null);
 
@@ -102,16 +103,17 @@ export default function CommunityPage() {
     if (postsControllerRef.current) postsControllerRef.current.abort();
     postsControllerRef.current = new AbortController();
     setLoading(true);
+    setFetchError(false);
     const params = new URLSearchParams({ post_type: board, per_page: '50' });
     fetch(`/api/posts?${params}`, { signal: postsControllerRef.current.signal }).then(r => r.json())
       .then(res => setPosts((res.data || []).map(p => mapApiPost(p, products))))
       .catch(err => {
         if (err.name === 'AbortError') return;
         console.error(err);
-        addToast('게시글을 불러오는데 실패했습니다', 'error');
+        setFetchError(true);
       })
       .finally(() => setLoading(false));
-  }, [board, products, addToast]);
+  }, [board, products]);
 
   useEffect(() => {
     refreshPosts();
@@ -538,7 +540,13 @@ export default function CommunityPage() {
 
       {/* Post List */}
       <div className={s.list}>
-        {!loading && paginatedPosts.length === 0 && (
+        {!loading && fetchError && (
+          <div style={{ textAlign: 'center', padding: '2rem 0' }}>
+            <p style={{ color: 'var(--red, #ef4444)', marginBottom: '0.75rem' }}>⚠️ 게시글을 불러오는 데 실패했습니다</p>
+            <button className={s.submitBtn} onClick={refreshPosts} style={{ display: 'inline-flex', padding: '0.5rem 1.2rem' }}>다시 시도</button>
+          </div>
+        )}
+        {!loading && !fetchError && paginatedPosts.length === 0 && (
           <EmptyState
             title="게시글이 없습니다"
             description="첫 번째 게시글을 작성해 보세요!"

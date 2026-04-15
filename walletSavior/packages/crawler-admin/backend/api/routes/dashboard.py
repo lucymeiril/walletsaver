@@ -206,11 +206,19 @@ async def get_dashboard_stats(days: int = Query(7, ge=1, le=90)):
             "status": status,
         })
 
+    # --- activeCrawlers: 최근 24시간 내 성공 실행 이력이 있는 크롤러 수 ---
+    active_crawlers = 0
+    for job_id, entry in latest_by_crawler.items():
+        if entry["status"] in ("success", "running"):
+            entry_dt = _parse_dt(entry.get("started_at", ""))
+            if entry_dt and (now - entry_dt).total_seconds() < 86400:
+                active_crawlers += 1
+
     result = {
         "statusDistribution": status_distribution,
         "errorTrend": error_trend,
         "totalCrawlers": total_crawlers,
-        "activeCrawlers": total_crawlers,
+        "activeCrawlers": active_crawlers,
         "todayCrawls": today_crawls,
         "successRate": success_rate,
         "alerts": alerts,

@@ -20,7 +20,7 @@ export const hotdealService = {
   },
 
   async voteDeal(dealId, voteType) {
-    const res = await api.post(`/api/hotdeals/${dealId}/vote`, { vote: voteType });
+    const res = await api.post(`/api/hotdeals/${dealId}/vote`, { vote_type: voteType });
     if (!res.ok) throw new Error('투표에 실패했습니다');
     return res.json();
   },
@@ -28,12 +28,6 @@ export const hotdealService = {
   async reportDeal(dealId, reason) {
     const res = await api.post(`/api/hotdeals/${dealId}/report`, { reason });
     if (!res.ok) throw new Error('신고에 실패했습니다');
-    return res.json();
-  },
-
-  async submitDeal(dealData) {
-    const res = await api.post('/api/hotdeals', dealData);
-    if (!res.ok) throw new Error('핫딜 등록에 실패했습니다');
     return res.json();
   },
 };

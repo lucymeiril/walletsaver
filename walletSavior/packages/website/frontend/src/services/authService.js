@@ -4,6 +4,7 @@ export const authService = {
   async login(email, password) {
     const res = await api.post('/api/auth/login', { email, password });
     const data = await res.json();
+    // Server also sets httpOnly cookies; keep in-memory token for Bearer header
     api.setToken(data.access_token);
     sessionStorage.setItem('refresh_token', data.refresh_token);
     return data;
@@ -34,13 +35,5 @@ export const authService = {
   async updateProfile(data) {
     const res = await api.put('/api/auth/me', data);
     return res.json();
-  },
-
-  async socialLogin(provider, token) {
-    const res = await api.post(`/api/auth/social/${provider}`, { token });
-    const data = await res.json();
-    api.setToken(data.access_token);
-    sessionStorage.setItem('refresh_token', data.refresh_token);
-    return data;
   },
 };

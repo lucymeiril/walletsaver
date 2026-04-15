@@ -14,6 +14,9 @@ API_KEY_HEADER = APIKeyHeader(name="X-API-Key", auto_error=False)
 
 PUBLIC_PATHS: set[str] = {"/health", "/docs", "/openapi.json", "/redoc"}
 
+# SSE 스트리밍은 EventSource API가 커스텀 헤더를 지원하지 않으므로 인증 면제
+SSE_PATH_SUFFIX = "/status/stream"
+
 
 def _get_api_key() -> str:
     """Load API key from environment. Raise on missing."""
@@ -46,6 +49,9 @@ async def verify_api_key(
     """
     if request.url.path in PUBLIC_PATHS:
         return "public"
+
+    if request.url.path.endswith(SSE_PATH_SUFFIX):
+        return "sse-public"
 
     if not _is_auth_required():
         return "auth-disabled"

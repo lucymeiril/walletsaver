@@ -383,7 +383,7 @@ export default function CategoryComparePage() {
       {!loading && error && (
         <div className={s.errorState}>
           <div className={s.errorIcon}>⚠️</div>
-          <div className={s.errorText}>카테고리 비교 데이터를 불러오는 중입니다</div>
+          <div className={s.errorText}>데이터를 불러오는 데 실패했습니다</div>
           <button className={s.retryBtn} onClick={fetchData}>
             다시 시도
           </button>
