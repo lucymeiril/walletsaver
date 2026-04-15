@@ -1,9 +1,10 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import {
   LayoutDashboard, Package, DollarSign,
-  FolderTree, BarChart3, Menu, X, Database, Inbox,
+  FolderTree, BarChart3, Menu, X, Database, Inbox, LogOut,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { logout } from '../stores/authStore';
 import s from './AdminLayout.module.css';
 
 const NAV = [
@@ -56,6 +57,11 @@ export default function AdminLayout() {
         <button className={s.collapseBtn} onClick={() => setCollapsed(!collapsed)}>
           {collapsed ? <Menu size={18} /> : <X size={18} />}
           {!collapsed && <span>접기</span>}
+        </button>
+
+        <button className={s.logoutBtn} onClick={logout} title="로그아웃">
+          <LogOut size={18} />
+          {!collapsed && <span>로그아웃</span>}
         </button>
       </aside>
 

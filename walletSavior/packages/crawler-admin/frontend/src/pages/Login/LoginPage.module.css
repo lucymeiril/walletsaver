@@ -1,0 +1,116 @@
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  padding: var(--space-md);
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xxl) var(--space-xl);
+  box-shadow: var(--shadow-xl);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.logoIcon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto var(--space-md);
+  background: var(--accent);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bg);
+  font-weight: var(--fw-black);
+  font-size: var(--fs-xl);
+}
+
+.title {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  margin-bottom: var(--space-xs);
+}
+
+.subtitle {
+  font-size: var(--fs-sm);
+  color: var(--text3);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.field label {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--text2);
+  margin-bottom: var(--space-xs);
+}
+
+.field input {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: var(--fs-base);
+  transition: border-color var(--dur) var(--ease);
+}
+
+.field input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.field input::placeholder {
+  color: var(--text3);
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 12px;
+  margin-top: var(--space-sm);
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: var(--fw-semi);
+  font-size: var(--fs-base);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.submitBtn:hover {
+  opacity: 0.9;
+}
+
+.submitBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error {
+  padding: 10px 14px;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: var(--radius-sm);
+  color: var(--red);
+  font-size: var(--fs-sm);
+  text-align: center;
+}

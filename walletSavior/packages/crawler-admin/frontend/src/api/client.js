@@ -1,3 +1,5 @@
+import { getApiKey, logout as authLogout } from '../stores/authStore';
+
 const API_BASE = '/api';
 const FETCH_TIMEOUT_MS = 30000;
 
@@ -18,6 +20,13 @@ function getHttpErrorMessage(status) {
   return HTTP_ERROR_MESSAGES[status] || `서버 오류가 발생했습니다 (HTTP ${status})`;
 }
 
+// ─── 인증 헤더 주입 ───
+function injectAuth(headers = {}) {
+  const key = getApiKey();
+  if (!key) return headers;
+  return { ...headers, 'X-API-Key': key };
+}
+
 /**
  * AbortController 기반 fetch — 타임아웃 및 컴포넌트 언마운트 시 정리 지원.
  * @param {string} url
@@ -25,6 +34,8 @@ function getHttpErrorMessage(status) {
  */
 async function fetchWithTimeout(url, options = {}) {
   const { timeoutMs = FETCH_TIMEOUT_MS, signal: externalSignal, ...fetchOptions } = options;
+  fetchOptions.headers = injectAuth(fetchOptions.headers);
+
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -39,6 +50,10 @@ async function fetchWithTimeout(url, options = {}) {
 
   try {
     const resp = await fetch(url, { ...fetchOptions, signal: controller.signal });
+    if (resp.status === 401 || resp.status === 403) {
+      authLogout();
+      throw new Error(getHttpErrorMessage(resp.status));
+    }
     if (!resp.ok) throw new Error(getHttpErrorMessage(resp.status));
     return resp;
   } catch (err) {
@@ -62,7 +77,7 @@ const _etagCache = new Map();
  */
 async function fetchWithETag(url, options = {}) {
   const cached = _etagCache.get(url);
-  const headers = { ...options.headers };
+  const headers = injectAuth({ ...options.headers });
   if (cached?.etag) {
     headers['If-None-Match'] = cached.etag;
   }
@@ -71,6 +86,11 @@ async function fetchWithETag(url, options = {}) {
 
   if (resp.status === 304 && cached?.data) {
     return cached.data;
+  }
+
+  if (resp.status === 401 || resp.status === 403) {
+    authLogout();
+    throw new Error(getHttpErrorMessage(resp.status));
   }
 
   if (!resp.ok) throw new Error(getHttpErrorMessage(resp.status));

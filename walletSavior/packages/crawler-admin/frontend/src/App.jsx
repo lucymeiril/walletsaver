@@ -1,14 +1,31 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useSyncExternalStore } from 'react';
 import ErrorBoundary from './components/ErrorBoundary';
 import AdminLayout from './components/AdminLayout';
+import LoginPage from './pages/Login/LoginPage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Crawlers from './pages/Crawlers/Crawlers';
 import Plugins from './pages/Plugins/Plugins';
 import Logs from './pages/Logs/Logs';
 import Schedule from './pages/Schedule/Schedule';
 import DataReviewPage from './pages/DataReview/DataReviewPage';
+import { isAuthenticated, subscribe } from './stores/authStore';
+
+function useAuth() {
+  return useSyncExternalStore(subscribe, isAuthenticated);
+}
 
 export default function App() {
+  const authed = useAuth();
+
+  if (!authed) {
+    return (
+      <ErrorBoundary>
+        <LoginPage />
+      </ErrorBoundary>
+    );
+  }
+
   return (
     <BrowserRouter>
       <ErrorBoundary>

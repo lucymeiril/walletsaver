@@ -1,7 +1,9 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useSyncExternalStore } from 'react';
 import AdminLayout from './layouts/AdminLayout';
 import ErrorBoundary from './components/ErrorBoundary';
+import LoginPage from './pages/Login/LoginPage';
+import { isAuthenticated, subscribe } from './stores/authStore';
 
 const Dashboard          = lazy(() => import('./pages/Dashboard/Dashboard'));
 const Products           = lazy(() => import('./pages/Products/Products'));
@@ -31,7 +33,21 @@ function PageBoundary({ children }) {
   );
 }
 
+function useAuth() {
+  return useSyncExternalStore(subscribe, isAuthenticated);
+}
+
 export default function App() {
+  const authed = useAuth();
+
+  if (!authed) {
+    return (
+      <ErrorBoundary message="애플리케이션에 심각한 오류가 발생했습니다.">
+        <LoginPage />
+      </ErrorBoundary>
+    );
+  }
+
   return (
     <ErrorBoundary message="애플리케이션에 심각한 오류가 발생했습니다.">
       <Suspense fallback={<Loader />}>

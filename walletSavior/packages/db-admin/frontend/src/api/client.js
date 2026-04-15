@@ -1,13 +1,53 @@
+import { getAccessToken, logout as authLogout } from '../stores/authStore';
+
 const API_BASE = '/api';
 
 // ─── Timeout defaults (ms) ───
 const DEFAULT_TIMEOUT = 15000;
 const LONG_TIMEOUT    = 45000;
 
+// ─── 인증 헤더 주입 ───
+function injectAuth(options = {}) {
+  const token = getAccessToken();
+  if (!token) return options;
+  return {
+    ...options,
+    headers: {
+      ...options.headers,
+      Authorization: `Bearer ${token}`,
+    },
+  };
+}
+
+// ─── 401 응답 시 토큰 갱신 시도, 실패하면 로그아웃 ───
+async function handleUnauthorized(resp, url, options, timeoutMs, fetcher) {
+  if (resp.status !== 401) return resp;
+
+  // 토큰 갱신 시도
+  const refreshToken = sessionStorage.getItem('db_admin_refresh_token');
+  if (!refreshToken) { authLogout(); throw new Error('인증이 만료되었습니다.'); }
+
+  const refreshResp = await fetch(`${API_BASE}/auth/refresh`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ refresh_token: refreshToken }),
+  });
+
+  if (!refreshResp.ok) { authLogout(); throw new Error('인증이 만료되었습니다.'); }
+
+  const data = await refreshResp.json();
+  sessionStorage.setItem('db_admin_access_token', data.access_token);
+  if (data.refresh_token) sessionStorage.setItem('db_admin_refresh_token', data.refresh_token);
+
+  // 갱신된 토큰으로 재시도
+  return fetcher(url, injectAuth(options), timeoutMs);
+}
+
 // ─── Core: fetch with AbortController timeout ───
 function fetchWithTimeout(url, options = {}, timeoutMs = DEFAULT_TIMEOUT) {
+  const authedOptions = injectAuth(options);
   const controller = new AbortController();
-  const existingSignal = options.signal;
+  const existingSignal = authedOptions.signal;
 
   if (existingSignal) {
     existingSignal.addEventListener('abort', () => controller.abort(existingSignal.reason));
@@ -18,8 +58,15 @@ function fetchWithTimeout(url, options = {}, timeoutMs = DEFAULT_TIMEOUT) {
     timeoutMs
   );
 
-  return fetch(url, { ...options, signal: controller.signal })
-    .finally(() => clearTimeout(timer));
+  const rawFetch = (u, o, t) => {
+    const c = new AbortController();
+    const tm = setTimeout(() => c.abort(), t);
+    return fetch(u, { ...o, signal: c.signal }).finally(() => clearTimeout(tm));
+  };
+
+  return fetch(url, { ...authedOptions, signal: controller.signal })
+    .finally(() => clearTimeout(timer))
+    .then(resp => handleUnauthorized(resp, url, options, timeoutMs, rawFetch));
 }
 
 // ─── Retry with exponential backoff (network errors + 5xx only) ───
