@@ -61,7 +61,7 @@ export default function App() {
       if (payload && !isTokenExpiringSoon(token, 0)) {
         api.setToken(token);
         login({ id: parseInt(payload.sub), email: payload.email, nickname: payload.nickname || payload.email?.split('@')[0], role: payload.role });
-        authService.getProfile().then((profile) => login({ ...profile })).catch(() => {});
+        authService.getProfile().then((profile) => login({ ...profile })).catch((err) => console.error('프로필 조회 실패:', err));
       } else {
         api.refreshToken().then((ok) => {
           if (ok) {
@@ -69,7 +69,7 @@ export default function App() {
             const p = decodeTokenPayload(newToken);
             if (p) {
               login({ id: parseInt(p.sub), email: p.email, nickname: p.nickname || p.email?.split('@')[0], role: p.role });
-              authService.getProfile().then((profile) => login({ ...profile })).catch(() => {});
+              authService.getProfile().then((profile) => login({ ...profile })).catch((err) => console.error('프로필 조회 실패:', err));
             }
           }
         });

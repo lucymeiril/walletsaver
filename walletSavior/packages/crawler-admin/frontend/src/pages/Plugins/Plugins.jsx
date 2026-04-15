@@ -5,11 +5,11 @@ import styles from './Plugins.module.css';
 
 const CATEGORIES = [
   { key: 'all', label: '전체' },
-  { key: '마트', label: '마트' },
-  { key: '핫딜', label: '핫딜' },
-  { key: '쇼핑', label: '쇼핑' },
-  { key: '공공', label: '공공' },
-  { key: '위치', label: '위치' },
+  { key: 'mart', label: '마트' },
+  { key: 'hotdeal', label: '핫딜' },
+  { key: 'shopping', label: '쇼핑' },
+  { key: 'public', label: '공공' },
+  { key: 'location', label: '위치' },
 ];
 
 const DIFFICULTY_LABELS = {

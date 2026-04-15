@@ -40,7 +40,7 @@ export default function AuthCallback() {
       // Fetch full profile to get accurate nickname
       authService.getProfile().then((profile) => {
         login({ ...profile });
-      }).catch(() => {});
+      }).catch((err) => console.error('프로필 조회 실패:', err));
 
       addToast('로그인 되었습니다! 🎉', 'success');
       navigate('/', { replace: true });

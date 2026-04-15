@@ -25,7 +25,7 @@ export default function ProductPicker({ selected, onChange }) {
     fetch(`/api/search/autocomplete?q=${encodeURIComponent(q)}`)
       .then((r) => r.json())
       .then((res) => {
-        const data = Array.isArray(res) ? res : res.data || [];
+        const data = Array.isArray(res) ? res : res?.data?.products || res?.data || [];
         setResults(data.slice(0, 5));
         setOpen(true);
       })

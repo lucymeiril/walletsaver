@@ -360,6 +360,13 @@ const HotdealDetailModal = React.memo(function HotdealDetailModal({ item, votes,
     }
   };
 
+  // Escape 키로 모달 닫기
+  useEffect(() => {
+    const handleKeyDown = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   return (
     <div className={s.modalOverlay} onClick={onClose} role="presentation">
       <div className={s.modal} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="핫딜 상세">

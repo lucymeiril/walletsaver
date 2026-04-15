@@ -178,7 +178,7 @@ const SearchAutocomplete = memo(function SearchAutocomplete({
   /* ── product click ── */
   const handleProductClick = useCallback(
     (p) => {
-      if (p.id) searchService.trackKeyword(p.id);
+      // Product clicks should not be tracked as keyword searches
 
       if (onProductClick) {
         onProductClick(p);

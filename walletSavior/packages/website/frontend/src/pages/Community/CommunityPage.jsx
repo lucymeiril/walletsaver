@@ -664,19 +664,20 @@ const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, boa
   const [coldVotes, setColdVotes] = useState(post.coldVotes || post.not_votes || 0);
   const { isLoggedIn, addToast } = useStore();
 
+  // Escape 키로 모달 닫기
+  useEffect(() => {
+    const handleKeyDown = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   useEffect(() => {
     setLoadingComments(true);
     fetch(`/api/posts/${post.id}/comments`)
       .then(r => r.json())
       .then(res => {
         const data = res.data || [];
-        setComments(data.map(c => ({
-          id: c.id,
-          author: c.author_nickname,
-          author_id: c.author_id,
-          text: c.content,
-          time: formatRelativeTime(c.created_at),
-        })));
+        setComments(data);
       })
       .catch(console.error)
       .finally(() => setLoadingComments(false));
@@ -700,14 +701,7 @@ const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, boa
       });
       if (resp.ok) {
         const res = await resp.json();
-        const c = res.data;
-        setComments(prev => [...prev, {
-          id: c.id,
-          author: c.author_nickname,
-          author_id: c.author_id,
-          text: c.content,
-          time: '방금 전',
-        }]);
+        setComments(prev => [...prev, res.data]);
         setNewComment('');
       } else {
         addToast('댓글 작성에 실패했습니다.', 'error');
@@ -768,9 +762,9 @@ const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, boa
   const isAuthor = user && (post.author_id === user.id);
 
   return (
-    <div className={s.modalOverlay} onClick={onClose}>
-      <div className={s.modal} onClick={e => e.stopPropagation()}>
-        <button className={s.modalClose} onClick={onClose}><X size={20} /></button>
+    <div className={s.modalOverlay} onClick={onClose} onKeyDown={e => { if (e.key === 'Escape') onClose(); }} role="presentation">
+      <div className={s.modal} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="게시글 상세">
+        <button className={s.modalClose} onClick={onClose} aria-label="닫기"><X size={20} /></button>
 
         <div className={s.modalBody}>
           <div className={s.modalMeta}>
@@ -848,9 +842,9 @@ const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, boa
             {!loadingComments && comments.length === 0 && <p className={s.noComment}>아직 댓글이 없습니다.</p>}
             {comments.map(c => (
               <div key={c.id} className={s.comment}>
-                <strong>{c.author}</strong>
-                <span className={s.commentTime}>{c.time}</span>
-                <p>{c.text}</p>
+                <strong>{c.author_nickname || c.author}</strong>
+                <span className={s.commentTime}>{c.created_at ? formatRelativeTime(c.created_at) : c.time}</span>
+                <p>{c.content || c.text}</p>
               </div>
             ))}
           </div>

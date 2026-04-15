@@ -136,7 +136,7 @@ export default function HomePage() {
       fetch('/api/hotdeals?per_page=10', { signal }).then(r => r.json()),
       fetch('/api/products/category-summary?per_page=8', { signal }).then(r => r.json()),
       fetch('/api/products/search?per_page=50', { signal }).then(r => r.json()),
-      fetch('/api/posts?board=hotdeal&per_page=5', { signal }).then(r => r.json()),
+      fetch('/api/posts?post_type=hotdeal&per_page=5', { signal }).then(r => r.json()),
       fetch(`/api/gas/nearby?${gasQuery}`, { signal }).then(r => r.json()),
       fetch('/api/products/trending', { signal }).then(r => r.json()),
       searchService.trending(8),

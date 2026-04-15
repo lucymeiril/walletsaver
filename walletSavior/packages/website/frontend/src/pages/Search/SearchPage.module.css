@@ -149,7 +149,24 @@
 .pagination {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: var(--space-sm);
   padding: var(--space-md) 0;
+}
+
+.pageBtn {
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 6px);
+  background: var(--bg2, #fff);
+  color: var(--text1);
+  cursor: pointer;
+  font-size: var(--fs-xs);
+}
+
+.pageBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .pageInfo {

@@ -55,6 +55,8 @@ export default function SearchPage() {
     try {
       const params = { sort };
       if (activeType !== 'all') params.type = activeType;
+      const page = searchParams.get('page');
+      if (page) params.page = page;
       const res = await searchService.search(query, params);
       setResults(res.data || []);
       setMeta(res.meta || null);
@@ -64,7 +66,7 @@ export default function SearchPage() {
     } finally {
       setLoading(false);
     }
-  }, [query, activeType, sort]);
+  }, [query, activeType, sort, searchParams]);
 
   useEffect(() => {
     fetchResults();
@@ -93,8 +95,8 @@ export default function SearchPage() {
   const handleItemClick = (item) => {
     if (item.type === 'product') openProductModal(item);
     else if (item.type === 'mart') openMartModal(item);
-    else if (item.type === 'hotdeal') navigate('/hotdeal');
-    else if (item.type === 'post') navigate('/community');
+    else if (item.type === 'hotdeal') navigate('/hotdeal', { state: { openDealId: item.id } });
+    else if (item.type === 'post') navigate('/community', { state: { openPostId: item.id } });
   };
 
   const categorized = {};
@@ -197,9 +199,31 @@ export default function SearchPage() {
 
             {meta && meta.total_pages > 1 && (
               <div className={s.pagination}>
+                <button
+                  className={s.pageBtn}
+                  disabled={meta.page <= 1}
+                  onClick={() => {
+                    const params = new URLSearchParams(searchParams);
+                    params.set('page', meta.page - 1);
+                    setSearchParams(params);
+                  }}
+                >
+                  ← 이전
+                </button>
                 <span className={s.pageInfo}>
                   {meta.page} / {meta.total_pages} 페이지 (총 {meta.total}건)
                 </span>
+                <button
+                  className={s.pageBtn}
+                  disabled={meta.page >= meta.total_pages}
+                  onClick={() => {
+                    const params = new URLSearchParams(searchParams);
+                    params.set('page', meta.page + 1);
+                    setSearchParams(params);
+                  }}
+                >
+                  다음 →
+                </button>
               </div>
             )}
           </>
