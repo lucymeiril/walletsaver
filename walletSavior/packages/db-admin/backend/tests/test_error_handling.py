@@ -5,6 +5,8 @@ from fastapi.testclient import TestClient
 
 @pytest.fixture
 def client(monkeypatch):
+    # Disable auth for error handling tests (these test error formatting, not auth)
+    monkeypatch.setenv("REQUIRE_AUTH", "false")
     # Ensure config has needed attributes
     from config import settings
     if not hasattr(settings, "CORS_ALLOWED_ORIGINS"):

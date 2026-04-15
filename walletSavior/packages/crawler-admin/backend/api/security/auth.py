@@ -27,8 +27,11 @@ def _get_api_key() -> str:
 
 
 def _is_auth_required() -> bool:
-    """Check if authentication is enabled via REQUIRE_AUTH env var."""
-    return os.getenv("REQUIRE_AUTH", "false").lower() in ("true", "1", "yes")
+    """Check if authentication is enabled via REQUIRE_AUTH env var.
+
+    보안: 기본값 true — 관리 API는 인증 필수 (개발 시 REQUIRE_AUTH=false 로 비활성화)
+    """
+    return os.getenv("REQUIRE_AUTH", "true").lower() in ("true", "1", "yes")
 
 
 async def verify_api_key(
@@ -39,7 +42,7 @@ async def verify_api_key(
     Validate the X-API-Key header against the server-side secret.
 
     Uses hmac.compare_digest for constant-time comparison to prevent
-    timing attacks. Auth can be disabled via REQUIRE_AUTH=false (default).
+    timing attacks. Auth is enabled by default (REQUIRE_AUTH=true).
     """
     if request.url.path in PUBLIC_PATHS:
         return "public"

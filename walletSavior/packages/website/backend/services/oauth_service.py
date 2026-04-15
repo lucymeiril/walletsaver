@@ -130,19 +130,24 @@ async def exchange_code_for_token(provider: str, code: str) -> dict:
     """인가 코드를 액세스 토큰으로 교환"""
     config = OAuthConfig.get(provider)
     redirect_base = os.getenv("OAUTH_REDIRECT_BASE", "http://localhost:8000")
-    async with httpx.AsyncClient() as client:
-        response = await client.post(
-            config["token_url"],
-            data={
-                "grant_type": "authorization_code",
-                "client_id": config["client_id"],
-                "client_secret": config["client_secret"],
-                "code": code,
-                "redirect_uri": f"{redirect_base}/api/auth/oauth/{provider}/callback",
-            },
-        )
-        response.raise_for_status()
-        return response.json()
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.post(
+                config["token_url"],
+                data={
+                    "grant_type": "authorization_code",
+                    "client_id": config["client_id"],
+                    "client_secret": config["client_secret"],
+                    "code": code,
+                    "redirect_uri": f"{redirect_base}/api/auth/oauth/{provider}/callback",
+                },
+            )
+            response.raise_for_status()
+            return response.json()
+    except httpx.TimeoutException:
+        raise ValueError(f"OAuth token exchange timed out for {provider}")
+    except httpx.ConnectError:
+        raise ValueError(f"OAuth token endpoint unreachable for {provider}")
 
 
 async def get_user_info(provider: str, access_token: str) -> OAuthUserInfo:
@@ -150,10 +155,15 @@ async def get_user_info(provider: str, access_token: str) -> OAuthUserInfo:
     config = OAuthConfig.get(provider)
     headers = {"Authorization": f"Bearer {access_token}"}
 
-    async with httpx.AsyncClient() as client:
-        response = await client.get(config["userinfo_url"], headers=headers)
-        response.raise_for_status()
-        data = response.json()
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.get(config["userinfo_url"], headers=headers)
+            response.raise_for_status()
+            data = response.json()
+    except httpx.TimeoutException:
+        raise ValueError(f"OAuth userinfo request timed out for {provider}")
+    except httpx.ConnectError:
+        raise ValueError(f"OAuth userinfo endpoint unreachable for {provider}")
 
     if provider == "google":
         return OAuthUserInfo(

@@ -11,6 +11,8 @@ def _make_app(global_limit="200/minute", destructive_limit="5/minute"):
     """Create a fresh app with specified rate limits."""
     os.environ["RATE_LIMIT_GLOBAL"] = global_limit
     os.environ["RATE_LIMIT_DESTRUCTIVE"] = destructive_limit
+    # Disable auth for rate limiting tests (these test rate limits, not auth)
+    os.environ["REQUIRE_AUTH"] = "false"
     for mod in list(sys.modules):
         if mod.startswith(("config", "api.")):
             del sys.modules[mod]

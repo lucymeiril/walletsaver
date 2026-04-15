@@ -34,7 +34,8 @@ class Settings:
     DB_POOL_RECYCLE: int = int(os.getenv("DB_POOL_RECYCLE", "1800"))
 
     # ── Auth 설정 ──
-    REQUIRE_AUTH: bool = os.getenv("REQUIRE_AUTH", "false").lower() == "true"
+    # 보안: 기본값 true — 관리 패널은 인증 필수 (개발 시 REQUIRE_AUTH=false 로 비활성화)
+    REQUIRE_AUTH: bool = os.getenv("REQUIRE_AUTH", "true").lower() == "true"
     JWT_SECRET: str = os.getenv("JWT_SECRET", "CHANGE-ME-IN-PRODUCTION-32-chars!")
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("JWT_ACCESS_EXPIRE_MIN", "60"))

@@ -1,5 +1,7 @@
 """API route 테스트."""
 
+import os
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -7,7 +9,8 @@ from api.app import create_app
 
 
 @pytest.fixture
-def client():
+def client(monkeypatch):
+    monkeypatch.setenv("REQUIRE_AUTH", "false")
     app = create_app()
     return TestClient(app)
 

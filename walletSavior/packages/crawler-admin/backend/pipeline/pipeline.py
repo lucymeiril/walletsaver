@@ -29,8 +29,10 @@ from audit import audit_log, AuditEventType
 
 logger = logging.getLogger(__name__)
 
-# DB-Admin API endpoint (configurable)
-DB_ADMIN_API_URL = "http://localhost:8001/api/prices/bulk"
+# DB-Admin API endpoint (port 8002, configurable via env)
+DB_ADMIN_API_URL = os.getenv(
+    "DB_ADMIN_API_URL", "http://localhost:8002/api/prices/bulk"
+)
 
 # 대기열(Pending Ingestion) 설정
 INGESTION_API_URL = os.getenv(
