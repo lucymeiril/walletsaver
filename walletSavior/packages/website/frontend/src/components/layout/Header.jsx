@@ -1,7 +1,8 @@
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useCallback, useMemo, memo } from 'react';
-import { Wallet, Bell, User, X, Search, Sun, Moon } from 'lucide-react';
+import { useState, useEffect, useCallback, useMemo, useRef, memo } from 'react';
+import { Wallet, Bell, User, X, Search, Sun, Moon, LogOut, Heart, BellRing, ChevronDown } from 'lucide-react';
 import useStore from '../../stores/appStore';
+import { authService } from '../../services/authService';
 import SearchAutocomplete from '../search/SearchAutocomplete';
 import s from './Header.module.css';
 
@@ -20,16 +21,21 @@ const Header = memo(function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
 
   const isLoggedIn = useStore((st) => st.isLoggedIn);
+  const user = useStore((st) => st.user);
   const logout = useStore((st) => st.logout);
+  const addToast = useStore((st) => st.addToast);
   const notifications = useStore((st) => st.notifications);
   const theme = useStore((st) => st.theme);
   const toggleTheme = useStore((st) => st.toggleTheme);
   const openLoginModal = useStore((st) => st.openLoginModal);
   const location = useLocation();
   const navigate = useNavigate();
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef(null);
 
   useEffect(() => {
     setMobileOpen(false);
+    setProfileOpen(false);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -44,6 +50,24 @@ const Header = memo(function Header() {
   }, [mobileOpen]);
 
   const openLogin = useCallback(() => openLoginModal(), [openLoginModal]);
+
+  // Close profile dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setProfileOpen(false);
+      }
+    };
+    if (profileOpen) document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [profileOpen]);
+
+  const handleLogout = useCallback(async () => {
+    try { await authService.logout(); } catch { /* ignore */ }
+    logout();
+    addToast('로그아웃 되었습니다', 'info');
+    setProfileOpen(false);
+  }, [logout, addToast]);
 
   const unreadCount = useMemo(
     () => notifications?.filter(n => !n.read).length || 0,
@@ -61,7 +85,12 @@ const Header = memo(function Header() {
   const toggleMobile = useCallback(() => setMobileOpen(prev => !prev), []);
   const closeMobile = useCallback(() => setMobileOpen(false), []);
 
-  const handleDrawerLogout = useCallback(() => { logout(); setMobileOpen(false); }, [logout]);
+  const handleDrawerLogout = useCallback(async () => {
+    try { await authService.logout(); } catch { /* ignore */ }
+    logout();
+    addToast('로그아웃 되었습니다', 'info');
+    setMobileOpen(false);
+  }, [logout, addToast]);
   const handleDrawerLogin = useCallback(() => { openLoginModal(); setMobileOpen(false); }, [openLoginModal]);
 
   return (
@@ -110,9 +139,34 @@ const Header = memo(function Header() {
             </button>
 
             {isLoggedIn ? (
-              <button className={s.avatarBtn} onClick={logout} aria-label="프로필">
-                <User size={18} />
-              </button>
+              <div className={s.profileWrap} ref={profileRef}>
+                <button className={s.avatarBtn} onClick={() => setProfileOpen((p) => !p)} aria-label="프로필 메뉴">
+                  <span className={s.avatarInitial}>{(user?.nickname || user?.email || 'U').charAt(0).toUpperCase()}</span>
+                  <ChevronDown size={14} className={`${s.chevron} ${profileOpen ? s.chevronOpen : ''}`} />
+                </button>
+                {profileOpen && (
+                  <div className={s.profileDropdown}>
+                    <div className={s.profileInfo}>
+                      <span className={s.profileName}>{user?.nickname || user?.email}</span>
+                      {user?.email && <span className={s.profileEmail}>{user.email}</span>}
+                    </div>
+                    <div className={s.profileDivider} />
+                    <button className={s.profileItem} onClick={() => { setProfileOpen(false); addToast('프로필 페이지 준비 중입니다', 'info'); }}>
+                      <User size={16} /> 프로필
+                    </button>
+                    <button className={s.profileItem} onClick={() => { setProfileOpen(false); navigate('/'); addToast('찜 목록 페이지 준비 중입니다', 'info'); }}>
+                      <Heart size={16} /> 찜 목록
+                    </button>
+                    <button className={s.profileItem} onClick={() => { setProfileOpen(false); navigate('/'); addToast('가격 알림 페이지 준비 중입니다', 'info'); }}>
+                      <BellRing size={16} /> 가격 알림
+                    </button>
+                    <div className={s.profileDivider} />
+                    <button className={s.profileItem} onClick={handleLogout}>
+                      <LogOut size={16} /> 로그아웃
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : (
               <button className={s.loginBtn} onClick={openLogin}>로그인</button>
             )}

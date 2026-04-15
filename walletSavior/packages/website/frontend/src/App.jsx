@@ -6,6 +6,9 @@ import BottomNav from './components/layout/BottomNav';
 import ToastContainer from './components/common/ToastContainer';
 import LoginModal from './components/modals/LoginModal';
 import useStore from './stores/appStore';
+import { api } from './services/api';
+import { authService } from './services/authService';
+import { decodeTokenPayload, isTokenExpiringSoon } from './utils/tokenUtils';
 import ShoppingListPanel from './components/common/ShoppingListPanel';
 import ModalManager from './components/modals/ModalManager';
 import ErrorBoundary from './components/common/ErrorBoundary';
@@ -19,6 +22,7 @@ const MartPage      = lazy(() => import('./pages/Mart/MartPage'));
 const LocalPage     = lazy(() => import('./pages/Local/LocalPage'));
 const CommunityPage = lazy(() => import('./pages/Community/CommunityPage'));
 const SearchPage    = lazy(() => import('./pages/Search/SearchPage'));
+const AuthCallback  = lazy(() => import('./pages/Auth/AuthCallback'));
 const NotFoundPage  = lazy(() => import('./pages/NotFound/NotFoundPage'));
 
 function PageLoader() {
@@ -43,10 +47,35 @@ function Guarded({ children, name }) {
 
 export default function App() {
   const theme = useStore((s) => s.theme);
+  const login = useStore((s) => s.login);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
+
+  // Restore session from stored token on app mount
+  useEffect(() => {
+    const token = sessionStorage.getItem('access_token');
+    if (token) {
+      const payload = decodeTokenPayload(token);
+      if (payload && !isTokenExpiringSoon(token, 0)) {
+        api.setToken(token);
+        login({ id: parseInt(payload.sub), email: payload.email, nickname: payload.nickname || payload.email?.split('@')[0], role: payload.role });
+        authService.getProfile().then((profile) => login({ ...profile })).catch(() => {});
+      } else {
+        api.refreshToken().then((ok) => {
+          if (ok) {
+            const newToken = sessionStorage.getItem('access_token');
+            const p = decodeTokenPayload(newToken);
+            if (p) {
+              login({ id: parseInt(p.sub), email: p.email, nickname: p.nickname || p.email?.split('@')[0], role: p.role });
+              authService.getProfile().then((profile) => login({ ...profile })).catch(() => {});
+            }
+          }
+        });
+      }
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -64,6 +93,7 @@ export default function App() {
               <Route path="/mart"      element={<Guarded name="마트"><MartPage /></Guarded>} />
               <Route path="/local"     element={<Guarded name="내주변"><LocalPage /></Guarded>} />
               <Route path="/community" element={<Guarded name="커뮤니티"><CommunityPage /></Guarded>} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Suspense>
