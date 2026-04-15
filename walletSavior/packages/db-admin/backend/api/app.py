@@ -56,7 +56,14 @@ async def lifespan(app: FastAPI):
         _lifecycle_logger.critical("Startup: database unreachable — %s", e)
         raise
 
-    # 4. Log startup summary
+    # 4. Seed default admin account if none exists
+    try:
+        from services.seed import seed_default_admin
+        seed_default_admin()
+    except Exception as e:
+        _lifecycle_logger.warning("Startup: admin seed failed — %s", e)
+
+    # 5. Log startup summary
     _lifecycle_logger.info(
         "Startup complete — host=%s port=%s debug=%s",
         settings.API_HOST, settings.API_PORT, settings.DEBUG,
@@ -67,7 +74,7 @@ async def lifespan(app: FastAPI):
     # ── Shutdown ──
     _lifecycle_logger.info("Shutdown: closing database connections")
 
-    # 5. Dispose engine via reset_engine (closes all pooled connections + clears singleton)
+    # 6. Dispose engine via reset_engine (closes all pooled connections + clears singleton)
     try:
         from services.base import reset_engine
         reset_engine()
@@ -75,7 +82,7 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         _lifecycle_logger.error("Shutdown: engine disposal failed — %s", e)
 
-    # 6. Flush all log handlers
+    # 7. Flush all log handlers
     for handler in logging.root.handlers:
         try:
             handler.flush()

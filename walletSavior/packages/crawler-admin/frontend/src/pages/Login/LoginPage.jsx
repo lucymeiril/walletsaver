@@ -6,6 +6,7 @@ export default function LoginPage() {
   const [apiKey, setApiKey] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const isDev = import.meta.env.DEV;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,10 +41,15 @@ export default function LoginPage() {
               type="password"
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
-              placeholder="API 키를 입력하세요"
+              placeholder={isDev ? 'walletsavior-dev-crawler-key-2025' : 'API 키를 입력하세요'}
               required
               autoFocus
             />
+            {isDev && (
+              <small style={{ color: '#888', marginTop: 4, display: 'block' }}>
+                개발 키: walletsavior-dev-crawler-key-2025
+              </small>
+            )}
           </div>
 
           <button type="submit" className={s.submitBtn} disabled={loading}>

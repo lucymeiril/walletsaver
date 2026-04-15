@@ -266,6 +266,51 @@ def _default_category_summary():
     ]
 
 
+@router.get("/prices")
+async def get_product_prices(
+    request: Request,
+    q: str = Query("", description="상품명 필터", max_length=200),
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=1, le=100),
+):
+    """상품별 가격 목록 — 가격 비교 페이지용."""
+    storage = request.app.state.storage
+    if storage is None:
+        return ApiResponse(data=[], meta=PaginationMeta(page=page, per_page=per_page, total=0, total_pages=0))
+
+    try:
+        products = storage.search_products(q, page=page, per_page=per_page)
+        items = []
+        if isinstance(products, dict) and "items" in products:
+            items = products["items"]
+        elif isinstance(products, list):
+            items = products
+
+        price_data = []
+        for p in items:
+            price = _safe_price(p)
+            if price > 0:
+                price_data.append({
+                    "id": p.get("id"),
+                    "name": p.get("name", ""),
+                    "price": price,
+                    "source": p.get("source") or p.get("store") or "",
+                    "category": p.get("category_id") or p.get("category") or "",
+                    "unit": p.get("unit") or "",
+                })
+
+        total = len(price_data)
+        return ApiResponse(
+            data=price_data,
+            meta=PaginationMeta(
+                page=page, per_page=per_page, total=total,
+                total_pages=math.ceil(total / per_page) if per_page else 0,
+            ),
+        )
+    except Exception:
+        return ApiResponse(data=[], meta=PaginationMeta(page=page, per_page=per_page, total=0, total_pages=0))
+
+
 @router.get("/by-source/{source_type}")
 async def get_products_by_source(
     request: Request,
