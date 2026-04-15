@@ -324,6 +324,7 @@ class Post(Base):
     product_id: Mapped[Optional[int]] = mapped_column(ForeignKey("products.id"))
     deal_price: Mapped[Optional[float]] = mapped_column(Float)
     deal_url: Mapped[Optional[str]] = mapped_column(String(500))
+    tags: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
     suggested_tier: Mapped[Optional[str]] = mapped_column(String(20))
     view_count: Mapped[int] = mapped_column(Integer, default=0)
     is_pinned: Mapped[bool] = mapped_column(Boolean, default=False)
@@ -646,4 +647,34 @@ class AuditLog(Base):
         Index("ix_audit_timestamp", "timestamp"),
         Index("ix_audit_entity", "entity_type", "entity_id"),
         Index("ix_audit_user", "user_id"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 핫딜 댓글 & 투표 (크롤링 핫딜용)
+# ═══════════════════════════════════════════════
+
+class HotDealComment(Base):
+    """크롤링 핫딜 댓글"""
+    __tablename__ = "hotdeal_comments"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    hotdeal_id: Mapped[int] = mapped_column(Integer, nullable=False, index=True)
+    author: Mapped[str] = mapped_column(String(100), default="익명")
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+
+class HotDealVote(Base):
+    """크롤링 핫딜 투표"""
+    __tablename__ = "hotdeal_votes"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    hotdeal_id: Mapped[int] = mapped_column(Integer, nullable=False, index=True)
+    vote_type: Mapped[str] = mapped_column(String(10), nullable=False)
+    client_ip: Mapped[str] = mapped_column(String(50), default="unknown")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    __table_args__ = (
+        Index("ix_hotdeal_votes_deal_type", "hotdeal_id", "vote_type"),
     )

@@ -7,6 +7,7 @@
 """
 
 from fastapi import APIRouter, Request, HTTPException
+from api.schemas.common import ApiResponse
 
 router = APIRouter()
 
@@ -20,7 +21,6 @@ async def list_crawlers(request: Request):
     """
     storage = request.app.state.storage
     if storage is None:
-        # DB 미연결: 기본 크롤러 목록만 반환 (상태 없음)
         default_crawlers = [
             {"name": "kamis",    "group": "public",  "status": "idle", "last_run": None, "items_count": 0, "description": "농산물유통정보 공공 API"},
             {"name": "opinet",   "group": "public",  "status": "idle", "last_run": None, "items_count": 0, "description": "오피넷 주유소 가격"},
@@ -31,7 +31,7 @@ async def list_crawlers(request: Request):
             {"name": "ppomppu",  "group": "hotdeals", "status": "idle", "last_run": None, "items_count": 0, "description": "뽐뿌 핫딜"},
             {"name": "eomisae",  "group": "hotdeals", "status": "idle", "last_run": None, "items_count": 0, "description": "어미새 핫딜"},
         ]
-        return default_crawlers
+        return ApiResponse(data=default_crawlers)
 
     # DB에서 크롤러별 최근 로그 조회
     logs = await storage.get_crawl_logs(limit=100)
@@ -42,7 +42,7 @@ async def list_crawlers(request: Request):
         if name not in latest:
             latest[name] = log
 
-    return [
+    return ApiResponse(data=[
         {
             "name": name,
             "status": log["status"],
@@ -51,7 +51,7 @@ async def list_crawlers(request: Request):
             "duration_seconds": log["duration_seconds"],
         }
         for name, log in latest.items()
-    ]
+    ])
 
 
 @router.post("/{name}/run")
@@ -63,10 +63,10 @@ async def run_crawler(request: Request, name: str):
     """
     engine = request.app.state.engine
     if engine is None:
-        return {
+        return ApiResponse(data={
             "status": "not_available",
             "message": f"크롤러 '{name}' 엔진이 아직 구현되지 않았습니다 (Phase 2 예정)",
-        }
+        })
 
     # TODO: engine.execute_crawler(name)
-    return {"status": "triggered", "crawler": name}
+    return ApiResponse(data={"status": "triggered", "crawler": name})

@@ -632,6 +632,7 @@ class TestSchemaIntegration:
             "pending_ingestions",
             "pending_categorizations", "category_corrections",
             "audit_logs",
+            "hotdeal_comments", "hotdeal_votes",
         }
         assert expected == set(inspector_tables)
 

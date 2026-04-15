@@ -6,9 +6,12 @@
     GET /api/recipes/compare      — 레시피 가격 비교
 """
 
+import logging
 import math
 from fastapi import APIRouter, Request, Query
 from api.schemas.common import ApiResponse
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -79,7 +82,7 @@ async def nearby_restaurants(
                 results = results[:limit]
                 return ApiResponse(data=results)
         except Exception:
-            pass
+            logger.exception("nearby restaurants DB query error")
 
     # DB 미연결 또는 조회 실패 시 빈 배열 반환
     return ApiResponse(data=[])
@@ -97,7 +100,7 @@ async def compare_recipes(request: Request):
             if recipes:
                 return ApiResponse(data=recipes)
         except Exception:
-            pass
+            logger.exception("recipe comparison query error")
 
     # 기본 레시피 비교 데이터 (DB 미연결 또는 데이터 없을 시)
     fallback = [

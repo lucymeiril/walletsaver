@@ -11,11 +11,17 @@
     POST   /api/users/me/alerts           — 알림 설정
 """
 
+import logging
 from fastapi import APIRouter, Request, Depends
 from pydantic import BaseModel
 from typing import Optional
+from sqlalchemy import select
 from api.schemas.common import ApiResponse
 from api.middleware.auth import require_auth, get_current_user
+from services.db import managed_session
+from storage.models import User
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -35,26 +41,64 @@ class AlertRequest(BaseModel):
 
 @router.get("/me")
 async def get_my_profile(user: dict = Depends(require_auth)):
-    """내 프로필."""
+    """내 프로필 — DB에서 실제 사용자 데이터 조회."""
+    try:
+        with managed_session() as session:
+            db_user = session.execute(
+                select(User).where(User.id == user["id"])
+            ).scalar_one_or_none()
+            if db_user:
+                return ApiResponse(data={
+                    "id": db_user.id,
+                    "email": db_user.email,
+                    "role": db_user.role.value if hasattr(db_user.role, "value") else db_user.role,
+                    "nickname": db_user.nickname,
+                    "profile_image": db_user.profile_image,
+                    "created_at": db_user.created_at.isoformat() if db_user.created_at else "",
+                })
+    except Exception:
+        logger.exception("Error fetching user profile for user_id=%s", user["id"])
+
     return ApiResponse(data={
         "id": user["id"],
         "email": user["email"],
         "role": user["role"],
         "nickname": user.get("nickname", user["email"].split("@")[0]),
-        "created_at": "2025-01-01T00:00:00",
+        "created_at": "",
     })
 
 
 @router.put("/me")
 async def update_my_profile(body: ProfileUpdate, user: dict = Depends(require_auth)):
-    """프로필 수정."""
+    """프로필 수정 — DB에 영속화."""
+    try:
+        with managed_session() as session:
+            db_user = session.execute(
+                select(User).where(User.id == user["id"])
+            ).scalar_one_or_none()
+            if db_user:
+                if body.nickname is not None:
+                    db_user.nickname = body.nickname
+                session.flush()
+                return ApiResponse(data={
+                    "id": db_user.id,
+                    "email": db_user.email,
+                    "role": db_user.role.value if hasattr(db_user.role, "value") else db_user.role,
+                    "nickname": db_user.nickname,
+                    "profile_image": db_user.profile_image,
+                    "created_at": db_user.created_at.isoformat() if db_user.created_at else "",
+                    "updated": True,
+                })
+    except Exception:
+        logger.exception("Error updating user profile for user_id=%s", user["id"])
+
     return ApiResponse(data={
         "id": user["id"],
         "email": user["email"],
         "role": user["role"],
         "nickname": body.nickname or user["email"].split("@")[0],
-        "created_at": "2025-01-01T00:00:00",
-        "updated": True,
+        "created_at": "",
+        "updated": False,
     })
 
 

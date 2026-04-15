@@ -8,11 +8,14 @@
     POST /api/search/track       — 검색 횟수 추적
 """
 
+import logging
 import math
 from fastapi import APIRouter, Request, Query
 from api.schemas.common import ApiResponse, PaginationMeta
 from api.utils.cache import TTLCache, RequestDeduplicator
 from api.middleware.rate_limit import limiter
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -89,7 +92,7 @@ async def search(
                             "image": None,
                         })
             except Exception:
-                pass
+                logger.exception("search: post query error for q=%r", q)
 
     # 마트/동네 검색
     if not type or type == "mart":
@@ -108,9 +111,9 @@ async def search(
                             "description": f"{data['name']} / {item.get('unit', '')}",
                             "price": item.get("price"),
                             "image": item.get("img"),
-                        })
+                         })
             except Exception:
-                pass
+                logger.exception("search: mart query error for q=%r", q)
 
     if sort == "popular":
         results.sort(key=lambda x: x.get("price") or 0, reverse=True)
@@ -193,4 +196,4 @@ async def track_search(
     storage = request.app.state.storage
     if storage:
         storage.increment_keyword_count(keyword_id)
-    return {"ok": True}
+    return ApiResponse(data={"ok": True})

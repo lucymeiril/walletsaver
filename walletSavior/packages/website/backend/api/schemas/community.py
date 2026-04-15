@@ -20,6 +20,8 @@ class PostCreate(BaseModel):
     original_price: Optional[float] = None
     url: Optional[str] = Field(None, max_length=2048)
     images: Optional[list[str]] = Field(None, max_length=10)
+    tags: Optional[list[str]] = Field(None, max_length=20)
+    product_ids: Optional[list[int]] = Field(None, max_length=10)
 
 
 class PostUpdate(BaseModel):

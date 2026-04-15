@@ -6,6 +6,7 @@ from sqlalchemy import select
 from api.schemas.auth import (
     UserRegister, UserLogin, TokenResponse, TokenRefresh, UserProfile
 )
+from api.schemas.common import ApiResponse
 from services.auth_service import (
     hash_password, verify_password, create_token_pair, decode_token
 )
@@ -102,7 +103,7 @@ async def refresh(request: Request, data: TokenRefresh):
 @router.post("/logout")
 async def logout():
     """로그아웃 — JWT는 클라이언트에서 토큰 삭제로 처리"""
-    return {"message": "로그아웃 되었습니다"}
+    return ApiResponse(data={"message": "로그아웃 되었습니다"})
 
 
 @router.get("/oauth/{provider}")

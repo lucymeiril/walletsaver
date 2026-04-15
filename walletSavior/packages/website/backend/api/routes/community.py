@@ -13,8 +13,6 @@
     GET    /api/posts/{id}/suggested-tier — 핫딜 적정가 제안
 """
 
-import os
-import sys
 import math
 import logging
 from datetime import datetime
@@ -35,14 +33,6 @@ router = APIRouter()
 _posts_list_cache = TTLCache(ttl_seconds=30, max_size=64)
 
 # ── DB 연결 설정 ──
-_db_admin_path = os.path.normpath(os.path.join(
-    os.path.dirname(__file__), "..", "..", "..", "..", "db-admin", "backend"
-))
-if _db_admin_path not in sys.path:
-    sys.path.insert(0, _db_admin_path)
-
-_db_engine = None
-_SessionLocal = None
 _use_db = False
 
 try:
@@ -56,16 +46,21 @@ try:
         PostType as DBPostType,
         VoteType as DBVoteType,
     )
-    from sqlalchemy import create_engine, func, desc
-    from sqlalchemy.orm import sessionmaker
+    from sqlalchemy import func, desc
+    from services.db import managed_session, get_engine
 
-    _db_path = os.path.join(_db_admin_path, "walletguardian.db")
-    _db_engine = create_engine(
-        f"sqlite:///{_db_path}",
-        connect_args={"check_same_thread": False},
-    )
-    Base.metadata.create_all(_db_engine)
-    _SessionLocal = sessionmaker(bind=_db_engine)
+    # WAL 일관성을 위해 shared engine 사용 (services/db.py에서 WAL pragma 설정)
+    _engine = get_engine()
+    Base.metadata.create_all(_engine)
+
+    # 기존 DB에 tags 컬럼이 없으면 추가
+    from sqlalchemy import text as _sa_text, inspect as _sa_inspect
+    _insp = _sa_inspect(_engine)
+    _post_cols = {c["name"] for c in _insp.get_columns("posts")} if _insp.has_table("posts") else set()
+    if "tags" not in _post_cols:
+        with _engine.connect() as _conn:
+            _conn.execute(_sa_text("ALTER TABLE posts ADD COLUMN tags JSON"))
+            _conn.commit()
 
     _use_db = True
 except Exception as _e:
@@ -95,6 +90,7 @@ def _post_to_dict(post: "PostModel") -> dict:
         "original_price": None,
         "url": post.deal_url,
         "images": [img.image_url for img in post.images] if post.images else [],
+        "tags": post.tags if hasattr(post, "tags") and post.tags else [],
         "created_at": post.created_at.isoformat() if post.created_at else "",
         "updated_at": post.updated_at.isoformat() if post.updated_at else "",
     }
@@ -140,13 +136,13 @@ async def list_posts(
     per_page: int = Query(20, ge=1, le=100),
 ):
     """게시글 목록."""
-    if _use_db and _SessionLocal:
+    if _use_db:
         cache_key = f"posts:{post_type}:{category}:{sort}:{page}:{per_page}"
         cached = _posts_list_cache.get(cache_key)
         if cached is not None:
             return cached
 
-        with _SessionLocal() as session:
+        with managed_session() as session:
             stmt = session.query(PostModel).filter(PostModel.is_deleted == False)
             if post_type:
                 try:
@@ -192,8 +188,8 @@ async def list_posts(
 @limiter.limit("10/minute")
 async def create_post(request: Request, body: PostCreate, user: dict = Depends(require_auth)):
     """게시글 작성 — 로그인 필수."""
-    if _use_db and _SessionLocal:
-        with _SessionLocal() as session:
+    if _use_db:
+        with managed_session() as session:
             _ensure_user(session, user["id"], user.get("email", ""), user.get("nickname", ""))
             try:
                 pt = DBPostType(body.post_type.value)
@@ -207,6 +203,8 @@ async def create_post(request: Request, body: PostCreate, user: dict = Depends(r
                 custom_category=body.category,
                 deal_price=body.price,
                 deal_url=validate_url(body.url) if body.url else None,
+                tags=body.tags if body.tags else None,
+                product_id=body.product_ids[0] if body.product_ids else None,
             )
             session.add(post)
             session.commit()
@@ -236,8 +234,8 @@ async def create_post(request: Request, body: PostCreate, user: dict = Depends(r
 @router.get("/{post_id}")
 async def get_post(post_id: int):
     """게시글 상세 (조회수 증가)."""
-    if _use_db and _SessionLocal:
-        with _SessionLocal() as session:
+    if _use_db:
+        with managed_session() as session:
             post = session.get(PostModel, post_id)
             if not post or post.is_deleted:
                 raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
@@ -252,8 +250,8 @@ async def get_post(post_id: int):
 @router.put("/{post_id}")
 async def update_post(post_id: int, body: PostUpdate, user: dict = Depends(require_auth)):
     """게시글 수정 (작성자만)."""
-    if _use_db and _SessionLocal:
-        with _SessionLocal() as session:
+    if _use_db:
+        with managed_session() as session:
             post = session.get(PostModel, post_id)
             if not post or post.is_deleted:
                 raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
@@ -283,8 +281,8 @@ async def update_post(post_id: int, body: PostUpdate, user: dict = Depends(requi
 @router.delete("/{post_id}")
 async def delete_post(post_id: int, user: dict = Depends(require_auth)):
     """게시글 삭제 (작성자 또는 관리자)."""
-    if _use_db and _SessionLocal:
-        with _SessionLocal() as session:
+    if _use_db:
+        with managed_session() as session:
             post = session.get(PostModel, post_id)
             if not post or post.is_deleted:
                 raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
@@ -302,8 +300,8 @@ async def delete_post(post_id: int, user: dict = Depends(require_auth)):
 @limiter.limit("10/minute")
 async def create_comment(request: Request, post_id: int, body: CommentCreate, user: dict = Depends(require_auth)):
     """댓글 작성."""
-    if _use_db and _SessionLocal:
-        with _SessionLocal() as session:
+    if _use_db:
+        with managed_session() as session:
             post = session.get(PostModel, post_id)
             if not post or post.is_deleted:
                 raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
@@ -328,8 +326,8 @@ async def create_comment(request: Request, post_id: int, body: CommentCreate, us
 @router.get("/{post_id}/comments")
 async def list_comments(post_id: int):
     """댓글 목록."""
-    if _use_db and _SessionLocal:
-        with _SessionLocal() as session:
+    if _use_db:
+        with managed_session() as session:
             post = session.get(PostModel, post_id)
             if not post or post.is_deleted:
                 raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
@@ -351,8 +349,8 @@ async def vote_post(request: Request, post_id: int, body: VoteRequest, user: dic
     if body.vote_type not in ("hot", "not"):
         raise HTTPException(status_code=400, detail="vote_type은 'hot' 또는 'not'이어야 합니다")
 
-    if _use_db and _SessionLocal:
-        with _SessionLocal() as session:
+    if _use_db:
+        with managed_session() as session:
             post = session.get(PostModel, post_id)
             if not post or post.is_deleted:
                 raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
@@ -404,8 +402,8 @@ async def suggested_tier(post_id: int):
     price = None
     orig = None
 
-    if _use_db and _SessionLocal:
-        with _SessionLocal() as session:
+    if _use_db:
+        with managed_session() as session:
             post = session.get(PostModel, post_id)
             if not post or post.is_deleted:
                 raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
