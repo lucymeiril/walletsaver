@@ -20,6 +20,20 @@ from services.auth_service import (
 from services.oauth_service import get_oauth_login_url, OAuthConfig
 
 
+# ── DB 테스트 셋업 ─────────────────────────────────────────────────
+
+@pytest.fixture(autouse=True)
+def setup_test_db():
+    """각 테스트 전에 인메모리 SQLite DB를 생성하고, 테스트 후 리셋한다."""
+    from services.db import get_engine, reset_engine
+    from storage.models import Base
+    reset_engine()
+    engine = get_engine("sqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    yield
+    reset_engine()
+
+
 # ── 비밀번호 해싱 테스트 ──────────────────────────────────────────
 
 class TestPasswordHashing:
@@ -168,14 +182,6 @@ class TestSchemaValidation:
 # ── API 라우트 통합 테스트 ───────────────────────────────────────
 
 class TestAuthRoutes:
-    @pytest.fixture(autouse=True)
-    def reset_db(self):
-        """각 테스트 전에 인메모리 DB 초기화"""
-        import api.routes.auth as auth_module
-        auth_module._users_db.clear()
-        auth_module._next_id = 1
-        yield
-
     @pytest.fixture
     def client(self):
         from fastapi import FastAPI
@@ -186,7 +192,6 @@ class TestAuthRoutes:
         app = FastAPI()
         app.state.limiter = limiter
         app.include_router(router)
-        # Reset rate limiter state between tests
         try:
             limiter.reset()
         except Exception:
@@ -277,9 +282,28 @@ class TestAuthRoutes:
         })
         assert resp.status_code == 422
 
-    def test_me_not_implemented(self, client):
+    def test_get_me_with_auth(self, client):
+        """인증된 사용자의 프로필 조회"""
+        reg = client.post("/api/auth/register", json={
+            "email": "me@example.com", "password": "Password123", "nickname": "나유저"
+        })
+        token = reg.json()["access_token"]
+        resp = client.get("/api/auth/me", headers={"Authorization": f"Bearer {token}"})
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["email"] == "me@example.com"
+        assert data["nickname"] == "나유저"
+        assert data["role"] == "user"
+
+    def test_get_me_without_auth(self, client):
+        """인증 없이 프로필 조회 시 401"""
         resp = client.get("/api/auth/me")
-        assert resp.status_code == 501
+        assert resp.status_code == 401
+
+    def test_logout(self, client):
+        """로그아웃 엔드포인트 확인"""
+        resp = client.post("/api/auth/logout")
+        assert resp.status_code == 200
 
 
 # ── OAuth URL 생성 테스트 ────────────────────────────────────────

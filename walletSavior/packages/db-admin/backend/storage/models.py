@@ -80,6 +80,7 @@ class User(Base):
     hashed_password: Mapped[Optional[str]] = mapped_column(String(255))
     nickname: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     role: Mapped[UserRole] = mapped_column(SAEnum(UserRole), default=UserRole.USER)
+    profile_image: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
