@@ -1,9 +1,9 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { lazy, Suspense, useSyncExternalStore } from 'react';
+import { lazy, Suspense, useEffect, useSyncExternalStore } from 'react';
 import AdminLayout from './layouts/AdminLayout';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoginPage from './pages/Login/LoginPage';
-import { isAuthenticated, subscribe } from './stores/authStore';
+import { isAuthenticated, subscribe, autoLoginDev } from './stores/authStore';
 
 const Dashboard          = lazy(() => import('./pages/Dashboard/Dashboard'));
 const Products           = lazy(() => import('./pages/Products/Products'));
@@ -39,6 +39,13 @@ function useAuth() {
 
 export default function App() {
   const authed = useAuth();
+
+  // 개발 환경 자동 로그인 시도
+  useEffect(() => {
+    if (!authed) {
+      autoLoginDev();
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!authed) {
     return (

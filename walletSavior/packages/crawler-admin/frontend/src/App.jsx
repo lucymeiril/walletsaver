@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useSyncExternalStore } from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
 import ErrorBoundary from './components/ErrorBoundary';
 import AdminLayout from './components/AdminLayout';
 import LoginPage from './pages/Login/LoginPage';
@@ -9,7 +9,7 @@ import Plugins from './pages/Plugins/Plugins';
 import Logs from './pages/Logs/Logs';
 import Schedule from './pages/Schedule/Schedule';
 import DataReviewPage from './pages/DataReview/DataReviewPage';
-import { isAuthenticated, subscribe } from './stores/authStore';
+import { isAuthenticated, subscribe, autoLoginDev } from './stores/authStore';
 
 function useAuth() {
   return useSyncExternalStore(subscribe, isAuthenticated);
@@ -17,6 +17,13 @@ function useAuth() {
 
 export default function App() {
   const authed = useAuth();
+
+  // 개발 환경 자동 로그인 시도
+  useEffect(() => {
+    if (!authed) {
+      autoLoginDev();
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!authed) {
     return (

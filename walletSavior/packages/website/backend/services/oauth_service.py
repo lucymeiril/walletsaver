@@ -56,13 +56,22 @@ class OAuthConfig:
 
     @classmethod
     def get(cls, provider: str) -> dict:
-        """env 변수를 호출 시점에 읽어 반환 (lazy load)"""
+        """env 변수를 호출 시점에 읽어 반환 (lazy load)
+
+        안전장치: config.py의 load_dotenv가 아직 실행되지 않았을 경우를 대비하여
+        여기서도 한 번 더 load_dotenv를 호출한다 (이미 로드된 경우 no-op).
+        """
+        from pathlib import Path
+        from dotenv import load_dotenv
+        _env_path = Path(__file__).resolve().parent.parent / ".env"
+        load_dotenv(_env_path)
+
         tmpl = cls._PROVIDERS.get(provider)
         if not tmpl:
             raise ValueError(f"지원하지 않는 OAuth 공급자: {provider}")
         return {
-            "client_id": os.getenv(tmpl["client_id_env"], ""),
-            "client_secret": os.getenv(tmpl["client_secret_env"], ""),
+            "client_id": os.getenv(tmpl["client_id_env"], "").strip(),
+            "client_secret": os.getenv(tmpl["client_secret_env"], "").strip(),
             "auth_url": tmpl["auth_url"],
             "token_url": tmpl["token_url"],
             "userinfo_url": tmpl["userinfo_url"],
@@ -111,25 +120,75 @@ def get_oauth_login_url(provider: str) -> str:
 
     urlencode를 사용하여 scope 공백, redirect_uri 슬래시 등을 안전하게 인코딩한다.
     """
+    import logging
+    _logger = logging.getLogger(__name__)
+
     config = OAuthConfig.get(provider)
+
+    # ── 필수 값 검증 — client_id가 빈 문자열이면 즉시 에러 ──
+    if not config["client_id"]:
+        _logger.error(
+            "OAuth client_id가 비어 있습니다. "
+            "환경 변수 %s 를 확인하세요. (provider=%s)",
+            OAuthConfig._PROVIDERS[provider]["client_id_env"], provider,
+        )
+        raise ValueError(
+            f"OAuth {provider} client_id가 설정되지 않았습니다. "
+            f".env 파일의 {OAuthConfig._PROVIDERS[provider]['client_id_env']} 값을 확인하세요."
+        )
+    if not config["client_secret"]:
+        _logger.error(
+            "OAuth client_secret이 비어 있습니다. "
+            "환경 변수 %s 를 확인하세요. (provider=%s)",
+            OAuthConfig._PROVIDERS[provider]["client_secret_env"], provider,
+        )
+        raise ValueError(
+            f"OAuth {provider} client_secret이 설정되지 않았습니다. "
+            f".env 파일의 {OAuthConfig._PROVIDERS[provider]['client_secret_env']} 값을 확인하세요."
+        )
+
     redirect_base = os.getenv("OAUTH_REDIRECT_BASE", "http://localhost:8000")
+    redirect_uri = f"{redirect_base}/api/auth/oauth/{provider}/callback"
     state = generate_oauth_state()
+
     params = {
         "client_id": config["client_id"],
-        "redirect_uri": f"{redirect_base}/api/auth/oauth/{provider}/callback",
+        "redirect_uri": redirect_uri,
         "response_type": "code",
-        "scope": config["scope"],
         "state": state,
     }
-    # 빈 값 제거 후 urlencode로 안전한 쿼리스트링 생성
-    filtered = {k: v for k, v in params.items() if v}
-    return f"{config['auth_url']}?{urlencode(filtered)}"
+
+    # scope가 있으면 추가 (naver는 scope가 빈 문자열)
+    if config["scope"]:
+        params["scope"] = config["scope"]
+
+    # Google 전용 파라미터 — 리프레시 토큰 수신 + 동의 화면 강제 표시
+    if provider == "google":
+        params["access_type"] = "offline"
+        params["prompt"] = "consent"
+
+    _logger.info(
+        "OAuth login URL 생성: provider=%s, redirect_uri=%s, client_id=%s…",
+        provider, redirect_uri, config["client_id"][:20],
+    )
+
+    return f"{config['auth_url']}?{urlencode(params)}"
 
 
 async def exchange_code_for_token(provider: str, code: str) -> dict:
     """인가 코드를 액세스 토큰으로 교환"""
+    import logging
+    _logger = logging.getLogger(__name__)
+
     config = OAuthConfig.get(provider)
     redirect_base = os.getenv("OAUTH_REDIRECT_BASE", "http://localhost:8000")
+    redirect_uri = f"{redirect_base}/api/auth/oauth/{provider}/callback"
+
+    _logger.info(
+        "OAuth token exchange: provider=%s, redirect_uri=%s",
+        provider, redirect_uri,
+    )
+
     try:
         async with httpx.AsyncClient(timeout=10.0) as client:
             response = await client.post(
@@ -139,11 +198,22 @@ async def exchange_code_for_token(provider: str, code: str) -> dict:
                     "client_id": config["client_id"],
                     "client_secret": config["client_secret"],
                     "code": code,
-                    "redirect_uri": f"{redirect_base}/api/auth/oauth/{provider}/callback",
+                    "redirect_uri": redirect_uri,
                 },
             )
+            if response.status_code != 200:
+                _logger.error(
+                    "OAuth token exchange failed: status=%d, body=%s",
+                    response.status_code, response.text,
+                )
             response.raise_for_status()
             return response.json()
+    except httpx.HTTPStatusError as exc:
+        _logger.error(
+            "OAuth token exchange HTTP error: %s — response: %s",
+            exc, exc.response.text if exc.response else "N/A",
+        )
+        raise ValueError(f"OAuth token exchange failed for {provider}: {exc}")
     except httpx.TimeoutException:
         raise ValueError(f"OAuth token exchange timed out for {provider}")
     except httpx.ConnectError:

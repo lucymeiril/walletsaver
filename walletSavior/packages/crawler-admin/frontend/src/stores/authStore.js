@@ -1,10 +1,14 @@
 /**
  * Crawler-Admin API Key 인증 스토어
  * sessionStorage 기반 — 탭 종료 시 자동 로그아웃
+ * 개발 환경: DEV_API_KEY로 자동 로그인
  */
 
 const STORAGE_KEY = 'crawler_admin_api_key';
 const API_BASE = '/api';
+
+// 개발 전용 — 프론트는 배포하지 않으므로 하드코딩 허용
+const DEV_API_KEY = 'walletsavior-dev-crawler-key-2025';
 
 const listeners = new Set();
 
@@ -43,4 +47,15 @@ export function getApiKey() {
 export function subscribe(fn) {
   listeners.add(fn);
   return () => listeners.delete(fn);
+}
+
+/** 개발 환경 자동 로그인 — 앱 로드 시 호출 */
+export async function autoLoginDev() {
+  if (isAuthenticated()) return;
+  try {
+    await login(DEV_API_KEY);
+  } catch {
+    // 서버 미기동 시 무시 — 수동 로그인 폴백
+    console.warn('[authStore] 자동 로그인 실패 — 수동 로그인 필요');
+  }
 }

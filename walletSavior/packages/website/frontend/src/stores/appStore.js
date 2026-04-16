@@ -4,6 +4,7 @@
  */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import useCartStore from './cartStore';
 
 const useStore = create(
   persist(
@@ -72,27 +73,34 @@ const useStore = create(
       }),
       clearRecentSearches: () => set({ recentSearches: [] }),
 
-      // 장보기 리스트 (Shopping List)
+      // 장보기 리스트 (Shopping List) — cartStore와 동기화
       shoppingList: [],
-      addToShoppingList: (item) => set((state) => {
-        const id = item.productId ?? item.id ?? item.name;
-        const existing = state.shoppingList.find(i => (i.productId ?? i.id ?? i.name) === id);
-        if (existing) {
+      addToShoppingList: (item) => {
+        // cartStore에도 동기화 (ShoppingListPanel이 cartStore를 읽음)
+        try {
+          useCartStore.getState().addItem(item);
+        } catch { /* cartStore 미초기화 시 무시 */ }
+
+        return set((state) => {
+          const id = item.productId ?? item.id ?? item.name;
+          const existing = state.shoppingList.find(i => (i.productId ?? i.id ?? i.name) === id);
+          if (existing) {
+            return {
+              shoppingList: state.shoppingList.map(i =>
+                (i.productId ?? i.id ?? i.name) === id
+                  ? { ...i, quantity: i.quantity + (item.quantity ?? 1) }
+                  : i
+              )
+            };
+          }
           return {
-            shoppingList: state.shoppingList.map(i =>
-              (i.productId ?? i.id ?? i.name) === id
-                ? { ...i, quantity: i.quantity + (item.quantity ?? 1) }
-                : i
-            )
+            shoppingList: [
+              ...state.shoppingList,
+              { productId: id, name: item.name, price: item.price, unit: item.unit || '', icon: item.icon || '🛒', quantity: item.quantity ?? 1 },
+            ],
           };
-        }
-        return {
-          shoppingList: [
-            ...state.shoppingList,
-            { productId: id, name: item.name, price: item.price, unit: item.unit || '', icon: item.icon || '🛒', quantity: item.quantity ?? 1 },
-          ],
-        };
-      }),
+        });
+      },
       removeFromShoppingList: (productId) => set((state) => ({
         shoppingList: state.shoppingList.filter(item => item.productId !== productId)
       })),

@@ -4,6 +4,9 @@ import logging
 import os
 import uuid
 
+# .env 로드 — auth.py 등이 os.getenv() 호출 전에 환경변수가 준비되어야 함
+import config  # noqa: F401  — config.py가 load_dotenv() 수행
+
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
