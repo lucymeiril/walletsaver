@@ -3,6 +3,8 @@ import { ExternalLink } from 'lucide-react';
 import Modal from '../common/Modal';
 import SafeImage from '../common/SafeImage';
 import useStore from '../../stores/appStore';
+import useCartStore from '../../stores/cartStore';
+import useActivityTracker from '../../hooks/useActivityTracker';
 import { fmt } from '../../utils/helpers';
 import s from './MartProductModal.module.css';
 
@@ -23,6 +25,8 @@ export default function MartProductModal({ data, onClose }) {
   const navigate = useNavigate();
   const addToShoppingList = useStore((st) => st.addToShoppingList);
   const addToast = useStore((st) => st.addToast);
+  const addCartItem = useCartStore((st) => st.addItem);
+  const { trackView, trackCartAdd } = useActivityTracker();
 
   if (!data) return null;
 
@@ -53,8 +57,19 @@ export default function MartProductModal({ data, onClose }) {
   };
 
   const handleAddToCart = () => {
+    addCartItem({
+      name,
+      price: salePrice,
+      original_price: origPrice,
+      store_name: martName || store,
+      store_key: martKey,
+      image,
+      unit,
+      category_id: categoryId,
+    });
     addToShoppingList({ name, price: salePrice, icon: '🏪' });
-    addToast(`${name}을(를) 장보기 리스트에 추가했어요`, 'success');
+    trackCartAdd(data.id || name, name);
+    addToast(`${name}을(를) 장바구니에 추가했어요`, 'success');
     onClose();
   };
 

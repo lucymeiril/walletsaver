@@ -1,7 +1,8 @@
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback, useMemo, useRef, memo } from 'react';
-import { Wallet, Bell, User, X, Search, Sun, Moon, LogOut, Heart, BellRing, ChevronDown } from 'lucide-react';
+import { Wallet, Bell, User, X, Search, Sun, Moon, LogOut, Heart, BellRing, ChevronDown, ShoppingCart } from 'lucide-react';
 import useStore from '../../stores/appStore';
+import useCartStore from '../../stores/cartStore';
 import { authService } from '../../services/authService';
 import SearchAutocomplete from '../search/SearchAutocomplete';
 import s from './Header.module.css';
@@ -28,6 +29,7 @@ const Header = memo(function Header() {
   const theme = useStore((st) => st.theme);
   const toggleTheme = useStore((st) => st.toggleTheme);
   const openLoginModal = useStore((st) => st.openLoginModal);
+  const cartItems = useCartStore((st) => st.items);
   const location = useLocation();
   const navigate = useNavigate();
   const [profileOpen, setProfileOpen] = useState(false);
@@ -151,10 +153,10 @@ const Header = memo(function Header() {
                       {user?.email && <span className={s.profileEmail}>{user.email}</span>}
                     </div>
                     <div className={s.profileDivider} />
-                    <button className={s.profileItem} onClick={() => { setProfileOpen(false); addToast('프로필 페이지 준비 중입니다', 'info'); }}>
+                    <button className={s.profileItem} onClick={() => { setProfileOpen(false); navigate('/profile'); }}>
                       <User size={16} /> 프로필
                     </button>
-                    <button className={s.profileItem} onClick={() => { setProfileOpen(false); navigate('/'); addToast('찜 목록 페이지 준비 중입니다', 'info'); }}>
+                    <button className={s.profileItem} onClick={() => { setProfileOpen(false); navigate('/wishlist'); }}>
                       <Heart size={16} /> 찜 목록
                     </button>
                     <button className={s.profileItem} onClick={() => { setProfileOpen(false); navigate('/'); addToast('가격 알림 페이지 준비 중입니다', 'info'); }}>

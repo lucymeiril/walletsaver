@@ -6,6 +6,7 @@ import { fmt } from '../../utils/helpers';
 import { searchService } from '../../services/searchService';
 import useStore from '../../stores/appStore';
 import useModalStore from '../../stores/modalStore';
+import useCartStore from '../../stores/cartStore';
 import useAbortController from '../../hooks/useAbortController';
 import EmptyState from '../../components/common/EmptyState';
 import s from './HomePage.module.css';
@@ -61,13 +62,14 @@ function SkeletonRow() {
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const { openMartModal, openHotdealModal, openProductModal } = useModalStore();
+  const { openMartModal, openHotdealModal, openProductModal, openProductDetailModal } = useModalStore();
   const {
     setSelectedProduct,
     favorites, addFavorite, removeFavorite, isFavorite,
     recentSearches, addRecentSearch, clearRecentSearches,
     addToShoppingList, addToast, setLocation,
   } = useStore();
+  const addCartItem = useCartStore((st) => st.addItem);
 
   const [query, setQuery] = useState('');
   const [acOpen, setAcOpen] = useState(false);
@@ -531,7 +533,17 @@ export default function HomePage() {
                 else tierClass = s.ok;
               }
               return (
-                <div key={d.id} className={s.topDealCard} onClick={() => navigate('/hotdeal', { state: { openDealId: d.id } })}>
+                <div key={d.id} className={s.topDealCard} onClick={() => {
+                  navigate(`/hotdeal?id=${encodeURIComponent(d.id)}&modal=true`);
+                  openProductDetailModal({
+                    id: d.id,
+                    name: d.title,
+                    price: d.price,
+                    original_price: d.origPrice,
+                    source: d.source,
+                    discountRate: d.discountRate,
+                  });
+                }}>
                   <span className={s.topDealRank}>TOP {i + 1}</span>
                   <div className={s.dealHead}>
                     <span className={s.dealSource}>{d.source}</span>
@@ -738,7 +750,11 @@ export default function HomePage() {
         ) : (
           <div className={s.martSaleGrid}>
             {activeMartItems.slice(0, 4).map((item, i) => (
-              <div key={item.id || item.name || `mart-${i}`} className={s.martSaleCard} onClick={() => navigate('/mart')}>
+              <div key={item.id || item.name || `mart-${i}`} className={s.martSaleCard} onClick={() => {
+                const productData = { ...item, martKey: martTab, martName: activeMartInfo?.name };
+                navigate(`/mart?product=${encodeURIComponent(item.id || item.name)}&modal=true`);
+                openProductDetailModal(productData);
+              }}>
                 <div className={s.martSaleName}>{item.name}</div>
                 <div className={s.martSalePrices}>
                   <span className={s.martSalePrice}>{item.sale ? `${fmt(item.sale)}원` : '가격 미정'}</span>

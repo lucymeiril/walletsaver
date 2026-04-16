@@ -6,6 +6,7 @@ import BottomNav from './components/layout/BottomNav';
 import ToastContainer from './components/common/ToastContainer';
 import LoginModal from './components/modals/LoginModal';
 import useStore from './stores/appStore';
+import useCartStore from './stores/cartStore';
 import { authService } from './services/authService';
 import ShoppingListPanel from './components/common/ShoppingListPanel';
 import ModalManager from './components/modals/ModalManager';
@@ -21,6 +22,8 @@ const LocalPage     = lazy(() => import('./pages/Local/LocalPage'));
 const CommunityPage = lazy(() => import('./pages/Community/CommunityPage'));
 const SearchPage    = lazy(() => import('./pages/Search/SearchPage'));
 const AuthCallback  = lazy(() => import('./pages/Auth/AuthCallback'));
+const ProfilePage   = lazy(() => import('./pages/Profile/ProfilePage'));
+const WishlistPage  = lazy(() => import('./pages/Wishlist/WishlistPage'));
 const NotFoundPage  = lazy(() => import('./pages/NotFound/NotFoundPage'));
 
 function PageLoader() {
@@ -46,6 +49,7 @@ function Guarded({ children, name }) {
 export default function App() {
   const theme = useStore((s) => s.theme);
   const login = useStore((s) => s.login);
+  const mergeOnLogin = useCartStore((s) => s.mergeOnLogin);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -54,7 +58,10 @@ export default function App() {
   // Restore session from httpOnly cookie on app mount
   useEffect(() => {
     authService.getProfile()
-      .then((profile) => login({ ...profile }))
+      .then((profile) => {
+        login({ ...profile });
+        mergeOnLogin();
+      })
       .catch(() => { /* not authenticated — ignore */ });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -74,6 +81,8 @@ export default function App() {
               <Route path="/mart"      element={<Guarded name="마트"><MartPage /></Guarded>} />
               <Route path="/local"     element={<Guarded name="내주변"><LocalPage /></Guarded>} />
               <Route path="/community" element={<Guarded name="커뮤니티"><CommunityPage /></Guarded>} />
+              <Route path="/profile" element={<Guarded name="프로필"><ProfilePage /></Guarded>} />
+              <Route path="/wishlist" element={<Guarded name="찜"><WishlistPage /></Guarded>} />
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
