@@ -8,10 +8,12 @@
 """
 
 import logging
+import os
 from datetime import datetime
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, field_validator
 from sqlalchemy import select, desc
 
@@ -23,6 +25,8 @@ from storage.models import User, UserActivity
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/profile", tags=["프로필"])
+
+_COOKIE_SECURE = os.getenv("COOKIE_SECURE", "false").lower() == "true"
 
 
 # ── Pydantic 스키마 ──
@@ -115,7 +119,7 @@ async def update_profile(body: ProfileUpdate, user: dict = Depends(require_auth)
 
 @router.delete("")
 async def delete_profile(user: dict = Depends(require_auth)):
-    """계정 소프트 삭제 — is_deleted=True, deleted_at=now"""
+    """계정 소프트 삭제 — is_deleted=True, deleted_at=now, auth cookies 정리"""
     with managed_session() as session:
         db_user = session.execute(
             select(User).where(User.id == user["id"])
@@ -126,7 +130,12 @@ async def delete_profile(user: dict = Depends(require_auth)):
         db_user.is_deleted = True
         db_user.deleted_at = datetime.utcnow()
 
-        return ApiResponse(data={"message": "계정이 삭제되었습니다", "deleted_at": db_user.deleted_at.isoformat()})
+        data = ApiResponse(data={"message": "계정이 삭제되었습니다", "deleted_at": db_user.deleted_at.isoformat()})
+
+    response = JSONResponse(content=data.model_dump())
+    response.delete_cookie(key="access_token", path="/")
+    response.delete_cookie(key="refresh_token", path="/api/auth")
+    return response
 
 
 @router.get("/activity")

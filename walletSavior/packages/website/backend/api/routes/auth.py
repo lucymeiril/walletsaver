@@ -98,6 +98,9 @@ async def login(request: Request, data: UserLogin):
                            status="failed")
             raise HTTPException(status_code=401, detail="이메일 또는 비밀번호가 올바르지 않습니다")
 
+        if user.is_deleted:
+            raise HTTPException(status_code=403, detail="계정이 삭제되었습니다")
+
         log_auth_event("login", user_id=user.id, email=data.email,
                        ip=request.client.host if request.client else "unknown")
 
@@ -206,6 +209,8 @@ async def oauth_callback(request: Request, provider: str, code: str, state: str 
 
             if oauth_account:
                 user = oauth_account.user
+                if user.is_deleted:
+                    raise HTTPException(status_code=403, detail="계정이 삭제되었습니다")
                 # 토큰 갱신
                 oauth_account.access_token = token_data.get("access_token")
                 if token_data.get("refresh_token"):
@@ -216,6 +221,8 @@ async def oauth_callback(request: Request, provider: str, code: str, state: str 
                 user = session.execute(
                     select(User).where(User.email == user_info.email)
                 ).scalar_one_or_none()
+                if user and user.is_deleted:
+                    raise HTTPException(status_code=403, detail="계정이 삭제되었습니다")
                 if not user:
                     nickname = _resolve_unique_nickname(
                         session, user_info.nickname, user_info.provider_user_id
@@ -270,6 +277,8 @@ async def get_me(user: dict = Depends(require_auth)):
         ).scalar_one_or_none()
         if not db_user:
             raise HTTPException(status_code=404, detail="사용자를 찾을 수 없습니다")
+        if db_user.is_deleted:
+            raise HTTPException(status_code=403, detail="계정이 삭제되었습니다")
         return UserProfile(
             id=db_user.id,
             email=db_user.email,

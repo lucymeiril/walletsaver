@@ -13,18 +13,17 @@ export default function useActivityTracker() {
   const lastCall = useRef(0);
 
   const track = useCallback(
-    async (eventType, targetType, targetId, metadata = {}) => {
+    async (activityType, targetType, targetId, metadata = {}) => {
       if (!isLoggedIn) return;
       const now = Date.now();
       if (now - lastCall.current < MIN_INTERVAL) return;
       lastCall.current = now;
       try {
         await api.post('/api/activity/track', {
-          event_type: eventType,
+          activity_type: activityType,
           target_type: targetType,
           target_id: targetId,
           metadata,
-          timestamp: new Date().toISOString(),
         });
       } catch {
         // 추적 실패는 무시

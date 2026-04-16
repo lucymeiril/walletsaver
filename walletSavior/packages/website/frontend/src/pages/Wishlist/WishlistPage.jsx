@@ -45,13 +45,19 @@ export default function WishlistPage() {
     setLoading(true);
     try {
       const data = await api.getJson('/api/wishlist');
-      const wishItems = data.items || data || [];
+      const rawItems = data.data || data.items || data || [];
+      const wishItems = Array.isArray(rawItems) ? rawItems.map((item) => ({
+        ...item,
+        product_name: item.item_name || item.product_name || item.name || '상품',
+        image: item.item_image_url || item.image || '',
+        price_at_add: item.price_at_add || item.item_price || 0,
+        current_price: item.current_price || item.item_price || 0,
+      })) : [];
       setItems(wishItems);
     } catch {
-      // Fallback: use local favorites as IDs
       setItems(
         favorites.map((id) => ({
-          product_id: id,
+          id: id,
           product_name: `상품 ${id}`,
           price_at_add: 0,
           current_price: 0,
@@ -62,11 +68,12 @@ export default function WishlistPage() {
   }, [favorites]);
 
   const handleRemove = async (item) => {
+    const itemId = item.id;
     const pid = item.product_id || item.id;
     removeFavorite(pid);
-    setItems((prev) => prev.filter((i) => (i.product_id || i.id) !== pid));
+    setItems((prev) => prev.filter((i) => i.id !== itemId));
     try {
-      await api.delete(`/api/wishlist/${item.wishlist_id || pid}`);
+      await api.delete(`/api/wishlist/${itemId}`);
     } catch { /* ignore */ }
     addToast('찜 목록에서 제거했어요', 'info');
   };
@@ -77,15 +84,15 @@ export default function WishlistPage() {
       addToast('올바른 가격을 입력해주세요', 'error');
       return;
     }
-    const pid = item.product_id || item.id;
+    const itemId = item.id;
     setItems((prev) =>
       prev.map((i) =>
-        (i.product_id || i.id) === pid ? { ...i, target_price: price } : i
+        i.id === itemId ? { ...i, target_price: price } : i
       )
     );
     setEditingTarget(null);
     try {
-      await api.put(`/api/wishlist/${item.wishlist_id || pid}`, { target_price: price });
+      await api.put(`/api/wishlist/${itemId}`, { target_price: price, notify_on_drop: true });
       addToast('목표가를 설정했어요 🎯', 'success');
     } catch { /* ignore */ }
   };
@@ -93,12 +100,12 @@ export default function WishlistPage() {
   const handleAddToCart = (item) => {
     addCartItem({
       product_id: item.product_id || item.id,
-      name: item.product_name || item.name,
-      price: item.current_price || item.price_at_add,
+      name: item.product_name || item.item_name || item.name,
+      price: item.current_price || item.item_price || item.price_at_add,
       store_name: item.store_name || '',
-      image: item.image || '',
+      image: item.image || item.item_image_url || '',
     });
-    addToast(`${item.product_name || item.name} 장바구니에 추가했어요`, 'success');
+    addToast(`${item.product_name || item.item_name || item.name} 장바구니에 추가했어요`, 'success');
   };
 
   const getTrend = (item) => {
@@ -141,7 +148,7 @@ export default function WishlistPage() {
         ) : (
           <div className={s.list}>
             {items.map((item) => {
-              const pid = item.product_id || item.id;
+              const pid = item.id;
               const trend = getTrend(item);
               const delta = getPriceDelta(item);
               const TrendIcon = TREND_ICONS[trend].icon;

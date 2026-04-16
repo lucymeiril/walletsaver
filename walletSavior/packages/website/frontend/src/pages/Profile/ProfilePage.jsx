@@ -32,7 +32,7 @@ export default function ProfilePage() {
   const { isLoggedIn, user, login, logout, addToast } = useStore();
   const [activeTab, setActiveTab] = useState('info');
   const [editing, setEditing] = useState(false);
-  const [form, setForm] = useState({ nickname: '', bio: '', profile_image: '' });
+  const [form, setForm] = useState({ nickname: '', bio: '', profile_image_url: '' });
   const [saving, setSaving] = useState(false);
   const [activities, setActivities] = useState([]);
   const [activityPage, setActivityPage] = useState(1);
@@ -55,7 +55,7 @@ export default function ProfilePage() {
       setForm({
         nickname: user.nickname || '',
         bio: user.bio || '',
-        profile_image: user.profile_image || user.profileImage || '',
+        profile_image_url: user.profile_image_url || user.profile_image || user.profileImage || '',
       });
     }
   }, [user]);
@@ -64,9 +64,11 @@ export default function ProfilePage() {
   const fetchActivities = useCallback(async (page = 1) => {
     setActivityLoading(true);
     try {
-      const data = await api.getJson('/api/activity/me', { page, limit: 10 });
-      setActivities(data.activities || data.items || data || []);
-      setActivityTotal(data.total || data.totalPages || 1);
+      const data = await api.getJson('/api/profile/activity', { page, per_page: 10 });
+      const responseData = data.data || data;
+      setActivities(Array.isArray(responseData) ? responseData : []);
+      const meta = data.meta || {};
+      setActivityTotal(meta.total_pages || 1);
     } catch {
       setActivities([]);
     }
@@ -86,11 +88,13 @@ export default function ProfilePage() {
     }
     setSaving(true);
     try {
-      const updated = await authService.updateProfile({
+      const res = await api.put('/api/profile', {
         nickname: form.nickname,
         bio: form.bio,
-        profile_image: form.profile_image,
+        profile_image_url: form.profile_image_url,
       });
+      const result = await res.json();
+      const updated = result.data || result;
       login({ ...user, ...updated });
       addToast('프로필을 수정했습니다 ✅', 'success');
       setEditing(false);
@@ -115,7 +119,7 @@ export default function ProfilePage() {
       return;
     }
     try {
-      await api.delete('/api/auth/me');
+      await api.delete('/api/profile');
       logout();
       addToast('계정이 삭제되었습니다', 'info');
       navigate('/');
@@ -137,8 +141,8 @@ export default function ProfilePage() {
         {/* Profile header */}
         <div className={s.profileHeader}>
           <div className={s.avatarWrap}>
-            {form.profile_image ? (
-              <img src={form.profile_image} alt="프로필" className={s.avatar} />
+            {form.profile_image_url ? (
+              <img src={form.profile_image_url} alt="프로필" className={s.avatar} />
             ) : (
               <div className={s.avatarPlaceholder}>
                 {(user?.nickname || user?.email || 'U').charAt(0).toUpperCase()}
@@ -180,7 +184,7 @@ export default function ProfilePage() {
                   <button className={s.saveBtn} onClick={handleSave} disabled={saving}>
                     <Save size={16} /> {saving ? '저장 중...' : '저장'}
                   </button>
-                  <button className={s.cancelBtn} onClick={() => { setEditing(false); setForm({ nickname: user?.nickname || '', bio: user?.bio || '', profile_image: user?.profile_image || '' }); }}>
+                  <button className={s.cancelBtn} onClick={() => { setEditing(false); setForm({ nickname: user?.nickname || '', bio: user?.bio || '', profile_image_url: user?.profile_image_url || user?.profile_image || '' }); }}>
                     <X size={16} /> 취소
                   </button>
                 </div>
@@ -233,14 +237,14 @@ export default function ProfilePage() {
                 {editing ? (
                   <input
                     className={s.input}
-                    value={form.profile_image}
-                    onChange={(e) => setForm({ ...form, profile_image: e.target.value })}
+                    value={form.profile_image_url}
+                    onChange={(e) => setForm({ ...form, profile_image_url: e.target.value })}
                     placeholder="https://..."
                     type="url"
                   />
                 ) : (
                   <span className={s.fieldValue}>
-                    {form.profile_image ? '설정됨' : '미설정'}
+                    {form.profile_image_url ? '설정됨' : '미설정'}
                   </span>
                 )}
               </div>
@@ -263,7 +267,7 @@ export default function ProfilePage() {
               <>
                 <div className={s.activityList}>
                   {activities.map((act, i) => {
-                    const IconComp = ACTIVITY_ICONS[act.event_type] || Eye;
+                    const IconComp = ACTIVITY_ICONS[act.activity_type] || Eye;
                     return (
                       <div key={act.id || i} className={s.activityItem}>
                         <div className={s.activityIcon}>
@@ -271,12 +275,12 @@ export default function ProfilePage() {
                         </div>
                         <div className={s.activityInfo}>
                           <span className={s.activityType}>
-                            {act.event_type === 'view' && '상품 조회'}
-                            {act.event_type === 'search' && '검색'}
-                            {act.event_type === 'vote' && '투표'}
-                            {act.event_type === 'cart_add' && '장바구니 추가'}
-                            {act.event_type === 'wishlist_add' && '찜 추가'}
-                            {!['view', 'search', 'vote', 'cart_add', 'wishlist_add'].includes(act.event_type) && act.event_type}
+                            {act.activity_type === 'view' && '상품 조회'}
+                            {act.activity_type === 'search' && '검색'}
+                            {act.activity_type === 'vote' && '투표'}
+                            {act.activity_type === 'cart_add' && '장바구니 추가'}
+                            {act.activity_type === 'wishlist_add' && '찜 추가'}
+                            {!['view', 'search', 'vote', 'cart_add', 'wishlist_add'].includes(act.activity_type) && act.activity_type}
                           </span>
                           <span className={s.activityTarget}>
                             {act.metadata?.name || act.target_id || ''}

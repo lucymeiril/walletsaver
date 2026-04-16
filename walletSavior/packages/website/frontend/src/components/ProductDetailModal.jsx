@@ -1,6 +1,9 @@
 /**
  * 상품 상세 모달 — 통합 제품 정보 뷰
  * 마트, 핫딜, 검색결과, 장바구니 항목 클릭 시 열림
+ *
+ * mode="product" (기본) — productId가 있으면 API에서 추가 데이터 로드
+ * mode="preview" — 전달받은 props 데이터만 표시, API 호출 없음
  */
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
@@ -27,7 +30,7 @@ const CATEGORY_ICONS = {
   패션: '👗', default: '📦',
 };
 
-export default function ProductDetailModal({ product, onClose }) {
+export default function ProductDetailModal({ product, onClose, mode: modeProp }) {
   const addToast = useStore((st) => st.addToast);
   const isLoggedIn = useStore((st) => st.isLoggedIn);
   const favorites = useStore((st) => st.favorites);
@@ -36,8 +39,7 @@ export default function ProductDetailModal({ product, onClose }) {
   const addItem = useCartStore((st) => st.addItem);
   const { trackView, trackCartAdd, trackWishlistAdd } = useActivityTracker();
 
-  const [comparison, setComparison] = useState(null);
-  const [otherStores, setOtherStores] = useState([]);
+  const [priceCompare, setPriceCompare] = useState(null);
   const [priceHistory, setPriceHistory] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -48,7 +50,7 @@ export default function ProductDetailModal({ product, onClose }) {
   const price = product.sale ?? product.price ?? product.current_price ?? product.item_price ?? 0;
   const origPrice = product.orig ?? product.original_price ?? product.origPrice ?? 0;
   const discount = product.disc ?? product.discount_pct ?? product.discount ?? product.discountRate ?? 0;
-  const image = product.img ?? product.image_url ?? product.image ?? product.thumbnail ?? '';
+  const image = product.img ?? product.image_url ?? product.image ?? product.item_image_url ?? product.thumbnail ?? '';
   const storeName = product.store_name ?? product.store ?? product.martName ?? product.source ?? '';
   const storeKey = product.store_key ?? product.martKey ?? product.source_key ?? '';
   const category = product.category ?? product.category_name ?? '';
@@ -58,6 +60,9 @@ export default function ProductDetailModal({ product, onClose }) {
   const productId = product.product_id ?? product.productId ?? product.id ?? '';
   const eventType = product.event ?? product.event_name ?? '';
   const period = product.period ?? '';
+
+  // Determine mode: if explicitly set use that, otherwise auto-detect
+  const mode = modeProp || (productId && !product.martKey && !product.source ? 'product' : 'preview');
 
   const savingsAmount = origPrice > price && price > 0 ? origPrice - price : 0;
   const savingsPct = discount > 0 ? discount : (origPrice > 0 && price > 0 ? Math.round((1 - price / origPrice) * 100) : 0);
@@ -70,25 +75,32 @@ export default function ProductDetailModal({ product, onClose }) {
     if (productId) trackView('product', productId);
   }, [productId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Fetch additional data
+  // Fetch additional data (only in product mode)
   useEffect(() => {
-    if (!productId) return;
+    if (mode !== 'product' || !productId) return;
     setLoading(true);
     const fetchExtra = async () => {
       try {
-        const [compRes, storesRes, histRes] = await Promise.allSettled([
-          api.getJson(`/api/products/${productId}/comparison`).catch(() => null),
-          api.getJson(`/api/products/${productId}/other-stores`).catch(() => null),
+        const [compRes, histRes] = await Promise.allSettled([
+          api.getJson(`/api/products/${productId}/price-compare`).catch(() => null),
           api.getJson(`/api/products/${productId}/price-history`).catch(() => null),
         ]);
-        if (compRes.status === 'fulfilled' && compRes.value) setComparison(compRes.value);
-        if (storesRes.status === 'fulfilled' && storesRes.value) setOtherStores(storesRes.value?.stores || storesRes.value || []);
-        if (histRes.status === 'fulfilled' && histRes.value) setPriceHistory(histRes.value?.history || histRes.value || []);
+        if (compRes.status === 'fulfilled' && compRes.value) {
+          const compData = compRes.value.data || compRes.value;
+          setPriceCompare(compData);
+        }
+        if (histRes.status === 'fulfilled' && histRes.value) {
+          const histData = histRes.value.data || histRes.value;
+          setPriceHistory(histData?.history || histData || []);
+        }
       } catch { /* ignore */ }
       setLoading(false);
     };
     fetchExtra();
-  }, [productId]);
+  }, [productId, mode]);
+
+  // Extract other stores from price-compare data
+  const otherStores = priceCompare?.other_stores || priceCompare?.stores || [];
 
   const handleAddToCart = useCallback(() => {
     addItem({
@@ -117,7 +129,6 @@ export default function ProductDetailModal({ product, onClose }) {
     } else {
       addFavorite(productId);
       trackWishlistAdd(productId, name);
-      // Also notify backend
       api.post('/api/wishlist', {
         product_id: productId,
         product_name: name,
@@ -231,40 +242,42 @@ export default function ProductDetailModal({ product, onClose }) {
             {unit && <div className={s.metaRow}><span className={s.metaLabel}>규격</span> {unit}</div>}
           </div>
 
-          {/* 시세 비교 */}
-          <div className={s.section}>
-            <h3 className={s.sectionTitle}>📊 시세 비교</h3>
-            {comparison ? (
-              <div className={s.comparisonGrid}>
-                {comparison.kamis_price && (
-                  <div className={s.compItem}>
-                    <span className={s.compLabel}>KAMIS 정부 가격</span>
-                    <span className={s.compValue}>{fmt(comparison.kamis_price)}원</span>
-                    {price < comparison.kamis_price && (
-                      <span className={s.compGood}>
-                        {fmt(comparison.kamis_price - price)}원 저렴
-                      </span>
-                    )}
-                  </div>
-                )}
-                {comparison.category_avg && (
-                  <div className={s.compItem}>
-                    <span className={s.compLabel}>카테고리 평균</span>
-                    <span className={s.compValue}>{fmt(comparison.category_avg)}원</span>
-                    {price < comparison.category_avg ? (
-                      <span className={s.compGood}>평균보다 저렴</span>
-                    ) : (
-                      <span className={s.compBad}>평균보다 비쌈</span>
-                    )}
-                  </div>
-                )}
-              </div>
-            ) : (
-              <p className={s.noData}>비교 데이터 부족 — 카테고리 평균가를 참고하세요</p>
-            )}
-          </div>
+          {/* 시세 비교 (product mode only) */}
+          {mode === 'product' && (
+            <div className={s.section}>
+              <h3 className={s.sectionTitle}>📊 시세 비교</h3>
+              {priceCompare ? (
+                <div className={s.comparisonGrid}>
+                  {priceCompare.kamis_price && (
+                    <div className={s.compItem}>
+                      <span className={s.compLabel}>KAMIS 정부 가격</span>
+                      <span className={s.compValue}>{fmt(priceCompare.kamis_price)}원</span>
+                      {price < priceCompare.kamis_price && (
+                        <span className={s.compGood}>
+                          {fmt(priceCompare.kamis_price - price)}원 저렴
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  {priceCompare.category_avg && (
+                    <div className={s.compItem}>
+                      <span className={s.compLabel}>카테고리 평균</span>
+                      <span className={s.compValue}>{fmt(priceCompare.category_avg)}원</span>
+                      {price < priceCompare.category_avg ? (
+                        <span className={s.compGood}>평균보다 저렴</span>
+                      ) : (
+                        <span className={s.compBad}>평균보다 비쌈</span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p className={s.noData}>비교 데이터 부족 — 카테고리 평균가를 참고하세요</p>
+              )}
+            </div>
+          )}
 
-          {/* 다른 매장 가격 */}
+          {/* 다른 매장 가격 (from price-compare data) */}
           {otherStores.length > 0 && (
             <div className={s.section}>
               <h3 className={s.sectionTitle}>🏬 다른 매장 가격</h3>

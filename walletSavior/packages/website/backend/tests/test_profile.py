@@ -125,15 +125,15 @@ class TestProfileDelete:
         assert resp.status_code == 200
         assert "삭제" in resp.json()["data"]["message"]
 
-        # 삭제 후 프로필 조회 실패
+        # 삭제 후 프로필 조회 — 미들웨어가 삭제된 계정을 403으로 차단
         resp = client.get("/api/profile", headers={"Authorization": f"Bearer {token}"})
-        assert resp.status_code == 404
+        assert resp.status_code == 403
 
     def test_double_delete(self, client):
         token = _register_and_get_token(client)
         client.delete("/api/profile", headers={"Authorization": f"Bearer {token}"})
         resp = client.delete("/api/profile", headers={"Authorization": f"Bearer {token}"})
-        assert resp.status_code == 404
+        assert resp.status_code == 403
 
 
 class TestProfileActivity:

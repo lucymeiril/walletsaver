@@ -48,6 +48,9 @@ const _inflight = new Map();
 const _cache = new Map();
 const DEFAULT_CACHE_TTL = 30_000; // 30 seconds
 
+// Auth-related paths that should never be cached
+const NO_CACHE_PREFIXES = ['/api/auth/', '/api/profile', '/api/cart', '/api/wishlist', '/api/activity'];
+
 function getCached(key) {
   const entry = _cache.get(key);
   if (!entry) return undefined;
@@ -60,6 +63,12 @@ function getCached(key) {
 
 function setCache(key, value, ttl = DEFAULT_CACHE_TTL) {
   _cache.set(key, { value, expiry: Date.now() + ttl });
+}
+
+/** Clear all cached responses — call on login/logout to prevent data leaks */
+export function clearApiCache() {
+  _cache.clear();
+  _inflight.clear();
 }
 
 class ApiClient {
@@ -177,16 +186,22 @@ class ApiClient {
     return this.request(path, { method: 'DELETE', ...options });
   }
 
-  /** JSON 파싱 포함 편의 메서드 (GET — with response caching) */
+  /** JSON 파싱 포함 편의 메서드 (GET — with response caching, auth endpoints excluded) */
   async getJson(path, params, options = {}) {
     const query = params ? '?' + new URLSearchParams(params).toString() : '';
     const cacheKey = `${path}${query}`;
-    const cached = getCached(cacheKey);
-    if (cached !== undefined) return cached;
+    const shouldCache = !NO_CACHE_PREFIXES.some((p) => path.startsWith(p));
+
+    if (shouldCache) {
+      const cached = getCached(cacheKey);
+      if (cached !== undefined) return cached;
+    }
 
     const res = await this.get(path, params, options);
     const json = await res.json();
-    setCache(cacheKey, json);
+    if (shouldCache) {
+      setCache(cacheKey, json);
+    }
     return json;
   }
 

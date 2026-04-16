@@ -4,24 +4,38 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { api } from '../services/api';
+import useStore from './appStore';
 
 const CART_API = '/api/cart';
+
+/** 백엔드 → 프론트 필드 정규화 */
+function normalizeCartItem(item) {
+  return {
+    id: item.id || item.product_id || item.productId || Date.now().toString(),
+    product_id: item.product_id || item.productId || item.id,
+    name: item.item_name || item.name || item.product_name || '상품',
+    price: item.item_price || item.price || item.sale || 0,
+    original_price: item.original_price || item.orig || item.origPrice || 0,
+    store_name: item.store_name || item.store || item.martName || '',
+    store_key: item.store_key || item.martKey || '',
+    category: item.category || item.category_name || '',
+    image: item.item_image_url || item.image || item.img || item.image_url || '',
+    unit: item.unit || item.spec || '',
+    quantity: item.quantity || 1,
+    cart_id: item.cart_id || item.id || null,
+  };
+}
 
 const useCartStore = create(
   persist(
     (set, get) => ({
       items: [],
       loading: false,
-      synced: false, // DB와 동기화 여부
+      synced: false,
 
-      /** 로그인 상태 확인 (appStore에서 가져옴) */
+      /** 로그인 상태 확인 (appStore runtime state) */
       _getAuth: () => {
-        try {
-          const raw = localStorage.getItem('wallet-savior-store');
-          if (!raw) return false;
-          const parsed = JSON.parse(raw);
-          return !!parsed?.state?.isLoggedIn;
-        } catch { return false; }
+        return !!useStore.getState().isLoggedIn;
       },
 
       /** API에서 장바구니 로드 */
@@ -30,8 +44,10 @@ const useCartStore = create(
         set({ loading: true });
         try {
           const res = await api.get(CART_API);
-          const data = await res.json();
-          set({ items: data.items || data || [], synced: true, loading: false });
+          const json = await res.json();
+          const rawItems = json.data || json.items || json || [];
+          const items = Array.isArray(rawItems) ? rawItems.map(normalizeCartItem) : [];
+          set({ items, synced: true, loading: false });
         } catch {
           set({ loading: false });
         }
@@ -39,19 +55,7 @@ const useCartStore = create(
 
       /** 아이템 추가 */
       addItem: async (item) => {
-        const normalized = {
-          id: item.id || item.productId || item.product_id || Date.now().toString(),
-          product_id: item.product_id || item.productId || item.id,
-          name: item.name || item.item_name || item.product_name || '상품',
-          price: item.price || item.item_price || item.sale || 0,
-          original_price: item.original_price || item.orig || item.origPrice || 0,
-          store_name: item.store_name || item.store || item.martName || '',
-          store_key: item.store_key || item.martKey || '',
-          category: item.category || item.category_name || '',
-          image: item.image || item.img || item.image_url || '',
-          unit: item.unit || item.spec || '',
-          quantity: item.quantity || 1,
-        };
+        const normalized = normalizeCartItem(item);
 
         const isLoggedIn = get()._getAuth();
         const existing = get().items.find(
@@ -75,7 +79,8 @@ const useCartStore = create(
           if (isLoggedIn) {
             try {
               const res = await api.post(CART_API, normalized);
-              const data = await res.json();
+              const json = await res.json();
+              const data = json.data || json;
               if (data.id || data.cart_id) {
                 set({
                   items: get().items.map((i) =>
