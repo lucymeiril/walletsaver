@@ -169,6 +169,10 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     from api.routes.search import router as search_router
     from api.routes.restaurants import router as restaurants_router
     from api.routes.naver_local import router as naver_local_router
+    from api.routes.profile import router as profile_router
+    from api.routes.cart import router as cart_router
+    from api.routes.wishlist import router as wishlist_router
+    from api.routes.activity import router as activity_router
 
     app.include_router(products_router, prefix="/api/products", tags=["Products"])
     app.include_router(hotdeals_router, prefix="/api/hotdeals", tags=["Hotdeals"])
@@ -181,6 +185,10 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     app.include_router(search_router, prefix="/api/search", tags=["Search"])
     app.include_router(restaurants_router, prefix="/api", tags=["Restaurants"])
     app.include_router(naver_local_router, prefix="/api/local", tags=["Local / Naver"])
+    app.include_router(profile_router)
+    app.include_router(cart_router)
+    app.include_router(wishlist_router)
+    app.include_router(activity_router)
 
     # ── 편의 별칭 라우트 (테스트·호환성) ──
     from fastapi import Request as _Req, Query as _Q

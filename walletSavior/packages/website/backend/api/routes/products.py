@@ -160,6 +160,7 @@ async def get_category_summary(
     CATEGORY_META = {
         "livestock":    {"icon": "🥩", "display": "축산물"},
         "meat":         {"icon": "🥩", "display": "축산물"},
+        "agriculture":  {"icon": "🥬", "display": "농산물"},
         "agricultural": {"icon": "🥬", "display": "농산물"},
         "seafood":      {"icon": "🐟", "display": "수산물"},
         "processed":    {"icon": "🥫", "display": "가공식품"},
@@ -169,6 +170,17 @@ async def get_category_summary(
         "grain":        {"icon": "🌾", "display": "곡류"},
         "fruit":        {"icon": "🍎", "display": "과일"},
         "vegetable":    {"icon": "🥬", "display": "채소"},
+        "snack":        {"icon": "🍪", "display": "과자/간식"},
+        "beverage":     {"icon": "🥤", "display": "음료"},
+        "alcohol":      {"icon": "🍺", "display": "주류"},
+    }
+
+    # Map Korean category names to top-level IDs
+    CATNAME_TO_ID = {
+        "축산물": "livestock", "농산물": "agriculture", "수산물": "seafood",
+        "가공식품": "processed", "생활용품": "living", "유제품": "dairy",
+        "계란/난류": "eggs", "곡류": "grain", "과일": "fruit",
+        "채소": "vegetable", "과자/간식": "snack", "음료": "beverage", "주류": "alcohol",
     }
 
     storage = request.app.state.storage
@@ -181,8 +193,8 @@ async def get_category_summary(
         return cached
 
     try:
-        # Cap at 100 products for aggregation — sufficient for category summary
-        all_products = storage.search_products("", per_page=100)
+        # Fetch more products for better category coverage
+        all_products = storage.search_products("", per_page=500)
         items = []
         if isinstance(all_products, dict) and "items" in all_products:
             items = all_products["items"]
@@ -196,17 +208,32 @@ async def get_category_summary(
         if not items:
             return ApiResponse(data=_default_category_summary())
 
-        # 카테고리별 그룹핑
+        # 카테고리별 그룹핑 — category_id 우선, 없으면 cat 이름 → ID 매핑
         from collections import defaultdict
         groups = defaultdict(list)
         for p in items:
-            cat_id = (p.get("category_id") or p.get("category") or "etc")
-            # 계층형 카테고리 → 최상위 키 사용
-            top_cat = cat_id.split(".")[0] if "." in cat_id else cat_id
+            cat_id = p.get("category_id") or ""
+            cat_name = p.get("cat") or p.get("category") or ""
+
+            if cat_id:
+                # 계층형 카테고리 → 최상위 키 사용
+                top_cat = cat_id.split(".")[0]
+            elif cat_name and cat_name in CATNAME_TO_ID:
+                top_cat = CATNAME_TO_ID[cat_name]
+            elif cat_name:
+                top_cat = cat_name
+            else:
+                top_cat = ""
+
+            # 카테고리 미분류 시 상품명 키워드로 추론
+            if not top_cat or top_cat == "etc":
+                top_cat = _infer_category_from_name(p.get("name", ""))
             groups[top_cat].append(p)
 
         summaries = []
         for cat_id, prods in groups.items():
+            if cat_id == "etc":
+                continue  # Skip uncategorized in summary
             prices = [_safe_price(p) for p in prods]
             prices = [pr for pr in prices if pr > 0]
             if not prices:
@@ -237,6 +264,30 @@ async def get_category_summary(
 
     except Exception:
         return ApiResponse(data=_default_category_summary())
+
+
+def _infer_category_from_name(name: str) -> str:
+    """상품명 키워드로 카테고리 추론 — category_id 미분류 보정용"""
+    if not name:
+        return "etc"
+    # 키워드 → 카테고리 매핑 (우선순위: 구체적 키워드부터)
+    _KEYWORD_MAP = {
+        "livestock": ["삼겹살", "돼지", "소고기", "한우", "닭고기", "닭", "갈비", "목살", "안심", "등심", "차돌"],
+        "fruit": ["사과", "배", "포도", "딸기", "수박", "참외", "복숭아", "감", "귤", "오렌지", "바나나", "망고", "블루베리", "키위"],
+        "vegetable": ["양파", "감자", "당근", "배추", "무", "시금치", "고추", "파", "마늘", "브로콜리", "토마토", "오이", "호박", "상추", "깻잎", "콩나물"],
+        "dairy": ["우유", "치즈", "요거트", "요구르트", "버터", "크림"],
+        "eggs": ["계란", "달걀", "난류", "메추리알"],
+        "seafood": ["고등어", "갈치", "오징어", "새우", "연어", "참치", "조기", "꽃게", "전복", "홍합", "굴", "멸치"],
+        "grain": ["쌀", "현미", "보리", "찹쌀", "잡곡", "밀가루"],
+        "processed": ["라면", "과자", "통조림", "소시지", "햄", "두부", "어묵", "만두", "냉동", "즉석"],
+        "living": ["세제", "휴지", "샴푸", "치약", "비누", "세정", "수건"],
+    }
+    name_lower = name.lower()
+    for cat_id, keywords in _KEYWORD_MAP.items():
+        for kw in keywords:
+            if kw in name_lower:
+                return cat_id
+    return "etc"
 
 
 def _safe_price(p):

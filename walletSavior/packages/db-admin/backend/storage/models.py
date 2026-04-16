@@ -85,12 +85,21 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    # 프로필 확장 필드
+    bio: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    preferences: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    is_deleted: Mapped[bool] = mapped_column(Boolean, default=False)
+    deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+
     oauth_accounts: Mapped[list["OAuthAccount"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     posts: Mapped[list["Post"]] = relationship(back_populates="author", cascade="all, delete-orphan")
     comments: Mapped[list["Comment"]] = relationship(back_populates="author", cascade="all, delete-orphan")
     votes: Mapped[list["Vote"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     favorites: Mapped[list["Favorite"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     price_alerts: Mapped[list["PriceAlert"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    cart_items: Mapped[list["CartItem"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    wishlist_items: Mapped[list["WishlistItem"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    activities: Mapped[list["UserActivity"]] = relationship(back_populates="user", cascade="all, delete-orphan")
 
 
 class OAuthAccount(Base):
@@ -677,4 +686,88 @@ class HotDealVote(Base):
 
     __table_args__ = (
         Index("ix_hotdeal_votes_deal_type", "hotdeal_id", "vote_type"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 장바구니
+# ═══════════════════════════════════════════════
+
+class CartItem(Base):
+    """사용자 장바구니 — 상품 or 수동 입력 아이템"""
+    __tablename__ = "cart_items"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    product_id: Mapped[Optional[int]] = mapped_column(ForeignKey("products.id", ondelete="SET NULL"), nullable=True)
+    item_name: Mapped[str] = mapped_column(String(300), nullable=False)
+    item_price: Mapped[float] = mapped_column(Float, nullable=False)
+    item_image_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    store_name: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    source_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    original_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    discount_rate: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    category: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    quantity: Mapped[int] = mapped_column(Integer, default=1)
+    added_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    expires_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+
+    user: Mapped["User"] = relationship(back_populates="cart_items")
+
+    __table_args__ = (
+        UniqueConstraint("user_id", "product_id", "store_name", name="uq_cart_user_product_store"),
+        Index("ix_cart_user", "user_id"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 찜 목록
+# ═══════════════════════════════════════════════
+
+class WishlistItem(Base):
+    """사용자 찜 목록 — 가격 하락 알림 지원"""
+    __tablename__ = "wishlist_items"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    product_id: Mapped[Optional[int]] = mapped_column(ForeignKey("products.id", ondelete="SET NULL"), nullable=True)
+    item_name: Mapped[str] = mapped_column(String(300), nullable=False)
+    target_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    item_image_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    store_name: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    category: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    price_at_add: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    current_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    added_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    notify_on_drop: Mapped[bool] = mapped_column(Boolean, default=False)
+
+    user: Mapped["User"] = relationship(back_populates="wishlist_items")
+
+    __table_args__ = (
+        Index("ix_wishlist_user", "user_id"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 사용자 활동 (추천용)
+# ═══════════════════════════════════════════════
+
+class UserActivity(Base):
+    """사용자 활동 로그 — 추천 알고리즘의 입력 데이터"""
+    __tablename__ = "user_activities"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    activity_type: Mapped[str] = mapped_column(String(30), nullable=False)
+    # view / search / cart_add / wishlist_add / vote
+    target_type: Mapped[Optional[str]] = mapped_column(String(30), nullable=True)
+    # product / post / hotdeal
+    target_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    metadata_: Mapped[Optional[dict]] = mapped_column("metadata", JSON, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    user: Mapped["User"] = relationship(back_populates="activities")
+
+    __table_args__ = (
+        Index("ix_activity_user_type_date", "user_id", "activity_type", "created_at"),
     )
