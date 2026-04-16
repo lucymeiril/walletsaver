@@ -110,9 +110,20 @@ async def login(request: Request, data: UserLogin):
 
 @router.post("/refresh", response_model=TokenResponse)
 @limiter.limit("5/minute")
-async def refresh(request: Request, data: TokenRefresh):
-    """토큰 갱신"""
-    payload = decode_token(data.refresh_token)
+async def refresh(request: Request):
+    """토큰 갱신 — body 또는 httpOnly 쿠키에서 refresh_token 읽기"""
+    refresh_token_value = None
+    try:
+        body = await request.json()
+        refresh_token_value = body.get("refresh_token") if isinstance(body, dict) else None
+    except Exception:
+        pass
+    if not refresh_token_value:
+        refresh_token_value = request.cookies.get("refresh_token")
+    if not refresh_token_value:
+        raise HTTPException(status_code=401, detail="리프레시 토큰이 필요합니다")
+
+    payload = decode_token(refresh_token_value)
     if not payload or payload.get("type") != "refresh":
         log_auth_event("token_refresh_failed",
                        ip=request.client.host if request.client else "unknown",
@@ -141,9 +152,11 @@ async def oauth_login(provider: str):
     """OAuth 로그인 URL로 리다이렉트"""
     try:
         url = get_oauth_login_url(provider)
-        return RedirectResponse(url=url)
-    except ValueError:
-        raise HTTPException(status_code=400, detail="지원하지 않는 OAuth 제공자입니다")
+        logger.info("OAuth redirect: provider=%s, url=%s", provider, url[:100])
+        return RedirectResponse(url=url, status_code=302)
+    except ValueError as e:
+        logger.error("OAuth login URL 생성 실패: %s", e)
+        raise HTTPException(status_code=400, detail=f"OAuth 인증 오류: {e}")
 
 
 def _resolve_unique_nickname(session, base_nickname: str, suffix: str) -> str:
@@ -230,7 +243,7 @@ async def oauth_callback(request: Request, provider: str, code: str, state: str 
             tokens = create_token_pair(user.id, user.email, user.role.value)
 
         frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
-        response = RedirectResponse(url=f"{frontend_url}/auth/callback")
+        response = RedirectResponse(url=f"{frontend_url}/auth/callback", status_code=302)
         _set_auth_cookies(response, tokens)
         return response
     except HTTPException:
@@ -240,7 +253,12 @@ async def oauth_callback(request: Request, provider: str, code: str, state: str 
         log_auth_event("oauth_failed",
                        ip=request.client.host if request.client else "unknown",
                        status="failed", provider=provider, detail=str(e))
-        raise HTTPException(status_code=400, detail="OAuth 인증에 실패했습니다. 다시 시도해주세요.")
+        # 프론트엔드로 에러와 함께 리다이렉트 (AuthCallback에서 toast 표시)
+        frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
+        return RedirectResponse(
+            url=f"{frontend_url}/auth/callback?error=oauth_failed",
+            status_code=302,
+        )
 
 
 @router.get("/me", response_model=UserProfile)

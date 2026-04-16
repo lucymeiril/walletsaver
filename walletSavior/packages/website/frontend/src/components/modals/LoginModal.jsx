@@ -2,7 +2,6 @@ import { useState, useMemo } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import useStore from '../../stores/appStore';
 import { authService } from '../../services/authService';
-import { decodeTokenPayload } from '../../utils/tokenUtils';
 import Modal from '../common/Modal';
 import s from './LoginModal.module.css';
 
@@ -52,15 +51,13 @@ export default function LoginModal() {
   const pwMatch = signupConfirm.length > 0 && signupPassword === signupConfirm;
   const pwMismatch = signupConfirm.length > 0 && signupPassword !== signupConfirm;
 
-  const completeLogin = (data) => {
-    const payload = decodeTokenPayload(data.access_token);
-    if (payload) {
-      login({
-        id: parseInt(payload.sub),
-        email: payload.email,
-        nickname: payload.nickname || payload.email?.split('@')[0],
-        role: payload.role,
-      });
+  const completeLogin = async () => {
+    try {
+      const profile = await authService.getProfile();
+      login({ ...profile });
+    } catch {
+      // Fallback: user is authenticated but profile fetch failed
+      login({ email: 'unknown' });
     }
     addToast('로그인 되었습니다! 🎉', 'success');
     closeLoginModal();
@@ -73,7 +70,7 @@ export default function LoginModal() {
     setLoginLoading(true);
     try {
       const data = await authService.login(loginEmail, loginPassword);
-      completeLogin(data);
+      await completeLogin(data);
     } catch (err) {
       setLoginError(err.data?.detail || '이메일 또는 비밀번호가 올바르지 않습니다');
     } finally {
@@ -91,7 +88,7 @@ export default function LoginModal() {
     setSignupLoading(true);
     try {
       const data = await authService.register({ email: signupEmail, nickname: signupNickname, password: signupPassword });
-      completeLogin(data);
+      await completeLogin(data);
     } catch (err) {
       const detail = err.data?.detail || '';
       if (typeof detail === 'string' && (detail.includes('email') || detail.includes('이메일'))) {
@@ -106,7 +103,12 @@ export default function LoginModal() {
     }
   };
 
-  const handleOAuth = (provider) => { window.location.href = `/api/auth/oauth/${provider}`; };
+  const handleOAuth = (provider) => {
+    // OAuth는 Vite 프록시를 거치지 않고 백엔드로 직접 리다이렉트
+    // (프록시가 302를 소비하면 Google로 리다이렉트되지 않음)
+    const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    window.location.href = `${backendUrl}/api/auth/oauth/${provider}`;
+  };
 
   const switchTab = (t) => {
     setTab(t);

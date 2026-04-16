@@ -222,8 +222,6 @@ export default function CommunityPage() {
     try {
       setSubmitting(true);
       const headers = { 'Content-Type': 'application/json' };
-      const token = sessionStorage.getItem('access_token');
-      if (token) headers['Authorization'] = `Bearer ${token}`;
 
       const isEdit = !!editPostId;
       const url = isEdit ? `/api/posts/${editPostId}` : '/api/posts';
@@ -239,7 +237,7 @@ export default function CommunityPage() {
         ...(isEdit ? {} : { images: wImages.length > 0 ? wImages : undefined }),
       };
 
-      const resp = await fetch(url, { method, headers, body: JSON.stringify(payload) });
+      const resp = await fetch(url, { method, headers, body: JSON.stringify(payload), credentials: 'include' });
       if (resp.ok) {
         addToast(isEdit ? '게시글이 수정되었습니다!' : '게시글이 등록되었습니다!', 'success');
         setShowWrite(false);
@@ -698,14 +696,11 @@ const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, boa
       return;
     }
     try {
-      const token = sessionStorage.getItem('access_token');
       const resp = await fetch(`/api/posts/${post.id}/comments`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: newComment }),
+        credentials: 'include',
       });
       if (resp.ok) {
         const res = await resp.json();
@@ -726,14 +721,11 @@ const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, boa
     }
     const voteType = type === 'hot' ? 'hot' : 'not';
     try {
-      const token = sessionStorage.getItem('access_token');
       const resp = await fetch(`/api/posts/${post.id}/vote`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ vote_type: voteType }),
+        credentials: 'include',
       });
       if (resp.ok) {
         const res = await resp.json();
@@ -749,10 +741,9 @@ const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, boa
   const handleDelete = async () => {
     if (!window.confirm('정말 삭제하시겠습니까?')) return;
     try {
-      const token = sessionStorage.getItem('access_token');
       const resp = await fetch(`/api/posts/${post.id}`, {
         method: 'DELETE',
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        credentials: 'include',
       });
       if (resp.ok) {
         addToast('게시글이 삭제되었습니다.', 'success');

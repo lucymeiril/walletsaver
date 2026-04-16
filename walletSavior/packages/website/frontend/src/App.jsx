@@ -6,9 +6,7 @@ import BottomNav from './components/layout/BottomNav';
 import ToastContainer from './components/common/ToastContainer';
 import LoginModal from './components/modals/LoginModal';
 import useStore from './stores/appStore';
-import { api } from './services/api';
 import { authService } from './services/authService';
-import { decodeTokenPayload, isTokenExpiringSoon } from './utils/tokenUtils';
 import ShoppingListPanel from './components/common/ShoppingListPanel';
 import ModalManager from './components/modals/ModalManager';
 import ErrorBoundary from './components/common/ErrorBoundary';
@@ -53,28 +51,11 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  // Restore session from stored token on app mount
+  // Restore session from httpOnly cookie on app mount
   useEffect(() => {
-    const token = sessionStorage.getItem('access_token');
-    if (token) {
-      const payload = decodeTokenPayload(token);
-      if (payload && !isTokenExpiringSoon(token, 0)) {
-        api.setToken(token);
-        login({ id: parseInt(payload.sub), email: payload.email, nickname: payload.nickname || payload.email?.split('@')[0], role: payload.role });
-        authService.getProfile().then((profile) => login({ ...profile })).catch((err) => console.error('프로필 조회 실패:', err));
-      } else {
-        api.refreshToken().then((ok) => {
-          if (ok) {
-            const newToken = sessionStorage.getItem('access_token');
-            const p = decodeTokenPayload(newToken);
-            if (p) {
-              login({ id: parseInt(p.sub), email: p.email, nickname: p.nickname || p.email?.split('@')[0], role: p.role });
-              authService.getProfile().then((profile) => login({ ...profile })).catch((err) => console.error('프로필 조회 실패:', err));
-            }
-          }
-        });
-      }
-    }
+    authService.getProfile()
+      .then((profile) => login({ ...profile }))
+      .catch(() => { /* not authenticated — ignore */ });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (

@@ -1,5 +1,4 @@
 import useStore from '../stores/appStore';
-import { isTokenExpiringSoon } from '../utils/tokenUtils';
 
 const API_BASE = import.meta.env.VITE_API_URL || '';
 const DEFAULT_TIMEOUT = 15000;
@@ -66,35 +65,22 @@ function setCache(key, value, ttl = DEFAULT_CACHE_TTL) {
 class ApiClient {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
-    this.token = sessionStorage.getItem('access_token');
   }
 
-  setToken(token) {
-    if (this.token === token) return;
-    this.token = token;
-    sessionStorage.setItem('access_token', token);
-  }
+  /** @deprecated No-op — auth is handled by httpOnly cookies */
+  setToken() {}
 
-  clearToken() {
-    this.token = null;
-    sessionStorage.removeItem('access_token');
-  }
+  /** @deprecated No-op — use authService.logout() to clear cookies */
+  clearToken() {}
 
   async request(path, options = {}) {
     const { timeout = DEFAULT_TIMEOUT, signal: externalSignal, ...fetchOptions } = options;
-
-    // Proactive token refresh: if token expires within 60 s, refresh before request
-    if (this.token && isTokenExpiringSoon(this.token)) {
-      await this.refreshToken();
-    }
 
     const headers = {
       'Content-Type': 'application/json',
       ...fetchOptions.headers,
     };
-    if (this.token) {
-      headers['Authorization'] = `Bearer ${this.token}`;
-    }
+    // Auth is handled by httpOnly cookies (credentials: 'include')
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
@@ -131,15 +117,12 @@ class ApiClient {
     if (response.status === 401) {
       const refreshed = await this.refreshToken();
       if (refreshed) {
-        headers['Authorization'] = `Bearer ${this.token}`;
         try {
           response = await fetch(`${this.baseUrl}${path}`, { ...fetchOptions, headers, credentials: 'include' });
         } catch {
           throw new ApiError(ERROR_MESSAGES.network, 0, 'network');
         }
       } else {
-        this.clearToken();
-        sessionStorage.removeItem('refresh_token');
         const store = useStore.getState();
         store.logout();
         store.openLoginModal();
@@ -214,22 +197,11 @@ class ApiClient {
 
   async refreshToken() {
     try {
-      const refreshToken = sessionStorage.getItem('refresh_token');
-      if (!refreshToken) return false;
-
       const response = await fetch(`${this.baseUrl}/api/auth/refresh`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ refresh_token: refreshToken }),
         credentials: 'include',
       });
-
-      if (!response.ok) return false;
-
-      const data = await response.json();
-      this.setToken(data.access_token);
-      sessionStorage.setItem('refresh_token', data.refresh_token);
-      return true;
+      return response.ok;
     } catch {
       return false;
     }
