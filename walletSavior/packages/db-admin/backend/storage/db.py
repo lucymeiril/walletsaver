@@ -602,6 +602,7 @@ class DBStorage(StorageContract):
                     "name": p.name,
                     "icon": cat.icon if cat else "",
                     "cat": cat.name if cat else "",
+                    "category_id": p.category_id or "",
                     "unit": p.unit,
                     "avg": avg,
                     "cur": current_price,
@@ -1504,7 +1505,18 @@ class DBStorage(StorageContract):
                         weight_g = float(weight_g)
                     except (ValueError, TypeError):
                         weight_g = 0
+                # Fallback: extract weight from product name
+                if not weight_g and p.name:
+                    import re
+                    wm = re.search(r"(\d+(?:\.\d+)?)\s*(g|kg)", p.name, re.IGNORECASE)
+                    if wm:
+                        wval = float(wm.group(1))
+                        wunit = wm.group(2).lower()
+                        weight_g = wval * 1000 if wunit == "kg" else wval
                 per_100g = round(current_price / weight_g * 100) if current_price and weight_g > 0 else None
+                # If still no per_100g but we have a price, use price as-is for comparison
+                if per_100g is None and current_price and current_price > 0:
+                    per_100g = round(current_price)
 
                 enriched.append({
                     "id": p.id,

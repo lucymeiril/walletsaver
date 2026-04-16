@@ -812,3 +812,272 @@ def _get_depth(category_id: str) -> int:
     if cat:
         return cat.get("depth", 0)
     return category_id.count(".")
+
+
+# ──────────────────────────────────────────────
+# Fuzzy Korean keyword → category fallback
+# ──────────────────────────────────────────────
+
+_KOREAN_KEYWORD_MAP: list[tuple[list[str], str]] = [
+    # 축산/돼지
+    (["삼겹살", "목살", "돼지고기", "앞다리", "뒷다리", "돼지갈비", "돼지등심", "돼지안심", "보쌈", "족발", "돼지", "돈까스", "돈카츠"], "livestock.pork"),
+    # 축산/소
+    (["한우", "소고기", "등심", "안심", "차돌박이", "양지", "사태", "갈비", "불고기", "국거리", "척아이롤", "채끝"], "livestock.beef"),
+    # 축산/닭
+    (["닭가슴살", "닭다리", "닭날개", "닭볶음탕", "통닭", "닭고기", "닭", "치킨텐더", "치킨너겟"], "livestock.chicken"),
+    # 과일
+    (["사과", "배", "포도", "딸기", "수박", "참외", "복숭아", "자두", "키위", "바나나", "오렌지", "귤", "감", "블루베리", "망고", "체리", "멜론", "레몬", "천혜향", "한라봉"], "agriculture.fruit"),
+    # 채소/엽채
+    (["배추", "시금치", "상추", "양배추", "깻잎", "부추", "대파", "콩나물", "숙주", "셀러리", "샐러리"], "agriculture.leafy"),
+    # 채소/근채
+    (["양파", "감자", "고구마", "당근", "무", "마늘", "생강"], "agriculture.root"),
+    # 유제품
+    (["우유", "치즈", "요구르트", "버터", "요거트", "크림치즈", "모짜렐라", "야쿠르트", "요플레"], "dairy"),
+    # 면류
+    (["라면", "국수", "파스타", "우동", "소면", "냉면", "쫄면", "칼국수", "짜파게티", "신라면"], "processed.noodle"),
+    # 두부/콩
+    (["두부", "콩나물", "순두부", "연두부"], "agriculture.leafy"),
+    # 계란
+    (["계란", "달걀", "에그", "유정란", "메추리알", "신선란"], "livestock.egg"),
+    # 곡류
+    (["쌀", "현미", "찹쌀", "보리", "잡곡", "오트밀"], "agriculture.grain"),
+    # 수산
+    (["참치", "고등어", "연어", "새우", "오징어", "멸치", "조기", "갈치", "꽃게", "전복", "굴", "홍합", "바지락", "어묵"], "seafood"),
+    # 양념/소스
+    (["소스", "케챱", "드레싱", "간장", "된장", "고추장", "식초", "맛술", "참기름", "들기름", "올리브유", "쌈장"], "processed.sauce"),
+    # 가공식품/냉동
+    (["만두", "교자", "냉동", "돈까스", "핫도그", "부대찌개", "짜장", "카레"], "processed.frozen"),
+    # 과자/간식
+    (["과자", "초콜릿", "사탕", "젤리", "칩", "쿠키", "크래커", "빼빼로", "포카칩"], "snack"),
+    # 음료
+    (["음료", "주스", "콜라", "사이다", "물", "탄산수", "이온음료", "커피", "녹차", "보리차"], "beverage"),
+    # 주류
+    (["맥주", "소주", "와인", "위스키", "막걸리", "하이볼", "카스", "참이슬"], "alcohol"),
+    # 생활용품
+    (["세제", "샴푸", "치약", "화장지", "휴지", "세탁세제", "섬유유연제", "주방세제", "물티슈", "칫솔", "메가롤"], "living"),
+    # 패션
+    (["티셔츠", "맨투맨", "후드", "니트", "바지", "팬츠", "자켓", "코트", "원피스", "셔츠",
+      "t-shirt", "tee", "hoodie", "pants", "jacket", "coat", "dress", "shirt", "sweatshirt"], "clothing"),
+]
+
+
+def _fallback_categorize(product_name: str) -> Optional[str]:
+    """Fuzzy Korean keyword matching — fallback when auto_categorize returns low confidence."""
+    if not product_name:
+        return None
+    name_lower = product_name.lower()
+    for keywords, cat_id in _KOREAN_KEYWORD_MAP:
+        for kw in keywords:
+            if kw in name_lower:
+                return cat_id
+    return None
+
+
+def extract_weight_from_name(name: str) -> Optional[float]:
+    """Extract weight in grams from product name string."""
+    if not name:
+        return None
+    # Match patterns like "100g", "1kg", "1.5kg", "500g"
+    m = re.search(r"(\d+(?:\.\d+)?)\s*(g|kg)", name, re.IGNORECASE)
+    if m:
+        value = float(m.group(1))
+        unit = m.group(2).lower()
+        if unit == "kg":
+            return value * 1000
+        return value
+    return None
+
+
+def normalize_product_name(name: str) -> str:
+    """Normalize product name for cross-mart matching.
+    
+    Remove store-specific prefixes, weight units, '국내산', etc.
+    """
+    if not name:
+        return ""
+    result = name
+
+    # Remove store prefixes
+    for prefix in ["이마트", "홈플러스", "롯데마트", "코스트코", "쿠팡", "SSG", "노브랜드", "피코크",
+                    "심플러스", "요리하다", "L'TABLE", "초이스엘", "홈플러스시그니처"]:
+        result = result.replace(prefix, "")
+
+    # Remove origin tags
+    for tag in ["국내산", "국산", "수입산", "미국산", "호주산", "스페인산", "캐나다산", "제주산", "제주직송"]:
+        result = result.replace(tag, "")
+
+    # Remove storage tags
+    for tag in ["냉장", "냉동", "상온", "실온", "해동"]:
+        result = result.replace(tag, "")
+
+    # Remove weight/unit patterns
+    result = re.sub(r"\d+(?:\.\d+)?\s*(?:g|kg|ml|l|리터|개|입|팩|봉|세트|매|장|병|캔|포)\b", "", result, flags=re.IGNORECASE)
+
+    # Remove grade patterns
+    result = re.sub(r"1\+\+|1\+|1등급|2등급|3등급|특등급", "", result)
+
+    # Remove promotional text
+    result = re.sub(r"\[.*?\]|\(.*?\)", "", result)
+
+    # Remove usage suffixes
+    result = re.sub(r"(구이|수육|볶음|탕|스테이크|불고기|보쌈|찜|전골|국거리|다짐)용?", "", result)
+
+    # Clean up whitespace
+    result = re.sub(r"\s+", " ", result).strip()
+
+    return result
+
+
+def group_similar_products(products: list[dict]) -> dict[str, list[dict]]:
+    """Group products by normalized name + category for cross-mart comparison.
+    
+    Returns: {normalized_name: [product_dicts]}
+    """
+    groups: dict[str, list[dict]] = {}
+    for p in products:
+        name = p.get("name", "")
+        normalized = normalize_product_name(name)
+        if not normalized:
+            continue
+        cat = p.get("category_id", "") or ""
+        # Use first-level category for grouping
+        top_cat = cat.split(".")[0] if cat else ""
+        key = f"{normalized}|{top_cat}" if top_cat else normalized
+        groups.setdefault(key, []).append(p)
+    return groups
+
+
+# ──────────────────────────────────────────────
+# Migration: batch auto-categorize all products
+# ──────────────────────────────────────────────
+
+def run_auto_categorize():
+    """Batch auto-categorize all products in the database.
+    
+    Safe to re-run: only updates products that have no category_id
+    or were previously auto-categorized (method = 'auto' or 'suggested').
+    Also computes per_100g prices and extracts attributes.
+    """
+    import logging
+    logging.basicConfig(level=logging.INFO)
+    log = logging.getLogger("auto_categorize_migration")
+
+    from services.base import managed_session, get_engine
+    from storage.models import Base, Product, Category, DiscountHistory, BaselinePrice
+
+    # Ensure tables exist
+    engine = get_engine()
+    Base.metadata.create_all(engine)
+
+    # First, seed categories if they don't exist
+    _load_data()
+    with managed_session() as session:
+        existing_cats = {c.id for c in session.query(Category).all()}
+        new_cats = 0
+        for cat_data in (_CATEGORIES or []):
+            if cat_data["id"] not in existing_cats:
+                cat = Category(
+                    id=cat_data["id"],
+                    name=cat_data["name"],
+                    parent_id=cat_data.get("parent_id"),
+                    depth=cat_data.get("depth", 0),
+                    sort_order=cat_data.get("sort_order", 0),
+                    icon=cat_data.get("icon"),
+                    attributes=cat_data.get("attributes"),
+                    is_active=cat_data.get("is_active", True),
+                )
+                session.add(cat)
+                new_cats += 1
+        if new_cats:
+            log.info("Seeded %d new categories", new_cats)
+
+    # Now categorize all products
+    with managed_session() as session:
+        products = session.query(Product).filter(
+            Product.is_active == True
+        ).all()
+
+        total = len(products)
+        categorized = 0
+        updated = 0
+        skipped = 0
+
+        for p in products:
+            # Skip manually categorized products
+            if p.category_id and p.categorization_method == "manual":
+                skipped += 1
+                continue
+
+            # Run auto-categorize
+            result = auto_categorize(p.name, p.source_type)
+            cat_id = result.category_id
+            confidence = result.confidence
+
+            # If auto_categorize returns low confidence, try fallback
+            if not cat_id or confidence < 0.3:
+                fallback_cat = _fallback_categorize(p.name)
+                if fallback_cat:
+                    cat_id = fallback_cat
+                    confidence = max(confidence, 0.4)
+
+            if cat_id:
+                # Verify category exists
+                if session.get(Category, cat_id) is None:
+                    # Try parent category
+                    parts = cat_id.split(".")
+                    while parts:
+                        parent_id = ".".join(parts)
+                        if session.get(Category, parent_id):
+                            cat_id = parent_id
+                            break
+                        parts.pop()
+                    else:
+                        cat_id = None
+
+            if cat_id:
+                old_cat = p.category_id
+                p.category_id = cat_id
+                p.categorization_confidence = confidence
+                p.categorization_method = "auto" if confidence >= 0.85 else "suggested"
+
+                # Extract and store attributes
+                attrs = result.attributes if hasattr(result, 'attributes') else {}
+                if attrs and not p.attributes:
+                    p.attributes = attrs
+                elif attrs and isinstance(p.attributes, dict):
+                    merged = {**p.attributes, **attrs}
+                    p.attributes = merged
+
+                # Extract weight if not already present
+                if not (p.attributes or {}).get("weight_g"):
+                    weight = extract_weight_from_name(p.name)
+                    if weight:
+                        if p.attributes is None:
+                            p.attributes = {}
+                        p.attributes = {**p.attributes, "weight_g": weight}
+
+                if old_cat != cat_id:
+                    updated += 1
+                categorized += 1
+            else:
+                skipped += 1
+
+        log.info(
+            "Auto-categorize complete: %d/%d categorized, %d updated, %d skipped",
+            categorized, total, updated, skipped,
+        )
+
+    # Verify results
+    with managed_session() as session:
+        from sqlalchemy import func
+        total = session.query(Product).count()
+        cat_count = session.query(Product).filter(Product.category_id != None).count()
+        log.info("Final: %d/%d products have categories", cat_count, total)
+
+        cats = (
+            session.query(Product.category_id, func.count())
+            .group_by(Product.category_id)
+            .all()
+        )
+        for cat_id, count in sorted(cats, key=lambda x: -x[1])[:15]:
+            log.info("  %s: %d", cat_id, count)
