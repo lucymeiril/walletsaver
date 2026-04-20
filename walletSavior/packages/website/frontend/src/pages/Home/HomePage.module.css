@@ -423,7 +423,9 @@
 .gasInfo { flex: 1; min-width: 0; }
 .gasName { font-size: .9rem; font-weight: var(--fw-semi); }
 .gasAddr { font-size: .75rem; color: var(--text3); margin-top: 2px; }
-.gasPrice { font-weight: var(--fw-bold); font-size: 1.1rem; color: var(--accent); white-space: nowrap; }
+.gasPrices { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
+.gasPrice { font-weight: var(--fw-bold); font-size: .95rem; color: var(--accent); white-space: nowrap; }
+.gasPriceDiesel { font-weight: var(--fw-semi); font-size: .8rem; color: var(--text2); white-space: nowrap; }
 
 /* Community Preview */
 .communityList { display: flex; flex-direction: column; gap: 8px; }

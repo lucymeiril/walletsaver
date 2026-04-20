@@ -97,6 +97,8 @@ export default function DataReviewPage() {
   const [showRejectInput, setShowRejectInput] = useState(null);
   const [showMemoInput, setShowMemoInput] = useState(null);
   const [detailCache, setDetailCache] = useState({});
+  const [detailLoading, setDetailLoading] = useState(null);
+  const [detailError, setDetailError] = useState({});
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedIds, setSelectedIds] = useState(new Set());
@@ -137,10 +139,22 @@ export default function DataReviewPage() {
     if (expandedId === id) { setExpandedId(null); return; }
     setExpandedId(id);
     if (!detailCache[id]) {
-      try {
-        const detail = await fetch(`/api/ingestions/${id}`).then(r => r.json());
-        setDetailCache(prev => ({ ...prev, [id]: detail }));
-      } catch { /* fallback */ }
+      await fetchDetail(id);
+    }
+  };
+
+  const fetchDetail = async (id) => {
+    setDetailLoading(id);
+    setDetailError(prev => ({ ...prev, [id]: null }));
+    try {
+      const res = await fetch(`/api/ingestions/${id}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const detail = await res.json();
+      setDetailCache(prev => ({ ...prev, [id]: detail }));
+    } catch (err) {
+      setDetailError(prev => ({ ...prev, [id]: err.message || '데이터 로드 실패' }));
+    } finally {
+      setDetailLoading(null);
     }
   };
 
@@ -577,6 +591,19 @@ export default function DataReviewPage() {
                   {/* Expanded Detail */}
                   {isExpanded && (
                     <div className={styles.detail}>
+                      {detailLoading === item.id && (
+                        <div className={styles.detailLoading}>
+                          <RefreshCw size={16} className={styles.spin} /> 데이터를 불러오는 중...
+                        </div>
+                      )}
+                      {detailError[item.id] && (
+                        <div className={styles.detailError}>
+                          <span>⚠️ 데이터 로드 실패: {detailError[item.id]}</span>
+                          <button className={styles.retryBtn} onClick={() => fetchDetail(item.id)}>
+                            <RefreshCw size={14} /> 다시 시도
+                          </button>
+                        </div>
+                      )}
                       {/* 스키마 정보 — 전체 텍스트 표시 */}
                       {items.length > 0 && (
                         <div className={styles.section}>

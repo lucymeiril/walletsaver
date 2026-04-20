@@ -817,10 +817,13 @@ export default function HomePage() {
               <div key={g.id || g.name || `gas-${i}`} className={s.gasCard} onClick={() => openGasStationModal(g)} style={{ cursor: 'pointer' }}>
                 <span className={s.gasRank}>{i + 1}</span>
                 <div className={s.gasInfo}>
-                  <div className={s.gasName}>{g.name}</div>
+                  <div className={s.gasName}>{g.brand ? `${g.brand} ` : ''}{g.name}</div>
                   <div className={s.gasAddr}>{g.addr}</div>
                 </div>
-                <span className={s.gasPrice}>{fmt(g.gasoline)}원</span>
+                <div className={s.gasPrices}>
+                  {g.gasoline != null && <span className={s.gasPrice}>휘발유 {fmt(g.gasoline)}원</span>}
+                  {g.diesel != null && <span className={s.gasPriceDiesel}>경유 {fmt(g.diesel)}원</span>}
+                </div>
               </div>
             ))}
           </div>
