@@ -20,6 +20,7 @@ export default function ProductFilters({
   sourceFilter, setSourceFilter,
   catFilter, setCatFilter,
   search, setSearch,
+  searchScope, setSearchScope,
   sortBy, setSortBy,
   sortDir, setSortDir,
   setPage,
@@ -90,13 +91,29 @@ export default function ProductFilters({
           <Search size={16} className={s.searchIcon} />
           <input
             className={s.searchInput}
-            placeholder="상품명 검색..."
+            placeholder={
+              searchScope === 'category' ? '카테고리명 검색...' :
+              searchScope === 'all' ? '이름+카테고리 검색...' :
+              '상품명 검색...'
+            }
             value={search}
             onChange={e => setSearch(e.target.value)}
             onKeyDown={handleSearchKey}
           />
           <button className={s.searchBtn} onClick={onSearch}>검색</button>
         </div>
+        {setSearchScope && (
+          <select
+            className={s.select}
+            value={searchScope || 'name'}
+            onChange={e => { setSearchScope(e.target.value); setPage(1); }}
+            style={{ minWidth: 100 }}
+          >
+            <option value="name">이름</option>
+            <option value="category">카테고리</option>
+            <option value="all">전체</option>
+          </select>
+        )}
         <select className={s.select} value={catFilter} onChange={e => { setCatFilter(e.target.value); setPage(1); }}>
           <option value="">전체 카테고리</option>
           {(stats?.by_category || []).map(c => (

@@ -25,6 +25,7 @@ export default function Products() {
   const loading = loadingProducts;
 
   const [search, setSearch] = useState('');
+  const [searchScope, setSearchScope] = useState('name');
   const [sourceFilter, setSourceFilter] = useState('all');
   const [catFilter, setCatFilter] = useState('');
   const [sortBy, setSortBy] = useState('name');
@@ -47,14 +48,25 @@ export default function Products() {
     const src = overrides.source ?? sourceFilter;
     if (src && src !== 'all') params.source = src;
     if (overrides.category ?? catFilter) params.category = overrides.category ?? catFilter;
-    if (overrides.search ?? search) params.search = overrides.search ?? search;
+    const currentSearch = overrides.search ?? search;
+    const currentScope = overrides.searchScope ?? searchScope;
+    if (currentSearch) {
+      if (currentScope === 'category') {
+        params.category_search = currentSearch;
+      } else if (currentScope === 'all') {
+        params.search = currentSearch;
+        params.category_search = currentSearch;
+      } else {
+        params.search = currentSearch;
+      }
+    }
     params.sort_by = overrides.sort_by ?? sortBy;
     params.sort_dir = overrides.sort_dir ?? sortDir;
     params.page = overrides.page ?? page;
     params.per_page = 20;
     const signal = getSignal();
     fetchProducts(params, { signal });
-  }, [sourceFilter, catFilter, search, sortBy, sortDir, page, fetchProducts, getSignal]);
+  }, [sourceFilter, catFilter, search, searchScope, sortBy, sortDir, page, fetchProducts, getSignal]);
 
   useEffect(() => {
     doFetch(); fetchProductStats(); fetchCategories(); fetchKeywords();
@@ -168,6 +180,7 @@ export default function Products() {
         sourceFilter={sourceFilter} setSourceFilter={setSourceFilter}
         catFilter={catFilter} setCatFilter={setCatFilter}
         search={search} setSearch={setSearch}
+        searchScope={searchScope} setSearchScope={setSearchScope}
         sortBy={sortBy} setSortBy={setSortBy}
         sortDir={sortDir} setSortDir={setSortDir}
         setPage={setPage}

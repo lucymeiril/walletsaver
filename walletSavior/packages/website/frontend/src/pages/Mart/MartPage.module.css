@@ -101,6 +101,69 @@
 }
 .catBtn:hover { color: var(--text2); border-color: var(--border2); }
 .catBtnActive { color: var(--accent2); border-color: var(--accent2); background: rgba(129,140,248,.08); }
+.catCount { font-size: .72rem; opacity: .7; }
+
+/* Search Bar */
+.searchRow {
+  max-width: var(--max-w);
+  margin: 0 auto 12px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.searchWrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+  max-width: 420px;
+}
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: .85rem;
+  pointer-events: none;
+}
+.searchInput {
+  width: 100%;
+  padding: 10px 36px 10px 36px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: .88rem;
+  outline: none;
+  transition: border-color var(--dur) var(--ease);
+}
+.searchInput::placeholder { color: var(--text3); }
+.searchInput:focus { border-color: var(--accent); }
+.searchClear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--glass);
+  border: none;
+  color: var(--text3);
+  font-size: .75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--dur) var(--ease);
+}
+.searchClear:hover { background: var(--glass2); color: var(--text); }
+.searchCount {
+  font-size: .82rem;
+  color: var(--text3);
+  white-space: nowrap;
+}
 
 /* Flyer Viewer */
 .flyerSection {
@@ -475,6 +538,7 @@
   .info { padding: 0 12px; }
   .modeRow { padding: 0 12px; }
   .catRow { padding: 0 12px; }
+  .searchRow { padding: 0 12px; }
   .flyerSection { padding: 0 12px; }
   .flyerMartTabs { gap: 6px; }
   .flyerMartTab { padding: 6px 12px; font-size: .8rem; }
