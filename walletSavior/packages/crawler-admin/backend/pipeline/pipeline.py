@@ -26,6 +26,7 @@ from pipeline.transformer import (
     enrich_with_category,
 )
 from audit import audit_log, AuditEventType
+from pipeline.db_admin_auth import get_db_admin_auth
 
 logger = logging.getLogger(__name__)
 
@@ -267,11 +268,20 @@ class CrawlPipeline:
         if not records:
             return 0
 
+        auth = get_db_admin_auth()
         last_exc: Exception | None = None
         for attempt in range(1, _max_retries + 1):
             try:
+                headers = await auth.get_headers()
                 async with httpx.AsyncClient(timeout=30) as client:
-                    resp = await client.post(self.db_api_url, json=records)
+                    resp = await client.post(
+                        self.db_api_url, json=records, headers=headers,
+                    )
+                    if resp.status_code == 401:
+                        headers = await auth.handle_401()
+                        resp = await client.post(
+                            self.db_api_url, json=records, headers=headers,
+                        )
                     resp.raise_for_status()
                     return len(records)
             except httpx.HTTPStatusError as exc:
@@ -324,8 +334,17 @@ class CrawlPipeline:
         last_exc: Exception | None = None
         for attempt in range(1, _max_retries + 1):
             try:
+                auth = get_db_admin_auth()
+                headers = await auth.get_headers()
                 async with httpx.AsyncClient(timeout=30) as client:
-                    resp = await client.post(INGESTION_API_URL, json=payload)
+                    resp = await client.post(
+                        INGESTION_API_URL, json=payload, headers=headers,
+                    )
+                    if resp.status_code == 401:
+                        headers = await auth.handle_401()
+                        resp = await client.post(
+                            INGESTION_API_URL, json=payload, headers=headers,
+                        )
                     resp.raise_for_status()
                     audit_log(
                         AuditEventType.DATA_SUBMISSION,

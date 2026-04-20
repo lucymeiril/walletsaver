@@ -14,6 +14,7 @@ from api.app import limiter
 from api.security.input_schemas import CleanupRequest
 from audit import audit_log, AuditEventType
 from pipeline.circuit_breaker import CircuitBreaker, CircuitOpenError
+from pipeline.db_admin_auth import get_db_admin_auth
 
 logger = logging.getLogger(__name__)
 
@@ -35,11 +36,18 @@ class ReviewRequest(BaseModel):
 
 
 async def _proxy(method: str, url: str, **kwargs):
-    """Execute a proxied HTTP request with circuit breaker protection."""
+    """Execute a proxied HTTP request with circuit breaker + JWT auth."""
     try:
+        auth = get_db_admin_auth()
+        auth_headers = await auth.get_headers()
+        hdrs = kwargs.pop("headers", {}) or {}
+        hdrs.update(auth_headers)
         async with _cb:
             async with httpx.AsyncClient(timeout=15) as client:
-                resp = await getattr(client, method)(url, **kwargs)
+                resp = await getattr(client, method)(url, headers=hdrs, **kwargs)
+                if resp.status_code == 401:
+                    hdrs.update(await auth.handle_401())
+                    resp = await getattr(client, method)(url, headers=hdrs, **kwargs)
                 resp.raise_for_status()
                 return resp.json()
     except CircuitOpenError:
