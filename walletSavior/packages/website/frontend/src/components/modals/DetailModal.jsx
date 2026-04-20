@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ImagePlus, Send, MessageSquare, Eye, Clock } from 'lucide-react';
 import { fmt } from '../../utils/helpers';
 import SafeImage from '../common/SafeImage';
@@ -7,18 +7,50 @@ import s from './DetailModal.module.css';
 
 export default function DetailModal({ item, type, onClose }) {
   const [newComment, setNewComment] = useState('');
-  const [comments, setComments] = useState(item?.commentData || []);
+  const [comments, setComments] = useState([]);
+  const [loadingComments, setLoadingComments] = useState(true);
+
+  useEffect(() => {
+    if (!item?.id) return;
+    setLoadingComments(true);
+    const endpoint = type === 'hotdeal'
+      ? `/api/hotdeals/${item.id}/comments`
+      : `/api/posts/${item.id}/comments`;
+    fetch(endpoint)
+      .then(r => r.json())
+      .then(res => setComments(res.data || []))
+      .catch(() => setComments(item?.commentData || []))
+      .finally(() => setLoadingComments(false));
+  }, [item?.id, type]);
+
+  const addComment = async () => {
+    if (!newComment.trim()) return;
+    const endpoint = type === 'hotdeal'
+      ? `/api/hotdeals/${item.id}/comments`
+      : `/api/posts/${item.id}/comments`;
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: newComment }),
+        credentials: 'include',
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.data) {
+          setComments(prev => [...prev, data.data]);
+        }
+        setNewComment('');
+      }
+    } catch {
+      // Silently fail
+    }
+  };
 
   const modalTitle = type === 'hotdeal' ? '핫딜 상세'
     : type === 'mart' ? '마트 상품 상세'
     : type === 'community' ? '게시글 상세'
     : '상세 보기';
-
-  const addComment = () => {
-    if (!newComment.trim()) return;
-    setComments(prev => [...prev, { id: Date.now(), author: '나', text: newComment, time: '방금 전' }]);
-    setNewComment('');
-  };
 
   return (
     <Modal isOpen={!!item} onClose={onClose} title={modalTitle} size="lg">

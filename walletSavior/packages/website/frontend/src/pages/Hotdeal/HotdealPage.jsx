@@ -159,6 +159,10 @@ export default function HotdealPage() {
         setAllDeals(ds => ds.map(d =>
           d.id === id ? { ...d, hotVotes: data.data.votes_hot, coldVotes: data.data.votes_not } : d
         ));
+        setDetail(prev => prev && prev.id === id
+          ? { ...prev, hotVotes: data.data.votes_hot, coldVotes: data.data.votes_not }
+          : prev
+        );
       }
     } catch {
       addToast('투표 처리에 실패했습니다', 'error');
@@ -169,6 +173,11 @@ export default function HotdealPage() {
   }, [votes, addToast, voteLoading]);
 
   const throttledVote = useThrottledCallback(handleVote, 1000);
+
+  const handleCommentCountChange = useCallback((dealId, count) => {
+    setAllDeals(ds => ds.map(d => d.id === dealId ? { ...d, comments: count } : d));
+    setDetail(prev => prev && prev.id === dealId ? { ...prev, comments: count } : prev);
+  }, []);
 
   return (
     <div>
@@ -298,12 +307,12 @@ export default function HotdealPage() {
         </div>
       )}
 
-      {detail && <HotdealDetailModal item={detail} votes={votes} onVote={handleVote} onClose={() => setDetail(null)} products={products} addToast={addToast} />}
+      {detail && <HotdealDetailModal item={detail} votes={votes} onVote={handleVote} onClose={() => setDetail(null)} products={products} addToast={addToast} onCommentCountChange={handleCommentCountChange} />}
     </div>
   );
 }
 
-const HotdealDetailModal = React.memo(function HotdealDetailModal({ item, votes, onVote, onClose, products, addToast }) {
+const HotdealDetailModal = React.memo(function HotdealDetailModal({ item, votes, onVote, onClose, products, addToast, onCommentCountChange }) {
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState([]);
   const [commentsLoading, setCommentsLoading] = useState(true);
@@ -342,10 +351,22 @@ const HotdealDetailModal = React.memo(function HotdealDetailModal({ item, votes,
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: newComment, author: '나' }),
+        credentials: 'include',
       });
+      if (!res.ok) {
+        addToast('댓글 작성에 실패했습니다', 'error');
+        return;
+      }
       const data = await res.json();
-      if (data.data) setComments(prev => [...prev, data.data]);
+      if (data.data) {
+        setComments(prev => {
+          const updated = [...prev, data.data];
+          if (onCommentCountChange) onCommentCountChange(item.id, updated.length);
+          return updated;
+        });
+      }
       setNewComment('');
+      addToast('댓글이 등록되었습니다', 'success');
     } catch {
       addToast('댓글 작성에 실패했습니다', 'error');
     }
@@ -353,8 +374,14 @@ const HotdealDetailModal = React.memo(function HotdealDetailModal({ item, votes,
 
   const deleteComment = async (commentId) => {
     try {
-      await fetch(`/api/hotdeals/${item.id}/comments/${commentId}`, { method: 'DELETE' });
-      setComments(prev => prev.filter(c => c.id !== commentId));
+      const res = await fetch(`/api/hotdeals/${item.id}/comments/${commentId}`, { method: 'DELETE' });
+      if (res.ok) {
+        setComments(prev => {
+          const updated = prev.filter(c => c.id !== commentId);
+          if (onCommentCountChange) onCommentCountChange(item.id, updated.length);
+          return updated;
+        });
+      }
     } catch {
       addToast('댓글 삭제에 실패했습니다', 'error');
     }

@@ -57,7 +57,7 @@ function mapApiPost(raw, products = []) {
     ...raw,
     body: raw.content,
     cat: raw.category || '',
-    tag: raw.tag || '',
+    tag: raw.tags?.[0] || raw.tag || '',
     author: raw.author_nickname || `user${raw.author_id}`,
     time: formatRelativeTime(raw.created_at),
     hotVotes: raw.hot_votes || 0,
@@ -232,6 +232,7 @@ export default function CommunityPage() {
         content: wBody,
         ...(isEdit ? {} : { post_type: board === 'hotdeal' ? 'hotdeal' : 'free' }),
         category: board === 'hotdeal' ? wCat : undefined,
+        tags: board === 'free' && wTag ? [wTag] : undefined,
         price: wPrice ? Number(wPrice) : undefined,
         url: wLink || undefined,
         ...(isEdit ? {} : { images: wImages.length > 0 ? wImages : undefined }),
@@ -242,7 +243,10 @@ export default function CommunityPage() {
         addToast(isEdit ? '게시글이 수정되었습니다!' : '게시글이 등록되었습니다!', 'success');
         setShowWrite(false);
         setEditPostId(null);
+        setWTitle(''); setWBody(''); setWProduct(''); setWSelectedProducts([]); setWPrice(''); setWLink(''); setWImages([]);
         refreshPosts();
+        setPage(1);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         const errData = await resp.json().catch(() => ({}));
         addToast(`${isEdit ? '수정' : '등록'} 실패: ${errData.detail || resp.statusText}`, 'error');
@@ -253,7 +257,6 @@ export default function CommunityPage() {
     } finally {
       setSubmitting(false);
     }
-    setWTitle(''); setWBody(''); setWProduct(''); setWSelectedProducts([]); setWPrice(''); setWLink(''); setWImages([]);
   };
 
   const handleWriteBtn = () => {
@@ -300,6 +303,10 @@ export default function CommunityPage() {
   const getVerifyBorderColor = useCallback((verified) => {
     if (!verified) return 'var(--border)';
     return VERIFY_STYLES[verified]?.border || 'var(--border)';
+  }, []);
+
+  const handlePostUpdate = useCallback((postId, updates) => {
+    setPosts(prev => prev.map(p => p.id === postId ? { ...p, ...updates } : p));
   }, []);
 
   return (
@@ -655,13 +662,14 @@ export default function CommunityPage() {
           user={user}
           onRefresh={refreshPosts}
           onEdit={handleEdit}
+          onPostUpdate={handlePostUpdate}
         />
       )}
     </div>
   );
 }
 
-const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, board, products, user, onRefresh, onEdit }) {
+const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, board, products, user, onRefresh, onEdit, onPostUpdate }) {
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState([]);
   const [loadingComments, setLoadingComments] = useState(true);
@@ -706,6 +714,8 @@ const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, boa
         const res = await resp.json();
         setComments(prev => [...prev, res.data]);
         setNewComment('');
+        addToast('댓글이 등록되었습니다', 'success');
+        if (onPostUpdate) onPostUpdate(post.id, { comments: comments.length + 1 });
       } else {
         addToast('댓글 작성에 실패했습니다.', 'error');
       }
@@ -732,6 +742,8 @@ const PostDetailModal = React.memo(function PostDetailModal({ post, onClose, boa
         setHotVotes(res.data.hot_votes);
         setColdVotes(res.data.not_votes);
         setVote(res.data.user_vote);
+        addToast('투표가 반영되었습니다', 'success');
+        if (onPostUpdate) onPostUpdate(post.id, { hotVotes: res.data.hot_votes, coldVotes: res.data.not_votes });
       }
     } catch {
       addToast('투표 중 오류가 발생했습니다.', 'error');
