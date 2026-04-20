@@ -449,3 +449,55 @@
   .tabs { flex-wrap: wrap; }
   .tab { font-size: var(--fs-xs); }
 }
+
+/* Wishlist in profile */
+.wishlistSummary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.wishlistItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.wishlistItemName {
+  flex: 1;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wishlistItemPrice {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  color: var(--accent);
+  white-space: nowrap;
+}
+.wishlistMore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--space-sm);
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  background: var(--glass2);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+  width: 100%;
+}
+.wishlistMore:hover {
+  border-color: var(--accent);
+  background: var(--glass);
+}

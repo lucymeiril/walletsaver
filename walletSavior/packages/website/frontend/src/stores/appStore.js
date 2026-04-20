@@ -129,6 +129,8 @@ const useStore = create(
       // 위치 상태
       location: { lat: null, lng: null },
       setLocation: (lat, lng) => set({ location: { lat, lng } }),
+      savedLocation: null, // { lat, lng, locationName } — persisted across refresh
+      setSavedLocation: (loc) => set({ savedLocation: loc }),
       nearbyGasStations: [],
       setNearbyGasStations: (stations) => set({ nearbyGasStations: stations }),
       nearbyRestaurants: [],
@@ -162,6 +164,7 @@ const useStore = create(
         shoppingList: state.shoppingList,
         priceAlerts: state.priceAlerts,
         filterPreferences: state.filterPreferences,
+        savedLocation: state.savedLocation,
       }),
     }
   )

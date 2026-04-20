@@ -62,7 +62,11 @@ export default function PricePage() {
 
   // Fetch product detail by ID
   useEffect(() => {
-    if (!id) { setProductData(null); return; }
+    if (!id) {
+      setProductData(null);
+      setSelectedProduct(null);
+      return;
+    }
     const controller = new AbortController();
     setLoading(true);
     fetch(`/api/products/${id}`, { signal: controller.signal }).then(r => r.json())
@@ -74,7 +78,7 @@ export default function PricePage() {
       })
       .finally(() => setLoading(false));
     return () => controller.abort();
-  }, [id, addToast]);
+  }, [id, addToast, setSelectedProduct]);
 
   // Navigate from search query in location state
   useEffect(() => {
@@ -175,12 +179,15 @@ export default function PricePage() {
     searchService.trackKeyword(kw.id);
     setSearchQuery('');
 
-    if (kw.suggested_action === 'category_page' && kw.category_id) {
+    // Prioritize product name match: if products exist in autocomplete, go to search
+    if (acProducts.length > 0) {
+      navigate(`/search?q=${encodeURIComponent(kw.word)}`);
+    } else if (kw.suggested_action === 'category_page' && kw.category_id && kw.category_path?.toLowerCase().includes(kw.word?.toLowerCase?.().slice(0, 2))) {
       navigate(`/price/category/${kw.category_id}`);
     } else {
       navigate(`/search?q=${encodeURIComponent(kw.word)}`);
     }
-  }, [addRecentSearch, navigate]);
+  }, [addRecentSearch, navigate, acProducts]);
 
   const handleAcProductClick = useCallback((p) => {
     if (p.id) searchService.trackKeyword(p.id);
@@ -393,14 +400,22 @@ export default function PricePage() {
     );
   }
 
+  const handleBackToList = useCallback(() => {
+    setSelectedProduct(null);
+    navigate('/price');
+  }, [setSelectedProduct, navigate]);
+
   return (
     <div>
       <div className={s.hdr}>
+        {id && (
+          <button className={s.backToList} onClick={handleBackToList}>
+            ← 목록으로
+          </button>
+        )}
         <h2>물가 비교</h2>
         <p>정부 공식 + 마트 전단 기반 — 진짜 적정 가격을 확인하세요</p>
       </div>
-
-      {/* Search bar at top */}
       <div className={s.searchSection}>
         <div className={s.searchWrap}>
           <Search size={18} className={s.searchIcon} />

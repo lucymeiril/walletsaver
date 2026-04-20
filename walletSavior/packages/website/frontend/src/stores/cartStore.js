@@ -10,16 +10,17 @@ const CART_API = '/api/cart';
 
 /** 백엔드 → 프론트 필드 정규화 */
 function normalizeCartItem(item) {
+  const id = item.id || item.product_id || item.productId || `cart-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
   return {
-    id: item.id || item.product_id || item.productId || Date.now().toString(),
-    product_id: item.product_id || item.productId || item.id,
-    name: item.item_name || item.name || item.product_name || '상품',
-    price: item.item_price || item.price || item.sale || 0,
-    original_price: item.original_price || item.orig || item.origPrice || 0,
-    store_name: item.store_name || item.store || item.martName || '',
-    store_key: item.store_key || item.martKey || '',
-    category: item.category || item.category_name || '',
-    image: item.item_image_url || item.image || item.img || item.image_url || '',
+    id,
+    product_id: item.product_id || item.productId || item.id || id,
+    name: item.item_name || item.name || item.product_name || item.title || '상품',
+    price: item.item_price || item.price || item.sale || (item.sale_price ?? 0),
+    original_price: item.original_price || item.orig || item.origPrice || item.regular_price || 0,
+    store_name: item.store_name || item.store || item.martName || item.mart || '',
+    store_key: item.store_key || item.martKey || item.mart_key || '',
+    category: item.category || item.category_name || item.cat || '',
+    image: item.item_image_url || item.image || item.img || item.image_url || item.thumbnail || '',
     unit: item.unit || item.spec || '',
     quantity: item.quantity || 1,
     cart_id: item.cart_id || item.id || null,

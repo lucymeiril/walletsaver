@@ -7,6 +7,28 @@
 .hdr h2 { font-size: 1.5rem; font-weight: var(--fw-bold); }
 .hdr p { color: var(--text3); font-size: .9rem; margin-top: 2px; }
 
+/* Back to list button */
+.backToList {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--accent);
+  font-size: .9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.backToList:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
 /* Search Section */
 .searchSection {
   max-width: var(--max-w);

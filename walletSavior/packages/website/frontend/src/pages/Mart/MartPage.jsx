@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ExternalLink, RefreshCw, ZoomIn, ZoomOut, Maximize, Minimize2 } from 'lucide-react';
 import { MARTS } from '../../utils/constants';
 import { fmt } from '../../utils/helpers';
@@ -100,7 +101,14 @@ function formatLastUpdate(dateStr) {
 }
 
 export default function MartPage() {
-  const [activeMart, setActiveMart] = useState('emart');
+  const [searchParams] = useSearchParams();
+  const urlMart = searchParams.get('mart');
+  const urlProduct = searchParams.get('product');
+
+  const [activeMart, setActiveMart] = useState(() => {
+    if (urlMart && MARTS.some(m => m.key === urlMart)) return urlMart;
+    return 'emart';
+  });
   const [mode, setMode] = useState('sale');
   const [catFilter, setCatFilter] = useState('전체');
   const [flyerIdx, setFlyerIdx] = useState(0);
@@ -167,6 +175,16 @@ export default function MartPage() {
 
   const flyerDataRef = useRef(flyerData);
   flyerDataRef.current = flyerData;
+
+  // Auto-open product from URL param (e.g., navigated from Home → Mart)
+  useEffect(() => {
+    if (!urlProduct || loading || martItems.length === 0) return;
+    const match = martItems.find(item => (item.id || item.name) === urlProduct || item.name === decodeURIComponent(urlProduct));
+    if (match) {
+      const mInfo = MARTS.find(m => m.key === activeMart);
+      setSaleDetail({ ...match, martKey: activeMart, martName: mInfo?.name, period: '' });
+    }
+  }, [urlProduct, loading, martItems, activeMart]);
 
   const fetchFlyerData = useCallback((store, signal) => {
     if (flyerDataRef.current[store]) return;
@@ -629,7 +647,7 @@ export default function MartPage() {
                         className={s.cartMini}
                         onClick={(e) => {
                           e.stopPropagation();
-                          addToShoppingList({ name: item.name, price: item.sale, icon: '🏪' });
+                          addToShoppingList({ name: item.name, price: item.sale, icon: '🏪', martKey: activeMart, martName: martInfo?.name, original_price: item.orig });
                           addToast(`${item.name}을(를) 장보기 리스트에 추가했어요`, 'success');
                         }}
                         title="장보기에 추가"
@@ -817,7 +835,7 @@ export default function MartPage() {
                 <button
                   className={s.detailCartBtn}
                   onClick={() => {
-                    addToShoppingList({ name: saleDetail.name, price: saleDetail.sale, icon: '🏪' });
+                    addToShoppingList({ name: saleDetail.name, price: saleDetail.sale, icon: '🏪', martKey: saleDetail.martKey, martName: saleDetail.martName, original_price: saleDetail.orig });
                     addToast(`${saleDetail.name}을(를) 장보기 리스트에 추가했어요`, 'success');
                     setSaleDetail(null);
                   }}

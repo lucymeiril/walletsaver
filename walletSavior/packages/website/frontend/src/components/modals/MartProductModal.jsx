@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Heart } from 'lucide-react';
 import Modal from '../common/Modal';
 import SafeImage from '../common/SafeImage';
 import useStore from '../../stores/appStore';
 import useCartStore from '../../stores/cartStore';
 import useActivityTracker from '../../hooks/useActivityTracker';
+import { api } from '../../services/api';
 import { fmt } from '../../utils/helpers';
 import s from './MartProductModal.module.css';
 
@@ -25,8 +26,12 @@ export default function MartProductModal({ data, onClose }) {
   const navigate = useNavigate();
   const addToShoppingList = useStore((st) => st.addToShoppingList);
   const addToast = useStore((st) => st.addToast);
+  const isLoggedIn = useStore((st) => st.isLoggedIn);
+  const favorites = useStore((st) => st.favorites);
+  const addFavorite = useStore((st) => st.addFavorite);
+  const removeFavorite = useStore((st) => st.removeFavorite);
   const addCartItem = useCartStore((st) => st.addItem);
-  const { trackView, trackCartAdd } = useActivityTracker();
+  const { trackView, trackCartAdd, trackWishlistAdd } = useActivityTracker();
 
   if (!data) return null;
 
@@ -45,6 +50,9 @@ export default function MartProductModal({ data, onClose }) {
   const detailUrl = data.detailUrl ?? data.source_url ?? data.detail_url ?? '';
   const categoryId = data.category_id ?? null;
 
+  const productId = data.id || data.product_id || name;
+  const isFav = favorites.includes(productId);
+
   const periodParts = period.split('~');
   const mallInfo = martKey ? MART_ONLINE_URLS[martKey] : null;
   const onlineUrl = getOnlineMallUrl(martKey, name);
@@ -53,6 +61,28 @@ export default function MartProductModal({ data, onClose }) {
     if (categoryId) {
       onClose();
       navigate(`/price/category/${categoryId}`);
+    }
+  };
+
+  const handleToggleWishlist = () => {
+    if (!isLoggedIn) {
+      addToast('로그인이 필요합니다', 'warning');
+      return;
+    }
+    if (isFav) {
+      removeFavorite(productId);
+      addToast('찜 목록에서 제거했어요', 'info');
+    } else {
+      addFavorite(productId);
+      trackWishlistAdd(productId, name);
+      api.post('/api/wishlist', {
+        product_id: productId,
+        product_name: name,
+        price_at_add: salePrice,
+        store_name: martName || store,
+        image,
+      }).catch(() => {});
+      addToast(`${name} 찜했어요 ❤️`, 'success');
     }
   };
 
@@ -147,6 +177,10 @@ export default function MartProductModal({ data, onClose }) {
               📊 카테고리 비교
             </button>
           )}
+          <button className={`${s.wishBtn} ${isFav ? s.wishActive : ''}`} onClick={handleToggleWishlist}>
+            <Heart size={16} fill={isFav ? 'currentColor' : 'none'} />
+            {isFav ? '찜 해제' : '찜하기'}
+          </button>
           <button className={s.cartBtn} onClick={handleAddToCart}>
             🛒 장보기에 추가
           </button>

@@ -62,7 +62,7 @@ export default function LocalPage() {
   const cookExample = RECIPES.find(r => r.name === '짜장면');
   const cookCost = cookExample ? calcRecipeCost(cookExample) : null;
 
-  const { addToast } = useStore();
+  const { addToast, setSavedLocation } = useStore();
   const searchInputRef = useRef(null);
   const iframeRef = useRef(null);
   const iframeLoadCount = useRef(0);
@@ -188,6 +188,7 @@ export default function LocalPage() {
       setLat(geo.lat);
       setLng(geo.lng);
       setLocationName(geo.name || locQuery);
+      setSavedLocation({ lat: geo.lat, lng: geo.lng, locationName: geo.name || locQuery });
       setIframeUrl(`https://map.naver.com/p/search/${encodeURIComponent(locQuery)}`);
       iframeLoadCount.current = 0;
       addToast(`📍 ${geo.name || locQuery} 위치 설정 완료`, 'success');
@@ -198,7 +199,7 @@ export default function LocalPage() {
     } finally {
       setLoading(false);
     }
-  }, [geocodeLocation, runAreaExplore, addToast]);
+  }, [geocodeLocation, runAreaExplore, addToast, setSavedLocation]);
 
   const handleLocationSubmit = (e) => {
     e.preventDefault();
@@ -231,10 +232,12 @@ export default function LocalPage() {
           const locLabel = geo?.name || '현재 위치';
           setLocationName(locLabel);
           setLocationInput(locLabel);
+          setSavedLocation({ lat: newLat, lng: newLng, locationName: locLabel });
           await runAreaExplore(locLabel, newLat, newLng);
         } catch {
           setLocationName('현재 위치');
           setLocationInput('현재 위치');
+          setSavedLocation({ lat: newLat, lng: newLng, locationName: '현재 위치' });
           await runAreaExplore(null, newLat, newLng);
         } finally {
           setLoading(false);
@@ -250,7 +253,7 @@ export default function LocalPage() {
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
     );
-  }, [geocodeLocation, runAreaExplore, addToast]);
+  }, [geocodeLocation, runAreaExplore, addToast, setSavedLocation]);
 
   const fetchSubcategoryResults = useCallback(async (location, subcategory, latVal, lngVal) => {
     const params = new URLSearchParams({

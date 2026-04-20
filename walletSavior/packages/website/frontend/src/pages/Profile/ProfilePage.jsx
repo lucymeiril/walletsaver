@@ -6,16 +6,18 @@ import { useNavigate } from 'react-router-dom';
 import {
   User, Mail, Calendar, Edit3, Save, X, LogOut, Trash2,
   Eye, Search, ThumbsUp, ShoppingCart, Heart, Clock,
-  ChevronLeft, ChevronRight, AlertTriangle,
+  ChevronLeft, ChevronRight, AlertTriangle, ArrowRight,
 } from 'lucide-react';
 import useStore from '../../stores/appStore';
 import { authService } from '../../services/authService';
 import { api } from '../../services/api';
+import { fmt } from '../../utils/helpers';
 import s from './ProfilePage.module.css';
 
 const TABS = [
   { key: 'info', label: '내 정보', icon: User },
   { key: 'activity', label: '활동 내역', icon: Clock },
+  { key: 'wishlist', label: '찜 목록', icon: Heart },
   { key: 'account', label: '계정 관리', icon: AlertTriangle },
 ];
 
@@ -40,6 +42,8 @@ export default function ProfilePage() {
   const [activityLoading, setActivityLoading] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteInput, setDeleteInput] = useState('');
+  const [wishlistItems, setWishlistItems] = useState([]);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
 
   // Redirect if not logged in
   useEffect(() => {
@@ -80,6 +84,27 @@ export default function ProfilePage() {
       fetchActivities(activityPage);
     }
   }, [activeTab, activityPage, isLoggedIn, fetchActivities]);
+
+  // Fetch wishlist
+  useEffect(() => {
+    if (activeTab !== 'wishlist' || !isLoggedIn) return;
+    let cancelled = false;
+    const fetchWishlist = async () => {
+      setWishlistLoading(true);
+      try {
+        const data = await api.getJson('/api/wishlist', { per_page: 5 });
+        if (!cancelled) {
+          const items = data.data || data.items || (Array.isArray(data) ? data : []);
+          setWishlistItems(items);
+        }
+      } catch {
+        if (!cancelled) setWishlistItems([]);
+      }
+      if (!cancelled) setWishlistLoading(false);
+    };
+    fetchWishlist();
+    return () => { cancelled = true; };
+  }, [activeTab, isLoggedIn]);
 
   const handleSave = async () => {
     if (form.nickname.length < 2 || form.nickname.length > 20) {
@@ -311,6 +336,40 @@ export default function ProfilePage() {
                   </button>
                 </div>
               </>
+            )}
+          </div>
+        )}
+
+        {/* Wishlist tab */}
+        {activeTab === 'wishlist' && (
+          <div className={s.tabContent}>
+            <h2 className={s.sectionTitle}>찜 목록</h2>
+            {wishlistLoading ? (
+              <div className={s.loadingState}>로딩 중...</div>
+            ) : wishlistItems.length === 0 ? (
+              <div className={s.emptyState}>
+                <Heart size={40} />
+                <p>아직 찜한 상품이 없어요</p>
+              </div>
+            ) : (
+              <div className={s.wishlistSummary}>
+                {wishlistItems.map((item, i) => (
+                  <div key={item.id || i} className={s.wishlistItem}>
+                    <Heart size={16} color="#ef4444" fill="#ef4444" />
+                    <span className={s.wishlistItemName}>
+                      {item.product_name || item.item_name || item.name || '상품'}
+                    </span>
+                    {(item.price_at_add ?? item.item_price ?? item.price) != null && (
+                      <span className={s.wishlistItemPrice}>
+                        {fmt(item.price_at_add ?? item.item_price ?? item.price)}원
+                      </span>
+                    )}
+                  </div>
+                ))}
+                <button className={s.wishlistMore} onClick={() => navigate('/wishlist')}>
+                  전체 찜 목록 보기 <ArrowRight size={14} />
+                </button>
+              </div>
             )}
           </div>
         )}

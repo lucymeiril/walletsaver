@@ -62,12 +62,13 @@ function SkeletonRow() {
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const { openMartModal, openHotdealModal, openProductModal, openProductDetailModal } = useModalStore();
+  const { openMartModal, openHotdealModal, openProductModal, openProductDetailModal, openGasStationModal } = useModalStore();
   const {
     setSelectedProduct,
     favorites, addFavorite, removeFavorite, isFavorite,
     recentSearches, addRecentSearch, clearRecentSearches,
     addToShoppingList, addToast, setLocation,
+    savedLocation, setSavedLocation,
   } = useStore();
   const addCartItem = useCartStore((st) => st.addItem);
 
@@ -106,8 +107,14 @@ export default function HomePage() {
   const getMainSignal = useAbortController();
   const getMartSignal = useAbortController();
 
-  // 1) GPS 위치 연동
+  // 1) GPS 위치 연동 — savedLocation 우선, 없으면 GPS
   useEffect(() => {
+    if (savedLocation?.lat && savedLocation?.lng) {
+      const c = { lat: savedLocation.lat, lng: savedLocation.lng };
+      setCoords(c);
+      setLocation(c.lat, c.lng);
+      return;
+    }
     if (!navigator.geolocation) {
       setCoords(DEFAULT_COORDS);
       setLocation(DEFAULT_COORDS.lat, DEFAULT_COORDS.lng);
@@ -125,7 +132,7 @@ export default function HomePage() {
       },
       { timeout: 5000, maximumAge: 300000 }
     );
-  }, [setLocation]);
+  }, [setLocation, savedLocation]);
 
   // 2) API 병렬 최적화 — /api/dashboard 통합 + 나머지 개별 요청
   const fetchAllData = useCallback((loc, signal) => {
@@ -243,7 +250,10 @@ export default function HomePage() {
     setAcKeywords([]);
     setAcProducts([]);
 
-    if (kw.suggested_action === 'category_page' && kw.category_id) {
+    // Prioritize product name match: if products exist in autocomplete, go to search
+    if (acProducts.length > 0) {
+      navigate(`/search?q=${encodeURIComponent(kw.word)}`);
+    } else if (kw.suggested_action === 'category_page' && kw.category_id && kw.category_path?.toLowerCase().includes(kw.word?.toLowerCase?.().slice(0, 2))) {
       navigate(`/price/category/${kw.category_id}`);
     } else {
       navigate(`/search?q=${encodeURIComponent(kw.word)}`);
@@ -752,8 +762,8 @@ export default function HomePage() {
             {activeMartItems.slice(0, 4).map((item, i) => (
               <div key={item.id || item.name || `mart-${i}`} className={s.martSaleCard} onClick={() => {
                 const productData = { ...item, martKey: martTab, martName: activeMartInfo?.name };
-                navigate(`/mart?product=${encodeURIComponent(item.id || item.name)}&modal=true`);
-                openProductDetailModal(productData);
+                navigate(`/mart?mart=${encodeURIComponent(martTab)}&product=${encodeURIComponent(item.id || item.name)}`);
+                openMartModal(productData);
               }}>
                 <div className={s.martSaleName}>{item.name}</div>
                 <div className={s.martSalePrices}>
@@ -767,7 +777,7 @@ export default function HomePage() {
                     className={s.cartSmall}
                     onClick={(e) => {
                       e.stopPropagation();
-                      addToShoppingList({ name: item.name, price: item.sale, icon: '🏪' });
+                      addToShoppingList({ name: item.name, price: item.sale, icon: '🏪', martKey: martTab, martName: activeMartInfo?.name });
                       addToast(`${item.name}을(를) 장보기 리스트에 추가했어요`, 'success');
                     }}
                     title="장보기에 추가"
@@ -804,7 +814,7 @@ export default function HomePage() {
         ) : (
           <div className={s.gasGrid}>
             {topGas.map((g, i) => (
-              <div key={g.id || g.name || `gas-${i}`} className={s.gasCard}>
+              <div key={g.id || g.name || `gas-${i}`} className={s.gasCard} onClick={() => openGasStationModal(g)} style={{ cursor: 'pointer' }}>
                 <span className={s.gasRank}>{i + 1}</span>
                 <div className={s.gasInfo}>
                   <div className={s.gasName}>{g.name}</div>

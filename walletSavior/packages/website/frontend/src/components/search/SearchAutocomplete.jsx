@@ -165,14 +165,17 @@ const SearchAutocomplete = memo(function SearchAutocomplete({
 
       if (onKeywordClick) {
         onKeywordClick(kw);
-      } else if (kw.suggested_action === 'category_page' && kw.category_id) {
+      } else if (products.length > 0) {
+        // Prioritize product name match over keyword category redirect
+        navigate(`/search?q=${encodeURIComponent(kw.word)}`);
+      } else if (kw.suggested_action === 'category_page' && kw.category_id && kw.category_path?.toLowerCase().includes(kw.word?.toLowerCase?.().slice(0, 2))) {
         navigate(`/price/category/${kw.category_id}`);
       } else {
         navigate(`/search?q=${encodeURIComponent(kw.word)}`);
       }
       resetState();
     },
-    [addRecentSearch, onKeywordClick, navigate, resetState],
+    [addRecentSearch, onKeywordClick, navigate, resetState, products],
   );
 
   /* ── product click ── */

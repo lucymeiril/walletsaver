@@ -1,9 +1,17 @@
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Heart } from 'lucide-react';
 import Modal from '../common/Modal';
+import useStore from '../../stores/appStore';
+import { api } from '../../services/api';
 import { fmt } from '../../utils/helpers';
 import s from './HotdealModal.module.css';
 
 export default function HotdealModal({ data, onClose }) {
+  const isLoggedIn = useStore((st) => st.isLoggedIn);
+  const favorites = useStore((st) => st.favorites);
+  const addFavorite = useStore((st) => st.addFavorite);
+  const removeFavorite = useStore((st) => st.removeFavorite);
+  const addToast = useStore((st) => st.addToast);
+
   if (!data) return null;
 
   const title = data.title || data.name || '핫딜';
@@ -16,6 +24,30 @@ export default function HotdealModal({ data, onClose }) {
   const comments = data.comment_count ?? data.comments ?? 0;
   const views = data.views ?? data.view_count ?? 0;
   const postedAt = data.posted_at || data.created_at || '';
+
+  const productId = data.product_id || data.id || title;
+  const isFav = favorites.includes(productId);
+
+  const handleToggleWishlist = () => {
+    if (!isLoggedIn) {
+      addToast('로그인이 필요합니다', 'warning');
+      return;
+    }
+    if (isFav) {
+      removeFavorite(productId);
+      addToast('찜 목록에서 제거했어요', 'info');
+    } else {
+      addFavorite(productId);
+      api.post('/api/wishlist', {
+        product_id: data.product_id || null,
+        item_name: title,
+        item_price: price,
+        source: source,
+        source_url: sourceUrl,
+      }).catch(() => {});
+      addToast(`${title} 찜했어요 ❤️`, 'success');
+    }
+  };
 
   const sourceLabel =
     source === 'ppomppu' ? '뽐뿌' :
@@ -63,6 +95,10 @@ export default function HotdealModal({ data, onClose }) {
               원문 보기 ({sourceLabel})
             </a>
           )}
+          <button className={`${s.wishBtn} ${isFav ? s.wishActive : ''}`} onClick={handleToggleWishlist}>
+            <Heart size={16} fill={isFav ? 'currentColor' : 'none'} />
+            {isFav ? '찜 해제' : '찜하기'}
+          </button>
           <button className={s.closeBtn} onClick={onClose}>
             닫기
           </button>
