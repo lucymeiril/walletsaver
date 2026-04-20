@@ -21,11 +21,52 @@ from storage.models import (
     Product, BaselinePrice, DiscountHistory, HotdealPrice,
     Category, Keyword, CrawlLog,
     PendingIngestion, PendingCategorization, CategoryCorrection,
+    Post, Favorite, PriceAlert, CartItem, WishlistItem,
 )
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/admin", tags=["admin"])
+
+
+def _cleanup_product_refs(session, product_ids=None):
+    """products 삭제 전 FK 참조를 정리한다.
+
+    product_ids=None  → 전체 정리 (reset-products, reset-all).
+    product_ids=[...]  → 지정 상품만 정리 (reset-source 좀비 삭제).
+    Returns dict of deletion counts.
+    """
+    if product_ids is not None and not product_ids:
+        return {}
+
+    counts: dict[str, int] = {}
+
+    if product_ids is None:
+        # Non-nullable FK → delete all rows
+        counts["price_alerts"] = session.query(PriceAlert).delete(
+            synchronize_session=False)
+        counts["pending_categorizations"] = session.query(
+            PendingCategorization).delete(synchronize_session=False)
+        # Nullable FK → NULL out
+        for Model in (Post, Favorite, CartItem, WishlistItem):
+            session.query(Model).filter(
+                Model.product_id.isnot(None)
+            ).update({"product_id": None}, synchronize_session=False)
+    else:
+        # Selective cleanup for specific product IDs
+        counts["price_alerts"] = session.query(PriceAlert).filter(
+            PriceAlert.product_id.in_(product_ids)
+        ).delete(synchronize_session=False)
+        counts["pending_categorizations"] = session.query(
+            PendingCategorization).filter(
+            PendingCategorization.product_id.in_(product_ids)
+        ).delete(synchronize_session=False)
+        for Model in (Post, Favorite, CartItem, WishlistItem):
+            session.query(Model).filter(
+                Model.product_id.in_(product_ids)
+            ).update({"product_id": None}, synchronize_session=False)
+
+    return counts
 
 
 # ── Request 스키마 ──
@@ -155,12 +196,27 @@ def reset_source(request: Request, body: ResetSourceRequest, identity: dict = De
             .delete(synchronize_session=False)
         )
 
+        # Orphan cleanup: products with zero remaining prices across ALL tables
+        from sqlalchemy import exists
+        orphan_ids = [r[0] for r in session.query(Product.id).filter(
+            ~exists().where(BaselinePrice.product_id == Product.id),
+            ~exists().where(DiscountHistory.product_id == Product.id),
+            ~exists().where(HotdealPrice.product_id == Product.id),
+        ).all()]
+
+        orphan_del = 0
+        if orphan_ids:
+            _cleanup_product_refs(session, orphan_ids)
+            orphan_del = session.query(Product).filter(
+                Product.id.in_(orphan_ids)
+            ).delete(synchronize_session=False)
+
         session.commit()
 
         total_deleted = discount_del + baseline_del + hotdeal_del
         logger.warning(
-            "[ADMIN] reset-source: source=%s discount=%d baseline=%d hotdeal=%d",
-            src, discount_del, baseline_del, hotdeal_del,
+            "[ADMIN] reset-source: source=%s discount=%d baseline=%d hotdeal=%d orphans=%d",
+            src, discount_del, baseline_del, hotdeal_del, orphan_del,
         )
 
         return {
@@ -170,7 +226,8 @@ def reset_source(request: Request, body: ResetSourceRequest, identity: dict = De
                 "discount_history": discount_del,
                 "baseline_prices": baseline_del,
                 "hotdeal_prices": hotdeal_del,
-                "total": total_deleted,
+                "orphan_products": orphan_del,
+                "total": total_deleted + orphan_del,
             },
             "timestamp": datetime.utcnow().isoformat(),
         }
@@ -205,13 +262,21 @@ def reset_products(request: Request, body: ResetProductsRequest, identity: dict 
         from sqlalchemy import func
 
         product_count = session.query(func.count(Product.id)).scalar() or 0
+
+        # Step 1: Clean FK references to products
+        ref_counts = _cleanup_product_refs(session)
+
+        # Step 2: Delete price tables
         discount_del = session.query(DiscountHistory).delete(synchronize_session=False)
         baseline_del = session.query(BaselinePrice).delete(synchronize_session=False)
         hotdeal_del = session.query(HotdealPrice).delete(synchronize_session=False)
+
+        # Step 3: Delete products (FK references already cleared)
         product_del = session.query(Product).delete(synchronize_session=False)
+
+        # Step 4: Delete remaining related data
         crawllog_del = session.query(CrawlLog).delete(synchronize_session=False)
         pending_del = session.query(PendingIngestion).delete(synchronize_session=False)
-        pending_cat_del = session.query(PendingCategorization).delete(synchronize_session=False)
 
         session.commit()
 
@@ -229,7 +294,8 @@ def reset_products(request: Request, body: ResetProductsRequest, identity: dict 
                 "hotdeal_prices": hotdeal_del,
                 "crawl_logs": crawllog_del,
                 "pending_ingestions": pending_del,
-                "pending_categorizations": pending_cat_del,
+                "pending_categorizations": ref_counts.get("pending_categorizations", 0),
+                "price_alerts": ref_counts.get("price_alerts", 0),
                 "total": product_del + discount_del + baseline_del + hotdeal_del,
             },
             "preserved": ["categories", "keywords"],
@@ -263,15 +329,32 @@ def reset_all(request: Request, body: ResetAllRequest, identity: dict = Depends(
 
     session = get_session()
     try:
+        # Step 1: Clean FK references to products
+        ref_counts = _cleanup_product_refs(session)
+
+        # Step 2: Delete price tables
         discount_del = session.query(DiscountHistory).delete(synchronize_session=False)
         baseline_del = session.query(BaselinePrice).delete(synchronize_session=False)
         hotdeal_del = session.query(HotdealPrice).delete(synchronize_session=False)
+
+        # Step 3: Delete products (FK references already cleared)
         product_del = session.query(Product).delete(synchronize_session=False)
+
+        # Step 4: Delete remaining product-related data
         crawllog_del = session.query(CrawlLog).delete(synchronize_session=False)
         pending_del = session.query(PendingIngestion).delete(synchronize_session=False)
-        pending_cat_del = session.query(PendingCategorization).delete(synchronize_session=False)
         correction_del = session.query(CategoryCorrection).delete(synchronize_session=False)
+
+        # Step 5: Clean FK references to categories, then delete
         keyword_del = session.query(Keyword).delete(synchronize_session=False)
+        # NULL out category self-reference and remaining category FKs
+        session.query(Category).filter(
+            Category.parent_id.isnot(None)
+        ).update({"parent_id": None}, synchronize_session=False)
+        for Model in (Post, Favorite):
+            session.query(Model).filter(
+                Model.category_id.isnot(None)
+            ).update({"category_id": None}, synchronize_session=False)
         category_del = session.query(Category).delete(synchronize_session=False)
 
         session.commit()
@@ -290,7 +373,8 @@ def reset_all(request: Request, body: ResetAllRequest, identity: dict = Depends(
                 "hotdeal_prices": hotdeal_del,
                 "crawl_logs": crawllog_del,
                 "pending_ingestions": pending_del,
-                "pending_categorizations": pending_cat_del,
+                "pending_categorizations": ref_counts.get("pending_categorizations", 0),
+                "price_alerts": ref_counts.get("price_alerts", 0),
                 "category_corrections": correction_del,
                 "keywords": keyword_del,
                 "categories": category_del,
