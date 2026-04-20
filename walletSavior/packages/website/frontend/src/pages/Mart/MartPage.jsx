@@ -12,6 +12,26 @@ import s from './MartPage.module.css';
 
 const COMPARE_MARTS = ['emart', 'homeplus', 'lotte'];
 
+const MART_CATEGORIES = {
+  '육류': ['돼지', '소고기', '한우', '삼겹', '갈비', '목심', '등심', '닭', '오리고기'],
+  '수산물': ['생선', '연어', '참치', '새우', '오징어', '조개', '굴', '게', '랍스터', '멸치'],
+  '채소': ['양파', '감자', '당근', '배추', '상추', '시금치', '파', '마늘', '고추', '토마토'],
+  '과일': ['사과', '배', '포도', '딸기', '수박', '참외', '바나나', '귤', '오렌지', '망고'],
+  '유제품': ['우유', '치즈', '요거트', '버터', '크림'],
+  '음료': ['커피', '주스', '콜라', '사이다', '물', '차', '맥주', '소주'],
+  '과자/간식': ['과자', '초콜릿', '젤리', '쿠키', '빵', '떡', '아이스크림'],
+  '가공식품': ['라면', '통조림', '소시지', '햄', '만두', '김치', '두부'],
+  '생활용품': ['세제', '휴지', '샴푸', '치약', '비누', '마스크'],
+};
+
+function inferCategory(name) {
+  if (!name) return '기타';
+  for (const [cat, keywords] of Object.entries(MART_CATEGORIES)) {
+    if (keywords.some(kw => name.includes(kw))) return cat;
+  }
+  return '기타';
+}
+
 const MART_ONLINE_URLS = {
   emart: { name: 'SSG.COM', url: 'https://www.ssg.com', searchUrl: 'https://www.ssg.com/search.ssg?query=' },
   homeplus: { name: '홈플러스몰', url: 'https://mfront.homeplus.co.kr', searchUrl: 'https://mfront.homeplus.co.kr/search?keyword=' },
@@ -111,6 +131,8 @@ export default function MartPage() {
   });
   const [mode, setMode] = useState('sale');
   const [catFilter, setCatFilter] = useState('전체');
+  const [searchText, setSearchText] = useState('');
+  const [productCat, setProductCat] = useState('전체');
   const [flyerIdx, setFlyerIdx] = useState(0);
   const [flyerZoom, setFlyerZoom] = useState(1);
   const [flyerPan, setFlyerPan] = useState({ x: 0, y: 0 });
@@ -222,7 +244,26 @@ export default function MartPage() {
   const martInfo = useMemo(() => MARTS.find(m => m.key === activeMart), [activeMart]);
   const martItems = useMemo(() => Array.isArray(martDeals[activeMart]) ? martDeals[activeMart] : [], [martDeals, activeMart]);
   const categories = useMemo(() => getCategories(martItems), [martItems]);
-  const filteredItems = useMemo(() => catFilter === '전체' ? martItems : martItems.filter(i => i.event === catFilter), [martItems, catFilter]);
+  const filteredItems = useMemo(() => {
+    let items = catFilter === '전체' ? martItems : martItems.filter(i => i.event === catFilter);
+    if (productCat !== '전체') {
+      items = items.filter(i => inferCategory(i.name) === productCat);
+    }
+    if (searchText.trim()) {
+      const q = searchText.trim().toLowerCase();
+      items = items.filter(i => i.name?.toLowerCase().includes(q));
+    }
+    return items;
+  }, [martItems, catFilter, productCat, searchText]);
+  const productCatCounts = useMemo(() => {
+    const base = catFilter === '전체' ? martItems : martItems.filter(i => i.event === catFilter);
+    const counts = {};
+    for (const item of base) {
+      const cat = inferCategory(item.name);
+      counts[cat] = (counts[cat] || 0) + 1;
+    }
+    return counts;
+  }, [martItems, catFilter]);
   const commonProducts = useMemo(() => findCommonProducts(martDeals), [martDeals]);
 
   const martPeriod = useMemo(() => {
@@ -329,7 +370,7 @@ export default function MartPage() {
           <button
             key={m.key}
             className={`${s.tab} ${activeMart === m.key ? s.tabActive : ''}`}
-            onClick={() => { setActiveMart(m.key); setCatFilter('전체'); }}
+            onClick={() => { setActiveMart(m.key); setCatFilter('전체'); setProductCat('전체'); setSearchText(''); }}
           >
             <span className={s.dot} style={{ background: m.color }} />{m.name}
           </button>
@@ -569,8 +610,29 @@ export default function MartPage() {
       {/* ===== SALE GRID ===== */}
       {mode === 'sale' && (
         <>
+          {/* 상품명 검색 */}
+          <div className={s.searchRow}>
+            <div className={s.searchWrap}>
+              <span className={s.searchIcon}>🔍</span>
+              <input
+                className={s.searchInput}
+                type="text"
+                placeholder="상품명 검색..."
+                value={searchText}
+                onChange={e => setSearchText(e.target.value)}
+              />
+              {searchText && (
+                <button className={s.searchClear} onClick={() => setSearchText('')}>✕</button>
+              )}
+            </div>
+            {searchText && (
+              <span className={s.searchCount}>검색 결과: {filteredItems.length}건</span>
+            )}
+          </div>
+
+          {/* 행사 유형 필터 */}
           <div className={s.catRow}>
-            <span className={s.catLabel}>카테고리:</span>
+            <span className={s.catLabel}>행사:</span>
             {categories.map(c => (
               <button
                 key={c}
@@ -580,6 +642,38 @@ export default function MartPage() {
                 {c}
               </button>
             ))}
+          </div>
+
+          {/* 상품 카테고리 필터 */}
+          <div className={s.catRow}>
+            <span className={s.catLabel}>상품군:</span>
+            <button
+              className={`${s.catBtn} ${productCat === '전체' ? s.catBtnActive : ''}`}
+              onClick={() => setProductCat('전체')}
+            >
+              전체
+            </button>
+            {Object.keys(MART_CATEGORIES).map(cat => {
+              const count = productCatCounts[cat] || 0;
+              if (count === 0) return null;
+              return (
+                <button
+                  key={cat}
+                  className={`${s.catBtn} ${productCat === cat ? s.catBtnActive : ''}`}
+                  onClick={() => setProductCat(cat)}
+                >
+                  {cat} <span className={s.catCount}>({count})</span>
+                </button>
+              );
+            })}
+            {(productCatCounts['기타'] || 0) > 0 && (
+              <button
+                className={`${s.catBtn} ${productCat === '기타' ? s.catBtnActive : ''}`}
+                onClick={() => setProductCat('기타')}
+              >
+                기타 <span className={s.catCount}>({productCatCounts['기타']})</span>
+              </button>
+            )}
           </div>
 
           <div className={s.grid}>
