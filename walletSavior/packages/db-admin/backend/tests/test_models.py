@@ -634,6 +634,7 @@ class TestSchemaIntegration:
             "audit_logs",
             "hotdeal_comments", "hotdeal_votes",
             "cart_items", "wishlist_items", "user_activities",
+            "product_keywords",
         }
         assert expected == set(inspector_tables)
 

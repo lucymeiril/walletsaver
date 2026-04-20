@@ -176,6 +176,9 @@ class Product(Base):
     hotdeal_prices: Mapped[list["HotdealPrice"]] = relationship(
         back_populates="product", cascade="all, delete-orphan", lazy="selectin",
     )
+    product_keywords: Mapped[list["ProductKeyword"]] = relationship(
+        back_populates="product", cascade="all, delete-orphan", lazy="selectin",
+    )
 
     __table_args__ = (
         Index("ix_products_name", "name"),
@@ -475,10 +478,36 @@ class Keyword(Base):
     search_count: Mapped[int] = mapped_column(Integer, default=0)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
+    product_keywords: Mapped[list["ProductKeyword"]] = relationship(
+        back_populates="keyword", cascade="all, delete-orphan", lazy="selectin",
+    )
+
     __table_args__ = (
         Index("ix_keywords_word", "word"),
         # 인기 검색어 정렬용 — search_count DESC 빈번 사용
         Index("ix_keywords_active_count", "is_active", "search_count"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 상품-키워드 연결 (Junction Table)
+# ═══════════════════════════════════════════════
+
+class ProductKeyword(Base):
+    """상품과 키워드의 다대다 관계를 위한 연결 테이블."""
+    __tablename__ = "product_keywords"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id", ondelete="CASCADE"))
+    keyword_id: Mapped[int] = mapped_column(ForeignKey("keywords.id", ondelete="CASCADE"))
+
+    product: Mapped["Product"] = relationship(back_populates="product_keywords")
+    keyword: Mapped["Keyword"] = relationship(back_populates="product_keywords")
+
+    __table_args__ = (
+        UniqueConstraint("product_id", "keyword_id", name="uq_product_keyword"),
+        Index("ix_product_keywords_product", "product_id"),
+        Index("ix_product_keywords_keyword", "keyword_id"),
     )
 
 

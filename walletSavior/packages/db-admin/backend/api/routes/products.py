@@ -21,7 +21,7 @@ from services.price_calc import (
     get_price_history,
     get_price_comparison,
 )
-from storage.models import Product, DiscountHistory, Category, CrawlLog, BaselinePrice
+from storage.models import Product, DiscountHistory, Category, CrawlLog, BaselinePrice, ProductKeyword, Keyword
 from api.security import (
     escape_like, MAX_NAME_LEN, MAX_CATEGORY_ID_LEN, MAX_UNIT_LEN,
     MAX_DESCRIPTION_LEN, MAX_URL_LEN, MAX_BULK_IDS,
@@ -36,6 +36,7 @@ class ProductCreate(BaseModel):
     unit: str = Field("개", min_length=1, max_length=MAX_UNIT_LEN)
     description: Optional[str] = Field(None, max_length=MAX_DESCRIPTION_LEN)
     image_url: Optional[str] = Field(None, max_length=MAX_URL_LEN)
+    keyword_ids: Optional[list[int]] = None
 
     @field_validator("name")
     @classmethod
@@ -58,6 +59,7 @@ class ProductUpdate(BaseModel):
     unit: Optional[str] = Field(None, min_length=1, max_length=MAX_UNIT_LEN)
     description: Optional[str] = Field(None, max_length=MAX_DESCRIPTION_LEN)
     is_active: Optional[bool] = None
+    keyword_ids: Optional[list[int]] = None
 
 
 class BulkDeleteRequest(BaseModel):
@@ -90,6 +92,14 @@ def _enrich_product(session: Session, p: Product) -> dict:
         if p.category_id and p.category:
             cat_name = p.category.name
 
+        keyword_list = []
+        try:
+            for pk in (p.product_keywords or []):
+                if pk.keyword:
+                    keyword_list.append({"id": pk.keyword_id, "keyword": pk.keyword.word})
+        except Exception:
+            pass
+
         return {
             "id": p.id,
             "name": p.name,
@@ -109,6 +119,7 @@ def _enrich_product(session: Session, p: Product) -> dict:
             "valid_from": latest.valid_from.isoformat() if latest and latest.valid_from else None,
             "valid_to": latest.valid_to.isoformat() if latest and latest.valid_to else None,
             "crawled_at": latest.crawled_at.isoformat() if latest and latest.crawled_at else None,
+            "keywords": keyword_list,
         }
     except Exception as e:
         logger.warning("_enrich_product failed for product %d: %s", p.id, str(e)[:200])
@@ -137,6 +148,7 @@ def _enrich_product(session: Session, p: Product) -> dict:
             "valid_from": None,
             "valid_to": None,
             "crawled_at": None,
+            "keywords": [],
         }
 
 
@@ -219,6 +231,8 @@ def list_products(
     source: Optional[str] = Query(None, description="소스 필터 (emart, homeplus 등)"),
     category: Optional[str] = Query(None, description="카테고리 ID 필터"),
     search: Optional[str] = Query(None, description="상품명 검색"),
+    keyword_id: Optional[int] = Query(None, description="키워드 ID 필터"),
+    keyword_search: Optional[str] = Query(None, description="키워드 단어 검색"),
     sort_by: str = Query("name", description="정렬 기준 (name, price, discount_rate, created_at)"),
     sort_dir: str = Query("asc", description="정렬 방향 (asc, desc)"),
     page: int = Query(1, ge=1, description="페이지 번호"),
@@ -248,6 +262,25 @@ def list_products(
         # 검색
         if search:
             query = query.filter(Product.name.ilike(f"%{escape_like(search)}%"))
+
+        # 키워드 ID 필터
+        if keyword_id is not None:
+            kw_product_ids = (
+                session.query(ProductKeyword.product_id)
+                .filter(ProductKeyword.keyword_id == keyword_id)
+                .subquery()
+            )
+            query = query.filter(Product.id.in_(session.query(kw_product_ids)))
+
+        # 키워드 단어 검색
+        if keyword_search:
+            kw_product_ids = (
+                session.query(ProductKeyword.product_id)
+                .join(Keyword, Keyword.id == ProductKeyword.keyword_id)
+                .filter(Keyword.word.ilike(f"%{escape_like(keyword_search)}%"))
+                .subquery()
+            )
+            query = query.filter(Product.id.in_(session.query(kw_product_ids)))
 
         # 총 개수
         total = query.count()
@@ -325,6 +358,10 @@ def create_product(body: ProductCreate, request: Request, identity: dict = Depen
         )
         session.add(p)
         session.flush()
+        if body.keyword_ids:
+            for kid in body.keyword_ids:
+                session.add(ProductKeyword(product_id=p.id, keyword_id=kid))
+            session.flush()
         session.refresh(p)
         return {"id": p.id, "name": p.name}
 
@@ -335,9 +372,24 @@ def update_product(product_id: int, body: ProductUpdate, request: Request, ident
         p = session.get(Product, product_id)
         if not p:
             raise HTTPException(404, "Product not found")
-        for key, val in body.model_dump(exclude_unset=True).items():
+        for key, val in body.model_dump(exclude_unset=True, exclude={"keyword_ids"}).items():
             setattr(p, key, val)
-        return {"id": p.id, "name": p.name}
+        if body.keyword_ids is not None:
+            session.query(ProductKeyword).filter_by(product_id=product_id).delete()
+            for kid in body.keyword_ids:
+                session.add(ProductKeyword(product_id=product_id, keyword_id=kid))
+        session.flush()
+        session.refresh(p)
+        result = {"id": p.id, "name": p.name}
+        keyword_list = []
+        try:
+            for pk in (p.product_keywords or []):
+                if pk.keyword:
+                    keyword_list.append({"id": pk.keyword_id, "keyword": pk.keyword.word})
+        except Exception:
+            pass
+        result["keywords"] = keyword_list
+        return result
 
 
 @router.delete("/{product_id}")

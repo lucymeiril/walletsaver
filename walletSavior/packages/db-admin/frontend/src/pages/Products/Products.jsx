@@ -129,13 +129,33 @@ export default function Products() {
   };
   const openEdit = (p) => {
     setForm({ ...p, categoryId: p.category_id || '', basePrice: String(p.basePrice || p.originalPrice || ''), currentAvg: String(p.currentAvg || p.currentPrice || '') });
-    setFormKeywords((p.keywords || []).map(k => typeof k === 'string' ? { id: k, keyword: keywords.find(kw => kw.id === k)?.keyword || k } : k));
+    const kwList = (p.keywords || []).map(k => {
+      if (typeof k === 'object' && k.id && k.keyword) return k;
+      if (typeof k === 'string') return { id: k, keyword: keywords.find(kw => kw.id === k)?.keyword || k };
+      return k;
+    });
+    setFormKeywords(kwList);
     setModal({ mode: 'edit', product: p });
   };
   const openDetail = (p) => setModal({ mode: 'detail', product: p });
 
   const handleSave = async () => {
     const data = { name: form.name, category_id: form.categoryId || null, unit: form.unit, description: form.description || null, image_url: form.image_url || null };
+
+    // Resolve keyword IDs — create new keywords first, then collect all IDs
+    const resolvedKeywordIds = [];
+    for (const kw of formKeywords) {
+      if (String(kw.id).startsWith('kw-new-')) {
+        try {
+          const created = await api.createKeyword({ word: kw.keyword, category_id: form.categoryId || null });
+          if (created?.id) resolvedKeywordIds.push(created.id);
+        } catch { /* skip duplicates or errors */ }
+      } else {
+        resolvedKeywordIds.push(kw.id);
+      }
+    }
+    data.keyword_ids = resolvedKeywordIds;
+
     if (modal.mode === 'add') await addProduct(data);
     else await updateProduct(modal.product.id, data);
     if (form.categoryId && formKeywords.length > 0) {
@@ -144,7 +164,7 @@ export default function Products() {
         try { await api.updateKeyword(kw.id, { category_id: form.categoryId }); } catch { /* best-effort */ }
       }
     }
-    setModal(null); fetchProductStats();
+    setModal(null); fetchProductStats(); fetchKeywords();
   };
 
   const handleDelete = async (id) => {
