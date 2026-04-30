@@ -1,4 +1,8 @@
 import { useEffect, useState } from 'react';
+import ProvidersPanel from './ProvidersPanel.jsx';
+import JobsPanel from './JobsPanel.jsx';
+import PromptPacksPanel from './PromptPacksPanel.jsx';
+import ReviewQueuePanel from './ReviewQueuePanel.jsx';
 
 function useFetchJson(url) {
   const [state, setState] = useState({ status: 'loading', data: null, error: null });
@@ -97,6 +101,10 @@ export default function App() {
       <p className="subtitle">로컬 전용 스켈레톤 — port 8003 / 5176</p>
       <HealthPanel />
       <CapabilitiesPanel />
+      <ProvidersPanel />
+      <JobsPanel />
+      <PromptPacksPanel />
+      <ReviewQueuePanel />
     </div>
   );
 }

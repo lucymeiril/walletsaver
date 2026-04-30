@@ -11,6 +11,7 @@ const Prices             = lazy(() => import('./pages/Prices/Prices'));
 const ClassificationPage = lazy(() => import('./pages/Classification/ClassificationPage'));
 const Analytics          = lazy(() => import('./pages/Analytics/Analytics'));
 const InboxPage          = lazy(() => import('./pages/Inbox/InboxPage'));
+const IntegrityPage      = lazy(() => import('./pages/Integrity/IntegrityPage'));
 
 function Loader() {
   return (
@@ -68,6 +69,7 @@ export default function App() {
             <Route path="/categories"     element={<Navigate to="/classification" replace />} />
             <Route path="/keywords"       element={<Navigate to="/classification" replace />} />
             <Route path="/analytics"      element={<PageBoundary><Analytics /></PageBoundary>} />
+            <Route path="/integrity"      element={<PageBoundary><IntegrityPage /></PageBoundary>} />
           </Route>
         </Routes>
       </Suspense>

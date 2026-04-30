@@ -4,6 +4,8 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 
+DEFAULT_CONTROL_DB_PATH = BASE_DIR / "ai_control.db"
+
 
 class Settings:
     DEBUG: bool = os.getenv("DEBUG", "true").lower() in ("1", "true", "yes")
@@ -11,6 +13,8 @@ class Settings:
     API_PORT: int = int(os.getenv("AI_ADMIN_PORT", "8003"))
 
     CORS_ALLOWED_ORIGINS: list[str] = []
+
+    CONTROL_DATABASE_URL: str = ""
 
     def __init__(self) -> None:
         self.CORS_ALLOWED_ORIGINS = [
@@ -21,6 +25,10 @@ class Settings:
             ).split(",")
             if o.strip()
         ]
+        self.CONTROL_DATABASE_URL = os.getenv(
+            "AI_CONTROL_DATABASE_URL",
+            f"sqlite:///{DEFAULT_CONTROL_DB_PATH.as_posix()}",
+        )
 
 
 settings = Settings()

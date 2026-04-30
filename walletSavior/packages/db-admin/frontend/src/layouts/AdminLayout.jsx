@@ -1,7 +1,7 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import {
   LayoutDashboard, Package, DollarSign,
-  FolderTree, BarChart3, Menu, X, Database, Inbox, LogOut,
+  FolderTree, BarChart3, Menu, X, Database, Inbox, LogOut, ShieldCheck,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { logout } from '../stores/authStore';
@@ -14,6 +14,7 @@ const NAV = [
   { to: '/prices',         label: '가격',       icon: DollarSign },
   { to: '/classification', label: '분류 관리',  icon: FolderTree },
   { to: '/analytics',      label: '분석',       icon: BarChart3 },
+  { to: '/integrity',      label: '무결성',     icon: ShieldCheck },
 ];
 
 export default function AdminLayout() {

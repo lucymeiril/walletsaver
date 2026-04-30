@@ -104,6 +104,7 @@ def create_app() -> FastAPI:
     from api.routes.ingestion import router as ingestion_router
     from api.routes.dashboard import router as dashboard_router
     from api.routes.plugins import router as plugins_router
+    from api.routes.ai_export import router as ai_export_router
 
     from fastapi import Depends
     from api.security.auth import verify_api_key
@@ -116,6 +117,7 @@ def create_app() -> FastAPI:
     app.include_router(ingestion_router, dependencies=_auth)
     app.include_router(dashboard_router, dependencies=_auth)
     app.include_router(plugins_router, dependencies=_auth)
+    app.include_router(ai_export_router, dependencies=_auth)
 
     # ── Health Check ─────────────────────────────────────────
 

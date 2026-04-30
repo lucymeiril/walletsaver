@@ -252,4 +252,11 @@ export const api = {
     postJson(`${API_BASE}/admin/reset-products`, { confirm }, { ...opts, timeout: LONG_TIMEOUT }),
   resetAll: (confirm, opts) =>
     postJson(`${API_BASE}/admin/reset-all`, { confirm }, { ...opts, timeout: LONG_TIMEOUT }),
+  // Integrity dashboard
+  getIntegritySummary: (opts) =>
+    get(`${API_BASE}/admin/integrity/summary`, { ...opts, timeout: LONG_TIMEOUT }),
+  recheckIntegrity: (check, opts) =>
+    postJson(`${API_BASE}/admin/integrity/recheck`, check ? { check } : {}, { ...opts, timeout: LONG_TIMEOUT }),
+  repairIntegrity: (check, confirm, opts) =>
+    postJson(`${API_BASE}/admin/integrity/repair`, { check, confirm }, { ...opts, timeout: LONG_TIMEOUT }),
 };
