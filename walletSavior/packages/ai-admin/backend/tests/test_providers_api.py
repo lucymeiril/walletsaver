@@ -149,6 +149,13 @@ def test_capabilities_for_provider(client: TestClient) -> None:
     assert cap["max_prompt_chars"] >= 1
 
 
+def test_models_requires_secret_env_alias(client: TestClient) -> None:
+    client.post("/api/providers", json=_payload(secret_alias="GOOGLE_MISSING_KEY")).raise_for_status()
+    res = client.get("/api/providers/gemini-prod/models")
+    assert res.status_code == 400
+    assert "GOOGLE_MISSING_KEY" in res.json()["detail"]
+
+
 def test_validation_error_on_bad_payload(client: TestClient) -> None:
     bad = _payload()
     bad["provider_kind"] = "not-a-real-kind"

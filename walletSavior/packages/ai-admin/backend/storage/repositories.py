@@ -17,6 +17,7 @@ from core.contracts.ai_pipeline import (
     FieldProvenance,
     PipelineStatus,
     ProposalType,
+    RawCrawlRecord as RawCrawlRecordContract,
 )
 from core.contracts.control_plane import (
     ControlJobContract,
@@ -82,6 +83,33 @@ class RawCrawlBatchRepository:
         rows = self.session.execute(select(RawCrawlBatch)).scalars().all()
         return [_batch_to_contract(r) for r in rows]
 
+    def save_records(self, batch_id: str, records: list[RawCrawlRecordContract]) -> None:
+        for record in records:
+            existing = self.session.get(RawCrawlRecord, record.raw_record_id)
+            data = dict(
+                batch_id=batch_id,
+                source_name=record.source_name,
+                source_record_key=record.source_record_key,
+                source_url=record.source_url,
+                raw_title=record.raw_title,
+                raw_price=record.raw_price,
+                raw_payload=record.raw_payload,
+                crawled_at=record.crawled_at,
+            )
+            if existing is None:
+                self.session.add(
+                    RawCrawlRecord(raw_record_id=record.raw_record_id, **data)
+                )
+            else:
+                for k, v in data.items():
+                    setattr(existing, k, v)
+        self.session.flush()
+
+    def list_records(self, batch_id: str) -> list[RawCrawlRecordContract]:
+        stmt = select(RawCrawlRecord).where(RawCrawlRecord.batch_id == batch_id)
+        rows = self.session.execute(stmt).scalars().all()
+        return [_record_to_contract(r) for r in rows]
+
 
 def _batch_to_contract(row: RawCrawlBatch) -> RawCrawlBatchContract:
     return RawCrawlBatchContract(
@@ -94,6 +122,19 @@ def _batch_to_contract(row: RawCrawlBatch) -> RawCrawlBatchContract:
         source_url=row.source_url,
         created_at=row.created_at,
         raw_artifact_uri=row.raw_artifact_uri,
+    )
+
+
+def _record_to_contract(row: RawCrawlRecord) -> RawCrawlRecordContract:
+    return RawCrawlRecordContract(
+        raw_record_id=row.raw_record_id,
+        source_name=row.source_name,
+        source_record_key=row.source_record_key,
+        source_url=row.source_url,
+        raw_title=row.raw_title,
+        raw_price=row.raw_price,
+        raw_payload=row.raw_payload or {},
+        crawled_at=row.crawled_at,
     )
 
 

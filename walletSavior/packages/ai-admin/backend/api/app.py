@@ -36,6 +36,7 @@ def create_app() -> FastAPI:
 
     from api.routes.capabilities import router as capabilities_router
     from api.routes.providers import router as providers_router
+    from api.routes.ingest import router as ingest_router
     from api.routes.jobs import router as jobs_router
     from api.routes.prompts import router as prompts_router
     from api.routes.review import router as review_router
@@ -43,6 +44,7 @@ def create_app() -> FastAPI:
 
     app.include_router(capabilities_router)
     app.include_router(providers_router)
+    app.include_router(ingest_router)
     app.include_router(jobs_router)
     app.include_router(prompts_router)
     app.include_router(review_router)

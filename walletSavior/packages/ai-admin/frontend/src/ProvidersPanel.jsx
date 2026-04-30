@@ -62,6 +62,7 @@ export default function ProvidersPanel() {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState(null);
   const [editingId, setEditingId] = useState(null);
+  const [modelResults, setModelResults] = useState({});
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -135,6 +136,27 @@ export default function ProvidersPanel() {
     }
   }
 
+  async function loadModels(cfg) {
+    setModelResults((prev) => ({
+      ...prev,
+      [cfg.provider_id]: { status: 'loading', data: null, error: null },
+    }));
+    try {
+      const res = await fetch(`/api/providers/${encodeURIComponent(cfg.provider_id)}/models`);
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.detail || `HTTP ${res.status}`);
+      setModelResults((prev) => ({
+        ...prev,
+        [cfg.provider_id]: { status: 'ok', data: body, error: null },
+      }));
+    } catch (err) {
+      setModelResults((prev) => ({
+        ...prev,
+        [cfg.provider_id]: { status: 'error', data: null, error: err.message },
+      }));
+    }
+  }
+
   return (
     <section className="panel">
       <h2>Provider 설정 <span className="muted">({providers.length})</span></h2>
@@ -147,7 +169,9 @@ export default function ProvidersPanel() {
 
       {providers.length > 0 && (
         <ul className="items">
-          {providers.map((p) => (
+          {providers.map((p) => {
+            const models = modelResults[p.provider_id];
+            return (
             <li key={p.provider_id}>
               <div>
                 <div>
@@ -161,6 +185,25 @@ export default function ProvidersPanel() {
                   {p.secret_alias ? <> · alias: <code>{p.secret_alias}</code></> : <> · alias 없음</>}
                   {' '}· 동시 {p.max_concurrent_jobs} · 간격 {p.min_request_interval_seconds}s
                 </div>
+                {models?.status === 'loading' && (
+                  <div className="muted" style={{ marginTop: 6 }}>모델 목록 확인 중...</div>
+                )}
+                {models?.status === 'error' && (
+                  <div className="muted" style={{ marginTop: 6, color: '#ff8a8a' }}>
+                    모델 조회 실패: {models.error}
+                  </div>
+                )}
+                {models?.status === 'ok' && (
+                  <div className="muted" style={{ marginTop: 6 }}>
+                    모델 {models.data.models?.length ?? 0}개 · 남은 할당량 제공:{' '}
+                    {models.data.quota_remaining_available ? '예' : '아니오'}
+                    <div style={{ marginTop: 4 }}>
+                      {(models.data.models ?? []).slice(0, 8).map((m) => (
+                        <code key={m.name} style={{ marginRight: 6 }}>{m.name}</code>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 <span className={`badge ${p.is_enabled ? 'ok' : ''}`}>
@@ -169,10 +212,11 @@ export default function ProvidersPanel() {
                 <button type="button" onClick={() => toggle(p)}>
                   {p.is_enabled ? '비활성화' : '활성화'}
                 </button>
+                <button type="button" onClick={() => loadModels(p)}>모델 조회</button>
                 <button type="button" onClick={() => startEdit(p)}>편집</button>
               </div>
             </li>
-          ))}
+          );})}
         </ul>
       )}
 
@@ -217,7 +261,7 @@ export default function ProvidersPanel() {
               required
               value={form.default_model}
               onChange={(e) => update('default_model', e.target.value)}
-              placeholder="gemini-1.5-pro"
+              placeholder="gemma-3-27b-it"
             />
           </label>
           <label>

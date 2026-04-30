@@ -20,6 +20,8 @@ from core.contracts.ai_pipeline import ProviderKind
 from core.contracts.control_plane import ProviderConfigContract
 
 from api.deps import get_db_session
+from providers import GoogleGenAIProvider
+from providers.google_genai import ProviderConfigurationError, ProviderResponseError
 from storage.repositories import ProviderConfigRepository
 
 router = APIRouter(prefix="/api/providers", tags=["providers"])
@@ -49,6 +51,15 @@ def _capabilities_payload(kind: ProviderKind) -> dict:
         "max_prompt_chars": cap.max_prompt_chars,
         "default_timeout_seconds": cap.default_timeout_seconds,
     }
+
+
+def _adapter_for_config(config: ProviderConfigContract):
+    if config.provider_kind == ProviderKind.GEMINI:
+        return GoogleGenAIProvider(config)
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail=f"provider adapter not implemented: {config.provider_kind.value}",
+    )
 
 
 class EnabledPayload(BaseModel):
@@ -131,4 +142,55 @@ def get_provider_capabilities(
     return {
         "provider_id": cfg.provider_id,
         "capabilities": _capabilities_payload(cfg.provider_kind),
+    }
+
+
+@router.get("/{provider_id}/models")
+def list_provider_models(
+    provider_id: str,
+    session: Session = Depends(get_db_session),
+) -> dict:
+    repo = ProviderConfigRepository(session)
+    cfg = repo.get(provider_id)
+    if cfg is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="provider not found"
+        )
+    try:
+        adapter = _adapter_for_config(cfg)
+        return adapter.list_models()
+    except ProviderConfigurationError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+
+
+class ProviderSmokePayload(BaseModel):
+    prompt: str = Field(
+        default='Return {"ok": true, "provider": "google"} as JSON.',
+        max_length=500,
+    )
+
+
+@router.post("/{provider_id}/smoke-test")
+def smoke_test_provider(
+    provider_id: str,
+    payload: ProviderSmokePayload,
+    session: Session = Depends(get_db_session),
+) -> dict:
+    repo = ProviderConfigRepository(session)
+    cfg = repo.get(provider_id)
+    if cfg is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="provider not found"
+        )
+    try:
+        adapter = _adapter_for_config(cfg)
+        result = adapter.call(prompt=payload.prompt)
+    except ProviderConfigurationError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+    except ProviderResponseError as exc:
+        raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=str(exc)) from exc
+    return {
+        "provider_id": cfg.provider_id,
+        "model": cfg.default_model,
+        "result": result,
     }
