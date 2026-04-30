@@ -1,0 +1,5 @@
+# ai-admin Backend (skeleton)
+# 실제 provider SDK는 추후 단계에서 추가한다.
+fastapi>=0.115.0
+uvicorn>=0.34.0
+pydantic>=2.0

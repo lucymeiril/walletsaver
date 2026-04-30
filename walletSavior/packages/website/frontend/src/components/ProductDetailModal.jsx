@@ -8,8 +8,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import {
-  X, ShoppingCart, Heart, Share2, ExternalLink, Store,
-  TrendingUp, TrendingDown, Minus, ChevronRight, Package,
+  X, ShoppingCart, Heart, Share2, ExternalLink, ChevronRight,
 } from 'lucide-react';
 import { api } from '../services/api';
 import useStore from '../stores/appStore';
@@ -41,6 +40,7 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
 
   const [priceCompare, setPriceCompare] = useState(null);
   const [priceHistory, setPriceHistory] = useState([]);
+  const [priceTrust, setPriceTrust] = useState(null);
   const [loading, setLoading] = useState(false);
 
   if (!product) return null;
@@ -81,9 +81,10 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
     setLoading(true);
     const fetchExtra = async () => {
       try {
-        const [compRes, histRes] = await Promise.allSettled([
+        const [compRes, histRes, trustRes] = await Promise.allSettled([
           api.getJson(`/api/products/${productId}/price-compare`).catch(() => null),
           api.getJson(`/api/products/${productId}/price-history`).catch(() => null),
+          api.getJson(`/api/products/${productId}/trust`).catch(() => null),
         ]);
         if (compRes.status === 'fulfilled' && compRes.value) {
           const compData = compRes.value.data || compRes.value;
@@ -92,6 +93,9 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
         if (histRes.status === 'fulfilled' && histRes.value) {
           const histData = histRes.value.data || histRes.value;
           setPriceHistory(histData?.history || histData || []);
+        }
+        if (trustRes.status === 'fulfilled' && trustRes.value) {
+          setPriceTrust(trustRes.value.data || trustRes.value);
         }
       } catch { /* ignore */ }
       setLoading(false);
@@ -245,6 +249,37 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
           {/* 시세 비교 (product mode only) */}
           {mode === 'product' && (
             <div className={s.section}>
+              <h3 className={s.sectionTitle}>🔥 진짜 핫딜 판단</h3>
+              {priceTrust ? (
+                <div className={s.trustBox}>
+                  <div className={s.trustScoreRow}>
+                    <span className={s.trustScore}>{priceTrust.hotdeal_score ?? 0}</span>
+                    <span className={s.trustScoreLabel}>/ 100</span>
+                    <span className={s.trustReason}>{priceTrust.rationale}</span>
+                  </div>
+                  <div className={s.trustMetrics}>
+                    <div>
+                      <span>현재가</span>
+                      <strong>{fmt(priceTrust.current_price)}원</strong>
+                    </div>
+                    <div>
+                      <span>과거 최저</span>
+                      <strong>{priceTrust.historical_low_price ? `${fmt(priceTrust.historical_low_price)}원` : '-'}</strong>
+                    </div>
+                    <div>
+                      <span>과거 평균</span>
+                      <strong>{priceTrust.historical_average_price ? `${fmt(priceTrust.historical_average_price)}원` : '-'}</strong>
+                    </div>
+                    <div>
+                      <span>비교 출처</span>
+                      <strong>{priceTrust.reference_count ?? 0}개</strong>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <p className={s.noData}>{loading ? '가격 신뢰도 계산 중...' : '가격 신뢰도 데이터가 아직 부족합니다.'}</p>
+              )}
+
               <h3 className={s.sectionTitle}>📊 시세 비교</h3>
               {priceCompare ? (
                 <div className={s.comparisonGrid}>

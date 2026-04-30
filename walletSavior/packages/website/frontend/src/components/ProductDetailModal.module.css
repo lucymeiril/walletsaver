@@ -282,6 +282,64 @@
   margin: 0;
 }
 
+.trustBox {
+  padding: var(--space-sm);
+  margin-bottom: var(--space-md);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: var(--radius);
+  background: rgba(251, 191, 36, 0.08);
+}
+
+.trustScoreRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-sm);
+}
+
+.trustScore {
+  font-size: 1.5rem;
+  font-weight: var(--fw-bold);
+  color: #fbbf24;
+}
+
+.trustScoreLabel {
+  font-size: var(--fs-xs);
+  color: var(--text3);
+}
+
+.trustReason {
+  flex: 1;
+  font-size: var(--fs-xs);
+  color: var(--text2);
+  line-height: 1.4;
+}
+
+.trustMetrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.trustMetrics div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.trustMetrics span {
+  font-size: 10px;
+  color: var(--text3);
+}
+
+.trustMetrics strong {
+  font-size: var(--fs-xs);
+  color: var(--text);
+}
+
 /* Other stores */
 .otherStores {
   display: flex;

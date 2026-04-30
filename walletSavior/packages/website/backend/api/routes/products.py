@@ -14,6 +14,7 @@ import math
 from fastapi import APIRouter, Request, HTTPException, Query
 from api.schemas.common import ApiResponse, PaginationMeta
 from api.utils.cache import TTLCache
+from api.utils.public_catalog import PublicCatalogReader
 
 router = APIRouter()
 
@@ -490,12 +491,12 @@ async def compare_category(
 
 @router.get("/{product_id}")
 async def get_product(request: Request, product_id: int):
-    """단일 상품 상세 — DB에서 조회."""
+    """단일 상품 상세 — public catalog read boundary로 조회."""
     storage = request.app.state.storage
     if storage is None:
         raise HTTPException(status_code=503, detail="DB 미연결")
 
-    result = storage.get_product_detail(product_id)
+    result = PublicCatalogReader(storage).get_product(product_id)
     if not result:
         raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
     return ApiResponse(data=result)
@@ -512,7 +513,7 @@ async def get_price_history(
     if storage is None:
         return ApiResponse(data=[])
 
-    data = storage.get_price_history(product_id, days)
+    data = PublicCatalogReader(storage).get_price_history(product_id, days)
     if not data:
         raise HTTPException(status_code=404, detail="가격 이력을 찾을 수 없습니다.")
     return ApiResponse(data=data)
@@ -525,7 +526,20 @@ async def get_price_compare(request: Request, product_id: int):
     if storage is None:
         return ApiResponse(data=[])
 
-    data = storage.get_price_compare(product_id)
+    data = PublicCatalogReader(storage).get_price_compare(product_id)
     if not data:
         raise HTTPException(status_code=404, detail="가격 비교 데이터를 찾을 수 없습니다.")
+    return ApiResponse(data=data)
+
+
+@router.get("/{product_id}/trust")
+async def get_price_trust(request: Request, product_id: int):
+    """상품 상세 모달용 가격 신뢰도 요약."""
+    storage = request.app.state.storage
+    if storage is None:
+        return ApiResponse(data=None)
+
+    data = PublicCatalogReader(storage).get_price_trust_summary(product_id)
+    if not data:
+        raise HTTPException(status_code=404, detail="상품 신뢰도 데이터를 찾을 수 없습니다.")
     return ApiResponse(data=data)
