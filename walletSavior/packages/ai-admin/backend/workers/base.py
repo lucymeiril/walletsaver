@@ -83,9 +83,13 @@ _PROMO_TOKENS = (
     "[할인]",
     "[증정]",
     "[정상가]",
+    "[단독]",
+    "[카드할인]",
     "(특가)",
     "(행사)",
     "(증정)",
+    "무료배송",
+    "최대혜택가",
 )
 
 
@@ -94,6 +98,8 @@ def clean_title(raw_title: str) -> str:
     cleaned = raw_title
     for token in _PROMO_TOKENS:
         cleaned = cleaned.replace(token, " ")
+    cleaned = re.sub(r"\b\d{1,3}%\s*(할인|쿠폰)?\b", " ", cleaned)
+    cleaned = re.sub(r"\b\d{1,3}(?:,\d{3})*원\b", " ", cleaned)
     cleaned = _WHITESPACE_RE.sub(" ", cleaned).strip()
     return cleaned or raw_title.strip()
 
@@ -104,3 +110,31 @@ _TOKEN_RE = re.compile(r"[A-Za-z0-9가-힣]+")
 def tokenize(text: str) -> list[str]:
     """단순한 알파벳/숫자/한글 토큰 분리."""
     return [t for t in _TOKEN_RE.findall(text) if t]
+
+
+_KNOWN_BRANDS = (
+    "서울우유",
+    "매일",
+    "남양",
+    "오리온",
+    "농심",
+    "오뚜기",
+    "CJ",
+    "비비고",
+    "풀무원",
+    "동원",
+    "롯데",
+    "해태",
+    "크라운",
+    "코카콜라",
+    "펩시",
+)
+
+
+def extract_brand(title: str) -> str | None:
+    """제목 앞뒤 어디에 있든 확인 가능한 대표 브랜드 후보를 찾는다."""
+    normalized = title.lower()
+    for brand in _KNOWN_BRANDS:
+        if brand.lower() in normalized:
+            return brand
+    return None

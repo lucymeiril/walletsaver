@@ -19,5 +19,5 @@ def test_capabilities_lists_all_shared_roles_and_providers():
     provider_values = {p["value"] for p in body["providers"]}
     assert provider_values == {kind.value for kind in ProviderKind}
 
-    assert all(r["supported"] is False for r in body["roles"])
+    assert all(r["supported"] is True for r in body["roles"])
     assert all(p["supported"] is False for p in body["providers"])

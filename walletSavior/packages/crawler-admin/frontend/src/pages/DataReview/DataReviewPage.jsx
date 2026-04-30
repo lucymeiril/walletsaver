@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useCallback, memo, useRef } from 'react';
 import useAdminStore from '../../stores/adminStore';
+import { api } from '../../api/client';
 import { CheckCircle, XCircle, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, RefreshCw, Info, Trash2 } from 'lucide-react';
 import styles from './DataReviewPage.module.css';
 
@@ -147,9 +148,7 @@ export default function DataReviewPage() {
     setDetailLoading(id);
     setDetailError(prev => ({ ...prev, [id]: null }));
     try {
-      const res = await fetch(`/api/ingestions/${id}`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const detail = await res.json();
+      const detail = await api.getIngestion(id);
       setDetailCache(prev => ({ ...prev, [id]: detail }));
     } catch (err) {
       setDetailError(prev => ({ ...prev, [id]: err.message || '데이터 로드 실패' }));

@@ -12,7 +12,7 @@ from core.contracts.ai_pipeline import (
     ProposalType,
 )
 
-from .base import clean_title, make_proposal
+from .base import clean_title, extract_brand, make_proposal
 
 
 class NormalizerWorker(BaseAIWorker):
@@ -40,6 +40,21 @@ class NormalizerWorker(BaseAIWorker):
                     source_field="raw_title",
                 )
             )
+            brand = extract_brand(cleaned)
+            if brand:
+                proposals.append(
+                    make_proposal(
+                        batch=batch,
+                        record=record,
+                        proposal_type=ProposalType.NORMALIZED_FIELD,
+                        target_field="brand",
+                        proposed_value=brand,
+                        evidence_text=brand,
+                        confidence=0.75,
+                        proposal_suffix="brand",
+                        source_field="raw_title",
+                    )
+                )
             if cleaned != record.raw_title.strip():
                 aliases.append(
                     make_proposal(
@@ -61,7 +76,8 @@ class NormalizerWorker(BaseAIWorker):
             alias_proposals=aliases,
             diagnostics={
                 "records_total": len(batch.records),
-                "records_proposed": len(proposals),
+                "records_proposed": len({p.provenance.raw_record_id for p in proposals}),
+                "fields_proposed": len(proposals),
                 "records_skipped": skipped,
             },
         )

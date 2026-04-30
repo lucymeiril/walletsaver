@@ -65,10 +65,12 @@ def test_normalizer_proposes_cleaned_title_and_alias() -> None:
     out = NormalizerWorker().run(batch)
     assert isinstance(out, AIWorkerOutput)
     assert out.role == AIWorkerRole.NORMALIZER
-    assert len(out.field_proposals) == 1
-    proposal = out.field_proposals[0]
+    fields = {p.target_field: p for p in out.field_proposals}
+    assert set(fields) == {"canonical_name", "brand"}
+    proposal = fields["canonical_name"]
     assert proposal.proposal_type == ProposalType.NORMALIZED_FIELD
     assert proposal.proposed_value == "서울우유 1L"
+    assert fields["brand"].proposed_value == "서울우유"
     # alias must be raw title (different from cleaned)
     assert len(out.alias_proposals) == 1
     assert out.alias_proposals[0].proposed_value == "[행사] 서울우유 1L"
@@ -104,7 +106,10 @@ def test_unit_converter_extracts_quantity_and_unit() -> None:
     fields = {(p.provenance.raw_record_id, p.target_field): p.proposed_value for p in out.field_proposals}
     assert fields[("rec-1", "package_quantity")] == 200.0
     assert fields[("rec-1", "package_unit")] == "g"
+    assert fields[("rec-1", "bundle_count")] == 3
+    assert fields[("rec-1", "total_quantity")] == 0.6
     assert fields[("rec-1", "standard_unit")] == "kg"
+    assert fields[("rec-1", "standard_unit_price")] == 4166.67
     assert fields[("rec-2", "package_quantity")] == 1.5
     assert fields[("rec-2", "standard_unit")] == "L"
 
@@ -125,6 +130,21 @@ def test_classifier_matches_known_keyword() -> None:
     assert out.diagnostics["needs_human_review"] is True
 
 
+def test_classifier_prefers_snack_phrase_over_seafood_token() -> None:
+    batch = _batch(AIWorkerRole.CLASSIFIER, [_record(1, title="오리온 오징어 땅콩 98g")])
+    out = ClassifierWorker().run(batch)
+    assert out.taxonomy_proposals[0].proposed_value == "snack.nut"
+
+
+def test_classifier_emits_attribute_values() -> None:
+    batch = _batch(AIWorkerRole.CLASSIFIER, [_record(1, title="국산 냉장 한우 등심 1등급 300g")])
+    out = ClassifierWorker().run(batch)
+    attrs = {p.target_field: p.proposed_value for p in out.taxonomy_proposals if p.proposal_type == ProposalType.ATTRIBUTE_VALUE}
+    assert attrs["attributes.storage_type"] == "chilled"
+    assert attrs["attributes.origin"] == "domestic"
+    assert attrs["attributes.quality_grade"] == "1"
+
+
 def test_canonical_matcher_emits_draft_and_alias() -> None:
     batch = _batch(
         AIWorkerRole.CANONICAL_MATCHER,
@@ -133,6 +153,10 @@ def test_canonical_matcher_emits_draft_and_alias() -> None:
     out = CanonicalMatcherWorker().run(batch)
     assert len(out.canonical_drafts) == 1  # both clean to same canonical
     assert out.canonical_drafts[0].canonical_name == "서울우유 1L"
+    assert out.canonical_drafts[0].brand == "서울우유"
+    assert len(out.variant_drafts) == 1
+    assert out.variant_drafts[0].package_quantity == 1.0
+    assert out.variant_drafts[0].standard_unit == "L"
     assert all(p.proposal_type == ProposalType.CANONICAL_MATCH for p in out.field_proposals)
     assert len(out.alias_proposals) == 2
 
@@ -144,6 +168,7 @@ def test_keyword_generator_dedupes_tokens() -> None:
     assert values == sorted(set(values), key=values.index)
     assert "우유" in values
     assert "서울" in values
+    assert out.alias_proposals[0].proposed_value == "우유서울1L"
 
 
 def test_prompt_curator_does_not_activate_prompts() -> None:
@@ -285,3 +310,18 @@ def test_data_auditor_handles_missing_price_only() -> None:
     assert out.diagnostics["missing_category"] == 0
     issues = out.diagnostics["issues_per_record"]["r1"]
     assert issues == ["price_missing"]
+
+
+def test_data_auditor_flags_zero_price_and_bad_seafood_category() -> None:
+    rec = RawCrawlRecord(
+        raw_record_id="r1",
+        source_name="emart",
+        raw_title="오리온 오징어 땅콩 98g",
+        raw_price=0,
+        raw_payload={"category_id": "seafood.squid"},
+    )
+    batch = _batch(AIWorkerRole.DATA_AUDITOR, [rec])
+    out = DataAuditorWorker().run(batch)
+    issues = out.diagnostics["issues_per_record"]["r1"]
+    assert "price_outlier" in issues
+    assert "suspicious_category_snack_marked_seafood" in issues

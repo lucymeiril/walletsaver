@@ -22,6 +22,8 @@ class DataAuditorWorker(BaseAIWorker):
         missing_price = 0
         missing_unit = 0
         missing_category = 0
+        price_outlier = 0
+        suspicious_category = 0
         for record in batch.records:
             issues: list[str] = []
             if not record.raw_title.strip():
@@ -29,12 +31,21 @@ class DataAuditorWorker(BaseAIWorker):
             if record.raw_price is None:
                 issues.append("price_missing")
                 missing_price += 1
+            elif record.raw_price == 0 or record.raw_price > 10_000_000:
+                issues.append("price_outlier")
+                price_outlier += 1
             if _parse_units(record.raw_title) is None:
                 issues.append("unit_signal_missing")
                 missing_unit += 1
             if not any(kw in record.raw_title for kw, *_ in _CATEGORY_KEYWORDS):
                 issues.append("category_signal_missing")
                 missing_category += 1
+            if "오징어 땅콩" in record.raw_title and any(
+                str(value).startswith("seafood")
+                for value in record.raw_payload.values()
+            ):
+                issues.append("suspicious_category_snack_marked_seafood")
+                suspicious_category += 1
             if issues:
                 issues_per_record[record.raw_record_id] = issues
                 proposals.append(
@@ -59,6 +70,8 @@ class DataAuditorWorker(BaseAIWorker):
                 "missing_price": missing_price,
                 "missing_unit": missing_unit,
                 "missing_category": missing_category,
+                "price_outlier": price_outlier,
+                "suspicious_category": suspicious_category,
                 "issues_per_record": issues_per_record,
             },
         )

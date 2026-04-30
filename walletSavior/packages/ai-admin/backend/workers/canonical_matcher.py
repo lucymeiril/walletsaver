@@ -10,10 +10,12 @@ from core.contracts.ai_pipeline import (
     AIJobBatch,
     AIWorkerRole,
     CanonicalProductDraft,
+    ProductVariantDraft,
     ProposalType,
 )
 
-from .base import clean_title, make_proposal
+from .base import clean_title, extract_brand, make_proposal
+from .unit_converter import _parse_units
 
 
 class CanonicalMatcherWorker(BaseAIWorker):
@@ -21,9 +23,11 @@ class CanonicalMatcherWorker(BaseAIWorker):
 
     def process(self, batch: AIJobBatch) -> AIWorkerOutput:
         drafts: list[CanonicalProductDraft] = []
+        variants: list[ProductVariantDraft] = []
         match_proposals = []
         alias_proposals = []
         seen_canonical: set[str] = set()
+        seen_variants: set[str] = set()
         for record in batch.records:
             canonical = clean_title(record.raw_title)
             if canonical not in seen_canonical:
@@ -31,9 +35,23 @@ class CanonicalMatcherWorker(BaseAIWorker):
                 drafts.append(
                     CanonicalProductDraft(
                         canonical_name=canonical,
+                        brand=extract_brand(canonical),
                         aliases=[record.raw_title.strip()]
                         if record.raw_title.strip() != canonical
                         else [],
+                    )
+                )
+            parsed = _parse_units(record.raw_title)
+            variant_key = f"{canonical}:{parsed}" if parsed else canonical
+            if variant_key not in seen_variants:
+                seen_variants.add(variant_key)
+                variants.append(
+                    ProductVariantDraft(
+                        variant_name=canonical,
+                        package_quantity=parsed["package_quantity"] if parsed else None,
+                        package_unit=parsed["package_unit"] if parsed else None,
+                        bundle_count=parsed["bundle_count"] if parsed else 1,
+                        standard_unit=parsed["standard_unit"] if parsed else None,
                     )
                 )
             match_proposals.append(
@@ -68,8 +86,10 @@ class CanonicalMatcherWorker(BaseAIWorker):
             field_proposals=match_proposals,
             alias_proposals=alias_proposals,
             canonical_drafts=drafts,
+            variant_drafts=variants,
             diagnostics={
                 "records_total": len(batch.records),
                 "unique_canonicals": len(drafts),
+                "unique_variants": len(variants),
             },
         )

@@ -8,6 +8,7 @@
 """
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
 
 import pytest
@@ -46,6 +47,7 @@ from storage import (
     ReviewDecisionRepository,
     create_database,
 )
+from storage.database import get_default_database, reset_default_database
 
 
 EXPECTED_TABLES = {
@@ -72,6 +74,21 @@ def test_create_all_creates_expected_tables(db: Database) -> None:
     inspector = inspect(db.engine)
     tables = set(inspector.get_table_names())
     assert EXPECTED_TABLES.issubset(tables)
+
+
+def test_default_database_initializes_once_under_parallel_requests(monkeypatch, tmp_path) -> None:
+    db_path = tmp_path / "ai_control.db"
+    monkeypatch.setenv("AI_CONTROL_DATABASE_URL", f"sqlite:///{db_path.as_posix()}")
+    reset_default_database()
+
+    try:
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            databases = list(pool.map(lambda _: get_default_database(), range(16)))
+        assert len({id(database) for database in databases}) == 1
+        inspector = inspect(databases[0].engine)
+        assert EXPECTED_TABLES.issubset(set(inspector.get_table_names()))
+    finally:
+        reset_default_database()
 
 
 def test_provider_config_persists_alias_only(db: Database) -> None:
