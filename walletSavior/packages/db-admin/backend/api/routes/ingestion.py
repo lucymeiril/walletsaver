@@ -911,67 +911,70 @@ def _insert_items(session, items: list[dict], schema_type: str) -> int:
     saved = 0
     for idx, item in enumerate(items):
         try:
-            if schema_type == "HotdealPost":
-                product_name = item.get("title", "")
-                hotdeal_source = item.get("source_community", "hotdeal")
-                pid = _ensure_product(session, product_name, crawler_source=hotdeal_source)
-                row = HotdealPrice(
-                    product_id=pid,
-                    price=float(item.get("price", 0)),
-                    source=hotdeal_source,
-                    source_url=item.get("url", ""),
-                    title=product_name,
-                    crawled_at=datetime.utcnow(),
-                )
-            else:
-                source = _resolve_source(item)
-                if source in ("government", "mart_regular"):
-                    product_name = item.get("name", "")
-                    pid = _ensure_product(session, product_name, crawler_source=source)
-                    row = BaselinePrice(
+            with session.begin_nested():
+                if schema_type == "HotdealPost":
+                    product_name = item.get("title", "")
+                    price = item.get("price")
+                    if price is None:
+                        raise ValueError("HotdealPost.price is missing; keep it in review until AI/human supplies a price")
+                    hotdeal_source = item.get("source_community", "hotdeal")
+                    pid = _ensure_product(session, product_name, crawler_source=hotdeal_source)
+                    row = HotdealPrice(
                         product_id=pid,
-                        price=float(
-                            item.get("sale_price") or item.get("price", 0)
-                        ),
-                        source=source,
-                        unit=item.get("unit", ""),
-                        recorded_at=datetime.utcnow(),
-                        region=item.get("region"),
+                        price=float(price),
+                        source=hotdeal_source,
+                        source_url=item.get("url", ""),
+                        title=product_name,
+                        crawled_at=datetime.utcnow(),
                     )
                 else:
-                    # 마트 할인 데이터 → DiscountHistory
-                    product_name = item.get("name", "")
-                    pid = _ensure_product(session, product_name, crawler_source=source)
-                    row = DiscountHistory(
-                        product_id=pid,
-                        price=float(
-                            item.get("sale_price") or item.get("price", 0)
-                        ),
-                        original_price=item.get("original_price"),
-                        discount_rate=item.get("discount_percent")
-                            or item.get("discount_rate"),
-                        source=source,
-                        source_url=item.get("detail_url")
-                            or item.get("source_url", ""),
-                        crawled_at=datetime.utcnow(),
-                        raw_data={
-                            "image_url": item.get("image_url", ""),
-                            "event_name": item.get("event_name", ""),
-                            "unit": item.get("unit", ""),
-                            "category": item.get("category", ""),
-                            "product_name": product_name,
-                            "store": item.get("store", ""),
-                        },
-                    )
-            session.add(row)
-            # 개별 flush로 어느 항목에서 오류가 발생하는지 추적 가능
-            session.flush()
+                    source = _resolve_source(item)
+                    if source in ("government", "mart_regular"):
+                        product_name = item.get("name", "")
+                        pid = _ensure_product(session, product_name, crawler_source=source)
+                        row = BaselinePrice(
+                            product_id=pid,
+                            price=float(
+                                item.get("sale_price") or item.get("price", 0)
+                            ),
+                            source=source,
+                            unit=item.get("unit", ""),
+                            recorded_at=datetime.utcnow(),
+                            region=item.get("region"),
+                        )
+                    else:
+                        # 마트 할인 데이터 → DiscountHistory
+                        product_name = item.get("name", "")
+                        pid = _ensure_product(session, product_name, crawler_source=source)
+                        row = DiscountHistory(
+                            product_id=pid,
+                            price=float(
+                                item.get("sale_price") or item.get("price", 0)
+                            ),
+                            original_price=item.get("original_price"),
+                            discount_rate=item.get("discount_percent")
+                                or item.get("discount_rate"),
+                            source=source,
+                            source_url=item.get("detail_url")
+                                or item.get("source_url", ""),
+                            crawled_at=datetime.utcnow(),
+                            raw_data={
+                                "image_url": item.get("image_url", ""),
+                                "event_name": item.get("event_name", ""),
+                                "unit": item.get("unit", ""),
+                                "category": item.get("category", ""),
+                                "product_name": product_name,
+                                "store": item.get("store", ""),
+                            },
+                        )
+                session.add(row)
+                # 개별 flush로 어느 항목에서 오류가 발생하는지 추적 가능
+                session.flush()
             saved += 1
         except Exception as e:
             logger.warning(
                 "[_insert_items] 항목 %d 삽입 실패 (schema=%s): %s — %s",
                 idx, schema_type, type(e).__name__, str(e)[:200],
             )
-            session.rollback()
             continue
     return saved

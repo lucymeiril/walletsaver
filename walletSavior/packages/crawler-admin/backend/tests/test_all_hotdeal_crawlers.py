@@ -393,6 +393,7 @@ class TestAlgumonParse:
         )
         prices = [item.price for item in items if item.price is not None]
         assert 1199000 in prices
+        assert 79000 in prices
 
 
 # ──────────────────────────────────────────────

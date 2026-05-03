@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback, memo, useRef } from 'react';
 import useAdminStore from '../../stores/adminStore';
 import { api } from '../../api/client';
-import { CheckCircle, XCircle, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, RefreshCw, Info, Trash2 } from 'lucide-react';
+import { CheckCircle, XCircle, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, RefreshCw, Info, Trash2, Send } from 'lucide-react';
 import styles from './DataReviewPage.module.css';
 
 const STATUS_MAP = {
@@ -107,6 +107,11 @@ export default function DataReviewPage() {
   const [errorStackExpanded, setErrorStackExpanded] = useState({});
   const [bulkRejectMode, setBulkRejectMode] = useState(false);
   const [bulkRejectReason, setBulkRejectReason] = useState('');
+  const [aiBaseUrl, setAiBaseUrl] = useState(() => localStorage.getItem('crawler-ai-base-url') || 'http://localhost:8003');
+  const [aiProviderId, setAiProviderId] = useState(() => localStorage.getItem('crawler-ai-provider-id') || '');
+  const [aiProviders, setAiProviders] = useState([]);
+  const [aiProviderLoading, setAiProviderLoading] = useState(false);
+  const [aiExportState, setAiExportState] = useState({});
 
   const [showCleanupModal, setShowCleanupModal] = useState(false);
   const [cleanupLoading, setCleanupLoading] = useState(false);
@@ -245,6 +250,78 @@ export default function DataReviewPage() {
     await deleteIngestion(id);
     if (expandedId === id) setExpandedId(null);
   }, [deleteIngestion, expandedId]);
+
+  const loadAiProviders = useCallback(async (baseUrl = aiBaseUrl) => {
+    const normalized = baseUrl.trim().replace(/\/$/, '');
+    if (!normalized) return;
+    setAiProviderLoading(true);
+    try {
+      const res = await fetch(`${normalized}/api/providers`);
+      if (!res.ok) throw new Error(`AI-admin provider 조회 실패 (HTTP ${res.status})`);
+      const data = await res.json();
+      const providers = data.providers || [];
+      setAiProviders(providers);
+      if (!aiProviderId && providers[0]?.provider_id) {
+        setAiProviderId(providers[0].provider_id);
+        localStorage.setItem('crawler-ai-provider-id', providers[0].provider_id);
+      }
+    } catch (err) {
+      setAiExportState(prev => ({
+        ...prev,
+        providerLoad: { ok: false, message: err.message || 'AI provider 조회 실패' },
+      }));
+    } finally {
+      setAiProviderLoading(false);
+    }
+  }, [aiBaseUrl, aiProviderId]);
+
+  const handleAiBaseUrlChange = useCallback((value) => {
+    setAiBaseUrl(value);
+    localStorage.setItem('crawler-ai-base-url', value);
+  }, []);
+
+  const handleAiProviderChange = useCallback((value) => {
+    setAiProviderId(value);
+    localStorage.setItem('crawler-ai-provider-id', value);
+  }, []);
+
+  const handleSendToAi = useCallback(async (item, detail) => {
+    const records = detail?.items || item.items || item.data || [];
+    if (!records.length) {
+      setAiExportState(prev => ({ ...prev, [item.id]: { ok: false, message: '전송할 크롤링 데이터가 없습니다.' } }));
+      return;
+    }
+    if (!aiBaseUrl.trim() || !aiProviderId.trim()) {
+      setAiExportState(prev => ({ ...prev, [item.id]: { ok: false, message: 'AI-admin 주소와 provider를 먼저 선택하세요.' } }));
+      return;
+    }
+    setAiExportState(prev => ({ ...prev, [item.id]: { loading: true, message: 'AI-admin으로 전송 중...' } }));
+    try {
+      const result = await api.forwardRawRecordsToAi({
+        ai_admin_base_url: aiBaseUrl.trim(),
+        provider_id: aiProviderId.trim(),
+        source_name: item.crawler_name || item.crawlerName || item.crawler_id || 'crawler-admin',
+        crawler_name: item.crawler_name || item.crawlerName || item.crawler_id || 'crawler-admin',
+        schema_type: item.schema_type || item.schemaType || 'DiscountItem',
+        source_url: detail?.source_url || item.source_url || undefined,
+        items: records,
+      });
+      const responses = result.responses || [];
+      setAiExportState(prev => ({
+        ...prev,
+        [item.id]: {
+          ok: true,
+          message: `AI-admin 전송 완료: ${result.records_sent ?? records.length}건, batch ${result.batches_sent ?? responses.length}개`,
+          result,
+        },
+      }));
+    } catch (err) {
+      setAiExportState(prev => ({
+        ...prev,
+        [item.id]: { ok: false, message: err.message || 'AI-admin 전송 실패' },
+      }));
+    }
+  }, [aiBaseUrl, aiProviderId]);
 
   const getQualityColor = (score) => {
     if (score >= 90) return styles.qualityHigh;
@@ -689,6 +766,62 @@ export default function DataReviewPage() {
                             </div>
                           ))}
                         </div>
+                      </div>
+
+                      <div className={styles.section}>
+                        <h4 className={styles.sectionTitle}>🤖 AI 정제 파이프라인 전송</h4>
+                        <p className={styles.sectionDesc}>
+                          이 버튼은 현재 검토 중인 원본 크롤링 데이터를 AI-admin의 실제 ingest 형식으로 보냅니다.
+                          터미널 명령 없이 여기서 크롤러 → AI 검수 큐 연결을 시작합니다.
+                        </p>
+                        <div className={styles.aiExportPanel}>
+                          <label className={styles.aiExportField}>
+                            AI-admin 주소
+                            <input
+                              value={aiBaseUrl}
+                              onChange={(e) => handleAiBaseUrlChange(e.target.value)}
+                              placeholder="http://localhost:8003"
+                            />
+                          </label>
+                          <label className={styles.aiExportField}>
+                            Provider
+                            <select value={aiProviderId} onChange={(e) => handleAiProviderChange(e.target.value)}>
+                              <option value="">provider 선택</option>
+                              {aiProviders.map((provider) => (
+                                <option key={provider.provider_id} value={provider.provider_id}>
+                                  {provider.provider_id} · {provider.provider_kind} · {provider.default_model}
+                                </option>
+                              ))}
+                              {aiProviderId && !aiProviders.some((p) => p.provider_id === aiProviderId) && (
+                                <option value={aiProviderId}>{aiProviderId}</option>
+                              )}
+                            </select>
+                          </label>
+                          <button
+                            className={styles.secondaryActionBtn}
+                            onClick={() => loadAiProviders(aiBaseUrl)}
+                            disabled={aiProviderLoading}
+                          >
+                            <RefreshCw size={14} className={aiProviderLoading ? styles.spin : ''} />
+                            provider 불러오기
+                          </button>
+                          <button
+                            className={styles.aiSendBtn}
+                            onClick={() => handleSendToAi(item, detail)}
+                            disabled={aiExportState[item.id]?.loading || !items.length}
+                          >
+                            <Send size={14} />
+                            이 크롤링 결과를 AI 검수 큐로 보내기
+                          </button>
+                        </div>
+                        {aiExportState.providerLoad && !aiExportState.providerLoad.ok && (
+                          <div className={styles.aiExportMessageError}>{aiExportState.providerLoad.message}</div>
+                        )}
+                        {aiExportState[item.id] && (
+                          <div className={aiExportState[item.id].ok ? styles.aiExportMessageOk : styles.aiExportMessageError}>
+                            {aiExportState[item.id].message}
+                          </div>
+                        )}
                       </div>
 
                       {/* 에러 정보 — 포매팅 + 스택 접기 */}

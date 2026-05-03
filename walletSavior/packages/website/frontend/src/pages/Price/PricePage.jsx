@@ -278,6 +278,11 @@ export default function PricePage() {
     }));
   }, [product, minMartPrice]);
 
+  const handleBackToList = useCallback(() => {
+    setSelectedProduct(null);
+    navigate('/price');
+  }, [setSelectedProduct, navigate]);
+
   // --- Early returns (after all hooks) ---
   if (loading) {
     return <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}><Spinner size="lg" /></div>;
@@ -399,11 +404,6 @@ export default function PricePage() {
       </div>
     );
   }
-
-  const handleBackToList = useCallback(() => {
-    setSelectedProduct(null);
-    navigate('/price');
-  }, [setSelectedProduct, navigate]);
 
   return (
     <div>

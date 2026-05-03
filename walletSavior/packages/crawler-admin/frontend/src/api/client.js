@@ -266,4 +266,10 @@ export const api = {
   deleteIngestion: (id) => fetchWithTimeout(`${API_BASE}/ingestions/${id}`, {
     method: 'DELETE',
   }).then(r => r.json()),
+  forwardRawRecordsToAi: (data) => fetchWithTimeout(`${API_BASE}/ai-export/raw-records/label`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+    timeoutMs: 120000,
+  }).then(r => r.json()),
 };
