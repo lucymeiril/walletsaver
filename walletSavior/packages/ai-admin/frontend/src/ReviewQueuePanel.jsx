@@ -16,17 +16,47 @@ async function postJson(url, body) {
   return parsed;
 }
 
+async function putJson(url, body) {
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.detail || `HTTP ${res.status}`);
+  return data;
+}
+
+async function deleteJson(url) {
+  const res = await fetch(url, { method: 'DELETE' });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.detail || `HTTP ${res.status}`);
+  return data;
+}
+
 export default function ReviewQueuePanel() {
   const [items, setItems] = useState([]);
+  const [rawRecords, setRawRecords] = useState([]);
+  const [audit, setAudit] = useState(null);
   const [error, setError] = useState(null);
   const [tick, setTick] = useState(0);
   const refresh = useCallback(() => setTick((t) => t + 1), []);
 
   useEffect(() => {
     let cancelled = false;
-    fetch('/api/review/proposals')
-      .then((r) => r.json())
-      .then((data) => { if (!cancelled) { setItems(data.items || []); setError(null); } })
+    Promise.all([
+      fetch('/api/review/proposals').then((r) => r.json()),
+      fetch('/api/review/raw-records?include_proposals=false').then((r) => r.json()),
+      fetch('/api/review/audit').then((r) => r.json()),
+    ])
+      .then(([proposals, records, auditReport]) => {
+        if (!cancelled) {
+          setItems(proposals.items || []);
+          setRawRecords(records.items || []);
+          setAudit(auditReport);
+          setError(null);
+        }
+      })
       .catch((err) => { if (!cancelled) setError(err.message); });
     return () => { cancelled = true; };
   }, [tick]);
@@ -40,10 +70,51 @@ export default function ReviewQueuePanel() {
     }
   };
 
+  const editProposal = async (proposal) => {
+    const field = window.prompt('필드명', proposal.target_field);
+    if (!field) return;
+    const value = window.prompt('제안 값 (JSON 또는 문자열)', JSON.stringify(proposal.proposed_value));
+    if (value == null) return;
+    let parsed = value;
+    try { parsed = JSON.parse(value); } catch { /* keep as string */ }
+    try {
+      await putJson(`/api/review/proposals/${proposal.proposal_id}`, {
+        target_field: field,
+        proposed_value: parsed,
+      });
+      refresh();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const deleteProposal = async (proposal) => {
+    if (!window.confirm(`${proposal.proposal_id} 제안을 삭제할까요?`)) return;
+    try {
+      await deleteJson(`/api/review/proposals/${proposal.proposal_id}`);
+      refresh();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   return (
     <section className="panel">
       <h2>검수 큐 <span className="muted">({items.length})</span></h2>
       {error && <div className="muted" style={{ color: '#a00' }}>오류: {error}</div>}
+      <div className="card" style={{ marginBottom: 12 }}>
+        <strong>Raw vs AI 감사</strong>{' '}
+        <span className="badge">{audit?.status || 'unknown'}</span>
+        <div className="muted">
+          원본 {audit?.raw_record_count ?? rawRecords.length}개 · 커버 {audit?.covered_record_count ?? 0}개 ·
+          이슈 {audit?.issue_count ?? 0}개
+        </div>
+        {!!audit?.issues?.length && (
+          <pre style={{ whiteSpace: 'pre-wrap', maxHeight: 220, overflow: 'auto' }}>
+            {JSON.stringify(audit.issues.slice(0, 20), null, 2)}
+          </pre>
+        )}
+      </div>
       <ul className="items">
         {items.map((p) => (
           <li key={p.proposal_id} style={{ flexWrap: 'wrap' }}>
@@ -51,6 +122,7 @@ export default function ReviewQueuePanel() {
               <code>{p.proposal_id}</code> {p.target_field} ={' '}
               <code>{JSON.stringify(p.proposed_value)}</code>
             </span>
+            <span className="muted">raw: {p.provenance?.raw_record_id || '-'}</span>
             <span className="badge">{p.status}</span>
             <span className="row" style={{ gap: 6 }}>
               {p.status === 'ai_proposed' && (
@@ -91,7 +163,11 @@ export default function ReviewQueuePanel() {
                       reason,
                     });
                   }}>반려</button>
+                  <button onClick={() => editProposal(p)}>수정</button>
                 </>
+              )}
+              {['ai_proposed', 'human_reviewing', 'rejected'].includes(p.status) && (
+                <button onClick={() => deleteProposal(p)}>삭제</button>
               )}
             </span>
           </li>

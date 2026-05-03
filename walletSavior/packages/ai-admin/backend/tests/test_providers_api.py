@@ -13,6 +13,7 @@ from sqlalchemy.orm import Session
 
 from api.app import create_app
 from api.deps import get_db_session
+from providers import secret_resolver
 from storage import Database, create_database
 
 
@@ -154,6 +155,24 @@ def test_models_requires_secret_env_alias(client: TestClient) -> None:
     res = client.get("/api/providers/gemini-prod/models")
     assert res.status_code == 400
     assert "GOOGLE_MISSING_KEY" in res.json()["detail"]
+
+
+def test_models_missing_alias_does_not_expose_dotenv_secret(
+    client: TestClient, tmp_path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    dotenv = tmp_path / ".env"
+    dotenv.write_text("OTHER_GOOGLE_KEY=fake-dotenv-secret-value\n", encoding="utf-8")
+    monkeypatch.setattr(secret_resolver, "DEFAULT_ENV_PATHS", (dotenv,))
+
+    client.post(
+        "/api/providers", json=_payload(secret_alias="GOOGLE_MISSING_KEY")
+    ).raise_for_status()
+    res = client.get("/api/providers/gemini-prod/models")
+
+    assert res.status_code == 400
+    detail = res.json()["detail"]
+    assert "GOOGLE_MISSING_KEY" in detail
+    assert "fake-dotenv-secret-value" not in detail
 
 
 def test_validation_error_on_bad_payload(client: TestClient) -> None:

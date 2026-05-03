@@ -5,7 +5,10 @@ import sys
 
 from fastapi.testclient import TestClient
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_BACKEND_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_PACKAGES_DIR = os.path.dirname(os.path.dirname(_BACKEND_DIR))
+sys.path.insert(0, _BACKEND_DIR)
+sys.path.insert(0, os.path.join(_PACKAGES_DIR, "shared"))
 
 from api.app import create_app
 from api.utils.public_catalog import PublicCatalogReader
@@ -35,6 +38,53 @@ class FakeCatalogStorage:
         ]
 
 
+class PipelineCatalogStorage:
+    def get_product_detail(self, product_id):
+        if product_id != 2:
+            return None
+        return {
+            "product": {
+                "public_product_id": "prod-orion-squid-peanut",
+                "canonical_name": "오리온 오징어땅콩",
+                "category_id": "snack.nut",
+                "keywords": ["오징어땅콩", "과자"],
+                "brand": "오리온",
+            },
+            "variant": {
+                "public_variant_id": "var-202g",
+                "variant_name": "오리온 오징어땅콩 202g",
+                "package_quantity": 202,
+                "package_unit": "g",
+                "standard_unit": "100g",
+            },
+            "offer": {
+                "public_offer_id": "offer-emart",
+                "source_name": "emart",
+                "source_title": "오리온 오징어땅콩 202g 행사",
+                "source_url": "https://example.test/offer",
+                "price": 2990,
+                "original_price": 3990,
+                "standard_unit_price": 1480.2,
+            },
+        }
+
+    def get_price_history(self, product_id, days):
+        if product_id != 2:
+            return []
+        return [
+            {"date": "2026-04-01", "price": 3990, "source_name": "emart"},
+            {"date": "2026-04-30", "price": 2990, "source_name": "emart"},
+        ]
+
+    def get_price_compare(self, product_id):
+        if product_id != 2:
+            return []
+        return [
+            {"source_name": "emart", "price": 2990},
+            {"source_name": "homeplus", "price": 3190},
+        ]
+
+
 def test_public_catalog_reader_builds_trust_summary():
     reader = PublicCatalogReader(FakeCatalogStorage())
 
@@ -57,6 +107,38 @@ def test_product_trust_endpoint_uses_public_read_boundary():
     assert body["success"] is True
     assert body["data"]["product_id"] == 1
     assert body["data"]["reference_count"] == 5
+
+
+def test_product_endpoint_flattens_approved_pipeline_public_catalog_data():
+    client = TestClient(create_app(storage=PipelineCatalogStorage()))
+
+    resp = client.get("/api/products/2")
+
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert data["name"] == "오리온 오징어땅콩"
+    assert data["category_id"] == "snack.nut"
+    assert data["keywords"] == ["오징어땅콩", "과자"]
+    assert data["source"] == "emart"
+    assert data["source_title"] == "오리온 오징어땅콩 202g 행사"
+    assert data["price"] == 2990
+    assert data["original_price"] == 3990
+    assert data["unit"] == "202g"
+    assert data["standard_unit_price"] == 1480.2
+
+
+def test_product_trust_endpoint_uses_pipeline_price_history_and_source_offers():
+    client = TestClient(create_app(storage=PipelineCatalogStorage()))
+
+    resp = client.get("/api/products/2/trust")
+
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert data["current_price"] == 2990
+    assert data["standard_unit_price"] == 1480.2
+    assert data["source_low_price"] == 2990
+    assert data["reference_count"] == 4
+    assert "최저가" in data["rationale"]
 
 
 def test_product_trust_endpoint_returns_404_when_product_missing():

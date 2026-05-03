@@ -9,7 +9,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Optional
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from core.contracts.ai_pipeline import (
@@ -108,6 +108,10 @@ class RawCrawlBatchRepository:
     def list_records(self, batch_id: str) -> list[RawCrawlRecordContract]:
         stmt = select(RawCrawlRecord).where(RawCrawlRecord.batch_id == batch_id)
         rows = self.session.execute(stmt).scalars().all()
+        return [_record_to_contract(r) for r in rows]
+
+    def list_all_records(self) -> list[RawCrawlRecordContract]:
+        rows = self.session.execute(select(RawCrawlRecord)).scalars().all()
         return [_record_to_contract(r) for r in rows]
 
 
@@ -307,6 +311,19 @@ class FieldProposalRepository:
             stmt = stmt.where(FieldProposal.proposal_type == proposal_type.value)
         rows = self.session.execute(stmt).scalars().all()
         return [_proposal_to_contract(r) for r in rows]
+
+    def delete(self, proposal_id: str) -> bool:
+        row = self.session.get(FieldProposal, proposal_id)
+        if row is None:
+            return False
+        self.session.delete(row)
+        self.session.execute(
+            delete(ReviewDecisionRecord).where(
+                ReviewDecisionRecord.proposal_id == proposal_id
+            )
+        )
+        self.session.flush()
+        return True
 
 
 def _proposal_to_contract(row: FieldProposal) -> FieldProposalContract:

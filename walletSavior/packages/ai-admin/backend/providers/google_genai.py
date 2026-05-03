@@ -1,18 +1,20 @@
 """Google GenAI SDK adapter.
 
-The DB stores only ``ProviderConfig.secret_alias``. The actual API key must be
-present in the local process environment under that alias. This file must never
-log or return the resolved secret value.
+The DB stores only ``ProviderConfig.secret_alias``. The actual API key is
+resolved from local ``.env`` files or process environment under that alias. This
+file must never log or return the resolved secret value.
 """
 from __future__ import annotations
 
 import json
-import os
 import re
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 from core.contracts.control_plane import ProviderConfigContract
+
+from .secret_resolver import env_setup_hint, resolve_secret_alias
 
 
 class ProviderConfigurationError(ValueError):
@@ -69,9 +71,14 @@ class ModelInfo:
 class GoogleGenAIProvider:
     """Minimal Google GenAI SDK provider for schema-first data refinement."""
 
-    def __init__(self, config: ProviderConfigContract) -> None:
+    def __init__(
+        self,
+        config: ProviderConfigContract,
+        env_paths: tuple[Path, ...] | list[Path] | None = None,
+    ) -> None:
         self.config = config
         self._client = None
+        self._env_paths = env_paths
 
     def _secret_alias(self) -> str:
         alias = self.config.secret_alias or "GOOGLE_API_KEY"
@@ -83,11 +90,9 @@ class GoogleGenAIProvider:
 
     def _api_key(self) -> str:
         alias = self._secret_alias()
-        value = os.getenv(alias)
+        value = resolve_secret_alias(alias, self._env_paths)
         if not value:
-            raise ProviderConfigurationError(
-                f"missing API key environment variable for alias '{alias}'"
-            )
+            raise ProviderConfigurationError(env_setup_hint(alias))
         return value
 
     def _get_client(self):

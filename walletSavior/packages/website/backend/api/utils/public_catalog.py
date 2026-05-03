@@ -32,7 +32,8 @@ class PublicCatalogReader:
         self.storage = storage
 
     def get_product(self, product_id: int) -> dict[str, Any] | None:
-        return self.storage.get_product_detail(product_id)
+        getter = getattr(self.storage, "get_public_product_detail", None) or self.storage.get_product_detail
+        return normalize_public_product_detail(getter(product_id), product_id=product_id)
 
     def get_price_history(self, product_id: int, days: int) -> list[dict[str, Any]]:
         data = self.storage.get_price_history(product_id, days)
@@ -42,7 +43,17 @@ class PublicCatalogReader:
 
     def get_price_compare(self, product_id: int) -> list[dict[str, Any]] | dict[str, Any]:
         data = self.storage.get_price_compare(product_id)
-        return data if data else []
+        if not data:
+            return []
+        if isinstance(data, list):
+            return [_normalize_offer(item) for item in data]
+        if isinstance(data, dict):
+            normalized = dict(data)
+            for key in ("sources", "stores", "other_stores", "items"):
+                if isinstance(normalized.get(key), list):
+                    normalized[key] = [_normalize_offer(item) for item in normalized[key]]
+            return normalized
+        return []
 
     def get_price_trust_summary(self, product_id: int, days: int = 365) -> dict[str, Any] | None:
         product = self.get_product(product_id)
@@ -100,6 +111,70 @@ class PublicCatalogReader:
             "source_prices": compare_items,
             "discount_history": discount_history,
         }
+
+
+def normalize_public_product_detail(data: Any, *, product_id: int | None = None) -> dict[str, Any] | None:
+    """Flatten approved public catalog product/variant/offer shapes for website rendering."""
+    data = _asdict(data)
+    if not isinstance(data, dict):
+        return None
+
+    product = _asdict(data.get("product")) if "product" in data else data
+    variant = _asdict(data.get("variant")) or {}
+    offer = _asdict(data.get("offer") or data.get("best_offer") or _first(data.get("offers"))) or {}
+
+    normalized = {**product, **{k: v for k, v in variant.items() if v is not None}, **{k: v for k, v in offer.items() if v is not None}}
+    if product_id is not None:
+        normalized.setdefault("id", product_id)
+        normalized.setdefault("product_id", product_id)
+
+    canonical_name = product.get("canonical_name") or normalized.get("canonical_name")
+    source_title = offer.get("source_title") or normalized.get("source_title")
+    normalized.setdefault("name", canonical_name or source_title or normalized.get("title") or "")
+    normalized.setdefault("category", product.get("category_id") or normalized.get("category_id") or "")
+    normalized.setdefault("keywords", product.get("keywords") or [])
+    normalized.setdefault("source", offer.get("source_name") or normalized.get("source_name") or normalized.get("store") or "")
+    normalized.setdefault("store_name", normalized.get("source"))
+    normalized.setdefault("image_url", offer.get("image_url") or normalized.get("image") or "")
+    normalized.setdefault("source_url", offer.get("source_url") or normalized.get("detail_url") or "")
+
+    if "price" not in normalized and offer.get("price") is not None:
+        normalized["price"] = offer["price"]
+    if "original_price" not in normalized and offer.get("original_price") is not None:
+        normalized["original_price"] = offer["original_price"]
+
+    if not normalized.get("unit"):
+        qty = variant.get("package_quantity")
+        package_unit = variant.get("package_unit")
+        if qty and package_unit:
+            normalized["unit"] = f"{qty:g}{package_unit}" if isinstance(qty, (int, float)) else f"{qty}{package_unit}"
+    if variant.get("standard_unit"):
+        normalized.setdefault("standard_unit", variant["standard_unit"])
+    return normalized
+
+
+def _asdict(value: Any) -> Any:
+    if hasattr(value, "model_dump"):
+        return value.model_dump(mode="json")
+    if isinstance(value, dict):
+        return value
+    return value
+
+
+def _first(value: Any) -> Any:
+    return value[0] if isinstance(value, list) and value else None
+
+
+def _normalize_offer(item: Any) -> dict[str, Any]:
+    item = _asdict(item)
+    if not isinstance(item, dict):
+        return {}
+    normalized = dict(item)
+    source = normalized.get("source") or normalized.get("source_name") or normalized.get("store") or normalized.get("store_name") or ""
+    normalized.setdefault("source", source)
+    normalized.setdefault("store_name", source)
+    normalized.setdefault("store_key", source.lower() if isinstance(source, str) else "")
+    return normalized
 
 
 def _compare_items(compare: list[dict[str, Any]] | dict[str, Any]) -> list[dict[str, Any]]:

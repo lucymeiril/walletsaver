@@ -46,20 +46,24 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
   if (!product) return null;
 
   // Normalize product data (supports multiple shapes)
-  const name = product.name || product.product_name || product.title || product.item_name || '상품명 없음';
+  const name = product.name || product.canonical_name || product.product_name || product.title || product.source_title || product.item_name || '상품명 없음';
   const price = product.sale ?? product.price ?? product.current_price ?? product.item_price ?? 0;
   const origPrice = product.orig ?? product.original_price ?? product.origPrice ?? 0;
   const discount = product.disc ?? product.discount_pct ?? product.discount ?? product.discountRate ?? 0;
   const image = product.img ?? product.image_url ?? product.image ?? product.item_image_url ?? product.thumbnail ?? '';
-  const storeName = product.store_name ?? product.store ?? product.martName ?? product.source ?? '';
+  const storeName = product.store_name ?? product.store ?? product.martName ?? product.source_name ?? product.source ?? '';
   const storeKey = product.store_key ?? product.martKey ?? product.source_key ?? '';
-  const category = product.category ?? product.category_name ?? '';
+  const category = product.category ?? product.category_name ?? product.category_id ?? '';
   const unit = product.unit ?? product.spec ?? '';
   const brand = product.brand ?? '';
   const sourceUrl = product.source_url ?? product.detail_url ?? product.detailUrl ?? product.link ?? '';
   const productId = product.product_id ?? product.productId ?? product.id ?? '';
   const eventType = product.event ?? product.event_name ?? '';
   const period = product.period ?? '';
+  const keywords = Array.isArray(product.keywords) ? product.keywords.filter(Boolean) : [];
+  const sourceTitle = product.source_title ?? product.offer_title ?? '';
+  const standardUnitPrice = product.standard_unit_price ?? product.unit_price ?? priceTrust?.standard_unit_price ?? null;
+  const standardUnit = product.standard_unit ?? priceTrust?.standard_unit ?? '100g';
 
   // Determine mode: if explicitly set use that, otherwise auto-detect
   const mode = modeProp || (productId && !product.martKey && !product.source ? 'product' : 'preview');
@@ -104,7 +108,9 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
   }, [productId, mode]);
 
   // Extract other stores from price-compare data
-  const otherStores = priceCompare?.other_stores || priceCompare?.stores || [];
+  const otherStores = Array.isArray(priceCompare)
+    ? priceCompare
+    : (priceCompare?.other_stores || priceCompare?.stores || priceCompare?.sources || priceCompare?.items || []);
 
   const handleAddToCart = useCallback(() => {
     addItem({
@@ -185,6 +191,9 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
       }
     }
   }
+  const displayUnitPrice = standardUnitPrice
+    ? `${fmt(Math.round(standardUnitPrice))}원/${standardUnit}`
+    : unitPrice;
 
   return createPortal(
     <div className={s.overlay} onClick={(e) => e.target === e.currentTarget && onClose()}>
@@ -234,7 +243,7 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
                   <span className={s.savingsBadge}>💰 {fmt(savingsAmount)}원 절약 ({savingsPct}%)</span>
                 </div>
               )}
-              {unitPrice && <div className={s.unitPrice}>{unitPrice}</div>}
+              {displayUnitPrice && <div className={s.unitPrice}>{displayUnitPrice}</div>}
             </div>
 
             {eventType && (
@@ -244,6 +253,17 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
 
             {/* Unit info */}
             {unit && <div className={s.metaRow}><span className={s.metaLabel}>규격</span> {unit}</div>}
+            {sourceTitle && sourceTitle !== name && (
+              <div className={s.metaRow}><span className={s.metaLabel}>판매명</span> {sourceTitle}</div>
+            )}
+            {keywords.length > 0 && (
+              <div className={s.metaRow}>
+                <span className={s.metaLabel}>키워드</span>
+                {keywords.slice(0, 5).map((keyword) => (
+                  <span key={keyword} className={s.categoryTag}>{keyword}</span>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* 시세 비교 (product mode only) */}
@@ -320,7 +340,7 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
                 {otherStores.map((st, i) => (
                   <div key={i} className={s.otherStoreItem}>
                     <span className={s.osIcon}>{STORE_ICONS[st.store_key] || '🏪'}</span>
-                    <span className={s.osName}>{st.store_name}</span>
+                    <span className={s.osName}>{st.store_name || st.source_name || st.source || st.store || '출처'}</span>
                     <span className={s.osPrice}>{fmt(st.price)}원</span>
                     {st.price < price && <span className={s.osCheaper}>더 저렴!</span>}
                   </div>

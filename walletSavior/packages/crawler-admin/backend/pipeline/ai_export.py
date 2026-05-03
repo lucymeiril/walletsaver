@@ -13,9 +13,12 @@ MAX_AI_BATCH_PROMPT_CHARS=2000)를 그대로 재사용한다. 한도를 넘으�
 from __future__ import annotations
 
 import hashlib
+import json
 import uuid
 from datetime import datetime
-from typing import Any, Iterable, Optional
+from typing import Any, Callable, Iterable, Optional
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
 from core.contracts import (
     MAX_AI_BATCH_ITEMS,
@@ -58,6 +61,9 @@ _RECORD_KEY_KEYS: tuple[str, ...] = (
 
 class RawExportError(ValueError):
     """배치 한도 위반 등 raw export 단계의 안전한 예외."""
+
+
+HttpPost = Callable[[str, dict[str, Any], dict[str, str], float], tuple[int, dict[str, Any]]]
 
 
 def _first_str(item: dict[str, Any], keys: Iterable[str]) -> Optional[str]:
@@ -208,6 +214,85 @@ def _enforce_batch_limits(records: list[RawCrawlRecord]) -> None:
         )
 
 
+def split_raw_records_for_ai(records: list[RawCrawlRecord]) -> list[list[RawCrawlRecord]]:
+    """RawCrawlRecord를 AI ingest 호출 한도(30개/2000자)에 맞춰 record-safe 분할."""
+    batches: list[list[RawCrawlRecord]] = []
+    current: list[RawCrawlRecord] = []
+    current_chars = 0
+
+    for record in records:
+        record_chars = len(record.prompt_text())
+        if record_chars > MAX_AI_BATCH_PROMPT_CHARS:
+            raise RawExportError(
+                f"record {record.raw_record_id} prompt text is {record_chars} chars; "
+                f"max is {MAX_AI_BATCH_PROMPT_CHARS}"
+            )
+
+        would_exceed = (
+            len(current) >= MAX_AI_BATCH_ITEMS
+            or current_chars + record_chars > MAX_AI_BATCH_PROMPT_CHARS
+        )
+        if current and would_exceed:
+            batches.append(current)
+            current = []
+            current_chars = 0
+
+        current.append(record)
+        current_chars += record_chars
+
+    if current:
+        batches.append(current)
+    return batches
+
+
+def build_raw_batches(
+    items: list[dict[str, Any]],
+    *,
+    source_name: str,
+    crawler_name: str,
+    schema_type: str,
+    source_url: Optional[str] = None,
+    raw_artifact_uri: Optional[str] = None,
+    crawled_at: Optional[datetime] = None,
+    batch_id: Optional[str] = None,
+) -> tuple[list[RawCrawlBatchContract], list[list[RawCrawlRecord]], int]:
+    """
+    크롤 결과를 ai-admin ingest 호출 한도에 맞는 여러 raw batch로 변환.
+
+    긴 단일 record는 자르지 않고 명확히 거절한다.
+    """
+    if not source_name:
+        raise RawExportError("source_name is required")
+    if not crawler_name:
+        raise RawExportError("crawler_name is required")
+    if not schema_type:
+        raise RawExportError("schema_type is required")
+
+    root_batch_id = batch_id or f"raw-{uuid.uuid4().hex[:16]}"
+    records, skipped = to_raw_records(
+        items,
+        source_name=source_name,
+        batch_id=root_batch_id,
+        crawled_at=crawled_at,
+    )
+    record_batches = split_raw_records_for_ai(records)
+    batches: list[RawCrawlBatchContract] = []
+    for index, record_batch in enumerate(record_batches, start=1):
+        batches.append(
+            RawCrawlBatchContract(
+                batch_id=f"{root_batch_id}-{index:03d}",
+                source_name=source_name,
+                crawler_name=crawler_name,
+                item_count=len(record_batch),
+                schema_type=schema_type,
+                status=PipelineStatus.RAW_INGESTED,
+                source_url=source_url,
+                raw_artifact_uri=raw_artifact_uri,
+            )
+        )
+    return batches, record_batches, skipped
+
+
 def build_raw_batch(
     items: list[dict[str, Any]],
     *,
@@ -253,3 +338,94 @@ def build_raw_batch(
         raw_artifact_uri=raw_artifact_uri,
     )
     return batch, records, skipped
+
+
+def _post_json(
+    url: str,
+    payload: dict[str, Any],
+    headers: dict[str, str],
+    timeout_seconds: float,
+) -> tuple[int, dict[str, Any]]:
+    body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+    request = Request(
+        url,
+        data=body,
+        headers={
+            "Content-Type": "application/json; charset=utf-8",
+            **headers,
+        },
+        method="POST",
+    )
+    try:
+        with urlopen(request, timeout=timeout_seconds) as response:
+            response_body = response.read().decode("utf-8")
+            data = json.loads(response_body) if response_body else {}
+            return response.status, data
+    except HTTPError as exc:
+        response_body = exc.read().decode("utf-8", errors="replace")
+        try:
+            data = json.loads(response_body) if response_body else {}
+        except json.JSONDecodeError:
+            data = {"detail": response_body}
+        return exc.code, data
+    except URLError as exc:
+        raise RawExportError(f"failed to call ai-admin ingest endpoint: {exc}") from exc
+
+
+def forward_raw_records_to_ai_admin(
+    items: list[dict[str, Any]],
+    *,
+    ai_admin_base_url: str,
+    provider_id: str,
+    source_name: str,
+    crawler_name: str,
+    schema_type: str,
+    source_url: Optional[str] = None,
+    raw_artifact_uri: Optional[str] = None,
+    batch_id: Optional[str] = None,
+    api_key: Optional[str] = None,
+    timeout_seconds: float = 30.0,
+    http_post: Optional[HttpPost] = None,
+) -> dict[str, Any]:
+    """크롤 결과를 변환/분할한 뒤 ai-admin raw label ingest API로 전송한다."""
+    if not ai_admin_base_url:
+        raise RawExportError("ai_admin_base_url is required")
+    if not provider_id:
+        raise RawExportError("provider_id is required")
+
+    batches, record_batches, skipped = build_raw_batches(
+        items,
+        source_name=source_name,
+        crawler_name=crawler_name,
+        schema_type=schema_type,
+        source_url=source_url,
+        raw_artifact_uri=raw_artifact_uri,
+        batch_id=batch_id,
+    )
+    post = http_post or _post_json
+    headers = {"X-API-Key": api_key} if api_key else {}
+    endpoint = ai_admin_base_url.rstrip("/") + "/api/ingest/raw-records/label"
+
+    responses: list[dict[str, Any]] = []
+    for batch, records in zip(batches, record_batches):
+        payload = {
+            "provider_id": provider_id,
+            "source_name": source_name,
+            "crawler_name": crawler_name,
+            "schema_type": schema_type,
+            "records": [record.model_dump(mode="json") for record in records],
+        }
+        status_code, data = post(endpoint, payload, headers, timeout_seconds)
+        if status_code >= 400:
+            raise RawExportError(
+                f"ai-admin ingest failed for {batch.batch_id}: "
+                f"status={status_code}, detail={data.get('detail', data)}"
+            )
+        responses.append({"raw_export_batch_id": batch.batch_id, **data})
+
+    return {
+        "batches_sent": len(record_batches),
+        "records_sent": sum(len(records) for records in record_batches),
+        "skipped_count": skipped,
+        "responses": responses,
+    }

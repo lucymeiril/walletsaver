@@ -16,6 +16,9 @@ from core.contracts import (
 from pipeline.ai_export import (
     RawExportError,
     build_raw_batch,
+    build_raw_batches,
+    forward_raw_records_to_ai_admin,
+    split_raw_records_for_ai,
     to_raw_record,
     to_raw_records,
 )
@@ -188,6 +191,101 @@ class TestBuildRawBatch:
             schema_type="mart_discount",
         )
         assert sum(len(r.prompt_text()) for r in records) <= MAX_AI_BATCH_PROMPT_CHARS
+
+    def test_build_raw_batches_splits_more_than_30_records(self):
+        items = [{"title": f"상품 {i}", "id": f"emart-{i}"} for i in range(31)]
+        batches, record_batches, skipped = build_raw_batches(
+            items,
+            source_name="emart",
+            crawler_name="emart_crawler",
+            schema_type="mart_discount",
+            batch_id="raw-emart",
+        )
+        assert skipped == 0
+        assert [len(records) for records in record_batches] == [30, 1]
+        assert [batch.item_count for batch in batches] == [30, 1]
+        assert all(len(records) <= MAX_AI_BATCH_ITEMS for records in record_batches)
+
+    def test_build_raw_batches_splits_by_prompt_chars_with_korean_records(self):
+        long_name = "오리온 오징어 땅콩 " + ("고소한맛" * 80)
+        items = [
+            {"name": long_name, "sale_price": "1,980원", "product_id": f"sku-{i}"}
+            for i in range(12)
+        ]
+        _, record_batches, _ = build_raw_batches(
+            items,
+            source_name="emart",
+            crawler_name="emart_crawler",
+            schema_type="mart_discount",
+            batch_id="raw-korean",
+        )
+        assert len(record_batches) > 1
+        for records in record_batches:
+            assert len(records) <= MAX_AI_BATCH_ITEMS
+            assert sum(len(r.prompt_text()) for r in records) <= MAX_AI_BATCH_PROMPT_CHARS
+
+    def test_split_rejects_long_single_record_clearly(self):
+        rec = to_raw_record(
+            {"title": "가" * (MAX_AI_BATCH_PROMPT_CHARS + 10), "id": "too-long"},
+            source_name="emart",
+            index=0,
+            batch_id="raw-long",
+        )
+        assert rec is not None
+        with pytest.raises(RawExportError, match="record emart:too-long prompt text"):
+            split_raw_records_for_ai([rec])
+
+    def test_forward_posts_ai_ingest_contract_in_safe_batches(self):
+        calls = []
+
+        def fake_post(url, payload, headers, timeout_seconds):
+            calls.append((url, payload, headers, timeout_seconds))
+            prompt_chars = sum(
+                len(
+                    f"{r['source_name']}:{r['raw_record_id']}:{r['raw_title']}"
+                    + (f" price={r['raw_price']}" if r.get("raw_price") is not None else "")
+                )
+                for r in payload["records"]
+            )
+            assert len(payload["records"]) <= MAX_AI_BATCH_ITEMS
+            assert prompt_chars <= MAX_AI_BATCH_PROMPT_CHARS
+            return 200, {
+                "raw_batch_id": f"ai-{len(calls)}",
+                "records_stored": len(payload["records"]),
+                "ai_batches": 1,
+                "provider_calls": 1,
+                "proposals_stored": len(payload["records"]),
+            }
+
+        items = [
+            {
+                "product_id": "orion-squid-peanut",
+                "name": "오리온 오징어 땅콩 98g",
+                "sale_price": "1,980원",
+                "detail_url": "https://emart.example/orion",
+                "category": "과자",
+            },
+            *[
+                {"product_id": f"sku-{i}", "name": f"테스트 상품 {i}", "sale_price": 1000 + i}
+                for i in range(31)
+            ],
+        ]
+        result = forward_raw_records_to_ai_admin(
+            items,
+            ai_admin_base_url="http://ai-admin.test",
+            provider_id="google-dev",
+            source_name="emart",
+            crawler_name="emart_crawler",
+            schema_type="mart_discount",
+            batch_id="raw-forward",
+            http_post=fake_post,
+        )
+
+        assert result["batches_sent"] == 2
+        assert result["records_sent"] == 32
+        assert calls[0][0] == "http://ai-admin.test/api/ingest/raw-records/label"
+        assert calls[0][1]["provider_id"] == "google-dev"
+        assert calls[0][1]["records"][0]["raw_title"] == "오리온 오징어 땅콩 98g"
 
 
 # ── HTTP 라우트 테스트 ───────────────────────────────────────
