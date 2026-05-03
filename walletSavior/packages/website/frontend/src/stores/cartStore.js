@@ -5,25 +5,53 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { api } from '../services/api';
 import useStore from './appStore';
+import { asNumericId, normalizeProduct } from '../utils/productActions';
 
 const CART_API = '/api/cart';
 
 /** 백엔드 → 프론트 필드 정규화 */
 function normalizeCartItem(item) {
-  const id = item.id || item.product_id || item.productId || `cart-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+  const product = normalizeProduct(item);
+  const isBackendCartItem = item.cart_id || item.item_name !== undefined || item.item_price !== undefined || item.added_at;
+  const id = item.local_id || item.stable_id || product.stableId;
   return {
     id,
-    product_id: item.product_id || item.productId || item.id || id,
-    name: item.item_name || item.name || item.product_name || item.title || '상품',
-    price: item.item_price || item.price || item.sale || (item.sale_price ?? 0),
-    original_price: item.original_price || item.orig || item.origPrice || item.regular_price || 0,
-    store_name: item.store_name || item.store || item.martName || item.mart || '',
-    store_key: item.store_key || item.martKey || item.mart_key || '',
-    category: item.category || item.category_name || item.cat || '',
-    image: item.item_image_url || item.image || item.img || item.image_url || item.thumbnail || '',
-    unit: item.unit || item.spec || '',
+    product_id: product.numericProductId || null,
+    product_catalog_id: product.numericProductId || null,
+    name: product.name,
+    price: product.price,
+    original_price: product.originalPrice,
+    store_name: product.storeName,
+    store_key: product.storeKey,
+    category: product.category,
+    image: product.image,
+    unit: product.unit,
     quantity: item.quantity || 1,
-    cart_id: item.cart_id || item.id || null,
+    cart_id: item.cart_id || (isBackendCartItem ? item.id : null) || null,
+    source_url: product.sourceUrl,
+    discount_rate: product.discount,
+  };
+}
+
+function itemKey(item) {
+  return item?.product_catalog_id ? `product:${item.product_catalog_id}` : item?.id;
+}
+
+function toCartApiPayload(item) {
+  const productId = asNumericId(item.product_catalog_id ?? item.product_id);
+  return {
+    ...(productId ? { product_id: productId } : {}),
+    item_name: item.name,
+    item_price: item.price,
+    item_image_url: item.image,
+    local_id: item.id,
+    store_name: item.store_name,
+    source_url: item.source_url,
+    original_price: item.original_price,
+    discount_rate: item.discount_rate,
+    category: item.category,
+    quantity: item.quantity || 1,
+    unit: item.unit,
   };
 }
 
@@ -59,13 +87,12 @@ const useCartStore = create(
         const normalized = normalizeCartItem(item);
 
         const isLoggedIn = get()._getAuth();
-        const existing = get().items.find(
-          (i) => (i.product_id || i.id) === (normalized.product_id || normalized.id)
-        );
+        const normalizedKey = itemKey(normalized);
+        const existing = get().items.find((i) => itemKey(i) === normalizedKey);
 
         if (existing) {
           const updated = get().items.map((i) =>
-            (i.product_id || i.id) === (normalized.product_id || normalized.id)
+            itemKey(i) === normalizedKey
               ? { ...i, quantity: i.quantity + normalized.quantity }
               : i
           );
@@ -77,15 +104,15 @@ const useCartStore = create(
           }
         } else {
           set({ items: [...get().items, normalized] });
-          if (isLoggedIn) {
+          if (isLoggedIn && normalized.price > 0) {
             try {
-              const res = await api.post(CART_API, normalized);
+              const res = await api.post(CART_API, toCartApiPayload(normalized));
               const json = await res.json();
               const data = json.data || json;
               if (data.id || data.cart_id) {
                 set({
                   items: get().items.map((i) =>
-                    (i.product_id || i.id) === (normalized.product_id || normalized.id)
+                    itemKey(i) === normalizedKey
                       ? { ...i, cart_id: data.id || data.cart_id }
                       : i
                   ),
@@ -152,7 +179,11 @@ const useCartStore = create(
         const localItems = get().items;
         if (localItems.length > 0) {
           try {
-            await api.post(`${CART_API}/merge`, { items: localItems });
+            await api.post(`${CART_API}/merge`, {
+              items: localItems
+                .filter((item) => (item.price || item.item_price || 0) > 0)
+                .map((item) => toCartApiPayload(normalizeCartItem(item))),
+            });
           } catch { /* silently fail */ }
         }
         await get().fetchCart();
@@ -181,7 +212,14 @@ const useCartStore = create(
     }),
     {
       name: 'wallet-savior-cart',
-      partialize: (state) => ({ items: state.items }),
+      partialize: (state) => ({ items: state.items.map(normalizeCartItem) }),
+      merge: (persistedState, currentState) => ({
+        ...currentState,
+        ...(persistedState || {}),
+        items: Array.isArray(persistedState?.items)
+          ? persistedState.items.map(normalizeCartItem)
+          : [],
+      }),
     }
   )
 );

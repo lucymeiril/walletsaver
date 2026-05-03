@@ -1,10 +1,13 @@
 import { useState, useEffect, useCallback, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Heart } from 'lucide-react';
 import Modal from '../common/Modal';
 import SafeImage from '../common/SafeImage';
 import useStore from '../../stores/appStore';
 import { productService } from '../../services/productService';
+import { api } from '../../services/api';
 import { fmt } from '../../utils/helpers';
+import { buildWishlistPayload, normalizeProduct } from '../../utils/productActions';
 import s from './ProductQuickView.module.css';
 
 const SOURCE_LABELS = {
@@ -22,6 +25,12 @@ function ProductQuickViewContent({ data, onClose }) {
   const navigate = useNavigate();
   const addToShoppingList = useStore((st) => st.addToShoppingList);
   const addToast = useStore((st) => st.addToast);
+  const isLoggedIn = useStore((st) => st.isLoggedIn);
+  const favorites = useStore((st) => st.favorites);
+  const favoriteItems = useStore((st) => st.favoriteItems);
+  const addFavorite = useStore((st) => st.addFavorite);
+  const removeFavorite = useStore((st) => st.removeFavorite);
+  const setFavoriteRemoteId = useStore((st) => st.setFavoriteRemoteId);
 
   const [detail, setDetail] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -60,6 +69,9 @@ function ProductQuickViewContent({ data, onClose }) {
   const src = getSourceInfo(sourceType);
   const hasDiscount = discountPct != null && discountPct > 0;
   const hasOrigPrice = origPrice != null && origPrice > 0;
+  const wishlistProduct = { ...data, ...d, name, price: salePrice, original_price: origPrice, unit, source_type: sourceType, image_url: image, category_path: categoryPath, category_id: categoryId };
+  const favoriteId = normalizeProduct(wishlistProduct).favoriteId;
+  const isFav = favorites.includes(favoriteId);
 
   const handlePriceCompare = useCallback(() => {
     onClose();
@@ -84,6 +96,31 @@ function ProductQuickViewContent({ data, onClose }) {
     addToast(`${name}을(를) 장보기 리스트에 추가했어요`, 'success');
     onClose();
   }, [addToShoppingList, productId, name, salePrice, unit, src.icon, addToast, onClose]);
+
+  const handleToggleWishlist = useCallback(() => {
+    if (!isLoggedIn) {
+      addToast('로그인이 필요합니다', 'warning');
+      return;
+    }
+    if (isFav) {
+      const remoteId = favoriteItems?.[favoriteId]?.remote_id;
+      removeFavorite(favoriteId);
+      if (remoteId) api.delete(`/api/wishlist/${remoteId}`).catch(() => {});
+      addToast('찜 목록에서 제거했어요', 'info');
+      return;
+    }
+    const payload = buildWishlistPayload(wishlistProduct);
+    addFavorite(favoriteId, payload);
+    api.post('/api/wishlist', payload).then(async (res) => {
+      const json = res?.json ? await res.json().catch(() => null) : null;
+      const remoteId = json?.data?.id || json?.id;
+      if (remoteId) setFavoriteRemoteId(favoriteId, remoteId);
+    }).catch(() => {
+      removeFavorite(favoriteId);
+      addToast('찜 추가에 실패했어요. 잠시 후 다시 시도해주세요.', 'error');
+    });
+    addToast(`${name} 찜했어요 ❤️`, 'success');
+  }, [isLoggedIn, isFav, favoriteItems, favoriteId, wishlistProduct, name, addFavorite, removeFavorite, setFavoriteRemoteId, addToast]);
 
   return (
     <Modal isOpen onClose={onClose} title={name} size="sm">
@@ -168,6 +205,10 @@ function ProductQuickViewContent({ data, onClose }) {
           )}
           <button className={s.cartBtn} onClick={handleAddToCart}>
             🛒 장보기에 추가
+          </button>
+          <button className={s.closeBtn} onClick={handleToggleWishlist}>
+            <Heart size={16} fill={isFav ? 'currentColor' : 'none'} />
+            {isFav ? ' 찜 해제' : ' 찜하기'}
           </button>
           <button className={s.closeBtn} onClick={onClose}>
             닫기

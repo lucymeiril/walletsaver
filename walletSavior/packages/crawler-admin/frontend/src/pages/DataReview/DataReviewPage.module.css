@@ -607,6 +607,42 @@
   white-space: nowrap !important;
 }
 
+.rowActionsCell {
+  min-width: 150px !important;
+  white-space: nowrap !important;
+}
+
+.rowEditBtn,
+.rowRemoveBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  margin-right: 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text2);
+  font-size: var(--fs-xs);
+  cursor: pointer;
+}
+
+.rowEditBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.rowRemoveBtn:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.rowEditBtn:disabled,
+.rowRemoveBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .emptyFilteredRows {
   padding: 20px;
   border: 1px dashed var(--border);
@@ -893,6 +929,56 @@
   min-width: 400px;
   max-width: 500px;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+}
+
+.rowEditModal {
+  width: min(920px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+}
+
+.rowEditGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.rowEditField,
+.rowEditNotes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semi);
+}
+
+.rowEditInput,
+.rowEditNotes textarea {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  padding: 8px 10px;
+  font-size: var(--fs-sm);
+}
+
+.rowEditNotes textarea {
+  min-height: 70px;
+  resize: vertical;
+  margin-bottom: 16px;
+}
+
+.rowEditInput:focus,
+.rowEditNotes textarea:focus {
+  outline: none;
+  border-color: var(--accent);
 }
 .modalTitle {
   font-size: var(--fs-lg);

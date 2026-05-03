@@ -11,6 +11,19 @@ import ProductModal, { BulkCategoryModal } from './ProductModal';
 import AdminResetModal from './AdminResetModal';
 import s from './Products.module.css';
 
+const toDateInput = (value) => (value ? String(value).slice(0, 10) : '');
+const positiveNumberOrNull = (value) => {
+  if (value === '' || value === null || value === undefined) return null;
+  const n = Number(value);
+  return Number.isFinite(n) && n > 0 ? n : null;
+};
+const nonNegativeNumberOrNull = (value) => {
+  if (value === '' || value === null || value === undefined) return null;
+  const n = Number(value);
+  return Number.isFinite(n) && n >= 0 ? n : null;
+};
+const dateTimeOrNull = (value) => (value ? `${value}T00:00:00` : null);
+
 export default function Products() {
   const {
     products, addProduct, updateProduct, deleteProduct,
@@ -128,6 +141,9 @@ export default function Products() {
       name: '', category: '', categoryId: '', unit: '',
       description: '', image_url: '', source_type: 'unknown',
       attributes_json: '', is_active: true,
+      offer_source: '', channel: '', current_price: '', original_price: '',
+      discount_rate: '', discount_rate_manual: false, valid_from: '', valid_to: '',
+      source_url: '', quantity: '', offer_notes: '', offer_raw_data_json: '',
     });
     setFormKeywords([]); setModal({ mode: 'add' });
   };
@@ -140,6 +156,18 @@ export default function Products() {
       source_type: p.source_type || 'unknown',
       attributes_json: p.attributes ? JSON.stringify(p.attributes, null, 2) : '',
       is_active: p.is_active !== false,
+      offer_source: p.offer_source || p.source || '',
+      channel: p.channel || p.offer_raw_data?.channel || '',
+      current_price: p.current_price ? String(p.current_price) : '',
+      original_price: p.original_price ? String(p.original_price) : '',
+      discount_rate: p.discount_rate ? String(p.discount_rate) : '',
+      discount_rate_manual: !!p.discount_rate_manual,
+      valid_from: toDateInput(p.valid_from),
+      valid_to: toDateInput(p.valid_to),
+      source_url: p.source_url || '',
+      quantity: p.quantity || p.offer_raw_data?.quantity || '',
+      offer_notes: p.offer_notes || p.offer_raw_data?.notes || '',
+      offer_raw_data_json: p.offer_raw_data ? JSON.stringify(p.offer_raw_data, null, 2) : '',
     });
     const kwList = (p.keywords || []).map(k => {
       if (typeof k === 'object' && k.id && k.keyword) return k;
@@ -161,6 +189,15 @@ export default function Products() {
         return;
       }
     }
+    let offerRawData = null;
+    if ((form.offer_raw_data_json || '').trim()) {
+      try {
+        offerRawData = JSON.parse(form.offer_raw_data_json);
+      } catch {
+        alert('행사 raw_data(JSON) 형식이 올바르지 않습니다.');
+        return;
+      }
+    }
     const data = {
       name: form.name,
       category_id: form.categoryId || null,
@@ -171,6 +208,26 @@ export default function Products() {
       attributes,
       is_active: form.is_active !== false,
     };
+
+    const hasOfferFields = [
+      form.offer_source, form.channel, form.current_price, form.original_price,
+      form.discount_rate, form.valid_from, form.valid_to, form.source_url,
+      form.quantity, form.offer_notes, form.offer_raw_data_json,
+    ].some(v => String(v || '').trim() !== '') || form.discount_rate_manual;
+    if (hasOfferFields) {
+      data.offer_source = form.offer_source || null;
+      data.channel = form.channel || null;
+      data.current_price = positiveNumberOrNull(form.current_price);
+      data.original_price = positiveNumberOrNull(form.original_price);
+      data.discount_rate = form.discount_rate_manual ? nonNegativeNumberOrNull(form.discount_rate) : null;
+      data.discount_rate_manual = !!form.discount_rate_manual;
+      data.valid_from = dateTimeOrNull(form.valid_from);
+      data.valid_to = dateTimeOrNull(form.valid_to);
+      data.source_url = form.source_url || null;
+      data.quantity = form.quantity || null;
+      data.offer_notes = form.offer_notes || null;
+      data.offer_raw_data = offerRawData;
+    }
 
     // Resolve keyword IDs — create new keywords first, then collect all IDs
     const resolvedKeywordIds = [];

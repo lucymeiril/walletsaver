@@ -1,7 +1,9 @@
-import { render, screen, waitFor, cleanup } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, cleanup } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import ProductDetailModal from './ProductDetailModal';
 import { api } from '../services/api';
+import useStore from '../stores/appStore';
+import useCartStore from '../stores/cartStore';
 
 vi.mock('../services/api', () => ({
   api: {
@@ -36,6 +38,8 @@ const approvedPipelineProduct = {
 describe('ProductDetailModal public catalog rendering', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
+    useStore.setState({ isLoggedIn: true, favorites: [], toasts: [], _toastSeq: 0 });
+    useCartStore.setState({ items: [] });
     api.getJson.mockImplementation((path) => {
       if (path.endsWith('/price-compare')) {
         return Promise.resolve({
@@ -98,5 +102,44 @@ describe('ProductDetailModal public catalog rendering', () => {
     expect(screen.getByRole('dialog', { name: '승인 상품' })).toBeInTheDocument();
     expect(screen.getByText('온라인')).toBeInTheDocument();
     expect(screen.queryByText('키워드')).not.toBeInTheDocument();
+  });
+
+  it('renders mart products with full image/info and normalized wishlist/cart actions', async () => {
+    render(<ProductDetailModal product={{
+      id: 'emart-sale-apple',
+      type: 'mart',
+      name: '행사 사과',
+      sale: 9900,
+      orig: 12900,
+      img: 'https://example.com/apple.png',
+      martName: '이마트',
+      martKey: 'emart',
+      category: '과일',
+      unit: '1.5kg',
+      keywords: ['사과', '과일'],
+    }} onClose={vi.fn()} mode="preview" />);
+
+    expect(screen.getByRole('dialog', { name: '행사 사과' })).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: '행사 사과' })).toBeInTheDocument();
+    expect(screen.getByText('이마트')).toBeInTheDocument();
+    expect(screen.getByText('1.5kg', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText('사과')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('찜하기'));
+    await waitFor(() => {
+      expect(api.post).toHaveBeenCalledWith('/api/wishlist', expect.objectContaining({
+        item_name: '행사 사과',
+        item_image_url: 'https://example.com/apple.png',
+        store_name: '이마트',
+      }));
+    });
+    expect(api.post.mock.calls.at(-1)[1]).not.toHaveProperty('product_id');
+
+    fireEvent.click(screen.getByText('장바구니 담기'));
+    expect(useCartStore.getState().items[0]).toEqual(expect.objectContaining({
+      name: '행사 사과',
+      price: 9900,
+      store_name: '이마트',
+    }));
   });
 });

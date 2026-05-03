@@ -19,6 +19,12 @@ const SOURCE_OPTIONS = [
   'lottemart', 'costco', 'government', 'musinsa', 'giordano',
 ];
 
+const CHANNEL_OPTIONS = [
+  { value: '', label: '선택 안 함' },
+  { value: 'online', label: '온라인' },
+  { value: 'offline', label: '오프라인' },
+];
+
 /* ─── 유사 상품 섹션 ─── */
 function SimilarProducts({ productId }) {
   const [similar, setSimilar] = useState(null);
@@ -216,6 +222,74 @@ function FormBody({ form, setForm, formKeywords, setFormKeywords, categories, ke
           onCreateKeyword={handleCreateKeyword}
         />
       </label>
+      <fieldset className={s.formSection}>
+        <legend>현재 행사/가격 정보</legend>
+        <div className={s.formGrid}>
+          <label>
+            판매처/소스
+            <input
+              list="offer-source-options"
+              value={form.offer_source || form.source || ''}
+              placeholder="예: algumon, emart, 이마트 성수점"
+              onChange={e => setForm({ ...form, offer_source: e.target.value })}
+            />
+            <datalist id="offer-source-options">
+              {SOURCE_OPTIONS.map(src => <option key={src} value={src}>{SOURCE_LABELS[src] || src}</option>)}
+            </datalist>
+          </label>
+          <label>
+            채널
+            <select value={form.channel || ''} onChange={e => setForm({ ...form, channel: e.target.value })}>
+              {CHANNEL_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+            </select>
+          </label>
+          <label>현재/행사가<input type="number" min="1" step="1" value={form.current_price || ''} onChange={e => setForm({ ...form, current_price: e.target.value })} /></label>
+          <label>원래가<input type="number" min="1" step="1" value={form.original_price || ''} onChange={e => setForm({ ...form, original_price: e.target.value })} /></label>
+          <label>
+            할인율(%)
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="0.1"
+              disabled={!form.discount_rate_manual}
+              placeholder={form.discount_rate_manual ? '예: 25' : '원래가/현재가로 자동 계산'}
+              value={form.discount_rate || ''}
+              onChange={e => setForm({ ...form, discount_rate: e.target.value })}
+            />
+          </label>
+          <label className={s.checkboxLabel}>
+            <input
+              type="checkbox"
+              checked={!!form.discount_rate_manual}
+              onChange={e => setForm({ ...form, discount_rate_manual: e.target.checked, discount_rate: e.target.checked ? form.discount_rate : '' })}
+            />
+            할인율 수동 입력
+          </label>
+          <label>행사 시작일<input type="date" value={form.valid_from || ''} onChange={e => setForm({ ...form, valid_from: e.target.value })} /></label>
+          <label>행사 종료일<input type="date" value={form.valid_to || ''} onChange={e => setForm({ ...form, valid_to: e.target.value })} /></label>
+          <label>원본 URL<input value={form.source_url || ''} onChange={e => setForm({ ...form, source_url: e.target.value })} /></label>
+          <label>수량/규격<input value={form.quantity || ''} placeholder="예: 1+1, 2kg, 10개입" onChange={e => setForm({ ...form, quantity: e.target.value })} /></label>
+        </div>
+        <label>
+          가격 메모/원문
+          <textarea
+            rows={3}
+            value={form.offer_notes || ''}
+            placeholder="오프라인 전단 내용, 지점명, 확인 메모 등"
+            onChange={e => setForm({ ...form, offer_notes: e.target.value })}
+          />
+        </label>
+        <label>
+          행사 raw_data(JSON)
+          <textarea
+            rows={3}
+            value={form.offer_raw_data_json || ''}
+            placeholder='{"store":"이마트 성수점"}'
+            onChange={e => setForm({ ...form, offer_raw_data_json: e.target.value })}
+          />
+        </label>
+      </fieldset>
       <div className={s.formActions}>
         <button className={s.cancelBtn} onClick={onClose}>취소</button>
         <button className={s.saveBtn} onClick={onSave}>저장</button>

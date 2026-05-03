@@ -1,6 +1,6 @@
 """상품 CRUD + 가격 조회 + 통계 + 유사 상품 라우트"""
 from fastapi import APIRouter, HTTPException, Query, Request, Depends
-from pydantic import BaseModel, Field, field_validator
+from pydantic import AliasChoices, BaseModel, Field, field_validator
 from typing import Optional, Any
 from datetime import datetime, timedelta
 
@@ -21,11 +21,12 @@ from services.price_calc import (
     get_price_history,
     get_price_comparison,
 )
-from storage.models import Product, DiscountHistory, Category, CrawlLog, BaselinePrice, ProductKeyword, Keyword
+from storage.models import Product, DiscountHistory, HotdealPrice, Category, CrawlLog, BaselinePrice, ProductKeyword, Keyword
 from api.security import (
     escape_like, MAX_NAME_LEN, MAX_CATEGORY_ID_LEN, MAX_UNIT_LEN,
     MAX_DESCRIPTION_LEN, MAX_URL_LEN, MAX_BULK_IDS, MAX_SOURCE_LEN,
 )
+from api.source_normalization import normalize_source_key, source_aliases
 
 router = APIRouter(prefix="/products", tags=["products"])
 
@@ -40,6 +41,18 @@ class ProductCreate(BaseModel):
     attributes: Optional[dict[str, Any]] = None
     is_active: bool = True
     keyword_ids: Optional[list[int]] = None
+    offer_source: Optional[str] = Field(None, max_length=MAX_SOURCE_LEN)
+    channel: Optional[str] = Field(None, max_length=30)
+    current_price: Optional[float] = Field(None, gt=0, validation_alias=AliasChoices("current_price", "sale_price"))
+    original_price: Optional[float] = Field(None, gt=0)
+    discount_rate: Optional[float] = Field(None, ge=0, le=100)
+    discount_rate_manual: bool = False
+    valid_from: Optional[datetime] = None
+    valid_to: Optional[datetime] = None
+    source_url: Optional[str] = Field(None, max_length=MAX_URL_LEN)
+    quantity: Optional[str] = Field(None, max_length=100)
+    offer_notes: Optional[str] = Field(None, max_length=MAX_DESCRIPTION_LEN)
+    offer_raw_data: Optional[dict[str, Any]] = None
 
     @field_validator("name")
     @classmethod
@@ -48,7 +61,7 @@ class ProductCreate(BaseModel):
             raise ValueError("상품명은 공백만으로 구성될 수 없습니다.")
         return v.strip()
 
-    @field_validator("image_url")
+    @field_validator("image_url", "source_url")
     @classmethod
     def validate_url(cls, v: str | None) -> str | None:
         if v is not None and not v.startswith(("http://", "https://")):
@@ -66,8 +79,20 @@ class ProductUpdate(BaseModel):
     attributes: Optional[dict[str, Any]] = None
     is_active: Optional[bool] = None
     keyword_ids: Optional[list[int]] = None
+    offer_source: Optional[str] = Field(None, max_length=MAX_SOURCE_LEN)
+    channel: Optional[str] = Field(None, max_length=30)
+    current_price: Optional[float] = Field(None, gt=0, validation_alias=AliasChoices("current_price", "sale_price"))
+    original_price: Optional[float] = Field(None, gt=0)
+    discount_rate: Optional[float] = Field(None, ge=0, le=100)
+    discount_rate_manual: Optional[bool] = None
+    valid_from: Optional[datetime] = None
+    valid_to: Optional[datetime] = None
+    source_url: Optional[str] = Field(None, max_length=MAX_URL_LEN)
+    quantity: Optional[str] = Field(None, max_length=100)
+    offer_notes: Optional[str] = Field(None, max_length=MAX_DESCRIPTION_LEN)
+    offer_raw_data: Optional[dict[str, Any]] = None
 
-    @field_validator("image_url")
+    @field_validator("image_url", "source_url")
     @classmethod
     def validate_url(cls, v: str | None) -> str | None:
         if v is not None and v and not v.startswith(("http://", "https://")):
@@ -84,6 +109,89 @@ class BulkCategoryRequest(BaseModel):
     category_id: str = Field(..., min_length=1, max_length=MAX_CATEGORY_ID_LEN)
 
 
+OFFER_FIELDS = {
+    "offer_source", "channel", "current_price", "original_price", "discount_rate",
+    "discount_rate_manual", "valid_from", "valid_to", "source_url", "quantity",
+    "offer_notes", "offer_raw_data",
+}
+PRODUCT_UPDATE_FIELDS = {
+    "name", "category_id", "unit", "description", "image_url", "source_type",
+    "attributes", "is_active",
+}
+
+
+def _has_offer_fields(body: ProductCreate | ProductUpdate) -> bool:
+    for field in OFFER_FIELDS:
+        if field not in body.model_fields_set:
+            continue
+        value = getattr(body, field)
+        if field == "discount_rate_manual":
+            if value is True:
+                return True
+            continue
+        if value not in (None, ""):
+            return True
+    return False
+
+
+def _clean_raw_data(raw_data: dict[str, Any]) -> dict[str, Any]:
+    return {k: v for k, v in raw_data.items() if v not in (None, "")}
+
+
+def _discount_rate(current_price: float, original_price: float | None, manual_rate: float | None) -> float | None:
+    if manual_rate is not None:
+        return manual_rate
+    if original_price and original_price > 0 and current_price > 0 and original_price >= current_price:
+        return round((original_price - current_price) / original_price * 100, 1)
+    return None
+
+
+def _upsert_current_offer(session: Session, product: Product, body: ProductCreate | ProductUpdate) -> DiscountHistory | None:
+    """Create/update the admin-managed current offer without inventing zero prices."""
+    if not _has_offer_fields(body):
+        return None
+
+    latest = (
+        session.query(DiscountHistory)
+        .filter(DiscountHistory.product_id == product.id)
+        .order_by(desc(DiscountHistory.crawled_at))
+        .first()
+    )
+
+    current_price = body.current_price if body.current_price is not None else (latest.price if latest else None)
+    if current_price is None or current_price <= 0:
+        raise HTTPException(status_code=422, detail="현재 판매가를 0보다 큰 값으로 입력해야 가격 정보를 저장할 수 있습니다.")
+
+    original_price = body.original_price if body.original_price is not None else (latest.original_price if latest else None)
+    source = (body.offer_source or product.source_type or (latest.source if latest else None) or "user_submitted").strip()
+    raw_data = dict(latest.raw_data or {}) if latest and latest.raw_data else {}
+    raw_data.update(body.offer_raw_data or {})
+    raw_data.update(_clean_raw_data({
+        "channel": body.channel,
+        "quantity": body.quantity,
+        "notes": body.offer_notes,
+        "unit": product.unit,
+        "image_url": product.image_url,
+        "admin_managed": True,
+        "discount_rate_manual": bool(body.discount_rate_manual),
+    }))
+
+    target = latest or DiscountHistory(product_id=product.id, crawled_at=datetime.utcnow())
+    if latest is None:
+        session.add(target)
+
+    target.price = current_price
+    target.original_price = original_price
+    target.discount_rate = _discount_rate(current_price, original_price, body.discount_rate)
+    target.source = source or "user_submitted"
+    target.source_url = body.source_url if body.source_url is not None else (latest.source_url if latest else None)
+    target.valid_from = body.valid_from if "valid_from" in body.model_fields_set else (latest.valid_from if latest else None)
+    target.valid_to = body.valid_to if "valid_to" in body.model_fields_set else (latest.valid_to if latest else None)
+    target.crawled_at = datetime.utcnow()
+    target.raw_data = raw_data or None
+    return target
+
+
 def _enrich_product(session: Session, p: Product) -> dict:
     """상품에 최신 가격 정보를 추가하여 반환."""
     try:
@@ -98,6 +206,12 @@ def _enrich_product(session: Session, p: Product) -> dict:
         sources = (
             session.query(DiscountHistory.source)
             .filter(DiscountHistory.product_id == p.id)
+            .distinct()
+            .all()
+        )
+        hotdeal_sources = (
+            session.query(HotdealPrice.source)
+            .filter(HotdealPrice.product_id == p.id)
             .distinct()
             .all()
         )
@@ -130,7 +244,18 @@ def _enrich_product(session: Session, p: Product) -> dict:
             "original_price": latest.original_price if latest else None,
             "discount_rate": latest.discount_rate if latest else None,
             "source": latest.source if latest else None,
-            "sources": [s[0] for s in sources],
+            "offer_source": latest.source if latest else None,
+            "source_url": latest.source_url if latest else None,
+            "channel": (latest.raw_data or {}).get("channel") if latest else None,
+            "quantity": (latest.raw_data or {}).get("quantity") if latest else None,
+            "offer_notes": (latest.raw_data or {}).get("notes") if latest else None,
+            "offer_raw_data": latest.raw_data if latest else None,
+            "discount_rate_manual": bool((latest.raw_data or {}).get("discount_rate_manual")) if latest else False,
+            "sources": sorted({
+                normalized
+                for raw in [s[0] for s in sources] + [s[0] for s in hotdeal_sources]
+                if (normalized := normalize_source_key(raw))
+            }),
             "valid_from": latest.valid_from.isoformat() if latest and latest.valid_from else None,
             "valid_to": latest.valid_to.isoformat() if latest and latest.valid_to else None,
             "crawled_at": latest.crawled_at.isoformat() if latest and latest.crawled_at else None,
@@ -161,6 +286,13 @@ def _enrich_product(session: Session, p: Product) -> dict:
             "original_price": None,
             "discount_rate": None,
             "source": None,
+            "offer_source": None,
+            "source_url": None,
+            "channel": None,
+            "quantity": None,
+            "offer_notes": None,
+            "offer_raw_data": None,
+            "discount_rate_manual": False,
             "sources": [],
             "valid_from": None,
             "valid_to": None,
@@ -187,7 +319,28 @@ def product_stats(identity: dict = Depends(require_viewer)):
             .group_by(DiscountHistory.source)
             .all()
         )
-        by_source = {row[0]: row[1] for row in source_counts_q}
+        by_source = {}
+        for raw_source, count in source_counts_q:
+            source_key = normalize_source_key(raw_source)
+            if not source_key:
+                continue
+            by_source[source_key] = by_source.get(source_key, 0) + count
+
+        hotdeal_source_counts_q = (
+            session.query(
+                HotdealPrice.source,
+                func.count(distinct(HotdealPrice.product_id)),
+            )
+            .join(Product, Product.id == HotdealPrice.product_id)
+            .filter(Product.is_active == True)
+            .group_by(HotdealPrice.source)
+            .all()
+        )
+        for raw_source, count in hotdeal_source_counts_q:
+            source_key = normalize_source_key(raw_source)
+            if not source_key:
+                continue
+            by_source[source_key] = by_source.get(source_key, 0) + count
 
         source_type_counts_q = (
             session.query(Product.source_type, func.count(Product.id))
@@ -196,7 +349,9 @@ def product_stats(identity: dict = Depends(require_viewer)):
             .all()
         )
         for source_type, count in source_type_counts_q:
-            by_source[source_type] = max(by_source.get(source_type, 0), count)
+            source_key = normalize_source_key(source_type)
+            if source_key:
+                by_source[source_key] = max(by_source.get(source_key, 0), count)
         by_source.setdefault("algumon", by_source.get("algumon", 0))
 
         # 카테고리별 상품 수
@@ -274,14 +429,29 @@ def list_products(
 
         # 소스 필터: 가격 이력 source 또는 상품 source_type에서 해당 소스를 가진 상품
         if source:
+            normalized_source = normalize_source_key(source, default=source)
+            source_values = source_aliases(normalized_source) or {normalized_source}
+            discount_source_filter = DiscountHistory.source.in_(source_values)
+            hotdeal_source_filter = HotdealPrice.source.in_(source_values)
+            product_source_filter = Product.source_type.in_(source_values)
+            if normalized_source == "algumon":
+                discount_source_filter = or_(discount_source_filter, DiscountHistory.source.ilike("%algumon.com%"))
+                hotdeal_source_filter = or_(hotdeal_source_filter, HotdealPrice.source.ilike("%algumon.com%"))
+                product_source_filter = or_(product_source_filter, Product.source_type.ilike("%algumon.com%"))
             product_ids = (
                 session.query(distinct(DiscountHistory.product_id))
-                .filter(DiscountHistory.source == source)
+                .filter(discount_source_filter)
+                .subquery()
+            )
+            hotdeal_product_ids = (
+                session.query(distinct(HotdealPrice.product_id))
+                .filter(hotdeal_source_filter)
                 .subquery()
             )
             query = query.filter(or_(
-                Product.source_type == source,
+                product_source_filter,
                 Product.id.in_(session.query(product_ids)),
+                Product.id.in_(session.query(hotdeal_product_ids)),
             ))
 
         # 카테고리 필터
@@ -401,8 +571,9 @@ def create_product(body: ProductCreate, request: Request, identity: dict = Depen
             for kid in body.keyword_ids:
                 session.add(ProductKeyword(product_id=p.id, keyword_id=kid))
             session.flush()
+        _upsert_current_offer(session, p, body)
         session.refresh(p)
-        return {"id": p.id, "name": p.name}
+        return _enrich_product(session, p)
 
 
 @router.put("/{product_id}")
@@ -411,24 +582,21 @@ def update_product(product_id: int, body: ProductUpdate, request: Request, ident
         p = session.get(Product, product_id)
         if not p:
             raise HTTPException(404, "Product not found")
-        for key, val in body.model_dump(exclude_unset=True, exclude={"keyword_ids"}).items():
+        for key, val in body.model_dump(
+            exclude_unset=True,
+            exclude=set(OFFER_FIELDS) | {"keyword_ids"},
+        ).items():
+            if key not in PRODUCT_UPDATE_FIELDS:
+                continue
             setattr(p, key, val)
         if body.keyword_ids is not None:
             session.query(ProductKeyword).filter_by(product_id=product_id).delete()
             for kid in body.keyword_ids:
                 session.add(ProductKeyword(product_id=product_id, keyword_id=kid))
+        _upsert_current_offer(session, p, body)
         session.flush()
         session.refresh(p)
-        result = {"id": p.id, "name": p.name}
-        keyword_list = []
-        try:
-            for pk in (p.product_keywords or []):
-                if pk.keyword:
-                    keyword_list.append({"id": pk.keyword_id, "keyword": pk.keyword.word})
-        except Exception:
-            pass
-        result["keywords"] = keyword_list
-        return result
+        return _enrich_product(session, p)
 
 
 @router.delete("/{product_id}")

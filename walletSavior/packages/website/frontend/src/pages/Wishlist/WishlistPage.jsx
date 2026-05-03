@@ -23,7 +23,7 @@ const TREND_ICONS = {
 
 export default function WishlistPage() {
   const navigate = useNavigate();
-  const { isLoggedIn, favorites, removeFavorite, addToast } = useStore();
+  const { isLoggedIn, favorites, favoriteItems, removeFavorite, setFavoriteRemoteId, addToast } = useStore();
   const addCartItem = useCartStore((st) => st.addItem);
 
   const [items, setItems] = useState([]);
@@ -53,23 +53,38 @@ export default function WishlistPage() {
         price_at_add: item.price_at_add || item.item_price || 0,
         current_price: item.current_price || item.item_price || 0,
       })) : [];
+      wishItems.forEach((item) => {
+        const match = Object.entries(favoriteItems || {}).find(([, fav]) =>
+          fav.remote_id === item.id || (
+            fav.item_name === item.product_name && (fav.store_name || '') === (item.store_name || '')
+          )
+        );
+        if (match) setFavoriteRemoteId(match[0], item.id);
+      });
       setItems(wishItems);
     } catch {
       setItems(
-        favorites.map((id) => ({
-          id: id,
-          product_name: `상품 ${id}`,
-          price_at_add: 0,
-          current_price: 0,
-        }))
+        favorites.map((id) => {
+          const item = favoriteItems?.[id] || {};
+          return {
+            id,
+            local_id: id,
+            product_name: item.item_name || item.product_name || item.name || `상품 ${id}`,
+            image: item.item_image_url || item.image || '',
+            store_name: item.store_name || '',
+            category: item.category || '',
+            price_at_add: item.price_at_add || item.item_price || item.current_price || 0,
+            current_price: item.current_price || item.price_at_add || item.item_price || 0,
+          };
+        })
       );
     }
     setLoading(false);
-  }, [favorites]);
+  }, [favorites, favoriteItems, setFavoriteRemoteId]);
 
   const handleRemove = async (item) => {
     const itemId = item.id;
-    const pid = item.product_id || item.id;
+    const pid = item.local_id || item.product_id || item.id;
     removeFavorite(pid);
     setItems((prev) => prev.filter((i) => i.id !== itemId));
     try {
@@ -104,6 +119,7 @@ export default function WishlistPage() {
       price: item.current_price || item.item_price || item.price_at_add,
       store_name: item.store_name || '',
       image: item.image || item.item_image_url || '',
+      category: item.category || '',
     });
     addToast(`${item.product_name || item.item_name || item.name} 장바구니에 추가했어요`, 'success');
   };

@@ -33,6 +33,9 @@ class WishlistItemCreate(BaseModel):
     item_image_url: Optional[str] = None
     store_name: Optional[str] = None
     category: Optional[str] = None
+    price_at_add: Optional[float] = None
+    current_price: Optional[float] = None
+    item_price: Optional[float] = None
     notify_on_drop: bool = False
 
 
@@ -99,8 +102,8 @@ async def add_to_wishlist(body: WishlistItemCreate, user: dict = Depends(require
         item_name = body.item_name
         item_image_url = body.item_image_url
         category = body.category
-        price_at_add = None
-        current_price = None
+        price_at_add = body.price_at_add if body.price_at_add is not None else body.item_price
+        current_price = body.current_price if body.current_price is not None else price_at_add
 
         if body.product_id:
             # 중복 검사
@@ -125,6 +128,17 @@ async def add_to_wishlist(body: WishlistItemCreate, user: dict = Depends(require
                 if current is not None:
                     price_at_add = current
                     current_price = current
+        else:
+            existing = session.execute(
+                select(WishlistItem).where(
+                    WishlistItem.user_id == user["id"],
+                    WishlistItem.product_id.is_(None),
+                    WishlistItem.item_name == item_name,
+                    WishlistItem.store_name == (body.store_name or None),
+                )
+            ).scalar_one_or_none()
+            if existing:
+                raise HTTPException(status_code=400, detail="이미 찜한 상품입니다")
 
         if not item_name:
             raise HTTPException(status_code=400, detail="item_name은 필수입니다")

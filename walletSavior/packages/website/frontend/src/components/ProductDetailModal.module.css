@@ -223,6 +223,17 @@
   font-weight: var(--fw-medium);
 }
 
+.description {
+  margin-top: var(--space-sm);
+  padding: var(--space-sm);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text2);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
 /* Sections */
 .section {
   padding: var(--space-md) var(--space-lg);

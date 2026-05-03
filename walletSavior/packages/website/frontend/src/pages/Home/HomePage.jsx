@@ -637,7 +637,7 @@ export default function HomePage() {
                         className={s.cartSmall}
                         onClick={(e) => {
                           e.stopPropagation();
-                          addToShoppingList({ productId: p.id, name: p.name, price: price, unit: p.unit, icon: p.icon });
+                          addToShoppingList({ ...p, productId: p.id, price, unit: p.unit, icon: p.icon });
                           addToast(`${p.name}을(를) 장보기 리스트에 추가했어요`, 'success');
                         }}
                         title="장보기에 추가"
@@ -777,7 +777,7 @@ export default function HomePage() {
                     className={s.cartSmall}
                     onClick={(e) => {
                       e.stopPropagation();
-                      addToShoppingList({ name: item.name, price: item.sale, icon: '🏪', martKey: martTab, martName: activeMartInfo?.name });
+                      addToShoppingList({ ...item, icon: '🏪', martKey: martTab, martName: activeMartInfo?.name });
                       addToast(`${item.name}을(를) 장보기 리스트에 추가했어요`, 'success');
                     }}
                     title="장보기에 추가"

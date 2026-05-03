@@ -1,8 +1,5 @@
 import useModalStore from '../../stores/modalStore';
-import MartProductModal from './MartProductModal';
-import HotdealModal from './HotdealModal';
 import GasStationModal from './GasStationModal';
-import ProductQuickView from './ProductQuickView';
 import ProductDetailModal from '../ProductDetailModal';
 
 export default function ModalManager() {
@@ -12,9 +9,8 @@ export default function ModalManager() {
 
   switch (activeModal) {
     case 'mart':
-      return <MartProductModal data={modalData} onClose={closeModal} />;
     case 'hotdeal':
-      return <HotdealModal data={modalData} onClose={closeModal} />;
+      return <ProductDetailModal product={modalData} onClose={closeModal} mode="preview" />;
     case 'gasStation':
       return <GasStationModal data={modalData} onClose={closeModal} />;
     case 'product':

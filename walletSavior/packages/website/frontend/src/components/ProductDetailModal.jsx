@@ -16,7 +16,7 @@ import useCartStore from '../stores/cartStore';
 import useActivityTracker from '../hooks/useActivityTracker';
 import SafeImage from './common/SafeImage';
 import { fmt } from '../utils/helpers';
-import { MARTS } from '../utils/constants';
+import { buildCartPayload, buildWishlistPayload, normalizeProduct } from '../utils/productActions';
 import s from './ProductDetailModal.module.css';
 
 const STORE_ICONS = {
@@ -33,8 +33,10 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
   const addToast = useStore((st) => st.addToast);
   const isLoggedIn = useStore((st) => st.isLoggedIn);
   const favorites = useStore((st) => st.favorites);
+  const favoriteItems = useStore((st) => st.favoriteItems);
   const addFavorite = useStore((st) => st.addFavorite);
   const removeFavorite = useStore((st) => st.removeFavorite);
+  const setFavoriteRemoteId = useStore((st) => st.setFavoriteRemoteId);
   const addItem = useCartStore((st) => st.addItem);
   const { trackView, trackCartAdd, trackWishlistAdd } = useActivityTracker();
 
@@ -45,39 +47,45 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
 
   if (!product) return null;
 
-  // Normalize product data (supports multiple shapes)
-  const name = product.name || product.canonical_name || product.product_name || product.title || product.source_title || product.item_name || '상품명 없음';
-  const price = product.sale ?? product.price ?? product.current_price ?? product.item_price ?? 0;
-  const origPrice = product.orig ?? product.original_price ?? product.origPrice ?? 0;
-  const discount = product.disc ?? product.discount_pct ?? product.discount ?? product.discountRate ?? 0;
-  const image = product.img ?? product.image_url ?? product.image ?? product.item_image_url ?? product.thumbnail ?? '';
-  const storeName = product.store_name ?? product.store ?? product.martName ?? product.source_name ?? product.source ?? '';
-  const storeKey = product.store_key ?? product.martKey ?? product.source_key ?? '';
-  const category = product.category ?? product.category_name ?? product.category_id ?? '';
-  const unit = product.unit ?? product.spec ?? '';
-  const brand = product.brand ?? '';
-  const sourceUrl = product.source_url ?? product.detail_url ?? product.detailUrl ?? product.link ?? '';
-  const productId = product.product_id ?? product.productId ?? product.id ?? '';
-  const eventType = product.event ?? product.event_name ?? '';
-  const period = product.period ?? '';
-  const keywords = Array.isArray(product.keywords) ? product.keywords.filter(Boolean) : [];
-  const sourceTitle = product.source_title ?? product.offer_title ?? '';
-  const standardUnitPrice = product.standard_unit_price ?? product.unit_price ?? priceTrust?.standard_unit_price ?? null;
-  const standardUnit = product.standard_unit ?? priceTrust?.standard_unit ?? '100g';
+  // Normalize product data (supports public catalog, mart deals, hotdeals, and cart items)
+  const normalized = normalizeProduct(product);
+  const {
+    name,
+    price,
+    originalPrice: origPrice,
+    discount,
+    image,
+    storeName,
+    storeKey,
+    category,
+    unit,
+    brand,
+    sourceUrl,
+    eventType,
+    period,
+    keywords,
+    sourceTitle,
+    description,
+    numericProductId,
+    favoriteId,
+  } = normalized;
+  const productId = numericProductId;
+  const standardUnitPrice = normalized.standardUnitPrice ?? priceTrust?.standard_unit_price ?? null;
+  const standardUnit = normalized.standardUnit ?? priceTrust?.standard_unit ?? '100g';
 
   // Determine mode: if explicitly set use that, otherwise auto-detect
-  const mode = modeProp || (productId && !product.martKey && !product.source ? 'product' : 'preview');
+  const mode = modeProp || (productId && !product.martKey && !product.source && product.type !== 'hotdeal' ? 'product' : 'preview');
 
   const savingsAmount = origPrice > price && price > 0 ? origPrice - price : 0;
   const savingsPct = discount > 0 ? discount : (origPrice > 0 && price > 0 ? Math.round((1 - price / origPrice) * 100) : 0);
-  const isFav = favorites.includes(productId);
+  const isFav = favorites.includes(favoriteId);
   const categoryIcon = CATEGORY_ICONS[category] || CATEGORY_ICONS.default;
   const storeIcon = STORE_ICONS[storeKey] || '🏪';
 
   // Track view on mount
   useEffect(() => {
-    if (productId) trackView('product', productId);
-  }, [productId]); // eslint-disable-line react-hooks/exhaustive-deps
+    trackView('product', productId || favoriteId);
+  }, [productId, favoriteId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fetch additional data (only in product mode)
   useEffect(() => {
@@ -113,20 +121,10 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
     : (priceCompare?.other_stores || priceCompare?.stores || priceCompare?.sources || priceCompare?.items || []);
 
   const handleAddToCart = useCallback(() => {
-    addItem({
-      product_id: productId,
-      name,
-      price,
-      original_price: origPrice,
-      store_name: storeName,
-      store_key: storeKey,
-      category,
-      image,
-      unit,
-    });
-    trackCartAdd(productId, name);
+    addItem(buildCartPayload(product));
+    trackCartAdd(productId || favoriteId, name);
     addToast(`${name} 장바구니에 추가했어요 🛒`, 'success');
-  }, [productId, name, price, origPrice, storeName, storeKey, category, image, unit, addItem, trackCartAdd, addToast]);
+  }, [product, productId, favoriteId, name, addItem, trackCartAdd, addToast]);
 
   const handleToggleWishlist = useCallback(() => {
     if (!isLoggedIn) {
@@ -134,21 +132,27 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
       return;
     }
     if (isFav) {
-      removeFavorite(productId);
+      const remoteId = favoriteItems?.[favoriteId]?.remote_id;
+      removeFavorite(favoriteId);
+      if (remoteId) {
+        api.delete(`/api/wishlist/${remoteId}`).catch(() => {});
+      }
       addToast('찜 목록에서 제거했어요', 'info');
     } else {
-      addFavorite(productId);
-      trackWishlistAdd(productId, name);
-      api.post('/api/wishlist', {
-        product_id: productId,
-        product_name: name,
-        price_at_add: price,
-        store_name: storeName,
-        image,
-      }).catch(() => {});
+      const payload = buildWishlistPayload(product);
+      addFavorite(favoriteId, payload);
+      trackWishlistAdd(productId || favoriteId, name);
+      api.post('/api/wishlist', payload).then(async (res) => {
+        const json = res?.json ? await res.json().catch(() => null) : null;
+        const remoteId = json?.data?.id || json?.id;
+        if (remoteId) setFavoriteRemoteId(favoriteId, remoteId);
+      }).catch(() => {
+        removeFavorite(favoriteId);
+        addToast('찜 추가에 실패했어요. 잠시 후 다시 시도해주세요.', 'error');
+      });
       addToast(`${name} 찜했어요 ❤️`, 'success');
     }
-  }, [isLoggedIn, isFav, productId, name, price, storeName, image, addFavorite, removeFavorite, addToast, trackWishlistAdd]);
+  }, [isLoggedIn, isFav, product, productId, favoriteId, name, favoriteItems, addFavorite, removeFavorite, setFavoriteRemoteId, addToast, trackWishlistAdd]);
 
   const handleShare = useCallback(async () => {
     const text = `${name} - ${fmt(price)}원 ${storeName ? `(${storeName})` : ''}`;
@@ -262,6 +266,11 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
                 {keywords.slice(0, 5).map((keyword) => (
                   <span key={keyword} className={s.categoryTag}>{keyword}</span>
                 ))}
+              </div>
+            )}
+            {description && (
+              <div className={s.description}>
+                {description}
               </div>
             )}
           </div>

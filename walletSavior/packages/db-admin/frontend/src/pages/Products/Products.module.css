@@ -257,6 +257,13 @@
 .form { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
 .form label { display: flex; flex-direction: column; gap: 6px; font-size: var(--fs-sm); color: var(--text2); }
 .form textarea { resize: vertical; min-height: 88px; }
+.formSection {
+  display: flex; flex-direction: column; gap: 12px; padding: 14px;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--glass1);
+}
+.formSection legend { padding: 0 6px; font-size: var(--fs-sm); font-weight: var(--fw-semi); color: var(--text); }
+.formGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .checkboxLabel {
   flex-direction: row !important; align-items: center; gap: 8px !important;
 }
@@ -276,6 +283,7 @@
   .filters { flex-direction: column; }
   .modal { width: 95%; max-height: 90vh; }
   .detailGrid { grid-template-columns: 1fr; }
+  .formGrid { grid-template-columns: 1fr; }
   .statsBar { flex-direction: row; }
   .sourceTabs { flex-wrap: nowrap; }
   .bulkBar { flex-wrap: wrap; }

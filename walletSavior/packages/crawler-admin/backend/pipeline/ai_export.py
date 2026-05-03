@@ -69,11 +69,19 @@ HttpGet = Callable[[str, dict[str, str], float], tuple[int, dict[str, Any]]]
 
 
 def _ai_admin_endpoint(ai_admin_base_url: str, path: str) -> str:
-    base_url = ai_admin_base_url.rstrip("/")
+    base_url = ai_admin_base_url.strip().rstrip("/")
     parsed = urlparse(base_url)
     if parsed.scheme not in {"http", "https"} or not parsed.netloc:
         raise RawExportError("ai_admin_base_url must be an http(s) URL")
-    return base_url + path
+    if parsed.username or parsed.password:
+        raise RawExportError("ai_admin_base_url must not include credentials")
+    if parsed.path not in {"", "/"} or parsed.params or parsed.query or parsed.fragment:
+        raise RawExportError(
+            "ai_admin_base_url must be only the ai-admin origin, for example http://localhost:8003"
+        )
+    if not parsed.hostname:
+        raise RawExportError("ai_admin_base_url must include a hostname")
+    return f"{parsed.scheme}://{parsed.netloc}{path}"
 
 
 def _first_str(item: dict[str, Any], keys: Iterable[str]) -> Optional[str]:

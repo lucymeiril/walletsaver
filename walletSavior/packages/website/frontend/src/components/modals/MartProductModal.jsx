@@ -3,10 +3,10 @@ import { ExternalLink, Heart } from 'lucide-react';
 import Modal from '../common/Modal';
 import SafeImage from '../common/SafeImage';
 import useStore from '../../stores/appStore';
-import useCartStore from '../../stores/cartStore';
 import useActivityTracker from '../../hooks/useActivityTracker';
 import { api } from '../../services/api';
 import { fmt } from '../../utils/helpers';
+import { buildWishlistPayload, normalizeProduct } from '../../utils/productActions';
 import s from './MartProductModal.module.css';
 
 const MART_ONLINE_URLS = {
@@ -28,9 +28,10 @@ export default function MartProductModal({ data, onClose }) {
   const addToast = useStore((st) => st.addToast);
   const isLoggedIn = useStore((st) => st.isLoggedIn);
   const favorites = useStore((st) => st.favorites);
+  const favoriteItems = useStore((st) => st.favoriteItems);
   const addFavorite = useStore((st) => st.addFavorite);
   const removeFavorite = useStore((st) => st.removeFavorite);
-  const addCartItem = useCartStore((st) => st.addItem);
+  const setFavoriteRemoteId = useStore((st) => st.setFavoriteRemoteId);
   const { trackView, trackCartAdd, trackWishlistAdd } = useActivityTracker();
 
   if (!data) return null;
@@ -50,7 +51,20 @@ export default function MartProductModal({ data, onClose }) {
   const detailUrl = data.detailUrl ?? data.source_url ?? data.detail_url ?? '';
   const categoryId = data.category_id ?? null;
 
-  const productId = data.id || data.product_id || name;
+  const productPayload = {
+    ...data,
+    name,
+    price: salePrice,
+    original_price: origPrice,
+    image,
+    unit,
+    store_name: martName || store,
+    martName,
+    martKey,
+    source_url: detailUrl,
+    category_id: categoryId,
+  };
+  const productId = normalizeProduct(productPayload).favoriteId;
   const isFav = favorites.includes(productId);
 
   const periodParts = period.split('~');
@@ -70,34 +84,25 @@ export default function MartProductModal({ data, onClose }) {
       return;
     }
     if (isFav) {
+      const remoteId = favoriteItems?.[productId]?.remote_id;
       removeFavorite(productId);
+      if (remoteId) api.delete(`/api/wishlist/${remoteId}`).catch(() => {});
       addToast('찜 목록에서 제거했어요', 'info');
     } else {
-      addFavorite(productId);
+      const payload = buildWishlistPayload(productPayload);
+      addFavorite(productId, payload);
       trackWishlistAdd(productId, name);
-      api.post('/api/wishlist', {
-        product_id: productId,
-        product_name: name,
-        price_at_add: salePrice,
-        store_name: martName || store,
-        image,
+      api.post('/api/wishlist', payload).then(async (res) => {
+        const json = res?.json ? await res.json().catch(() => null) : null;
+        const remoteId = json?.data?.id || json?.id;
+        if (remoteId) setFavoriteRemoteId(productId, remoteId);
       }).catch(() => {});
       addToast(`${name} 찜했어요 ❤️`, 'success');
     }
   };
 
   const handleAddToCart = () => {
-    addCartItem({
-      name,
-      price: salePrice,
-      original_price: origPrice,
-      store_name: martName || store,
-      store_key: martKey,
-      image,
-      unit,
-      category_id: categoryId,
-    });
-    addToShoppingList({ name, price: salePrice, icon: '🏪' });
+    addToShoppingList({ ...productPayload, icon: '🏪' });
     trackCartAdd(data.id || name, name);
     addToast(`${name}을(를) 장바구니에 추가했어요`, 'success');
     onClose();

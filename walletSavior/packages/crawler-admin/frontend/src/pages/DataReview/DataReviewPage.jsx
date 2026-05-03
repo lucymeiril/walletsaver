@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import useAdminStore from '../../stores/adminStore';
 import { api } from '../../api/client';
-import { CheckCircle, XCircle, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, RefreshCw, Info, Trash2, Send } from 'lucide-react';
+import { CheckCircle, XCircle, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, RefreshCw, Info, Trash2, Send, Edit3 } from 'lucide-react';
 import styles from './DataReviewPage.module.css';
 
 const STATUS_MAP = {
@@ -37,6 +37,35 @@ const ISSUE_FILTERS = [
   { key: 'duplicate', label: '중복' },
   { key: 'outlier', label: '이상치' },
 ];
+
+const COMMON_EDIT_FIELDS = [
+  'title', 'name', 'price', 'sale_price', 'original_price', 'source', 'source_community',
+  'url', 'product_url', 'category', 'category_id', 'valid_from', 'valid_to',
+  'start_date', 'end_date', 'image_url', 'unit',
+];
+
+const getSchemaDefaultKeys = (schemaType) => (
+  schemaType === 'HotdealPost'
+    ? ['title', 'url', 'price', 'source_community', 'category', 'valid_from', 'valid_to']
+    : ['name', 'sale_price', 'original_price', 'source', 'url', 'category', 'valid_from', 'valid_to']
+);
+
+const getEditableKeys = (row, allKeys, schemaType) => (
+  Array.from(new Set([...getSchemaDefaultKeys(schemaType), ...COMMON_EDIT_FIELDS, ...allKeys, ...Object.keys(row || {})]))
+);
+
+const parseEditedValue = (key, value, originalValue) => {
+  if (value === '') return '';
+  const lowerKey = key.toLowerCase();
+  if (typeof originalValue === 'number' || lowerKey.includes('price') || lowerKey.includes('amount')) {
+    const parsed = Number(String(value).replace(/,/g, ''));
+    return Number.isNaN(parsed) ? value : parsed;
+  }
+  if (typeof originalValue === 'boolean') {
+    return value === true || value === 'true';
+  }
+  return value;
+};
 
 const issueMatchesFilter = (issues, filterKey) => {
   if (!filterKey) return true;
@@ -186,6 +215,8 @@ export default function DataReviewPage() {
   const [aiProviderLoading, setAiProviderLoading] = useState(false);
   const [aiExportState, setAiExportState] = useState({});
   const [activeIssueFilters, setActiveIssueFilters] = useState({});
+  const [editingRow, setEditingRow] = useState(null);
+  const [rowActionLoading, setRowActionLoading] = useState(null);
 
   const [showCleanupModal, setShowCleanupModal] = useState(false);
   const [cleanupLoading, setCleanupLoading] = useState(false);
@@ -338,9 +369,7 @@ export default function DataReviewPage() {
     if (!normalized) return;
     setAiProviderLoading(true);
     try {
-      const res = await fetch(`${normalized}/api/providers`);
-      if (!res.ok) throw new Error(`AI-admin provider 조회 실패 (HTTP ${res.status})`);
-      const data = await res.json();
+      const data = await api.getAiProviders(normalized);
       const providers = data.providers || [];
       setAiProviders(providers);
       if (!aiProviderId && providers[0]?.provider_id) {
@@ -421,6 +450,62 @@ export default function DataReviewPage() {
       delete next[itemId];
       return next;
     });
+  };
+
+  const openRowEditor = (ingestionId, rowIndex, row, allKeys, schemaType) => {
+    setEditingRow({
+      ingestionId,
+      rowIndex,
+      original: row,
+      draft: { ...row },
+      keys: getEditableKeys(row, allKeys, schemaType),
+      notes: '',
+    });
+  };
+
+  const updateEditingField = (key, value) => {
+    setEditingRow(prev => ({
+      ...prev,
+      draft: { ...prev.draft, [key]: value },
+    }));
+  };
+
+  const saveEditingRow = async () => {
+    if (!editingRow) return;
+    const { ingestionId, rowIndex, draft, original, notes } = editingRow;
+    const normalized = {};
+    for (const [key, value] of Object.entries(draft)) {
+      normalized[key] = parseEditedValue(key, value, original?.[key]);
+    }
+    setRowActionLoading(`${ingestionId}:${rowIndex}:save`);
+    try {
+      const updated = await api.updateIngestionRow(ingestionId, rowIndex, {
+        item: normalized,
+        notes: notes || undefined,
+      });
+      setDetailCache(prev => ({ ...prev, [ingestionId]: updated }));
+      await fetchIngestions();
+      setEditingRow(null);
+    } catch (err) {
+      setDetailError(prev => ({ ...prev, [ingestionId]: err.message || '행 수정 실패' }));
+    } finally {
+      setRowActionLoading(null);
+    }
+  };
+
+  const removeRowFromBatch = async (ingestionId, rowIndex) => {
+    if (!window.confirm(`${rowIndex + 1}번 행을 이 배치에서 제외하시겠습니까?`)) return;
+    const notes = window.prompt('삭제/제외 사유(선택):', '') || '';
+    setRowActionLoading(`${ingestionId}:${rowIndex}:remove`);
+    try {
+      const updated = await api.removeIngestionRow(ingestionId, rowIndex, notes || undefined);
+      setDetailCache(prev => ({ ...prev, [ingestionId]: updated }));
+      await fetchIngestions();
+    } catch (err) {
+      setDetailError(prev => ({ ...prev, [ingestionId]: err.message || '행 삭제 실패' }));
+    } finally {
+      setRowActionLoading(null);
+    }
   };
 
   const getCellClassName = (key, value) => {
@@ -610,6 +695,49 @@ export default function DataReviewPage() {
         </div>
       )}
 
+      {editingRow && (
+        <div className={styles.modalOverlay} onClick={() => setEditingRow(null)}>
+          <div className={styles.rowEditModal} onClick={(e) => e.stopPropagation()}>
+            <h3 className={styles.modalTitle}>행 수정 · #{editingRow.rowIndex + 1}</h3>
+            <p className={styles.modalDesc}>
+              수정 후 저장하면 pending ingestion의 원본 배치 데이터와 품질 지표가 함께 갱신됩니다.
+            </p>
+            <div className={styles.rowEditGrid}>
+              {editingRow.keys.map((key) => (
+                <label key={key} className={styles.rowEditField}>
+                  <span>{key}</span>
+                  <input
+                    value={editingRow.draft[key] ?? ''}
+                    onChange={(e) => updateEditingField(key, e.target.value)}
+                    className={styles.rowEditInput}
+                  />
+                </label>
+              ))}
+            </div>
+            <label className={styles.rowEditNotes}>
+              <span>감사 메모(선택)</span>
+              <textarea
+                value={editingRow.notes}
+                onChange={(e) => setEditingRow(prev => ({ ...prev, notes: e.target.value }))}
+                placeholder="예: 가격 누락값을 상세 페이지 기준으로 보정"
+              />
+            </label>
+            <div className={styles.modalActions}>
+              <button
+                className={styles.modalBtnApproved}
+                onClick={saveEditingRow}
+                disabled={rowActionLoading?.includes(':save')}
+              >
+                저장
+              </button>
+              <button className={styles.modalClose} onClick={() => setEditingRow(null)} disabled={!!rowActionLoading}>
+                취소
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {error && <div className={styles.errorBanner}>{error}</div>}
 
       {/* Filter Tabs */}
@@ -687,11 +815,14 @@ export default function DataReviewPage() {
               const rawQuality = detail?.quality_score ?? item.qualityScore ?? item.quality_score ?? 0;
               const qualityScore = rawQuality > 0 && rawQuality <= 1 ? Math.round(rawQuality * 100) : rawQuality;
               const schemaType = item.schemaType ?? item.schema_type ?? 'Unknown';
-              const allKeys = items.length > 0 ? Array.from(new Set(items.flatMap((row) => Object.keys(row)))) : [];
+              const allKeys = items.length > 0
+                ? Array.from(new Set([...getSchemaDefaultKeys(schemaType), ...items.flatMap((row) => Object.keys(row))]))
+                : [];
               const qualityBreakdown = getQualityBreakdown(item, detail);
               const issueMap = getProblemIssueMap(detail);
               const issueCounts = getIssueCounts(detail);
               const activeIssueFilter = activeIssueFilters[item.id] || null;
+              const canEditRows = item.status === 'pending' || item.status === 'crawler_approved';
               const displayedRows = activeIssueFilter
                 ? items.map((row, idx) => ({ row, idx, issues: issueMap.get(idx) || [] }))
                     .filter(({ issues }) => issueMatchesFilter(issues, activeIssueFilter))
@@ -846,10 +977,11 @@ export default function DataReviewPage() {
                                     {allKeys.map((key) => (
                                       <th key={key}>{key}</th>
                                     ))}
-                                    {issueCounts.all > 0 && <th>문제</th>}
-                                  </tr>
-                                </thead>
-                                <tbody>
+                                     {issueCounts.all > 0 && <th>문제</th>}
+                                     {canEditRows && <th>수정</th>}
+                                   </tr>
+                                 </thead>
+                                 <tbody>
                                   {displayedRows.map(({ row, idx, issues }) => (
                                     <tr key={idx} className={issues.length > 0 ? styles.problemRow : ''}>
                                       <td className={styles.rowNum}>{idx + 1}</td>
@@ -858,13 +990,33 @@ export default function DataReviewPage() {
                                           {String(row[key] ?? '')}
                                         </td>
                                       ))}
-                                      {issueCounts.all > 0 && (
-                                        <td className={styles.issueCell}>
-                                          {issues.length > 0 ? issues.map(getIssueText).join(' / ') : '정상'}
-                                        </td>
-                                      )}
-                                    </tr>
-                                  ))}
+                                       {issueCounts.all > 0 && (
+                                         <td className={styles.issueCell}>
+                                           {issues.length > 0 ? issues.map(getIssueText).join(' / ') : '정상'}
+                                         </td>
+                                       )}
+                                       {canEditRows && (
+                                         <td className={styles.rowActionsCell}>
+                                           <button
+                                             className={styles.rowEditBtn}
+                                             onClick={() => openRowEditor(item.id, idx, row, allKeys, schemaType)}
+                                             disabled={!!rowActionLoading}
+                                             title="행 수정"
+                                           >
+                                             <Edit3 size={13} /> 수정
+                                           </button>
+                                           <button
+                                             className={styles.rowRemoveBtn}
+                                             onClick={() => removeRowFromBatch(item.id, idx)}
+                                             disabled={!!rowActionLoading}
+                                             title="배치에서 제외"
+                                           >
+                                             <Trash2 size={13} /> 제외
+                                           </button>
+                                         </td>
+                                       )}
+                                     </tr>
+                                   ))}
                                 </tbody>
                               </table>
                             </div>

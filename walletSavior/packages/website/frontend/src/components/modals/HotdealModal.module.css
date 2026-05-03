@@ -135,3 +135,19 @@
   background: rgba(239, 68, 68, .15);
   color: #ef4444;
 }
+.cartBtn {
+  flex: 1;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(52, 211, 153, .1);
+  border: 1px solid rgba(52, 211, 153, .25);
+  color: var(--green);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.cartBtn:hover {
+  background: rgba(52, 211, 153, .18);
+  border-color: var(--green);
+}

@@ -31,6 +31,7 @@ from api.security import (
     MAX_BULK_IDS, MAX_NAME_LEN, ALLOWED_SCHEMA_TYPES, ALLOWED_CRAWL_STATUSES,
     MAX_REVIEW_ACTION_VALUES, MAX_CLEANUP_STATUS_VALUES,
 )
+from api.source_normalization import normalize_source_key
 
 router = APIRouter(prefix="/api/ingestions", tags=["ingestions"])
 
@@ -77,6 +78,11 @@ class ReviewRequest(BaseModel):
         if v not in MAX_REVIEW_ACTION_VALUES:
             raise ValueError(f"action은 {MAX_REVIEW_ACTION_VALUES} 중 하나여야 합니다.")
         return v
+
+
+class IngestionRowUpdateRequest(BaseModel):
+    item: dict = Field(...)
+    notes: Optional[str] = Field(None, max_length=MAX_NOTES_LEN)
 
 
 class BulkApproveRequest(BaseModel):
@@ -366,55 +372,7 @@ def get_ingestion(ingestion_id: int, identity: dict = Depends(require_viewer)):
         if not row:
             raise HTTPException(404, "대기열 항목을 찾을 수 없습니다")
 
-        items = json.loads(row.items_json) if row.items_json else []
-        schema_type = row.schema_type or "DiscountItem"
-
-        # 품질 breakdown 계산
-        quality_breakdown = _build_quality_breakdown(items, schema_type, row)
-
-        # 문제 항목 인덱스 표시
-        problem_indices = _find_problem_items(items, schema_type)
-
-        # 이전 수집과 비교
-        prev_comparison = _compare_with_previous(session, row)
-
-        return {
-            "id": row.id,
-            "crawler_name": row.crawler_name,
-            "crawl_status": row.crawl_status,
-            "items_count": row.items_count,
-            "schema_type": schema_type,
-            "quality_score": row.quality_score,
-            "status": row.status.value
-            if hasattr(row.status, "value")
-            else row.status,
-            "crawled_at": row.crawled_at.isoformat() if row.crawled_at else None,
-            "duration_seconds": row.duration_seconds,
-            "items": items,
-            "quality_details": row.quality_details,
-            "quality_breakdown": quality_breakdown,
-            "problem_indices": problem_indices,
-            "previous_comparison": prev_comparison,
-            "errors": json.loads(row.errors_json) if row.errors_json else [],
-            "crawler_reviewer_notes": row.crawler_reviewer_notes,
-            "db_reviewer_notes": row.db_reviewer_notes,
-            "rejected_reason": row.rejected_reason,
-            "approved_items": (
-                json.loads(row.approved_items_json)
-                if row.approved_items_json
-                else None
-            ),
-            "strategy_used": row.strategy_used,
-            "source_url": row.source_url,
-            "crawler_reviewed_at": (
-                row.crawler_reviewed_at.isoformat()
-                if row.crawler_reviewed_at
-                else None
-            ),
-            "db_reviewed_at": (
-                row.db_reviewed_at.isoformat() if row.db_reviewed_at else None
-            ),
-        }
+        return _build_detail_item(session, row)
     finally:
         session.close()
 
@@ -499,6 +457,81 @@ def db_review(ingestion_id: int, body: ReviewRequest, identity: dict = Depends(r
             raise HTTPException(400, f"잘못된 액션: {body.action}")
 
 
+@router.put("/{ingestion_id}/items/{item_index}")
+def update_ingestion_item(
+    ingestion_id: int,
+    item_index: int,
+    body: IngestionRowUpdateRequest,
+    request: Request,
+    identity: dict = Depends(require_moderator),
+):
+    """대기열 항목의 단일 행을 수정하고 품질 지표를 재계산."""
+    with managed_session() as session:
+        row = session.get(PendingIngestion, ingestion_id)
+        if not row:
+            raise HTTPException(404, "대기열 항목을 찾을 수 없습니다")
+        _ensure_ingestion_rows_editable(row)
+
+        items = json.loads(row.items_json) if row.items_json else []
+        if item_index < 0 or item_index >= len(items):
+            raise HTTPException(404, "수정할 행을 찾을 수 없습니다")
+
+        old_item = items[item_index]
+        items[item_index] = body.item
+        _persist_items_and_quality(row, items)
+        _append_review_note(row, f"row {item_index + 1} edited", body.notes)
+        log_action(
+            session,
+            action="ingestion_row_update",
+            entity_type="pending_ingestion",
+            entity_id=row.id,
+            old_value={"index": item_index, "item": old_item},
+            new_value={"index": item_index, "item": body.item},
+            request=request,
+            user_id=str(identity.get("email") or identity.get("id")),
+            metadata={"notes": body.notes},
+        )
+        session.flush()
+        return _build_detail_item(session, row)
+
+
+@router.delete("/{ingestion_id}/items/{item_index}")
+def remove_ingestion_item(
+    ingestion_id: int,
+    item_index: int,
+    request: Request,
+    notes: Optional[str] = Query(None, max_length=MAX_NOTES_LEN),
+    identity: dict = Depends(require_moderator),
+):
+    """대기열 항목의 단일 행을 제외/삭제하고 품질 지표를 재계산."""
+    with managed_session() as session:
+        row = session.get(PendingIngestion, ingestion_id)
+        if not row:
+            raise HTTPException(404, "대기열 항목을 찾을 수 없습니다")
+        _ensure_ingestion_rows_editable(row)
+
+        items = json.loads(row.items_json) if row.items_json else []
+        if item_index < 0 or item_index >= len(items):
+            raise HTTPException(404, "삭제할 행을 찾을 수 없습니다")
+
+        removed = items.pop(item_index)
+        _persist_items_and_quality(row, items)
+        _append_review_note(row, f"row {item_index + 1} removed", notes)
+        log_action(
+            session,
+            action="ingestion_row_remove",
+            entity_type="pending_ingestion",
+            entity_id=row.id,
+            old_value={"index": item_index, "item": removed},
+            new_value={"items_count": len(items)},
+            request=request,
+            user_id=str(identity.get("email") or identity.get("id")),
+            metadata={"notes": notes},
+        )
+        session.flush()
+        return _build_detail_item(session, row)
+
+
 @router.delete("/{ingestion_id}")
 def delete_ingestion(ingestion_id: int, identity: dict = Depends(require_admin)):
     """대기열 항목 삭제."""
@@ -511,6 +544,75 @@ def delete_ingestion(ingestion_id: int, identity: dict = Depends(require_admin))
 
 
 # --- 내부 헬퍼 ---
+
+
+def _ensure_ingestion_rows_editable(row) -> None:
+    if row.status not in (IngestionStatus.PENDING, IngestionStatus.CRAWLER_APPROVED):
+        status_value = row.status.value if hasattr(row.status, "value") else row.status
+        raise HTTPException(400, f"현재 상태({status_value})에서는 행 수정이 불가합니다")
+
+
+def _persist_items_and_quality(row, items: list[dict]) -> None:
+    row.items_json = json.dumps(items, ensure_ascii=False, default=str)
+    row.items_count = len(items)
+    row.quality_score, row.quality_details = _calculate_quality(items, row.schema_type or "DiscountItem")
+    row.approved_items_json = None
+
+
+def _append_review_note(row, action: str, notes: Optional[str]) -> None:
+    if not notes:
+        return
+    stamp = datetime.utcnow().isoformat(timespec="seconds")
+    addition = f"[{stamp}] {action}: {notes}"
+    row.crawler_reviewer_notes = (
+        f"{row.crawler_reviewer_notes}\n{addition}"
+        if row.crawler_reviewer_notes
+        else addition
+    )
+
+
+def _build_detail_item(session, row) -> dict:
+    items = json.loads(row.items_json) if row.items_json else []
+    schema_type = row.schema_type or "DiscountItem"
+    quality_breakdown = _build_quality_breakdown(items, schema_type, row)
+    problem_indices = _find_problem_items(items, schema_type)
+    prev_comparison = _compare_with_previous(session, row)
+
+    return {
+        "id": row.id,
+        "crawler_name": row.crawler_name,
+        "crawl_status": row.crawl_status,
+        "items_count": row.items_count,
+        "schema_type": schema_type,
+        "quality_score": row.quality_score,
+        "status": row.status.value if hasattr(row.status, "value") else row.status,
+        "crawled_at": row.crawled_at.isoformat() if row.crawled_at else None,
+        "duration_seconds": row.duration_seconds,
+        "items": items,
+        "quality_details": row.quality_details,
+        "quality_breakdown": quality_breakdown,
+        "problem_indices": problem_indices,
+        "previous_comparison": prev_comparison,
+        "errors": json.loads(row.errors_json) if row.errors_json else [],
+        "crawler_reviewer_notes": row.crawler_reviewer_notes,
+        "db_reviewer_notes": row.db_reviewer_notes,
+        "rejected_reason": row.rejected_reason,
+        "approved_items": (
+            json.loads(row.approved_items_json)
+            if row.approved_items_json
+            else None
+        ),
+        "strategy_used": row.strategy_used,
+        "source_url": row.source_url,
+        "crawler_reviewed_at": (
+            row.crawler_reviewed_at.isoformat()
+            if row.crawler_reviewed_at
+            else None
+        ),
+        "db_reviewed_at": (
+            row.db_reviewed_at.isoformat() if row.db_reviewed_at else None
+        ),
+    }
 
 
 def _build_list_item(r) -> dict:
@@ -785,24 +887,20 @@ def _compare_with_previous(session, current_row) -> Optional[dict]:
     except Exception:
         return None
 
-# 한국어 마트명 → DB source 키 매핑
-_STORE_NAME_MAP = {
-    "이마트": "emart",
-    "홈플러스": "homeplus",
-    "롯데마트": "lottemart",
-    "코스트코": "costco",
-}
-
-
 def _resolve_source(item: dict) -> str:
-    """크롤러 항목에서 source 키를 결정 (한국어 → 영문 변환 포함)."""
+    """크롤러 항목에서 source 키를 결정 (한국어/별칭 → 안정 키 변환 포함)."""
     raw = (
         item.get("source")
         or item.get("_source")
+        or item.get("source_name")
+        or item.get("source_site")
+        or item.get("source_type")
         or item.get("store")
+        or item.get("source_url")
+        or item.get("detail_url")
         or "mart_discount"
     )
-    return _STORE_NAME_MAP.get(raw, raw)
+    return normalize_source_key(raw, default="mart_discount")
 
 
 # 크롤러 소스 → source_type 매핑
@@ -813,7 +911,9 @@ _SOURCE_TYPE_MAP = {
     "costco": "mart_crawl",
     "ppomppu": "community_deal",
     "fmkorea": "community_deal",
+    "ruliweb": "community_deal",
     "clien": "community_deal",
+    "algumon": "algumon",
     "government": "baseline",
     "mart_regular": "baseline",
 }
@@ -831,6 +931,9 @@ def _ensure_product(session, name: str, crawler_source: str | None = None) -> in
         select(Product).where(Product.name == name)
     ).scalar_one_or_none()
     if product:
+        source_type = _SOURCE_TYPE_MAP.get(crawler_source, "unknown") if crawler_source else "unknown"
+        if source_type != "unknown" and product.source_type in (None, "", "unknown"):
+            product.source_type = source_type
         return product.id
 
     # Determine source_type from crawler source
@@ -917,7 +1020,15 @@ def _insert_items(session, items: list[dict], schema_type: str) -> int:
                     price = item.get("price")
                     if price is None:
                         raise ValueError("HotdealPost.price is missing; keep it in review until AI/human supplies a price")
-                    hotdeal_source = item.get("source_community", "hotdeal")
+                    hotdeal_source = normalize_source_key(
+                        item.get("source_community")
+                        or item.get("source")
+                        or item.get("source_name")
+                        or item.get("source_site")
+                        or item.get("source_type")
+                        or item.get("url"),
+                        default="hotdeal",
+                    )
                     pid = _ensure_product(session, product_name, crawler_source=hotdeal_source)
                     row = HotdealPrice(
                         product_id=pid,

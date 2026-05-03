@@ -1,8 +1,10 @@
 import { ExternalLink, Heart } from 'lucide-react';
 import Modal from '../common/Modal';
 import useStore from '../../stores/appStore';
+import useCartStore from '../../stores/cartStore';
 import { api } from '../../services/api';
 import { fmt } from '../../utils/helpers';
+import { buildCartPayload, buildWishlistPayload, normalizeProduct } from '../../utils/productActions';
 import s from './HotdealModal.module.css';
 
 export default function HotdealModal({ data, onClose }) {
@@ -11,6 +13,7 @@ export default function HotdealModal({ data, onClose }) {
   const addFavorite = useStore((st) => st.addFavorite);
   const removeFavorite = useStore((st) => st.removeFavorite);
   const addToast = useStore((st) => st.addToast);
+  const addCartItem = useCartStore((st) => st.addItem);
 
   if (!data) return null;
 
@@ -25,7 +28,7 @@ export default function HotdealModal({ data, onClose }) {
   const views = data.views ?? data.view_count ?? 0;
   const postedAt = data.posted_at || data.created_at || '';
 
-  const productId = data.product_id || data.id || title;
+  const productId = normalizeProduct(data).favoriteId;
   const isFav = favorites.includes(productId);
 
   const handleToggleWishlist = () => {
@@ -38,15 +41,15 @@ export default function HotdealModal({ data, onClose }) {
       addToast('찜 목록에서 제거했어요', 'info');
     } else {
       addFavorite(productId);
-      api.post('/api/wishlist', {
-        product_id: data.product_id || null,
-        item_name: title,
-        item_price: price,
-        source: source,
-        source_url: sourceUrl,
-      }).catch(() => {});
+      api.post('/api/wishlist', buildWishlistPayload(data)).catch(() => {});
       addToast(`${title} 찜했어요 ❤️`, 'success');
     }
+  };
+
+  const handleAddToCart = () => {
+    addCartItem(buildCartPayload(data));
+    addToast(`${title}을(를) 장바구니에 추가했어요`, 'success');
+    onClose();
   };
 
   const sourceLabel =
@@ -98,6 +101,9 @@ export default function HotdealModal({ data, onClose }) {
           <button className={`${s.wishBtn} ${isFav ? s.wishActive : ''}`} onClick={handleToggleWishlist}>
             <Heart size={16} fill={isFav ? 'currentColor' : 'none'} />
             {isFav ? '찜 해제' : '찜하기'}
+          </button>
+          <button className={s.cartBtn} onClick={handleAddToCart}>
+            🛒 장바구니 담기
           </button>
           <button className={s.closeBtn} onClick={onClose}>
             닫기

@@ -26,6 +26,7 @@ from storage.models import (
     Product, BaselinePrice, DiscountHistory, HotdealPrice,
     Category, CrawlLog, CrawlStatus,
 )
+from api.source_normalization import normalize_sources
 
 from api.security import escape_like, make_error, MAX_VALIDATE_ITEMS
 
@@ -555,12 +556,16 @@ def source_types(identity: dict = Depends(require_viewer)):
             .filter(DiscountHistory.source.isnot(None))
         ).scalars().all()
 
+        hotdeal_sources = session.execute(
+            select(distinct(HotdealPrice.source))
+            .filter(HotdealPrice.source.isnot(None))
+        ).scalars().all()
+
         product_sources = session.execute(
             select(distinct(Product.source_type))
             .filter(Product.source_type.isnot(None))
         ).scalars().all()
 
-        all_sources = (set(discount_sources) | set(product_sources) | {"algumon"}) - {"unknown", None, ""}
-        return sorted(all_sources)
+        return normalize_sources([*discount_sources, *hotdeal_sources, *product_sources, "algumon"])
     finally:
         session.close()

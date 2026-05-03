@@ -35,6 +35,11 @@ class ReviewRequest(BaseModel):
     rejected_reason: Optional[str] = None
 
 
+class RowUpdateRequest(BaseModel):
+    item: dict
+    notes: Optional[str] = None
+
+
 async def _proxy(method: str, url: str, **kwargs):
     """Execute a proxied HTTP request with circuit breaker + JWT auth."""
     try:
@@ -96,6 +101,47 @@ async def crawler_review(ingestion_id: int, request: Request, body: ReviewReques
         "post",
         f"{DB_ADMIN_URL}/{ingestion_id}/crawler-review",
         json=body.model_dump(),
+    )
+
+
+@router.put("/{ingestion_id}/items/{item_index}")
+async def update_ingestion_item(
+    ingestion_id: int,
+    item_index: int,
+    request: Request,
+    body: RowUpdateRequest,
+):
+    """대기열 상세 행 수정 — DB 관리 API 프록시."""
+    audit_log(
+        AuditEventType.DATA_INGESTION,
+        request=request,
+        detail={"ingestion_id": ingestion_id, "item_index": item_index, "action": "row_update"},
+    )
+    return await _proxy(
+        "put",
+        f"{DB_ADMIN_URL}/{ingestion_id}/items/{item_index}",
+        json=body.model_dump(),
+    )
+
+
+@router.delete("/{ingestion_id}/items/{item_index}")
+async def remove_ingestion_item(
+    ingestion_id: int,
+    item_index: int,
+    request: Request,
+    notes: Optional[str] = Query(None),
+):
+    """대기열 상세 행 제외/삭제 — DB 관리 API 프록시."""
+    audit_log(
+        AuditEventType.DATA_INGESTION,
+        request=request,
+        detail={"ingestion_id": ingestion_id, "item_index": item_index, "action": "row_remove"},
+    )
+    params = {"notes": notes} if notes else None
+    return await _proxy(
+        "delete",
+        f"{DB_ADMIN_URL}/{ingestion_id}/items/{item_index}",
+        params=params,
     )
 
 

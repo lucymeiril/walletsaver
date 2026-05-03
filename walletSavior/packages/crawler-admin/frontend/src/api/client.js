@@ -20,6 +20,17 @@ function getHttpErrorMessage(status) {
   return HTTP_ERROR_MESSAGES[status] || `서버 오류가 발생했습니다 (HTTP ${status})`;
 }
 
+async function getResponseErrorMessage(resp) {
+  try {
+    const data = await resp.clone().json();
+    const detail = data?.detail || data?.error || data?.message;
+    if (detail) return typeof detail === 'string' ? detail : JSON.stringify(detail);
+  } catch {
+    // Fall back to status-based message when the response is not JSON.
+  }
+  return getHttpErrorMessage(resp.status);
+}
+
 // ─── 인증 헤더 주입 ───
 function injectAuth(headers = {}) {
   const key = getApiKey();
@@ -54,7 +65,7 @@ async function fetchWithTimeout(url, options = {}) {
       authLogout();
       throw new Error(getHttpErrorMessage(resp.status));
     }
-    if (!resp.ok) throw new Error(getHttpErrorMessage(resp.status));
+    if (!resp.ok) throw new Error(await getResponseErrorMessage(resp));
     return resp;
   } catch (err) {
     if (err.name === 'AbortError') {
@@ -258,6 +269,17 @@ export const api = {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   }).then(r => r.json()),
+  updateIngestionRow: (id, index, data) => fetchWithTimeout(`${API_BASE}/ingestions/${id}/items/${index}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }).then(r => r.json()),
+  removeIngestionRow: (id, index, notes) => {
+    const qs = notes ? `?${new URLSearchParams({ notes })}` : '';
+    return fetchWithTimeout(`${API_BASE}/ingestions/${id}/items/${index}${qs}`, {
+      method: 'DELETE',
+    }).then(r => r.json());
+  },
   cleanupIngestions: (data) => fetchWithTimeout(`${API_BASE}/ingestions/cleanup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

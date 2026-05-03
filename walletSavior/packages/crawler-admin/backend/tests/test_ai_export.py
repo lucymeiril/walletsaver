@@ -324,6 +324,22 @@ class TestBuildRawBatch:
                 http_get=fake_get,
             )
 
+    @pytest.mark.parametrize(
+        ("base_url", "message"),
+        [
+            ("http://user:pass@localhost:8003", "must not include credentials"),
+            ("http://localhost:8003/api/providers", "must be only the ai-admin origin"),
+            ("http://localhost:8003?token=secret", "must be only the ai-admin origin"),
+            ("javascript:alert(1)", "must be an http\\(s\\) URL"),
+        ],
+    )
+    def test_fetch_ai_admin_providers_rejects_unsafe_base_url(self, base_url, message):
+        def fake_get(url, headers, timeout_seconds):
+            raise AssertionError("unsafe URL should not be fetched")
+
+        with pytest.raises(RawExportError, match=message):
+            fetch_ai_admin_providers(ai_admin_base_url=base_url, http_get=fake_get)
+
 
 # ── HTTP 라우트 테스트 ───────────────────────────────────────
 
@@ -416,3 +432,12 @@ class TestAIExportRoute:
                 "timeout_seconds": 10.0,
             }
         ]
+
+    def test_get_ai_providers_rejects_unsafe_base_url(self, client):
+        resp = client.get(
+            "/api/ai-export/providers",
+            params={"ai_admin_base_url": "http://localhost:8003/api/providers"},
+        )
+
+        assert resp.status_code == 422
+        assert "must be only the ai-admin origin" in resp.json()["detail"]

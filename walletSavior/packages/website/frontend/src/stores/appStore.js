@@ -5,6 +5,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import useCartStore from './cartStore';
+import { buildCartPayload, buildWishlistPayload, normalizeProduct } from '../utils/productActions';
 
 const useStore = create(
   persist(
@@ -53,15 +54,47 @@ const useStore = create(
 
       // 관심 품목 (Favorites/Watchlist)
       favorites: [],
-      addFavorite: (productId) => set((state) => ({
-        favorites: state.favorites.includes(productId)
-          ? state.favorites
-          : [...state.favorites, productId]
-      })),
+      favoriteItems: {},
+      addFavorite: (productOrId, details = {}) => set((state) => {
+        const normalized = typeof productOrId === 'object'
+          ? normalizeProduct(productOrId)
+          : null;
+        const productId = normalized?.favoriteId || productOrId;
+        const payload = normalized
+          ? buildWishlistPayload(productOrId)
+          : { local_id: productId, ...details };
+        const favorites = Array.isArray(state.favorites) ? state.favorites : [];
+        const favoriteItems = state.favoriteItems || {};
+        return {
+          favorites: favorites.includes(productId)
+            ? favorites
+            : [...favorites, productId],
+          favoriteItems: {
+            ...favoriteItems,
+            [productId]: {
+              ...(favoriteItems[productId] || {}),
+              ...payload,
+              local_id: productId,
+            },
+          },
+        };
+      }),
       removeFavorite: (productId) => set((state) => ({
-        favorites: state.favorites.filter(id => id !== productId)
+        favorites: state.favorites.filter(id => id !== productId),
+        favoriteItems: Object.fromEntries(
+          Object.entries(state.favoriteItems || {}).filter(([id]) => id !== productId)
+        ),
       })),
-      isFavorite: (productId) => get().favorites.includes(productId),
+      setFavoriteRemoteId: (productId, remoteId) => set((state) => ({
+        favoriteItems: {
+          ...(state.favoriteItems || {}),
+          [productId]: {
+            ...(state.favoriteItems?.[productId] || { local_id: productId }),
+            remote_id: remoteId,
+          },
+        },
+      })),
+      isFavorite: (productId) => (get().favorites || []).includes(productId),
 
       // 최근 검색
       recentSearches: [],
@@ -75,20 +108,24 @@ const useStore = create(
 
       // 장보기 리스트 (Shopping List) — cartStore와 동기화
       shoppingList: [],
-      addToShoppingList: (item) => {
+      addToShoppingList: (item, quantityArg) => {
+        const cartItem = (item && typeof item === 'object')
+          ? item
+          : { productId: item, id: item, name: String(item || '상품'), quantity: quantityArg || 1 };
         // cartStore에도 동기화 (ShoppingListPanel이 cartStore를 읽음)
         try {
-          useCartStore.getState().addItem(item);
+          useCartStore.getState().addItem(buildCartPayload(cartItem));
         } catch { /* cartStore 미초기화 시 무시 */ }
 
         return set((state) => {
-          const id = item.productId ?? item.id ?? item.name;
+          const normalized = normalizeProduct(cartItem);
+          const id = normalized.favoriteId;
           const existing = state.shoppingList.find(i => (i.productId ?? i.id ?? i.name) === id);
           if (existing) {
             return {
               shoppingList: state.shoppingList.map(i =>
                 (i.productId ?? i.id ?? i.name) === id
-                  ? { ...i, quantity: i.quantity + (item.quantity ?? 1) }
+                  ? { ...i, quantity: i.quantity + (normalized.quantity ?? 1) }
                   : i
               )
             };
@@ -96,7 +133,7 @@ const useStore = create(
           return {
             shoppingList: [
               ...state.shoppingList,
-              { productId: id, name: item.name, price: item.price, unit: item.unit || '', icon: item.icon || '🛒', quantity: item.quantity ?? 1 },
+              { productId: id, name: normalized.name, price: normalized.price, unit: normalized.unit || '', icon: cartItem.icon || '🛒', quantity: normalized.quantity ?? 1 },
             ],
           };
         });
@@ -160,6 +197,7 @@ const useStore = create(
       partialize: (state) => ({
         theme: state.theme,
         favorites: state.favorites,
+        favoriteItems: state.favoriteItems,
         recentSearches: state.recentSearches,
         shoppingList: state.shoppingList,
         priceAlerts: state.priceAlerts,

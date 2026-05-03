@@ -1,9 +1,11 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ExternalLink, RefreshCw, ZoomIn, ZoomOut, Maximize, Minimize2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ExternalLink, Heart, RefreshCw, ZoomIn, ZoomOut, Maximize, Minimize2 } from 'lucide-react';
 import { MARTS } from '../../utils/constants';
 import { fmt } from '../../utils/helpers';
 import useStore from '../../stores/appStore';
+import { api } from '../../services/api';
+import { buildWishlistPayload, normalizeProduct } from '../../utils/productActions';
 import Modal from '../../components/common/Modal';
 import Spinner from '../../components/common/Spinner';
 import SafeImage from '../../components/common/SafeImage';
@@ -142,7 +144,11 @@ export default function MartPage() {
   const flyerImgRef = useRef(null);
   const [saleDetail, setSaleDetail] = useState(null);
 
-  const { addToShoppingList, addToast } = useStore();
+  const {
+    addToShoppingList, addToast, isLoggedIn, favorites, favoriteItems,
+    addFavorite, removeFavorite, setFavoriteRemoteId,
+  } = useStore();
+  const favoriteIds = Array.isArray(favorites) ? favorites : [];
 
   const [martDeals, setMartDeals] = useState({});
   const [martMeta, setMartMeta] = useState({});
@@ -273,6 +279,34 @@ export default function MartPage() {
     const endOfWeek = new Date(startOfWeek); endOfWeek.setDate(startOfWeek.getDate() + 6);
     return `${startOfWeek.getMonth()+1}/${startOfWeek.getDate()} ~ ${endOfWeek.getMonth()+1}/${endOfWeek.getDate()}`;
   }, []);
+
+  const toggleWishlist = useCallback((product) => {
+    const normalized = normalizeProduct(product);
+    const favoriteId = normalized.favoriteId;
+    const isFav = favoriteIds.includes(favoriteId);
+    if (!isLoggedIn) {
+      addToast('로그인이 필요합니다', 'warning');
+      return;
+    }
+    if (isFav) {
+      const remoteId = favoriteItems?.[favoriteId]?.remote_id;
+      removeFavorite(favoriteId);
+      if (remoteId) api.delete(`/api/wishlist/${remoteId}`).catch(() => {});
+      addToast('찜 목록에서 제거했어요', 'info');
+      return;
+    }
+    const payload = buildWishlistPayload(product);
+    addFavorite(favoriteId, payload);
+    api.post('/api/wishlist', payload).then(async (res) => {
+      const json = res?.json ? await res.json().catch(() => null) : null;
+      const remoteId = json?.data?.id || json?.id;
+      if (remoteId) setFavoriteRemoteId(favoriteId, remoteId);
+    }).catch(() => {
+      removeFavorite(favoriteId);
+      addToast('찜 추가에 실패했어요. 잠시 후 다시 시도해주세요.', 'error');
+    });
+    addToast(`${normalized.name} 찜했어요 ❤️`, 'success');
+  }, [isLoggedIn, favoriteIds, favoriteItems, addFavorite, removeFavorite, setFavoriteRemoteId, addToast]);
 
   const currentFlyer = useMemo(() => flyerData[flyerMart], [flyerData, flyerMart]);
   const flyerPages = useMemo(() => currentFlyer?.flyer_pages || [], [currentFlyer]);
@@ -710,8 +744,10 @@ export default function MartPage() {
               const matched = products.find(p => item.name?.includes(p.name));
               const diff = matched ? item.sale - matched.avg : null;
               const onlineUrl = getOnlineMallUrl(activeMart, item.name);
+              const productData = { ...item, martKey: activeMart, martName: martInfo?.name, period: martPeriod };
+              const fav = favoriteIds.includes(normalizeProduct(productData).favoriteId);
               return (
-                <div key={item.id || item.name || `sale-${i}`} className={s.card} onClick={() => setSaleDetail({ ...item, martKey: activeMart, martName: martInfo?.name, period: martPeriod })}>
+                <div key={item.id || item.name || `sale-${i}`} className={s.card} onClick={() => setSaleDetail(productData)}>
                   <div className={s.cardName}>{item.name}</div>
                   <div className={s.cardPrices}>
                     <span className={s.sale}>{fmt(item.sale)}원</span>
@@ -738,19 +774,29 @@ export default function MartPage() {
                           🛍️
                         </a>
                       )}
-                      <button
-                        className={s.cartMini}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          addToShoppingList({ name: item.name, price: item.sale, icon: '🏪', martKey: activeMart, martName: martInfo?.name, original_price: item.orig });
-                          addToast(`${item.name}을(를) 장보기 리스트에 추가했어요`, 'success');
-                        }}
-                        title="장보기에 추가"
-                      >
-                        🛒
-                      </button>
-                    </div>
-                  </div>
+                       <button
+                         className={s.cartMini}
+                         onClick={(e) => {
+                           e.stopPropagation();
+                           addToShoppingList({ ...productData, icon: '🏪' });
+                           addToast(`${item.name}을(를) 장보기 리스트에 추가했어요`, 'success');
+                         }}
+                         title="장보기에 추가"
+                       >
+                         🛒
+                       </button>
+                       <button
+                         className={s.cartMini}
+                         onClick={(e) => {
+                           e.stopPropagation();
+                           toggleWishlist(productData);
+                         }}
+                         title={fav ? '찜 해제' : '찜하기'}
+                       >
+                         <Heart size={14} fill={fav ? 'currentColor' : 'none'} />
+                       </button>
+                     </div>
+                   </div>
                   <div className={s.validity}>~ {martPeriod.split('~')[1]?.trim() || martPeriod}</div>
                 </div>
               );
@@ -930,12 +976,19 @@ export default function MartPage() {
                 <button
                   className={s.detailCartBtn}
                   onClick={() => {
-                    addToShoppingList({ name: saleDetail.name, price: saleDetail.sale, icon: '🏪', martKey: saleDetail.martKey, martName: saleDetail.martName, original_price: saleDetail.orig });
+                    addToShoppingList({ ...saleDetail, icon: '🏪' });
                     addToast(`${saleDetail.name}을(를) 장보기 리스트에 추가했어요`, 'success');
                     setSaleDetail(null);
                   }}
                 >
                   🛒 장보기에 추가
+                </button>
+                <button
+                  className={s.detailCartBtn}
+                  onClick={() => toggleWishlist(saleDetail)}
+                >
+                  <Heart size={16} fill={favoriteIds.includes(normalizeProduct(saleDetail).favoriteId) ? 'currentColor' : 'none'} />
+                  {favoriteIds.includes(normalizeProduct(saleDetail).favoriteId) ? ' 찜 해제' : ' 찜하기'}
                 </button>
                 <button className={s.detailCloseBtn} onClick={() => setSaleDetail(null)}>
                   닫기

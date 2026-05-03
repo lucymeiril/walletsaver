@@ -150,6 +150,24 @@ async def add_to_cart(body: CartItemCreate, user: dict = Depends(require_auth)):
                 existing.quantity += body.quantity
                 existing.item_price = data["item_price"]
                 return ApiResponse(data=_cart_item_to_dict(existing))
+        else:
+            existing = session.execute(
+                select(CartItem).where(
+                    CartItem.user_id == user["id"],
+                    CartItem.product_id.is_(None),
+                    CartItem.item_name == data["item_name"],
+                    CartItem.store_name == (body.store_name or None),
+                    CartItem.source_url == (body.source_url or None),
+                )
+            ).scalar_one_or_none()
+            if existing:
+                existing.quantity += body.quantity
+                existing.item_price = data["item_price"]
+                existing.item_image_url = data.get("item_image_url") or existing.item_image_url
+                existing.original_price = data.get("original_price") or existing.original_price
+                existing.discount_rate = data.get("discount_rate") or existing.discount_rate
+                existing.category = data.get("category") or existing.category
+                return ApiResponse(data=_cart_item_to_dict(existing))
 
         expires_at = None
         if body.expires_at:
@@ -251,6 +269,25 @@ async def merge_cart(body: CartMergeRequest, user: dict = Depends(require_auth))
                 ).scalar_one_or_none()
                 if existing:
                     existing.quantity += merge_item.quantity
+                    merged += 1
+                    continue
+            else:
+                existing = session.execute(
+                    select(CartItem).where(
+                        CartItem.user_id == user["id"],
+                        CartItem.product_id.is_(None),
+                        CartItem.item_name == data["item_name"],
+                        CartItem.store_name == (merge_item.store_name or None),
+                        CartItem.source_url == (merge_item.source_url or None),
+                    )
+                ).scalar_one_or_none()
+                if existing:
+                    existing.quantity += merge_item.quantity
+                    existing.item_price = data["item_price"]
+                    existing.item_image_url = data.get("item_image_url") or existing.item_image_url
+                    existing.original_price = data.get("original_price") or existing.original_price
+                    existing.discount_rate = data.get("discount_rate") or existing.discount_rate
+                    existing.category = data.get("category") or existing.category
                     merged += 1
                     continue
 
