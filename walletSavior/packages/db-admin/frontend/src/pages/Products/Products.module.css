@@ -256,6 +256,11 @@
 /* 폼 */
 .form { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
 .form label { display: flex; flex-direction: column; gap: 6px; font-size: var(--fs-sm); color: var(--text2); }
+.form textarea { resize: vertical; min-height: 88px; }
+.checkboxLabel {
+  flex-direction: row !important; align-items: center; gap: 8px !important;
+}
+.checkboxLabel input { width: auto; }
 .formActions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }
 .cancelBtn {
   padding: 8px 20px; border-radius: var(--radius-sm);

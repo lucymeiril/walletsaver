@@ -17,7 +17,7 @@ import os
 from datetime import datetime, timedelta
 from typing import Any, Optional
 
-from sqlalchemy import create_engine, select, func, desc, event
+from sqlalchemy import create_engine, select, func, desc, event, or_
 from sqlalchemy.orm import Session, sessionmaker, scoped_session, joinedload
 
 from storage.models import (
@@ -52,6 +52,7 @@ class DBStorage(StorageContract):
 
     # 결과 집합 안전 상한 — 무제한 조회로 인한 OOM 방지
     MAX_RESULT_LIMIT = 1000
+    UNREVIEWED_CATEGORY_METHODS = {"suggested", "none"}
 
     def __init__(self, database_url: str | None = None):
         if database_url is None:
@@ -103,6 +104,17 @@ class DBStorage(StorageContract):
         if limit is None or limit > self.MAX_RESULT_LIMIT:
             return self.MAX_RESULT_LIMIT
         return limit
+
+    def _public_category(self, product: Product) -> Category | None:
+        """Return only reviewed, navigable categories for public APIs."""
+        if not product.category_id or not product.category:
+            return None
+        method = (getattr(product, "categorization_method", None) or "").lower()
+        if method in self.UNREVIEWED_CATEGORY_METHODS:
+            return None
+        if product.category.name and product.category.name.strip() == (product.name or "").strip():
+            return None
+        return product.category
 
     def init_db(self) -> None:
         """모든 테이블을 생성한다. 이미 존재하면 스킵."""
@@ -252,7 +264,7 @@ class DBStorage(StorageContract):
             for p in products:
                 price_stats = self._compute_product_stats(session, p.id)
                 store_prices = self._get_store_prices(session, p.id)
-                cat = p.category
+                cat = self._public_category(p)
                 avg = price_stats["avg"]
                 cur = price_stats["cur"]
                 result.append({
@@ -292,7 +304,7 @@ class DBStorage(StorageContract):
                 return None
             price_stats = self._compute_product_stats(session, p.id)
             store_prices = self._get_store_prices(session, p.id)
-            cat = p.category
+            cat = self._public_category(p)
             avg = price_stats["avg"]
             cur = price_stats["cur"]
             return {
@@ -300,6 +312,7 @@ class DBStorage(StorageContract):
                 "name": p.name,
                 "icon": cat.icon if cat else "",
                 "cat": cat.name if cat else "",
+                "category_id": cat.id if cat else "",
                 "unit": p.unit,
                 "avg": avg,
                 "cur": cur,
@@ -562,7 +575,12 @@ class DBStorage(StorageContract):
             if category:
                 from storage.models import Category
                 stmt = stmt.join(Category, Product.category_id == Category.id).where(
-                    Category.name.contains(category)
+                    Category.name.contains(category),
+                    or_(
+                        Product.categorization_method.is_(None),
+                        ~Product.categorization_method.in_(self.UNREVIEWED_CATEGORY_METHODS),
+                    ),
+                    Category.name != Product.name,
                 )
             offset = (page - 1) * per_page
             stmt = stmt.offset(offset).limit(per_page)
@@ -571,7 +589,7 @@ class DBStorage(StorageContract):
             for p in products:
                 price_stats = self._compute_product_stats(session, p.id)
                 store_prices = self._get_store_prices(session, p.id)
-                cat = p.category
+                cat = self._public_category(p)
                 avg = price_stats["avg"]
                 cur = price_stats["cur"]
 
@@ -602,7 +620,7 @@ class DBStorage(StorageContract):
                     "name": p.name,
                     "icon": cat.icon if cat else "",
                     "cat": cat.name if cat else "",
-                    "category_id": p.category_id or "",
+                    "category_id": cat.id if cat else "",
                     "unit": p.unit,
                     "avg": avg,
                     "cur": current_price,
@@ -1308,7 +1326,7 @@ class DBStorage(StorageContract):
 
             product_results: list[dict] = []
             for p in products:
-                cat = p.category
+                cat = self._public_category(p)
                 has_baseline = baseline_counts.get(p.id, 0) > 0
                 latest_discount = latest_discounts.get(p.id)
 
@@ -1348,7 +1366,7 @@ class DBStorage(StorageContract):
                     "match_type": "product_name",
                     "id": p.id,
                     "name": p.name,
-                    "category_id": p.category_id,
+                    "category_id": cat.id if cat else "",
                     "unit": p.unit,
                     "icon": cat.icon if cat else "",
                     "current_price": current_price,
@@ -1446,6 +1464,10 @@ class DBStorage(StorageContract):
             stmt = select(Product).where(
                 Product.is_active == True,
                 Product.category_id.in_(all_cat_ids),
+                or_(
+                    Product.categorization_method.is_(None),
+                    ~Product.categorization_method.in_(self.UNREVIEWED_CATEGORY_METHODS),
+                ),
             )
 
             # Apply attribute-based filters
@@ -1454,6 +1476,9 @@ class DBStorage(StorageContract):
             # Enrich products with price data and apply filters
             enriched = []
             for p in products_raw:
+                cat = self._public_category(p)
+                if cat is None:
+                    continue
                 attrs = p.attributes or {}
 
                 # Filter by storage
@@ -1521,7 +1546,7 @@ class DBStorage(StorageContract):
                 enriched.append({
                     "id": p.id,
                     "name": p.name,
-                    "category_id": p.category_id,
+                    "category_id": cat.id,
                     "source_type": source_type,
                     "source": source,
                     "current_price": current_price,
@@ -1621,9 +1646,7 @@ class DBStorage(StorageContract):
                         product.category_id = cat_id
                     product.categorization_method = "auto"
                 elif confidence >= 0.50:
-                    # Tentative assignment + pending review
-                    if cat_id:
-                        product.category_id = cat_id
+                    # Suggested categories require review before public navigation.
                     product.categorization_method = "suggested"
                     pending = PendingCategorization(
                         product_id=product_id,

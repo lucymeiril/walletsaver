@@ -157,9 +157,9 @@ export default function JobsPanel() {
     <section className="panel">
       <h2>AI Job 큐 <span className="muted">({jobs.length})</span></h2>
       <div className="card workflow-card">
-        <strong>Job 운영 가이드</strong>
+        <strong>AI 처리 상태</strong>
         <div className="muted" style={{ marginTop: 6 }}>
-          이 화면의 등록/일시정지/재개는 로컬 큐 상태만 변경합니다. 실제 워커가 job을 acquire해 실행할 때 provider 설정에 따라 LIVE 모델 호출이 발생할 수 있습니다.
+          등록/일시정지/재개는 큐 상태를 바꿉니다. 실제 워커 실행 시에만 provider 설정에 따라 LIVE 모델 호출이 발생할 수 있습니다.
         </div>
         <div className="row" style={{ marginTop: 8 }}>
           {STATUSES.filter((status) => counts[status]).map((status) => (
@@ -168,32 +168,39 @@ export default function JobsPanel() {
         </div>
       </div>
 
-      <EnqueueForm onEnqueued={refresh} />
-
       <div className="row" style={{ marginTop: 14, marginBottom: 10 }}>
-        <label className="muted">
-          상태 필터:&nbsp;
-          <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-            <option value="">(전체)</option>
-            {STATUSES.map((s) => (
-              <option key={s} value={s}>{s}</option>
-            ))}
-          </select>
-        </label>
-        <label className="muted">
-          role 필터:&nbsp;
-          <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}>
-            <option value="">(전체)</option>
-            {ROLES.map((r) => (
-              <option key={r} value={r}>{r}</option>
-            ))}
-          </select>
-        </label>
-        <button className="provider-form" onClick={refresh} disabled={loading}>
+        <button className="secondary-button" onClick={refresh} disabled={loading}>
           {loading ? '불러오는 중...' : '새로고침'}
         </button>
         {error && <span className="badge err">{error}</span>}
       </div>
+
+      <details className="inline-details" style={{ marginBottom: 12 }}>
+        <summary>고급: job 직접 등록/필터 열기</summary>
+        <div style={{ marginTop: 10 }}>
+          <EnqueueForm onEnqueued={refresh} />
+          <div className="row" style={{ marginTop: 14, marginBottom: 10 }}>
+            <label className="muted">
+              상태 필터:&nbsp;
+              <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+                <option value="">(전체)</option>
+                {STATUSES.map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+            </label>
+            <label className="muted">
+              role 필터:&nbsp;
+              <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}>
+                <option value="">(전체)</option>
+                {ROLES.map((r) => (
+                  <option key={r} value={r}>{r}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+        </div>
+      </details>
 
       {jobs.length === 0 && !loading && (
         <div className="muted">표시할 job이 없습니다.</div>

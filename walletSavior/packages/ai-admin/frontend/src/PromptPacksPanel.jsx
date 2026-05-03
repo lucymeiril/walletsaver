@@ -81,7 +81,12 @@ export default function PromptPacksPanel() {
     <section className="panel">
       <h2>프롬프트 팩 <span className="muted">({items.length})</span></h2>
       {error && <div className="muted" style={{ color: '#a00' }}>오류: {error}</div>}
-      <PromptDraftForm onSubmitted={refresh} onError={(m) => setError(m)} />
+      <details className="inline-details" style={{ marginBottom: 10 }}>
+        <summary>고급: 프롬프트 초안 작성 열기</summary>
+        <div style={{ marginTop: 10 }}>
+          <PromptDraftForm onSubmitted={refresh} onError={(m) => setError(m)} />
+        </div>
+      </details>
       <ul className="items">
         {items.map((p) => (
           <li key={`${p.pack_id}@${p.version}`}>

@@ -259,4 +259,11 @@ export const api = {
     postJson(`${API_BASE}/admin/integrity/recheck`, check ? { check } : {}, { ...opts, timeout: LONG_TIMEOUT }),
   repairIntegrity: (check, confirm, opts) =>
     postJson(`${API_BASE}/admin/integrity/repair`, { check, confirm }, { ...opts, timeout: LONG_TIMEOUT }),
+  // Community moderation
+  getCommunityPosts: (params = {}, opts) =>
+    get(`${API_BASE}/community/posts?${new URLSearchParams(params)}`, opts),
+  deleteCommunityPost: (id, opts) =>
+    del(`${API_BASE}/community/posts/${id}`, opts),
+  restoreCommunityPost: (id, opts) =>
+    postJson(`${API_BASE}/community/posts/${id}/restore`, {}, opts),
 };

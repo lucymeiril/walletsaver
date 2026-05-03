@@ -6,7 +6,9 @@ import s from './Products.module.css';
 const DEFAULT_SOURCE_LABELS = {
   emart: '이마트', homeplus: '홈플러스',
   lottemart: '롯데마트', costco: '코스트코', hotdeal: '핫딜', government: '정부데이터',
-  musinsa: '무신사', giordano: '지오다노', community: '커뮤니티',
+  musinsa: '무신사', giordano: '지오다노', community: '커뮤니티', algumon: '알구몬',
+  unknown: '알 수 없음', mart_crawl: '마트 크롤', community_deal: '커뮤니티 딜',
+  baseline: '기준가', user_submitted: '사용자 등록',
 };
 
 const SORT_OPTIONS = [

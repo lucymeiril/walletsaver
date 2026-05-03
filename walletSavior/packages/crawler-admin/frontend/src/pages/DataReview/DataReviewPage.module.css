@@ -524,6 +524,98 @@
 .fullTable tr:last-child td { border-bottom: none; }
 .fullTable tbody tr:hover { background: var(--glass); }
 
+.tableHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: var(--space-sm);
+}
+
+.tableHeaderRow .sectionTitle {
+  margin-bottom: 0;
+}
+
+.issueFilterPanel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+  margin-bottom: var(--space-sm);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  border-radius: var(--radius-sm);
+  background: rgba(248, 113, 113, 0.06);
+}
+
+.issueFilterLabel {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semi);
+  color: var(--text2);
+}
+
+.issueChip,
+.issueChipActive,
+.resetIssueFilterBtn {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 4px 10px;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+}
+
+.issueChip {
+  background: var(--surface);
+  color: var(--text2);
+}
+
+.issueChip:hover {
+  border-color: var(--red);
+  color: var(--text);
+}
+
+.issueChipActive {
+  background: rgba(248, 113, 113, 0.18);
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.resetIssueFilterBtn {
+  background: var(--glass);
+  color: var(--text2);
+}
+
+.resetIssueFilterBtn:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.activeIssueState {
+  color: var(--red);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semi);
+}
+
+.problemRow {
+  background: rgba(248, 113, 113, 0.05);
+}
+
+.issueCell {
+  color: var(--red) !important;
+  font-weight: var(--fw-semi);
+  white-space: nowrap !important;
+}
+
+.emptyFilteredRows {
+  padding: 20px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text3);
+  text-align: center;
+  font-size: var(--fs-sm);
+}
+
 .rowNumTh, .rowNum {
   text-align: center;
   color: var(--text3);

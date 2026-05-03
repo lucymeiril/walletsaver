@@ -272,4 +272,7 @@ export const api = {
     body: JSON.stringify(data),
     timeoutMs: 120000,
   }).then(r => r.json()),
+  getAiProviders: (aiAdminBaseUrl) => fetchWithTimeout(
+    `${API_BASE}/ai-export/providers?${new URLSearchParams({ ai_admin_base_url: aiAdminBaseUrl })}`,
+  ).then(r => r.json()),
 };

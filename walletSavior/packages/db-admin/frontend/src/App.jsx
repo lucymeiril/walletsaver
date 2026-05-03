@@ -12,6 +12,7 @@ const ClassificationPage = lazy(() => import('./pages/Classification/Classificat
 const Analytics          = lazy(() => import('./pages/Analytics/Analytics'));
 const InboxPage          = lazy(() => import('./pages/Inbox/InboxPage'));
 const IntegrityPage      = lazy(() => import('./pages/Integrity/IntegrityPage'));
+const CommunityModeration = lazy(() => import('./pages/Community/CommunityModeration'));
 
 function Loader() {
   return (
@@ -70,6 +71,7 @@ export default function App() {
             <Route path="/keywords"       element={<Navigate to="/classification" replace />} />
             <Route path="/analytics"      element={<PageBoundary><Analytics /></PageBoundary>} />
             <Route path="/integrity"      element={<PageBoundary><IntegrityPage /></PageBoundary>} />
+            <Route path="/community"      element={<PageBoundary><CommunityModeration /></PageBoundary>} />
           </Route>
         </Routes>
       </Suspense>

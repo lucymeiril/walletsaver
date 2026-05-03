@@ -124,11 +124,23 @@ export default function Products() {
 
   /* ─── 모달 ─── */
   const openAdd = () => {
-    setForm({ name: '', category: '', categoryId: '', unit: '', description: '', image_url: '' });
+    setForm({
+      name: '', category: '', categoryId: '', unit: '',
+      description: '', image_url: '', source_type: 'unknown',
+      attributes_json: '', is_active: true,
+    });
     setFormKeywords([]); setModal({ mode: 'add' });
   };
   const openEdit = (p) => {
-    setForm({ ...p, categoryId: p.category_id || '', basePrice: String(p.basePrice || p.originalPrice || ''), currentAvg: String(p.currentAvg || p.currentPrice || '') });
+    setForm({
+      ...p,
+      categoryId: p.category_id || '',
+      basePrice: String(p.basePrice || p.originalPrice || ''),
+      currentAvg: String(p.currentAvg || p.currentPrice || ''),
+      source_type: p.source_type || 'unknown',
+      attributes_json: p.attributes ? JSON.stringify(p.attributes, null, 2) : '',
+      is_active: p.is_active !== false,
+    });
     const kwList = (p.keywords || []).map(k => {
       if (typeof k === 'object' && k.id && k.keyword) return k;
       if (typeof k === 'string') return { id: k, keyword: keywords.find(kw => kw.id === k)?.keyword || k };
@@ -140,7 +152,25 @@ export default function Products() {
   const openDetail = (p) => setModal({ mode: 'detail', product: p });
 
   const handleSave = async () => {
-    const data = { name: form.name, category_id: form.categoryId || null, unit: form.unit, description: form.description || null, image_url: form.image_url || null };
+    let attributes = null;
+    if ((form.attributes_json || '').trim()) {
+      try {
+        attributes = JSON.parse(form.attributes_json);
+      } catch {
+        alert('속성(JSON) 형식이 올바르지 않습니다.');
+        return;
+      }
+    }
+    const data = {
+      name: form.name,
+      category_id: form.categoryId || null,
+      unit: form.unit || '개',
+      description: form.description || null,
+      image_url: form.image_url || null,
+      source_type: form.source_type || 'unknown',
+      attributes,
+      is_active: form.is_active !== false,
+    };
 
     // Resolve keyword IDs — create new keywords first, then collect all IDs
     const resolvedKeywordIds = [];

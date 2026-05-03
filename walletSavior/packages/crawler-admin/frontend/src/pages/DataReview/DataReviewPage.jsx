@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback, memo, useRef } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import useAdminStore from '../../stores/adminStore';
 import { api } from '../../api/client';
 import { CheckCircle, XCircle, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, RefreshCw, Info, Trash2, Send } from 'lucide-react';
@@ -29,6 +29,79 @@ const isOutlierValue = (key, val) => {
 };
 
 const FIELD_STATUS_ICON = { ok: '✅', warn: '⚠️', missing: '❌' };
+
+const ISSUE_FILTERS = [
+  { key: 'all', label: '전체 문제' },
+  { key: 'missing', label: '누락 필드' },
+  { key: 'format_error', label: '형식 오류' },
+  { key: 'duplicate', label: '중복' },
+  { key: 'outlier', label: '이상치' },
+];
+
+const issueMatchesFilter = (issues, filterKey) => {
+  if (!filterKey) return true;
+  if (filterKey === 'all') return issues.length > 0;
+  if (filterKey === 'missing') return issues.some((issue) => issue.startsWith('missing:'));
+  return issues.includes(filterKey);
+};
+
+const getIssueText = (issue) => {
+  if (issue.startsWith('missing:')) return `누락:${issue.slice(8)}`;
+  if (issue === 'outlier') return '이상치';
+  if (issue === 'duplicate') return '중복';
+  if (issue === 'format_error') return '형식오류';
+  return issue;
+};
+
+const getProblemIssueMap = (detail) => {
+  const map = new Map();
+  const addIssue = (index, issue) => {
+    if (!Number.isInteger(index)) return;
+    const issues = map.get(index) || [];
+    if (!issues.includes(issue)) issues.push(issue);
+    map.set(index, issues);
+  };
+
+  for (const problem of detail?.problem_indices || []) {
+    if (Number.isInteger(problem.index)) {
+      map.set(problem.index, Array.isArray(problem.issues) ? problem.issues : []);
+    }
+  }
+
+  const bd = detail?.quality_breakdown || {};
+  for (const item of bd.missing_fields_detail || []) {
+    for (const field of item.fields || []) addIssue(item.index, `missing:${field}`);
+  }
+  for (const item of bd.format_errors_detail || []) addIssue(item.index, 'format_error');
+  for (const index of bd.duplicate_indices || []) addIssue(index, 'duplicate');
+  for (const index of bd.outlier_indices || []) addIssue(index, 'outlier');
+
+  return map;
+};
+
+const getIssueCounts = (detail) => {
+  const bd = detail?.quality_breakdown || {};
+  const issueMap = getProblemIssueMap(detail);
+  const derived = { missing: 0, format_error: 0, duplicate: 0, outlier: 0 };
+  for (const issues of issueMap.values()) {
+    if (issues.some((issue) => issue.startsWith('missing:'))) derived.missing += 1;
+    if (issues.includes('format_error')) derived.format_error += 1;
+    if (issues.includes('duplicate')) derived.duplicate += 1;
+    if (issues.includes('outlier')) derived.outlier += 1;
+  }
+  const counts = {
+    all: issueMap.size,
+    missing: bd.missing_fields ?? derived.missing,
+    format_error: bd.format_errors ?? derived.format_error,
+    duplicate: bd.duplicates ?? derived.duplicate,
+    outlier: bd.outliers ?? derived.outlier,
+  };
+
+  if (counts.all === 0 && (counts.missing || counts.format_error || counts.duplicate || counts.outlier)) {
+    counts.all = counts.missing + counts.format_error + counts.duplicate + counts.outlier;
+  }
+  return counts;
+};
 
 function parseAsUTC(dateStr) {
   if (!dateStr) return NaN;
@@ -112,6 +185,7 @@ export default function DataReviewPage() {
   const [aiProviders, setAiProviders] = useState([]);
   const [aiProviderLoading, setAiProviderLoading] = useState(false);
   const [aiExportState, setAiExportState] = useState({});
+  const [activeIssueFilters, setActiveIssueFilters] = useState({});
 
   const [showCleanupModal, setShowCleanupModal] = useState(false);
   const [cleanupLoading, setCleanupLoading] = useState(false);
@@ -142,7 +216,15 @@ export default function DataReviewPage() {
   }, [ingestions]);
 
   const expandCard = async (id) => {
-    if (expandedId === id) { setExpandedId(null); return; }
+    if (expandedId === id) {
+      setExpandedId(null);
+      setActiveIssueFilters(prev => {
+        const next = { ...prev };
+        delete next[id];
+        return next;
+      });
+      return;
+    }
     setExpandedId(id);
     if (!detailCache[id]) {
       await fetchDetail(id);
@@ -327,6 +409,18 @@ export default function DataReviewPage() {
     if (score >= 90) return styles.qualityHigh;
     if (score >= 70) return styles.qualityMid;
     return styles.qualityLow;
+  };
+
+  const setIssueFilter = (itemId, filterKey) => {
+    setActiveIssueFilters(prev => ({ ...prev, [itemId]: filterKey }));
+  };
+
+  const clearIssueFilter = (itemId) => {
+    setActiveIssueFilters(prev => {
+      const next = { ...prev };
+      delete next[itemId];
+      return next;
+    });
   };
 
   const getCellClassName = (key, value) => {
@@ -593,8 +687,16 @@ export default function DataReviewPage() {
               const rawQuality = detail?.quality_score ?? item.qualityScore ?? item.quality_score ?? 0;
               const qualityScore = rawQuality > 0 && rawQuality <= 1 ? Math.round(rawQuality * 100) : rawQuality;
               const schemaType = item.schemaType ?? item.schema_type ?? 'Unknown';
-              const allKeys = items.length > 0 ? Object.keys(items[0]) : [];
+              const allKeys = items.length > 0 ? Array.from(new Set(items.flatMap((row) => Object.keys(row)))) : [];
               const qualityBreakdown = getQualityBreakdown(item, detail);
+              const issueMap = getProblemIssueMap(detail);
+              const issueCounts = getIssueCounts(detail);
+              const activeIssueFilter = activeIssueFilters[item.id] || null;
+              const displayedRows = activeIssueFilter
+                ? items.map((row, idx) => ({ row, idx, issues: issueMap.get(idx) || [] }))
+                    .filter(({ issues }) => issueMatchesFilter(issues, activeIssueFilter))
+                : items.map((row, idx) => ({ row, idx, issues: issueMap.get(idx) || [] }));
+              const activeIssueLabel = ISSUE_FILTERS.find((f) => f.key === activeIssueFilter)?.label;
 
               return (
                 <div key={item.id} className={styles.card}>
@@ -699,31 +801,74 @@ export default function DataReviewPage() {
                       {/* 데이터 전체 보기 — 모든 행·열, 잘림 해제, 하이라이트 */}
                       {items.length > 0 && (
                         <div className={styles.section}>
-                          <h4 className={styles.sectionTitle}>🔍 데이터 전체 보기 ({items.length}건)</h4>
-                          <div className={styles.fullTableWrapper}>
-                            <table className={styles.fullTable}>
-                              <thead>
-                                <tr>
-                                  <th className={styles.rowNumTh}>#</th>
-                                  {allKeys.map((key) => (
-                                    <th key={key}>{key}</th>
-                                  ))}
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {items.map((row, idx) => (
-                                  <tr key={idx}>
-                                    <td className={styles.rowNum}>{idx + 1}</td>
-                                    {allKeys.map((key) => (
-                                      <td key={key} className={`${styles.dataCell} ${getCellClassName(key, row[key])}`}>
-                                        {String(row[key] ?? '')}
-                                      </td>
-                                    ))}
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
+                          <div className={styles.tableHeaderRow}>
+                            <h4 className={styles.sectionTitle}>
+                              🔍 데이터 전체 보기 ({activeIssueFilter ? `${displayedRows.length}/${items.length}` : items.length}건)
+                            </h4>
+                            {activeIssueFilter && (
+                              <button className={styles.resetIssueFilterBtn} onClick={() => clearIssueFilter(item.id)}>
+                                필터 초기화
+                              </button>
+                            )}
                           </div>
+                          {issueCounts.all > 0 && (
+                            <div className={styles.issueFilterPanel}>
+                              <span className={styles.issueFilterLabel}>문제 행 필터:</span>
+                              {ISSUE_FILTERS.map((filterDef) => {
+                                const count = filterDef.key === 'all' ? issueCounts.all : issueCounts[filterDef.key];
+                                if (!count) return null;
+                                return (
+                                  <button
+                                    key={filterDef.key}
+                                    className={activeIssueFilter === filterDef.key ? styles.issueChipActive : styles.issueChip}
+                                    onClick={() => setIssueFilter(item.id, filterDef.key)}
+                                    aria-pressed={activeIssueFilter === filterDef.key}
+                                  >
+                                    {filterDef.label} {count}건
+                                  </button>
+                                );
+                              })}
+                              {activeIssueFilter && (
+                                <span className={styles.activeIssueState}>
+                                  {activeIssueLabel}만 표시 중 · 원본 행 번호 유지
+                                </span>
+                              )}
+                            </div>
+                          )}
+                          {activeIssueFilter && displayedRows.length === 0 ? (
+                            <div className={styles.emptyFilteredRows}>해당 문제 유형의 행이 없습니다.</div>
+                          ) : (
+                            <div className={styles.fullTableWrapper}>
+                              <table className={styles.fullTable}>
+                                <thead>
+                                  <tr>
+                                    <th className={styles.rowNumTh}>#</th>
+                                    {allKeys.map((key) => (
+                                      <th key={key}>{key}</th>
+                                    ))}
+                                    {issueCounts.all > 0 && <th>문제</th>}
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {displayedRows.map(({ row, idx, issues }) => (
+                                    <tr key={idx} className={issues.length > 0 ? styles.problemRow : ''}>
+                                      <td className={styles.rowNum}>{idx + 1}</td>
+                                      {allKeys.map((key) => (
+                                        <td key={key} className={`${styles.dataCell} ${getCellClassName(key, row[key])}`}>
+                                          {String(row[key] ?? '')}
+                                        </td>
+                                      ))}
+                                      {issueCounts.all > 0 && (
+                                        <td className={styles.issueCell}>
+                                          {issues.length > 0 ? issues.map(getIssueText).join(' / ') : '정상'}
+                                        </td>
+                                      )}
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          )}
                         </div>
                       )}
 

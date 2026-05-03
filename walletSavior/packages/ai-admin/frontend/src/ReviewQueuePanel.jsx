@@ -59,20 +59,15 @@ function WorkflowGuide({ audit, rawCount, proposalCount }) {
   return (
     <div className="card workflow-card">
       <div className="row" style={{ justifyContent: 'space-between' }}>
-        <strong>크롤러 → AI → 검수 운영 흐름</strong>
+        <strong>간단 흐름: 원본 확인 → AI 제안 검수</strong>
         <span className={`badge ${audit?.status === 'ok' ? 'ok' : 'warn'}`}>{audit?.status || 'unknown'}</span>
       </div>
-      <ol className="workflow-steps">
-        <li><b>Raw 확인</b> — crawler-admin에서 넘어온 원본 레코드와 payload를 먼저 확인합니다.</li>
-        <li><b>AI 제안 검토</b> — 연결된 proposal, provenance, audit issue를 한 화면에서 비교합니다.</li>
-        <li><b>오프라인 검수 액션</b> — 시작/승인/보정/반려/수정/삭제는 로컬 review API만 호출하고 모델을 호출하지 않습니다.</li>
-      </ol>
       <div className="muted">
         원본 {audit?.raw_record_count ?? rawCount}개 · 커버 {audit?.covered_record_count ?? 0}개 ·
         누락 {audit?.missing_record_count ?? 0}개 · 제안 {audit?.proposal_count ?? proposalCount}개 · 이슈 {audit?.issue_count ?? 0}개
       </div>
       <div className="muted" style={{ marginTop: 6 }}>
-        라이브 모델 호출은 <code>/api/ingest/raw-records/label</code> 같은 ingest/provider 액션에서만 발생합니다. 이 검수 화면은 재라벨링을 실행하지 않습니다.
+        이 화면의 기본 버튼은 모델을 호출하지 않습니다. 문제 있는 항목만 펼쳐서 보정/반려하세요.
       </div>
     </div>
   );
@@ -174,11 +169,7 @@ function ProposalActions({ proposal, reviewerId, setReviewerId, onRefresh, onErr
             검수 시작
           </button>
         )}
-        {reviewable && <button disabled={busy} onClick={approve}>승인</button>}
-        {reviewable && <button disabled={busy} onClick={correct}>보정 승인</button>}
-        {reviewable && <button disabled={busy} onClick={reject}>반려</button>}
-        {reviewable && <button disabled={busy} onClick={() => setEditOpen((open) => !open)}>값 수정</button>}
-        {deletable && <button disabled={busy} onClick={remove}>삭제</button>}
+        {reviewable && <button className="primary-button" disabled={busy} onClick={approve}>문제 없음: 승인</button>}
       </div>
       {reviewable && (
         <div className="form-grid compact-grid" style={{ marginTop: 8 }}>
@@ -186,15 +177,34 @@ function ProposalActions({ proposal, reviewerId, setReviewerId, onRefresh, onErr
             검수자 ID
             <input value={reviewerId} onChange={(e) => setReviewerId(e.target.value)} placeholder="admin" />
           </label>
-          <label>
-            보정 값(JSON 또는 문자열)
-            <input value={correctedText} onChange={(e) => setCorrectedText(e.target.value)} />
-          </label>
-          <label>
-            반려/보정 사유
-            <input value={reason} onChange={(e) => setReason(e.target.value)} placeholder="왜 결정했는지" />
-          </label>
         </div>
+      )}
+      {reviewable && (
+        <details className="inline-details" style={{ marginTop: 8 }}>
+          <summary>문제가 있나요? 보정/반려/직접수정 열기</summary>
+          <div className="form-grid compact-grid" style={{ marginTop: 8 }}>
+            <label>
+              보정 값(JSON 또는 문자열)
+              <input value={correctedText} onChange={(e) => setCorrectedText(e.target.value)} />
+            </label>
+            <label>
+              반려/보정 사유
+              <input value={reason} onChange={(e) => setReason(e.target.value)} placeholder="왜 결정했는지" />
+            </label>
+          </div>
+          <div className="row" style={{ gap: 6, marginTop: 8 }}>
+            <button disabled={busy} onClick={correct}>보정 승인</button>
+            <button disabled={busy} onClick={reject}>반려</button>
+            <button disabled={busy} onClick={() => setEditOpen((open) => !open)}>제안 값 직접 수정</button>
+            {deletable && <button className="danger-outline" disabled={busy} onClick={remove}>삭제</button>}
+          </div>
+        </details>
+      )}
+      {!reviewable && deletable && (
+        <details className="inline-details" style={{ marginTop: 8 }}>
+          <summary>고급: 삭제 열기</summary>
+          <button className="danger-outline" style={{ marginTop: 8 }} disabled={busy} onClick={remove}>삭제</button>
+        </details>
       )}
       {editOpen && (
         <div className="card nested-card">
@@ -235,15 +245,18 @@ function ProposalCard({ proposal, reviewerId, setReviewerId, onRefresh, onError 
         <div style={{ marginTop: 6 }}>
           <b>{proposal.target_field}</b> = <code>{pretty(proposal.proposed_value)}</code>
         </div>
-        <div className="muted" style={{ marginTop: 4 }}>
-          role {proposal.provenance?.worker_role || '-'} · confidence {proposal.provenance?.confidence ?? '-'} · model {proposal.provenance?.provider?.model_name || '-'}
-        </div>
-        {proposal.provenance?.evidence_text && (
-          <div className="muted" style={{ marginTop: 4 }}>근거: {proposal.provenance.evidence_text}</div>
-        )}
-        {!!proposal.alternatives?.length && (
-          <div className="muted" style={{ marginTop: 4 }}>대안: {proposal.alternatives.map(pretty).join(', ')}</div>
-        )}
+        <details className="inline-details" style={{ marginTop: 6 }}>
+          <summary>AI 근거/모델 정보 보기</summary>
+          <div className="muted" style={{ marginTop: 4 }}>
+            role {proposal.provenance?.worker_role || '-'} · confidence {proposal.provenance?.confidence ?? '-'} · model {proposal.provenance?.provider?.model_name || '-'}
+          </div>
+          {proposal.provenance?.evidence_text && (
+            <div className="muted" style={{ marginTop: 4 }}>근거: {proposal.provenance.evidence_text}</div>
+          )}
+          {!!proposal.alternatives?.length && (
+            <div className="muted" style={{ marginTop: 4 }}>대안: {proposal.alternatives.map(pretty).join(', ')}</div>
+          )}
+        </details>
         <ProposalActions
           proposal={proposal}
           reviewerId={reviewerId}
@@ -327,7 +340,7 @@ export default function ReviewQueuePanel() {
   }, {}), [items]);
 
   return (
-    <section className="panel review-panel">
+    <section id="review" className="panel review-panel anchor-offset">
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <h2>검수 큐 <span className="muted">({items.length} proposals / {rawRecords.length} raw)</span></h2>
         <button className="secondary-button" onClick={refresh} disabled={loading}>{loading ? '불러오는 중...' : '새로고침'}</button>
@@ -336,21 +349,24 @@ export default function ReviewQueuePanel() {
 
       <WorkflowGuide audit={audit} rawCount={rawRecords.length} proposalCount={items.length} />
 
-      <div className="row" style={{ margin: '12px 0' }}>
-        <label className="muted">
-          상태 필터&nbsp;
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-            <option value="">전체</option>
-            {STATUS_OPTIONS.map((status) => (
-              <option key={status} value={status}>{status} ({statusCounts[status] || 0})</option>
-            ))}
-          </select>
-        </label>
-        <label className="muted">
-          검색&nbsp;
-          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="raw id/source/title" />
-        </label>
-      </div>
+      <details className="inline-details" style={{ margin: '12px 0' }}>
+        <summary>필터/검색 열기</summary>
+        <div className="row" style={{ marginTop: 8 }}>
+          <label className="muted">
+            상태 필터&nbsp;
+            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+              <option value="">전체</option>
+              {STATUS_OPTIONS.map((status) => (
+                <option key={status} value={status}>{status} ({statusCounts[status] || 0})</option>
+              ))}
+            </select>
+          </label>
+          <label className="muted">
+            검색&nbsp;
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="raw id/source/title" />
+          </label>
+        </div>
+      </details>
 
       <div className="split-view">
         <div className="card list-card">
@@ -400,6 +416,9 @@ export default function ReviewQueuePanel() {
                       {issue.actual !== undefined && <div>actual: <code>{pretty(issue.actual)}</code></div>}
                     </div>
                   ))}
+                  <div className="muted recovery-actions">
+                    복구: 원본이 잘못되었으면 crawler-admin에서 재수집하고, 제안이 누락되었으면 고급 Job 상태를 확인하세요.
+                  </div>
                 </div>
               )}
 

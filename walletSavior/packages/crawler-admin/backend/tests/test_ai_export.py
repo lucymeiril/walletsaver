@@ -17,6 +17,7 @@ from pipeline.ai_export import (
     RawExportError,
     build_raw_batch,
     build_raw_batches,
+    fetch_ai_admin_providers,
     forward_raw_records_to_ai_admin,
     split_raw_records_for_ai,
     to_raw_record,
@@ -287,6 +288,42 @@ class TestBuildRawBatch:
         assert calls[0][1]["provider_id"] == "google-dev"
         assert calls[0][1]["records"][0]["raw_title"] == "오리온 오징어 땅콩 98g"
 
+    def test_fetch_ai_admin_providers_uses_server_side_get(self):
+        calls = []
+
+        def fake_get(url, headers, timeout_seconds):
+            calls.append((url, headers, timeout_seconds))
+            return 200, {
+                "providers": [
+                    {
+                        "provider_id": "google-dev",
+                        "provider_kind": "gemini",
+                        "default_model": "gemma-3-27b-it",
+                    }
+                ],
+                "count": 1,
+            }
+
+        result = fetch_ai_admin_providers(
+            ai_admin_base_url="http://ai-admin.test/",
+            timeout_seconds=7,
+            http_get=fake_get,
+        )
+
+        assert result["count"] == 1
+        assert result["providers"][0]["provider_id"] == "google-dev"
+        assert calls == [("http://ai-admin.test/api/providers", {}, 7)]
+
+    def test_fetch_ai_admin_providers_rejects_bad_response(self):
+        def fake_get(url, headers, timeout_seconds):
+            return 200, {"providers": "not-a-list"}
+
+        with pytest.raises(RawExportError, match="invalid providers"):
+            fetch_ai_admin_providers(
+                ai_admin_base_url="http://ai-admin.test",
+                http_get=fake_get,
+            )
+
 
 # ── HTTP 라우트 테스트 ───────────────────────────────────────
 
@@ -347,3 +384,35 @@ class TestAIExportRoute:
         }
         resp = client.post("/api/ai-export/raw-batch", json=payload)
         assert resp.status_code == 422
+
+    def test_get_ai_providers_proxies_through_backend(self, client, monkeypatch):
+        calls = []
+
+        def fake_fetch(**kwargs):
+            calls.append(kwargs)
+            return {
+                "providers": [
+                    {
+                        "provider_id": "google-dev",
+                        "provider_kind": "gemini",
+                        "default_model": "gemma-3-27b-it",
+                    }
+                ],
+                "count": 1,
+            }
+
+        monkeypatch.setattr("api.routes.ai_export.fetch_ai_admin_providers", fake_fetch)
+
+        resp = client.get(
+            "/api/ai-export/providers",
+            params={"ai_admin_base_url": "http://localhost:8003"},
+        )
+
+        assert resp.status_code == 200, resp.text
+        assert resp.json()["providers"][0]["provider_id"] == "google-dev"
+        assert calls == [
+            {
+                "ai_admin_base_url": "http://localhost:8003",
+                "timeout_seconds": 10.0,
+            }
+        ]

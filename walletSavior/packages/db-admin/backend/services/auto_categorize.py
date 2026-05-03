@@ -1034,11 +1034,11 @@ def run_auto_categorize():
                     else:
                         cat_id = None
 
-            if cat_id:
+            if cat_id and confidence >= 0.85:
                 old_cat = p.category_id
                 p.category_id = cat_id
                 p.categorization_confidence = confidence
-                p.categorization_method = "auto" if confidence >= 0.85 else "suggested"
+                p.categorization_method = "auto"
 
                 # Extract and store attributes
                 attrs = result.attributes if hasattr(result, 'attributes') else {}
@@ -1060,6 +1060,9 @@ def run_auto_categorize():
                     updated += 1
                 categorized += 1
             else:
+                if cat_id:
+                    p.categorization_confidence = confidence
+                    p.categorization_method = "suggested"
                 skipped += 1
 
         log.info(

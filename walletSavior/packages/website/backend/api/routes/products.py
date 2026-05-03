@@ -166,6 +166,8 @@ async def get_category_summary(
         "seafood":      {"icon": "🐟", "display": "수산물"},
         "processed":    {"icon": "🥫", "display": "가공식품"},
         "living":       {"icon": "🧴", "display": "생활용품"},
+        "electronics":  {"icon": "📱", "display": "전자제품"},
+        "fashion":      {"icon": "👕", "display": "패션"},
         "dairy":        {"icon": "🥛", "display": "유제품"},
         "eggs":         {"icon": "🥚", "display": "계란/난류"},
         "grain":        {"icon": "🌾", "display": "곡류"},
@@ -209,7 +211,7 @@ async def get_category_summary(
         if not items:
             return ApiResponse(data=_default_category_summary())
 
-        # 카테고리별 그룹핑 — category_id 우선, 없으면 cat 이름 → ID 매핑
+        # 카테고리별 그룹핑 — approved category_id/name만 사용 (상품명 추론 금지)
         from collections import defaultdict
         groups = defaultdict(list)
         for p in items:
@@ -221,14 +223,11 @@ async def get_category_summary(
                 top_cat = cat_id.split(".")[0]
             elif cat_name and cat_name in CATNAME_TO_ID:
                 top_cat = CATNAME_TO_ID[cat_name]
-            elif cat_name:
-                top_cat = cat_name
             else:
                 top_cat = ""
 
-            # 카테고리 미분류 시 상품명 키워드로 추론
-            if not top_cat or top_cat == "etc":
-                top_cat = _infer_category_from_name(p.get("name", ""))
+            if not top_cat or top_cat == "etc" or top_cat not in CATEGORY_META:
+                continue
             groups[top_cat].append(p)
 
         summaries = []

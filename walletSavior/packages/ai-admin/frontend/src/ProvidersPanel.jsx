@@ -64,37 +64,39 @@ async function fetchJson(url, options) {
 function SetupState({ setup }) {
   if (!setup) return <div className="muted" style={{ marginTop: 6 }}>설정 상태를 아직 불러오지 못했습니다.</div>;
   return (
-    <div className="card nested-card setup-state-card">
-      <div className="row" style={{ justifyContent: 'space-between' }}>
-        <strong>.env / provider setup</strong>
+    <div className="setup-state-card">
+      <div className="row" style={{ marginTop: 6 }}>
         <span className={`badge ${setup.can_call_live ? 'ok' : setup.requires_secret ? 'warn' : ''}`}>
-          {setup.requires_secret
-            ? setup.secret_resolved ? 'alias 확인됨' : 'alias 미설정/미발견'
-            : 'secret 불필요'}
+          {setup.can_call_live
+            ? 'LIVE 호출 가능'
+            : setup.requires_secret
+              ? 'secret 확인 필요'
+              : '오프라인 가능'}
         </span>
+        <span className="muted">alias: <code>{setup.secret_alias || '-'}</code> · enabled: {setup.is_enabled ? 'yes' : 'no'}</span>
       </div>
-      <div className="muted" style={{ marginTop: 6 }}>
-        alias: <code>{setup.secret_alias || '-'}</code> · enabled: {setup.is_enabled ? 'yes' : 'no'}
-      </div>
-      <div className="muted" style={{ marginTop: 4 }}>
-        확인 위치: {setup.env_locations?.map((path) => <code key={path} style={{ marginRight: 6 }}>{path}</code>)}
-      </div>
-      <div className="two-column-hints">
-        <div>
-          <b>오프라인/감사 액션</b>
-          <ul>
-            {(setup.offline_actions || []).map((action) => <li key={action}><code>{action}</code></li>)}
-          </ul>
+      <details className="inline-details" style={{ marginTop: 6 }}>
+        <summary>.env 위치와 LIVE/오프라인 액션 보기</summary>
+        <div className="muted" style={{ marginTop: 4 }}>
+          확인 위치: {setup.env_locations?.map((path) => <code key={path} style={{ marginRight: 6 }}>{path}</code>)}
         </div>
-        <div>
-          <b>LIVE 모델/API 액션</b>
-          <ul>
-            {(setup.live_actions || []).length === 0
-              ? <li className="muted">등록된 live 액션 없음</li>
-              : setup.live_actions.map((action) => <li key={action}><code>{action}</code></li>)}
-          </ul>
+        <div className="two-column-hints">
+          <div>
+            <b>오프라인/감사 액션</b>
+            <ul>
+              {(setup.offline_actions || []).map((action) => <li key={action}><code>{action}</code></li>)}
+            </ul>
+          </div>
+          <div>
+            <b>LIVE 모델/API 액션</b>
+            <ul>
+              {(setup.live_actions || []).length === 0
+                ? <li className="muted">등록된 live 액션 없음</li>
+                : setup.live_actions.map((action) => <li key={action}><code>{action}</code></li>)}
+            </ul>
+          </div>
         </div>
-      </div>
+      </details>
     </div>
   );
 }
@@ -109,6 +111,7 @@ export default function ProvidersPanel() {
   const [saveError, setSaveError] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [modelResults, setModelResults] = useState({});
+  const [configOpen, setConfigOpen] = useState(false);
 
   const setupById = useMemo(() => setupStates.reduce((acc, state) => {
     acc[state.provider_id] = state;
@@ -142,12 +145,14 @@ export default function ProvidersPanel() {
     setForm(fromConfig(cfg));
     setEditingId(cfg.provider_id);
     setSaveError(null);
+    setConfigOpen(true);
   }
 
   function resetForm() {
     setForm(EMPTY_FORM);
     setEditingId(null);
     setSaveError(null);
+    setConfigOpen(false);
   }
 
   async function submit(event) {
@@ -222,10 +227,9 @@ export default function ProvidersPanel() {
         </button>
       </div>
       <div className="card workflow-card">
-        <strong>Secret boundary</strong>
+        <strong>안전 안내</strong>
         <div className="muted" style={{ marginTop: 6 }}>
-          이 화면은 secret alias와 존재 여부만 보여줍니다. API 키 값은 저장/표시하지 않습니다.
-          <b> LIVE</b> 배지가 붙은 모델 조회, smoke test, raw-record labeling은 실제 provider/API를 호출할 수 있습니다.
+          API 키 값은 저장/표시하지 않습니다. <b>LIVE 모델 조회</b>는 확인창 이후에만 실제 provider/API를 호출합니다.
         </div>
       </div>
       {loading && <div className="muted">로딩 중...</div>}
@@ -249,12 +253,15 @@ export default function ProvidersPanel() {
                     <span className="badge">{p.provider_kind}</span>{' '}
                     {p.provider_kind === 'gemini' && <span className="badge warn">LIVE capable</span>}
                   </div>
-                  <div className="muted" style={{ marginTop: 4 }}>
-                    model: <code>{p.default_model}</code>
-                    {p.base_url ? <> · base_url: <code>{p.base_url}</code></> : null}
-                    {p.secret_alias ? <> · alias: <code>{p.secret_alias}</code></> : <> · alias 기본값/없음</>}
-                    {' '}· 동시 {p.max_concurrent_jobs} · 간격 {p.min_request_interval_seconds}s
-                  </div>
+                  <details className="inline-details" style={{ marginTop: 4 }}>
+                    <summary>모델/요청 제한 보기</summary>
+                    <div className="muted" style={{ marginTop: 4 }}>
+                      model: <code>{p.default_model}</code>
+                      {p.base_url ? <> · base_url: <code>{p.base_url}</code></> : null}
+                      {p.secret_alias ? <> · alias: <code>{p.secret_alias}</code></> : <> · alias 기본값/없음</>}
+                      {' '}· 동시 {p.max_concurrent_jobs} · 간격 {p.min_request_interval_seconds}s
+                    </div>
+                  </details>
                   <SetupState setup={setup} />
                   {models?.status === 'loading' && (
                     <div className="muted" style={{ marginTop: 6 }}>LIVE 모델 목록 확인 중...</div>
@@ -294,8 +301,10 @@ export default function ProvidersPanel() {
         </ul>
       )}
 
-      <form className="provider-form" onSubmit={submit}>
-        <h3 style={{ margin: '16px 0 8px', fontSize: '0.95rem' }}>
+      <details className="inline-details" open={configOpen} onToggle={(e) => setConfigOpen(e.currentTarget.open)}>
+        <summary>{editingId ? `편집 중: ${editingId}` : 'Provider 추가/편집 열기'}</summary>
+        <form className="provider-form" onSubmit={submit}>
+        <h3 style={{ margin: '12px 0 8px', fontSize: '0.95rem' }}>
           {editingId ? `편집: ${editingId}` : '새 provider 추가'}
         </h3>
         <div className="form-grid">
@@ -356,7 +365,8 @@ export default function ProvidersPanel() {
           <button type="submit" disabled={saving}>{saving ? '저장 중...' : editingId ? '업데이트' : '추가'}</button>
           {editingId && <button type="button" onClick={resetForm} disabled={saving}>취소</button>}
         </div>
-      </form>
+        </form>
+      </details>
     </section>
   );
 }

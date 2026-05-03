@@ -17,6 +17,7 @@ import json
 import uuid
 from datetime import datetime
 from typing import Any, Callable, Iterable, Optional
+from urllib.parse import urlparse
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
@@ -64,6 +65,15 @@ class RawExportError(ValueError):
 
 
 HttpPost = Callable[[str, dict[str, Any], dict[str, str], float], tuple[int, dict[str, Any]]]
+HttpGet = Callable[[str, dict[str, str], float], tuple[int, dict[str, Any]]]
+
+
+def _ai_admin_endpoint(ai_admin_base_url: str, path: str) -> str:
+    base_url = ai_admin_base_url.rstrip("/")
+    parsed = urlparse(base_url)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        raise RawExportError("ai_admin_base_url must be an http(s) URL")
+    return base_url + path
 
 
 def _first_str(item: dict[str, Any], keys: Iterable[str]) -> Optional[str]:
@@ -372,6 +382,54 @@ def _post_json(
         raise RawExportError(f"failed to call ai-admin ingest endpoint: {exc}") from exc
 
 
+def _get_json(
+    url: str,
+    headers: dict[str, str],
+    timeout_seconds: float,
+) -> tuple[int, dict[str, Any]]:
+    request = Request(url, headers=headers, method="GET")
+    try:
+        with urlopen(request, timeout=timeout_seconds) as response:
+            response_body = response.read().decode("utf-8")
+            data = json.loads(response_body) if response_body else {}
+            return response.status, data
+    except HTTPError as exc:
+        response_body = exc.read().decode("utf-8", errors="replace")
+        try:
+            data = json.loads(response_body) if response_body else {}
+        except json.JSONDecodeError:
+            data = {"detail": response_body}
+        return exc.code, data
+    except URLError as exc:
+        raise RawExportError(f"failed to call ai-admin providers endpoint: {exc}") from exc
+
+
+def fetch_ai_admin_providers(
+    *,
+    ai_admin_base_url: str,
+    api_key: Optional[str] = None,
+    timeout_seconds: float = 10.0,
+    http_get: Optional[HttpGet] = None,
+) -> dict[str, Any]:
+    """Server-side proxy for ai-admin providers so browsers avoid cross-origin calls."""
+    if not ai_admin_base_url:
+        raise RawExportError("ai_admin_base_url is required")
+
+    headers = {"X-API-Key": api_key} if api_key else {}
+    endpoint = _ai_admin_endpoint(ai_admin_base_url, "/api/providers")
+    get = http_get or _get_json
+    status_code, data = get(endpoint, headers, timeout_seconds)
+    if status_code >= 400:
+        detail = data.get("detail") or data.get("error") or data
+        raise RawExportError(f"ai-admin providers failed ({status_code}): {detail}")
+    if not isinstance(data, dict):
+        raise RawExportError("ai-admin providers response is not an object")
+    providers = data.get("providers")
+    if providers is not None and not isinstance(providers, list):
+        raise RawExportError("ai-admin providers response has invalid providers field")
+    return data
+
+
 def forward_raw_records_to_ai_admin(
     items: list[dict[str, Any]],
     *,
@@ -404,7 +462,7 @@ def forward_raw_records_to_ai_admin(
     )
     post = http_post or _post_json
     headers = {"X-API-Key": api_key} if api_key else {}
-    endpoint = ai_admin_base_url.rstrip("/") + "/api/ingest/raw-records/label"
+    endpoint = _ai_admin_endpoint(ai_admin_base_url, "/api/ingest/raw-records/label")
 
     responses: list[dict[str, Any]] = []
     for batch, records in zip(batches, record_batches):

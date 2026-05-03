@@ -5,6 +5,8 @@ import s from './Products.module.css';
 const SOURCE_LABELS = {
   all: '전체', emart: '이마트', homeplus: '홈플러스',
   lottemart: '롯데마트', costco: '코스트코', hotdeal: '핫딜', government: '정부데이터',
+  algumon: '알구몬', unknown: '알 수 없음', mart_crawl: '마트 크롤',
+  community_deal: '커뮤니티 딜', baseline: '기준가', user_submitted: '사용자 등록',
 };
 
 function SortIcon({ col, sortBy, sortDir }) {
@@ -67,7 +69,7 @@ function ProductRow({ p, selected, onToggleSelect, expanded, onToggleExpand, row
         </td>
         <td onClick={onDetail}>
           <div className={s.sourceTags}>
-            {(p.sources || (p.source ? [p.source] : [])).map(src => (
+            {([...new Set([...(p.sources || (p.source ? [p.source] : [])), p.source_type].filter(Boolean))]).map(src => (
               <span key={src} className={s.sourceTag}>{SOURCE_LABELS[src] || src}</span>
             ))}
           </div>

@@ -9,7 +9,15 @@ import s from './Products.module.css';
 const SOURCE_LABELS = {
   all: '전체', emart: '이마트', homeplus: '홈플러스',
   lottemart: '롯데마트', costco: '코스트코', hotdeal: '핫딜', government: '정부데이터',
+  algumon: '알구몬', unknown: '알 수 없음', mart_crawl: '마트 크롤',
+  community_deal: '커뮤니티 딜', baseline: '기준가', user_submitted: '사용자 등록',
 };
+
+const SOURCE_OPTIONS = [
+  'unknown', 'algumon', 'hotdeal', 'community', 'community_deal',
+  'mart_crawl', 'baseline', 'user_submitted', 'emart', 'homeplus',
+  'lottemart', 'costco', 'government', 'musinsa', 'giordano',
+];
 
 /* ─── 유사 상품 섹션 ─── */
 function SimilarProducts({ productId }) {
@@ -77,8 +85,9 @@ function DetailBody({ product, keywords, onEdit, onDelete }) {
         </div>
         <div>
           <span className={s.label}>소스</span>
-          <span>{(product.sources || []).map(src => SOURCE_LABELS[src] || src).join(', ') || product.source || '-'}</span>
+          <span>{([...new Set([...(product.sources || []), product.source, product.source_type].filter(Boolean))]).map(src => SOURCE_LABELS[src] || src).join(', ') || '-'}</span>
         </div>
+        <div><span className={s.label}>활성 상태</span><span>{product.is_active ? '활성' : '비활성'}</span></div>
       </div>
 
       {/* 소스별 가격 비교 */}
@@ -173,8 +182,31 @@ function FormBody({ form, setForm, formKeywords, setFormKeywords, categories, ke
         />
       </label>
       <label>단위<input value={form.unit || ''} onChange={e => setForm({ ...form, unit: e.target.value })} /></label>
+      <label>
+        소스 타입
+        <select value={form.source_type || 'unknown'} onChange={e => setForm({ ...form, source_type: e.target.value })}>
+          {SOURCE_OPTIONS.map(src => <option key={src} value={src}>{SOURCE_LABELS[src] || src}</option>)}
+        </select>
+      </label>
       <label>설명<input value={form.description || ''} onChange={e => setForm({ ...form, description: e.target.value })} /></label>
       <label>이미지 URL<input value={form.image_url || ''} onChange={e => setForm({ ...form, image_url: e.target.value })} /></label>
+      <label>
+        속성(JSON)
+        <textarea
+          rows={4}
+          value={form.attributes_json || ''}
+          placeholder='{"brand":"", "size":""}'
+          onChange={e => setForm({ ...form, attributes_json: e.target.value })}
+        />
+      </label>
+      <label className={s.checkboxLabel}>
+        <input
+          type="checkbox"
+          checked={form.is_active !== false}
+          onChange={e => setForm({ ...form, is_active: e.target.checked })}
+        />
+        활성 상품
+      </label>
       <label>
         키워드
         <TagInput

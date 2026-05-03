@@ -113,9 +113,9 @@ def _calculate_quality(items: list[dict], schema_type: str) -> tuple[float, dict
 
     # 필수 필드 검사
     if schema_type == "HotdealPost":
-        required = ["title", "url"]
+        required = ["title", "url", "price"]
     else:
-        required = ["name", "sale_price"]
+        required = ["name", "sale_price", "source"]
 
     missing_count = 0
     for item in items:
@@ -702,10 +702,10 @@ def _find_problem_items(items: list[dict], schema_type: str) -> list[dict]:
         return []
 
     if schema_type == "HotdealPost":
-        required = ["title", "url"]
+        required = ["title", "url", "price"]
         price_field = "price"
     else:
-        required = ["name", "sale_price"]
+        required = ["name", "sale_price", "source"]
         price_field = "sale_price"
 
     prices = [

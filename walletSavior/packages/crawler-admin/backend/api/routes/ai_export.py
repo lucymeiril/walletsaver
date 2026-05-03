@@ -9,12 +9,13 @@ from __future__ import annotations
 import logging
 from typing import Any, Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
 from pipeline.ai_export import (
     RawExportError,
     build_raw_batch,
+    fetch_ai_admin_providers,
     forward_raw_records_to_ai_admin,
 )
 
@@ -85,6 +86,21 @@ async def forward_raw_records_to_ai(body: ForwardToAIRequest) -> dict[str, Any]:
             batch_id=body.batch_id,
             api_key=body.ai_admin_api_key,
             timeout_seconds=body.timeout_seconds,
+        )
+    except RawExportError as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
+
+
+@router.get("/providers")
+async def list_ai_providers(
+    ai_admin_base_url: str = Query(min_length=1),
+    timeout_seconds: float = Query(default=10.0, gt=0, le=30),
+) -> dict[str, Any]:
+    """Proxy ai-admin provider lookup through crawler-admin to avoid browser CORS."""
+    try:
+        return fetch_ai_admin_providers(
+            ai_admin_base_url=ai_admin_base_url,
+            timeout_seconds=timeout_seconds,
         )
     except RawExportError as exc:
         raise HTTPException(status_code=422, detail=str(exc))

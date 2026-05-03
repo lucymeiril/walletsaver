@@ -560,7 +560,7 @@ def source_types(identity: dict = Depends(require_viewer)):
             .filter(Product.source_type.isnot(None))
         ).scalars().all()
 
-        all_sources = sorted(set(discount_sources) | set(product_sources) - {"unknown", None, ""})
-        return all_sources
+        all_sources = (set(discount_sources) | set(product_sources) | {"algumon"}) - {"unknown", None, ""}
+        return sorted(all_sources)
     finally:
         session.close()

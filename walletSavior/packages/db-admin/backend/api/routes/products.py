@@ -1,7 +1,7 @@
 """상품 CRUD + 가격 조회 + 통계 + 유사 상품 라우트"""
 from fastapi import APIRouter, HTTPException, Query, Request, Depends
 from pydantic import BaseModel, Field, field_validator
-from typing import Optional
+from typing import Optional, Any
 from datetime import datetime, timedelta
 
 from sqlalchemy import func, desc, asc, distinct, case, or_
@@ -24,7 +24,7 @@ from services.price_calc import (
 from storage.models import Product, DiscountHistory, Category, CrawlLog, BaselinePrice, ProductKeyword, Keyword
 from api.security import (
     escape_like, MAX_NAME_LEN, MAX_CATEGORY_ID_LEN, MAX_UNIT_LEN,
-    MAX_DESCRIPTION_LEN, MAX_URL_LEN, MAX_BULK_IDS,
+    MAX_DESCRIPTION_LEN, MAX_URL_LEN, MAX_BULK_IDS, MAX_SOURCE_LEN,
 )
 
 router = APIRouter(prefix="/products", tags=["products"])
@@ -36,6 +36,9 @@ class ProductCreate(BaseModel):
     unit: str = Field("개", min_length=1, max_length=MAX_UNIT_LEN)
     description: Optional[str] = Field(None, max_length=MAX_DESCRIPTION_LEN)
     image_url: Optional[str] = Field(None, max_length=MAX_URL_LEN)
+    source_type: Optional[str] = Field("unknown", max_length=MAX_SOURCE_LEN)
+    attributes: Optional[dict[str, Any]] = None
+    is_active: bool = True
     keyword_ids: Optional[list[int]] = None
 
     @field_validator("name")
@@ -58,8 +61,18 @@ class ProductUpdate(BaseModel):
     category_id: Optional[str] = Field(None, max_length=MAX_CATEGORY_ID_LEN)
     unit: Optional[str] = Field(None, min_length=1, max_length=MAX_UNIT_LEN)
     description: Optional[str] = Field(None, max_length=MAX_DESCRIPTION_LEN)
+    image_url: Optional[str] = Field(None, max_length=MAX_URL_LEN)
+    source_type: Optional[str] = Field(None, max_length=MAX_SOURCE_LEN)
+    attributes: Optional[dict[str, Any]] = None
     is_active: Optional[bool] = None
     keyword_ids: Optional[list[int]] = None
+
+    @field_validator("image_url")
+    @classmethod
+    def validate_url(cls, v: str | None) -> str | None:
+        if v is not None and v and not v.startswith(("http://", "https://")):
+            raise ValueError("URL은 http:// 또는 https://로 시작해야 합니다.")
+        return v
 
 
 class BulkDeleteRequest(BaseModel):
@@ -108,6 +121,8 @@ def _enrich_product(session: Session, p: Product) -> dict:
             "unit": p.unit,
             "description": p.description,
             "image_url": p.image_url,
+            "source_type": p.source_type,
+            "attributes": p.attributes,
             "is_active": p.is_active,
             "created_at": p.created_at.isoformat() if p.created_at else None,
             "updated_at": p.updated_at.isoformat() if p.updated_at else None,
@@ -137,6 +152,8 @@ def _enrich_product(session: Session, p: Product) -> dict:
             "unit": p.unit,
             "description": getattr(p, "description", None),
             "image_url": getattr(p, "image_url", None),
+            "source_type": getattr(p, "source_type", None),
+            "attributes": getattr(p, "attributes", None),
             "is_active": getattr(p, "is_active", None),
             "created_at": p.created_at.isoformat() if getattr(p, "created_at", None) else None,
             "updated_at": p.updated_at.isoformat() if getattr(p, "updated_at", None) else None,
@@ -171,6 +188,16 @@ def product_stats(identity: dict = Depends(require_viewer)):
             .all()
         )
         by_source = {row[0]: row[1] for row in source_counts_q}
+
+        source_type_counts_q = (
+            session.query(Product.source_type, func.count(Product.id))
+            .filter(Product.is_active == True, Product.source_type.isnot(None), Product.source_type != "unknown", Product.source_type != "")
+            .group_by(Product.source_type)
+            .all()
+        )
+        for source_type, count in source_type_counts_q:
+            by_source[source_type] = max(by_source.get(source_type, 0), count)
+        by_source.setdefault("algumon", by_source.get("algumon", 0))
 
         # 카테고리별 상품 수
         cat_counts_q = (
@@ -231,6 +258,7 @@ def list_products(
     source: Optional[str] = Query(None, description="소스 필터 (emart, homeplus 등)"),
     category: Optional[str] = Query(None, description="카테고리 ID 필터"),
     search: Optional[str] = Query(None, description="상품명 검색"),
+    category_search: Optional[str] = Query(None, description="카테고리명 검색"),
     keyword_id: Optional[int] = Query(None, description="키워드 ID 필터"),
     keyword_search: Optional[str] = Query(None, description="키워드 단어 검색"),
     sort_by: str = Query("name", description="정렬 기준 (name, price, discount_rate, created_at)"),
@@ -244,15 +272,16 @@ def list_products(
     try:
         query = session.query(Product).filter(Product.is_active == True)
 
-        # 소스 필터: DiscountHistory에서 해당 소스를 가진 상품만
+        # 소스 필터: 가격 이력 source 또는 상품 source_type에서 해당 소스를 가진 상품
         if source:
             product_ids = (
                 session.query(distinct(DiscountHistory.product_id))
                 .filter(DiscountHistory.source == source)
                 .subquery()
             )
-            query = query.filter(Product.id.in_(
-                session.query(product_ids)
+            query = query.filter(or_(
+                Product.source_type == source,
+                Product.id.in_(session.query(product_ids)),
             ))
 
         # 카테고리 필터
@@ -262,6 +291,14 @@ def list_products(
         # 검색
         if search:
             query = query.filter(Product.name.ilike(f"%{escape_like(search)}%"))
+
+        if category_search:
+            query = query.outerjoin(Category, Product.category_id == Category.id).filter(
+                or_(
+                    Product.category_id.ilike(f"%{escape_like(category_search)}%"),
+                    Category.name.ilike(f"%{escape_like(category_search)}%"),
+                )
+            )
 
         # 키워드 ID 필터
         if keyword_id is not None:
@@ -355,6 +392,8 @@ def create_product(body: ProductCreate, request: Request, identity: dict = Depen
         p = Product(
             name=body.name, category_id=body.category_id,
             unit=body.unit, description=body.description, image_url=body.image_url,
+            source_type=body.source_type or "unknown", attributes=body.attributes,
+            is_active=body.is_active,
         )
         session.add(p)
         session.flush()
