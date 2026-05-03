@@ -167,6 +167,32 @@ class FieldProposal(Base):
     )
 
 
+class KeywordProposal(Base):
+    __tablename__ = "keyword_proposals"
+
+    proposal_id: Mapped[str] = mapped_column(String(160), primary_key=True)
+    proposed_keyword: Mapped[str] = mapped_column(String(120), nullable=False, index=True)
+    match_terms: Mapped[list[str]] = mapped_column(JSON, nullable=False, default=list)
+    category_suggestion: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+    confidence: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    reason: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    triggering_records: Mapped[list[dict[str, Any]]] = mapped_column(
+        JSON, nullable=False, default=list
+    )
+    source_values: Mapped[list[str]] = mapped_column(JSON, nullable=False, default=list)
+    status: Mapped[str] = mapped_column(String(40), nullable=False, index=True)
+    reviewer_id: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+    rejection_reason: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    persisted_keyword_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=datetime.now
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=datetime.now
+    )
+    decided_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+
+
 class ReviewDecisionRecord(Base):
     __tablename__ = "review_decisions"
 
@@ -179,6 +205,28 @@ class ReviewDecisionRecord(Base):
     reason: Mapped[str] = mapped_column(Text, nullable=False, default="")
     create_learning_rule: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     decided_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=datetime.now
+    )
+
+
+class AIPublishRecord(Base):
+    __tablename__ = "ai_publish_records"
+
+    raw_record_id: Mapped[str] = mapped_column(String(120), primary_key=True)
+    batch_id: Mapped[str] = mapped_column(String(120), nullable=False, index=True)
+    source_name: Mapped[str] = mapped_column(String(120), nullable=False)
+    status: Mapped[str] = mapped_column(String(40), nullable=False, index=True, default="pending_review")
+    ai_proposal_ids: Mapped[list[str]] = mapped_column(JSON, nullable=False, default=list)
+    human_decision_ids: Mapped[list[str]] = mapped_column(JSON, nullable=False, default=list)
+    eligibility_errors: Mapped[list[Any]] = mapped_column(JSON, nullable=False, default=list)
+    last_error: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    db_ingestion_id: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+    db_ingestion_result: Mapped[Optional[dict[str, Any]]] = mapped_column(JSON, nullable=True)
+    publish_attempts: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    requested_by: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+    requested_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    published_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    updated_at: Mapped[datetime] = mapped_column(
         DateTime, nullable=False, default=datetime.now
     )
 

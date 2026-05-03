@@ -50,6 +50,7 @@ class CanonicalMatcherWorker(BaseAIWorker):
                         variant_name=canonical,
                         package_quantity=parsed["package_quantity"] if parsed else None,
                         package_unit=parsed["package_unit"] if parsed else None,
+                        display_unit=parsed["display_unit"] if parsed else None,
                         bundle_count=parsed["bundle_count"] if parsed else 1,
                         standard_unit=parsed["standard_unit"] if parsed else None,
                     )

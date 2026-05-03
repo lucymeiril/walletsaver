@@ -21,7 +21,9 @@ from storage.models import (
     Category,
     DiscountHistory,
     HotdealPrice,
+    Keyword,
     Product,
+    ProductKeyword,
     PendingCategorization,
 )
 
@@ -32,6 +34,7 @@ from api.security import (
     MAX_REVIEW_ACTION_VALUES, MAX_CLEANUP_STATUS_VALUES,
 )
 from api.source_normalization import normalize_source_key
+from core.product_units import normalize_unit_metadata
 
 router = APIRouter(prefix="/api/ingestions", tags=["ingestions"])
 
@@ -235,10 +238,16 @@ def bulk_approve(body: BulkApproveRequest, identity: dict = Depends(require_mode
                 continue
             items = json.loads(row.items_json) if row.items_json else []
             saved = _insert_items(session, items, row.schema_type)
-            row.status = IngestionStatus.APPROVED
             row.db_reviewer_notes = body.notes or f"벌크 승인 (reviewer: {body.reviewer or 'system'})"
             row.db_reviewed_at = datetime.utcnow()
-            results.append({"id": ingestion_id, "status": "approved", "saved": saved})
+            if saved == len(items):
+                row.status = IngestionStatus.APPROVED
+                results.append({"id": ingestion_id, "status": "approved", "saved": saved})
+            else:
+                row.status = IngestionStatus.CRAWLER_APPROVED
+                reason = f"{len(items) - saved}개 항목이 필수 공개 메타데이터 누락/오류로 저장되지 않았습니다"
+                row.db_reviewer_notes = f"{row.db_reviewer_notes or ''}\n{reason}".strip()
+                results.append({"id": ingestion_id, "status": "pending", "saved": saved, "reason": reason})
         approved_count = sum(1 for r in results if r["status"] == "approved")
         return {
             "approved": approved_count,
@@ -422,9 +431,14 @@ def db_review(ingestion_id: int, body: ReviewRequest, identity: dict = Depends(r
 
         if body.action == "approve":
             saved = _insert_items(session, items, row.schema_type)
-            row.status = IngestionStatus.APPROVED
             row.db_reviewer_notes = body.notes
             row.db_reviewed_at = datetime.utcnow()
+            if saved != len(items):
+                row.status = IngestionStatus.CRAWLER_APPROVED
+                reason = f"{len(items) - saved}개 항목이 필수 공개 메타데이터 누락/오류로 저장되지 않았습니다"
+                row.db_reviewer_notes = f"{row.db_reviewer_notes or ''}\n{reason}".strip()
+                return {"id": row.id, "status": "crawler_approved", "saved": saved, "failed": len(items) - saved, "reason": reason}
+            row.status = IngestionStatus.APPROVED
             return {"id": row.id, "status": "approved", "saved": saved}
 
         elif body.action == "reject":
@@ -445,12 +459,17 @@ def db_review(ingestion_id: int, body: ReviewRequest, identity: dict = Depends(r
                 if i < len(items)
             ]
             saved = _insert_items(session, approved, row.schema_type)
-            row.status = IngestionStatus.PARTIAL
             row.approved_items_json = json.dumps(
                 approved, ensure_ascii=False, default=str
             )
             row.db_reviewer_notes = body.notes
             row.db_reviewed_at = datetime.utcnow()
+            if saved != len(approved):
+                row.status = IngestionStatus.CRAWLER_APPROVED
+                reason = f"{len(approved) - saved}개 부분 승인 항목이 필수 공개 메타데이터 누락/오류로 저장되지 않았습니다"
+                row.db_reviewer_notes = f"{row.db_reviewer_notes or ''}\n{reason}".strip()
+                return {"id": row.id, "status": "crawler_approved", "saved": saved, "failed": len(approved) - saved, "reason": reason}
+            row.status = IngestionStatus.PARTIAL
             return {"id": row.id, "status": "partial", "saved": saved}
 
         else:
@@ -919,7 +938,16 @@ _SOURCE_TYPE_MAP = {
 }
 
 
-def _ensure_product(session, name: str, crawler_source: str | None = None) -> int:
+def _ensure_product(
+    session,
+    name: str,
+    crawler_source: str | None = None,
+    *,
+    category_id: str | None = None,
+    image_url: str | None = None,
+    unit: str | None = None,
+    attributes: dict | None = None,
+) -> int:
     """Product 레코드가 없으면 자동 생성하고 id를 반환.
 
     새 상품 생성 시 source_type을 설정하고 자동 카테고리 분류를 시도한다.
@@ -934,14 +962,36 @@ def _ensure_product(session, name: str, crawler_source: str | None = None) -> in
         source_type = _SOURCE_TYPE_MAP.get(crawler_source, "unknown") if crawler_source else "unknown"
         if source_type != "unknown" and product.source_type in (None, "", "unknown"):
             product.source_type = source_type
+        _apply_approved_product_metadata(
+            session,
+            product,
+            category_id=category_id,
+            image_url=image_url,
+            unit=unit,
+            attributes=attributes,
+        )
         return product.id
 
     # Determine source_type from crawler source
     source_type = _SOURCE_TYPE_MAP.get(crawler_source, "unknown") if crawler_source else "unknown"
 
-    new_product = Product(name=name, unit="개", source_type=source_type)
+    new_product = Product(
+        name=name,
+        unit=unit or "개",
+        source_type=source_type,
+        image_url=image_url or None,
+        attributes=attributes or None,
+    )
     session.add(new_product)
     session.flush()
+    _apply_approved_product_metadata(
+        session,
+        new_product,
+        category_id=category_id,
+        image_url=image_url,
+        unit=unit,
+        attributes=attributes,
+    )
 
     # Auto-categorize inline (같은 세션 사용) — must never crash product creation
     try:
@@ -1009,6 +1059,54 @@ def _ensure_product(session, name: str, crawler_source: str | None = None) -> in
     return new_product.id
 
 
+def _apply_approved_product_metadata(
+    session,
+    product: Product,
+    *,
+    category_id: str | None = None,
+    image_url: str | None = None,
+    unit: str | None = None,
+    attributes: dict | None = None,
+) -> None:
+    if image_url and not product.image_url:
+        product.image_url = str(image_url)
+    if unit and product.unit in (None, "", "개"):
+        product.unit = str(unit)
+    if attributes:
+        product.attributes = {**(product.attributes or {}), **attributes}
+    if not category_id:
+        return
+    cat_exists = session.execute(
+        select(Category.id).where(Category.id == category_id)
+    ).scalar_one_or_none()
+    if cat_exists:
+        product.category_id = category_id
+        product.categorization_method = "manual"
+        product.categorization_confidence = 1.0
+        return
+    existing_pending = session.execute(
+        select(PendingCategorization).where(
+            PendingCategorization.product_id == product.id,
+            PendingCategorization.suggested_category_id == category_id,
+            PendingCategorization.status == "pending",
+        )
+    ).scalar_one_or_none()
+    if existing_pending is None:
+        session.add(
+            PendingCategorization(
+                product_id=product.id,
+                suggested_category_id=category_id,
+                confidence=1.0,
+                candidates_json=[{"category_id": category_id, "score": 1.0}],
+                parsed_keywords=None,
+                parsed_attributes=attributes or None,
+                status="pending",
+            )
+        )
+    product.categorization_method = product.categorization_method or "suggested"
+    product.categorization_confidence = product.categorization_confidence or 1.0
+
+
 def _insert_items(session, items: list[dict], schema_type: str) -> int:
     """승인된 항목을 최종 DB 테이블에 삽입."""
     saved = 0
@@ -1042,43 +1140,63 @@ def _insert_items(session, items: list[dict], schema_type: str) -> int:
                     source = _resolve_source(item)
                     if source in ("government", "mart_regular"):
                         product_name = item.get("name", "")
-                        pid = _ensure_product(session, product_name, crawler_source=source)
+                        price = _coerce_positive_number(item.get("sale_price") or item.get("price"))
+                        if price is None:
+                            raise ValueError("BaselinePrice.price is missing or invalid")
+                        pid = _ensure_product(
+                            session,
+                            product_name,
+                            crawler_source=source,
+                            category_id=item.get("category_id") or item.get("category"),
+                            image_url=item.get("image_url"),
+                            unit=item.get("display_unit") or item.get("unit"),
+                            attributes=item.get("attributes") if isinstance(item.get("attributes"), dict) else None,
+                        )
                         row = BaselinePrice(
                             product_id=pid,
-                            price=float(
-                                item.get("sale_price") or item.get("price", 0)
-                            ),
+                            price=price,
                             source=source,
                             unit=item.get("unit", ""),
                             recorded_at=datetime.utcnow(),
                             region=item.get("region"),
+                            raw_data=_build_offer_raw_data(item, product_name),
                         )
                     else:
                         # 마트 할인 데이터 → DiscountHistory
                         product_name = item.get("name", "")
-                        pid = _ensure_product(session, product_name, crawler_source=source)
+                        _validate_discount_item_for_publish(item)
+                        price = _coerce_positive_number(
+                            item.get("sale_price") or item.get("current_price") or item.get("price")
+                        )
+                        original_price = _coerce_nonnegative_number(item.get("original_price"))
+                        discount_rate = _coerce_nonnegative_number(
+                            item.get("discount_percent") or item.get("discount_rate")
+                        )
+                        pid = _ensure_product(
+                            session,
+                            product_name,
+                            crawler_source=source,
+                            category_id=item.get("category_id") or item.get("category"),
+                            image_url=item.get("image_url"),
+                            unit=item.get("unit"),
+                            attributes=item.get("attributes") if isinstance(item.get("attributes"), dict) else None,
+                        )
                         row = DiscountHistory(
                             product_id=pid,
-                            price=float(
-                                item.get("sale_price") or item.get("price", 0)
-                            ),
-                            original_price=item.get("original_price"),
-                            discount_rate=item.get("discount_percent")
-                                or item.get("discount_rate"),
+                            price=price,
+                            original_price=original_price,
+                            discount_rate=discount_rate,
                             source=source,
                             source_url=item.get("detail_url")
                                 or item.get("source_url", ""),
+                            valid_from=_parse_datetime(item.get("valid_from")),
+                            valid_to=_parse_datetime(item.get("valid_to")),
                             crawled_at=datetime.utcnow(),
-                            raw_data={
-                                "image_url": item.get("image_url", ""),
-                                "event_name": item.get("event_name", ""),
-                                "unit": item.get("unit", ""),
-                                "category": item.get("category", ""),
-                                "product_name": product_name,
-                                "store": item.get("store", ""),
-                            },
+                            raw_data=_build_offer_raw_data(item, product_name),
                         )
                 session.add(row)
+                if schema_type != "HotdealPost":
+                    _link_product_keywords(session, pid, item.get("keywords"))
                 # 개별 flush로 어느 항목에서 오류가 발생하는지 추적 가능
                 session.flush()
             saved += 1
@@ -1089,3 +1207,156 @@ def _insert_items(session, items: list[dict], schema_type: str) -> int:
             )
             continue
     return saved
+
+
+def _is_ai_review_publish(item: dict) -> bool:
+    return bool(item.get("ai_review_audit") or item.get("raw_record_id"))
+
+
+def _validate_discount_item_for_publish(item: dict) -> None:
+    price = _coerce_positive_number(item.get("sale_price") or item.get("current_price") or item.get("price"))
+    if price is None:
+        raise ValueError("DiscountItem.sale_price is missing or invalid; keep it in review")
+    if not item.get("name"):
+        raise ValueError("DiscountItem.name is missing; keep it in review")
+    if not item.get("source"):
+        raise ValueError("DiscountItem.source is missing; keep it in review")
+    if not _is_ai_review_publish(item):
+        return
+    required = {
+        "image_url": item.get("image_url"),
+        "original_price": _coerce_positive_number(item.get("original_price")),
+        "discount_percent": _coerce_nonnegative_number(item.get("discount_percent") or item.get("discount_rate")),
+        "source_url": item.get("source_url") or item.get("detail_url"),
+    }
+    missing = [name for name, value in required.items() if value in (None, "")]
+    if missing:
+        raise ValueError(f"AI-reviewed offer missing customer-visible fields: {', '.join(missing)}")
+
+
+def _coerce_positive_number(value) -> float | None:
+    number = _coerce_nonnegative_number(value)
+    if number is None or number <= 0:
+        return None
+    return number
+
+
+def _coerce_nonnegative_number(value) -> float | None:
+    if isinstance(value, bool) or value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return float(value) if value >= 0 else None
+    if isinstance(value, str):
+        cleaned = (
+            value.replace(",", "")
+            .replace("원", "")
+            .replace("₩", "")
+            .replace("%", "")
+            .strip()
+        )
+        if not cleaned:
+            return None
+        try:
+            number = float(cleaned)
+        except ValueError:
+            return None
+        return number if number >= 0 else None
+    return None
+
+
+def _parse_datetime(value) -> datetime | None:
+    if isinstance(value, datetime):
+        return value
+    if not isinstance(value, str) or not value.strip():
+        return None
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00")).replace(tzinfo=None)
+    except ValueError:
+        return None
+
+
+def _build_offer_raw_data(item: dict, product_name: str) -> dict:
+    raw_data = item.get("raw_data") if isinstance(item.get("raw_data"), dict) else {}
+    preserved = {k: v for k, v in item.items() if k not in {"raw_data"}}
+    sale_price = item.get("sale_price") or item.get("current_price") or item.get("price")
+    unit_metadata = normalize_unit_metadata(
+        name=product_name,
+        sale_price=sale_price,
+        raw_unit=item.get("unit") or raw_data.get("unit"),
+    )
+    attributes = {
+        **(raw_data.get("attributes") if isinstance(raw_data.get("attributes"), dict) else {}),
+        **(item.get("attributes") if isinstance(item.get("attributes"), dict) else {}),
+        **(unit_metadata.get("attributes") or {}),
+    }
+    return {
+        **raw_data,
+        "published_item": preserved,
+        "image_url": item.get("image_url") or raw_data.get("image_url", ""),
+        "event_name": item.get("event_name") or raw_data.get("event_name", ""),
+        "unit": item.get("unit") or raw_data.get("unit", ""),
+        "display_unit": item.get("display_unit")
+            or raw_data.get("display_unit")
+            or unit_metadata.get("display_unit")
+            or item.get("unit")
+            or raw_data.get("unit", ""),
+        "package_quantity": item.get("package_quantity")
+            or raw_data.get("package_quantity")
+            or unit_metadata.get("package_quantity"),
+        "package_unit": item.get("package_unit")
+            or raw_data.get("package_unit")
+            or unit_metadata.get("package_unit"),
+        "price_per_100g": item.get("price_per_100g")
+            or raw_data.get("price_per_100g")
+            or unit_metadata.get("price_per_100g"),
+        "pack_price": sale_price,
+        "raw_sale_price": item.get("sale_price") or raw_data.get("sale_price"),
+        "raw_original_price": item.get("original_price") or raw_data.get("original_price"),
+        "attributes": attributes,
+        "category": item.get("category") or raw_data.get("category", ""),
+        "category_id": item.get("category_id") or raw_data.get("category_id"),
+        "keywords": item.get("keywords") or raw_data.get("keywords") or [],
+        "product_name": product_name,
+        "store": item.get("store") or raw_data.get("store", ""),
+        "source_url": item.get("source_url") or item.get("detail_url") or raw_data.get("source_url"),
+    }
+
+
+def _link_product_keywords(session, product_id: int, keywords) -> None:
+    terms = _keyword_terms(keywords)
+    for term in terms:
+        keyword = session.execute(
+            select(Keyword).where(Keyword.word == term, Keyword.is_active.is_(True))
+        ).scalar_one_or_none()
+        if keyword is None:
+            keyword = session.execute(
+                select(Keyword).where(Keyword.synonyms.is_not(None), Keyword.is_active.is_(True))
+            ).scalars().all()
+            keyword = next((kw for kw in keyword if term in (kw.synonyms or [])), None)
+        if keyword is None:
+            continue
+        exists = session.execute(
+            select(ProductKeyword).where(
+                ProductKeyword.product_id == product_id,
+                ProductKeyword.keyword_id == keyword.id,
+            )
+        ).scalar_one_or_none()
+        if exists is None:
+            session.add(ProductKeyword(product_id=product_id, keyword_id=keyword.id))
+
+
+def _keyword_terms(keywords) -> list[str]:
+    if keywords is None:
+        return []
+    values = keywords if isinstance(keywords, list) else [keywords]
+    seen: set[str] = set()
+    result: list[str] = []
+    for value in values:
+        if not isinstance(value, str):
+            continue
+        term = value.strip()
+        if not term or term in seen:
+            continue
+        seen.add(term)
+        result.append(term)
+    return result

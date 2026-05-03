@@ -106,6 +106,7 @@ def test_unit_converter_extracts_quantity_and_unit() -> None:
     fields = {(p.provenance.raw_record_id, p.target_field): p.proposed_value for p in out.field_proposals}
     assert fields[("rec-1", "package_quantity")] == 200.0
     assert fields[("rec-1", "package_unit")] == "g"
+    assert fields[("rec-1", "display_unit")] == "200g"
     assert fields[("rec-1", "bundle_count")] == 3
     assert fields[("rec-1", "total_quantity")] == 0.6
     assert fields[("rec-1", "standard_unit")] == "kg"
@@ -119,6 +120,26 @@ def test_unit_converter_unmatched_records() -> None:
     out = UnitConverterWorker().run(batch)
     assert out.field_proposals == []
     assert out.diagnostics["records_unmatched"] == 1
+
+
+def test_unit_converter_emart_reference_100g_does_not_override_package() -> None:
+    batch = _batch(
+        AIWorkerRole.UNIT_CONVERTER,
+        [
+            _record(1, title="[냉장] 한우 불고기1+등급300g", price=14850),
+            _record(2, title="[냉동][베트남] 흰다리 새우살 (200g)", price=4488),
+        ],
+    )
+    out = UnitConverterWorker().run(batch)
+    fields = {(p.provenance.raw_record_id, p.target_field): p.proposed_value for p in out.field_proposals}
+
+    assert fields[("rec-1", "package_quantity")] == 300.0
+    assert fields[("rec-1", "package_unit")] == "g"
+    assert fields[("rec-1", "display_unit")] == "300g"
+    assert fields[("rec-1", "price_per_100g")] == 4950
+    assert fields[("rec-2", "package_quantity")] == 200.0
+    assert fields[("rec-2", "display_unit")] == "200g"
+    assert fields[("rec-2", "price_per_100g")] == 2244
 
 
 def test_classifier_matches_known_keyword() -> None:
@@ -143,6 +164,20 @@ def test_classifier_emits_attribute_values() -> None:
     assert attrs["attributes.storage_type"] == "chilled"
     assert attrs["attributes.origin"] == "domestic"
     assert attrs["attributes.quality_grade"] == "1"
+
+
+def test_classifier_preserves_emart_storage_origin_cut_grade_as_attributes() -> None:
+    batch = _batch(AIWorkerRole.CLASSIFIER, [_record(1, title="[냉동][베트남] 흰다리 새우살 (200g)")])
+    out = ClassifierWorker().run(batch)
+    attrs = {
+        p.target_field: p.proposed_value
+        for p in out.taxonomy_proposals
+        if p.proposal_type == ProposalType.ATTRIBUTE_VALUE
+    }
+
+    assert attrs["attributes.storage_type"] == "frozen"
+    assert attrs["attributes.origin"] == "vietnam"
+    assert attrs["attributes.cut"] == "shrimp_meat"
 
 
 def test_canonical_matcher_emits_draft_and_alias() -> None:

@@ -159,6 +159,46 @@ class TestEmartParse:
             assert item.sale_price > 0
             assert len(item.name) >= 2
 
+    def test_emart_keeps_pack_price_separate_from_100g_reference_unit(self):
+        crawler = EmartCrawler()
+        item = crawler._next_data_to_discount_item({
+            "itemName": "[냉장] 한우 불고기1+등급300g",
+            "finalPrice": "14,850",
+            "strikeOutPrice": "19,800",
+            "sellUnitCapacity": "100g",
+            "siteName": "이마트",
+        })
+
+        assert item is not None
+        assert item.sale_price == 14850
+        assert item.original_price == 19800
+        assert item.unit == "300g"
+        assert item.display_unit == "300g"
+        assert item.package_quantity == 300
+        assert item.package_unit == "g"
+        assert item.price_per_100g == 4950
+        assert item.attributes["storage_type"] == "chilled"
+        assert item.attributes["quality_grade"] == "1+"
+        assert item.attributes["cut"] == "bulgogi"
+
+    def test_emart_parses_parenthesized_frozen_shrimp_package(self):
+        crawler = EmartCrawler()
+        item = crawler._next_data_to_discount_item({
+            "itemName": "[냉동][베트남] 흰다리 새우살 (200g)",
+            "finalPrice": "4,488",
+            "sellUnitCapacity": "100g",
+            "siteName": "이마트",
+        })
+
+        assert item is not None
+        assert item.sale_price == 4488
+        assert item.unit == "200g"
+        assert item.package_quantity == 200
+        assert item.price_per_100g == 2244
+        assert item.attributes["storage_type"] == "frozen"
+        assert item.attributes["origin"] == "vietnam"
+        assert item.attributes["cut"] == "shrimp_meat"
+
 
 class TestHomeplusParse:
     """홈플러스 크롤러 파싱 테스트."""

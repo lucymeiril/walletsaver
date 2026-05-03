@@ -59,6 +59,7 @@ EXPECTED_TABLES = {
     "prompt_packs",
     "field_proposals",
     "review_decisions",
+    "ai_publish_records",
     "learned_knowledge",
 }
 

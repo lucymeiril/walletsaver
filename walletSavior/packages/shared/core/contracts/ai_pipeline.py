@@ -27,8 +27,12 @@ class PipelineStatus(str, Enum):
     AI_PROCESSING = "ai_processing"
     AI_PROPOSED = "ai_proposed"
     HUMAN_REVIEWING = "human_reviewing"
+    PENDING_REVIEW = "pending_review"
     APPROVED = "approved"
+    PUBLISHING = "publishing"
     PUBLISHED = "published"
+    PUBLISH_FAILED = "publish_failed"
+    HELD = "held"
     NEEDS_REWORK = "needs_rework"
     REJECTED = "rejected"
     SUPERSEDED = "superseded"
@@ -190,6 +194,7 @@ class ProductVariantDraft(BaseModel):
     variant_name: str = Field(min_length=1)
     package_quantity: Optional[float] = Field(default=None, gt=0)
     package_unit: Optional[str] = None
+    display_unit: Optional[str] = None
     bundle_count: int = Field(default=1, ge=1)
     standard_unit: Optional[str] = None
     attributes: dict[str, Any] = Field(default_factory=dict)
@@ -206,6 +211,7 @@ class SaleOfferDraft(BaseModel):
     price: int = Field(ge=0)
     original_price: Optional[int] = Field(default=None, ge=0)
     standard_unit_price: Optional[float] = Field(default=None, ge=0)
+    price_per_100g: Optional[float] = Field(default=None, ge=0)
     valid_from: Optional[datetime] = None
     valid_to: Optional[datetime] = None
     raw_record_id: str = Field(min_length=1)

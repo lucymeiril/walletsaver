@@ -10,63 +10,35 @@ from core.contracts.ai_pipeline import (
     AIWorkerRole,
     ProposalType,
 )
+from core.product_units import normalize_unit_metadata, quantity_to_standard_total
 
 from .base import make_proposal
 
-# (값, 단위, 표준단위) — 표준단위는 공개 카탈로그의 단위 표기.
-_UNIT_PATTERN = re.compile(
-    r"(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>kg|g|mg|l|L|ml|mL|개|팩|입|매|봉|병|캔)",
-    re.IGNORECASE,
-)
 _BUNDLE_PATTERN = re.compile(r"(?:x|X|×|\*)\s*(?P<count>\d+)|(?P<count_suffix>\d+)\s*(?:개입|입|봉|팩|병|캔)")
-
-_STANDARD_UNIT_MAP = {
-    "kg": "kg",
-    "g": "kg",
-    "mg": "kg",
-    "l": "L",
-    "ml": "L",
-    "개": "ea",
-    "팩": "ea",
-    "입": "ea",
-    "매": "ea",
-    "봉": "ea",
-    "병": "ea",
-    "캔": "ea",
-}
-
-
-def _normalize_total_quantity(qty: float, unit: str, bundle_count: int) -> float:
-    if unit == "mg":
-        return qty / 1_000_000 * bundle_count
-    if unit == "g":
-        return qty / 1000 * bundle_count
-    if unit == "kg":
-        return qty * bundle_count
-    if unit == "ml":
-        return qty / 1000 * bundle_count
-    if unit == "l":
-        return qty * bundle_count
-    return qty * bundle_count
 
 
 def _parse_units(text: str) -> Optional[dict]:
-    match = _UNIT_PATTERN.search(text)
-    if not match:
+    parsed = normalize_unit_metadata(name=text)
+    if parsed.get("package_quantity") is None or parsed.get("package_unit") is None:
         return None
-    qty = float(match.group("qty"))
-    unit = match.group("unit").lower()
-    bundle_match = _BUNDLE_PATTERN.search(text[match.end():])
     bundle_count = 1
+    raw_match = str(parsed["raw_match"])
+    tail = text[text.rfind(raw_match) + len(raw_match):] if raw_match in text else ""
+    bundle_match = _BUNDLE_PATTERN.search(tail)
     if bundle_match:
         bundle_count = int(bundle_match.group("count") or bundle_match.group("count_suffix"))
+    total = quantity_to_standard_total(parsed["package_quantity"], parsed["package_unit"], bundle_count)
+    if total is None:
+        return None
+    total_quantity, standard_unit = total
     return {
-        "raw_match": match.group(0),
-        "package_quantity": qty,
-        "package_unit": unit,
+        "raw_match": parsed["raw_match"],
+        "package_quantity": parsed["package_quantity"],
+        "package_unit": parsed["package_unit"],
+        "display_unit": parsed["display_unit"],
         "bundle_count": bundle_count,
-        "total_quantity": round(_normalize_total_quantity(qty, unit, bundle_count), 6),
-        "standard_unit": _STANDARD_UNIT_MAP.get(unit, unit),
+        "total_quantity": round(total_quantity, 6),
+        "standard_unit": standard_unit,
     }
 
 
@@ -84,6 +56,7 @@ class UnitConverterWorker(BaseAIWorker):
             fields = (
                 "package_quantity",
                 "package_unit",
+                "display_unit",
                 "bundle_count",
                 "total_quantity",
                 "standard_unit",
@@ -103,19 +76,34 @@ class UnitConverterWorker(BaseAIWorker):
                     )
                 )
             if record.raw_price is not None and parsed["total_quantity"] > 0:
+                standard_unit_price = round(record.raw_price / parsed["total_quantity"], 2)
                 proposals.append(
                     make_proposal(
                         batch=batch,
                         record=record,
                         proposal_type=ProposalType.NORMALIZED_FIELD,
                         target_field="standard_unit_price",
-                        proposed_value=round(record.raw_price / parsed["total_quantity"], 2),
+                        proposed_value=standard_unit_price,
                         evidence_text=f"{record.raw_price}/{parsed['total_quantity']}{parsed['standard_unit']}",
                         confidence=0.82,
                         proposal_suffix="standard_unit_price",
                         source_field="raw_price",
                     )
                 )
+                if parsed["package_unit"] == "g":
+                    proposals.append(
+                        make_proposal(
+                            batch=batch,
+                            record=record,
+                            proposal_type=ProposalType.NORMALIZED_FIELD,
+                            target_field="price_per_100g",
+                            proposed_value=round(record.raw_price * 100 / (parsed["package_quantity"] * parsed["bundle_count"]), 2),
+                            evidence_text=f"{record.raw_price}/{parsed['package_quantity'] * parsed['bundle_count']}g",
+                            confidence=0.86,
+                            proposal_suffix="price_per_100g",
+                            source_field="raw_price",
+                        )
+                    )
         return AIWorkerOutput(
             job_id=batch.batch_id,
             role=self.role,

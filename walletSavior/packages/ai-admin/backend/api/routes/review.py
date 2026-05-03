@@ -5,29 +5,39 @@ shared `ReviewQueueService`에 상태 전이를 위임한다. AI 제안의 appro
 """
 from __future__ import annotations
 
+import os
 import re
 from collections import defaultdict
+from datetime import datetime
 from typing import Any, Optional
 
+import httpx
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
 from core.contracts.ai_pipeline import (
+    AIWorkerRole,
     FieldProposal as FieldProposalContract,
+    FieldProvenance,
     PipelineStatus,
     ProposalType,
     RawCrawlRecord,
 )
+from core.contracts.control_plane import ReviewDecision
+from core.product_units import normalize_unit_metadata
 from core.review_queue import ReviewQueueService
 
+from storage.models import AIPublishRecord
 from storage import (
     Database,
     FieldProposalRepository,
+    KeywordProposalRepository,
     RawCrawlBatchRepository,
     ReviewDecisionRepository,
     ReviewQueueRepositoryAdapter,
     get_default_database,
 )
+from services.keyword_catalog import KeywordCatalogAdapter
 
 router = APIRouter(prefix="/api/review", tags=["review"])
 
@@ -53,6 +63,13 @@ class RejectRequest(BaseModel):
     reason: str = Field(min_length=1)
 
 
+class KeywordProposalApproveRequest(BaseModel):
+    reviewer_id: str = Field(min_length=1)
+    proposed_keyword: Optional[str] = Field(default=None, min_length=1)
+    match_terms: Optional[list[str]] = None
+    category_suggestion: Optional[str] = None
+
+
 class UpdateProposalRequest(BaseModel):
     proposal_type: Optional[ProposalType] = None
     target_field: Optional[str] = Field(default=None, min_length=1)
@@ -60,8 +77,39 @@ class UpdateProposalRequest(BaseModel):
     alternatives: Optional[list[Any]] = None
 
 
+class PublishApprovedRequest(BaseModel):
+    raw_record_ids: list[str] = Field(default_factory=list, max_length=500)
+    reviewer_id: str = Field(min_length=1)
+    confirm_count: int = Field(ge=1, le=500)
+
+
+DB_ADMIN_URL = os.getenv("DB_ADMIN_URL", "http://localhost:8002").rstrip("/")
+DB_ADMIN_INGESTION_URL = os.getenv(
+    "DB_ADMIN_INGESTION_URL",
+    f"{DB_ADMIN_URL}/api/ingestions",
+).rstrip("/")
+DB_ADMIN_API_KEY = os.getenv("DB_ADMIN_API_KEY", "")
+
+
 def _service(session) -> ReviewQueueService:
     return ReviewQueueService(ReviewQueueRepositoryAdapter(session))
+
+
+def _db_admin_headers() -> dict[str, str]:
+    if not DB_ADMIN_API_KEY:
+        raise HTTPException(
+            status_code=502,
+            detail="DB_ADMIN_API_KEY is required to publish AI-reviewed records to DB-admin.",
+        )
+    return {"X-API-Key": DB_ADMIN_API_KEY}
+
+
+async def _submit_to_db_admin(payload: dict[str, Any]) -> dict[str, Any]:
+    headers = _db_admin_headers()
+    async with httpx.AsyncClient(timeout=20) as client:
+        resp = await client.post(DB_ADMIN_INGESTION_URL, json=payload, headers=headers)
+        resp.raise_for_status()
+        return resp.json()
 
 
 ACTIVE_PROPOSAL_STATUSES = {
@@ -258,6 +306,150 @@ def list_raw_records(
         return {"items": items}
 
 
+@router.get("/keyword-proposals")
+def list_keyword_proposals(
+    status: Optional[PipelineStatus] = None,
+    db: Database = Depends(get_db),
+) -> dict[str, Any]:
+    with db.session_scope() as session:
+        proposals = KeywordProposalRepository(session).list(status=status)
+        return {"items": proposals}
+
+
+@router.get("/keyword-proposals/{proposal_id}")
+def get_keyword_proposal(
+    proposal_id: str,
+    db: Database = Depends(get_db),
+) -> dict[str, Any]:
+    with db.session_scope() as session:
+        proposal = KeywordProposalRepository(session).get(proposal_id)
+        if proposal is None:
+            raise HTTPException(status_code=404, detail="keyword proposal not found")
+        return proposal
+
+
+@router.post("/keyword-proposals/{proposal_id}/approve")
+def approve_keyword_proposal(
+    proposal_id: str,
+    payload: KeywordProposalApproveRequest,
+    db: Database = Depends(get_db),
+) -> dict[str, Any]:
+    with db.session_scope() as session:
+        repo = KeywordProposalRepository(session)
+        proposal = repo.get(proposal_id)
+        if proposal is None:
+            raise HTTPException(status_code=404, detail="keyword proposal not found")
+        if proposal["status"] not in {
+            PipelineStatus.AI_PROPOSED.value,
+            PipelineStatus.HUMAN_REVIEWING.value,
+            PipelineStatus.REJECTED.value,
+        }:
+            raise HTTPException(status_code=400, detail="keyword proposal already decided")
+        word = (payload.proposed_keyword or proposal["proposed_keyword"]).strip()
+        terms = payload.match_terms if payload.match_terms is not None else proposal["match_terms"]
+        category_id = (
+            payload.category_suggestion
+            if "category_suggestion" in payload.model_fields_set
+            else proposal["category_suggestion"]
+        )
+        try:
+            catalog = KeywordCatalogAdapter()
+            persisted = catalog.upsert_keyword(
+                word=word,
+                match_terms=terms,
+                category_id=category_id,
+            )
+            persisted = persisted | catalog.link_keyword_to_products(
+                keyword_id=persisted.get("id"),
+                triggering_records=proposal.get("triggering_records", []),
+            )
+        except Exception as exc:
+            raise HTTPException(
+                status_code=502,
+                detail=f"failed to persist keyword to DB-admin: {exc}",
+            ) from exc
+        updated = proposal | {
+            "proposed_keyword": word,
+            "match_terms": terms,
+            "category_suggestion": category_id,
+            "status": PipelineStatus.APPROVED.value,
+            "reviewer_id": payload.reviewer_id,
+            "persisted_keyword_id": persisted.get("id"),
+            "updated_at": datetime.now(),
+            "decided_at": datetime.now(),
+        }
+        saved = repo.save(updated)
+        _save_approved_keyword_field_proposals(session, saved, reviewer_id=payload.reviewer_id)
+        return {"proposal": saved, "persisted_keyword": persisted}
+
+
+@router.post("/keyword-proposals/{proposal_id}/reject")
+def reject_keyword_proposal(
+    proposal_id: str,
+    payload: RejectRequest,
+    db: Database = Depends(get_db),
+) -> dict[str, Any]:
+    with db.session_scope() as session:
+        repo = KeywordProposalRepository(session)
+        proposal = repo.get(proposal_id)
+        if proposal is None:
+            raise HTTPException(status_code=404, detail="keyword proposal not found")
+        if proposal["status"] not in {
+            PipelineStatus.AI_PROPOSED.value,
+            PipelineStatus.HUMAN_REVIEWING.value,
+        }:
+            raise HTTPException(status_code=400, detail="only pending keyword proposals can be rejected")
+        saved = repo.save(
+            proposal | {
+                "status": PipelineStatus.REJECTED.value,
+                "reviewer_id": payload.reviewer_id,
+                "rejection_reason": payload.reason,
+                "updated_at": datetime.now(),
+                "decided_at": datetime.now(),
+            }
+        )
+        return saved
+
+
+def _save_approved_keyword_field_proposals(
+    session,
+    keyword_proposal: dict[str, Any],
+    *,
+    reviewer_id: str,
+) -> None:
+    repo = FieldProposalRepository(session)
+    keyword = keyword_proposal["proposed_keyword"]
+    for record in keyword_proposal.get("triggering_records", []):
+        raw_id = record.get("raw_record_id")
+        raw_title = record.get("raw_title") or keyword
+        if not raw_id:
+            continue
+        proposal = FieldProposalContract(
+            proposal_id=f"{keyword_proposal['proposal_id']}:approved:{raw_id}",
+            proposal_type=ProposalType.KEYWORD,
+            target_field="keywords",
+            proposed_value=keyword,
+            status=PipelineStatus.APPROVED,
+            provenance=FieldProvenance(
+                raw_record_id=raw_id,
+                source_field="keyword_proposal",
+                evidence_text=str(raw_title),
+                worker_role=AIWorkerRole.KEYWORD_GENERATOR,
+                confidence=keyword_proposal.get("confidence"),
+                reviewed_by=reviewer_id,
+                reviewed_at=datetime.now(),
+            ),
+            alternatives=[
+                {
+                    "keyword_proposal_id": keyword_proposal["proposal_id"],
+                    "match_terms": keyword_proposal.get("match_terms", []),
+                    "persisted_keyword_id": keyword_proposal.get("persisted_keyword_id"),
+                }
+            ],
+        )
+        repo.save(proposal)
+
+
 @router.post("/proposals/{proposal_id}/start")
 def start_review(
     proposal_id: str,
@@ -309,6 +501,125 @@ def audit_raw_vs_ai(
         return build_raw_ai_audit(records, proposals, batch_id=batch_id)
 
 
+@router.get("/publish-eligibility")
+def publish_eligibility(
+    batch_id: Optional[str] = None,
+    db: Database = Depends(get_db),
+) -> dict[str, Any]:
+    with db.session_scope() as session:
+        rows = _build_publish_rows(session, batch_id=batch_id)
+        summary = _build_batch_publish_summary(session, rows, batch_id=batch_id)
+        return {
+            "items": rows,
+            "eligible_count": summary["eligible_count"],
+            "blocked_count": summary["blocked_count"],
+            "summary": summary,
+        }
+
+
+@router.post("/publish-approved")
+async def publish_approved_records(
+    payload: PublishApprovedRequest,
+    db: Database = Depends(get_db),
+) -> dict[str, Any]:
+    with db.session_scope() as session:
+        rows = _build_publish_rows(session)
+    selected_ids = set(payload.raw_record_ids)
+    candidates = [
+        row
+        for row in rows
+        if row["eligible"] and (not selected_ids or row["raw_record_id"] in selected_ids)
+    ]
+    if selected_ids:
+        missing = selected_ids - {row["raw_record_id"] for row in rows}
+        blocked = [
+            row
+            for row in rows
+            if row["raw_record_id"] in selected_ids and not row["eligible"]
+        ]
+        if missing or blocked:
+            return {
+                "published": 0,
+                "failed": len(missing) + len(blocked),
+                "results": [
+                    {
+                        "raw_record_id": raw_id,
+                        "status": "not_found",
+                        "error": "raw record not found",
+                    }
+                    for raw_id in sorted(missing)
+                ]
+                + [
+                    {
+                        "raw_record_id": row["raw_record_id"],
+                        "status": row["status"],
+                        "error": "; ".join(row["blockers"]),
+                    }
+                    for row in blocked
+                ],
+            }
+    if payload.confirm_count != len(candidates):
+        raise HTTPException(
+            status_code=400,
+            detail=f"confirmation count mismatch: expected {len(candidates)}, got {payload.confirm_count}",
+        )
+    if not candidates:
+        raise HTTPException(status_code=400, detail="no eligible records selected")
+
+    results: list[dict[str, Any]] = []
+    for candidate in candidates:
+        raw_id = candidate["raw_record_id"]
+        with db.session_scope() as session:
+            _upsert_publish_record(
+                session,
+                candidate,
+                status=PipelineStatus.PUBLISHING.value,
+                requested_by=payload.reviewer_id,
+            )
+        try:
+            response = await _submit_to_db_admin(_db_admin_payload(candidate))
+        except Exception as exc:  # pragma: no cover - exact httpx type is integration-dependent
+            message = str(exc)
+            with db.session_scope() as session:
+                _upsert_publish_record(
+                    session,
+                    candidate,
+                    status=PipelineStatus.PUBLISH_FAILED.value,
+                    requested_by=payload.reviewer_id,
+                    last_error=message,
+                    db_result={"error": message},
+                )
+            results.append(
+                {"raw_record_id": raw_id, "status": "publish_failed", "error": message}
+            )
+            continue
+
+        ingestion_id = response.get("id")
+        with db.session_scope() as session:
+            _mark_proposals_published(session, candidate["proposal_ids"])
+            _upsert_publish_record(
+                session,
+                candidate,
+                status=PipelineStatus.PUBLISHED.value,
+                requested_by=payload.reviewer_id,
+                db_ingestion_id=str(ingestion_id) if ingestion_id is not None else None,
+                db_result=response,
+            )
+        results.append(
+            {
+                "raw_record_id": raw_id,
+                "status": "published",
+                "db_ingestion_id": ingestion_id,
+            }
+        )
+
+    return {
+        "published": sum(1 for result in results if result["status"] == "published"),
+        "failed": sum(1 for result in results if result["status"] != "published"),
+        "results": results,
+    }
+
+
 def _proposals_by_raw_record(
     proposals: list[FieldProposalContract],
 ) -> dict[str, list[FieldProposalContract]]:
@@ -318,6 +629,524 @@ def _proposals_by_raw_record(
         if raw_id:
             grouped[raw_id].append(proposal)
     return grouped
+
+
+def _build_publish_rows(session, batch_id: Optional[str] = None) -> list[dict[str, Any]]:
+    raw_repo = RawCrawlBatchRepository(session)
+    records = raw_repo.list_records(batch_id) if batch_id else raw_repo.list_all_records()
+    proposals = FieldProposalRepository(session).list()
+    keyword_proposals = KeywordProposalRepository(session).list()
+    proposals_by_record = _proposals_by_raw_record(proposals)
+    audit = build_raw_ai_audit(records, proposals, batch_id=batch_id)
+    issues_by_record: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for issue in audit.get("issues", []):
+        issues_by_record[issue["raw_record_id"]].append(issue)
+
+    rows: list[dict[str, Any]] = []
+    for record in records:
+        linked = proposals_by_record.get(record.raw_record_id, [])
+        publish_state = session.get(AIPublishRecord, record.raw_record_id)
+        decisions = {
+            proposal.proposal_id: ReviewDecisionRepository(session).list_for_proposal(
+                proposal.proposal_id
+            )
+            for proposal in linked
+        }
+        blockers = _publish_blockers(
+            record,
+            linked,
+            issues_by_record[record.raw_record_id],
+            decisions,
+            keyword_proposals,
+        )
+        status = _derived_publish_status(linked, blockers, publish_state)
+        item = _db_item_from_review(record, linked, decisions)
+        rows.append(
+            {
+                "raw_record_id": record.raw_record_id,
+                "batch_id": record.raw_payload.get("batch_id") or _batch_id_for_record(session, record.raw_record_id),
+                "source_name": record.source_name,
+                "raw_title": record.raw_title,
+                "status": status,
+                "eligible": not blockers and status in {PipelineStatus.APPROVED.value, PipelineStatus.PUBLISH_FAILED.value},
+                "retryable": status == PipelineStatus.PUBLISH_FAILED.value and not blockers,
+                "blockers": blockers,
+                "keyword_proposals": [
+                    proposal
+                    for proposal in keyword_proposals
+                    if any(
+                        triggering.get("raw_record_id") == record.raw_record_id
+                        for triggering in proposal.get("triggering_records", [])
+                    )
+                ],
+                "audit_issues": issues_by_record[record.raw_record_id],
+                "proposal_ids": [proposal.proposal_id for proposal in linked],
+                "human_decision_ids": [
+                    decision.decision_id
+                    for proposal_decisions in decisions.values()
+                    for decision in proposal_decisions
+                ],
+                "db_ingestion_id": publish_state.db_ingestion_id if publish_state else None,
+                "last_error": publish_state.last_error if publish_state else None,
+                "item": item,
+            }
+        )
+    return rows
+
+
+UNRESOLVED_PROPOSAL_STATUSES = {
+    PipelineStatus.AI_PROPOSED.value,
+    PipelineStatus.HUMAN_REVIEWING.value,
+    PipelineStatus.PENDING_REVIEW.value,
+    PipelineStatus.NEEDS_REWORK.value,
+}
+BLOCKING_KEYWORD_STATUSES = {
+    PipelineStatus.AI_PROPOSED.value,
+    PipelineStatus.HUMAN_REVIEWING.value,
+    PipelineStatus.REJECTED.value,
+}
+
+
+def _status_counts(values: list[str]) -> dict[str, int]:
+    counts: dict[str, int] = defaultdict(int)
+    for value in values:
+        counts[value] += 1
+    return dict(counts)
+
+
+def _keyword_linked_to_raw_ids(proposal: dict[str, Any], raw_ids: set[str]) -> bool:
+    return any(
+        isinstance(record, dict) and record.get("raw_record_id") in raw_ids
+        for record in proposal.get("triggering_records", [])
+    )
+
+
+def _build_batch_publish_summary(
+    session,
+    rows: list[dict[str, Any]],
+    *,
+    batch_id: Optional[str] = None,
+) -> dict[str, Any]:
+    raw_ids = {row["raw_record_id"] for row in rows}
+    field_proposals = [
+        proposal
+        for proposal in FieldProposalRepository(session).list()
+        if proposal.provenance.raw_record_id in raw_ids
+    ]
+    keyword_proposals = [
+        proposal
+        for proposal in KeywordProposalRepository(session).list()
+        if _keyword_linked_to_raw_ids(proposal, raw_ids)
+    ]
+    field_status_counts = _status_counts([proposal.status.value for proposal in field_proposals])
+    keyword_status_counts = _status_counts([proposal.get("status") for proposal in keyword_proposals])
+    row_status_counts = _status_counts([row["status"] for row in rows])
+    unresolved_field = sum(
+        count for status, count in field_status_counts.items() if status in UNRESOLVED_PROPOSAL_STATUSES
+    )
+    unresolved_keyword = sum(
+        count for status, count in keyword_status_counts.items() if status in BLOCKING_KEYWORD_STATUSES
+    )
+    eligible_count = sum(1 for row in rows if row["eligible"])
+    blocked_rows = [row for row in rows if not row["eligible"]]
+    published_count = row_status_counts.get(PipelineStatus.PUBLISHED.value, 0)
+    ai_record_count = len({
+        proposal.provenance.raw_record_id
+        for proposal in field_proposals
+        if proposal.provenance.raw_record_id
+    })
+    data_quality_issue_count = sum(len(row.get("audit_issues") or []) for row in rows)
+    raw_without_ai_count = max(len(rows) - ai_record_count, 0)
+
+    blockers: list[dict[str, Any]] = []
+    if raw_without_ai_count:
+        blockers.append({
+            "code": "raw_without_ai",
+            "count": raw_without_ai_count,
+            "severity": "error",
+            "message": f"AI 제안이 없는 원본 {raw_without_ai_count}개가 남아 있습니다. 배치 완료로 보지 말고 AI 처리/재수집을 먼저 확인하세요.",
+        })
+    if unresolved_field:
+        blockers.append({
+            "code": "unresolved_field_proposals",
+            "count": unresolved_field,
+            "severity": "error",
+            "message": f"사람이 승인/반려하지 않은 필드 제안 {unresolved_field}개가 남아 있습니다.",
+        })
+    if unresolved_keyword:
+        blockers.append({
+            "code": "unresolved_keyword_proposals",
+            "count": unresolved_keyword,
+            "severity": "error",
+            "message": f"키워드 제안 {unresolved_keyword}개가 미해결 상태입니다. 노출 품질에 영향이 있어 먼저 승인/반려하세요.",
+        })
+    if data_quality_issue_count:
+        blockers.append({
+            "code": "data_quality_issues",
+            "count": data_quality_issue_count,
+            "severity": "error",
+            "message": f"가격/카테고리/누락 등 품질 이슈 {data_quality_issue_count}건이 있습니다. 해당 원본을 보정하거나 보류 사유를 남기세요.",
+        })
+    if blocked_rows:
+        reasons: dict[str, int] = defaultdict(int)
+        for row in blocked_rows:
+            for blocker in row.get("blockers") or ["blocked"]:
+                reasons[blocker] += 1
+        blockers.append({
+            "code": "blocked_rows",
+            "count": len(blocked_rows),
+            "severity": "warn" if eligible_count else "error",
+            "message": f"발행 불가 원본 {len(blocked_rows)}개가 남아 있습니다.",
+            "reasons": dict(sorted(reasons.items())),
+        })
+
+    if published_count and (blocked_rows or unresolved_field or unresolved_keyword or data_quality_issue_count or raw_without_ai_count):
+        batch_status = "published_with_holds"
+        verdict = "일부만 발행됐고 보류/미해결 항목이 남아 있습니다. 배치 완료가 아닙니다."
+    elif eligible_count and (blocked_rows or unresolved_field or unresolved_keyword or data_quality_issue_count or raw_without_ai_count):
+        batch_status = "partial_only"
+        verdict = "부분 발행만 가능합니다. 남은 보류/미해결 항목 때문에 배치 전체 발행은 안전하지 않습니다."
+    elif rows and eligible_count == len(rows) and not blockers:
+        batch_status = "ready"
+        verdict = "모든 원본이 사람 승인·키워드 승인·품질 점검을 통과해 발행 준비가 됐습니다."
+    else:
+        batch_status = "not_ready"
+        verdict = "아직 발행 준비가 아닙니다. AI 제안, 키워드, 품질 이슈를 먼저 해결하세요."
+
+    return {
+        "batch_id": batch_id or (rows[0]["batch_id"] if rows else None),
+        "batch_status": batch_status,
+        "quality_verdict": verdict,
+        "raw_count": len(rows),
+        "ai_record_count": ai_record_count,
+        "raw_without_ai_count": raw_without_ai_count,
+        "field_proposal_count": len(field_proposals),
+        "keyword_proposal_count": len(keyword_proposals),
+        "approved_count": row_status_counts.get(PipelineStatus.APPROVED.value, 0),
+        "held_count": row_status_counts.get(PipelineStatus.HELD.value, 0) + row_status_counts.get(PipelineStatus.PENDING_REVIEW.value, 0),
+        "rejected_count": field_status_counts.get(PipelineStatus.REJECTED.value, 0) + keyword_status_counts.get(PipelineStatus.REJECTED.value, 0),
+        "published_count": published_count,
+        "eligible_count": eligible_count,
+        "blocked_count": len(blocked_rows),
+        "unresolved_field_proposal_count": unresolved_field,
+        "unresolved_keyword_proposal_count": unresolved_keyword,
+        "data_quality_issue_count": data_quality_issue_count,
+        "field_status_counts": field_status_counts,
+        "keyword_status_counts": keyword_status_counts,
+        "row_status_counts": row_status_counts,
+        "blockers": blockers,
+        "held_rows": [
+            {
+                "raw_record_id": row["raw_record_id"],
+                "raw_title": row.get("raw_title"),
+                "status": row.get("status"),
+                "blockers": row.get("blockers", []),
+                "audit_issue_count": len(row.get("audit_issues") or []),
+                "keyword_proposal_count": len(row.get("keyword_proposals") or []),
+            }
+            for row in blocked_rows[:25]
+        ],
+    }
+
+
+def _batch_id_for_record(session, raw_record_id: str) -> str:
+    from storage.models import RawCrawlRecord as RawCrawlRecordModel
+
+    row = session.get(RawCrawlRecordModel, raw_record_id)
+    return row.batch_id if row else "unknown"
+
+
+def _publish_blockers(
+    record: RawCrawlRecord,
+    proposals: list[FieldProposalContract],
+    audit_issues: list[dict[str, Any]],
+    decisions_by_proposal: dict[str, list[Any]],
+    keyword_proposals: list[dict[str, Any]],
+) -> list[str]:
+    blockers: list[str] = []
+    if not proposals:
+        blockers.append("pending_review: no AI proposals linked to raw record")
+    if audit_issues:
+        blockers.append("data_quality: resolve audit issues before publishing")
+    pending_statuses = {
+        PipelineStatus.AI_PROPOSED,
+        PipelineStatus.HUMAN_REVIEWING,
+        PipelineStatus.NEEDS_REWORK,
+        PipelineStatus.PENDING_REVIEW,
+    }
+    if any(proposal.proposal_type == ProposalType.KEYWORD and proposal.status in pending_statuses for proposal in proposals):
+        blockers.append("keyword: pending keyword proposal requires approval or rejection")
+    linked_keyword_proposals = [
+        proposal
+        for proposal in keyword_proposals
+        if any(
+            triggering.get("raw_record_id") == record.raw_record_id
+            for triggering in proposal.get("triggering_records", [])
+        )
+    ]
+    if any(
+        proposal.get("status") in {PipelineStatus.AI_PROPOSED.value, PipelineStatus.HUMAN_REVIEWING.value}
+        for proposal in linked_keyword_proposals
+    ):
+        blockers.append("keyword: pending DB keyword proposal blocks publishing")
+    if any(proposal.get("status") == PipelineStatus.REJECTED.value for proposal in linked_keyword_proposals):
+        blockers.append("keyword: rejected DB keyword proposal requires edit before publishing")
+    if any(proposal.status in pending_statuses for proposal in proposals):
+        blockers.append("pending_review: all AI proposals must be human approved")
+    if any(proposal.status == PipelineStatus.REJECTED for proposal in proposals):
+        blockers.append("held: rejected proposal requires rework before publishing")
+    if proposals and not any(proposal.status in {PipelineStatus.APPROVED, PipelineStatus.PUBLISHED} for proposal in proposals):
+        blockers.append("approved: at least one human-approved proposal is required")
+    item = _db_item_from_review(record, proposals, decisions_by_proposal)
+    for field in ("name", "sale_price", "source"):
+        if item.get(field) in (None, ""):
+            blockers.append(f"data_quality: missing DB ingestion field {field}")
+    for field in ("image_url", "original_price", "discount_percent", "source_url"):
+        if item.get(field) in (None, ""):
+            blockers.append(f"data_quality: missing customer-visible offer field {field}")
+    return blockers
+
+
+def _derived_publish_status(
+    proposals: list[FieldProposalContract],
+    blockers: list[str],
+    publish_state: Optional[AIPublishRecord],
+) -> str:
+    if publish_state and publish_state.status in {
+        PipelineStatus.PUBLISHING.value,
+        PipelineStatus.PUBLISHED.value,
+        PipelineStatus.PUBLISH_FAILED.value,
+    }:
+        return publish_state.status
+    if any(blocker.startswith("held:") for blocker in blockers):
+        return PipelineStatus.HELD.value
+    if blockers:
+        return PipelineStatus.PENDING_REVIEW.value
+    return PipelineStatus.APPROVED.value
+
+
+def _db_item_from_review(
+    record: RawCrawlRecord,
+    proposals: list[FieldProposalContract],
+    decisions_by_proposal: dict[str, list[Any]],
+) -> dict[str, Any]:
+    fields: dict[str, Any] = {}
+    attributes: dict[str, Any] = {}
+    for proposal in proposals:
+        if proposal.status not in {PipelineStatus.APPROVED, PipelineStatus.PUBLISHED}:
+            continue
+        value = _human_reviewed_value(proposal, decisions_by_proposal.get(proposal.proposal_id, []))
+        target = proposal.target_field
+        if target.startswith("attributes."):
+            attributes[target.split(".", 1)[1]] = value
+        elif target == "keywords":
+            fields[target] = value if isinstance(value, list) else [value]
+        else:
+            fields[target] = value
+
+    raw_payload = record.raw_payload or {}
+    name = (
+        fields.get("name")
+        or fields.get("canonical_name")
+        or fields.get("product_name")
+        or _first_present(raw_payload, "name", "product_name", "title")
+        or record.raw_title
+    )
+    price = _first_number(
+        fields.get("sale_price"),
+        fields.get("current_price"),
+        fields.get("price"),
+        fields.get("offer_price"),
+        fields.get("raw_price"),
+        raw_payload.get("sale_price"),
+        raw_payload.get("current_price"),
+        raw_payload.get("price"),
+        record.raw_price,
+    )
+    original_price = _first_number(
+        fields.get("original_price"),
+        raw_payload.get("original_price"),
+        raw_payload.get("list_price"),
+        raw_payload.get("regular_price"),
+    )
+    discount_percent = _first_number(
+        fields.get("discount_percent"),
+        fields.get("discount_rate"),
+        raw_payload.get("discount_percent"),
+        raw_payload.get("discount_rate"),
+        raw_payload.get("discount"),
+    )
+    source_url = (
+        fields.get("source_url")
+        or fields.get("detail_url")
+        or record.source_url
+        or _first_present(raw_payload, "source_url", "detail_url", "url")
+    )
+    source = fields.get("source") or _first_present(raw_payload, "source", "store", "mall") or record.source_name
+    category_id = fields.get("category_id") or raw_payload.get("category_id")
+    category = category_id or fields.get("category") or raw_payload.get("category") or raw_payload.get("category_hint")
+    unit_metadata = normalize_unit_metadata(
+        name=record.raw_title,
+        sale_price=price,
+        raw_unit=_first_present(raw_payload, "unit", "raw_unit", "sellUnitCapacity"),
+    )
+    display_unit = (
+        fields.get("display_unit")
+        or raw_payload.get("display_unit")
+        or unit_metadata.get("display_unit")
+    )
+    package_quantity = _first_number(
+        fields.get("package_quantity"),
+        raw_payload.get("package_quantity"),
+        unit_metadata.get("package_quantity"),
+    )
+    package_unit = (
+        fields.get("package_unit")
+        or raw_payload.get("package_unit")
+        or unit_metadata.get("package_unit")
+    )
+    if isinstance(package_unit, str) and package_unit not in {"g", "kg", "ml", "L"}:
+        package_unit = unit_metadata.get("package_unit") or package_unit
+    price_per_100g = _first_number(
+        fields.get("price_per_100g"),
+        raw_payload.get("price_per_100g"),
+        unit_metadata.get("price_per_100g"),
+    )
+    raw_unit = _first_present(raw_payload, "unit", "raw_unit", "sellUnitCapacity")
+    raw_data = {
+        "raw_record": record.model_dump(mode="json"),
+        "raw_payload": raw_payload,
+        "approved_fields": fields,
+        "attributes": attributes,
+        "raw_unit": raw_unit,
+        "display_unit": display_unit,
+        "package_quantity": package_quantity,
+        "package_unit": package_unit,
+        "price_per_100g": price_per_100g,
+    }
+    item = {
+        "name": name,
+        "sale_price": price,
+        "current_price": price,
+        "original_price": original_price,
+        "discount_percent": discount_percent,
+        "discount_rate": discount_percent,
+        "source": source,
+        "store": _first_present(raw_payload, "store", "mall") or source,
+        "source_url": source_url,
+        "detail_url": fields.get("detail_url") or source_url,
+        "image_url": fields.get("image_url") or raw_payload.get("image_url") or raw_payload.get("image"),
+        "event_name": fields.get("event_name") or raw_payload.get("event_name") or raw_payload.get("event"),
+        "valid_from": fields.get("valid_from") or raw_payload.get("valid_from") or raw_payload.get("start_date"),
+        "valid_to": fields.get("valid_to") or raw_payload.get("valid_to") or raw_payload.get("end_date"),
+        "unit": display_unit or fields.get("unit") or raw_unit or fields.get("package_unit") or fields.get("standard_unit") or "개",
+        "raw_unit": raw_unit,
+        "display_unit": display_unit,
+        "package_quantity": package_quantity,
+        "package_unit": package_unit,
+        "price_per_100g": price_per_100g,
+        "category": category,
+        "category_id": category_id,
+        "keywords": fields.get("keywords", []),
+        "raw_data": raw_data,
+        "raw_record_id": record.raw_record_id,
+        "source_record_key": record.source_record_key,
+        "ai_review_audit": {
+            "raw_record_id": record.raw_record_id,
+            "proposal_ids": [proposal.proposal_id for proposal in proposals],
+        },
+    }
+    if attributes:
+        item["attributes"] = attributes
+    return item
+
+
+def _human_reviewed_value(proposal: FieldProposalContract, decisions: list[Any]) -> Any:
+    for decision in sorted(decisions, key=lambda d: d.decided_at, reverse=True):
+        if decision.decision == ReviewDecision.CORRECT:
+            return decision.corrected_value
+    return proposal.proposed_value
+
+
+def _first_number(*values: Any) -> Optional[float]:
+    for value in values:
+        if isinstance(value, (int, float)) and value >= 0:
+            return value
+        if isinstance(value, str):
+            try:
+                number = float(value.replace(",", ""))
+            except ValueError:
+                continue
+            if number >= 0:
+                return number
+    return None
+
+
+def _first_present(mapping: dict[str, Any], *keys: str) -> Any:
+    for key in keys:
+        value = mapping.get(key)
+        if value not in (None, ""):
+            return value
+    return None
+
+
+def _db_admin_payload(candidate: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "crawler_name": f"ai-admin:{candidate['source_name']}",
+        "crawl_status": "success",
+        "items": [candidate["item"]],
+        "schema_type": "DiscountItem",
+        "strategy_used": "ai_review_publish",
+        "duration_seconds": 0,
+        "errors": [],
+        "source_url": candidate["item"].get("source_url"),
+    }
+
+
+def _upsert_publish_record(
+    session,
+    candidate: dict[str, Any],
+    *,
+    status: str,
+    requested_by: str,
+    last_error: Optional[str] = None,
+    db_ingestion_id: Optional[str] = None,
+    db_result: Optional[dict[str, Any]] = None,
+) -> None:
+    now = datetime.now()
+    row = session.get(AIPublishRecord, candidate["raw_record_id"])
+    if row is None:
+        row = AIPublishRecord(
+            raw_record_id=candidate["raw_record_id"],
+            batch_id=candidate["batch_id"],
+            source_name=candidate["source_name"],
+        )
+        session.add(row)
+    row.status = status
+    row.ai_proposal_ids = list(candidate["proposal_ids"])
+    row.human_decision_ids = list(candidate["human_decision_ids"])
+    row.eligibility_errors = list(candidate["blockers"])
+    row.last_error = last_error
+    row.requested_by = requested_by
+    row.requested_at = now
+    row.updated_at = now
+    if status == PipelineStatus.PUBLISHING.value:
+        row.publish_attempts = (row.publish_attempts or 0) + 1
+    if db_ingestion_id is not None:
+        row.db_ingestion_id = db_ingestion_id
+    if db_result is not None:
+        row.db_ingestion_result = db_result
+    if status == PipelineStatus.PUBLISHED.value:
+        row.published_at = now
+    session.flush()
+
+
+def _mark_proposals_published(session, proposal_ids: list[str]) -> None:
+    repo = FieldProposalRepository(session)
+    for proposal_id in proposal_ids:
+        proposal = repo.get(proposal_id)
+        if proposal and proposal.status == PipelineStatus.APPROVED:
+            repo.save(proposal.model_copy(update={"status": PipelineStatus.PUBLISHED}))
 
 
 def build_raw_ai_audit(

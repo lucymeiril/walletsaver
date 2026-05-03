@@ -42,6 +42,7 @@ def product_row_to_variant_draft(row: dict[str, Any]) -> ProductVariantDraft:
     return ProductVariantDraft(
         variant_name=name,
         package_unit=str(unit),
+        display_unit=str(unit),
         standard_unit=str(unit),
         attributes={"legacy_product_id": row.get("id"), **attributes},
     )
@@ -62,6 +63,7 @@ def discount_row_to_offer_draft(row: dict[str, Any], *, product_name: str) -> Sa
         image_url=raw_data.get("image_url"),
         price=int(price),
         original_price=int(row["original_price"]) if row.get("original_price") is not None else None,
+        price_per_100g=raw_data.get("price_per_100g"),
         valid_from=row.get("valid_from"),
         valid_to=row.get("valid_to"),
         raw_record_id=f"legacy-discount-{row.get('id')}",

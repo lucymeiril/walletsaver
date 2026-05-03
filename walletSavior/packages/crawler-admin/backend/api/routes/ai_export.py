@@ -17,6 +17,7 @@ from pipeline.ai_export import (
     build_raw_batch,
     fetch_ai_admin_providers,
     forward_raw_records_to_ai_admin,
+    to_raw_records_with_invalid_rows,
 )
 
 logger = logging.getLogger(__name__)
@@ -38,6 +39,7 @@ class RawBatchResponse(BaseModel):
     batch: dict[str, Any]
     records: list[dict[str, Any]]
     skipped_count: int
+    invalid_rows: list[dict[str, Any]] = Field(default_factory=list)
 
 
 class ForwardToAIRequest(RawBatchRequest):
@@ -60,6 +62,11 @@ async def export_raw_batch(body: RawBatchRequest) -> RawBatchResponse:
             raw_artifact_uri=body.raw_artifact_uri,
             batch_id=body.batch_id,
         )
+        _, _, invalid_rows = to_raw_records_with_invalid_rows(
+            body.items,
+            source_name=body.source_name,
+            batch_id=batch.batch_id,
+        )
     except RawExportError as exc:
         raise HTTPException(status_code=422, detail=str(exc))
 
@@ -67,6 +74,7 @@ async def export_raw_batch(body: RawBatchRequest) -> RawBatchResponse:
         batch=batch.model_dump(mode="json"),
         records=[r.model_dump(mode="json") for r in records],
         skipped_count=skipped,
+        invalid_rows=invalid_rows,
     )
 
 

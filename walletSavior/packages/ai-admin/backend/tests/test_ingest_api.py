@@ -14,6 +14,7 @@ from api.app import create_app
 from api.deps import get_db_session
 from api.routes.review import get_db as get_review_db
 from core.contracts.control_plane import ProviderConfigContract
+from providers.google_genai import ProviderResponseError
 from services import ai_ingestion
 from storage import Database, ProviderConfigRepository, RawCrawlBatchRepository, create_database
 
@@ -226,6 +227,56 @@ def test_ingest_label_handles_realistic_hotdeal_food_records(client: TestClient)
     assert ("keywords", "두부") in values
 
 
+def test_labeling_response_overrides_emart_100g_hint_with_package_metadata() -> None:
+    provider = ai_ingestion._provider_ref(
+        ProviderConfigContract(
+            provider_id="local",
+            provider_kind="gemini",
+            display_name="Local",
+            default_model="fake",
+            secret_alias="NONE",
+        )
+    )
+    records = [
+        ai_ingestion.RawCrawlRecord(
+            raw_record_id="emart-beef",
+            source_name="emart",
+            raw_title="[냉장] 한우 불고기1+등급300g",
+            raw_price=14850,
+            raw_payload={"unit": "100g"},
+        )
+    ]
+
+    proposals = ai_ingestion.proposals_from_labeling_response(
+        batch_id="b-emart",
+        provider=provider,
+        records=records,
+        response={
+            "items": [
+                {
+                    "raw_record_id": "emart-beef",
+                    "canonical_name": "한우 불고기",
+                    "keywords": ["냉장", "한우", "불고기"],
+                    "attributes": {},
+                    "package_quantity": 100,
+                    "package_unit": "g",
+                    "display_unit": "100g",
+                    "standard_unit_price": 14850,
+                }
+            ]
+        },
+    )
+    values = {(p.target_field, p.proposed_value) for p in proposals}
+
+    assert ("package_quantity", 300.0) in values
+    assert ("package_unit", "g") in values
+    assert ("display_unit", "300g") in values
+    assert ("price_per_100g", 4950.0) in values
+    assert ("attributes.storage_type", "chilled") in values
+    assert ("attributes.quality_grade", "1+") in values
+    assert ("keywords", "냉장") not in values
+
+
 def test_ingest_provider_validation_error_returns_actionable_502(
     client: TestClient,
     monkeypatch: pytest.MonkeyPatch,
@@ -265,7 +316,73 @@ def test_ingest_provider_validation_error_returns_actionable_502(
     detail = res.json()["detail"]
     assert detail["provider_id"] == "google-dev"
     assert detail["model"] == "gemma-3-27b-it"
+    assert detail["stage"] == "provider_response_validation"
+    assert detail["row_count"] == 1
+    assert detail["raw_batch_id"].startswith("raw-")
+    assert ":ai:" in detail["ai_batch_id"]
     assert "missing labels" in detail["message"]
+
+
+def test_ingest_provider_call_failure_returns_safe_actionable_502(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class FailingProvider:
+        def __init__(self, config: ProviderConfigContract) -> None:
+            self.config = config
+
+        def call(self, *, prompt: str, schema=None) -> dict:
+            raise ProviderResponseError(
+                "Google GenAI provider call failed: quota exhausted for request; key=[REDACTED]",
+                provider_id="google-dev",
+                model="gemma-3-27b-it",
+            )
+
+    monkeypatch.setattr(
+        ai_ingestion,
+        "provider_from_config",
+        lambda config: FailingProvider(config),
+    )
+
+    res = client.post(
+        "/api/ingest/raw-records/label",
+        json={
+            "provider_id": "google-dev",
+            "source_name": "emart",
+            "crawler_name": "emart_sale_crawler",
+            "schema_type": "mart_discount",
+            "records": [
+                {
+                    "raw_record_id": "emart:8801111111111",
+                    "source_name": "emart",
+                    "source_record_key": "8801111111111",
+                    "source_url": "https://emart.example/products/8801111111111",
+                    "raw_title": "서울우유 나100% 1L 2입",
+                    "raw_price": 5980,
+                    "raw_payload": {
+                        "source": "emart",
+                        "name": "서울우유 나100% 1L 2입",
+                        "unit": "1L",
+                        "quantity": "2개",
+                        "category_hint": "우유/유제품",
+                        "image_url": "https://emart.example/images/milk.jpg",
+                    },
+                }
+            ],
+        },
+    )
+
+    assert res.status_code == 502
+    detail = res.json()["detail"]
+    assert detail["error"] == "ai_ingestion_error"
+    assert detail["stage"] == "provider_call"
+    assert detail["provider_id"] == "google-dev"
+    assert detail["model"] == "gemma-3-27b-it"
+    assert detail["row_count"] == 1
+    assert detail["raw_batch_id"].startswith("raw-")
+    assert ":ai:" in detail["ai_batch_id"]
+    assert "quota exhausted" in detail["message"]
+    assert "AIza" not in detail["message"]
 
 
 def _load_crawler_ai_export():

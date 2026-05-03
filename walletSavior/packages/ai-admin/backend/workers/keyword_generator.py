@@ -12,7 +12,28 @@ from .base import clean_title, make_proposal, tokenize
 
 _MIN_TOKEN_LEN = 2
 # 너무 흔하거나 의미 없는 토큰: 검색 키워드로 부적합.
-_STOPWORDS = {"행사", "특가", "할인", "증정", "정상가", "무료배송", "팩", "개입"}
+_STOPWORDS = {
+    "행사",
+    "특가",
+    "할인",
+    "증정",
+    "정상가",
+    "무료배송",
+    "팩",
+    "개입",
+    "개",
+    "통",
+    "키트",
+    "불",
+    "소",
+    "냉장",
+    "냉동",
+    "국산",
+    "국내산",
+    "베트남",
+    "불고기",
+    "등급",
+}
 
 
 class KeywordGeneratorWorker(BaseAIWorker):

@@ -15,6 +15,7 @@ from .models import Base
 from .repositories import (
     FieldProposalRepository,
     JobQueueSqlRepository,
+    KeywordProposalRepository,
     LearnedKnowledgeRepository,
     PromptPackRepository,
     ProviderConfigRepository,
@@ -32,6 +33,7 @@ __all__ = [
     "reset_default_database",
     "FieldProposalRepository",
     "JobQueueSqlRepository",
+    "KeywordProposalRepository",
     "LearnedKnowledgeRepository",
     "PromptPackRepository",
     "ProviderConfigRepository",

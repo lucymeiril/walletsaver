@@ -388,3 +388,99 @@ ul.items li.proposal-card {
     grid-template-columns: 1fr;
   }
 }
+
+.pipeline-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.pipeline-step {
+  background: #101827;
+  border: 1px solid #2f4366;
+  border-radius: 10px;
+  padding: 12px;
+  min-height: 118px;
+}
+
+.pipeline-step.pipeline-ok { border-color: #1f6b45; }
+.pipeline-step.pipeline-warn { border-color: #6b4b1f; }
+
+.pipeline-count {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+}
+
+.filter-grid label,
+.reviewer-inline {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+}
+
+.review-group-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.review-group-card {
+  background: #11151d;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.review-group-card h3 {
+  margin: 8px 0 4px;
+  font-size: 1rem;
+}
+
+.group-header {
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.decision-hint {
+  background: #101827;
+  border: 1px solid #2f4366;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 10px;
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.issue-chip-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.bulk-actions {
+  border-top: 1px solid var(--border);
+  margin-top: 12px;
+  padding-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.reviewer-inline {
+  max-width: 220px;
+}
+
+.group-items {
+  margin-top: 12px;
+}

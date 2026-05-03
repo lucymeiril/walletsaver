@@ -27,6 +27,7 @@ from core.models import (
     CrawlerInfo, CrawlerGroup, CrawlResult, CrawlStatus,
     DiscountItem,
 )
+from core.product_units import normalize_unit_metadata
 from engine.anti_detect import AntiDetect
 
 logger = logging.getLogger(__name__)
@@ -315,7 +316,13 @@ class EmartCrawler(CrawlerContract):
         detail_url = product.get("itemUrl", "")
         brand = product.get("brandName", "")
         site = product.get("siteName", "이마트")
-        unit = product.get("sellUnitCapacity", "")
+        raw_unit = product.get("sellUnitCapacity", "")
+        unit_metadata = normalize_unit_metadata(
+            name=name,
+            sale_price=sale_price,
+            raw_unit=raw_unit,
+        )
+        display_unit = unit_metadata.get("display_unit") or raw_unit
 
         return DiscountItem(
             name=name,
@@ -323,7 +330,12 @@ class EmartCrawler(CrawlerContract):
             original_price=original_price,
             sale_price=sale_price,
             discount_percent=discount_pct,
-            unit=unit,
+            unit=display_unit or "",
+            display_unit=display_unit or "",
+            package_quantity=unit_metadata.get("package_quantity"),
+            package_unit=unit_metadata.get("package_unit") or "",
+            price_per_100g=unit_metadata.get("price_per_100g"),
+            attributes=unit_metadata.get("attributes") or {},
             category=brand,
             event_name="이마트 할인",
             image_url=image_url,
@@ -378,6 +390,13 @@ class EmartCrawler(CrawlerContract):
         detail_url = product.get("itemUrl") or product.get("detail_url", "")
         if detail_url and not detail_url.startswith("http"):
             detail_url = f"{self.BASE_URL}{detail_url}"
+        raw_unit = product.get("unit") or product.get("sellUnitCapacity") or ""
+        unit_metadata = normalize_unit_metadata(
+            name=name,
+            sale_price=sale_price,
+            raw_unit=raw_unit,
+        )
+        display_unit = unit_metadata.get("display_unit") or raw_unit
 
         return DiscountItem(
             name=name,
@@ -385,6 +404,12 @@ class EmartCrawler(CrawlerContract):
             original_price=original_price,
             sale_price=sale_price,
             discount_percent=discount_pct,
+            unit=display_unit or "",
+            display_unit=display_unit or "",
+            package_quantity=unit_metadata.get("package_quantity"),
+            package_unit=unit_metadata.get("package_unit") or "",
+            price_per_100g=unit_metadata.get("price_per_100g"),
+            attributes=unit_metadata.get("attributes") or {},
             category=category,
             event_name=product.get("eventNm", "이마트 할인"),
             image_url=image_url,
@@ -444,6 +469,8 @@ class EmartCrawler(CrawlerContract):
         if link_el:
             href = link_el.get("href", "")
             detail_url = href if href.startswith("http") else f"{self.BASE_URL}{href}"
+        unit_metadata = normalize_unit_metadata(name=name, sale_price=sale_price)
+        display_unit = unit_metadata.get("display_unit")
 
         return DiscountItem(
             name=name,
@@ -451,6 +478,12 @@ class EmartCrawler(CrawlerContract):
             original_price=original_price,
             sale_price=sale_price,
             discount_percent=discount_pct,
+            unit=display_unit or "",
+            display_unit=display_unit or "",
+            package_quantity=unit_metadata.get("package_quantity"),
+            package_unit=unit_metadata.get("package_unit") or "",
+            price_per_100g=unit_metadata.get("price_per_100g"),
+            attributes=unit_metadata.get("attributes") or {},
             image_url=image_url,
             detail_url=detail_url,
             event_name="이마트 할인",

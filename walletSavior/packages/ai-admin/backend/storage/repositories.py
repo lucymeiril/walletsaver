@@ -37,6 +37,7 @@ from core.contracts.ai_pipeline import AIWorkerRole, ProviderKind
 from .models import (
     AIJob,
     FieldProposal,
+    KeywordProposal,
     LearnedKnowledge,
     PromptPack,
     ProviderConfig,
@@ -337,6 +338,92 @@ def _proposal_to_contract(row: FieldProposal) -> FieldProposalContract:
         alternatives=list(row.alternatives or []),
         created_at=row.created_at,
     )
+
+
+# --------------------------------------------------------------------------------------
+# KeywordProposal
+# --------------------------------------------------------------------------------------
+
+
+class KeywordProposalRepository:
+    def __init__(self, session: Session) -> None:
+        self.session = session
+
+    def save(self, data: dict[str, Any]) -> dict[str, Any]:
+        now = datetime.now()
+        existing = self.session.get(KeywordProposal, data["proposal_id"])
+        payload = dict(
+            proposed_keyword=data["proposed_keyword"],
+            match_terms=list(data.get("match_terms") or []),
+            category_suggestion=data.get("category_suggestion"),
+            confidence=data.get("confidence"),
+            reason=data.get("reason") or "",
+            triggering_records=list(data.get("triggering_records") or []),
+            source_values=list(data.get("source_values") or []),
+            status=data.get("status", PipelineStatus.AI_PROPOSED.value),
+            reviewer_id=data.get("reviewer_id"),
+            rejection_reason=data.get("rejection_reason"),
+            persisted_keyword_id=data.get("persisted_keyword_id"),
+            updated_at=data.get("updated_at") or now,
+        )
+        if existing is None:
+            self.session.add(
+                KeywordProposal(
+                    proposal_id=data["proposal_id"],
+                    created_at=data.get("created_at") or now,
+                    decided_at=data.get("decided_at"),
+                    **payload,
+                )
+            )
+        else:
+            for key, value in payload.items():
+                setattr(existing, key, value)
+            if "decided_at" in data:
+                existing.decided_at = data.get("decided_at")
+        self.session.flush()
+        return self.get(data["proposal_id"]) or data
+
+    def get(self, proposal_id: str) -> Optional[dict[str, Any]]:
+        row = self.session.get(KeywordProposal, proposal_id)
+        return _keyword_proposal_to_dict(row) if row else None
+
+    def list(self, *, status: Optional[PipelineStatus] = None) -> list[dict[str, Any]]:
+        stmt = select(KeywordProposal)
+        if status is not None:
+            stmt = stmt.where(KeywordProposal.status == status.value)
+        rows = self.session.execute(stmt).scalars().all()
+        return [_keyword_proposal_to_dict(row) for row in rows]
+
+    def list_for_raw_record(self, raw_record_id: str) -> list[dict[str, Any]]:
+        return [
+            proposal
+            for proposal in self.list()
+            if any(
+                record.get("raw_record_id") == raw_record_id
+                for record in proposal.get("triggering_records", [])
+                if isinstance(record, dict)
+            )
+        ]
+
+
+def _keyword_proposal_to_dict(row: KeywordProposal) -> dict[str, Any]:
+    return {
+        "proposal_id": row.proposal_id,
+        "proposed_keyword": row.proposed_keyword,
+        "match_terms": list(row.match_terms or []),
+        "category_suggestion": row.category_suggestion,
+        "confidence": row.confidence,
+        "reason": row.reason,
+        "triggering_records": list(row.triggering_records or []),
+        "source_values": list(row.source_values or []),
+        "status": row.status,
+        "reviewer_id": row.reviewer_id,
+        "rejection_reason": row.rejection_reason,
+        "persisted_keyword_id": row.persisted_keyword_id,
+        "created_at": row.created_at.isoformat() if row.created_at else None,
+        "updated_at": row.updated_at.isoformat() if row.updated_at else None,
+        "decided_at": row.decided_at.isoformat() if row.decided_at else None,
+    }
 
 
 # --------------------------------------------------------------------------------------

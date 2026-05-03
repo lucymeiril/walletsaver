@@ -204,6 +204,11 @@ class DiscountItem(BaseModel):
     sale_price: int                             # 할인가 (원)
     discount_percent: Optional[float] = None    # 할인율 (%)
     unit: str = ""                              # 단위
+    display_unit: str = ""                      # 고객 표시용 판매 단위(예: 300g)
+    package_quantity: Optional[float] = None    # 포장 수량(예: 300)
+    package_unit: str = ""                      # 포장 단위(예: g)
+    price_per_100g: Optional[float] = None      # 중량 상품의 100g당 가격
+    attributes: dict[str, Any] = Field(default_factory=dict)  # 냉장/원산지/등급 등
     category: str = ""                          # 카테고리
     event_name: str = ""                        # 행사명 ("1+1", "반값", "주간특가")
     valid_from: Optional[datetime] = None       # 행사 시작일

@@ -12,6 +12,7 @@ from core.contracts.ai_pipeline import (
     AIWorkerRole,
     ProposalType,
 )
+from core.product_units import extract_product_attributes
 
 from .base import make_proposal
 
@@ -63,6 +64,9 @@ _ATTRIBUTE_HINTS: list[tuple[str, str, str, float]] = [
     ("무항생제", "quality_label", "antibiotic_free", 0.75),
     ("1등급", "quality_grade", "1", 0.78),
     ("한우", "origin_grade", "hanwoo", 0.85),
+    ("베트남", "origin", "vietnam", 0.8),
+    ("불고기", "cut", "bulgogi", 0.78),
+    ("새우살", "cut", "shrimp_meat", 0.78),
 ]
 
 
@@ -107,6 +111,26 @@ class ClassifierWorker(BaseAIWorker):
                             source_field="raw_title",
                         )
                     )
+            parsed_attributes = extract_product_attributes(title)
+            for field, value in parsed_attributes.items():
+                if field.endswith("_label"):
+                    continue
+                target_field = f"attributes.{field}"
+                if any(p.provenance.raw_record_id == record.raw_record_id and p.target_field == target_field for p in attributes):
+                    continue
+                attributes.append(
+                    make_proposal(
+                        batch=batch,
+                        record=record,
+                        proposal_type=ProposalType.ATTRIBUTE_VALUE,
+                        target_field=target_field,
+                        proposed_value=value,
+                        evidence_text=title,
+                        confidence=0.82,
+                        proposal_suffix=f"attr:{field}",
+                        source_field="raw_title",
+                    )
+                )
             if not matched:
                 unmatched += 1
         return AIWorkerOutput(

@@ -22,6 +22,7 @@ from pipeline.ai_export import (
     split_raw_records_for_ai,
     to_raw_record,
     to_raw_records,
+    to_raw_records_with_invalid_rows,
 )
 
 
@@ -123,6 +124,35 @@ class TestRawRecordConversion:
         )
         assert len(records) == 2
         assert skipped == 1
+
+    def test_to_raw_records_reports_row_level_invalid_emart_items(self):
+        records, skipped, invalid_rows = to_raw_records_with_invalid_rows(
+            [
+                {
+                    "product_id": "emart-milk-2pack",
+                    "name": "서울우유 나100% 1L 2입",
+                    "sale_price": "5,980원",
+                    "detail_url": "https://emart.example/products/milk",
+                    "unit": "1L",
+                    "quantity": "2개",
+                    "source": "emart",
+                    "image_url": "https://emart.example/images/milk.jpg",
+                    "category_hint": "우유/유제품",
+                },
+                {
+                    "sale_price": "1,980원",
+                    "detail_url": "https://emart.example/products/missing-title",
+                    "category_hint": "과자",
+                },
+            ],
+            source_name="emart",
+            batch_id="raw-emart-row-errors",
+        )
+
+        assert len(records) == 1
+        assert skipped == 1
+        assert invalid_rows == [{"index": 1, "reason": "missing product name/title"}]
+        assert records[0].raw_payload["quantity"] == "2개"
 
 
 # ── 배치 빌드/한도 테스트 ────────────────────────────────────
@@ -322,6 +352,96 @@ class TestBuildRawBatch:
         assert "provider=google-dev" in message
         assert "model=gemma-3-27b-it" in message
         assert "malformed output" in message
+
+    def test_forward_surfaces_ai_admin_structured_stage_context(self):
+        def fake_post(url, payload, headers, timeout_seconds):
+            return 502, {
+                "detail": {
+                    "error": "ai_ingestion_error",
+                    "stage": "provider_call",
+                    "provider_id": "google-dev",
+                    "model": "gemma-3-27b-it",
+                    "raw_batch_id": "raw-20250101000000-abcd1234",
+                    "ai_batch_id": "raw-20250101000000-abcd1234:ai:1",
+                    "row_count": len(payload["records"]),
+                    "message": "Google GenAI provider call failed: quota exhausted",
+                }
+            }
+
+        with pytest.raises(RawExportError) as exc_info:
+            forward_raw_records_to_ai_admin(
+                [
+                    {
+                        "product_id": "emart-milk-2pack",
+                        "name": "서울우유 나100% 1L 2입",
+                        "sale_price": "5,980원",
+                        "detail_url": "https://emart.example/products/milk",
+                        "unit": "1L",
+                        "quantity": "2개",
+                        "source": "emart",
+                        "image_url": "https://emart.example/images/milk.jpg",
+                        "category_hint": "우유/유제품",
+                    }
+                ],
+                ai_admin_base_url="http://ai-admin.test",
+                provider_id="google-dev",
+                source_name="emart",
+                crawler_name="emart_sale_crawler",
+                schema_type="mart_discount",
+                batch_id="raw-emart",
+                http_post=fake_post,
+            )
+
+        message = str(exc_info.value)
+        assert "stage=provider_call" in message
+        assert "provider=google-dev" in message
+        assert "model=gemma-3-27b-it" in message
+        assert "raw_batch_id=raw-20250101000000-abcd1234" in message
+        assert "row_count=1" in message
+        assert "quota exhausted" in message
+
+    def test_forward_reports_invalid_rows_without_losing_valid_records(self):
+        calls = []
+
+        def fake_post(url, payload, headers, timeout_seconds):
+            calls.append(payload)
+            return 200, {
+                "raw_batch_id": "ai-ok",
+                "records_stored": len(payload["records"]),
+                "ai_batches": 1,
+                "provider_calls": 1,
+                "proposals_stored": len(payload["records"]),
+            }
+
+        result = forward_raw_records_to_ai_admin(
+            [
+                {
+                    "product_id": "emart-tofu-300g",
+                    "name": "풀무원 국산콩 두부 300g",
+                    "sale_price": "2,990원",
+                    "detail_url": "https://emart.example/products/tofu",
+                    "unit": "300g",
+                    "quantity": "1개",
+                    "source": "emart",
+                    "image_url": "https://emart.example/images/tofu.jpg",
+                    "category_hint": "두부/콩나물",
+                },
+                {"sale_price": "990원", "category_hint": "채소"},
+            ],
+            ai_admin_base_url="http://ai-admin.test",
+            provider_id="google-dev",
+            source_name="emart",
+            crawler_name="emart_sale_crawler",
+            schema_type="mart_discount",
+            batch_id="raw-emart-partial",
+            http_post=fake_post,
+        )
+
+        assert result["records_sent"] == 1
+        assert result["skipped_count"] == 1
+        assert result["invalid_rows"] == [{"index": 1, "reason": "missing product name/title"}]
+        assert len(calls) == 1
+        assert calls[0]["records"][0]["raw_title"] == "풀무원 국산콩 두부 300g"
 
     def test_fetch_ai_admin_providers_uses_server_side_get(self):
         calls = []

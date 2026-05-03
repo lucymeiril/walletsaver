@@ -56,6 +56,7 @@ class PublicProductVariant(BaseModel):
     variant_name: str = Field(min_length=1, max_length=255)
     package_quantity: Optional[float] = Field(default=None, gt=0)
     package_unit: Optional[str] = Field(default=None, max_length=40)
+    display_unit: Optional[str] = Field(default=None, max_length=80)
     bundle_count: int = Field(default=1, ge=1)
     standard_unit: Optional[str] = Field(default=None, max_length=40)
     attributes: dict[str, Any] = Field(default_factory=dict)
@@ -77,6 +78,7 @@ class PublicSaleOffer(BaseModel):
     original_price: Optional[int] = Field(default=None, ge=0)
     discount_rate: Optional[float] = Field(default=None, ge=0.0, le=1.0)
     standard_unit_price: Optional[float] = Field(default=None, ge=0.0)
+    price_per_100g: Optional[float] = Field(default=None, ge=0.0)
     valid_from: Optional[datetime] = None
     valid_to: Optional[datetime] = None
     crawled_at: datetime = Field(default_factory=datetime.now)

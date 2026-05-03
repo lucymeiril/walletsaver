@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import socket
 import uuid
 from datetime import datetime
 from typing import Any, Callable, Iterable, Optional
@@ -218,6 +219,32 @@ def to_raw_records(
     return records, skipped
 
 
+def to_raw_records_with_invalid_rows(
+    items: list[dict[str, Any]],
+    *,
+    source_name: str,
+    batch_id: str,
+    crawled_at: Optional[datetime] = None,
+) -> tuple[list[RawCrawlRecord], int, list[dict[str, Any]]]:
+    """item list → records plus row-level skip reasons for UI/API diagnostics."""
+    records: list[RawCrawlRecord] = []
+    invalid_rows: list[dict[str, Any]] = []
+    for idx, item in enumerate(items):
+        rec = to_raw_record(
+            item,
+            source_name=source_name,
+            index=idx,
+            batch_id=batch_id,
+            crawled_at=crawled_at,
+        )
+        if rec is None:
+            reason = "item must be an object" if not isinstance(item, dict) else "missing product name/title"
+            invalid_rows.append({"index": idx, "reason": reason})
+        else:
+            records.append(rec)
+    return records, len(invalid_rows), invalid_rows
+
+
 def _enforce_batch_limits(records: list[RawCrawlRecord]) -> None:
     if len(records) > MAX_AI_BATCH_ITEMS:
         raise RawExportError(
@@ -287,7 +314,7 @@ def build_raw_batches(
         raise RawExportError("schema_type is required")
 
     root_batch_id = batch_id or f"raw-{uuid.uuid4().hex[:16]}"
-    records, skipped = to_raw_records(
+    records, skipped, _invalid_rows = to_raw_records_with_invalid_rows(
         items,
         source_name=source_name,
         batch_id=root_batch_id,
@@ -377,7 +404,10 @@ def _post_json(
     try:
         with urlopen(request, timeout=timeout_seconds) as response:
             response_body = response.read().decode("utf-8")
-            data = json.loads(response_body) if response_body else {}
+            try:
+                data = json.loads(response_body) if response_body else {}
+            except json.JSONDecodeError:
+                data = {"detail": response_body}
             return response.status, data
     except HTTPError as exc:
         response_body = exc.read().decode("utf-8", errors="replace")
@@ -386,7 +416,7 @@ def _post_json(
         except json.JSONDecodeError:
             data = {"detail": response_body}
         return exc.code, data
-    except URLError as exc:
+    except (URLError, TimeoutError, socket.timeout, OSError) as exc:
         raise RawExportError(f"failed to call ai-admin ingest endpoint: {exc}") from exc
 
 
@@ -399,7 +429,10 @@ def _get_json(
     try:
         with urlopen(request, timeout=timeout_seconds) as response:
             response_body = response.read().decode("utf-8")
-            data = json.loads(response_body) if response_body else {}
+            try:
+                data = json.loads(response_body) if response_body else {}
+            except json.JSONDecodeError:
+                data = {"detail": response_body}
             return response.status, data
     except HTTPError as exc:
         response_body = exc.read().decode("utf-8", errors="replace")
@@ -408,7 +441,7 @@ def _get_json(
         except json.JSONDecodeError:
             data = {"detail": response_body}
         return exc.code, data
-    except URLError as exc:
+    except (URLError, TimeoutError, socket.timeout, OSError) as exc:
         raise RawExportError(f"failed to call ai-admin providers endpoint: {exc}") from exc
 
 
@@ -417,14 +450,39 @@ def _format_ai_admin_error(data: dict[str, Any]) -> str:
     if isinstance(detail, dict):
         provider = detail.get("provider_id")
         model = detail.get("model")
+        stage = detail.get("stage")
+        raw_batch_id = detail.get("raw_batch_id")
+        ai_batch_id = detail.get("ai_batch_id")
+        row_count = detail.get("row_count")
         message = detail.get("message") or detail.get("error") or detail
         parts = []
+        if stage:
+            parts.append(f"stage={stage}")
         if provider:
             parts.append(f"provider={provider}")
         if model:
             parts.append(f"model={model}")
+        if raw_batch_id:
+            parts.append(f"raw_batch_id={raw_batch_id}")
+        if ai_batch_id:
+            parts.append(f"ai_batch_id={ai_batch_id}")
+        if row_count is not None:
+            parts.append(f"row_count={row_count}")
         parts.append(f"message={message}")
         return ", ".join(parts)
+    if isinstance(data, dict) and isinstance(data.get("error"), dict):
+        error = data["error"]
+        code = error.get("code")
+        message = error.get("message")
+        error_id = error.get("error_id")
+        parts = []
+        if code:
+            parts.append(f"code={code}")
+        if error_id:
+            parts.append(f"error_id={error_id}")
+        if message:
+            parts.append(f"message={message}")
+        return ", ".join(parts) or str(error)
     return str(detail or data.get("error") or data)
 
 
@@ -474,16 +532,33 @@ def forward_raw_records_to_ai_admin(
         raise RawExportError("ai_admin_base_url is required")
     if not provider_id:
         raise RawExportError("provider_id is required")
+    if not source_name:
+        raise RawExportError("source_name is required")
+    if not crawler_name:
+        raise RawExportError("crawler_name is required")
+    if not schema_type:
+        raise RawExportError("schema_type is required")
 
-    batches, record_batches, skipped = build_raw_batches(
+    root_batch_id = batch_id or f"raw-{uuid.uuid4().hex[:16]}"
+    records, skipped, invalid_rows = to_raw_records_with_invalid_rows(
         items,
         source_name=source_name,
-        crawler_name=crawler_name,
-        schema_type=schema_type,
-        source_url=source_url,
-        raw_artifact_uri=raw_artifact_uri,
-        batch_id=batch_id,
+        batch_id=root_batch_id,
     )
+    record_batches = split_raw_records_for_ai(records)
+    batches = [
+        RawCrawlBatchContract(
+            batch_id=f"{root_batch_id}-{index:03d}",
+            source_name=source_name,
+            crawler_name=crawler_name,
+            item_count=len(record_batch),
+            schema_type=schema_type,
+            status=PipelineStatus.RAW_INGESTED,
+            source_url=source_url,
+            raw_artifact_uri=raw_artifact_uri,
+        )
+        for index, record_batch in enumerate(record_batches, start=1)
+    ]
     post = http_post or _post_json
     headers = {"X-API-Key": api_key} if api_key else {}
     endpoint = _ai_admin_endpoint(ai_admin_base_url, "/api/ingest/raw-records/label")
@@ -510,5 +585,6 @@ def forward_raw_records_to_ai_admin(
         "batches_sent": len(record_batches),
         "records_sent": sum(len(records) for records in record_batches),
         "skipped_count": skipped,
+        "invalid_rows": invalid_rows,
         "responses": responses,
     }

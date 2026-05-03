@@ -5,6 +5,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 
 DEFAULT_CONTROL_DB_PATH = BASE_DIR / "ai_control.db"
+DEFAULT_DB_ADMIN_DB_PATH = BASE_DIR.parent.parent / "db-admin" / "backend" / "walletguardian.db"
 
 
 class Settings:
@@ -15,6 +16,7 @@ class Settings:
     CORS_ALLOWED_ORIGINS: list[str] = []
 
     CONTROL_DATABASE_URL: str = ""
+    DB_ADMIN_DATABASE_URL: str = ""
 
     def __init__(self) -> None:
         self.CORS_ALLOWED_ORIGINS = [
@@ -28,6 +30,10 @@ class Settings:
         self.CONTROL_DATABASE_URL = os.getenv(
             "AI_CONTROL_DATABASE_URL",
             f"sqlite:///{DEFAULT_CONTROL_DB_PATH.as_posix()}",
+        )
+        self.DB_ADMIN_DATABASE_URL = os.getenv(
+            "DB_ADMIN_DATABASE_URL",
+            f"sqlite:///{DEFAULT_DB_ADMIN_DB_PATH.as_posix()}",
         )
 
 
