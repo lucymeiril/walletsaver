@@ -38,6 +38,19 @@ class FakeCatalogStorage:
         ]
 
 
+class SparseCatalogStorage(FakeCatalogStorage):
+    def get_product_detail(self, product_id):
+        if product_id != 3:
+            return None
+        return {"id": 3, "name": "신규 상품", "price": 4500, "unit": "1개", "source": "emart"}
+
+    def get_price_history(self, product_id, days):
+        return []
+
+    def get_price_compare(self, product_id):
+        return []
+
+
 class PipelineCatalogStorage:
     def get_product_detail(self, product_id):
         if product_id != 2:
@@ -97,6 +110,21 @@ def test_public_catalog_reader_builds_trust_summary():
     assert "최저가" in summary["rationale"]
 
 
+def test_public_catalog_reader_builds_stable_empty_price_history_summary():
+    reader = PublicCatalogReader(SparseCatalogStorage())
+
+    summary = reader.get_price_history_summary(3, 30)
+
+    assert summary["history"] == []
+    assert summary["points"] == []
+    assert summary["point_count"] == 0
+    assert summary["current_offer"]["price"] == 4500
+    assert summary["average_price"] is None
+    assert summary["min_price"] is None
+    assert summary["max_price"] is None
+    assert "현재 확인된 가격" in summary["message"]
+
+
 def test_product_trust_endpoint_uses_public_read_boundary():
     client = TestClient(create_app(storage=FakeCatalogStorage()))
 
@@ -107,6 +135,36 @@ def test_product_trust_endpoint_uses_public_read_boundary():
     assert body["success"] is True
     assert body["data"]["product_id"] == 1
     assert body["data"]["reference_count"] == 5
+
+
+def test_product_price_history_endpoint_returns_summary_shape():
+    client = TestClient(create_app(storage=FakeCatalogStorage()))
+
+    resp = client.get("/api/products/1/price-history?days=30")
+
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["success"] is True
+    data = body["data"]
+    assert data["product_id"] == 1
+    assert data["point_count"] == 3
+    assert len(data["history"]) == 3
+    assert data["current_offer"]["price"] == 2990
+    assert data["average_price"] == 3490
+    assert data["min_price"] == 2990
+    assert data["max_price"] == 3990
+
+
+def test_product_price_history_endpoint_returns_empty_for_product_without_history():
+    client = TestClient(create_app(storage=SparseCatalogStorage()))
+
+    resp = client.get("/api/products/3/price-history?days=30")
+
+    assert resp.status_code == 200
+    data = resp.json()["data"]
+    assert data["history"] == []
+    assert data["is_sparse"] is True
+    assert data["current_offer"]["price"] == 4500
 
 
 def test_product_endpoint_flattens_approved_pipeline_public_catalog_data():

@@ -288,6 +288,41 @@ class TestBuildRawBatch:
         assert calls[0][1]["provider_id"] == "google-dev"
         assert calls[0][1]["records"][0]["raw_title"] == "오리온 오징어 땅콩 98g"
 
+    def test_forward_surfaces_ai_admin_provider_error_details(self):
+        def fake_post(url, payload, headers, timeout_seconds):
+            return 502, {
+                "detail": {
+                    "error": "provider_response_error",
+                    "provider_id": "google-dev",
+                    "model": "gemma-3-27b-it",
+                    "message": "JSON fallback returned malformed output for tofu hotdeal",
+                }
+            }
+
+        with pytest.raises(RawExportError) as exc_info:
+            forward_raw_records_to_ai_admin(
+                [
+                    {
+                        "post_id": "tofu-1",
+                        "title": "[이마트] 풀무원 국산콩 두부 300g 2,990원",
+                        "price": 2990,
+                        "url": "https://ppomppu.example/tofu-1",
+                    }
+                ],
+                ai_admin_base_url="http://ai-admin.test",
+                provider_id="google-dev",
+                source_name="ppomppu",
+                crawler_name="ppomppu_hotdeal",
+                schema_type="hotdeal",
+                batch_id="raw-hotdeal",
+                http_post=fake_post,
+            )
+
+        message = str(exc_info.value)
+        assert "provider=google-dev" in message
+        assert "model=gemma-3-27b-it" in message
+        assert "malformed output" in message
+
     def test_fetch_ai_admin_providers_uses_server_side_get(self):
         calls = []
 

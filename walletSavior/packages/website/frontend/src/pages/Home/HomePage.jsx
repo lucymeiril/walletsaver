@@ -551,6 +551,14 @@ export default function HomePage() {
                     price: d.price,
                     original_price: d.origPrice,
                     source: d.source,
+                    source_type: 'hotdeal',
+                    image: d.thumb,
+                    source_url: d.url,
+                    period: d.time,
+                    hotVotes: d.hotVotes,
+                    coldVotes: d.coldVotes,
+                    comments: d.comments,
+                    views: d.views,
                     discountRate: d.discountRate,
                   });
                 }}>

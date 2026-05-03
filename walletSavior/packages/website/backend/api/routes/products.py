@@ -507,14 +507,30 @@ async def get_price_history(
     product_id: int,
     days: int = Query(30, ge=7, le=365, description="조회 기간 (일)"),
 ):
-    """가격 추이 — 차트 렌더링용. DB에서 실제 가격 이력 조회."""
+    """가격 추이 — 차트/현재가 문맥용. 이력이 없으면 빈 상태를 반환."""
     storage = request.app.state.storage
     if storage is None:
-        return ApiResponse(data=[])
+        return ApiResponse(data={
+            "product_id": product_id,
+            "days": days,
+            "history": [],
+            "points": [],
+            "point_count": 0,
+            "has_history": False,
+            "is_sparse": True,
+            "current_offer": None,
+            "latest_offer": None,
+            "average_price": None,
+            "min_price": None,
+            "max_price": None,
+            "message": "DB 미연결로 가격 이력을 조회할 수 없습니다.",
+        })
 
-    data = PublicCatalogReader(storage).get_price_history(product_id, days)
-    if not data:
-        raise HTTPException(status_code=404, detail="가격 이력을 찾을 수 없습니다.")
+    reader = PublicCatalogReader(storage)
+    product = reader.get_product(product_id)
+    if not product:
+        raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
+    data = reader.get_price_history_summary(product_id, days, product=product)
     return ApiResponse(data=data)
 
 

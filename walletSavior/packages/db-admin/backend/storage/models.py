@@ -714,6 +714,7 @@ class HotDealVote(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     __table_args__ = (
+        UniqueConstraint("hotdeal_id", "client_ip", name="uq_hotdeal_vote_identity"),
         Index("ix_hotdeal_votes_deal_type", "hotdeal_id", "vote_type"),
     )
 

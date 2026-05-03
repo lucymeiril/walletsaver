@@ -9,14 +9,18 @@
     POST /api/hotdeals/{id}/report  — 핫딜 신고
 """
 
+import hashlib
 import logging
 import math
 import time
-from fastapi import APIRouter, Request, Query, HTTPException
+from typing import Optional
+
+from fastapi import APIRouter, Depends, Request, Query, HTTPException
 from api.schemas.common import ApiResponse, PaginationMeta
 from api.utils.cache import TTLCache
+from api.middleware.auth import get_current_user
 from services.db import managed_session
-from storage.models import HotDealComment, HotDealVote, Base
+from storage.models import HotDealComment, HotDealVote, HotdealPrice
 from sqlalchemy import func
 
 logger = logging.getLogger(__name__)
@@ -43,6 +47,88 @@ def _check_rate_limit(client_ip: str) -> bool:
     hits.append(now)
     _rate_limit_store[client_ip] = hits
     return True
+
+
+def _vote_identity(request: Request, user: Optional[dict]) -> str:
+    """Stable voter key: authenticated user first, anonymous browser/IP fingerprint fallback."""
+    if user and user.get("id") is not None:
+        return f"user:{user['id']}"
+    client_ip = request.client.host if request.client else "unknown"
+    ua = request.headers.get("user-agent", "")
+    session_hint = request.cookies.get("session_id") or request.cookies.get("access_token", "")
+    digest = hashlib.sha256(f"{client_ip}|{ua}|{session_hint}".encode("utf-8")).hexdigest()[:32]
+    return f"anon:{digest}"
+
+
+def _canonical_vote_type(raw_vote_type: str | None) -> str | None:
+    """Accept frontend aliases while storing one canonical value."""
+    if raw_vote_type in ("hot", "not"):
+        return raw_vote_type
+    if raw_vote_type == "cold":
+        return "not"
+    if raw_vote_type in ("cancel", "none", None):
+        return None
+    raise HTTPException(status_code=400, detail="vote_type must be 'hot', 'not', 'cold', or 'cancel'")
+
+
+def _count_hotdeal_votes(session, hotdeal_id: int) -> tuple[int, int]:
+    votes_hot = session.query(func.count(HotDealVote.id)).filter(
+        HotDealVote.hotdeal_id == hotdeal_id,
+        HotDealVote.vote_type == "hot",
+    ).scalar() or 0
+    votes_not = session.query(func.count(HotDealVote.id)).filter(
+        HotDealVote.hotdeal_id == hotdeal_id,
+        HotDealVote.vote_type == "not",
+    ).scalar() or 0
+    return votes_hot, votes_not
+
+
+def _apply_hotdeal_vote(session, hotdeal_id: int, identity_key: str, vote_type: str | None) -> dict:
+    deal = session.get(HotdealPrice, hotdeal_id)
+    if not deal:
+        raise HTTPException(status_code=404, detail="핫딜을 찾을 수 없습니다")
+
+    existing_votes = (
+        session.query(HotDealVote)
+        .filter(
+            HotDealVote.hotdeal_id == hotdeal_id,
+            HotDealVote.client_ip == identity_key,
+        )
+        .order_by(HotDealVote.id)
+        .all()
+    )
+
+    primary_vote = existing_votes[0] if existing_votes else None
+    for duplicate in existing_votes[1:]:
+        session.delete(duplicate)
+
+    if vote_type is None:
+        if primary_vote:
+            session.delete(primary_vote)
+        user_vote = None
+    elif primary_vote:
+        primary_vote.vote_type = vote_type
+        user_vote = vote_type
+    else:
+        session.add(HotDealVote(
+            hotdeal_id=hotdeal_id,
+            vote_type=vote_type,
+            client_ip=identity_key,
+        ))
+        user_vote = vote_type
+
+    session.flush()
+    votes_hot, votes_not = _count_hotdeal_votes(session, hotdeal_id)
+    deal.votes_hot = votes_hot
+    deal.votes_not = votes_not
+    deal.is_verified = (votes_hot + votes_not) >= 10
+    session.flush()
+
+    return {
+        "votes_hot": votes_hot,
+        "votes_not": votes_not,
+        "user_vote": user_vote,
+    }
 
 
 @router.get("")
@@ -117,48 +203,36 @@ async def get_hotdeal(request: Request, hotdeal_id: int):
 
 
 @router.post("/{hotdeal_id}/vote")
-async def vote_hotdeal(request: Request, hotdeal_id: int):
+async def vote_hotdeal(
+    request: Request,
+    hotdeal_id: int,
+    user: Optional[dict] = Depends(get_current_user),
+):
     """핫딜 투표 (hot/not) — DB 영속화."""
     client_ip = request.client.host if request.client else "unknown"
     if not _check_rate_limit(f"vote:{client_ip}"):
         raise HTTPException(status_code=429, detail="Too many requests")
 
     body = await request.json()
-    vote_type = body.get("vote_type", "hot")
-    if vote_type not in ("hot", "not"):
-        raise HTTPException(status_code=400, detail="vote_type must be 'hot' or 'not'")
+    vote_type = _canonical_vote_type(body.get("vote_type", "hot"))
+    identity_key = _vote_identity(request, user)
 
     storage = request.app.state.storage
     if storage is not None:
         try:
-            result = storage.vote_hotdeal(hotdeal_id, vote_type)
+            result = storage.vote_hotdeal(hotdeal_id, vote_type, identity_key=identity_key)
+            _listing_cache.clear()
             return ApiResponse(data=result)
         except Exception:
             logger.debug("storage.vote_hotdeal failed, falling back to DB")
 
     try:
         with managed_session() as session:
-            vote = HotDealVote(
-                hotdeal_id=hotdeal_id,
-                vote_type=vote_type,
-                client_ip=client_ip,
-            )
-            session.add(vote)
-            session.flush()
-
-            votes_hot = session.query(func.count(HotDealVote.id)).filter(
-                HotDealVote.hotdeal_id == hotdeal_id,
-                HotDealVote.vote_type == "hot",
-            ).scalar() or 0
-            votes_not = session.query(func.count(HotDealVote.id)).filter(
-                HotDealVote.hotdeal_id == hotdeal_id,
-                HotDealVote.vote_type == "not",
-            ).scalar() or 0
-
-            return ApiResponse(data={
-                "votes_hot": votes_hot,
-                "votes_not": votes_not,
-            })
+            result = _apply_hotdeal_vote(session, hotdeal_id, identity_key, vote_type)
+            _listing_cache.clear()
+            return ApiResponse(data=result)
+    except HTTPException:
+        raise
     except Exception:
         logger.exception("hotdeal vote DB error for hotdeal_id=%s", hotdeal_id)
         raise HTTPException(status_code=500, detail="투표 처리 중 오류가 발생했습니다")
@@ -235,6 +309,7 @@ async def add_hotdeal_comment(request: Request, hotdeal_id: int):
     if storage is not None:
         try:
             result = storage.add_hotdeal_comment(hotdeal_id, content, author)
+            _listing_cache.clear()
             return ApiResponse(data=result)
         except Exception:
             logger.debug("storage.add_hotdeal_comment failed, falling back to DB")
@@ -255,6 +330,7 @@ async def add_hotdeal_comment(request: Request, hotdeal_id: int):
                 "time": comment.created_at.isoformat() if comment.created_at else "방금 전",
                 "hotdeal_id": comment.hotdeal_id,
             }
+            _listing_cache.clear()
             return ApiResponse(data=data)
     except Exception:
         logger.exception("hotdeal comment create DB error for hotdeal_id=%s", hotdeal_id)
@@ -268,6 +344,7 @@ async def delete_hotdeal_comment(request: Request, hotdeal_id: int, comment_id: 
     if storage is not None:
         try:
             storage.delete_hotdeal_comment(comment_id)
+            _listing_cache.clear()
             return ApiResponse(data={"deleted": True})
         except Exception:
             logger.debug("storage.delete_hotdeal_comment failed, falling back to DB")
@@ -277,6 +354,7 @@ async def delete_hotdeal_comment(request: Request, hotdeal_id: int, comment_id: 
             comment = session.get(HotDealComment, comment_id)
             if comment and comment.hotdeal_id == hotdeal_id:
                 session.delete(comment)
+                _listing_cache.clear()
             return ApiResponse(data={"deleted": True})
     except Exception:
         logger.exception("hotdeal comment delete DB error for comment_id=%s", comment_id)

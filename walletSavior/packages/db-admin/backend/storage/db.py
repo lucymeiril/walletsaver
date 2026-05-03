@@ -24,6 +24,7 @@ from storage.models import (
     Base, Product, BaselinePrice, DiscountHistory,
     HotdealPrice, GasStation, CrawlLog, Favorite, PriceAlert,
     CrawlStatus, Category, Keyword, PendingCategorization, CategoryCorrection,
+    HotDealVote,
 )
 
 try:
@@ -690,6 +691,56 @@ class DBStorage(StorageContract):
                 "votes_not": hp.votes_not,
                 "is_verified": hp.is_verified,
             }
+
+    def vote_hotdeal(self, hotdeal_id: int, vote_type: str | None, identity_key: str = "unknown") -> dict:
+        """Create, update, or cancel one active vote per identity for a hotdeal."""
+        with self.SessionLocal() as session:
+            hp = session.get(HotdealPrice, hotdeal_id)
+            if not hp:
+                raise ValueError("hotdeal not found")
+
+            existing_votes = (
+                session.query(HotDealVote)
+                .filter(
+                    HotDealVote.hotdeal_id == hotdeal_id,
+                    HotDealVote.client_ip == identity_key,
+                )
+                .order_by(HotDealVote.id)
+                .all()
+            )
+            primary_vote = existing_votes[0] if existing_votes else None
+            for duplicate in existing_votes[1:]:
+                session.delete(duplicate)
+
+            if vote_type is None:
+                if primary_vote:
+                    session.delete(primary_vote)
+                user_vote = None
+            elif primary_vote:
+                primary_vote.vote_type = vote_type
+                user_vote = vote_type
+            else:
+                session.add(HotDealVote(
+                    hotdeal_id=hotdeal_id,
+                    vote_type=vote_type,
+                    client_ip=identity_key,
+                ))
+                user_vote = vote_type
+
+            session.flush()
+            votes_hot = session.query(func.count(HotDealVote.id)).filter(
+                HotDealVote.hotdeal_id == hotdeal_id,
+                HotDealVote.vote_type == "hot",
+            ).scalar() or 0
+            votes_not = session.query(func.count(HotDealVote.id)).filter(
+                HotDealVote.hotdeal_id == hotdeal_id,
+                HotDealVote.vote_type == "not",
+            ).scalar() or 0
+            hp.votes_hot = votes_hot
+            hp.votes_not = votes_not
+            hp.is_verified = (votes_hot + votes_not) >= 10
+            session.commit()
+            return {"votes_hot": votes_hot, "votes_not": votes_not, "user_vote": user_vote}
 
     # ──────────────────────────────────────────
     # 사용자 기능 — 즐겨찾기 / 알림

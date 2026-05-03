@@ -1,6 +1,9 @@
 """Google provider adapter tests without live network calls."""
 from __future__ import annotations
 
+import sys
+import types as py_types
+
 import pytest
 
 from core.contracts.ai_pipeline import ProviderKind
@@ -8,6 +11,7 @@ from core.contracts.control_plane import ProviderConfigContract
 from providers.google_genai import (
     GoogleGenAIProvider,
     ProviderConfigurationError,
+    ProviderResponseError,
     _extract_json_object,
 )
 from providers.secret_resolver import resolve_secret_alias
@@ -81,3 +85,98 @@ def test_rejects_secret_alias_that_is_not_env_name() -> None:
     provider = GoogleGenAIProvider(_config(secret_alias="not-a-valid-alias-name"))
     with pytest.raises(ProviderConfigurationError):
         provider.validate_config()
+
+
+def _install_fake_google_types(monkeypatch: pytest.MonkeyPatch) -> None:
+    class GenerateContentConfig:
+        def __init__(self, **kwargs):
+            self.kwargs = kwargs
+            for key, value in kwargs.items():
+                setattr(self, key, value)
+
+    google_mod = py_types.ModuleType("google")
+    genai_mod = py_types.ModuleType("google.genai")
+    types_mod = py_types.ModuleType("google.genai.types")
+    types_mod.GenerateContentConfig = GenerateContentConfig
+    genai_mod.types = types_mod
+    google_mod.genai = genai_mod
+    monkeypatch.setitem(sys.modules, "google", google_mod)
+    monkeypatch.setitem(sys.modules, "google.genai", genai_mod)
+    monkeypatch.setitem(sys.modules, "google.genai.types", types_mod)
+
+
+class _FakeResponse:
+    text = '{"items":[{"raw_record_id":"hotdeal:tofu","canonical_name":"풀무원 두부 300g"}]}'
+    usage_metadata = None
+
+
+def test_call_retries_without_json_mode_when_google_model_rejects_it(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _install_fake_google_types(monkeypatch)
+    monkeypatch.setenv("GOOGLE_TEST_API_KEY", "fake-local-test-key")
+    calls = []
+
+    class FakeModels:
+        def generate_content(self, *, model, contents, config):
+            calls.append((model, contents, config.kwargs))
+            if config.kwargs.get("response_mime_type") == "application/json":
+                raise Exception(
+                    "400 INVALID_ARGUMENT. JSON mode is not enabled for models/gemma-3-27b-it"
+                )
+            return _FakeResponse()
+
+    provider = GoogleGenAIProvider(_config(default_model="gemini-compatible-name"))
+    provider._client = py_types.SimpleNamespace(models=FakeModels())
+
+    result = provider.call(
+        prompt="Label hotdeal tofu/meat/mart prices. Return JSON.",
+        schema={"type": "object"},
+    )
+
+    assert result["items"][0]["raw_record_id"] == "hotdeal:tofu"
+    assert len(calls) == 2
+    assert calls[0][2]["response_mime_type"] == "application/json"
+    assert "response_mime_type" not in calls[1][2]
+    assert "Return one valid JSON object only" in calls[1][1]
+
+
+def test_call_skips_json_mode_for_gemma_model(monkeypatch: pytest.MonkeyPatch) -> None:
+    _install_fake_google_types(monkeypatch)
+    monkeypatch.setenv("GOOGLE_TEST_API_KEY", "fake-local-test-key")
+    calls = []
+
+    class FakeModels:
+        def generate_content(self, *, model, contents, config):
+            calls.append((model, contents, config.kwargs))
+            return _FakeResponse()
+
+    provider = GoogleGenAIProvider(_config(default_model="gemma-3-27b-it"))
+    provider._client = py_types.SimpleNamespace(models=FakeModels())
+
+    provider.call(prompt="Label tofu/meat mart hotdeal records.", schema={"type": "object"})
+
+    assert len(calls) == 1
+    assert calls[0][0] == "gemma-3-27b-it"
+    assert "response_mime_type" not in calls[0][2]
+    assert "Return one valid JSON object only" in calls[0][1]
+
+
+def test_call_reports_sanitized_provider_error(monkeypatch: pytest.MonkeyPatch) -> None:
+    _install_fake_google_types(monkeypatch)
+    monkeypatch.setenv("GOOGLE_TEST_API_KEY", "fake-local-test-key")
+
+    class FakeModels:
+        def generate_content(self, *, model, contents, config):
+            raise Exception("quota failed api_key=AIza1234567890123456789012345")
+
+    provider = GoogleGenAIProvider(_config(default_model="gemini-2.5-flash"))
+    provider._client = py_types.SimpleNamespace(models=FakeModels())
+
+    with pytest.raises(ProviderResponseError) as exc_info:
+        provider.call(prompt="Label tofu/meat mart hotdeal records.")
+
+    detail = exc_info.value.to_detail()
+    assert detail["provider_id"] == "google-dev"
+    assert detail["model"] == "gemini-2.5-flash"
+    assert "AIza" not in detail["message"]

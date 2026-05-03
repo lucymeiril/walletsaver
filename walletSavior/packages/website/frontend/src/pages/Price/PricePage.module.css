@@ -335,6 +335,29 @@
 }
 .chartBtn:hover { color: var(--text); }
 .chartBtnActive { background: rgba(56,189,248,.1); color: var(--accent); }
+.historyEmpty { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 12px 0; }
+.sparseNotice {
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(251,191,36,.08);
+  border: 1px solid rgba(251,191,36,.22);
+  color: var(--text2);
+  font-size: .82rem;
+}
+.currentOfferCard {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(56,189,248,.08);
+  border: 1px solid rgba(56,189,248,.2);
+  color: var(--text2);
+}
+.currentOfferCard span { font-size: .78rem; color: var(--text3); }
+.currentOfferCard strong { color: var(--accent); font-size: 1rem; }
+.currentOfferCard em { font-style: normal; font-size: .78rem; color: var(--text3); }
 
 /* Expert Mode */
 .expertToggle {

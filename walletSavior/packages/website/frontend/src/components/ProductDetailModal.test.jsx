@@ -86,7 +86,7 @@ describe('ProductDetailModal public catalog rendering', () => {
     expect(screen.getByText('오징어땅콩 202g 행사', { exact: false })).toBeInTheDocument();
     expect(screen.getByText('오징어땅콩')).toBeInTheDocument();
     expect(screen.getByText('과자')).toBeInTheDocument();
-    expect(screen.getByText('1,480원/100g')).toBeInTheDocument();
+    expect(screen.getAllByText('1,480원/100g').length).toBeGreaterThan(0);
     expect(screen.getByText('3,990원')).toBeInTheDocument();
 
     await waitFor(() => {
@@ -100,7 +100,7 @@ describe('ProductDetailModal public catalog rendering', () => {
     render(<ProductDetailModal product={{ id: 3, canonical_name: '승인 상품', price: 1000 }} onClose={vi.fn()} mode="preview" />);
 
     expect(screen.getByRole('dialog', { name: '승인 상품' })).toBeInTheDocument();
-    expect(screen.getByText('온라인')).toBeInTheDocument();
+    expect(screen.getAllByText('온라인').length).toBeGreaterThan(0);
     expect(screen.queryByText('키워드')).not.toBeInTheDocument();
   });
 
@@ -121,8 +121,8 @@ describe('ProductDetailModal public catalog rendering', () => {
 
     expect(screen.getByRole('dialog', { name: '행사 사과' })).toBeInTheDocument();
     expect(screen.getByRole('img', { name: '행사 사과' })).toBeInTheDocument();
-    expect(screen.getByText('이마트')).toBeInTheDocument();
-    expect(screen.getByText('1.5kg', { exact: false })).toBeInTheDocument();
+    expect(screen.getAllByText('이마트').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('1.5kg', { exact: false }).length).toBeGreaterThan(0);
     expect(screen.getByText('사과')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('찜하기'));
@@ -141,5 +141,40 @@ describe('ProductDetailModal public catalog rendering', () => {
       price: 9900,
       store_name: '이마트',
     }));
+  });
+
+  it('renders rich decision support for real-shaped hotdeal preview data', () => {
+    render(<ProductDetailModal product={{
+      id: 'hotdeal-ramen-1',
+      type: 'hotdeal',
+      title: '농심 신라면 20봉 핫딜',
+      price: 12900,
+      original_price: 18900,
+      source: '뽐뿌',
+      source_url: 'https://example.com/deal',
+      unit: '20입',
+      period: '오늘 23:59까지',
+      hotVotes: 42,
+      coldVotes: 3,
+      comments: 18,
+      price_history: [
+        { date: '2026-04-01', price: 15900 },
+        { date: '2026-04-12', price: 14500 },
+        { date: '2026-04-30', price: 12900 },
+      ],
+      comparable_offers: [
+        { source_name: '쿠팡', price: 13900, title: '신라면 20봉' },
+        { source_name: '이마트', price: 14900, title: '신라면 멀티팩' },
+      ],
+    }} onClose={vi.fn()} mode="preview" />);
+
+    expect(screen.getByText('구매 판단', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText('역대 최저가')).toBeInTheDocument();
+    expect(screen.getByText('가격 이력 요약', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText('마지막 할인 04-30')).toBeInTheDocument();
+    expect(screen.getByText('비교 가능한 판매처', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText('쿠팡')).toBeInTheDocument();
+    expect(screen.getByText('커뮤니티 반응 🔥42 / ❄️3')).toBeInTheDocument();
+    expect(screen.getByText('댓글 18개')).toBeInTheDocument();
   });
 });

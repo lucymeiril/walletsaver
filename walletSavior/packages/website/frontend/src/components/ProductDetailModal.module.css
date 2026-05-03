@@ -253,6 +253,113 @@
   gap: var(--space-sm);
 }
 
+.judgmentBox {
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  margin-bottom: var(--space-sm);
+}
+
+.judgmentBox p {
+  margin: 4px 0 0;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--text2);
+}
+
+.judgmentHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  color: var(--text);
+}
+
+.judgment-great,
+.judgment-good {
+  border-color: rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.08);
+}
+
+.judgment-bad {
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.loadingPill {
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: var(--glass2);
+  color: var(--text3);
+  font-size: var(--fs-xs);
+}
+
+.decisionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.decisionGrid > div,
+.historySummary > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: var(--space-sm);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.decisionGrid span,
+.historySummary span {
+  font-size: var(--fs-xs);
+  color: var(--text3);
+}
+
+.decisionGrid strong,
+.historySummary strong {
+  font-size: var(--fs-sm);
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.decisionGrid small {
+  font-size: 10px;
+  color: var(--text3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.signalList,
+.historyNote {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.signalList span,
+.historyNote span {
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  background: var(--glass2);
+  color: var(--text2);
+  font-size: var(--fs-xs);
+}
+
+.historySummary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
 .compItem {
   display: flex;
   align-items: center;
@@ -367,22 +474,46 @@
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
 }
+.currentOffer {
+  border-color: rgba(56, 189, 248, 0.35);
+  background: rgba(56, 189, 248, 0.08);
+}
 
 .osIcon { font-size: 1rem; }
 .osName {
   flex: 1;
+  min-width: 0;
   font-size: var(--fs-sm);
   color: var(--text2);
+}
+.osName small {
+  display: block;
+  margin-top: 2px;
+  color: var(--text3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .osPrice {
   font-size: var(--fs-sm);
   font-weight: var(--fw-semi);
   color: var(--text);
+  white-space: nowrap;
 }
 .osCheaper {
   font-size: var(--fs-xs);
   color: #22c55e;
   font-weight: var(--fw-medium);
+  white-space: nowrap;
+}
+.osBest {
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  background: rgba(34, 197, 94, 0.14);
+  color: #22c55e;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semi);
+  white-space: nowrap;
 }
 
 /* Price history mini chart */
@@ -538,6 +669,10 @@
   }
   .actions {
     flex-wrap: wrap;
+  }
+  .decisionGrid,
+  .historySummary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .actionPrimary {
     width: 100%;

@@ -412,6 +412,22 @@ def _get_json(
         raise RawExportError(f"failed to call ai-admin providers endpoint: {exc}") from exc
 
 
+def _format_ai_admin_error(data: dict[str, Any]) -> str:
+    detail = data.get("detail") if isinstance(data, dict) else data
+    if isinstance(detail, dict):
+        provider = detail.get("provider_id")
+        model = detail.get("model")
+        message = detail.get("message") or detail.get("error") or detail
+        parts = []
+        if provider:
+            parts.append(f"provider={provider}")
+        if model:
+            parts.append(f"model={model}")
+        parts.append(f"message={message}")
+        return ", ".join(parts)
+    return str(detail or data.get("error") or data)
+
+
 def fetch_ai_admin_providers(
     *,
     ai_admin_base_url: str,
@@ -428,7 +444,7 @@ def fetch_ai_admin_providers(
     get = http_get or _get_json
     status_code, data = get(endpoint, headers, timeout_seconds)
     if status_code >= 400:
-        detail = data.get("detail") or data.get("error") or data
+        detail = _format_ai_admin_error(data)
         raise RawExportError(f"ai-admin providers failed ({status_code}): {detail}")
     if not isinstance(data, dict):
         raise RawExportError("ai-admin providers response is not an object")
@@ -483,9 +499,10 @@ def forward_raw_records_to_ai_admin(
         }
         status_code, data = post(endpoint, payload, headers, timeout_seconds)
         if status_code >= 400:
+            detail = _format_ai_admin_error(data)
             raise RawExportError(
                 f"ai-admin ingest failed for {batch.batch_id}: "
-                f"status={status_code}, detail={data.get('detail', data)}"
+                f"status={status_code}, detail={detail}"
             )
         responses.append({"raw_export_batch_id": batch.batch_id, **data})
 

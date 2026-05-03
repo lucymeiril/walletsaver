@@ -169,6 +169,7 @@
   transition: all var(--dur) var(--ease);
 }
 .voteBtn:hover { border-color: var(--border2); }
+.voteBtn:disabled { opacity: .65; cursor: not-allowed; }
 .voteBtnHot { border-color: rgba(248,113,113,.3); color: var(--red); background: rgba(248,113,113,.06); }
 .voteBtnCold { border-color: rgba(56,189,248,.3); color: var(--accent); background: rgba(56,189,248,.06); }
 
@@ -251,6 +252,7 @@
   text-align: center;
 }
 .modalVoteBtn:hover { transform: translateY(-1px); }
+.modalVoteBtn:disabled { opacity: .65; cursor: not-allowed; transform: none; }
 .modalVoteHot { border-color: rgba(248,113,113,.3); color: var(--red); }
 .modalVoteHot:hover { background: rgba(248,113,113,.08); }
 .modalVoteCold { border-color: rgba(56,189,248,.3); color: var(--accent); }

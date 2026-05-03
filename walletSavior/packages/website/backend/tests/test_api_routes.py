@@ -99,11 +99,17 @@ class TestProducts:
         resp = client.get("/api/products/1/price-history?days=7")
         body = resp.json()
         assert body["success"] is True
-        assert isinstance(body["data"], list)
-        assert len(body["data"]) > 0
-        assert "date" in body["data"][0]
-        assert "price" in body["data"][0]
-        assert "source" in body["data"][0]
+        assert isinstance(body["data"], dict)
+        assert isinstance(body["data"]["history"], list)
+        if body["data"]["history"]:
+            assert "date" in body["data"]["history"][0]
+            assert "price" in body["data"]["history"][0]
+            assert "source" in body["data"]["history"][0]
+        else:
+            assert body["data"]["point_count"] == 0
+            assert body["data"]["has_history"] is False
+        assert "current_offer" in body["data"]
+        assert "average_price" in body["data"]
 
     def test_price_history_not_found(self, client):
         resp = client.get("/api/products/99999/price-history")

@@ -21,6 +21,7 @@ from core.contracts.ai_pipeline import (
 )
 from core.contracts.control_plane import ProviderConfigContract, RawCrawlBatchContract
 from providers import GoogleGenAIProvider
+from providers.google_genai import ProviderResponseError
 from storage.repositories import (
     FieldProposalRepository,
     ProviderConfigRepository,
@@ -174,14 +175,52 @@ def proposals_from_labeling_response(
     record_by_id = {record.raw_record_id: record for record in records}
     items = response.get("items")
     if not isinstance(items, list):
-        raise ValueError("provider response must contain items list")
+        raise ProviderResponseError(
+            "provider response must contain items list",
+            provider_id=provider.provider_name,
+            model=provider.model_name,
+        )
+    seen_ids: set[str] = set()
     proposals: list[FieldProposal] = []
-    for item in items:
+    for index, item in enumerate(items):
         if not isinstance(item, dict):
-            continue
+            raise ProviderResponseError(
+                f"provider response item {index} must be an object",
+                provider_id=provider.provider_name,
+                model=provider.model_name,
+            )
         record_id = item.get("raw_record_id")
         if not isinstance(record_id, str) or record_id not in record_by_id:
-            continue
+            raise ProviderResponseError(
+                f"provider response item {index} has unknown raw_record_id",
+                provider_id=provider.provider_name,
+                model=provider.model_name,
+            )
+        if record_id in seen_ids:
+            raise ProviderResponseError(
+                f"provider response contains duplicate raw_record_id: {record_id}",
+                provider_id=provider.provider_name,
+                model=provider.model_name,
+            )
+        seen_ids.add(record_id)
+        for list_field in ("keywords", "aliases"):
+            value = item.get(list_field)
+            if value is not None and (
+                not isinstance(value, list)
+                or not all(isinstance(entry, str) for entry in value)
+            ):
+                raise ProviderResponseError(
+                    f"provider response field {list_field} for {record_id} must be a list of strings",
+                    provider_id=provider.provider_name,
+                    model=provider.model_name,
+                )
+        attributes = item.get("attributes")
+        if attributes is not None and not isinstance(attributes, dict):
+            raise ProviderResponseError(
+                f"provider response field attributes for {record_id} must be an object",
+                provider_id=provider.provider_name,
+                model=provider.model_name,
+            )
         record = record_by_id[record_id]
         evidence = item.get("notes") or record.raw_title
 
@@ -217,7 +256,6 @@ def proposals_from_labeling_response(
                     )
                 )
 
-        attributes = item.get("attributes")
         if isinstance(attributes, dict):
             for attr_name, attr_value in sorted(attributes.items()):
                 if attr_value is None or attr_value == "":
@@ -269,6 +307,14 @@ def proposals_from_labeling_response(
                         suffix=f"alias:{index}",
                     )
                 )
+    missing_ids = set(record_by_id) - seen_ids
+    if missing_ids:
+        missing = ", ".join(sorted(missing_ids)[:5])
+        raise ProviderResponseError(
+            f"provider response missing labels for raw_record_id(s): {missing}",
+            provider_id=provider.provider_name,
+            model=provider.model_name,
+        )
     return proposals
 
 

@@ -22,10 +22,66 @@ class ProviderConfigurationError(ValueError):
 
 
 class ProviderResponseError(ValueError):
-    """Provider responded, but not with the required JSON shape."""
+    """Provider call failed safely or returned an invalid JSON shape."""
+
+    def __init__(
+        self,
+        message: str,
+        *,
+        provider_id: str | None = None,
+        model: str | None = None,
+    ) -> None:
+        super().__init__(message)
+        self.provider_id = provider_id
+        self.model = model
+
+    def to_detail(self) -> dict[str, Any]:
+        return {
+            "error": "provider_response_error",
+            "provider_id": self.provider_id,
+            "model": self.model,
+            "message": str(self),
+        }
 
 
 _JSON_OBJECT_RE = re.compile(r"\{.*\}", re.DOTALL)
+_JSON_MODE_UNSUPPORTED_MARKERS = (
+    "json mode is not enabled",
+    "response_mime_type",
+    "response mime type",
+    "application/json",
+    "response_schema",
+)
+
+
+def _sanitize_provider_error(message: str) -> str:
+    """Keep provider diagnostics useful without exposing common API-key shapes."""
+    sanitized = re.sub(r"AIza[0-9A-Za-z_\-]{20,}", "[REDACTED_API_KEY]", message)
+    sanitized = re.sub(
+        r"(?i)(api[_-]?key|key|token|authorization)(\s*[=:]\s*)['\"]?[^'\"\s,;}]+",
+        r"\1\2[REDACTED]",
+        sanitized,
+    )
+    return sanitized.strip()
+
+
+def _is_json_mode_unsupported_error(exc: Exception) -> bool:
+    text = str(exc).lower()
+    return any(marker in text for marker in _JSON_MODE_UNSUPPORTED_MARKERS) and (
+        "not enabled" in text
+        or "unsupported" in text
+        or "invalid_argument" in text
+        or "400" in text
+    )
+
+
+def _json_only_prompt(prompt: str) -> str:
+    return (
+        f"{prompt}\n\n"
+        "Provider compatibility instruction: JSON response mode is unavailable for "
+        "this model. Return one valid JSON object only, with no Markdown fences, "
+        "no prose, and no trailing commentary. The JSON must match the shape above."
+    )
 
 
 def _extract_json_object(text: str) -> dict[str, Any]:
@@ -124,20 +180,50 @@ class GoogleGenAIProvider:
                 "google-genai package is not installed"
             ) from exc
 
-        config_kwargs: dict[str, Any] = {
-            "temperature": 0.1,
-            "response_mime_type": "application/json",
-        }
+        config_kwargs: dict[str, Any] = {"temperature": 0.1}
+        use_json_mode = "gemma" not in self.config.default_model.lower()
+        if use_json_mode:
+            config_kwargs["response_mime_type"] = "application/json"
         # The SDK accepts response_schema for selected schema dialects, but it is
-        # stricter than JSON Schema and changes across releases. We keep JSON
-        # mode on and validate the returned object in our own pipeline layer.
-        response = client.models.generate_content(
-            model=self.config.default_model,
-            contents=prompt,
-            config=types.GenerateContentConfig(**config_kwargs),
-        )
+        # stricter than JSON Schema and changes across releases. We only request
+        # JSON mode for models that accept it and validate the returned object in
+        # our own pipeline layer.
+        try:
+            response = client.models.generate_content(
+                model=self.config.default_model,
+                contents=prompt if use_json_mode else _json_only_prompt(prompt),
+                config=types.GenerateContentConfig(**config_kwargs),
+            )
+        except Exception as exc:
+            if not use_json_mode or not _is_json_mode_unsupported_error(exc):
+                message = _sanitize_provider_error(str(exc))
+                raise ProviderResponseError(
+                    f"Google GenAI provider call failed: {message}",
+                    provider_id=self.config.provider_id,
+                    model=self.config.default_model,
+                ) from exc
+            try:
+                response = client.models.generate_content(
+                    model=self.config.default_model,
+                    contents=_json_only_prompt(prompt),
+                    config=types.GenerateContentConfig(temperature=0.1),
+                )
+            except Exception as retry_exc:
+                message = _sanitize_provider_error(str(retry_exc))
+                raise ProviderResponseError(
+                    f"Google GenAI provider fallback failed: {message}",
+                    provider_id=self.config.provider_id,
+                    model=self.config.default_model,
+                ) from retry_exc
         text = getattr(response, "text", "") or ""
-        parsed = _extract_json_object(text)
+        try:
+            parsed = _extract_json_object(text)
+        except ProviderResponseError as exc:
+            raise ProviderResponseError(
+                str(exc),
+                provider_id=self.config.provider_id,
+                model=self.config.default_model,
+            ) from exc
         usage = getattr(response, "usage_metadata", None)
         if usage is not None:
             parsed.setdefault(

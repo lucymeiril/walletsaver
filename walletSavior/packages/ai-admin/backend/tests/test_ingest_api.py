@@ -45,31 +45,74 @@ def client(db: Database, monkeypatch: pytest.MonkeyPatch) -> Iterator[TestClient
             self.config = config
 
         def call(self, *, prompt: str, schema=None) -> dict:
-            record_ids = re.findall(r"- id=([^;]+);", prompt)
+            records = re.findall(r"- id=([^;]+); source=[^;]+; title=([^;]+); price=([^\n]+)", prompt)
+            if not records:
+                records = [(record_id, "", "") for record_id in re.findall(r"- id=([^;]+);", prompt)]
+
+            def _label(record_id: str, title: str) -> dict:
+                if "두부" in title or "tofu" in record_id:
+                    canonical_name = "풀무원 국산콩 두부 300g"
+                    brand = "풀무원"
+                    category_id = "fresh.tofu"
+                    keywords = ["두부", "국산콩", "마트특가"]
+                    aliases = ["국산콩두부"]
+                    attributes = {"food_type": "tofu"}
+                    package_quantity = 300
+                    package_unit = "g"
+                    standard_unit = "kg"
+                    standard_unit_price = 9966.67
+                elif "삼겹살" in title or "meat" in record_id:
+                    canonical_name = "국내산 삼겹살 600g"
+                    brand = "정육"
+                    category_id = "fresh.meat"
+                    keywords = ["삼겹살", "돼지고기", "핫딜"]
+                    aliases = ["국내산삼겹살"]
+                    attributes = {"meat_cut": "pork_belly"}
+                    package_quantity = 600
+                    package_unit = "g"
+                    standard_unit = "kg"
+                    standard_unit_price = 19800
+                elif "orion" in record_id or record_id == "r1":
+                    canonical_name = "오리온 오징어 땅콩 98g"
+                    brand = "오리온"
+                    category_id = "snack.nut"
+                    keywords = ["오징어땅콩", "과자"]
+                    aliases = ["오징어땅콩"]
+                    attributes = {"snack_type": "nut"}
+                    package_quantity = 98
+                    package_unit = "g"
+                    standard_unit = "kg"
+                    standard_unit_price = 20204.08
+                else:
+                    canonical_name = "이마트 테스트 상품"
+                    brand = "이마트"
+                    category_id = "mart.test"
+                    keywords = ["테스트"]
+                    aliases = ["테스트상품"]
+                    attributes = {"source": "mart"}
+                    package_quantity = 1
+                    package_unit = "ea"
+                    standard_unit = "ea"
+                    standard_unit_price = 1000
+                return {
+                    "raw_record_id": record_id,
+                    "canonical_name": canonical_name,
+                    "brand": brand,
+                    "category_id": category_id,
+                    "keywords": keywords,
+                    "aliases": aliases,
+                    "attributes": attributes,
+                    "package_quantity": package_quantity,
+                    "package_unit": package_unit,
+                    "bundle_count": 1,
+                    "standard_unit": standard_unit,
+                    "standard_unit_price": standard_unit_price,
+                    "confidence": 0.91,
+                    "notes": "real-shaped hotdeal/mart product",
+                }
+
             return {
-                "items": [
-                    {
-                        "raw_record_id": record_id,
-                        "canonical_name": (
-                            "오리온 오징어 땅콩 98g"
-                            if "orion" in record_id or record_id == "r1"
-                            else "이마트 테스트 상품"
-                        ),
-                        "brand": "오리온",
-                        "category_id": "snack.nut",
-                        "keywords": ["오징어땅콩", "과자"],
-                        "aliases": ["오징어땅콩"],
-                        "attributes": {"snack_type": "nut"},
-                        "package_quantity": 98,
-                        "package_unit": "g",
-                        "bundle_count": 1,
-                        "standard_unit": "kg",
-                        "standard_unit_price": 20204.08,
-                        "confidence": 0.91,
-                        "notes": "과자 브랜드 제품",
-                    }
-                    for record_id in record_ids
-                ]
+                "items": [_label(record_id, title) for record_id, title, _price in records]
             }
 
     monkeypatch.setattr(
@@ -140,6 +183,89 @@ def test_ingest_rejects_more_than_30_records(client: TestClient) -> None:
         json={"provider_id": "google-dev", "source_name": "emart", "records": records},
     )
     assert res.status_code == 422
+
+
+def test_ingest_label_handles_realistic_hotdeal_food_records(client: TestClient) -> None:
+    res = client.post(
+        "/api/ingest/raw-records/label",
+        json={
+            "provider_id": "google-dev",
+            "source_name": "ppomppu",
+            "crawler_name": "ppomppu_hotdeal",
+            "schema_type": "hotdeal",
+            "records": [
+                {
+                    "raw_record_id": "hotdeal:tofu-300g",
+                    "source_name": "ppomppu",
+                    "source_url": "https://ppomppu.example/post/tofu",
+                    "raw_title": "[이마트] 풀무원 국산콩 두부 300g 2,990원",
+                    "raw_price": 2990,
+                    "raw_payload": {"mall": "이마트", "discount": "행사"},
+                },
+                {
+                    "raw_record_id": "hotdeal:meat-600g",
+                    "source_name": "ppomppu",
+                    "source_url": "https://ppomppu.example/post/meat",
+                    "raw_title": "[마트] 국내산 삼겹살 600g 11,880원",
+                    "raw_price": 11880,
+                    "raw_payload": {"mall": "동네마트", "shipping": "매장픽업"},
+                },
+            ],
+        },
+    )
+    assert res.status_code == 200, res.text
+    body = res.json()
+    assert body["records_stored"] == 2
+    assert body["provider_calls"] == 1
+    assert body["proposals_stored"] >= 16
+
+    proposals = client.get("/api/review/proposals").json()["items"]
+    values = {(p["target_field"], p["proposed_value"]) for p in proposals}
+    assert ("category_id", "fresh.tofu") in values
+    assert ("category_id", "fresh.meat") in values
+    assert ("keywords", "두부") in values
+
+
+def test_ingest_provider_validation_error_returns_actionable_502(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class BrokenProvider:
+        def __init__(self, config: ProviderConfigContract) -> None:
+            self.config = config
+
+        def call(self, *, prompt: str, schema=None) -> dict:
+            return {"items": []}
+
+    monkeypatch.setattr(
+        ai_ingestion,
+        "provider_from_config",
+        lambda config: BrokenProvider(config),
+    )
+
+    res = client.post(
+        "/api/ingest/raw-records/label",
+        json={
+            "provider_id": "google-dev",
+            "source_name": "ppomppu",
+            "crawler_name": "ppomppu_hotdeal",
+            "schema_type": "hotdeal",
+            "records": [
+                {
+                    "raw_record_id": "hotdeal:tofu-300g",
+                    "source_name": "ppomppu",
+                    "raw_title": "[이마트] 풀무원 국산콩 두부 300g 2,990원",
+                    "raw_price": 2990,
+                }
+            ],
+        },
+    )
+
+    assert res.status_code == 502
+    detail = res.json()["detail"]
+    assert detail["provider_id"] == "google-dev"
+    assert detail["model"] == "gemma-3-27b-it"
+    assert "missing labels" in detail["message"]
 
 
 def _load_crawler_ai_export():

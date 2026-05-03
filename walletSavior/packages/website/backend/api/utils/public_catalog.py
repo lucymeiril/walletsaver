@@ -16,7 +16,7 @@ PRICE_KEYS = ("cur", "price", "sale_price", "current_price", "item_price")
 
 
 def safe_price(item: dict[str, Any] | None) -> float:
-    if not item:
+    if not item or not isinstance(item, dict):
         return 0
     for key in PRICE_KEYS:
         value = item.get(key)
@@ -39,7 +39,39 @@ class PublicCatalogReader:
         data = self.storage.get_price_history(product_id, days)
         if isinstance(data, dict) and "history" in data:
             data = data["history"]
-        return data if isinstance(data, list) else []
+        if not isinstance(data, list):
+            return []
+        points = [_normalize_history_point(item) for item in data]
+        return [point for point in points if safe_price(point) > 0]
+
+    def get_price_history_summary(
+        self,
+        product_id: int,
+        days: int,
+        product: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        product = product if product is not None else self.get_product(product_id)
+        history = self.get_price_history(product_id, days)
+        compare = self.get_price_compare(product_id)
+        compare_items = _compare_items(compare)
+        current_offer = _current_offer(product or {}, history, compare_items)
+        prices = [safe_price(row) for row in history if safe_price(row) > 0]
+
+        return {
+            "product_id": product_id,
+            "days": days,
+            "history": history,
+            "points": history,
+            "point_count": len(history),
+            "has_history": bool(history),
+            "is_sparse": len(history) < 2,
+            "current_offer": current_offer,
+            "latest_offer": current_offer,
+            "average_price": round(mean(prices)) if prices else None,
+            "min_price": min(prices) if prices else None,
+            "max_price": max(prices) if prices else None,
+            "message": _history_message(history, current_offer),
+        }
 
     def get_price_compare(self, product_id: int) -> list[dict[str, Any]] | dict[str, Any]:
         data = self.storage.get_price_compare(product_id)
@@ -175,6 +207,71 @@ def _normalize_offer(item: Any) -> dict[str, Any]:
     normalized.setdefault("store_name", source)
     normalized.setdefault("store_key", source.lower() if isinstance(source, str) else "")
     return normalized
+
+
+def _normalize_history_point(item: Any) -> dict[str, Any]:
+    item = _asdict(item)
+    if not isinstance(item, dict):
+        return {}
+    return {
+        "date": item.get("date") or item.get("recorded_at") or item.get("valid_from") or item.get("crawled_at") or "",
+        "price": safe_price(item),
+        "source": item.get("source") or item.get("source_name") or item.get("store") or item.get("store_name") or "",
+        "original_price": item.get("original_price"),
+        "discount_rate": item.get("discount_rate"),
+        "url": item.get("url") or item.get("source_url"),
+    }
+
+
+def _current_offer(
+    product: dict[str, Any],
+    history: list[dict[str, Any]],
+    compare_items: list[dict[str, Any]],
+) -> dict[str, Any] | None:
+    product_price = safe_price(product)
+    if product_price > 0:
+        return {
+            "price": product_price,
+            "source": product.get("source") or product.get("source_name") or product.get("store") or product.get("store_name") or "",
+            "original_price": product.get("original_price"),
+            "discount_rate": product.get("discount_rate") or product.get("discount_pct"),
+            "url": product.get("source_url") or product.get("url"),
+            "date": product.get("updated_at") or product.get("crawled_at") or product.get("recorded_at"),
+        }
+
+    compare_prices = [item for item in compare_items if safe_price(item) > 0]
+    if compare_prices:
+        best = min(compare_prices, key=safe_price)
+        return {
+            "price": safe_price(best),
+            "source": best.get("source") or best.get("source_name") or best.get("store") or best.get("store_name") or "",
+            "original_price": best.get("original_price"),
+            "discount_rate": best.get("discount_rate"),
+            "url": best.get("url") or best.get("source_url"),
+            "date": best.get("date") or best.get("crawled_at") or best.get("recorded_at"),
+        }
+
+    if history:
+        latest = history[-1]
+        return {
+            "price": safe_price(latest),
+            "source": latest.get("source") or "",
+            "original_price": latest.get("original_price"),
+            "discount_rate": latest.get("discount_rate"),
+            "url": latest.get("url"),
+            "date": latest.get("date"),
+        }
+    return None
+
+
+def _history_message(history: list[dict[str, Any]], current_offer: dict[str, Any] | None) -> str:
+    if len(history) >= 2:
+        return ""
+    if len(history) == 1:
+        return "가격 이력이 1건뿐이라 추세 판단은 제한적입니다."
+    if current_offer:
+        return "아직 기간별 가격 이력은 없지만 현재 확인된 가격을 표시합니다."
+    return "아직 수집된 가격 이력이 없습니다."
 
 
 def _compare_items(compare: list[dict[str, Any]] | dict[str, Any]) -> list[dict[str, Any]]:

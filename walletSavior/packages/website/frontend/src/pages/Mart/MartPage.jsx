@@ -6,10 +6,9 @@ import { fmt } from '../../utils/helpers';
 import useStore from '../../stores/appStore';
 import { api } from '../../services/api';
 import { buildWishlistPayload, normalizeProduct } from '../../utils/productActions';
-import Modal from '../../components/common/Modal';
 import Spinner from '../../components/common/Spinner';
-import SafeImage from '../../components/common/SafeImage';
 import EmptyState from '../../components/common/EmptyState';
+import ProductDetailModal from '../../components/ProductDetailModal';
 import s from './MartPage.module.css';
 
 const COMPARE_MARTS = ['emart', 'homeplus', 'lotte'];
@@ -744,7 +743,26 @@ export default function MartPage() {
               const matched = products.find(p => item.name?.includes(p.name));
               const diff = matched ? item.sale - matched.avg : null;
               const onlineUrl = getOnlineMallUrl(activeMart, item.name);
-              const productData = { ...item, martKey: activeMart, martName: martInfo?.name, period: martPeriod };
+              const common = commonProducts.find(cp => cp.name === normalizeProductName(item.name));
+              const comparableOffers = common
+                ? Object.entries(common.marts).map(([key, offer]) => ({
+                  ...offer,
+                  source_name: offer.mart || key,
+                  store_name: offer.mart || key,
+                  price: offer.sale || offer.price,
+                  original_price: offer.orig,
+                  source_type: 'mart',
+                  period: martPeriod,
+                }))
+                : [];
+              const productData = {
+                ...item,
+                martKey: activeMart,
+                martName: martInfo?.name,
+                period: martPeriod,
+                comparable_offers: comparableOffers,
+                price_history_summary: matched ? { average_price: matched.avg, count: 1 } : null,
+              };
               const fav = favoriteIds.includes(normalizeProduct(productData).favoriteId);
               return (
                 <div key={item.id || item.name || `sale-${i}`} className={s.card} onClick={() => setSaleDetail(productData)}>
@@ -893,111 +911,13 @@ export default function MartPage() {
         </div>
       )}
 
-      {/* ===== SALE DETAIL MODAL ===== */}
-      {saleDetail && (() => {
-        const matched = products.find(p => saleDetail.name?.includes(p.name));
-        const diffVsAvg = matched ? saleDetail.sale - matched.avg : null;
-        const periodParts = saleDetail.period?.split('~') || [];
-        const martKey = saleDetail.martKey || null;
-        const onlineUrl = getOnlineMallUrl(martKey, saleDetail.name);
-        const mallInfo = martKey ? MART_ONLINE_URLS[martKey] : null;
-
-        return (
-          <Modal isOpen={!!saleDetail} onClose={() => setSaleDetail(null)} title={saleDetail.name} size="sm">
-            <div className={s.detailBody}>
-              {saleDetail.img && (
-                <div className={s.detailImgWrap}>
-                  <SafeImage src={saleDetail.img} alt={saleDetail.name} className={s.detailImg} />
-                  {saleDetail.disc > 0 && (
-                    <span className={s.detailDiscBadge}>-{saleDetail.disc}%</span>
-                  )}
-                </div>
-              )}
-              <div className={s.detailRow}>
-                <span className={s.detailLabel}>판매가</span>
-                <span className={s.detailSale}>{fmt(saleDetail.sale)}원</span>
-              </div>
-              {saleDetail.orig > 0 && (
-                <div className={s.detailRow}>
-                  <span className={s.detailLabel}>정가</span>
-                  <span className={s.detailOrig}>{fmt(saleDetail.orig)}원</span>
-                </div>
-              )}
-              {saleDetail.disc > 0 && (
-                <div className={s.detailRow}>
-                  <span className={s.detailLabel}>할인율</span>
-                  <span className={s.detailDisc}>-{saleDetail.disc}%</span>
-                </div>
-              )}
-              <div className={s.detailRow}>
-                <span className={s.detailLabel}>행사 유형</span>
-                <span className={s.detailEvent}>{saleDetail.event}</span>
-              </div>
-              {saleDetail.unit && (
-                <div className={s.detailRow}>
-                  <span className={s.detailLabel}>규격/단위</span>
-                  <span>{saleDetail.unit}</span>
-                </div>
-              )}
-              {saleDetail.store && (
-                <div className={s.detailRow}>
-                  <span className={s.detailLabel}>판매 매장</span>
-                  <span>{saleDetail.store}</span>
-                </div>
-              )}
-              <div className={s.detailRow}>
-                <span className={s.detailLabel}>마트</span>
-                <span>{saleDetail.martName}</span>
-              </div>
-              <div className={s.detailRow}>
-                <span className={s.detailLabel}>행사 기간</span>
-                <span>{periodParts[0]?.trim() || ''} ~ {periodParts[1]?.trim() || ''}</span>
-              </div>
-              {diffVsAvg !== null && (
-                <div className={s.detailRow}>
-                  <span className={s.detailLabel}>시세 평균 대비</span>
-                  <span className={diffVsAvg <= 0 ? s.cheap : s.expensive}>
-                    {diffVsAvg <= 0 ? fmt(diffVsAvg) : `+${fmt(diffVsAvg)}`}원
-                  </span>
-                </div>
-              )}
-              <div className={s.detailActions}>
-                {saleDetail.detailUrl && (
-                  <a href={saleDetail.detailUrl} target="_blank" rel="noopener noreferrer" className={s.detailLinkBtn}>
-                    <ExternalLink size={16} />
-                    상품 페이지로 이동
-                  </a>
-                )}
-                {onlineUrl && mallInfo && (
-                  <a href={onlineUrl} target="_blank" rel="noopener noreferrer" className={s.detailMallBtn}>
-                    🛍️ {mallInfo.name}에서 검색
-                  </a>
-                )}
-                <button
-                  className={s.detailCartBtn}
-                  onClick={() => {
-                    addToShoppingList({ ...saleDetail, icon: '🏪' });
-                    addToast(`${saleDetail.name}을(를) 장보기 리스트에 추가했어요`, 'success');
-                    setSaleDetail(null);
-                  }}
-                >
-                  🛒 장보기에 추가
-                </button>
-                <button
-                  className={s.detailCartBtn}
-                  onClick={() => toggleWishlist(saleDetail)}
-                >
-                  <Heart size={16} fill={favoriteIds.includes(normalizeProduct(saleDetail).favoriteId) ? 'currentColor' : 'none'} />
-                  {favoriteIds.includes(normalizeProduct(saleDetail).favoriteId) ? ' 찜 해제' : ' 찜하기'}
-                </button>
-                <button className={s.detailCloseBtn} onClick={() => setSaleDetail(null)}>
-                  닫기
-                </button>
-              </div>
-            </div>
-          </Modal>
-        );
-      })()}
+      {saleDetail && (
+        <ProductDetailModal
+          product={saleDetail}
+          onClose={() => setSaleDetail(null)}
+          mode="preview"
+        />
+      )}
     </div>
   );
 }

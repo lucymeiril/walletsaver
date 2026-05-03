@@ -20,6 +20,10 @@ function highlightMatch(text, query) {
   return <>{text.slice(0, idx)}<strong>{text.slice(idx, idx + query.length)}</strong>{text.slice(idx + query.length)}</>;
 }
 
+function positivePrice(...values) {
+  return values.find(v => typeof v === 'number' && v > 0) ?? 0;
+}
+
 export default function PricePage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -30,6 +34,8 @@ export default function PricePage() {
   const [products, setProducts] = useState([]);
   const [productData, setProductData] = useState(null);
   const [chartData, setChartData] = useState([]);
+  const [priceHistory, setPriceHistory] = useState(null);
+  const [chartError, setChartError] = useState(null);
   const [relatedHotdeals, setRelatedHotdeals] = useState([]);
   const [loading, setLoading] = useState(false);
   const [chartLoading, setChartLoading] = useState(false);
@@ -146,10 +152,25 @@ export default function PricePage() {
     if (!product) return;
     const controller = new AbortController();
     setChartLoading(true);
+    setChartError(null);
     fetch(`/api/products/${product.id}/price-history?days=${range}`, { signal: controller.signal })
-      .then(r => r.json())
-      .then(res => setChartData(res.data || []))
-      .catch(err => { if (err.name !== 'AbortError') console.error(err); })
+      .then(async r => {
+        const res = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(res.detail || '가격 이력을 불러오지 못했습니다');
+        return res;
+      })
+      .then(res => {
+        const payload = res.data || {};
+        const points = Array.isArray(payload) ? payload : (payload.history || payload.points || []);
+        setPriceHistory(Array.isArray(payload) ? { history: points, points, point_count: points.length } : payload);
+        setChartData(points);
+      })
+      .catch(err => {
+        if (err.name === 'AbortError') return;
+        setPriceHistory({ history: [], points: [], point_count: 0, is_sparse: true, message: err.message });
+        setChartData([]);
+        setChartError(err.message);
+      })
       .finally(() => setChartLoading(false));
     return () => controller.abort();
   }, [product?.id, range]);
@@ -228,10 +249,12 @@ export default function PricePage() {
   // 상품 상세 — 속성 변형은 DB에서 조회
   const variants = productData?.variants || [];
   const activeVariant = variants[variantIdx] || null;
-  const displayAvg = product ? (activeVariant?.avg ?? product.avg) : 0;
-  const displayCur = product ? (activeVariant?.cur ?? product.cur) : 0;
-  const displayLow = product ? (activeVariant?.low ?? product.low) : 0;
-  const displayHigh = product ? (activeVariant?.high ?? product.high) : 0;
+  const currentOffer = priceHistory?.current_offer || priceHistory?.latest_offer || null;
+  const currentOfferPrice = positivePrice(currentOffer?.price, product?.current_price, product?.price, product?.sale_price);
+  const displayCur = product ? positivePrice(activeVariant?.cur, product.cur, currentOfferPrice) : 0;
+  const displayAvg = product ? positivePrice(activeVariant?.avg, product.avg, priceHistory?.average_price, displayCur) : 0;
+  const displayLow = product ? positivePrice(activeVariant?.low, product.low, priceHistory?.min_price, displayCur) : 0;
+  const displayHigh = product ? positivePrice(activeVariant?.high, product.high, priceHistory?.max_price, displayCur) : 0;
 
   const ratio = useMemo(() => displayAvg > 0 ? displayCur / displayAvg : 1, [displayCur, displayAvg]);
   const diff = useMemo(() => displayCur - displayAvg, [displayCur, displayAvg]);
@@ -249,7 +272,9 @@ export default function PricePage() {
 
   const fairPrice = useMemo(() => Math.round(displayAvg * 0.8), [displayAvg]);
 
-  const hasData = displayCur != null && displayAvg != null && displayAvg > 0;
+  const hasData = displayCur != null && displayCur > 0 && displayAvg != null && displayAvg > 0;
+  const historyPointCount = priceHistory?.point_count ?? chartData.length;
+  const historyMessage = chartError || priceHistory?.message;
 
   // 마트별 최저가 계산 — 모든 훅은 early return 전에 호출해야 함
   const cheapestMart = useMemo(() => {
@@ -610,28 +635,42 @@ export default function PricePage() {
                         <p style={{ marginTop: 8, color: 'var(--text3)', fontSize: '.85rem' }}>차트 데이터 로딩 중...</p>
                       </div>
                     ) : chartData.length === 0 ? (
-                      <EmptyState
-                        title="가격 이력이 없습니다"
-                        description="아직 수집된 가격 데이터가 없습니다."
-                      />
-                    ) : (
-                    <ResponsiveContainer width="100%" height={220}>
-                      <AreaChart data={chartData}>
-                        <defs>
-                          <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.2} />
-                            <stop offset="95%" stopColor="#38bdf8" stopOpacity={0} />
-                          </linearGradient>
-                        </defs>
-                        <XAxis dataKey="date" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
-                        <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} width={50} tickFormatter={v => fmt(v)} />
-                        <Tooltip
-                          contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: '.85rem' }}
-                          formatter={v => [`${fmt(v)}원`, '가격']}
+                      <div className={s.historyEmpty}>
+                        <EmptyState
+                          title="가격 이력이 없습니다"
+                          description={historyMessage || '아직 기간별 가격 데이터가 충분하지 않습니다.'}
                         />
-                        <Area type="monotone" dataKey="price" stroke="#38bdf8" strokeWidth={2} fill="url(#colorPrice)" />
-                      </AreaChart>
-                    </ResponsiveContainer>
+                        {currentOffer && (
+                          <div className={s.currentOfferCard}>
+                            <span>현재 확인된 가격</span>
+                            <strong>{fmt(currentOffer.price)}원</strong>
+                            {currentOffer.source && <em>{currentOffer.source}</em>}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <>
+                        {historyPointCount < 2 && (
+                          <div className={s.sparseNotice}>{historyMessage || '가격 이력이 적어 추세 판단은 제한적입니다.'}</div>
+                        )}
+                        <ResponsiveContainer width="100%" height={220}>
+                          <AreaChart data={chartData}>
+                            <defs>
+                              <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.2} />
+                                <stop offset="95%" stopColor="#38bdf8" stopOpacity={0} />
+                              </linearGradient>
+                            </defs>
+                            <XAxis dataKey="date" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
+                            <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} width={50} tickFormatter={v => fmt(v)} />
+                            <Tooltip
+                              contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: '.85rem' }}
+                              formatter={v => [`${fmt(v)}원`, '가격']}
+                            />
+                            <Area type="monotone" dataKey="price" stroke="#38bdf8" strokeWidth={2} fill="url(#colorPrice)" />
+                          </AreaChart>
+                        </ResponsiveContainer>
+                      </>
                     )}
                   </div>
 
@@ -654,7 +693,14 @@ export default function PricePage() {
             <div className={s.noData}>
               <div className={s.noDataIcon}>📊</div>
               <p className={s.noDataText}>아직 가격 데이터가 충분하지 않습니다</p>
-              <p className={s.noDataSub}>데이터가 수집되면 가격 추이, 적정가, 마트별 비교를 확인할 수 있어요</p>
+              <p className={s.noDataSub}>{historyMessage || '데이터가 수집되면 가격 추이, 적정가, 마트별 비교를 확인할 수 있어요'}</p>
+              {currentOffer && (
+                <div className={s.currentOfferCard}>
+                  <span>현재 확인된 가격</span>
+                  <strong>{fmt(currentOffer.price)}원</strong>
+                  {currentOffer.source && <em>{currentOffer.source}</em>}
+                </div>
+              )}
               <button className={s.requestBtn} onClick={() => addToast('데이터 수집 요청이 접수되었습니다', 'success')}>
                 📥 데이터 수집 요청
               </button>

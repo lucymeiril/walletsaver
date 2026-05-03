@@ -133,6 +133,15 @@ export function normalizeProduct(product = {}) {
     standardUnitPrice: firstDefined(product.standard_unit_price, product.unit_price, null),
     standardUnit: firstDefined(product.standard_unit, '100g'),
     sourceType,
+    priceHistory: firstDefined(product.price_history, product.priceHistory, product.history, []),
+    comparableOffers: firstDefined(product.comparable_offers, product.comparableOffers, product.offers, product.other_sources, []),
+    priceTrust: firstDefined(product.price_trust, product.priceTrust, product.trust, null),
+    community: {
+      hotVotes: toNumber(firstDefined(product.hotVotes, product.hot_votes, product.votes_hot)),
+      coldVotes: toNumber(firstDefined(product.coldVotes, product.cold_votes, product.votes_not)),
+      comments: toNumber(product.comments),
+      views: toNumber(product.views),
+    },
     quantity: toNumber(product.quantity, 1) || 1,
   };
 }
@@ -155,6 +164,13 @@ export function buildCartPayload(product) {
     discount_rate: p.discount,
     category: p.category,
     unit: p.unit,
+    period: p.period,
+    event_name: p.eventType,
+    source_type: p.sourceType,
+    source_title: p.sourceTitle,
+    description: p.description,
+    standard_unit_price: p.standardUnitPrice,
+    standard_unit: p.standardUnit,
     quantity: p.quantity,
   };
 }
@@ -175,5 +191,19 @@ export function buildWishlistPayload(product) {
     original_price: p.originalPrice,
     discount_rate: p.discount,
     unit: p.unit,
+    period: p.period,
+    event_name: p.eventType,
+    source_type: p.sourceType,
+    source_title: p.sourceTitle,
+    description: p.description,
+    standard_unit_price: p.standardUnitPrice,
+    standard_unit: p.standardUnit,
+    price_history: p.priceHistory,
+    comparable_offers: p.comparableOffers,
+    price_trust: p.priceTrust,
+    hotVotes: p.community.hotVotes,
+    coldVotes: p.community.coldVotes,
+    comments: p.community.comments,
+    views: p.community.views,
   };
 }

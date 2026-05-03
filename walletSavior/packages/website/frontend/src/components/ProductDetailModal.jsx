@@ -17,6 +17,7 @@ import useActivityTracker from '../hooks/useActivityTracker';
 import SafeImage from './common/SafeImage';
 import { fmt } from '../utils/helpers';
 import { buildCartPayload, buildWishlistPayload, normalizeProduct } from '../utils/productActions';
+import { buildProductDecision } from '../utils/productDecision';
 import s from './ProductDetailModal.module.css';
 
 const STORE_ICONS = {
@@ -32,7 +33,8 @@ const CATEGORY_ICONS = {
 export default function ProductDetailModal({ product, onClose, mode: modeProp }) {
   const addToast = useStore((st) => st.addToast);
   const isLoggedIn = useStore((st) => st.isLoggedIn);
-  const favorites = useStore((st) => st.favorites);
+  const rawFavorites = useStore((st) => st.favorites);
+  const favorites = Array.isArray(rawFavorites) ? rawFavorites : [];
   const favoriteItems = useStore((st) => st.favoriteItems);
   const addFavorite = useStore((st) => st.addFavorite);
   const removeFavorite = useStore((st) => st.removeFavorite);
@@ -115,11 +117,6 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
     fetchExtra();
   }, [productId, mode]);
 
-  // Extract other stores from price-compare data
-  const otherStores = Array.isArray(priceCompare)
-    ? priceCompare
-    : (priceCompare?.other_stores || priceCompare?.stores || priceCompare?.sources || priceCompare?.items || []);
-
   const handleAddToCart = useCallback(() => {
     addItem(buildCartPayload(product));
     trackCartAdd(productId || favoriteId, name);
@@ -198,6 +195,28 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
   const displayUnitPrice = standardUnitPrice
     ? `${fmt(Math.round(standardUnitPrice))}원/${standardUnit}`
     : unitPrice;
+  const decision = buildProductDecision(product, { priceCompare, priceHistory, priceTrust });
+  const {
+    historySummary,
+    comparableOffers,
+    judgment,
+    trustSignals,
+    currentOffer,
+  } = decision;
+  const otherOffers = comparableOffers.filter((offer) => !offer.current);
+  const bestOffer = comparableOffers[0];
+  const currentIsBest = bestOffer && bestOffer.price >= price;
+  const trendLabel = {
+    down: '최근 하락',
+    up: '최근 상승',
+    stable: '큰 변동 없음',
+    unknown: '추세 부족',
+  }[historySummary.trend] || '추세 부족';
+  const formatDate = (value) => {
+    if (!value) return '';
+    const text = String(value);
+    return text.length >= 10 ? text.slice(5, 10) : text;
+  };
 
   return createPortal(
     <div className={s.overlay} onClick={(e) => e.target === e.currentTarget && onClose()}>
@@ -275,108 +294,105 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
             )}
           </div>
 
-          {/* 시세 비교 (product mode only) */}
-          {mode === 'product' && (
-            <div className={s.section}>
-              <h3 className={s.sectionTitle}>🔥 진짜 핫딜 판단</h3>
-              {priceTrust ? (
-                <div className={s.trustBox}>
-                  <div className={s.trustScoreRow}>
-                    <span className={s.trustScore}>{priceTrust.hotdeal_score ?? 0}</span>
-                    <span className={s.trustScoreLabel}>/ 100</span>
-                    <span className={s.trustReason}>{priceTrust.rationale}</span>
-                  </div>
-                  <div className={s.trustMetrics}>
-                    <div>
-                      <span>현재가</span>
-                      <strong>{fmt(priceTrust.current_price)}원</strong>
-                    </div>
-                    <div>
-                      <span>과거 최저</span>
-                      <strong>{priceTrust.historical_low_price ? `${fmt(priceTrust.historical_low_price)}원` : '-'}</strong>
-                    </div>
-                    <div>
-                      <span>과거 평균</span>
-                      <strong>{priceTrust.historical_average_price ? `${fmt(priceTrust.historical_average_price)}원` : '-'}</strong>
-                    </div>
-                    <div>
-                      <span>비교 출처</span>
-                      <strong>{priceTrust.reference_count ?? 0}개</strong>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <p className={s.noData}>{loading ? '가격 신뢰도 계산 중...' : '가격 신뢰도 데이터가 아직 부족합니다.'}</p>
-              )}
-
-              <h3 className={s.sectionTitle}>📊 시세 비교</h3>
-              {priceCompare ? (
-                <div className={s.comparisonGrid}>
-                  {priceCompare.kamis_price && (
-                    <div className={s.compItem}>
-                      <span className={s.compLabel}>KAMIS 정부 가격</span>
-                      <span className={s.compValue}>{fmt(priceCompare.kamis_price)}원</span>
-                      {price < priceCompare.kamis_price && (
-                        <span className={s.compGood}>
-                          {fmt(priceCompare.kamis_price - price)}원 저렴
-                        </span>
-                      )}
-                    </div>
-                  )}
-                  {priceCompare.category_avg && (
-                    <div className={s.compItem}>
-                      <span className={s.compLabel}>카테고리 평균</span>
-                      <span className={s.compValue}>{fmt(priceCompare.category_avg)}원</span>
-                      {price < priceCompare.category_avg ? (
-                        <span className={s.compGood}>평균보다 저렴</span>
-                      ) : (
-                        <span className={s.compBad}>평균보다 비쌈</span>
-                      )}
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <p className={s.noData}>비교 데이터 부족 — 카테고리 평균가를 참고하세요</p>
-              )}
+          <div className={s.section}>
+            <h3 className={s.sectionTitle}>🔥 구매 판단</h3>
+            <div className={`${s.judgmentBox} ${s[`judgment-${judgment.tone}`] || ''}`}>
+              <div className={s.judgmentHead}>
+                <strong>{judgment.label}</strong>
+                {loading && mode === 'product' && <span className={s.loadingPill}>계산 중</span>}
+              </div>
+              <p>{judgment.copy}</p>
             </div>
-          )}
+            <div className={s.decisionGrid}>
+              <div>
+                <span>판매 채널</span>
+                <strong>{currentOffer.sourceName}</strong>
+                <small>{currentOffer.sourceType}</small>
+              </div>
+              <div>
+                <span>단위가</span>
+                <strong>{displayUnitPrice || '정보 없음'}</strong>
+                <small>{unit || '규격 미확인'}</small>
+              </div>
+              <div>
+                <span>유효 기간</span>
+                <strong>{currentOffer.period || '기간 미확인'}</strong>
+                <small>{eventType || '행사 정보 없음'}</small>
+              </div>
+              <div>
+                <span>다음 행동</span>
+                <strong>{currentIsBest ? '현재 상품 확인' : '더 싼 판매처 확인'}</strong>
+                <small>{sourceUrl ? '원본 이동 가능' : '찜/장바구니로 추적'}</small>
+              </div>
+            </div>
+            {trustSignals.length > 0 ? (
+              <div className={s.signalList}>
+                {trustSignals.map((signal) => <span key={signal}>{signal}</span>)}
+              </div>
+            ) : (
+              <p className={s.noData}>신뢰도/커뮤니티 신호는 아직 수집되지 않았습니다.</p>
+            )}
+          </div>
 
-          {/* 다른 매장 가격 (from price-compare data) */}
-          {otherStores.length > 0 && (
-            <div className={s.section}>
-              <h3 className={s.sectionTitle}>🏬 다른 매장 가격</h3>
+          <div className={s.section}>
+            <h3 className={s.sectionTitle}>📈 가격 이력 요약</h3>
+            {historySummary.hasData ? (
+              <>
+                <div className={s.historySummary}>
+                  <div><span>최저</span><strong>{historySummary.min ? `${fmt(historySummary.min)}원` : '-'}</strong></div>
+                  <div><span>평균</span><strong>{historySummary.avg ? `${fmt(historySummary.avg)}원` : '-'}</strong></div>
+                  <div><span>최고</span><strong>{historySummary.max ? `${fmt(historySummary.max)}원` : '-'}</strong></div>
+                  <div><span>최근</span><strong>{historySummary.latest ? `${fmt(historySummary.latest)}원` : `${fmt(price)}원`}</strong></div>
+                </div>
+                <div className={s.historyNote}>
+                  <span>{trendLabel}</span>
+                  {historySummary.lastDiscountDate && <span>마지막 할인 {formatDate(historySummary.lastDiscountDate)}</span>}
+                  {historySummary.sparse && <span>표본이 적어 판단 신뢰도가 낮습니다</span>}
+                </div>
+                {historySummary.history.length > 0 && (
+                  <div className={s.priceHistoryChart}>
+                    {historySummary.history.slice(-7).map((p, i) => {
+                      const recent = historySummary.history.slice(-7);
+                      const max = Math.max(...recent.map((h) => h.price));
+                      const min = Math.min(...recent.map((h) => h.price));
+                      const height = max > min ? ((p.price - min) / (max - min)) * 70 + 25 : 55;
+                      return (
+                        <div key={`${p.date}-${i}`} className={s.chartBar}>
+                          <div className={s.barFill} style={{ height: `${height}%` }} />
+                          <span className={s.barLabel}>{formatDate(p.date)}</span>
+                          <span className={s.barPrice}>{fmt(p.price)}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </>
+            ) : (
+              <p className={s.noData}>가격 이력이 아직 없습니다. 찜해두면 이후 가격 변동을 추적할 수 있어요.</p>
+            )}
+          </div>
+
+          <div className={s.section}>
+            <h3 className={s.sectionTitle}>🏬 비교 가능한 판매처</h3>
+            {otherOffers.length > 0 ? (
               <div className={s.otherStores}>
-                {otherStores.map((st, i) => (
-                  <div key={i} className={s.otherStoreItem}>
-                    <span className={s.osIcon}>{STORE_ICONS[st.store_key] || '🏪'}</span>
-                    <span className={s.osName}>{st.store_name || st.source_name || st.source || st.store || '출처'}</span>
-                    <span className={s.osPrice}>{fmt(st.price)}원</span>
-                    {st.price < price && <span className={s.osCheaper}>더 저렴!</span>}
+                {comparableOffers.map((offer, i) => (
+                  <div key={`${offer.sourceName}-${offer.price}-${i}`} className={`${s.otherStoreItem} ${offer.current ? s.currentOffer : ''}`}>
+                    <span className={s.osIcon}>{offer.current ? '✅' : '🏪'}</span>
+                    <span className={s.osName}>
+                      {offer.sourceName}
+                      {offer.title && <small>{offer.title}</small>}
+                    </span>
+                    <span className={s.osPrice}>{fmt(offer.price)}원</span>
+                    {offer.price < price && <span className={s.osCheaper}>더 저렴</span>}
+                    {offer.price === bestOffer?.price && <span className={s.osBest}>최저</span>}
                   </div>
                 ))}
               </div>
-            </div>
-          )}
-
-          {/* 가격 추이 */}
-          {priceHistory.length > 0 && (
-            <div className={s.section}>
-              <h3 className={s.sectionTitle}>📈 가격 추이</h3>
-              <div className={s.priceHistoryChart}>
-                {priceHistory.slice(-7).map((p, i) => {
-                  const max = Math.max(...priceHistory.slice(-7).map((h) => h.price));
-                  const height = max > 0 ? (p.price / max) * 100 : 50;
-                  return (
-                    <div key={i} className={s.chartBar}>
-                      <div className={s.barFill} style={{ height: `${height}%` }} />
-                      <span className={s.barLabel}>{p.date?.slice(5) || ''}</span>
-                      <span className={s.barPrice}>{fmt(p.price)}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+            ) : (
+              <p className={s.noData}>아직 다른 마트/쇼핑몰/핫딜 사이트 비교 데이터가 없습니다.</p>
+            )}
+          </div>
 
           {/* Source link */}
           {sourceUrl && (

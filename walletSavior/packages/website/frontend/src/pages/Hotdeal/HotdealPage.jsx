@@ -16,6 +16,24 @@ import s from './HotdealPage.module.css';
 
 const PAGE_SIZE = 8;
 
+function normalizeDeal(deal) {
+  return {
+    ...deal,
+    hotVotes: deal.hotVotes ?? deal.votes_hot ?? 0,
+    coldVotes: deal.coldVotes ?? deal.votes_not ?? 0,
+  };
+}
+
+function voteTypeForApi(type) {
+  if (type === 'cold') return 'not';
+  return type || 'cancel';
+}
+
+function voteTypeFromApi(type) {
+  if (type === 'not') return 'cold';
+  return type || null;
+}
+
 function getTier(price, origPrice) {
   if (!price || !origPrice) return null;
   const ratio = price / origPrice;
@@ -42,7 +60,12 @@ export default function HotdealPage() {
   const [newDealCount, setNewDealCount] = useState(0);
   const lastDealIdsRef = useRef(null);
   const [voteLoading, setVoteLoading] = useState({});
+  const voteLoadingRef = useRef({});
   const getSignal = useAbortController();
+
+  useEffect(() => {
+    voteLoadingRef.current = voteLoading;
+  }, [voteLoading]);
 
   // 핫딜 출처 목록 API에서 조회
   useEffect(() => {
@@ -70,7 +93,7 @@ export default function HotdealPage() {
     if (sort) params.set('sort', sort);
 
     fetch(`/api/hotdeals?${params}`, { signal: controller.signal }).then(r => r.json())
-      .then(res => setAllDeals(res.data || []))
+      .then(res => setAllDeals((res.data || []).map(normalizeDeal)))
       .catch(err => {
         if (err.name === 'AbortError') return;
         console.error(err);
@@ -111,7 +134,7 @@ export default function HotdealPage() {
       if (filter !== 'all') params.set('category', filter);
       if (sort) params.set('sort', sort);
       fetch(`/api/hotdeals?${params}`, { signal: currentController.signal }).then(r => r.json())
-        .then(res => { if (res.data?.length) setAllDeals(res.data); })
+        .then(res => { if (res.data?.length) setAllDeals(res.data.map(normalizeDeal)); })
         .catch(() => {});
     }, 60000);
     return () => {
@@ -143,19 +166,36 @@ export default function HotdealPage() {
   const sentinelRef = useInfiniteScroll(loadMore, { enabled: hasMore });
 
   const handleVote = useCallback(async (id, type) => {
-    if (voteLoading[id]) return;
+    if (voteLoadingRef.current[id]) return;
     setVoteLoading(prev => ({ ...prev, [id]: true }));
     const prev = votes[id];
     const newType = prev === type ? null : type;
     setVotes(p => ({ ...p, [id]: newType }));
+    let toastShown = false;
     try {
       const res = await fetch(`/api/hotdeals/${id}/vote`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ vote_type: newType || 'cancel' }),
+        credentials: 'include',
+        body: JSON.stringify({ vote_type: voteTypeForApi(newType) }),
       });
+      if (!res.ok) {
+        if (res.status === 401) {
+          addToast('로그인 후 투표할 수 있습니다', 'error');
+        } else if (res.status === 429) {
+          addToast('투표 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.', 'error');
+        } else if (res.status === 400) {
+          addToast('투표 요청을 처리할 수 없습니다. 새로고침 후 다시 시도해주세요.', 'error');
+        } else {
+          addToast('투표 처리에 실패했습니다', 'error');
+        }
+        toastShown = true;
+        throw new Error(`vote failed: ${res.status}`);
+      }
       const data = await res.json();
       if (data.data) {
+        const serverVote = voteTypeFromApi(data.data.user_vote);
+        setVotes(p => ({ ...p, [id]: serverVote }));
         setAllDeals(ds => ds.map(d =>
           d.id === id ? { ...d, hotVotes: data.data.votes_hot, coldVotes: data.data.votes_not } : d
         ));
@@ -165,12 +205,12 @@ export default function HotdealPage() {
         );
       }
     } catch {
-      addToast('투표 처리에 실패했습니다', 'error');
+      if (!toastShown) addToast('투표 처리에 실패했습니다', 'error');
       setVotes(p => ({ ...p, [id]: prev }));
     } finally {
       setVoteLoading(prev => ({ ...prev, [id]: false }));
     }
-  }, [votes, addToast, voteLoading]);
+  }, [votes, addToast]);
 
   const throttledVote = useThrottledCallback(handleVote, 1000);
 
@@ -307,16 +347,17 @@ export default function HotdealPage() {
         </div>
       )}
 
-      {detail && <HotdealDetailModal item={detail} votes={votes} onVote={handleVote} onClose={() => setDetail(null)} products={products} addToast={addToast} onCommentCountChange={handleCommentCountChange} />}
+      {detail && <HotdealDetailModal item={detail} votes={votes} voteLoading={voteLoading} onVote={handleVote} onClose={() => setDetail(null)} products={products} addToast={addToast} onCommentCountChange={handleCommentCountChange} />}
     </div>
   );
 }
 
-const HotdealDetailModal = React.memo(function HotdealDetailModal({ item, votes, onVote, onClose, products, addToast, onCommentCountChange }) {
+const HotdealDetailModal = React.memo(function HotdealDetailModal({ item, votes, voteLoading, onVote, onClose, products, addToast, onCommentCountChange }) {
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState([]);
   const [commentsLoading, setCommentsLoading] = useState(true);
   const vote = votes[item.id];
+  const isVotePending = Boolean(voteLoading[item.id]);
 
   const matchedProduct = products.find(p => item.title?.includes(p.name));
   const totalVotes = (item.hotVotes || 0) + (item.coldVotes || 0);
@@ -330,6 +371,12 @@ const HotdealDetailModal = React.memo(function HotdealDetailModal({ item, votes,
       .catch(() => setComments(item?.commentData || []))
       .finally(() => setCommentsLoading(false));
   }, [item.id]);
+
+  useEffect(() => {
+    if (!commentsLoading && onCommentCountChange) {
+      onCommentCountChange(item.id, comments.length);
+    }
+  }, [comments.length, commentsLoading, item.id, onCommentCountChange]);
 
   const [chartData, setChartData] = useState([]);
   const [chartLoading, setChartLoading] = useState(false);
@@ -359,11 +406,7 @@ const HotdealDetailModal = React.memo(function HotdealDetailModal({ item, votes,
       }
       const data = await res.json();
       if (data.data) {
-        setComments(prev => {
-          const updated = [...prev, data.data];
-          if (onCommentCountChange) onCommentCountChange(item.id, updated.length);
-          return updated;
-        });
+        setComments(prev => [...prev, data.data]);
       }
       setNewComment('');
       addToast('댓글이 등록되었습니다', 'success');
@@ -376,11 +419,7 @@ const HotdealDetailModal = React.memo(function HotdealDetailModal({ item, votes,
     try {
       const res = await fetch(`/api/hotdeals/${item.id}/comments/${commentId}`, { method: 'DELETE' });
       if (res.ok) {
-        setComments(prev => {
-          const updated = prev.filter(c => c.id !== commentId);
-          if (onCommentCountChange) onCommentCountChange(item.id, updated.length);
-          return updated;
-        });
+        setComments(prev => prev.filter(c => c.id !== commentId));
       }
     } catch {
       addToast('댓글 삭제에 실패했습니다', 'error');
@@ -435,11 +474,15 @@ const HotdealDetailModal = React.memo(function HotdealDetailModal({ item, votes,
             <button
               className={`${s.modalVoteBtn} ${vote === 'hot' ? s.modalVoteHot : ''}`}
               onClick={() => onVote(item.id, 'hot')}
-            >🔥 핫딜이다</button>
+              disabled={isVotePending}
+              aria-busy={isVotePending}
+            >{isVotePending ? '⏳' : '🔥'} 핫딜이다</button>
             <button
               className={`${s.modalVoteBtn} ${vote === 'cold' ? s.modalVoteCold : ''}`}
               onClick={() => onVote(item.id, 'cold')}
-            >❄️ 아니다</button>
+              disabled={isVotePending}
+              aria-busy={isVotePending}
+            >{isVotePending ? '⏳' : '❄️'} 아니다</button>
           </div>
 
           {/* 가격 이력 차트 또는 빈 상태 */}

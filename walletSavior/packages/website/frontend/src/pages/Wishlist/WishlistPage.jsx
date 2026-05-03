@@ -67,6 +67,7 @@ export default function WishlistPage() {
         favorites.map((id) => {
           const item = favoriteItems?.[id] || {};
           return {
+            ...item,
             id,
             local_id: id,
             product_name: item.item_name || item.product_name || item.name || `상품 ${id}`,
@@ -189,6 +190,11 @@ export default function WishlistPage() {
                       <div className={s.itemName}>{item.product_name || item.name || '상품'}</div>
                       {item.store_name && (
                         <div className={s.storeName}>🏪 {item.store_name}</div>
+                      )}
+                      {(item.unit || item.source_type || item.period) && (
+                        <div className={s.storeName}>
+                          {[item.source_type, item.unit, item.period].filter(Boolean).join(' · ')}
+                        </div>
                       )}
 
                       <div className={s.priceRow}>
