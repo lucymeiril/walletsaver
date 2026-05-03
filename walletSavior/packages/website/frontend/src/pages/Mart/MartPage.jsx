@@ -198,6 +198,9 @@ export default function MartPage() {
   const flyerDataRef = useRef(flyerData);
   flyerDataRef.current = flyerData;
 
+  const martInfo = useMemo(() => MARTS.find(m => m.key === activeMart), [activeMart]);
+  const martItems = useMemo(() => Array.isArray(martDeals[activeMart]) ? martDeals[activeMart] : [], [martDeals, activeMart]);
+
   // Auto-open product from URL param (e.g., navigated from Home → Mart)
   useEffect(() => {
     if (!urlProduct || loading || martItems.length === 0) return;
@@ -241,8 +244,6 @@ export default function MartPage() {
     return () => controller.abort();
   }, [mode, flyerMart, fetchFlyerData]);
 
-  const martInfo = useMemo(() => MARTS.find(m => m.key === activeMart), [activeMart]);
-  const martItems = useMemo(() => Array.isArray(martDeals[activeMart]) ? martDeals[activeMart] : [], [martDeals, activeMart]);
   const categories = useMemo(() => getCategories(martItems), [martItems]);
   const filteredItems = useMemo(() => {
     let items = catFilter === '전체' ? martItems : martItems.filter(i => i.event === catFilter);

@@ -108,13 +108,17 @@ function EnqueueForm({ onEnqueued }) {
 export default function JobsPanel() {
   const [jobs, setJobs] = useState([]);
   const [filter, setFilter] = useState('');
+  const [roleFilter, setRoleFilter] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
-      const url = filter ? `/api/jobs?status=${encodeURIComponent(filter)}` : '/api/jobs';
+      const params = new URLSearchParams();
+      if (filter) params.set('status', filter);
+      if (roleFilter) params.set('role', roleFilter);
+      const url = params.toString() ? `/api/jobs?${params.toString()}` : '/api/jobs';
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const body = await res.json();
@@ -125,7 +129,7 @@ export default function JobsPanel() {
     } finally {
       setLoading(false);
     }
-  }, [filter]);
+  }, [filter, roleFilter]);
 
   useEffect(() => { refresh(); }, [refresh]);
 
@@ -144,9 +148,25 @@ export default function JobsPanel() {
     }
   }
 
+  const counts = jobs.reduce((acc, job) => {
+    acc[job.status] = (acc[job.status] || 0) + 1;
+    return acc;
+  }, {});
+
   return (
     <section className="panel">
       <h2>AI Job 큐 <span className="muted">({jobs.length})</span></h2>
+      <div className="card workflow-card">
+        <strong>Job 운영 가이드</strong>
+        <div className="muted" style={{ marginTop: 6 }}>
+          이 화면의 등록/일시정지/재개는 로컬 큐 상태만 변경합니다. 실제 워커가 job을 acquire해 실행할 때 provider 설정에 따라 LIVE 모델 호출이 발생할 수 있습니다.
+        </div>
+        <div className="row" style={{ marginTop: 8 }}>
+          {STATUSES.filter((status) => counts[status]).map((status) => (
+            <span key={status} className={`badge ${statusBadgeClass(status)}`}>{status} {counts[status]}</span>
+          ))}
+        </div>
+      </div>
 
       <EnqueueForm onEnqueued={refresh} />
 
@@ -157,6 +177,15 @@ export default function JobsPanel() {
             <option value="">(전체)</option>
             {STATUSES.map((s) => (
               <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+        </label>
+        <label className="muted">
+          role 필터:&nbsp;
+          <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}>
+            <option value="">(전체)</option>
+            {ROLES.map((r) => (
+              <option key={r} value={r}>{r}</option>
             ))}
           </select>
         </label>

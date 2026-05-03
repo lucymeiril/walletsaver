@@ -150,6 +150,44 @@ def test_capabilities_for_provider(client: TestClient) -> None:
     assert cap["max_prompt_chars"] >= 1
 
 
+def test_setup_state_reports_secret_presence_without_leaking_value(
+    client: TestClient, tmp_path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    dotenv = tmp_path / ".env"
+    dotenv.write_text("GEMINI_API_KEY=super-secret-local-value\n", encoding="utf-8")
+    monkeypatch.setattr(secret_resolver, "DEFAULT_ENV_PATHS", (dotenv,))
+
+    client.post(
+        "/api/providers", json=_payload(secret_alias="GEMINI_API_KEY")
+    ).raise_for_status()
+    res = client.get("/api/providers/setup-state")
+
+    assert res.status_code == 200
+    body = res.json()
+    state = body["providers"][0]
+    assert state["provider_id"] == "gemini-prod"
+    assert state["secret_alias"] == "GEMINI_API_KEY"
+    assert state["secret_resolved"] is True
+    assert state["can_call_live"] is True
+    serialized = str(body)
+    assert "super-secret-local-value" not in serialized
+    assert "/api/ingest/raw-records/label" in state["live_actions"]
+    assert "/api/review/audit" in state["offline_actions"]
+
+
+def test_setup_state_missing_secret_disables_live_hint(client: TestClient) -> None:
+    client.post(
+        "/api/providers", json=_payload(secret_alias="GOOGLE_MISSING_KEY")
+    ).raise_for_status()
+    res = client.get("/api/providers/setup-state")
+
+    assert res.status_code == 200
+    state = res.json()["providers"][0]
+    assert state["secret_resolved"] is False
+    assert state["can_call_live"] is False
+    assert "GOOGLE_MISSING_KEY" in str(state)
+
+
 def test_models_requires_secret_env_alias(client: TestClient) -> None:
     client.post("/api/providers", json=_payload(secret_alias="GOOGLE_MISSING_KEY")).raise_for_status()
     res = client.get("/api/providers/gemini-prod/models")

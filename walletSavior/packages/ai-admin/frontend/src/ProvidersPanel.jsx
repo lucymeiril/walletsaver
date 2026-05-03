@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 const PROVIDER_KINDS = [
-  { value: 'gemini', label: 'Google Gemini' },
+  { value: 'gemini', label: 'Google Gemini (LIVE API)' },
   { value: 'openai_compatible', label: 'OpenAI 호환' },
   { value: 'ollama', label: 'Ollama (로컬)' },
   { value: 'custom', label: '사용자 정의' },
@@ -54,8 +54,54 @@ function fromConfig(cfg) {
   };
 }
 
+async function fetchJson(url, options) {
+  const res = await fetch(url, options);
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(body.detail || `HTTP ${res.status}`);
+  return body;
+}
+
+function SetupState({ setup }) {
+  if (!setup) return <div className="muted" style={{ marginTop: 6 }}>설정 상태를 아직 불러오지 못했습니다.</div>;
+  return (
+    <div className="card nested-card setup-state-card">
+      <div className="row" style={{ justifyContent: 'space-between' }}>
+        <strong>.env / provider setup</strong>
+        <span className={`badge ${setup.can_call_live ? 'ok' : setup.requires_secret ? 'warn' : ''}`}>
+          {setup.requires_secret
+            ? setup.secret_resolved ? 'alias 확인됨' : 'alias 미설정/미발견'
+            : 'secret 불필요'}
+        </span>
+      </div>
+      <div className="muted" style={{ marginTop: 6 }}>
+        alias: <code>{setup.secret_alias || '-'}</code> · enabled: {setup.is_enabled ? 'yes' : 'no'}
+      </div>
+      <div className="muted" style={{ marginTop: 4 }}>
+        확인 위치: {setup.env_locations?.map((path) => <code key={path} style={{ marginRight: 6 }}>{path}</code>)}
+      </div>
+      <div className="two-column-hints">
+        <div>
+          <b>오프라인/감사 액션</b>
+          <ul>
+            {(setup.offline_actions || []).map((action) => <li key={action}><code>{action}</code></li>)}
+          </ul>
+        </div>
+        <div>
+          <b>LIVE 모델/API 액션</b>
+          <ul>
+            {(setup.live_actions || []).length === 0
+              ? <li className="muted">등록된 live 액션 없음</li>
+              : setup.live_actions.map((action) => <li key={action}><code>{action}</code></li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ProvidersPanel() {
   const [providers, setProviders] = useState([]);
+  const [setupStates, setSetupStates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -64,14 +110,21 @@ export default function ProvidersPanel() {
   const [editingId, setEditingId] = useState(null);
   const [modelResults, setModelResults] = useState({});
 
+  const setupById = useMemo(() => setupStates.reduce((acc, state) => {
+    acc[state.provider_id] = state;
+    return acc;
+  }, {}), [setupStates]);
+
   const refresh = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/providers');
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const body = await res.json();
-      setProviders(body.providers ?? []);
+      const [providerBody, setupBody] = await Promise.all([
+        fetchJson('/api/providers'),
+        fetchJson('/api/providers/setup-state'),
+      ]);
+      setProviders(providerBody.providers ?? []);
+      setSetupStates(setupBody.providers ?? []);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -79,9 +132,7 @@ export default function ProvidersPanel() {
     }
   }, []);
 
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
+  useEffect(() => { refresh(); }, [refresh]);
 
   function update(field, value) {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -104,15 +155,11 @@ export default function ProvidersPanel() {
     setSaving(true);
     setSaveError(null);
     try {
-      const res = await fetch('/api/providers', {
+      await fetchJson('/api/providers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(toPayload(form)),
       });
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(`HTTP ${res.status}: ${text}`);
-      }
       await refresh();
       resetForm();
     } catch (err) {
@@ -124,12 +171,11 @@ export default function ProvidersPanel() {
 
   async function toggle(cfg) {
     try {
-      const res = await fetch(`/api/providers/${encodeURIComponent(cfg.provider_id)}/enabled`, {
+      await fetchJson(`/api/providers/${encodeURIComponent(cfg.provider_id)}/enabled`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ is_enabled: !cfg.is_enabled }),
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       await refresh();
     } catch (err) {
       setError(err.message);
@@ -137,14 +183,24 @@ export default function ProvidersPanel() {
   }
 
   async function loadModels(cfg) {
+    const setup = setupById[cfg.provider_id];
+    const confirmed = window.confirm(
+      `LIVE API 호출입니다. ${cfg.display_name} provider의 모델 목록을 원격 SDK로 조회합니다. 계속할까요?`,
+    );
+    if (!confirmed) return;
+    if (setup && !setup.can_call_live) {
+      setModelResults((prev) => ({
+        ...prev,
+        [cfg.provider_id]: { status: 'error', data: null, error: 'provider is disabled or secret alias is not resolved' },
+      }));
+      return;
+    }
     setModelResults((prev) => ({
       ...prev,
       [cfg.provider_id]: { status: 'loading', data: null, error: null },
     }));
     try {
-      const res = await fetch(`/api/providers/${encodeURIComponent(cfg.provider_id)}/models`);
-      const body = await res.json();
-      if (!res.ok) throw new Error(body.detail || `HTTP ${res.status}`);
+      const body = await fetchJson(`/api/providers/${encodeURIComponent(cfg.provider_id)}/models`);
       setModelResults((prev) => ({
         ...prev,
         [cfg.provider_id]: { status: 'ok', data: body, error: null },
@@ -159,7 +215,19 @@ export default function ProvidersPanel() {
 
   return (
     <section className="panel">
-      <h2>Provider 설정 <span className="muted">({providers.length})</span></h2>
+      <div className="row" style={{ justifyContent: 'space-between' }}>
+        <h2>Provider 설정 <span className="muted">({providers.length})</span></h2>
+        <button className="secondary-button" type="button" onClick={refresh} disabled={loading}>
+          {loading ? '확인 중...' : '.env 상태 새로고침'}
+        </button>
+      </div>
+      <div className="card workflow-card">
+        <strong>Secret boundary</strong>
+        <div className="muted" style={{ marginTop: 6 }}>
+          이 화면은 secret alias와 존재 여부만 보여줍니다. API 키 값은 저장/표시하지 않습니다.
+          <b> LIVE</b> 배지가 붙은 모델 조회, smoke test, raw-record labeling은 실제 provider/API를 호출할 수 있습니다.
+        </div>
+      </div>
       {loading && <div className="muted">로딩 중...</div>}
       {error && <div className="muted">불러올 수 없습니다 — {error}</div>}
 
@@ -168,55 +236,61 @@ export default function ProvidersPanel() {
       )}
 
       {providers.length > 0 && (
-        <ul className="items">
+        <ul className="items provider-list">
           {providers.map((p) => {
             const models = modelResults[p.provider_id];
+            const setup = setupById[p.provider_id];
             return (
-            <li key={p.provider_id}>
-              <div>
-                <div>
-                  <strong>{p.display_name}</strong>{' '}
-                  <code>{p.provider_id}</code>{' '}
-                  <span className="badge">{p.provider_kind}</span>
-                </div>
-                <div className="muted" style={{ marginTop: 4 }}>
-                  model: <code>{p.default_model}</code>
-                  {p.base_url ? <> · base_url: <code>{p.base_url}</code></> : null}
-                  {p.secret_alias ? <> · alias: <code>{p.secret_alias}</code></> : <> · alias 없음</>}
-                  {' '}· 동시 {p.max_concurrent_jobs} · 간격 {p.min_request_interval_seconds}s
-                </div>
-                {models?.status === 'loading' && (
-                  <div className="muted" style={{ marginTop: 6 }}>모델 목록 확인 중...</div>
-                )}
-                {models?.status === 'error' && (
-                  <div className="muted" style={{ marginTop: 6, color: '#ff8a8a' }}>
-                    모델 조회 실패: {models.error}
+              <li key={p.provider_id}>
+                <div style={{ flex: 1 }}>
+                  <div>
+                    <strong>{p.display_name}</strong>{' '}
+                    <code>{p.provider_id}</code>{' '}
+                    <span className="badge">{p.provider_kind}</span>{' '}
+                    {p.provider_kind === 'gemini' && <span className="badge warn">LIVE capable</span>}
                   </div>
-                )}
-                {models?.status === 'ok' && (
-                  <div className="muted" style={{ marginTop: 6 }}>
-                    모델 {models.data.models?.length ?? 0}개 · 남은 할당량 제공:{' '}
-                    {models.data.quota_remaining_available ? '예' : '아니오'}
-                    <div style={{ marginTop: 4 }}>
-                      {(models.data.models ?? []).slice(0, 8).map((m) => (
-                        <code key={m.name} style={{ marginRight: 6 }}>{m.name}</code>
-                      ))}
+                  <div className="muted" style={{ marginTop: 4 }}>
+                    model: <code>{p.default_model}</code>
+                    {p.base_url ? <> · base_url: <code>{p.base_url}</code></> : null}
+                    {p.secret_alias ? <> · alias: <code>{p.secret_alias}</code></> : <> · alias 기본값/없음</>}
+                    {' '}· 동시 {p.max_concurrent_jobs} · 간격 {p.min_request_interval_seconds}s
+                  </div>
+                  <SetupState setup={setup} />
+                  {models?.status === 'loading' && (
+                    <div className="muted" style={{ marginTop: 6 }}>LIVE 모델 목록 확인 중...</div>
+                  )}
+                  {models?.status === 'error' && (
+                    <div className="muted" style={{ marginTop: 6, color: '#ff8a8a' }}>
+                      모델 조회 실패: {models.error}
                     </div>
-                  </div>
-                )}
-              </div>
-              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                <span className={`badge ${p.is_enabled ? 'ok' : ''}`}>
-                  {p.is_enabled ? '활성' : '비활성'}
-                </span>
-                <button type="button" onClick={() => toggle(p)}>
-                  {p.is_enabled ? '비활성화' : '활성화'}
-                </button>
-                <button type="button" onClick={() => loadModels(p)}>모델 조회</button>
-                <button type="button" onClick={() => startEdit(p)}>편집</button>
-              </div>
-            </li>
-          );})}
+                  )}
+                  {models?.status === 'ok' && (
+                    <div className="muted" style={{ marginTop: 6 }}>
+                      모델 {models.data.models?.length ?? 0}개 · 남은 할당량 제공:{' '}
+                      {models.data.quota_remaining_available ? '예' : '아니오'}
+                      <div style={{ marginTop: 4 }}>
+                        {(models.data.models ?? []).slice(0, 8).map((m) => (
+                          <code key={m.name} style={{ marginRight: 6 }}>{m.name}</code>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                  <span className={`badge ${p.is_enabled ? 'ok' : ''}`}>
+                    {p.is_enabled ? '활성' : '비활성'}
+                  </span>
+                  <button type="button" onClick={() => toggle(p)}>
+                    {p.is_enabled ? '비활성화' : '활성화'}
+                  </button>
+                  <button type="button" className="danger-outline" onClick={() => loadModels(p)}>
+                    LIVE 모델 조회
+                  </button>
+                  <button type="button" onClick={() => startEdit(p)}>편집</button>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       )}
 
@@ -237,105 +311,50 @@ export default function ProvidersPanel() {
           </label>
           <label>
             <span>provider 종류</span>
-            <select
-              value={form.provider_kind}
-              onChange={(e) => update('provider_kind', e.target.value)}
-            >
-              {PROVIDER_KINDS.map((k) => (
-                <option key={k.value} value={k.value}>{k.label}</option>
-              ))}
+            <select value={form.provider_kind} onChange={(e) => update('provider_kind', e.target.value)}>
+              {PROVIDER_KINDS.map((k) => <option key={k.value} value={k.value}>{k.label}</option>)}
             </select>
           </label>
           <label>
             <span>표시 이름</span>
-            <input
-              required
-              value={form.display_name}
-              onChange={(e) => update('display_name', e.target.value)}
-              placeholder="Gemini Prod"
-            />
+            <input required value={form.display_name} onChange={(e) => update('display_name', e.target.value)} placeholder="Gemini Prod" />
           </label>
           <label>
             <span>기본 모델</span>
-            <input
-              required
-              value={form.default_model}
-              onChange={(e) => update('default_model', e.target.value)}
-              placeholder="gemma-3-27b-it"
-            />
+            <input required value={form.default_model} onChange={(e) => update('default_model', e.target.value)} placeholder="gemma-3-27b-it" />
           </label>
           <label>
             <span>base_url (선택)</span>
-            <input
-              value={form.base_url}
-              onChange={(e) => update('base_url', e.target.value)}
-              placeholder="https://api.example.com/v1"
-            />
+            <input value={form.base_url} onChange={(e) => update('base_url', e.target.value)} placeholder="https://api.example.com/v1" />
           </label>
           <label>
-            <span>secret alias</span>
-            <input
-              value={form.secret_alias}
-              onChange={(e) => update('secret_alias', e.target.value)}
-              placeholder="GEMINI_API_KEY"
-            />
+            <span>secret alias (값 아님)</span>
+            <input value={form.secret_alias} onChange={(e) => update('secret_alias', e.target.value)} placeholder="GEMINI_API_KEY" />
           </label>
           <label>
             <span>최대 동시 요청</span>
-            <input
-              type="number"
-              min={1}
-              max={20}
-              value={form.max_concurrent_jobs}
-              onChange={(e) => update('max_concurrent_jobs', e.target.value)}
-            />
+            <input type="number" min={1} max={20} value={form.max_concurrent_jobs} onChange={(e) => update('max_concurrent_jobs', e.target.value)} />
           </label>
           <label>
             <span>최소 요청 간격(초)</span>
-            <input
-              type="number"
-              step="0.1"
-              min={1.0}
-              value={form.min_request_interval_seconds}
-              onChange={(e) => update('min_request_interval_seconds', e.target.value)}
-            />
+            <input type="number" step="0.1" min={1.0} value={form.min_request_interval_seconds} onChange={(e) => update('min_request_interval_seconds', e.target.value)} />
           </label>
           <label>
             <span>일일 예산 한도 (선택)</span>
-            <input
-              type="number"
-              step="0.01"
-              min={0}
-              value={form.daily_budget_limit}
-              onChange={(e) => update('daily_budget_limit', e.target.value)}
-            />
+            <input type="number" step="0.01" min={0} value={form.daily_budget_limit} onChange={(e) => update('daily_budget_limit', e.target.value)} />
           </label>
           <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={!!form.is_enabled}
-              onChange={(e) => update('is_enabled', e.target.checked)}
-            />
+            <input type="checkbox" checked={!!form.is_enabled} onChange={(e) => update('is_enabled', e.target.checked)} />
             <span>활성화</span>
           </label>
         </div>
         <div className="muted" style={{ marginTop: 6 }}>
-          비밀값(API 키 등)은 절대 입력하지 마세요. alias 이름만 등록합니다.
+          비밀값(API 키 등)은 절대 입력하지 마세요. <code>packages\ai-admin\backend\.env</code> 또는 repo <code>.env</code>에는 alias 이름으로만 저장합니다.
         </div>
-        {saveError && (
-          <div className="muted" style={{ marginTop: 8, color: '#ff8a8a' }}>
-            저장 실패: {saveError}
-          </div>
-        )}
+        {saveError && <div className="muted" style={{ marginTop: 8, color: '#ff8a8a' }}>저장 실패: {saveError}</div>}
         <div style={{ marginTop: 10, display: 'flex', gap: 8 }}>
-          <button type="submit" disabled={saving}>
-            {saving ? '저장 중...' : editingId ? '업데이트' : '추가'}
-          </button>
-          {editingId && (
-            <button type="button" onClick={resetForm} disabled={saving}>
-              취소
-            </button>
-          )}
+          <button type="submit" disabled={saving}>{saving ? '저장 중...' : editingId ? '업데이트' : '추가'}</button>
+          {editingId && <button type="button" onClick={resetForm} disabled={saving}>취소</button>}
         </div>
       </form>
     </section>

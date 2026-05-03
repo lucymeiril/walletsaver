@@ -120,6 +120,109 @@ def _seed_raw_batch(db: Database) -> None:
         repo.save_records("batch-review", records)
 
 
+def _seed_quality_audit_batch(db: Database) -> None:
+    records = [
+        RawCrawlRecord(
+            raw_record_id="qa-good-chilled-pork",
+            source_name="emart",
+            raw_title="국내산 냉장 삼겹살 500g",
+            raw_price=9900,
+            raw_payload={
+                "expected_ai": {
+                    "canonical_name": "국내산 냉장 삼겹살 500g",
+                    "category_id": "meat.pork",
+                    "package_unit": "g",
+                    "keywords": ["삼겹살"],
+                    "price": 9900,
+                    "attributes": {"storage_type": "냉장"},
+                }
+            },
+        ),
+        RawCrawlRecord(
+            raw_record_id="qa-price-wrong",
+            source_name="emart",
+            raw_title="서울우유 1L",
+            raw_price=2800,
+            raw_payload={
+                "expected_ai": {
+                    "canonical_name": "서울우유 1L",
+                    "category_id": "dairy.milk",
+                    "package_unit": "L",
+                    "keywords": ["서울우유", "우유"],
+                    "price": 2800,
+                    "storage_type": "냉장",
+                }
+            },
+        ),
+        RawCrawlRecord(
+            raw_record_id="qa-snack-seafood-confused",
+            source_name="emart",
+            raw_title="오리온 오징어땅콩 98g",
+            raw_price=1980,
+            raw_payload={
+                "expected_ai": {
+                    "canonical_name": "오리온 오징어땅콩 98g",
+                    "category_id": "snack.nut",
+                    "package_unit": "g",
+                    "keywords": ["오징어땅콩", "과자"],
+                    "price": 1980,
+                }
+            },
+        ),
+        RawCrawlRecord(
+            raw_record_id="qa-frozen-seafood-missing-storage",
+            source_name="emart",
+            raw_title="냉동 손질 오징어 500g",
+            raw_price=7900,
+            raw_payload={
+                "expected_ai": {
+                    "canonical_name": "냉동 손질 오징어 500g",
+                    "category_id": "seafood.squid",
+                    "package_unit": "g",
+                    "keywords": ["오징어"],
+                    "price": 7900,
+                    "storage_type": "냉동",
+                }
+            },
+        ),
+        RawCrawlRecord(
+            raw_record_id="qa-keyword-category-wrong",
+            source_name="emart",
+            raw_title="제주 감귤 1.5kg",
+            raw_price=12900,
+            raw_payload={
+                "expected_ai": {
+                    "canonical_name": "제주 감귤 1.5kg",
+                    "category_id": "fruit.citrus",
+                    "package_unit": "kg",
+                    "keywords": ["감귤"],
+                    "price": 12900,
+                    "attributes": {"storage_type": "fresh"},
+                }
+            },
+        ),
+        RawCrawlRecord(
+            raw_record_id="qa-missing-product",
+            source_name="emart",
+            raw_title="풀무원 국산콩 두부 300g",
+            raw_price=3480,
+        ),
+    ]
+    with db.session_scope() as session:
+        repo = RawCrawlBatchRepository(session)
+        repo.save(
+            RawCrawlBatchContract(
+                batch_id="batch-quality-audit",
+                source_name="emart",
+                crawler_name="seeded-quality-audit",
+                item_count=len(records),
+                schema_type="product_offer",
+                status=PipelineStatus.RAW_INGESTED,
+            )
+        )
+        repo.save_records("batch-quality-audit", records)
+
+
 def test_submit_and_start_review(client: TestClient) -> None:
     _submit(client)
 
@@ -310,3 +413,68 @@ def test_raw_vs_ai_audit_detects_missing_and_misclassified_data(
     assert ("raw-wrong", "mismatched_category_id") in issue_codes
     assert ("raw-wrong", "mismatched_package_unit") in issue_codes
     assert ("raw-wrong", "name_signal_mismatch") in issue_codes
+
+
+def test_raw_vs_ai_audit_flags_seeded_korean_data_that_exists_but_is_not_serviceable(
+    client: TestClient,
+    db: Database,
+) -> None:
+    _seed_quality_audit_batch(db)
+    proposals = [
+        _proposal_for_record("qa-good-name", "qa-good-chilled-pork", "canonical_name", "국내산 냉장 삼겹살 500g"),
+        _proposal_for_record("qa-good-cat", "qa-good-chilled-pork", "category_id", "meat.pork", proposal_type="category"),
+        _proposal_for_record("qa-good-unit", "qa-good-chilled-pork", "package_unit", "g"),
+        _proposal_for_record("qa-good-kw", "qa-good-chilled-pork", "keywords", "삼겹살", proposal_type="keyword"),
+        _proposal_for_record("qa-good-price", "qa-good-chilled-pork", "price", 9900),
+        _proposal_for_record("qa-good-storage", "qa-good-chilled-pork", "attributes.storage_type", "냉장", proposal_type="attribute_value"),
+        _proposal_for_record("qa-price-name", "qa-price-wrong", "canonical_name", "서울우유 1L"),
+        _proposal_for_record("qa-price-cat", "qa-price-wrong", "category_id", "dairy.milk", proposal_type="category"),
+        _proposal_for_record("qa-price-unit", "qa-price-wrong", "package_unit", "L"),
+        _proposal_for_record("qa-price-kw", "qa-price-wrong", "keywords", ["서울우유", "우유"], proposal_type="keyword"),
+        _proposal_for_record("qa-price-price", "qa-price-wrong", "price", "3,800원"),
+        _proposal_for_record("qa-snack-name", "qa-snack-seafood-confused", "canonical_name", "오리온 오징어땅콩 98g"),
+        _proposal_for_record("qa-snack-cat", "qa-snack-seafood-confused", "category_id", "seafood.squid", proposal_type="category"),
+        _proposal_for_record("qa-snack-unit", "qa-snack-seafood-confused", "package_unit", "g"),
+        _proposal_for_record("qa-snack-kw", "qa-snack-seafood-confused", "keywords", "오징어", proposal_type="keyword"),
+        _proposal_for_record("qa-snack-price", "qa-snack-seafood-confused", "price", 1980),
+        _proposal_for_record("qa-seafood-name", "qa-frozen-seafood-missing-storage", "canonical_name", "냉동 손질 오징어 500g"),
+        _proposal_for_record("qa-seafood-cat", "qa-frozen-seafood-missing-storage", "category_id", "seafood.squid", proposal_type="category"),
+        _proposal_for_record("qa-seafood-unit", "qa-frozen-seafood-missing-storage", "package_unit", "g"),
+        _proposal_for_record("qa-seafood-kw", "qa-frozen-seafood-missing-storage", "keywords", "오징어", proposal_type="keyword"),
+        _proposal_for_record("qa-seafood-price", "qa-frozen-seafood-missing-storage", "price", 7900),
+        _proposal_for_record("qa-citrus-name", "qa-keyword-category-wrong", "canonical_name", "제주 감귤 1.5kg"),
+        _proposal_for_record("qa-citrus-cat", "qa-keyword-category-wrong", "category_id", "fruit.apple", proposal_type="category"),
+        _proposal_for_record("qa-citrus-unit", "qa-keyword-category-wrong", "package_unit", "kg"),
+        _proposal_for_record("qa-citrus-kw", "qa-keyword-category-wrong", "keywords", "사과", proposal_type="keyword"),
+        _proposal_for_record("qa-citrus-price", "qa-keyword-category-wrong", "price", 12900),
+        _proposal_for_record("qa-citrus-storage", "qa-keyword-category-wrong", "attributes.storage_type", "ambient", proposal_type="attribute_value"),
+        _proposal_for_record("qa-orphan-name", "qa-not-in-raw", "canonical_name", "없는 상품"),
+    ]
+    for proposal in proposals:
+        res = client.post("/api/review/proposals", json=proposal)
+        assert res.status_code == 201, res.text
+
+    audit = client.get("/api/review/audit", params={"batch_id": "batch-quality-audit"})
+    assert audit.status_code == 200, audit.text
+    body = audit.json()
+
+    assert body["raw_record_count"] == 6
+    assert body["covered_record_count"] == 5
+    assert body["missing_record_count"] == 1
+    assert body["status"] == "warning"
+
+    issue_codes = {(issue["raw_record_id"], issue["code"]) for issue in body["issues"]}
+    assert ("qa-missing-product", "missing_all_proposals") in issue_codes
+    assert ("qa-not-in-raw", "orphan_ai_proposals") in issue_codes
+    assert ("qa-price-wrong", "price_mismatch_raw") in issue_codes
+    assert ("qa-price-wrong", "mismatched_price") in issue_codes
+    assert ("qa-price-wrong", "missing_storage_attribute") in issue_codes
+    assert ("qa-snack-seafood-confused", "mismatched_category_id") in issue_codes
+    assert ("qa-snack-seafood-confused", "mismatched_keywords") in issue_codes
+    assert ("qa-snack-seafood-confused", "snack_seafood_confusion") in issue_codes
+    assert ("qa-frozen-seafood-missing-storage", "missing_storage_attribute") in issue_codes
+    assert ("qa-frozen-seafood-missing-storage", "mismatched_storage_attribute") in issue_codes
+    assert ("qa-keyword-category-wrong", "mismatched_category_id") in issue_codes
+    assert ("qa-keyword-category-wrong", "mismatched_keywords") in issue_codes
+    assert ("qa-keyword-category-wrong", "mismatched_storage_attribute") in issue_codes
+    assert not any(issue[0] == "qa-good-chilled-pork" for issue in issue_codes)

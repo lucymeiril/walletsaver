@@ -22,6 +22,7 @@ from core.contracts.control_plane import ProviderConfigContract
 from api.deps import get_db_session
 from providers import GoogleGenAIProvider
 from providers.google_genai import ProviderConfigurationError, ProviderResponseError
+from providers.secret_resolver import DEFAULT_ENV_PATHS, resolve_secret_alias
 from storage.repositories import ProviderConfigRepository
 
 router = APIRouter(prefix="/api/providers", tags=["providers"])
@@ -95,6 +96,48 @@ def upsert_provider(
     repo = ProviderConfigRepository(session)
     repo.save(payload)
     return payload.model_dump(mode="json")
+
+
+@router.get("/setup-state")
+def list_provider_setup_state(
+    session: Session = Depends(get_db_session),
+) -> dict:
+    """Return local setup status without exposing secret values or calling providers."""
+    repo = ProviderConfigRepository(session)
+    configs = repo.list()
+    states = []
+    for cfg in configs:
+        alias = cfg.secret_alias or ("GOOGLE_API_KEY" if cfg.provider_kind == ProviderKind.GEMINI else None)
+        requires_secret = cfg.provider_kind == ProviderKind.GEMINI
+        secret_resolved = bool(alias and resolve_secret_alias(alias))
+        live_actions = []
+        if cfg.provider_kind == ProviderKind.GEMINI:
+            live_actions = [
+                f"/api/providers/{cfg.provider_id}/models",
+                f"/api/providers/{cfg.provider_id}/smoke-test",
+                "/api/ingest/raw-records/label",
+            ]
+        states.append(
+            {
+                "provider_id": cfg.provider_id,
+                "provider_kind": cfg.provider_kind.value,
+                "is_enabled": cfg.is_enabled,
+                "secret_alias": alias,
+                "requires_secret": requires_secret,
+                "secret_resolved": secret_resolved,
+                "env_locations": [str(path) for path in DEFAULT_ENV_PATHS],
+                "offline_actions": [
+                    "/api/providers",
+                    f"/api/providers/{cfg.provider_id}/capabilities",
+                    "/api/review/audit",
+                    "/api/review/raw-records",
+                    "/api/review/proposals/* review decisions",
+                ],
+                "live_actions": live_actions,
+                "can_call_live": cfg.is_enabled and (not requires_secret or secret_resolved),
+            }
+        )
+    return {"providers": states, "count": len(states)}
 
 
 @router.get("/{provider_id}")
