@@ -12,9 +12,25 @@ from api.app import create_app
 from api.routes.prompts import get_db as prompts_get_db
 import api.routes.review as review_routes
 from api.routes.review import get_db as review_get_db
-from core.contracts.ai_pipeline import PipelineStatus, RawCrawlRecord
-from core.contracts.control_plane import RawCrawlBatchContract
-from storage import Database, KeywordProposalRepository, RawCrawlBatchRepository, create_database
+from core.contracts.ai_pipeline import (
+    AIWorkerRole,
+    FieldProposal,
+    FieldProvenance,
+    PipelineStatus,
+    ProposalType,
+    RawCrawlRecord,
+)
+from core.contracts.control_plane import LearnedKnowledgeContract, RawCrawlBatchContract
+from storage import (
+    Database,
+    FieldProposalRepository,
+    KeywordProposalRepository,
+    LearnedKnowledgeRepository,
+    RawCrawlBatchRepository,
+    ReviewDecisionRepository,
+    create_database,
+)
+from storage.models import AIPublishRecord
 
 
 @pytest.fixture()
@@ -67,6 +83,176 @@ def _proposal_for_record(
 def _submit(client: TestClient, proposal_id: str = "p-1") -> None:
     res = client.post("/api/review/proposals", json=_proposal(proposal_id))
     assert res.status_code == 201, res.text
+
+
+def _automation_proposal(
+    raw_id: str,
+    target_field: str,
+    value,
+    *,
+    proposal_type: ProposalType = ProposalType.NORMALIZED_FIELD,
+    confidence: float = 0.96,
+    alternatives: list[dict] | None = None,
+) -> FieldProposal:
+    return FieldProposal(
+        proposal_id=f"{raw_id}:{target_field}",
+        proposal_type=proposal_type,
+        target_field=target_field,
+        proposed_value=value,
+        status=PipelineStatus.AI_PROPOSED,
+        provenance=FieldProvenance(
+            raw_record_id=raw_id,
+            source_field="raw_title",
+            evidence_text=f"automation evidence for {raw_id}",
+            worker_role=AIWorkerRole.KEYWORD_GENERATOR
+            if proposal_type == ProposalType.KEYWORD
+            else AIWorkerRole.CLASSIFIER,
+            confidence=confidence,
+        ),
+        alternatives=alternatives or [],
+    )
+
+
+def _seed_automation_batch(db: Database) -> None:
+    records = [
+        RawCrawlRecord(
+            raw_record_id="auto-safe",
+            source_name="emart",
+            source_url="https://emart.example/products/tofu",
+            raw_title="풀무원 국산콩 두부 300g",
+            raw_price=2480,
+            raw_payload={
+                "source_url": "https://emart.example/products/tofu",
+                "image_url": "https://emart.example/images/tofu.jpg",
+                "unit": "300g",
+                "category_id": "processed.tofu.firm",
+                "expected_ai": {
+                    "canonical_name": "풀무원 국산콩 두부 300g",
+                    "category_id": "processed.tofu.firm",
+                    "package_unit": "g",
+                    "keywords": ["두부"],
+                    "price": 2480,
+                },
+            },
+        ),
+        RawCrawlRecord(
+            raw_record_id="auto-missing-image",
+            source_name="emart",
+            source_url="https://emart.example/products/milk",
+            raw_title="서울우유 1L",
+            raw_price=2800,
+            raw_payload={
+                "source_url": "https://emart.example/products/milk",
+                "unit": "1L",
+                "category_id": "dairy.milk",
+                "expected_ai": {
+                    "canonical_name": "서울우유 1L",
+                    "category_id": "dairy.milk",
+                    "package_unit": "L",
+                    "keywords": ["우유"],
+                    "price": 2800,
+                },
+            },
+        ),
+        RawCrawlRecord(
+            raw_record_id="auto-unresolved",
+            source_name="emart",
+            source_url="https://emart.example/products/ssamjang",
+            raw_title="고기쌈장 500g",
+            raw_price=3980,
+            raw_payload={
+                "source_url": "https://emart.example/products/ssamjang",
+                "image_url": "https://emart.example/images/ssamjang.jpg",
+                "unit": "500g",
+                "category_id": "processed.sauce.ssamjang",
+                "expected_ai": {
+                    "canonical_name": "고기쌈장 500g",
+                    "category_id": "processed.sauce.ssamjang",
+                    "package_unit": "g",
+                    "keywords": ["쌈장"],
+                    "price": 3980,
+                },
+            },
+        ),
+        RawCrawlRecord(
+            raw_record_id="auto-learned",
+            source_name="emart",
+            source_url="https://emart.example/products/gochujang",
+            raw_title="태양초 고추장 500g",
+            raw_price=4980,
+            raw_payload={
+                "source_url": "https://emart.example/products/gochujang",
+                "image_url": "https://emart.example/images/gochujang.jpg",
+                "unit": "500g",
+                "category_id": "processed.sauce.gochujang",
+                "expected_ai": {
+                    "canonical_name": "태양초 고추장 500g",
+                    "category_id": "processed.sauce.gochujang",
+                    "package_unit": "g",
+                    "keywords": ["고추장"],
+                    "price": 4980,
+                },
+            },
+        ),
+    ]
+    with db.session_scope() as session:
+        raw_repo = RawCrawlBatchRepository(session)
+        raw_repo.save(
+            RawCrawlBatchContract(
+                batch_id="batch-automation",
+                source_name="emart",
+                crawler_name="automation-test",
+                item_count=len(records),
+                schema_type="product_offer",
+                status=PipelineStatus.RAW_INGESTED,
+            )
+        )
+        raw_repo.save_records("batch-automation", records)
+        proposal_repo = FieldProposalRepository(session)
+        for raw_id, category, keyword in [
+            ("auto-safe", "processed.tofu.firm", "두부"),
+            ("auto-missing-image", "dairy.milk", "우유"),
+            ("auto-unresolved", "processed.sauce.ssamjang", "쌈장"),
+            ("auto-learned", "processed.sauce.gochujang", "고추장"),
+        ]:
+            keyword_alternatives = (
+                [{"word": keyword, "keyword_id": 1, "matched_term": keyword, "category_id": category}]
+                if raw_id != "auto-learned"
+                else [{"word": keyword, "knowledge_id": "knowledge:gochujang", "matched_term": "태양초고추장", "category_id": category}]
+            )
+            for proposal in [
+                _automation_proposal(raw_id, "canonical_name", records[[r.raw_record_id for r in records].index(raw_id)].raw_title),
+                _automation_proposal(raw_id, "package_unit", "g" if raw_id != "auto-missing-image" else "L"),
+                _automation_proposal(raw_id, "category_id", category, proposal_type=ProposalType.CATEGORY),
+                _automation_proposal(
+                    raw_id,
+                    "keywords",
+                    keyword,
+                    proposal_type=ProposalType.KEYWORD,
+                    alternatives=keyword_alternatives,
+                ),
+            ]:
+                proposal_repo.save(proposal)
+        LearnedKnowledgeRepository(session).save(
+            LearnedKnowledgeContract(
+                knowledge_id="knowledge:gochujang",
+                knowledge_type="keyword_alias_approved",
+                source_name="emart",
+                pattern="태양초고추장",
+                target_value={"word": "고추장", "category_id": "processed.sauce.gochujang"},
+                positive_examples=["태양초 고추장 500g"],
+                success_count=3,
+            )
+        )
+        KeywordProposalRepository(session).save(
+            {
+                "proposal_id": "keyword:auto-unresolved",
+                "proposed_keyword": "쌈장",
+                "match_terms": ["쌈장"],
+                "triggering_records": [{"raw_record_id": "auto-unresolved"}],
+                "status": PipelineStatus.AI_PROPOSED.value,
+            }
+        )
 
 
 def _seed_raw_batch(db: Database) -> None:
@@ -766,6 +952,118 @@ def test_publish_partial_failure_keeps_retryable_error(client: TestClient, db: D
     assert "DB-admin validation failed" in rows["pub-2"]["last_error"]
 
 
+def test_publish_missing_api_key_marks_row_retryable_without_admin_password_defaults(
+    client: TestClient, db: Database, monkeypatch
+) -> None:
+    _seed_publish_batch(db)
+    _approve_publish_proposals(client, "pub-1")
+    monkeypatch.delenv("DB_ADMIN_API_KEY", raising=False)
+
+    res = client.post(
+        "/api/review/publish-approved",
+        json={"raw_record_ids": ["pub-1"], "reviewer_id": "lucy", "confirm_count": 1},
+    )
+
+    assert res.status_code == 200, res.text
+    body = res.json()
+    assert body["published"] == 0
+    assert body["failed"] == 1
+    assert "DB_ADMIN_API_KEY" in body["results"][0]["error"]
+    assert "password" not in body["results"][0]["error"].lower()
+    rows = {
+        row["raw_record_id"]: row
+        for row in client.get("/api/review/publish-eligibility").json()["items"]
+    }
+    assert rows["pub-1"]["status"] == "publish_failed"
+    assert rows["pub-1"]["retryable"] is True
+
+
+def test_publish_retry_reuses_existing_db_ingestion_without_duplicate_submit(
+    client: TestClient, db: Database, monkeypatch
+) -> None:
+    _seed_publish_batch(db)
+    _approve_publish_proposals(client, "pub-1")
+    with db.session_scope() as session:
+        session.add(
+            AIPublishRecord(
+                raw_record_id="pub-1",
+                batch_id="batch-publish",
+                source_name="emart",
+                status=PipelineStatus.PUBLISH_FAILED.value,
+                ai_proposal_ids=[
+                    "pub-1-name",
+                    "pub-1-category",
+                    "pub-1-unit",
+                    "pub-1-price",
+                    "pub-1-keyword",
+                    "pub-1-storage",
+                ],
+                human_decision_ids=[],
+                eligibility_errors=[],
+                last_error="ambiguous timeout after DB-admin accepted",
+                db_ingestion_id="901",
+                db_ingestion_result={"id": 901, "status": "pending"},
+                publish_attempts=1,
+            )
+        )
+    called = False
+
+    async def fake_submit(payload):
+        nonlocal called
+        called = True
+        return {"id": 902}
+
+    monkeypatch.setattr(review_routes, "_submit_to_db_admin", fake_submit)
+    res = client.post(
+        "/api/review/publish-approved",
+        json={"raw_record_ids": ["pub-1"], "reviewer_id": "lucy", "confirm_count": 1},
+    )
+
+    assert res.status_code == 200, res.text
+    assert called is False
+    result = res.json()["results"][0]
+    assert result["status"] == "published"
+    assert result["db_ingestion_id"] == "901"
+    assert result["skipped_duplicate"] is True
+
+
+def test_publish_rollback_marks_ai_record_not_public_safe_and_unpublishes_proposals(
+    client: TestClient, db: Database, monkeypatch
+) -> None:
+    _seed_publish_batch(db)
+    _approve_publish_proposals(client, "pub-1")
+
+    async def fake_submit(payload):
+        return {"id": 777, "status": "pending", "quality_score": 100}
+
+    monkeypatch.setattr(review_routes, "_submit_to_db_admin", fake_submit)
+    published = client.post(
+        "/api/review/publish-approved",
+        json={"raw_record_ids": ["pub-1"], "reviewer_id": "lucy", "confirm_count": 1},
+    )
+    assert published.status_code == 200, published.text
+
+    res = client.post(
+        "/api/review/publish-records/pub-1/rollback",
+        json={"reviewer_id": "lucy", "reason": "wrong image before public exposure"},
+    )
+
+    assert res.status_code == 200, res.text
+    body = res.json()
+    assert body["status"] == "rolled_back"
+    assert body["db_ingestion_id"] == "777"
+    assert "reject/remove" in body["operator_instructions"]
+    rows = {
+        row["raw_record_id"]: row
+        for row in client.get("/api/review/publish-eligibility").json()["items"]
+    }
+    assert rows["pub-1"]["status"] == "rolled_back"
+    assert rows["pub-1"]["eligible"] is False
+    assert rows["pub-1"]["db_ingestion_result"]["rollback_requested"] is True
+    detail = client.get("/api/review/proposals/pub-1-name").json()
+    assert detail["proposal"]["status"] == "approved"
+
+
 def test_publish_does_not_call_db_when_keyword_or_quality_blocked(
     client: TestClient, db: Database, monkeypatch
 ) -> None:
@@ -795,6 +1093,142 @@ def test_publish_does_not_call_db_when_keyword_or_quality_blocked(
     assert res.status_code == 200, res.text
     assert res.json()["published"] == 0
     assert called is False
+
+
+def test_automation_gates_preview_and_apply_safe_exact_matches_without_publishing(
+    client: TestClient,
+    db: Database,
+) -> None:
+    _seed_automation_batch(db)
+
+    preview = client.post(
+        "/api/review/automation-gates/preview",
+        json={
+            "batch_id": "batch-automation",
+            "config": {
+                "selected_rule_ids": ["exact_catalog_keyword", "exact_category"],
+                "default_min_confidence": 0.9,
+                "allowed_sources": ["emart"],
+                "allowed_categories": ["processed.tofu.firm"],
+                "reviewer_id": "automation:test",
+            },
+        },
+    )
+    assert preview.status_code == 200, preview.text
+    body = preview.json()
+    eligible_ids = {item["proposal_id"] for item in body["eligible_items"]}
+    assert {"auto-safe:keywords", "auto-safe:category_id"}.issubset(eligible_ids)
+
+    missing_image = [
+        item for item in body["blocked_items"] if item["raw_record_id"] == "auto-missing-image"
+    ]
+    assert missing_image
+    assert any("missing image" in blocker for blocker in missing_image[0]["blockers"])
+
+    unresolved = [
+        item for item in body["blocked_items"] if item["raw_record_id"] == "auto-unresolved"
+    ]
+    assert unresolved
+    assert any("keyword proposal" in blocker for blocker in unresolved[0]["blockers"])
+
+    apply = client.post(
+        "/api/review/automation-gates/apply",
+        json={
+            "batch_id": "batch-automation",
+            "config": {
+                "enabled": True,
+                "selected_rule_ids": ["exact_catalog_keyword", "exact_category"],
+                "default_min_confidence": 0.9,
+                "allowed_sources": ["emart"],
+                "allowed_categories": ["processed.tofu.firm"],
+                "reviewer_id": "automation:test",
+            },
+        },
+    )
+    assert apply.status_code == 200, apply.text
+    result = apply.json()
+    assert result["applied_count"] == 2
+    assert result["will_publish_to_db_admin"] is False
+
+    with db.session_scope() as session:
+        safe_keyword = FieldProposalRepository(session).get("auto-safe:keywords")
+        safe_category = FieldProposalRepository(session).get("auto-safe:category_id")
+        blocked_missing = FieldProposalRepository(session).get("auto-missing-image:keywords")
+        decisions = ReviewDecisionRepository(session).list_for_proposal("auto-safe:keywords")
+        publish_record_count = session.query(AIPublishRecord).count()
+
+    assert safe_keyword.status == PipelineStatus.APPROVED
+    assert safe_category.status == PipelineStatus.APPROVED
+    assert blocked_missing.status == PipelineStatus.AI_PROPOSED
+    assert publish_record_count == 0
+    assert decisions
+    assert decisions[0].reviewer_id == "automation:test"
+    assert "automation_rule_id" in decisions[0].reason
+    assert decisions[0].corrected_value["proposal_id"] == "auto-safe:keywords"
+
+
+def test_automation_apply_requires_explicit_opt_in(client: TestClient, db: Database) -> None:
+    _seed_automation_batch(db)
+
+    res = client.post(
+        "/api/review/automation-gates/apply",
+        json={
+            "batch_id": "batch-automation",
+            "config": {
+                "enabled": False,
+                "selected_rule_ids": ["exact_catalog_keyword"],
+                "reviewer_id": "automation:test",
+            },
+        },
+    )
+
+    assert res.status_code == 400
+    assert "enabled=true" in res.text
+
+
+def test_automation_learned_alias_requires_prior_success_count(
+    client: TestClient,
+    db: Database,
+) -> None:
+    _seed_automation_batch(db)
+
+    preview = client.post(
+        "/api/review/automation-gates/preview",
+        json={
+            "batch_id": "batch-automation",
+            "config": {
+                "selected_rule_ids": ["learned_alias"],
+                "learned_alias_min_confidence": 0.9,
+                "learned_alias_min_success_count": 2,
+                "allowed_sources": ["emart"],
+                "allowed_categories": ["processed.sauce.gochujang"],
+                "reviewer_id": "automation:test",
+            },
+        },
+    )
+    assert preview.status_code == 200, preview.text
+    eligible_ids = {item["proposal_id"] for item in preview.json()["eligible_items"]}
+    assert "auto-learned:keywords" in eligible_ids
+
+    blocked = client.post(
+        "/api/review/automation-gates/preview",
+        json={
+            "batch_id": "batch-automation",
+            "config": {
+                "selected_rule_ids": ["learned_alias"],
+                "learned_alias_min_confidence": 0.9,
+                "learned_alias_min_success_count": 4,
+                "allowed_sources": ["emart"],
+                "allowed_categories": ["processed.sauce.gochujang"],
+                "reviewer_id": "automation:test",
+            },
+        },
+    )
+    assert blocked.status_code == 200, blocked.text
+    learned_row = next(
+        item for item in blocked.json()["blocked_items"] if item["proposal_id"] == "auto-learned:keywords"
+    )
+    assert any("success_count below 4" in blocker for blocker in learned_row["blockers"])
 
 
 def test_correct_requires_reason(client: TestClient) -> None:

@@ -15,7 +15,13 @@ from core.contracts.control_plane import ProviderConfigContract
 from services import ai_ingestion
 from core.contracts.ai_pipeline import RawCrawlRecord
 from services.keyword_catalog import KeywordCatalogAdapter, build_keyword_outputs
-from storage import Database, ProviderConfigRepository, create_database
+from storage import (
+    Database,
+    LearnedKnowledgeRepository,
+    ProviderConfigRepository,
+    ReviewDecisionRepository,
+    create_database,
+)
 
 
 @pytest.fixture()
@@ -228,6 +234,66 @@ def test_new_keyword_blocks_until_approval_and_persists(client: TestClient) -> N
         and proposal["status"] == "approved"
     ]
     assert approved_keyword_fields
+
+
+def test_second_batch_reuses_approved_keyword_alias_knowledge(
+    client: TestClient,
+    control_db: Database,
+) -> None:
+    first = _label(client, "emart-ssamjang-first", "고기쌈장 500g")
+    assert first["keyword_proposals_stored"] == 1
+    proposal_id = first["keyword_proposal_ids"][0]
+
+    approve = client.post(
+        f"/api/review/keyword-proposals/{proposal_id}/approve",
+        json={
+            "reviewer_id": "lucy",
+            "proposed_keyword": "쌈장",
+            "match_terms": ["고기쌈장", "행사쌈장", "쌈장"],
+            "category_suggestion": "processed.sauce.ssamjang",
+        },
+    )
+    assert approve.status_code == 200, approve.text
+
+    second = _label(client, "emart-ssamjang-second", "행사 고기쌈장 1kg")
+    assert second["keyword_proposals_stored"] == 0
+
+    with control_db.session_scope() as session:
+        decisions = ReviewDecisionRepository(session).list_for_proposal(proposal_id)
+        learned = LearnedKnowledgeRepository(session).list(active_only=True)
+    assert any(decision.decision.value == "approve" for decision in decisions)
+    approved_patterns = {
+        item.pattern
+        for item in learned
+        if item.knowledge_type == "keyword_alias_approved"
+    }
+    assert {"쌈장", "고기쌈장", "행사쌈장"}.issubset(approved_patterns)
+
+
+def test_second_batch_reuses_rejected_keyword_knowledge(
+    client: TestClient,
+    control_db: Database,
+) -> None:
+    first = _label(client, "emart-noise-first", "고기쌈장 500g")
+    proposal_id = first["keyword_proposal_ids"][0]
+
+    rejected = client.post(
+        f"/api/review/keyword-proposals/{proposal_id}/reject",
+        json={"reviewer_id": "lucy", "reason": "marketing/source phrase, not a canonical keyword"},
+    )
+    assert rejected.status_code == 200, rejected.text
+
+    second = _label(client, "emart-noise-second", "행사 고기쌈장 1kg")
+    assert second["keyword_proposals_stored"] == 0
+
+    with control_db.session_scope() as session:
+        learned = LearnedKnowledgeRepository(session).list(active_only=True)
+    rejected_patterns = {
+        item.pattern
+        for item in learned
+        if item.knowledge_type == "keyword_rejected"
+    }
+    assert {"쌈장", "고기쌈장", "행사쌈장"}.issubset(rejected_patterns)
 
 
 def test_emart_five_record_keyword_noise_is_grouped_before_review() -> None:

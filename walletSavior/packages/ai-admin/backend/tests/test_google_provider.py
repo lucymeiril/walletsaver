@@ -180,3 +180,29 @@ def test_call_reports_sanitized_provider_error(monkeypatch: pytest.MonkeyPatch) 
     assert detail["provider_id"] == "google-dev"
     assert detail["model"] == "gemini-2.5-flash"
     assert "AIza" not in detail["message"]
+
+
+def test_call_rejects_malformed_json_without_leaking_response(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _install_fake_google_types(monkeypatch)
+    monkeypatch.setenv("GOOGLE_TEST_API_KEY", "fake-local-test-key")
+
+    class BadJsonResponse:
+        text = "```json\n{\"items\": [}\n``` api_key=AIza1234567890123456789012345"
+        usage_metadata = None
+
+    class FakeModels:
+        def generate_content(self, *, model, contents, config):
+            return BadJsonResponse()
+
+    provider = GoogleGenAIProvider(_config(default_model="gemini-2.5-flash"))
+    provider._client = py_types.SimpleNamespace(models=FakeModels())
+
+    with pytest.raises(ProviderResponseError) as exc_info:
+        provider.call(prompt="Label realistic E-Mart records.")
+
+    message = str(exc_info.value)
+    assert "malformed JSON" in message
+    assert "AIza" not in message
+    assert "api_key" not in message

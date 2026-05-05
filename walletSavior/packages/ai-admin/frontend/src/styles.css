@@ -407,6 +407,40 @@ ul.items li.proposal-card {
 .pipeline-step.pipeline-ok { border-color: #1f6b45; }
 .pipeline-step.pipeline-warn { border-color: #6b4b1f; }
 
+.ops-command-center {
+  border-color: #345f94;
+  background: linear-gradient(180deg, #111b2d 0%, #11151d 100%);
+}
+
+.operator-flow,
+.batch-health-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.operator-flow-step,
+.batch-health-card {
+  background: #101827;
+  border: 1px solid #26354c;
+  border-radius: 10px;
+  padding: 10px;
+  min-height: 96px;
+}
+
+.operator-flow-step strong {
+  color: #d7e7ff;
+}
+
+.batch-health-card.health-ok { border-color: #1f6b45; }
+.batch-health-card.health-warn { border-color: #6b4b1f; }
+.batch-health-card.health-err { border-color: #713030; }
+
+.provider-status-strip {
+  border-color: #31425e;
+}
+
 .pipeline-count {
   font-size: 1.5rem;
   font-weight: 800;

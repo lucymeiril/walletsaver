@@ -22,6 +22,10 @@ PROMO_TERMS = {
     "세일",
     "할인",
     "추천",
+    "신상",
+    "한정",
+    "최저가",
+    "초특가",
 }
 MODIFIER_TERMS = {
     "국산",
@@ -78,6 +82,45 @@ class CatalogKeyword:
         return (self.word, *self.synonyms)
 
 
+@dataclass(frozen=True)
+class KeywordKnowledgeRule:
+    knowledge_id: str
+    knowledge_type: str
+    source_name: Optional[str]
+    pattern: str
+    target_value: Any
+    negative_examples: tuple[str, ...] = ()
+    positive_examples: tuple[str, ...] = ()
+
+
+KEYWORD_PROPOSAL_APPROVABLE_STATUSES = {
+    PipelineStatus.AI_PROPOSED.value,
+    PipelineStatus.HUMAN_REVIEWING.value,
+    PipelineStatus.REJECTED.value,
+}
+KEYWORD_PROPOSAL_REJECTABLE_STATUSES = {
+    PipelineStatus.AI_PROPOSED.value,
+    PipelineStatus.HUMAN_REVIEWING.value,
+}
+KEYWORD_PROPOSAL_BLOCKING_STATUSES = {
+    PipelineStatus.AI_PROPOSED.value,
+    PipelineStatus.HUMAN_REVIEWING.value,
+    PipelineStatus.REJECTED.value,
+}
+
+
+def can_approve_keyword_proposal(status: str) -> bool:
+    return status in KEYWORD_PROPOSAL_APPROVABLE_STATUSES
+
+
+def can_reject_keyword_proposal(status: str) -> bool:
+    return status in KEYWORD_PROPOSAL_REJECTABLE_STATUSES
+
+
+def is_blocking_keyword_proposal(status: str) -> bool:
+    return status in KEYWORD_PROPOSAL_BLOCKING_STATUSES
+
+
 def normalize_keyword(value: Any) -> str:
     return re.sub(r"[^0-9a-z가-힣]+", "", str(value or "").strip().lower())
 
@@ -110,6 +153,32 @@ def canonical_candidate(value: str) -> str:
     }:
         return ""
     return normalized or candidate
+
+
+def keyword_knowledge_from_contracts(items: Iterable[Any]) -> list[KeywordKnowledgeRule]:
+    rules: list[KeywordKnowledgeRule] = []
+    for item in items:
+        is_active = getattr(item, "is_active", True)
+        if not is_active:
+            continue
+        target = getattr(item, "target_value", None)
+        if isinstance(item, dict):
+            is_active = item.get("is_active", True)
+            if not is_active:
+                continue
+            target = item.get("target_value")
+        rules.append(
+            KeywordKnowledgeRule(
+                knowledge_id=str(_get_value(item, "knowledge_id", "")),
+                knowledge_type=str(_get_value(item, "knowledge_type", "")),
+                source_name=_get_value(item, "source_name", None),
+                pattern=str(_get_value(item, "pattern", "")),
+                target_value=target,
+                negative_examples=tuple(str(v) for v in (_get_value(item, "negative_examples", []) or [])),
+                positive_examples=tuple(str(v) for v in (_get_value(item, "positive_examples", []) or [])),
+            )
+        )
+    return rules
 
 
 class KeywordCatalogAdapter:
@@ -271,11 +340,13 @@ def build_keyword_outputs(
     records: list[RawCrawlRecord],
     response_items: list[dict[str, Any]],
     catalog: list[CatalogKeyword],
+    learned_knowledge: Iterable[Any] | None = None,
 ) -> tuple[dict[str, list[dict[str, Any]]], list[dict[str, Any]]]:
     """Return per-record matched keywords and durable new-keyword proposals."""
     records_by_id = {record.raw_record_id: record for record in records}
     matched_by_record: dict[str, list[dict[str, Any]]] = defaultdict(list)
     proposal_groups: dict[str, dict[str, Any]] = {}
+    knowledge_rules = keyword_knowledge_from_contracts(learned_knowledge or [])
 
     for item in response_items:
         raw_id = item.get("raw_record_id")
@@ -300,10 +371,35 @@ def build_keyword_outputs(
                     },
                 )
                 continue
+            approved_rule = match_approved_keyword_knowledge(value, record, knowledge_rules)
+            if approved_rule is not None:
+                target = approved_rule.target_value if isinstance(approved_rule.target_value, dict) else {}
+                word = str(target.get("word") or canonical_candidate(value))
+                if word:
+                    _append_unique(
+                        matched_by_record[raw_id],
+                        {
+                            "word": word,
+                            "keyword_id": target.get("keyword_id"),
+                            "matched_term": value.strip(),
+                            "category_id": target.get("category_id"),
+                            "knowledge_id": approved_rule.knowledge_id,
+                        },
+                    )
+                continue
+            rejected_rule = match_rejected_keyword_knowledge(value, record, knowledge_rules)
+            if rejected_rule is not None:
+                continue
             canonical = canonical_candidate(value)
             if not canonical:
                 continue
+            canonical_rejected = match_rejected_keyword_knowledge(canonical, record, knowledge_rules)
+            if canonical_rejected is not None:
+                continue
             key = canonical
+            reason = "AI keyword did not safely match an existing DB keyword"
+            if ambiguous:
+                reason = "AI keyword is ambiguous against existing DB keywords and needs human merge/alias decision"
             proposal = proposal_groups.setdefault(
                 key,
                 {
@@ -312,7 +408,7 @@ def build_keyword_outputs(
                     "match_terms": [],
                     "category_suggestion": category_id,
                     "confidence": confidence,
-                    "reason": "AI keyword did not safely match an existing DB keyword",
+                    "reason": reason,
                     "triggering_records": [],
                     "source_values": [],
                     "status": PipelineStatus.AI_PROPOSED.value,
@@ -340,11 +436,7 @@ def record_keyword_gate(raw_record_id: str, proposals: list[dict[str, Any]]) -> 
         proposal
         for proposal in proposals
         if any(record.get("raw_record_id") == raw_record_id for record in proposal.get("triggering_records", []))
-        and proposal.get("status") in {
-            PipelineStatus.AI_PROPOSED.value,
-            PipelineStatus.HUMAN_REVIEWING.value,
-            PipelineStatus.REJECTED.value,
-        }
+        and is_blocking_keyword_proposal(str(proposal.get("status")))
     ]
     rejected = [p for p in blocking if p.get("status") == PipelineStatus.REJECTED.value]
     return {
@@ -355,9 +447,67 @@ def record_keyword_gate(raw_record_id: str, proposals: list[dict[str, Any]]) -> 
     }
 
 
+def match_approved_keyword_knowledge(
+    value: str,
+    record: RawCrawlRecord,
+    rules: Iterable[KeywordKnowledgeRule],
+) -> KeywordKnowledgeRule | None:
+    return _match_keyword_knowledge(value, record, rules, knowledge_type="keyword_alias_approved")
+
+
+def match_rejected_keyword_knowledge(
+    value: str,
+    record: RawCrawlRecord,
+    rules: Iterable[KeywordKnowledgeRule],
+) -> KeywordKnowledgeRule | None:
+    return _match_keyword_knowledge(value, record, rules, knowledge_type="keyword_rejected")
+
+
+def _match_keyword_knowledge(
+    value: str,
+    record: RawCrawlRecord,
+    rules: Iterable[KeywordKnowledgeRule],
+    *,
+    knowledge_type: str,
+) -> KeywordKnowledgeRule | None:
+    candidate_norm = normalize_keyword(value)
+    canonical_norm = normalize_keyword(canonical_candidate(value))
+    if not candidate_norm and not canonical_norm:
+        return None
+    title_norm = normalize_keyword(record.raw_title)
+    for rule in rules:
+        if rule.knowledge_type != knowledge_type:
+            continue
+        if rule.source_name and rule.source_name != record.source_name:
+            continue
+        pattern_norm = normalize_keyword(rule.pattern)
+        if not pattern_norm:
+            continue
+        if pattern_norm in {candidate_norm, canonical_norm}:
+            return rule
+        target = rule.target_value if isinstance(rule.target_value, dict) else {}
+        terms = [
+            *(target.get("match_terms") or []),
+            *(target.get("source_values") or []),
+            *(rule.positive_examples or []),
+            *(rule.negative_examples or []),
+        ]
+        if any(normalize_keyword(term) == candidate_norm for term in terms):
+            return rule
+        if knowledge_type == "keyword_rejected" and pattern_norm and pattern_norm in title_norm:
+            return rule
+    return None
+
+
 def _proposal_id(batch_id: str, canonical: str) -> str:
     digest = hashlib.sha1(f"{batch_id}:{canonical}".encode("utf-8")).hexdigest()[:12]
     return f"{batch_id}:keyword_proposal:{digest}"
+
+
+def _get_value(item: Any, key: str, default: Any) -> Any:
+    if isinstance(item, dict):
+        return item.get(key, default)
+    return getattr(item, key, default)
 
 
 def _dedupe_terms(values: Iterable[Any]) -> list[str]:

@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from core.ai_providers import model_supports_json_mode
 from core.contracts.control_plane import ProviderConfigContract
 
 from .secret_resolver import env_setup_hint, resolve_secret_alias
@@ -30,18 +31,23 @@ class ProviderResponseError(ValueError):
         *,
         provider_id: str | None = None,
         model: str | None = None,
+        invalid_rows: list[dict[str, Any]] | None = None,
     ) -> None:
         super().__init__(message)
         self.provider_id = provider_id
         self.model = model
+        self.invalid_rows = invalid_rows or []
 
     def to_detail(self) -> dict[str, Any]:
-        return {
+        detail = {
             "error": "provider_response_error",
             "provider_id": self.provider_id,
             "model": self.model,
             "message": str(self),
         }
+        if self.invalid_rows:
+            detail["invalid_rows"] = self.invalid_rows
+        return detail
 
 
 _JSON_OBJECT_RE = re.compile(r"\{.*\}", re.DOTALL)
@@ -100,7 +106,12 @@ def _extract_json_object(text: str) -> dict[str, Any]:
         match = _JSON_OBJECT_RE.search(stripped)
         if not match:
             raise ProviderResponseError("provider response did not contain a JSON object")
-        parsed = json.loads(match.group(0))
+        try:
+            parsed = json.loads(match.group(0))
+        except json.JSONDecodeError as exc:
+            raise ProviderResponseError(
+                "provider response contained malformed JSON"
+            ) from exc
     if not isinstance(parsed, dict):
         raise ProviderResponseError("provider response JSON must be an object")
     return parsed
@@ -113,14 +124,25 @@ class ModelInfo:
     supported_actions: list[str] | None = None
     input_token_limit: int | None = None
     output_token_limit: int | None = None
+    supports_json_mode: bool = False
+    provider_kind: str = "gemini"
+    is_local: bool = False
+    availability_status: str = "listed"
+    smoke_status: str = "not_run"
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "name": self.name,
+            "model_name": self.name,
             "display_name": self.display_name,
             "supported_actions": self.supported_actions or [],
             "input_token_limit": self.input_token_limit,
             "output_token_limit": self.output_token_limit,
+            "supports_json_mode": self.supports_json_mode,
+            "provider_kind": self.provider_kind,
+            "is_local": self.is_local,
+            "availability_status": self.availability_status,
+            "smoke_status": self.smoke_status,
         }
 
 
@@ -181,7 +203,9 @@ class GoogleGenAIProvider:
             ) from exc
 
         config_kwargs: dict[str, Any] = {"temperature": 0.1}
-        use_json_mode = "gemma" not in self.config.default_model.lower()
+        use_json_mode = model_supports_json_mode(
+            self.config.provider_kind, self.config.default_model
+        )
         if use_json_mode:
             config_kwargs["response_mime_type"] = "application/json"
         # The SDK accepts response_schema for selected schema dialects, but it is
@@ -254,6 +278,11 @@ class GoogleGenAIProvider:
                     supported_actions=list(getattr(model, "supported_actions", []) or []),
                     input_token_limit=getattr(model, "input_token_limit", None),
                     output_token_limit=getattr(model, "output_token_limit", None),
+                    supports_json_mode=model_supports_json_mode(
+                        self.config.provider_kind, getattr(model, "name", "")
+                    ),
+                    provider_kind=self.config.provider_kind.value,
+                    is_local=False,
                 ).to_dict()
             )
         return {

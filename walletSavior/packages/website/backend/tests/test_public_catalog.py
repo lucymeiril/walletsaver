@@ -75,9 +75,12 @@ class PipelineCatalogStorage:
                 "source_name": "emart",
                 "source_title": "오리온 오징어땅콩 202g 행사",
                 "source_url": "https://example.test/offer",
+                "image_url": "https://example.test/squid-peanut.jpg",
                 "price": 2990,
                 "original_price": 3990,
                 "standard_unit_price": 1480.2,
+                "price_per_100g": 1480.2,
+                "raw_evidence": {"raw_unit": "202g"},
             },
         }
 
@@ -183,6 +186,8 @@ def test_product_endpoint_flattens_approved_pipeline_public_catalog_data():
     assert data["original_price"] == 3990
     assert data["unit"] == "202g"
     assert data["standard_unit_price"] == 1480.2
+    assert data["image_url"] == "https://example.test/squid-peanut.jpg"
+    assert data["price_per_100g"] == 1480.2
 
 
 def test_product_trust_endpoint_uses_pipeline_price_history_and_source_offers():

@@ -77,10 +77,14 @@ class PublicSaleOffer(BaseModel):
     price: int = Field(ge=0)
     original_price: Optional[int] = Field(default=None, ge=0)
     discount_rate: Optional[float] = Field(default=None, ge=0.0, le=1.0)
+    event_name: Optional[str] = Field(default=None, max_length=255)
     standard_unit_price: Optional[float] = Field(default=None, ge=0.0)
     price_per_100g: Optional[float] = Field(default=None, ge=0.0)
     valid_from: Optional[datetime] = None
     valid_to: Optional[datetime] = None
+    raw_record_id: Optional[str] = Field(default=None, max_length=200)
+    raw_evidence: dict[str, Any] = Field(default_factory=dict)
+    audit_provenance: dict[str, Any] = Field(default_factory=dict)
     crawled_at: datetime = Field(default_factory=datetime.now)
     offer_state: OfferState = OfferState.ACTIVE
     projection_version: str = Field(min_length=1)

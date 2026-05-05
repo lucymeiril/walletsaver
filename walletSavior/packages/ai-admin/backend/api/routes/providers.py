@@ -15,7 +15,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
-from core.ai_providers import DEFAULT_CAPABILITIES, ProviderRegistry
+from core.ai_providers import (
+    DEFAULT_CAPABILITIES,
+    ProviderRegistry,
+    configured_model_capability,
+)
 from core.contracts.ai_pipeline import ProviderKind
 from core.contracts.control_plane import ProviderConfigContract
 
@@ -49,6 +53,7 @@ def _capabilities_payload(kind: ProviderKind) -> dict:
         "provider_kind": cap.provider_kind.value,
         "supports_json_mode": cap.supports_json_mode,
         "supports_local_execution": cap.supports_local_execution,
+        "is_local": cap.supports_local_execution,
         "max_prompt_chars": cap.max_prompt_chars,
         "default_timeout_seconds": cap.default_timeout_seconds,
     }
@@ -110,6 +115,20 @@ def list_provider_setup_state(
         alias = cfg.secret_alias or ("GOOGLE_API_KEY" if cfg.provider_kind == ProviderKind.GEMINI else None)
         requires_secret = cfg.provider_kind == ProviderKind.GEMINI
         secret_resolved = bool(alias and resolve_secret_alias(alias))
+        availability_status = (
+            "ready"
+            if cfg.is_enabled and (not requires_secret or secret_resolved)
+            else "missing_secret"
+            if requires_secret and not secret_resolved
+            else "disabled"
+            if not cfg.is_enabled
+            else "configured"
+        )
+        model_capability = configured_model_capability(
+            cfg,
+            availability_status=availability_status,
+            smoke_status="not_run",
+        ).to_dict()
         live_actions = []
         if cfg.provider_kind == ProviderKind.GEMINI:
             live_actions = [
@@ -135,6 +154,7 @@ def list_provider_setup_state(
                 ],
                 "live_actions": live_actions,
                 "can_call_live": cfg.is_enabled and (not requires_secret or secret_resolved),
+                "model_capability": model_capability,
             }
         )
     return {"providers": states, "count": len(states)}
@@ -185,6 +205,7 @@ def get_provider_capabilities(
     return {
         "provider_id": cfg.provider_id,
         "capabilities": _capabilities_payload(cfg.provider_kind),
+        "model_capability": configured_model_capability(cfg).to_dict(),
     }
 
 
@@ -201,7 +222,16 @@ def list_provider_models(
         )
     try:
         adapter = _adapter_for_config(cfg)
-        return adapter.list_models()
+        payload = adapter.list_models()
+        payload.setdefault(
+            "default_model_capability",
+            configured_model_capability(
+                cfg,
+                availability_status="listed",
+                smoke_status="not_run",
+            ).to_dict(),
+        )
+        return payload
     except ProviderConfigurationError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
 
@@ -235,5 +265,10 @@ def smoke_test_provider(
     return {
         "provider_id": cfg.provider_id,
         "model": cfg.default_model,
+        "model_capability": configured_model_capability(
+            cfg,
+            availability_status="ready",
+            smoke_status="passed",
+        ).to_dict(),
         "result": result,
     }

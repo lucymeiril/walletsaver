@@ -172,6 +172,11 @@ def test_ai_reviewed_emart_cabbage_publish_preserves_offer_fields_and_links():
     assert history.source_url == item["source_url"]
     assert history.raw_data["raw_payload"]["original_price"] == 3480
     assert history.raw_data["published_item"]["image_url"] == item["image_url"]
+    assert history.raw_data["source_title"] == "한끼 양배추 800g 통"
+    assert history.raw_data["display_unit"] == "800g"
+    assert history.raw_data["package_quantity"] == 800
+    assert history.raw_data["price_per_100g"] == 348
+    assert history.raw_data["ai_review_audit"]["proposal_ids"] == ["cabbage-name", "cabbage-cat", "cabbage-kw"]
     assert keyword.word == "양배추"
 
 
@@ -207,6 +212,74 @@ def test_ai_reviewed_unknown_category_stays_pending_without_public_category_poll
     assert categories == []
     assert pending.suggested_category_id == "ai.suggested.cabbage"
     assert pending.status == "pending"
+
+
+def test_ai_reviewed_shrimp_and_daily_goods_keep_variant_offer_semantics():
+    Session = _make_session_factory()
+    items = [
+        {
+            "name": "흰다리 새우살",
+            "source_title": "[냉동][베트남] 흰다리 새우살 (200g)",
+            "sale_price": 4488,
+            "original_price": 5980,
+            "discount_percent": 25,
+            "source": "emart",
+            "store": "이마트",
+            "source_url": "https://emart.example/shrimp",
+            "image_url": "https://emart.example/shrimp.jpg",
+            "unit": "100g",
+            "display_unit": "200g",
+            "package_quantity": 200,
+            "package_unit": "g",
+            "standard_unit": "kg",
+            "standard_unit_price": 22440,
+            "price_per_100g": 2244,
+            "category_id": "seafood.shrimp",
+            "attributes": {"storage_type": "frozen", "origin": "vietnam", "cut": "shrimp_meat"},
+            "keywords": ["새우"],
+            "raw_record_id": "raw-shrimp",
+            "ai_review_audit": {"proposal_ids": ["shrimp"]},
+        },
+        {
+            "name": "세탁세제 리필",
+            "source_title": "세탁세제 리필 2L",
+            "sale_price": 6900,
+            "original_price": 9900,
+            "discount_percent": 30,
+            "source": "emart",
+            "store": "이마트",
+            "source_url": "https://emart.example/detergent",
+            "image_url": "https://emart.example/detergent.jpg",
+            "display_unit": "2L",
+            "package_quantity": 2,
+            "package_unit": "L",
+            "category_id": "daily.detergent",
+            "keywords": ["세탁세제"],
+            "raw_record_id": "raw-detergent",
+            "ai_review_audit": {"proposal_ids": ["detergent"]},
+        },
+    ]
+    with Session.begin() as session:
+        session.add(Category(id="seafood.shrimp", name="새우", depth=1, is_active=True))
+        session.add(Category(id="daily.detergent", name="세탁세제", depth=1, is_active=True))
+        session.add(Keyword(word="새우", category_id="seafood.shrimp", is_active=True))
+        session.add(Keyword(word="세탁세제", category_id="daily.detergent", is_active=True))
+        saved = _insert_items(session, items, "DiscountItem")
+
+    with Session() as session:
+        rows = session.execute(select(DiscountHistory).order_by(DiscountHistory.price)).scalars().all()
+        products = {product.name: product for product in session.query(Product).all()}
+
+    assert saved == 2
+    shrimp = rows[0]
+    detergent = rows[1]
+    assert products["흰다리 새우살"].category_id == "seafood.shrimp"
+    assert shrimp.raw_data["source_title"].startswith("[냉동]")
+    assert shrimp.raw_data["standard_unit_price"] == 22440
+    assert shrimp.raw_data["attributes"]["origin"] == "vietnam"
+    assert detergent.raw_data["display_unit"] == "2L"
+    assert detergent.raw_data["package_unit"] == "L"
+    assert products["세탁세제 리필"].image_url.endswith("detergent.jpg")
 
 
 def _make_session_factory():

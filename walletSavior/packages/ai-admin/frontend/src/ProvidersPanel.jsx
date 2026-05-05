@@ -63,6 +63,7 @@ async function fetchJson(url, options) {
 
 function SetupState({ setup }) {
   if (!setup) return <div className="muted" style={{ marginTop: 6 }}>설정 상태를 아직 불러오지 못했습니다.</div>;
+  const cap = setup.model_capability;
   return (
     <div className="setup-state-card">
       <div className="row" style={{ marginTop: 6 }}>
@@ -75,6 +76,13 @@ function SetupState({ setup }) {
         </span>
         <span className="muted">alias: <code>{setup.secret_alias || '-'}</code> · enabled: {setup.is_enabled ? 'yes' : 'no'}</span>
       </div>
+      {cap && (
+        <div className="muted" style={{ marginTop: 4 }}>
+          model: <code>{cap.model_name}</code> · JSON mode: {cap.supports_json_mode ? 'yes' : 'fallback prompt'} ·{' '}
+          {cap.is_local ? 'local' : 'remote'} · availability: {cap.availability_status} · smoke: {cap.smoke_status} ·{' '}
+          max prompt {cap.max_prompt_chars} chars
+        </div>
+      )}
       <details className="inline-details" style={{ marginTop: 6 }}>
         <summary>.env 위치와 LIVE/오프라인 액션 보기</summary>
         <div className="muted" style={{ marginTop: 4 }}>
@@ -111,6 +119,7 @@ export default function ProvidersPanel() {
   const [saveError, setSaveError] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [modelResults, setModelResults] = useState({});
+  const [smokeResults, setSmokeResults] = useState({});
   const [configOpen, setConfigOpen] = useState(false);
 
   const setupById = useMemo(() => setupStates.reduce((acc, state) => {
@@ -218,6 +227,41 @@ export default function ProvidersPanel() {
     }
   }
 
+  async function smokeTest(cfg) {
+    const setup = setupById[cfg.provider_id];
+    const confirmed = window.confirm(
+      `LIVE API 호출입니다. ${cfg.display_name} provider의 기본 모델로 짧은 smoke test를 실행합니다. 계속할까요?`,
+    );
+    if (!confirmed) return;
+    if (setup && !setup.can_call_live) {
+      setSmokeResults((prev) => ({
+        ...prev,
+        [cfg.provider_id]: { status: 'error', data: null, error: 'provider is disabled or secret alias is not resolved' },
+      }));
+      return;
+    }
+    setSmokeResults((prev) => ({
+      ...prev,
+      [cfg.provider_id]: { status: 'loading', data: null, error: null },
+    }));
+    try {
+      const body = await fetchJson(`/api/providers/${encodeURIComponent(cfg.provider_id)}/smoke-test`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: 'Return {"ok": true} as JSON.' }),
+      });
+      setSmokeResults((prev) => ({
+        ...prev,
+        [cfg.provider_id]: { status: 'ok', data: body, error: null },
+      }));
+    } catch (err) {
+      setSmokeResults((prev) => ({
+        ...prev,
+        [cfg.provider_id]: { status: 'error', data: null, error: err.message },
+      }));
+    }
+  }
+
   return (
     <section className="panel">
       <div className="row" style={{ justifyContent: 'space-between' }}>
@@ -277,9 +321,24 @@ export default function ProvidersPanel() {
                       {models.data.quota_remaining_available ? '예' : '아니오'}
                       <div style={{ marginTop: 4 }}>
                         {(models.data.models ?? []).slice(0, 8).map((m) => (
-                          <code key={m.name} style={{ marginRight: 6 }}>{m.name}</code>
+                          <code key={m.name} style={{ marginRight: 6 }}>
+                            {m.name} · JSON:{m.supports_json_mode ? 'Y' : 'N'} · {m.is_local ? 'local' : 'remote'}
+                          </code>
                         ))}
                       </div>
+                    </div>
+                  )}
+                  {smokeResults[p.provider_id]?.status === 'loading' && (
+                    <div className="muted" style={{ marginTop: 6 }}>LIVE smoke test 실행 중...</div>
+                  )}
+                  {smokeResults[p.provider_id]?.status === 'error' && (
+                    <div className="muted" style={{ marginTop: 6, color: '#ff8a8a' }}>
+                      smoke test 실패: {smokeResults[p.provider_id].error}
+                    </div>
+                  )}
+                  {smokeResults[p.provider_id]?.status === 'ok' && (
+                    <div className="muted" style={{ marginTop: 6 }}>
+                      smoke test 통과 · model: <code>{smokeResults[p.provider_id].data.model}</code>
                     </div>
                   )}
                 </div>
@@ -292,6 +351,9 @@ export default function ProvidersPanel() {
                   </button>
                   <button type="button" className="danger-outline" onClick={() => loadModels(p)}>
                     LIVE 모델 조회
+                  </button>
+                  <button type="button" className="danger-outline" onClick={() => smokeTest(p)}>
+                    LIVE smoke test
                   </button>
                   <button type="button" onClick={() => startEdit(p)}>편집</button>
                 </div>

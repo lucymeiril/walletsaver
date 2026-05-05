@@ -125,10 +125,15 @@ def project_offer(
         image_url=draft.image_url,
         price=draft.price,
         original_price=draft.original_price,
+        discount_rate=draft.discount_rate,
+        event_name=draft.event_name,
         standard_unit_price=draft.standard_unit_price,
         price_per_100g=draft.price_per_100g,
         valid_from=draft.valid_from,
         valid_to=draft.valid_to,
+        raw_record_id=draft.raw_record_id,
+        raw_evidence=draft.raw_evidence,
+        audit_provenance=draft.audit_provenance,
         projection_version=projection_version,
     )
 

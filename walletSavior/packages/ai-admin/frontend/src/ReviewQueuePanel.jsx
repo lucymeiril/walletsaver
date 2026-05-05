@@ -1,4 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  buildAutomationApplyMessage,
+  buildBatchHealth,
+  buildBulkPreview,
+  buildPublishConfirmationMessage,
+  buildRollbackConfirmationMessage,
+  explainAutomationRow,
+  nextOperatorAction,
+  publishRowAction,
+  summarizeAutomationPreview,
+  summarizeProviderSetup,
+} from './reviewQueueHelpers.js';
 
 const STATUS_OPTIONS = [
   'ai_proposed',
@@ -8,6 +20,7 @@ const STATUS_OPTIONS = [
   'publishing',
   'published',
   'publish_failed',
+  'rolled_back',
   'held',
   'needs_rework',
   'rejected',
@@ -25,6 +38,7 @@ const STATUS_COPY = {
   publishing: { label: '발행 중', help: 'DB-admin 큐로 전송 중입니다.' },
   published: { label: 'DB 큐 전송됨', help: 'DB-admin 검수 큐에 들어갔습니다. 최종 DB 반영은 DB-admin 승인이 필요합니다.' },
   publish_failed: { label: '발행 실패', help: 'DB-admin 전송에 실패했습니다. 오류를 확인하고 재시도하세요.' },
+  rolled_back: { label: '롤백 요청됨', help: 'AI-admin 발행 기록을 되돌렸습니다. DB-admin ingestion 승인 금지/삭제를 별도로 확인하세요.' },
   held: { label: '보류', help: '반려 또는 차단 이슈가 있어 발행할 수 없습니다.' },
   needs_rework: { label: '재작업 필요', help: 'AI 또는 원본 재처리가 필요합니다.' },
   rejected: { label: '반려됨', help: '잘못된 제안으로 사용하지 않습니다.' },
@@ -139,7 +153,7 @@ function labelIssue(code) {
 function statusBadgeClass(status) {
   if (status === 'approved' || status === 'published') return 'ok';
   if (status === 'ai_proposed' || status === 'human_reviewing' || status === 'pending_review' || status === 'publishing') return 'warn';
-  if (status === 'rejected' || status === 'held' || status === 'publish_failed' || status === 'dead_letter' || status === 'needs_rework') return 'err';
+  if (status === 'rejected' || status === 'held' || status === 'publish_failed' || status === 'rolled_back' || status === 'dead_letter' || status === 'needs_rework') return 'err';
   return '';
 }
 
@@ -413,13 +427,93 @@ function WorkflowGuide({ audit, rawCount, proposalCount, visibleGroups, publishS
   );
 }
 
-function PublishControls({ eligibleRows, allRows, publishSummary, reviewerId, loading, onPublish }) {
+function FirstScreenOperations({ publishSummary, providerSummary, healthCards }) {
+  const nextAction = nextOperatorAction(publishSummary || {}, providerSummary || {});
+  return (
+    <div className="card workflow-card ops-command-center">
+      <div className="row" style={{ justifyContent: 'space-between' }}>
+        <div>
+          <strong>오늘 할 일: AI 검수 운영 흐름</strong>
+          <div className="muted">개발자 로그 없이 이 순서대로 처리하세요.</div>
+        </div>
+        <span className={`badge ${batchStatusBadgeClass(publishSummary?.batch_status)}`}>
+          {labelBatchStatus(publishSummary?.batch_status)}
+        </span>
+      </div>
+      <div className="next-action" style={{ marginTop: 10 }}>
+        <span className="badge warn">다음 액션</span>
+        <strong>{nextAction}</strong>
+        <span className="muted">DB 최종 반영은 DB-admin 승인 필요</span>
+      </div>
+      <div className="operator-flow" aria-label="operator workflow">
+        {[
+          ['1 수신', '원본 상품이 들어왔는지 확인'],
+          ['2 AI 라벨', '상품명/가격/카테고리/키워드 제안 확인'],
+          ['3 키워드·카테고리', '노출 품질 항목 승인/반려'],
+          ['4 행 검수', '보정·보류·반려 사유 기록'],
+          ['5 eligible 발행', '안전한 subset만 DB-admin 큐 전송'],
+          ['6 DB-admin 승인', '최종 DB 반영은 DB-admin에서 승인'],
+        ].map(([title, help]) => (
+          <div key={title} className="operator-flow-step">
+            <strong>{title}</strong>
+            <div className="muted">{help}</div>
+          </div>
+        ))}
+      </div>
+      <div className="batch-health-grid" aria-label="batch health counts">
+        {healthCards.map((card) => (
+          <div key={card.key} className={`batch-health-card ${card.tone ? `health-${card.tone}` : ''}`}>
+            <div className="pipeline-count">{card.value}</div>
+            <strong>{card.label}</strong>
+            <div className="muted">{card.help}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ProviderStatusStrip({ providerSummary, setupError }) {
+  if (setupError) {
+    return (
+      <div className="card workflow-card provider-status-strip">
+        <span className="badge err">Provider 상태 불러오기 실패</span>{' '}
+        <span className="muted">{setupError}</span>
+      </div>
+    );
+  }
+  return (
+    <div className="card workflow-card provider-status-strip">
+      <div className="row" style={{ justifyContent: 'space-between' }}>
+        <strong>Provider/모델 상태</strong>
+        <span className={`badge ${providerSummary.blocked || providerSummary.modelTrouble ? 'err' : providerSummary.liveReady ? 'ok' : 'warn'}`}>
+          {providerSummary.primaryMessage}
+        </span>
+      </div>
+      <div className="muted" style={{ marginTop: 6 }}>
+        AI 라벨 실패를 설명할 때 확인: 활성 provider, secret alias, model availability/smoke 상태.
+      </div>
+      {!!providerSummary.failures?.length && (
+        <ul className="compact-list" style={{ marginTop: 8 }}>
+          {providerSummary.failures.map((failure) => (
+            <li key={`${failure.provider_id}-${failure.reason}`}>
+              <span className="badge err">{failure.display_name}</span> {failure.reason}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function PublishControls({ eligibleRows, allRows, publishSummary, reviewerId, loading, onPublish, onRollback }) {
   const count = eligibleRows.length;
   const retryCount = eligibleRows.filter((row) => row.retryable).length;
   const blockedCount = publishSummary?.blocked_count ?? allRows.filter((row) => !row.eligible).length;
   const totalEligible = publishSummary?.eligible_count ?? allRows.filter((row) => row.eligible).length;
   const isSubset = count > 0 && (count < totalEligible || blockedCount > 0);
   const topBlockers = (publishSummary?.blockers || []).slice(0, 4);
+  const publishedRows = allRows.filter((row) => row.status === 'published');
   return (
     <div className="card workflow-card">
       <div className="row" style={{ justifyContent: 'space-between' }}>
@@ -450,13 +544,35 @@ function PublishControls({ eligibleRows, allRows, publishSummary, reviewerId, lo
         <details className="inline-details" style={{ marginTop: 8 }} open={publishSummary.batch_status !== 'ready'}>
           <summary>남은 보류 원본/사유 {publishSummary.held_rows.length}개 미리보기</summary>
           <ul className="compact-list">
-            {publishSummary.held_rows.slice(0, 8).map((row) => (
+            {publishSummary.held_rows.map((row) => (
               <li key={row.raw_record_id}>
                 <code>{row.raw_record_id}</code> {row.raw_title || ''} ·{' '}
                 {(row.blockers || []).slice(0, 3).map(formatBlockerReason).join(', ') || labelStatus(row.status)}
               </li>
             ))}
           </ul>
+        </details>
+      )}
+      {!!publishedRows.length && (
+        <details className="inline-details" style={{ marginTop: 8 }} open>
+          <summary>DB-admin 전송 완료/롤백 가능 원본 {publishedRows.length}개</summary>
+          <ul className="compact-list">
+            {publishedRows.map((row) => (
+              <li key={row.raw_record_id}>
+                <code>{row.raw_record_id}</code> {row.raw_title || row.item?.name || ''} ·
+                ingestion <strong>{row.db_ingestion_id || '-'}</strong> ·
+                result <code>{row.db_ingestion_result?.status || row.db_ingestion_result?.message || '-'}</code>{' '}
+                <button
+                  className="danger-outline"
+                  disabled={loading || !reviewerId.trim()}
+                  onClick={() => onRollback(row)}
+                >
+                  롤백 요청
+                </button>
+              </li>
+            ))}
+          </ul>
+          <div className="muted">주의: DB-admin 최종 승인은 별도입니다. 롤백 요청 후 DB-admin pending ingestion을 승인하지 마세요.</div>
         </details>
       )}
       <div className="row" style={{ gap: 8, marginTop: 8 }}>
@@ -470,6 +586,123 @@ function PublishControls({ eligibleRows, allRows, publishSummary, reviewerId, lo
         {!reviewerId.trim() && <span className="muted">검수자 ID 입력 후 발행 가능</span>}
         {isSubset && <span className="badge warn">부분 발행: 남은 항목은 계속 보류/미해결</span>}
       </div>
+    </div>
+  );
+}
+
+function AutomationGateControls({ reviewerId, loading, onRefresh, onError }) {
+  const [ruleId, setRuleId] = useState('exact_catalog_keyword');
+  const [confidence, setConfidence] = useState('0.90');
+  const [successCount, setSuccessCount] = useState('2');
+  const [preview, setPreview] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const summary = summarizeAutomationPreview(preview || {});
+  const config = (enabled) => ({
+    enabled,
+    selected_rule_ids: [ruleId],
+    reviewer_id: reviewerId.trim() || 'automation:review-gates',
+    default_min_confidence: Number(confidence) || 0.9,
+    learned_alias_min_confidence: Number(confidence) || 0.92,
+    learned_alias_min_success_count: Number(successCount) || 2,
+  });
+
+  async function previewAutomation() {
+    setBusy(true);
+    try {
+      const result = await requestJson('/api/review/automation-gates/preview', {
+        method: 'POST',
+        body: { config: config(false) },
+      });
+      setPreview(result);
+      onError(null);
+    } catch (err) {
+      onError(`자동화 미리보기: ${err.message}`);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function applyAutomation() {
+    const currentPreview = preview || await requestJson('/api/review/automation-gates/preview', {
+      method: 'POST',
+      body: { config: config(false) },
+    });
+    if (!currentPreview.eligible_count) {
+      setPreview(currentPreview);
+      onError('자동화 적용: 안전 게이트를 통과한 항목이 없습니다.');
+      return;
+    }
+    if (!window.confirm(buildAutomationApplyMessage(currentPreview, ruleId))) return;
+    setBusy(true);
+    try {
+      const result = await requestJson('/api/review/automation-gates/apply', {
+        method: 'POST',
+        body: { config: config(true) },
+      });
+      setPreview(result);
+      onError(`자동화 승인 완료: ${result.applied_count}개. DB-admin 발행은 하지 않았습니다.`);
+      await onRefresh();
+    } catch (err) {
+      onError(`자동화 적용: ${err.message}`);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="card workflow-card">
+      <div className="row" style={{ justifyContent: 'space-between' }}>
+        <div>
+          <strong>안전 자동화 게이트</strong>
+          <div className="muted">기본은 꺼져 있습니다. 미리보기 후 선택한 안전 규칙만 승인합니다.</div>
+        </div>
+        <span className={`badge ${summary.tone}`}>{summary.primaryMessage}</span>
+      </div>
+      <div className="decision-hint" style={{ marginTop: 8 }}>
+        자동화는 제안 승인/audit trail만 남깁니다. DB-admin 큐 발행은 아래 발행 버튼으로 운영자가 명시 실행해야 합니다.
+      </div>
+      <div className="form-grid compact-grid" style={{ marginTop: 8 }}>
+        <label>
+          안전 규칙
+          <select value={ruleId} onChange={(e) => setRuleId(e.target.value)}>
+            <option value="exact_catalog_keyword">기존 DB 키워드 정확 매칭</option>
+            <option value="learned_alias">학습된 별칭/동의어</option>
+            <option value="exact_category">원본/기대 카테고리 정확 일치</option>
+          </select>
+        </label>
+        <label>
+          최소 신뢰도
+          <input value={confidence} onChange={(e) => setConfidence(e.target.value)} placeholder="0.90" />
+        </label>
+        <label>
+          학습 별칭 최소 성공 횟수
+          <input value={successCount} onChange={(e) => setSuccessCount(e.target.value)} placeholder="2" />
+        </label>
+      </div>
+      <div className="row" style={{ gap: 8, marginTop: 8 }}>
+        <button disabled={loading || busy} onClick={previewAutomation}>드라이런 미리보기</button>
+        <button className="primary-button" disabled={loading || busy || !reviewerId.trim() || !summary.eligible} onClick={applyAutomation}>
+          선택 게이트 {summary.eligible}개 승인
+        </button>
+        {!reviewerId.trim() && <span className="muted">검수자 ID 입력 후 적용 가능</span>}
+      </div>
+      {preview && (
+        <details className="inline-details" style={{ marginTop: 8 }} open>
+          <summary>왜 eligible/blocked 인가요? 후보 {summary.candidate}개</summary>
+          <ul className="compact-list">
+            {(preview.eligible_items || []).slice(0, 8).map((row) => (
+              <li key={row.proposal_id}><span className="badge ok">eligible</span> {explainAutomationRow(row)}</li>
+            ))}
+            {(preview.blocked_items || []).slice(0, 8).map((row) => (
+              <li key={row.proposal_id}><span className="badge warn">blocked</span> {explainAutomationRow(row)}</li>
+            ))}
+          </ul>
+          <details className="inline-details" style={{ marginTop: 8 }}>
+            <summary>고급: 자동화 규칙/threshold JSON</summary>
+            <pre className="json-block">{JSON.stringify(preview.rules || [], null, 2)}</pre>
+          </details>
+        </details>
+      )}
     </div>
   );
 }
@@ -488,7 +721,9 @@ function BulkGroupActions({ group, reviewerId, setReviewerId, onRefresh, onError
       onError(`${label}: 처리할 항목이 없습니다.`);
       return;
     }
-    if (confirmText && !window.confirm(confirmText)) return;
+    const preview = buildBulkPreview(proposals).map((line) => `  · ${line}`).join('\n');
+    const message = confirmText || `${label} ${proposals.length}개를 처리합니다.\n${preview}${proposals.length > 5 ? '\n  · ...' : ''}\n계속할까요?`;
+    if (!window.confirm(message)) return;
     setBusy(true);
     try {
       for (const proposal of proposals) {
@@ -517,7 +752,9 @@ function BulkGroupActions({ group, reviewerId, setReviewerId, onRefresh, onError
             onClick={() => runBulk('고신뢰 묶음 승인', reviewable, (proposal) => requestJson(`/api/review/proposals/${encodeURIComponent(proposal.proposal_id)}/approve`, {
               method: 'POST',
               body: { reviewer_id: reviewerId.trim() },
-            }))}
+            }), {
+              confirmText: `고신뢰·이슈 없음 조건의 ${reviewable.length}개만 승인합니다.\n${buildBulkPreview(reviewable).map((line) => `  · ${line}`).join('\n')}\n같은 묶음 값을 확인했나요?`,
+            })}
           >
             고신뢰 {reviewable.length}개 승인
           </button>
@@ -525,7 +762,9 @@ function BulkGroupActions({ group, reviewerId, setReviewerId, onRefresh, onError
         {isLowConfidenceGroup(group) && (
           <button
             disabled={busy}
-            onClick={() => runBulk('낮은 신뢰도 보류', aiProposed, (proposal) => requestJson(`/api/review/proposals/${encodeURIComponent(proposal.proposal_id)}/start`, { method: 'POST' }))}
+            onClick={() => runBulk('낮은 신뢰도 보류', aiProposed, (proposal) => requestJson(`/api/review/proposals/${encodeURIComponent(proposal.proposal_id)}/start`, { method: 'POST' }), {
+              confirmText: `낮은 신뢰도 ${aiProposed.length}개를 "사람 확인 중"으로 보류 표시합니다.\n${buildBulkPreview(aiProposed).map((line) => `  · ${line}`).join('\n')}\n이후 행별 보정/반려 사유를 남겨야 합니다.`,
+            })}
           >
             낮은 신뢰도 {aiProposed.length}개 보류 표시
           </button>
@@ -711,13 +950,14 @@ function ProposalActions({ proposal, reviewerId, setReviewerId, onRefresh, onErr
   );
 }
 
-function ProposalCard({ proposal, reviewerId, setReviewerId, onRefresh, onError, issuesByRecord, duplicateMap, publishRow, onPublishRows }) {
+function ProposalCard({ proposal, reviewerId, setReviewerId, onRefresh, onError, issuesByRecord, duplicateMap, publishRow, onPublishRows, onRollback }) {
   const duplicateKey = `${proposal.target_field}|${normalizedKey(proposal.proposed_value)}`;
   const duplicateCount = duplicateMap[duplicateKey] || 0;
   const reasons = whyNeedsReview(proposal, issuesByRecord, duplicateCount);
   const nextAction = recommendedAction(proposal, issuesByRecord, duplicateCount);
   const confidence = confidenceValue(proposal);
   const issues = recordIssuesForProposal(proposal, issuesByRecord);
+  const publishAction = publishRowAction(publishRow || {});
 
   return (
     <li className="proposal-card">
@@ -734,14 +974,24 @@ function ProposalCard({ proposal, reviewerId, setReviewerId, onRefresh, onError,
           <div className="row" style={{ gap: 6, marginTop: 6 }}>
             <span className={`badge ${statusBadgeClass(publishRow.status)}`}>DB 발행: {labelStatus(publishRow.status)}</span>
             {publishRow.db_ingestion_id && <span className="badge">ingestion #{publishRow.db_ingestion_id}</span>}
+            {publishRow.db_ingestion_result && <span className="badge">result {publishRow.db_ingestion_result.status || publishRow.db_ingestion_result.message || '-'}</span>}
             {publishRow.last_error && <span className="badge err">{publishRow.last_error}</span>}
-            {publishRow.eligible && (
+            {publishAction.kind === 'rollback' && (
+              <button
+                className="danger-outline"
+                disabled={!reviewerId.trim()}
+                onClick={() => onRollback(publishRow)}
+              >
+                {publishAction.label}
+              </button>
+            )}
+            {['publish', 'retry'].includes(publishAction.kind) && (
               <button
                 className="secondary-button"
                 disabled={!reviewerId.trim()}
                 onClick={() => onPublishRows([publishRow])}
               >
-                {publishRow.retryable ? 'DB 발행 재시도' : 'DB-admin 큐로 발행'}
+                {publishAction.label}
               </button>
             )}
           </div>
@@ -920,7 +1170,7 @@ function KeywordProposalPanel({ proposals, reviewerId, setReviewerId, onRefresh,
   );
 }
 
-function GroupCard({ group, rawRecordsById, issuesByRecord, duplicateMap, publishRowsByRawId, onPublishRows, reviewerId, setReviewerId, onRefresh, onError }) {
+function GroupCard({ group, rawRecordsById, issuesByRecord, duplicateMap, publishRowsByRawId, onPublishRows, onRollback, reviewerId, setReviewerId, onRefresh, onError }) {
   const [open, setOpen] = useState(false);
   const sample = group.proposals[0];
   const sampleDuplicateKey = `${sample.target_field}|${normalizedKey(sample.proposed_value)}`;
@@ -986,6 +1236,7 @@ function GroupCard({ group, rawRecordsById, issuesByRecord, duplicateMap, publis
                   duplicateMap={duplicateMap}
                   publishRow={publishRowsByRawId[proposal.provenance?.raw_record_id]}
                   onPublishRows={onPublishRows}
+                  onRollback={onRollback}
                   record={record}
                 />
               );
@@ -1012,6 +1263,8 @@ export default function ReviewQueuePanel() {
   const [rawRecords, setRawRecords] = useState([]);
   const [publishRows, setPublishRows] = useState([]);
   const [publishSummary, setPublishSummary] = useState(null);
+  const [providerSetup, setProviderSetup] = useState([]);
+  const [providerSetupError, setProviderSetupError] = useState(null);
   const [audit, setAudit] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -1033,18 +1286,28 @@ export default function ReviewQueuePanel() {
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
-      const [proposals, keywordProposalResponse, records, auditReport, publishEligibility] = await Promise.all([
+      const [proposals, keywordProposalResponse, records, auditReport, publishEligibility, setupResult] = await Promise.all([
         requestJson('/api/review/proposals'),
         requestJson('/api/review/keyword-proposals'),
         requestJson('/api/review/raw-records?include_proposals=true'),
         requestJson('/api/review/audit'),
         requestJson('/api/review/publish-eligibility'),
+        requestJson('/api/providers/setup-state')
+          .then((body) => ({ ok: true, body }))
+          .catch((err) => ({ ok: false, error: err })),
       ]);
       setItems(proposals.items || []);
       setKeywordProposals(keywordProposalResponse.items || []);
       setRawRecords(records.items || []);
       setPublishRows(publishEligibility.items || []);
       setPublishSummary(publishEligibility.summary || null);
+      if (setupResult.ok) {
+        setProviderSetup(setupResult.body.providers || []);
+        setProviderSetupError(null);
+      } else {
+        setProviderSetup([]);
+        setProviderSetupError(setupResult.error.message);
+      }
       setAudit(auditReport);
       setError(null);
     } catch (err) {
@@ -1068,6 +1331,10 @@ export default function ReviewQueuePanel() {
   const sources = useMemo(() => [...new Set(allGroups.map((group) => group.source))].sort(), [allGroups]);
   const categories = useMemo(() => [...new Set(allGroups.map((group) => group.category))].sort(), [allGroups]);
   const issueCodes = useMemo(() => [...new Set((audit?.issues || []).map((issue) => issue.code))].sort(), [audit]);
+  const providerSummary = useMemo(() => summarizeProviderSetup(providerSetup), [providerSetup]);
+  const healthCards = useMemo(() => (
+    buildBatchHealth(publishSummary || {}, rawRecords, items, keywordProposals)
+  ), [publishSummary, rawRecords, items, keywordProposals]);
 
   const filteredGroups = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -1114,7 +1381,6 @@ export default function ReviewQueuePanel() {
       setError('발행: eligible 항목이 없습니다.');
       return;
     }
-    const sample = rows.slice(0, 5).map((row) => row.raw_record_id).join(', ');
     const retryCount = rows.filter((row) => row.retryable).length;
     const blockedCount = publishSummary?.blocked_count ?? publishRows.filter((row) => !row.eligible).length;
     const totalEligible = publishSummary?.eligible_count ?? publishRows.filter((row) => row.eligible).length;
@@ -1131,7 +1397,7 @@ export default function ReviewQueuePanel() {
     const heldPreview = (publishSummary?.held_rows || []).slice(0, 5).map((row) => (
       `  · ${row.raw_record_id}: ${(row.blockers || []).slice(0, 2).map(formatBlockerReason).join(', ') || labelStatus(row.status)}`
     )).join('\n');
-    const message = `DB-admin 큐로 ${rows.length}개를 발행합니다.${retryCount ? ` 재시도 ${retryCount}개 포함.` : ''}\n예: ${sample}${rows.length > 5 ? ' ...' : ''}${subsetWarning}${heldPreview ? `\n남는 보류 예시:\n${heldPreview}` : ''}\n계속할까요?`;
+    const message = `${buildPublishConfirmationMessage(rows, publishSummary || {})}${retryCount ? `\n재시도 ${retryCount}개 포함.` : ''}${subsetWarning}${heldPreview ? `\n남는 보류 예시:\n${heldPreview}` : ''}`;
     if (!window.confirm(message)) return;
     setLoading(true);
     try {
@@ -1152,6 +1418,30 @@ export default function ReviewQueuePanel() {
     }
   }, [reviewerId, refresh, publishRows, publishSummary]);
 
+  const rollbackPublishRow = useCallback(async (row) => {
+    if (!reviewerId.trim()) {
+      setError('롤백: 검수자 ID를 입력하세요.');
+      return;
+    }
+    if (!window.confirm(buildRollbackConfirmationMessage(row))) return;
+    setLoading(true);
+    try {
+      const result = await requestJson(`/api/review/publish-records/${encodeURIComponent(row.raw_record_id)}/rollback`, {
+        method: 'POST',
+        body: {
+          reviewer_id: reviewerId.trim(),
+          reason: `AI-admin operator rollback before DB-admin final approval for ingestion ${row.db_ingestion_id || '-'}`,
+        },
+      });
+      setError(`롤백 요청 완료: ${result.raw_record_id} · ingestion ${result.db_ingestion_id || '-'}`);
+      await refresh();
+    } catch (err) {
+      setError(`롤백: ${err.message}`);
+    } finally {
+      setLoading(false);
+    }
+  }, [reviewerId, refresh]);
+
   return (
     <section id="review" className="panel review-panel anchor-offset">
       <div className="row" style={{ justifyContent: 'space-between' }}>
@@ -1160,6 +1450,12 @@ export default function ReviewQueuePanel() {
       </div>
       {error && <div className="badge err" style={{ marginBottom: 10 }}>오류: {error}</div>}
 
+      <FirstScreenOperations
+        publishSummary={publishSummary}
+        providerSummary={providerSummary}
+        healthCards={healthCards}
+      />
+      <ProviderStatusStrip providerSummary={providerSummary} setupError={providerSetupError} />
       <PipelineStatusBar rawRecords={rawRecords} items={items} audit={audit} publishSummary={publishSummary} />
       <WorkflowGuide audit={audit} rawCount={rawRecords.length} proposalCount={items.length} visibleGroups={filteredGroups.length} publishSummary={publishSummary} />
       <PublishControls
@@ -1169,6 +1465,13 @@ export default function ReviewQueuePanel() {
         reviewerId={reviewerId}
         loading={loading}
         onPublish={publishRowsToDb}
+        onRollback={rollbackPublishRow}
+      />
+      <AutomationGateControls
+        reviewerId={reviewerId}
+        loading={loading}
+        onRefresh={refresh}
+        onError={setError}
       />
       <KeywordProposalPanel
         proposals={keywordProposals}
@@ -1243,6 +1546,7 @@ export default function ReviewQueuePanel() {
             duplicateMap={duplicateMap}
             publishRowsByRawId={publishRowsByRawId}
             onPublishRows={publishRowsToDb}
+            onRollback={rollbackPublishRow}
             reviewerId={reviewerId}
             setReviewerId={setReviewerId}
             onRefresh={refresh}

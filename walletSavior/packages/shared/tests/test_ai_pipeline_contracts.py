@@ -10,10 +10,14 @@ from shared.core.contracts.ai_pipeline import (
     FieldProposal,
     FieldProvenance,
     PipelineStatus,
+    ProductOfferDraft,
+    ProductVariantDraft,
     PromptPackRef,
     ProposalType,
     ProviderKind,
     RawCrawlRecord,
+    CanonicalProductDraft,
+    SaleOfferDraft,
 )
 
 
@@ -107,3 +111,57 @@ def test_field_proposal_requires_field_level_provenance():
     assert proposal.status == PipelineStatus.AI_PROPOSED
     assert proposal.provenance.confidence == 0.91
     assert proposal.provenance.worker_role == AIWorkerRole.CLASSIFIER
+
+
+def test_product_offer_draft_preserves_customer_safe_offer_variant_and_audit_fields():
+    raw = RawCrawlRecord(
+        raw_record_id="emart-beef-300g",
+        source_name="emart",
+        source_record_key="sku-beef",
+        source_url="https://emart.example/beef",
+        raw_title="[냉장] 한우 불고기1+등급300g",
+        raw_price=14850,
+        raw_payload={"unit": "100g", "image_url": "https://emart.example/beef.jpg"},
+    )
+
+    draft = ProductOfferDraft(
+        product=CanonicalProductDraft(
+            canonical_name="한우 불고기",
+            category_id="meat.beef",
+            keywords=["한우", "불고기"],
+            attributes={"storage_type": "chilled", "origin": "domestic", "quality_grade": "1+"},
+        ),
+        variant=ProductVariantDraft(
+            variant_name=raw.raw_title,
+            package_quantity=300,
+            package_unit="g",
+            display_unit="300g",
+            standard_unit="kg",
+            attributes={"cut": "bulgogi"},
+        ),
+        offer=SaleOfferDraft(
+            source_name="emart",
+            source_record_key="sku-beef",
+            source_title=raw.raw_title,
+            source_url=raw.source_url,
+            image_url="https://emart.example/beef.jpg",
+            price=14850,
+            original_price=19800,
+            standard_unit_price=49500,
+            price_per_100g=4950,
+            raw_record_id=raw.raw_record_id,
+            raw_evidence={"raw_unit": "100g"},
+        ),
+        raw_record=raw,
+        audit_provenance={"proposal_ids": ["name", "unit", "offer"]},
+    )
+
+    item = draft.to_db_admin_discount_item()
+
+    assert item["source_title"] == raw.raw_title
+    assert item["image_url"].endswith("beef.jpg")
+    assert item["original_price"] == 19800
+    assert item["discount_percent"] == 25
+    assert item["package_quantity"] == 300
+    assert item["price_per_100g"] == 4950
+    assert item["raw_data"]["raw_evidence"]["raw_unit"] == "100g"

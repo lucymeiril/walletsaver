@@ -9,6 +9,7 @@ from core.contracts.ai_pipeline import (
 )
 
 from .base import clean_title, make_proposal, tokenize
+from services.keyword_catalog import canonical_candidate
 
 _MIN_TOKEN_LEN = 2
 # 너무 흔하거나 의미 없는 토큰: 검색 키워드로 부적합.
@@ -52,6 +53,8 @@ class KeywordGeneratorWorker(BaseAIWorker):
                 if len(token) < _MIN_TOKEN_LEN:
                     continue
                 if token in _STOPWORDS:
+                    continue
+                if not canonical_candidate(token):
                     continue
                 if token in seen:
                     continue

@@ -80,3 +80,52 @@ def test_delta_manifest_reports_removed_public_ids():
 
     assert manifest.removed_public_ids == ["prod-old"]
     assert manifest.changed_products == 1
+
+
+def test_projection_preserves_realistic_food_offer_evidence_and_unit_prices():
+    product = project_product(
+        CanonicalProductDraft(
+            canonical_name="흰다리 새우살",
+            category_id="seafood.shrimp",
+            keywords=["새우"],
+            attributes={"storage_type": "frozen", "origin": "vietnam"},
+        ),
+        projection_version="v-real",
+    )
+    variant = project_variant(
+        product,
+        ProductVariantDraft(
+            variant_name="[냉동][베트남] 흰다리 새우살 (200g)",
+            package_quantity=200,
+            package_unit="g",
+            display_unit="200g",
+            standard_unit="kg",
+            attributes={"cut": "shrimp_meat"},
+        ),
+        projection_version="v-real",
+    )
+    offer = project_offer(
+        variant,
+        SaleOfferDraft(
+            source_name="emart",
+            source_record_key="shrimp-200g",
+            source_title="[냉동][베트남] 흰다리 새우살 (200g)",
+            source_url="https://emart.example/shrimp",
+            image_url="https://emart.example/shrimp.jpg",
+            price=4488,
+            original_price=5980,
+            standard_unit_price=22440,
+            price_per_100g=2244,
+            raw_record_id="raw-shrimp",
+            raw_evidence={"raw_unit": "100g", "pack_price": 4488},
+            audit_provenance={"proposal_ids": ["shrimp-name", "shrimp-unit"]},
+        ),
+        projection_version="v-real",
+    )
+
+    assert variant.display_unit == "200g"
+    assert offer.source_title.startswith("[냉동]")
+    assert offer.image_url.endswith("shrimp.jpg")
+    assert offer.discount_rate == 0.2495
+    assert offer.price_per_100g == 2244
+    assert offer.raw_evidence["pack_price"] == 4488

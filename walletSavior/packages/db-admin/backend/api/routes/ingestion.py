@@ -1223,11 +1223,19 @@ def _validate_discount_item_for_publish(item: dict) -> None:
         raise ValueError("DiscountItem.source is missing; keep it in review")
     if not _is_ai_review_publish(item):
         return
+    unit_metadata = normalize_unit_metadata(
+        name=item.get("source_title") or item.get("name") or "",
+        sale_price=price,
+        raw_unit=item.get("unit") or item.get("raw_unit"),
+    )
     required = {
         "image_url": item.get("image_url"),
         "original_price": _coerce_positive_number(item.get("original_price")),
         "discount_percent": _coerce_nonnegative_number(item.get("discount_percent") or item.get("discount_rate")),
         "source_url": item.get("source_url") or item.get("detail_url"),
+        "display_unit": item.get("display_unit") or item.get("unit") or unit_metadata.get("display_unit"),
+        "package_quantity": _coerce_positive_number(item.get("package_quantity") or unit_metadata.get("package_quantity")),
+        "package_unit": item.get("package_unit") or unit_metadata.get("package_unit"),
     }
     missing = [name for name, value in required.items() if value in (None, "")]
     if missing:
@@ -1309,9 +1317,16 @@ def _build_offer_raw_data(item: dict, product_name: str) -> dict:
         "price_per_100g": item.get("price_per_100g")
             or raw_data.get("price_per_100g")
             or unit_metadata.get("price_per_100g"),
+        "standard_unit": item.get("standard_unit") or raw_data.get("standard_unit"),
+        "standard_unit_price": item.get("standard_unit_price") or raw_data.get("standard_unit_price"),
+        "bundle_count": item.get("bundle_count") or raw_data.get("bundle_count") or 1,
         "pack_price": sale_price,
         "raw_sale_price": item.get("sale_price") or raw_data.get("sale_price"),
         "raw_original_price": item.get("original_price") or raw_data.get("original_price"),
+        "source_title": item.get("source_title") or raw_data.get("source_title") or product_name,
+        "source_record_key": item.get("source_record_key") or raw_data.get("source_record_key"),
+        "ai_review_audit": item.get("ai_review_audit") or raw_data.get("ai_review_audit"),
+        "raw_evidence": item.get("raw_evidence") or raw_data.get("raw_evidence"),
         "attributes": attributes,
         "category": item.get("category") or raw_data.get("category", ""),
         "category_id": item.get("category_id") or raw_data.get("category_id"),

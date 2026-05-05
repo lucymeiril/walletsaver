@@ -148,6 +148,12 @@ def test_capabilities_for_provider(client: TestClient) -> None:
     assert cap["supports_json_mode"] is True
     assert cap["supports_local_execution"] is False
     assert cap["max_prompt_chars"] >= 1
+    model_cap = body["model_capability"]
+    assert model_cap["provider_kind"] == "gemini"
+    assert model_cap["model_name"] == "gemini-1.5-pro"
+    assert model_cap["supports_json_mode"] is True
+    assert model_cap["is_local"] is False
+    assert model_cap["availability_status"] == "configured"
 
 
 def test_setup_state_reports_secret_presence_without_leaking_value(
@@ -169,6 +175,8 @@ def test_setup_state_reports_secret_presence_without_leaking_value(
     assert state["secret_alias"] == "GEMINI_API_KEY"
     assert state["secret_resolved"] is True
     assert state["can_call_live"] is True
+    assert state["model_capability"]["availability_status"] == "ready"
+    assert state["model_capability"]["smoke_status"] == "not_run"
     serialized = str(body)
     assert "super-secret-local-value" not in serialized
     assert "/api/ingest/raw-records/label" in state["live_actions"]
@@ -185,7 +193,21 @@ def test_setup_state_missing_secret_disables_live_hint(client: TestClient) -> No
     state = res.json()["providers"][0]
     assert state["secret_resolved"] is False
     assert state["can_call_live"] is False
+    assert state["model_capability"]["availability_status"] == "missing_secret"
     assert "GOOGLE_MISSING_KEY" in str(state)
+
+
+def test_gemma_setup_state_reports_json_mode_fallback(client: TestClient) -> None:
+    client.post(
+        "/api/providers",
+        json=_payload(default_model="gemma-3-27b-it", secret_alias="GOOGLE_MISSING_KEY"),
+    ).raise_for_status()
+
+    state = client.get("/api/providers/setup-state").json()["providers"][0]
+
+    assert state["model_capability"]["model_name"] == "gemma-3-27b-it"
+    assert state["model_capability"]["supports_json_mode"] is False
+    assert state["model_capability"]["is_local"] is False
 
 
 def test_models_requires_secret_env_alias(client: TestClient) -> None:

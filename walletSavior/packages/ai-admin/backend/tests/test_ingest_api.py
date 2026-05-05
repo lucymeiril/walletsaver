@@ -16,7 +16,13 @@ from api.routes.review import get_db as get_review_db
 from core.contracts.control_plane import ProviderConfigContract
 from providers.google_genai import ProviderResponseError
 from services import ai_ingestion
-from storage import Database, ProviderConfigRepository, RawCrawlBatchRepository, create_database
+from storage import (
+    Database,
+    FieldProposalRepository,
+    ProviderConfigRepository,
+    RawCrawlBatchRepository,
+    create_database,
+)
 
 
 @pytest.fixture()
@@ -256,6 +262,12 @@ def test_labeling_response_overrides_emart_100g_hint_with_package_metadata() -> 
                 {
                     "raw_record_id": "emart-beef",
                     "canonical_name": "한우 불고기",
+                    "source_title": "[냉장] 한우 불고기1+등급300g",
+                    "sale_price": 14850,
+                    "original_price": 19800,
+                    "discount_percent": 25,
+                    "source_url": "https://emart.example/beef",
+                    "image_url": "https://emart.example/beef.jpg",
                     "keywords": ["냉장", "한우", "불고기"],
                     "attributes": {},
                     "package_quantity": 100,
@@ -272,6 +284,11 @@ def test_labeling_response_overrides_emart_100g_hint_with_package_metadata() -> 
     assert ("package_unit", "g") in values
     assert ("display_unit", "300g") in values
     assert ("price_per_100g", 4950.0) in values
+    assert ("sale_price", 14850) in values
+    assert ("original_price", 19800) in values
+    assert ("discount_percent", 25) in values
+    assert ("source_url", "https://emart.example/beef") in values
+    assert ("image_url", "https://emart.example/beef.jpg") in values
     assert ("attributes.storage_type", "chilled") in values
     assert ("attributes.quality_grade", "1+") in values
     assert ("keywords", "냉장") not in values
@@ -383,6 +400,214 @@ def test_ingest_provider_call_failure_returns_safe_actionable_502(
     assert ":ai:" in detail["ai_batch_id"]
     assert "quota exhausted" in detail["message"]
     assert "AIza" not in detail["message"]
+
+
+def test_ingest_retries_transient_provider_failure_without_duplicate_proposals(
+    client: TestClient,
+    db: Database,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(ai_ingestion, "_sleep", lambda _seconds: None)
+
+    class FlakyProvider:
+        calls = 0
+
+        def __init__(self, config: ProviderConfigContract) -> None:
+            self.config = config
+
+        def call(self, *, prompt: str, schema=None) -> dict:
+            type(self).calls += 1
+            if type(self).calls == 1:
+                raise ProviderResponseError(
+                    "Google GenAI provider call failed: 503 quota temporarily unavailable",
+                    provider_id="google-dev",
+                    model="gemma-3-27b-it",
+                )
+            record_ids = re.findall(r"- id=([^;]+);", prompt)
+            return {
+                "items": [
+                    {
+                        "raw_record_id": record_id,
+                        "canonical_name": "이마트 서울우유 나100% 1L 2입",
+                        "brand": "서울우유",
+                        "category_id": "dairy.milk",
+                        "keywords": ["우유"],
+                        "aliases": ["서울우유1L"],
+                        "attributes": {"source": "emart"},
+                        "confidence": 0.9,
+                    }
+                    for record_id in record_ids
+                ]
+            }
+
+    monkeypatch.setattr(
+        ai_ingestion,
+        "provider_from_config",
+        lambda config: FlakyProvider(config),
+    )
+
+    res = client.post(
+        "/api/ingest/raw-records/label",
+        json={
+            "provider_id": "google-dev",
+            "source_name": "emart",
+            "crawler_name": "emart_sale_crawler",
+            "schema_type": "mart_discount",
+            "records": [
+                {
+                    "raw_record_id": "emart:milk-1l-2",
+                    "source_name": "emart",
+                    "source_url": "https://emart.example/products/milk",
+                    "raw_title": "서울우유 나100% 1L 2입",
+                    "raw_price": 5980,
+                    "raw_payload": {"source": "emart", "unit": "1L", "quantity": "2개"},
+                }
+            ],
+        },
+    )
+
+    assert res.status_code == 200, res.text
+    body = res.json()
+    assert body["provider_calls"] == 2
+    assert FlakyProvider.calls == 2
+    assert len(body["proposal_ids"]) == len(set(body["proposal_ids"]))
+    with db.session_scope() as session:
+        proposals = FieldProposalRepository(session).list()
+    assert len(proposals) == len(body["proposal_ids"])
+
+
+def test_ingest_partial_invalid_provider_records_are_actionable(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class PartiallyInvalidProvider:
+        def __init__(self, config: ProviderConfigContract) -> None:
+            self.config = config
+
+        def call(self, *, prompt: str, schema=None) -> dict:
+            return {
+                "items": [
+                    {
+                        "raw_record_id": "emart:tofu",
+                        "canonical_name": "풀무원 두부 300g",
+                        "category_id": "fresh.tofu",
+                        "keywords": ["두부"],
+                        "aliases": [],
+                        "attributes": {},
+                    },
+                    {
+                        "raw_record_id": "emart:unknown",
+                        "canonical_name": "알 수 없는 상품",
+                        "keywords": [],
+                    },
+                ]
+            }
+
+    monkeypatch.setattr(
+        ai_ingestion,
+        "provider_from_config",
+        lambda config: PartiallyInvalidProvider(config),
+    )
+
+    res = client.post(
+        "/api/ingest/raw-records/label",
+        json={
+            "provider_id": "google-dev",
+            "source_name": "emart",
+            "crawler_name": "emart_sale_crawler",
+            "schema_type": "mart_discount",
+            "records": [
+                {
+                    "raw_record_id": "emart:tofu",
+                    "source_name": "emart",
+                    "raw_title": "풀무원 국산콩 두부 300g",
+                    "raw_price": 2990,
+                },
+                {
+                    "raw_record_id": "emart:milk",
+                    "source_name": "emart",
+                    "raw_title": "서울우유 나100% 1L",
+                    "raw_price": 2980,
+                },
+            ],
+        },
+    )
+
+    assert res.status_code == 502
+    detail = res.json()["detail"]
+    assert detail["stage"] == "provider_response_validation"
+    assert detail["row_count"] == 2
+    assert detail["invalid_rows"][0]["raw_record_id"] == "emart:unknown"
+    assert detail["invalid_rows"][0]["field"] == "raw_record_id"
+
+
+def test_ingest_error_detail_redacts_secrets_from_provider_message(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class SecretLeakingProvider:
+        def __init__(self, config: ProviderConfigContract) -> None:
+            self.config = config
+
+        def call(self, *, prompt: str, schema=None) -> dict:
+            raise ProviderResponseError(
+                "500 INTERNAL_ERROR authorization=Bearer-secret api_key=AIza1234567890123456789012345",
+                provider_id="google-dev",
+                model="gemma-3-27b-it",
+            )
+
+    monkeypatch.setattr(ai_ingestion, "_sleep", lambda _seconds: None)
+    monkeypatch.setattr(
+        ai_ingestion,
+        "provider_from_config",
+        lambda config: SecretLeakingProvider(config),
+    )
+
+    res = client.post(
+        "/api/ingest/raw-records/label",
+        json={
+            "provider_id": "google-dev",
+            "source_name": "emart",
+            "records": [
+                {
+                    "raw_record_id": "emart:snack",
+                    "source_name": "emart",
+                    "raw_title": "오리온 오징어 땅콩 98g",
+                    "raw_price": 1980,
+                }
+            ],
+        },
+    )
+
+    assert res.status_code == 502
+    serialized = str(res.json())
+    assert "INTERNAL_ERROR" in serialized
+    assert "AIza" not in serialized
+    assert "Bearer-secret" not in serialized
+
+
+def test_split_records_builds_bounded_prompts_for_realistic_emart_records() -> None:
+    records = [
+        ai_ingestion.RawCrawlRecord(
+            raw_record_id=f"emart:item-{i}",
+            source_name="emart",
+            source_url=f"https://emart.example/products/{i}",
+            raw_title=f"이마트 행사 상품 {i} 300g",
+            raw_price=1000 + i,
+            raw_payload={"source": "emart", "unit": "100g", "category_hint": "가공식품"},
+        )
+        for i in range(30)
+    ]
+
+    batches = ai_ingestion.split_records_for_ai(records)
+
+    assert sum(len(batch) for batch in batches) == 30
+    assert all(len(batch) <= 30 for batch in batches)
+    assert all(
+        len(ai_ingestion.build_labeling_prompt(batch))
+        <= ai_ingestion.MAX_AI_BATCH_PROMPT_CHARS
+        for batch in batches
+    )
 
 
 def _load_crawler_ai_export():

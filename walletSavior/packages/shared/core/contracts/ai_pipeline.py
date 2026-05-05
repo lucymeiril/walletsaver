@@ -210,11 +210,93 @@ class SaleOfferDraft(BaseModel):
     image_url: Optional[str] = None
     price: int = Field(ge=0)
     original_price: Optional[int] = Field(default=None, ge=0)
+    discount_rate: Optional[float] = Field(default=None, ge=0.0, le=1.0)
+    event_name: Optional[str] = None
     standard_unit_price: Optional[float] = Field(default=None, ge=0)
     price_per_100g: Optional[float] = Field(default=None, ge=0)
     valid_from: Optional[datetime] = None
     valid_to: Optional[datetime] = None
     raw_record_id: str = Field(min_length=1)
+    raw_evidence: dict[str, Any] = Field(default_factory=dict)
+    audit_provenance: dict[str, Any] = Field(default_factory=dict)
+
+    @model_validator(mode="after")
+    def validate_offer_semantics(self) -> "SaleOfferDraft":
+        if self.valid_from and self.valid_to and self.valid_to < self.valid_from:
+            raise ValueError("valid_to must be >= valid_from")
+        if self.original_price is not None and self.discount_rate is None and self.original_price > 0:
+            if self.price <= self.original_price:
+                self.discount_rate = round((self.original_price - self.price) / self.original_price, 4)
+        return self
+
+
+class ProductOfferDraft(BaseModel):
+    """
+    검수 완료 원본 1건이 public catalog에 투영될 때의 typed aggregate.
+
+    Product(대표 상품), ProductVariant(용량/속성), SaleOffer(판매 이벤트)를 한 번에
+    검증해 publish 경계에서 ad-hoc dict가 image/original_price/unit evidence를 누락하지
+    않게 한다.
+    """
+
+    product: CanonicalProductDraft
+    variant: ProductVariantDraft
+    offer: SaleOfferDraft
+    raw_record: RawCrawlRecord
+    audit_provenance: dict[str, Any] = Field(default_factory=dict)
+
+    def to_db_admin_discount_item(self) -> dict[str, Any]:
+        """db-admin의 기존 DiscountItem ingestion 경계로 보낼 보존형 payload."""
+        attributes = {**self.product.attributes, **self.variant.attributes}
+        discount_percent = (
+            round(self.offer.discount_rate * 100, 2)
+            if self.offer.discount_rate is not None and self.offer.discount_rate <= 1
+            else None
+        )
+        raw_data = {
+            "raw_record": self.raw_record.model_dump(mode="json"),
+            "raw_payload": self.raw_record.raw_payload,
+            "canonical_product": self.product.model_dump(mode="json"),
+            "product_variant": self.variant.model_dump(mode="json"),
+            "sale_offer": self.offer.model_dump(mode="json"),
+            "attributes": attributes,
+            "raw_evidence": self.offer.raw_evidence,
+            "audit_provenance": {**self.audit_provenance, **self.offer.audit_provenance},
+        }
+        return {
+            "name": self.product.canonical_name,
+            "canonical_name": self.product.canonical_name,
+            "source_title": self.offer.source_title,
+            "sale_price": self.offer.price,
+            "current_price": self.offer.price,
+            "original_price": self.offer.original_price,
+            "discount_percent": discount_percent,
+            "discount_rate": discount_percent,
+            "source": self.offer.source_name,
+            "store": self.offer.source_name,
+            "source_url": self.offer.source_url,
+            "detail_url": self.offer.source_url,
+            "image_url": self.offer.image_url,
+            "event_name": self.offer.event_name,
+            "valid_from": self.offer.valid_from,
+            "valid_to": self.offer.valid_to,
+            "unit": self.variant.display_unit or self.variant.package_unit or self.variant.standard_unit or "개",
+            "display_unit": self.variant.display_unit,
+            "package_quantity": self.variant.package_quantity,
+            "package_unit": self.variant.package_unit,
+            "bundle_count": self.variant.bundle_count,
+            "standard_unit": self.variant.standard_unit,
+            "standard_unit_price": self.offer.standard_unit_price,
+            "price_per_100g": self.offer.price_per_100g,
+            "category": self.product.category_id,
+            "category_id": self.product.category_id,
+            "keywords": self.product.keywords,
+            "attributes": attributes,
+            "raw_data": raw_data,
+            "raw_record_id": self.raw_record.raw_record_id,
+            "source_record_key": self.offer.source_record_key,
+            "ai_review_audit": raw_data["audit_provenance"],
+        }
 
 
 class PublishProjectionRequest(BaseModel):

@@ -38,6 +38,38 @@ class ProviderCapabilities:
     default_timeout_seconds: int = 60
 
 
+@dataclass(frozen=True)
+class ProviderModelCapability:
+    """Operator-facing runtime capability metadata for one configured model."""
+
+    provider_kind: ProviderKind
+    model_name: str
+    supports_json_mode: bool
+    supports_local_execution: bool
+    is_local: bool
+    max_prompt_chars: int
+    default_timeout_seconds: int
+    availability_status: str = "configured"
+    smoke_status: str = "not_run"
+    input_token_limit: int | None = None
+    output_token_limit: int | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "provider_kind": self.provider_kind.value,
+            "model_name": self.model_name,
+            "supports_json_mode": self.supports_json_mode,
+            "supports_local_execution": self.supports_local_execution,
+            "is_local": self.is_local,
+            "max_prompt_chars": self.max_prompt_chars,
+            "default_timeout_seconds": self.default_timeout_seconds,
+            "availability_status": self.availability_status,
+            "smoke_status": self.smoke_status,
+            "input_token_limit": self.input_token_limit,
+            "output_token_limit": self.output_token_limit,
+        }
+
+
 DEFAULT_CAPABILITIES: dict[ProviderKind, ProviderCapabilities] = {
     ProviderKind.GEMINI: ProviderCapabilities(
         provider_kind=ProviderKind.GEMINI,
@@ -65,6 +97,43 @@ DEFAULT_CAPABILITIES: dict[ProviderKind, ProviderCapabilities] = {
         max_prompt_chars=2000,
     ),
 }
+
+
+def model_supports_json_mode(provider_kind: ProviderKind, model_name: str) -> bool:
+    """Return the JSON-mode request capability known before a live call."""
+
+    base = DEFAULT_CAPABILITIES[provider_kind]
+    if not base.supports_json_mode:
+        return False
+    if provider_kind == ProviderKind.GEMINI and "gemma" in model_name.lower():
+        return False
+    return True
+
+
+def configured_model_capability(
+    config: ProviderConfigContract,
+    *,
+    availability_status: str = "configured",
+    smoke_status: str = "not_run",
+    input_token_limit: int | None = None,
+    output_token_limit: int | None = None,
+) -> ProviderModelCapability:
+    base = DEFAULT_CAPABILITIES[config.provider_kind]
+    return ProviderModelCapability(
+        provider_kind=config.provider_kind,
+        model_name=config.default_model,
+        supports_json_mode=model_supports_json_mode(
+            config.provider_kind, config.default_model
+        ),
+        supports_local_execution=base.supports_local_execution,
+        is_local=base.supports_local_execution,
+        max_prompt_chars=base.max_prompt_chars,
+        default_timeout_seconds=base.default_timeout_seconds,
+        availability_status=availability_status,
+        smoke_status=smoke_status,
+        input_token_limit=input_token_limit,
+        output_token_limit=output_token_limit,
+    )
 
 
 class ProviderRegistry:
