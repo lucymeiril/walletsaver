@@ -140,11 +140,13 @@ async def source_coverage(request: Request):
 class BoundedDiagnosticsRequest(BaseModel):
     crawler_ids: Optional[List[str]] = None
     fixtures: dict[str, str] = Field(default_factory=dict)
+    health_baselines: dict[str, dict[str, Any]] = Field(default_factory=dict)
     live_enabled: bool = False
 
 
 class BoundedLiveDiagnosticsPlanRequest(BaseModel):
     fixture_snapshots: dict[str, Any] = Field(default_factory=dict)
+    health_baselines: dict[str, dict[str, Any]] = Field(default_factory=dict)
     allow_live: bool = False
     run_limits: dict[str, int] = Field(default_factory=dict)
 
@@ -166,6 +168,7 @@ async def bounded_diagnostics_with_fixtures(request: Request, body: BoundedDiagn
         reg,
         fixture_by_source=body.fixtures,
         crawler_ids=body.crawler_ids,
+        health_baseline_by_source=body.health_baselines,
         live_enabled=body.live_enabled,
     )
 
@@ -188,6 +191,7 @@ async def bounded_live_diagnostics_plan_with_artifacts(
     reg = _get_registry()
     return build_bounded_live_diagnostics_plan(
         reg,
+        health_baseline_by_source=body.health_baselines,
         fixture_snapshots=body.fixture_snapshots,
         allow_live=body.allow_live,
         run_limits=body.run_limits,

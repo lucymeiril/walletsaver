@@ -58,9 +58,17 @@ def client(db: Database) -> TestClient:
 
 @pytest.fixture(autouse=True)
 def no_real_db_admin_final_approve(monkeypatch) -> None:
+    async def fake_preflight():
+        return {
+            "status": "ready",
+            "ready_to_mutate": True,
+            "snapshot": {"verified": True, "latest_backup": "test-snapshot.sqlite"},
+        }
+
     async def fake_final_approve(ingestion_id, *, notes=None):
         raise RuntimeError("DB-admin safe final approve not stubbed")
 
+    monkeypatch.setattr(review_routes, "_check_db_admin_mutation_preflight", fake_preflight)
     monkeypatch.setattr(review_routes, "_ai_safe_final_approve_db_admin", fake_final_approve)
 
 
@@ -1004,12 +1012,23 @@ def test_publish_success_marks_row_pending_db_review_not_published(client: TestC
 
     calls = []
     final_calls = []
+    events = []
+
+    async def fake_preflight():
+        events.append("preflight")
+        return {
+            "status": "ready",
+            "ready_to_mutate": True,
+            "snapshot": {"verified": True, "latest_backup": "test-snapshot.sqlite"},
+        }
 
     async def fake_submit(payload):
+        events.append("submit")
         calls.append(payload)
         return {"id": 777, "status": "pending", "quality_score": 100}
 
     async def fake_final_approve(ingestion_id, *, notes=None):
+        events.append("final_approve")
         final_calls.append({"ingestion_id": ingestion_id, "notes": notes})
         return {
             "id": int(ingestion_id),
@@ -1021,6 +1040,7 @@ def test_publish_success_marks_row_pending_db_review_not_published(client: TestC
             "operator_next_action": "rollback or re-review if audit fails",
         }
 
+    monkeypatch.setattr(review_routes, "_check_db_admin_mutation_preflight", fake_preflight)
     monkeypatch.setattr(review_routes, "_submit_to_db_admin", fake_submit)
     monkeypatch.setattr(review_routes, "_ai_safe_final_approve_db_admin", fake_final_approve)
     res = client.post(
@@ -1036,6 +1056,7 @@ def test_publish_success_marks_row_pending_db_review_not_published(client: TestC
     assert res.json()["pending_db_review"] == 0
     assert res.json()["safety"]["status"] == "operator_final_approval_required"
     assert "ai-safe-final-approve" in res.json()["safety"]["notice"]
+    assert events == ["preflight", "submit", "final_approve"]
     assert calls[0]["items"][0]["raw_record_id"] == "pub-1"
     assert final_calls[0]["ingestion_id"] == 777
 
@@ -1060,6 +1081,54 @@ def test_publish_success_marks_row_pending_db_review_not_published(client: TestC
     assert retry_body["failed"] == 1
     assert retry_body["results"][0]["status"] == "published"
     assert "DB-admin/public DB flow already accepted" in retry_body["results"][0]["error"]
+
+
+def test_publish_blocks_ai_safe_mutation_when_preflight_lacks_backup(
+    client: TestClient, db: Database, monkeypatch
+) -> None:
+    _seed_publish_batch(db)
+    _approve_publish_proposals(client, "pub-1")
+    submit_calls = []
+    final_calls = []
+
+    async def fake_preflight():
+        return {
+            "status": "blocked",
+            "ready_to_mutate": False,
+            "readiness": {"status": "ready"},
+            "snapshot": {"verified": False, "latest_backup": None},
+            "error": {"class": "SnapshotMissing", "message": "No DB-admin backup was listed"},
+        }
+
+    async def fake_submit(payload):
+        submit_calls.append(payload)
+        return {"id": 778, "status": "pending"}
+
+    async def fake_final_approve(ingestion_id, *, notes=None):
+        final_calls.append(ingestion_id)
+        return {"id": int(ingestion_id), "status": "approved"}
+
+    monkeypatch.setattr(review_routes, "_check_db_admin_mutation_preflight", fake_preflight)
+    monkeypatch.setattr(review_routes, "_submit_to_db_admin", fake_submit)
+    monkeypatch.setattr(review_routes, "_ai_safe_final_approve_db_admin", fake_final_approve)
+
+    res = client.post(
+        "/api/review/publish-approved",
+        json={"raw_record_ids": ["pub-1"], "reviewer_id": "lucy", "confirm_count": 1},
+    )
+
+    assert res.status_code == 200, res.text
+    body = res.json()
+    assert body["published"] == 0
+    assert body["submitted_to_db_admin"] == 0
+    assert body["final_approve_failed"] == 1
+    assert body["safety"]["mutation_preflight"]["snapshot"]["verified"] is False
+    assert "rollback backup" in body["results"][0]["error"]
+    assert submit_calls == []
+    assert final_calls == []
+    row = client.get("/api/review/publish-eligibility").json()["items"][0]
+    assert row["status"] == "publish_failed"
+    assert row["retryable"] is True
 
 
 def test_publish_final_approve_without_public_verification_stays_pending_db_review(

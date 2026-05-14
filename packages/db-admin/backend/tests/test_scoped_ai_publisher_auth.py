@@ -12,6 +12,8 @@ from storage.models import Base, DiscountHistory, IngestionStatus, PendingIngest
 
 SERVICE_KEY = "test-service-key"
 PUBLISHER_KEY = "test-ai-publisher-key"
+ONE_SHOT_PUBLISHER_KEY = "test-one-shot-publisher-key"
+ADMIN_KEY = "test-admin-key"
 
 
 @pytest.fixture
@@ -49,12 +51,15 @@ def scoped_auth_client(monkeypatch):
     settings.SERVICE_API_KEYS = {
         SERVICE_KEY: "service",
         PUBLISHER_KEY: "ai_publisher",
+        ONE_SHOT_PUBLISHER_KEY: "one_shot_publisher",
+        ADMIN_KEY: "admin",
     }
 
     monkeypatch.setattr(ingestion_routes, "get_session", get_test_session)
     monkeypatch.setattr(ingestion_routes, "managed_session", managed_test_session)
     monkeypatch.setattr(admin_routes, "get_session", get_test_session)
     monkeypatch.setattr(admin_routes, "list_backups", lambda: [{"filename": "snapshot.sqlite", "size_bytes": 1}])
+    monkeypatch.setattr(admin_routes, "create_backup", lambda database_url, reason: "admin-test-backup.sqlite")
 
     from api.app import create_app
 
@@ -69,8 +74,16 @@ def _publisher_headers():
     return {"X-API-Key": PUBLISHER_KEY}
 
 
+def _one_shot_publisher_headers():
+    return {"X-API-Key": ONE_SHOT_PUBLISHER_KEY}
+
+
 def _service_headers():
     return {"X-API-Key": SERVICE_KEY}
+
+
+def _admin_headers():
+    return {"X-API-Key": ADMIN_KEY}
 
 
 def _valid_ai_reviewed_item():
@@ -120,6 +133,24 @@ def _create_pending_ai_ingestion(Session, item):
         return row.id
 
 
+def _create_crawler_approved_ai_ingestion(Session, item):
+    with Session.begin() as session:
+        row = PendingIngestion(
+            crawler_name="ai-admin:emart",
+            crawl_status="success",
+            items_count=1,
+            items_json=json.dumps([item], ensure_ascii=False),
+            schema_type="DiscountItem",
+            strategy_used="ai_review_publish",
+            quality_score=100,
+            quality_details={},
+            status=IngestionStatus.CRAWLER_APPROVED,
+        )
+        session.add(row)
+        session.flush()
+        return row.id
+
+
 def test_service_key_cannot_ai_safe_final_approve(scoped_auth_client):
     client, Session = scoped_auth_client
     ingestion_id = _create_pending_ai_ingestion(Session, _valid_ai_reviewed_item())
@@ -133,6 +164,23 @@ def test_service_key_cannot_ai_safe_final_approve(scoped_auth_client):
     assert response.status_code == 403
 
 
+def test_service_key_cannot_db_final_approve(scoped_auth_client):
+    client, Session = scoped_auth_client
+    ingestion_id = _create_crawler_approved_ai_ingestion(Session, _valid_ai_reviewed_item())
+
+    response = client.post(
+        f"/api/ingestions/{ingestion_id}/db-review",
+        json={"action": "approve"},
+        headers=_service_headers(),
+    )
+
+    assert response.status_code == 403
+    with Session() as session:
+        row = session.get(PendingIngestion, ingestion_id)
+        assert row.status == IngestionStatus.CRAWLER_APPROVED
+        assert session.query(DiscountHistory).count() == 0
+
+
 def test_service_key_cannot_read_backup_snapshots(scoped_auth_client):
     client, _ = scoped_auth_client
 
@@ -141,18 +189,23 @@ def test_service_key_cannot_read_backup_snapshots(scoped_auth_client):
     assert response.status_code == 403
 
 
-def test_scoped_publisher_can_final_approve_and_read_backup_snapshot_list(scoped_auth_client):
+@pytest.mark.parametrize("headers_factory", [_publisher_headers, _one_shot_publisher_headers])
+def test_scoped_publisher_can_only_ai_safe_final_approve_and_read_backup_snapshot_list(
+    scoped_auth_client,
+    headers_factory,
+):
     client, Session = scoped_auth_client
     ingestion_id = _create_pending_ai_ingestion(Session, _valid_ai_reviewed_item())
+    headers = headers_factory()
 
-    backup_response = client.get("/api/admin/backups", headers=_publisher_headers())
+    backup_response = client.get("/api/admin/backups", headers=headers)
     assert backup_response.status_code == 200
     assert backup_response.json()["backups"][0]["filename"] == "snapshot.sqlite"
 
     approve_response = client.post(
         f"/api/ingestions/{ingestion_id}/ai-safe-final-approve",
         json={"action": "approve", "notes": "scoped publish"},
-        headers=_publisher_headers(),
+        headers=headers,
     )
 
     assert approve_response.status_code == 200
@@ -161,6 +214,29 @@ def test_scoped_publisher_can_final_approve_and_read_backup_snapshot_list(scoped
         row = session.get(PendingIngestion, ingestion_id)
         assert row.status == IngestionStatus.APPROVED
         assert session.query(DiscountHistory).count() == 1
+
+
+def test_admin_api_key_uses_ordinary_admin_role_for_protected_routes(scoped_auth_client):
+    client, Session = scoped_auth_client
+    ingestion_id = _create_pending_ai_ingestion(Session, _valid_ai_reviewed_item())
+
+    assert client.get("/api/admin/data-summary", headers=_admin_headers()).status_code == 200
+
+    manual_backup_response = client.post("/api/admin/backup", headers=_admin_headers())
+    assert manual_backup_response.status_code == 200
+    assert manual_backup_response.json()["backup"] == "admin-test-backup.sqlite"
+
+    backup_list_response = client.get("/api/admin/backups", headers=_admin_headers())
+    assert backup_list_response.status_code == 200
+    assert backup_list_response.json()["backups"][0]["filename"] == "snapshot.sqlite"
+
+    approve_response = client.post(
+        f"/api/ingestions/{ingestion_id}/ai-safe-final-approve",
+        json={"action": "approve", "notes": "admin publish"},
+        headers=_admin_headers(),
+    )
+    assert approve_response.status_code == 200
+    assert approve_response.json()["status"] == "approved"
 
 
 def test_scoped_publisher_is_denied_unrelated_moderator_and_admin_endpoints(scoped_auth_client):
@@ -180,6 +256,43 @@ def test_scoped_publisher_is_denied_unrelated_moderator_and_admin_endpoints(scop
         headers=_publisher_headers(),
     ).status_code == 403
     assert client.delete(f"/api/ingestions/{ingestion_id}", headers=_publisher_headers()).status_code == 403
+
+
+def test_scoped_publisher_cannot_use_standard_db_final_approve(scoped_auth_client):
+    client, Session = scoped_auth_client
+    ingestion_id = _create_crawler_approved_ai_ingestion(Session, _valid_ai_reviewed_item())
+
+    response = client.post(
+        f"/api/ingestions/{ingestion_id}/db-review",
+        json={"action": "approve"},
+        headers=_publisher_headers(),
+    )
+
+    assert response.status_code == 403
+    with Session() as session:
+        row = session.get(PendingIngestion, ingestion_id)
+        assert row.status == IngestionStatus.CRAWLER_APPROVED
+        assert session.query(DiscountHistory).count() == 0
+
+
+@pytest.mark.parametrize("headers, expected_status", [({}, 401), ({"X-API-Key": "invalid-scoped-key"}, 401)])
+def test_scoped_routes_fail_closed_without_registered_valid_key(scoped_auth_client, headers, expected_status):
+    client, Session = scoped_auth_client
+    ingestion_id = _create_pending_ai_ingestion(Session, _valid_ai_reviewed_item())
+
+    approve_response = client.post(
+        f"/api/ingestions/{ingestion_id}/ai-safe-final-approve",
+        json={"action": "approve"},
+        headers=headers,
+    )
+    backup_response = client.get("/api/admin/backups", headers=headers)
+
+    assert approve_response.status_code == expected_status
+    assert backup_response.status_code == expected_status
+    with Session() as session:
+        row = session.get(PendingIngestion, ingestion_id)
+        assert row.status == IngestionStatus.PENDING
+        assert session.query(DiscountHistory).count() == 0
 
 
 def test_scoped_publisher_still_cannot_bypass_ai_safe_validation_gates(scoped_auth_client):

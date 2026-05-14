@@ -4,6 +4,53 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 
+LOCAL_ENV_PATHS = (
+    BASE_DIR / ".env",
+    BASE_DIR / ".env.local",
+)
+
+
+def _strip_optional_quotes(value: str) -> str:
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+        return value[1:-1]
+    return value
+
+
+def _parse_local_env_file(path: Path) -> dict[str, str]:
+    values: dict[str, str] = {}
+    if not path.is_file():
+        return values
+
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[len("export ") :].strip()
+        if "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        if key:
+            values[key] = _strip_optional_quotes(value.strip())
+    return values
+
+
+def load_local_env_files(paths: tuple[Path, ...] = LOCAL_ENV_PATHS) -> None:
+    """Load local gitignored env files before settings are initialized.
+
+    Existing process env wins; otherwise later local files (for example
+    ``.env.local``) may override earlier local files.
+    """
+    process_env_keys = set(os.environ)
+    for path in paths:
+        for key, value in _parse_local_env_file(path).items():
+            if key not in process_env_keys:
+                os.environ[key] = value
+
+
+load_local_env_files()
+
 # 기본: 로컬 SQLite (walletguardian.db)
 # 운영: DATABASE_URL 환경변수로 PostgreSQL 지정
 _default_db = f"sqlite:///{BASE_DIR / 'walletguardian.db'}"
@@ -71,5 +118,9 @@ class Settings:
                 if ":" in pair:
                     key, role = pair.rsplit(":", 1)
                     self.SERVICE_API_KEYS[key.strip()] = role.strip()
+        local_admin_key = os.getenv("DB_ADMIN_API_KEY", "").strip()
+        if local_admin_key:
+            local_admin_role = os.getenv("DB_ADMIN_API_KEY_ROLE", "admin").strip() or "admin"
+            self.SERVICE_API_KEYS.setdefault(local_admin_key, local_admin_role)
 
 settings = Settings()

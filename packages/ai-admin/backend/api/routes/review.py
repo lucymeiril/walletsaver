@@ -53,6 +53,7 @@ from services.keyword_catalog import (
 from services.db_admin_adapter import (
     ai_safe_final_approve_db_admin,
     build_db_admin_ingestion_payload,
+    check_db_admin_mutation_preflight,
     submit_to_db_admin,
 )
 from services.review_publish import (
@@ -158,6 +159,10 @@ async def _ai_safe_final_approve_db_admin(
     return await ai_safe_final_approve_db_admin(ingestion_id, notes=notes)
 
 
+async def _check_db_admin_mutation_preflight() -> dict[str, Any]:
+    return await check_db_admin_mutation_preflight()
+
+
 AI_DB_HANDOFF_SAFETY_NOTICE = (
     "AI-admin submit only creates/updates a DB-admin pending ingestion; public DB rows "
     "are saved only after explicit DB-admin ai-safe-final-approve succeeds."
@@ -177,6 +182,24 @@ def _publish_safety_metadata(summary: dict[str, Any] | None = None) -> dict[str,
 
 def _db_admin_submit_retained_pending(response: dict[str, Any]) -> bool:
     return response.get("id") is not None and response.get("status") == "pending"
+
+
+def _db_admin_mutation_preflight_ready(result: dict[str, Any] | None) -> bool:
+    return bool(
+        isinstance(result, dict)
+        and result.get("status") == "ready"
+        and result.get("ready_to_mutate") is True
+        and isinstance(result.get("snapshot"), dict)
+        and result["snapshot"].get("verified") is True
+    )
+
+
+def _db_admin_mutation_preflight_error(result: dict[str, Any] | None) -> str:
+    return (
+        "DB-admin mutation preflight failed; readiness and a listed rollback backup "
+        "are required before AI-safe live DB mutation: "
+        f"{result}"
+    )
 
 
 def _final_approve_public_verified(response: dict[str, Any] | None) -> bool:
@@ -1257,6 +1280,49 @@ async def publish_approved_records(
         )
     if not candidates:
         raise HTTPException(status_code=400, detail="no eligible records selected")
+
+    mutation_preflight: dict[str, Any] | None = None
+    if any(candidate.get("ai_safe_final_approve_eligible") for candidate in candidates):
+        mutation_preflight = await _check_db_admin_mutation_preflight()
+        if not _db_admin_mutation_preflight_ready(mutation_preflight):
+            message = _db_admin_mutation_preflight_error(mutation_preflight)
+            results = list(preflight_failures)
+            for candidate in candidates:
+                with db.session_scope() as session:
+                    upsert_publish_record(
+                        session,
+                        candidate,
+                        status=PipelineStatus.PUBLISH_FAILED.value,
+                        requested_by=payload.reviewer_id,
+                        db_result={"mutation_preflight": mutation_preflight, "error": message},
+                        last_error=message,
+                    )
+                results.append(
+                    {
+                        "raw_record_id": candidate["raw_record_id"],
+                        "status": PipelineStatus.PUBLISH_FAILED.value,
+                        "error": message,
+                        "requires_db_admin_review": True,
+                        "db_handoff_mode": candidate.get("db_handoff_mode"),
+                        "ai_safe_final_approve_eligible": candidate.get("ai_safe_final_approve_eligible"),
+                    }
+                )
+            return {
+                "published": 0,
+                "submitted_to_db_admin": 0,
+                "pending_db_review": 0,
+                "ai_safe_final_approved": 0,
+                "public_db_verified": 0,
+                "rollback_re_review_supported": 0,
+                "operator_next_action": "Create/verify a DB-admin backup snapshot and rerun publish-approved.",
+                "final_approve_failed": len(candidates),
+                "failed": len(results),
+                "results": results,
+                "safety": {
+                    **_publish_safety_metadata(),
+                    "mutation_preflight": mutation_preflight,
+                },
+            }
 
     results: list[dict[str, Any]] = list(preflight_failures)
     for candidate in candidates:

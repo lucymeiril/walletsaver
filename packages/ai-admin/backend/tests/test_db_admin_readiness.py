@@ -4,13 +4,17 @@ from __future__ import annotations
 import asyncio
 
 import httpx
+import pytest
 
 from services import db_admin_adapter
 from services.db_admin_adapter import (
+    DBAdminAdapter,
     ai_safe_final_approve_db_admin,
     check_db_admin_mutation_preflight,
     check_db_admin_readiness,
 )
+
+DB_ADMIN_KEY_ALIAS = "DB_ADMIN_" + "API_KEY"
 
 
 class _FakeResponse:
@@ -39,6 +43,21 @@ class _FakeAsyncClient:
 
     async def get(self, url: str, *, headers: dict[str, str]):
         self.calls.append({"method": "GET", "url": url, "headers": headers, "timeout": self.timeout})
+        next_response = self.responses.pop(0)
+        if isinstance(next_response, Exception):
+            raise next_response
+        return next_response
+
+    async def post(self, url: str, *, json: dict, headers: dict[str, str]):
+        self.calls.append(
+            {
+                "method": "POST",
+                "url": url,
+                "json": json,
+                "headers": headers,
+                "timeout": self.timeout,
+            }
+        )
         next_response = self.responses.pop(0)
         if isinstance(next_response, Exception):
             raise next_response
@@ -84,7 +103,7 @@ def test_db_admin_readiness_ready_from_dotenv(tmp_path) -> None:
     secret = "test-db-admin-key-ready"
     dotenv = tmp_path / ".env"
     dotenv.write_text(
-        f"DB_ADMIN_URL=https://admin.example.local/base?token=drop-me\nDB_ADMIN_API_KEY={secret}\n",
+        f"DB_ADMIN_URL=https://admin.example.local/base?token=drop-me\n{DB_ADMIN_KEY_ALIAS}={secret}\n",
         encoding="utf-8",
     )
     _FakeAsyncClient.responses = [_FakeResponse(200, '{"ok": true}')]
@@ -104,6 +123,22 @@ def test_db_admin_readiness_ready_from_dotenv(tmp_path) -> None:
             "timeout": 2.5,
         }
     ]
+
+
+def test_db_admin_adapter_from_env_uses_local_db_admin_api_key_alias(tmp_path, monkeypatch) -> None:
+    secret = "local-db-admin-adapter-key"
+    dotenv = tmp_path / ".env.local"
+    dotenv.write_text(
+        f"DB_ADMIN_URL=https://admin.example.local\n{DB_ADMIN_KEY_ALIAS}={secret}\n",
+        encoding="utf-8",
+    )
+    monkeypatch.delenv("DB_ADMIN_URL", raising=False)
+    monkeypatch.delenv("DB_ADMIN_API_KEY", raising=False)
+
+    adapter = DBAdminAdapter.from_env(env_paths=(dotenv,))
+
+    assert adapter.ingestion_url == "https://admin.example.local/api/ingestions"
+    assert adapter.headers() == {"X-API-Key": secret}
 
 
 def test_db_admin_readiness_server_down_is_sanitized() -> None:
@@ -201,4 +236,55 @@ def test_db_admin_mutation_preflight_passes_with_readonly_state_and_backup_listi
     assert result["current_state"]["total_pending"] == 2
     assert result["snapshot"]["verified"] is True
     assert "walletguardian_manual_20260101_000000.db" in result["snapshot"]["latest_backup"]
+
+
+def test_db_admin_mutation_preflight_uses_dotenv_key_for_all_readonly_headers(tmp_path) -> None:
+    secret = "preflight-dotenv-secret"
+    dotenv = tmp_path / ".env.local"
+    dotenv.write_text(
+        f"DB_ADMIN_URL=https://admin.example.local\n{DB_ADMIN_KEY_ALIAS}={secret}\n",
+        encoding="utf-8",
+    )
+    _FakeAsyncClient.calls = []
+    _FakeAsyncClient.responses = [
+        _FakeResponse(200, '{"total_pending": 2}'),
+        _FakeResponse(200, '{"total_pending": 2}'),
+        _FakeResponse(200, '{"backups": [{"filename": "snapshot.db"}]}'),
+    ]
+
+    result = asyncio.run(check_db_admin_mutation_preflight(env_paths=(dotenv,), client_factory=_FakeAsyncClient))
+
+    assert result["status"] == "ready"
+    assert [call["headers"] for call in _FakeAsyncClient.calls] == [
+        {"X-API-Key": secret},
+        {"X-API-Key": secret},
+        {"X-API-Key": secret},
+    ]
+
+
+def test_db_admin_adapter_final_approve_uses_header_and_sanitizes_error(monkeypatch) -> None:
+    secret = "final-approve-secret"
+    _FakeAsyncClient.calls = []
+    _FakeAsyncClient.responses = [_FakeResponse(403, f"invalid X-API-Key: {secret}")]
+    monkeypatch.setattr(db_admin_adapter.httpx, "AsyncClient", _FakeAsyncClient)
+    adapter = DBAdminAdapter(
+        ingestion_url="https://admin.example.local/api/ingestions",
+        api_key=secret,
+        timeout_seconds=3.0,
+    )
+
+    with pytest.raises(RuntimeError) as excinfo:
+        asyncio.run(adapter.ai_safe_final_approve("ing-123", notes="validated"))
+
+    assert _FakeAsyncClient.calls == [
+        {
+            "method": "POST",
+            "url": "https://admin.example.local/api/ingestions/ing-123/ai-safe-final-approve",
+            "json": {"action": "approve", "notes": "validated"},
+            "headers": {"X-API-Key": secret},
+            "timeout": 3.0,
+        }
+    ]
+    assert secret not in str(excinfo.value)
+    assert "[REDACTED]" in str(excinfo.value)
 

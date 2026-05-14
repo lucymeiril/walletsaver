@@ -54,6 +54,17 @@ def _safe_error(exc: Exception, secret_value: str | None = None) -> dict[str, st
     }
 
 
+def _http_error_message(response: httpx.Response, context: str, secret_value: str | None = None) -> str:
+    try:
+        body = response.text or ""
+    except Exception:
+        body = ""
+    return _sanitize_text(
+        f"DB-admin returned HTTP {response.status_code} for {context}: {body[:240]}",
+        secret_value,
+    )
+
+
 def _sanitize_url(value: str | None) -> str | None:
     if not value:
         return None
@@ -355,8 +366,11 @@ class DBAdminAdapter:
     timeout_seconds: float = 20.0
 
     @classmethod
-    def from_env(cls) -> "DBAdminAdapter":
-        resolved_url, resolved_key = resolve_db_admin_credentials()
+    def from_env(
+        cls,
+        env_paths: tuple[Path, ...] | list[Path] | None = None,
+    ) -> "DBAdminAdapter":
+        resolved_url, resolved_key = resolve_db_admin_credentials(env_paths=env_paths)
         base_url = (resolved_url or "http://localhost:8002").rstrip("/")
         ingestion_url = os.getenv(
             "DB_ADMIN_INGESTION_URL",
@@ -381,7 +395,8 @@ class DBAdminAdapter:
                 json=payload,
                 headers=self.headers(),
             )
-            response.raise_for_status()
+            if response.status_code >= 400:
+                raise RuntimeError(_http_error_message(response, "ingestion submit", self.api_key))
             return response.json()
 
     async def ai_safe_final_approve(
@@ -396,7 +411,8 @@ class DBAdminAdapter:
                 json={"action": "approve", "notes": notes},
                 headers=self.headers(),
             )
-            response.raise_for_status()
+            if response.status_code >= 400:
+                raise RuntimeError(_http_error_message(response, "ai-safe final approve", self.api_key))
             return response.json()
 
 

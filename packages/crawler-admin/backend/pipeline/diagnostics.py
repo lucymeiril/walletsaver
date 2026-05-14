@@ -120,13 +120,18 @@ def build_bounded_live_diagnostics_plan(
     registry: Any,
     *,
     quality_by_source: dict[str, dict[str, Any]] | None = None,
+    health_baseline_by_source: dict[str, dict[str, Any]] | None = None,
     fixture_snapshots: dict[str, Any] | None = None,
     allow_live: bool = False,
     run_limits: dict[str, int] | None = None,
 ) -> dict[str, Any]:
     """Build a source-by-source live diagnostics plan without running live network."""
     registry_data = _registry_dict(registry)
-    coverage = build_source_coverage(registry_data, quality_by_source=quality_by_source)
+    coverage = build_source_coverage(
+        registry_data,
+        quality_by_source=quality_by_source,
+        health_baseline_by_source=health_baseline_by_source,
+    )
     fixture_snapshots = fixture_snapshots or {}
     plans: list[dict[str, Any]] = []
 
@@ -349,6 +354,7 @@ async def run_bounded_crawler_diagnostics(
     *,
     fixture_by_source: dict[str, str] | None = None,
     crawler_ids: list[str] | None = None,
+    health_baseline_by_source: dict[str, dict[str, Any]] | None = None,
     live_enabled: bool = False,
 ) -> dict[str, Any]:
     """Run safe, bounded fixture diagnostics for registered crawlers only.
@@ -420,6 +426,10 @@ async def run_bounded_crawler_diagnostics(
             "rows, critical customer-visible field coverage, and no blocking live_ready=false state."
         ),
         "quality_by_source": quality_by_source,
-        "source_coverage": build_source_coverage(registry_dict, quality_by_source=quality_by_source),
+        "source_coverage": build_source_coverage(
+            registry_dict,
+            quality_by_source=quality_by_source,
+            health_baseline_by_source=health_baseline_by_source,
+        ),
         "crawlers": reports,
     }

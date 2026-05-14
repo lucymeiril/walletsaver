@@ -8,6 +8,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from crawlers.source_health import build_source_health_row, summarize_source_health_rows
+
 
 REQUIRED_ONE_SHOT_SOURCES: list[dict[str, Any]] = [
     {
@@ -128,6 +130,7 @@ MARKETPLACE_OPERATOR_NEXT_ACTIONS = [
 def build_source_coverage(
     registry: dict[str, dict[str, Any]],
     quality_by_source: dict[str, dict[str, Any]] | None = None,
+    health_baseline_by_source: dict[str, dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Return required-source coverage from a CrawlerRegistry registry dict.
 
@@ -141,6 +144,7 @@ def build_source_coverage(
         for name, info in registry.items()
     }
     quality_by_source = quality_by_source or {}
+    health_baseline_by_source = health_baseline_by_source or {}
     rows: list[dict[str, Any]] = []
     missing_by_group: dict[str, list[str]] = {}
     registered_count = 0
@@ -153,6 +157,13 @@ def build_source_coverage(
         live_ready = ((match or {}).get("config") or {}).get("live_ready") if match else None
         readiness_gate = _live_readiness_gate(source, match, quality)
         reliability = _collection_reliability(status, quality, live_ready, readiness_gate)
+        source_health = build_source_health_row(
+            source,
+            match,
+            quality,
+            reliability,
+            _find_health_baseline(source, match, health_baseline_by_source),
+        )
         if reliability == "collecting":
             collecting_count += 1
         if match:
@@ -182,6 +193,7 @@ def build_source_coverage(
                 "can_claim_collecting": reliability == "collecting",
                 "quality_evidence": _quality_evidence(quality),
                 "quality_summary": _quality_summary(quality),
+                "source_health": source_health,
                 "operator_diagnostics": _coverage_diagnostics(source, status, reliability, quality, match, readiness_gate),
                 "next_action": _next_action(source, status, reliability, quality, readiness_gate),
             }
@@ -201,6 +213,7 @@ def build_source_coverage(
             "contract plus bounded diagnostics evidence before any live_ready=true or collecting claim. "
             "registered_unverified means the plugin exists but live collection reliability has not been proven."
         ),
+        "source_health_dashboard": summarize_source_health_rows(rows),
         "sources": rows,
     }
 
@@ -225,6 +238,21 @@ def _find_quality(
         quality = quality_by_source.get(str(key).lower()) or quality_by_source.get(str(key))
         if quality:
             return quality
+    return None
+
+
+def _find_health_baseline(
+    source: dict[str, Any],
+    match: dict[str, Any] | None,
+    health_baseline_by_source: dict[str, dict[str, Any]],
+) -> dict[str, Any] | None:
+    keys = [source["source_id"], *source["plugin_aliases"]]
+    if match:
+        keys.append(str(match.get("registered_name", "")))
+    for key in keys:
+        baseline = health_baseline_by_source.get(str(key).lower()) or health_baseline_by_source.get(str(key))
+        if baseline:
+            return baseline
     return None
 
 

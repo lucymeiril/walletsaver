@@ -13,7 +13,9 @@ BACKEND_DIR = Path(__file__).resolve().parents[1]
 REPO_ROOT = BACKEND_DIR.parents[2]
 
 DEFAULT_ENV_PATHS = (
+    BACKEND_DIR / ".env.local",
     BACKEND_DIR / ".env",
+    REPO_ROOT / ".env.local",
     REPO_ROOT / ".env",
 )
 
