@@ -315,6 +315,10 @@ def build_db_admin_ingestion_payload(candidate: dict[str, Any]) -> dict[str, Any
     item = copy.deepcopy(candidate["item"])
     raw_data = item.setdefault("raw_data", {})
     if isinstance(raw_data, dict):
+        normalized_metadata = item.get("normalized_metadata") or raw_data.get("normalized") or raw_data.get("normalized_metadata")
+        if isinstance(normalized_metadata, dict):
+            raw_data.setdefault("normalized", normalized_metadata)
+            raw_data.setdefault("normalized_metadata", normalized_metadata)
         rebuild_provenance = {
             "raw_record_id": candidate.get("raw_record_id") or item.get("raw_record_id"),
             "batch_id": candidate.get("batch_id"),

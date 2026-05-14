@@ -20,7 +20,7 @@ from core.contracts.ai_pipeline import (
     RawCrawlRecord,
     SaleOfferDraft,
 )
-from core.contracts.control_plane import ReviewDecision
+from core.contracts.control_plane import ReviewDecision, normalize_match_text, normalize_package_signature
 from core.product_units import normalize_unit_metadata, quantity_to_standard_total
 from core.promotion_semantics import PriceState
 from storage.models import AIPublishRecord
@@ -1137,6 +1137,7 @@ def publish_blockers(
     if item.get("source_url") in (None, ""):
         blockers.append("data_quality: missing price observation evidence field source_url")
     blockers.extend(_package_metadata_blockers(record, item))
+    blockers.extend(_source_package_mismatch_blockers(record, proposals, item))
     return blockers
 
 
@@ -1166,6 +1167,61 @@ def _package_metadata_blockers(record: RawCrawlRecord, item: dict[str, Any]) -> 
         for field in ("display_unit", "package_quantity", "package_unit")
         if item.get(field) in (None, "")
     ]
+
+
+def _source_package_mismatch_blockers(
+    record: RawCrawlRecord,
+    proposals: list[FieldProposalContract],
+    item: dict[str, Any],
+) -> list[str]:
+    """Hold package variants when source evidence and AI package proposals conflict."""
+
+    normalized = (item.get("raw_data") or {}).get("normalized") if isinstance(item.get("raw_data"), dict) else {}
+    variant = normalized.get("product_variant") if isinstance(normalized, dict) else {}
+    if not isinstance(variant, dict):
+        return []
+    if (
+        variant.get("package_evidence_source") == "deterministic_source"
+        and variant.get("package_match_status") == "source_confirmed"
+    ):
+        return []
+    proposed_package_fields = {
+        proposal.target_field
+        for proposal in proposals
+        if (
+            proposal.target_field
+            in (
+                "package_quantity",
+                "package_unit",
+                "display_unit",
+                "standard_unit",
+                "standard_unit_price",
+            )
+            and proposal.status in DB_ITEM_USABLE_PROPOSAL_STATUSES
+        )
+    }
+    if not proposed_package_fields:
+        return []
+    if variant.get("package_evidence_source") == "source_payload":
+        mismatched = [
+            field
+            for field in proposed_package_fields
+            if field in {"package_quantity", "package_unit", "display_unit"}
+            and not _contains_equivalent([item.get(field)], _proposal_value_for_field(proposals, field))
+        ]
+        if not mismatched:
+            return []
+    return [
+        "data_quality: package_mismatch_source",
+        "held: package mismatch must remain a candidate until source listing evidence is strong",
+    ]
+
+
+def _proposal_value_for_field(proposals: list[FieldProposalContract], field: str) -> Any:
+    for proposal in proposals:
+        if proposal.target_field == field and proposal.status in DB_ITEM_USABLE_PROPOSAL_STATUSES:
+            return proposal.proposed_value
+    return None
 
 
 def build_post_publish_audit_flags(
@@ -1362,7 +1418,7 @@ def db_item_from_review(
         for key, value in fields.items()
         if key in SOURCE_OWNED_PROPOSAL_FIELDS and value not in (None, "")
     }
-    price = _first_number(
+    price = _first_positive_number(
         record.raw_price,
         raw_payload.get("sale_price"),
         raw_payload.get("current_price"),
@@ -1423,17 +1479,17 @@ def db_item_from_review(
     display_unit = (
         unit_metadata.get("display_unit")
         if has_deterministic_package
-        else fields.get("display_unit") or raw_payload.get("display_unit") or unit_metadata.get("display_unit")
+        else raw_payload.get("display_unit") or fields.get("display_unit") or unit_metadata.get("display_unit")
     )
     package_quantity = (
         unit_metadata.get("package_quantity")
         if has_deterministic_package
-        else _first_number(fields.get("package_quantity"), raw_payload.get("package_quantity"))
+        else _first_number(raw_payload.get("package_quantity"), fields.get("package_quantity"))
     )
     package_unit = (
         unit_metadata.get("package_unit")
         if has_deterministic_package
-        else fields.get("package_unit") or raw_payload.get("package_unit")
+        else raw_payload.get("package_unit") or fields.get("package_unit")
     )
     if isinstance(package_unit, str) and package_unit not in {"g", "kg", "ml", "L"}:
         package_unit = unit_metadata.get("package_unit") or package_unit
@@ -1489,6 +1545,7 @@ def db_item_from_review(
             source_url=source_url,
             image_url=raw_payload.get("image_url") or raw_payload.get("image"),
             price_state=price_state,
+            promotion_type=raw_payload.get("promotion_type") or raw_payload.get("promotion") or "unknown",
             price=int(price) if price is not None else None,
             original_price=int(original_price) if original_price is not None else None,
             discount_rate=_discount_rate_fraction(discount_percent),
@@ -1542,7 +1599,184 @@ def db_item_from_review(
     }
     if attributes:
         item["attributes"] = attributes
+    _attach_normalized_publish_metadata(
+        item,
+        record=record,
+        fields=fields,
+        raw_payload=raw_payload,
+        raw_unit=raw_unit,
+        unit_metadata=unit_metadata,
+        package_evidence_source=_package_evidence_source(
+            has_deterministic_package=has_deterministic_package,
+            raw_payload=raw_payload,
+            fields=fields,
+        ),
+    )
     return item
+
+
+def _package_evidence_source(
+    *,
+    has_deterministic_package: bool,
+    raw_payload: dict[str, Any],
+    fields: dict[str, Any],
+) -> str:
+    if has_deterministic_package:
+        return "deterministic_source"
+    if raw_payload.get("package_quantity") not in (None, "") or raw_payload.get("package_unit") not in (None, ""):
+        return "source_payload"
+    if fields.get("package_quantity") not in (None, "") or fields.get("package_unit") not in (None, ""):
+        return "ai_proposal"
+    return "missing"
+
+
+def _attach_normalized_publish_metadata(
+    item: dict[str, Any],
+    *,
+    record: RawCrawlRecord,
+    fields: dict[str, Any],
+    raw_payload: dict[str, Any],
+    raw_unit: Any,
+    unit_metadata: dict[str, Any],
+    package_evidence_source: str,
+) -> None:
+    """Attach DB-admin normalized table semantics without changing legacy fields."""
+
+    raw_data = item.setdefault("raw_data", {})
+    if not isinstance(raw_data, dict):
+        return
+    canonical = dict(raw_data.get("canonical_product") or {})
+    variant = dict(raw_data.get("product_variant") or {})
+    offer = dict(raw_data.get("sale_offer") or {})
+    raw_evidence = offer.get("raw_evidence") if isinstance(offer.get("raw_evidence"), dict) else {
+        "raw_title": record.raw_title,
+        "raw_price": record.raw_price,
+        "raw_unit": raw_unit,
+        "raw_payload": raw_payload,
+    }
+    audit_provenance = dict(raw_data.get("audit_provenance") or item.get("ai_review_audit") or {})
+
+    source_package_signature = _package_signature(
+        quantity=unit_metadata.get("package_quantity") or raw_payload.get("package_quantity"),
+        unit=unit_metadata.get("package_unit") or raw_payload.get("package_unit"),
+        bundle_count=unit_metadata.get("bundle_count") or raw_payload.get("bundle_count") or 1,
+        display_unit=unit_metadata.get("display_unit") or raw_payload.get("display_unit") or raw_unit,
+    )
+    publish_package_signature = _package_signature(
+        quantity=item.get("package_quantity"),
+        unit=item.get("package_unit"),
+        bundle_count=item.get("bundle_count") or 1,
+        display_unit=item.get("display_unit") or item.get("unit"),
+    )
+    package_match_status = (
+        "source_confirmed"
+        if package_evidence_source in {"deterministic_source", "source_payload"}
+        and (not source_package_signature or source_package_signature == publish_package_signature)
+        else "candidate_package_mismatch"
+        if source_package_signature and publish_package_signature and source_package_signature != publish_package_signature
+        else "candidate_needs_review"
+        if package_evidence_source == "ai_proposal"
+        else "not_applicable"
+    )
+
+    normalized = {
+        "contract_version": "normalized-mart3-v1",
+        "ai_override_policy": "source_owned_price_link_period_image_fields_win",
+        "canonical_product": {
+            "public_product_id": item.get("public_product_id"),
+            "canonical_name": item.get("canonical_name") or item.get("name"),
+            "brand": item.get("brand") or canonical.get("brand"),
+            "category_id": item.get("category_id"),
+            "category_name": item.get("category") or item.get("category_display_label"),
+            "aliases": canonical.get("aliases") or item.get("aliases") or [],
+            "keywords": item.get("keywords") or canonical.get("keywords") or [],
+            "attributes": canonical.get("attributes") or item.get("attributes") or {},
+            "primary_image_url": item.get("image_url"),
+        },
+        "product_variant": {
+            "public_variant_id": item.get("public_variant_id"),
+            "variant_name": variant.get("variant_name") or item.get("source_title") or item.get("name"),
+            "package_quantity": item.get("package_quantity"),
+            "package_unit": item.get("package_unit"),
+            "display_unit": item.get("display_unit"),
+            "bundle_count": item.get("bundle_count") or 1,
+            "standard_unit": item.get("standard_unit"),
+            "attributes": variant.get("attributes") or item.get("attributes") or {},
+            "package_signature": publish_package_signature,
+            "source_package_signature": source_package_signature,
+            "package_evidence_source": package_evidence_source,
+            "package_match_status": package_match_status,
+        },
+        "source_listing": {
+            "public_source_listing_id": item.get("public_source_listing_id"),
+            "source_name": item.get("source"),
+            "source_record_key": item.get("source_record_key") or record.source_record_key,
+            "source_title": item.get("source_title") or record.raw_title,
+            "source_title_key": normalize_match_text(str(item.get("source_title") or record.raw_title)),
+            "source_url": item.get("source_url"),
+            "image_url": item.get("image_url"),
+            "source_unit_text": raw_unit or item.get("display_unit") or item.get("unit"),
+        },
+        "offer_event": {
+            "public_offer_event_id": item.get("public_offer_event_id"),
+            "price_state": item.get("price_state"),
+            "promotion_type": item.get("promotion_type"),
+            "price": item.get("sale_price"),
+            "current_price": item.get("current_price"),
+            "original_price": item.get("original_price"),
+            "discount_rate": offer.get("discount_rate"),
+            "discount_percent": item.get("discount_percent"),
+            "event_name": item.get("event_name"),
+            "valid_from": _jsonable_datetime(item.get("valid_from") or offer.get("valid_from")),
+            "valid_to": _jsonable_datetime(item.get("valid_to") or offer.get("valid_to")),
+            "standard_unit_price": item.get("standard_unit_price"),
+            "price_per_100g": item.get("price_per_100g"),
+            "raw_record_id": record.raw_record_id,
+            "raw_evidence": raw_evidence,
+            "audit_provenance": audit_provenance,
+            "offer_state": item.get("offer_state") or "active",
+        },
+        "source_owned_fields": {
+            "price": item.get("sale_price"),
+            "source_url": item.get("source_url"),
+            "image_url": item.get("image_url"),
+            "event_name": item.get("event_name"),
+            "valid_from": _jsonable_datetime(item.get("valid_from") or offer.get("valid_from")),
+            "valid_to": _jsonable_datetime(item.get("valid_to") or offer.get("valid_to")),
+        },
+    }
+    raw_data["normalized"] = normalized
+    raw_data["normalized_metadata"] = normalized
+    item["normalized_metadata"] = normalized
+    item.setdefault("price", item.get("sale_price"))
+    item.setdefault("source_name", item.get("source"))
+    item.setdefault("variant_name", normalized["product_variant"]["variant_name"])
+    item.setdefault("source_unit_text", normalized["source_listing"]["source_unit_text"])
+    item.setdefault("listing_image_url", item.get("image_url"))
+    item.setdefault("raw_evidence", raw_evidence)
+    item.setdefault("audit_provenance", audit_provenance)
+    item.setdefault("crawled_at", item.get("observed_at"))
+
+
+def _package_signature(
+    *,
+    quantity: Any,
+    unit: Any,
+    bundle_count: Any,
+    display_unit: Any,
+) -> str | None:
+    if quantity in (None, "") and unit in (None, "") and display_unit in (None, ""):
+        return None
+    try:
+        return normalize_package_signature(
+            f"qty={quantity or ''};unit={unit or ''};bundle={bundle_count or 1};display={display_unit or ''}"
+        )
+    except ValueError:
+        return None
+
+
+def _jsonable_datetime(value: Any) -> Any:
+    return value.isoformat() if isinstance(value, datetime) else value
 
 
 def _human_reviewed_value(proposal: FieldProposalContract, decisions: list[Any]) -> Any:
@@ -1578,6 +1812,11 @@ def _first_number(*values: Any) -> Optional[float]:
             if number >= 0:
                 return number
     return None
+
+
+def _first_positive_number(*values: Any) -> Optional[float]:
+    number = _first_number(*values)
+    return number if number is not None and number > 0 else None
 
 
 def _first_present(mapping: dict[str, Any], *keys: str) -> Any:

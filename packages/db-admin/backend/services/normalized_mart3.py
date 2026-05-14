@@ -252,6 +252,8 @@ def _upsert_offer_event(
         offer = NormalizedOfferEvent(public_offer_event_id=event_id, **data)
         session.add(offer)
     else:
+        data["raw_evidence"] = _merge_evidence(offer.raw_evidence or {}, data["raw_evidence"])
+        data["audit_provenance"] = _merge_evidence(offer.audit_provenance or {}, data["audit_provenance"])
         for key, value in data.items():
             setattr(offer, key, value)
     session.flush()
@@ -323,6 +325,17 @@ def _variant_package_signature(variant: NormalizedProductVariant) -> str:
 
 def _source_name(row: dict[str, Any]) -> str:
     return str(row.get("source_name") or row.get("source") or row.get("store") or "unknown").strip().lower()
+
+
+def _merge_evidence(existing: dict[str, Any], incoming: dict[str, Any]) -> dict[str, Any]:
+    if not incoming:
+        return existing
+    if not existing or existing == incoming:
+        return incoming
+    observations = existing.get("observations") if isinstance(existing.get("observations"), list) else [existing]
+    if incoming not in observations:
+        observations = [*observations, incoming]
+    return {"observations": observations}
 
 
 def _stable_id(prefix: str, *parts: Any) -> str:

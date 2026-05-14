@@ -18,6 +18,7 @@ from api.auth import (
     get_current_identity,
 )
 from services.audit import log_action
+from services.normalized_mart3 import publish_mart3_rows
 from api.middleware.rate_limit import limiter, INGESTION_LIMIT
 from starlette.requests import Request as StarletteRequest
 from storage.models import (
@@ -1589,6 +1590,10 @@ def _insert_items(session, items: list[dict], schema_type: str) -> int:
                             crawled_at=datetime.utcnow(),
                             raw_data=_build_offer_raw_data(item, product_name),
                         )
+                        publish_mart3_rows(
+                            session,
+                            [_build_normalized_discount_row(item, product_name, source, price)],
+                        )
                 session.add(row)
                 if schema_type != "HotdealPost":
                     _link_product_keywords(session, pid, item.get("keywords"))
@@ -1798,6 +1803,57 @@ def _build_offer_raw_data(item: dict, product_name: str) -> dict:
         "product_name": product_name,
         "store": item.get("store") or raw_data.get("store", ""),
         "source_url": item.get("source_url") or item.get("detail_url") or raw_data.get("source_url"),
+    }
+
+
+def _build_normalized_discount_row(item: dict, product_name: str, source: str, price: float | None) -> dict:
+    raw_data = item.get("raw_data") if isinstance(item.get("raw_data"), dict) else {}
+    raw_evidence = item.get("raw_evidence") or raw_data.get("raw_evidence") or raw_data.get("price_observation") or {}
+    audit = item.get("ai_review_audit") if isinstance(item.get("ai_review_audit"), dict) else {}
+    unit_metadata = normalize_unit_metadata(
+        name=item.get("source_title") or product_name,
+        sale_price=price,
+        raw_unit=item.get("unit") or raw_data.get("unit"),
+    )
+    promotion_type = item.get("promotion_type") or raw_data.get("promotion_type") or "final_price"
+    return {
+        "raw_record_id": item.get("raw_record_id") or raw_data.get("raw_record_id"),
+        "source": source,
+        "source_name": source,
+        "source_record_key": item.get("source_record_key") or raw_data.get("source_record_key"),
+        "source_title": item.get("source_title") or raw_data.get("source_title") or product_name,
+        "canonical_name": product_name,
+        "category_id": item.get("category_id") or raw_data.get("category_id") or item.get("category"),
+        "category_name": item.get("category_name") or raw_data.get("category_name") or item.get("category"),
+        "image_url": item.get("image_url") or raw_data.get("image_url"),
+        "source_url": item.get("source_url") or item.get("detail_url") or raw_data.get("source_url"),
+        "package_quantity": item.get("package_quantity") or raw_data.get("package_quantity") or unit_metadata.get("package_quantity"),
+        "package_unit": item.get("package_unit") or raw_data.get("package_unit") or unit_metadata.get("package_unit"),
+        "display_unit": item.get("display_unit") or raw_data.get("display_unit") or unit_metadata.get("display_unit"),
+        "unit": item.get("unit") or raw_data.get("unit"),
+        "price": price,
+        "current_price": price,
+        "original_price": item.get("original_price") or raw_data.get("original_price"),
+        "discount_rate": item.get("discount_rate") if item.get("discount_rate") is not None else item.get("discount_percent"),
+        "price_state": item.get("price_state") or raw_data.get("price_state"),
+        "promotion_type": promotion_type,
+        "event_name": item.get("event_name") or raw_data.get("event_name"),
+        "standard_unit": item.get("standard_unit") or raw_data.get("standard_unit"),
+        "standard_unit_price": item.get("standard_unit_price") or raw_data.get("standard_unit_price"),
+        "price_per_100g": item.get("price_per_100g") or raw_data.get("price_per_100g") or unit_metadata.get("price_per_100g"),
+        "bundle_count": item.get("bundle_count") or raw_data.get("bundle_count") or 1,
+        "week_start": item.get("week_start") or raw_data.get("week_start") or item.get("valid_from"),
+        "week_end": item.get("week_end") or raw_data.get("week_end") or item.get("valid_to"),
+        "valid_from": item.get("valid_from") or raw_data.get("valid_from"),
+        "valid_to": item.get("valid_to") or raw_data.get("valid_to"),
+        "crawled_at": item.get("crawled_at") or raw_data.get("crawled_at") or item.get("recorded_at"),
+        "raw_evidence": raw_evidence if isinstance(raw_evidence, dict) else {"value": raw_evidence},
+        "audit_provenance": {
+            **audit,
+            "publication_kind": item.get("publication_kind") or raw_data.get("publication_kind"),
+        },
+        "attributes": item.get("attributes") if isinstance(item.get("attributes"), dict) else raw_data.get("attributes"),
+        "keywords": item.get("keywords") or raw_data.get("keywords") or [],
     }
 
 

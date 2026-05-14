@@ -176,6 +176,7 @@ def create_app() -> FastAPI:
     from api.routes.auth_routes import router as auth_router
     from api.routes.integrity import router as integrity_router
     from api.routes.community import router as community_router
+    from api.routes.normalized_catalog import router as normalized_catalog_router
 
     # Payload size limit
     app.add_middleware(RequestSizeLimitMiddleware)
@@ -195,6 +196,7 @@ def create_app() -> FastAPI:
     app.include_router(auth_router, prefix="/api")
     app.include_router(integrity_router, prefix="/api")
     app.include_router(community_router, prefix="/api")
+    app.include_router(normalized_catalog_router, prefix="/api")
     # ingestion 라우터는 이미 /api/ingestions 접두어가 있음
     app.include_router(ingestion_router)
 

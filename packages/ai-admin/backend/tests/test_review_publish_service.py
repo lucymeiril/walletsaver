@@ -248,6 +248,12 @@ def test_source_owned_fields_win_over_conflicting_ai_proposals() -> None:
     ignored = item["raw_data"]["audit_provenance"]["ignored_source_owned_ai_fields"]
     assert ignored["sale_price"] == 777
     assert ignored["source_url"] == "https://ai.example/wrong"
+    normalized = item["raw_data"]["normalized"]
+    assert normalized["source_owned_fields"]["price"] == 1000
+    assert normalized["source_listing"]["source_url"] == "https://emart.example/source"
+    assert normalized["source_listing"]["image_url"] == "https://emart.example/source.jpg"
+    assert normalized["offer_event"]["valid_from"].startswith("2026-01-01")
+    assert normalized["offer_event"]["valid_to"].startswith("2026-01-07")
 
 
 def test_conflicting_ai_price_proposal_is_held_not_published(db: Database) -> None:
@@ -325,6 +331,155 @@ def test_ai_price_does_not_fill_missing_source_price() -> None:
     assert item["sale_price"] is None
     assert item["discount_percent"] == 30
     assert "data_quality: missing positive DB ingestion field sale_price" in blockers
+
+
+def test_normalized_publish_payload_contains_identity_variant_listing_and_offer_sections() -> None:
+    record = RawCrawlRecord(
+        raw_record_id="normalized-payload",
+        source_name="emart",
+        source_record_key="sku-normalized",
+        source_url="https://emart.example/normalized",
+        raw_title="풀무원 국산콩 두부 300g",
+        raw_price=1980,
+        raw_payload={
+            "store": "이마트",
+            "sale_price": 1980,
+            "unit": "300g",
+            "image_url": "https://emart.example/tofu.jpg",
+            "source_url": "https://emart.example/normalized",
+        },
+    )
+    proposals = [
+        _proposal("normalized-payload", "canonical_name", "풀무원 국산콩 두부", proposal_type=ProposalType.NORMALIZED_FIELD),
+        _proposal("normalized-payload", "category_id", "processed.tofu", proposal_type=ProposalType.CATEGORY),
+        _proposal("normalized-payload", "keywords", ["두부"], proposal_type=ProposalType.KEYWORD),
+    ]
+
+    item = db_item_from_review(record, proposals, {})
+    payload = build_db_admin_ingestion_payload(
+        {
+            "raw_record_id": "normalized-payload",
+            "batch_id": "batch-normalized",
+            "source_name": "emart",
+            "proposal_ids": [proposal.proposal_id for proposal in proposals],
+            "human_decision_ids": [],
+            "db_handoff_mode": "ai_safe_final_approve",
+            "publication_kind": item["publication_kind"],
+            "item": item,
+        }
+    )
+
+    published_item = payload["items"][0]
+    normalized = published_item["raw_data"]["normalized"]
+    assert published_item["price"] == 1980
+    assert published_item["source_name"] == "이마트"
+    assert published_item["variant_name"] == "풀무원 국산콩 두부 300g"
+    assert normalized["canonical_product"]["canonical_name"] == "풀무원 국산콩 두부"
+    assert normalized["product_variant"]["package_quantity"] == 300
+    assert normalized["product_variant"]["package_unit"] == "g"
+    assert normalized["product_variant"]["package_match_status"] == "source_confirmed"
+    assert normalized["source_listing"]["source_record_key"] == "sku-normalized"
+    assert normalized["offer_event"]["price"] == 1980
+    assert normalized["offer_event"]["price_state"] == "normal"
+
+
+def test_hidden_and_discount_only_price_states_are_represented_without_fake_prices() -> None:
+    hidden = RawCrawlRecord(
+        raw_record_id="hidden-price",
+        source_name="homeplus",
+        source_record_key="hidden-price",
+        source_url="https://homeplus.example/hidden",
+        raw_title="앱에서 가격 확인 라면 5입",
+        raw_price=0,
+        raw_payload={
+            "store": "홈플러스",
+            "price": 0,
+            "source_url": "https://homeplus.example/hidden",
+            "image_url": "https://homeplus.example/hidden.jpg",
+        },
+    )
+    discount_only = RawCrawlRecord(
+        raw_record_id="discount-only",
+        source_name="lottemart",
+        source_record_key="discount-only",
+        source_url="https://lotte.example/discount",
+        raw_title="카드 20% 할인 양배추",
+        raw_price=None,
+        raw_payload={
+            "store": "롯데마트",
+            "discount_percent": 20,
+            "promotion_type": "checkout_discount",
+            "source_url": "https://lotte.example/discount",
+            "image_url": "https://lotte.example/discount.jpg",
+        },
+    )
+
+    hidden_item = db_item_from_review(hidden, [], {})
+    discount_item = db_item_from_review(discount_only, [], {})
+
+    assert hidden_item["sale_price"] is None
+    assert hidden_item["price"] is None
+    assert hidden_item["price_state"] == "price_hidden"
+    assert hidden_item["raw_data"]["normalized"]["offer_event"]["price"] is None
+    assert discount_item["sale_price"] is None
+    assert discount_item["price_state"] == "discount_rate_only"
+    assert discount_item["promotion_type"] == "checkout_discount"
+    assert discount_item["raw_data"]["normalized"]["offer_event"]["discount_rate"] == 0.2
+    assert discount_item["raw_data"]["normalized"]["offer_event"]["price"] is None
+
+
+def test_source_package_mismatch_is_held_as_candidate_until_evidence_is_strong(db: Database) -> None:
+    with db.session_scope() as session:
+        RawCrawlBatchRepository(session).save(
+            RawCrawlBatchContract(
+                batch_id="batch-package-mismatch",
+                source_name="emart",
+                crawler_name="service-test",
+                item_count=1,
+                schema_type="product_offer",
+                status=PipelineStatus.RAW_INGESTED,
+            )
+        )
+        RawCrawlBatchRepository(session).save_records(
+            "batch-package-mismatch",
+            [
+                RawCrawlRecord(
+                    raw_record_id="package-mismatch",
+                    source_name="emart",
+                    source_record_key="package-mismatch",
+                    source_url="https://emart.example/package-mismatch",
+                    raw_title="풀무원 국산콩 두부",
+                    raw_price=1980,
+                    raw_payload={
+                        "store": "이마트",
+                        "sale_price": 1980,
+                        "package_quantity": 300,
+                        "package_unit": "g",
+                        "display_unit": "300g",
+                        "source_url": "https://emart.example/package-mismatch",
+                        "image_url": "https://emart.example/package-mismatch.jpg",
+                    },
+                )
+            ],
+        )
+        proposal_repo = FieldProposalRepository(session)
+        for proposal in [
+            _proposal("package-mismatch", "canonical_name", "풀무원 국산콩 두부", proposal_type=ProposalType.NORMALIZED_FIELD),
+            _proposal("package-mismatch", "category_id", "processed.tofu", proposal_type=ProposalType.CATEGORY),
+            _proposal("package-mismatch", "keywords", ["두부"], proposal_type=ProposalType.KEYWORD),
+            _proposal("package-mismatch", "package_quantity", 500, proposal_type=ProposalType.NORMALIZED_FIELD),
+            _proposal("package-mismatch", "package_unit", "g", proposal_type=ProposalType.NORMALIZED_FIELD),
+        ]:
+            proposal_repo.save(proposal)
+
+        row = build_publish_rows(session, batch_id="batch-package-mismatch")[0]
+
+    assert row["eligible"] is False
+    assert row["status"] in {PipelineStatus.PENDING_REVIEW.value, PipelineStatus.HELD.value}
+    assert "data_quality: package_mismatch_source" in row["blockers"]
+    assert "held: package mismatch must remain a candidate until source listing evidence is strong" in row["blockers"]
+    assert row["item"]["package_quantity"] == 300
+    assert row["item"]["raw_data"]["normalized"]["product_variant"]["package_evidence_source"] == "source_payload"
 
 
 def test_review_publish_builds_typed_offer_items_for_food_and_daily_goods() -> None:

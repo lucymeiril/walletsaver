@@ -3,10 +3,12 @@ from __future__ import annotations
 from sqlalchemy import create_engine, func, select
 from sqlalchemy.orm import sessionmaker
 
+from api.routes.ingestion import _insert_items
 from services.normalized_mart3 import publish_mart3_rows
 from storage.models import (
     Base,
     Category,
+    DiscountHistory,
     NormalizedCanonicalProduct,
     NormalizedOfferEvent,
     NormalizedOfferWeekLink,
@@ -176,6 +178,10 @@ def test_mart3_normalized_slice_dedupes_static_rows_offers_and_updates_listing_u
             NormalizedSourceListing,
             placements[0]["public_source_listing_id"],
         )
+        tofu_offer = session.get(
+            NormalizedOfferEvent,
+            placements[0]["public_offer_event_id"],
+        )
 
     assert product_count == 1
     assert category_count == 1
@@ -190,6 +196,7 @@ def test_mart3_normalized_slice_dedupes_static_rows_offers_and_updates_listing_u
     assert len(tofu_week_links) == 2
     assert week_count == 2
     assert latest_listing.source_url == "https://emart.example/products/tofu?week=2"
+    assert tofu_offer.raw_evidence == {"price_text": "1,980원"}
 
 
 def test_mart3_nullable_price_states_do_not_create_fake_comparable_prices():
@@ -227,3 +234,91 @@ def test_mart3_nullable_price_states_do_not_create_fake_comparable_prices():
     assert placements[3]["comparable_price"] is None
     assert all(link.observed_min_price is None for link in unsafe_links)
     assert all(link.observed_max_price is None for link in unsafe_links)
+
+
+def _ai_publish_item(**overrides):
+    item = {
+        "name": "테스트 두부 300g",
+        "source_title": "테스트 두부 300g",
+        "sale_price": 1980,
+        "current_price": 1980,
+        "source": "emart",
+        "source_url": "https://emart.example/products/test-tofu?week=1",
+        "image_url": "https://emart.example/images/test-tofu.jpg",
+        "unit": "300g",
+        "display_unit": "300g",
+        "package_quantity": 300,
+        "package_unit": "g",
+        "raw_record_id": "test-tofu-300g-w1",
+        "source_record_key": "emart-sku-test-tofu-300g",
+        "promotion_type": "final_price",
+        "week_start": "2026-04-06T00:00:00",
+        "week_end": "2026-04-12T00:00:00",
+        "ai_review_audit": {"raw_record_id": "test-tofu-300g-w1", "proposal_ids": ["name", "price"]},
+        "raw_data": {"raw_evidence": {"title": "테스트 두부 300g", "price_text": "1,980원"}},
+    }
+    item.update(overrides)
+    return item
+
+
+def test_db_admin_insert_items_publishes_legacy_and_normalized_discount_rows():
+    Session = _session_factory()
+    rows = [
+        _ai_publish_item(),
+        _ai_publish_item(
+            raw_record_id="test-tofu-300g-w2",
+            source_url="https://emart.example/products/test-tofu?week=2",
+            week_start="2026-04-13T00:00:00",
+            week_end="2026-04-19T00:00:00",
+        ),
+    ]
+    with Session.begin() as session:
+        saved = _insert_items(session, rows, "DiscountItem")
+
+    with Session() as session:
+        product_count = session.scalar(select(func.count()).select_from(NormalizedCanonicalProduct))
+        variant_count = session.scalar(select(func.count()).select_from(NormalizedProductVariant))
+        listing_count = session.scalar(select(func.count()).select_from(NormalizedSourceListing))
+        offer_count = session.scalar(select(func.count()).select_from(NormalizedOfferEvent))
+        week_count = session.scalar(select(func.count()).select_from(NormalizedWeekBucket))
+        link_count = session.scalar(select(func.count()).select_from(NormalizedOfferWeekLink))
+        legacy_count = session.scalar(select(func.count()).select_from(DiscountHistory))
+        listing = session.execute(select(NormalizedSourceListing)).scalar_one()
+        offer = session.execute(select(NormalizedOfferEvent)).scalar_one()
+        links = session.execute(select(NormalizedOfferWeekLink)).scalars().all()
+
+    assert saved == 2
+    assert legacy_count == 2
+    assert product_count == 1
+    assert variant_count == 1
+    assert listing_count == 1
+    assert offer_count == 1
+    assert week_count == 2
+    assert link_count == 2
+    assert listing.source_url == "https://emart.example/products/test-tofu?week=2"
+    assert offer.raw_evidence == {"title": "테스트 두부 300g", "price_text": "1,980원"}
+    assert offer.audit_provenance["raw_record_id"] == "test-tofu-300g-w1"
+    assert all(link.observed_min_price == 1980 for link in links)
+
+
+def test_db_admin_insert_items_keeps_conditional_price_non_comparable():
+    Session = _session_factory()
+    item = _ai_publish_item(
+        promotion_type="checkout_discount",
+        event_name="카드 결제 할인",
+        raw_record_id="conditional-card-discount",
+    )
+    with Session.begin() as session:
+        saved = _insert_items(session, [item], "DiscountItem")
+
+    with Session() as session:
+        legacy = session.execute(select(DiscountHistory)).scalar_one()
+        offer = session.execute(select(NormalizedOfferEvent)).scalar_one()
+        link = session.execute(select(NormalizedOfferWeekLink)).scalar_one()
+
+    assert saved == 1
+    assert legacy.price == 1980
+    assert offer.price == 1980
+    assert offer.promotion_type == "checkout_discount"
+    assert link.observed_min_price is None
+    assert link.observed_max_price is None
