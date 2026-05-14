@@ -78,3 +78,19 @@ def test_measure_bundle_parser_does_not_treat_plus_formula_as_count_multiplier()
     assert parsed["package_quantity"] == 100.0
     assert parsed["package_unit"] == "ml"
     assert "bundle_count" not in parsed
+
+
+def test_korean_measure_words_parse_as_canonical_package_units() -> None:
+    assert parse_package_quantity("처음보는 쌀과자 300그램") == {
+        "raw_match": "300그램",
+        "package_quantity": 300.0,
+        "package_unit": "g",
+        "display_unit": "300g",
+    }
+
+    parsed = normalize_unit_metadata(name="마트 PB 생수 2리터×6입", sale_price=3600)
+    assert parsed["raw_match"] == "2리터×6입"
+    assert parsed["package_quantity"] == 2.0
+    assert parsed["package_unit"] == "L"
+    assert parsed["display_unit"] == "2L×6"
+    assert parsed["bundle_count"] == 6

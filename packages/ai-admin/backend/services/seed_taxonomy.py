@@ -182,6 +182,17 @@ SAFE_SEED_CATEGORY_ALIASES = {
 
 _CATEGORY_TOKEN_RE = re.compile(r"[0-9a-z가-힣]+")
 
+
+def _compact_category_alias(value: Any) -> str:
+    raw = str(value or "").strip().lower()
+    return "".join(ch for ch in raw if ch.isalnum() or "가" <= ch <= "힣")
+
+
+LABEL_DERIVED_CATEGORY_ALIASES = {
+    _compact_category_alias(label): category_id
+    for category_id, label in SAFE_SEED_CATEGORY_LABELS.items()
+}
+
 SAFE_SEED_CATEGORY_FAMILY_RULES = (
     {
         "target": "produce.fruit",
@@ -257,8 +268,13 @@ def normalize_category_id(value: Any) -> str:
     raw = str(value or "").strip().lower()
     if raw in SAFE_SEED_CATEGORY_IDS:
         return raw
-    compact = "".join(ch for ch in raw if ch.isalnum() or "가" <= ch <= "힣")
-    return SAFE_SEED_CATEGORY_ALIASES.get(compact) or _family_parent_category(raw) or raw
+    compact = _compact_category_alias(raw)
+    return (
+        SAFE_SEED_CATEGORY_ALIASES.get(compact)
+        or LABEL_DERIVED_CATEGORY_ALIASES.get(compact)
+        or _family_parent_category(raw)
+        or raw
+    )
 
 
 def _category_tokens(raw: str) -> set[str]:

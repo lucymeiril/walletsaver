@@ -292,7 +292,12 @@ def _report_from_quality(
     config = info.get("config") or {}
     live_ready = config.get("live_ready")
     counts = quality.get("item_counts") or {}
-    has_quality_evidence = fixture_available and (counts.get("source_raw") or counts.get("parsed") or counts.get("valid")) > 0
+    evidence_count = max(
+        int(counts.get("source_raw") or 0),
+        int(counts.get("parsed") or 0),
+        int(counts.get("valid") or 0),
+    )
+    has_quality_evidence = bool(fixture_available and evidence_count > 0)
     collection_status = _safe_collection_status(
         quality,
         live_ready=live_ready,
@@ -347,6 +352,44 @@ def _report_from_quality(
         "next_actions": quality.get("next_actions", []),
         "quality_details": quality,
     }
+
+
+def _source_health_snapshot(row: dict[str, Any]) -> dict[str, Any] | None:
+    health = row.get("source_health")
+    if not health:
+        return None
+    completeness = health.get("completeness") or {}
+    return {
+        "source_id": row.get("source_id"),
+        "collection_status": row.get("collection_status"),
+        "status": health.get("status"),
+        "counts": completeness.get("counts"),
+        "expected_counts": completeness.get("expected_counts"),
+        "critical_field_coverage": (row.get("quality_summary") or {}).get("critical_field_coverage"),
+        "field_coverage_dashboard": health.get("field_coverage_dashboard"),
+        "count_drop": health.get("count_drop"),
+        "baseline": health.get("completeness_baseline"),
+        "next_action_state": health.get("next_action_state"),
+        "live_network_default": health.get("live_network_default"),
+    }
+
+
+def _attach_source_health_to_reports(
+    reports: list[dict[str, Any]],
+    coverage: dict[str, Any],
+) -> None:
+    coverage_rows = coverage.get("sources") or []
+    by_key: dict[str, dict[str, Any]] = {}
+    for row in coverage_rows:
+        for key in (row.get("source_id"), row.get("registered_name")):
+            if key:
+                by_key[str(key).lower()] = row
+
+    for report in reports:
+        for key in (report.get("crawler_id"), report.get("registered_name")):
+            if key and (row := by_key.get(str(key).lower())):
+                report["source_health_evidence"] = _source_health_snapshot(row)
+                break
 
 
 async def run_bounded_crawler_diagnostics(
@@ -413,6 +456,12 @@ async def run_bounded_crawler_diagnostics(
             quality_by_source[crawler_id] = quality
 
     collecting_count = sum(1 for report in reports if report.get("quality_evidence", {}).get("can_claim_collecting"))
+    source_coverage = build_source_coverage(
+        registry_dict,
+        quality_by_source=quality_by_source,
+        health_baseline_by_source=health_baseline_by_source,
+    )
+    _attach_source_health_to_reports(reports, source_coverage)
     return {
         "schema": DIAGNOSTICS_SCHEMA,
         "live_network_default": "disabled",
@@ -426,10 +475,6 @@ async def run_bounded_crawler_diagnostics(
             "rows, critical customer-visible field coverage, and no blocking live_ready=false state."
         ),
         "quality_by_source": quality_by_source,
-        "source_coverage": build_source_coverage(
-            registry_dict,
-            quality_by_source=quality_by_source,
-            health_baseline_by_source=health_baseline_by_source,
-        ),
+        "source_coverage": source_coverage,
         "crawlers": reports,
     }

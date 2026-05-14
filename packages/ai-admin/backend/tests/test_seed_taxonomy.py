@@ -54,3 +54,9 @@ def test_seed_taxonomy_uses_family_rules_for_unseen_terms_without_snack_leakage(
     assert normalize_category_id("agriculture.vegetable.애호박") == "produce.vegetable"
     assert normalize_category_id("seafood.fish.명태") == "seafood.fish"
     assert normalize_category_id("snack.fruit.자두젤리") == "snack.fruit.자두젤리"
+
+
+def test_seed_taxonomy_derives_general_korean_slash_label_aliases() -> None:
+    assert normalize_category_id("가공식품/소스") == "processed.sauce"
+    assert normalize_category_id("수산 / 패류") == "seafood.shellfish"
+    assert normalize_category_id("음료/탄산") == "beverage.soda"

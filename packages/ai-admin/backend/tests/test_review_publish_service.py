@@ -647,6 +647,36 @@ def test_lottemart_general_taxonomy_ids_are_normalized_without_manual_product_al
     ]
 
 
+def test_korean_slash_category_id_normalizes_without_invalid_category_audit() -> None:
+    record = RawCrawlRecord(
+        raw_record_id="slash-category",
+        source_name="emart",
+        source_record_key="slash-category",
+        source_url="https://emart.example/slash-category",
+        raw_title="처음보는 토마토 파스타소스 300g",
+        raw_price=3980,
+        raw_payload={
+            "store": "이마트",
+            "sale_price": 3980,
+            "unit": "300g",
+            "image_url": "https://emart.example/slash-category.jpg",
+        },
+    )
+    proposals = [
+        _proposal("slash-category", "canonical_name", "처음보는 토마토 파스타소스", proposal_type=ProposalType.NORMALIZED_FIELD),
+        _proposal("slash-category", "category_id", "가공식품/소스", proposal_type=ProposalType.CATEGORY),
+        _proposal("slash-category", "keywords", ["파스타소스"], proposal_type=ProposalType.KEYWORD),
+        _proposal("slash-category", "package_unit", "g", proposal_type=ProposalType.NORMALIZED_FIELD),
+    ]
+
+    audit = build_raw_ai_audit([record], proposals, batch_id="slash-category")
+    item = db_item_from_review(record, proposals, {})
+
+    assert item["category_id"] == "processed.sauce"
+    assert "invalid_category_id_format" not in {issue["code"] for issue in audit["issues"]}
+    assert "unknown_taxonomy_category" not in {issue["code"] for issue in audit["issues"]}
+
+
 def test_model_inferred_keywords_without_crawler_keywords_do_not_fail_raw_evidence_audit() -> None:
     record = RawCrawlRecord(
         raw_record_id="lotte-water",

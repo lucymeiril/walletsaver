@@ -5,16 +5,20 @@ import {
   buildAutomationApplyMessage,
   buildBatchHealth,
   buildBulkPreview,
+  buildMutationPreflightChecklist,
   buildOperatorDashboardReport,
   buildOpsTriageCounters,
   buildPublishConfirmationMessage,
+  buildPublishRowNextAction,
   buildRollbackConfirmationMessage,
+  auditFlagLabel,
   categoryDisplayLabel,
   explainAutomationRow,
   formatCategoryDisplay,
   normalizeCategoryId,
   nextOperatorAction,
   publishRowAction,
+  summarizeNormalizedPublishRow,
   summarizeAutomationPreview,
   summarizeProviderSetup,
 } from './reviewQueueHelpers.js';
@@ -160,6 +164,51 @@ test('publish row actions distinguish retry from rollback to avoid operator mist
     danger: false,
   });
   assert.equal(publishRowAction({ status: 'rolled_back' }).label, '롤백 요청됨');
+});
+
+test('operator publish helpers explain preflight backup and rollback next action', () => {
+  const required = buildMutationPreflightChecklist({ ai_safe_final_approve_count: 2 }, []);
+  assert.equal(required.backupRequired, true);
+  assert.equal(required.tone, 'warn');
+  assert.match(required.help, /롤백 백업/);
+
+  const ready = buildMutationPreflightChecklist({
+    ai_safe_final_approve_count: 1,
+    safety: {
+      mutation_preflight: {
+        status: 'ready',
+        ready_to_mutate: true,
+        snapshot: { verified: true, latest_backup: 'snapshot.db' },
+      },
+    },
+  }, []);
+  assert.equal(ready.tone, 'ok');
+  assert.equal(ready.latestBackup, 'snapshot.db');
+
+  assert.match(buildPublishRowNextAction({ status: 'publish_failed' }), /preflight|재시도/);
+  assert.match(buildPublishRowNextAction({ status: 'rolled_back' }), /reject\/delete/);
+  assert.match(buildPublishRowNextAction({ eligible: true, ai_safe_final_approve_eligible: true }), /최종 승인/);
+});
+
+test('normalized publish snapshot and audit flag copy are beginner friendly', () => {
+  const cards = summarizeNormalizedPublishRow({
+    raw_title: '원본 우유 1L',
+    source_name: 'emart',
+    item: {
+      normalized_metadata: {
+        canonical_product: { canonical_name: '서울우유', category_name: '유제품/우유', category_id: 'dairy.milk' },
+        product_variant: { package_signature: '1L', package_match_status: 'source_confirmed' },
+        source_listing: { source_title: '원본 우유 1L', source_name: 'emart', source_record_key: 'sku-1' },
+        offer_event: { price: 2980, price_state: 'current' },
+      },
+    },
+  });
+  const byKey = Object.fromEntries(cards.map((card) => [card.key, card]));
+  assert.equal(byKey.canonical.value, '서울우유');
+  assert.match(byKey.variant.help, /원본 출처/);
+  assert.match(byKey.listing.help, /emart/);
+  assert.equal(byKey.offer.value, 2980);
+  assert.match(auditFlagLabel({ code: 'ai_suggested_keywords', message: 'new term' }), /새 키워드 제안/);
 });
 
 test('publish and rollback confirmations preview exact rows and DB-admin consequences', () => {

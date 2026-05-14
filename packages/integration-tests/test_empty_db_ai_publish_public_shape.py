@@ -19,7 +19,7 @@ from typing import Any
 
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine, select
+from sqlalchemy import create_engine, func, select
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
@@ -572,6 +572,10 @@ def _submit_ai_ingestion_http(client: TestClient, item: dict[str, Any]) -> int:
     return body["id"]
 
 
+def _table_count(session, table_name: str) -> int:
+    return session.scalar(select(func.count()).select_from(Base.metadata.tables[table_name]))
+
+
 class PersistedPublicCatalogStorage:
     """Website-facing read adapter over the isolated db-admin test session."""
 
@@ -667,12 +671,19 @@ def _run_empty_db_cross_service_flow(monkeypatch, tmp_path: Path) -> dict[str, A
     item, ai_admin_api = _ai_admin_api_stubbed_item(monkeypatch, tmp_path, record)
 
     with Session.begin() as session:
-        started_empty = (
-            session.query(Product).count() == 0
-            and session.query(DiscountHistory).count() == 0
-            and session.query(Category).count() == 0
-            and session.query(Keyword).count() == 0
-        )
+        initial_counts = {
+            "products": session.scalar(select(func.count()).select_from(Product)),
+            "discount_histories": session.scalar(select(func.count()).select_from(DiscountHistory)),
+            "categories": session.scalar(select(func.count()).select_from(Category)),
+            "keywords": session.scalar(select(func.count()).select_from(Keyword)),
+            "normalized_canonical_products": _table_count(session, "normalized_canonical_products"),
+            "normalized_product_variants": _table_count(session, "normalized_product_variants"),
+            "normalized_source_listings": _table_count(session, "normalized_source_listings"),
+            "normalized_offer_events": _table_count(session, "normalized_offer_events"),
+            "normalized_week_buckets": _table_count(session, "normalized_week_buckets"),
+            "normalized_offer_week_links": _table_count(session, "normalized_offer_week_links"),
+        }
+        started_empty = all(count == 0 for count in initial_counts.values())
         seed_catalog_taxonomy(session)
         assert session.query(Product).count() == 0
         assert session.query(DiscountHistory).count() == 0
@@ -717,8 +728,29 @@ def _run_empty_db_cross_service_flow(monkeypatch, tmp_path: Path) -> dict[str, A
         public_history_response = website_client.get(f"/api/products/{product.id}/price-history?days=30")
         assert public_history_response.status_code == 200, public_history_response.text
         public_history = public_history_response.json()["data"]
+        from services.normalized_price_read import get_normalized_price_comparison
+
+        normalized_model = get_normalized_price_comparison(session, category_id=product.category_id)
+        normalized_listing = normalized_model["products"][0]["variants"][0]["source_listings"][0]
+        normalized_offer = normalized_listing["offer_events"][0]
         return {
             "started_empty": started_empty,
+            "initial_counts": initial_counts,
+            "one_shot_rehearsal_summary": {
+                "result_scope": "fixture_stub_in_memory_rehearsal",
+                "live_all_source_success_claimed": False,
+                "external_network_allowed": False,
+                "real_db_mutation_allowed": False,
+                "secret_values_printed": False,
+                "legs": {
+                    "crawler_admin": {"mode": "fixture", "boundary": "TestClient diagnostics"},
+                    "ai_admin": {"mode": "stub", "boundary": "TestClient label/publish eligibility"},
+                    "ai_provider": {"mode": "stub", "provider_mode": ai_admin_api["provider_mode"]},
+                    "db_admin": {"mode": "fixture", "mutation_scope": "in_memory_sqlite"},
+                    "website": {"mode": "fixture", "boundary": "TestClient public read"},
+                    "normalized_read_model": {"mode": "fixture", "boundary": "direct in-memory read model"},
+                },
+            },
             "boundary_coverage": {
                 "crawler_admin": "HTTP TestClient diagnostics fixture upstream; no live crawler network",
                 "ai_admin": "HTTP TestClient provider config, raw-record label, and publish-eligibility using provider_mode=stub",
@@ -739,6 +771,12 @@ def _run_empty_db_cross_service_flow(monkeypatch, tmp_path: Path) -> dict[str, A
                 "discount_histories": session.query(DiscountHistory).count(),
                 "product_keywords": session.query(ProductKeyword).count(),
                 "pending_ingestions": session.query(PendingIngestion).count(),
+                "normalized_canonical_products": _table_count(session, "normalized_canonical_products"),
+                "normalized_product_variants": _table_count(session, "normalized_product_variants"),
+                "normalized_source_listings": _table_count(session, "normalized_source_listings"),
+                "normalized_offer_events": _table_count(session, "normalized_offer_events"),
+                "normalized_week_buckets": _table_count(session, "normalized_week_buckets"),
+                "normalized_offer_week_links": _table_count(session, "normalized_offer_week_links"),
             },
             "db_product": {
                 "name": product.name,
@@ -799,6 +837,18 @@ def _run_empty_db_cross_service_flow(monkeypatch, tmp_path: Path) -> dict[str, A
                 "history_price_observation_only": public_history["history"][0]["price_observation_only"],
                 "history_discount_claim_status": public_history["history"][0]["discount_claim_status"],
             },
+            "normalized_public_read_model": {
+                "product_count": len(normalized_model["products"]),
+                "week_bucket_count": len(normalized_model["week_buckets"]),
+                "canonical_name": normalized_model["products"][0]["canonical_name"],
+                "category_id": normalized_model["products"][0]["category_id"],
+                "listing_source_name": normalized_listing["source_name"],
+                "listing_source_url": normalized_listing["source_url"],
+                "best_comparable_price": normalized_listing["best_comparable_price"],
+                "offer_comparable_price": normalized_offer["comparable_price"],
+                "offer_display_state": normalized_offer["display_state"],
+                "offer_price": normalized_offer["price"],
+            },
             "raw_vs_final": {
                 "raw_name": record.raw_payload["name"],
                 "final_name": raw_data["published_item"]["name"],
@@ -827,6 +877,35 @@ def test_cross_service_empty_db_ai_safe_final_approve_public_shape_is_repeatable
 
     assert first == second
     assert first["started_empty"] is True
+    assert first["initial_counts"] == {
+        "products": 0,
+        "discount_histories": 0,
+        "categories": 0,
+        "keywords": 0,
+        "normalized_canonical_products": 0,
+        "normalized_product_variants": 0,
+        "normalized_source_listings": 0,
+        "normalized_offer_events": 0,
+        "normalized_week_buckets": 0,
+        "normalized_offer_week_links": 0,
+    }
+    assert first["one_shot_rehearsal_summary"] == {
+        "result_scope": "fixture_stub_in_memory_rehearsal",
+        "live_all_source_success_claimed": False,
+        "external_network_allowed": False,
+        "real_db_mutation_allowed": False,
+        "secret_values_printed": False,
+        "legs": {
+            "crawler_admin": {"mode": "fixture", "boundary": "TestClient diagnostics"},
+            "ai_admin": {"mode": "stub", "boundary": "TestClient label/publish eligibility"},
+            "ai_provider": {"mode": "stub", "provider_mode": "stub"},
+            "db_admin": {"mode": "fixture", "mutation_scope": "in_memory_sqlite"},
+            "website": {"mode": "fixture", "boundary": "TestClient public read"},
+            "normalized_read_model": {"mode": "fixture", "boundary": "direct in-memory read model"},
+        },
+    }
+    assert "live_all_source_success_claimed" in first["one_shot_rehearsal_summary"]
+    assert "all-source live success" not in json.dumps(first["one_shot_rehearsal_summary"], ensure_ascii=False).lower()
     assert first["boundary_coverage"] == {
         "crawler_admin": "HTTP TestClient diagnostics fixture upstream; no live crawler network",
         "ai_admin": "HTTP TestClient provider config, raw-record label, and publish-eligibility using provider_mode=stub",
@@ -887,6 +966,12 @@ def test_cross_service_empty_db_ai_safe_final_approve_public_shape_is_repeatable
         "discount_histories": 1,
         "product_keywords": 1,
         "pending_ingestions": 1,
+        "normalized_canonical_products": 1,
+        "normalized_product_variants": 1,
+        "normalized_source_listings": 1,
+        "normalized_offer_events": 1,
+        "normalized_week_buckets": 1,
+        "normalized_offer_week_links": 1,
     }
     assert first["db_product"] == {
         "name": "풀무원 국산콩 두부 300g",
@@ -948,6 +1033,18 @@ def test_cross_service_empty_db_ai_safe_final_approve_public_shape_is_repeatable
         "history_publication_kind": "price_observation",
         "history_price_observation_only": True,
         "history_discount_claim_status": "hotdeal_claim_blocked",
+    }
+    assert first["normalized_public_read_model"] == {
+        "product_count": 1,
+        "week_bucket_count": 1,
+        "canonical_name": "풀무원 국산콩 두부 300g",
+        "category_id": "processed.tofu.firm",
+        "listing_source_name": "emart",
+        "listing_source_url": "https://emart.example/products/tofu-300g",
+        "best_comparable_price": None,
+        "offer_comparable_price": None,
+        "offer_display_state": "non_comparable",
+        "offer_price": 1980,
     }
     assert first["raw_vs_final"] == {
         "raw_name": "원천명 국산콩 두부 300g",

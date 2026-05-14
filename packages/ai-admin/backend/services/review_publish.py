@@ -2837,6 +2837,8 @@ def _taxonomy_category_issues(
         category_id = normalize_category_id(value)
         if not category_id:
             continue
+        if is_safe_seed_category(category_id):
+            continue
         if _has_unsafe_category_id_separator(raw_category_id) or not OFFICIAL_CATEGORY_ID_RE.match(category_id):
             issues.append(
                 _issue(
@@ -2849,8 +2851,6 @@ def _taxonomy_category_issues(
                     review_context=_taxonomy_review_context(record, by_field),
                 )
             )
-            continue
-        if is_safe_seed_category(category_id):
             continue
         issues.append(
             _issue(

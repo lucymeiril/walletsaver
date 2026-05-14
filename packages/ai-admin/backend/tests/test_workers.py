@@ -268,6 +268,32 @@ def test_canonical_matcher_emits_draft_and_alias() -> None:
     assert len(out.alias_proposals) == 2
 
 
+def test_canonical_matcher_holdouts_do_not_auto_merge_renamed_package_or_typo_near_matches() -> None:
+    batch = _batch(
+        AIWorkerRole.CANONICAL_MATCHER,
+        [
+            _record(1, title="처음보는 플레인 요거트 100g"),
+            _record(2, title="처음보는 플레인 요거트 300g"),
+            _record(3, title="처음보는 플래인 요거트 100g"),
+            _record(4, title="처음보는 저지방 플레인 요거트 100g"),
+        ],
+    )
+
+    out = CanonicalMatcherWorker().run(batch)
+    names = [draft.canonical_name for draft in out.canonical_drafts]
+    variants = {
+        (variant.variant_name, variant.package_quantity, variant.package_unit)
+        for variant in out.variant_drafts
+    }
+
+    assert len(names) == 4
+    assert "처음보는 플레인 요거트 100g" in names
+    assert "처음보는 플래인 요거트 100g" in names
+    assert "처음보는 저지방 플레인 요거트 100g" in names
+    assert ("처음보는 플레인 요거트 100g", 100.0, "g") in variants
+    assert ("처음보는 플레인 요거트 300g", 300.0, "g") in variants
+
+
 def test_keyword_generator_dedupes_tokens() -> None:
     batch = _batch(AIWorkerRole.KEYWORD_GENERATOR, [_record(1, title="우유 우유 서울 1L")])
     out = KeywordGeneratorWorker().run(batch)

@@ -4,13 +4,14 @@ from __future__ import annotations
 import re
 from typing import Any
 
+_MEASURE_UNIT_PATTERN = r"kg|킬로그램|g|그램|ml|mL|밀리리터|미리리터|l|L|리터"
 _QUANTITY_RE = re.compile(
-    r"(?<![\d.])(?:\((?P<paren>\d+(?:\.\d+)?)\s*(?P<paren_unit>kg|g|ml|mL|l|L)\)|(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>kg|g|ml|mL|l|L))",
+    rf"(?<![\d.])(?:\((?P<paren>\d+(?:\.\d+)?)\s*(?P<paren_unit>{_MEASURE_UNIT_PATTERN})\)|(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>{_MEASURE_UNIT_PATTERN}))",
     re.IGNORECASE,
 )
 _MEASURE_BUNDLE_RE = re.compile(
     r"(?<![\d.])"
-    r"(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>kg|g|ml|mL|l|L)"
+    rf"(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>{_MEASURE_UNIT_PATTERN})"
     r"\s*[xX×*]\s*"
     r"(?P<count>\d+)\s*(?:개입|입|개|팩|봉|병|캔|포|장)?",
     re.IGNORECASE,

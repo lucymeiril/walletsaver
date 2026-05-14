@@ -403,6 +403,15 @@ def _next_action_state(
             "message": "Bounded diagnostics do not meet completeness baseline; fix parser, validation, or fixture contract.",
         }
     if collection_status == "registered_unverified":
+        if completeness["status"] == "meets_baseline":
+            return {
+                "state": "await_bounded_live_diagnostics_approval",
+                "severity": "warning",
+                "message": (
+                    "Fixture/bounded evidence meets source health baselines, but live/collecting claims remain disabled "
+                    "until bounded diagnostics gates and explicit operator approval pass."
+                ),
+            }
         return {
             "state": "attach_fixture_and_run_bounded_diagnostics",
             "severity": "warning",

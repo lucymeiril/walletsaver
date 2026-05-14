@@ -288,6 +288,41 @@ def test_bounded_diagnostics_does_not_feed_missing_fixture_as_collecting_evidenc
     assert result["source_coverage"]["collecting_count"] == 0
 
 
+def test_bounded_diagnostics_attaches_source_health_count_drop_evidence():
+    crawlers_dir = Path(__file__).resolve().parents[1] / "crawlers"
+    registry = CrawlerRegistry(crawlers_dir=crawlers_dir)
+    registry.discover()
+    fixture = (NON_MARKETPLACE_FIXTURE_DIR / "emart.html").read_text(encoding="utf-8")
+
+    result = _run(
+        run_bounded_crawler_diagnostics(
+            registry,
+            fixture_by_source={"emart": fixture},
+            crawler_ids=["emart"],
+            health_baseline_by_source={
+                "emart": {
+                    "expected_counts": {"source_raw": 10, "parsed": 10, "valid": 10},
+                    "count_drop_threshold": 0.75,
+                    "baseline_source": "fixture_contract:emart:previous_good",
+                }
+            },
+        )
+    )
+    report = result["crawlers"][0]
+    coverage = {row["source_id"]: row for row in result["source_coverage"]["sources"]}["emart"]
+    health = report["source_health_evidence"]
+
+    assert health["counts"]["source_raw"] == report["quality_evidence"]["counts"]["source_raw"]
+    assert health["counts"]["parsed"] == report["quality_evidence"]["counts"]["parsed"]
+    assert health["counts"]["valid"] == report["quality_evidence"]["counts"]["valid"]
+    assert health["baseline"]["baseline_source"] == "fixture_contract:emart:previous_good"
+    assert health["count_drop"]["status"] == "drop_detected"
+    assert {alert["metric"] for alert in health["count_drop"]["alerts"]} == {"source_raw", "parsed", "valid"}
+    assert health["next_action_state"]["state"] == "investigate_count_drop"
+    assert coverage["source_health"]["status"] == "failing"
+    assert coverage["source_health"]["next_action_state"]["state"] == "investigate_count_drop"
+
+
 def test_bounded_live_diagnostics_plan_is_artifact_only_and_keeps_unverified_non_collecting():
     registry = _DiagnosticsRegistry()
 
@@ -350,6 +385,7 @@ def test_high_priority_non_marketplace_fixtures_produce_bounded_quality_evidence
         row = rows[source_id]
         counts = row["quality_evidence"]["counts"]
         coverage = row["quality_evidence"]["critical_field_coverage"]
+        health = row["source_health_evidence"]
 
         assert row["fixture"] == {
             "available": True,
@@ -367,10 +403,20 @@ def test_high_priority_non_marketplace_fixtures_produce_bounded_quality_evidence
         assert row["operator_diagnostics"] == []
         assert row["source_drift_readiness"]["ready"] is True
         assert row["fixture"]["live_enabled"] is False
+        assert health["counts"]["source_raw"] == counts["source_raw"]
+        assert health["counts"]["parsed"] == counts["parsed"]
+        assert health["counts"]["valid"] == counts["valid"]
+        assert health["expected_counts"] == {"source_raw": 1, "parsed": 1, "valid": 1}
+        assert health["critical_field_coverage"] == coverage
+        assert health["field_coverage_dashboard"]["status"] == "ok"
+        assert health["count_drop"]["status"] == "within_baseline"
+        assert health["next_action_state"]["state"] == "monitor"
+        assert health["live_network_default"] == "disabled"
 
     homeplus = rows["homeplus"]
     homeplus_counts = homeplus["quality_evidence"]["counts"]
     homeplus_coverage = homeplus["quality_evidence"]["critical_field_coverage"]
+    homeplus_health = homeplus["source_health_evidence"]
 
     assert homeplus["fixture"] == {
         "available": True,
@@ -389,6 +435,10 @@ def test_high_priority_non_marketplace_fixtures_produce_bounded_quality_evidence
     assert homeplus["source_drift_readiness"]["ready"] is True
     assert homeplus["operator_diagnostics"][0]["code"] == "live_ready_false_registered_unverified"
     assert "bounded no-DB live diagnostic" in homeplus["operator_diagnostics"][0]["next_action"]
+    assert homeplus_health["counts"]["source_raw"] == homeplus_counts["source_raw"]
+    assert homeplus_health["critical_field_coverage"] == homeplus_coverage
+    assert homeplus_health["count_drop"]["status"] == "within_baseline"
+    assert homeplus_health["next_action_state"]["state"] == "await_bounded_live_diagnostics_approval"
 
     plan = build_bounded_live_diagnostics_plan(
         registry,
@@ -448,12 +498,22 @@ def test_marketplace_skeleton_fixtures_are_diagnostics_ready_but_not_db_mutation
         assert report["quality_evidence"]["counts"]["valid"] > 0
         assert report["operator_diagnostics"][0]["code"] == "live_ready_false_registered_unverified"
         assert "bounded no-DB live diagnostic" in report["operator_diagnostics"][0]["next_action"]
+        assert report["source_health_evidence"]["counts"]["source_raw"] == report["quality_evidence"]["counts"]["source_raw"]
+        assert report["source_health_evidence"]["counts"]["parsed"] == report["quality_evidence"]["counts"]["parsed"]
+        assert report["source_health_evidence"]["counts"]["valid"] == report["quality_evidence"]["counts"]["valid"]
+        assert report["source_health_evidence"]["critical_field_coverage"] == report["quality_evidence"]["critical_field_coverage"]
+        assert report["source_health_evidence"]["field_coverage_dashboard"]["status"] == "ok"
+        assert report["source_health_evidence"]["count_drop"]["status"] == "within_baseline"
+        assert report["source_health_evidence"]["next_action_state"]["state"] == "await_bounded_live_diagnostics_approval"
+        assert report["source_health_evidence"]["live_network_default"] == "disabled"
 
         assert coverage["collection_status"] == "registered_unverified"
         assert coverage["can_claim_collecting"] is False
         assert coverage["live_readiness_gate"]["passed"] is False
         assert coverage["live_readiness_gate"]["safe_db_mutation_allowed"] is False
         assert coverage["live_readiness_gate"]["downstream_flow"]["next_stage"] == "saved_fixture_diagnostics"
+        assert coverage["source_health"]["count_drop"]["status"] == "within_baseline"
+        assert coverage["source_health"]["next_action_state"]["state"] == "await_bounded_live_diagnostics_approval"
         assert "marketplace_live_readiness_gate_blocked" in [
             diag["code"] for diag in coverage["operator_diagnostics"]
         ]

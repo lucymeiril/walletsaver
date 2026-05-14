@@ -71,6 +71,111 @@ export function buildOpsTriageCounters(summary = {}, publishRows = [], automatio
   ];
 }
 
+export function auditFlagLabel(flag = {}) {
+  const code = typeof flag === 'string' ? flag : flag.code;
+  const message = typeof flag === 'string' ? '' : flag.message || flag.reason || flag.field;
+  const copy = {
+    ai_suggested_category: '새 카테고리 제안',
+    ai_suggested_category_id: '새 카테고리 ID',
+    ai_suggested_category_hint: '카테고리 힌트 확인',
+    ai_suggested_category_name: '카테고리명 확인',
+    ai_suggested_keywords: '새 키워드 제안',
+    ai_suggested_aliases: '새 별칭 제안',
+    db_keyword_proposal_unresolved: '키워드 미해결',
+    hotdeal_claim_blocked: '할인 근거 부족',
+  };
+  return [copy[code] || code || '사후 감사 필요', message].filter(Boolean).join(' · ');
+}
+
+export function buildMutationPreflightChecklist(summary = {}, rows = []) {
+  const finalApproveCount = summary.ai_safe_final_approve_count
+    ?? rows.filter((row) => row.ai_safe_final_approve_eligible).length;
+  const preflight = summary.safety?.mutation_preflight
+    || rows.find((row) => row.db_ingestion_result?.mutation_preflight)?.db_ingestion_result?.mutation_preflight
+    || null;
+  const snapshot = preflight?.snapshot || {};
+  const ready = preflight
+    ? preflight.status === 'ready' && preflight.ready_to_mutate === true && snapshot.verified === true
+    : false;
+  const blockedMessage = preflight?.error?.message || preflight?.error || '';
+
+  if (!finalApproveCount) {
+    return {
+      key: 'db-review-only',
+      tone: 'warn',
+      label: 'DB-admin 검수 큐',
+      help: '최종 DB 저장 전 DB-admin에서 사람이 다시 승인합니다.',
+      backupRequired: false,
+      latestBackup: snapshot.latest_backup || null,
+    };
+  }
+  return {
+    key: ready ? 'preflight-ready' : 'preflight-required',
+    tone: ready ? 'ok' : 'warn',
+    label: ready ? '백업 확인됨' : '백업 확인 필요',
+    help: ready
+      ? `DB-admin 백업 스냅샷이 확인되어 최종 승인 후보 ${finalApproveCount}개를 시도할 수 있습니다.`
+      : `최종 승인 후보 ${finalApproveCount}개는 DB-admin 읽기 상태와 롤백 백업 스냅샷 확인이 먼저 필요합니다.${blockedMessage ? ` (${blockedMessage})` : ''}`,
+    backupRequired: true,
+    latestBackup: snapshot.latest_backup || null,
+    createEndpoint: snapshot.create_endpoint || '/api/admin/backup',
+    rollbackPath: snapshot.rollback_path || '검증된 백업으로 복구 후 재시도',
+  };
+}
+
+export function buildPublishRowNextAction(row = {}) {
+  if (!row.raw_record_id && !row.status && !row.eligible && !(row.blockers || []).length) return '행을 선택하면 다음 조치를 안내합니다.';
+  if (row.status === 'published') {
+    const verified = row.db_ingestion_result?.ai_safe_final_approve?.public_db_verification?.verified;
+    return verified
+      ? '공개 DB 반영 확인됨. 이후 이상 징후가 보이면 롤백 후 재검수하세요.'
+      : 'DB-admin 결과 확인 후 이상하면 롤백/재검수로 보내세요.';
+  }
+  if (row.status === 'pending_db_review') return 'DB-admin에서 승인하거나, 의심되면 승인하지 말고 롤백 요청하세요.';
+  if (row.status === 'publish_failed') return '오류와 백업 preflight를 확인한 뒤 DB 발행 재시도 또는 보류하세요.';
+  if (row.status === 'rolled_back') return 'DB-admin ingestion을 reject/delete한 뒤 원본·제안을 재검수하세요.';
+  if (row.eligible && row.ai_safe_final_approve_eligible) return '원본·정규화·감사 플래그를 확인하고 최종 승인 요청하세요.';
+  if (row.eligible) return '사후 감사 플래그를 확인하고 DB-admin 검수 큐로 보내세요.';
+  if ((row.blockers || []).length) return `차단 사유를 해결하세요: ${(row.blockers || []).slice(0, 2).join(', ')}`;
+  return '검수 묶음에서 승인/보정/반려를 먼저 완료하세요.';
+}
+
+export function summarizeNormalizedPublishRow(row = {}) {
+  const metadata = row.normalized_metadata || row.item?.normalized_metadata || row.item?.raw_data?.normalized || {};
+  const canonical = metadata.canonical_product || {};
+  const variant = metadata.product_variant || {};
+  const listing = metadata.source_listing || {};
+  const offer = metadata.offer_event || {};
+  return [
+    {
+      key: 'canonical',
+      label: '상품 카드',
+      value: canonical.canonical_name || row.item?.name || row.raw_title || '-',
+      help: [canonical.category_name || row.item?.category, canonical.category_id || row.item?.category_id].filter(Boolean).join(' · ') || '카테고리 없음',
+    },
+    {
+      key: 'variant',
+      label: '용량/단위',
+      value: variant.package_signature || row.item?.display_unit || row.item?.unit || '-',
+      help: variant.package_match_status === 'source_confirmed'
+        ? '원본 출처 단위와 일치'
+        : variant.package_match_status || '단위 확인 필요',
+    },
+    {
+      key: 'listing',
+      label: '출처 상품',
+      value: listing.source_title || row.raw_title || '-',
+      help: [listing.source_name || row.source_name, listing.source_record_key].filter(Boolean).join(' · ') || '출처 정보 없음',
+    },
+    {
+      key: 'offer',
+      label: '가격/이벤트',
+      value: offer.price ?? row.item?.sale_price ?? row.item?.price ?? '-',
+      help: [offer.price_state || row.item?.price_state, offer.event_name || row.item?.event_name].filter(Boolean).join(' · ') || '가격 상태 확인',
+    },
+  ];
+}
+
 export function buildOperatorDashboardReport(operatorSummary = {}) {
   const stats = operatorSummary.stats || {};
   const publishBlockers = operatorSummary.publish_blockers || [];

@@ -3,14 +3,18 @@ import {
   buildAutomationApplyMessage,
   buildBatchHealth,
   buildBulkPreview,
+  buildMutationPreflightChecklist,
   buildOperatorDashboardReport,
   buildOpsTriageCounters,
   buildPublishConfirmationMessage,
+  buildPublishRowNextAction,
   buildRollbackConfirmationMessage,
   explainAutomationRow,
   formatCategoryDisplay,
+  auditFlagLabel,
   nextOperatorAction,
   publishRowAction,
+  summarizeNormalizedPublishRow,
   summarizeAutomationPreview,
   summarizeProviderSetup,
 } from './reviewQueueHelpers.js';
@@ -594,6 +598,62 @@ function ProviderStatusStrip({ providerSummary, setupError }) {
   );
 }
 
+function SourceEvidencePanel({ record, proposal, publishRow }) {
+  const rawPayload = record?.raw_payload || publishRow?.item?.raw_evidence?.raw_payload || {};
+  const sourceUrl = record?.source_url || rawPayload.source_url || rawPayload.detail_url || rawPayload.url || publishRow?.item?.source_url;
+  const sourceUnit = rawPayload.unit || rawPayload.raw_unit || rawPayload.sellUnitCapacity || publishRow?.item?.raw_unit || publishRow?.item?.source_unit_text;
+  const sourcePrice = record?.raw_price ?? rawPayload.sale_price ?? rawPayload.current_price ?? rawPayload.price ?? publishRow?.item?.sale_price;
+  return (
+    <div className="evidence-panel" aria-label="source evidence">
+      <div className="row" style={{ justifyContent: 'space-between' }}>
+        <strong>출처 근거</strong>
+        <span className="badge">원본이 가격/링크/행사 기간의 기준입니다</span>
+      </div>
+      <div className="evidence-grid">
+        <div><span className="muted">원본 제목</span><br />{record?.raw_title || publishRow?.raw_title || proposal.provenance?.evidence_text || '-'}</div>
+        <div><span className="muted">출처/ID</span><br />{record?.source_name || publishRow?.source_name || '-'} · <code>{record?.source_record_key || proposal.provenance?.raw_record_id || '-'}</code></div>
+        <div><span className="muted">원본 가격/단위</span><br />{pretty(sourcePrice)} · {pretty(sourceUnit)}</div>
+        <div><span className="muted">원본 링크</span><br />{sourceUrl ? <a href={sourceUrl} target="_blank" rel="noreferrer">출처 열기</a> : '-'}</div>
+      </div>
+    </div>
+  );
+}
+
+function NormalizedSnapshot({ publishRow }) {
+  if (!publishRow) return null;
+  const cards = summarizeNormalizedPublishRow(publishRow);
+  const flags = publishRow.post_publish_audit_flags || publishRow.item?.post_publish_audit_flags || [];
+  return (
+    <div className="evidence-panel" aria-label="normalized publish snapshot">
+      <div className="row" style={{ justifyContent: 'space-between' }}>
+        <strong>DB에 보낼 정규화 카드</strong>
+        <span className={`badge ${publishRow.ai_safe_final_approve_eligible ? 'ok' : 'warn'}`}>
+          {publishRow.ai_safe_final_approve_eligible ? '최종 승인 후보' : 'DB-admin 검수 필요'}
+        </span>
+      </div>
+      <div className="normalized-card-grid">
+        {cards.map((card) => (
+          <div key={card.key} className="normalized-mini-card">
+            <span className="muted">{card.label}</span>
+            <strong>{pretty(card.value)}</strong>
+            <div className="muted">{card.help}</div>
+          </div>
+        ))}
+      </div>
+      {!!flags.length && (
+        <div className="issue-chip-row" aria-label="post publish audit flags">
+          <span className="badge warn">사후 감사</span>
+          {flags.slice(0, 4).map((flag, index) => (
+            <span key={`${typeof flag === 'string' ? flag : flag.code}-${index}`} className="badge warn">{auditFlagLabel(flag)}</span>
+          ))}
+          {flags.length > 4 && <span className="badge">+{flags.length - 4}</span>}
+        </div>
+      )}
+      <div className="muted" style={{ marginTop: 6 }}>다음 조치: {buildPublishRowNextAction(publishRow)}</div>
+    </div>
+  );
+}
+
 function PublishControls({ eligibleRows, allRows, publishSummary, reviewerId, loading, onPublish, onRollback }) {
   const count = eligibleRows.length;
   const retryCount = eligibleRows.filter((row) => row.retryable).length;
@@ -603,6 +663,7 @@ function PublishControls({ eligibleRows, allRows, publishSummary, reviewerId, lo
   const topBlockers = (publishSummary?.blockers || []).slice(0, 4);
   const approvedPreviewRows = (publishSummary?.approved_rows || eligibleRows).slice(0, 8);
   const publishedRows = allRows.filter((row) => row.status === 'published' || row.status === 'pending_db_review');
+  const preflight = buildMutationPreflightChecklist(publishSummary || {}, eligibleRows.length ? eligibleRows : allRows);
   return (
     <div className="card workflow-card">
       <div className="row" style={{ justifyContent: 'space-between' }}>
@@ -616,6 +677,16 @@ function PublishControls({ eligibleRows, allRows, publishSummary, reviewerId, lo
       <div className="decision-hint" style={{ marginTop: 8 }}>
         <strong>발행 후 감사:</strong> AI-admin은 DB-admin 전송/최종 승인 기록과 의심 항목을 계속 보여줍니다.
         신고/오류가 보이면 아래 전송 완료 목록 또는 각 행의 <b>롤백 요청</b>을 누르고, 실패 항목은 <b>DB 발행 재시도</b>로 재검수 흐름에 올리세요.
+      </div>
+      <div className="decision-hint" style={{ marginTop: 8 }}>
+        <span className={`badge ${preflight.tone}`}>변경 전 안전 확인: {preflight.label}</span>{' '}
+        {preflight.help}
+        {preflight.backupRequired && (
+          <>
+            <br />
+            백업: <code>{preflight.latestBackup || '아직 화면에서 확인되지 않음'}</code> · 실패 시 {preflight.rollbackPath}
+          </>
+        )}
       </div>
       <div className="decision-hint" style={{ marginTop: 8 }}>
         <strong>{publishSummary?.quality_verdict || '품질 게이트를 확인 중입니다.'}</strong>
@@ -643,7 +714,9 @@ function PublishControls({ eligibleRows, allRows, publishSummary, reviewerId, lo
                 <span className={`badge ${row.ai_safe_final_approve_eligible ? 'ok' : 'warn'}`}>
                   {row.ai_safe_final_approve_eligible ? '최종 승인 후보' : 'DB 검수 큐'}
                 </span>
-                {!!row.post_publish_audit_flags?.length && <span className="muted"> audit {row.post_publish_audit_flags.length}건</span>}
+                {!!row.post_publish_audit_flags?.length && (
+                  <span className="muted"> · 사후 감사: {row.post_publish_audit_flags.slice(0, 2).map(auditFlagLabel).join(', ')}</span>
+                )}
               </li>
             ))}
           </ul>
@@ -672,6 +745,7 @@ function PublishControls({ eligibleRows, allRows, publishSummary, reviewerId, lo
                 <code>{row.raw_record_id}</code> {row.raw_title || row.item?.name || ''} ·
                 ingestion <strong>{row.db_ingestion_id || '-'}</strong> ·
                 result <code>{row.db_ingestion_result?.status || row.db_ingestion_result?.message || '-'}</code>{' '}
+                <span className="muted">{buildPublishRowNextAction(row)}</span>{' '}
                 <button
                   className="danger-outline"
                   disabled={loading || !reviewerId.trim()}
@@ -1060,7 +1134,7 @@ function ProposalActions({ proposal, reviewerId, setReviewerId, onRefresh, onErr
   );
 }
 
-function ProposalCard({ proposal, reviewerId, setReviewerId, onRefresh, onError, issuesByRecord, duplicateMap, publishRow, onPublishRows, onRollback }) {
+function ProposalCard({ proposal, reviewerId, setReviewerId, onRefresh, onError, issuesByRecord, duplicateMap, publishRow, onPublishRows, onRollback, record }) {
   const duplicateKey = `${proposal.target_field}|${normalizedKey(proposal.proposed_value)}`;
   const duplicateCount = duplicateMap[duplicateKey] || 0;
   const reasons = whyNeedsReview(proposal, issuesByRecord, duplicateCount);
@@ -1118,6 +1192,8 @@ function ProposalCard({ proposal, reviewerId, setReviewerId, onRefresh, onError,
           <br />
           <strong>추천:</strong> {nextAction}
         </div>
+        <SourceEvidencePanel record={record} proposal={proposal} publishRow={publishRow} />
+        <NormalizedSnapshot publishRow={publishRow} />
         {!!issues.length && (
           <div className="issue-chip-row">
             {issues.slice(0, 4).map((issue, index) => (
@@ -1351,6 +1427,10 @@ function MatchDecisionCards({ cards, reviewerId, setReviewerId, onRefresh, onErr
                 <button className="danger-outline" onClick={() => runAction(card, 'manual_hold')}>수동 보류</button>
               </div>
             </div>
+            <div className="decision-hint">
+              <strong>초보자 체크:</strong> 원본 제목/용량이 후보 상품과 같은 상품이면 “이 후보 선택”, 같은 상품의 새 용량이면 “variant 생성”,
+              출처별 새 판매글이면 “source listing 생성”, 헷갈리면 “수동 보류”를 누르세요.
+            </div>
             <div className="candidate-list">
               {(card.candidates || []).slice(0, 5).map((candidate) => (
                 <div className="candidate-card" key={candidate.match_id || `${candidate.target_type}:${candidate.target_id}`}>
@@ -1370,7 +1450,7 @@ function MatchDecisionCards({ cards, reviewerId, setReviewerId, onRefresh, onErr
                   </div>
                   <div className="muted">근거: {(candidate.reasons || []).join(', ')}</div>
                   <div className="muted">
-                    허용 {pretty(candidate.allowed_title_pattern_evidence)} · 차단 {pretty(candidate.blocked_title_pattern_evidence)} · 패키지 {candidate.package_signature_match ? '일치' : '불일치/없음'}
+                    허용 제목 근거 {pretty(candidate.allowed_title_pattern_evidence)} · 차단 제목 근거 {pretty(candidate.blocked_title_pattern_evidence)} · 용량/단위 {candidate.package_signature_match ? '일치' : '불일치/없음'}
                   </div>
                 </div>
               ))}
@@ -1528,7 +1608,10 @@ export default function ReviewQueuePanel() {
       setMatchCards(matchCardResponse.items || []);
       setRawRecords(records.items || []);
       setPublishRows(publishEligibility.items || []);
-      setPublishSummary(publishEligibility.summary || null);
+      setPublishSummary(publishEligibility.summary ? {
+        ...publishEligibility.summary,
+        safety: publishEligibility.safety,
+      } : null);
       if (operatorResult.ok) {
         setOperatorSummary(operatorResult.body || null);
         setOperatorSummaryError(null);

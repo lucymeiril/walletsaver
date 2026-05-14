@@ -514,6 +514,31 @@ ul.items li.proposal-card {
   line-height: 1.45;
 }
 
+.evidence-panel {
+  background: #0f131b;
+  border: 1px solid #26354c;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.evidence-grid,
+.normalized-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.normalized-mini-card {
+  background: #101827;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  display: grid;
+  gap: 4px;
+}
+
 .issue-chip-row {
   display: flex;
   gap: 6px;
