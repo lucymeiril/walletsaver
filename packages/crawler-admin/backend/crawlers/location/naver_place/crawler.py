@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import json
 import logging
+import random
 import re
 from datetime import datetime
 from typing import Optional
@@ -141,8 +142,8 @@ class NaverPlaceCrawler(CrawlerContract):
 
                 try:
                     await page.goto(search_url, wait_until="domcontentloaded", timeout=20000)
-                    # 네이버 지도 검색 결과 로딩 대기
-                    await page.wait_for_timeout(3000)
+                    # 네이버 지도 검색 결과 로딩 대기 (jitter for anti-detection)
+                    await page.wait_for_timeout(3000 + int(random.uniform(0, 1000)))
 
                     # 네이버 지도는 검색 결과를 iframe 안에 렌더링한다
                     # searchIframe이 존재하는지 확인
@@ -307,6 +308,8 @@ class NaverPlaceCrawler(CrawlerContract):
                     "source": "naver_place",
                     "query": query,
                 })
+
+            del soup  # 메모리 해제
 
         except Exception as e:
             logger.warning(f"[네이버 플레이스] HTML 파싱 실패: {e}")

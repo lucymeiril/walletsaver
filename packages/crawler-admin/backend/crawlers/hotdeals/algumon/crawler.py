@@ -24,7 +24,9 @@ https://www.algumon.com/n/deal 에서 핫딜 게시글을 수집한다.
 from __future__ import annotations
 
 import logging
+import random
 import re
+import time
 from datetime import datetime
 from typing import Optional
 
@@ -60,6 +62,33 @@ class AlgumonCrawler(CrawlerContract):
             strategies=["requests"],
         )
 
+    def _retry_request(self, url: str, *, headers: dict | None = None,
+                       session: requests.Session | None = None,
+                       timeout: int = 15, max_retries: int = 3) -> requests.Response:
+        """HTTP GET with exponential backoff for transient failures."""
+        requester = session or requests
+        last_exc = None
+        for attempt in range(max_retries):
+            try:
+                resp = requester.get(url, headers=headers, timeout=timeout)
+                if resp.status_code == 429:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    time.sleep(wait)
+                    continue
+                return resp
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.Timeout) as e:
+                last_exc = e
+                if attempt < max_retries - 1:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
+                                   f"retrying in {wait:.1f}s: {e}")
+                    time.sleep(wait)
+                else:
+                    raise
+        raise last_exc  # type: ignore[misc]
+
     async def crawl(self) -> CrawlResult:
         """알구몬 핫딜 목록을 크롤링한다."""
         started_at = datetime.now()
@@ -67,7 +96,7 @@ class AlgumonCrawler(CrawlerContract):
 
         try:
             headers = self._anti_detect.get_random_headers()
-            response = requests.get(self.DEAL_URL, headers=headers, timeout=15)
+            response = self._retry_request(self.DEAL_URL, headers=headers, timeout=15)
             response.encoding = "utf-8"
 
             if response.status_code != 200:
@@ -121,6 +150,8 @@ class AlgumonCrawler(CrawlerContract):
         items: list[HotdealPost] = []
 
         # 1차: JSON-LD에서 추출 시도
+        # JSON-LD는 최신 알구몬에서 제목/URL만 있고 가격이 빠지는 경우가 많다.
+        # 그래서 여기서 조기 반환하지 않고 DOM 카드까지 병합해 price/source 누락을 보강한다.
         import json
         for script in soup.select('script[type="application/ld+json"]'):
             try:
@@ -142,11 +173,9 @@ class AlgumonCrawler(CrawlerContract):
             except (json.JSONDecodeError, KeyError):
                 continue
 
-        if items:
-            logger.info(f"[알구몬] JSON-LD에서 {len(items)}개 추출")
-            return items
+        jsonld_by_key = {self._deal_key(item.url): item for item in items}
 
-        # 2차: HTML DOM 기반 파싱
+        # 2차: HTML DOM 기반 파싱. JSON-LD 결과가 있어도 price 보강을 위해 항상 시도한다.
         cards = soup.select(".deal-card-content")
         logger.info(f"[알구몬] deal-card-content 카드: {len(cards)}개")
 
@@ -154,12 +183,34 @@ class AlgumonCrawler(CrawlerContract):
             try:
                 item = self._parse_card(card)
                 if item:
-                    items.append(item)
+                    existing = jsonld_by_key.get(self._deal_key(item.url))
+                    if existing:
+                        if existing.price is None and item.price is not None:
+                            existing.price = item.price
+                        if not existing.source_community and item.source_community:
+                            existing.source_community = item.source_community
+                    else:
+                        items.append(item)
+                        jsonld_by_key[self._deal_key(item.url)] = item
             except Exception as e:
                 logger.debug(f"[알구몬] 카드 파싱 오류: {e}")
                 continue
 
+        if items:
+            price_count = sum(1 for item in items if item.price is not None)
+            logger.info(f"[알구몬] 총 {len(items)}개 추출, 가격 포함 {price_count}개")
+
+        del soup  # Free DOM tree memory
         return items
+
+    def _deal_key(self, url: str) -> str:
+        """알구몬 JSON-LD(`/n/deal/123`)와 DOM redirect(`/l/d/123?...`) URL을 같은 딜로 묶는다."""
+        if not url:
+            return ""
+        match = re.search(r"/(?:n/deal|l/d)/(\d+)", url)
+        if match:
+            return match.group(1)
+        return url.split("?", 1)[0]
 
     def _parse_card(self, card) -> Optional[HotdealPost]:
         """개별 핫딜 카드를 파싱한다."""

@@ -107,9 +107,8 @@ export default function PluginSandbox({
 /** 권한에 따른 sandbox 속성 구성 */
 function buildSandboxAttr(permissions) {
   const parts = ['allow-scripts'];
-  if (permissions.includes('network:external')) {
-    parts.push('allow-same-origin');
-  }
+  // SECURITY: NEVER combine allow-scripts + allow-same-origin.
+  // Per HTML spec, this allows the iframe to remove its own sandbox.
   if (permissions.includes('write:preferences')) {
     parts.push('allow-forms');
   }

@@ -485,6 +485,28 @@ def _build_synonym_maps():
 _build_synonym_maps()
 
 
+# ──────────────────────────────────────────────
+# 사전 인덱스 — O(1) 조회용 (auto_categorize 핫패스 최적화)
+# ──────────────────────────────────────────────
+
+# word → keyword dict (정확 일치 조회)
+KEYWORD_BY_WORD: dict[str, dict] = {kw["word"]: kw for kw in KEYWORDS}
+
+# synonym → keyword dict (동의어 역매핑으로 O(1) 조회)
+KEYWORD_BY_SYNONYM: dict[str, dict] = {}
+for _kw_entry in KEYWORDS:
+    for _syn in _kw_entry.get("synonyms", []):
+        if _syn not in KEYWORD_BY_SYNONYM:
+            KEYWORD_BY_SYNONYM[_syn] = _kw_entry
+
+# category_id → [keyword dicts] 인덱스
+KEYWORDS_BY_CATEGORY: dict[str, list[dict]] = {}
+for _kw_entry in KEYWORDS:
+    _cid = _kw_entry.get("category_id")
+    if _cid:
+        KEYWORDS_BY_CATEGORY.setdefault(_cid, []).append(_kw_entry)
+
+
 def resolve_synonym(query: str) -> str:
     """동의어를 원래 키워드로 변환. 없으면 원래 쿼리 반환."""
     return SYNONYMS.get(query, query)
@@ -496,8 +518,8 @@ def get_related(word: str) -> list[str]:
 
 
 def get_keywords_for_category(category_id: str) -> list[dict]:
-    """특정 카테고리에 속한 키워드 목록."""
-    return [kw for kw in KEYWORDS if kw["category_id"] == category_id]
+    """특정 카테고리에 속한 키워드 목록. 사전 인덱스로 O(1) 조회."""
+    return list(KEYWORDS_BY_CATEGORY.get(category_id, []))
 
 
 def search_keywords(query: str, limit: int = 10) -> list[dict]:

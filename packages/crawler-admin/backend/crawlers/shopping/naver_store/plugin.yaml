@@ -1,0 +1,32 @@
+name: naver_store
+display_name: 네이버스토어
+category: shopping
+module: crawlers.shopping.naver_store.crawler
+class_name: NaverStoreCrawler
+schedule: manual
+difficulty: skeleton
+source_id: naver_store
+source_group: marketplace
+live_ready: false
+parser_contract: marketplace_skeleton.v1
+fixture_contract: marketplace_skeleton_fixture_contracts.v1
+live_readiness:
+  status: skeleton_fixture_only
+  fixture_contract_status: passed
+  bounded_diagnostics:
+    status: required_before_live_ready
+    evidence_id: null
+    captured_at: null
+    run_limits:
+      max_requests: null
+      max_pages: null
+      timeout_seconds: null
+  operator_approval:
+    status: required_before_live_ready
+  required_evidence:
+    - fixture_contract_passed
+    - bounded_live_diagnostics_passed
+    - bounded_run_limits_recorded
+    - operator_approval_recorded
+plugin_aliases: ["naver_store", "naverstore", "smartstore", "naver_smartstore"]
+notes: "Registered skeleton/fixture-only: safe mocked HTML/JSON parser coverage; live crawling intentionally disabled. Do not set live_ready=true until fixture contract, bounded diagnostics evidence, run limits, and operator approval are recorded."

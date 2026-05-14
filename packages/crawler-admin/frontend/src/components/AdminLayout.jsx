@@ -9,7 +9,9 @@ import {
   Menu,
   X,
   ClipboardCheck,
+  LogOut,
 } from 'lucide-react';
+import { logout } from '../stores/authStore';
 import styles from './AdminLayout.module.css';
 
 const navItems = [
@@ -75,6 +77,11 @@ export default function AdminLayout() {
             </NavLink>
           ))}
         </nav>
+
+        <button className={styles.logoutBtn} onClick={logout}>
+          <LogOut size={18} />
+          로그아웃
+        </button>
       </aside>
 
       <main className={styles.main}>

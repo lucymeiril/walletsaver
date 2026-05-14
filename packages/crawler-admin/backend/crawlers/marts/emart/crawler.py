@@ -13,7 +13,9 @@ from __future__ import annotations
 
 import json
 import logging
+import random
 import re
+import time
 from datetime import datetime
 from typing import Optional
 from urllib.parse import quote
@@ -23,24 +25,62 @@ import requests
 from core.contracts.crawler import CrawlerContract
 from core.models import (
     CrawlerInfo, CrawlerGroup, CrawlResult, CrawlStatus,
-    DiscountItem,
+    DiscountItem, ErrorType, StrategyFailure,
 )
+from core.product_units import normalize_unit_metadata
 from engine.anti_detect import AntiDetect
+from pipeline.quality import summarize_discount_run
 
 logger = logging.getLogger(__name__)
 
 
 class EmartCrawler(CrawlerContract):
-    """이마트 크롤러 — SSG __NEXT_DATA__ 기반 할인 상품 수집."""
+    """이마트 크롤러 — SSG __NEXT_DATA__ 기반 할인 상품 수집.
+
+    봇 탐지 회피 전략:
+      - 검색어별 1~3초 랜덤 딜레이 (AntiDetect)
+      - User-Agent 로테이션
+      - Referer 헤더로 정상 브라우저 흉내
+      - 페이지 간 점진적 크롤링 (한 번에 최대 MAX_PAGES 페이지)
+    """
 
     BASE_URL = "https://emart.ssg.com"
     # SSG 검색 페이지 — __NEXT_DATA__에 상품 JSON이 포함됨
     SEARCH_URL = "https://emart.ssg.com/search.ssg"
-    # 할인 상품이 많은 기본 검색어 목록
-    SEARCH_QUERIES = ["행사", "할인", "특가"]
+    # 다양한 검색어로 더 많은 할인 상품 수집
+    SEARCH_QUERIES = ["행사", "할인", "특가", "1+1", "반값", "세일"]
+    # 페이지네이션: 각 검색어당 최대 페이지 수 (페이지당 ~40개)
+    MAX_PAGES = 3
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=1.0, delay_max=3.0)
+
+    def _retry_request(self, url: str, *, headers: dict | None = None,
+                       session: requests.Session | None = None,
+                       timeout: int = 15, max_retries: int = 3) -> requests.Response:
+        """HTTP GET with exponential backoff for transient failures."""
+        requester = session or requests
+        last_exc = None
+        for attempt in range(max_retries):
+            try:
+                resp = requester.get(url, headers=headers, timeout=timeout)
+                if resp.status_code == 429:  # Rate limited — back off
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    time.sleep(wait)
+                    continue
+                return resp
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.Timeout) as e:
+                last_exc = e
+                if attempt < max_retries - 1:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
+                                   f"retrying in {wait:.1f}s: {e}")
+                    time.sleep(wait)
+                else:
+                    raise
+        raise last_exc  # type: ignore[misc]
 
     @property
     def info(self) -> CrawlerInfo:
@@ -54,49 +94,117 @@ class EmartCrawler(CrawlerContract):
         )
 
     async def crawl(self) -> CrawlResult:
-        """이마트 할인 상품을 크롤링한다."""
+        """이마트 할인 상품을 크롤링한다.
+
+        페이지네이션 전략:
+          각 검색어(SEARCH_QUERIES)에 대해 MAX_PAGES 페이지까지 순회하며
+          __NEXT_DATA__에서 상품을 추출한다. 중복은 validate()에서 제거한다.
+          사이트 부하를 줄이기 위해 각 요청 사이에 AntiDetect 딜레이를 적용한다.
+        """
         started_at = datetime.now()
         logger.info("[이마트] 크롤링 시작")
 
         all_items: list[DiscountItem] = []
         errors: list[str] = []
+        strategy_failures: list[StrategyFailure] = []
+        source_raw_count = 0
+        pages_attempted = 0
+        import asyncio as _asyncio
 
         try:
             for query in self.SEARCH_QUERIES:
-                try:
-                    url = f"{self.SEARCH_URL}?target=all&query={quote(query)}"
-                    headers = self._anti_detect.get_random_headers()
-                    headers.update({
-                        "Referer": "https://emart.ssg.com/",
-                    })
+                for page_num in range(1, self.MAX_PAGES + 1):
+                    pages_attempted += 1
+                    try:
+                        url = f"{self.SEARCH_URL}?target=all&query={quote(query)}&page={page_num}"
+                        headers = self._anti_detect.get_random_headers()
+                        headers.update({
+                            "Referer": "https://emart.ssg.com/",
+                        })
 
-                    response = requests.get(url, headers=headers, timeout=20)
-                    response.encoding = "utf-8"
+                        # Anti-detection: randomized delay between pages with jitter
+                        delay = self._anti_detect.get_random_delay()
+                        await _asyncio.sleep(delay + random.uniform(0, 0.5))
 
-                    if response.status_code != 200:
-                        logger.warning(f"[이마트] 검색 '{query}' HTTP {response.status_code}")
-                        errors.append(f"검색 '{query}' HTTP {response.status_code}")
-                        continue
+                        response = self._retry_request(url, headers=headers, timeout=20)
+                        response.encoding = "utf-8"
 
-                    items = await self.parse(response.text)
-                    logger.info(f"[이마트] 검색 '{query}': {len(items)}개 수집")
-                    all_items.extend(items)
+                        if response.status_code != 200:
+                            message = f"검색 '{query}' p{page_num} HTTP {response.status_code}"
+                            logger.warning(f"[이마트] {message}")
+                            errors.append(message)
+                            strategy_failures.append(StrategyFailure(
+                                strategy_name="requests",
+                                error_type=ErrorType.HTTP_ERROR,
+                                error_msg=message,
+                                status_code=response.status_code,
+                            ))
+                            break  # 이 검색어의 다음 페이지 스킵
 
-                except Exception as e:
-                    logger.warning(f"[이마트] 검색 '{query}' 실패: {e}")
-                    errors.append(f"검색 '{query}': {e}")
-                    continue
+                        raw_candidates = self._count_raw_candidates(response.text)
+                        source_raw_count += raw_candidates
+                        items = await self.parse(response.text)
+                        logger.info(
+                            f"[이마트] 검색 '{query}' p{page_num}: 원천 후보 {raw_candidates}개, 파싱 {len(items)}개"
+                        )
+                        all_items.extend(items)
 
-                # 첫 검색어에서 충분히 수집되면 중단 (사이트 부하 방지)
-                if len(all_items) >= 30:
-                    break
+                        # 결과가 없으면 이 검색어의 마지막 페이지
+                        if not items:
+                            break
+
+                    except Exception as e:
+                        message = f"검색 '{query}' p{page_num}: {e}"
+                        logger.warning(f"[이마트] {message}")
+                        errors.append(message)
+                        error_type = (
+                            ErrorType.TIMEOUT
+                            if isinstance(e, requests.exceptions.Timeout)
+                            else ErrorType.NETWORK_ERROR
+                            if isinstance(e, requests.exceptions.RequestException)
+                            else ErrorType.UNKNOWN
+                        )
+                        strategy_failures.append(StrategyFailure(
+                            strategy_name="requests",
+                            error_type=error_type,
+                            error_msg=message,
+                        ))
+                        break
 
             valid_items = await self.validate(all_items)
             items_as_dict = [item.model_dump(mode="json") for item in valid_items]
+            quality_details = summarize_discount_run(
+                items_as_dict,
+                raw_count=len(all_items),
+                source_raw_count=source_raw_count,
+                invalid_count=max(0, len(all_items) - len(valid_items)),
+                errors=errors,
+                strategy_used="requests",
+                queries_attempted=len(self.SEARCH_QUERIES),
+                pages_attempted=pages_attempted,
+            )
 
             finished_at = datetime.now()
             duration = (finished_at - started_at).total_seconds()
             status = CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED
+            if not valid_items:
+                diagnostic = quality_details.get("zero_result_diagnostic") or {}
+                stage = diagnostic.get("stage")
+                if stage == "source_zero_raw_rows":
+                    error_type = ErrorType.EMPTY_RESPONSE
+                elif stage == "parse_filtered_all_raw_rows":
+                    error_type = ErrorType.PARSE_ERROR
+                elif stage == "validation_rejected_all_rows":
+                    error_type = ErrorType.UNKNOWN
+                else:
+                    error_type = ErrorType.UNKNOWN
+                message = diagnostic.get("message") or "이마트 크롤링 결과가 0건입니다."
+                errors.append(message)
+                strategy_failures.append(StrategyFailure(
+                    strategy_name="requests",
+                    error_type=error_type,
+                    error_msg=message,
+                ))
             logger.info(f"[이마트] 크롤링 완료: {len(valid_items)}개, {duration:.2f}초")
 
             return CrawlResult(
@@ -108,7 +216,10 @@ class EmartCrawler(CrawlerContract):
                 started_at=started_at,
                 finished_at=finished_at,
                 duration_seconds=duration,
+                errors=strategy_failures,
                 error_msg="; ".join(errors) if errors and not valid_items else None,
+                quality_score=quality_details["score"],
+                quality_details=quality_details,
             )
 
         except Exception as e:
@@ -117,6 +228,11 @@ class EmartCrawler(CrawlerContract):
                 status=CrawlStatus.FAILED,
                 crawler_name=self.info.name,
                 error_msg=str(e),
+                errors=[StrategyFailure(
+                    strategy_name="requests",
+                    error_type=ErrorType.UNKNOWN,
+                    error_msg=str(e),
+                )],
                 started_at=started_at,
                 finished_at=datetime.now(),
             )
@@ -150,10 +266,28 @@ class EmartCrawler(CrawlerContract):
             from bs4 import BeautifulSoup
             soup = BeautifulSoup(raw_data, "html.parser")
             items = self._parse_html(soup)
+            del soup  # Free parsed HTML tree from memory
         except Exception as e:
             logger.warning(f"[이마트] HTML 파싱 실패: {e}")
 
         return items
+
+    def _count_raw_candidates(self, raw_data: str) -> int:
+        """Count source candidate rows before DiscountItem parsing/validation."""
+        next_data_items = self._extract_next_data_items(raw_data)
+        if next_data_items:
+            return len(next_data_items)
+        json_items = self._extract_json_items(raw_data)
+        if json_items:
+            return len(json_items)
+        try:
+            from bs4 import BeautifulSoup
+            soup = BeautifulSoup(raw_data, "html.parser")
+            count = len(soup.select(".cunit_prod, .csct_deal, .mndtl_item, .item_box"))
+            del soup
+            return count
+        except Exception:
+            return 0
 
     def _extract_next_data_items(self, raw_data: str) -> list[dict]:
         """__NEXT_DATA__ 스크립트에서 상품 목록을 추출한다.
@@ -212,6 +346,7 @@ class EmartCrawler(CrawlerContract):
                 # 상품 데이터인지 확인: itemId + itemName 필드 존재 여부
                 if "itemId" in data_list[0] and "itemName" in data_list[0]:
                     logger.info(f"[이마트] __NEXT_DATA__ 상품 {len(data_list)}개 발견")
+                    del data  # Free large JSON from memory
                     return data_list
 
         return []
@@ -241,7 +376,9 @@ class EmartCrawler(CrawlerContract):
             return None
 
         # 원가
-        original_price = self._parse_price_str(product.get("strikeOutPrice"))
+        original_price = self._parse_price_str(
+            product.get("strikeOutPrice") or product.get("originalPrice")
+        )
         if not original_price:
             price_info = product.get("priceInfo", {})
             if price_info:
@@ -259,11 +396,27 @@ class EmartCrawler(CrawlerContract):
                 if rate_match:
                     discount_pct = float(rate_match.group(1))
 
-        image_url = product.get("itemImgUrl", "")
-        detail_url = product.get("itemUrl", "")
+        image_url = self._absolute_url(
+            product.get("itemImgUrl") or product.get("imageUrl") or product.get("imgUrl") or "",
+            self.BASE_URL,
+        )
+        detail_url = self._absolute_url(
+            product.get("itemUrl") or product.get("detailUrl") or product.get("linkUrl") or "",
+            self.BASE_URL,
+        )
         brand = product.get("brandName", "")
         site = product.get("siteName", "이마트")
-        unit = product.get("sellUnitCapacity", "")
+        raw_unit = product.get("sellUnitCapacity", "")
+        unit_metadata = normalize_unit_metadata(
+            name=name,
+            sale_price=sale_price,
+            raw_unit=raw_unit,
+        )
+        display_unit = unit_metadata.get("display_unit") or raw_unit
+
+        attributes = unit_metadata.get("attributes") or {}
+        if brand:
+            attributes = {**attributes, "collection": brand}
 
         return DiscountItem(
             name=name,
@@ -271,12 +424,29 @@ class EmartCrawler(CrawlerContract):
             original_price=original_price,
             sale_price=sale_price,
             discount_percent=discount_pct,
-            unit=unit,
-            category=brand,
+            unit=display_unit or "",
+            display_unit=display_unit or "",
+            package_quantity=unit_metadata.get("package_quantity"),
+            package_unit=unit_metadata.get("package_unit") or "",
+            price_per_100g=unit_metadata.get("price_per_100g"),
+            attributes=attributes,
+            category="",
             event_name="이마트 할인",
             image_url=image_url,
             detail_url=detail_url,
         )
+
+    def _absolute_url(self, url: str, base_url: str) -> str:
+        """Normalize source-relative URLs while preserving absolute URLs."""
+        if not url:
+            return ""
+        if url.startswith("//"):
+            return f"https:{url}"
+        if url.startswith("http"):
+            return url
+        if url.startswith("/"):
+            return f"{base_url}{url}"
+        return url
 
     def _extract_json_items(self, raw_data: str) -> list[dict]:
         """페이지 내 임베디드 JSON 데이터 추출 (레거시 fallback)."""
@@ -326,6 +496,13 @@ class EmartCrawler(CrawlerContract):
         detail_url = product.get("itemUrl") or product.get("detail_url", "")
         if detail_url and not detail_url.startswith("http"):
             detail_url = f"{self.BASE_URL}{detail_url}"
+        raw_unit = product.get("unit") or product.get("sellUnitCapacity") or ""
+        unit_metadata = normalize_unit_metadata(
+            name=name,
+            sale_price=sale_price,
+            raw_unit=raw_unit,
+        )
+        display_unit = unit_metadata.get("display_unit") or raw_unit
 
         return DiscountItem(
             name=name,
@@ -333,6 +510,12 @@ class EmartCrawler(CrawlerContract):
             original_price=original_price,
             sale_price=sale_price,
             discount_percent=discount_pct,
+            unit=display_unit or "",
+            display_unit=display_unit or "",
+            package_quantity=unit_metadata.get("package_quantity"),
+            package_unit=unit_metadata.get("package_unit") or "",
+            price_per_100g=unit_metadata.get("price_per_100g"),
+            attributes=unit_metadata.get("attributes") or {},
             category=category,
             event_name=product.get("eventNm", "이마트 할인"),
             image_url=image_url,
@@ -392,6 +575,8 @@ class EmartCrawler(CrawlerContract):
         if link_el:
             href = link_el.get("href", "")
             detail_url = href if href.startswith("http") else f"{self.BASE_URL}{href}"
+        unit_metadata = normalize_unit_metadata(name=name, sale_price=sale_price)
+        display_unit = unit_metadata.get("display_unit")
 
         return DiscountItem(
             name=name,
@@ -399,6 +584,12 @@ class EmartCrawler(CrawlerContract):
             original_price=original_price,
             sale_price=sale_price,
             discount_percent=discount_pct,
+            unit=display_unit or "",
+            display_unit=display_unit or "",
+            package_quantity=unit_metadata.get("package_quantity"),
+            package_unit=unit_metadata.get("package_unit") or "",
+            price_per_100g=unit_metadata.get("price_per_100g"),
+            attributes=unit_metadata.get("attributes") or {},
             image_url=image_url,
             detail_url=detail_url,
             event_name="이마트 할인",

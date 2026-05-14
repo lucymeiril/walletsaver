@@ -223,6 +223,227 @@
   opacity: 0.9;
 }
 
+/* Page Header */
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+}
+
+.pageHeader .pageTitle {
+  margin-bottom: 0;
+}
+
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--bg);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semi);
+  cursor: pointer;
+  transition: opacity var(--dur-fast) var(--ease);
+}
+
+.addBtn:hover {
+  opacity: 0.9;
+}
+
+.inlineAddBtn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: inherit;
+  text-decoration: underline;
+  padding: 0;
+}
+
+/* Disabled row */
+.disabledRow td {
+  opacity: 0.5;
+}
+
+.disabledRow .crawlerName {
+  text-decoration: line-through;
+  color: var(--text3);
+}
+
+.disabledRow .cronCode {
+  text-decoration: line-through;
+}
+
+/* Next runs */
+.nextRunCell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nextRunsList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nextRunItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--fs-xs);
+  color: var(--text3);
+}
+
+/* Running button */
+.runningBtn {
+  border-color: var(--green) !important;
+  color: var(--green) !important;
+  cursor: wait !important;
+}
+
+/* Delete button */
+.deleteBtn:hover {
+  border-color: var(--red) !important;
+  color: var(--red) !important;
+}
+
+/* Modal header */
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+}
+
+.modalHeader .editTitle {
+  margin-bottom: 0;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.closeBtn:hover {
+  color: var(--text);
+}
+
+/* Preset grid */
+.presetGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: var(--space-xs);
+}
+
+.presetChip {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: transparent;
+  color: var(--text2);
+  font-size: var(--fs-xs);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease);
+  white-space: nowrap;
+}
+
+.presetChip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.presetActive {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.presetActive:hover {
+  background: var(--accent);
+  color: var(--bg);
+  opacity: 0.9;
+}
+
+/* Select dropdown */
+.editSelect {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  outline: none;
+  cursor: pointer;
+}
+
+.editSelect:focus {
+  border-color: var(--accent);
+}
+
+/* Next runs preview in modal */
+.nextRunsPreview {
+  margin-bottom: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.previewRunItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-sm);
+  color: var(--text2);
+  padding: 4px 0;
+}
+
+/* Confirm dialog */
+.confirmModal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-xl);
+  width: 360px;
+  max-width: 90vw;
+}
+
+.confirmText {
+  font-size: var(--fs-sm);
+  color: var(--text2);
+  line-height: 1.6;
+  margin-bottom: var(--space-lg);
+}
+
+.dangerBtn {
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--red);
+  color: white;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semi);
+  cursor: pointer;
+}
+
+.dangerBtn:hover {
+  opacity: 0.9;
+}
+
 @media (max-width: 768px) {
   .tableCard {
     overflow-x: auto;

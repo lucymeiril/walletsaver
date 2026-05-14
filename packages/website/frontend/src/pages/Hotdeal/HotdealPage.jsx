@@ -1,17 +1,38 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { X, Info, Eye, MessageSquare, Clock, Send } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { HOTDEAL_FILTERS, fmt } from '../../data/mockData';
-import { HOTDEAL_SOURCES } from '../../data/seedData';
+import { HOTDEAL_FILTERS } from '../../utils/constants';
+import { fmt } from '../../utils/helpers';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
+import useAbortController from '../../hooks/useAbortController';
+import useThrottledCallback from '../../hooks/useThrottledCallback';
 import Badge from '../../components/common/Badge';
 import Spinner from '../../components/common/Spinner';
+import SafeImage from '../../components/common/SafeImage';
+import EmptyState from '../../components/common/EmptyState';
 import useStore from '../../stores/appStore';
 import s from './HotdealPage.module.css';
 
-const SOURCES = HOTDEAL_SOURCES;
 const PAGE_SIZE = 8;
+
+function normalizeDeal(deal) {
+  return {
+    ...deal,
+    hotVotes: deal.hotVotes ?? deal.votes_hot ?? 0,
+    coldVotes: deal.coldVotes ?? deal.votes_not ?? 0,
+  };
+}
+
+function voteTypeForApi(type) {
+  if (type === 'cold') return 'not';
+  return type || 'cancel';
+}
+
+function voteTypeFromApi(type) {
+  if (type === 'not') return 'cold';
+  return type || null;
+}
 
 function getTier(price, origPrice) {
   if (!price || !origPrice) return null;
@@ -27,36 +48,61 @@ export default function HotdealPage() {
   const { addToast } = useStore();
   const [filter, setFilter] = useState('all');
   const [source, setSource] = useState('전체');
-  const [sort, setSort] = useState('time');
+  const [sort, setSort] = useState('discount');
   const [detail, setDetail] = useState(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [votes, setVotes] = useState({});
 
   const [allDeals, setAllDeals] = useState([]);
   const [products, setProducts] = useState([]);
+  const [sources, setSources] = useState(['전체']);
   const [loading, setLoading] = useState(true);
+  const [newDealCount, setNewDealCount] = useState(0);
+  const lastDealIdsRef = useRef(null);
+  const [voteLoading, setVoteLoading] = useState({});
+  const voteLoadingRef = useRef({});
+  const getSignal = useAbortController();
 
   useEffect(() => {
-    fetch('/api/products/search?per_page=50').then(r => r.json())
+    voteLoadingRef.current = voteLoading;
+  }, [voteLoading]);
+
+  // 핫딜 출처 목록 API에서 조회
+  useEffect(() => {
+    const signal = getSignal();
+    fetch('/api/hotdeals/sources', { signal }).then(r => r.json())
+      .then(res => setSources(res.data || ['전체']))
+      .catch(err => {
+        if (err.name !== 'AbortError') setSources(['전체']);
+      });
+  }, [getSignal]);
+
+  useEffect(() => {
+    const signal = getSignal();
+    fetch('/api/products/search?per_page=50', { signal }).then(r => r.json())
       .then(res => setProducts(res.data || []))
-      .catch(console.error);
-  }, []);
+      .catch(err => { if (err.name !== 'AbortError') console.error(err); });
+  }, [getSignal]);
 
   useEffect(() => {
     setLoading(true);
     setVisibleCount(PAGE_SIZE);
+    const controller = new AbortController();
     const params = new URLSearchParams({ per_page: '50' });
     if (filter !== 'all') params.set('category', filter);
     if (sort) params.set('sort', sort);
 
-    fetch(`/api/hotdeals?${params}`).then(r => r.json())
-      .then(res => setAllDeals(res.data || []))
+    fetch(`/api/hotdeals?${params}`, { signal: controller.signal }).then(r => r.json())
+      .then(res => setAllDeals((res.data || []).map(normalizeDeal)))
       .catch(err => {
+        if (err.name === 'AbortError') return;
         console.error(err);
         addToast('핫딜 데이터를 불러오는데 실패했습니다', 'error');
       })
       .finally(() => setLoading(false));
-  }, [filter, sort]);
+
+    return () => controller.abort();
+  }, [filter, sort, addToast]);
 
   useEffect(() => {
     const openDealId = location.state?.openDealId;
@@ -66,6 +112,36 @@ export default function HotdealPage() {
       window.history.replaceState({}, '');
     }
   }, [location.state, allDeals]);
+
+  // 새 핫딜 감지
+  useEffect(() => {
+    if (allDeals.length === 0) return;
+    const currentIds = new Set(allDeals.map(d => d.id));
+    if (lastDealIdsRef.current !== null) {
+      const fresh = [...currentIds].filter(id => !lastDealIdsRef.current.has(id));
+      if (fresh.length > 0) setNewDealCount(prev => prev + fresh.length);
+    }
+    lastDealIdsRef.current = currentIds;
+  }, [allDeals]);
+
+  // 60초마다 새 핫딜 폴링
+  useEffect(() => {
+    let currentController = null;
+    const interval = setInterval(() => {
+      if (currentController) currentController.abort();
+      currentController = new AbortController();
+      const params = new URLSearchParams({ per_page: '50' });
+      if (filter !== 'all') params.set('category', filter);
+      if (sort) params.set('sort', sort);
+      fetch(`/api/hotdeals?${params}`, { signal: currentController.signal }).then(r => r.json())
+        .then(res => { if (res.data?.length) setAllDeals(res.data.map(normalizeDeal)); })
+        .catch(() => {});
+    }, 60000);
+    return () => {
+      clearInterval(interval);
+      if (currentController) currentController.abort();
+    };
+  }, [filter, sort]);
 
   const allItems = useMemo(() => {
     let items = [...allDeals];
@@ -89,13 +165,59 @@ export default function HotdealPage() {
 
   const sentinelRef = useInfiniteScroll(loadMore, { enabled: hasMore });
 
-  const handleVote = (id, type) => {
-    setVotes(prev => {
-      const current = prev[id];
-      if (current === type) return { ...prev, [id]: null };
-      return { ...prev, [id]: type };
-    });
-  };
+  const handleVote = useCallback(async (id, type) => {
+    if (voteLoadingRef.current[id]) return;
+    setVoteLoading(prev => ({ ...prev, [id]: true }));
+    const prev = votes[id];
+    const newType = prev === type ? null : type;
+    setVotes(p => ({ ...p, [id]: newType }));
+    let toastShown = false;
+    try {
+      const res = await fetch(`/api/hotdeals/${id}/vote`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ vote_type: voteTypeForApi(newType) }),
+      });
+      if (!res.ok) {
+        if (res.status === 401) {
+          addToast('로그인 후 투표할 수 있습니다', 'error');
+        } else if (res.status === 429) {
+          addToast('투표 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.', 'error');
+        } else if (res.status === 400) {
+          addToast('투표 요청을 처리할 수 없습니다. 새로고침 후 다시 시도해주세요.', 'error');
+        } else {
+          addToast('투표 처리에 실패했습니다', 'error');
+        }
+        toastShown = true;
+        throw new Error(`vote failed: ${res.status}`);
+      }
+      const data = await res.json();
+      if (data.data) {
+        const serverVote = voteTypeFromApi(data.data.user_vote);
+        setVotes(p => ({ ...p, [id]: serverVote }));
+        setAllDeals(ds => ds.map(d =>
+          d.id === id ? { ...d, hotVotes: data.data.votes_hot, coldVotes: data.data.votes_not } : d
+        ));
+        setDetail(prev => prev && prev.id === id
+          ? { ...prev, hotVotes: data.data.votes_hot, coldVotes: data.data.votes_not }
+          : prev
+        );
+      }
+    } catch {
+      if (!toastShown) addToast('투표 처리에 실패했습니다', 'error');
+      setVotes(p => ({ ...p, [id]: prev }));
+    } finally {
+      setVoteLoading(prev => ({ ...prev, [id]: false }));
+    }
+  }, [votes, addToast]);
+
+  const throttledVote = useThrottledCallback(handleVote, 1000);
+
+  const handleCommentCountChange = useCallback((dealId, count) => {
+    setAllDeals(ds => ds.map(d => d.id === dealId ? { ...d, comments: count } : d));
+    setDetail(prev => prev && prev.id === dealId ? { ...prev, comments: count } : prev);
+  }, []);
 
   return (
     <div>
@@ -105,6 +227,12 @@ export default function HotdealPage() {
       </div>
 
       {loading && <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem 0' }}><Spinner /></div>}
+
+      {newDealCount > 0 && (
+        <div className={s.newDealToast} onClick={() => { setNewDealCount(0); setVisibleCount(PAGE_SIZE); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+          🔔 새 핫딜 {newDealCount}개가 등록되었습니다 — 클릭하여 확인
+        </div>
+      )}
 
       <div className={s.controls}>
         <div className={s.filterRow}>
@@ -128,7 +256,7 @@ export default function HotdealPage() {
         </div>
         <div className={s.sourceRow}>
           <span className={s.sourceLabel}>출처:</span>
-          {SOURCES.map(src => (
+          {sources.map(src => (
             <button
               key={src}
               className={`${s.sourceBtn} ${source === src ? s.sourceBtnActive : ''}`}
@@ -141,6 +269,12 @@ export default function HotdealPage() {
       </div>
 
       <div className={s.grid}>
+        {!loading && items.length === 0 && (
+          <EmptyState
+            title="핫딜이 없습니다"
+            description="다른 카테고리나 필터를 선택해 보세요."
+          />
+        )}
         {items.map(d => {
           const tier = getTier(d.price, d.origPrice);
           const matchedProduct = products.find(p => d.title?.includes(p.name));
@@ -151,7 +285,7 @@ export default function HotdealPage() {
 
           return (
             <div key={d.id} className={s.card} onClick={() => setDetail(d)}>
-              {d.thumb && <img src={d.thumb} alt={d.title} className={s.thumb} loading="lazy" />}
+              {d.thumb && <SafeImage src={d.thumb} alt={d.title} className={s.thumb} />}
               <div className={s.cardBody}>
                 <div className={s.cardHead}>
                   <span className={s.source}>{d.source}</span>
@@ -176,19 +310,31 @@ export default function HotdealPage() {
                         <span className={s.dbInfo}><Info size={11} /></span>
                       </span>
                     )}
+                    {(d.hotVotes || 0) + (d.coldVotes || 0) >= 10 && (
+                      <span className={s.verifiedBadge}>✅ 커뮤니티 검증</span>
+                    )}
                   </div>
                 </div>
                 <div className={s.cardMeta}>👁️ {d.views} · 💬 {d.comments} · 🔥 {d.hotVotes || 0} / ❄️ {d.coldVotes || 0}</div>
                 <div className={s.voteRow} onClick={e => e.stopPropagation()}>
                   <button
                     className={`${s.voteBtn} ${vote === 'hot' ? s.voteBtnHot : ''}`}
-                    onClick={() => handleVote(d.id, 'hot')}
-                  >🔥 핫딜</button>
+                    onClick={() => throttledVote(d.id, 'hot')}
+                    disabled={voteLoading[d.id]}
+                    aria-busy={voteLoading[d.id]}
+                  >{voteLoading[d.id] ? '⏳' : '🔥'} 핫딜</button>
                   <button
                     className={`${s.voteBtn} ${vote === 'cold' ? s.voteBtnCold : ''}`}
-                    onClick={() => handleVote(d.id, 'cold')}
-                  >❄️ 아니다</button>
+                    onClick={() => throttledVote(d.id, 'cold')}
+                    disabled={voteLoading[d.id]}
+                    aria-busy={voteLoading[d.id]}
+                  >{voteLoading[d.id] ? '⏳' : '❄️'} 아니다</button>
                 </div>
+                {d.url && (
+                  <a href={d.url} target="_blank" rel="noopener noreferrer" className={s.ctaBtn} onClick={e => e.stopPropagation()}>
+                    🔗 원본 사이트로 이동
+                  </a>
+                )}
               </div>
             </div>
           );
@@ -201,49 +347,104 @@ export default function HotdealPage() {
         </div>
       )}
 
-      {detail && <HotdealDetailModal item={detail} votes={votes} onVote={handleVote} onClose={() => setDetail(null)} products={products} />}
+      {detail && <HotdealDetailModal item={detail} votes={votes} voteLoading={voteLoading} onVote={handleVote} onClose={() => setDetail(null)} products={products} addToast={addToast} onCommentCountChange={handleCommentCountChange} />}
     </div>
   );
 }
 
-function HotdealDetailModal({ item, votes, onVote, onClose, products }) {
+const HotdealDetailModal = React.memo(function HotdealDetailModal({ item, votes, voteLoading, onVote, onClose, products, addToast, onCommentCountChange }) {
   const [newComment, setNewComment] = useState('');
-  const [comments, setComments] = useState(item?.commentData || []);
+  const [comments, setComments] = useState([]);
+  const [commentsLoading, setCommentsLoading] = useState(true);
   const vote = votes[item.id];
+  const isVotePending = Boolean(voteLoading[item.id]);
 
   const matchedProduct = products.find(p => item.title?.includes(p.name));
+  const totalVotes = (item.hotVotes || 0) + (item.coldVotes || 0);
+
+  // 댓글 API 조회
+  useEffect(() => {
+    setCommentsLoading(true);
+    fetch(`/api/hotdeals/${item.id}/comments`)
+      .then(r => r.json())
+      .then(res => setComments(res.data || []))
+      .catch(() => setComments(item?.commentData || []))
+      .finally(() => setCommentsLoading(false));
+  }, [item.id]);
+
+  useEffect(() => {
+    if (!commentsLoading && onCommentCountChange) {
+      onCommentCountChange(item.id, comments.length);
+    }
+  }, [comments.length, commentsLoading, item.id, onCommentCountChange]);
 
   const [chartData, setChartData] = useState([]);
+  const [chartLoading, setChartLoading] = useState(false);
   useEffect(() => {
     if (!matchedProduct) return;
+    setChartLoading(true);
     fetch(`/api/products/${matchedProduct.id}/price-history?days=30`)
       .then(r => r.json())
       .then(res => setChartData(res.data || []))
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setChartLoading(false));
   }, [matchedProduct?.id]);
 
-  const addComment = () => {
+  // 댓글 서버 저장
+  const addComment = async () => {
     if (!newComment.trim()) return;
-    setComments(prev => [...prev, { id: Date.now(), author: '나', text: newComment, time: '방금 전' }]);
-    setNewComment('');
+    try {
+      const res = await fetch(`/api/hotdeals/${item.id}/comments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: newComment, author: '나' }),
+        credentials: 'include',
+      });
+      if (!res.ok) {
+        addToast('댓글 작성에 실패했습니다', 'error');
+        return;
+      }
+      const data = await res.json();
+      if (data.data) {
+        setComments(prev => [...prev, data.data]);
+      }
+      setNewComment('');
+      addToast('댓글이 등록되었습니다', 'success');
+    } catch {
+      addToast('댓글 작성에 실패했습니다', 'error');
+    }
   };
 
-  return (
-    <div className={s.modalOverlay} onClick={onClose}>
-      <div className={s.modal} onClick={e => e.stopPropagation()}>
-        <button className={s.modalClose} onClick={onClose}><X size={20} /></button>
+  const deleteComment = async (commentId) => {
+    try {
+      const res = await fetch(`/api/hotdeals/${item.id}/comments/${commentId}`, { method: 'DELETE' });
+      if (res.ok) {
+        setComments(prev => prev.filter(c => c.id !== commentId));
+      }
+    } catch {
+      addToast('댓글 삭제에 실패했습니다', 'error');
+    }
+  };
 
-        {item.thumb && <img src={item.thumb} alt="" className={s.modalHero} />}
+  // Escape 키로 모달 닫기
+  useEffect(() => {
+    const handleKeyDown = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  return (
+    <div className={s.modalOverlay} onClick={onClose} role="presentation">
+      <div className={s.modal} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="핫딜 상세">
+        <button className={s.modalClose} onClick={onClose} aria-label="닫기"><X size={20} /></button>
+
+        {item.thumb && <SafeImage src={item.thumb} alt={item.title || '핫딜 이미지'} className={s.modalHero} />}
 
         <div className={s.modalBody}>
           <div className={s.modalMeta}>
             <span className={s.source}>{item.source}</span>
             <span className={s.time}><Clock size={12} /> {item.time}</span>
-            {item.url && (
-              <a href={item.url} target="_blank" rel="noopener noreferrer" className={s.sourceLink} onClick={e => e.stopPropagation()}>
-                🔗 원본 보기
-              </a>
-            )}
+            {totalVotes >= 10 && <span className={s.verifiedBadge}>✅ 커뮤니티 검증</span>}
           </div>
           <h3 className={s.modalTitle}>{item.title}</h3>
 
@@ -254,6 +455,13 @@ function HotdealDetailModal({ item, votes, onVote, onClose, products }) {
               <span className={s.modalDisc}>{Math.round((1 - item.price / item.origPrice) * 100)}% 할인</span>
             )}
           </div>
+
+          {/* 원본 사이트 CTA */}
+          {item.url && (
+            <a href={item.url} target="_blank" rel="noopener noreferrer" className={s.ctaBtnLg} onClick={e => e.stopPropagation()}>
+              🔗 원본 사이트로 이동
+            </a>
+          )}
 
           <div className={s.modalStats}>
             <Eye size={14} /> {item.views}
@@ -266,35 +474,63 @@ function HotdealDetailModal({ item, votes, onVote, onClose, products }) {
             <button
               className={`${s.modalVoteBtn} ${vote === 'hot' ? s.modalVoteHot : ''}`}
               onClick={() => onVote(item.id, 'hot')}
-            >🔥 핫딜이다</button>
+              disabled={isVotePending}
+              aria-busy={isVotePending}
+            >{isVotePending ? '⏳' : '🔥'} 핫딜이다</button>
             <button
               className={`${s.modalVoteBtn} ${vote === 'cold' ? s.modalVoteCold : ''}`}
               onClick={() => onVote(item.id, 'cold')}
-            >❄️ 아니다</button>
+              disabled={isVotePending}
+              aria-busy={isVotePending}
+            >{isVotePending ? '⏳' : '❄️'} 아니다</button>
           </div>
 
-          {/* 가격 이력 차트 */}
-          {matchedProduct && chartData.length > 0 && (
-            <div className={s.chartBox}>
-              <h4>📈 {matchedProduct.name} 30일 가격 추이</h4>
-              <ResponsiveContainer width="100%" height={180}>
-                <AreaChart data={chartData}>
-                  <defs>
-                    <linearGradient id="colorDealPrice" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.2} />
-                      <stop offset="95%" stopColor="#38bdf8" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <XAxis dataKey="date" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} width={50} tickFormatter={v => fmt(v)} />
-                  <Tooltip
-                    contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: '.85rem' }}
-                    formatter={v => [`${fmt(v)}원`, '가격']}
-                  />
-                  <Area type="monotone" dataKey="price" stroke="#38bdf8" strokeWidth={2} fill="url(#colorDealPrice)" />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
+          {/* 가격 이력 차트 또는 빈 상태 */}
+          {matchedProduct ? (
+            chartLoading ? (
+              <div className={s.emptyChart}><p>가격 데이터 로딩 중...</p></div>
+            ) : chartData.length > 0 ? (
+              <div className={s.chartBox}>
+                <h4>📈 {matchedProduct.name} 30일 가격 추이</h4>
+                <ResponsiveContainer width="100%" height={180}>
+                  <AreaChart data={chartData}>
+                    <defs>
+                      <linearGradient id="colorDealPrice" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.2} />
+                        <stop offset="95%" stopColor="#38bdf8" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <XAxis dataKey="date" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
+                    <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} width={50} tickFormatter={v => fmt(v)} />
+                    <Tooltip
+                      contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: '.85rem' }}
+                      formatter={v => [`${fmt(v)}원`, '가격']}
+                    />
+                    <Area type="monotone" dataKey="price" stroke="#38bdf8" strokeWidth={2} fill="url(#colorDealPrice)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            ) : (
+              <div className={s.emptyChart}>
+                <div className={s.emptyChartIcon}>📊</div>
+                <p>가격 데이터를 수집 중입니다</p>
+                <span>곧 {matchedProduct.name}의 가격 추이를 확인할 수 있습니다</span>
+              </div>
+            )
+          ) : (
+            products.length > 0 && (
+              <div className={s.similarBox}>
+                <h4>🔍 유사 상품 추천</h4>
+                <div className={s.similarList}>
+                  {products.slice(0, 3).map(p => (
+                    <div key={p.id} className={s.similarItem}>
+                      <span>{p.name}</span>
+                      {p.avg && <span className={s.similarPrice}>평균 {fmt(p.avg)}원</span>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
           )}
         </div>
 
@@ -302,11 +538,19 @@ function HotdealDetailModal({ item, votes, onVote, onClose, products }) {
         <div className={s.commentSec}>
           <h4>💬 댓글 {comments.length}개</h4>
           <div className={s.commentList}>
-            {comments.length === 0 && <p className={s.noComment}>아직 댓글이 없습니다.</p>}
+            {commentsLoading && <p className={s.noComment}>댓글 불러오는 중...</p>}
+            {!commentsLoading && comments.length === 0 && <p className={s.noComment}>아직 댓글이 없습니다.</p>}
             {comments.map(c => (
               <div key={c.id} className={s.comment}>
-                <strong>{c.author}</strong>
-                <span className={s.commentTime}>{c.time}</span>
+                <div className={s.commentHeader}>
+                  <div>
+                    <strong>{c.author}</strong>
+                    <span className={s.commentTime}>{c.time}</span>
+                  </div>
+                  {c.author === '나' && (
+                    <button className={s.deleteCommentBtn} onClick={() => deleteComment(c.id)} title="삭제">🗑️</button>
+                  )}
+                </div>
                 <p>{c.text}</p>
               </div>
             ))}
@@ -324,4 +568,4 @@ function HotdealDetailModal({ item, votes, onVote, onClose, products }) {
       </div>
     </div>
   );
-}
+});

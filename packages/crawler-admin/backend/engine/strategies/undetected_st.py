@@ -43,7 +43,7 @@ class UndetectedStrategy(BaseStrategy):
 
     async def _do_fetch(self, url: str, **options) -> str:
         wait_timeout = options.get("wait_timeout", self._wait_timeout)
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         html = await loop.run_in_executor(None, self._fetch_sync, url, wait_timeout)
         return html
 
@@ -63,6 +63,7 @@ class UndetectedStrategy(BaseStrategy):
             options.add_argument("--headless=new")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--js-flags=--max-old-space-size=256")
         options.add_argument(f"--user-agent={self._anti_detect.get_random_user_agent()}")
 
         proxy = self._anti_detect.get_random_proxy()
@@ -71,6 +72,21 @@ class UndetectedStrategy(BaseStrategy):
 
         driver = uc.Chrome(options=options)
         self._driver = driver
+
+        # Register with watchdog — undetected-chromedriver spawns a separate Chrome binary
+        from engine.browser_watchdog import get_browser_watchdog
+        watchdog = get_browser_watchdog()
+        try:
+            pid = driver.browser_pid  # undetected-chromedriver exposes this
+            if pid:
+                watchdog.register_pid(pid)
+        except AttributeError:
+            pass
+        try:
+            pid = driver.service.process.pid
+            watchdog.register_pid(pid)
+        except Exception:
+            pass
 
         try:
             driver.get(url)
@@ -105,16 +121,43 @@ class UndetectedStrategy(BaseStrategy):
                 strategy_name=self.name,
             )
         finally:
-            try:
-                driver.quit()
-            except Exception:
-                pass
+            self._safe_quit_driver(driver)
             self._driver = None
+
+    def _safe_quit_driver(self, driver) -> None:
+        """Quit the undetected-chromedriver and verify all processes are dead."""
+        from engine.browser_watchdog import get_browser_watchdog
+        watchdog = get_browser_watchdog()
+
+        pids_to_check = []
+        try:
+            pids_to_check.append(driver.browser_pid)
+        except (AttributeError, Exception):
+            pass
+        try:
+            pids_to_check.append(driver.service.process.pid)
+        except Exception:
+            pass
+
+        try:
+            driver.quit()
+        except Exception:
+            pass
+
+        for pid in pids_to_check:
+            if pid:
+                try:
+                    import psutil
+                    proc = psutil.Process(pid)
+                    if proc.is_running():
+                        proc.kill()
+                        proc.wait(timeout=5)
+                        logger.warning("[UndetectedStrategy] force-killed PID=%d", pid)
+                except Exception:
+                    pass
+                watchdog.unregister_pid(pid)
 
     async def cleanup(self) -> None:
         if self._driver:
-            try:
-                self._driver.quit()
-            except Exception:
-                pass
+            self._safe_quit_driver(self._driver)
             self._driver = None

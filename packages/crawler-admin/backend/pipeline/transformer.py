@@ -5,6 +5,8 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any
 
+from pipeline.sanitizer import sanitize_record
+
 
 def to_discount_history(
     items: list[dict[str, Any]],
@@ -29,7 +31,7 @@ def to_discount_history(
             "recorded_at": now,
         }
         records.append(record)
-    return records
+    return [sanitize_record(r) for r in records]
 
 
 def to_hotdeal_prices(
@@ -51,7 +53,7 @@ def to_hotdeal_prices(
             "recorded_at": now,
         }
         records.append(record)
-    return records
+    return [sanitize_record(r) for r in records]
 
 
 def to_delivery_items(

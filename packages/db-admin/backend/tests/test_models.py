@@ -26,6 +26,7 @@ from storage.models import (
     Post, PostImage, Comment, Vote,
     Favorite, PriceAlert, CrawlLog, Keyword,
     DeliveryItem, ShoppingItem,
+    PendingCategorization, CategoryCorrection,
 )
 
 
@@ -628,6 +629,15 @@ class TestSchemaIntegration:
             "posts", "post_images", "comments", "votes",
             "favorites", "price_alerts", "crawl_logs", "keywords",
             "delivery_items", "shopping_items",
+            "pending_ingestions",
+            "pending_categorizations", "category_corrections",
+            "audit_logs",
+            "hotdeal_comments", "hotdeal_votes",
+            "cart_items", "wishlist_items", "user_activities",
+            "product_keywords",
+            "normalized_canonical_products", "normalized_product_variants",
+            "normalized_source_listings", "normalized_offer_events",
+            "normalized_week_buckets", "normalized_offer_week_links",
         }
         assert expected == set(inspector_tables)
 

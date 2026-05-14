@@ -1,7 +1,10 @@
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { Wallet, Bell, User, X, Search, Sun, Moon } from 'lucide-react';
+import { useState, useEffect, useCallback, useMemo, useRef, memo } from 'react';
+import { Wallet, Bell, User, X, Search, Sun, Moon, LogOut, Heart, BellRing, ChevronDown, ShoppingCart } from 'lucide-react';
 import useStore from '../../stores/appStore';
+import useCartStore from '../../stores/cartStore';
+import { authService } from '../../services/authService';
+import SearchAutocomplete from '../search/SearchAutocomplete';
 import s from './Header.module.css';
 
 const NAV = [
@@ -13,19 +16,28 @@ const NAV = [
   { to: '/community', label: '커뮤니티' },
 ];
 
-export default function Header() {
+const Header = memo(function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const { isLoggedIn, logout, notifications } = useStore();
-  const theme = useStore((s) => s.theme);
-  const toggleTheme = useStore((s) => s.toggleTheme);
+
+  const isLoggedIn = useStore((st) => st.isLoggedIn);
+  const user = useStore((st) => st.user);
+  const logout = useStore((st) => st.logout);
+  const addToast = useStore((st) => st.addToast);
+  const notifications = useStore((st) => st.notifications);
+  const theme = useStore((st) => st.theme);
+  const toggleTheme = useStore((st) => st.toggleTheme);
+  const openLoginModal = useStore((st) => st.openLoginModal);
+  const cartItems = useCartStore((st) => st.items);
   const location = useLocation();
   const navigate = useNavigate();
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef(null);
 
   useEffect(() => {
     setMobileOpen(false);
+    setProfileOpen(false);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -39,18 +51,49 @@ export default function Header() {
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
-  const openLoginModal = useStore((s) => s.openLoginModal);
-  const openLogin = () => openLoginModal();
+  const openLogin = useCallback(() => openLoginModal(), [openLoginModal]);
 
-  const unreadCount = notifications?.filter(n => !n.read).length || 0;
+  // Close profile dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setProfileOpen(false);
+      }
+    };
+    if (profileOpen) document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [profileOpen]);
 
-  const handleSearch = () => {
-    if (searchQuery.trim()) {
-      navigate('/price', { state: { searchQuery: searchQuery.trim() } });
-      setSearchQuery('');
-      setSearchOpen(false);
-    }
-  };
+  const handleLogout = useCallback(async () => {
+    try { await authService.logout(); } catch { /* ignore */ }
+    logout();
+    addToast('로그아웃 되었습니다', 'info');
+    setProfileOpen(false);
+  }, [logout, addToast]);
+
+  const unreadCount = useMemo(
+    () => notifications?.filter(n => !n.read).length || 0,
+    [notifications],
+  );
+
+  const closeSearch = useCallback(() => setSearchOpen(false), []);
+
+  const handleHeaderSearch = useCallback((query) => {
+    navigate(`/search?q=${encodeURIComponent(query)}`);
+    setSearchOpen(false);
+  }, [navigate]);
+
+  const toggleSearch = useCallback(() => setSearchOpen(prev => !prev), []);
+  const toggleMobile = useCallback(() => setMobileOpen(prev => !prev), []);
+  const closeMobile = useCallback(() => setMobileOpen(false), []);
+
+  const handleDrawerLogout = useCallback(async () => {
+    try { await authService.logout(); } catch { /* ignore */ }
+    logout();
+    addToast('로그아웃 되었습니다', 'info');
+    setMobileOpen(false);
+  }, [logout, addToast]);
+  const handleDrawerLogin = useCallback(() => { openLoginModal(); setMobileOpen(false); }, [openLoginModal]);
 
   return (
     <>
@@ -77,7 +120,7 @@ export default function Header() {
           <div className={s.right}>
             <button
               className={s.iconBtn}
-              onClick={() => setSearchOpen(!searchOpen)}
+              onClick={toggleSearch}
               aria-label="검색"
             >
               <Search size={20} />
@@ -98,16 +141,41 @@ export default function Header() {
             </button>
 
             {isLoggedIn ? (
-              <button className={s.avatarBtn} onClick={logout} aria-label="프로필">
-                <User size={18} />
-              </button>
+              <div className={s.profileWrap} ref={profileRef}>
+                <button className={s.avatarBtn} onClick={() => setProfileOpen((p) => !p)} aria-label="프로필 메뉴">
+                  <span className={s.avatarInitial}>{(user?.nickname || user?.email || 'U').charAt(0).toUpperCase()}</span>
+                  <ChevronDown size={14} className={`${s.chevron} ${profileOpen ? s.chevronOpen : ''}`} />
+                </button>
+                {profileOpen && (
+                  <div className={s.profileDropdown}>
+                    <div className={s.profileInfo}>
+                      <span className={s.profileName}>{user?.nickname || user?.email}</span>
+                      {user?.email && <span className={s.profileEmail}>{user.email}</span>}
+                    </div>
+                    <div className={s.profileDivider} />
+                    <button className={s.profileItem} onClick={() => { setProfileOpen(false); navigate('/profile'); }}>
+                      <User size={16} /> 프로필
+                    </button>
+                    <button className={s.profileItem} onClick={() => { setProfileOpen(false); navigate('/wishlist'); }}>
+                      <Heart size={16} /> 찜 목록
+                    </button>
+                    <button className={s.profileItem} onClick={() => { setProfileOpen(false); navigate('/'); addToast('가격 알림 페이지 준비 중입니다', 'info'); }}>
+                      <BellRing size={16} /> 가격 알림
+                    </button>
+                    <div className={s.profileDivider} />
+                    <button className={s.profileItem} onClick={handleLogout}>
+                      <LogOut size={16} /> 로그아웃
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : (
               <button className={s.loginBtn} onClick={openLogin}>로그인</button>
             )}
 
             <button
               className={`${s.mobileBtn} ${mobileOpen ? s.mobileBtnOpen : ''}`}
-              onClick={() => setMobileOpen(!mobileOpen)}
+              onClick={toggleMobile}
               aria-label="메뉴"
             >
               <span /><span /><span />
@@ -118,16 +186,14 @@ export default function Header() {
         {searchOpen && (
           <div className={s.searchBar}>
             <div className={s.searchInner}>
-              <input
-                type="search"
-                className={s.searchInput}
+              <SearchAutocomplete
+                variant="header"
                 placeholder="상품, 가격, 핫딜 검색..."
                 autoFocus
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                onSearch={handleHeaderSearch}
+                onAfterAction={closeSearch}
               />
-              <button className={s.searchClose} onClick={() => setSearchOpen(false)}>
+              <button className={s.searchClose} onClick={closeSearch}>
                 <X size={18} />
               </button>
             </div>
@@ -138,12 +204,12 @@ export default function Header() {
       {/* Mobile drawer */}
       <div
         className={`${s.overlay} ${mobileOpen ? s.overlayOpen : ''}`}
-        onClick={() => setMobileOpen(false)}
+        onClick={closeMobile}
       />
       <aside className={`${s.drawer} ${mobileOpen ? s.drawerOpen : ''}`}>
         <div className={s.drawerHeader}>
           <span className={s.drawerTitle}>메뉴</span>
-          <button className={s.drawerClose} onClick={() => setMobileOpen(false)}>
+          <button className={s.drawerClose} onClick={closeMobile}>
             <X size={20} />
           </button>
         </div>
@@ -154,7 +220,7 @@ export default function Header() {
               to={n.to}
               end={n.to === '/'}
               className={({ isActive }) => `${s.drawerLink} ${isActive ? s.drawerLinkActive : ''}`}
-              onClick={() => setMobileOpen(false)}
+              onClick={closeMobile}
             >
               {n.label}
             </NavLink>
@@ -162,12 +228,14 @@ export default function Header() {
         </nav>
         <div className={s.drawerFooter}>
           {isLoggedIn ? (
-            <button className={s.drawerBtn} onClick={() => { logout(); setMobileOpen(false); }}>로그아웃</button>
+            <button className={s.drawerBtn} onClick={handleDrawerLogout}>로그아웃</button>
           ) : (
-            <button className={s.drawerBtn} onClick={() => { openLogin(); setMobileOpen(false); }}>로그인</button>
+            <button className={s.drawerBtn} onClick={handleDrawerLogin}>로그인</button>
           )}
         </div>
       </aside>
     </>
   );
-}
+});
+
+export default Header;

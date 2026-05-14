@@ -1,8 +1,0 @@
-name: naver_place
-display_name: 네이버 플레이스
-category: location
-module: crawlers.location.naver_place.crawler
-class_name: NaverPlaceCrawler
-schedule: "realtime"
-difficulty: hard
-notes: "네이버 플레이스 실시간 크롤링 — 사용자 위치/검색 기반으로 주변 가게 정보 수집. Playwright 필수."

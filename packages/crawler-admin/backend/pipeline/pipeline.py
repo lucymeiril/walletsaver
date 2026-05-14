@@ -20,16 +20,22 @@ from pipeline.validator import (
     deduplicate,
     normalize_prices,
 )
+from pipeline.quality import summarize_discount_run
+from pipeline.diagnostics import run_bounded_crawler_diagnostics
 from pipeline.transformer import (
     to_discount_history,
     to_hotdeal_prices,
     enrich_with_category,
 )
+from audit import audit_log, AuditEventType
+from pipeline.db_admin_auth import get_db_admin_auth
 
 logger = logging.getLogger(__name__)
 
-# DB-Admin API endpoint (configurable)
-DB_ADMIN_API_URL = "http://localhost:8001/api/prices/bulk"
+# DB-Admin API endpoint (port 8002, configurable via env)
+DB_ADMIN_API_URL = os.getenv(
+    "DB_ADMIN_API_URL", "http://localhost:8002/api/prices/bulk"
+)
 
 # 대기열(Pending Ingestion) 설정
 INGESTION_API_URL = os.getenv(
@@ -50,6 +56,8 @@ class PipelineResult:
         items_saved: int = 0,
         duration: float = 0.0,
         errors: list[str] | None = None,
+        quality_score: float | None = None,
+        quality_details: dict[str, Any] | None = None,
     ):
         self.crawler_name = crawler_name
         self.status = status
@@ -58,6 +66,8 @@ class PipelineResult:
         self.items_saved = items_saved
         self.duration = duration
         self.errors = errors or []
+        self.quality_score = quality_score
+        self.quality_details = quality_details or {}
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -68,6 +78,8 @@ class PipelineResult:
             "items_saved": self.items_saved,
             "duration": round(self.duration, 2),
             "errors": self.errors,
+            "quality_score": self.quality_score,
+            "quality_details": self.quality_details,
         }
 
 
@@ -143,23 +155,48 @@ class CrawlPipeline:
         # 2. Parse — 이미 dict 리스트이므로 pass-through
         items = list(raw_items)
 
+        # Sanitize raw items before they enter the pipeline
+        for item in items:
+            for key, val in list(item.items()):
+                if isinstance(val, str) and len(val) > 5000:
+                    item[key] = val[:5000]
+
         # 3. Validate
+        model_type = config.get("output", {}).get("model", "DiscountItem")
+        price_field = (
+            "price"
+            if model_type == "HotdealPost" or not any("sale_price" in item for item in items)
+            else "sale_price"
+        )
         required = config.get("output", {}).get("required_fields", [])
         if required:
             items, invalid = validate_items(items, required)
             if invalid:
                 errors.append(f"validation: {len(invalid)} items missing fields")
-        items, price_invalid = validate_price_range(items)
+        items = normalize_prices(items, price_field=price_field)
+        items, price_invalid = validate_price_range(items, price_field=price_field)
         if price_invalid:
             errors.append(f"price_range: {len(price_invalid)} items out of range")
-        items = normalize_prices(items)
-        items = deduplicate(items, key_fields=["name", "price"])
+        dedup_fields = ["title", "price"] if model_type == "HotdealPost" else ["name", price_field]
+        dedup_before = len(items)
+        items = deduplicate(items, key_fields=dedup_fields)
         items = enrich_with_category(items)
 
         items_valid = len(items)
+        quality_details = summarize_discount_run(
+            items,
+            raw_count=items_found,
+            invalid_count=max(0, items_found - len(items)),
+            errors=errors,
+            strategy_used=crawl_result.strategy_used,
+            fallback_used="fallback" in (crawl_result.strategy_used or "").lower(),
+        )
+        quality_details = {
+            **quality_details,
+            "deduplicated_count": max(0, dedup_before - items_valid),
+        }
 
         # 4. Transform
-        model_type = config.get("output", {}).get("model", "DiscountItem")
         if model_type == "HotdealPost":
             records = to_hotdeal_prices(items, source="hotdeal")
         else:
@@ -177,17 +214,30 @@ class CrawlPipeline:
                 strategy_used=crawl_result.strategy_used,
                 duration_seconds=time.monotonic() - start,
                 errors=errors,
+                quality_score=quality_details["score"],
+                quality_details=quality_details,
             )
 
         duration = time.monotonic() - start
+
+        # Determine status based on actual persistence outcome
+        if items_saved == 0 and items_valid > 0:
+            final_status = "partial_failure"
+        elif 0 < items_saved < items_valid:
+            final_status = "partial_failure"
+        else:
+            final_status = "success"
+
         result = PipelineResult(
             crawler_name=crawler_name,
-            status="success",
+            status=final_status,
             items_found=items_found,
             items_valid=items_valid,
             items_saved=items_saved,
             duration=duration,
             errors=errors,
+            quality_score=quality_details["score"],
+            quality_details=quality_details,
         )
 
         await self.event_bus.publish(Event(
@@ -197,9 +247,15 @@ class CrawlPipeline:
         ))
 
         logger.info(
-            f"[Pipeline] {crawler_name}: "
-            f"found={items_found} valid={items_valid} saved={items_saved} "
-            f"duration={duration:.2f}s"
+            "[Pipeline] %s: found=%d valid=%d saved=%d duration=%.2fs",
+            crawler_name, items_found, items_valid, items_saved, duration,
+            extra={
+                "crawler_name": crawler_name,
+                "items_found": items_found,
+                "items_saved": items_saved,
+                "duration": round(duration, 2),
+                "status": final_status,
+            },
         )
         return result
 
@@ -214,27 +270,83 @@ class CrawlPipeline:
         return await self.run_batch(names)
 
     async def run_batch(self, crawler_names: list[str]) -> list[PipelineResult]:
-        """지정된 크롤러들을 동시 실행."""
+        """지정된 크롤러들을 동시 실행. 개별 실패가 다른 크롤러에 영향을 주지 않는다."""
         tasks = [self.run_crawler(name) for name in crawler_names]
-        return list(await asyncio.gather(*tasks, return_exceptions=False))
+        raw_results = await asyncio.gather(*tasks, return_exceptions=True)
+        results: list[PipelineResult] = []
+        for name, r in zip(crawler_names, raw_results):
+            if isinstance(r, PipelineResult):
+                results.append(r)
+            elif isinstance(r, BaseException):
+                logger.error("[Pipeline] batch: %s raised %s", name, r)
+                results.append(PipelineResult(
+                    crawler_name=name,
+                    status="failed",
+                    errors=[f"unhandled: {r}"],
+                ))
+        return results
+
+    async def run_bounded_diagnostics(
+        self,
+        *,
+        fixture_by_source: dict[str, str] | None = None,
+        crawler_ids: list[str] | None = None,
+        live_enabled: bool = False,
+    ) -> dict[str, Any]:
+        """Run safe fixture diagnostics without live network crawling by default."""
+        return await run_bounded_crawler_diagnostics(
+            self.registry,
+            fixture_by_source=fixture_by_source,
+            crawler_ids=crawler_ids,
+            live_enabled=live_enabled,
+        )
 
     # --- internal helpers ---
 
     async def _store(
-        self, records: list[dict[str, Any]], errors: list[str]
+        self, records: list[dict[str, Any]], errors: list[str],
+        *, _max_retries: int = 3,
     ) -> int:
-        """DB-Admin API 로 레코드 전송. 실패 시 0 반환."""
+        """DB-Admin API 로 레코드 전송. 재시도 후 실패 시 DLQ에 기록."""
+        import random
+        from pipeline.dead_letter import write_dead_letter
+
         if not records:
             return 0
-        try:
-            async with httpx.AsyncClient(timeout=30) as client:
-                resp = await client.post(self.db_api_url, json=records)
-                resp.raise_for_status()
-                return len(records)
-        except Exception as exc:
-            errors.append(f"store: {exc}")
-            logger.warning(f"[Pipeline] store failed: {exc}")
-            return 0
+
+        auth = get_db_admin_auth()
+        last_exc: Exception | None = None
+        for attempt in range(1, _max_retries + 1):
+            try:
+                headers = await auth.get_headers()
+                async with httpx.AsyncClient(timeout=30) as client:
+                    resp = await client.post(
+                        self.db_api_url, json=records, headers=headers,
+                    )
+                    if resp.status_code == 401:
+                        headers = await auth.handle_401()
+                        resp = await client.post(
+                            self.db_api_url, json=records, headers=headers,
+                        )
+                    resp.raise_for_status()
+                    return len(records)
+            except httpx.HTTPStatusError as exc:
+                last_exc = exc
+                if exc.response.status_code < 500:
+                    break  # client error — no retry
+                if attempt < _max_retries:
+                    await asyncio.sleep(2 ** attempt + random.random())
+            except (httpx.ConnectError, httpx.TimeoutException) as exc:
+                last_exc = exc
+                if attempt < _max_retries:
+                    await asyncio.sleep(2 ** attempt + random.random())
+
+        # All retries exhausted — write to DLQ
+        err_msg = str(last_exc) if last_exc else "unknown"
+        errors.append(f"store: {err_msg}")
+        logger.warning("[Pipeline] store failed after %d retries: %s", _max_retries, err_msg)
+        write_dead_letter(records, target="db_admin", error_msg=err_msg)
+        return 0
 
     async def _store_to_ingestion(
         self,
@@ -245,10 +357,18 @@ class CrawlPipeline:
         strategy_used: str | None,
         duration_seconds: float,
         errors: list[str],
+        quality_score: float | None = None,
+        quality_details: dict[str, Any] | None = None,
+        *,
+        _max_retries: int = 3,
     ) -> int:
-        """대기열(Pending Ingestion)에 크롤 결과 제출."""
+        """대기열(Pending Ingestion)에 크롤 결과 제출. 재시도 후 실패 시 DLQ에 기록."""
+        import random
+        from pipeline.dead_letter import write_dead_letter
+
         if not items:
             return 0
+
         payload = {
             "crawler_name": crawler_name,
             "crawl_status": crawl_status,
@@ -257,16 +377,56 @@ class CrawlPipeline:
             "strategy_used": strategy_used,
             "duration_seconds": round(duration_seconds, 2),
             "errors": [{"message": e} for e in errors],
+            "quality_score": quality_score,
+            "quality_details": quality_details,
         }
-        try:
-            async with httpx.AsyncClient(timeout=30) as client:
-                resp = await client.post(INGESTION_API_URL, json=payload)
-                resp.raise_for_status()
-                return len(items)
-        except Exception as exc:
-            errors.append(f"ingestion_submit: {exc}")
-            logger.warning(f"[Pipeline] ingestion submit failed: {exc}")
-            return 0
+
+        last_exc: Exception | None = None
+        for attempt in range(1, _max_retries + 1):
+            try:
+                auth = get_db_admin_auth()
+                headers = await auth.get_headers()
+                async with httpx.AsyncClient(timeout=30) as client:
+                    resp = await client.post(
+                        INGESTION_API_URL, json=payload, headers=headers,
+                    )
+                    if resp.status_code == 401:
+                        headers = await auth.handle_401()
+                        resp = await client.post(
+                            INGESTION_API_URL, json=payload, headers=headers,
+                        )
+                    resp.raise_for_status()
+                    audit_log(
+                        AuditEventType.DATA_SUBMISSION,
+                        resource=crawler_name,
+                        detail={
+                            "item_count": len(items),
+                            "schema_type": schema_type,
+                            "strategy": strategy_used,
+                        },
+                    )
+                    return len(items)
+            except httpx.HTTPStatusError as exc:
+                last_exc = exc
+                if exc.response.status_code < 500:
+                    break
+                if attempt < _max_retries:
+                    await asyncio.sleep(2 ** attempt + random.random())
+            except (httpx.ConnectError, httpx.TimeoutException) as exc:
+                last_exc = exc
+                if attempt < _max_retries:
+                    await asyncio.sleep(2 ** attempt + random.random())
+
+        err_msg = str(last_exc) if last_exc else "unknown"
+        errors.append(f"ingestion_submit: {err_msg}")
+        logger.warning("[Pipeline] ingestion submit failed after %d retries: %s", _max_retries, err_msg)
+        write_dead_letter(
+            payload.get("items", []),
+            crawler_name=crawler_name,
+            target="ingestion",
+            error_msg=err_msg,
+        )
+        return 0
 
     def _fail(
         self,

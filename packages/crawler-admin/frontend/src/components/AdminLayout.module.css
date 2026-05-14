@@ -78,6 +78,28 @@
   background: rgba(56, 189, 248, 0.15);
 }
 
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  margin: var(--space-sm);
+  border: none;
+  background: none;
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-md);
+  color: var(--text3);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease);
+  width: calc(100% - var(--space-md));
+}
+
+.logoutBtn:hover {
+  color: var(--red);
+}
+
 .main {
   margin-left: 240px;
   min-height: 100vh;

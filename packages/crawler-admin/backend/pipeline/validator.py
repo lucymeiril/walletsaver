@@ -7,16 +7,45 @@ from typing import Any
 from urllib.parse import urlparse
 
 
+# Expected types per field. Fields not listed here skip type checking.
+FIELD_TYPE_RULES: dict[str, tuple[type, ...]] = {
+    "name": (str,),
+    "title": (str,),
+    "url": (str,),
+    "source_url": (str,),
+    "detail_url": (str,),
+    "store": (str,),
+    "price": (int, float, str, type(None)),
+    "original_price": (int, float, str, type(None)),
+    "sale_price": (int, float, str, type(None)),
+    "discount_percent": (int, float, type(None)),
+}
+
+
 def validate_items(
     items: list[dict[str, Any]],
     required_fields: list[str],
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """필수 필드 존재 확인. (valid, invalid) 튜플 반환."""
+    """필수 필드 존재 및 타입 확인. (valid, invalid) 튜플 반환."""
     valid, invalid = [], []
     for item in items:
+        errors: list[str] = []
+
+        # 1. Required field presence
         missing = [f for f in required_fields if not item.get(f)]
         if missing:
-            item["_validation_error"] = f"missing fields: {missing}"
+            errors.append(f"missing fields: {missing}")
+
+        # 2. Type validation for known fields
+        for field, expected_types in FIELD_TYPE_RULES.items():
+            val = item.get(field)
+            if val is not None and field in item and not isinstance(val, expected_types):
+                errors.append(
+                    f"field '{field}': expected {expected_types}, got {type(val).__name__}"
+                )
+
+        if errors:
+            item["_validation_error"] = "; ".join(errors)
             invalid.append(item)
         else:
             valid.append(item)
@@ -71,11 +100,20 @@ def deduplicate(
     items: list[dict[str, Any]],
     key_fields: list[str],
 ) -> list[dict[str, Any]]:
-    """중복 제거. key_fields 조합이 같으면 첫 번째만 유지."""
+    """중복 제거. key_fields 조합이 같으면 첫 번째만 유지.
+
+    None/missing 필드가 포함된 키는 인덱스로 구별하여 false dedup을 방지한다.
+    """
     seen: set[tuple] = set()
     result: list[dict[str, Any]] = []
-    for item in items:
-        key = tuple(item.get(f) for f in key_fields)
+    for idx, item in enumerate(items):
+        values = tuple(item.get(f) for f in key_fields)
+        # If all key fields are None/missing, use index as tiebreaker
+        # to prevent collapsing unrelated items
+        if all(v is None for v in values):
+            key = (*values, f"__idx_{idx}__")
+        else:
+            key = values
         if key not in seen:
             seen.add(key)
             result.append(item)

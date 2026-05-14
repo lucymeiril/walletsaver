@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Optional
 
 
@@ -27,7 +27,7 @@ class JobTracker:
 
     def start(self, job_id: str) -> JobExecution:
         """작업 실행 시작 기록."""
-        execution = JobExecution(job_id=job_id, started_at=datetime.now())
+        execution = JobExecution(job_id=job_id, started_at=datetime.now(timezone.utc))
         self._history.append(execution)
         if len(self._history) > self._max_history:
             self._history = self._history[-self._max_history:]
@@ -39,13 +39,13 @@ class JobTracker:
         result: dict[str, Any] | None = None,
     ) -> None:
         """작업 성공 기록."""
-        execution.ended_at = datetime.now()
+        execution.ended_at = datetime.now(timezone.utc)
         execution.status = "success"
         execution.result = result
 
     def fail(self, execution: JobExecution, error: str) -> None:
         """작업 실패 기록."""
-        execution.ended_at = datetime.now()
+        execution.ended_at = datetime.now(timezone.utc)
         execution.status = "failed"
         execution.error = error
 

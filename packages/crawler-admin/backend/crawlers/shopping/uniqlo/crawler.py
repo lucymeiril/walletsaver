@@ -16,7 +16,9 @@ from __future__ import annotations
 
 import json
 import logging
+import random
 import re
+import time
 from datetime import datetime
 from typing import Optional
 
@@ -68,6 +70,34 @@ class UniqloCrawler(CrawlerContract):
             target_url=self.BASE_URL,
             strategies=["requests"],
         )
+
+    def _retry_request(self, url: str, *, headers: dict | None = None,
+                       params: dict | None = None,
+                       session: requests.Session | None = None,
+                       timeout: int = 15, max_retries: int = 3) -> requests.Response:
+        """HTTP GET with exponential backoff for transient failures."""
+        requester = session or requests
+        last_exc = None
+        for attempt in range(max_retries):
+            try:
+                resp = requester.get(url, headers=headers, params=params, timeout=timeout)
+                if resp.status_code == 429:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    time.sleep(wait)
+                    continue
+                return resp
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.Timeout) as e:
+                last_exc = e
+                if attempt < max_retries - 1:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
+                                   f"retrying in {wait:.1f}s: {e}")
+                    time.sleep(wait)
+                else:
+                    raise
+        raise last_exc  # type: ignore[misc]
 
     async def crawl(self) -> CrawlResult:
         """유니클로 세일 상품을 크롤링한다.
@@ -283,29 +313,37 @@ class UniqloCrawler(CrawlerContract):
             ),
         ]
 
-        for api_url, params in api_urls:
-            try:
-                headers = self._get_headers()
-                resp = requests.get(api_url, params=params, headers=headers, timeout=15)
+        # Session으로 TCP 커넥션 재사용 — API 반복 요청 최적화
+        session = requests.Session()
+        try:
+            for api_url, params in api_urls:
+                try:
+                    headers = self._get_headers()
+                    resp = self._retry_request(
+                        api_url, params=params, headers=headers,
+                        session=session, timeout=15,
+                    )
 
-                if resp.status_code != 200:
-                    logger.warning(f"[유니클로] API HTTP {resp.status_code}: {api_url}")
+                    if resp.status_code != 200:
+                        logger.warning(f"[유니클로] API HTTP {resp.status_code}: {api_url}")
+                        continue
+
+                    data = resp.json()
+                    products = self._extract_products_from_api(data)
+
+                    for product in products:
+                        item = self._api_to_discount_item(product)
+                        if item:
+                            items.append(item)
+
+                    if items:
+                        break
+
+                except Exception as e:
+                    logger.warning(f"[유니클로] API 실패: {e}")
                     continue
-
-                data = resp.json()
-                products = self._extract_products_from_api(data)
-
-                for product in products:
-                    item = self._api_to_discount_item(product)
-                    if item:
-                        items.append(item)
-
-                if items:
-                    break
-
-            except Exception as e:
-                logger.warning(f"[유니클로] API 실패: {e}")
-                continue
+        finally:
+            session.close()
 
         return items
 
@@ -397,25 +435,32 @@ class UniqloCrawler(CrawlerContract):
         """세일 페이지 HTML에서 상품 추출 (fallback)."""
         items: list[DiscountItem] = []
 
-        for url in [self.SALE_PAGE, self.LIMITED_PAGE]:
-            try:
-                headers = self._get_headers()
-                headers["Accept"] = "text/html,application/xhtml+xml"
-                resp = requests.get(url, headers=headers, timeout=15)
-                resp.encoding = "utf-8"
+        # Session으로 TCP 커넥션 재사용 — 페이지 반복 요청 최적화
+        session = requests.Session()
+        try:
+            for url in [self.SALE_PAGE, self.LIMITED_PAGE]:
+                try:
+                    headers = self._get_headers()
+                    headers["Accept"] = "text/html,application/xhtml+xml"
+                    resp = self._retry_request(
+                        url, headers=headers, session=session, timeout=15,
+                    )
+                    resp.encoding = "utf-8"
 
-                if resp.status_code != 200:
-                    continue
+                    if resp.status_code != 200:
+                        continue
 
-                # __NEXT_DATA__ 또는 embedded JSON 추출
-                page_items = self._extract_from_html(resp.text)
-                items.extend(page_items)
+                    # __NEXT_DATA__ 또는 embedded JSON 추출
+                    page_items = self._extract_from_html(resp.text)
+                    items.extend(page_items)
 
-                if items:
-                    break
+                    if items:
+                        break
 
-            except Exception as e:
-                logger.warning(f"[유니클로] HTML 크롤링 실패 ({url}): {e}")
+                except Exception as e:
+                    logger.warning(f"[유니클로] HTML 크롤링 실패 ({url}): {e}")
+        finally:
+            session.close()
 
         return items
 
@@ -454,6 +499,7 @@ class UniqloCrawler(CrawlerContract):
                 item = self._parse_html_card(card)
                 if item:
                     items.append(item)
+            del soup  # 메모리 해제 — 대형 HTML 트리 조기 GC
         except Exception as e:
             logger.warning(f"[유니클로] HTML 파싱 실패: {e}")
 
@@ -545,6 +591,8 @@ class UniqloCrawler(CrawlerContract):
             pass
 
         items.extend(self._extract_from_html(raw_data))
+        # 원본 raw_data 참조 해제 — 대형 문자열 조기 GC
+        del raw_data
         return items
 
     async def validate(self, items: list[DiscountItem]) -> list[DiscountItem]:

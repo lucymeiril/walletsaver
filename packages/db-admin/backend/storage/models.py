@@ -80,9 +80,16 @@ class User(Base):
     hashed_password: Mapped[Optional[str]] = mapped_column(String(255))
     nickname: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     role: Mapped[UserRole] = mapped_column(SAEnum(UserRole), default=UserRole.USER)
+    profile_image: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # 프로필 확장 필드
+    bio: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    preferences: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    is_deleted: Mapped[bool] = mapped_column(Boolean, default=False)
+    deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
 
     oauth_accounts: Mapped[list["OAuthAccount"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     posts: Mapped[list["Post"]] = relationship(back_populates="author", cascade="all, delete-orphan")
@@ -90,6 +97,9 @@ class User(Base):
     votes: Mapped[list["Vote"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     favorites: Mapped[list["Favorite"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     price_alerts: Mapped[list["PriceAlert"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    cart_items: Mapped[list["CartItem"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    wishlist_items: Mapped[list["WishlistItem"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    activities: Mapped[list["UserActivity"]] = relationship(back_populates="user", cascade="all, delete-orphan")
 
 
 class OAuthAccount(Base):
@@ -149,14 +159,33 @@ class Product(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    source_type: Mapped[Optional[str]] = mapped_column(String(20), default="unknown")
+    # "mart_crawl" | "community_deal" | "baseline" | "user_submitted" | "unknown"
+    categorization_confidence: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    categorization_method: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
+    # "auto" | "suggested" | "manual" | "corrected"
+
     category: Mapped[Optional["Category"]] = relationship(back_populates="products")
-    baseline_prices: Mapped[list["BaselinePrice"]] = relationship(back_populates="product", cascade="all, delete-orphan")
-    discount_history: Mapped[list["DiscountHistory"]] = relationship(back_populates="product", cascade="all, delete-orphan")
-    hotdeal_prices: Mapped[list["HotdealPrice"]] = relationship(back_populates="product", cascade="all, delete-orphan")
+    # lazy="selectin" — 상품 목록 조회 시 N+1 방지, 필요할 때만 서브쿼리로 일괄 로딩
+    baseline_prices: Mapped[list["BaselinePrice"]] = relationship(
+        back_populates="product", cascade="all, delete-orphan", lazy="selectin",
+    )
+    discount_history: Mapped[list["DiscountHistory"]] = relationship(
+        back_populates="product", cascade="all, delete-orphan", lazy="selectin",
+    )
+    hotdeal_prices: Mapped[list["HotdealPrice"]] = relationship(
+        back_populates="product", cascade="all, delete-orphan", lazy="selectin",
+    )
+    product_keywords: Mapped[list["ProductKeyword"]] = relationship(
+        back_populates="product", cascade="all, delete-orphan", lazy="selectin",
+    )
 
     __table_args__ = (
         Index("ix_products_name", "name"),
         Index("ix_products_category", "category_id"),
+        # source_type 필터 빈번 — 핫딜/마트/기준가 분류 필터링용
+        Index("ix_products_source_type", "source_type"),
+        Index("ix_products_active", "is_active"),
     )
 
 
@@ -181,6 +210,8 @@ class BaselinePrice(Base):
 
     __table_args__ = (
         Index("ix_baseline_product_date", "product_id", "recorded_at"),
+        # 매장별 최신 기준가 조회 최적화
+        Index("ix_baseline_product_source", "product_id", "source"),
     )
 
 
@@ -205,6 +236,10 @@ class DiscountHistory(Base):
     __table_args__ = (
         Index("ix_discount_product_date", "product_id", "crawled_at"),
         Index("ix_discount_source", "source"),
+        # 복합 인덱스: 매장별 최신 가격 조회 최적화 (source + product_id)
+        Index("ix_discount_product_source", "product_id", "source"),
+        # crawled_at 단독 인덱스: 최신 할인 목록 정렬용
+        Index("ix_discount_crawled_at", "crawled_at"),
     )
 
 
@@ -227,6 +262,10 @@ class HotdealPrice(Base):
 
     __table_args__ = (
         Index("ix_hotdeal_product_date", "product_id", "crawled_at"),
+        # source 단독 인덱스: 출처별 핫딜 필터링용
+        Index("ix_hotdeal_source", "source"),
+        # crawled_at 단독: 최신 핫딜 정렬용
+        Index("ix_hotdeal_crawled_at", "crawled_at"),
     )
 
 
@@ -297,6 +336,7 @@ class Post(Base):
     product_id: Mapped[Optional[int]] = mapped_column(ForeignKey("products.id"))
     deal_price: Mapped[Optional[float]] = mapped_column(Float)
     deal_url: Mapped[Optional[str]] = mapped_column(String(500))
+    tags: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
     suggested_tier: Mapped[Optional[str]] = mapped_column(String(20))
     view_count: Mapped[int] = mapped_column(Integer, default=0)
     is_pinned: Mapped[bool] = mapped_column(Boolean, default=False)
@@ -438,8 +478,36 @@ class Keyword(Base):
     search_count: Mapped[int] = mapped_column(Integer, default=0)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
+    product_keywords: Mapped[list["ProductKeyword"]] = relationship(
+        back_populates="keyword", cascade="all, delete-orphan", lazy="selectin",
+    )
+
     __table_args__ = (
         Index("ix_keywords_word", "word"),
+        # 인기 검색어 정렬용 — search_count DESC 빈번 사용
+        Index("ix_keywords_active_count", "is_active", "search_count"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 상품-키워드 연결 (Junction Table)
+# ═══════════════════════════════════════════════
+
+class ProductKeyword(Base):
+    """상품과 키워드의 다대다 관계를 위한 연결 테이블."""
+    __tablename__ = "product_keywords"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id", ondelete="CASCADE"))
+    keyword_id: Mapped[int] = mapped_column(ForeignKey("keywords.id", ondelete="CASCADE"))
+
+    product: Mapped["Product"] = relationship(back_populates="product_keywords")
+    keyword: Mapped["Keyword"] = relationship(back_populates="product_keywords")
+
+    __table_args__ = (
+        UniqueConstraint("product_id", "keyword_id", name="uq_product_keyword"),
+        Index("ix_product_keywords_product", "product_id"),
+        Index("ix_product_keywords_keyword", "keyword_id"),
     )
 
 
@@ -490,6 +558,182 @@ class ShoppingItem(Base):
 
     __table_args__ = (
         Index("ix_shopping_platform", "platform"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# Normalized public mart catalog/pricing slice
+# ═══════════════════════════════════════════════
+
+class NormalizedCanonicalProduct(Base):
+    """Static canonical product data for the normalized public catalog slice."""
+    __tablename__ = "normalized_canonical_products"
+
+    public_product_id: Mapped[str] = mapped_column(String(120), primary_key=True)
+    category_id: Mapped[Optional[str]] = mapped_column(ForeignKey("categories.id"), nullable=True)
+    canonical_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    brand: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+    aliases: Mapped[list[str]] = mapped_column(JSON, nullable=False, default=list)
+    keywords: Mapped[list[str]] = mapped_column(JSON, nullable=False, default=list)
+    attributes: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    primary_image_url: Mapped[Optional[str]] = mapped_column(String(1000), nullable=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    projection_version: Mapped[str] = mapped_column(String(40), nullable=False, default="mart3-v1")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    category: Mapped[Optional["Category"]] = relationship("Category")
+    variants: Mapped[list["NormalizedProductVariant"]] = relationship(
+        back_populates="product", cascade="all, delete-orphan", lazy="selectin",
+    )
+
+    __table_args__ = (
+        Index("ix_norm_product_category", "category_id"),
+        Index("ix_norm_product_name", "canonical_name"),
+    )
+
+
+class NormalizedProductVariant(Base):
+    """Package/volume variant for a canonical product."""
+    __tablename__ = "normalized_product_variants"
+
+    public_variant_id: Mapped[str] = mapped_column(String(120), primary_key=True)
+    public_product_id: Mapped[str] = mapped_column(
+        ForeignKey("normalized_canonical_products.public_product_id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    variant_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    package_quantity: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    package_unit: Mapped[Optional[str]] = mapped_column(String(40), nullable=True)
+    display_unit: Mapped[Optional[str]] = mapped_column(String(80), nullable=True)
+    bundle_count: Mapped[int] = mapped_column(Integer, default=1)
+    standard_unit: Mapped[Optional[str]] = mapped_column(String(40), nullable=True)
+    attributes: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    projection_version: Mapped[str] = mapped_column(String(40), nullable=False, default="mart3-v1")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    product: Mapped["NormalizedCanonicalProduct"] = relationship(back_populates="variants")
+    source_listings: Mapped[list["NormalizedSourceListing"]] = relationship(
+        back_populates="variant", cascade="all, delete-orphan", lazy="selectin",
+    )
+
+    __table_args__ = (
+        Index("ix_norm_variant_product", "public_product_id"),
+        Index("ix_norm_variant_package", "package_quantity", "package_unit", "bundle_count"),
+    )
+
+
+class NormalizedSourceListing(Base):
+    """Source-owned listing data; latest URL lives here, not on product static rows."""
+    __tablename__ = "normalized_source_listings"
+
+    public_source_listing_id: Mapped[str] = mapped_column(String(120), primary_key=True)
+    public_variant_id: Mapped[str] = mapped_column(
+        ForeignKey("normalized_product_variants.public_variant_id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    source_name: Mapped[str] = mapped_column(String(120), nullable=False)
+    source_record_key: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
+    source_title: Mapped[str] = mapped_column(String(500), nullable=False)
+    source_url: Mapped[Optional[str]] = mapped_column(String(1000), nullable=True)
+    image_url: Mapped[Optional[str]] = mapped_column(String(1000), nullable=True)
+    source_unit_text: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    projection_version: Mapped[str] = mapped_column(String(40), nullable=False, default="mart3-v1")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    variant: Mapped["NormalizedProductVariant"] = relationship(back_populates="source_listings")
+    offer_events: Mapped[list["NormalizedOfferEvent"]] = relationship(
+        back_populates="source_listing", cascade="all, delete-orphan", lazy="selectin",
+    )
+
+    __table_args__ = (
+        Index("ix_norm_listing_variant", "public_variant_id"),
+        Index("ix_norm_listing_source", "source_name", "source_record_key"),
+    )
+
+
+class NormalizedOfferEvent(Base):
+    """Source-owned price/promotion fact; price can be null for unsafe price states."""
+    __tablename__ = "normalized_offer_events"
+
+    public_offer_event_id: Mapped[str] = mapped_column(String(120), primary_key=True)
+    public_source_listing_id: Mapped[str] = mapped_column(
+        ForeignKey("normalized_source_listings.public_source_listing_id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    price_state: Mapped[str] = mapped_column(String(40), nullable=False)
+    promotion_type: Mapped[str] = mapped_column(String(40), nullable=False)
+    price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    original_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    discount_rate: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    event_name: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    standard_unit_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    price_per_100g: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    valid_from: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    valid_to: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    raw_record_id: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
+    raw_evidence: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    audit_provenance: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    crawled_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    offer_state: Mapped[str] = mapped_column(String(40), nullable=False, default="active")
+    projection_version: Mapped[str] = mapped_column(String(40), nullable=False, default="mart3-v1")
+
+    source_listing: Mapped["NormalizedSourceListing"] = relationship(back_populates="offer_events")
+    week_links: Mapped[list["NormalizedOfferWeekLink"]] = relationship(
+        back_populates="offer_event", cascade="all, delete-orphan", lazy="selectin",
+    )
+
+    __table_args__ = (
+        Index("ix_norm_offer_listing", "public_source_listing_id"),
+        Index("ix_norm_offer_state", "offer_state"),
+    )
+
+
+class NormalizedWeekBucket(Base):
+    """Comparison week bucket, shared by many offer events."""
+    __tablename__ = "normalized_week_buckets"
+
+    public_week_bucket_id: Mapped[str] = mapped_column(String(120), primary_key=True)
+    week_start: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    week_end: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    projection_version: Mapped[str] = mapped_column(String(40), nullable=False, default="mart3-v1")
+    generated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    offer_links: Mapped[list["NormalizedOfferWeekLink"]] = relationship(
+        back_populates="week_bucket", cascade="all, delete-orphan", lazy="selectin",
+    )
+
+    __table_args__ = (
+        UniqueConstraint("week_start", "week_end", name="uq_norm_week_range"),
+        Index("ix_norm_week_start", "week_start"),
+    )
+
+
+class NormalizedOfferWeekLink(Base):
+    """Many-to-many linkage between de-duplicated offer events and week buckets."""
+    __tablename__ = "normalized_offer_week_links"
+
+    public_offer_event_id: Mapped[str] = mapped_column(
+        ForeignKey("normalized_offer_events.public_offer_event_id", ondelete="CASCADE"),
+        primary_key=True,
+    )
+    public_week_bucket_id: Mapped[str] = mapped_column(
+        ForeignKey("normalized_week_buckets.public_week_bucket_id", ondelete="CASCADE"),
+        primary_key=True,
+    )
+    observed_min_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    observed_max_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    offer_event: Mapped["NormalizedOfferEvent"] = relationship(back_populates="week_links")
+    week_bucket: Mapped["NormalizedWeekBucket"] = relationship(back_populates="offer_links")
+
+    __table_args__ = (
+        Index("ix_norm_offer_week", "public_week_bucket_id"),
     )
 
 
@@ -548,4 +792,188 @@ class PendingIngestion(Base):
         Index("ix_pending_status", "status"),
         Index("ix_pending_crawler", "crawler_name"),
         Index("ix_pending_crawled_at", "crawled_at"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 자동 카테고리 분류
+# ═══════════════════════════════════════════════
+
+class PendingCategorization(Base):
+    """자동 분류 대기열 — 신뢰도 부족 시 관리자 확인 대기."""
+    __tablename__ = "pending_categorizations"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"), nullable=False)
+    suggested_category_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    confidence: Mapped[float] = mapped_column(Float, default=0.0)
+    candidates_json: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    parsed_keywords: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    parsed_attributes: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    status: Mapped[str] = mapped_column(String(20), default="pending")
+    # "pending" | "approved" | "corrected" | "skipped"
+    admin_category_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    product: Mapped["Product"] = relationship("Product", backref="pending_categorizations")
+
+    __table_args__ = (
+        Index("ix_pending_cat_status", "status"),
+        Index("ix_pending_cat_product", "product_id"),
+    )
+
+
+class CategoryCorrection(Base):
+    """관리자 보정 이력 — 피드백 루프용."""
+    __tablename__ = "category_corrections"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    product_name_pattern: Mapped[str] = mapped_column(String(500), nullable=False)
+    wrong_category_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    correct_category_id: Mapped[str] = mapped_column(String(100), nullable=False)
+    tokens: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+
+# ═══════════════════════════════════════════════
+# 감사 로그
+# ═══════════════════════════════════════════════
+
+class AuditLog(Base):
+    """관리자 작업 감사 로그."""
+    __tablename__ = "audit_logs"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    timestamp: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    user_id: Mapped[str] = mapped_column(String(100), default="anonymous")
+    action: Mapped[str] = mapped_column(String(50), nullable=False)
+    entity_type: Mapped[str] = mapped_column(String(50), nullable=False)
+    entity_id: Mapped[Optional[str]] = mapped_column(String(100))
+    old_value: Mapped[Optional[dict]] = mapped_column(JSON)
+    new_value: Mapped[Optional[dict]] = mapped_column(JSON)
+    ip_address: Mapped[Optional[str]] = mapped_column(String(45))
+    user_agent: Mapped[Optional[str]] = mapped_column(String(500))
+    request_id: Mapped[Optional[str]] = mapped_column(String(50))
+    metadata_: Mapped[Optional[dict]] = mapped_column("metadata", JSON)
+
+    __table_args__ = (
+        Index("ix_audit_timestamp", "timestamp"),
+        Index("ix_audit_entity", "entity_type", "entity_id"),
+        Index("ix_audit_user", "user_id"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 핫딜 댓글 & 투표 (크롤링 핫딜용)
+# ═══════════════════════════════════════════════
+
+class HotDealComment(Base):
+    """크롤링 핫딜 댓글"""
+    __tablename__ = "hotdeal_comments"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    hotdeal_id: Mapped[int] = mapped_column(Integer, nullable=False, index=True)
+    author: Mapped[str] = mapped_column(String(100), default="익명")
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+
+class HotDealVote(Base):
+    """크롤링 핫딜 투표"""
+    __tablename__ = "hotdeal_votes"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    hotdeal_id: Mapped[int] = mapped_column(Integer, nullable=False, index=True)
+    vote_type: Mapped[str] = mapped_column(String(10), nullable=False)
+    client_ip: Mapped[str] = mapped_column(String(50), default="unknown")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    __table_args__ = (
+        UniqueConstraint("hotdeal_id", "client_ip", name="uq_hotdeal_vote_identity"),
+        Index("ix_hotdeal_votes_deal_type", "hotdeal_id", "vote_type"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 장바구니
+# ═══════════════════════════════════════════════
+
+class CartItem(Base):
+    """사용자 장바구니 — 상품 or 수동 입력 아이템"""
+    __tablename__ = "cart_items"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    product_id: Mapped[Optional[int]] = mapped_column(ForeignKey("products.id", ondelete="SET NULL"), nullable=True)
+    item_name: Mapped[str] = mapped_column(String(300), nullable=False)
+    item_price: Mapped[float] = mapped_column(Float, nullable=False)
+    item_image_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    store_name: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    source_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    original_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    discount_rate: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    category: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    quantity: Mapped[int] = mapped_column(Integer, default=1)
+    added_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    expires_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+
+    user: Mapped["User"] = relationship(back_populates="cart_items")
+
+    __table_args__ = (
+        UniqueConstraint("user_id", "product_id", "store_name", name="uq_cart_user_product_store"),
+        Index("ix_cart_user", "user_id"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 찜 목록
+# ═══════════════════════════════════════════════
+
+class WishlistItem(Base):
+    """사용자 찜 목록 — 가격 하락 알림 지원"""
+    __tablename__ = "wishlist_items"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    product_id: Mapped[Optional[int]] = mapped_column(ForeignKey("products.id", ondelete="SET NULL"), nullable=True)
+    item_name: Mapped[str] = mapped_column(String(300), nullable=False)
+    target_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    item_image_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    store_name: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    category: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    price_at_add: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    current_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    added_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    notify_on_drop: Mapped[bool] = mapped_column(Boolean, default=False)
+
+    user: Mapped["User"] = relationship(back_populates="wishlist_items")
+
+    __table_args__ = (
+        Index("ix_wishlist_user", "user_id"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 사용자 활동 (추천용)
+# ═══════════════════════════════════════════════
+
+class UserActivity(Base):
+    """사용자 활동 로그 — 추천 알고리즘의 입력 데이터"""
+    __tablename__ = "user_activities"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    activity_type: Mapped[str] = mapped_column(String(30), nullable=False)
+    # view / search / cart_add / wishlist_add / vote
+    target_type: Mapped[Optional[str]] = mapped_column(String(30), nullable=True)
+    # product / post / hotdeal
+    target_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    metadata_: Mapped[Optional[dict]] = mapped_column("metadata", JSON, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    user: Mapped["User"] = relationship(back_populates="activities")
+
+    __table_args__ = (
+        Index("ix_activity_user_type_date", "user_id", "activity_type", "created_at"),
     )

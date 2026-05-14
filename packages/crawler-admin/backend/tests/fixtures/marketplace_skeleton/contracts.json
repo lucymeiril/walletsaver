@@ -1,0 +1,70 @@
+{
+  "schema": "marketplace_skeleton_fixture_contracts.v1",
+  "fixtures": {
+    "11st": {
+      "source": "11st",
+      "display_name": "11번가",
+      "name": "11번가 fixture 세제 3L",
+      "sale_price": 12900,
+      "original_price": 16900,
+      "discount_percent": 24,
+      "detail_url": "https://www.11st.co.kr/products/fixture-11st",
+      "image_url": "https://www.11st.co.kr/images/11st-detergent.jpg",
+      "parser_contract": "marketplace_skeleton.v1",
+      "live_ready": false,
+      "verification_status": "registered_unverified"
+    },
+    "gmarket": {
+      "source": "gmarket",
+      "display_name": "G마켓",
+      "name": "G마켓 fixture 라면 20입",
+      "sale_price": 18900,
+      "original_price": 22900,
+      "discount_percent": 17,
+      "detail_url": "https://www.gmarket.co.kr/item?goodsCode=fixture-gmarket",
+      "image_url": "https://www.gmarket.co.kr/images/gmarket-ramen.jpg",
+      "parser_contract": "marketplace_skeleton.v1",
+      "live_ready": false,
+      "verification_status": "registered_unverified"
+    },
+    "aliexpress": {
+      "source": "aliexpress",
+      "display_name": "알리익스프레스",
+      "name": "AliExpress fixture USB Cable",
+      "sale_price": 2500,
+      "original_price": 4200,
+      "discount_percent": 40,
+      "detail_url": "https://www.aliexpress.com/item/fixture-aliexpress.html",
+      "image_url": "https://www.aliexpress.com/images/ali-cable.jpg",
+      "parser_contract": "marketplace_skeleton.v1",
+      "live_ready": false,
+      "verification_status": "registered_unverified"
+    },
+    "naver_store": {
+      "source": "naver_store",
+      "display_name": "네이버스토어",
+      "name": "네이버 fixture 쌀 10kg",
+      "sale_price": 29900,
+      "original_price": 34900,
+      "discount_percent": 14,
+      "detail_url": "https://smartstore.naver.com/fixture-store/products/rice",
+      "image_url": "https://smartstore.naver.com/images/naver-rice.jpg",
+      "parser_contract": "marketplace_skeleton.v1",
+      "live_ready": false,
+      "verification_status": "registered_unverified"
+    },
+    "coupang": {
+      "source": "coupang",
+      "display_name": "쿠팡",
+      "name": "쿠팡 fixture 생수 2L",
+      "sale_price": 3900,
+      "original_price": 5900,
+      "discount_percent": 34,
+      "detail_url": "https://www.coupang.com/vp/products/fixture-coupang",
+      "image_url": "https://www.coupang.com/image/coupang.jpg",
+      "parser_contract": "marketplace_skeleton.v1",
+      "live_ready": false,
+      "verification_status": "registered_unverified"
+    }
+  }
+}

@@ -7,6 +7,28 @@
 .hdr h2 { font-size: 1.5rem; font-weight: var(--fw-bold); }
 .hdr p { color: var(--text3); font-size: .9rem; margin-top: 2px; }
 
+/* Back to list button */
+.backToList {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--accent);
+  font-size: .9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.backToList:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
 /* Search Section */
 .searchSection {
   max-width: var(--max-w);
@@ -64,6 +86,20 @@
 .acName { font-weight: var(--fw-semi); font-size: .9rem; flex: 1; }
 .acCat { font-size: .75rem; color: var(--text3); }
 .acPrice { font-weight: var(--fw-bold); color: var(--accent); font-size: .85rem; }
+
+/* Autocomplete 2-section styles */
+.acSectionLabel { padding: 6px 16px; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.03em; }
+.acDivider { height: 1px; background: var(--border); margin: 4px 0; }
+.acContent { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
+.acHint { font-size: 0.75rem; color: #f97316; }
+.acPath { font-size: 0.7rem; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.acMeta { font-size: 0.75rem; color: #888; }
+.acFooter { padding: 8px 16px; text-align: center; color: var(--accent); cursor: pointer; border-top: 1px solid var(--border); font-size: 0.85rem; }
+.acFooter:hover { background: rgba(56,189,248,.06); }
+.acEmpty { padding: 16px; text-align: center; color: #888; font-size: 0.88rem; }
+.acTrending { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 8px; }
+.acTrendBtn { background: rgba(30,41,59,.6); border: 1px solid var(--border); border-radius: 12px; padding: 4px 10px; color: var(--text2); cursor: pointer; font-size: 0.8rem; }
+.acTrendBtn:hover { border-color: var(--accent); color: var(--accent); }
 
 /* Search Results */
 .resultGrid {
@@ -299,6 +335,29 @@
 }
 .chartBtn:hover { color: var(--text); }
 .chartBtnActive { background: rgba(56,189,248,.1); color: var(--accent); }
+.historyEmpty { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 12px 0; }
+.sparseNotice {
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(251,191,36,.08);
+  border: 1px solid rgba(251,191,36,.22);
+  color: var(--text2);
+  font-size: .82rem;
+}
+.currentOfferCard {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(56,189,248,.08);
+  border: 1px solid rgba(56,189,248,.2);
+  color: var(--text2);
+}
+.currentOfferCard span { font-size: .78rem; color: var(--text3); }
+.currentOfferCard strong { color: var(--accent); font-size: 1rem; }
+.currentOfferCard em { font-style: normal; font-size: .78rem; color: var(--text3); }
 
 /* Expert Mode */
 .expertToggle {
@@ -434,6 +493,7 @@
   .chartBtn { min-height: 44px; padding: 8px 14px; }
   .searchSection { padding: 0 12px; }
   .resultGrid { grid-template-columns: repeat(2, 1fr); padding: 0 12px 20px; }
+  .summaryBar { margin: 0 12px 12px; }
 }
 @media(max-width:600px) {
   .prices { grid-template-columns: repeat(2, 1fr); }
@@ -442,4 +502,88 @@
 @media(max-width:480px) {
   .statsGrid { grid-template-columns: repeat(2, 1fr); }
   .prices { grid-template-columns: 1fr; }
+}
+
+/* 결론형 요약 바 */
+.summaryBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  margin: 0 0 16px;
+  background: linear-gradient(135deg, rgba(34,197,94,.12), rgba(56,189,248,.12));
+  border: 1px solid rgba(34,197,94,.25);
+  border-radius: 12px;
+  font-size: .95rem;
+  color: var(--text1);
+}
+.summaryIcon { font-size: 1.4rem; }
+.summaryText strong { color: #22c55e; }
+
+/* 점진적 공개 토글 */
+.detailToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  margin-top: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--text2);
+  font-size: .9rem;
+  transition: background .15s;
+}
+.detailToggle:hover { background: var(--surface-hover, rgba(255,255,255,.06)); }
+.detailPanel { margin-top: 8px; }
+
+/* 빈 데이터 상태 */
+.noData {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 20px;
+  margin-top: 16px;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  text-align: center;
+}
+.noDataIcon { font-size: 3rem; margin-bottom: 12px; opacity: .5; }
+.noDataText { font-size: 1.05rem; color: var(--text1); margin: 0 0 6px; font-weight: 600; }
+.noDataSub { font-size: .85rem; color: var(--text3); margin: 0 0 20px; }
+.requestBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 24px;
+  background: var(--primary, #38bdf8);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.requestBtn:hover { opacity: .85; }
+
+/* 마트 최저가 강조 */
+.mlCheapest {
+  background: rgba(34,197,94,.08);
+  border-radius: 8px;
+  padding-left: 8px;
+  margin-left: -8px;
+}
+.mlBadge {
+  display: inline-block;
+  padding: 1px 6px;
+  margin-left: 6px;
+  background: #22c55e;
+  color: #fff;
+  border-radius: 4px;
+  font-size: .65rem;
+  font-weight: 700;
+  vertical-align: middle;
 }

@@ -28,6 +28,7 @@ export default function Button({
       className={classes}
       disabled={disabled || loading}
       onClick={onClick}
+      aria-busy={loading || undefined}
       {...props}
     >
       {loading && <Loader2 className={s.spinner} size={size === 'sm' ? 14 : size === 'lg' ? 20 : 16} />}

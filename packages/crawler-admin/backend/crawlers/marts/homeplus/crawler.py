@@ -1,11 +1,18 @@
 """
 홈플러스 크롤러 — 전단지 및 할인 행사 상품 정보 수집.
 
-홈플러스 행사 상품 페이지에서 전단지/할인 데이터를 수집한다.
-홈플러스는 행사 상품 목록을 내부 API(JSON) 또는 SSR HTML로 제공하므로
-cloudscraper 전략으로 접근한다.
+홈플러스는 mfront.homeplus.co.kr SPA로 전환되어
+서버사이드 HTML만으로는 상품 데이터를 추출할 수 없다.
+Playwright 브라우저 렌더링으로 검색 결과를 수집하고,
+.unitItemInner 카드에서 상품 정보를 파싱한다.
 
-데이터 흐름: API JSON/HTML → DiscountItem → ProductPrice → DB
+봇 탐지 회피 전략:
+  - 검색어별 1~3초 랜덤 딜레이 (AntiDetect)
+  - User-Agent 로테이션
+  - Playwright stealth 모드로 자동화 탐지 우회
+  - 검색어 간 점진적 크롤링
+
+데이터 흐름: Playwright HTML → DiscountItem → ProductPrice → DB
 용도: 할인 이력 DB 구축 (discount_history)
 의존: core/ 만
 """
@@ -14,9 +21,12 @@ from __future__ import annotations
 
 import json
 import logging
+import random
 import re
+import time
 from datetime import datetime
 from typing import Optional
+from urllib.parse import quote
 
 import requests
 
@@ -25,114 +35,133 @@ from core.models import (
     CrawlerInfo, CrawlerGroup, CrawlResult, CrawlStatus,
     DiscountItem,
 )
+from core.product_units import normalize_unit_metadata
 from engine.anti_detect import AntiDetect
+from pipeline.quality import summarize_discount_run
 
 logger = logging.getLogger(__name__)
 
 
 class HomeplusCrawler(CrawlerContract):
-    """홈플러스 크롤러 — 전단지/할인 행사 상품 수집."""
+    """홈플러스 크롤러 — mfront.homeplus.co.kr SPA Playwright 기반 상품 수집.
+
+    봇 탐지 회피 전략:
+      - 검색어별 1~3초 랜덤 딜레이 (AntiDetect)
+      - User-Agent 로테이션
+      - Playwright stealth 모드로 봇 탐지 우회
+      - 스크롤로 lazy-load 상품 트리거
+    """
 
     BASE_URL = "https://www.homeplus.co.kr"
     MFRONT_URL = "https://mfront.homeplus.co.kr"
-    EVENT_URL = "https://www.homeplus.co.kr/event/eventMain.do"
-    # 홈플러스 전단지 API (모바일)
-    LEAFLET_API = "https://www.homeplus.co.kr/app/event/leaflet.do"
-    SEARCH_QUERIES = ["세일", "특가", "할인"]
+    # 다양한 검색어로 더 많은 할인 상품 수집
+    SEARCH_QUERIES = ["할인", "특가", "세일", "1+1", "행사", "과일", "정육", "우유"]
+    # Homeplus is a browser-rendered SPA; keep default collection bounded until
+    # live readiness is explicitly approved. Operator diagnostics may tighten
+    # MAX_PAGES/MAX_REQUESTS without changing the normal scheduled path.
+    MAX_ITEMS: int | None = 50
+    MAX_PAGES: int | None = None
+    MAX_REQUESTS: int | None = None
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=1.0, delay_max=3.0)
+
+    def _retry_request(self, url: str, *, headers: dict | None = None,
+                       session: requests.Session | None = None,
+                       timeout: int = 15, max_retries: int = 3,
+                       **kwargs) -> requests.Response:
+        """HTTP GET with exponential backoff for transient failures."""
+        requester = session or requests
+        last_exc = None
+        for attempt in range(max_retries):
+            try:
+                resp = requester.get(url, headers=headers, timeout=timeout, **kwargs)
+                if resp.status_code == 429:  # Rate limited — back off
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    time.sleep(wait)
+                    continue
+                return resp
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.Timeout) as e:
+                last_exc = e
+                if attempt < max_retries - 1:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
+                                   f"retrying in {wait:.1f}s: {e}")
+                    time.sleep(wait)
+                else:
+                    raise
+        raise last_exc  # type: ignore[misc]
 
     @property
     def info(self) -> CrawlerInfo:
         return CrawlerInfo(
             name="홈플러스",
-            version="1.0.0",
+            version="2.0.0",
             group=CrawlerGroup.MART,
-            description="홈플러스 전단지 및 할인 행사 상품 정보 수집",
+            description="홈플러스 할인 상품 정보 수집 (mfront SPA Playwright 기반)",
             target_url=self.BASE_URL,
-            strategies=["cloudscraper", "requests"],
+            strategies=["playwright", "requests"],
         )
 
     async def crawl(self) -> CrawlResult:
-        """홈플러스 행사 상품 페이지를 크롤링한다.
+        """홈플러스 할인 상품을 크롤링한다.
 
-        전략 순서:
-          1차: HTTP 직접 요청 (JSON/HTML)
-          2차: Playwright 브라우저 렌더링 — mfront.homeplus.co.kr SPA 완전 렌더링
-
-        2025년 기준 homeplus.co.kr → mfront.homeplus.co.kr(SPA)로 전환됨.
+        전략:
+          mfront.homeplus.co.kr은 완전한 SPA이므로 Playwright 렌더링이 필수.
+          /search?keyword= 검색 URL로 검색어별 상품을 수집한다.
+          HTTP 요청은 SPA 셸만 반환하므로 Playwright를 기본 전략으로 사용한다.
         """
         started_at = datetime.now()
         logger.info("[홈플러스] 크롤링 시작")
 
         try:
-            headers = self._anti_detect.get_random_headers()
-            headers.update({
-                "Referer": "https://www.homeplus.co.kr/",
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            })
+            # Playwright 기반 크롤링 (SPA이므로 항상 Playwright 우선)
+            items, queries_attempted = await self._fetch_via_playwright()
+            strategy = "playwright"
+            fallback_used = False
 
-            response = requests.get(
-                self.EVENT_URL, headers=headers, timeout=20,
-                allow_redirects=True,
-            )
+            # Playwright 실패 시 HTTP fallback 시도. Bounded live diagnostics
+            # with MAX_REQUESTS exhausted must not make an extra request.
+            request_budget_exhausted = self.MAX_REQUESTS is not None and queries_attempted >= self.MAX_REQUESTS
+            if not items and not request_budget_exhausted:
+                logger.info("[홈플러스] Playwright 수집 실패, HTTP fallback 시도")
+                items = await self._fetch_via_http()
+                queries_attempted = 0
+                strategy = "requests"
+                fallback_used = True
+            elif not items and request_budget_exhausted:
+                logger.info(f"[홈플러스] bounded MAX_REQUESTS={self.MAX_REQUESTS} 도달, HTTP fallback 생략")
 
-            # SPA 감지 → Playwright로 전환
-            is_spa = "mfront.homeplus" in response.url or len(response.text) < 15000
-            if is_spa:
-                from bs4 import BeautifulSoup
-                soup = BeautifulSoup(response.text, "html.parser")
-                product_markers = soup.select(".product-item, .goods_item, .event_item")
-                if not product_markers:
-                    logger.info("[홈플러스] SPA 셸 감지 → Playwright 렌더링")
-                    items = await self._fetch_via_playwright()
-                    valid_items = await self.validate(items)
-                    items_as_dict = [item.model_dump(mode="json") for item in valid_items]
-                    finished_at = datetime.now()
-                    duration = (finished_at - started_at).total_seconds()
-                    logger.info(f"[홈플러스] Playwright 크롤링 완료: {len(valid_items)}개, {duration:.2f}초")
-                    return CrawlResult(
-                        status=CrawlStatus.SUCCESS if valid_items else CrawlStatus.PARTIAL,
-                        crawler_name=self.info.name,
-                        strategy_used="playwright",
-                        items_count=len(valid_items),
-                        items=items_as_dict,
-                        started_at=started_at,
-                        finished_at=finished_at,
-                        duration_seconds=duration,
-                        error_msg="Playwright 렌더링 사용 (SPA)" if not valid_items else None,
-                    )
-
-            if response.status_code != 200:
-                logger.error(f"[홈플러스] HTTP {response.status_code}")
-                return CrawlResult(
-                    status=CrawlStatus.FAILED,
-                    crawler_name=self.info.name,
-                    error_msg=f"HTTP {response.status_code}",
-                    started_at=started_at,
-                    finished_at=datetime.now(),
-                )
-
-            raw_data = response.text
-            items = await self.parse(raw_data)
             valid_items = await self.validate(items)
-
             items_as_dict = [item.model_dump(mode="json") for item in valid_items]
+            quality_details = summarize_discount_run(
+                items_as_dict,
+                raw_count=len(items),
+                invalid_count=max(0, len(items) - len(valid_items)),
+                strategy_used=strategy,
+                fallback_used=fallback_used,
+                queries_attempted=queries_attempted,
+            )
 
             finished_at = datetime.now()
             duration = (finished_at - started_at).total_seconds()
+            status = CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED
             logger.info(f"[홈플러스] 크롤링 완료: {len(valid_items)}개, {duration:.2f}초")
 
             return CrawlResult(
-                status=CrawlStatus.SUCCESS,
+                status=status,
                 crawler_name=self.info.name,
-                strategy_used="cloudscraper",
+                strategy_used=strategy,
                 items_count=len(valid_items),
                 items=items_as_dict,
                 started_at=started_at,
                 finished_at=finished_at,
                 duration_seconds=duration,
+                error_msg=None if valid_items else "상품 수집 실패",
+                quality_score=quality_details["score"],
+                quality_details=quality_details,
             )
 
         except Exception as e:
@@ -145,28 +174,63 @@ class HomeplusCrawler(CrawlerContract):
                 finished_at=datetime.now(),
             )
 
-    async def _fetch_via_playwright(self) -> list[DiscountItem]:
+    async def _fetch_via_http(self) -> list[DiscountItem]:
+        """HTTP 요청으로 홈플러스 상품 데이터를 수집한다 (fallback).
+
+        mfront SPA가 아닌 front.homeplus.co.kr의 이벤트 페이지에서
+        JSON/HTML 데이터 추출을 시도한다.
+        """
+        items: list[DiscountItem] = []
+        headers = self._anti_detect.get_random_headers()
+        headers.update({
+            "Referer": "https://www.homeplus.co.kr/",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        })
+
+        try:
+            response = self._retry_request(
+                f"{self.BASE_URL}/event/eventMain.do",
+                headers=headers, timeout=20, allow_redirects=True,
+            )
+            if response.status_code == 200:
+                items = await self.parse(response.text)
+                items = self._limit_items(items)
+        except Exception as e:
+            logger.debug(f"[홈플러스] HTTP fallback 실패: {e}")
+
+        return items
+
+    async def _fetch_via_playwright(self) -> tuple[list[DiscountItem], int]:
         """Playwright로 mfront.homeplus.co.kr 검색 페이지를 렌더링하여 상품 데이터를 추출한다.
 
         2025년 기준 홈플러스는 mfront.homeplus.co.kr SPA로 전환되어
         /search?keyword= 검색 URL이 유일하게 상품을 반환한다.
+        .unitItemInner 카드에서 상품 정보를 파싱한다.
         """
         items: list[DiscountItem] = []
         seen_keys: set[str] = set()
+        queries_attempted = 0
+        max_items = self.MAX_ITEMS
 
         try:
             from engine.playwright_helper import PlaywrightHelper
 
             async with PlaywrightHelper() as helper:
-                for query in self.SEARCH_QUERIES:
-                    url = f"{self.MFRONT_URL}/search?keyword={query}"
+                query_limit = len(self.SEARCH_QUERIES)
+                if self.MAX_PAGES is not None:
+                    query_limit = min(query_limit, max(1, int(self.MAX_PAGES)))
+                if self.MAX_REQUESTS is not None:
+                    query_limit = min(query_limit, max(1, int(self.MAX_REQUESTS)))
+                for query in self.SEARCH_QUERIES[:query_limit]:
+                    queries_attempted += 1
+                    url = f"{self.MFRONT_URL}/search?keyword={quote(query)}"
                     try:
                         html = await helper.get_rendered_html(
                             url,
                             wait_selector=".unitItemInner",
                             wait_timeout=20000,
                             extra_wait_ms=3000,
-                            scroll_to_bottom=True,
+                            scroll_to_bottom=max_items is None,
                         )
                         page_items = await self.parse(html)
                         new_count = 0
@@ -176,7 +240,10 @@ class HomeplusCrawler(CrawlerContract):
                                 seen_keys.add(key)
                                 items.append(item)
                                 new_count += 1
-                        logger.info(f"[홈플러스] '{query}' 검색: {new_count}개 신규")
+                                if max_items is not None and len(items) >= max_items:
+                                    logger.info(f"[홈플러스] bounded MAX_ITEMS={max_items} 도달, 조기 종료")
+                                    return items[:max_items], queries_attempted
+                        logger.info(f"[홈플러스] '{query}' 검색: {new_count}개 신규 ({len(page_items)}개 중)")
                     except Exception as e:
                         logger.debug(f"[홈플러스] '{query}' 검색 실패: {e}")
                         continue
@@ -188,7 +255,7 @@ class HomeplusCrawler(CrawlerContract):
         except Exception as e:
             logger.warning(f"[홈플러스] Playwright 크롤링 실패: {e}")
 
-        return items
+        return self._limit_items(items), queries_attempted
 
     async def parse(self, raw_data: str) -> list[DiscountItem]:
         """HTML/JSON 응답에서 할인 상품을 파싱한다."""
@@ -208,10 +275,30 @@ class HomeplusCrawler(CrawlerContract):
             from bs4 import BeautifulSoup
             soup = BeautifulSoup(raw_data, "html.parser")
             items = self._parse_html(soup)
+            del soup  # Free parsed HTML tree from memory
         except Exception as e:
             logger.warning(f"[홈플러스] HTML 파싱 실패: {e}")
 
         return items
+
+    def _limit_items(self, items: list[DiscountItem]) -> list[DiscountItem]:
+        if self.MAX_ITEMS is None:
+            return items
+        return items[: max(0, int(self.MAX_ITEMS))]
+
+    def count_raw_candidates(self, raw_data: str) -> int:
+        """Count source candidate rows before DiscountItem parsing/validation."""
+        json_items = self._extract_json_items(raw_data)
+        if json_items:
+            return len(json_items)
+        try:
+            from bs4 import BeautifulSoup
+            soup = BeautifulSoup(raw_data, "html.parser")
+            count = len(soup.select(".unitItemInner, .product-item, .goods_item, .event_item, .item_box, .prod_wrap"))
+            del soup
+            return count
+        except Exception:
+            return 0
 
     def _extract_json_items(self, raw_data: str) -> list[dict]:
         """페이지 내 임베디드 JSON 데이터 추출."""
@@ -262,6 +349,13 @@ class HomeplusCrawler(CrawlerContract):
         detail_url = product.get("goodsUrl") or product.get("detail_url", "")
         if detail_url and not detail_url.startswith("http"):
             detail_url = f"{self.BASE_URL}{detail_url}"
+        raw_unit = product.get("unit") or product.get("goodsUnit") or product.get("capacity") or ""
+        unit_metadata = normalize_unit_metadata(
+            name=name,
+            sale_price=sale_price,
+            raw_unit=raw_unit,
+        )
+        display_unit = unit_metadata.get("display_unit") or raw_unit
 
         return DiscountItem(
             name=name,
@@ -269,6 +363,12 @@ class HomeplusCrawler(CrawlerContract):
             original_price=original_price,
             sale_price=sale_price,
             discount_percent=discount_pct,
+            unit=display_unit or "",
+            display_unit=display_unit or "",
+            package_quantity=unit_metadata.get("package_quantity"),
+            package_unit=unit_metadata.get("package_unit") or "",
+            price_per_100g=unit_metadata.get("price_per_100g"),
+            attributes=unit_metadata.get("attributes") or {},
             category=category,
             event_name=product.get("eventNm", "홈플러스 할인"),
             image_url=image_url,
@@ -368,6 +468,8 @@ class HomeplusCrawler(CrawlerContract):
         name = self._extract_mfront_name(card, img_el)
         if not name or len(name) < 2:
             return None
+        unit_metadata = normalize_unit_metadata(name=name, sale_price=sale_price)
+        display_unit = unit_metadata.get("display_unit")
 
         return DiscountItem(
             name=name,
@@ -375,6 +477,12 @@ class HomeplusCrawler(CrawlerContract):
             original_price=original_price,
             sale_price=sale_price,
             discount_percent=discount_pct,
+            unit=display_unit or "",
+            display_unit=display_unit or "",
+            package_quantity=unit_metadata.get("package_quantity"),
+            package_unit=unit_metadata.get("package_unit") or "",
+            price_per_100g=unit_metadata.get("price_per_100g"),
+            attributes=unit_metadata.get("attributes") or {},
             image_url=image_url,
             detail_url=detail_url,
             event_name="홈플러스 할인",
@@ -442,6 +550,8 @@ class HomeplusCrawler(CrawlerContract):
         if link_el:
             href = link_el.get("href", "")
             detail_url = href if href.startswith("http") else f"{self.BASE_URL}{href}"
+        unit_metadata = normalize_unit_metadata(name=name, sale_price=sale_price)
+        display_unit = unit_metadata.get("display_unit")
 
         return DiscountItem(
             name=name,
@@ -449,6 +559,12 @@ class HomeplusCrawler(CrawlerContract):
             original_price=original_price,
             sale_price=sale_price,
             discount_percent=discount_pct,
+            unit=display_unit or "",
+            display_unit=display_unit or "",
+            package_quantity=unit_metadata.get("package_quantity"),
+            package_unit=unit_metadata.get("package_unit") or "",
+            price_per_100g=unit_metadata.get("price_per_100g"),
+            attributes=unit_metadata.get("attributes") or {},
             image_url=image_url,
             detail_url=detail_url,
             event_name="홈플러스 할인",

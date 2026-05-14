@@ -25,7 +25,9 @@ https://www.clien.net/service/board/jirum 에서 핫딜 게시글을 수집한�
 from __future__ import annotations
 
 import logging
+import random
 import re
+import time
 from datetime import datetime
 from typing import Optional
 from urllib.parse import urljoin
@@ -60,6 +62,33 @@ class ClienCrawler(CrawlerContract):
             strategies=["requests"],
         )
 
+    def _retry_request(self, url: str, *, headers: dict | None = None,
+                       session: requests.Session | None = None,
+                       timeout: int = 15, max_retries: int = 3) -> requests.Response:
+        """HTTP GET with exponential backoff for transient failures."""
+        requester = session or requests
+        last_exc = None
+        for attempt in range(max_retries):
+            try:
+                resp = requester.get(url, headers=headers, timeout=timeout)
+                if resp.status_code == 429:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    time.sleep(wait)
+                    continue
+                return resp
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.Timeout) as e:
+                last_exc = e
+                if attempt < max_retries - 1:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
+                                   f"retrying in {wait:.1f}s: {e}")
+                    time.sleep(wait)
+                else:
+                    raise
+        raise last_exc  # type: ignore[misc]
+
     async def crawl(self) -> CrawlResult:
         """클리앙 알뜰구매 목록을 크롤링한다."""
         started_at = datetime.now()
@@ -67,7 +96,7 @@ class ClienCrawler(CrawlerContract):
 
         try:
             headers = self._anti_detect.get_random_headers()
-            response = requests.get(self.DEAL_URL, headers=headers, timeout=15)
+            response = self._retry_request(self.DEAL_URL, headers=headers, timeout=15)
             response.encoding = "utf-8"
 
             if response.status_code != 200:
@@ -136,6 +165,7 @@ class ClienCrawler(CrawlerContract):
                 logger.debug(f"[클리앙] 항목 파싱 오류: {e}")
                 continue
 
+        del soup  # Free DOM tree memory
         return items
 
     def _parse_item(self, row) -> Optional[HotdealPost]:

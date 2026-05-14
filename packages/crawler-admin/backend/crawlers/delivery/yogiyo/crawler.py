@@ -26,7 +26,10 @@ from __future__ import annotations
 
 import json
 import logging
+import os
+import random
 import re
+import time
 from datetime import datetime
 from typing import Optional
 
@@ -69,6 +72,36 @@ class YogiyoCrawler(CrawlerContract):
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=1.5, delay_max=3.0)
+
+    # Retry helper — exponential backoff for transient failures
+    def _retry_request(self, url: str, *, headers: dict | None = None,
+                       params: dict | None = None,
+                       session: requests.Session | None = None,
+                       timeout: int = 15, max_retries: int = 3,
+                       **kwargs) -> requests.Response:
+        """HTTP GET with exponential backoff for transient failures."""
+        requester = session or requests
+        last_exc = None
+        for attempt in range(max_retries):
+            try:
+                resp = requester.get(url, headers=headers, params=params, timeout=timeout, **kwargs)
+                if resp.status_code == 429:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    time.sleep(wait)
+                    continue
+                return resp
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.Timeout) as e:
+                last_exc = e
+                if attempt < max_retries - 1:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
+                                   f"retrying in {wait:.1f}s: {e}")
+                    time.sleep(wait)
+                else:
+                    raise
+        raise last_exc  # type: ignore[misc]
 
     @property
     def info(self) -> CrawlerInfo:
@@ -213,15 +246,17 @@ class YogiyoCrawler(CrawlerContract):
 
     def _get_headers(self) -> dict:
         """요기요 API 요청용 헤더."""
+        yogiyo_api_key = os.getenv("YOGIYO_API_KEY", "")
+        yogiyo_api_secret = os.getenv("YOGIYO_API_SECRET", "")
+
         base_headers = self._anti_detect.get_random_headers()
         base_headers.update({
             "Referer": "https://www.yogiyo.co.kr/",
             "Accept": "application/json",
             "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
             "Origin": "https://www.yogiyo.co.kr",
-            # 요기요 API 키 (웹 앱에서 공개적으로 사용하는 키)
-            "x-apikey": "iphoneap",
-            "x-apisecret": "fe5183cc3dea12bd0ce299cf110a75a2",
+            "x-apikey": yogiyo_api_key,
+            "x-apisecret": yogiyo_api_secret,
         })
         return base_headers
 
@@ -252,30 +287,36 @@ class YogiyoCrawler(CrawlerContract):
             },
         ]
 
-        for endpoint in api_endpoints:
-            try:
-                headers = self._get_headers()
-                resp = requests.get(
-                    endpoint["url"],
-                    params=endpoint["params"],
-                    headers=headers,
-                    timeout=15,
-                )
+        # Session 재사용으로 TCP 연결 오버헤드 절감
+        session = requests.Session()
+        try:
+            for endpoint in api_endpoints:
+                try:
+                    headers = self._get_headers()
+                    resp = self._retry_request(
+                        endpoint["url"],
+                        params=endpoint["params"],
+                        headers=headers,
+                        session=session,
+                        timeout=15,
+                    )
 
-                if resp.status_code == 200:
-                    data = resp.json()
-                    restaurants = self._extract_restaurants_from_api(data)
-                    for restaurant in restaurants:
-                        item = self._api_restaurant_to_item(restaurant)
-                        if item:
-                            items.append(item)
-                    if items:
-                        return items
-                else:
-                    logger.warning(f"[요기요] API HTTP {resp.status_code}: {endpoint['url']}")
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        restaurants = self._extract_restaurants_from_api(data)
+                        for restaurant in restaurants:
+                            item = self._api_restaurant_to_item(restaurant)
+                            if item:
+                                items.append(item)
+                        if items:
+                            return items
+                    else:
+                        logger.warning(f"[요기요] API HTTP {resp.status_code}: {endpoint['url']}")
 
-            except Exception as e:
-                logger.warning(f"[요기요] API 요청 실패: {e}")
+                except Exception as e:
+                    logger.warning(f"[요기요] API 요청 실패: {e}")
+        finally:
+            session.close()
 
         return items
 
@@ -383,7 +424,7 @@ class YogiyoCrawler(CrawlerContract):
         try:
             headers = self._get_headers()
             headers["Accept"] = "text/html,application/xhtml+xml"
-            resp = requests.get(self.BASE_URL, headers=headers, timeout=15)
+            resp = self._retry_request(self.BASE_URL, headers=headers, timeout=15)
             resp.encoding = "utf-8"
 
             if resp.status_code != 200:
@@ -481,6 +522,9 @@ class YogiyoCrawler(CrawlerContract):
                 item = self._parse_html_card(card)
                 if item:
                     items.append(item)
+
+            del soup  # 메모리 해제
+
         except Exception as e:
             logger.debug(f"[요기요] HTML 파싱 실패: {e}")
 

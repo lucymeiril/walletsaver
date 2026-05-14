@@ -15,7 +15,14 @@ load_dotenv(BASE_DIR / ".env")
 
 
 # --- Database ---
-DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://user:password@localhost:5432/wallet_guardian")
+DATABASE_URL: str = os.getenv("DATABASE_URL", "")
+if not DATABASE_URL:
+    import warnings
+    warnings.warn(
+        "DATABASE_URL not set — database features will be unavailable",
+        RuntimeWarning,
+        stacklevel=2,
+    )
 
 # --- 공공데이터 API Keys ---
 KAMIS_API_KEY: str = os.getenv("KAMIS_API_KEY", "")
@@ -44,5 +51,14 @@ IMAGE_MAX_SIZE: int = int(os.getenv("IMAGE_MAX_SIZE", "1920"))
 THUMBNAIL_SIZE: int = int(os.getenv("THUMBNAIL_SIZE", "300"))
 
 # --- API Server ---
-API_HOST: str = os.getenv("API_HOST", "0.0.0.0")
+API_HOST: str = os.getenv("API_HOST", "127.0.0.1")
 API_PORT: int = int(os.getenv("API_PORT", "8000"))
+
+# --- Resource Limits ---
+MAX_CONCURRENT_CRAWLS: int = int(os.getenv("MAX_CONCURRENT_CRAWLS", "5"))
+CRAWL_CUMULATIVE_TIMEOUT: int = int(os.getenv("CRAWL_CUMULATIVE_TIMEOUT", "180"))
+SSE_MAX_DURATION: int = int(os.getenv("SSE_MAX_DURATION", "1800"))
+
+# --- Audit ---
+AUDIT_LOG_MAX_BYTES: int = int(os.getenv("AUDIT_LOG_MAX_BYTES", str(50 * 1024 * 1024)))
+AUDIT_LOG_BACKUP_COUNT: int = int(os.getenv("AUDIT_LOG_BACKUP_COUNT", "10"))

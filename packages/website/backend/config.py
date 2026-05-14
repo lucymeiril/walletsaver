@@ -43,5 +43,5 @@ IMAGE_MAX_SIZE: int = int(os.getenv("IMAGE_MAX_SIZE", "1920"))
 THUMBNAIL_SIZE: int = int(os.getenv("THUMBNAIL_SIZE", "300"))
 
 # --- API Server ---
-API_HOST: str = os.getenv("API_HOST", "0.0.0.0")
+API_HOST: str = os.getenv("WEBSITE_HOST", os.getenv("API_HOST", "127.0.0.1"))
 API_PORT: int = int(os.getenv("API_PORT", "8000"))

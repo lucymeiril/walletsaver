@@ -1,5 +1,5 @@
 """커뮤니티 관련 스키마"""
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 from enum import Enum
 
@@ -12,23 +12,28 @@ class PostType(str, Enum):
 
 
 class PostCreate(BaseModel):
-    title: str
-    content: str
+    title: str = Field(..., min_length=1, max_length=200)
+    content: str = Field(..., min_length=1, max_length=50_000)
     post_type: PostType = PostType.FREE
-    category: Optional[str] = None
-    price: Optional[float] = None
+    category: Optional[str] = Field(None, max_length=50)
+    price: Optional[float] = Field(None, ge=0, le=100_000_000)
     original_price: Optional[float] = None
-    url: Optional[str] = None
+    url: Optional[str] = Field(None, max_length=2048)
+    images: Optional[list[str]] = Field(None, max_length=10)
+    tags: Optional[list[str]] = Field(None, max_length=20)
+    product_ids: Optional[list[int]] = Field(None, max_length=10)
 
 
 class PostUpdate(BaseModel):
-    title: Optional[str] = None
-    content: Optional[str] = None
-    category: Optional[str] = None
+    title: Optional[str] = Field(None, max_length=200)
+    content: Optional[str] = Field(None, max_length=50_000)
+    category: Optional[str] = Field(None, max_length=50)
+    price: Optional[float] = Field(None, ge=0, le=100_000_000)
+    url: Optional[str] = Field(None, max_length=2048)
 
 
 class CommentCreate(BaseModel):
-    content: str
+    content: str = Field(..., min_length=1, max_length=5_000)
     parent_id: Optional[int] = None
 
 

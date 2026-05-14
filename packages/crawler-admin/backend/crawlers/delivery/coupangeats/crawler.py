@@ -26,7 +26,9 @@ from __future__ import annotations
 
 import json
 import logging
+import random
 import re
+import time
 from datetime import datetime
 from typing import Optional
 
@@ -56,6 +58,36 @@ class CoupangEatsCrawler(CrawlerContract):
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=1.5, delay_max=3.0)
+
+    # Retry helper — exponential backoff for transient failures
+    def _retry_request(self, url: str, *, headers: dict | None = None,
+                       params: dict | None = None,
+                       session: requests.Session | None = None,
+                       timeout: int = 15, max_retries: int = 3,
+                       **kwargs) -> requests.Response:
+        """HTTP GET with exponential backoff for transient failures."""
+        requester = session or requests
+        last_exc = None
+        for attempt in range(max_retries):
+            try:
+                resp = requester.get(url, headers=headers, params=params, timeout=timeout, **kwargs)
+                if resp.status_code == 429:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    time.sleep(wait)
+                    continue
+                return resp
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.Timeout) as e:
+                last_exc = e
+                if attempt < max_retries - 1:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
+                                   f"retrying in {wait:.1f}s: {e}")
+                    time.sleep(wait)
+                else:
+                    raise
+        raise last_exc  # type: ignore[misc]
 
     @property
     def info(self) -> CrawlerInfo:
@@ -204,7 +236,7 @@ class CoupangEatsCrawler(CrawlerContract):
 
         try:
             headers = self._get_headers()
-            resp = requests.get(self.MAIN_PAGE, headers=headers, timeout=15)
+            resp = self._retry_request(self.MAIN_PAGE, headers=headers, timeout=15)
             resp.encoding = "utf-8"
 
             if resp.status_code != 200:
@@ -305,6 +337,9 @@ class CoupangEatsCrawler(CrawlerContract):
                 item = self._parse_card(card)
                 if item:
                     items.append(item)
+
+            del soup  # 메모리 해제
+
         except Exception as e:
             logger.debug(f"[쿠팡이츠] HTML 파싱 실패: {e}")
 

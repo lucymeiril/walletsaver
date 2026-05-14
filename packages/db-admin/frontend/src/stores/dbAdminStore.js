@@ -1,123 +1,188 @@
 import { create } from 'zustand';
 import { api } from '../api/client';
-import {
-  products as mockProducts,
-  categories as mockCategories,
-  keywords as mockKeywords,
-  priceHistories as mockPriceHistories,
-  priceOutliers as mockOutliers,
-  dashboardStats as mockDashboardStats,
-  categoryAvgPrices as mockCategoryAvgPrices,
-  qualityReport as mockQualityReport,
-  sourceStats as mockSourceStats,
-  priceTiers as mockPriceTiers,
-} from '../data/mockData';
 
 const useDbAdminStore = create((set, get) => ({
-  // Loading / Error
+  // Loading / Error — per-domain flags
   loading: false,
   error: null,
+  loadingProducts: false,
+  loadingCategories: false,
+  loadingKeywords: false,
+  loadingPrices: false,
+  loadingAnalytics: false,
+  loadingDashboard: false,
+  loadingIngestions: false,
+
+  // Stale data timestamps
+  lastFetchedAt: {
+    products: null,
+    categories: null,
+    keywords: null,
+    prices: null,
+    analytics: null,
+    dashboard: null,
+    ingestions: null,
+  },
 
   /* ── 상품 ── */
-  products: mockProducts,
+  products: [],
+  productStats: null,
+  productPagination: { total: 0, page: 1, per_page: 20, total_pages: 1 },
+
   addProduct: async (product) => {
     try {
       const result = await api.createProduct(product);
       await get().fetchProducts();
       return result;
-    } catch {
-      // 오프라인 모드: 로컬 상태만 업데이트
-      set((s) => ({ products: [...s.products, { ...product, id: `p-${Date.now()}` }] }));
+    } catch (err) {
+      set({ error: `상품 추가 실패: ${err.message}` });
+      throw err;
     }
   },
   updateProduct: async (id, data) => {
     try {
       await api.updateProduct(id, data);
       await get().fetchProducts();
-    } catch {
-      set((s) => ({ products: s.products.map((p) => (p.id === id ? { ...p, ...data } : p)) }));
+    } catch (err) {
+      set({ error: `상품 수정 실패: ${err.message}` });
+      throw err;
     }
   },
   deleteProduct: async (id) => {
     try {
       await api.deleteProduct(id);
       await get().fetchProducts();
-    } catch {
-      set((s) => ({ products: s.products.filter((p) => p.id !== id) }));
+    } catch (err) {
+      set({ error: `상품 삭제 실패: ${err.message}` });
+      throw err;
+    }
+  },
+  bulkDeleteProducts: async (ids) => {
+    try {
+      await api.bulkDeleteProducts(ids);
+      await get().fetchProducts();
+    } catch (err) {
+      set({ error: `일괄 삭제 실패: ${err.message}` });
+      throw err;
+    }
+  },
+  bulkUpdateCategory: async (ids, categoryId) => {
+    try {
+      await api.bulkUpdateCategory(ids, categoryId);
+      await get().fetchProducts();
+    } catch (err) {
+      set({ error: `일괄 카테고리 변경 실패: ${err.message}` });
+      throw err;
     }
   },
 
-  fetchProducts: async () => {
-    set({ loading: true, error: null });
+  fetchProducts: async (params = {}, { signal } = {}) => {
+    set({ loadingProducts: true, error: null });
     try {
-      const data = await api.getProducts();
-      const list = Array.isArray(data) ? data : data.products ?? data.data ?? [];
-      // API 상품 → 프론트엔드 형식으로 변환 (basePrice/currentAvg/tier 기본값)
-      const mapped = list.map((p) => ({
+      const data = await api.getProducts(params, { signal });
+      const items = data.items ?? (Array.isArray(data) ? data : []);
+      const mapped = items.map((p) => ({
         ...p,
-        category: p.category || p.category_id || '',
-        basePrice: p.basePrice ?? p.base_price ?? 0,
-        currentAvg: p.currentAvg ?? p.current_avg ?? 0,
+        category: p.category_display_label || p.category_name || p.category || p.category_id || '',
+        basePrice: p.basePrice ?? p.base_price ?? p.original_price ?? null,
+        currentAvg: p.currentAvg ?? p.current_avg ?? p.current_price ?? null,
+        currentPrice: p.current_price ?? null,
+        originalPrice: p.original_price ?? null,
+        discountRate: p.discount_rate ?? null,
         tier: p.tier || 'good',
+        valid_from: p.valid_from ?? null,
+        valid_to: p.valid_to ?? null,
+        crawled_at: p.crawled_at ?? null,
       }));
-      if (mapped.length > 0) set({ products: mapped });
-    } catch {
-      // mock 유지
+      set({
+        products: mapped,
+        productPagination: {
+          total: data.total ?? mapped.length,
+          page: data.page ?? 1,
+          per_page: data.per_page ?? 20,
+          total_pages: data.total_pages ?? 1,
+        },
+        lastFetchedAt: { ...get().lastFetchedAt, products: Date.now() },
+      });
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      set({ products: [], error: '⚠️ 데이터를 불러올 수 없습니다' });
     } finally {
-      set({ loading: false });
+      set({ loadingProducts: false });
+    }
+  },
+
+  fetchProductStats: async ({ signal } = {}) => {
+    try {
+      const data = await api.getProductStats({ signal });
+      set({ productStats: data });
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      // stats are optional, don't show error
     }
   },
 
   /* ── 카테고리 (트리 구조) ── */
-  categories: mockCategories,
+  categories: [],
   addCategory: async (parentId, category) => {
-    // 백엔드 CategoryCreate 스키마에는 id가 필수 — 이름 기반으로 자동 생성
     const autoId = category.id || `cat-${category.name.replace(/\s+/g, '-')}-${Date.now()}`;
     try {
       await api.createCategory({ ...category, id: autoId, parent_id: parentId });
       await get().fetchCategories();
-    } catch {
-      set((s) => ({
-        categories: addToTree(s.categories, parentId, { ...category, id: autoId, children: [], productCount: 0 }),
-      }));
+    } catch (err) {
+      set({ error: `카테고리 추가 실패: ${err.message}` });
     }
   },
   updateCategory: async (id, data) => {
     try {
       await api.updateCategory(id, data);
       await get().fetchCategories();
-    } catch {
-      set((s) => ({ categories: updateInTree(s.categories, id, data) }));
+    } catch (err) {
+      set({ error: `카테고리 수정 실패: ${err.message}` });
     }
   },
   deleteCategory: async (id) => {
     try {
       await api.deleteCategory(id);
       await get().fetchCategories();
-    } catch {
-      set((s) => ({ categories: removeFromTree(s.categories, id) }));
+    } catch (err) {
+      set({ error: `카테고리 삭제 실패: ${err.message}` });
+    }
+  },
+  moveCategory: async (id, newParentId) => {
+    try {
+      await api.moveCategory(id, newParentId);
+      await get().fetchCategories();
+    } catch (err) {
+      set({ error: `카테고리 이동 실패: ${err.message}` });
     }
   },
 
-  fetchCategories: async () => {
-    set({ loading: true, error: null });
+  fetchCategories: async ({ signal } = {}) => {
+    set({ loadingCategories: true, error: null });
     try {
-      const data = await api.getCategories();
+      const data = await api.getCategories({ signal });
       const list = Array.isArray(data) ? data : data.categories ?? data.data ?? [];
-      if (list.length > 0) set({ categories: list });
-    } catch {
-      // mock 유지
+      set({
+        categories: list,
+        lastFetchedAt: { ...get().lastFetchedAt, categories: Date.now() },
+      });
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      set({ error: `카테고리 로드 실패: ${err.message}` });
     } finally {
-      set({ loading: false });
+      set({ loadingCategories: false });
     }
   },
 
   /* ── 키워드 ── */
-  keywords: mockKeywords,
+  keywords: [],
+  keywordPagination: { total: 0, page: 1, per_page: 20, total_pages: 1 },
+  keywordStats: { total: 0, unused_count: 0 },
+
   addKeyword: async (kw) => {
-    // 프론트엔드 필드명 → 백엔드 필드명 변환
     const word = (kw.keyword ?? kw.word ?? '').trim();
-    if (!word) return;
+    if (!word) return { ok: false };
     const apiData = {
       word,
       synonyms: kw.synonyms || [],
@@ -126,12 +191,17 @@ const useDbAdminStore = create((set, get) => ({
     try {
       await api.createKeyword(apiData);
       await get().fetchKeywords();
-    } catch {
-      set((s) => ({ keywords: [...s.keywords, { ...kw, id: `kw-${Date.now()}` }] }));
+      await get().fetchKeywordStats();
+      return { ok: true };
+    } catch (err) {
+      const msg = err.status === 409
+        ? err.message
+        : `키워드 추가 실패: ${err.message}`;
+      set({ error: msg });
+      return { ok: false, status: err.status, message: msg };
     }
   },
   updateKeyword: async (id, data) => {
-    // 프론트엔드 필드명 → 백엔드 필드명 변환
     const apiData = {};
     if (data.keyword !== undefined) apiData.word = data.keyword;
     if (data.word !== undefined) apiData.word = data.word;
@@ -141,57 +211,200 @@ const useDbAdminStore = create((set, get) => ({
     try {
       await api.updateKeyword(id, apiData);
       await get().fetchKeywords();
-    } catch {
-      set((s) => ({ keywords: s.keywords.map((k) => (k.id === id ? { ...k, ...data } : k)) }));
+    } catch (err) {
+      set({ error: `키워드 수정 실패: ${err.message}` });
     }
   },
   deleteKeyword: async (id) => {
     try {
       await api.deleteKeyword(id);
       set((s) => ({ keywords: s.keywords.filter((k) => k.id !== id) }));
-    } catch {
-      set((s) => ({ keywords: s.keywords.filter((k) => k.id !== id) }));
+      await get().fetchKeywordStats();
+    } catch (err) {
+      set({ error: `키워드 삭제 실패: ${err.message}` });
+    }
+  },
+  bulkDeleteKeywords: async (ids) => {
+    try {
+      const result = await api.bulkDeleteKeywords(ids);
+      await get().fetchKeywords();
+      await get().fetchKeywordStats();
+      return result;
+    } catch (err) {
+      set({ error: `벌크 삭제 실패: ${err.message}` });
+      return null;
     }
   },
 
-  fetchKeywords: async () => {
+  fetchKeywords: async (params = {}, { signal } = {}) => {
+    set({ loadingKeywords: true, error: null });
     try {
-      const data = await api.getKeywords();
-      const list = Array.isArray(data) ? data : data.keywords ?? data.data ?? [];
-      // 백엔드 필드명 → 프론트엔드 필드명 변환
+      const data = await api.getKeywords(params, { signal });
+      const list = data.items ?? (Array.isArray(data) ? data : data.keywords ?? data.data ?? []);
       const mapped = list.map((kw) => ({
         ...kw,
         keyword: kw.keyword || kw.word || '',
         searchCount: kw.searchCount ?? kw.search_count ?? 0,
         synonyms: kw.synonyms || [],
         categoryId: kw.categoryId || kw.category_id || '',
+        productCount: kw.productCount ?? kw.product_count ?? 0,
       }));
-      if (mapped.length > 0) set({ keywords: mapped });
-    } catch {
-      // mock 유지
+      set({
+        keywords: mapped,
+        keywordPagination: {
+          total: data.total ?? mapped.length,
+          page: data.page ?? 1,
+          per_page: data.per_page ?? 20,
+          total_pages: data.total_pages ?? 1,
+        },
+        lastFetchedAt: { ...get().lastFetchedAt, keywords: Date.now() },
+      });
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      set({ error: `키워드 로드 실패: ${err.message}` });
+    } finally {
+      set({ loadingKeywords: false });
+    }
+  },
+
+  fetchKeywordStats: async ({ signal } = {}) => {
+    try {
+      const data = await api.getKeywordStats({ signal });
+      set({ keywordStats: data });
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      // stats are optional
     }
   },
 
   /* ── 가격 ── */
-  priceHistories: mockPriceHistories,
-  priceOutliers: mockOutliers,
-  priceTiers: mockPriceTiers,
+  priceHistories: {},
+  priceOutliers: [],
+  priceTiers: {
+    ultra: { label: '초특가', threshold: 70, color: 'var(--tier-ultra)' },
+    great: { label: '특가',   threshold: 85, color: 'var(--tier-great)' },
+    good:  { label: '적정',   threshold: 105, color: 'var(--tier-good)' },
+    wait:  { label: '관망',   threshold: 120, color: 'var(--tier-wait)' },
+    bad:   { label: '비쌈',   threshold: Infinity, color: 'var(--tier-bad)' },
+  },
+  priceStats: null,
+  priceHistoryPage: { items: [], total: 0, page: 1, per_page: 50, total_pages: 0 },
+  tierSaving: false,
+
   updatePriceTier: (tier, threshold) =>
     set((s) => ({
       priceTiers: { ...s.priceTiers, [tier]: { ...s.priceTiers[tier], threshold } },
     })),
 
-  /* ── 분석 ── */
-  categoryAvgPrices: mockCategoryAvgPrices,
-  qualityReport: mockQualityReport,
-  sourceStats: mockSourceStats,
+  fetchTierConfig: async ({ signal } = {}) => {
+    try {
+      const data = await api.getTierConfig({ signal });
+      if (data && typeof data === 'object') {
+        const tiers = {};
+        for (const [k, v] of Object.entries(data)) {
+          tiers[k] = { ...v, threshold: v.threshold === null ? Infinity : v.threshold };
+        }
+        set({ priceTiers: tiers });
+      }
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      // 기본값 유지
+    }
+  },
 
-  fetchAnalytics: async () => {
-    set({ loading: true, error: null });
+  saveTierConfig: async () => {
+    set({ tierSaving: true });
+    try {
+      const tiers = { ...get().priceTiers };
+      const payload = {};
+      for (const [k, v] of Object.entries(tiers)) {
+        payload[k] = { ...v, threshold: v.threshold === Infinity ? null : v.threshold };
+      }
+      await api.saveTierConfig(payload);
+      return true;
+    } catch (err) {
+      set({ error: `티어 저장 실패: ${err.message}` });
+      return false;
+    } finally {
+      set({ tierSaving: false });
+    }
+  },
+
+  whitelistOutlier: async (id) => {
+    try {
+      await api.whitelistOutlier(id);
+      await get().fetchOutliers();
+    } catch (err) {
+      set({ error: `화이트리스트 추가 실패: ${err.message}` });
+      throw err;
+    }
+  },
+
+  fetchOutliers: async (limit = 20, { signal } = {}) => {
+    set({ loadingPrices: true });
+    try {
+      const data = await api.getGlobalOutliers(limit, { signal });
+      const list = Array.isArray(data) ? data : [];
+      set({
+        priceOutliers: list,
+        lastFetchedAt: { ...get().lastFetchedAt, prices: Date.now() },
+      });
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      set({ priceOutliers: [] });
+    } finally {
+      set({ loadingPrices: false });
+    }
+  },
+
+  fetchPriceHistory: async (params = {}, { signal } = {}) => {
+    try {
+      const data = await api.getPriceHistory(params, { signal });
+      set({ priceHistoryPage: data || { items: [], total: 0, page: 1, per_page: 50, total_pages: 0 } });
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      set({ priceHistoryPage: { items: [], total: 0, page: 1, per_page: 50, total_pages: 0 } });
+    }
+  },
+
+  fetchProductPriceHistory: async (productId, days = 90, { signal } = {}) => {
+    if (!productId) return;
+    try {
+      const data = await api.getPriceHistory({ product_id: productId, days, per_page: 200 }, { signal });
+      const items = data?.items || [];
+      set((s) => ({
+        priceHistories: {
+          ...s.priceHistories,
+          [productId]: items.map((i) => ({ date: i.date, price: i.price, source: i.source })),
+        },
+      }));
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      // 이력 없음
+    }
+  },
+
+  fetchPriceStats: async ({ signal } = {}) => {
+    try {
+      const data = await api.getPriceStats({ signal });
+      set({ priceStats: data });
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      set({ priceStats: null });
+    }
+  },
+
+  /* ── 분석 ── */
+  categoryAvgPrices: [],
+  qualityReport: { outliers: 0, duplicates: 0, missingFields: 0, totalRecords: 0, completeness: 0, accuracy: 0, fieldCompleteness: 0, priceCoverage: 0, categoryRate: 0 },
+  sourceStats: [],
+
+  fetchAnalytics: async ({ signal } = {}) => {
+    set({ loadingAnalytics: true, error: null });
     try {
       const [qualityData, summaryData] = await Promise.allSettled([
-        api.getQualityReport(),
-        api.getSummary(),
+        api.getQualityReport({ signal }),
+        api.getSummary({ signal }),
       ]);
       if (qualityData.status === 'fulfilled' && qualityData.value) {
         const qr = qualityData.value;
@@ -207,6 +420,9 @@ const useDbAdminStore = create((set, get) => ({
             missingFields: quality.products_without_prices ?? quality.missingFields ?? qr.missingFields ?? 0,
             completeness: quality.completeness ?? qr.completeness ?? (totalRecords > 0 ? 95 : 0),
             accuracy: quality.accuracy ?? qr.accuracy ?? (totalRecords > 0 ? 90 : 0),
+            fieldCompleteness: quality.field_completeness ?? 0,
+            priceCoverage: quality.price_coverage ?? 0,
+            categoryRate: quality.category_rate ?? 0,
           },
         });
       }
@@ -215,48 +431,57 @@ const useDbAdminStore = create((set, get) => ({
         if (s.categoryAvgPrices) set({ categoryAvgPrices: s.categoryAvgPrices });
         if (s.sourceStats) set({ sourceStats: s.sourceStats });
       }
-    } catch {
-      // mock 유지
+      set({ lastFetchedAt: { ...get().lastFetchedAt, analytics: Date.now() } });
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      set({ error: `분석 데이터 로드 실패: ${err.message}` });
     } finally {
-      set({ loading: false });
+      set({ loadingAnalytics: false });
     }
   },
 
   /* ── 대시보드 ── */
-  dashboardStats: mockDashboardStats,
+  dashboardStats: {
+    totalProducts: 0,
+    totalPriceRecords: 0,
+    totalCategories: 0,
+    totalKeywords: 0,
+    lastUpdated: null,
+    qualityScore: 0,
+    qualityDetails: { fillRate: 0, dupRate: 0, noCategoryRate: 0 },
+    recentIngestions: [],
+    alerts: [],
+    freshness: [],
+    changes: { products: 0, priceRecords: 0, categories: 0, keywords: 0 },
+  },
 
-  fetchDashboard: async () => {
-    set({ loading: true, error: null });
+  fetchDashboard: async ({ signal } = {}) => {
+    set({ loadingDashboard: true, error: null });
     try {
-      const [productsData, summaryData] = await Promise.allSettled([
-        api.getProducts(),
-        api.getSummary(),
-      ]);
-      const products = productsData.status === 'fulfilled'
-        ? (Array.isArray(productsData.value) ? productsData.value : productsData.value.products ?? productsData.value.data ?? [])
-        : [];
-      if (products.length > 0) set({ products });
-
-      if (summaryData.status === 'fulfilled' && summaryData.value) {
-        const s = summaryData.value;
-        // API 필드명 → 프론트엔드 필드명 변환
+      const data = await api.getDashboardStats({ signal });
+      if (data) {
         set({
           dashboardStats: {
-            ...get().dashboardStats,
-            totalProducts: s.totalProducts ?? s.products ?? products.length ?? get().dashboardStats.totalProducts,
-            totalPriceRecords: s.totalPriceRecords ?? s.baseline_prices ?? get().dashboardStats.totalPriceRecords,
-            totalCategories: s.totalCategories ?? s.categories ?? get().dashboardStats.totalCategories,
-            totalKeywords: s.totalKeywords ?? s.keywords ?? get().dashboardStats.totalKeywords,
-            lastUpdated: s.lastUpdated ?? s.generated_at ?? new Date().toISOString(),
-            qualityScore: s.qualityScore ?? s.quality_score ?? get().dashboardStats.qualityScore,
-            recentIngestions: s.recentIngestions ?? get().dashboardStats.recentIngestions,
+            totalProducts: data.totalProducts ?? 0,
+            totalPriceRecords: data.totalPriceRecords ?? 0,
+            totalCategories: data.totalCategories ?? 0,
+            totalKeywords: data.totalKeywords ?? 0,
+            lastUpdated: data.lastUpdated ?? null,
+            qualityScore: data.qualityScore ?? 0,
+            qualityDetails: data.qualityDetails ?? { fillRate: 0, dupRate: 0, noCategoryRate: 0 },
+            recentIngestions: data.recentIngestions ?? [],
+            alerts: data.alerts ?? [],
+            freshness: data.freshness ?? [],
+            changes: data.changes ?? { products: 0, priceRecords: 0, categories: 0, keywords: 0 },
           },
+          lastFetchedAt: { ...get().lastFetchedAt, dashboard: Date.now() },
         });
       }
-    } catch {
-      // mock 유지
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      set({ error: `대시보드 로드 실패: ${err.message}` });
     } finally {
-      set({ loading: false });
+      set({ loadingDashboard: false });
     }
   },
 
@@ -265,55 +490,67 @@ const useDbAdminStore = create((set, get) => ({
   selectedIngestion: null,
   ingestionFilter: 'all',
   ingestionStats: { pending: 0, approved: 0, rejected: 0 },
+  ingestionPagination: { total: 0, page: 1, per_page: 20, total_pages: 1 },
 
-  fetchIngestions: async (params = {}) => {
-    set({ loading: true, error: null });
+  fetchIngestions: async (params = {}, { signal } = {}) => {
+    set({ loadingIngestions: true, error: null });
     try {
-      const data = await api.getIngestions(params);
+      const data = await api.getIngestions(params, { signal });
       const list = Array.isArray(data) ? data : data.items ?? data.ingestions ?? data.data ?? [];
-      set({ ingestions: list });
-    } catch {
-      set({ ingestions: [] });
+      set({
+        ingestions: list,
+        ingestionPagination: {
+          total: data.total ?? list.length,
+          page: data.page ?? 1,
+          per_page: data.per_page ?? 20,
+          total_pages: data.total_pages ?? 1,
+        },
+        lastFetchedAt: { ...get().lastFetchedAt, ingestions: Date.now() },
+      });
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      set({ ingestions: [], ingestionPagination: { total: 0, page: 1, per_page: 20, total_pages: 1 } });
     } finally {
-      set({ loading: false });
+      set({ loadingIngestions: false });
     }
   },
 
-  fetchIngestion: async (id) => {
-    set({ loading: true, error: null });
+  fetchIngestion: async (id, { signal } = {}) => {
+    set({ loadingIngestions: true, error: null });
     try {
-      const data = await api.getIngestion(id);
+      const data = await api.getIngestion(id, { signal });
       set({ selectedIngestion: data });
       return data;
-    } catch {
+    } catch (err) {
+      if (err.name === 'AbortError') return null;
       set({ selectedIngestion: null });
       return null;
     } finally {
-      set({ loading: false });
+      set({ loadingIngestions: false });
     }
   },
 
-  fetchIngestionStats: async () => {
+  fetchIngestionStats: async ({ signal } = {}) => {
     try {
-      const data = await api.getIngestionStats();
+      const data = await api.getIngestionStats({ signal });
       if (data) {
         set({
           ingestionStats: {
-            pending: data.pending ?? data.total_pending ?? 0,
+            pending: data.total_crawler_approved ?? data.crawler_approved ?? data.pending ?? data.total_pending ?? 0,
             approved: data.approved ?? data.total_approved ?? 0,
             rejected: data.rejected ?? data.total_rejected ?? 0,
           },
         });
       }
-    } catch {
-      // mock 유지
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      // 통계 없음
     }
   },
 
   reviewIngestion: async (id, reviewData) => {
     set({ loading: true, error: null });
     try {
-      // 프론트엔드 필드명 → 백엔드 ReviewRequest 스키마 변환
       const apiData = {
         action: reviewData.action,
         notes: reviewData.notes || reviewData.memo || undefined,
@@ -325,6 +562,21 @@ const useDbAdminStore = create((set, get) => ({
       return result;
     } catch (err) {
       set({ error: `리뷰 실패: ${err.message}` });
+      return null;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  bulkApproveIngestions: async (ids, reviewer, notes) => {
+    set({ loading: true, error: null });
+    try {
+      const result = await api.bulkApproveIngestions(ids, reviewer, notes);
+      await get().fetchIngestions();
+      await get().fetchIngestionStats();
+      return result;
+    } catch (err) {
+      set({ error: `벌크 승인 실패: ${err.message}` });
       return null;
     } finally {
       set({ loading: false });

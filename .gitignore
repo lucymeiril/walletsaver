@@ -9,7 +9,12 @@ ENV/
 env/
 
 # Data
-!proj/.env.example
+.env
+.env.local
+.env.production
+.env.*
+!**/.env.example
+*.db
 
 # OS
 .DS_Store
@@ -18,3 +23,44 @@ Thumbs.db
 # Misc
 *.zip
 *.log
+logs/
+error-log/
+data/dead_letter/
+*.jsonl
+node_modules/
+dist/
+dist-ssr/
+build/
+backups/
+packages/ai-admin/backend/backend_*.txt
+packages/ai-admin/backend/check_db.py
+packages/ai-admin/backend/query_providers.py
+packages/ai-admin/backend/test_ingest.py
+packages/crawler-admin/backend/crawler_run_history.json
+packages/crawler-admin/backend/plugin_state.json
+
+crawl_results/
+packages/ai-admin/backend/ai_control.db
+
+# Archived (unused files moved here for cleanup)
+_archived/
+_archive/
+
+# Tools
+copilot.exe
+copilot.exe.old
+
+# Secrets (should never be committed)
+client_secret_*.json
+service-key*.json
+service_key*.json
+*service-key-override*
+*service_key_override*
+
+# Session files
+copilot-session-*.md
+
+# Manual live validation artifacts (operator-run only)
+.debug-artifacts/
+.walletsavior-live-validation/
+.walletsavior-one-shot-db-build/

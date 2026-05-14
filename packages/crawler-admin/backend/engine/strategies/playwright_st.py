@@ -66,6 +66,10 @@ class PlaywrightStrategy(BaseStrategy):
             args=[
                 "--disable-blink-features=AutomationControlled",
                 "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--js-flags=--max-old-space-size=256",
+                "--disable-extensions",
+                "--disable-gpu",
             ],
         )
         self._browser = browser
@@ -121,9 +125,18 @@ class PlaywrightStrategy(BaseStrategy):
                 strategy_name=self.name,
             )
         finally:
-            await context.close()
-            await browser.close()
-            await pw.stop()
+            try:
+                await context.close()
+            except Exception:
+                pass
+            try:
+                await browser.close()
+            except Exception:
+                pass
+            try:
+                await pw.stop()
+            except Exception:
+                pass
             self._browser = None
             self._playwright = None
 

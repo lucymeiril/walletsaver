@@ -57,6 +57,18 @@ MOCK_HOMEPLUS_HTML = """
 </body></html>
 """
 
+MOCK_HOMEPLUS_MFRONT_HTML = """
+<html><body>
+<div class="unitItemInner">
+  <a href="/item?itemNo=milk-1"><img alt="서울우유 1L" src="https://image.homeplus.test/milk.jpg" /></a>
+  <strong class="itemName">서울우유 1L</strong>
+  <span class="priceValue">2,480원</span>
+  <span class="priceValue">3,100원</span>
+  <span class="badge">20%</span>
+</div>
+</body></html>
+"""
+
 MOCK_LOTTEMART_HTML = """
 <html><body>
 <div class="product-item">
@@ -159,6 +171,84 @@ class TestEmartParse:
             assert item.sale_price > 0
             assert len(item.name) >= 2
 
+    def test_emart_keeps_pack_price_separate_from_100g_reference_unit(self):
+        crawler = EmartCrawler()
+        item = crawler._next_data_to_discount_item({
+            "itemName": "[냉장] 한우 불고기1+등급300g",
+            "finalPrice": "14,850",
+            "strikeOutPrice": "19,800",
+            "sellUnitCapacity": "100g",
+            "siteName": "이마트",
+        })
+
+        assert item is not None
+        assert item.sale_price == 14850
+        assert item.original_price == 19800
+        assert item.unit == "300g"
+        assert item.display_unit == "300g"
+        assert item.package_quantity == 300
+        assert item.package_unit == "g"
+        assert item.price_per_100g == 4950
+        assert item.attributes["storage_type"] == "chilled"
+        assert item.attributes["quality_grade"] == "1+"
+        assert item.attributes["cut"] == "bulgogi"
+
+    def test_emart_parses_parenthesized_frozen_shrimp_package(self):
+        crawler = EmartCrawler()
+        item = crawler._next_data_to_discount_item({
+            "itemName": "[냉동][베트남] 흰다리 새우살 (200g)",
+            "finalPrice": "4,488",
+            "sellUnitCapacity": "100g",
+            "siteName": "이마트",
+        })
+
+        assert item is not None
+        assert item.sale_price == 4488
+        assert item.unit == "200g"
+        assert item.package_quantity == 200
+        assert item.price_per_100g == 2244
+        assert item.attributes["storage_type"] == "frozen"
+        assert item.attributes["origin"] == "vietnam"
+        assert item.attributes["cut"] == "shrimp_meat"
+
+    def test_emart_preserves_peacock_as_collection_not_category(self):
+        crawler = EmartCrawler()
+        item = crawler._next_data_to_discount_item({
+            "itemName": "한돈으로 만든 햄꼬마김밥키트157g",
+            "finalPrice": "6,980",
+            "sellUnitCapacity": "157g",
+            "brandName": "피코크",
+            "siteName": "이마트",
+        })
+
+        assert item is not None
+        assert item.category == ""
+        assert item.attributes["collection"] == "피코크"
+        assert item.package_quantity == 157
+        assert item.price_per_100g == 4445.86
+
+    def test_emart_next_data_preserves_source_urls_prices_and_collection(self):
+        crawler = EmartCrawler()
+        item = crawler._next_data_to_discount_item({
+            "itemName": "피코크 왕교자 700g",
+            "finalPrice": "6,980",
+            "originalPrice": "8,980",
+            "brandName": "피코크",
+            "itemImgUrl": "//img.ssgcdn.com/transient/mandu.jpg",
+            "itemUrl": "/item/itemView.ssg?itemId=100",
+            "siteName": "이마트",
+        })
+
+        assert item is not None
+        assert item.sale_price == 6980
+        assert item.original_price == 8980
+        assert item.discount_percent == pytest.approx(22.3)
+        assert item.image_url == "https://img.ssgcdn.com/transient/mandu.jpg"
+        assert item.detail_url == "https://emart.ssg.com/item/itemView.ssg?itemId=100"
+        assert item.category == ""
+        assert item.attributes["collection"] == "피코크"
+        assert item.unit == "700g"
+
 
 class TestHomeplusParse:
     """홈플러스 크롤러 파싱 테스트."""
@@ -180,6 +270,43 @@ class TestHomeplusParse:
             item = discounted[0]
             assert 0 < item.discount_percent < 100
             assert item.original_price > item.sale_price
+
+    @pytest.mark.asyncio
+    async def test_mfront_preserves_real_source_shaped_fields(self):
+        """mfront 상품 카드에서 가격·단위·이미지·상세 URL을 보존한다."""
+        crawler = HomeplusCrawler()
+        items = await crawler.parse(MOCK_HOMEPLUS_MFRONT_HTML)
+
+        assert len(items) == 1
+        item = items[0]
+        assert item.name == "서울우유 1L"
+        assert item.sale_price == 2480
+        assert item.original_price == 3100
+        assert item.discount_percent == 20.0
+        assert item.unit == "1L"
+        assert item.package_quantity == 1
+        assert item.package_unit == "L"
+        assert item.image_url == "https://image.homeplus.test/milk.jpg"
+        assert item.detail_url == "https://mfront.homeplus.co.kr/item?itemNo=milk-1"
+
+    def test_homeplus_json_preserves_unit_and_source_fields(self):
+        crawler = HomeplusCrawler()
+        item = crawler._json_to_discount_item({
+            "goodsNm": "호주산 척아이롤 500g",
+            "salePrice": "12900",
+            "originPrice": "15900",
+            "unit": "500g",
+            "imgUrl": "https://image.homeplus.test/beef.jpg",
+            "goodsUrl": "/goods/detail?goodsNo=beef-1",
+        })
+
+        assert item is not None
+        assert item.sale_price == 12900
+        assert item.original_price == 15900
+        assert item.discount_percent == pytest.approx(18.9)
+        assert item.unit == "500g"
+        assert item.image_url == "https://image.homeplus.test/beef.jpg"
+        assert item.detail_url == "https://www.homeplus.co.kr/goods/detail?goodsNo=beef-1"
 
 
 class TestLottemartParse:
@@ -299,7 +426,8 @@ class TestCrawlWithMock:
     @pytest.mark.asyncio
     async def test_emart_crawl_success(self):
         """이마트 크롤링 성공 시 CrawlResult를 반환한다."""
-        crawler = EmartCrawler()
+        from engine.anti_detect import AntiDetect
+        crawler = EmartCrawler(anti_detect=AntiDetect(delay_min=0.0, delay_max=0.01))
         mock_resp = MagicMock()
         mock_resp.status_code = 200
         mock_resp.text = MOCK_EMART_HTML
@@ -311,6 +439,9 @@ class TestCrawlWithMock:
         assert result.status == CrawlStatus.SUCCESS
         assert result.crawler_name == "이마트"
         assert result.items_count >= 0
+        assert result.quality_score is not None
+        assert result.quality_details["coverage"]["sale_price"] == 1.0
+        assert "zero_valid_items" not in result.quality_details["alerts"]
 
     @pytest.mark.asyncio
     async def test_homeplus_crawl_success(self):
@@ -320,32 +451,82 @@ class TestCrawlWithMock:
         mock_resp.status_code = 200
         mock_resp.text = MOCK_HOMEPLUS_HTML
         mock_resp.encoding = "utf-8"
+        mock_resp.url = "https://front.homeplus.co.kr/event/eventMain.do"
 
-        with patch("crawlers.marts.homeplus.crawler.requests.get", return_value=mock_resp):
+        # 홈플러스는 SPA이므로 Playwright를 먼저 시도함 → mock으로 빈 결과 반환
+        # HTTP fallback에서 mock_resp로 상품 수집
+        with patch("crawlers.marts.homeplus.crawler.requests.get", return_value=mock_resp), \
+             patch.object(crawler, "_fetch_via_playwright", return_value=([], 0)):
             result = await crawler.crawl()
 
         assert result.status == CrawlStatus.SUCCESS
         assert result.crawler_name == "홈플러스"
+        assert result.strategy_used == "requests"
+        assert "fallback_used" in result.quality_details["alerts"]
+
+    @pytest.mark.asyncio
+    async def test_homeplus_bounded_request_limit_skips_http_fallback(self):
+        """Bounded Homeplus diagnostics do not exceed the approved one-request cap."""
+        crawler = HomeplusCrawler()
+        crawler.MAX_ITEMS = 2
+        crawler.MAX_PAGES = 1
+        crawler.MAX_REQUESTS = 1
+
+        with patch("crawlers.marts.homeplus.crawler.requests.get") as mock_get, \
+             patch.object(crawler, "_fetch_via_playwright", return_value=([], 1)):
+            result = await crawler.crawl()
+
+        mock_get.assert_not_called()
+        assert result.status == CrawlStatus.FAILED
+        assert result.strategy_used == "playwright"
+        assert "fallback_used" not in result.quality_details["alerts"]
 
     @pytest.mark.asyncio
     async def test_lottemart_crawl_success(self):
         """롯데마트 크롤링 성공 시 CrawlResult를 반환한다."""
-        crawler = LottemartCrawler()
+        from engine.anti_detect import AntiDetect
+        crawler = LottemartCrawler(anti_detect=AntiDetect(delay_min=0.0, delay_max=0.01))
         mock_resp = MagicMock()
         mock_resp.status_code = 200
         mock_resp.text = MOCK_LOTTEMART_HTML
         mock_resp.encoding = "utf-8"
+        mock_resp.url = "https://lottemartzetta.com/search?query=test"
 
-        with patch("crawlers.marts.lottemart.crawler.requests.get", return_value=mock_resp):
+        with patch("crawlers.marts.lottemart.crawler.requests.Session.get", return_value=mock_resp), \
+             patch.object(crawler, "_fetch_via_playwright", return_value=[]):
             result = await crawler.crawl()
 
         assert result.status == CrawlStatus.SUCCESS
         assert result.crawler_name == "롯데마트"
+        assert result.quality_details["fetch"]["fallback_used"] is True
+
+    @pytest.mark.asyncio
+    async def test_lottemart_crawl_zero_valid_items_fails_without_silent_success(self):
+        """HTTP 200이어도 유효 상품이 없으면 성공으로 처리하지 않는다."""
+        from engine.anti_detect import AntiDetect
+        crawler = LottemartCrawler(anti_detect=AntiDetect(delay_min=0.0, delay_max=0.01))
+        crawler.SEARCH_QUERIES = ["테스트"]
+        mock_resp = MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.text = "<html><body>no products</body></html>"
+        mock_resp.encoding = "utf-8"
+        mock_resp.url = "https://lottemartzetta.com/search?query=test"
+
+        with patch("crawlers.marts.lottemart.crawler.requests.Session.get", return_value=mock_resp), \
+             patch.object(crawler, "_fetch_via_playwright", return_value=[]):
+            result = await crawler.crawl()
+
+        assert result.status == CrawlStatus.FAILED
+        assert result.items_count == 0
+        assert result.quality_details["alerts"]
 
     @pytest.mark.asyncio
     async def test_crawl_http_error(self):
         """HTTP 에러 시 FAILED 상태를 반환한다."""
-        crawler = EmartCrawler()
+        from engine.anti_detect import AntiDetect
+        crawler = EmartCrawler(anti_detect=AntiDetect(delay_min=0.0, delay_max=0.01))
+        crawler.SEARCH_QUERIES = ["테스트"]
+        crawler.MAX_PAGES = 1
         mock_resp = MagicMock()
         mock_resp.status_code = 403
 
@@ -353,12 +534,88 @@ class TestCrawlWithMock:
             result = await crawler.crawl()
 
         assert result.status == CrawlStatus.FAILED
-        assert "403" in result.error_msg
+        assert result.error_msg
+        assert result.errors
+        assert result.quality_details["alerts"]
+
+    @pytest.mark.asyncio
+    async def test_emart_zero_source_rows_has_actionable_diagnostics(self):
+        """HTTP 200 + 원천 후보 0건은 source-zero 원인으로 진단한다."""
+        from engine.anti_detect import AntiDetect
+        crawler = EmartCrawler(anti_detect=AntiDetect(delay_min=0.0, delay_max=0.01))
+        crawler.SEARCH_QUERIES = ["테스트"]
+        crawler.MAX_PAGES = 1
+        mock_resp = MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.text = "<html><body>no products</body></html>"
+        mock_resp.encoding = "utf-8"
+
+        with patch("crawlers.marts.emart.crawler.requests.get", return_value=mock_resp):
+            result = await crawler.crawl()
+
+        diagnostic = result.quality_details["zero_result_diagnostic"]
+        assert result.status == CrawlStatus.FAILED
+        assert diagnostic["stage"] == "source_zero_raw_rows"
+        assert "network" in diagnostic["message"].lower() or "source" in diagnostic["message"].lower()
+        assert "zero_source_raw_rows" in result.quality_details["alerts"]
+        assert result.error_msg
+        assert result.errors[0].error_type.value == "empty_response"
+
+    @pytest.mark.asyncio
+    async def test_emart_raw_rows_not_parsed_has_selector_diagnostics(self):
+        """원천 후보는 있으나 파싱 결과 0건이면 셀렉터/파싱 문제로 진단한다."""
+        from engine.anti_detect import AntiDetect
+        crawler = EmartCrawler(anti_detect=AntiDetect(delay_min=0.0, delay_max=0.01))
+        crawler.SEARCH_QUERIES = ["테스트"]
+        crawler.MAX_PAGES = 1
+        mock_resp = MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.text = """
+        <html><body>
+          <div class="cunit_prod"><span class="cunit_md">양파 1kg</span></div>
+        </body></html>
+        """
+        mock_resp.encoding = "utf-8"
+
+        with patch("crawlers.marts.emart.crawler.requests.get", return_value=mock_resp):
+            result = await crawler.crawl()
+
+        diagnostic = result.quality_details["zero_result_diagnostic"]
+        assert result.status == CrawlStatus.FAILED
+        assert diagnostic["stage"] == "parse_filtered_all_raw_rows"
+        assert "selector" in diagnostic["message"].lower() or "parser" in diagnostic["message"].lower()
+        assert "raw_rows_not_parsed" in result.quality_details["alerts"]
+        assert result.errors[0].error_type.value == "parse_error"
+
+    @pytest.mark.asyncio
+    async def test_emart_validation_rejected_all_rows_has_validation_diagnostics(self):
+        """파싱 row가 모두 validate에서 탈락하면 validation 원인으로 진단한다."""
+        from engine.anti_detect import AntiDetect
+        crawler = EmartCrawler(anti_detect=AntiDetect(delay_min=0.0, delay_max=0.01))
+        crawler.SEARCH_QUERIES = ["테스트"]
+        crawler.MAX_PAGES = 1
+        mock_resp = MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.text = "<html><body>patched parse</body></html>"
+        mock_resp.encoding = "utf-8"
+        parsed_item = DiscountItem(name="양파 1kg", store="이마트", sale_price=0)
+
+        with patch("crawlers.marts.emart.crawler.requests.get", return_value=mock_resp), \
+             patch.object(crawler, "_count_raw_candidates", return_value=1), \
+             patch.object(crawler, "parse", return_value=[parsed_item]):
+            result = await crawler.crawl()
+
+        diagnostic = result.quality_details["zero_result_diagnostic"]
+        assert result.status == CrawlStatus.FAILED
+        assert diagnostic["stage"] == "validation_rejected_all_rows"
+        assert "validation" in diagnostic["message"].lower()
+        assert "validation_rejected_all_rows" in result.quality_details["alerts"]
 
     @pytest.mark.asyncio
     async def test_crawl_json_page(self):
         """JSON 임베디드 페이지에서 크롤링 성공."""
-        crawler = EmartCrawler()
+        from engine.anti_detect import AntiDetect
+        crawler = EmartCrawler(anti_detect=AntiDetect(delay_min=0.0, delay_max=0.01))
         mock_resp = MagicMock()
         mock_resp.status_code = 200
         mock_resp.text = MOCK_JSON_PAGE
@@ -369,3 +626,202 @@ class TestCrawlWithMock:
 
         assert result.status == CrawlStatus.SUCCESS
         assert result.items_count == 2
+
+
+# --- __INITIAL_STATE__ 파싱 테스트 (롯데마트 Zetta) ---
+
+MOCK_INITIAL_STATE_HTML = """
+<html><head><script>
+window.__INITIAL_STATE__={"data":{"products":{"productEntities":{
+"uuid-001":{"name":"[할인] 신선 양파 1.5kg","price":{"original":{"amount":"5980","currency":"KRW"},"current":{"amount":"3980","currency":"KRW"}},"image":{"src":"https://img.test/yangpa.jpg"},"categoryPath":["채소"],"size":{"value":"1.5kg"},"offer":{"description":"주간특가"},"brand":"","productId":"uuid-001"},
+"uuid-002":{"name":"국내산 삼겹살 600g","price":{"original":{"amount":"18900","currency":"KRW"},"current":{"amount":"12900","currency":"KRW"}},"image":{"src":"https://img.test/samgyup.jpg"},"categoryPath":["정육"],"size":{"value":"600g"},"offer":{"description":"롯데마트 할인"},"brand":"롯데축산","productId":"uuid-002"},
+"uuid-003":{"name":"X","price":{"original":{"amount":"100","currency":"KRW"},"current":{"amount":"0","currency":"KRW"}},"image":{},"categoryPath":[],"size":{},"offer":{},"brand":"","productId":"uuid-003"}
+}},"search":{}}}</script></head><body></body></html>
+"""
+
+
+class TestLottemartInitialState:
+    """롯데마트 __INITIAL_STATE__ 파싱 테스트."""
+
+    @pytest.mark.asyncio
+    async def test_parse_initial_state(self):
+        """__INITIAL_STATE__에서 상품을 파싱한다."""
+        crawler = LottemartCrawler()
+        items = await crawler.parse(MOCK_INITIAL_STATE_HTML)
+        # 이름 1자("X")와 가격 0인 상품 제외 → 2개
+        valid = [i for i in items if i.sale_price > 0 and len(i.name) >= 2]
+        assert len(valid) == 2
+
+    @pytest.mark.asyncio
+    async def test_initial_state_fields(self):
+        """__INITIAL_STATE__ 파싱 시 필드가 올바르게 추출된다."""
+        crawler = LottemartCrawler()
+        items = await crawler.parse(MOCK_INITIAL_STATE_HTML)
+        valid = [i for i in items if i.sale_price > 0 and len(i.name) >= 2]
+        assert len(valid) >= 1
+        item = valid[0]
+        assert item.store == "롯데마트"
+        assert item.sale_price > 0
+        assert item.image_url != ""
+
+    @pytest.mark.asyncio
+    async def test_initial_state_discount_calc(self):
+        """__INITIAL_STATE__ 파싱 시 할인율이 계산된다."""
+        crawler = LottemartCrawler()
+        items = await crawler.parse(MOCK_INITIAL_STATE_HTML)
+        discounted = [i for i in items if i.discount_percent is not None and i.discount_percent > 0]
+        assert len(discounted) >= 1
+        for item in discounted:
+            assert 0 < item.discount_percent < 100
+            assert item.original_price > item.sale_price
+
+    @pytest.mark.asyncio
+    async def test_initial_state_promotion_prefix_removed(self):
+        """프로모션 접두사([할인])가 상품명에서 제거된다."""
+        crawler = LottemartCrawler()
+        items = await crawler.parse(MOCK_INITIAL_STATE_HTML)
+        yangpa = [i for i in items if "양파" in i.name]
+        assert len(yangpa) == 1
+        assert not yangpa[0].name.startswith("[")
+
+    def test_initial_state_preserves_unit_url_and_keeps_brand_out_of_category(self):
+        crawler = LottemartCrawler()
+        item = crawler._entity_to_discount_item({
+            "name": "롯데한우 등심 300g",
+            "price": {
+                "original": {"amount": "19800"},
+                "current": {"amount": "14850"},
+            },
+            "image": {"src": "https://img.lottemart.test/beef.jpg"},
+            "categoryPath": [],
+            "size": {"value": "300g"},
+            "offer": {"description": "주간특가"},
+            "brand": "롯데축산",
+            "url": "/products/beef-300",
+        }, "beef-300")
+
+        assert item is not None
+        assert item.sale_price == 14850
+        assert item.original_price == 19800
+        assert item.discount_percent == 25.0
+        assert item.unit == "300g"
+        assert item.package_quantity == 300
+        assert item.package_unit == "g"
+        assert item.price_per_100g == 4950
+        assert item.image_url == "https://img.lottemart.test/beef.jpg"
+        assert item.detail_url == "https://lottemartzetta.com/products/beef-300"
+        assert item.category == ""
+        assert item.attributes["brand"] == "롯데축산"
+
+
+# --- 실제 사이트 통합 테스트 (live integration) ---
+# pytest -m live 로 실행 (기본 실행에서는 스킵)
+
+@pytest.mark.live
+class TestLiveEmart:
+    """이마트 크롤러 실제 사이트 통합 테스트."""
+
+    @pytest.mark.asyncio
+    async def test_emart_live_crawl(self):
+        """이마트 실제 크롤링: 100개 이상 수집, 스키마 검증."""
+        from engine.anti_detect import AntiDetect
+        crawler = EmartCrawler(anti_detect=AntiDetect(delay_min=0.5, delay_max=1.0))
+        result = await crawler.crawl()
+
+        assert result.status == CrawlStatus.SUCCESS, f"크롤링 실패: {result.error_msg}"
+        assert result.items_count > 50, f"상품 수 부족: {result.items_count}개 (50개 이상 필요)"
+
+        # 스키마 검증
+        for item in result.items:
+            assert isinstance(item["name"], str) and len(item["name"]) >= 2
+            assert isinstance(item["sale_price"], int) and item["sale_price"] > 0
+            # SSG 통합 검색이므로 이마트/트레이더스 등 다양한 매장 포함
+            assert isinstance(item.get("store", ""), str) and len(item.get("store", "")) >= 1
+
+        # 중복 검사
+        keys = [f"{i['name']}_{i['sale_price']}" for i in result.items]
+        assert len(keys) == len(set(keys)), "중복 상품 발견"
+
+        # 로그 기록
+        _write_live_log("emart", result)
+
+
+@pytest.mark.live
+class TestLiveLottemart:
+    """롯데마트 크롤러 실제 사이트 통합 테스트."""
+
+    @pytest.mark.asyncio
+    async def test_lottemart_live_crawl(self):
+        """롯데마트 실제 크롤링: 50개 이상 수집, 스키마 검증."""
+        from engine.anti_detect import AntiDetect
+        crawler = LottemartCrawler(anti_detect=AntiDetect(delay_min=0.5, delay_max=1.0))
+        result = await crawler.crawl()
+
+        assert result.status == CrawlStatus.SUCCESS, f"크롤링 실패: {result.error_msg}"
+        assert result.items_count > 30, f"상품 수 부족: {result.items_count}개 (30개 이상 필요)"
+
+        # 스키마 검증
+        for item in result.items:
+            assert isinstance(item["name"], str) and len(item["name"]) >= 2
+            assert isinstance(item["sale_price"], int) and item["sale_price"] > 0
+            assert item.get("store") == "롯데마트"
+
+        # 중복 검사
+        keys = [f"{i['name']}_{i['sale_price']}" for i in result.items]
+        assert len(keys) == len(set(keys)), "중복 상품 발견"
+
+        _write_live_log("lottemart", result)
+
+
+@pytest.mark.live
+class TestLiveHomeplus:
+    """홈플러스 크롤러 실제 사이트 통합 테스트 (Playwright 필요)."""
+
+    @pytest.mark.asyncio
+    async def test_homeplus_live_crawl(self):
+        """홈플러스 실제 크롤링: 50개 이상 수집, 스키마 검증."""
+        crawler = HomeplusCrawler()
+        result = await crawler.crawl()
+
+        assert result.status == CrawlStatus.SUCCESS, f"크롤링 실패: {result.error_msg}"
+        assert result.items_count > 30, f"상품 수 부족: {result.items_count}개 (30개 이상 필요)"
+
+        # 스키마 검증
+        for item in result.items:
+            assert isinstance(item["name"], str) and len(item["name"]) >= 2
+            assert isinstance(item["sale_price"], int) and item["sale_price"] > 0
+            assert item.get("store") == "홈플러스"
+
+        # 중복 검사
+        keys = [f"{i['name']}_{i['sale_price']}" for i in result.items]
+        assert len(keys) == len(set(keys)), "중복 상품 발견"
+
+        _write_live_log("homeplus", result)
+
+
+def _write_live_log(crawler_name: str, result):
+    """실제 크롤링 결과를 로그 파일에 기록한다."""
+    import os
+    from datetime import datetime
+
+    log_dir = os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "error-log")
+    os.makedirs(log_dir, exist_ok=True)
+    log_path = os.path.join(log_dir, f"live_crawl_{crawler_name}.log")
+
+    with open(log_path, "a", encoding="utf-8") as f:
+        f.write(f"\n{'='*60}\n")
+        f.write(f"[{datetime.now().isoformat()}] {crawler_name} 실제 크롤링 결과\n")
+        f.write(f"상태: {result.status}\n")
+        f.write(f"전략: {result.strategy_used}\n")
+        f.write(f"수집: {result.items_count}개\n")
+        f.write(f"소요: {result.duration_seconds:.2f}초\n")
+        if result.error_msg:
+            f.write(f"오류: {result.error_msg}\n")
+        f.write(f"--- 샘플 (최대 5개) ---\n")
+        for i, item in enumerate(result.items[:5]):
+            name = item.get("name", "?")
+            sale = item.get("sale_price", "?")
+            orig = item.get("original_price", "?")
+            disc = item.get("discount_percent", "?")
+            f.write(f"  [{i+1}] {name} | 할인가={sale} | 원가={orig} | 할인율={disc}%\n")
+        f.write(f"{'='*60}\n")

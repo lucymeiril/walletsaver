@@ -25,12 +25,6 @@ export const productService = {
     return res.json();
   },
 
-  async compareProducts(productIds) {
-    const res = await api.post('/api/products/compare', { product_ids: productIds });
-    if (!res.ok) throw new Error('상품 비교에 실패했습니다');
-    return res.json();
-  },
-
   async getPopular(params = {}) {
     const res = await api.get('/api/products/popular', params);
     if (!res.ok) throw new Error('인기 상품 조회에 실패했습니다');

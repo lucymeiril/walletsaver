@@ -1,33 +1,102 @@
-import { useEffect } from 'react';
-import { Package, DollarSign, FolderTree, Search, Clock, Activity, Inbox } from 'lucide-react';
+import { useEffect, useCallback } from 'react';
+import { Package, DollarSign, FolderTree, Search, Clock, Activity, Inbox, RefreshCw, AlertTriangle, Zap, LayoutDashboard } from 'lucide-react';
 import useDbAdminStore from '../../stores/dbAdminStore';
 import { useNavigate } from 'react-router-dom';
+import { useAbortController } from '../../hooks/useAbortController';
+import LastUpdated from '../../components/LastUpdated';
+import EmptyState from '../../components/EmptyState';
 import s from './Dashboard.module.css';
 
+const AUTO_REFRESH_MS = 60_000;
+
 export default function Dashboard() {
-  const { dashboardStats, loading, ingestionStats, fetchDashboard, fetchIngestionStats } = useDbAdminStore();
-  const { totalProducts, totalPriceRecords, totalCategories, totalKeywords, lastUpdated, qualityScore, recentIngestions } = dashboardStats;
+  const {
+    dashboardStats, loadingDashboard, ingestionStats,
+    fetchDashboard, fetchIngestionStats, lastFetchedAt,
+  } = useDbAdminStore();
+  const loading = loadingDashboard;
+  const {
+    totalProducts, totalPriceRecords, totalCategories, totalKeywords,
+    lastUpdated, qualityScore, qualityDetails, recentIngestions,
+    alerts, freshness, changes,
+  } = dashboardStats;
   const navigate = useNavigate();
+  const getSignal = useAbortController([]);
 
   useEffect(() => {
-    fetchDashboard();
-    fetchIngestionStats();
-  }, [fetchDashboard, fetchIngestionStats]);
+    const signal = getSignal();
+    fetchDashboard({ signal });
+    fetchIngestionStats({ signal });
+
+    const interval = setInterval(() => {
+      const sig = getSignal();
+      fetchDashboard({ signal: sig });
+      fetchIngestionStats({ signal: sig });
+    }, AUTO_REFRESH_MS);
+
+    return () => clearInterval(interval);
+  }, [fetchDashboard, fetchIngestionStats, getSignal]);
+
+  const handleRefresh = useCallback(() => {
+    const signal = getSignal();
+    fetchDashboard({ signal });
+    fetchIngestionStats({ signal });
+  }, [fetchDashboard, fetchIngestionStats, getSignal]);
 
   const timeSince = getTimeSince(lastUpdated);
-  const freshness = timeSince.hours < 1 ? 'fresh' : timeSince.hours < 6 ? 'normal' : 'stale';
+  const overallFreshness = timeSince.hours < 1 ? 'fresh' : timeSince.hours < 6 ? 'normal' : 'stale';
   const pendingCount = ingestionStats.pending || 0;
+  const hasAlerts = alerts && alerts.length > 0;
 
   return (
     <div className={s.page}>
-      <h2 className={s.title}>대시보드</h2>
+      <div className={s.titleRow}>
+        <h2 className={s.title}>대시보드</h2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <LastUpdated
+            timestamp={lastFetchedAt.dashboard}
+            onRefresh={handleRefresh}
+            isLoading={loading}
+          />
+          <button className={s.refreshBtn} onClick={handleRefresh} disabled={loading} title="새로고침">
+            <RefreshCw size={16} className={loading ? s.spin : ''} />
+            새로고침
+          </button>
+        </div>
+      </div>
+
+      {!loading && totalProducts === 0 && totalPriceRecords === 0 && (
+        <EmptyState
+          icon={LayoutDashboard}
+          title="데이터 없음"
+          description="아직 등록된 데이터가 없습니다. 수신함에서 데이터를 승인해 주세요."
+          action={() => navigate('/inbox')}
+          actionLabel="수신함으로 이동"
+        />
+      )}
+
+      {/* 긴급 알림 배너 */}
+      {hasAlerts && (
+        <div className={s.alertBanner}>
+          <AlertTriangle size={18} />
+          <div className={s.alertContent}>
+            <strong>⚠️ 긴급: {alerts.length}건의 수집 실패 감지</strong>
+            <ul className={s.alertList}>
+              {alerts.slice(0, 3).map((a) => (
+                <li key={a.id}>{a.crawler} — {a.message}</li>
+              ))}
+              {alerts.length > 3 && <li>외 {alerts.length - 3}건...</li>}
+            </ul>
+          </div>
+        </div>
+      )}
 
       {/* 요약 카드 */}
       <div className={s.cards}>
-        <StatCard icon={Package} label="총 상품 수" value={totalProducts} color="var(--accent)" />
-        <StatCard icon={DollarSign} label="가격 이력 수" value={(totalPriceRecords ?? 0).toLocaleString()} color="var(--green)" />
-        <StatCard icon={FolderTree} label="카테고리 수" value={totalCategories} color="var(--yellow)" />
-        <StatCard icon={Search} label="키워드 수" value={totalKeywords} color="var(--pink)" />
+        <StatCard icon={Package} label="총 상품 수" value={totalProducts} color="var(--accent)" change={changes?.products} />
+        <StatCard icon={DollarSign} label="가격 이력 수" value={(totalPriceRecords ?? 0).toLocaleString()} color="var(--green)" change={changes?.priceRecords} />
+        <StatCard icon={FolderTree} label="카테고리 수" value={totalCategories} color="var(--yellow)" change={changes?.categories} />
+        <StatCard icon={Search} label="키워드 수" value={totalKeywords} color="var(--pink)" change={changes?.keywords} />
       </div>
 
       {/* 수신함 대기 알림 */}
@@ -48,20 +117,37 @@ export default function Dashboard() {
       )}
 
       <div className={s.grid}>
-        {/* 데이터 최신성 */}
+        {/* 데이터 신선도 패널 — 소스별 */}
         <div className={s.card}>
-          <h3 className={s.cardTitle}><Clock size={16} /> 최근 업데이트</h3>
-          <div className={s.freshnessWrap}>
-            <span className={`${s.dot} ${s[freshness]}`} />
-            <span className={s.freshnessText}>
-              {freshness === 'fresh' ? '최신 상태' : freshness === 'normal' ? '정상' : '업데이트 필요'}
-            </span>
-          </div>
-          <p className={s.timeAgo}>{timeSince.text}</p>
+          <h3 className={s.cardTitle}><Zap size={16} /> 데이터 신선도</h3>
+          {freshness && freshness.length > 0 ? (
+            <div className={s.freshnessList}>
+              {freshness.map((f) => (
+                <div key={f.source} className={s.freshnessItem}>
+                  <span className={`${s.dot} ${s[f.status]}`} />
+                  <span className={s.freshnessSource}>{f.source}</span>
+                  <span className={s.freshnessTime}>
+                    {f.hoursSince <= 1
+                      ? '방금 전'
+                      : f.hoursSince <= 24
+                        ? `${Math.floor(f.hoursSince)}시간 전`
+                        : `${Math.floor(f.hoursSince / 24)}일 전`}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className={s.freshnessWrap}>
+              <span className={`${s.dot} ${s[overallFreshness]}`} />
+              <span className={s.freshnessText}>
+                {overallFreshness === 'fresh' ? '최신 상태' : overallFreshness === 'normal' ? '정상' : '업데이트 필요'}
+              </span>
+            </div>
+          )}
           <p className={s.timestamp}>{lastUpdated ? new Date(lastUpdated).toLocaleString('ko-KR') : '-'}</p>
         </div>
 
-        {/* 품질 점수 게이지 */}
+        {/* 품질 점수 게이지 — 실데이터 */}
         <div className={s.card}>
           <h3 className={s.cardTitle}><Activity size={16} /> 데이터 품질 점수</h3>
           <div className={s.gaugeWrap}>
@@ -81,6 +167,13 @@ export default function Dashboard() {
           <p className={s.gaugeLabel}>
             {qualityScore >= 80 ? '양호' : qualityScore >= 60 ? '보통' : '주의 필요'}
           </p>
+          {qualityDetails && (
+            <div className={s.qualityBreakdown}>
+              <QualityBar label="필드 채움률" value={qualityDetails.fillRate} />
+              <QualityBar label="중복률" value={qualityDetails.dupRate} invert />
+              <QualityBar label="미분류율" value={qualityDetails.noCategoryRate} invert />
+            </div>
+          )}
         </div>
 
         {/* 최근 데이터 수집 활동 */}
@@ -116,7 +209,7 @@ export default function Dashboard() {
   );
 }
 
-function StatCard({ icon: Icon, label, value, color }) {
+function StatCard({ icon: Icon, label, value, color, change }) {
   return (
     <div className={s.statCard}>
       <div className={s.statIcon} style={{ background: `${color}15`, color }}>
@@ -124,8 +217,32 @@ function StatCard({ icon: Icon, label, value, color }) {
       </div>
       <div>
         <p className={s.statLabel}>{label}</p>
-        <p className={s.statValue}>{value}</p>
+        <div className={s.statRow}>
+          <p className={s.statValue}>{value}</p>
+          {change !== undefined && change !== 0 && (
+            <span className={`${s.changeBadge} ${change > 0 ? s.changeUp : s.changeDown}`}>
+              △{change > 0 ? '+' : ''}{change}
+            </span>
+          )}
+        </div>
       </div>
+    </div>
+  );
+}
+
+function QualityBar({ label, value, invert }) {
+  const displayVal = value ?? 0;
+  const barColor = invert
+    ? (displayVal <= 5 ? 'var(--green)' : displayVal <= 20 ? 'var(--yellow)' : 'var(--red)')
+    : (displayVal >= 80 ? 'var(--green)' : displayVal >= 50 ? 'var(--yellow)' : 'var(--red)');
+
+  return (
+    <div className={s.qualityRow}>
+      <span className={s.qualityLabel}>{label}</span>
+      <div className={s.qualityBarBg}>
+        <div className={s.qualityBarFill} style={{ width: `${Math.min(displayVal, 100)}%`, background: barColor }} />
+      </div>
+      <span className={s.qualityVal}>{displayVal}%</span>
     </div>
   );
 }

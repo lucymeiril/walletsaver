@@ -13,6 +13,7 @@
 
 import asyncio
 import json
+import subprocess
 import sys
 import os
 import io
@@ -249,7 +250,12 @@ async def main():
 
     # 5. 전체 테스트 실행
     header("[테스트] 전체 리그레션")
-    os.system("python -m pytest tests/ engine/tests/ -v --tb=short 2>&1")
+    subprocess.run(
+        ["python", "-m", "pytest", "tests/", "engine/tests/", "-v", "--tb=short"],
+        capture_output=True,
+        text=True,
+        timeout=300,
+    )
 
 
 if __name__ == "__main__":

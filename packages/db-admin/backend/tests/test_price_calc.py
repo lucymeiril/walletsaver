@@ -91,6 +91,21 @@ class TestCalculateBaselineAverage:
         assert result["average"] == 0
         assert result["count"] == 0
 
+    def test_ignores_zero_and_negative_placeholder_prices(self, session):
+        p = Product(id=100, name="가격숨김상품", unit="개")
+        session.add(p)
+        now = datetime.utcnow()
+        session.add_all([
+            BaselinePrice(product_id=100, price=0, source="placeholder", unit="개", recorded_at=now),
+            DiscountHistory(product_id=100, price=-1, source="placeholder", crawled_at=now),
+        ])
+        session.commit()
+
+        result = calculate_baseline_average(session, 100, days=90)
+
+        assert result["average"] == 0
+        assert result["count"] == 0
+
 
 class TestCalculateHotdealPrice:
     def test_with_outlier_removal(self, seeded_session):

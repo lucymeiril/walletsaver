@@ -5,7 +5,7 @@
 const DEFAULT_TIMEOUT = 5000;
 
 export class MessageBridge {
-  constructor({ targetWindow, targetOrigin = '*', allowedOrigins = [] }) {
+  constructor({ targetWindow, targetOrigin = window.location.origin, allowedOrigins = [window.location.origin] }) {
     this._target = targetWindow;
     this._targetOrigin = targetOrigin;
     this._allowedOrigins = allowedOrigins;
@@ -39,7 +39,8 @@ export class MessageBridge {
 
   /** origin 검증 */
   isOriginAllowed(origin) {
-    if (this._allowedOrigins.length === 0) return true;
+    // SECURITY: Never allow empty allowlist — always require explicit origins
+    if (this._allowedOrigins.length === 0) return false;
     return this._allowedOrigins.includes(origin);
   }
 
@@ -132,7 +133,12 @@ export class MessageBridge {
               direction: 'response',
               source: 'wallet-savior',
             };
-            event.source.postMessage(response, event.origin === 'null' ? '*' : event.origin);
+            // SECURITY: Never post to '*'. For sandboxed iframes (origin 'null'),
+            // use the configured target origin.
+            const replyOrigin = event.origin === 'null'
+              ? this._targetOrigin
+              : event.origin;
+            event.source.postMessage(response, replyOrigin);
           })
           .catch((err) => {
             const response = {
@@ -142,7 +148,10 @@ export class MessageBridge {
               direction: 'response',
               source: 'wallet-savior',
             };
-            event.source.postMessage(response, event.origin === 'null' ? '*' : event.origin);
+            const replyOrigin = event.origin === 'null'
+              ? this._targetOrigin
+              : event.origin;
+            event.source.postMessage(response, replyOrigin);
           });
       }
       return;

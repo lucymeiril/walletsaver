@@ -1,260 +1,342 @@
-import { useState, useMemo, useEffect, useCallback } from 'react';
-import { Plus, Pencil, Trash2, X, Search } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { useState, useEffect, useCallback } from 'react';
+import { Plus, Package, AlertTriangle, Database } from 'lucide-react';
 import useDbAdminStore from '../../stores/dbAdminStore';
-import SearchableSelect from '../../components/SearchableSelect';
-import TagInput from '../../components/TagInput';
 import { api } from '../../api/client';
+import { useAbortController } from '../../hooks/useAbortController';
+import LastUpdated from '../../components/LastUpdated';
+import ProductStats from './ProductStats';
+import ProductFilters from './ProductFilters';
+import ProductTable from './ProductTable';
+import ProductModal, { BulkCategoryModal } from './ProductModal';
+import AdminResetModal from './AdminResetModal';
 import s from './Products.module.css';
 
-const TIER_LABEL = { ultra: '초특가', great: '특가', good: '적정', wait: '관망', bad: '비쌈' };
-const TIER_CLASS = { ultra: 'tierUltra', great: 'tierGreat', good: 'tierGood', wait: 'tierWait', bad: 'tierBad' };
+const toDateInput = (value) => (value ? String(value).slice(0, 10) : '');
+const positiveNumberOrNull = (value) => {
+  if (value === '' || value === null || value === undefined) return null;
+  const n = Number(value);
+  return Number.isFinite(n) && n > 0 ? n : null;
+};
+const nonNegativeNumberOrNull = (value) => {
+  if (value === '' || value === null || value === undefined) return null;
+  const n = Number(value);
+  return Number.isFinite(n) && n >= 0 ? n : null;
+};
+const dateTimeOrNull = (value) => (value ? `${value}T00:00:00` : null);
 
 export default function Products() {
   const {
     products, addProduct, updateProduct, deleteProduct,
-    priceHistories, fetchProducts, loading,
+    bulkDeleteProducts, bulkUpdateCategory,
+    fetchProducts, loadingProducts, error,
+    productStats, fetchProductStats,
+    productPagination,
     categories, fetchCategories, addCategory,
     keywords, fetchKeywords, addKeyword,
+    lastFetchedAt,
   } = useDbAdminStore();
+  const loading = loadingProducts;
+
   const [search, setSearch] = useState('');
+  const [searchScope, setSearchScope] = useState('name');
+  const [sourceFilter, setSourceFilter] = useState('all');
   const [catFilter, setCatFilter] = useState('');
+  const [sortBy, setSortBy] = useState('name');
+  const [sortDir, setSortDir] = useState('asc');
+  const [page, setPage] = useState(1);
   const [modal, setModal] = useState(null);
   const [form, setForm] = useState({});
   const [formKeywords, setFormKeywords] = useState([]);
+  const [selected, setSelected] = useState(new Set());
+  const [expandedRow, setExpandedRow] = useState(null);
+  const [rowHistory, setRowHistory] = useState(null);
+  const [bulkCatModal, setBulkCatModal] = useState(false);
+  const [bulkCatId, setBulkCatId] = useState('');
+  const [adminResetOpen, setAdminResetOpen] = useState(false);
+  const getSignal = useAbortController([sourceFilter, catFilter, sortBy, sortDir, page]);
 
-  const allCategories = useMemo(() => [...new Set(products.map(p => p.category).filter(Boolean))].sort(), [products]);
-
-  useEffect(() => {
-    fetchProducts();
-    fetchCategories();
-    fetchKeywords();
-  }, [fetchProducts, fetchCategories, fetchKeywords]);
-
-  const filtered = useMemo(() => {
-    return products.filter(p => {
-      const matchName = !search || p.name.includes(search);
-      const matchCat = !catFilter || p.category === catFilter;
-      return matchName && matchCat;
-    });
-  }, [products, search, catFilter]);
-
-  const openAdd = () => {
-    setForm({ name: '', category: '', categoryId: '', unit: '', basePrice: '', currentAvg: '', tier: 'good' });
-    setFormKeywords([]);
-    setModal({ mode: 'add' });
-  };
-
-  const openEdit = (p) => {
-    setForm({ ...p, basePrice: String(p.basePrice), currentAvg: String(p.currentAvg) });
-    const productKws = (p.keywords || []).map(k =>
-      typeof k === 'string'
-        ? { id: k, keyword: keywords.find(kw => kw.id === k)?.keyword || k }
-        : k,
-    );
-    setFormKeywords(productKws);
-    setModal({ mode: 'edit', product: p });
-  };
-
-  const openDetail = (p) => {
-    setModal({ mode: 'detail', product: p });
-  };
-
-  const handleSave = async () => {
-    const data = {
-      ...form,
-      basePrice: Number(form.basePrice),
-      currentAvg: Number(form.currentAvg),
-      keywords: formKeywords.map(k => k.id),
-    };
-    if (modal.mode === 'add') await addProduct(data);
-    else await updateProduct(modal.product.id, data);
-
-    // Link keywords to the product's category
-    if (form.categoryId && formKeywords.length > 0) {
-      for (const kw of formKeywords) {
-        if (kw.id.startsWith('kw-new-')) continue;
-        try {
-          await api.updateKeyword(kw.id, { category_id: form.categoryId });
-        } catch { /* best-effort */ }
+  /* ─── 데이터 페칭 ─── */
+  const doFetch = useCallback((overrides = {}) => {
+    const params = {};
+    const src = overrides.source ?? sourceFilter;
+    if (src && src !== 'all') params.source = src;
+    if (overrides.category ?? catFilter) params.category = overrides.category ?? catFilter;
+    const currentSearch = overrides.search ?? search;
+    const currentScope = overrides.searchScope ?? searchScope;
+    if (currentSearch) {
+      if (currentScope === 'category') {
+        params.category_search = currentSearch;
+      } else if (currentScope === 'all') {
+        params.search = currentSearch;
+        params.category_search = currentSearch;
+      } else {
+        params.search = currentSearch;
       }
     }
+    params.sort_by = overrides.sort_by ?? sortBy;
+    params.sort_dir = overrides.sort_dir ?? sortDir;
+    params.page = overrides.page ?? page;
+    params.per_page = 20;
+    const signal = getSignal();
+    fetchProducts(params, { signal });
+  }, [sourceFilter, catFilter, search, searchScope, sortBy, sortDir, page, fetchProducts, getSignal]);
 
-    setModal(null);
+  useEffect(() => {
+    doFetch(); fetchProductStats(); fetchCategories(); fetchKeywords();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    doFetch(); setSelected(new Set());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sourceFilter, catFilter, sortBy, sortDir, page]);
+
+  const handleSearch = () => { setPage(1); doFetch({ page: 1 }); };
+
+  /* ─── 정렬 ─── */
+  const toggleSort = (col) => {
+    if (sortBy === col) setSortDir(d => d === 'asc' ? 'desc' : 'asc');
+    else { setSortBy(col); setSortDir('asc'); }
+    setPage(1);
   };
 
-  const handleDelete = (id) => {
-    if (confirm('정말 삭제하시겠습니까?')) deleteProduct(id);
+  /* ─── 선택 ─── */
+  const toggleSelectAll = () => {
+    const allSelected = products.length > 0 && products.every(p => selected.has(p.id));
+    setSelected(allSelected ? new Set() : new Set(products.map(p => p.id)));
+  };
+  const toggleSelect = (id) => {
+    setSelected(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
   };
 
-  const handleCategoryChange = (id, name) => {
-    setForm(prev => ({ ...prev, category: name, categoryId: id }));
+  /* ─── 벌크 ─── */
+  const handleBulkDelete = async () => {
+    if (!confirm(`선택한 ${selected.size}개 상품을 삭제하시겠습니까?`)) return;
+    await bulkDeleteProducts([...selected]);
+    setSelected(new Set()); fetchProductStats();
+  };
+  const handleBulkCategory = async () => {
+    if (!bulkCatId) return;
+    await bulkUpdateCategory([...selected], bulkCatId);
+    setBulkCatModal(false); setBulkCatId(''); setSelected(new Set()); fetchProductStats();
   };
 
-  const handleCreateCategory = async (parentId, catData) => {
-    await addCategory(parentId, catData);
-  };
-
-  const searchKeywordsApi = useCallback(async (q) => {
+  /* ─── 확장 행 ─── */
+  const toggleExpand = async (id) => {
+    if (expandedRow === id) { setExpandedRow(null); setRowHistory(null); return; }
+    setExpandedRow(id);
     try {
-      const results = await api.searchKeywords(q);
-      const arr = Array.isArray(results) ? results : results?.keywords ?? results?.data ?? [];
-      return arr.map(kw => ({
-        ...kw,
-        keyword: kw.keyword || kw.word || '',
-      }));
-    } catch {
-      const q2 = q.toLowerCase();
-      return keywords.filter(kw => (kw.keyword || kw.word || '').toLowerCase().includes(q2));
-    }
-  }, [keywords]);
+      const hist = await api.getProductHistory(id);
+      setRowHistory(Array.isArray(hist) ? hist : hist.history ?? []);
+    } catch { setRowHistory([]); }
+  };
 
-  const handleCreateKeyword = useCallback(async (word) => {
-    await addKeyword({ word, category_id: form.categoryId || null });
-  }, [addKeyword, form.categoryId]);
+  /* ─── 모달 ─── */
+  const openAdd = () => {
+    setForm({
+      name: '', category: '', categoryId: '', unit: '',
+      description: '', image_url: '', source_type: 'unknown',
+      attributes_json: '', is_active: true,
+      offer_source: '', channel: '', current_price: '', original_price: '',
+      discount_rate: '', discount_rate_manual: false, valid_from: '', valid_to: '',
+      source_url: '', quantity: '', offer_notes: '', offer_raw_data_json: '',
+    });
+    setFormKeywords([]); setModal({ mode: 'add' });
+  };
+  const openEdit = (p) => {
+    setForm({
+      ...p,
+      categoryId: p.category_id || '',
+      basePrice: String(p.basePrice || p.originalPrice || ''),
+      currentAvg: String(p.currentAvg || p.currentPrice || ''),
+      source_type: p.source_type || 'unknown',
+      attributes_json: p.attributes ? JSON.stringify(p.attributes, null, 2) : '',
+      is_active: p.is_active !== false,
+      offer_source: p.offer_source || p.source || '',
+      channel: p.channel || p.offer_raw_data?.channel || '',
+      current_price: p.current_price ? String(p.current_price) : '',
+      original_price: p.original_price ? String(p.original_price) : '',
+      discount_rate: p.discount_rate ? String(p.discount_rate) : '',
+      discount_rate_manual: !!p.discount_rate_manual,
+      valid_from: toDateInput(p.valid_from),
+      valid_to: toDateInput(p.valid_to),
+      source_url: p.source_url || '',
+      quantity: p.quantity || p.offer_raw_data?.quantity || '',
+      offer_notes: p.offer_notes || p.offer_raw_data?.notes || '',
+      offer_raw_data_json: p.offer_raw_data ? JSON.stringify(p.offer_raw_data, null, 2) : '',
+    });
+    const kwList = (p.keywords || []).map(k => {
+      if (typeof k === 'object' && k.id && k.keyword) return k;
+      if (typeof k === 'string') return { id: k, keyword: keywords.find(kw => kw.id === k)?.keyword || k };
+      return k;
+    });
+    setFormKeywords(kwList);
+    setModal({ mode: 'edit', product: p });
+  };
+  const openDetail = (p) => setModal({ mode: 'detail', product: p });
+
+  const handleSave = async () => {
+    let attributes = null;
+    if ((form.attributes_json || '').trim()) {
+      try {
+        attributes = JSON.parse(form.attributes_json);
+      } catch {
+        alert('속성(JSON) 형식이 올바르지 않습니다.');
+        return;
+      }
+    }
+    let offerRawData = null;
+    if ((form.offer_raw_data_json || '').trim()) {
+      try {
+        offerRawData = JSON.parse(form.offer_raw_data_json);
+      } catch {
+        alert('행사 raw_data(JSON) 형식이 올바르지 않습니다.');
+        return;
+      }
+    }
+    const data = {
+      name: form.name,
+      category_id: form.categoryId || null,
+      unit: form.unit || '개',
+      description: form.description || null,
+      image_url: form.image_url || null,
+      source_type: form.source_type || 'unknown',
+      attributes,
+      is_active: form.is_active !== false,
+    };
+
+    const hasOfferFields = [
+      form.offer_source, form.channel, form.current_price, form.original_price,
+      form.discount_rate, form.valid_from, form.valid_to, form.source_url,
+      form.quantity, form.offer_notes, form.offer_raw_data_json,
+    ].some(v => String(v || '').trim() !== '') || form.discount_rate_manual;
+    if (hasOfferFields) {
+      data.offer_source = form.offer_source || null;
+      data.channel = form.channel || null;
+      data.current_price = positiveNumberOrNull(form.current_price);
+      data.original_price = positiveNumberOrNull(form.original_price);
+      data.discount_rate = form.discount_rate_manual ? nonNegativeNumberOrNull(form.discount_rate) : null;
+      data.discount_rate_manual = !!form.discount_rate_manual;
+      data.valid_from = dateTimeOrNull(form.valid_from);
+      data.valid_to = dateTimeOrNull(form.valid_to);
+      data.source_url = form.source_url || null;
+      data.quantity = form.quantity || null;
+      data.offer_notes = form.offer_notes || null;
+      data.offer_raw_data = offerRawData;
+    }
+
+    // Resolve keyword IDs — create new keywords first, then collect all IDs
+    const resolvedKeywordIds = [];
+    for (const kw of formKeywords) {
+      if (String(kw.id).startsWith('kw-new-')) {
+        try {
+          const created = await api.createKeyword({ word: kw.keyword, category_id: form.categoryId || null });
+          if (created?.id) resolvedKeywordIds.push(created.id);
+        } catch { /* skip duplicates or errors */ }
+      } else {
+        resolvedKeywordIds.push(kw.id);
+      }
+    }
+    data.keyword_ids = resolvedKeywordIds;
+
+    if (modal.mode === 'add') await addProduct(data);
+    else await updateProduct(modal.product.id, data);
+    if (form.categoryId && formKeywords.length > 0) {
+      for (const kw of formKeywords) {
+        if (String(kw.id).startsWith('kw-new-')) continue;
+        try { await api.updateKeyword(kw.id, { category_id: form.categoryId }); } catch { /* best-effort */ }
+      }
+    }
+    setModal(null); fetchProductStats(); fetchKeywords();
+  };
+
+  const handleDelete = async (id) => {
+    if (confirm('정말 삭제하시겠습니까?')) { await deleteProduct(id); setModal(null); fetchProductStats(); }
+  };
+
+  const handleCreateCategory = async (parentId, catData) => { await addCategory(parentId, catData); };
+
+  const { total, total_pages } = productPagination;
 
   return (
     <div className={s.page}>
       <div className={s.header}>
-        <h2 className={s.title}>상품 관리</h2>
-        <button className={s.addBtn} onClick={openAdd}><Plus size={16} /> 상품 추가</button>
-      </div>
-
-      {/* 필터 */}
-      <div className={s.filters}>
-        <div className={s.searchWrap}>
-          <Search size={16} className={s.searchIcon} />
-          <input
-            className={s.searchInput}
-            placeholder="상품명 검색..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
+        <div>
+          <h2 className={s.title}>상품 관리</h2>
+          <LastUpdated
+            timestamp={lastFetchedAt.products}
+            onRefresh={() => { doFetch(); fetchProductStats(); }}
+            isLoading={loading}
           />
         </div>
-        <select className={s.select} value={catFilter} onChange={e => setCatFilter(e.target.value)}>
-          <option value="">전체 카테고리</option>
-          {allCategories.map(c => <option key={c} value={c}>{c}</option>)}
-        </select>
-      </div>
-
-      {/* 테이블 */}
-      <div className={s.tableWrap}>
-        <table className={s.table}>
-          <thead>
-            <tr>
-              <th>이름</th>
-              <th>카테고리</th>
-              <th>단위</th>
-              <th>기준가</th>
-              <th>현재 평균가</th>
-              <th>가격 티어</th>
-              <th>관리</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map(p => (
-              <tr key={p.id} onClick={() => openDetail(p)} className={s.row}>
-                <td className={s.nameCol}>{p.name}</td>
-                <td>{p.category}</td>
-                <td>{p.unit}</td>
-                <td>{(p.basePrice ?? 0).toLocaleString()}원</td>
-                <td>{(p.currentAvg ?? 0).toLocaleString()}원</td>
-                <td><span className={`${s.tier} ${s[TIER_CLASS[p.tier]]}`}>{TIER_LABEL[p.tier]}</span></td>
-                <td>
-                  <div className={s.actions} onClick={e => e.stopPropagation()}>
-                    <button className={s.iconBtn} onClick={() => openEdit(p)} title="수정"><Pencil size={14} /></button>
-                    <button className={s.iconBtn} onClick={() => handleDelete(p.id)} title="삭제"><Trash2 size={14} /></button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <p className={s.count}>{filtered.length}개 상품</p>
-
-      {/* 모달 */}
-      {modal && (
-        <div className={s.overlay} onClick={() => setModal(null)}>
-          <div className={s.modal} onClick={e => e.stopPropagation()}>
-            <div className={s.modalHeader}>
-              <h3>{modal.mode === 'add' ? '상품 추가' : modal.mode === 'edit' ? '상품 수정' : modal.product.name}</h3>
-              <button onClick={() => setModal(null)}><X size={18} /></button>
-            </div>
-
-            {modal.mode === 'detail' ? (
-              <div className={s.detail}>
-                <div className={s.detailGrid}>
-                  <div><span className={s.label}>카테고리</span><span>{modal.product.category}</span></div>
-                  <div><span className={s.label}>단위</span><span>{modal.product.unit}</span></div>
-                  <div><span className={s.label}>기준가</span><span>{(modal.product.basePrice ?? 0).toLocaleString()}원</span></div>
-                  <div><span className={s.label}>현재 평균가</span><span>{(modal.product.currentAvg ?? 0).toLocaleString()}원</span></div>
-                  <div><span className={s.label}>가격 티어</span><span className={`${s.tier} ${s[TIER_CLASS[modal.product.tier]]}`}>{TIER_LABEL[modal.product.tier]}</span></div>
-                </div>
-                {modal.product.keywords?.length > 0 && (
-                  <div className={s.detailKeywords}>
-                    <span className={s.label}>키워드</span>
-                    <div className={s.keywordTags}>
-                      {modal.product.keywords.map((kw, i) => (
-                        <span key={i} className={s.keywordTag}>
-                          {typeof kw === 'string' ? (keywords.find(k => k.id === kw)?.keyword || kw) : kw.keyword}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                <h4 className={s.chartTitle}>가격 이력 (90일)</h4>
-                <div className={s.chartWrap}>
-                  <ResponsiveContainer width="100%" height={250}>
-                    <LineChart data={priceHistories[modal.product.id]?.slice(-30) || []}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                      <XAxis dataKey="date" tick={{ fill: 'var(--text3)', fontSize: 11 }} tickFormatter={v => v.slice(5)} />
-                      <YAxis tick={{ fill: 'var(--text3)', fontSize: 11 }} />
-                      <Tooltip contentStyle={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text)' }} />
-                      <Line type="monotone" dataKey="price" stroke="var(--accent)" strokeWidth={2} dot={false} />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-                <button className={s.editBtn} onClick={() => openEdit(modal.product)}>수정하기</button>
-              </div>
-            ) : (
-              <div className={s.form}>
-                <label>이름<input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /></label>
-                <label>
-                  카테고리
-                  <SearchableSelect
-                    categories={categories}
-                    value={form.categoryId || form.category}
-                    onChange={handleCategoryChange}
-                    onCreateCategory={handleCreateCategory}
-                  />
-                </label>
-                <label>단위<input value={form.unit} onChange={e => setForm({ ...form, unit: e.target.value })} /></label>
-                <label>기준가<input type="number" value={form.basePrice} onChange={e => setForm({ ...form, basePrice: e.target.value })} /></label>
-                <label>현재 평균가<input type="number" value={form.currentAvg} onChange={e => setForm({ ...form, currentAvg: e.target.value })} /></label>
-                <label>가격 티어
-                  <select value={form.tier} onChange={e => setForm({ ...form, tier: e.target.value })}>
-                    {Object.entries(TIER_LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-                  </select>
-                </label>
-                <label>
-                  키워드
-                  <TagInput
-                    value={formKeywords}
-                    onChange={setFormKeywords}
-                    onSearch={searchKeywordsApi}
-                    onCreateKeyword={handleCreateKeyword}
-                  />
-                </label>
-                <div className={s.formActions}>
-                  <button className={s.cancelBtn} onClick={() => setModal(null)}>취소</button>
-                  <button className={s.saveBtn} onClick={handleSave}>저장</button>
-                </div>
-              </div>
-            )}
-          </div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button className={s.adminResetBtn} onClick={() => setAdminResetOpen(true)}>
+            <Database size={16} /> DB 초기화
+          </button>
+          <button className={s.addBtn} onClick={openAdd}><Plus size={16} /> 상품 추가</button>
         </div>
+      </div>
+
+      <ProductStats stats={productStats} />
+
+      <ProductFilters
+        sourceFilter={sourceFilter} setSourceFilter={setSourceFilter}
+        catFilter={catFilter} setCatFilter={setCatFilter}
+        search={search} setSearch={setSearch}
+        searchScope={searchScope} setSearchScope={setSearchScope}
+        sortBy={sortBy} setSortBy={setSortBy}
+        sortDir={sortDir} setSortDir={setSortDir}
+        setPage={setPage}
+        onSearch={handleSearch}
+        stats={productStats}
+        selected={selected}
+        onBulkDelete={handleBulkDelete}
+        onBulkCategoryOpen={() => setBulkCatModal(true)}
+        onClearSelection={() => setSelected(new Set())}
+      />
+
+      {error && <div className={s.errorState}><AlertTriangle size={20} /><span>{error}</span></div>}
+      {loading && <div className={s.loadingBar}>불러오는 중...</div>}
+      {!loading && !error && products.length === 0 && (
+        <div className={s.emptyState}><Package size={40} /><p>데이터 없음</p><span>등록된 상품이 없습니다. 상품을 추가하거나 크롤링을 실행하세요.</span></div>
       )}
+
+      {products.length > 0 && (
+        <ProductTable
+          products={products} selected={selected}
+          onToggleSelect={toggleSelect} onToggleSelectAll={toggleSelectAll}
+          expandedRow={expandedRow} onToggleExpand={toggleExpand} rowHistory={rowHistory}
+          sortBy={sortBy} sortDir={sortDir} onToggleSort={toggleSort}
+          onDetail={openDetail} onEdit={openEdit} onDelete={handleDelete}
+          page={page} setPage={setPage} total={total} totalPages={total_pages}
+        />
+      )}
+
+      <BulkCategoryModal
+        open={bulkCatModal} onClose={() => setBulkCatModal(false)}
+        categories={categories} bulkCatId={bulkCatId} setBulkCatId={setBulkCatId}
+        onApply={handleBulkCategory} selectedCount={selected.size}
+        onCreateCategory={handleCreateCategory}
+      />
+
+      <ProductModal
+        modal={modal} onClose={() => setModal(null)}
+        form={form} setForm={setForm}
+        formKeywords={formKeywords} setFormKeywords={setFormKeywords}
+        categories={categories} keywords={keywords}
+        onSave={handleSave} onEdit={openEdit} onDelete={handleDelete}
+        onCreateCategory={handleCreateCategory} addKeyword={addKeyword}
+      />
+
+      <AdminResetModal
+        open={adminResetOpen}
+        onClose={() => setAdminResetOpen(false)}
+        onComplete={() => { doFetch(); fetchProductStats(); }}
+      />
     </div>
   );
 }

@@ -20,6 +20,10 @@ class UserRegister(BaseModel):
     def validate_password(cls, v):
         if len(v) < 8:
             raise ValueError("비밀번호는 8자 이상이어야 합니다")
+        if not any(c.isupper() for c in v):
+            raise ValueError("비밀번호에 대문자가 포함되어야 합니다")
+        if not any(c.islower() for c in v):
+            raise ValueError("비밀번호에 소문자가 포함되어야 합니다")
         if not any(c.isdigit() for c in v):
             raise ValueError("비밀번호에 숫자가 포함되어야 합니다")
         return v
@@ -54,6 +58,7 @@ class UserProfile(BaseModel):
     nickname: str
     role: str
     created_at: str
+    profile_image: Optional[str] = None
 
     class Config:
         from_attributes = True

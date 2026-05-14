@@ -1,7 +1,7 @@
 """Pipeline run, validation, transformation 테스트."""
 
 import asyncio
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch, patch
 
 import pytest
 
@@ -49,6 +49,32 @@ class TestValidateItems:
         valid, invalid = validate_items(items, ["name", "price"])
         assert len(valid) == 2
         assert len(invalid) == 1
+
+    def test_wrong_type_name_rejected(self):
+        """name field must be str; integer name should be rejected."""
+        items = [{"name": 12345, "price": 3000}]
+        valid, invalid = validate_items(items, ["name", "price"])
+        assert len(valid) == 0
+        assert len(invalid) == 1
+        assert "expected" in invalid[0]["_validation_error"]
+
+    def test_string_price_accepted(self):
+        """Price as string is allowed (normalize_prices handles it later)."""
+        items = [{"name": "사과", "price": "12,500원"}]
+        valid, invalid = validate_items(items, ["name", "price"])
+        assert len(valid) == 1
+
+    def test_list_price_rejected(self):
+        """Price as list should be rejected."""
+        items = [{"name": "사과", "price": [1, 2, 3]}]
+        valid, invalid = validate_items(items, ["name", "price"])
+        assert len(invalid) == 1
+
+    def test_extra_fields_no_type_check(self):
+        """Fields not in FIELD_TYPE_RULES should not be type-checked."""
+        items = [{"name": "사과", "price": 3000, "custom_data": {"nested": True}}]
+        valid, invalid = validate_items(items, ["name", "price"])
+        assert len(valid) == 1
 
 
 class TestValidatePriceRange:
@@ -103,6 +129,36 @@ class TestDeduplicate:
         ]
         result = deduplicate(items, key_fields=["name", "price"])
         assert len(result) == 2
+
+    def test_none_fields_not_collapsed(self):
+        """Items with all-None key fields must not be falsely deduplicated."""
+        items = [
+            {"name": None, "price": None, "url": "https://a.com"},
+            {"name": None, "price": None, "url": "https://b.com"},
+            {"name": None, "price": None, "url": "https://c.com"},
+        ]
+        result = deduplicate(items, key_fields=["name", "price"])
+        assert len(result) == 3
+
+    def test_partial_none_still_deduped(self):
+        """Items sharing same name but None price should still dedup on (name, None)."""
+        items = [
+            {"name": "사과", "price": None},
+            {"name": "사과", "price": None},
+        ]
+        result = deduplicate(items, key_fields=["name", "price"])
+        assert len(result) == 1  # same name, same None price → dedup
+
+    def test_mixed_none_and_values(self):
+        """Items with some None and some non-None key fields work correctly."""
+        items = [
+            {"name": "사과", "price": 3000},
+            {"name": None, "price": None, "url": "https://a.com"},
+            {"name": None, "price": None, "url": "https://b.com"},
+            {"name": "사과", "price": 3000},  # duplicate of first
+        ]
+        result = deduplicate(items, key_fields=["name", "price"])
+        assert len(result) == 3  # first 사과 + 2 unique None items
 
 
 class TestNormalizePrices:
@@ -256,10 +312,40 @@ class TestCrawlPipeline:
         pipeline = CrawlPipeline(
             registry=mock_registry, db_api_url="http://fake:9999/api/prices/bulk"
         )
-        result = await pipeline.run_crawler("test_crawler")
+        with patch.object(pipeline, "_store_to_ingestion", new_callable=AsyncMock, return_value=2) as store:
+            result = await pipeline.run_crawler("test_crawler")
         assert result.status == "success"
         assert result.items_found == 2
         assert result.items_valid >= 1
+        assert result.quality_score is not None
+        assert store.await_args.kwargs["quality_details"]["coverage"]["sale_price"] == 1.0
+
+    @pytest.mark.asyncio
+    async def test_discount_pipeline_uses_sale_price_for_validation_and_dedup(self, mock_registry):
+        mock_registry._registry["test_crawler"]["config"]["output"]["required_fields"] = ["name", "sale_price"]
+        mock_registry.get_crawler.return_value = MagicMock(
+            crawl=AsyncMock(
+                return_value=CrawlResult(
+                    status=CrawlStatus.SUCCESS,
+                    crawler_name="test_crawler",
+                    items_count=3,
+                    items=[
+                        {"name": "두부 300g", "sale_price": "1,980원", "detail_url": "https://x.test/a"},
+                        {"name": "두부 300g", "sale_price": "2,180원", "detail_url": "https://x.test/b"},
+                        {"name": "두부 300g", "sale_price": "2,180원", "detail_url": "https://x.test/b"},
+                    ],
+                )
+            )
+        )
+        pipeline = CrawlPipeline(registry=mock_registry)
+
+        with patch.object(pipeline, "_store_to_ingestion", new_callable=AsyncMock, return_value=2) as store:
+            result = await pipeline.run_crawler("test_crawler")
+
+        assert result.items_valid == 2
+        submitted_items = store.await_args.kwargs["items"]
+        assert [item["sale_price"] for item in submitted_items] == [1980, 2180]
+        assert store.await_args.kwargs["quality_details"]["deduplicated_count"] == 1
 
     @pytest.mark.asyncio
     async def test_run_crawler_not_found(self):
@@ -276,7 +362,8 @@ class TestCrawlPipeline:
         pipeline = CrawlPipeline(
             registry=mock_registry, db_api_url="http://fake:9999/api/prices/bulk"
         )
-        results = await pipeline.run_batch(["test_crawler"])
+        with patch.object(pipeline, "_store_to_ingestion", new_callable=AsyncMock, return_value=2):
+            results = await pipeline.run_batch(["test_crawler"])
         assert len(results) == 1
         assert results[0].items_found == 2
 
@@ -286,7 +373,8 @@ class TestCrawlPipeline:
         pipeline = CrawlPipeline(
             registry=mock_registry, db_api_url="http://fake:9999/api/prices/bulk"
         )
-        results = await pipeline.run_all(category="mart")
+        with patch.object(pipeline, "_store_to_ingestion", new_callable=AsyncMock, return_value=2):
+            results = await pipeline.run_all(category="mart")
         assert len(results) == 1
 
     @pytest.mark.asyncio
@@ -297,3 +385,16 @@ class TestCrawlPipeline:
         )
         results = await pipeline.run_all(category="nonexistent")
         assert len(results) == 0
+
+    @pytest.mark.asyncio
+    async def test_run_bounded_diagnostics_does_not_live_crawl_without_fixture(self, mock_registry, mock_crawler):
+        mock_registry.get_crawler.return_value = mock_crawler
+        pipeline = CrawlPipeline(registry=mock_registry)
+
+        report = await pipeline.run_bounded_diagnostics(crawler_ids=["test_crawler"])
+
+        assert report["schema"] == "bounded_crawler_diagnostics.v1"
+        assert report["live_network_default"] == "disabled"
+        assert report["crawlers"][0]["fixture"]["available"] is False
+        assert report["crawlers"][0]["quality_evidence"]["can_claim_collecting"] is False
+        mock_registry.get_crawler.assert_not_called()

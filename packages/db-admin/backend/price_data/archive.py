@@ -270,32 +270,27 @@ def build_full_archive(
     """
     전체 가격 아카이브를 구축한다.
 
-    Returns: {
-        "generated_at": str,
-        "total_records": int,
-        "products": {
-            product_id: {
-                "archive": {...},
-                "daily": [...],
-                "weekly": [...],
-                "monthly": [...],
-                "by_store": [...],
-            }
-        },
-        "comparison_matrix": {...},
-    }
+    사전 그룹핑으로 product_id 별 필터링 반복을 제거.
     """
     if product_ids is None:
         product_ids = sorted({r.get("product_id") for r in records if r.get("product_id")})
 
+    # 사전 그룹핑 — O(n) 1회 스캔으로 product_id 별 레코드 분류
+    grouped: dict[int, list[dict]] = defaultdict(list)
+    for r in records:
+        pid = r.get("product_id")
+        if pid is not None:
+            grouped[pid].append(r)
+
     products_data: dict[int, dict] = {}
     for pid in product_ids:
+        pid_records = grouped.get(pid, [])
         products_data[pid] = {
-            "archive": build_product_archive(records, pid),
-            "daily": aggregate_by_period(records, pid, "daily"),
-            "weekly": aggregate_by_period(records, pid, "weekly"),
-            "monthly": aggregate_by_period(records, pid, "monthly"),
-            "by_store": aggregate_by_store(records, pid),
+            "archive": build_product_archive(pid_records, pid),
+            "daily": aggregate_by_period(pid_records, pid, "daily"),
+            "weekly": aggregate_by_period(pid_records, pid, "weekly"),
+            "monthly": aggregate_by_period(pid_records, pid, "monthly"),
+            "by_store": aggregate_by_store(pid_records, pid),
         }
 
     return {

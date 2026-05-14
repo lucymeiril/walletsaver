@@ -1,19 +1,21 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import {
   LayoutDashboard, Package, DollarSign,
-  FolderTree, Search, BarChart3, Menu, X, Database, Inbox,
+  FolderTree, BarChart3, Menu, X, Database, Inbox, LogOut, ShieldCheck, MessageSquareWarning,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { logout } from '../stores/authStore';
 import s from './AdminLayout.module.css';
 
 const NAV = [
-  { to: '/',           label: '대시보드', icon: LayoutDashboard },
-  { to: '/inbox',      label: '📥 수신함', icon: Inbox },
-  { to: '/products',   label: '상품',     icon: Package },
-  { to: '/prices',     label: '가격',     icon: DollarSign },
-  { to: '/categories', label: '카테고리', icon: FolderTree },
-  { to: '/keywords',   label: '키워드',   icon: Search },
-  { to: '/analytics',  label: '분석',     icon: BarChart3 },
+  { to: '/',               label: '대시보드',   icon: LayoutDashboard },
+  { to: '/inbox',          label: '📥 수신함',  icon: Inbox },
+  { to: '/products',       label: '상품',       icon: Package },
+  { to: '/prices',         label: '가격',       icon: DollarSign },
+  { to: '/classification', label: '분류 관리',  icon: FolderTree },
+  { to: '/analytics',      label: '분석',       icon: BarChart3 },
+  { to: '/integrity',      label: '무결성',     icon: ShieldCheck },
+  { to: '/community',      label: '커뮤니티',   icon: MessageSquareWarning },
 ];
 
 export default function AdminLayout() {
@@ -57,6 +59,11 @@ export default function AdminLayout() {
         <button className={s.collapseBtn} onClick={() => setCollapsed(!collapsed)}>
           {collapsed ? <Menu size={18} /> : <X size={18} />}
           {!collapsed && <span>접기</span>}
+        </button>
+
+        <button className={s.logoutBtn} onClick={logout} title="로그아웃">
+          <LogOut size={18} />
+          {!collapsed && <span>로그아웃</span>}
         </button>
       </aside>
 

@@ -63,6 +63,9 @@ class SeleniumStrategy(BaseStrategy):
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-gpu")
+        options.add_argument("--js-flags=--max-old-space-size=256")
+        options.add_argument("--single-process")
+        options.add_argument("--disable-extensions")
         options.add_argument(f"--user-agent={self._anti_detect.get_random_user_agent()}")
 
         # 프록시 설정
@@ -91,13 +94,22 @@ class SeleniumStrategy(BaseStrategy):
             logger.warning("selenium-stealth 미설치. 기본 Selenium으로 진행.")
 
         driver.set_page_load_timeout(self._wait_timeout * 3)
+
+        # Register browser PID with watchdog for zombie prevention
+        from engine.browser_watchdog import get_browser_watchdog
+        try:
+            pid = driver.service.process.pid
+            get_browser_watchdog().register_pid(pid)
+        except Exception:
+            pass
+
         return driver
 
     async def _do_fetch(self, url: str, **options) -> str:
         wait_timeout = options.get("wait_timeout", self._wait_timeout)
 
         # 브라우저 실행은 blocking이므로 executor에서 실행
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         html = await loop.run_in_executor(None, self._fetch_sync, url, wait_timeout)
         return html
 
@@ -142,16 +154,39 @@ class SeleniumStrategy(BaseStrategy):
                 strategy_name=self.name,
             )
         finally:
+            self._safe_quit_driver(driver)
+            self._driver = None
+
+    def _safe_quit_driver(self, driver) -> None:
+        """Quit the driver and verify the process is dead via watchdog."""
+        from engine.browser_watchdog import get_browser_watchdog
+        watchdog = get_browser_watchdog()
+
+        pid = None
+        try:
+            pid = driver.service.process.pid
+        except Exception:
+            pass
+
+        try:
+            driver.quit()
+        except Exception:
+            pass
+
+        # Verify process is actually dead
+        if pid:
             try:
-                driver.quit()
+                import psutil
+                proc = psutil.Process(pid)
+                if proc.is_running():
+                    proc.kill()
+                    proc.wait(timeout=5)
+                    logger.warning("[SeleniumStrategy] force-killed chromedriver PID=%d", pid)
             except Exception:
                 pass
-            self._driver = None
+            watchdog.unregister_pid(pid)
 
     async def cleanup(self) -> None:
         if self._driver:
-            try:
-                self._driver.quit()
-            except Exception:
-                pass
+            self._safe_quit_driver(self._driver)
             self._driver = None

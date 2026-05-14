@@ -78,6 +78,19 @@
 }
 .collapseBtn:hover { color: var(--text); }
 
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-top: 1px solid var(--border);
+  color: var(--text3);
+  font-size: var(--fs-sm);
+  transition: color var(--dur) var(--ease);
+  width: 100%;
+}
+.logoutBtn:hover { color: var(--red); }
+
 /* ── Main area ── */
 .main {
   margin-left: 240px;

@@ -17,6 +17,13 @@ config = context.config
 database_url = os.getenv("DATABASE_URL")
 if database_url:
     config.set_main_option("sqlalchemy.url", database_url)
+else:
+    url = config.get_main_option("sqlalchemy.url")
+    if url and "changeme" in url:
+        raise RuntimeError(
+            "SECURITY: Default credentials detected in alembic.ini. "
+            "Set DATABASE_URL environment variable."
+        )
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)

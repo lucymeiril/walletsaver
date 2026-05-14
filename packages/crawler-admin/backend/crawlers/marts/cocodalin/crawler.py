@@ -24,7 +24,9 @@ API 엔드포인트: https://www.cocodalin.com/api/front
 from __future__ import annotations
 
 import logging
+import random
 import re
+import time
 from datetime import datetime
 from typing import Optional
 
@@ -52,6 +54,33 @@ class CocodalinCrawler(CrawlerContract):
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=0.3, delay_max=1.0)
 
+    def _retry_request(self, url: str, *, headers: dict | None = None,
+                       session: requests.Session | None = None,
+                       timeout: int = 15, max_retries: int = 3) -> requests.Response:
+        """HTTP GET with exponential backoff for transient failures."""
+        requester = session or requests
+        last_exc = None
+        for attempt in range(max_retries):
+            try:
+                resp = requester.get(url, headers=headers, timeout=timeout)
+                if resp.status_code == 429:  # Rate limited — back off
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    time.sleep(wait)
+                    continue
+                return resp
+            except (requests.exceptions.ConnectionError,
+                    requests.exceptions.Timeout) as e:
+                last_exc = e
+                if attempt < max_retries - 1:
+                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
+                                   f"retrying in {wait:.1f}s: {e}")
+                    time.sleep(wait)
+                else:
+                    raise
+        raise last_exc  # type: ignore[misc]
+
     @property
     def info(self) -> CrawlerInfo:
         return CrawlerInfo(
@@ -75,9 +104,9 @@ class CocodalinCrawler(CrawlerContract):
                 "Referer": "https://www.cocodalin.com/",
             })
 
-            # 인기 할인 상품 API 호출
+            # 인기 할인 상품 API 호출 (retry with backoff)
             url = self.API_BASE + self.ENDPOINTS["best"]
-            response = requests.get(url, headers=headers, timeout=15)
+            response = self._retry_request(url, headers=headers, timeout=15)
 
             if response.status_code != 200:
                 logger.error(f"[코코달인] API HTTP {response.status_code}")

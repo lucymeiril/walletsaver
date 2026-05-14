@@ -30,24 +30,9 @@ async def nearby_gas_stations(
     fuel_type: str = Query("gasoline", description="연료 종류 (gasoline, diesel, lpg)"),
     sort: str = Query("price_asc", description="정렬 (price_asc, distance)"),
 ):
-    """주변 주유소 가격 정보."""
+    """주변 주유소 가격 정보 — DB에서 조회."""
     storage = request.app.state.storage
     if storage is None:
-        from api.mock_responses import MOCK_GAS_STATIONS
-        stations = []
-        for s in MOCK_GAS_STATIONS:
-            dist = _haversine(lat, lng, s["lat"], s["lng"])
-            if dist <= radius:
-                stations.append({**s, "distance": round(dist)})
-
-        if sort == "price_asc":
-            def sort_key(s):
-                price = s.get(fuel_type)
-                return price if price is not None else float("inf")
-            stations.sort(key=sort_key)
-        elif sort == "distance":
-            stations.sort(key=lambda s: s["distance"])
-
-        return ApiResponse(data=stations)
+        return ApiResponse(data=[])
 
     return ApiResponse(data=storage.get_gas_prices(lat=lat, lng=lng, radius=radius, fuel_type=fuel_type, sort_by=sort))

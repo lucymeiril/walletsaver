@@ -1,0 +1,217 @@
+"""Authentication & authorization dependencies for DB Admin API.
+
+Dual-mode auth:
+  - JWT bearer tokens for human users (frontend admin panel)
+  - Static API keys for service-to-service calls (crawler → db-admin)
+
+Auth is OPTIONAL by default (REQUIRE_AUTH=false). When disabled, all
+endpoints pass through without authentication. Enable for production
+with REQUIRE_AUTH=true.
+
+Usage in route files:
+    from api.auth import require_viewer, require_admin
+
+    @router.get("/items")
+    def list_items(identity: dict = Depends(require_viewer)):
+        ...
+"""
+
+import logging
+from datetime import datetime, timedelta
+from typing import Iterable, Optional
+
+from fastapi import Depends, HTTPException, Header, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from jose import jwt, JWTError
+from passlib.context import CryptContext
+
+from config import settings
+
+logger = logging.getLogger(__name__)
+
+# ── Password hashing ──
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+def hash_password(plain: str) -> str:
+    return pwd_context.hash(plain)
+
+
+def verify_password(plain: str, hashed: str) -> bool:
+    return pwd_context.verify(plain, hashed)
+
+
+# ── JWT token creation ──
+
+def create_access_token(user_id: int, email: str, role: str) -> str:
+    expire = datetime.utcnow() + timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
+    payload = {
+        "sub": str(user_id),
+        "email": email,
+        "role": role,
+        "exp": expire,
+        "type": "access",
+    }
+    return jwt.encode(payload, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM)
+
+
+def create_refresh_token(user_id: int) -> str:
+    expire = datetime.utcnow() + timedelta(days=settings.JWT_REFRESH_TOKEN_EXPIRE_DAYS)
+    payload = {
+        "sub": str(user_id),
+        "exp": expire,
+        "type": "refresh",
+    }
+    return jwt.encode(payload, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM)
+
+
+def decode_token(token: str) -> dict:
+    """Decode and validate a JWT token. Raises HTTPException on failure."""
+    try:
+        payload = jwt.decode(token, settings.JWT_SECRET, algorithms=[settings.JWT_ALGORITHM])
+        return payload
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="유효하지 않은 토큰입니다.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+
+# ── Identity resolution (JWT or API key) ──
+
+_optional_bearer = HTTPBearer(auto_error=False)
+
+# Anonymous identity returned when REQUIRE_AUTH is false and no creds provided
+_ANONYMOUS_IDENTITY = {
+    "id": 0,
+    "email": "anonymous",
+    "role": "admin",
+    "auth_type": "anonymous",
+}
+
+
+async def get_current_identity(
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(_optional_bearer),
+    x_api_key: Optional[str] = Header(None),
+) -> dict:
+    """Resolve the caller's identity from JWT bearer token or X-API-Key header.
+
+    Returns a dict:
+        {"id": ..., "email": str, "role": str, "auth_type": "jwt"|"api_key"|"anonymous"}
+
+    When REQUIRE_AUTH is false and no credentials are provided, returns
+    an anonymous admin identity so development workflow is not disrupted.
+    """
+    # 1) Try JWT bearer token
+    if credentials and credentials.credentials:
+        payload = decode_token(credentials.credentials)
+        if payload.get("type") != "access":
+            raise HTTPException(status.HTTP_401_UNAUTHORIZED, "액세스 토큰이 아닙니다.")
+        return {
+            "id": int(payload["sub"]),
+            "email": payload.get("email", ""),
+            "role": payload.get("role", "user"),
+            "auth_type": "jwt",
+        }
+
+    # 2) Try static API key
+    if x_api_key:
+        role = settings.SERVICE_API_KEYS.get(x_api_key)
+        if role:
+            return {
+                "id": f"service:{x_api_key[:8]}",
+                "email": "service-account",
+                "role": role,
+                "auth_type": "api_key",
+            }
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "유효하지 않은 API 키입니다.")
+
+    # 3) No credentials — check if auth is required
+    if not settings.REQUIRE_AUTH:
+        return _ANONYMOUS_IDENTITY
+
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="인증이 필요합니다. Authorization 헤더 또는 X-API-Key를 제공하세요.",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+
+# ── Role-based dependencies ──
+
+ROLE_HIERARCHY = {
+    "user": 0,
+    "viewer": 0,
+    "ai_publisher": 0,
+    "one_shot_publisher": 0,
+    "service": 1,
+    "moderator": 2,
+    "admin": 3,
+}
+
+AI_PUBLISHER_ROLES = {"ai_publisher", "one_shot_publisher"}
+
+
+def _require_min_role(min_role: str):
+    """Factory: returns a FastAPI dependency that enforces a minimum role level."""
+    min_level = ROLE_HIERARCHY.get(min_role, 0)
+
+    async def _checker(identity: dict = Depends(get_current_identity)) -> dict:
+        caller_level = ROLE_HIERARCHY.get(identity["role"], 0)
+        if caller_level < min_level:
+            logger.warning(
+                "Access denied: user=%s role=%s required=%s",
+                identity.get("email"), identity["role"], min_role,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"'{min_role}' 이상의 권한이 필요합니다. 현재 권한: '{identity['role']}'",
+            )
+        return identity
+
+    return _checker
+
+
+def _identity_has_role_or_scope(
+    identity: dict,
+    *,
+    min_role: str = "moderator",
+    scoped_roles: Iterable[str] = (),
+) -> bool:
+    role = identity.get("role", "user")
+    if role in set(scoped_roles):
+        return True
+    return ROLE_HIERARCHY.get(role, 0) >= ROLE_HIERARCHY.get(min_role, 0)
+
+
+def _require_role_or_scope(min_role: str, scoped_roles: Iterable[str], purpose: str):
+    """Factory for scoped service roles that must not inherit broad moderator powers."""
+    scoped_roles = set(scoped_roles)
+
+    async def _checker(identity: dict = Depends(get_current_identity)) -> dict:
+        if not _identity_has_role_or_scope(identity, min_role=min_role, scoped_roles=scoped_roles):
+            logger.warning(
+                "Access denied: user=%s role=%s required=%s scoped=%s purpose=%s",
+                identity.get("email"), identity.get("role"), min_role, sorted(scoped_roles), purpose,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"'{purpose}' 권한이 필요합니다. 현재 권한: '{identity.get('role', 'user')}'",
+            )
+        return identity
+
+    return _checker
+
+
+# Pre-built dependencies — import these in route files
+require_viewer = _require_min_role("viewer")
+require_service = _require_min_role("service")
+require_moderator = _require_min_role("moderator")
+require_admin = _require_min_role("admin")
+require_ai_publisher = _require_role_or_scope("moderator", AI_PUBLISHER_ROLES, "ai-safe publish")
+require_backup_snapshot_reader = _require_role_or_scope(
+    "moderator",
+    AI_PUBLISHER_ROLES,
+    "backup snapshot read",
+)

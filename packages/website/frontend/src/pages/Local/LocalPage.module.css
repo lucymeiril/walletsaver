@@ -1,5 +1,5 @@
 /* ============================================================
-   LocalPage — Gas Stations + Restaurants, Location, Filters
+   LocalPage — Category Tree Navigation, iframe Sync
    ============================================================ */
 
 .hdr { max-width: var(--max-w); margin: 0 auto; padding: 28px 20px 20px; }
@@ -54,31 +54,33 @@
   border-radius: 6px;
   margin-top: 8px;
 }
+.mapResetBtn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: .75rem;
+  font-weight: var(--fw-semi);
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+  backdrop-filter: blur(8px);
+}
+.mapResetBtn:hover { background: rgba(56,189,248,.1); }
 
 /* Sidebar */
 .sidebar { display: flex; flex-direction: column; gap: 12px; }
 
-/* Main Toggle */
-.mainToggle { display: flex; gap: 4px; }
-.toggleBtn {
-  flex: 1;
-  padding: 10px;
-  border-radius: 10px;
-  font-size: .9rem;
-  font-weight: var(--fw-semi);
-  text-align: center;
-  color: var(--text2);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  cursor: pointer;
-  transition: all var(--dur) var(--ease);
-}
-.toggleActive { color: var(--accent); border-color: var(--accent); background: rgba(56,189,248,.06); }
-
-/* Location Input */
+/* ============================================================
+   Location Input Row
+   ============================================================ */
 .locationRow {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 .locationInput {
   flex: 1;
@@ -91,9 +93,9 @@
 }
 .locationInput::placeholder { color: var(--text3); }
 .locationBtn {
-  padding: 10px 14px;
+  padding: 10px 12px;
   border-radius: 10px;
-  font-size: .82rem;
+  font-size: .78rem;
   font-weight: var(--fw-semi);
   background: var(--glass);
   border: 1px solid var(--border);
@@ -103,14 +105,275 @@
   transition: all var(--dur) var(--ease);
 }
 .locationBtn:hover { background: rgba(56,189,248,.08); }
+.searchBtn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity var(--dur) var(--ease);
+}
+.searchBtn:disabled { opacity: .5; cursor: not-allowed; }
+.searchBtn:hover:not(:disabled) { opacity: .85; }
 
-/* Fuel Toggle */
-.fuelToggle { display: flex; gap: 4px; }
-.fuelBtn {
+/* ============================================================
+   Radius Selector
+   ============================================================ */
+.radiusRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.radiusLabel {
+  font-size: .78rem;
+  color: var(--text3);
+  font-weight: var(--fw-semi);
+  white-space: nowrap;
+}
+.radiusOptions {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
   flex: 1;
-  padding: 8px;
+}
+.radiusBtn {
+  padding: 5px 10px;
   border-radius: 8px;
+  font-size: .75rem;
+  font-weight: var(--fw-medium);
+  color: var(--text3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.radiusBtn:hover { border-color: var(--border2); }
+.radiusActive {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(56,189,248,.06);
+}
+.radiusInput {
+  width: 80px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  font-size: .75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.radiusInput::placeholder { color: var(--text3); font-size: .7rem; }
+
+/* ============================================================
+   Direct Search Row
+   ============================================================ */
+.directSearchRow {
+  display: flex;
+  gap: 6px;
+}
+.directSearchInput {
+  flex: 1;
+  padding: 9px 14px;
+  border-radius: 10px;
+  font-size: .82rem;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  color: var(--text);
+}
+.directSearchInput::placeholder { color: var(--text3); }
+.directSearchBtn {
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: rgba(56,189,248,.15);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--dur) var(--ease);
+}
+.directSearchBtn:disabled { opacity: .5; cursor: not-allowed; }
+.directSearchBtn:hover:not(:disabled) { background: rgba(56,189,248,.25); }
+
+/* ============================================================
+   Breadcrumb
+   ============================================================ */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 12px;
+  background: var(--glass);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.breadcrumbItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.breadcrumbSep {
+  color: var(--text3);
+  flex-shrink: 0;
+  margin: 0 2px;
+}
+.breadcrumbLink {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: .82rem;
+  font-weight: var(--fw-semi);
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background var(--dur) var(--ease);
+}
+.breadcrumbLink:hover { background: rgba(56,189,248,.1); }
+.breadcrumbCurrent {
+  font-size: .82rem;
+  font-weight: var(--fw-semi);
+  color: var(--text);
+}
+
+/* ============================================================
+   Loading & Idle States
+   ============================================================ */
+.loadingBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 30px;
+  color: var(--accent);
+  font-size: .9rem;
+}
+.idleBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  text-align: center;
+  color: var(--text3);
+}
+.idleBox p {
+  margin-top: 14px;
+  font-size: .9rem;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   Category Grid (Step 2)
+   ============================================================ */
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.categoryCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 8px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.categoryCard:hover {
+  border-color: var(--accent);
+  background: rgba(56,189,248,.04);
+  transform: translateY(-2px);
+}
+.categoryIcon { font-size: 1.5rem; }
+.categoryName {
+  font-size: .82rem;
+  font-weight: var(--fw-semi);
+  color: var(--text);
+}
+.categoryCount {
+  font-size: .72rem;
+  color: var(--text3);
+}
+.categoryLoading {
+  cursor: default;
+  opacity: .6;
+  pointer-events: none;
+}
+
+/* ============================================================
+   Subcategory Section (Step 3)
+   ============================================================ */
+.subcategorySection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.allItemsBtn {
+  padding: 10px 14px;
+  border-radius: 10px;
   font-size: .85rem;
+  font-weight: var(--fw-semi);
+  background: rgba(56,189,248,.08);
+  border: 1px solid rgba(56,189,248,.2);
+  color: var(--accent);
+  cursor: pointer;
+  text-align: center;
+  transition: all var(--dur) var(--ease);
+}
+.allItemsBtn:hover { background: rgba(56,189,248,.15); }
+.subcategoryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.subcategoryBtn {
+  padding: 10px 6px;
+  border-radius: 10px;
+  font-size: .8rem;
+  font-weight: var(--fw-medium);
+  text-align: center;
+  color: var(--text2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.subcategoryBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.subcategoryCount {
+  font-size: .7rem;
+  color: var(--text3);
+}
+
+/* ============================================================
+   Sort Controls
+   ============================================================ */
+.sortControls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sortByGroup {
+  display: flex;
+  gap: 3px;
+  flex: 1;
+}
+.sortByBtn {
+  flex: 1;
+  padding: 7px 4px;
+  border-radius: 8px;
+  font-size: .78rem;
   font-weight: var(--fw-medium);
   text-align: center;
   color: var(--text3);
@@ -119,31 +382,38 @@
   cursor: pointer;
   transition: all var(--dur) var(--ease);
 }
-.fuelActive { color: var(--accent); border-color: var(--accent); background: rgba(56,189,248,.06); }
-
-/* Self filter */
-.filterRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.sortByBtn:hover { border-color: var(--border2); }
+.sortByActive {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(56,189,248,.06);
 }
-.filterCheck {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: .82rem;
-  color: var(--text2);
-  cursor: pointer;
-  padding: 6px 12px;
+.sortDirBtn {
+  padding: 7px 10px;
   border-radius: 8px;
+  font-size: .78rem;
+  font-weight: var(--fw-semi);
+  color: var(--accent);
   background: var(--glass);
-  border: 1px solid var(--border);
+  border: 1px solid var(--accent);
+  cursor: pointer;
+  white-space: nowrap;
   transition: all var(--dur) var(--ease);
 }
-.filterCheck:hover { border-color: var(--border2); }
-.filterCheckActive { color: var(--accent); border-color: var(--accent); background: rgba(56,189,248,.06); }
+.sortDirBtn:hover { background: rgba(56,189,248,.1); }
 
-/* List */
+/* ============================================================
+   Results Count
+   ============================================================ */
+.resultCount {
+  font-size: .78rem;
+  color: var(--text3);
+  padding: 0 4px;
+}
+
+/* ============================================================
+   Item List
+   ============================================================ */
 .list {
   display: flex;
   flex-direction: column;
@@ -202,24 +472,49 @@
   border-radius: 4px;
   background: rgba(52,211,153,.1);
   color: var(--green);
-  margin-top: 2px;
+  margin-left: 4px;
   display: inline-block;
 }
-
-/* Average */
-.avg {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 16px;
-  background: var(--glass);
-  border-radius: 10px;
-  border: 1px solid var(--border);
+.emptyMsg {
+  text-align: center;
+  padding: 30px 16px;
+  font-size: .85rem;
+  color: var(--text3);
 }
-.avg span { font-size: .82rem; color: var(--text3); }
-.avg strong { font-size: 1rem; color: var(--yellow); }
 
-/* Cook vs Eat comparison */
+/* Petrol prices in search results */
+.petrolPrices { display: flex; flex-direction: column; gap: 2px; text-align: right; }
+.petrolLine { display: flex; gap: 6px; align-items: center; justify-content: flex-end; }
+.petrolLineSub { display: flex; gap: 6px; align-items: center; justify-content: flex-end; opacity: .7; font-size: .75rem; }
+.petrolLabel { font-size: .68rem; color: var(--text3); min-width: 32px; }
+.petrolVal { font-weight: var(--fw-bold); font-size: .95rem; color: var(--accent); white-space: nowrap; }
+.petrolVal::after { content: '원'; font-size: .72rem; font-weight: normal; color: var(--text3); margin-left: 1px; }
+
+/* Price range */
+.priceRange {
+  font-size: .72rem;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+/* Rating */
+.rating { color: var(--yellow); font-size: .82rem; }
+
+/* Spin animation */
+@keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+.spin { animation: spin .8s linear infinite; }
+
+/* 서브카테고리 추가 검색 로딩 표시 */
+.loadingMore {
+  text-align: center;
+  color: var(--text-muted, #888);
+  padding: 12px;
+  font-size: 13px;
+}
+
+/* ============================================================
+   Cook vs Eat Comparison
+   ============================================================ */
 .cookBanner {
   background: linear-gradient(135deg, rgba(52,211,153,.08), rgba(56,189,248,.08));
   border: 1px solid rgba(52,211,153,.2);
@@ -232,10 +527,7 @@
   color: var(--green);
   margin-bottom: 8px;
 }
-.cookCompare {
-  display: flex;
-  gap: 12px;
-}
+.cookCompare { display: flex; gap: 12px; }
 .cookItem {
   flex: 1;
   padding: 10px 14px;
@@ -255,18 +547,9 @@
   color: var(--green);
 }
 
-/* Restaurant rating */
-.rating { color: var(--yellow); font-size: .82rem; }
-
-/* Responsive */
-@media(max-width:768px) {
-  .layout { grid-template-columns: 1fr; }
-  .map { min-height: 250px; }
-  .hdr { padding: 20px 12px 14px; }
-  .layout { padding: 0 12px 100px; }
-}
-
-/* Detail Modal Content */
+/* ============================================================
+   Detail Modal Content
+   ============================================================ */
 .modalDetail { display: flex; flex-direction: column; gap: 16px; }
 .detailHeader { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .detailName { font-size: 1.15rem; font-weight: var(--fw-bold); margin: 0; }
@@ -288,6 +571,7 @@
 .detailAddr { font-size: .85rem; color: var(--text2); margin: 0; }
 .detailDist { font-size: .82rem; color: var(--text3); margin: 0; }
 .detailRating { font-size: .9rem; color: var(--yellow); margin: 0; font-weight: var(--fw-semi); }
+.detailTel { font-size: .85rem; color: var(--text2); margin: 0; }
 
 .detailSection {
   background: var(--glass);
@@ -373,108 +657,6 @@
   margin-top: 8px;
 }
 
-/* Direction button */
-.directionBtn {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: #fff;
-  font-weight: var(--fw-semi);
-  font-size: .95rem;
-  border: none;
-  cursor: pointer;
-  transition: transform var(--dur) var(--ease);
-}
-.directionBtn:hover { transform: translateY(-1px); }
-
-/* Naver Search Row */
-.naverSearchRow {
-  display: flex;
-  gap: 6px;
-}
-.naverSearchInput {
-  flex: 1;
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-size: .85rem;
-  background: var(--surface);
-  border: 1px solid var(--accent);
-  color: var(--text);
-}
-.naverSearchInput::placeholder { color: var(--text3); }
-.naverSearchBtn {
-  padding: 10px 14px;
-  border-radius: 10px;
-  background: var(--accent);
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity var(--dur) var(--ease);
-}
-.naverSearchBtn:disabled { opacity: .6; cursor: not-allowed; }
-.naverSearchBtn:hover:not(:disabled) { opacity: .85; }
-
-/* Naver Results */
-.naverResults {
-  background: rgba(56,189,248,.04);
-  border: 1px solid rgba(56,189,248,.2);
-  border-radius: 10px;
-  padding: 10px;
-}
-.naverResultsHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: .82rem;
-  font-weight: var(--fw-semi);
-  color: var(--accent);
-  margin-bottom: 8px;
-  padding: 0 4px;
-}
-.naverClearBtn {
-  background: none;
-  border: none;
-  color: var(--text3);
-  cursor: pointer;
-  padding: 2px;
-  border-radius: 4px;
-}
-.naverClearBtn:hover { color: var(--red); }
-
-/* Spin animation */
-@keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
-.spin { animation: spin .8s linear infinite; }
-
-/* Price range in list */
-.priceRange {
-  font-size: .72rem;
-  color: var(--text3);
-  margin-top: 2px;
-}
-
-/* Map reset button */
-.mapResetBtn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 3;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: .75rem;
-  font-weight: var(--fw-semi);
-  background: var(--surface);
-  border: 1px solid var(--accent);
-  color: var(--accent);
-  cursor: pointer;
-  transition: all var(--dur) var(--ease);
-  backdrop-filter: blur(8px);
-}
-.mapResetBtn:hover { background: rgba(56,189,248,.1); }
-
 /* Detail image */
 .detailImageWrap {
   border-radius: 10px;
@@ -489,9 +671,6 @@
   object-fit: cover;
   display: block;
 }
-
-/* Phone number */
-.detailTel { font-size: .85rem; color: var(--text2); margin: 0; }
 
 /* Price summary bar */
 .priceSummary {
@@ -543,3 +722,175 @@
   transition: all var(--dur) var(--ease);
 }
 .naverLinkBtn:hover { background: rgba(56,189,248,.06); }
+
+/* External link */
+.externalLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: rgba(99,102,241,.12);
+  color: var(--accent);
+  text-decoration: none;
+  font-size: .85rem;
+  transition: background .2s;
+}
+.externalLink:hover { background: rgba(99,102,241,.2); }
+
+/* Direction button */
+.directionBtn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-weight: var(--fw-semi);
+  font-size: .95rem;
+  border: none;
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease);
+}
+.directionBtn:hover { transform: translateY(-1px); }
+
+/* ============================================================
+   Skeleton Loader
+   ============================================================ */
+.skeletonWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 0;
+}
+.skeletonMsg {
+  text-align: center;
+  font-size: .85rem;
+  color: var(--accent);
+  font-weight: var(--fw-semi);
+  margin: 0 0 8px 0;
+}
+.skeletonItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.skeletonRank {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--glass) 25%, var(--border) 50%, var(--glass) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  flex-shrink: 0;
+}
+.skeletonBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.skeletonLine {
+  height: 12px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--glass) 25%, var(--border) 50%, var(--glass) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+.skeletonLineWide { width: 65%; }
+.skeletonLineNarrow { width: 40%; }
+.skeletonPrice {
+  width: 60px;
+  height: 18px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--glass) 25%, var(--border) 50%, var(--glass) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  flex-shrink: 0;
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ============================================================
+   GPS Hint & Start Button
+   ============================================================ */
+.gpsHint {
+  font-size: .78rem;
+  color: var(--yellow);
+  padding: 8px 12px;
+  background: rgba(251,191,36,.08);
+  border: 1px solid rgba(251,191,36,.2);
+  border-radius: 8px;
+}
+.gpsStartBtn {
+  margin-top: 16px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: .85rem;
+  font-weight: var(--fw-semi);
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease);
+}
+.gpsStartBtn:hover { transform: translateY(-1px); }
+
+/* ============================================================
+   Tel Link
+   ============================================================ */
+.telLink {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: var(--fw-semi);
+  transition: opacity var(--dur) var(--ease);
+}
+.telLink:hover { opacity: .75; text-decoration: underline; }
+
+/* ============================================================
+   Menu Raw Text Fallback
+   ============================================================ */
+.menuRawText {
+  font-size: .82rem;
+  color: var(--text2);
+  background: var(--surface);
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+  line-height: 1.5;
+  font-family: inherit;
+}
+.menuRawHint {
+  margin-top: 4px;
+}
+.menuRawHint summary {
+  font-size: .78rem;
+  color: var(--text3);
+  cursor: pointer;
+  padding: 4px 0;
+}
+.menuRawHint summary:hover { color: var(--accent); }
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media(max-width:768px) {
+  .layout { grid-template-columns: 1fr; }
+  .map { min-height: 250px; }
+  .hdr { padding: 20px 12px 14px; }
+  .layout { padding: 0 12px 100px; }
+  .categoryGrid { grid-template-columns: repeat(2, 1fr); }
+  .subcategoryGrid { grid-template-columns: repeat(2, 1fr); }
+  .sortControls { flex-direction: column; gap: 6px; }
+  .locationRow { flex-wrap: wrap; }
+  .radiusOptions { flex-wrap: wrap; }
+  .breadcrumb { flex-wrap: wrap; }
+}
