@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from crawlers.registry.registry import CrawlerRegistry
+from crawlers.source_coverage import build_source_coverage
 from pipeline.quality import summarize_discount_run
 from pipeline.diagnostics import build_bounded_live_diagnostics_plan, run_bounded_crawler_diagnostics
 
@@ -517,3 +518,111 @@ def test_marketplace_skeleton_fixtures_are_diagnostics_ready_but_not_db_mutation
         assert "marketplace_live_readiness_gate_blocked" in [
             diag["code"] for diag in coverage["operator_diagnostics"]
         ]
+
+
+def _passing_quality_summary():
+    return summarize_discount_run(
+        [
+            {"name": "양파", "sale_price": 3980, "detail_url": "https://example.test/a"},
+            {"name": "두부", "sale_price": 1980, "detail_url": "https://example.test/b"},
+        ],
+        raw_count=2,
+        source_raw_count=2,
+        strategy_used="bounded-fixture",
+        live_enabled=False,
+        fixture_available=True,
+    )
+
+
+def test_source_readiness_reports_missing_baseline_without_collecting_claim():
+    coverage = build_source_coverage(
+        {
+            "emart": {
+                "config": {"name": "emart", "source_id": "emart", "live_ready": True},
+                "module_path": "tests.emart",
+            }
+        },
+        quality_by_source={"emart": _passing_quality_summary()},
+        health_baseline_by_source={"emart": {"expected_counts": {"source_raw": 1, "parsed": 1}}},
+    )
+    row = {row["source_id"]: row for row in coverage["sources"]}["emart"]
+
+    readiness = row["source_readiness"]
+    assert row["source_health"]["completeness"]["status"] == "baseline_missing"
+    assert readiness["stage"] == "registered_only"
+    assert readiness["fixture_passed"] is False
+    assert "completeness_baseline_missing" in readiness["blockers"]
+    assert readiness["claim_policy"].endswith("it does not assert that live collection ran.")
+
+
+def test_source_readiness_reports_count_drop_blockers():
+    coverage = build_source_coverage(
+        {
+            "emart": {
+                "config": {"name": "emart", "source_id": "emart", "live_ready": True},
+                "module_path": "tests.emart",
+            }
+        },
+        quality_by_source={"emart": _passing_quality_summary()},
+        health_baseline_by_source={
+            "emart": {
+                "expected_counts": {"source_raw": 10, "parsed": 10, "valid": 10},
+                "count_drop_threshold": 0.75,
+            }
+        },
+    )
+    row = {row["source_id"]: row for row in coverage["sources"]}["emart"]
+
+    readiness = row["source_readiness"]
+    assert readiness["stage"] == "registered_only"
+    assert readiness["count_drop_status"] == "drop_detected"
+    assert {blocker for blocker in readiness["blockers"] if blocker.startswith("count_drop:")} == {
+        "count_drop:source_raw",
+        "count_drop:parsed",
+        "count_drop:valid",
+    }
+
+
+def test_source_readiness_distinguishes_fixture_and_bounded_diagnostic_ready_marketplace():
+    quality = _passing_quality_summary()
+    base_config = {
+        "name": "coupang",
+        "source_id": "coupang",
+        "live_ready": False,
+        "parser_contract": "marketplace_skeleton.v1",
+        "fixture_contract": "marketplace_skeleton_fixture_contracts.v1",
+        "live_readiness": {"fixture_contract_status": "passed"},
+    }
+    fixture_only = build_source_coverage(
+        {"coupang": {"config": base_config, "module_path": "tests.coupang"}},
+        quality_by_source={"coupang": quality},
+    )
+    fixture_row = {row["source_id"]: row for row in fixture_only["sources"]}["coupang"]
+
+    assert fixture_row["collection_status"] == "registered_unverified"
+    assert fixture_row["source_readiness"]["stage"] == "fixture_passing"
+    assert fixture_row["source_readiness"]["fixture_passed"] is True
+    assert fixture_row["source_readiness"]["live_approved"] is False
+
+    bounded_config = {
+        **base_config,
+        "live_readiness": {
+            "fixture_contract_status": "passed",
+            "bounded_diagnostics": {
+                "status": "passed",
+                "evidence_id": "bounded:coupang:fixture-safe",
+                "captured_at": "2025-01-01T00:00:00Z",
+                "run_limits": {"max_requests": 1, "max_pages": 1, "timeout_seconds": 10},
+            },
+        },
+    }
+    bounded = build_source_coverage(
+        {"coupang": {"config": bounded_config, "module_path": "tests.coupang"}},
+        quality_by_source={"coupang": quality},
+    )
+    bounded_row = {row["source_id"]: row for row in bounded["sources"]}["coupang"]
+
+    assert bounded_row["source_readiness"]["stage"] == "bounded_diagnostic_ready"
+    assert bounded_row["source_readiness"]["bounded_diagnostic_ready"] is True
+    assert "live_readiness_gate:operator_approval_missing" in bounded_row["source_readiness"]["blockers"]
+    assert bounded_row["can_claim_collecting"] is False

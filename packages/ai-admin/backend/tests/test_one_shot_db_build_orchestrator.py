@@ -15,6 +15,7 @@ spec.loader.exec_module(orchestrator)
 def _args(tmp_path: Path, **overrides) -> Namespace:
     defaults = {
         "artifact_dir": tmp_path,
+        "local_empty_db_rehearsal": False,
         "allow_live_crawler": False,
         "crawler_batch_json": None,
         "allow_live_ai_provider": False,
@@ -106,7 +107,6 @@ def test_default_one_shot_dry_run_writes_success_artifact_without_live_side_effe
         "dropped_count": 0,
         "retain_all": True,
     }
-
     artifact_path = Path(artifact["artifact_path"])
     assert artifact_path.is_file()
     serialized = artifact_path.read_text(encoding="utf-8")
@@ -115,6 +115,72 @@ def test_default_one_shot_dry_run_writes_success_artifact_without_live_side_effe
     persisted = json.loads(serialized)
     assert persisted["overall_status"] == "success"
     assert persisted["result_scope"] == "fixture_stub_dry_run"
+
+def test_local_empty_db_rehearsal_runner_labels_fixture_stub_legs(tmp_path: Path) -> None:
+    captured_commands: list[list[str]] = []
+
+    def runner(command):
+        captured_commands.append(command)
+        return orchestrator.subprocess.CompletedProcess(
+            command,
+            0,
+            stdout="2 passed",
+            stderr="",
+        )
+
+    artifact = orchestrator.run_orchestrator(
+        _args(tmp_path, local_empty_db_rehearsal=True),
+        local_rehearsal_runner=runner,
+    )
+
+    assert artifact["overall_status"] == "success"
+    assert artifact["result_scope"] == "fixture_stub_local_empty_db_rehearsal"
+    assert artifact["live_integrations_invoked"] == {
+        "crawler": False,
+        "crawler_batch_artifact": False,
+        "ai_provider_smoke": False,
+        "ai_labeling": False,
+        "db_mutation": False,
+        "website_verification": False,
+    }
+    assert captured_commands[0][1:4] == ["-m", "pytest", "packages\\integration-tests\\test_empty_db_ai_publish_public_shape.py"]
+    modes = {phase["name"]: phase["mode"] for phase in artifact["phases"]}
+    assert modes == {
+        "source artifact or deterministic fixture": "fixture",
+        "AI-admin publish payload shaping": "stub",
+        "DB-admin mutation and normalized/public read verification": "fixture",
+    }
+    db_phase = artifact["phases"][2]
+    assert db_phase["details"]["mutation_scope"] == "local_in_memory_sqlite"
+    assert db_phase["details"]["can_claim_live_db_success"] is False
+    assert artifact["local_rehearsal"]["honesty"] == {
+        "source_leg": "fixture",
+        "ai_leg": "stub",
+        "db_admin_leg": "fixture",
+        "public_read_leg": "fixture",
+        "live_network_success_claimed": False,
+    }
+    persisted = json.loads(Path(artifact["artifact_path"]).read_text(encoding="utf-8"))
+    assert persisted["local_rehearsal"]["honesty"]["live_network_success_claimed"] is False
+
+def test_local_empty_db_rehearsal_failure_is_not_reported_as_live_success(tmp_path: Path) -> None:
+    def runner(command):
+        return orchestrator.subprocess.CompletedProcess(
+            command,
+            1,
+            stdout="",
+            stderr="assertion failed",
+        )
+
+    artifact = orchestrator.run_orchestrator(
+        _args(tmp_path, local_empty_db_rehearsal=True),
+        local_rehearsal_runner=runner,
+    )
+
+    assert artifact["overall_status"] == "failed"
+    assert artifact["local_rehearsal"]["returncode"] == 1
+    assert artifact["local_rehearsal"]["honesty"]["live_network_success_claimed"] is False
+    assert "Targeted local rehearsal tests failed." in artifact["blockers"]
 
 def test_one_shot_stub_batch_retention_keeps_all_fixture_items(tmp_path: Path, monkeypatch) -> None:
     batch_items = [

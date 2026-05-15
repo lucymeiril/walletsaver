@@ -138,6 +138,18 @@ only when the operator intends to write through DB-admin.
 Operator-triggered crawler artifact path from the repository root:
 
 ```powershell
+# Repeatable local rehearsal; fixture/stub/local in-memory DB only.
+# Runs targeted integration tests and writes a one-shot artifact with every leg
+# labeled fixture/stub (no live crawler, live AI, or real DB-admin mutation).
+python tools\one_shot_db_build_orchestrator.py --local-empty-db-rehearsal
+```
+
+Use the local rehearsal first when validating empty/local DB behavior. Its
+DB-admin leg mutates only an isolated in-memory SQLite database through
+TestClient and verifies normalized/public read shapes; it must not be described
+as live network or production DB success.
+
+```powershell
 python tools\one_shot_db_build_orchestrator.py `
   --crawler-batch-json .walletsavior-crawler\latest-batch.json `
   --allow-live-ai-provider `

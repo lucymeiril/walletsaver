@@ -681,12 +681,19 @@ function PublishControls({ eligibleRows, allRows, publishSummary, reviewerId, lo
       <div className="decision-hint" style={{ marginTop: 8 }}>
         <span className={`badge ${preflight.tone}`}>변경 전 안전 확인: {preflight.label}</span>{' '}
         {preflight.help}
+        <br />
+        <span className={`badge ${preflight.readiness.dataLabelTone}`}>입력 라벨: {preflight.readiness.dataLabel}</span>{' '}
+        {preflight.readiness.writeLabel} · {preflight.readiness.uncertaintyLabel}
+        <br />
+        {preflight.readiness.dataLabelHelp}
         {preflight.backupRequired && (
           <>
             <br />
             백업: <code>{preflight.latestBackup || '아직 화면에서 확인되지 않음'}</code> · 실패 시 {preflight.rollbackPath}
           </>
         )}
+        <br />
+        롤백/재검수: {preflight.readiness.rollbackHelp}
       </div>
       <div className="decision-hint" style={{ marginTop: 8 }}>
         <strong>{publishSummary?.quality_verdict || '품질 게이트를 확인 중입니다.'}</strong>

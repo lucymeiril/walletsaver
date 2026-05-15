@@ -370,6 +370,7 @@ def _source_health_snapshot(row: dict[str, Any]) -> dict[str, Any] | None:
         "count_drop": health.get("count_drop"),
         "baseline": health.get("completeness_baseline"),
         "next_action_state": health.get("next_action_state"),
+        "source_readiness": row.get("source_readiness"),
         "live_network_default": health.get("live_network_default"),
     }
 

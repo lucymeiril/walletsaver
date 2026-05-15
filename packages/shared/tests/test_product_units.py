@@ -94,3 +94,23 @@ def test_korean_measure_words_parse_as_canonical_package_units() -> None:
     assert parsed["package_unit"] == "L"
     assert parsed["display_unit"] == "2L×6"
     assert parsed["bundle_count"] == 6
+
+
+def test_trailing_unit_price_reference_does_not_override_package_quantity() -> None:
+    parsed = normalize_unit_metadata(name="무항생제 한우 불고기 300g 100g당 4,950원", sale_price=14850)
+    assert parsed["raw_match"] == "300g"
+    assert parsed["package_quantity"] == 300.0
+    assert parsed["package_unit"] == "g"
+    assert parsed["price_per_100g"] == 4950
+
+    parsed = normalize_unit_metadata(name="대용량 생수 2L 100ml당 25원", sale_price=500)
+    assert parsed["raw_match"] == "2L"
+    assert parsed["package_quantity"] == 2.0
+    assert parsed["package_unit"] == "L"
+
+
+def test_standalone_unit_price_reference_is_not_treated_as_package() -> None:
+    parsed = normalize_unit_metadata(name="정육 행사 100g당 2,980원", sale_price=2980)
+    assert parsed["package_quantity"] is None
+    assert parsed["package_unit"] is None
+    assert parsed["display_unit"] is None

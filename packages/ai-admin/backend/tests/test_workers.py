@@ -126,8 +126,9 @@ def test_unit_converter_emart_reference_100g_does_not_override_package() -> None
     batch = _batch(
         AIWorkerRole.UNIT_CONVERTER,
         [
-            _record(1, title="[냉장] 한우 불고기1+등급300g", price=14850),
+            _record(1, title="[냉장] 한우 불고기1+등급300g 100g당 4,950원", price=14850),
             _record(2, title="[냉동][베트남] 흰다리 새우살 (200g)", price=4488),
+            _record(3, title="정육 행사 100g당 2,980원", price=2980),
         ],
     )
     out = UnitConverterWorker().run(batch)
@@ -140,6 +141,8 @@ def test_unit_converter_emart_reference_100g_does_not_override_package() -> None
     assert fields[("rec-2", "package_quantity")] == 200.0
     assert fields[("rec-2", "display_unit")] == "200g"
     assert fields[("rec-2", "price_per_100g")] == 2244
+    assert ("rec-3", "package_quantity") not in fields
+    assert out.diagnostics["records_unmatched"] == 1
 
 
 def test_unit_converter_live_emart_kimbap_kit_price_per_100g() -> None:

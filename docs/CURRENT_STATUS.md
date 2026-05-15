@@ -79,6 +79,14 @@ Pop-Location
 
 Passed: `4 passed, 23 deselected`.
 
+```powershell
+py tools\one_shot_db_build_orchestrator.py --local-empty-db-rehearsal
+```
+
+Passed: fixture/stub/local in-memory rehearsal artifact reported
+`overall_status=success`; this is not live crawler, live AI provider, or real
+DB-admin network success.
+
 ## Risks
 
 - Accidentally inventing prices from AI labels or discount text would destroy trust.

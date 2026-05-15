@@ -25,6 +25,7 @@ _COUNT_ONLY_PACKAGE_RE = re.compile(
     r"\(\s*(?P<unit>개입|봉지|인분|세트|마리|입|개|팩|봉|병|캔|손|매|롤|포|장|족|통)\s*\)"
 )
 _DISPLAY_REF_UNIT_RE = re.compile(r"^\s*(?:100\s*g|1\s*kg|100\s*ml|1\s*l)\s*$", re.IGNORECASE)
+_REFERENCE_UNIT_SUFFIX_RE = re.compile(r"^\s*(?:당|/|기준)")
 
 _STORAGE_HINTS = {
     "냉장": "chilled",
@@ -98,6 +99,18 @@ def quantity_to_standard_total(quantity: float, unit: str, bundle_count: int = 1
     return None
 
 
+def _is_reference_unit_match(text: str, match: re.Match[str]) -> bool:
+    qty_text = match.group("paren") or match.group("qty")
+    unit_text = match.group("paren_unit") or match.group("unit")
+    if not qty_text or not unit_text:
+        return False
+    reference_unit = f"{qty_text}{_normalize_unit(unit_text)}"
+    return bool(
+        _DISPLAY_REF_UNIT_RE.match(reference_unit)
+        and _REFERENCE_UNIT_SUFFIX_RE.match(text[match.end():])
+    )
+
+
 def parse_package_quantity(text: str) -> dict[str, Any] | None:
     """Extract the sold package quantity from title text (e.g. 300g, (200g), 1.5L, 5입)."""
     text = text or ""
@@ -115,7 +128,11 @@ def parse_package_quantity(text: str) -> dict[str, Any] | None:
             "display_unit": f"{display_qty}×{bundle_count}",
             "bundle_count": bundle_count,
         }
-    measure_matches = [("measure", match) for match in _QUANTITY_RE.finditer(text)]
+    measure_matches = [
+        ("measure", match)
+        for match in _QUANTITY_RE.finditer(text)
+        if not _is_reference_unit_match(text, match)
+    ]
     count_matches = [
         ("count", match)
         for match in _COUNT_PACKAGE_RE.finditer(text)

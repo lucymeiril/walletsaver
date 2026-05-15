@@ -109,6 +109,17 @@ Pop-Location
 
 Result: `311 passed, 1 skipped`.
 
+Local one-shot rehearsal command from repository root:
+
+```powershell
+py tools\one_shot_db_build_orchestrator.py --local-empty-db-rehearsal
+```
+
+Scope: fixture source evidence, stub AI labeling/publish shaping, local
+in-memory DB-admin mutation, and normalized/public read verification. It writes
+an artifact but does not prove live crawler, live AI provider, or real DB-admin
+network success.
+
 ```powershell
 Push-Location packages\db-admin\backend
 py -m pytest tests\test_normalized_mart3_slice.py tests\test_models.py tests\test_ingestion_insert.py tests\test_price_calc.py -q

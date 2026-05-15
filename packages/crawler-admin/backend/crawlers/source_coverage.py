@@ -170,6 +170,7 @@ def build_source_coverage(
             registered_count += 1
         else:
             missing_by_group.setdefault(source["group"], []).append(source["source_id"])
+        source_readiness = _source_readiness_dimension(status, reliability, quality, readiness_gate, source_health)
         rows.append(
             {
                 "source_id": source["source_id"],
@@ -194,6 +195,7 @@ def build_source_coverage(
                 "quality_evidence": _quality_evidence(quality),
                 "quality_summary": _quality_summary(quality),
                 "source_health": source_health,
+                "source_readiness": source_readiness,
                 "operator_diagnostics": _coverage_diagnostics(source, status, reliability, quality, match, readiness_gate),
                 "next_action": _next_action(source, status, reliability, quality, readiness_gate),
             }
@@ -311,6 +313,87 @@ def _quality_evidence(quality: dict[str, Any] | None) -> dict[str, Any]:
         },
         "zero_result_stage": zero.get("stage"),
         "diagnostic_codes": [diag.get("code") for diag in quality.get("operator_diagnostics", []) if diag.get("code")],
+    }
+
+
+def _source_readiness_dimension(
+    status: str,
+    reliability: str,
+    quality: dict[str, Any] | None,
+    readiness_gate: dict[str, Any],
+    source_health: dict[str, Any],
+) -> dict[str, Any]:
+    """Classify source readiness from registry metadata and bounded evidence only."""
+    completeness = source_health.get("completeness") or {}
+    count_drop = source_health.get("count_drop") or {}
+    field_dashboard = source_health.get("field_coverage_dashboard") or {}
+    bounded = readiness_gate.get("bounded_diagnostics") or {}
+    run_limits = bounded.get("run_limits") or {}
+    quality_status = (quality.get("quality_summary") or {}).get("status") if quality else None
+
+    blockers: list[str] = []
+    if status != "registered":
+        blockers.append("crawler_not_registered")
+    if not quality:
+        blockers.append("quality_evidence_missing")
+    if completeness.get("status") == "baseline_missing":
+        blockers.append("completeness_baseline_missing")
+    if completeness.get("status") == "below_baseline":
+        blockers.extend(f"below_baseline:{name}" for name in completeness.get("below_expected_counts", []))
+    if count_drop.get("status") == "drop_detected":
+        blockers.extend(f"count_drop:{alert.get('metric')}" for alert in count_drop.get("alerts", []))
+    if field_dashboard.get("status") == "low_coverage":
+        blockers.extend(
+            f"critical_field_low:{field.get('field')}"
+            for field in field_dashboard.get("fields", [])
+            if field.get("status") == "low"
+        )
+    if quality and quality_status != "collecting":
+        blockers.append(f"quality_status:{quality_status}")
+
+    fixture_passed = bool(
+        quality
+        and quality_status == "collecting"
+        and completeness.get("status") == "meets_baseline"
+        and count_drop.get("status") in {"within_baseline", None}
+        and field_dashboard.get("status") == "ok"
+    )
+    bounded_ready = bool(
+        fixture_passed
+        and readiness_gate.get("required")
+        and bounded.get("status") in {"passed", "verified"}
+        and bounded.get("evidence_id")
+        and bounded.get("captured_at")
+        and all(run_limits.get(key) for key in ("max_requests", "max_pages", "timeout_seconds"))
+    )
+
+    if status != "registered" or not quality or not fixture_passed:
+        stage = "registered_only"
+    elif readiness_gate.get("passed"):
+        stage = "live_approved"
+    elif bounded_ready:
+        stage = "bounded_diagnostic_ready"
+    else:
+        stage = "fixture_passing"
+
+    if readiness_gate.get("required") and not readiness_gate.get("passed"):
+        blockers.extend(f"live_readiness_gate:{reason}" for reason in readiness_gate.get("reasons", []))
+
+    return {
+        "stage": stage,
+        "fixture_passed": fixture_passed,
+        "bounded_diagnostic_ready": bounded_ready,
+        "live_approved": stage == "live_approved",
+        "evidence_basis": "registry_metadata_and_saved_fixture_or_bounded_diagnostic_summary",
+        "live_network_default": "disabled",
+        "claim_policy": (
+            "Readiness is derived from registry metadata, saved fixtures, and bounded diagnostic summaries only; "
+            "it does not assert that live collection ran."
+        ),
+        "blockers": list(dict.fromkeys(blockers)),
+        "completeness_status": completeness.get("status"),
+        "count_drop_status": count_drop.get("status"),
+        "field_coverage_status": field_dashboard.get("status"),
     }
 
 

@@ -87,9 +87,102 @@ export function auditFlagLabel(flag = {}) {
   return [copy[code] || code || '사후 감사 필요', message].filter(Boolean).join(' · ');
 }
 
-export function buildMutationPreflightChecklist(summary = {}, rows = []) {
-  const finalApproveCount = summary.ai_safe_final_approve_count
+function finalApproveRowCount(summary = {}, rows = []) {
+  return summary.ai_safe_final_approve_count
     ?? rows.filter((row) => row.ai_safe_final_approve_eligible).length;
+}
+
+function mutationPreflightFrom(summary = {}, rows = []) {
+  return summary.safety?.mutation_preflight
+    || rows.find((row) => row.db_ingestion_result?.mutation_preflight)?.db_ingestion_result?.mutation_preflight
+    || null;
+}
+
+function honestFixtureStubLiveLabel(summary = {}, rows = [], preflight = null) {
+  const candidates = [
+    summary.source_label,
+    summary.input_label,
+    summary.data_label,
+    summary.seed_label,
+    summary.validation_mode,
+    summary.run_mode,
+    summary.mode,
+    summary.safety?.source_label,
+    summary.safety?.input_label,
+    summary.safety?.mode,
+    preflight?.source_label,
+    preflight?.input_label,
+    preflight?.mode,
+    ...rows.flatMap((row) => [row.source_label, row.input_label, row.data_label]),
+  ].filter(Boolean).map((value) => String(value).toLowerCase());
+
+  const classified = candidates.map((raw) => {
+    if (raw.includes('fixture')) return 'fixture';
+    if (raw.includes('stub') || raw.includes('mock')) return 'stub';
+    if (raw.includes('dry')) return 'dry-run';
+    if (raw.includes('live')) return raw.includes('like') ? 'live-like' : 'live';
+    return null;
+  }).filter(Boolean);
+  const distinct = [...new Set(classified)];
+
+  if (distinct.length > 1) {
+    return {
+      value: 'label-conflict',
+      tone: 'err',
+      known: true,
+      conflicting: true,
+      conflicts: distinct,
+    };
+  }
+  if (distinct.length === 1) {
+    const [value] = distinct;
+    return { value, tone: value === 'live' || value === 'live-like' ? 'ok' : 'warn', known: true };
+  }
+  return { value: 'unlabeled', tone: 'warn', known: false };
+}
+
+export function buildLiveReadinessCues(summary = {}, rows = []) {
+  const finalApproveCount = finalApproveRowCount(summary, rows);
+  const dbReviewCount = summary.db_review_handoff_count
+    ?? rows.filter((row) => row.eligible && !row.ai_safe_final_approve_eligible).length;
+  const unresolvedField = summary.unresolved_field_proposal_count ?? 0;
+  const unresolvedKeyword = summary.unresolved_keyword_proposal_count ?? 0;
+  const postAudit = summary.post_publish_audit_count ?? rows.reduce((total, row) => total + (row.post_publish_audit_flags?.length || 0), 0);
+  const preflight = mutationPreflightFrom(summary, rows);
+  const snapshot = preflight?.snapshot || {};
+  const preflightReady = preflight
+    ? preflight.status === 'ready' && preflight.ready_to_mutate === true && snapshot.verified === true
+    : false;
+  const label = honestFixtureStubLiveLabel(summary, rows, preflight);
+
+  return {
+    dataLabel: label.value,
+    dataLabelTone: label.tone,
+    dataLabelConflict: label.conflicting || false,
+    dataLabelHelp: label.conflicting
+      ? `입력/시드 라벨이 서로 충돌합니다: ${label.conflicts.join(' / ')}. 운영 DB 쓰기 전 같은 실행 artifact에서 라벨 원천을 맞추세요.`
+      : label.known
+      ? `입력/시드 라벨은 ${label.value}입니다. fixture/stub이면 운영 DB 쓰기 전 live 입력으로 다시 확인하세요.`
+      : '입력/시드가 fixture, stub, live 중 무엇인지 화면 API에 없습니다. 운영 artifact나 배치 로그에서 라벨을 확인하세요.',
+    writeLabel: finalApproveCount ? 'DB-admin live write path' : 'DB-admin review queue only',
+    writeHelp: finalApproveCount
+      ? `최종 승인 후보 ${finalApproveCount}개는 preflight ready일 때만 DB-admin ai-safe-final-approve를 호출합니다. 실패하면 검수 큐/재시도 상태로 남깁니다.`
+      : `직접 공개 DB 저장 후보는 없습니다. ${dbReviewCount || rows.length}개는 DB-admin 검수 큐에서 사람이 다시 승인해야 합니다.`,
+    uncertaintyLabel: `미해결 필드 ${unresolvedField} · 키워드 ${unresolvedKeyword} · 사후 감사 ${postAudit}`,
+    uncertaintyHelp: unresolvedField || unresolvedKeyword || postAudit
+      ? '불확실한 값은 숨기지 않고 보류/DB-admin 검수/사후 감사로 남깁니다.'
+      : '현재 요약 기준 남은 불확실성 카운터가 없습니다.',
+    preflightReady,
+    preflightHelp: preflightReady
+      ? `백업 스냅샷 확인됨: ${snapshot.latest_backup || '이름 없음'}`
+      : 'live DB 최종 승인 전 DB-admin 읽기 상태와 rollback backup preflight가 필요합니다.',
+    rollbackHelp: '문제 발견 시 AI-admin 롤백 요청 후 DB-admin ingestion을 승인하지 말고 reject/delete한 뒤 재검수하세요.',
+  };
+}
+
+export function buildMutationPreflightChecklist(summary = {}, rows = []) {
+  const finalApproveCount = finalApproveRowCount(summary, rows);
+  const readiness = buildLiveReadinessCues(summary, rows);
   const preflight = summary.safety?.mutation_preflight
     || rows.find((row) => row.db_ingestion_result?.mutation_preflight)?.db_ingestion_result?.mutation_preflight
     || null;
@@ -107,6 +200,7 @@ export function buildMutationPreflightChecklist(summary = {}, rows = []) {
       help: '최종 DB 저장 전 DB-admin에서 사람이 다시 승인합니다.',
       backupRequired: false,
       latestBackup: snapshot.latest_backup || null,
+      readiness,
     };
   }
   return {
@@ -120,6 +214,7 @@ export function buildMutationPreflightChecklist(summary = {}, rows = []) {
     latestBackup: snapshot.latest_backup || null,
     createEndpoint: snapshot.create_endpoint || '/api/admin/backup',
     rollbackPath: snapshot.rollback_path || '검증된 백업으로 복구 후 재시도',
+    readiness,
   };
 }
 
@@ -299,6 +394,7 @@ export function publishRowAction(row = {}) {
 export function buildPublishConfirmationMessage(rows = [], summary = {}) {
   const finalApproveCount = rows.filter((row) => row.ai_safe_final_approve_eligible).length;
   const dbReviewCount = rows.length - finalApproveCount;
+  const readiness = buildLiveReadinessCues(summary, rows);
   const preview = rows.map((row) => (
     `  · ${row.raw_record_id}: ${row.raw_title || row.item?.name || '-'} (${row.ai_safe_final_approve_eligible ? 'AI 안전 최종 승인 후보' : row.retryable ? 'retry' : 'DB 검수 큐'})`
   )).join('\n');
@@ -307,6 +403,9 @@ export function buildPublishConfirmationMessage(rows = [], summary = {}) {
   return [
     `DB-admin으로 ${rows.length}개를 보냅니다. 최종 승인 후보 ${finalApproveCount}개 · DB 검수 큐 ${dbReviewCount}개.`,
     `화면 기준 승인/발행 가능 ${approvedCount}개 · 보류/차단 ${heldCount}개를 분리해 표시합니다.`,
+    `라벨/쓰기 경로: ${readiness.dataLabel} · ${readiness.writeLabel}. ${readiness.dataLabelHelp}`,
+    `불확실성: ${readiness.uncertaintyLabel}. ${readiness.uncertaintyHelp}`,
+    `Preflight/rollback: ${readiness.preflightHelp} ${readiness.rollbackHelp}`,
     preview,
     finalApproveCount
       ? `최종 승인 후보는 이 클릭 후 DB-admin ai-safe-final-approve까지 요청합니다. 제출만으로는 공개 DB 저장이 아니며, 최종 승인 성공 때만 DB save complete입니다. 실패하면 검수 큐 대기로 남습니다.`

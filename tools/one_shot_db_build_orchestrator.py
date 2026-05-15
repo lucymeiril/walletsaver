@@ -178,6 +178,16 @@ def _run_command(command: list[str]) -> subprocess.CompletedProcess[str]:
         check=False,
     )
 
+def build_local_empty_db_rehearsal_command() -> list[str]:
+    return [
+        sys.executable,
+        "-m",
+        "pytest",
+        "packages\\integration-tests\\test_empty_db_ai_publish_public_shape.py",
+        "packages\\integration-tests\\test_controlled_db_mutation_acceptance.py",
+        "-q",
+    ]
+
 def build_live_batch_command(args: argparse.Namespace) -> list[str]:
     artifact_dir = args.live_batch_artifact_dir or (args.artifact_dir / DEFAULT_LIVE_BATCH_ARTIFACT_SUBDIR)
     command = [
@@ -536,6 +546,15 @@ def build_arg_parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument("--artifact-dir", type=Path, default=DEFAULT_ARTIFACT_DIR)
+    parser.add_argument(
+        "--local-empty-db-rehearsal",
+        action="store_true",
+        help=(
+            "Run the repeatable local empty-DB rehearsal integration tests and write an "
+            "honest fixture/stub/local artifact. This does not use live crawler, live AI, "
+            "or a real DB-admin database."
+        ),
+    )
     parser.add_argument("--allow-live-crawler", action="store_true")
     parser.add_argument("--crawler-batch-json", type=Path, help="Crawler batch artifact JSON to feed into the live model batch wrapper.")
     parser.add_argument("--allow-live-ai-provider", action="store_true", help="Opt in to provider-backed ai-admin calls; required with --allow-live-ai-labeling.")
@@ -576,6 +595,7 @@ def run_orchestrator(
     args: argparse.Namespace,
     *,
     live_batch_runner=_run_command,
+    local_rehearsal_runner=_run_command,
 ) -> dict[str, Any]:
     run_id = f"one-shot-db-build-{datetime.now().strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:8]}"
     args.artifact_dir.mkdir(parents=True, exist_ok=True)
@@ -594,6 +614,100 @@ def run_orchestrator(
     }
     live_batch_summary: dict[str, Any] | None = None
     db_mutation_preflight: dict[str, Any] | None = None
+
+    if getattr(args, "local_empty_db_rehearsal", False):
+        command = build_local_empty_db_rehearsal_command()
+        result = local_rehearsal_runner(command)
+        status = "passed" if result.returncode == 0 else "failed"
+        phases = [
+            _phase(
+                "source artifact or deterministic fixture",
+                mode="fixture",
+                status=status,
+                counts={"targeted_test_files": 2},
+                warnings=[
+                    "Deterministic fixtures only; no live crawler/source network is invoked by this rehearsal."
+                ],
+                details={
+                    "source_scope": "crawler-admin diagnostics fixture and controlled raw records",
+                    "can_claim_live_collection": False,
+                },
+            ),
+            _phase(
+                "AI-admin publish payload shaping",
+                mode="stub",
+                status=status,
+                warnings=["Provider is stubbed/deterministic; no live AI quota is consumed."],
+                details={
+                    "publish_payload_scope": "AI-admin TestClient/stub plus controlled review_publish payload",
+                    "can_claim_live_ai_success": False,
+                },
+            ),
+            _phase(
+                "DB-admin mutation and normalized/public read verification",
+                mode="fixture",
+                status=status,
+                blockers=[] if result.returncode == 0 else ["Targeted local rehearsal tests failed."],
+                warnings=[
+                    "Mutation is local/in-memory SQLite through DB-admin TestClient, not a real DB-admin database."
+                ],
+                details={
+                    "mutation_scope": "local_in_memory_sqlite",
+                    "verification_scope": "DB-admin rows plus normalized read model and website/public TestClient reads",
+                    "can_claim_live_db_success": False,
+                },
+            ),
+        ]
+        overall_status = "success" if result.returncode == 0 else "failed"
+        artifact = {
+            "schema": "walletsavior.one_shot_db_build_orchestrator.v1",
+            "run_id": run_id,
+            "created_at": _utc_now(),
+            "overall_status": overall_status,
+            "result_scope": "fixture_stub_local_empty_db_rehearsal",
+            "live_integrations_invoked": live_integrations_invoked,
+            "manual_safe_defaults": {
+                "consumes_ai_quota_by_default": False,
+                "mutates_real_db_by_default": False,
+                "live_requires_explicit_flags": True,
+            },
+            "command_shape": "py tools\\one_shot_db_build_orchestrator.py --local-empty-db-rehearsal",
+            "phases": phases,
+            "counts": {
+                "phases": len(phases),
+                "passed": sum(1 for phase in phases if phase["status"] == "passed"),
+                "blocked": 0,
+                "failed": sum(1 for phase in phases if phase["status"] == "failed"),
+                "skipped": 0,
+            },
+            "blockers": [blocker for phase in phases for blocker in phase["blockers"]],
+            "warnings": warnings + [warning for phase in phases for warning in phase["warnings"]],
+            "local_rehearsal": {
+                "command_shape": _command_shape(command),
+                "returncode": result.returncode,
+                "stdout": _sanitize_text(result.stdout),
+                "stderr": _sanitize_text(result.stderr),
+                "honesty": {
+                    "source_leg": "fixture",
+                    "ai_leg": "stub",
+                    "db_admin_leg": "fixture",
+                    "public_read_leg": "fixture",
+                    "live_network_success_claimed": False,
+                },
+            },
+            "public_shape": None,
+            "retention": {
+                "source_raw_count": 0,
+                "review_candidate_count": 0,
+                "retained_count": 0,
+                "dropped_count": 0,
+                "retain_all": True,
+            },
+        }
+        artifact_path = args.artifact_dir / f"{run_id}.json"
+        artifact["artifact_path"] = str(artifact_path)
+        artifact_path.write_text(json.dumps(_safe_json(artifact), ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
+        return artifact
 
     if args.crawler_batch_json:
         try:

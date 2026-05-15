@@ -5,6 +5,7 @@ import {
   buildAutomationApplyMessage,
   buildBatchHealth,
   buildBulkPreview,
+  buildLiveReadinessCues,
   buildMutationPreflightChecklist,
   buildOperatorDashboardReport,
   buildOpsTriageCounters,
@@ -171,9 +172,12 @@ test('operator publish helpers explain preflight backup and rollback next action
   assert.equal(required.backupRequired, true);
   assert.equal(required.tone, 'warn');
   assert.match(required.help, /롤백 백업/);
+  assert.equal(required.readiness.dataLabel, 'unlabeled');
+  assert.match(required.readiness.dataLabelHelp, /fixture, stub, live/);
 
   const ready = buildMutationPreflightChecklist({
     ai_safe_final_approve_count: 1,
+    source_label: 'live',
     safety: {
       mutation_preflight: {
         status: 'ready',
@@ -184,10 +188,58 @@ test('operator publish helpers explain preflight backup and rollback next action
   }, []);
   assert.equal(ready.tone, 'ok');
   assert.equal(ready.latestBackup, 'snapshot.db');
+  assert.equal(ready.readiness.dataLabel, 'live');
+  assert.equal(ready.readiness.preflightReady, true);
 
   assert.match(buildPublishRowNextAction({ status: 'publish_failed' }), /preflight|재시도/);
   assert.match(buildPublishRowNextAction({ status: 'rolled_back' }), /reject\/delete/);
   assert.match(buildPublishRowNextAction({ eligible: true, ai_safe_final_approve_eligible: true }), /최종 승인/);
+});
+
+test('live readiness cues keep fixture/stub/live labels and uncertainty honest', () => {
+  const cues = buildLiveReadinessCues({
+    input_label: 'fixture',
+    unresolved_field_proposal_count: 2,
+    unresolved_keyword_proposal_count: 1,
+    post_publish_audit_count: 3,
+    ai_safe_final_approve_count: 1,
+    db_review_handoff_count: 1,
+    safety: {
+      mutation_preflight: {
+        status: 'blocked',
+        ready_to_mutate: false,
+        snapshot: { verified: false },
+      },
+    },
+  }, [
+    { raw_record_id: 'fixture-row', eligible: true, ai_safe_final_approve_eligible: true },
+  ]);
+
+  assert.equal(cues.dataLabel, 'fixture');
+  assert.equal(cues.writeLabel, 'DB-admin live write path');
+  assert.match(cues.writeHelp, /ai-safe-final-approve/);
+  assert.match(cues.uncertaintyLabel, /미해결 필드 2 · 키워드 1 · 사후 감사 3/);
+  assert.match(cues.preflightHelp, /rollback backup preflight/);
+  assert.match(cues.rollbackHelp, /reject\/delete/);
+});
+
+test('live readiness cues warn when fixture/stub/live labels conflict', () => {
+  const cues = buildLiveReadinessCues({
+    source_label: 'fixture',
+    safety: {
+      mutation_preflight: {
+        input_label: 'live',
+      },
+    },
+  }, [
+    { raw_record_id: 'stub-row', input_label: 'stub' },
+  ]);
+
+  assert.equal(cues.dataLabel, 'label-conflict');
+  assert.equal(cues.dataLabelTone, 'err');
+  assert.equal(cues.dataLabelConflict, true);
+  assert.match(cues.dataLabelHelp, /fixture \/ live \/ stub/);
+  assert.match(cues.dataLabelHelp, /운영 DB 쓰기 전/);
 });
 
 test('normalized publish snapshot and audit flag copy are beginner friendly', () => {
@@ -221,6 +273,9 @@ test('publish and rollback confirmations preview exact rows and DB-admin consequ
   assert.match(publishMessage, /emart-beef-300g/);
   assert.match(publishMessage, /DB-admin 최종 승인은 별도/);
   assert.match(publishMessage, /제출만으로는 공개 DB 저장이 아닙니다/);
+  assert.match(publishMessage, /라벨\/쓰기 경로: unlabeled/);
+  assert.match(publishMessage, /불확실성:/);
+  assert.match(publishMessage, /Preflight\/rollback:/);
   assert.match(publishMessage, /operator_final_approval_required/);
   assert.match(publishMessage, /pending_db_review/);
   assert.match(publishMessage, /보류\/차단 3개/);
