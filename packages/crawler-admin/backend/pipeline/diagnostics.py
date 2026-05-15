@@ -107,12 +107,6 @@ def _plan_blockers(row: dict[str, Any], fixture_snapshot: dict[str, Any]) -> lis
     if fixture_snapshot.get("status") == "missing":
         blockers.append("fixture_snapshot_missing")
 
-    gate = row.get("live_readiness_gate") or {}
-    if gate.get("required") and not gate.get("passed"):
-        blockers.extend(f"marketplace_gate:{reason}" for reason in gate.get("reasons", []))
-
-    if row.get("collection_status") != "collecting":
-        blockers.append(f"current_collection_status:{row.get('collection_status')}")
     return blockers
 
 
@@ -344,6 +338,7 @@ def _report_from_quality(
                 "duplicates_after_validation": counts.get("duplicates_after_validation"),
             },
             "critical_field_coverage": (quality.get("quality_summary") or {}).get("critical_field_coverage") or {},
+            "field_coverage": quality.get("coverage") or {},
             "critical_field_thresholds": CRITICAL_FIELD_THRESHOLDS,
             "diagnostic_codes": [d.get("code") for d in quality.get("operator_diagnostics", []) if d.get("code")],
         },
@@ -366,6 +361,7 @@ def _source_health_snapshot(row: dict[str, Any]) -> dict[str, Any] | None:
         "counts": completeness.get("counts"),
         "expected_counts": completeness.get("expected_counts"),
         "critical_field_coverage": (row.get("quality_summary") or {}).get("critical_field_coverage"),
+        "field_coverage": (row.get("quality_evidence") or {}).get("field_coverage"),
         "field_coverage_dashboard": health.get("field_coverage_dashboard"),
         "count_drop": health.get("count_drop"),
         "baseline": health.get("completeness_baseline"),

@@ -359,12 +359,12 @@ class OpinetCrawler(CrawlerContract):
     async def _crawl_via_web(self, errors: list[str]) -> list[dict]:
         """메인 페이지 스크레이핑으로 유가 정보 수집.
 
-        오피넷은 NetFunnel(대기열) JS가 필요하므로 Playwright 우선,
+        오피넷은 대기열 스크립트가 포함될 수 있으므로 Playwright 우선,
         plain HTTP는 fallback으로만 사용한다.
         """
         items: list[dict] = []
 
-        # 1차: Playwright 렌더링 (NetFunnel JS 처리 가능)
+        # 1차: Playwright 렌더링
         try:
             from engine.playwright_helper import PlaywrightHelper
 
@@ -386,7 +386,7 @@ class OpinetCrawler(CrawlerContract):
             logger.warning(f"[오피넷] Playwright 스크레이핑 실패: {e}")
             errors.append(f"Playwright: {e}")
 
-        # 2차: plain HTTP fallback (NetFunnel 미통과 시 빈 페이지일 수 있음)
+        # 2차: plain HTTP fallback
         try:
             headers = self._anti_detect.get_random_headers()
             headers["Referer"] = self.BASE_URL

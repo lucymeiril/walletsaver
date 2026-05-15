@@ -182,6 +182,33 @@ def test_batch_retention_artifact_keeps_every_record_as_publish_or_raw_evidence(
     assert all(row["final_sale_price"] for row in artifact["raw_vs_final"])
     assert all(row["final_source_url"] for row in artifact["raw_vs_final"])
 
+def test_artifact_replay_accepts_raw_selected_items_container(tmp_path: Path) -> None:
+    input_json = tmp_path / "previous-live-validation-artifact.json"
+    input_json.write_text(
+        json.dumps(
+            {
+                "run_id": "previous-run",
+                "raw_selected_items": [
+                    {
+                        "name": "리플레이 검증 두부 300g",
+                        "sale_price": 1980,
+                        "source": "emart",
+                        "detail_url": "https://emart.example/replay-tofu",
+                        "image_url": "https://emart.example/replay-tofu.jpg",
+                    }
+                ],
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    artifact = harness.run_harness(_args(tmp_path, input_json=input_json, retain_all_input=True))
+
+    assert artifact["source"]["selected_item_count"] == 1
+    assert artifact["quality_batch_validation"]["input_count"] == 1
+    assert artifact["raw_records"][0]["raw_title"] == "리플레이 검증 두부 300g"
+
 def test_multi_source_crawler_artifact_retain_all_rows_and_reports_input_anomalies(tmp_path: Path) -> None:
     input_json = tmp_path / "mixed-crawler-artifact.json"
     input_json.write_text(
@@ -372,6 +399,77 @@ def test_explicit_large_live_batch_opt_in_allows_395_dry_run_rows(tmp_path: Path
     assert artifact["provider_response_summary"]["called"] is False
     assert artifact["decisions"]["bounds"]["allow_large_live_batch"] is True
     assert artifact["decisions"]["bounds"]["max_live_items_cap"] == 395
+    assert summary["quality_gate"]["full_input_attempted"] is True
+    assert summary["quality_gate"]["sample_only"] is False
+    assert summary["quality_gate"]["scale_claim"] == "blocked_not_full_source_quality"
+
+
+def test_dry_run_does_not_report_missing_ai_taxonomy_as_category_anomaly(tmp_path: Path) -> None:
+    input_json = tmp_path / "no-provider-raw-taxonomy-absent.json"
+    input_json.write_text(
+        json.dumps(
+            [
+                {
+                    "product_id": "no-ai-taxonomy-1",
+                    "name": "원천 분류 없는 대량 검증 상품",
+                    "sale_price": 1290,
+                    "detail_url": "https://emart.example/no-taxonomy",
+                    "source": "emart",
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    def fail_http(*_args, **_kwargs):
+        raise AssertionError("dry-run taxonomy check must not call HTTP/provider APIs")
+
+    artifact = harness.run_harness(
+        _args(tmp_path, input_json=input_json, retain_all_input=True),
+        http_json=fail_http,
+    )
+
+    quality = artifact["quality_batch_validation"]
+    assert quality["provider"]["called"] is False
+    assert quality["anomaly_counts"]["category"] == 0
+    assert quality["anomaly_counts"]["keyword"] == 0
+    assert not any(
+        "category/taxonomy" in blocker
+        for blocker in quality["quality_gate"]["blockers"]
+    )
+
+
+def test_fractional_source_discount_percent_is_preserved_without_overwrite_risk(tmp_path: Path) -> None:
+    input_json = tmp_path / "fractional-percent-discount.json"
+    input_json.write_text(
+        json.dumps(
+            [
+                {
+                    "product_id": "fractional-percent-1",
+                    "name": "반퍼센트 할인 원천 상품",
+                    "sale_price": 20890,
+                    "original_price": 21000,
+                    "discount_percent": 0.5,
+                    "detail_url": "https://emart.example/fractional-percent",
+                    "image_url": "https://emart.example/fractional-percent.jpg",
+                    "source": "emart",
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    artifact = harness.run_harness(
+        _args(tmp_path, input_json=input_json, retain_all_input=True)
+    )
+
+    comparison = artifact["raw_vs_final"][0]
+    assert comparison["raw_discount_percent"] == 0.5
+    assert comparison["final_discount_percent"] == 0.5
+    assert artifact["quality_batch_validation"]["anomaly_counts"]["source_owned_overwrite_risk"] == 0
+    assert artifact["quality_batch_validation"]["quality_gate"]["source_owned_overwrite_risks"] == []
 
 def test_live_provider_requires_explicit_provider_id(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="requires --provider-id"):
@@ -1408,13 +1506,21 @@ def test_quality_batch_validation_summary_reports_bounded_partial_anomalies_with
     assert summary["anomaly_counts"]["category"] >= 1
     assert summary["anomaly_counts"]["keyword"] >= 1
     assert summary["anomaly_counts"]["unit"] >= 1
+    assert summary["anomaly_counts"]["package"] >= 1
     assert summary["anomaly_counts"]["price"] >= 1
     assert summary["anomaly_counts"]["image"] >= 1
+    assert summary["anomaly_counts"]["source_owned_overwrite_risk"] >= 1
+    gate = summary["quality_gate"]
+    assert gate["accepted"] is False
+    assert gate["sample_only"] is True
+    assert gate["claim_scope"] == "bounded_sample"
+    assert any("Only 5 of 6 input rows" in blocker for blocker in gate["blockers"])
     by_id = {row["raw_record_id"]: row for row in summary["per_row_anomalies"]}
     assert "category_changed_raw_vs_final" in by_id[raw_ids[0]]["category"]
     assert "missing_final_keywords" in by_id[raw_ids[0]]["keyword"]
     assert any("standard_unit" in item for item in by_id[raw_ids[1]]["unit"])
     assert "price_changed_raw_vs_final" in by_id[raw_ids[2]]["price"]
+    assert "source_owned_sale_price_changed_raw_vs_final" in by_id[raw_ids[2]]["source_owned_overwrite_risk"]
     assert "missing_hotdeal_final_image_url" in by_id[raw_ids[2]]["image"]
     retry = summary["reviewer_retry_candidates"]
     assert retry["source"] == "deterministic_quality_batch_validation_no_live_reviewer_ai"

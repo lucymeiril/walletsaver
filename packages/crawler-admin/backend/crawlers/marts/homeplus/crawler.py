@@ -300,6 +300,18 @@ class HomeplusCrawler(CrawlerContract):
         except Exception:
             return 0
 
+    def _absolute_url(self, url: str, base_url: str) -> str:
+        """Normalize source-relative URLs while preserving absolute URLs."""
+        if not url:
+            return ""
+        if url.startswith("//"):
+            return f"https:{url}"
+        if url.startswith("http"):
+            return url
+        if url.startswith("/"):
+            return f"{base_url}{url}"
+        return url
+
     def _extract_json_items(self, raw_data: str) -> list[dict]:
         """페이지 내 임베디드 JSON 데이터 추출."""
         patterns = [
@@ -344,11 +356,12 @@ class HomeplusCrawler(CrawlerContract):
         if original_price and original_price > sale_price:
             discount_pct = round((1 - sale_price / original_price) * 100, 1)
 
-        image_url = product.get("imgUrl") or product.get("goodsImg", "")
-        category = product.get("categoryNm") or product.get("ctgNm", "")
+        image_url = self._absolute_url(product.get("imgUrl") or product.get("goodsImg", ""), self.BASE_URL)
+        category = product.get("categoryNm") or product.get("ctgNm") or product.get("category") or ""
         detail_url = product.get("goodsUrl") or product.get("detail_url", "")
         if detail_url and not detail_url.startswith("http"):
             detail_url = f"{self.BASE_URL}{detail_url}"
+        source_record_key = str(product.get("goodsNo") or product.get("itemId") or product.get("id") or "").strip()
         raw_unit = product.get("unit") or product.get("goodsUnit") or product.get("capacity") or ""
         unit_metadata = normalize_unit_metadata(
             name=name,
@@ -368,7 +381,13 @@ class HomeplusCrawler(CrawlerContract):
             package_quantity=unit_metadata.get("package_quantity"),
             package_unit=unit_metadata.get("package_unit") or "",
             price_per_100g=unit_metadata.get("price_per_100g"),
-            attributes=unit_metadata.get("attributes") or {},
+            attributes={
+                **(unit_metadata.get("attributes") or {}),
+                **({"source_record_key": source_record_key} if source_record_key else {}),
+                **({"source_url": detail_url} if detail_url else {}),
+                **({"image_url": image_url} if image_url else {}),
+                **({"category_hint": category} if category else {}),
+            },
             category=category,
             event_name=product.get("eventNm", "홈플러스 할인"),
             image_url=image_url,
@@ -468,6 +487,12 @@ class HomeplusCrawler(CrawlerContract):
         name = self._extract_mfront_name(card, img_el)
         if not name or len(name) < 2:
             return None
+        category = (
+            card.get("data-category")
+            or card.get("data-ctg-nm")
+            or card.get("data-category-name")
+            or ""
+        )
         unit_metadata = normalize_unit_metadata(name=name, sale_price=sale_price)
         display_unit = unit_metadata.get("display_unit")
 
@@ -482,7 +507,13 @@ class HomeplusCrawler(CrawlerContract):
             package_quantity=unit_metadata.get("package_quantity"),
             package_unit=unit_metadata.get("package_unit") or "",
             price_per_100g=unit_metadata.get("price_per_100g"),
-            attributes=unit_metadata.get("attributes") or {},
+            attributes={
+                **(unit_metadata.get("attributes") or {}),
+                **({"source_url": detail_url} if detail_url else {}),
+                **({"image_url": image_url} if image_url else {}),
+                **({"category_hint": category} if category else {}),
+            },
+            category=category,
             image_url=image_url,
             detail_url=detail_url,
             event_name="홈플러스 할인",
@@ -564,7 +595,11 @@ class HomeplusCrawler(CrawlerContract):
             package_quantity=unit_metadata.get("package_quantity"),
             package_unit=unit_metadata.get("package_unit") or "",
             price_per_100g=unit_metadata.get("price_per_100g"),
-            attributes=unit_metadata.get("attributes") or {},
+            attributes={
+                **(unit_metadata.get("attributes") or {}),
+                **({"source_url": detail_url} if detail_url else {}),
+                **({"image_url": image_url} if image_url else {}),
+            },
             image_url=image_url,
             detail_url=detail_url,
             event_name="홈플러스 할인",

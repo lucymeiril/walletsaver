@@ -196,9 +196,11 @@ class ClienCrawler(CrawlerContract):
         url = href if href.startswith("http") else urljoin(self.BASE_URL, href)
 
         # 2) 가격 추출 — 제목 또는 행 전체 텍스트에서
+        price_evidence = title
         price = self._extract_price(title)
         if price is None:
-            price = self._extract_price(row.get_text(" ", strip=True))
+            price_evidence = row.get_text(" ", strip=True)
+            price = self._extract_price(price_evidence)
 
         # 3) 카테고리 추출 — 제목 앞 [카테고리] 패턴
         category = ""
@@ -206,12 +208,19 @@ class ClienCrawler(CrawlerContract):
         if cat_match:
             category = cat_match.group(1)
 
+        image_el = row.select_one("img[src], img[data-src]")
+        date_el = row.select_one(".timestamp, time")
+
         return HotdealPost(
             title=title,
             url=url,
             source_community="클리앙",
             price=price,
+            price_evidence=price_evidence if price is not None else "",
             category=category,
+            category_hints=[hint for hint in (category,) if hint],
+            image_url=urljoin(self.BASE_URL, image_el.get("src") or image_el.get("data-src")) if image_el else "",
+            period=date_el.get_text(" ", strip=True) if date_el else "",
         )
 
     def _is_ad(self, row, title: str) -> bool:

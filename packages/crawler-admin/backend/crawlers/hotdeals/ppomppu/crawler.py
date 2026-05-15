@@ -204,9 +204,11 @@ class PpomppuCrawler(CrawlerContract):
         url = href if href.startswith("http") else urljoin(self.BASE_URL + "/zboard/", href)
 
         # 2) 가격 추출 — 제목 텍스트에 (39,800원/무배) 형태로 포함
+        price_evidence = title
         price = self._extract_price(title)
         if price is None:
-            price = self._extract_price(row.get_text(" ", strip=True))
+            price_evidence = row.get_text(" ", strip=True)
+            price = self._extract_price(price_evidence)
 
         # 3) 카테고리 추출 — em.baseList-head 또는 제목 앞 [카테고리]
         category = ""
@@ -225,12 +227,17 @@ class PpomppuCrawler(CrawlerContract):
             if sub_text and not category:
                 category = sub_text
 
+        image_el = row.select_one("img[src], img[data-src]")
+
         return HotdealPost(
             title=title,
             url=url,
             source_community="뽐뿌",
             price=price,
+            price_evidence=price_evidence if price is not None else "",
             category=category,
+            category_hints=[hint for hint in (category,) if hint],
+            image_url=urljoin(self.BASE_URL, image_el.get("src") or image_el.get("data-src")) if image_el else "",
         )
 
     def _is_ad(self, row, title: str) -> bool:

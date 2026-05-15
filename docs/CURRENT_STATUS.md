@@ -23,7 +23,31 @@ The goal is trustworthy public price intelligence: users should see prices that 
 | GitHub upload readiness | Blocked pending repo-layout and tracked runtime/sensitive file cleanup. |
 | Crawler expansion | Deferred until normalized AI/DB publishing is safer. |
 | Scoped auth/service key | Blocked/deferred by design. |
-| Source health/calendar baselines | Deferred future work. |
+| Source connector/readiness gap map | Implemented metadata inventory for registered connectors, skeletons, fixture diagnostics, and blocked external-service dependencies. |
+
+## Source connector readiness gap map
+
+This inventory is code-backed by `packages\crawler-admin\backend\crawlers\source_coverage.py`, crawler `plugin.yaml` files, and crawler-admin tests. `fixture_passing` means saved fixture or bounded diagnostic parser evidence only; it is not a live-service readiness claim.
+
+Executable gate: every row now exposes `source_completion_gate`. Operators cannot claim a source complete unless `passed=true`; blocked, skeleton, registered-unverified, fixture-passing, and bounded-diagnostic-ready rows list exact `required_evidence` and `missing_evidence`.
+
+| Area | Sources | Classification | Notes |
+|---|---|---|---|
+| mart3 | emart, homeplus, lottemart | registered_unverified; homeplus blocked_by_external_key/service | Connectors exist, but current dashboard must require quality evidence before claiming collection. Homeplus is browser/service-state dependent and live collection is disabled in metadata. |
+| other mart connector | cocodalin | registered_unverified | Registered connector, not part of mart3. |
+| Opinet/fuel | opinet | blocked_by_external_key/service | Registered connector; API/public-service evidence is external and not proven by fixture status. |
+| hotdeal communities | algumon, arca_hotdeal, ppomppu, fmkorea, clien, quasarzone, cocodal | registered_unverified; cocodal blocked_by_external_key/service | Community connectors are registered; cocodal metadata says the site is inactive/unavailable. |
+| commerce marketplace skeletons | coupang, naver_store, gmarket, 11st, aliexpress | skeleton_only, or fixture_passing when saved fixture diagnostics are attached | Skeleton adapters parse saved/mock fixtures and require bounded diagnostics plus operator approval before any live-ready or collecting claim. |
+| commerce fashion | musinsa, giordano, uniqlo | registered_unverified / blocked_by_external_key/service where service/browser state is required | Connectors are registered, but no current bounded quality evidence is attached. |
+| delivery/location | baemin, coupangeats, yogiyo, naver_place | blocked_by_external_key/service | Registered adapters depend on address/location context, service state, browser runtime, or provider-specific access. |
+
+| Gate state | Evidence required before completion/live-ready claim |
+|---|---|
+| `blocked_by_external_key/service` | Record the external key/service/browser/location prerequisite, attach fixture/raw snapshot parser evidence, run bounded diagnostics with limits, then record operator approval. |
+| `skeleton_only` | Keep fixture contract passing, attach bounded live diagnostics with run limits/evidence id, and record operator approval. |
+| `registered_unverified` | Attach saved-fixture or bounded quality summary with source_raw/parsed/valid/drop/duplicate/critical-field evidence before claiming completion. |
+| `fixture_passing` | Treat as parser-only evidence; add bounded diagnostics, run limits, and operator approval before live-ready or collecting claims. |
+| `bounded_diagnostic_ready` | Bounded evidence exists, but completion is still blocked until operator approval and no-DB AI review requirements are recorded. |
 
 ## Key files to inspect first
 
@@ -117,7 +141,7 @@ submit/final approve evidence, website verification, and exact blockers.
 2. Connect AI-admin reviewed outputs to DB-admin normalized tables with audit provenance.
 3. Preserve nullable price states for ambiguous promotions.
 4. Add deliberate scoped-auth/service-key design when unblocked.
-5. Add crawler source health/calendar baselines later.
+5. Keep crawler source coverage/readiness metadata current as connectors or fixture diagnostics change.
 6. Resume crawler expansion only after these data rules remain green.
 
 ## GitHub upload status

@@ -174,6 +174,39 @@ class TestRawRecordConversion:
         assert invalid_rows == [{"index": 1, "reason": "missing product name/title"}]
         assert records[0].raw_payload["quantity"] == "2개"
 
+    def test_mart3_source_owned_facts_are_retained_for_ai_db_handoff(self):
+        rec = to_raw_record(
+            {
+                "product_id": "lottemart-water-2l-6",
+                "name": "오늘좋은 생수 2L*6입",
+                "store": "롯데마트",
+                "sale_price": "2,990원",
+                "detail_url": "https://lottemartzetta.com/products/lottemart-water-2l-6",
+                "image_url": "https://image.lottemart.test/water.jpg",
+                "category": "생수/음료",
+                "category_hint": "생수",
+                "unit": "2L*6입",
+                "package_quantity": 6,
+                "package_unit": "입",
+                "attributes": {
+                    "source_record_key": "lottemart-water-2l-6",
+                    "source_url": "https://lottemartzetta.com/products/lottemart-water-2l-6",
+                },
+            },
+            source_name="lottemart",
+            index=0,
+            batch_id="raw-mart3",
+        )
+
+        assert rec is not None
+        assert rec.source_record_key == "lottemart-water-2l-6"
+        assert rec.source_url == "https://lottemartzetta.com/products/lottemart-water-2l-6"
+        assert rec.raw_price == 2990
+        assert rec.raw_payload["image_url"] == "https://image.lottemart.test/water.jpg"
+        assert rec.raw_payload["category_hint"] == "생수"
+        assert rec.raw_payload["package_quantity"] == 6
+        assert rec.raw_payload["attributes"]["source_url"] == rec.source_url
+
 
 # ── 배치 빌드/한도 테스트 ────────────────────────────────────
 

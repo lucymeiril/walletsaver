@@ -252,7 +252,12 @@ class HotdealPost(BaseModel):
     source_community: str = ""                  # "뽐뿌", "어미새", "루리웹"
     price: Optional[int] = None
     original_price: Optional[int] = None
+    price_evidence: str = ""                   # 원문 가격 텍스트/증거
     category: str = ""
+    category_hints: list[str] = Field(default_factory=list)
+    image_url: str = ""
+    post_date: Optional[datetime] = None
+    period: str = ""
     crawled_at: datetime = Field(default_factory=datetime.now)
     matched_product: str = ""                   # DB 매칭된 품목명
     price_vs_avg: Optional[float] = None        # 평균 대비 비율 (0.7 = 30% 저렴)

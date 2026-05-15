@@ -14,3 +14,10 @@ schedule:
 output:
   model: GasStation
   required_fields: [name, gasoline_price]
+source_id: opinet
+source_group: government
+live_ready: false
+live_readiness:
+  status: blocked_by_key_or_service
+  reason: "OPINET API key or bounded service fixture evidence is required before live collection readiness can be claimed."
+connector_contract: fuel_price_connector.v1

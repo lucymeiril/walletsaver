@@ -28,3 +28,4 @@ schedule:
 output:
   model: DiscountItem
   required_fields: [name, sale_price, detail_url]
+  diagnostic_evidence_fields: [source_raw, parsed, valid, detail_url, source_url, image_url, period, unit, category_hint]

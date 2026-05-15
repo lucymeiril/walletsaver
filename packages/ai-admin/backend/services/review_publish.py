@@ -1432,11 +1432,7 @@ def db_item_from_review(
         raw_payload.get("list_price"),
         raw_payload.get("regular_price"),
     )
-    discount_percent = _first_number(
-        raw_payload.get("discount_percent"),
-        raw_payload.get("discount_rate"),
-        raw_payload.get("discount"),
-    )
+    discount_percent = _source_discount_percent(raw_payload)
     if original_price is not None and price is not None and original_price <= price:
         original_price = None
     if discount_percent is not None and discount_percent <= 0:
@@ -1831,7 +1827,19 @@ def _discount_rate_fraction(value: Any) -> Optional[float]:
     number = _first_number(value)
     if number is None:
         return None
-    return round(number / 100, 4) if number > 1 else round(number, 4)
+    return round(number / 100, 4)
+
+
+def _source_discount_percent(raw_payload: dict[str, Any]) -> Optional[float]:
+    """Return source-owned discount_percent in percent units without treating sub-1 percentages as fractions."""
+    for key in ("discount_percent", "discount"):
+        number = _first_number(raw_payload.get(key))
+        if number is not None:
+            return number
+    rate = _first_number(raw_payload.get("discount_rate"))
+    if rate is None:
+        return None
+    return round(rate * 100, 4) if rate <= 1 else rate
 
 
 def _source_price_state(

@@ -31,15 +31,15 @@ def test_mart_source_health_includes_calendar_baseline_and_field_dashboard():
     health = emart["source_health"]
 
     assert health["schema"] == "crawler_source_health.v1"
-    assert health["status"] == "collecting"
+    assert health["status"] == "registered_unverified"
     assert health["calendar"]["expected_event_cadence"] == "daily_price_event"
     assert health["calendar"]["expression"] == "0 7 * * *"
     assert health["calendar"]["freshness_sla_hours"] == 36
     assert health["completeness"]["status"] == "meets_baseline"
     assert health["completeness_baseline"]["expected_counts"] == {"source_raw": 1, "parsed": 1, "valid": 1}
     assert health["field_coverage_dashboard"]["status"] == "ok"
-    assert health["next_action_state"]["state"] == "monitor"
-    assert coverage["source_health_dashboard"]["status_counts"]["collecting"] == 1
+    assert health["next_action_state"]["state"] == "await_bounded_live_diagnostics_approval"
+    assert coverage["source_health_dashboard"]["status_counts"]["registered_unverified"] == 1
 
 
 def test_marketplace_registered_unverified_health_keeps_live_disabled():
@@ -156,11 +156,11 @@ def test_source_health_dashboard_aggregates_multiple_sources_alerts_and_fields()
 
     assert rows["emart"]["source_health"]["calendar"]["source_calendar"] == "emart_daily_morning_price_snapshot.v1"
     assert rows["homeplus"]["source_health"]["status"] == "failing"
-    assert dashboard["status_counts"]["collecting"] == 1
+    assert dashboard["status_counts"]["registered_unverified"] == 1
     assert dashboard["status_counts"]["failing"] == 1
     assert dashboard["field_coverage_dashboard"]["detail_url"]["low"] >= 1
     assert {alert["metric"] for alert in dashboard["count_drop_alerts"]} == {"source_raw", "parsed", "valid"}
-    assert dashboard["sources_needing_action"][0]["source_id"] == "homeplus"
+    assert any(row["source_id"] == "homeplus" for row in dashboard["sources_needing_action"])
 
 
 def test_source_health_reports_missing_count_baseline_without_count_drop_alerts():

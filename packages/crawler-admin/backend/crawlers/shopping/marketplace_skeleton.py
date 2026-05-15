@@ -33,6 +33,10 @@ _PRICE_KEYS = (
     "final_price",
     "discountPrice",
     "discount_price",
+    "salePriceText",
+    "sale_price_text",
+    "priceText",
+    "price_text",
     "price",
     "lowestPrice",
 )
@@ -45,9 +49,9 @@ _ORIGINAL_PRICE_KEYS = (
     "list_price",
 )
 _NAME_KEYS = ("name", "title", "productName", "product_name", "itemName", "goodsName")
-_URL_KEYS = ("url", "detailUrl", "detail_url", "productUrl", "product_url", "link")
+_URL_KEYS = ("url", "detailUrl", "detail_url", "productUrl", "product_url", "sourceUrl", "source_url", "link")
 _IMAGE_KEYS = ("image", "imageUrl", "image_url", "thumbnail", "thumbnailUrl")
-_CATEGORY_KEYS = ("category", "categoryName", "category_name", "brand", "brandName")
+_CATEGORY_KEYS = ("category", "categoryName", "category_name", "brand", "brandName", "mallName", "sellerName")
 _CARD_SELECTOR = "[data-testid='product-card'], [data-product-card], .product-card, .goods-card, .item, li"
 MARKETPLACE_PARSER_CONTRACT = "marketplace_skeleton.v1"
 MARKETPLACE_FIXTURE_CONTRACT = "marketplace_skeleton_fixture_contracts.v1"
@@ -298,17 +302,24 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
         discount_percent = _parse_float(data.get("discountPercent") or data.get("discount_percent") or data.get("discountRate"))
         detail_url = self._absolute_url(_first_value(data, _URL_KEYS))
         image_url = self._absolute_url(_first_value(data, _IMAGE_KEYS))
+        price_evidence = str(_first_value(data, _PRICE_KEYS) or sale_price)
+        category = str(_first_value(data, _CATEGORY_KEYS) or "")
         return DiscountItem(
             name=str(name).strip(),
             store=self.DISPLAY_NAME,
             sale_price=sale_price,
             original_price=original_price,
             discount_percent=discount_percent,
-            category=str(_first_value(data, _CATEGORY_KEYS) or ""),
+            category=category,
             image_url=image_url,
             detail_url=detail_url,
             attributes={
                 "source": self.SOURCE_ID,
+                "source_url": detail_url,
+                "price_evidence": price_evidence,
+                "category_hints": [category] if category else [],
+                "post_date": data.get("postDate") or data.get("posted_at") or data.get("date"),
+                "period": data.get("period") or data.get("validPeriod") or data.get("eventPeriod"),
                 "parser_contract": MARKETPLACE_PARSER_CONTRACT,
                 "fixture_contract": MARKETPLACE_FIXTURE_CONTRACT,
             },
@@ -324,7 +335,8 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
 
     def _item_from_html_card(self, card: Any) -> DiscountItem | None:
         name = self._select_text(card, "[data-field='name'], .name, .title, .product-name, [itemprop='name']")
-        sale_price = _parse_int(self._select_text(card, "[data-field='sale_price'], [data-field='price'], .sale-price, .price, [itemprop='price']"))
+        price_evidence = self._select_text(card, "[data-field='sale_price'], [data-field='price'], .sale-price, .price, [itemprop='price']")
+        sale_price = _parse_int(price_evidence)
         if not name or not sale_price:
             return None
         original_price = _parse_int(self._select_text(card, "[data-field='original_price'], .original-price, .normal-price, .list-price"))
@@ -332,6 +344,7 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
         category = self._select_text(card, "[data-field='category'], .category, .brand, .brand-name")
         link = card.select_one("[data-field='detail_url'], a[href]")
         image = card.select_one("img[src], img[data-src]")
+        period = self._select_text(card, "[data-field='period'], .period, .valid-period, time")
         return DiscountItem(
             name=name,
             store=self.DISPLAY_NAME,
@@ -343,6 +356,10 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
             detail_url=self._absolute_url(link.get("href") if link else ""),
             attributes={
                 "source": self.SOURCE_ID,
+                "source_url": self._absolute_url(link.get("href") if link else ""),
+                "price_evidence": price_evidence,
+                "category_hints": [category] if category else [],
+                "period": period,
                 "parser_contract": MARKETPLACE_PARSER_CONTRACT,
                 "fixture_contract": MARKETPLACE_FIXTURE_CONTRACT,
             },

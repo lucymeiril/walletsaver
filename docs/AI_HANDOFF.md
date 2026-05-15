@@ -156,7 +156,7 @@ Result: AI-admin frontend tests/build passed; DB-admin frontend production build
 ## 7. Known blocked or deferred work
 
 - **Scoped-auth service-key redesign is intentionally blocked/deferred.** Do not quickly patch around it with weaker auth.
-- **Crawler source health/calendar baselines are future work.** Do not treat them as finished.
+- **Crawler source coverage/readiness is metadata-backed, not live-service proof.** Treat saved fixtures and skeleton adapters as parser diagnostics until bounded evidence and operator approval are present.
 - Public crawler expansion is lower priority until normalized AI/DB publishing remains stable.
 - Live AI provider validation depends on local non-secret provider configuration and quota. Do not assume a passing health check proves provider availability.
 - Some older status docs are stale relative to the normalized AI/DB work. Prefer `docs\CURRENT_STATUS.md` for current handoff status.
@@ -168,7 +168,7 @@ Result: AI-admin frontend tests/build passed; DB-admin frontend production build
 1. Add/update tests before extending normalized publishing beyond the mart3 slice.
 2. Wire reviewed AI-admin decisions into DB-admin normalized tables through explicit, auditable publish paths.
 3. Expand match cards only in ways that preserve human-approved strict match memory.
-4. Add source health/calendar baselines after the normalized offer/week model is stable.
+4. Keep source coverage/readiness metadata aligned with registered connectors, fixture diagnostics, and bounded diagnostic evidence.
 5. Revisit scoped-auth service-key design as a deliberate security task, not as an incidental fix.
 6. Only then expand new crawlers, starting with sources that provide enough raw evidence for safe price states.
 

@@ -77,6 +77,9 @@ def test_marketplace_skeletons_parse_mock_json_schema():
         assert item.original_price == 5900
         assert item.detail_url.startswith(crawler.BASE_URL)
         assert item.attributes["source"] == source_id
+        assert item.attributes["source_url"] == item.detail_url
+        assert item.attributes["price_evidence"]
+        assert item.attributes["category_hints"] == ["fixture-brand"]
         assert item.attributes["parser_contract"] == "marketplace_skeleton.v1"
         assert item.attributes["fixture_contract"] == "marketplace_skeleton_fixture_contracts.v1"
 
@@ -102,6 +105,9 @@ def test_marketplace_skeletons_parse_saved_fixture_contracts():
             assert item.detail_url == expected["detail_url"]
             assert item.image_url == expected["image_url"]
             assert item.attributes["source"] == source_id
+            assert item.attributes["source_url"] == expected["detail_url"]
+            assert item.attributes["price_evidence"]
+            assert item.attributes["category_hints"]
             assert item.attributes["parser_contract"] == expected["parser_contract"]
             assert item.attributes["fixture_contract"] == "marketplace_skeleton_fixture_contracts.v1"
 
@@ -129,6 +135,8 @@ def test_marketplace_skeletons_parse_mock_html_and_report_success():
         assert result.items[0]["name"] == "테스트 라면 5입"
         assert result.items[0]["sale_price"] == 4980
         assert result.items[0]["detail_url"].startswith(crawler.BASE_URL)
+        assert result.items[0]["attributes"]["source_url"].startswith(crawler.BASE_URL)
+        assert result.items[0]["attributes"]["price_evidence"] == "4,980원"
         assert result.quality_details["quality_summary"]["status"] in {"collecting", "warning"}
         assert result.quality_details["readiness_gate"]["status"] == "skeleton_fixture_only"
         assert result.quality_details["readiness_gate"]["collecting_claim_allowed"] is False

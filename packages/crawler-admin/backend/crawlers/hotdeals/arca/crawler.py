@@ -2,7 +2,7 @@
 아카라이브 핫딜 크롤러.
 
 https://arca.live/b/hotdeal 에서 핫딜 게시글을 수집한다.
-아카라이브는 Cloudflare 보호가 강해 cloudscraper + Playwright 폴백이 필수이다.
+아카라이브는 응답 형태가 달라질 수 있어 cloudscraper + Playwright 폴백을 사용한다.
 
 데이터 구조 (2026-07 기준):
   <div class="vrow hybrid">
@@ -53,7 +53,7 @@ logger = logging.getLogger(__name__)
 
 
 class ArcaCrawler(CrawlerContract):
-    """아카라이브 핫딜 크롤러 — Cloudflare 보호 사이트."""
+    """아카라이브 핫딜 크롤러 — 커뮤니티 핫딜 채널."""
 
     BASE_URL = "https://arca.live"
     DEAL_URL = "https://arca.live/b/hotdeal"
@@ -110,7 +110,7 @@ class ArcaCrawler(CrawlerContract):
                 return CrawlResult(
                     status=CrawlStatus.FAILED,
                     crawler_name=self.info.name,
-                    error_msg="Cloudflare 차단 — cloudscraper로도 접근 실패",
+                    error_msg="소스 응답 부족 — cloudscraper로도 목록 수집 실패",
                     started_at=started_at,
                     finished_at=datetime.now(),
                 )
@@ -118,9 +118,9 @@ class ArcaCrawler(CrawlerContract):
             items = await self.parse(raw_data)
             valid_items = await self.validate(items)
 
-            # Cloudflare 부분 차단 감지: HTML 반환되나 게시글이 없는 경우
+            # 응답은 왔지만 게시글 목록이 없는 경우
             if not valid_items and len(raw_data) < 50000:
-                logger.warning("[아카라이브] Cloudflare 부분 차단 — 게시글 목록이 렌더링되지 않음")
+                logger.warning("[아카라이브] 게시글 목록이 렌더링되지 않음")
 
             items_as_dict = [item.model_dump(mode="json") for item in valid_items]
 
@@ -149,9 +149,9 @@ class ArcaCrawler(CrawlerContract):
             )
 
     def _fetch_page(self) -> Optional[str]:
-        """cloudscraper → Playwright 순서로 페이지를 가져온다. Cloudflare 우회 시도."""
+        """cloudscraper → Playwright 순서로 페이지를 가져온다."""
 
-        # 1차: cloudscraper (Cloudflare JS Challenge 우회)
+        # 1차: cloudscraper 기반 수집 세션
         try:
             import cloudscraper
             scraper = cloudscraper.create_scraper(
@@ -164,7 +164,7 @@ class ArcaCrawler(CrawlerContract):
             # Retry via session-based backoff (cloudscraper extends requests.Session)
             response = self._retry_request(self.DEAL_URL, headers=headers, session=scraper, timeout=20)
             if response.status_code == 200 and len(response.text) > 1000:
-                # Cloudflare 차단 페이지가 아닌지 확인 — 실제 게시글 목록(a.vrow)이 있어야 함
+                # 실제 게시글 목록(a.vrow)이 있는지 확인
                 if "vrow" in response.text and "col-title" in response.text:
                     return response.text
             logger.warning(f"[아카라이브] cloudscraper 응답 부족: HTTP {response.status_code}, len={len(response.text)}")
@@ -173,12 +173,12 @@ class ArcaCrawler(CrawlerContract):
         except Exception as e:
             logger.warning(f"[아카라이브] cloudscraper 예외: {e}")
 
-        # 2차: Playwright stealth 모드 (Cloudflare 완전 우회)
+        # 2차: Playwright 렌더링 폴백
         html = self._fetch_with_playwright()
         if html:
             return html
 
-        # 3차: 일반 requests 폴백 (Cloudflare가 없을 때만 성공)
+        # 3차: 일반 requests 폴백
         try:
             headers = self._anti_detect.get_random_headers()
             response = self._retry_request(self.DEAL_URL, headers=headers, timeout=15)
@@ -190,9 +190,9 @@ class ArcaCrawler(CrawlerContract):
         return None
 
     def _fetch_with_playwright(self) -> Optional[str]:
-        """Playwright stealth 모드로 아카라이브를 렌더링한다.
+        """Playwright로 아카라이브를 렌더링한다.
 
-        Cloudflare 보호가 강한 사이트에서 cloudscraper가 실패할 때 사용.
+        cloudscraper 기반 수집 세션이 충분한 목록 HTML을 반환하지 못할 때 사용.
         실제 브라우저로 JS Challenge를 통과한 뒤 HTML을 반환한다.
         """
         try:
@@ -212,14 +212,14 @@ class ArcaCrawler(CrawlerContract):
                     )
                     page = context.new_page()
 
-                    # Cloudflare 감지 회피: webdriver 속성 제거
+                    # 렌더링 컨텍스트 초기화
                     page.add_init_script("""
                         Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
                     """)
 
                     page.goto(self.DEAL_URL, wait_until="networkidle", timeout=30000)
 
-                    # Cloudflare challenge 대기 (최대 10초)
+                    # 페이지 렌더링 대기
                     page.wait_for_timeout(3000)
 
                     # 게시글 목록이 로드될 때까지 대기
@@ -338,20 +338,30 @@ class ArcaCrawler(CrawlerContract):
 
         # 3) 가격 추출 — deal-price 스팬에서 직접 추출
         price = None
+        price_evidence = ""
         price_el = row.select_one("span.deal-price")
         if price_el:
-            price = self._extract_price(price_el.get_text(strip=True))
+            price_evidence = price_el.get_text(" ", strip=True)
+            price = self._extract_price(price_evidence)
 
         # 폴백: 제목에서 가격 추출
         if price is None:
+            price_evidence = title
             price = self._extract_price(title)
+
+        image_el = row.select_one("img[src], img[data-src]")
+        date_el = row.select_one("time, .date, .vrow-time")
 
         return HotdealPost(
             title=title,
             url=url,
             source_community="아카라이브",
             price=price,
+            price_evidence=price_evidence if price is not None else "",
             category=category,
+            category_hints=[hint for hint in (category, sub_category) if hint],
+            image_url=urljoin(self.BASE_URL, image_el.get("src") or image_el.get("data-src")) if image_el else "",
+            period=date_el.get_text(" ", strip=True) if date_el else "",
         )
 
     def _extract_price(self, text: str) -> Optional[int]:

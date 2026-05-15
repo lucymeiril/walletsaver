@@ -97,6 +97,21 @@ def summarize_discount_run(
         "discount_percent": sum(1 for item in items if _present(item.get("discount_percent"))),
         "image_url": sum(1 for item in items if _present(item.get("image_url"))),
         "detail_url": sum(1 for item in items if _present(item.get("detail_url") or item.get("source_url") or item.get("url"))),
+        "source_url": sum(
+            1
+            for item in items
+            if _present(item.get("source_url"))
+            or _present(item.get("detail_url"))
+            or _present((item.get("attributes") or {}).get("source_url"))
+        ),
+        "period": sum(
+            1
+            for item in items
+            if _present(item.get("period"))
+            or _present(item.get("valid_from"))
+            or _present(item.get("valid_until"))
+            or _present((item.get("attributes") or {}).get("period"))
+        ),
         "unit": sum(
             1
             for item in items
@@ -105,6 +120,15 @@ def summarize_discount_run(
             or _present(item.get("package_quantity"))
             or _present(item.get("package_unit"))
             or _present(item.get("package_info"))
+        ),
+        "category_hint": sum(
+            1
+            for item in items
+            if _present(item.get("category"))
+            or _present(item.get("category_hint"))
+            or _present((item.get("attributes") or {}).get("category_hint"))
+            or _present((item.get("attributes") or {}).get("category_hints"))
+            or _present((item.get("attributes") or {}).get("category_path"))
         ),
     }
     duplicate_count = sum(count - 1 for count in Counter(_discount_key(item) for item in items).values() if count > 1)

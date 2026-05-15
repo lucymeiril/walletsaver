@@ -230,6 +230,7 @@ class TestEmartParse:
     def test_emart_next_data_preserves_source_urls_prices_and_collection(self):
         crawler = EmartCrawler()
         item = crawler._next_data_to_discount_item({
+            "itemId": "100",
             "itemName": "피코크 왕교자 700g",
             "finalPrice": "6,980",
             "originalPrice": "8,980",
@@ -237,6 +238,7 @@ class TestEmartParse:
             "itemImgUrl": "//img.ssgcdn.com/transient/mandu.jpg",
             "itemUrl": "/item/itemView.ssg?itemId=100",
             "siteName": "이마트",
+            "categoryName": "냉동/간편식",
         })
 
         assert item is not None
@@ -245,8 +247,12 @@ class TestEmartParse:
         assert item.discount_percent == pytest.approx(22.3)
         assert item.image_url == "https://img.ssgcdn.com/transient/mandu.jpg"
         assert item.detail_url == "https://emart.ssg.com/item/itemView.ssg?itemId=100"
-        assert item.category == ""
+        assert item.category == "냉동/간편식"
         assert item.attributes["collection"] == "피코크"
+        assert item.attributes["source_record_key"] == "100"
+        assert item.attributes["source_url"] == item.detail_url
+        assert item.attributes["image_url"] == item.image_url
+        assert item.attributes["category_hint"] == "냉동/간편식"
         assert item.unit == "700g"
 
 
@@ -292,12 +298,14 @@ class TestHomeplusParse:
     def test_homeplus_json_preserves_unit_and_source_fields(self):
         crawler = HomeplusCrawler()
         item = crawler._json_to_discount_item({
+            "goodsNo": "beef-1",
             "goodsNm": "호주산 척아이롤 500g",
             "salePrice": "12900",
             "originPrice": "15900",
             "unit": "500g",
             "imgUrl": "https://image.homeplus.test/beef.jpg",
             "goodsUrl": "/goods/detail?goodsNo=beef-1",
+            "categoryNm": "정육",
         })
 
         assert item is not None
@@ -305,8 +313,11 @@ class TestHomeplusParse:
         assert item.original_price == 15900
         assert item.discount_percent == pytest.approx(18.9)
         assert item.unit == "500g"
+        assert item.category == "정육"
         assert item.image_url == "https://image.homeplus.test/beef.jpg"
         assert item.detail_url == "https://www.homeplus.co.kr/goods/detail?goodsNo=beef-1"
+        assert item.attributes["source_record_key"] == "beef-1"
+        assert item.attributes["source_url"] == item.detail_url
 
 
 class TestLottemartParse:
@@ -326,6 +337,40 @@ class TestLottemartParse:
         items = await crawler.parse(MOCK_LOTTEMART_HTML)
         for item in items:
             assert item.store == "롯데마트"
+
+    def test_initial_state_preserves_count_and_source_owned_fields(self):
+        crawler = LottemartCrawler()
+        html = """
+        <html><script>window.__INITIAL_STATE__={
+          "data":{"products":{"productEntities":{
+            "sku-1":{
+              "name":"[행사] 오늘좋은 생수 2L*6입",
+              "price":{"current":{"amount":"2,990"},"original":{"amount":"3,990"}},
+              "image":{"src":"https://image.lottemart.test/water.jpg"},
+              "categoryPath":["생수/음료","생수"],
+              "size":{"value":"2L*6입"},
+              "offer":{"description":"주간특가"},
+              "url":"/products/sku-1",
+              "brand":"오늘좋은"
+            }
+          }}}
+        };</script></html>
+        """
+
+        assert crawler.count_raw_candidates(html) == 1
+        items = crawler._extract_from_initial_state(html)
+        assert len(items) == 1
+        item = items[0]
+        assert item.name == "오늘좋은 생수 2L*6입"
+        assert item.sale_price == 2990
+        assert item.original_price == 3990
+        assert item.category == "생수/음료"
+        assert item.event_name == "주간특가"
+        assert item.image_url == "https://image.lottemart.test/water.jpg"
+        assert item.detail_url == "https://lottemartzetta.com/products/sku-1"
+        assert item.attributes["source_record_key"] == "sku-1"
+        assert item.attributes["category_path"] == ["생수/음료", "생수"]
+        assert item.attributes["source_url"] == item.detail_url
 
 
 # --- JSON 파싱 테스트 ---

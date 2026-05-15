@@ -297,6 +297,36 @@ class LottemartCrawler(CrawlerContract):
         del data  # Free large JSON from memory
         return items
 
+    def count_raw_candidates(self, raw_data: str) -> int:
+        """Count source candidate rows before DiscountItem parsing/validation."""
+        idx = raw_data.find("window.__INITIAL_STATE__=")
+        if idx >= 0:
+            start = idx + len("window.__INITIAL_STATE__=")
+            script_end = raw_data.find("</script>", start)
+            if script_end >= 0:
+                try:
+                    data = json.loads(raw_data[start:script_end].rstrip().rstrip(";"))
+                    product_entities = (
+                        data.get("data", {})
+                        .get("products", {})
+                        .get("productEntities", {})
+                    )
+                    if isinstance(product_entities, dict):
+                        return len(product_entities)
+                except json.JSONDecodeError:
+                    pass
+        json_items = self._extract_json_items(raw_data)
+        if json_items:
+            return len(json_items)
+        try:
+            from bs4 import BeautifulSoup
+            soup = BeautifulSoup(raw_data, "html.parser")
+            count = len(soup.select(".product-card-container, .product-item, .goods_item, .event_item, .item_box, .prod_wrap"))
+            del soup
+            return count
+        except Exception:
+            return 0
+
     def _entity_to_discount_item(self, product: dict, product_id: str = "") -> Optional[DiscountItem]:
         """lottemartzetta productEntity → DiscountItem 변환.
 
@@ -371,6 +401,14 @@ class LottemartCrawler(CrawlerContract):
         attributes = unit_metadata.get("attributes") or {}
         if brand:
             attributes = {**attributes, "brand": brand}
+        attributes = {
+            **attributes,
+            **({"source_record_key": product_id} if product_id else {}),
+            **({"source_url": detail_url} if detail_url else {}),
+            **({"image_url": image_url} if image_url else {}),
+            **({"category_path": category_path} if category_path else {}),
+            **({"category_hint": category} if category else {}),
+        }
 
         return DiscountItem(
             name=clean_name,
@@ -620,11 +658,12 @@ class LottemartCrawler(CrawlerContract):
         if original_price and original_price > sale_price:
             discount_pct = round((1 - sale_price / original_price) * 100, 1)
 
-        image_url = product.get("imgUrl") or product.get("goodsImg", "")
+        image_url = self._absolute_url(product.get("imgUrl") or product.get("goodsImg", ""), self.BASE_URL)
         category = product.get("categoryNm") or product.get("ctgNm", "")
         detail_url = product.get("goodsUrl") or product.get("detail_url", "")
         if detail_url and not detail_url.startswith("http"):
             detail_url = f"{self.BASE_URL}{detail_url}"
+        source_record_key = str(product.get("goodsNo") or product.get("itemId") or product.get("id") or "").strip()
         raw_unit = product.get("unit") or product.get("size") or product.get("capacity") or ""
         unit_metadata = normalize_unit_metadata(
             name=name,
@@ -644,7 +683,13 @@ class LottemartCrawler(CrawlerContract):
             package_quantity=unit_metadata.get("package_quantity"),
             package_unit=unit_metadata.get("package_unit") or "",
             price_per_100g=unit_metadata.get("price_per_100g"),
-            attributes=unit_metadata.get("attributes") or {},
+            attributes={
+                **(unit_metadata.get("attributes") or {}),
+                **({"source_record_key": source_record_key} if source_record_key else {}),
+                **({"source_url": detail_url} if detail_url else {}),
+                **({"image_url": image_url} if image_url else {}),
+                **({"category_hint": category} if category else {}),
+            },
             category=category,
             event_name=product.get("eventNm", "롯데마트 할인"),
             image_url=image_url,
@@ -721,7 +766,11 @@ class LottemartCrawler(CrawlerContract):
             package_quantity=unit_metadata.get("package_quantity"),
             package_unit=unit_metadata.get("package_unit") or "",
             price_per_100g=unit_metadata.get("price_per_100g"),
-            attributes=unit_metadata.get("attributes") or {},
+            attributes={
+                **(unit_metadata.get("attributes") or {}),
+                **({"source_url": detail_url} if detail_url else {}),
+                **({"image_url": image_url} if image_url else {}),
+            },
             image_url=image_url,
             detail_url=detail_url,
             event_name="롯데마트 할인",

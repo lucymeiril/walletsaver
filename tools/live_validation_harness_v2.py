@@ -168,7 +168,7 @@ def _rows_from_container(container: Any) -> list[Any] | None:
     if isinstance(container, list):
         return container
     if isinstance(container, dict):
-        for key in ("items", "records", "raw_items"):
+        for key in ("items", "records", "raw_items", "raw_selected_items"):
             if isinstance(container.get(key), list):
                 return container[key]
     return None
@@ -180,7 +180,7 @@ def _load_input_artifact(path: Path) -> tuple[list[Any], list[dict[str, Any]]]:
     if rows is not None:
         return rows, []
     if not isinstance(data, dict):
-        raise ValueError(f"{path} must contain a JSON list or an object with items/records/raw_items/sources")
+        raise ValueError(f"{path} must contain a JSON list or an object with items/records/raw_items/raw_selected_items/sources")
 
     flattened: list[Any] = []
     source_artifacts: list[dict[str, Any]] = []
@@ -224,7 +224,7 @@ def _load_input_artifact(path: Path) -> tuple[list[Any], list[dict[str, Any]]]:
                     flattened.append(row)
         if flattened or source_artifacts:
             return flattened, source_artifacts
-    raise ValueError(f"{path} must contain a JSON list or an object with items/records/raw_items/sources")
+    raise ValueError(f"{path} must contain a JSON list or an object with items/records/raw_items/raw_selected_items/sources")
 
 def _load_json_list(path: Path) -> list[dict[str, Any]]:
     rows, _source_artifacts = _load_input_artifact(path)
@@ -654,13 +654,25 @@ def build_quality_batch_validation_summary(
             row,
             issues_by_raw.get(str(row.get("raw_record_id")), []),
             blockers_by_raw.get(str(row.get("raw_record_id")), []),
+            provider_called=bool(provider_summary.get("called")),
         )
         for row in raw_vs_final
     ]
     category_counts = {
         field: sum(1 for row in row_anomalies if row[field])
-        for field in ("category", "keyword", "unit", "price", "image")
+        for field in ("category", "keyword", "unit", "source", "price", "image")
     }
+    category_counts["package"] = sum(
+        1
+        for row in row_anomalies
+        if any(
+            "package" in str(reason).lower() or "display_unit" in str(reason).lower()
+            for reason in [*(row.get("unit") or []), *(row.get("blockers") or [])]
+        )
+    )
+    category_counts["source_owned_overwrite_risk"] = sum(
+        1 for row in row_anomalies if row.get("source_owned_overwrite_risk")
+    )
     provider_attempts = provider_summary.get("provider_calls")
     if provider_attempts is None:
         provider_attempts = 0 if not provider_summary.get("called") else None
@@ -720,10 +732,100 @@ def build_quality_batch_validation_summary(
         "anomaly_counts": category_counts,
         "rows_with_any_anomaly": sum(1 for row in row_anomalies if row["has_any_anomaly"]),
         "per_row_anomalies": row_anomalies,
+        "quality_gate": build_quality_gate_summary(
+            args=args,
+            total_input_count=total_input_count,
+            selected_count=selected_count,
+            retained_count=retained_count,
+            invalid_rows=invalid_rows,
+            retention_anomalies=retention_anomalies,
+            anomaly_counts=category_counts,
+            provider_summary=provider_summary,
+            row_anomalies=row_anomalies,
+        ),
         "honesty_notes": [
             "This validates only the bounded selected rows, not a full all-source one-shot build.",
             "DB-admin mutation is disabled unless --allow-db-admin-submit is explicit.",
         ],
+    }
+
+def build_quality_gate_summary(
+    *,
+    args: argparse.Namespace,
+    total_input_count: int,
+    selected_count: int,
+    retained_count: int,
+    invalid_rows: list[dict[str, Any]],
+    retention_anomalies: list[dict[str, Any]],
+    anomaly_counts: dict[str, int],
+    provider_summary: dict[str, Any],
+    row_anomalies: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Make scale/quality claims explicit so bounded runs cannot overclaim."""
+    blockers: list[str] = []
+    warnings: list[str] = []
+    retain_all = bool(getattr(args, "retain_all_input", False))
+    sample_only = selected_count < total_input_count
+    full_input_attempted = retain_all and selected_count == total_input_count
+    if sample_only:
+        blockers.append(
+            f"Only {selected_count} of {total_input_count} input rows were selected; this is a bounded sample, not a full-source quality pass."
+        )
+    if total_input_count != retained_count + len(invalid_rows):
+        blockers.append("Input retention accounting does not balance retained rows plus invalid rows.")
+    if invalid_rows:
+        blockers.append(f"{len(invalid_rows)} structurally unreadable rows were not retained for validation.")
+    if retention_anomalies:
+        warnings.append(
+            f"{len(retention_anomalies)} retained input anomalies require review before publication."
+        )
+
+    missing_label_count = int(provider_summary.get("missing_label_count") or 0)
+    failed_chunk_count = int(provider_summary.get("failed_chunk_count") or 0)
+    if missing_label_count:
+        blockers.append(f"{missing_label_count} rows are missing provider labels after configured attempts.")
+    if failed_chunk_count:
+        blockers.append(f"{failed_chunk_count} provider label chunks failed or were only partially validated.")
+    if provider_summary.get("partial_results") or provider_summary.get("partial_review_required"):
+        blockers.append("Provider reported partial results/review-required status.")
+    provider_validation = provider_summary.get("provider_response_validation") or {}
+    invalid_provider_rows = int(provider_validation.get("invalid_response_row_count") or 0)
+    if invalid_provider_rows:
+        blockers.append(f"{invalid_provider_rows} provider response rows could not be mapped back to source records.")
+    if not provider_summary.get("called"):
+        blockers.append("Provider labeling was skipped; AI taxonomy/keyword quality was not evaluated.")
+
+    if anomaly_counts.get("category"):
+        blockers.append(f"{anomaly_counts['category']} rows have category/taxonomy anomalies.")
+    if anomaly_counts.get("package"):
+        blockers.append(f"{anomaly_counts['package']} rows have package/display-unit anomalies.")
+    source_owned_risks = [
+        {
+            "raw_record_id": row.get("raw_record_id"),
+            "raw_title": row.get("raw_title"),
+            "risks": row.get("source_owned_overwrite_risk"),
+        }
+        for row in row_anomalies
+        if row.get("source_owned_overwrite_risk")
+    ]
+    if source_owned_risks:
+        blockers.append(
+            f"{len(source_owned_risks)} rows changed source-owned evidence fields between raw and final output."
+        )
+
+    return {
+        "accepted": not blockers,
+        "full_input_attempted": full_input_attempted,
+        "sample_only": sample_only,
+        "claim_scope": "full_input" if full_input_attempted else "bounded_sample",
+        "scale_claim": (
+            "full_input_quality_candidate"
+            if full_input_attempted and not blockers
+            else "blocked_not_full_source_quality"
+        ),
+        "blockers": blockers,
+        "warnings": warnings,
+        "source_owned_overwrite_risks": source_owned_risks,
     }
 
 def build_reviewer_retry_candidates(
@@ -866,6 +968,8 @@ def _quality_row_anomalies(
     row: dict[str, Any],
     issues: list[dict[str, Any]],
     blockers: list[str],
+    *,
+    provider_called: bool = True,
 ) -> dict[str, Any]:
     issue_codes = {str(issue.get("code")) for issue in issues if isinstance(issue, dict)}
     blocker_text = " | ".join(blockers)
@@ -878,16 +982,19 @@ def _quality_row_anomalies(
     category = issue_or_blocker({"category", "taxonomy"})
     if row.get("raw_category_id") and row.get("final_category_id") and row.get("raw_category_id") != row.get("final_category_id"):
         category.append("category_changed_raw_vs_final")
-    if not row.get("final_category_id"):
+    if (provider_called or row.get("raw_category_id")) and not row.get("final_category_id"):
         category.append("missing_final_category_id")
 
     keyword = issue_or_blocker({"keyword", "alias"})
     if row.get("raw_keywords") and row.get("final_keywords") and row.get("raw_keywords") != row.get("final_keywords"):
         keyword.append("keywords_changed_raw_vs_final")
-    if not row.get("final_keywords"):
+    if (provider_called or row.get("raw_keywords")) and not row.get("final_keywords"):
         keyword.append("missing_final_keywords")
 
     unit = issue_or_blocker({"unit", "package", "standard_unit", "100g"})
+    source = issue_or_blocker({"source"})
+    if row.get("final_source_url") in (None, ""):
+        source.append("missing_final_source_url")
     price = issue_or_blocker({"price", "discount", "hotdeal", "claim", "period"})
     if row.get("raw_price") in (None, ""):
         price.append("missing_raw_price")
@@ -907,6 +1014,7 @@ def _quality_row_anomalies(
         image.append("missing_hotdeal_final_image_url")
     if "image_url" in blocker_text and not image:
         image.append("image_blocker_present")
+    source_owned_overwrite_risk = _source_owned_overwrite_risks(row)
 
     anomaly = {
         "raw_record_id": row.get("raw_record_id"),
@@ -915,13 +1023,40 @@ def _quality_row_anomalies(
         "category": _dedupe_list(category),
         "keyword": _dedupe_list(keyword),
         "unit": _dedupe_list(unit),
+        "source": _dedupe_list(source),
         "price": _dedupe_list(price),
         "image": _dedupe_list(image),
+        "source_owned_overwrite_risk": source_owned_overwrite_risk,
         "blockers": blockers,
         "audit_issue_codes": sorted(issue_codes),
     }
-    anomaly["has_any_anomaly"] = any(anomaly[field] for field in ("category", "keyword", "unit", "price", "image"))
+    anomaly["has_any_anomaly"] = any(
+        anomaly[field]
+        for field in ("category", "keyword", "unit", "source", "price", "image", "source_owned_overwrite_risk")
+    )
     return anomaly
+
+def _source_owned_overwrite_risks(row: dict[str, Any]) -> list[str]:
+    risks: list[str] = []
+    for raw_field, final_field, label in (
+        ("raw_price", "final_sale_price", "sale_price"),
+        ("raw_original_price", "final_original_price", "original_price"),
+        ("raw_discount_percent", "final_discount_percent", "discount_percent"),
+        ("raw_source_url", "final_source_url", "source_url"),
+        ("raw_image_url", "final_image_url", "image_url"),
+    ):
+        raw_value = row.get(raw_field)
+        final_value = row.get(final_field)
+        if raw_value in (None, "") or final_value in (None, ""):
+            continue
+        if _norm_compare_value(raw_value) != _norm_compare_value(final_value):
+            risks.append(f"source_owned_{label}_changed_raw_vs_final")
+    return risks
+
+def _norm_compare_value(value: Any) -> str:
+    if isinstance(value, (int, float)):
+        return str(value)
+    return _norm(value)
 
 async def _run_live_crawler(crawler_name: str, max_pages: int, max_items: int, max_requests: int) -> dict[str, Any]:
     from crawlers.registry.registry import CrawlerRegistry

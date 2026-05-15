@@ -201,9 +201,11 @@ class QuasarzoneCrawler(CrawlerContract):
         # 2) 가격 + 카테고리 추출 — market-info-sub-txt 텍스트에서
         price = None
         category = ""
+        price_evidence = ""
         sub_txt_el = row.select_one("p.market-info-sub-txt")
         if sub_txt_el:
             sub_text = sub_txt_el.get_text(" ", strip=True)
+            price_evidence = sub_text
             price = self._extract_price(sub_text)
 
             # 카테고리 — 첫 번째 텍스트 조각 (가격 전)
@@ -213,14 +215,22 @@ class QuasarzoneCrawler(CrawlerContract):
 
         # 가격이 없으면 제목에서 추출 시도
         if price is None:
+            price_evidence = title
             price = self._extract_price(title)
+
+        image_el = row.select_one("img[src], img[data-src]")
+        date_el = row.select_one("time, .date, .timestamp")
 
         return HotdealPost(
             title=title,
             url=url,
             source_community="퀘이사존",
             price=price,
+            price_evidence=price_evidence if price is not None else "",
             category=category,
+            category_hints=[hint for hint in (category,) if hint],
+            image_url=urljoin(self.BASE_URL, image_el.get("src") or image_el.get("data-src")) if image_el else "",
+            period=date_el.get_text(" ", strip=True) if date_el else "",
         )
 
     def _extract_price(self, text: str) -> Optional[int]:

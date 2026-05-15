@@ -3,7 +3,7 @@ FM코리아 핫딜 크롤러.
 
 https://www.fmkorea.com/hotdeal 에서 핫딜 게시글을 수집한다.
 FM코리아는 대형 커뮤니티로 핫딜 전용 게시판이 활발하다.
-Cloudflare 보호가 있을 수 있어 cloudscraper 폴백을 지원한다.
+일부 응답은 축약될 수 있어 cloudscraper 기반 수집 폴백을 지원한다.
 
 데이터 구조 (2026 기준):
   <li class="li li_best2_pop0 ...">
@@ -141,10 +141,10 @@ class FmkoreaCrawler(CrawlerContract):
     def _fetch_with_fallback(self) -> Optional[str]:
         """cloudscraper → requests 순서로 시도하여 HTML을 가져온다.
 
-        FM코리아는 Cloudflare 보호가 강해서 일반 requests는 축소된 HTML만 반환한다.
+        FM코리아는 일반 requests에서 축약된 HTML을 반환할 수 있다.
         cloudscraper를 먼저 시도하고, 실패 시 requests로 폴백한다.
         """
-        # 1차: cloudscraper (Cloudflare 우회 — 전체 HTML 반환)
+        # 1차: cloudscraper 기반 수집 세션
         try:
             import cloudscraper
             scraper = cloudscraper.create_scraper()
@@ -241,12 +241,19 @@ class FmkoreaCrawler(CrawlerContract):
 
         # 가격 추출 — hotdeal_info 스팬 또는 전체 텍스트에서
         price = None
+        price_evidence = ""
+        category = ""
         info_el = li.select_one("span.hotdeal_info, div.hotdeal_info")
         if info_el:
-            price = self._extract_price(info_el.get_text(strip=True))
+            price_evidence = info_el.get_text(" ", strip=True)
+            price = self._extract_price(price_evidence)
+            category = price_evidence.split("|", 1)[0].strip()
 
         if price is None:
-            price = self._extract_price(li.get_text(" ", strip=True))
+            price_evidence = li.get_text(" ", strip=True)
+            price = self._extract_price(price_evidence)
+
+        image_el = li.select_one("img[src], img[data-src]")
 
         # 댓글 수 추출
         comment_el = li.select_one("span.comment_count, a.comment_count")
@@ -269,6 +276,10 @@ class FmkoreaCrawler(CrawlerContract):
             url=url,
             source_community="FM코리아",
             price=price,
+            price_evidence=price_evidence if price is not None else "",
+            category=category,
+            category_hints=[hint for hint in (category,) if hint],
+            image_url=urljoin(self.BASE_URL, image_el.get("src") or image_el.get("data-src")) if image_el else "",
         )
 
     def _parse_table_row(self, tr) -> Optional[HotdealPost]:
@@ -289,13 +300,17 @@ class FmkoreaCrawler(CrawlerContract):
         href = title_el.get("href", "")
         url = href if href.startswith("http") else urljoin(self.BASE_URL, href)
 
-        price = self._extract_price(tr.get_text(" ", strip=True))
+        price_evidence = tr.get_text(" ", strip=True)
+        price = self._extract_price(price_evidence)
+        image_el = tr.select_one("img[src], img[data-src]")
 
         return HotdealPost(
             title=title,
             url=url,
             source_community="FM코리아",
             price=price,
+            price_evidence=price_evidence if price is not None else "",
+            image_url=urljoin(self.BASE_URL, image_el.get("src") or image_el.get("data-src")) if image_el else "",
         )
 
     def _extract_price(self, text: str) -> Optional[int]:

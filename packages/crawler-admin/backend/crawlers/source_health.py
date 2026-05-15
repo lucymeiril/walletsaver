@@ -43,6 +43,22 @@ DEFAULT_CADENCE_BY_GROUP: dict[str, dict[str, Any]] = {
         "freshness_sla_hours": 48,
         "collection_window": "bounded_fixture_or_approved_run",
     },
+    "delivery": {
+        "expected_event_cadence": "user_location_or_service_state_dependent",
+        "freshness_sla_hours": None,
+        "collection_window": "disabled_until_bounded_diagnostics_and_context_available",
+        "timezone": "Asia/Seoul",
+        "event_family": "delivery_or_local_price_snapshot",
+        "evidence_mode": "saved_fixture_then_bounded_context_diagnostic",
+    },
+    "location": {
+        "expected_event_cadence": "user_location_or_service_state_dependent",
+        "freshness_sla_hours": None,
+        "collection_window": "disabled_until_bounded_diagnostics_and_context_available",
+        "timezone": "Asia/Seoul",
+        "event_family": "local_place_snapshot",
+        "evidence_mode": "saved_fixture_then_bounded_context_diagnostic",
+    },
 }
 
 SOURCE_CALENDAR_BY_ID: dict[str, dict[str, Any]] = {

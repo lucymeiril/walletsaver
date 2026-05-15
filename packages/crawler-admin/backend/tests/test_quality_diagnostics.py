@@ -357,8 +357,22 @@ def test_bounded_live_diagnostics_plan_is_artifact_only_and_keeps_unverified_non
     assert emart["fixture_snapshot_status"] == "available"
     assert emart["current_collection_status"] == "registered_unverified"
     assert emart["allowed_live"] is False
-    assert "current_collection_status:registered_unverified" in emart["blockers"]
+    assert "current_collection_status:registered_unverified" not in emart["blockers"]
     assert plan["source_coverage"]["collecting_count"] == 0
+
+    live_plan = build_bounded_live_diagnostics_plan(
+        {
+            "emart": {
+                "config": {"name": "emart", "source_id": "emart", "live_ready": True},
+                "path": "crawlers\\marts\\emart",
+                "module_path": "crawlers.marts.emart.crawler",
+            }
+        },
+        fixture_snapshots={"emart": "fixtures\\emart.html"},
+        allow_live=True,
+    )
+    live_emart = {row["source_id"]: row for row in live_plan["sources"]}["emart"]
+    assert live_emart["allowed_live"] is True
 
 
 def test_high_priority_non_marketplace_fixtures_produce_bounded_quality_evidence():
@@ -367,22 +381,22 @@ def test_high_priority_non_marketplace_fixtures_produce_bounded_quality_evidence
     registry.discover()
     fixture_by_source = {
         source_id: (NON_MARKETPLACE_FIXTURE_DIR / f"{source_id}.html").read_text(encoding="utf-8")
-        for source_id in ("emart", "homeplus", "algumon")
+        for source_id in ("emart", "homeplus", "lottemart", "algumon")
     }
 
     result = _run(
         run_bounded_crawler_diagnostics(
             registry,
             fixture_by_source=fixture_by_source,
-            crawler_ids=["emart", "homeplus", "algumon"],
+            crawler_ids=["emart", "homeplus", "lottemart", "algumon"],
         )
     )
     rows = {row["crawler_id"]: row for row in result["crawlers"]}
 
     assert result["live_network_default"] == "disabled"
     assert result["live_enabled"] is False
-    assert result["quality_evidence_count"] == 3
-    for source_id in ("emart", "algumon"):
+    assert result["quality_evidence_count"] == 4
+    for source_id in ("algumon",):
         row = rows[source_id]
         counts = row["quality_evidence"]["counts"]
         coverage = row["quality_evidence"]["critical_field_coverage"]
@@ -413,6 +427,37 @@ def test_high_priority_non_marketplace_fixtures_produce_bounded_quality_evidence
         assert health["count_drop"]["status"] == "within_baseline"
         assert health["next_action_state"]["state"] == "monitor"
         assert health["live_network_default"] == "disabled"
+
+    for source_id in ("emart", "homeplus", "lottemart"):
+        row = rows[source_id]
+        counts = row["quality_evidence"]["counts"]
+        critical_coverage = row["quality_evidence"]["critical_field_coverage"]
+        field_coverage = row["quality_evidence"]["field_coverage"]
+        health = row["source_health_evidence"]
+        readiness = health["source_readiness"]
+
+        assert row["quality_evidence"]["has_quality_evidence"] is True
+        assert row["quality_evidence"]["collection_status"] == "registered_unverified"
+        assert row["quality_evidence"]["can_claim_collecting"] is False
+        assert counts["source_raw"] > 0
+        assert counts["parsed"] > 0
+        assert counts["valid"] > 0
+        assert critical_coverage["name"] == 1.0
+        assert critical_coverage["sale_price"] == 1.0
+        assert critical_coverage["detail_url"] == 1.0
+        assert field_coverage["source_url"] == 1.0
+        assert field_coverage["image_url"] == 1.0
+        assert "period" in field_coverage
+        assert field_coverage["unit"] == 1.0
+        assert "category_hint" in field_coverage
+        assert row["operator_diagnostics"][0]["code"] == "live_ready_false_registered_unverified"
+        assert row["source_drift_readiness"]["ready"] is True
+        assert health["status"] == "registered_unverified"
+        assert health["counts"]["source_raw"] == counts["source_raw"]
+        assert health["field_coverage_dashboard"]["status"] == "ok"
+        assert health["next_action_state"]["state"] == "await_bounded_live_diagnostics_approval"
+        assert readiness["stage"] == "fixture_passing"
+        assert readiness["bounded_diagnostic_ready"] is False
 
     homeplus = rows["homeplus"]
     homeplus_counts = homeplus["quality_evidence"]["counts"]
@@ -456,7 +501,19 @@ def test_high_priority_non_marketplace_fixtures_produce_bounded_quality_evidence
     assert homeplus_plan["max_requests"] == 1
     assert homeplus_plan["max_pages"] == 1
     assert homeplus_plan["timeout_seconds"] == 20
-    assert "current_collection_status:registered_unverified" in homeplus_plan["blockers"]
+    assert "current_collection_status:registered_unverified" not in homeplus_plan["blockers"]
+
+    live_plan = build_bounded_live_diagnostics_plan(
+        registry,
+        quality_by_source={"homeplus": homeplus["quality_details"]},
+        fixture_snapshots={
+            "homeplus": "tests\\fixtures\\non_marketplace_crawlers\\homeplus.html",
+        },
+        allow_live=True,
+    )
+    live_homeplus_plan = {row["source_id"]: row for row in live_plan["sources"]}["homeplus"]
+    assert live_homeplus_plan["allowed_live"] is True
+    assert live_homeplus_plan["approval_needed"] is True
 
 
 def test_marketplace_skeleton_fixtures_are_diagnostics_ready_but_not_db_mutation_ready():
@@ -600,9 +657,14 @@ def test_source_readiness_distinguishes_fixture_and_bounded_diagnostic_ready_mar
     fixture_row = {row["source_id"]: row for row in fixture_only["sources"]}["coupang"]
 
     assert fixture_row["collection_status"] == "registered_unverified"
+    assert fixture_row["gap_classification"] == "fixture_passing"
     assert fixture_row["source_readiness"]["stage"] == "fixture_passing"
     assert fixture_row["source_readiness"]["fixture_passed"] is True
     assert fixture_row["source_readiness"]["live_approved"] is False
+    assert fixture_row["source_completion_gate"]["stage"] == "fixture_passing"
+    assert fixture_row["source_completion_gate"]["blocks_completion_claim"] is True
+    assert "bounded_live_diagnostics_missing" in fixture_row["source_completion_gate"]["missing_evidence"]
+    assert "operator_approval_missing" in fixture_row["source_completion_gate"]["missing_evidence"]
 
     bounded_config = {
         **base_config,
@@ -625,4 +687,12 @@ def test_source_readiness_distinguishes_fixture_and_bounded_diagnostic_ready_mar
     assert bounded_row["source_readiness"]["stage"] == "bounded_diagnostic_ready"
     assert bounded_row["source_readiness"]["bounded_diagnostic_ready"] is True
     assert "live_readiness_gate:operator_approval_missing" in bounded_row["source_readiness"]["blockers"]
+    assert bounded_row["source_completion_gate"]["stage"] == "bounded_diagnostic_ready"
+    assert bounded_row["source_completion_gate"]["blocks_completion_claim"] is True
+    assert bounded_row["source_completion_gate"]["required_evidence"] == [
+        "operator_approval_recorded",
+        "live_ready_true_recorded_for_live_service_claim",
+        "no_db_ai_review_completed_before_db_mutation",
+    ]
+    assert "operator_approval_missing" in bounded_row["source_completion_gate"]["missing_evidence"]
     assert bounded_row["can_claim_collecting"] is False

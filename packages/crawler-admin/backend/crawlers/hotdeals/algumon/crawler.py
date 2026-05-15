@@ -169,6 +169,7 @@ class AlgumonCrawler(CrawlerContract):
                                 url=url,
                                 source_community="알구몬",
                                 price=price,
+                                price_evidence=title if price is not None else "",
                             ))
             except (json.JSONDecodeError, KeyError):
                 continue
@@ -245,12 +246,19 @@ class AlgumonCrawler(CrawlerContract):
 
         # 3) 소스 커뮤니티 추출
         source = self._extract_source(card)
+        image_el = card.select_one("img[src], img[data-src]")
+        date_el = card.select_one("time, .time, .timestamp")
 
         return HotdealPost(
             title=title,
             url=url,
             source_community=source,
             price=price,
+            price_evidence=price_text if price_el and price is not None else (card_text if price is not None else ""),
+            category=source,
+            category_hints=[source] if source else [],
+            image_url=f"{self.BASE_URL}{image_el.get('src') or image_el.get('data-src')}" if image_el and not (image_el.get("src") or image_el.get("data-src")).startswith("http") else ((image_el.get("src") or image_el.get("data-src")) if image_el else ""),
+            period=date_el.get_text(" ", strip=True) if date_el else "",
         )
 
     def _extract_price(self, text: str) -> Optional[int]:

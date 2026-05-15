@@ -18,15 +18,30 @@ def test_source_coverage_reports_registered_and_missing_one_shot_sources():
     assert rows["lottemart"]["status"] == "registered"
     assert rows["algumon"]["status"] == "registered"
     assert rows["arca_hotdeal"]["status"] == "registered"
+    assert rows["ppomppu"]["status"] == "registered"
+    assert rows["fmkorea"]["status"] == "registered"
+    assert rows["clien"]["status"] == "registered"
+    assert rows["quasarzone"]["status"] == "registered"
+    assert rows["cocodal"]["status"] == "registered"
     assert rows["opinet"]["status"] == "registered"
+    for community in ["algumon", "arca_hotdeal", "ppomppu", "fmkorea", "clien", "quasarzone"]:
+        assert rows[community]["readiness_status"] == "registered-unverified"
+    assert rows["cocodal"]["readiness_status"] == "blocked-by-key/service"
+    assert rows["opinet"]["readiness_status"] == "blocked-by-key/service"
     assert rows["musinsa"]["status"] == "registered"
     assert rows["giordano"]["status"] == "registered"
     assert rows["uniqlo"]["status"] == "registered"
+    assert rows["baemin"]["status"] == "registered"
+    assert rows["coupangeats"]["status"] == "registered"
+    assert rows["yogiyo"]["status"] == "registered"
+    assert rows["naver_place"]["status"] == "registered"
 
     for marketplace in ["coupang", "naver_store", "gmarket", "11st", "aliexpress"]:
         assert rows[marketplace]["status"] == "registered"
         assert rows[marketplace]["group"] == "marketplace"
         assert rows[marketplace]["registered_name"] == marketplace
+        assert rows[marketplace]["readiness_status"] == "skeleton-only"
+        assert rows[marketplace]["gap_classification"] == "skeleton_only"
         assert rows[marketplace]["collection_status"] == "registered_unverified"
         assert rows[marketplace]["can_claim_collecting"] is False
         assert rows[marketplace]["can_claim_live_ready"] is False
@@ -37,6 +52,17 @@ def test_source_coverage_reports_registered_and_missing_one_shot_sources():
         assert rows[marketplace]["live_readiness_gate"]["passed"] is False
         assert rows[marketplace]["live_readiness_gate"]["safe_db_mutation_allowed"] is False
         assert rows[marketplace]["live_readiness_gate"]["downstream_flow"]["next_stage"] == "saved_fixture_diagnostics"
+        assert rows[marketplace]["source_readiness"]["stage"] == "skeleton_only"
+        assert rows[marketplace]["source_completion_gate"]["stage"] == "skeleton_only"
+        assert rows[marketplace]["source_completion_gate"]["passed"] is False
+        assert rows[marketplace]["source_completion_gate"]["blocks_completion_claim"] is True
+        assert rows[marketplace]["source_completion_gate"]["required_evidence"] == [
+            "fixture_contract_passed",
+            "bounded_live_diagnostics_passed",
+            "bounded_run_limits_recorded",
+            "operator_approval_recorded",
+        ]
+        assert "bounded_live_diagnostics_missing" in rows[marketplace]["source_completion_gate"]["missing_evidence"]
         assert any(
             "no-DB AI review" in action
             for action in rows[marketplace]["live_readiness_gate"]["operator_next_actions"]
@@ -57,6 +83,8 @@ def test_source_coverage_reports_registered_and_missing_one_shot_sources():
     assert "marketplace" not in coverage["missing_by_group"]
     assert "registered_unverified means the plugin exists" in coverage["collection_claim_policy"]
     assert "Marketplace skeletons additionally require the fixture contract plus bounded diagnostics evidence" in coverage["collection_claim_policy"]
+    assert coverage["gap_classification_counts"]["skeleton_only"] == 5
+    assert coverage["gap_classification_counts"]["blocked_by_external_key/service"] >= 5
     assert {
         rows[source_id]["registered_name"]
         for source_id in ["coupang", "naver_store", "gmarket", "11st", "aliexpress"]
@@ -68,8 +96,26 @@ def test_source_coverage_reports_registered_and_missing_one_shot_sources():
         "aliexpress",
     }
     assert rows["emart"]["collection_status"] == "registered_unverified"
-    assert rows["emart"]["operator_diagnostics"][0]["code"] == "dry_run_quality_missing"
+    assert rows["emart"]["gap_classification"] == "registered_unverified"
+    assert rows["emart"]["source_readiness"]["stage"] == "registered_unverified"
+    assert rows["emart"]["source_completion_gate"]["classification"] == "registered_unverified"
+    assert rows["emart"]["source_completion_gate"]["blocks_completion_claim"] is True
+    assert "quality_evidence_missing" in rows["emart"]["source_completion_gate"]["missing_evidence"]
+    assert rows["emart"]["live_readiness_gate"]["required"] is True
+    assert rows["emart"]["can_claim_live_ready"] is False
+    assert rows["emart"]["operator_diagnostics"][0]["code"] == "mart3_live_readiness_gate_blocked"
+    assert "dry_run_quality_missing" in [diag["code"] for diag in rows["emart"]["operator_diagnostics"]]
+    assert "live_collection_disabled" in [diag["code"] for diag in rows["emart"]["operator_diagnostics"]]
+    assert rows["emart"]["mart3_source_collection_readiness"]["status"] == "source_collection_blocked"
+    assert "source_collection_diagnostics_missing" in rows["emart"]["mart3_source_collection_readiness"]["blockers"]
     assert rows["emart"]["can_claim_collecting"] is False
+    assert rows["opinet"]["gap_classification"] == "blocked_by_external_key/service"
+    assert rows["opinet"]["source_readiness"]["stage"] == "blocked_by_external_key/service"
+    assert rows["opinet"]["source_completion_gate"]["classification"] == "blocked_by_external_key/service"
+    assert rows["opinet"]["source_completion_gate"]["blocks_completion_claim"] is True
+    assert "external_key_service_or_location_prerequisite_missing" in rows["opinet"]["source_completion_gate"]["missing_evidence"]
+    for service_source in ["baemin", "coupangeats", "yogiyo", "naver_place"]:
+        assert rows[service_source]["gap_classification"] == "blocked_by_external_key/service"
 
 
 def test_delivery_coupang_eats_does_not_satisfy_coupang_marketplace():
@@ -108,17 +154,142 @@ def test_source_coverage_distinguishes_registered_from_collecting_with_mock_qual
     rows = {row["source_id"]: row for row in coverage["sources"]}
 
     assert coverage["registered_count"] == 2
-    assert coverage["collecting_count"] == 1
-    assert coverage["registered_not_collecting_count"] == 1
-    assert rows["emart"]["collection_status"] == "collecting"
-    assert rows["emart"]["can_claim_collecting"] is True
+    assert coverage["collecting_count"] == 0
+    assert coverage["registered_not_collecting_count"] == 2
+    assert rows["emart"]["collection_status"] == "registered_unverified"
+    assert rows["emart"]["can_claim_collecting"] is False
     assert rows["emart"]["quality_evidence"]["has_quality_evidence"] is True
     assert rows["emart"]["quality_evidence"]["counts"]["valid"] == 1
-    assert "currently collecting" in rows["emart"]["next_action"]
+    assert rows["emart"]["mart3_source_collection_readiness"]["status"] == "fixture_diagnostics_ready"
+    assert "live_ready=true" in rows["emart"]["next_action"]
     assert rows["homeplus"]["collection_status"] == "failing"
-    assert rows["homeplus"]["operator_diagnostics"][0]["code"] == "parse_filtered_all_raw_rows"
+    assert "parse_filtered_all_raw_rows" in [diag["code"] for diag in rows["homeplus"]["operator_diagnostics"]]
     assert "parser drift" in rows["homeplus"]["next_action"]
     assert rows["homeplus"]["quality_evidence"]["zero_result_stage"] == "parse_filtered_all_raw_rows"
+
+
+def test_mart3_readiness_separates_fixture_diagnostics_from_live_service_ready():
+    quality = summarize_discount_run(
+        [{"name": "양파 1kg", "sale_price": 3980, "detail_url": "https://emart.example/a"}],
+        raw_count=1,
+        source_raw_count=1,
+        strategy_used="bounded-fixture",
+        live_enabled=False,
+        fixture_available=True,
+    )
+    coverage = build_source_coverage(
+        {
+            "emart": {
+                "config": {
+                    "name": "emart",
+                    "category": "mart",
+                    "live_ready": False,
+                    "live_readiness": {
+                        "bounded_diagnostics": {
+                            "status": "required_before_live_ready",
+                            "run_limits": {"max_requests": 3, "max_pages": 1, "timeout_seconds": 20},
+                        }
+                    },
+                },
+                "path": "crawlers/marts/emart",
+                "module_path": "crawlers.marts.emart.crawler",
+            }
+        },
+        quality_by_source={"emart": quality},
+    )
+
+    readiness = {row["source_id"]: row for row in coverage["sources"]}["emart"]["mart3_source_collection_readiness"]
+    assert readiness["schema"] == "mart3_source_collection_readiness.v1"
+    assert readiness["status"] == "fixture_diagnostics_ready"
+    assert readiness["fixture_diagnostics_passed"] is True
+    assert readiness["bounded_diagnostic_ready"] is False
+    assert readiness["live_ready"] is False
+    assert readiness["live_service_ready"] is False
+    assert readiness["required_evidence_fields"] == [
+        "name",
+        "sale_price",
+        "detail_url",
+        "source_url",
+        "image_url",
+        "period",
+        "unit",
+        "category_hint",
+    ]
+    assert readiness["field_coverage"]["source_url"] == 1.0
+    assert readiness["field_coverage"]["period"] == 0
+    assert "live_ready_not_approved" in readiness["blockers"]
+    assert "bounded_live_diagnostics_missing" in readiness["blockers"]
+    assert "bounded_evidence_id_missing" in readiness["blockers"]
+    assert "operator_approval_missing" in readiness["blockers"]
+    assert "fixture passing does not equal live-service readiness" in readiness["claim_policy"]
+
+
+def test_mart3_readiness_distinguishes_bounded_diagnostic_ready_from_live_ready():
+    quality = summarize_discount_run(
+        [{
+            "name": "양파 1kg",
+            "sale_price": 3980,
+            "detail_url": "https://emart.example/a",
+            "image_url": "https://emart.example/a.jpg",
+            "unit": "1kg",
+            "category": "채소",
+        }],
+        raw_count=1,
+        source_raw_count=1,
+        strategy_used="bounded-diagnostic",
+        live_enabled=False,
+        fixture_available=True,
+    )
+    base_plugin = {
+        "config": {
+            "name": "emart",
+            "category": "mart",
+            "live_ready": False,
+            "live_readiness": {
+                "fixture_contract_status": "passed",
+                "bounded_diagnostics": {
+                    "status": "passed",
+                    "evidence_id": "bounded:emart:2025-01-01",
+                    "captured_at": "2025-01-01T00:00:00Z",
+                    "run_limits": {"max_requests": 3, "max_pages": 1, "timeout_seconds": 20},
+                },
+            },
+        },
+        "path": "crawlers/marts/emart",
+        "module_path": "crawlers.marts.emart.crawler",
+    }
+
+    bounded = build_source_coverage({"emart": base_plugin}, quality_by_source={"emart": quality})
+    bounded_row = {row["source_id"]: row for row in bounded["sources"]}["emart"]
+    bounded_readiness = bounded_row["mart3_source_collection_readiness"]
+
+    assert bounded_row["can_claim_live_ready"] is False
+    assert bounded_readiness["status"] == "bounded_diagnostic_ready"
+    assert bounded_readiness["bounded_diagnostic_ready"] is True
+    assert bounded_readiness["live_ready"] is False
+    assert "live_ready_not_approved" in bounded_readiness["blockers"]
+    assert "operator_approval_missing" in bounded_readiness["blockers"]
+
+    live_plugin = {
+        **base_plugin,
+        "config": {
+            **base_plugin["config"],
+            "live_ready": True,
+            "live_readiness": {
+                **base_plugin["config"]["live_readiness"],
+                "operator_approval": {"status": "approved"},
+            },
+        },
+    }
+    live = build_source_coverage({"emart": live_plugin}, quality_by_source={"emart": quality})
+    live_row = {row["source_id"]: row for row in live["sources"]}["emart"]
+    live_readiness = live_row["mart3_source_collection_readiness"]
+
+    assert live_row["live_readiness_gate"]["passed"] is True
+    assert live_row["can_claim_live_ready"] is True
+    assert live_readiness["status"] == "live_ready"
+    assert live_readiness["live_ready"] is True
+    assert live_readiness["blockers"] == []
 
 
 def test_marketplace_live_ready_true_without_required_gate_evidence_is_blocked():
@@ -256,3 +427,59 @@ def test_marketplace_can_claim_collecting_only_after_full_readiness_gate_passes(
     assert row["can_claim_live_ready"] is True
     assert row["collection_status"] == "collecting"
     assert row["can_claim_collecting"] is True
+    assert row["source_completion_gate"]["passed"] is False
+    assert "no_db_ai_review_missing" in row["source_completion_gate"]["missing_evidence"]
+
+
+def test_source_completion_requires_no_db_ai_review_after_live_readiness_gate():
+    quality_by_source = {
+        "coupang": summarize_discount_run(
+            [{"name": "fixture", "sale_price": 1000, "detail_url": "https://example.test/item"}],
+            raw_count=1,
+            source_raw_count=1,
+            strategy_used="bounded-diagnostic",
+            live_enabled=True,
+            fixture_available=True,
+        )
+    }
+
+    coverage = build_source_coverage(
+        {
+            "coupang": {
+                "config": {
+                    "name": "coupang",
+                    "source_group": "marketplace",
+                    "live_ready": True,
+                    "parser_contract": "marketplace_skeleton.v1",
+                    "fixture_contract": "marketplace_skeleton_fixture_contracts.v1",
+                    "live_readiness": {
+                        "status": "live_ready",
+                        "fixture_contract_status": "passed",
+                        "bounded_diagnostics": {
+                            "status": "passed",
+                            "evidence_id": "diagnostic-run-123",
+                            "captured_at": "2025-01-01T00:00:00Z",
+                            "run_limits": {
+                                "max_requests": 3,
+                                "max_pages": 1,
+                                "timeout_seconds": 15,
+                            },
+                        },
+                        "operator_approval": {"status": "approved"},
+                        "no_db_ai_review": {
+                            "status": "completed",
+                            "artifact_id": "no-db-ai-review-123",
+                        },
+                    },
+                },
+                "path": "crawlers/shopping/coupang",
+                "module_path": "crawlers.shopping.coupang.crawler",
+            }
+        },
+        quality_by_source=quality_by_source,
+    )
+    row = {row["source_id"]: row for row in coverage["sources"]}["coupang"]
+
+    assert row["live_readiness_gate"]["passed"] is True
+    assert row["source_completion_gate"]["passed"] is True
+    assert row["source_completion_gate"]["can_claim_source_complete"] is True

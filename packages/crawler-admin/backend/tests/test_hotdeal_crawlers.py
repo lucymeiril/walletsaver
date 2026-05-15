@@ -270,6 +270,8 @@ class TestPpomppuParse:
         assert isinstance(first, HotdealPost)
         assert len(first.title) >= 3
         assert first.url
+        assert first.price_evidence
+        assert first.category_hints
         assert first.source_community == "뽐뿌"
 
     def test_parse_extracts_price(self, crawler):
@@ -322,6 +324,8 @@ class TestFmkoreaParse:
         assert isinstance(first, HotdealPost)
         assert len(first.title) >= 3
         assert first.url
+        assert first.price_evidence
+        assert first.category_hints
         assert first.source_community == "FM코리아"
 
     def test_parse_extracts_price(self, crawler):
@@ -361,6 +365,8 @@ class TestClienParse:
         assert isinstance(first, HotdealPost)
         assert len(first.title) >= 3
         assert first.url
+        assert first.price_evidence
+        assert first.category_hints
         assert first.source_community == "클리앙"
 
     def test_parse_extracts_price(self, crawler):

@@ -10,3 +10,10 @@ status: inactive
 note: "cocodal.in, cocodal.co.kr 모두 접속 불가. 향후 사이트 복구 시 활성화."
 output:
   model: HotdealPost
+source_id: cocodal
+source_group: hotdeal
+live_ready: false
+live_readiness:
+  status: blocked_by_key_or_service
+  reason: "Community source currently unavailable; keep connector registered for diagnostics only until service returns and fixtures pass."
+connector_contract: hotdeal_community_connector.v1
