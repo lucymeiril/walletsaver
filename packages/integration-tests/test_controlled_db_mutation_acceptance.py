@@ -16,8 +16,9 @@ from typing import Any
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, func, select
+from sqlalchemy.engine import URL
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import StaticPool
+from sqlalchemy.pool import NullPool, StaticPool
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 AI_BACKEND = ROOT / "packages" / "ai-admin" / "backend"
@@ -106,6 +107,19 @@ def _session_factory():
     )
     Base.metadata.create_all(engine)
     return sessionmaker(bind=engine)
+
+
+def _local_db_file_session_factory(tmp_path: Path):
+    db_path = tmp_path / "walletsavior-real-db-mutation-acceptance.sqlite"
+    db_url = URL.create("sqlite", database=str(db_path))
+    engine = create_engine(
+        db_url,
+        connect_args={"check_same_thread": False},
+        poolclass=NullPool,
+    )
+    Base.metadata.create_all(engine)
+    assert db_path.is_file()
+    return sessionmaker(bind=engine), engine, db_path, str(db_url)
 
 
 def _patch_db_admin_sessions(monkeypatch, Session) -> None:
@@ -292,5 +306,103 @@ def test_controlled_ai_admin_payload_mutates_db_admin_and_reads_normalized_model
         assert listing["best_comparable_price"] == 1980
         assert listing["offer_events"][0]["comparable_price"] == 1980
         assert listing["offer_events"][0]["display_state"] == "comparable"
+    finally:
+        client._walletsavior_restore_settings()  # type: ignore[attr-defined]
+
+
+def test_local_db_file_ai_admin_payload_persists_after_app_and_session_boundary(monkeypatch, tmp_path):
+    Session, engine, db_path, db_url = _local_db_file_session_factory(tmp_path)
+    assert db_path.name == "walletsavior-real-db-mutation-acceptance.sqlite"
+    assert ":memory:" not in db_url and db_url != "sqlite://"
+    assert db_path.is_file()
+
+    api_key = "controlled-local-db-file-admin-key"
+    client = _db_admin_client(monkeypatch, Session, api_key)
+    artifact_label = f"local DB file mutation acceptance artifact: {db_path.name}"
+    try:
+        with Session() as session:
+            assert session.scalar(select(func.count()).select_from(Product)) == 0
+            assert session.scalar(select(func.count()).select_from(DiscountHistory)) == 0
+            assert session.scalar(select(func.count()).select_from(NormalizedCanonicalProduct)) == 0
+
+        backup_response = client.get("/api/admin/backups", headers=_headers(api_key))
+        assert backup_response.status_code == 200, backup_response.text
+        assert backup_response.json()["backups"][0]["filename"] == "controlled-before-mutation.sqlite"
+
+        payload = _ai_admin_payload()
+        item = payload["items"][0]
+        normalized = item["raw_data"]["normalized"]
+        assert normalized["source_owned_fields"]["price"] == 1980
+        assert normalized["offer_event"]["price"] == 1980
+        assert normalized["source_listing"]["source_url"] == "https://emart.example/controlled/tofu"
+        assert normalized["source_listing"]["image_url"] == "https://emart.example/controlled/tofu.jpg"
+        assert normalized["offer_event"]["audit_provenance"]["ignored_source_owned_ai_fields"]["sale_price"] == 777
+        assert "local DB file" in artifact_label
+
+        submit_response = client.post(
+            "/api/ingestions",
+            json=json.loads(json.dumps(payload, ensure_ascii=False, default=str)),
+            headers=_headers(api_key),
+        )
+        assert submit_response.status_code == 200, submit_response.text
+        ingestion_id = submit_response.json()["id"]
+
+        with Session() as session:
+            queued = session.get(PendingIngestion, ingestion_id)
+            assert queued is not None
+            assert queued.status.value == "pending"
+            assert session.scalar(select(func.count()).select_from(Product)) == 0
+
+        approve_response = client.post(
+            f"/api/ingestions/{ingestion_id}/ai-safe-final-approve",
+            json={"action": "approve", "notes": artifact_label},
+            headers=_headers(api_key),
+        )
+        assert approve_response.status_code == 200, approve_response.text
+        approved = approve_response.json()
+        assert approved["status"] == "approved"
+        assert approved["saved"] == 1
+        assert approved["public_db_verification"]["verified"] is True
+        assert approved["rollback_supported"] is True
+        assert approved["re_review_supported"] is True
+        assert approved["raw_evidence_retained"] is True
+
+        client.close()
+        engine.dispose()
+
+        reopened_engine = create_engine(
+            URL.create("sqlite", database=str(db_path)),
+            connect_args={"check_same_thread": False},
+            poolclass=NullPool,
+        )
+        ReopenedSession = sessionmaker(bind=reopened_engine)
+        try:
+            with ReopenedSession() as session:
+                assert session.get(PendingIngestion, ingestion_id).status.value == "approved"
+                assert session.scalar(select(func.count()).select_from(Product)) == 1
+                assert session.scalar(select(func.count()).select_from(DiscountHistory)) == 1
+                assert session.scalar(select(func.count()).select_from(NormalizedCanonicalProduct)) == 1
+                assert session.scalar(select(func.count()).select_from(NormalizedProductVariant)) == 1
+                assert session.scalar(select(func.count()).select_from(NormalizedSourceListing)) == 1
+                assert session.scalar(select(func.count()).select_from(NormalizedOfferEvent)) == 1
+                assert session.scalar(select(func.count()).select_from(NormalizedWeekBucket)) == 1
+                assert session.scalar(select(func.count()).select_from(NormalizedOfferWeekLink)) == 1
+
+                history = session.execute(select(DiscountHistory)).scalar_one()
+                assert history.price == 1980
+                assert history.source_url == "https://emart.example/controlled/tofu"
+                assert history.raw_data["normalized"]["source_listing"]["source_url"] == "https://emart.example/controlled/tofu"
+                assert history.raw_data["normalized"]["source_listing"]["image_url"] == "https://emart.example/controlled/tofu.jpg"
+
+                model = get_normalized_price_comparison(session, category_id=item["category_id"])
+
+            assert model["products"][0]["canonical_name"] == "풀무원 국산콩 두부"
+            listing = model["products"][0]["variants"][0]["source_listings"][0]
+            assert listing["source_name"] == "emart"
+            assert listing["best_comparable_price"] == 1980
+            assert listing["offer_events"][0]["comparable_price"] == 1980
+            assert listing["offer_events"][0]["display_state"] == "comparable"
+        finally:
+            reopened_engine.dispose()
     finally:
         client._walletsavior_restore_settings()  # type: ignore[attr-defined]

@@ -120,6 +120,18 @@ in-memory DB-admin mutation, and normalized/public read verification. It writes
 an artifact but does not prove live crawler, live AI provider, or real DB-admin
 network success.
 
+Strict real-readiness command shape from repository root:
+
+```powershell
+py tools\one_shot_db_build_orchestrator.py --real-readiness --crawler-batch-json <source.json> --allow-live-ai-provider --allow-live-ai-labeling --provider-id <provider> --allow-db-mutation
+```
+
+Use `--allow-live-website --website-url <url>` to require semantic website API
+verification against DB-admin `public_db_verification` rows. A plain HTTP 200
+response is not enough. In `--real-readiness`, missing source input, live AI
+labeling, provider calls, DB-admin preflight/submit/final approve, or requested
+website verification blocks the run instead of falling back to fixture/stub.
+
 ```powershell
 Push-Location packages\db-admin\backend
 py -m pytest tests\test_normalized_mart3_slice.py tests\test_models.py tests\test_ingestion_insert.py tests\test_price_calc.py -q

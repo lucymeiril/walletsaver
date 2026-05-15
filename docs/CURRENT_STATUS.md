@@ -87,6 +87,19 @@ Passed: fixture/stub/local in-memory rehearsal artifact reported
 `overall_status=success`; this is not live crawler, live AI provider, or real
 DB-admin network success.
 
+Strict live operator readiness now uses an explicit gate and never downgrades to
+fixture/stub:
+
+```powershell
+py tools\one_shot_db_build_orchestrator.py --real-readiness --crawler-batch-json <source.json> --allow-live-ai-provider --allow-live-ai-labeling --provider-id <provider> --allow-db-mutation
+```
+
+Add `--allow-live-website --website-url <url>` when website serving must be
+verified. The website leg now requires semantic API round-trip evidence from
+DB-admin `public_db_verification` rows; an HTTP 200 response alone blocks rather
+than passing. The artifact reports each real leg, provider calls, DB
+submit/final approve evidence, website verification, and exact blockers.
+
 ## Risks
 
 - Accidentally inventing prices from AI labels or discount text would destroy trust.

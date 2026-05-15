@@ -16,6 +16,7 @@ def _args(tmp_path: Path, **overrides) -> Namespace:
     defaults = {
         "artifact_dir": tmp_path,
         "local_empty_db_rehearsal": False,
+        "real_readiness": False,
         "allow_live_crawler": False,
         "crawler_batch_json": None,
         "allow_live_ai_provider": False,
@@ -315,22 +316,102 @@ def test_live_ai_readiness_passed_blocks_without_stub_live_candidate(tmp_path: P
     assert db_phase["status"] == "skipped"
     assert "No candidate item available." in db_phase["blockers"]
 
-def test_live_website_with_url_is_skipped_not_live_verified(tmp_path: Path) -> None:
+def test_live_website_with_url_blocks_without_db_published_rows(tmp_path: Path) -> None:
     artifact = orchestrator.run_orchestrator(
         _args(
             tmp_path,
             allow_live_website=True,
             website_url="https://walletsavior.example",
-        )
+        ),
+        website_verifier=lambda url, expected_rows=None: {
+            "attempted": True,
+            "verified": False,
+            "semantic_verified": False,
+            "status": "blocked",
+            "status_code": 200,
+            "final_url": url,
+            "expected_row_count": len(expected_rows or []),
+            "blockers": ["Website URL responded, but no DB-admin public_db_verification rows were available."],
+        },
     )
 
     website_phase = artifact["phases"][3]
     assert website_phase["mode"] == "live"
-    assert website_phase["status"] == "skipped"
+    assert website_phase["status"] == "blocked"
     assert website_phase["details"]["website_url_present"] is True
-    assert website_phase["details"]["live_website_verification_invoked"] is False
-    assert website_phase["details"]["verification_scope"] == "not_implemented_not_live_verified"
-    assert any("not implemented/invoked" in warning for warning in website_phase["warnings"])
+    assert website_phase["details"]["live_website_verification_invoked"] is True
+    assert website_phase["details"]["expected_db_published_rows"] == 0
+    assert artifact["website_verification"]["semantic_verified"] is False
+    assert artifact["live_integrations_invoked"]["website_verification"] is True
+
+def test_website_verifier_checks_db_published_product_detail(monkeypatch) -> None:
+    class Response:
+        status = 200
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return False
+
+        def read(self):
+            return json.dumps(
+                {
+                    "data": {
+                        "id": 42,
+                        "price": 1980,
+                        "source_url": "https://emart.example/live-tofu",
+                    }
+                }
+            ).encode("utf-8")
+
+        def geturl(self):
+            return "https://walletsavior.example/api/products/42"
+
+        def getcode(self):
+            return 200
+
+    requested_urls = []
+
+    def fake_urlopen(request, timeout):
+        requested_urls.append(request.full_url)
+        return Response()
+
+    monkeypatch.setattr(orchestrator.urllib.request, "urlopen", fake_urlopen)
+
+    verification = orchestrator._verify_website_url(
+        "https://walletsavior.example",
+        expected_rows=[
+            {
+                "product_id": 42,
+                "price": 1980,
+                "source_url": "https://emart.example/live-tofu",
+            }
+        ],
+    )
+
+    assert verification["verified"] is True
+    assert verification["semantic_verified"] is True
+    assert verification["verification_scope"] == "semantic_public_api_roundtrip"
+    assert verification["verified_item_count"] == 1
+    assert requested_urls == ["https://walletsavior.example/api/products/42"]
+
+def test_real_readiness_blocks_missing_real_legs_without_fixture_fallback(tmp_path: Path) -> None:
+    artifact = orchestrator.run_orchestrator(_args(tmp_path, real_readiness=True))
+
+    assert artifact["overall_status"] == "blocked"
+    assert artifact["result_scope"] == "real_readiness_blocked"
+    assert artifact["real_readiness"]["requested"] is True
+    assert artifact["real_readiness"]["status"] == "blocked"
+    assert artifact["real_readiness"]["legs"]["source_input"]["mode"] == "missing"
+    assert artifact["real_readiness"]["legs"]["source_input"]["source_raw_count"] == 0
+    assert artifact["real_readiness"]["provider_calls"] == 0
+    phase_modes = {phase["name"]: phase["mode"] for phase in artifact["phases"]}
+    assert phase_modes["crawler-admin batch artifact/source evidence"] == "missing"
+    assert phase_modes["ai-admin live model batch label/classify"] == "missing"
+    assert phase_modes["DB-admin ingestion submit and ai-safe-final-approve"] == "missing"
+    assert phase_modes["real readiness operator gate"] == "strict"
+    assert any("fixture source is not accepted" in blocker for blocker in artifact["blockers"])
 
 def test_crawler_batch_artifact_without_live_labeling_blocks_instead_of_stub_success(tmp_path: Path) -> None:
     crawler_batch = tmp_path / "crawler-batch.json"
@@ -621,6 +702,109 @@ def test_live_labeling_invokes_bounded_wrapper_and_forwards_db_submit_only_with_
     assert db_phase["details"]["db_admin_submit_safety"]["safe_final_approval_confirmed"] is True
     assert db_phase["details"]["db_admin_mutation_preflight"]["ready_to_mutate"] is True
     assert artifact["live_integrations_invoked"]["website_verification"] is False
+
+def test_real_readiness_passes_only_with_real_ai_db_and_requested_website_evidence(tmp_path: Path, monkeypatch) -> None:
+    crawler_batch = tmp_path / "crawler-batch.json"
+    crawler_batch.write_text('[{"name":"두부","sale_price":1980,"source":"emart"}]', encoding="utf-8")
+    monkeypatch.setattr(
+        orchestrator,
+        "_run_db_mutation_preflight",
+        lambda _args: _ready_db_mutation_preflight(),
+    )
+
+    def runner(command):
+        stdout = json.dumps(
+            {
+                "status": "success",
+                "harness_summary": {
+                    "validation_run": {
+                        "live_call_attempted": True,
+                        "live_call_succeeded": True,
+                        "item_counts": {"records": 1},
+                    },
+                    "provider_response_summary": {"called": True, "provider_calls": 1},
+                    "db_admin_submit_result": {
+                        "submitted_to_db_admin": 1,
+                        "ai_safe_final_approved": 1,
+                        "public_db_verified": 1,
+                        "rollback_re_review_supported": 1,
+                        "operator_next_action": "rollback or re-review if needed",
+                        "pending_db_review": 0,
+                        "final_approve_failed": 0,
+                        "failed": 0,
+                        "results": [
+                            {
+                                "status": "published",
+                                "ai_safe_final_approve": {
+                                    "status": "approved",
+                                    "saved": 1,
+                                    "public_db_verification": {
+                                        "verified": True,
+                                        "verified_count": 1,
+                                        "expected_count": 1,
+                                        "items": [
+                                            {
+                                                "item_index": 0,
+                                                "verified": True,
+                                                "published_row": {
+                                                    "id": 55,
+                                                    "product_id": 42,
+                                                    "price": 1980,
+                                                    "source": "emart",
+                                                    "source_url": "https://emart.example/live-tofu",
+                                                },
+                                            }
+                                        ],
+                                    },
+                                    "rollback_supported": True,
+                                    "re_review_supported": True,
+                                },
+                            }
+                        ],
+                    },
+                },
+            }
+        )
+        return orchestrator.subprocess.CompletedProcess(command, 0, stdout=stdout, stderr="")
+
+    artifact = orchestrator.run_orchestrator(
+        _args(
+            tmp_path,
+            real_readiness=True,
+            crawler_batch_json=crawler_batch,
+            allow_live_ai_provider=True,
+            allow_live_ai_labeling=True,
+            provider_id="google-live",
+            allow_db_mutation=True,
+            allow_live_website=True,
+            website_url="https://walletsavior.example",
+        ),
+        live_batch_runner=runner,
+        website_verifier=lambda url, expected_rows=None: {
+            "attempted": True,
+            "verified": True,
+            "semantic_verified": True,
+            "status": "passed",
+            "status_code": 200,
+            "final_url": url,
+            "verification_scope": "semantic_public_api_roundtrip",
+            "expected_row_count": len(expected_rows or []),
+            "verified_item_count": len(expected_rows or []),
+            "blockers": [],
+        },
+    )
+
+    assert artifact["overall_status"] == "success"
+    assert artifact["result_scope"] == "real_readiness_success"
+    assert artifact["provider_calls"] == 1
+    assert artifact["real_readiness"]["status"] == "passed"
+    assert artifact["real_readiness"]["legs"]["live_ai_labeling"]["provider_calls"] == 1
+    assert artifact["db_mutation_evidence"]["submit_final_approve_safety"]["safe_final_approval_confirmed"] is True
+    assert artifact["website_verification"]["verified"] is True
+    assert artifact["website_verification"]["expected_row_count"] == 1
+    assert artifact["live_integrations_invoked"]["ai_labeling"] is True
+    assert artifact["live_integrations_invoked"]["db_mutation"] is True
+    assert artifact["live_integrations_invoked"]["website_verification"] is True
 
 def test_live_labeling_db_mutation_fails_closed_when_preflight_blocks(tmp_path: Path, monkeypatch) -> None:
     crawler_batch = tmp_path / "crawler-batch.json"

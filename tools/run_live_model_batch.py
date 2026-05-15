@@ -267,6 +267,72 @@ def db_admin_acceptance_from_summary(summary: dict) -> dict:
     }
 
 
+def _nested_dict(value: object) -> dict:
+    return value if isinstance(value, dict) else {}
+
+
+def _countish(value: object) -> int:
+    try:
+        return int(value or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def real_ai_labeling_evidence(summary: dict) -> dict:
+    """Require explicit live provider-call proof before claiming real labeling."""
+    validation_run = _nested_dict(summary.get("validation_run"))
+    provider_summary = _nested_dict(summary.get("provider_response_summary"))
+    quality = _nested_dict(summary.get("quality_batch_validation"))
+    quality_provider = _nested_dict(quality.get("provider"))
+    item_counts = _nested_dict(validation_run.get("item_counts"))
+
+    live_call_attempted = bool(
+        summary.get("live_call_attempted")
+        or validation_run.get("live_call_attempted")
+    )
+    live_call_succeeded = bool(
+        summary.get("live_call_succeeded")
+        or validation_run.get("live_call_succeeded")
+    )
+    provider_called = bool(
+        summary.get("provider_called")
+        or provider_summary.get("called")
+        or quality_provider.get("called")
+    )
+    provider_calls = max(
+        _countish(provider_summary.get("provider_calls")),
+        _countish(quality_provider.get("call_attempts")),
+        _countish(item_counts.get("provider_calls")),
+    )
+    http_label_calls = max(
+        _countish(provider_summary.get("http_label_calls")),
+        _countish(quality_provider.get("http_label_calls")),
+        _countish(item_counts.get("provider_call_attempts")),
+    )
+    artifact_path = summary.get("artifact_path")
+    blockers = []
+    if not artifact_path:
+        blockers.append("Harness did not report an artifact_path.")
+    if not live_call_attempted:
+        blockers.append("Harness did not report live_call_attempted=true.")
+    if not live_call_succeeded:
+        blockers.append("Harness did not report live_call_succeeded=true.")
+    if not provider_called:
+        blockers.append("Harness did not report provider called=true.")
+    if provider_calls < 1:
+        blockers.append("Harness did not report provider_calls >= 1.")
+    return {
+        "real_ai_labeling": not blockers,
+        "artifact_path": artifact_path,
+        "live_call_attempted": live_call_attempted,
+        "live_call_succeeded": live_call_succeeded,
+        "provider_called": provider_called,
+        "provider_calls": provider_calls,
+        "http_label_calls": http_label_calls,
+        "blockers": blockers,
+    }
+
+
 def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
@@ -590,6 +656,8 @@ def main(
                         "Fix the input/bounds before any live provider call. "
                         f"{BACKEND_FRESHNESS_WARNING}"
                     ),
+                    "real_ai_labeling": False,
+                    "blockers": [f"preflight could not compute AI batch count: {sanitize_message(exc)}"],
                     "db_admin_submit_allowed": False,
                 },
                 ensure_ascii=False,
@@ -614,6 +682,8 @@ def main(
                         "No live provider call was made. "
                         f"{BACKEND_FRESHNESS_WARNING}"
                     ),
+                    "real_ai_labeling": False,
+                    "blockers": ["preflight provider call bound exceeded; no live provider call was made"],
                     "estimated_provider_calls": estimated_provider_calls,
                     "estimated_total_provider_calls": estimated_total_provider_calls,
                     "ai_batch_size": args.ai_batch_size,
@@ -648,6 +718,8 @@ def main(
                         f"{BACKEND_START_COMMAND}. {BACKEND_FRESHNESS_WARNING}"
                     ),
                     "backend_freshness_warning": BACKEND_FRESHNESS_WARNING,
+                    "real_ai_labeling": False,
+                    "blockers": [sanitize_message(readiness_message)],
                     "label_timeout_seconds": args.label_timeout_seconds,
                     "label_timeout_seconds_requested": requested_label_timeout_seconds,
                     "label_timeout_seconds_cap": MAX_LABEL_TIMEOUT_SECONDS,
@@ -694,6 +766,8 @@ def main(
                         "label_call_min_interval_seconds": args.label_call_min_interval_seconds,
                         "label_call_min_interval_seconds_requested": requested_label_call_min_interval_seconds,
                         "attempts": attempt_summaries,
+                        "real_ai_labeling": False,
+                        "blockers": ["live validation harness command failed before complete real AI labeling evidence"],
                         "db_admin_submit_allowed": bool(args.allow_db_admin_submit),
                     },
                     ensure_ascii=False,
@@ -707,6 +781,7 @@ def main(
             harness_summary = {"stdout": sanitize_message(result.stdout)}
         harness_summary = enrich_harness_summary(harness_summary)
         if harness_summary.get("live_call_succeeded") is False:
+            live_ai_evidence = real_ai_labeling_evidence(harness_summary)
             last_failure_class = failure_class_from_summary(harness_summary)
             attempt_summaries.append(
                 {
@@ -747,6 +822,38 @@ def main(
                         "label_call_min_interval_seconds_requested": requested_label_call_min_interval_seconds,
                         "provider_pool": provider_choice_payloads(provider_choices),
                         "attempts": attempt_summaries,
+                        "real_ai_labeling": False,
+                        "live_ai_evidence": live_ai_evidence,
+                        "blockers": live_ai_evidence["blockers"] or ["live provider call did not succeed"],
+                        "harness_summary": harness_summary,
+                        "db_admin_submit_allowed": bool(args.allow_db_admin_submit),
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                )
+            )
+            return 2
+        live_ai_evidence = real_ai_labeling_evidence(harness_summary)
+        if not live_ai_evidence["real_ai_labeling"]:
+            print(
+                json.dumps(
+                    {
+                        "status": "blocked",
+                        "reason": "live AI labeling evidence was incomplete",
+                        "readiness": sanitize_message(readiness_message),
+                        "backend_freshness_warning": BACKEND_FRESHNESS_WARNING,
+                        "estimated_provider_calls": estimated_provider_calls,
+                        "estimated_total_provider_calls": estimated_total_provider_calls,
+                        "provider_pool": provider_choice_payloads(provider_choices),
+                        "successful_attempt": {
+                            "attempt": attempt_index,
+                            "provider_id": choice.provider_id,
+                            "provider_model": choice.provider_model,
+                        },
+                        "command_shape": command_shape(command),
+                        "real_ai_labeling": False,
+                        "live_ai_evidence": live_ai_evidence,
+                        "blockers": live_ai_evidence["blockers"],
                         "harness_summary": harness_summary,
                         "db_admin_submit_allowed": bool(args.allow_db_admin_submit),
                     },
@@ -762,6 +869,8 @@ def main(
                     {
                         "status": "blocked",
                         "reason": "DB-admin mutation acceptance gates did not pass",
+                        "real_ai_labeling": live_ai_evidence["real_ai_labeling"],
+                        "live_ai_evidence": live_ai_evidence,
                         "db_admin_submit_allowed": True,
                         "db_admin_acceptance": db_admin_acceptance,
                         "harness_summary": harness_summary,
@@ -800,6 +909,10 @@ def main(
                     },
                     "previous_attempts": attempt_summaries,
                     "command_shape": command_shape(command),
+                    "artifact_path": live_ai_evidence["artifact_path"],
+                    "provider_calls": live_ai_evidence["provider_calls"],
+                    "real_ai_labeling": live_ai_evidence["real_ai_labeling"],
+                    "live_ai_evidence": live_ai_evidence,
                     "db_admin_submit_allowed": bool(args.allow_db_admin_submit),
                     "db_admin_acceptance": db_admin_acceptance,
                     "harness_summary": harness_summary,

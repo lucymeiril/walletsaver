@@ -378,15 +378,23 @@ class DBStorage(StorageContract):
                 return None
             price_stats = self._compute_product_stats(session, p.id)
             store_prices = self._get_store_prices(session, p.id)
+            latest_discount = session.execute(
+                select(DiscountHistory)
+                .where(DiscountHistory.product_id == p.id)
+                .order_by(desc(DiscountHistory.crawled_at))
+                .limit(1)
+            ).scalar_one_or_none()
             cat = self._public_category(p)
             avg = price_stats["avg"]
             cur = price_stats["cur"]
+            metadata = _discount_observation_metadata(latest_discount) if latest_discount else {}
+            raw = latest_discount.raw_data if latest_discount and isinstance(latest_discount.raw_data, dict) else {}
             return {
                 "id": p.id,
                 "name": p.name,
                 "icon": cat.icon if cat else "",
                 "cat": cat.name if cat else "",
-                "category_id": cat.id if cat else "",
+                "category_id": cat.id if cat else (p.category_id or ""),
                 "unit": p.unit,
                 "avg": avg,
                 "cur": cur,
@@ -394,6 +402,12 @@ class DBStorage(StorageContract):
                 "high": price_stats["high"],
                 "price_tier": self._compute_price_tier(cur, avg),
                 "img": p.image_url or "",
+                "source": latest_discount.source if latest_discount else None,
+                "source_title": metadata.get("source_title", ""),
+                "source_url": metadata.get("source_url", ""),
+                "image_url": p.image_url or raw.get("image_url", ""),
+                "original_price": latest_discount.original_price if latest_discount else None,
+                "discount_rate": latest_discount.discount_rate if latest_discount else None,
                 "stores": store_prices,
                 "stats": {
                     "dataDays": price_stats["data_days"],
@@ -404,6 +418,7 @@ class DBStorage(StorageContract):
                     "discFreq": price_stats["disc_freq"],
                 },
                 "attributes": p.attributes or {},
+                **metadata,
             }
 
     def get_hotdeals(
@@ -730,8 +745,10 @@ class DBStorage(StorageContract):
                 original_price = None
                 discount_pct = None
                 img = p.image_url or ""
+                metadata = {}
 
                 if latest_discount:
+                    metadata = _discount_observation_metadata(latest_discount)
                     if current_price == 0 and latest_discount.price:
                         current_price = round(latest_discount.price)
                     original_price = latest_discount.original_price
@@ -745,7 +762,7 @@ class DBStorage(StorageContract):
                     "name": p.name,
                     "icon": cat.icon if cat else "",
                     "cat": cat.name if cat else "",
-                    "category_id": cat.id if cat else "",
+                    "category_id": cat.id if cat else (p.category_id or ""),
                     "unit": p.unit,
                     "avg": avg,
                     "cur": current_price,
@@ -756,6 +773,9 @@ class DBStorage(StorageContract):
                     "original_price": original_price,
                     "discount_pct": discount_pct,
                     "source": latest_discount.source if latest_discount else None,
+                    "source_url": metadata.get("source_url", ""),
+                    "source_title": metadata.get("source_title", ""),
+                    **metadata,
                     "stores": store_prices,
                     "stats": {
                         "dataDays": price_stats["data_days"],
@@ -777,27 +797,43 @@ class DBStorage(StorageContract):
             price_stats = self._compute_product_stats(session, p.id)
             store_prices = self._get_store_prices(session, p.id)
             avg = price_stats["avg"]
+            latest_discount_by_source = {}
+            for row in session.execute(
+                select(DiscountHistory)
+                .where(DiscountHistory.product_id == p.id)
+                .order_by(desc(DiscountHistory.crawled_at))
+            ).scalars():
+                if row.source and row.source not in latest_discount_by_source:
+                    latest_discount_by_source[row.source] = row
             compare = []
             for source, price in store_prices.items():
                 disc = round((1 - price / avg) * 100, 1) if avg else None
+                latest_discount = latest_discount_by_source.get(source)
+                metadata = _discount_observation_metadata(latest_discount) if latest_discount else {}
                 compare.append({
                     "source": source,
                     "price": price,
-                    "original_price": None,
-                    "discount_rate": None,
+                    "original_price": latest_discount.original_price if latest_discount else None,
+                    "discount_rate": latest_discount.discount_rate if latest_discount else None,
                     "reference_price": avg,
                     "historical_average_price": avg,
                     "price_vs_reference_rate": disc,
                     "reference_method": "historical_average",
-                    "record_kind": "price_observation",
-                    "publication_kind": "price_observation",
-                    "price_observation_only": True,
-                    "discount_claim_status": "unknown",
-                    "claim_basis": "current_price_vs_historical_average",
-                    "has_discount_metadata": False,
-                    "record_label": "관측 가격",
-                    "claim_status_label": "할인 여부 미확인",
-                    "url": None,
+                    "record_kind": metadata.get("record_kind", "price_observation"),
+                    "publication_kind": metadata.get("publication_kind", "price_observation"),
+                    "price_observation_only": metadata.get("price_observation_only", True),
+                    "discount_claim_status": metadata.get("discount_claim_status", "unknown"),
+                    "claim_basis": metadata.get("claim_basis", "current_price_vs_historical_average"),
+                    "claim_blockers": metadata.get("claim_blockers", []),
+                    "has_discount_metadata": metadata.get("has_discount_metadata", False),
+                    "record_label": metadata.get("record_label", "관측 가격"),
+                    "claim_status_label": metadata.get("claim_status_label", "할인 여부 미확인"),
+                    "source_url": metadata.get("source_url", ""),
+                    "url": metadata.get("source_url", ""),
+                    "source_title": metadata.get("source_title", ""),
+                    "unit": metadata.get("unit", ""),
+                    "display_unit": metadata.get("display_unit", ""),
+                    "observed_at": metadata.get("observed_at", ""),
                 })
             compare.sort(key=lambda x: x["price"])
             return compare
@@ -1641,20 +1677,16 @@ class DBStorage(StorageContract):
         filters = filters or {}
         with self.SessionLocal() as session:
             # Resolve category + descendants
-            cat = session.get(Category, category_id)
-            if not cat:
-                return {"summary": {}, "products": [], "total": 0, "page": page, "per_page": per_page}
-
-            all_cat_ids = self._get_descendant_category_ids(session, category_id)
+            requested_category = session.get(Category, category_id)
+            if not requested_category:
+                all_cat_ids = [category_id]
+            else:
+                all_cat_ids = self._get_descendant_category_ids(session, category_id)
 
             # Base query: products in these categories
             stmt = select(Product).where(
                 Product.is_active == True,
                 Product.category_id.in_(all_cat_ids),
-                or_(
-                    Product.categorization_method.is_(None),
-                    ~Product.categorization_method.in_(self.UNREVIEWED_CATEGORY_METHODS),
-                ),
             )
 
             # Apply attribute-based filters
@@ -1663,9 +1695,8 @@ class DBStorage(StorageContract):
             # Enrich products with price data and apply filters
             enriched = []
             for p in products_raw:
-                cat = self._public_category(p)
-                if cat is None:
-                    continue
+                product_cat = self._public_category(p)
+                public_category_id = product_cat.id if product_cat else (p.category_id or "")
                 attrs = p.attributes or {}
 
                 # Filter by storage
@@ -1701,14 +1732,17 @@ class DBStorage(StorageContract):
                     current_price = latest_discount.price
                     original_price = latest_discount.original_price
                     source = latest_discount.source
+                    source_url = latest_discount.source_url
                 elif latest_baseline:
                     current_price = latest_baseline.price
                     original_price = None
                     source = latest_baseline.source
+                    source_url = ""
                 else:
                     current_price = None
                     original_price = None
                     source = None
+                    source_url = ""
 
                 # Normalized price (per 100g)
                 weight_g = attrs.get("weight_g") or attrs.get("weight", 0)
@@ -1733,9 +1767,10 @@ class DBStorage(StorageContract):
                 enriched.append({
                     "id": p.id,
                     "name": p.name,
-                    "category_id": cat.id,
+                    "category_id": public_category_id,
                     "source_type": source_type,
                     "source": source,
+                    "source_url": source_url,
                     "current_price": current_price,
                     "original_price": original_price,
                     "per_100g": per_100g,
@@ -1788,7 +1823,7 @@ class DBStorage(StorageContract):
             # Summary
             summary = {
                 "category_id": category_id,
-                "category_name": cat.name,
+                "category_name": requested_category.name if requested_category else category_id,
                 "category_path": self._build_category_path(session, category_id),
                 "total_products": total,
                 "avg_per_100g": round(sum(prices_for_tier) / len(prices_for_tier)) if prices_for_tier else None,

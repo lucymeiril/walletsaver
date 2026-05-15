@@ -117,7 +117,13 @@ def test_explicit_395_large_batch_opt_in_reaches_mocked_runner_without_db_submit
 
     def runner(command):
         captured_command.extend(command)
-        stdout = json.dumps({"artifact_path": "artifact.json", "provider_called": True})
+        stdout = json.dumps({
+            "artifact_path": "artifact.json",
+            "provider_called": True,
+            "live_call_attempted": True,
+            "live_call_succeeded": True,
+            "provider_response_summary": {"called": True, "provider_calls": 1},
+        })
         return subprocess.CompletedProcess(command, 0, stdout=stdout, stderr="")
 
     monkeypatch.setattr(wrapper, "estimate_provider_call_count", twenty_two_batches)
@@ -160,7 +166,13 @@ def test_label_timeout_option_is_capped_forwarded_and_reported(capsys, monkeypat
 
     def runner(command):
         captured_command.extend(command)
-        stdout = json.dumps({"artifact_path": "artifact.json", "provider_called": True})
+        stdout = json.dumps({
+            "artifact_path": "artifact.json",
+            "provider_called": True,
+            "live_call_attempted": True,
+            "live_call_succeeded": True,
+            "provider_response_summary": {"called": True, "provider_calls": 1},
+        })
         return subprocess.CompletedProcess(command, 0, stdout=stdout, stderr="")
 
     monkeypatch.setattr(wrapper, "estimate_provider_call_count", one_batch)
@@ -450,7 +462,9 @@ def test_provider_pool_tries_next_choice_after_retryable_timeout_with_spacing(
             {
                 "artifact_path": "artifact2.json",
                 "provider_called": True,
+                "live_call_attempted": True,
                 "live_call_succeeded": True,
+                "provider_response_summary": {"called": True, "provider_calls": 1},
             }
         )
         return subprocess.CompletedProcess(command, 0, stdout=stdout, stderr="")
@@ -534,7 +548,10 @@ def test_db_admin_submit_success_requires_public_verification_and_recovery_evide
         stdout = json.dumps(
             {
                 "artifact_path": "artifact.json",
+                "live_call_attempted": True,
                 "live_call_succeeded": True,
+                "provider_called": True,
+                "provider_response_summary": {"called": True, "provider_calls": 1},
                 "db_admin_submit_result": {
                     "published": 1,
                     "submitted_to_db_admin": 1,
@@ -600,7 +617,13 @@ def test_ready_wrapper_runs_expected_harness_command_and_prints_sanitized_summar
 
     def runner(command):
         captured_command.extend(command)
-        stdout = json.dumps({"artifact_path": "artifact.json", "provider_called": True})
+        stdout = json.dumps({
+            "artifact_path": "artifact.json",
+            "provider_called": True,
+            "live_call_attempted": True,
+            "live_call_succeeded": True,
+            "provider_response_summary": {"called": True, "provider_calls": 1},
+        })
         return subprocess.CompletedProcess(command, 0, stdout=stdout, stderr="")
 
     exit_code = wrapper.main(["--provider-key-alias", "GOOGLE_API_KEY"], readiness_checker=ready, runner=runner)
@@ -616,6 +639,63 @@ def test_ready_wrapper_runs_expected_harness_command_and_prints_sanitized_summar
     assert output["estimated_provider_calls"] == 1
     assert output["db_admin_submit_allowed"] is False
     assert output["harness_summary"]["provider_called"] is True
+    assert output["real_ai_labeling"] is True
+    assert output["provider_calls"] == 1
+
+
+def test_wrapper_blocks_success_without_provider_call_evidence(capsys, monkeypatch) -> None:
+    def ready(*_args, **_kwargs):
+        return True, "ready"
+
+    def runner(command):
+        stdout = json.dumps(
+            {
+                "artifact_path": "artifact.json",
+                "live_call_attempted": True,
+                "live_call_succeeded": True,
+                "provider_response_summary": {"called": True, "provider_calls": 0},
+            }
+        )
+        return subprocess.CompletedProcess(command, 0, stdout=stdout, stderr="")
+
+    monkeypatch.setattr(wrapper, "estimate_provider_call_count", lambda _args: 1)
+
+    exit_code = wrapper.main([], readiness_checker=ready, runner=runner)
+
+    assert exit_code == 2
+    output = json.loads(capsys.readouterr().out)
+    assert output["status"] == "blocked"
+    assert output["real_ai_labeling"] is False
+    assert "provider_calls >= 1" in "; ".join(output["blockers"])
+
+
+def test_wrapper_blocks_contradictory_provider_call_evidence(capsys, monkeypatch) -> None:
+    def ready(*_args, **_kwargs):
+        return True, "ready"
+
+    def runner(command):
+        stdout = json.dumps(
+            {
+                "artifact_path": "artifact.json",
+                "validation_run": {
+                    "live_call_attempted": True,
+                    "live_call_succeeded": True,
+                    "item_counts": {"provider_calls": 1},
+                },
+                "provider_response_summary": {"called": False, "provider_calls": 1},
+            }
+        )
+        return subprocess.CompletedProcess(command, 0, stdout=stdout, stderr="")
+
+    monkeypatch.setattr(wrapper, "estimate_provider_call_count", lambda _args: 1)
+
+    exit_code = wrapper.main([], readiness_checker=ready, runner=runner)
+
+    assert exit_code == 2
+    output = json.loads(capsys.readouterr().out)
+    assert output["status"] == "blocked"
+    assert output["real_ai_labeling"] is False
+    assert "provider called=true" in "; ".join(output["blockers"])
 
 
 def test_wrapper_blocks_when_harness_reports_live_call_failure(capsys) -> None:

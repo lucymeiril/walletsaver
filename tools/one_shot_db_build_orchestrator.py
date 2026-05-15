@@ -19,6 +19,9 @@ import re
 import subprocess
 import sys
 import uuid
+import urllib.error
+import urllib.parse
+import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -177,6 +180,153 @@ def _run_command(command: list[str]) -> subprocess.CompletedProcess[str]:
         capture_output=True,
         check=False,
     )
+
+def _collect_public_verification_rows(value: Any) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    if isinstance(value, dict):
+        public_verification = value.get("public_db_verification")
+        if isinstance(public_verification, dict):
+            for item in public_verification.get("items") or []:
+                if not isinstance(item, dict) or item.get("verified") is not True:
+                    continue
+                published_row = item.get("published_row")
+                if isinstance(published_row, dict):
+                    rows.append(published_row)
+        for child in value.values():
+            rows.extend(_collect_public_verification_rows(child))
+    elif isinstance(value, list):
+        for child in value:
+            rows.extend(_collect_public_verification_rows(child))
+    unique: dict[tuple[Any, Any], dict[str, Any]] = {}
+    for row in rows:
+        key = (row.get("product_id") or row.get("id"), row.get("source_url"))
+        unique[key] = row
+    return list(unique.values())
+
+def _verify_website_url(
+    website_url: str,
+    *,
+    expected_rows: list[dict[str, Any]] | None = None,
+    timeout_seconds: float = 10.0,
+) -> dict[str, Any]:
+    if not website_url:
+        return {
+            "attempted": False,
+            "verified": False,
+            "semantic_verified": False,
+            "status": "blocked",
+            "blockers": ["WEBSITE_PUBLIC_URL or --website-url is required with --allow-live-website"],
+        }
+    expected_rows = expected_rows or []
+
+    def request_json(url: str) -> tuple[int, str, Any]:
+        request = urllib.request.Request(
+            url,
+            headers={"User-Agent": "WalletSavior-one-shot-readiness/1.0"},
+            method="GET",
+        )
+        with urllib.request.urlopen(request, timeout=timeout_seconds) as response:  # noqa: S310 - operator-supplied readiness URL.
+            body = response.read().decode("utf-8", errors="replace")
+            parsed = json.loads(body) if body else {}
+            return int(getattr(response, "status", response.getcode())), response.geturl(), parsed
+
+    try:
+        if not expected_rows:
+            request = urllib.request.Request(
+                website_url,
+                headers={"User-Agent": "WalletSavior-one-shot-readiness/1.0"},
+                method="GET",
+            )
+            with urllib.request.urlopen(request, timeout=timeout_seconds) as response:  # noqa: S310 - operator-supplied readiness URL.
+                status_code = int(getattr(response, "status", response.getcode()))
+                http_ready = 200 <= status_code < 400
+                return {
+                    "attempted": True,
+                    "verified": False,
+                    "semantic_verified": False,
+                    "http_reachable": http_ready,
+                    "status": "blocked",
+                    "status_code": status_code,
+                    "final_url": response.geturl(),
+                    "blockers": [
+                        "Website URL responded, but no DB-admin public_db_verification rows were available for semantic product/offer/history validation."
+                    ],
+                }
+
+        verified_items = []
+        blockers = []
+        for expected in expected_rows:
+            product_id = expected.get("product_id") or expected.get("id")
+            if product_id in (None, ""):
+                blockers.append("DB-admin public verification row did not include product_id/id for website detail lookup.")
+                continue
+            detail_url = urllib.parse.urljoin(website_url.rstrip("/") + "/", f"api/products/{product_id}")
+            status_code, final_url, payload = request_json(detail_url)
+            data = payload.get("data") if isinstance(payload, dict) else None
+            detail = data if isinstance(data, dict) else {}
+            expected_price = expected.get("price")
+            actual_price = detail.get("price", detail.get("cur"))
+            item_blockers = []
+            if not (200 <= status_code < 400):
+                item_blockers.append(f"product detail returned HTTP {status_code}")
+            if str(detail.get("id")) != str(product_id):
+                item_blockers.append("product detail id did not match DB-admin published product_id")
+            if expected.get("source_url") and detail.get("source_url") != expected.get("source_url"):
+                item_blockers.append("product detail source_url did not match DB-admin published row")
+            if expected_price is not None and actual_price != expected_price:
+                item_blockers.append("product detail price did not match DB-admin published row")
+            verified_items.append(
+                {
+                    "product_id": product_id,
+                    "detail_url": final_url,
+                    "status_code": status_code,
+                    "verified": not item_blockers,
+                    "blockers": item_blockers,
+                }
+            )
+            blockers.extend(f"product {product_id}: {blocker}" for blocker in item_blockers)
+        verified = bool(verified_items) and all(item["verified"] for item in verified_items)
+        return {
+            "attempted": True,
+            "verified": verified,
+            "semantic_verified": verified,
+            "status": "passed" if verified else "blocked",
+            "status_code": verified_items[0]["status_code"] if verified_items else None,
+            "verification_scope": "semantic_public_api_roundtrip",
+            "expected_row_count": len(expected_rows),
+            "verified_item_count": sum(1 for item in verified_items if item["verified"]),
+            "items": verified_items,
+            "blockers": blockers,
+        }
+    except urllib.error.HTTPError as exc:
+        status_code = int(exc.code)
+        return {
+            "attempted": True,
+            "verified": False,
+            "semantic_verified": False,
+            "status": "blocked",
+            "status_code": status_code,
+            "final_url": exc.geturl(),
+            "blockers": [f"Website semantic verification returned non-ready HTTP status {status_code}."],
+        }
+    except json.JSONDecodeError as exc:
+        return {
+            "attempted": True,
+            "verified": False,
+            "semantic_verified": False,
+            "status": "blocked",
+            "blockers": [f"Website semantic verification did not return JSON: {_sanitize_text(exc)}"],
+            "error": _error_detail(exc),
+        }
+    except Exception as exc:  # pragma: no cover - network environment dependent.
+        return {
+            "attempted": True,
+            "verified": False,
+            "semantic_verified": False,
+            "status": "blocked",
+            "blockers": [f"Website semantic verification failed: {_sanitize_text(exc)}"],
+            "error": _error_detail(exc),
+        }
 
 def build_local_empty_db_rehearsal_command() -> list[str]:
     return [
@@ -372,6 +522,109 @@ def _db_admin_submit_safety(db_admin_result: Any) -> dict[str, Any]:
         "blockers": blockers,
     }
 
+def _extract_live_batch_summaries(live_batch_summary: dict[str, Any] | None) -> tuple[dict[str, Any], dict[str, Any], Any]:
+    harness_summary = live_batch_summary.get("harness_summary") if isinstance(live_batch_summary, dict) else {}
+    if not isinstance(harness_summary, dict):
+        harness_summary = {}
+    validation_run = harness_summary.get("validation_run", {})
+    if not isinstance(validation_run, dict):
+        validation_run = {}
+    provider_summary = harness_summary.get("provider_response_summary", {})
+    if not isinstance(provider_summary, dict):
+        provider_summary = {}
+    return validation_run, provider_summary, harness_summary.get("db_admin_submit_result")
+
+def _build_real_readiness_report(
+    args: argparse.Namespace,
+    *,
+    source_items: list[dict[str, Any]],
+    live_batch_summary: dict[str, Any] | None,
+    db_mutation_preflight: dict[str, Any] | None,
+    website_verification: dict[str, Any] | None,
+) -> dict[str, Any]:
+    validation_run, provider_summary, db_admin_result = _extract_live_batch_summaries(live_batch_summary)
+    db_admin_safety = _db_admin_submit_safety(db_admin_result)
+    provider_calls = _countish(provider_summary.get("provider_calls"))
+    if provider_calls == 0 and provider_summary.get("called"):
+        provider_calls = 1
+    source_ready = bool(args.crawler_batch_json and source_items)
+    ai_ready = bool(
+        args.allow_live_ai_provider
+        and args.allow_live_ai_labeling
+        and validation_run.get("live_call_attempted")
+        and validation_run.get("live_call_succeeded") is True
+        and provider_calls >= 1
+    )
+    db_ready = bool(
+        args.allow_db_mutation
+        and db_mutation_preflight
+        and db_mutation_preflight.get("ready_to_mutate")
+        and db_admin_safety["safe_final_approval_confirmed"]
+    )
+    website_requested = bool(args.allow_live_website)
+    website_ready = (not website_requested) or bool(website_verification and website_verification.get("verified"))
+    blockers: list[str] = []
+    if not source_ready:
+        blockers.append("--real-readiness requires --crawler-batch-json containing at least one readable source row; fixture source is not accepted.")
+    if not args.allow_live_ai_provider:
+        blockers.append("--real-readiness requires --allow-live-ai-provider.")
+    if not args.allow_live_ai_labeling:
+        blockers.append("--real-readiness requires --allow-live-ai-labeling; AI stub/fallback is not accepted.")
+    if not (args.provider_id or args.provider_pool):
+        blockers.append("--real-readiness requires --provider-id or --provider-pool.")
+    if args.allow_live_ai_provider and args.allow_live_ai_labeling and provider_calls < 1:
+        blockers.append("--real-readiness did not observe a provider call from live AI labeling.")
+    if validation_run and validation_run.get("live_call_succeeded") is not True:
+        blockers.append("--real-readiness did not observe successful live AI labeling.")
+    if not args.allow_db_mutation:
+        blockers.append("--real-readiness requires --allow-db-mutation so --allow-db-admin-submit is forwarded.")
+    if args.allow_db_mutation and not (db_mutation_preflight and db_mutation_preflight.get("ready_to_mutate")):
+        blockers.append("--real-readiness requires a passing DB-admin mutation preflight before submit/final approve.")
+    blockers.extend(db_admin_safety["blockers"] if args.allow_db_mutation else [])
+    if website_requested and not website_ready:
+        blockers.extend((website_verification or {}).get("blockers") or ["Website verification was requested but did not pass."])
+    return {
+        "requested": True,
+        "status": "passed" if source_ready and ai_ready and db_ready and website_ready and not blockers else "blocked",
+        "legs": {
+            "source_input": {
+                "required": True,
+                "ready": source_ready,
+                "mode": "artifact" if args.crawler_batch_json else "missing",
+                "source_raw_count": len(source_items),
+                "artifact_path": str(args.crawler_batch_json) if args.crawler_batch_json else None,
+            },
+            "live_ai_labeling": {
+                "required": True,
+                "ready": ai_ready,
+                "provider_calls": provider_calls,
+                "live_call_attempted": bool(validation_run.get("live_call_attempted")),
+                "live_call_succeeded": validation_run.get("live_call_succeeded") is True,
+            },
+            "db_mutation_submit_final_approve": {
+                "required": True,
+                "ready": db_ready,
+                "preflight": db_mutation_preflight,
+                "submit_final_approve_safety": db_admin_safety,
+                "submit_final_approve_result": db_admin_result,
+            },
+            "website_verification": {
+                "required": website_requested,
+                "ready": website_ready,
+                "status": "not_requested" if not website_requested else (website_verification or {}).get("status", "blocked"),
+                "verification": website_verification,
+            },
+        },
+        "provider_calls": provider_calls,
+        "db_mutation_evidence": {
+            "preflight": db_mutation_preflight,
+            "submit_final_approve_safety": db_admin_safety,
+            "submit_final_approve_result": db_admin_result,
+        },
+        "website_verification": website_verification or {"status": "not_requested", "verified": False, "attempted": False},
+        "blockers": blockers,
+    }
+
 def _error_detail(exc: BaseException | str) -> dict[str, str]:
     return {
         "class": exc.__class__.__name__ if isinstance(exc, BaseException) else "Error",
@@ -555,6 +808,15 @@ def build_arg_parser() -> argparse.ArgumentParser:
             "or a real DB-admin database."
         ),
     )
+    parser.add_argument(
+        "--real-readiness",
+        action="store_true",
+        help=(
+            "Strict operator readiness gate. Requires real source input, live AI labeling, "
+            "DB-admin mutation preflight plus submit/final approve evidence, and live website "
+            "verification when --allow-live-website is set. Never falls back to fixture/stub."
+        ),
+    )
     parser.add_argument("--allow-live-crawler", action="store_true")
     parser.add_argument("--crawler-batch-json", type=Path, help="Crawler batch artifact JSON to feed into the live model batch wrapper.")
     parser.add_argument("--allow-live-ai-provider", action="store_true", help="Opt in to provider-backed ai-admin calls; required with --allow-live-ai-labeling.")
@@ -596,6 +858,7 @@ def run_orchestrator(
     *,
     live_batch_runner=_run_command,
     local_rehearsal_runner=_run_command,
+    website_verifier=_verify_website_url,
 ) -> dict[str, Any]:
     run_id = f"one-shot-db-build-{datetime.now().strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:8]}"
     args.artifact_dir.mkdir(parents=True, exist_ok=True)
@@ -614,6 +877,7 @@ def run_orchestrator(
     }
     live_batch_summary: dict[str, Any] | None = None
     db_mutation_preflight: dict[str, Any] | None = None
+    website_verification: dict[str, Any] | None = None
 
     if getattr(args, "local_empty_db_rehearsal", False):
         command = build_local_empty_db_rehearsal_command()
@@ -766,6 +1030,19 @@ def run_orchestrator(
             )
         )
         source_items: list[dict[str, Any]] = []
+    elif getattr(args, "real_readiness", False):
+        source_items = []
+        phases.append(
+            _phase(
+                "crawler-admin batch artifact/source evidence",
+                mode="missing",
+                status="blocked",
+                blockers=[
+                    "--real-readiness requires --crawler-batch-json source input; fixture diagnostics are not used."
+                ],
+                details={"fixture_fallback_allowed": False, "source_items_available": 0},
+            )
+        )
     else:
         source_items = _fixture_source_items()
         phases.append(
@@ -901,6 +1178,19 @@ def run_orchestrator(
                     },
                 )
             )
+    elif getattr(args, "real_readiness", False):
+        phases.append(
+            _phase(
+                "ai-admin live model batch label/classify",
+                mode="missing",
+                status="blocked",
+                blockers=[
+                    "--real-readiness requires --allow-live-ai-provider and --allow-live-ai-labeling; stub classification is not used."
+                ],
+                counts={"candidate_items": 0, "provider_calls": 0},
+                details={"fixture_fallback_allowed": False, "real_labeling_invoked": False},
+            )
+        )
     else:
         candidates = [_stub_ai_candidate(item) for item in source_items]
         candidate = candidates[0] if candidates else None
@@ -1026,6 +1316,18 @@ def run_orchestrator(
                         details={"error": _error_detail(exc), "mutation_opt_in": True},
                     )
                 )
+    elif getattr(args, "real_readiness", False):
+        phases.append(
+            _phase(
+                "DB-admin ingestion submit and ai-safe-final-approve",
+                mode="missing",
+                status="blocked",
+                blockers=[
+                    "--real-readiness requires --allow-db-mutation plus passing DB-admin preflight; fixture approval is not used."
+                ],
+                details={"fixture_fallback_allowed": False, "db_admin_submit_allowed": False},
+            )
+        )
     elif candidates:
         db_result = {
             "submitted": False,
@@ -1057,19 +1359,54 @@ def run_orchestrator(
         )
 
     if args.allow_live_website:
+        if args.website_url:
+            expected_website_rows = _collect_public_verification_rows(live_batch_summary) + _collect_public_verification_rows(db_result)
+            website_verification = website_verifier(args.website_url, expected_rows=expected_website_rows)
+            live_integrations_invoked["website_verification"] = bool(website_verification.get("attempted"))
+            phases.append(
+                _phase(
+                    "website/public verification of persisted product/offer/history shape",
+                    mode="live",
+                    status="passed" if website_verification.get("verified") else "blocked",
+                    blockers=website_verification.get("blockers") or [],
+                    counts={"http_status": website_verification.get("status_code")},
+                    details={
+                        "website_url_present": True,
+                        "live_website_verification_invoked": bool(website_verification.get("attempted")),
+                        "verification_scope": website_verification.get("verification_scope")
+                        or "semantic_public_api_roundtrip_required",
+                        "expected_db_published_rows": len(expected_website_rows),
+                        "website_verification": website_verification,
+                    },
+                )
+            )
+        else:
+            website_verification = _verify_website_url("")
+            phases.append(
+                _phase(
+                    "website/public verification of persisted product/offer/history shape",
+                    mode="skipped",
+                    status="blocked",
+                    blockers=website_verification["blockers"],
+                    details={
+                        "website_url_present": False,
+                        "live_website_verification_invoked": False,
+                        "verification_scope": "missing_url",
+                        "website_verification": website_verification,
+                    },
+                )
+            )
+        public_shape = None
+    elif getattr(args, "real_readiness", False):
         phases.append(
             _phase(
                 "website/public verification of persisted product/offer/history shape",
-                mode="live" if args.website_url else "skipped",
-                status="blocked" if not args.website_url else "skipped",
-                blockers=["WEBSITE_PUBLIC_URL or --website-url is required with --allow-live-website"] if not args.website_url else [],
-                warnings=[
-                    "Live website verification is not implemented/invoked by this orchestrator; URL presence is not live verification."
-                ],
+                mode="skipped",
+                status="skipped",
                 details={
-                    "website_url_present": bool(args.website_url),
+                    "website_url_present": False,
                     "live_website_verification_invoked": False,
-                    "verification_scope": "not_implemented_not_live_verified",
+                    "verification_scope": "not_requested",
                 },
             )
         )
@@ -1105,14 +1442,42 @@ def run_orchestrator(
             )
         )
 
+    real_readiness = (
+        _build_real_readiness_report(
+            args,
+            source_items=source_items,
+            live_batch_summary=live_batch_summary,
+            db_mutation_preflight=db_mutation_preflight,
+            website_verification=website_verification,
+        )
+        if getattr(args, "real_readiness", False)
+        else {"requested": False}
+    )
+    if getattr(args, "real_readiness", False):
+        phases.append(
+            _phase(
+                "real readiness operator gate",
+                mode="strict",
+                status="passed" if real_readiness["status"] == "passed" else "blocked",
+                blockers=real_readiness["blockers"],
+                counts={
+                    "source_raw_count": real_readiness["legs"]["source_input"]["source_raw_count"],
+                    "provider_calls": real_readiness["provider_calls"],
+                    "db_final_approved": real_readiness["legs"]["db_mutation_submit_final_approve"]["submit_final_approve_safety"]["final_approved_count"],
+                    "website_verified": int(bool(real_readiness["legs"]["website_verification"]["ready"])),
+                },
+                details=real_readiness["legs"],
+            )
+        )
+
     failure_statuses = {"blocked", "failed"}
     overall_status = "blocked" if any(phase["status"] in failure_statuses for phase in phases) else "success"
-    artifact = {
-        "schema": "walletsavior.one_shot_db_build_orchestrator.v1",
-        "run_id": run_id,
-        "created_at": _utc_now(),
-        "overall_status": overall_status,
-        "result_scope": (
+    result_scope = (
+        "real_readiness_success"
+        if getattr(args, "real_readiness", False) and overall_status == "success"
+        else "real_readiness_blocked"
+        if getattr(args, "real_readiness", False)
+        else (
             "fixture_stub_dry_run"
             if not any(
                 [
@@ -1125,7 +1490,14 @@ def run_orchestrator(
                 ]
             )
             else "mixed_explicit_live_opt_in_with_unimplemented_or_blocked_steps"
-        ),
+        )
+    )
+    artifact = {
+        "schema": "walletsavior.one_shot_db_build_orchestrator.v1",
+        "run_id": run_id,
+        "created_at": _utc_now(),
+        "overall_status": overall_status,
+        "result_scope": result_scope,
         "live_integrations_invoked": live_integrations_invoked,
         "manual_safe_defaults": {
             "consumes_ai_quota_by_default": False,
@@ -1151,6 +1523,12 @@ def run_orchestrator(
         },
         "blockers": [blocker for phase in phases for blocker in phase["blockers"]],
         "warnings": warnings + [warning for phase in phases for warning in phase["warnings"]],
+        "real_readiness": real_readiness,
+        "provider_calls": real_readiness.get("provider_calls", 0) if real_readiness.get("requested") else sum(
+            _countish(phase["counts"].get("provider_calls")) for phase in phases
+        ),
+        "db_mutation_evidence": real_readiness.get("db_mutation_evidence") if real_readiness.get("requested") else None,
+        "website_verification": real_readiness.get("website_verification") if real_readiness.get("requested") else website_verification,
         "public_shape": public_shape,
         "retention": {
             "source_raw_count": len(source_items),
