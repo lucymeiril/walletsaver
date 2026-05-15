@@ -38,14 +38,17 @@ from bs4 import BeautifulSoup
 from core.contracts.crawler import CrawlerContract
 from core.models import CrawlerInfo, CrawlerGroup, CrawlResult, CrawlStatus, HotdealPost
 from engine.anti_detect import AntiDetect
+from crawlers.hotdeals.common import HotdealCollectorMixin, apply_source_facts, dedupe_hotdeal_posts
 
 logger = logging.getLogger(__name__)
 
 
-class ClienCrawler(CrawlerContract):
+class ClienCrawler(HotdealCollectorMixin, CrawlerContract):
     """클리앙 알뜰구매 크롤러 — IT/기술 중심 커뮤니티 핫딜."""
 
     BASE_URL = "https://www.clien.net"
+    SOURCE_ID = "clien"
+    PAGE_ENCODING = "utf-8"
     DEAL_URL = "https://www.clien.net/service/board/jirum"
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
@@ -211,7 +214,9 @@ class ClienCrawler(CrawlerContract):
         image_el = row.select_one("img[src], img[data-src]")
         date_el = row.select_one(".timestamp, time")
 
-        return HotdealPost(
+        date_text = date_el.get("datetime") if date_el and date_el.name == "time" else (date_el.get_text(" ", strip=True) if date_el else None)
+
+        return apply_source_facts(HotdealPost(
             title=title,
             url=url,
             source_community="클리앙",
@@ -221,7 +226,7 @@ class ClienCrawler(CrawlerContract):
             category_hints=[hint for hint in (category,) if hint],
             image_url=urljoin(self.BASE_URL, image_el.get("src") or image_el.get("data-src")) if image_el else "",
             period=date_el.get_text(" ", strip=True) if date_el else "",
-        )
+        ), source_id=self.SOURCE_ID, source_url=url, post_date_text=date_text)
 
     def _is_ad(self, row, title: str) -> bool:
         """광고/공지 게시글 여부를 판단한다."""
@@ -254,17 +259,4 @@ class ClienCrawler(CrawlerContract):
 
     async def validate(self, items: list[HotdealPost]) -> list[HotdealPost]:
         """유효한 핫딜만 필터링한다."""
-        valid = []
-        seen_urls: set[str] = set()
-
-        for item in items:
-            if item.url in seen_urls:
-                continue
-            seen_urls.add(item.url)
-
-            if len(item.title) < 3:
-                continue
-
-            valid.append(item)
-
-        return valid
+        return dedupe_hotdeal_posts(items)

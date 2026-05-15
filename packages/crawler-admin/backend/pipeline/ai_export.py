@@ -89,6 +89,8 @@ def _ai_admin_endpoint(ai_admin_base_url: str, path: str) -> str:
 def _first_str(item: dict[str, Any], keys: Iterable[str]) -> Optional[str]:
     for k in keys:
         v = item.get(k)
+        if v is None and isinstance(item.get("attributes"), dict):
+            v = item["attributes"].get(k)
         if v is None:
             continue
         s = str(v).strip()

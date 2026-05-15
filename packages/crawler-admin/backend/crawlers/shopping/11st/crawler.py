@@ -10,6 +10,9 @@ class ElevenstCrawler(MarketplaceSkeletonCrawler):
     DISPLAY_NAME = "11번가"
     BASE_URL = "https://www.11st.co.kr"
     DESCRIPTION = "11번가 marketplace price source"
+    SEARCH_PATH = "https://search.11st.co.kr/Search.tmall"
+    SEARCH_QUERY_PARAM = "kwd"
+    PAGE_PARAM = "pageNo"
 
 
 Crawler = ElevenstCrawler

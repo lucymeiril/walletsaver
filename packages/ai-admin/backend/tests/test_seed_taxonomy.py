@@ -45,8 +45,13 @@ def test_seed_taxonomy_normalizes_common_korean_ai_category_strings() -> None:
     assert normalize_category_id("bakery.bread") == "bakery.bread"
     assert normalize_category_id("seafood.shellfish") == "seafood.shellfish"
     assert normalize_category_id("household.tissue") == "household.tissue"
+    assert normalize_category_id("living.furniture.storage") == "household.storage"
     assert normalize_category_id("processed.meat") == "processed.meat"
     assert normalize_category_id("processed.sauce") == "processed.sauce"
+    assert normalize_category_id("processed.soy.tofu") == "processed.tofu.firm"
+    assert normalize_category_id("processed.snack") == "snack.general"
+    assert normalize_category_id("processed.dairy.butter") == "processed.spread"
+    assert normalize_category_id("processed.grain.ricecake") == "processed.rice_cake"
 
 
 def test_seed_taxonomy_uses_family_rules_for_unseen_terms_without_snack_leakage() -> None:

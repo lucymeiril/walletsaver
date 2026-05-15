@@ -29,6 +29,7 @@ from pipeline.transformer import (
 )
 from audit import audit_log, AuditEventType
 from pipeline.db_admin_auth import get_db_admin_auth
+from pipeline.source_runs import SourceRunPipeline, SourceRunResult, SourceRunStore
 
 logger = logging.getLogger(__name__)
 
@@ -97,6 +98,29 @@ class CrawlPipeline:
         self.event_bus = event_bus or EventBus()
         self.db_api_url = db_api_url
         self.default_retry_count = default_retry_count
+        self.source_runs = SourceRunPipeline(
+            self.registry,
+            store=SourceRunStore(),
+            retry_count=default_retry_count,
+        )
+
+    async def run_source_incremental(
+        self,
+        crawler_name: str,
+        *,
+        source_name: str | None = None,
+        schema_type: str = "source_raw",
+        source_url: str | None = None,
+        force_full: bool = False,
+    ) -> SourceRunResult:
+        """Run crawler incrementally and write AI handoff artifacts without DB mutation."""
+        return await self.source_runs.run_source_incremental(
+            crawler_name,
+            source_name=source_name,
+            schema_type=schema_type,
+            source_url=source_url,
+            force_full=force_full,
+        )
 
     async def run_crawler(self, crawler_name: str) -> PipelineResult:
         """단일 크롤러를 파이프라인 전체 흐름으로 실행."""

@@ -10,6 +10,9 @@ class NaverStoreCrawler(MarketplaceSkeletonCrawler):
     DISPLAY_NAME = "네이버스토어"
     BASE_URL = "https://smartstore.naver.com"
     DESCRIPTION = "네이버스토어 marketplace price source"
+    SEARCH_PATH = "https://search.shopping.naver.com/search/all"
+    SEARCH_QUERY_PARAM = "query"
+    PAGE_PARAM = "pagingIndex"
 
 
 Crawler = NaverStoreCrawler

@@ -36,6 +36,13 @@ from core.models import (
     DiscountItem,
 )
 from core.product_units import normalize_unit_metadata
+from crawlers.marts.source_utils import (
+    absolute_url,
+    build_source_attributes,
+    normalize_source_key,
+    parse_period_fields,
+    source_dedup_key,
+)
 from engine.anti_detect import AntiDetect
 from pipeline.quality import summarize_discount_run
 
@@ -56,6 +63,7 @@ class HomeplusCrawler(CrawlerContract):
     MFRONT_URL = "https://mfront.homeplus.co.kr"
     # 다양한 검색어로 더 많은 할인 상품 수집
     SEARCH_QUERIES = ["할인", "특가", "세일", "1+1", "행사", "과일", "정육", "우유"]
+    CATEGORY_QUERIES = ["과일", "채소", "정육", "생수", "유제품", "간편식"]
     # Homeplus is a browser-rendered SPA; keep default collection bounded until
     # live readiness is explicitly approved. Operator diagnostics may tighten
     # MAX_PAGES/MAX_REQUESTS without changing the normal scheduled path.
@@ -134,6 +142,7 @@ class HomeplusCrawler(CrawlerContract):
             elif not items and request_budget_exhausted:
                 logger.info(f"[홈플러스] bounded MAX_REQUESTS={self.MAX_REQUESTS} 도달, HTTP fallback 생략")
 
+            items = self._dedupe_items(items)
             valid_items = await self.validate(items)
             items_as_dict = [item.model_dump(mode="json") for item in valid_items]
             quality_details = summarize_discount_run(
@@ -194,7 +203,7 @@ class HomeplusCrawler(CrawlerContract):
             )
             if response.status_code == 200:
                 items = await self.parse(response.text)
-                items = self._limit_items(items)
+                items = self._limit_items(self._dedupe_items(items))
         except Exception as e:
             logger.debug(f"[홈플러스] HTTP fallback 실패: {e}")
 
@@ -216,14 +225,13 @@ class HomeplusCrawler(CrawlerContract):
             from engine.playwright_helper import PlaywrightHelper
 
             async with PlaywrightHelper() as helper:
-                query_limit = len(self.SEARCH_QUERIES)
-                if self.MAX_PAGES is not None:
-                    query_limit = min(query_limit, max(1, int(self.MAX_PAGES)))
-                if self.MAX_REQUESTS is not None:
-                    query_limit = min(query_limit, max(1, int(self.MAX_REQUESTS)))
-                for query in self.SEARCH_QUERIES[:query_limit]:
+                for source_request in self._build_source_requests():
+                    if self.MAX_REQUESTS is not None and queries_attempted >= self.MAX_REQUESTS:
+                        break
+                    query = str(source_request["query"])
+                    url = str(source_request["url"])
+                    category_hint = str(source_request["category_hint"])
                     queries_attempted += 1
-                    url = f"{self.MFRONT_URL}/search?keyword={quote(query)}"
                     try:
                         html = await helper.get_rendered_html(
                             url,
@@ -233,9 +241,14 @@ class HomeplusCrawler(CrawlerContract):
                             scroll_to_bottom=max_items is None,
                         )
                         page_items = await self.parse(html)
+                        if category_hint:
+                            for item in page_items:
+                                if not item.category:
+                                    item.category = category_hint
+                                item.attributes.setdefault("category_hint", item.category or category_hint)
                         new_count = 0
                         for item in page_items:
-                            key = f"{item.name}_{item.sale_price}"
+                            key = source_dedup_key(item)
                             if key not in seen_keys:
                                 seen_keys.add(key)
                                 items.append(item)
@@ -256,6 +269,40 @@ class HomeplusCrawler(CrawlerContract):
             logger.warning(f"[홈플러스] Playwright 크롤링 실패: {e}")
 
         return self._limit_items(items), queries_attempted
+
+    def _dedupe_items(self, items: list[DiscountItem]) -> list[DiscountItem]:
+        """Remove source-key duplicates before reporting collection counts."""
+        deduped: list[DiscountItem] = []
+        seen_keys: set[tuple[str, str, str]] = set()
+        for item in items:
+            key = source_dedup_key(item)
+            if key in seen_keys:
+                continue
+            seen_keys.add(key)
+            deduped.append(item)
+        return deduped
+
+    def _build_source_requests(self) -> list[dict[str, str | int]]:
+        """Build bounded category + pagination source collection requests."""
+        max_pages = self.MAX_PAGES if self.MAX_PAGES is not None else 1
+        requests_to_make: list[dict[str, str | int]] = []
+        seen: set[tuple[str, int]] = set()
+        for query in [*self.SEARCH_QUERIES, *self.CATEGORY_QUERIES]:
+            category_hint = query if query in self.CATEGORY_QUERIES else ""
+            for page_num in range(1, max(1, int(max_pages)) + 1):
+                key = (query, page_num)
+                if key in seen:
+                    continue
+                seen.add(key)
+                requests_to_make.append(
+                    {
+                        "query": query,
+                        "page": page_num,
+                        "category_hint": category_hint,
+                        "url": f"{self.MFRONT_URL}/search?keyword={quote(query)}&page={page_num}",
+                    }
+                )
+        return requests_to_make
 
     async def parse(self, raw_data: str) -> list[DiscountItem]:
         """HTML/JSON 응답에서 할인 상품을 파싱한다."""
@@ -302,15 +349,7 @@ class HomeplusCrawler(CrawlerContract):
 
     def _absolute_url(self, url: str, base_url: str) -> str:
         """Normalize source-relative URLs while preserving absolute URLs."""
-        if not url:
-            return ""
-        if url.startswith("//"):
-            return f"https:{url}"
-        if url.startswith("http"):
-            return url
-        if url.startswith("/"):
-            return f"{base_url}{url}"
-        return url
+        return absolute_url(url, base_url)
 
     def _extract_json_items(self, raw_data: str) -> list[dict]:
         """페이지 내 임베디드 JSON 데이터 추출."""
@@ -361,7 +400,15 @@ class HomeplusCrawler(CrawlerContract):
         detail_url = product.get("goodsUrl") or product.get("detail_url", "")
         if detail_url and not detail_url.startswith("http"):
             detail_url = f"{self.BASE_URL}{detail_url}"
-        source_record_key = str(product.get("goodsNo") or product.get("itemId") or product.get("id") or "").strip()
+        source_record_key = normalize_source_key(
+            "homeplus",
+            product.get("goodsNo"),
+            product.get("itemId"),
+            product.get("id"),
+            detail_url,
+            name,
+        )
+        valid_from, valid_until, period = parse_period_fields(product)
         raw_unit = product.get("unit") or product.get("goodsUnit") or product.get("capacity") or ""
         unit_metadata = normalize_unit_metadata(
             name=name,
@@ -381,15 +428,19 @@ class HomeplusCrawler(CrawlerContract):
             package_quantity=unit_metadata.get("package_quantity"),
             package_unit=unit_metadata.get("package_unit") or "",
             price_per_100g=unit_metadata.get("price_per_100g"),
-            attributes={
-                **(unit_metadata.get("attributes") or {}),
-                **({"source_record_key": source_record_key} if source_record_key else {}),
-                **({"source_url": detail_url} if detail_url else {}),
-                **({"image_url": image_url} if image_url else {}),
-                **({"category_hint": category} if category else {}),
-            },
+            attributes=build_source_attributes(
+                "homeplus",
+                source_record_key=source_record_key,
+                detail_url=detail_url,
+                image_url=image_url,
+                category=category,
+                period=period,
+                extra=unit_metadata.get("attributes") or {},
+            ),
             category=category,
             event_name=product.get("eventNm", "홈플러스 할인"),
+            valid_from=valid_from,
+            valid_until=valid_until,
             image_url=image_url,
             detail_url=detail_url,
         )
@@ -509,9 +560,13 @@ class HomeplusCrawler(CrawlerContract):
             price_per_100g=unit_metadata.get("price_per_100g"),
             attributes={
                 **(unit_metadata.get("attributes") or {}),
-                **({"source_url": detail_url} if detail_url else {}),
-                **({"image_url": image_url} if image_url else {}),
-                **({"category_hint": category} if category else {}),
+                **build_source_attributes(
+                    "homeplus",
+                    source_record_key=normalize_source_key("homeplus", detail_url, name),
+                    detail_url=detail_url,
+                    image_url=image_url,
+                    category=category,
+                ),
             },
             category=category,
             image_url=image_url,
@@ -597,8 +652,12 @@ class HomeplusCrawler(CrawlerContract):
             price_per_100g=unit_metadata.get("price_per_100g"),
             attributes={
                 **(unit_metadata.get("attributes") or {}),
-                **({"source_url": detail_url} if detail_url else {}),
-                **({"image_url": image_url} if image_url else {}),
+                **build_source_attributes(
+                    "homeplus",
+                    source_record_key=normalize_source_key("homeplus", detail_url, name),
+                    detail_url=detail_url,
+                    image_url=image_url,
+                ),
             },
             image_url=image_url,
             detail_url=detail_url,
@@ -644,7 +703,7 @@ class HomeplusCrawler(CrawlerContract):
         seen = set()
 
         for item in items:
-            key = f"{item.name}_{item.sale_price}"
+            key = source_dedup_key(item)
             if key in seen:
                 continue
             seen.add(key)

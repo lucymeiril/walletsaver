@@ -87,6 +87,35 @@ class CrawlScheduler:
         logger.info("[Scheduler] added job %s cron=%s", job_id, cron)
         return {"job_id": job_id, "crawler_name": crawler_name, "cron": cron}
 
+    def add_source_job(
+        self,
+        crawler_name: str,
+        cron: str,
+        *,
+        source_name: str | None = None,
+        schema_type: str = "source_raw",
+        source_url: str | None = None,
+    ) -> dict[str, Any]:
+        """Add recurring incremental source run that writes AI handoff artifacts only."""
+        job_id = f"source_{crawler_name}"
+        trigger = CronTrigger.from_crontab(cron)
+        self._scheduler.add_job(
+            self._execute_source_job,
+            trigger=trigger,
+            id=job_id,
+            args=[crawler_name, source_name, schema_type, source_url],
+            replace_existing=True,
+            name=f"source:{crawler_name}",
+        )
+        logger.info("[Scheduler] added source job %s cron=%s", job_id, cron)
+        return {
+            "job_id": job_id,
+            "crawler_name": crawler_name,
+            "source_name": source_name or crawler_name,
+            "schema_type": schema_type,
+            "cron": cron,
+        }
+
     def remove_job(self, crawler_name: str) -> bool:
         """작업 제거."""
         job_id = f"crawl_{crawler_name}"
@@ -130,6 +159,24 @@ class CrawlScheduler:
         """즉시 실행 (스케줄과 무관)."""
         return await self._execute_job(crawler_name)
 
+    async def run_source_now(
+        self,
+        crawler_name: str,
+        *,
+        source_name: str | None = None,
+        schema_type: str = "source_raw",
+        source_url: str | None = None,
+        force_full: bool = False,
+    ) -> dict[str, Any]:
+        """Run incremental source collection now without DB mutation."""
+        return await self._execute_source_job(
+            crawler_name,
+            source_name,
+            schema_type,
+            source_url,
+            force_full=force_full,
+        )
+
     def init_from_registry(self) -> int:
         """레지스트리의 plugin.yaml cron 설정으로 초기화. 등록 수 반환."""
         if not self._registry:
@@ -166,4 +213,35 @@ class CrawlScheduler:
         except Exception as exc:
             self.tracker.fail(execution, str(exc))
             logger.error("[Scheduler] job %s failed: %s", crawler_name, exc)
+            return {"crawler_name": crawler_name, "status": "failed", "error": str(exc)}
+
+    async def _execute_source_job(
+        self,
+        crawler_name: str,
+        source_name: str | None = None,
+        schema_type: str = "source_raw",
+        source_url: str | None = None,
+        *,
+        force_full: bool = False,
+    ) -> dict[str, Any]:
+        """Incremental source run + tracking for scheduler history."""
+        job_id = f"source:{crawler_name}"
+        execution = self.tracker.start(job_id)
+        try:
+            if not self._pipeline or not hasattr(self._pipeline, "run_source_incremental"):
+                result_dict = {"crawler_name": crawler_name, "status": "no_source_pipeline"}
+            else:
+                result = await self._pipeline.run_source_incremental(
+                    crawler_name,
+                    source_name=source_name,
+                    schema_type=schema_type,
+                    source_url=source_url,
+                    force_full=force_full,
+                )
+                result_dict = result.to_dict() if hasattr(result, "to_dict") else dict(result)
+            self.tracker.complete(execution, result_dict)
+            return result_dict
+        except Exception as exc:
+            self.tracker.fail(execution, str(exc))
+            logger.error("[Scheduler] source job %s failed: %s", crawler_name, exc)
             return {"crawler_name": crawler_name, "status": "failed", "error": str(exc)}

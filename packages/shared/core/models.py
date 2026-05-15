@@ -249,6 +249,8 @@ class HotdealPost(BaseModel):
     """
     title: str
     url: str
+    source_url: str = ""                         # canonical source-owned post URL
+    source_record_key: str = ""                  # stable community-owned dedup/incremental key
     source_community: str = ""                  # "뽐뿌", "어미새", "루리웹"
     price: Optional[int] = None
     original_price: Optional[int] = None

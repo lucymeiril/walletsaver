@@ -38,14 +38,17 @@ from bs4 import BeautifulSoup
 from core.contracts.crawler import CrawlerContract
 from core.models import CrawlerInfo, CrawlerGroup, CrawlResult, CrawlStatus, HotdealPost
 from engine.anti_detect import AntiDetect
+from crawlers.hotdeals.common import HotdealCollectorMixin, apply_source_facts, dedupe_hotdeal_posts
 
 logger = logging.getLogger(__name__)
 
 
-class PpomppuCrawler(CrawlerContract):
+class PpomppuCrawler(HotdealCollectorMixin, CrawlerContract):
     """뽐뿌 핫딜 크롤러 — 국내 최대 핫딜 커뮤니티."""
 
     BASE_URL = "https://www.ppomppu.co.kr"
+    SOURCE_ID = "ppomppu"
+    PAGE_ENCODING = "euc-kr"
     DEAL_URL = "https://www.ppomppu.co.kr/zboard/zboard.php?id=ppomppu"
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
@@ -228,8 +231,9 @@ class PpomppuCrawler(CrawlerContract):
                 category = sub_text
 
         image_el = row.select_one("img[src], img[data-src]")
+        date_el = row.select_one("time, .date, .timestamp, .baseList-time")
 
-        return HotdealPost(
+        return apply_source_facts(HotdealPost(
             title=title,
             url=url,
             source_community="뽐뿌",
@@ -238,7 +242,7 @@ class PpomppuCrawler(CrawlerContract):
             category=category,
             category_hints=[hint for hint in (category,) if hint],
             image_url=urljoin(self.BASE_URL, image_el.get("src") or image_el.get("data-src")) if image_el else "",
-        )
+        ), source_id=self.SOURCE_ID, source_url=url, post_date_text=date_el.get_text(" ", strip=True) if date_el else None)
 
     def _is_ad(self, row, title: str) -> bool:
         """광고/공지 게시글 여부를 판단한다."""
@@ -276,17 +280,4 @@ class PpomppuCrawler(CrawlerContract):
 
     async def validate(self, items: list[HotdealPost]) -> list[HotdealPost]:
         """유효한 핫딜만 필터링한다."""
-        valid = []
-        seen_urls: set[str] = set()
-
-        for item in items:
-            if item.url in seen_urls:
-                continue
-            seen_urls.add(item.url)
-
-            if len(item.title) < 3:
-                continue
-
-            valid.append(item)
-
-        return valid
+        return dedupe_hotdeal_posts(items)

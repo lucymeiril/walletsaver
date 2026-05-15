@@ -255,6 +255,61 @@ class TestEmartParse:
         assert item.attributes["category_hint"] == "냉동/간편식"
         assert item.unit == "700g"
 
+    @pytest.mark.asyncio
+    async def test_emart_next_data_collects_multiple_categories_with_period_and_source_keys(self):
+        crawler = EmartCrawler()
+        html = """
+        <script id="__NEXT_DATA__" type="application/json">{
+          "props":{"pageProps":{"dehydratedState":{"queries":[{"state":{"data":{"areaList":[
+            {"title":"채소","dataList":[
+              {"itemId":"veg-1","itemName":"양파 1kg","finalPrice":"3,980","itemUrl":"/item/veg-1","itemImgUrl":"/img/veg.jpg","sellUnitCapacity":"1kg","eventStartDate":"2026-03-18","eventEndDate":"2026-03-24"}
+            ]},
+            {"title":"정육","dataList":[
+              {"itemId":"meat-1","itemName":"삼겹살 600g","finalPrice":"12,900","itemUrl":"/item/meat-1","itemImgUrl":"/img/meat.jpg","sellUnitCapacity":"600g"},
+              {"itemId":"veg-1","itemName":"양파 1kg","finalPrice":"3,980","itemUrl":"/item/veg-1","itemImgUrl":"/img/veg.jpg","sellUnitCapacity":"1kg"}
+            ]}
+          ]}}}]}}}
+        }</script>
+        """
+
+        items = await crawler.parse(html)
+
+        assert [item.attributes["source_record_key"] for item in items] == ["veg-1", "meat-1"]
+        assert {item.category for item in items} == {"채소", "정육"}
+        assert items[0].valid_from is not None
+        assert items[0].valid_until is not None
+        assert items[0].attributes["period"] == "2026-03-18~2026-03-24"
+
+    def test_emart_source_requests_cover_categories_and_pagination(self):
+        crawler = EmartCrawler()
+        crawler.SEARCH_QUERIES = ["행사"]
+        crawler.CATEGORY_QUERIES = ["채소", "정육"]
+        crawler.MAX_PAGES = 2
+
+        requests = crawler._build_source_requests()
+
+        assert [req["page"] for req in requests if req["query"] == "채소"] == [1, 2]
+        assert any("query=%EC%A0%95%EC%9C%A1" in req["url"] for req in requests)
+
+    @pytest.mark.asyncio
+    async def test_emart_crawl_dedupes_overlapping_pages_before_counts(self):
+        crawler = EmartCrawler()
+        crawler.SEARCH_QUERIES = ["행사"]
+        crawler.CATEGORY_QUERIES = ["채소"]
+        crawler.MAX_PAGES = 1
+        crawler._anti_detect = MagicMock()
+        crawler._anti_detect.get_random_headers.return_value = {}
+        crawler._anti_detect.get_random_delay.return_value = 0
+        response = MagicMock(status_code=200, text=MOCK_EMART_HTML)
+
+        with patch.object(crawler, "_retry_request", return_value=response):
+            result = await crawler.crawl()
+
+        assert result.status == CrawlStatus.SUCCESS
+        assert result.items_count == 2
+        assert result.quality_details["item_counts"]["raw"] == 2
+        assert result.quality_details["item_counts"]["duplicates_after_validation"] == 0
+
 
 class TestHomeplusParse:
     """홈플러스 크롤러 파싱 테스트."""
@@ -319,6 +374,59 @@ class TestHomeplusParse:
         assert item.attributes["source_record_key"] == "beef-1"
         assert item.attributes["source_url"] == item.detail_url
 
+    def test_homeplus_source_requests_are_bounded_by_query_category_and_page(self):
+        crawler = HomeplusCrawler()
+        crawler.SEARCH_QUERIES = ["행사"]
+        crawler.CATEGORY_QUERIES = ["유제품"]
+        crawler.MAX_PAGES = 2
+        crawler.MAX_REQUESTS = None
+
+        requests = crawler._build_source_requests()
+
+        assert len(requests) == 4
+        assert requests[2]["category_hint"] == "유제품"
+        assert requests[3]["url"].endswith("&page=2")
+
+    @pytest.mark.asyncio
+    async def test_homeplus_validate_dedupes_by_source_record_key_for_incremental_update(self):
+        crawler = HomeplusCrawler()
+        first = crawler._json_to_discount_item({
+            "goodsNo": "hp-1",
+            "goodsNm": "두부 300g",
+            "salePrice": "1980",
+            "goodsUrl": "/goods/detail?goodsNo=hp-1",
+        })
+        updated = crawler._json_to_discount_item({
+            "goodsNo": "hp-1",
+            "goodsNm": "두부 300g",
+            "salePrice": "1780",
+            "goodsUrl": "/goods/detail?goodsNo=hp-1",
+        })
+
+        valid = await crawler.validate([first, updated])
+
+        assert len(valid) == 1
+        assert valid[0].attributes["source_record_key"] == "hp-1"
+
+    def test_homeplus_dedupes_before_collection_counts(self):
+        crawler = HomeplusCrawler()
+        first = crawler._json_to_discount_item({
+            "goodsNo": "hp-1",
+            "goodsNm": "두부 300g",
+            "salePrice": "1980",
+            "goodsUrl": "/goods/detail?goodsNo=hp-1",
+        })
+        duplicate = crawler._json_to_discount_item({
+            "goodsNo": "hp-1",
+            "goodsNm": "두부 300g",
+            "salePrice": "1980",
+            "goodsUrl": "/goods/detail?goodsNo=hp-1",
+        })
+
+        assert first is not None
+        assert duplicate is not None
+        assert crawler._dedupe_items([first, duplicate]) == [first]
+
 
 class TestLottemartParse:
     """롯데마트 크롤러 파싱 테스트."""
@@ -371,6 +479,37 @@ class TestLottemartParse:
         assert item.attributes["source_record_key"] == "sku-1"
         assert item.attributes["category_path"] == ["생수/음료", "생수"]
         assert item.attributes["source_url"] == item.detail_url
+
+    def test_lottemart_source_requests_include_category_pagination(self):
+        crawler = LottemartCrawler()
+        crawler.SEARCH_QUERIES = ["특가"]
+        crawler.CATEGORY_QUERIES = ["생수"]
+        crawler.MAX_PAGES = 2
+
+        requests = crawler._build_source_requests()
+
+        assert [req["page"] for req in requests] == [1, 2, 1, 2]
+        assert requests[2]["category_hint"] == "생수"
+        assert "page=2" in requests[3]["url"]
+
+    @pytest.mark.asyncio
+    async def test_lottemart_validate_uses_source_key_not_price_for_incremental_update(self):
+        crawler = LottemartCrawler()
+        first = crawler._entity_to_discount_item({
+            "name": "오늘좋은 생수 2L*6입",
+            "price": {"current": {"amount": "2,990"}},
+            "url": "/products/water-1",
+        }, "water-1")
+        updated = crawler._entity_to_discount_item({
+            "name": "오늘좋은 생수 2L*6입",
+            "price": {"current": {"amount": "2,690"}},
+            "url": "/products/water-1",
+        }, "water-1")
+
+        valid = await crawler.validate([first, updated])
+
+        assert len(valid) == 1
+        assert valid[0].attributes["source_record_key"] == "water-1"
 
 
 # --- JSON 파싱 테스트 ---

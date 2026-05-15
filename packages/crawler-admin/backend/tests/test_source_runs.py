@@ -1,0 +1,158 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import pytest
+
+from core.models import CrawlResult, CrawlStatus
+from pipeline.source_runs import SourceRunPipeline, SourceRunStore
+from scheduler.scheduler import CrawlScheduler
+
+
+class SequencedCrawler:
+    def __init__(self, runs):
+        self.runs = list(runs)
+        self.seen_since = []
+
+    async def crawl_incremental(self, *, since=None):
+        self.seen_since.append(since)
+        items = self.runs.pop(0)
+        return CrawlResult(
+            status=CrawlStatus.SUCCESS,
+            crawler_name="emart",
+            items_count=len(items),
+            items=items,
+        )
+
+
+class Registry:
+    def __init__(self, crawler):
+        self.crawler = crawler
+
+    def get_crawler(self, crawler_name):
+        return self.crawler
+
+
+@pytest.mark.asyncio
+async def test_repeated_source_runs_skip_unchanged_without_duplicate_handoff(tmp_path: Path):
+    crawler = SequencedCrawler(
+        [
+            [
+                {
+                    "product_id": "milk-1l",
+                    "name": "서울우유 1L",
+                    "sale_price": 2980,
+                    "detail_url": "https://emart.example/milk",
+                }
+            ],
+            [
+                {
+                    "product_id": "milk-1l",
+                    "name": "서울우유 1L",
+                    "sale_price": 2980,
+                    "detail_url": "https://emart.example/milk",
+                }
+            ],
+        ]
+    )
+    pipeline = SourceRunPipeline(Registry(crawler), store=SourceRunStore(tmp_path))
+
+    first = await pipeline.run_source_incremental("emart", source_name="emart", schema_type="mart_discount")
+    second = await pipeline.run_source_incremental("emart", source_name="emart", schema_type="mart_discount")
+
+    assert first.items_new == 1
+    assert first.records_handed_off == 1
+    assert second.since is not None
+    assert crawler.seen_since == [None, second.since]
+    assert second.items_new == 0
+    assert second.items_changed == 0
+    assert second.items_skipped == 1
+    assert second.records_handed_off == 0
+
+    handoff = json.loads(Path(second.ai_handoff_path).read_text(encoding="utf-8"))
+    assert handoff["records"] == []
+    assert handoff["batches"] == []
+
+
+@pytest.mark.asyncio
+async def test_changed_source_owned_facts_are_handed_off_and_preserved(tmp_path: Path):
+    crawler = SequencedCrawler(
+        [
+            [
+                {
+                    "product_id": "tofu-300g",
+                    "name": "국산콩 두부 300g",
+                    "sale_price": 2990,
+                    "detail_url": "https://emart.example/tofu",
+                    "category_hint": "두부/콩나물",
+                }
+            ],
+            [
+                {
+                    "product_id": "tofu-300g",
+                    "name": "국산콩 두부 300g",
+                    "sale_price": 2490,
+                    "detail_url": "https://emart.example/tofu",
+                    "category_hint": "두부/콩나물",
+                    "event_name": "주간특가",
+                }
+            ],
+        ]
+    )
+    pipeline = SourceRunPipeline(Registry(crawler), store=SourceRunStore(tmp_path))
+
+    await pipeline.run_source_incremental("emart", source_name="emart", schema_type="mart_discount")
+    changed = await pipeline.run_source_incremental("emart", source_name="emart", schema_type="mart_discount")
+
+    assert changed.items_changed == 1
+    assert changed.items_skipped == 0
+    handoff = json.loads(Path(changed.ai_handoff_path).read_text(encoding="utf-8"))
+    record = handoff["records"][0]
+    assert record["source_record_key"] == "tofu-300g"
+    assert record["raw_price"] == 2490
+    assert record["raw_payload"]["event_name"] == "주간특가"
+    assert record["raw_payload"]["category_hint"] == "두부/콩나물"
+    assert handoff["batches"][0]["raw_artifact_uri"].endswith("raw_records.jsonl")
+
+
+@pytest.mark.asyncio
+async def test_scheduler_source_run_records_manifest_and_retry_dead_letter(tmp_path: Path, monkeypatch):
+    class FailingCrawler:
+        async def crawl_incremental(self, *, since=None):
+            raise RuntimeError("source offline")
+
+    dead_letter_path = tmp_path / "dead_letter.jsonl"
+
+    def fake_dead_letter(records, *, crawler_name="unknown", target="store", error_msg=""):
+        dead_letter_path.write_text(
+            json.dumps(
+                {
+                    "records": records,
+                    "crawler_name": crawler_name,
+                    "target": target,
+                    "error": error_msg,
+                }
+            ),
+            encoding="utf-8",
+        )
+        return dead_letter_path
+
+    monkeypatch.setattr("pipeline.source_runs.write_dead_letter", fake_dead_letter)
+    source_pipeline = SourceRunPipeline(
+        Registry(FailingCrawler()),
+        store=SourceRunStore(tmp_path / "runs"),
+        retry_count=2,
+    )
+    scheduler = CrawlScheduler(pipeline=source_pipeline)
+
+    result = await scheduler.run_source_now("emart", source_name="emart", schema_type="mart_discount")
+
+    assert result["status"] == "failed"
+    assert result["dead_letter_path"] == str(dead_letter_path)
+    assert [attempt["status"] for attempt in result["retry_attempts"]] == ["failed", "failed"]
+    manifest = json.loads(Path(result["manifest_path"]).read_text(encoding="utf-8"))
+    assert manifest["dead_letter_path"] == str(dead_letter_path)
+    assert manifest["counts"]["records_handed_off"] == 0
+    history = scheduler.tracker.get_history(job_id="source:emart")
+    assert history[0]["result"]["status"] == "failed"

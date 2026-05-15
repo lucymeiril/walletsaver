@@ -10,6 +10,9 @@ class CoupangCrawler(MarketplaceSkeletonCrawler):
     DISPLAY_NAME = "쿠팡"
     BASE_URL = "https://www.coupang.com"
     DESCRIPTION = "쿠팡 marketplace price source"
+    SEARCH_PATH = "/np/search"
+    SEARCH_QUERY_PARAM = "q"
+    PAGE_PARAM = "page"
 
 
 Crawler = CoupangCrawler

@@ -10,6 +10,9 @@ class GmarketCrawler(MarketplaceSkeletonCrawler):
     DISPLAY_NAME = "G마켓"
     BASE_URL = "https://www.gmarket.co.kr"
     DESCRIPTION = "G마켓 marketplace price source"
+    SEARCH_PATH = "https://browse.gmarket.co.kr/search"
+    SEARCH_QUERY_PARAM = "keyword"
+    PAGE_PARAM = "p"
 
 
 Crawler = GmarketCrawler

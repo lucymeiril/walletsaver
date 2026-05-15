@@ -44,8 +44,11 @@ SAFE_SEED_CATEGORY_IDS = frozenset(
         "bakery.bread",
         "seafood.shellfish",
         "household.tissue",
+        "household.storage",
         "processed.meat",
         "processed.sauce",
+        "processed.spread",
+        "processed.rice_cake",
         # Existing reviewed/legacy IDs used by the review pipeline tests and fixtures.
         "vegetable.cabbage",
         "processed.tofu.firm",
@@ -94,8 +97,11 @@ SAFE_SEED_CATEGORY_LABELS = {
     "bakery.bread": "베이커리/빵",
     "seafood.shellfish": "수산/패류",
     "household.tissue": "생활용품/티슈",
+    "household.storage": "생활용품/수납",
     "processed.meat": "가공식품/육가공",
     "processed.sauce": "가공식품/소스",
+    "processed.spread": "가공식품/스프레드",
+    "processed.rice_cake": "가공식품/떡",
     "vegetable.cabbage": "채소/양배추",
     "processed.tofu.firm": "가공식품/두부",
     "processed.sauce.ssamjang": "가공식품/소스/쌈장",
@@ -116,6 +122,8 @@ SAFE_SEED_CATEGORY_ALIASES = {
     "푸드두부": "processed.tofu.firm",
     "가공식품두부": "processed.tofu.firm",
     "processedtofu": "processed.tofu.firm",
+    "processedsoytofu": "processed.tofu.firm",
+    "soytofu": "processed.tofu.firm",
     "foodtofu": "processed.tofu.firm",
     "과일": "produce.fruit",
     "농산과일": "produce.fruit",
@@ -157,6 +165,7 @@ SAFE_SEED_CATEGORY_ALIASES = {
     "processedinstantmealkit": "prepared_food.meal_kit",
     "processedmealkit": "prepared_food.meal_kit",
     "snack": "snack.general",
+    "processedsnack": "snack.general",
     "snacksnack": "snack.general",
     "snackchips": "snack.chip",
     "beverage": "beverage.general",
@@ -169,8 +178,20 @@ SAFE_SEED_CATEGORY_ALIASES = {
     "bakerybread": "bakery.bread",
     "seafoodshellfish": "seafood.shellfish",
     "householdtissue": "household.tissue",
+    "householdstorage": "household.storage",
+    "livingstorage": "household.storage",
+    "livingfurniturestorage": "household.storage",
     "processedmeat": "processed.meat",
     "processedsauce": "processed.sauce",
+    "processedspread": "processed.spread",
+    "processeddairybutter": "processed.spread",
+    "spread": "processed.spread",
+    "butter": "processed.spread",
+    "피넛버터": "processed.spread",
+    "processedricecake": "processed.rice_cake",
+    "processedgrainricecake": "processed.rice_cake",
+    "ricecake": "processed.rice_cake",
+    "떡": "processed.rice_cake",
     "agriculturefruitcherry": "produce.fruit",
     "agriculturefruitwatermelon": "produce.fruit",
     "agricultureleafycabbage": "vegetable.cabbage",
@@ -261,6 +282,11 @@ PROMPT_CATEGORY_HINT_IDS = (
     "seafood.frozen",
     "produce.fruit",
     "processed.tofu.firm",
+    "snack.general",
+    "instant.noodle",
+    "household.storage",
+    "processed.spread",
+    "processed.rice_cake",
 )
 
 
@@ -321,6 +347,6 @@ def is_safe_seed_category(value: Any) -> bool:
 def seed_taxonomy_prompt_line() -> str:
     categories = ", ".join(PROMPT_CATEGORY_HINT_IDS)
     return (
-        "Compact safe seed taxonomy hints; reuse these official dot category_id values when they fit: "
+        "Official category_id hints: "
         f"{categories}"
     )

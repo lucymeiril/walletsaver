@@ -24,6 +24,7 @@ from workers.keyword_generator import KeywordGeneratorWorker
 from workers.normalizer import NormalizerWorker
 from workers.prompt_curator import PromptCuratorWorker
 from workers.unit_converter import UnitConverterWorker
+from services.ai_ingestion import _record_prompt_line
 
 
 def _provider() -> AIProviderRef:
@@ -36,6 +37,25 @@ def _provider() -> AIProviderRef:
 
 def _prompt_pack(role: AIWorkerRole) -> PromptPackRef:
     return PromptPackRef(role=role, pack_id="pack-1", version="1")
+
+
+def test_labeling_prompt_omits_ambiguous_source_category_but_keeps_category_hint() -> None:
+    record = RawCrawlRecord(
+        raw_record_id="raw-ambiguous-category",
+        source_name="emart",
+        raw_title="성주 참외 2kg",
+        raw_price=9900,
+        raw_payload={
+            "category": "파머스픽",
+            "category_hint": "농산/과일",
+            "sale_price": 9900,
+        },
+    )
+
+    line = _record_prompt_line(record)
+
+    assert "category=파머스픽" not in line
+    assert "category_hint=농산/과일" in line
 
 
 def _record(idx: int, *, title: str = "[행사] 서울우유 1L", price: int | None = 2500) -> RawCrawlRecord:

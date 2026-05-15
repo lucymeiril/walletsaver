@@ -36,6 +36,13 @@ from core.models import (
     DiscountItem,
 )
 from core.product_units import normalize_unit_metadata
+from crawlers.marts.source_utils import (
+    absolute_url,
+    build_source_attributes,
+    normalize_source_key,
+    parse_period_fields,
+    source_dedup_key,
+)
 from engine.anti_detect import AntiDetect
 from pipeline.quality import summarize_discount_run
 
@@ -55,6 +62,9 @@ class LottemartCrawler(CrawlerContract):
     ZETTA_BASE = "https://lottemartzetta.com"
     # 다양한 검색어로 더 많은 상품 수집
     SEARCH_QUERIES = ["할인", "특가", "과일", "채소", "정육", "세일", "우유", "음료"]
+    CATEGORY_QUERIES = ["과일", "채소", "정육", "계란", "생수", "유제품", "간편식"]
+    MAX_PAGES = 2
+    MAX_REQUESTS: int | None = None
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=1.0, delay_max=3.0)
@@ -113,14 +123,22 @@ class LottemartCrawler(CrawlerContract):
         all_items: list[DiscountItem] = []
         errors: list[str] = []
         seen_ids: set[str] = set()
+        source_raw_count = 0
+        pages_attempted = 0
 
         # Reuse TCP connections across multiple search queries
         session = requests.Session()
         try:
             # 1차: __INITIAL_STATE__ 기반 추출 (HTTP 요청)
-            for query in self.SEARCH_QUERIES:
+            for source_request in self._build_source_requests():
+                if self.MAX_REQUESTS is not None and pages_attempted >= self.MAX_REQUESTS:
+                    break
+                query = str(source_request["query"])
+                page_num = source_request["page"]
+                url = str(source_request["url"])
+                category_hint = str(source_request["category_hint"])
+                pages_attempted += 1
                 try:
-                    url = f"{self.ZETTA_BASE}/search?query={quote(query)}"
                     headers = self._anti_detect.get_random_headers()
                     headers.update({
                         "Referer": f"{self.ZETTA_BASE}/",
@@ -134,27 +152,32 @@ class LottemartCrawler(CrawlerContract):
                     response = self._retry_request(url, headers=headers, session=session, timeout=20, allow_redirects=True)
 
                     if response.status_code != 200:
-                        logger.warning(f"[롯데마트] 검색 '{query}' HTTP {response.status_code}")
-                        errors.append(f"검색 '{query}' HTTP {response.status_code}")
+                        logger.warning(f"[롯데마트] 검색 '{query}' p{page_num} HTTP {response.status_code}")
+                        errors.append(f"검색 '{query}' p{page_num} HTTP {response.status_code}")
                         continue
 
+                    source_raw_count += self.count_raw_candidates(response.text)
                     # __INITIAL_STATE__에서 상품 데이터 추출
                     items = self._extract_from_initial_state(response.text)
 
                     # __INITIAL_STATE__ 추출 실패 시 HTML/JSON 파싱 폴백
                     if not items:
                         items = await self.parse(response.text)
+                    if category_hint:
+                        for item in items:
+                            if not item.category:
+                                item.category = category_hint
+                            item.attributes.setdefault("category_hint", item.category or category_hint)
 
                     new_count = 0
                     for item in items:
-                        # productId 기반 중복 제거
-                        key = f"{item.name}_{item.sale_price}"
+                        key = source_dedup_key(item)
                         if key not in seen_ids:
                             seen_ids.add(key)
                             all_items.append(item)
                             new_count += 1
 
-                    logger.info(f"[롯데마트] 검색 '{query}': {new_count}개 신규 ({len(items)}개 중)")
+                    logger.info(f"[롯데마트] 검색 '{query}' p{page_num}: {new_count}개 신규 ({len(items)}개 중)")
 
                 except Exception as e:
                     logger.warning(f"[롯데마트] 검색 '{query}' 실패: {e}")
@@ -170,7 +193,7 @@ class LottemartCrawler(CrawlerContract):
                     pw_items = await self._fetch_via_playwright()
                     fallback_used = True
                     for item in pw_items:
-                        key = f"{item.name}_{item.sale_price}"
+                        key = source_dedup_key(item)
                         if key not in seen_ids:
                             seen_ids.add(key)
                             all_items.append(item)
@@ -183,11 +206,13 @@ class LottemartCrawler(CrawlerContract):
             quality_details = summarize_discount_run(
                 items_as_dict,
                 raw_count=len(all_items),
+                source_raw_count=source_raw_count,
                 invalid_count=max(0, len(all_items) - len(valid_items)),
                 errors=errors,
                 strategy_used="playwright" if fallback_used else "requests",
                 fallback_used=fallback_used,
                 queries_attempted=len(self.SEARCH_QUERIES),
+                pages_attempted=pages_attempted,
             )
 
             finished_at = datetime.now()
@@ -249,6 +274,27 @@ class LottemartCrawler(CrawlerContract):
             )
         finally:
             session.close()  # Release TCP connections
+
+    def _build_source_requests(self) -> list[dict[str, str | int]]:
+        """Build bounded search/category pagination source requests."""
+        requests_to_make: list[dict[str, str | int]] = []
+        seen: set[tuple[str, int]] = set()
+        for query in [*self.SEARCH_QUERIES, *self.CATEGORY_QUERIES]:
+            category_hint = query if query in self.CATEGORY_QUERIES else ""
+            for page_num in range(1, self.MAX_PAGES + 1):
+                key = (query, page_num)
+                if key in seen:
+                    continue
+                seen.add(key)
+                requests_to_make.append(
+                    {
+                        "query": query,
+                        "page": page_num,
+                        "category_hint": category_hint,
+                        "url": f"{self.ZETTA_BASE}/search?query={quote(query)}&page={page_num}",
+                    }
+                )
+        return requests_to_make
 
     def _extract_from_initial_state(self, html: str) -> list[DiscountItem]:
         """window.__INITIAL_STATE__ Redux 상태에서 productEntities를 추출한다.
@@ -401,14 +447,18 @@ class LottemartCrawler(CrawlerContract):
         attributes = unit_metadata.get("attributes") or {}
         if brand:
             attributes = {**attributes, "brand": brand}
-        attributes = {
-            **attributes,
-            **({"source_record_key": product_id} if product_id else {}),
-            **({"source_url": detail_url} if detail_url else {}),
-            **({"image_url": image_url} if image_url else {}),
-            **({"category_path": category_path} if category_path else {}),
-            **({"category_hint": category} if category else {}),
-        }
+        source_record_key = normalize_source_key("lottemart", product_id, detail_url, clean_name)
+        valid_from, valid_until, period = parse_period_fields(product)
+        attributes = build_source_attributes(
+            "lottemart",
+            source_record_key=source_record_key,
+            detail_url=detail_url,
+            image_url=image_url,
+            category=category,
+            category_path=category_path,
+            period=period,
+            extra=attributes,
+        )
 
         return DiscountItem(
             name=clean_name,
@@ -424,6 +474,8 @@ class LottemartCrawler(CrawlerContract):
             attributes=attributes,
             category=category,
             event_name=event_name,
+            valid_from=valid_from,
+            valid_until=valid_until,
             image_url=image_url,
             detail_url=detail_url,
         )
@@ -579,7 +631,13 @@ class LottemartCrawler(CrawlerContract):
             package_quantity=unit_metadata.get("package_quantity"),
             package_unit=unit_metadata.get("package_unit") or "",
             price_per_100g=unit_metadata.get("price_per_100g"),
-            attributes=unit_metadata.get("attributes") or {},
+            attributes=build_source_attributes(
+                "lottemart",
+                source_record_key=normalize_source_key("lottemart", detail_url, name),
+                detail_url=detail_url,
+                image_url=image_url,
+                extra=unit_metadata.get("attributes") or {},
+            ),
             image_url=image_url,
             detail_url=detail_url,
             event_name=event_name,
@@ -663,7 +721,15 @@ class LottemartCrawler(CrawlerContract):
         detail_url = product.get("goodsUrl") or product.get("detail_url", "")
         if detail_url and not detail_url.startswith("http"):
             detail_url = f"{self.BASE_URL}{detail_url}"
-        source_record_key = str(product.get("goodsNo") or product.get("itemId") or product.get("id") or "").strip()
+        source_record_key = normalize_source_key(
+            "lottemart",
+            product.get("goodsNo"),
+            product.get("itemId"),
+            product.get("id"),
+            detail_url,
+            name,
+        )
+        valid_from, valid_until, period = parse_period_fields(product)
         raw_unit = product.get("unit") or product.get("size") or product.get("capacity") or ""
         unit_metadata = normalize_unit_metadata(
             name=name,
@@ -683,15 +749,19 @@ class LottemartCrawler(CrawlerContract):
             package_quantity=unit_metadata.get("package_quantity"),
             package_unit=unit_metadata.get("package_unit") or "",
             price_per_100g=unit_metadata.get("price_per_100g"),
-            attributes={
-                **(unit_metadata.get("attributes") or {}),
-                **({"source_record_key": source_record_key} if source_record_key else {}),
-                **({"source_url": detail_url} if detail_url else {}),
-                **({"image_url": image_url} if image_url else {}),
-                **({"category_hint": category} if category else {}),
-            },
+            attributes=build_source_attributes(
+                "lottemart",
+                source_record_key=source_record_key,
+                detail_url=detail_url,
+                image_url=image_url,
+                category=category,
+                period=period,
+                extra=unit_metadata.get("attributes") or {},
+            ),
             category=category,
             event_name=product.get("eventNm", "롯데마트 할인"),
+            valid_from=valid_from,
+            valid_until=valid_until,
             image_url=image_url,
             detail_url=detail_url,
         )
@@ -766,11 +836,13 @@ class LottemartCrawler(CrawlerContract):
             package_quantity=unit_metadata.get("package_quantity"),
             package_unit=unit_metadata.get("package_unit") or "",
             price_per_100g=unit_metadata.get("price_per_100g"),
-            attributes={
-                **(unit_metadata.get("attributes") or {}),
-                **({"source_url": detail_url} if detail_url else {}),
-                **({"image_url": image_url} if image_url else {}),
-            },
+            attributes=build_source_attributes(
+                "lottemart",
+                source_record_key=normalize_source_key("lottemart", detail_url, name),
+                detail_url=detail_url,
+                image_url=image_url,
+                extra=unit_metadata.get("attributes") or {},
+            ),
             image_url=image_url,
             detail_url=detail_url,
             event_name="롯데마트 할인",
@@ -798,15 +870,7 @@ class LottemartCrawler(CrawlerContract):
 
     def _absolute_url(self, url: str, base_url: str) -> str:
         """Normalize source-relative URLs while preserving absolute URLs."""
-        if not url:
-            return ""
-        if url.startswith("//"):
-            return f"https:{url}"
-        if url.startswith("http"):
-            return url
-        if url.startswith("/"):
-            return f"{base_url}{url}"
-        return url
+        return absolute_url(url, base_url)
 
     def _extract_price(self, text: str) -> Optional[int]:
         """텍스트에서 가격(원)을 추출한다."""
@@ -837,7 +901,7 @@ class LottemartCrawler(CrawlerContract):
         seen = set()
 
         for item in items:
-            key = f"{item.name}_{item.sale_price}"
+            key = source_dedup_key(item)
             if key in seen:
                 continue
             seen.add(key)

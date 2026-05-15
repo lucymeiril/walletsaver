@@ -1,9 +1,11 @@
 import asyncio
 import json
 from pathlib import Path
+from urllib.parse import unquote
 
 from core.models import CrawlStatus
 from crawlers.registry.registry import CrawlerRegistry
+from pipeline.ai_export import to_raw_records
 
 
 MARKETPLACE_SOURCES = {
@@ -153,6 +155,106 @@ def test_marketplace_skeletons_parse_mock_html_and_report_success():
             "db_mutation_allowed": False,
         }
         assert any("no-DB AI review" in action for action in result.quality_details["readiness_gate"]["next_actions"])
+
+
+def test_coupang_and_gmarket_parse_source_cards_edges_and_ai_handoff_rows():
+    registry = _registry()
+    fixtures = {
+        "coupang": """
+        <html><body>
+          <ul id="product-list">
+            <li class="search-product" data-product-id="111">
+              <a class="search-product-link" href="/vp/products/111?vendorItemId=222">
+                <img data-img-src="//image.example/coupang-111.jpg" />
+                <span class="name">source 생수 2L 6개</span>
+              </a>
+              <strong class="price-value">10,900원</strong>
+              <del class="base-price">12,900원</del>
+            </li>
+            <li class="search-product" data-product-id="112">
+              <a class="search-product-link" href="/vp/products/112"><span class="name">source 라면 5입</span></a>
+              <strong class="price-value">4,980원</strong>
+            </li>
+            <li class="search-product" data-product-id="113">
+              <a class="search-product-link" href="/vp/products/113"><span class="name">가격 누락 상품</span></a>
+            </li>
+          </ul>
+          <a class="next" href="/np/search?q=water&page=2">next</a>
+        </body></html>
+        """,
+        "gmarket": """
+        <html><body>
+          <div class="box__item-container" data-goods-code="gm-111">
+            <a class="link__item" href="/item?goodsCode=gm-111">
+              <img data-original="/images/gm-111.jpg" />
+              <span class="box__item-title">source 즉석밥 12입</span>
+            </a>
+            <span class="box__price-seller"><strong>13,500원</strong></span>
+            <span class="text__price-original">15,900원</span>
+          </div>
+          <div class="box__item-container" data-goods-code="gm-112">
+            <a class="link__item" href="/item?goodsCode=gm-112">
+              <span class="box__item-title">source 세제 3L</span>
+            </a>
+            <span class="text__value">8,900원</span>
+          </div>
+          <div class="box__item-container" data-goods-code="gm-113">
+            <a class="link__item" href="/item?goodsCode=gm-113"><span class="box__item-title">가격 누락 상품</span></a>
+          </div>
+          <link rel="next" href="https://browse.gmarket.co.kr/search?keyword=rice&p=2" />
+        </body></html>
+        """,
+    }
+
+    for source_id, raw in fixtures.items():
+        crawler = registry.get_crawler(source_id)
+        parsed = _run(crawler.parse(raw))
+        valid = _run(crawler.validate(parsed))
+
+        assert crawler.count_raw_candidates(raw) == 3
+        assert len(valid) == 2
+        assert valid[0].detail_url.startswith(crawler.BASE_URL)
+        assert valid[0].attributes["source"] == source_id
+        assert valid[0].attributes["source_record_key"]
+        assert valid[0].attributes["dedup_key"].startswith(f"{source_id}:")
+        assert valid[0].attributes["incremental_key"]
+        assert valid[0].attributes["source_rank"] == 1
+        assert valid[1].image_url == ""
+        assert crawler.next_page_url(raw)
+
+        rows, skipped = to_raw_records(
+            [item.model_dump(mode="json") for item in valid],
+            source_name=source_id,
+            batch_id=f"{source_id}-fixture-source",
+        )
+        assert skipped == 0
+        assert [row.source_record_key for row in rows] == [
+            valid[0].attributes["source_record_key"],
+            valid[1].attributes["source_record_key"],
+        ]
+        assert rows[0].source_url == valid[0].detail_url
+        assert rows[0].raw_payload["attributes"]["source_url"] == valid[0].detail_url
+
+
+def test_marketplace_source_connectors_build_search_and_category_urls():
+    registry = _registry()
+    cases = {
+        "coupang": ("q=생수", "page=3"),
+        "gmarket": ("keyword=생수", "p=3"),
+        "11st": ("kwd=생수", "pageNo=3"),
+        "naver_store": ("query=생수", "pagingIndex=3"),
+        "aliexpress": ("SearchText=생수", "page=3"),
+    }
+
+    for source_id, expected_parts in cases.items():
+        crawler = registry.get_crawler(source_id)
+        search_url = crawler.build_search_url("생수", page=3)
+        category_url = crawler.build_category_url("/category/source-owned", page=2)
+
+        decoded_search_url = unquote(search_url)
+        assert search_url.startswith("https://")
+        assert all(part in decoded_search_url for part in expected_parts)
+        assert category_url.startswith(crawler.BASE_URL)
 
 
 def test_marketplace_skeletons_without_fixture_return_zero_result_diagnostics():

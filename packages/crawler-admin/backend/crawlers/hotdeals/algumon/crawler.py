@@ -36,14 +36,17 @@ from bs4 import BeautifulSoup
 from core.contracts.crawler import CrawlerContract
 from core.models import CrawlerInfo, CrawlerGroup, CrawlResult, CrawlStatus, HotdealPost
 from engine.anti_detect import AntiDetect
+from crawlers.hotdeals.common import HotdealCollectorMixin, apply_source_facts, dedupe_hotdeal_posts
 
 logger = logging.getLogger(__name__)
 
 
-class AlgumonCrawler(CrawlerContract):
+class AlgumonCrawler(HotdealCollectorMixin, CrawlerContract):
     """알구몬 핫딜 크롤러 — 여러 커뮤니티의 핫딜 통합."""
 
     BASE_URL = "https://www.algumon.com"
+    SOURCE_ID = "algumon"
+    PAGE_ENCODING = "utf-8"
     DEAL_URL = "https://www.algumon.com/n/deal"
     # 알구몬은 SPA(Svelte)이지만 SSR로 JSON-LD가 포함된다
     # JSON-LD schema에서 데이터 추출이 더 안정적
@@ -164,13 +167,13 @@ class AlgumonCrawler(CrawlerContract):
                         url = item_data.get("url", "")
                         if title and url:
                             price = self._extract_price(title)
-                            items.append(HotdealPost(
+                            items.append(apply_source_facts(HotdealPost(
                                 title=title,
                                 url=url,
                                 source_community="알구몬",
                                 price=price,
                                 price_evidence=title if price is not None else "",
-                            ))
+                            ), source_id=self.SOURCE_ID, source_url=url))
             except (json.JSONDecodeError, KeyError):
                 continue
 
@@ -249,7 +252,9 @@ class AlgumonCrawler(CrawlerContract):
         image_el = card.select_one("img[src], img[data-src]")
         date_el = card.select_one("time, .time, .timestamp")
 
-        return HotdealPost(
+        date_text = date_el.get("datetime") if date_el and date_el.name == "time" else (date_el.get_text(" ", strip=True) if date_el else None)
+
+        return apply_source_facts(HotdealPost(
             title=title,
             url=url,
             source_community=source,
@@ -259,7 +264,7 @@ class AlgumonCrawler(CrawlerContract):
             category_hints=[source] if source else [],
             image_url=f"{self.BASE_URL}{image_el.get('src') or image_el.get('data-src')}" if image_el and not (image_el.get("src") or image_el.get("data-src")).startswith("http") else ((image_el.get("src") or image_el.get("data-src")) if image_el else ""),
             period=date_el.get_text(" ", strip=True) if date_el else "",
-        )
+        ), source_id=self.SOURCE_ID, source_url=url, post_date_text=date_text)
 
     def _extract_price(self, text: str) -> Optional[int]:
         """텍스트에서 최초 가격(원)을 추출한다."""
@@ -299,19 +304,4 @@ class AlgumonCrawler(CrawlerContract):
 
     async def validate(self, items: list[HotdealPost]) -> list[HotdealPost]:
         """유효한 핫딜만 필터링한다."""
-        valid = []
-        seen_urls = set()
-
-        for item in items:
-            # URL 기반 중복 제거
-            if item.url in seen_urls:
-                continue
-            seen_urls.add(item.url)
-
-            # 너무 짧은 제목
-            if len(item.title) < 3:
-                continue
-
-            valid.append(item)
-
-        return valid
+        return dedupe_hotdeal_posts(items)

@@ -42,14 +42,17 @@ from bs4 import BeautifulSoup
 from core.contracts.crawler import CrawlerContract
 from core.models import CrawlerInfo, CrawlerGroup, CrawlResult, CrawlStatus, HotdealPost
 from engine.anti_detect import AntiDetect
+from crawlers.hotdeals.common import HotdealCollectorMixin, apply_source_facts, dedupe_hotdeal_posts
 
 logger = logging.getLogger(__name__)
 
 
-class FmkoreaCrawler(CrawlerContract):
+class FmkoreaCrawler(HotdealCollectorMixin, CrawlerContract):
     """FM코리아 핫딜 크롤러 — 대형 커뮤니티의 핫딜 게시판."""
 
     BASE_URL = "https://www.fmkorea.com"
+    SOURCE_ID = "fmkorea"
+    PAGE_ENCODING = "utf-8"
     DEAL_URL = "https://www.fmkorea.com/hotdeal"
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
@@ -254,6 +257,7 @@ class FmkoreaCrawler(CrawlerContract):
             price = self._extract_price(price_evidence)
 
         image_el = li.select_one("img[src], img[data-src]")
+        date_el = li.select_one("time, .date, .timestamp")
 
         # 댓글 수 추출
         comment_el = li.select_one("span.comment_count, a.comment_count")
@@ -271,7 +275,7 @@ class FmkoreaCrawler(CrawlerContract):
             if vm:
                 votes = int(vm.group(1))
 
-        return HotdealPost(
+        return apply_source_facts(HotdealPost(
             title=title,
             url=url,
             source_community="FM코리아",
@@ -280,7 +284,7 @@ class FmkoreaCrawler(CrawlerContract):
             category=category,
             category_hints=[hint for hint in (category,) if hint],
             image_url=urljoin(self.BASE_URL, image_el.get("src") or image_el.get("data-src")) if image_el else "",
-        )
+        ), source_id=self.SOURCE_ID, source_url=url, post_date_text=date_el.get_text(" ", strip=True) if date_el else None)
 
     def _parse_table_row(self, tr) -> Optional[HotdealPost]:
         """테이블(tr) 형태의 핫딜 행을 파싱한다."""
@@ -303,15 +307,16 @@ class FmkoreaCrawler(CrawlerContract):
         price_evidence = tr.get_text(" ", strip=True)
         price = self._extract_price(price_evidence)
         image_el = tr.select_one("img[src], img[data-src]")
+        date_el = tr.select_one("time, .date, .timestamp")
 
-        return HotdealPost(
+        return apply_source_facts(HotdealPost(
             title=title,
             url=url,
             source_community="FM코리아",
             price=price,
             price_evidence=price_evidence if price is not None else "",
             image_url=urljoin(self.BASE_URL, image_el.get("src") or image_el.get("data-src")) if image_el else "",
-        )
+        ), source_id=self.SOURCE_ID, source_url=url, post_date_text=date_el.get_text(" ", strip=True) if date_el else None)
 
     def _extract_price(self, text: str) -> Optional[int]:
         """텍스트에서 최초 가격(원)을 추출한다."""
@@ -333,17 +338,4 @@ class FmkoreaCrawler(CrawlerContract):
 
     async def validate(self, items: list[HotdealPost]) -> list[HotdealPost]:
         """유효한 핫딜만 필터링한다."""
-        valid = []
-        seen_urls: set[str] = set()
-
-        for item in items:
-            if item.url in seen_urls:
-                continue
-            seen_urls.add(item.url)
-
-            if len(item.title) < 3:
-                continue
-
-            valid.append(item)
-
-        return valid
+        return dedupe_hotdeal_posts(items)

@@ -41,7 +41,11 @@ from storage.repositories import (
     RawCrawlBatchRepository,
 )
 from services.keyword_catalog import KeywordCatalogAdapter, build_keyword_outputs, normalize_keyword
-from services.seed_taxonomy import get_category_display_label, normalize_category_id
+from services.seed_taxonomy import (
+    get_category_display_label,
+    normalize_category_id,
+    seed_taxonomy_prompt_line,
+)
 
 
 _TRANSIENT_PROVIDER_MARKERS = (
@@ -90,7 +94,8 @@ _LABELING_PROMPT_PREFIX = [
     '"package_unit":null,"display_unit":null,"bundle_count":1,"standard_unit":null,'
     '"standard_unit_price":null,"price_per_100g":null,"confidence":0.0,"notes":"..."}]}',
     "Rules: preserve raw titles, do not invent prices, classify snacks as snacks even if the name contains seafood words.",
-    "If source hints say unit=100g but the title contains a package size like 300g/(200g), treat the raw price as pack price; set package/display unit from the title and calculate price_per_100g separately.",
+    "If source unit=100g but title has pack size like 300g/(200g) or 300g*2, raw price is pack price; set display unit from title and price_per_100g separately.",
+    "For bundles like 300g*2, package_quantity=300, bundle_count=2, and standard_unit_price uses sale_price/(quantity*bundle_count).",
     "Put storage/origin/cut/grade facts such as 냉장, 냉동, 베트남, 불고기, 1+등급 in attributes, not keywords.",
     "Use a broad canonical keyword instead of promotional/country variants when possible (e.g. 두부, not 국산두부 or 행사두부).",
     "Records:",
@@ -184,7 +189,6 @@ def _record_prompt_line(record: RawCrawlRecord, *, provider_raw_record_id: str |
     for key in (
         "unit",
         "quantity",
-        "category",
         "category_hint",
         "image_url",
         "image",
@@ -304,6 +308,14 @@ def _bounded_prompt_lines(
         return required_lines
 
     context_lines: list[str] = []
+    optional_guidance = [
+        seed_taxonomy_prompt_line(),
+        "Prefer official IDs; do not invent dotted taxonomy paths when a broad hint fits.",
+    ]
+    for line in optional_guidance:
+        candidate = [*base_lines, *context_lines, line, "Records:", *record_lines]
+        if len("\n".join(candidate)) <= max_prompt_chars:
+            context_lines.append(line)
     for line in _catalog_prompt_lines(catalog, learned_knowledge):
         candidate = [*base_lines, *context_lines, line, "Records:", *record_lines]
         if len("\n".join(candidate)) <= max_prompt_chars:

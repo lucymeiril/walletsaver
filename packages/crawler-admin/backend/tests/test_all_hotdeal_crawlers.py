@@ -293,13 +293,13 @@ class TestArcaParse:
         return ArcaCrawler()
 
     def test_parse_returns_items(self, crawler):
-        items = asyncio.get_event_loop().run_until_complete(
+        items = asyncio.run(
             crawler.parse(ARCA_SAMPLE_HTML)
         )
         assert len(items) >= 2
 
     def test_parse_item_fields(self, crawler):
-        items = asyncio.get_event_loop().run_until_complete(
+        items = asyncio.run(
             crawler.parse(ARCA_SAMPLE_HTML)
         )
         first = items[0]
@@ -309,14 +309,14 @@ class TestArcaParse:
         assert first.source_community == "아카라이브"
 
     def test_parse_extracts_price(self, crawler):
-        items = asyncio.get_event_loop().run_until_complete(
+        items = asyncio.run(
             crawler.parse(ARCA_SAMPLE_HTML)
         )
         prices = [item.price for item in items if item.price is not None]
         assert 49900 in prices
 
     def test_parse_extracts_category(self, crawler):
-        items = asyncio.get_event_loop().run_until_complete(
+        items = asyncio.run(
             crawler.parse(ARCA_SAMPLE_HTML)
         )
         categories = [item.category for item in items if item.category]
@@ -331,13 +331,13 @@ class TestQuasarzoneParse:
         return QuasarzoneCrawler()
 
     def test_parse_returns_items(self, crawler):
-        items = asyncio.get_event_loop().run_until_complete(
+        items = asyncio.run(
             crawler.parse(QUASARZONE_SAMPLE_HTML)
         )
         assert len(items) >= 2
 
     def test_parse_item_fields(self, crawler):
-        items = asyncio.get_event_loop().run_until_complete(
+        items = asyncio.run(
             crawler.parse(QUASARZONE_SAMPLE_HTML)
         )
         first = items[0]
@@ -347,7 +347,7 @@ class TestQuasarzoneParse:
         assert first.source_community == "퀘이사존"
 
     def test_parse_extracts_price(self, crawler):
-        items = asyncio.get_event_loop().run_until_complete(
+        items = asyncio.run(
             crawler.parse(QUASARZONE_SAMPLE_HTML)
         )
         prices = [item.price for item in items if item.price is not None]
@@ -355,7 +355,7 @@ class TestQuasarzoneParse:
 
     def test_parse_removes_status_from_title(self, crawler):
         """종료/진행중 상태 텍스트가 제목에서 제거되어야 한다."""
-        items = asyncio.get_event_loop().run_until_complete(
+        items = asyncio.run(
             crawler.parse(QUASARZONE_SAMPLE_HTML)
         )
         for item in items:
@@ -372,14 +372,14 @@ class TestAlgumonParse:
 
     def test_parse_json_ld(self, crawler):
         """JSON-LD 기반 파싱 검증."""
-        items = asyncio.get_event_loop().run_until_complete(
+        items = asyncio.run(
             crawler.parse(ALGUMON_SAMPLE_HTML)
         )
         # JSON-LD에서 2개 추출
         assert len(items) >= 2
 
     def test_parse_item_fields(self, crawler):
-        items = asyncio.get_event_loop().run_until_complete(
+        items = asyncio.run(
             crawler.parse(ALGUMON_SAMPLE_HTML)
         )
         first = items[0]
@@ -388,7 +388,7 @@ class TestAlgumonParse:
         assert first.url.startswith("http")
 
     def test_parse_extracts_price(self, crawler):
-        items = asyncio.get_event_loop().run_until_complete(
+        items = asyncio.run(
             crawler.parse(ALGUMON_SAMPLE_HTML)
         )
         prices = [item.price for item in items if item.price is not None]
@@ -406,13 +406,13 @@ class TestCocodalInactive:
     def test_crawl_returns_failed(self):
         """사이트 접속 불가로 FAILED 반환해야 한다."""
         crawler = CocodalCrawler()
-        result = asyncio.get_event_loop().run_until_complete(crawler.crawl())
+        result = asyncio.run(crawler.crawl())
         assert result.status == CrawlStatus.FAILED
         assert "접속 불가" in result.error_msg
 
     def test_parse_returns_empty(self):
         crawler = CocodalCrawler()
-        items = asyncio.get_event_loop().run_until_complete(crawler.parse(""))
+        items = asyncio.run(crawler.parse(""))
         assert items == []
 
 
@@ -442,7 +442,7 @@ class TestAllValidation:
             HotdealPost(title="AB", url="https://example.com/1", source_community=source),
             HotdealPost(title="정상 제목 테스트 게시글", url="https://example.com/2", source_community=source),
         ]
-        valid = asyncio.get_event_loop().run_until_complete(crawler.validate(items))
+        valid = asyncio.run(crawler.validate(items))
         assert len(valid) == 1
         assert valid[0].title == "정상 제목 테스트 게시글"
 
@@ -454,7 +454,7 @@ class TestAllValidation:
             HotdealPost(title="상품 B 핫딜", url="https://example.com/dup", source_community=source),
             HotdealPost(title="상품 C 핫딜", url="https://example.com/unique", source_community=source),
         ]
-        valid = asyncio.get_event_loop().run_until_complete(crawler.validate(items))
+        valid = asyncio.run(crawler.validate(items))
         assert len(valid) == 2
 
     def test_preserves_valid_items(self, crawler_and_source):
@@ -464,7 +464,7 @@ class TestAllValidation:
             HotdealPost(title="좋은 상품 핫딜 특가", url="https://example.com/a", source_community=source, price=15000),
             HotdealPost(title="또 다른 핫딜 할인", url="https://example.com/b", source_community=source, price=29000),
         ]
-        valid = asyncio.get_event_loop().run_until_complete(crawler.validate(items))
+        valid = asyncio.run(crawler.validate(items))
         assert len(valid) == 2
 
 
@@ -484,7 +484,7 @@ class TestLiveCrawling:
     def test_ppomppu_live(self):
         """뽐뿌 라이브 크롤링 — 실제 핫딜 게시글 수집."""
         crawler = PpomppuCrawler()
-        result = asyncio.get_event_loop().run_until_complete(crawler.crawl())
+        result = asyncio.run(crawler.crawl())
 
         if result.status == CrawlStatus.FAILED:
             save_crawl_results("ppomppu", [], "FAILED", result.error_msg or "")
@@ -510,7 +510,7 @@ class TestLiveCrawling:
     def test_fmkorea_live(self):
         """FM코리아 라이브 크롤링."""
         crawler = FmkoreaCrawler()
-        result = asyncio.get_event_loop().run_until_complete(crawler.crawl())
+        result = asyncio.run(crawler.crawl())
 
         if result.status == CrawlStatus.FAILED:
             save_crawl_results("fmkorea", [], "FAILED", result.error_msg or "")
@@ -533,7 +533,7 @@ class TestLiveCrawling:
     def test_clien_live(self):
         """클리앙 라이브 크롤링."""
         crawler = ClienCrawler()
-        result = asyncio.get_event_loop().run_until_complete(crawler.crawl())
+        result = asyncio.run(crawler.crawl())
 
         if result.status == CrawlStatus.FAILED:
             save_crawl_results("clien", [], "FAILED", result.error_msg or "")
@@ -556,7 +556,7 @@ class TestLiveCrawling:
     def test_arca_live(self):
         """아카라이브 라이브 크롤링 — Cloudflare 보호 사이트."""
         crawler = ArcaCrawler()
-        result = asyncio.get_event_loop().run_until_complete(crawler.crawl())
+        result = asyncio.run(crawler.crawl())
 
         if result.status == CrawlStatus.FAILED:
             save_crawl_results("arca", [], "FAILED", result.error_msg or "")
@@ -581,7 +581,7 @@ class TestLiveCrawling:
     def test_cocodal_live(self):
         """코코달 라이브 크롤링 — 사이트 비활성 상태이므로 FAILED 예상."""
         crawler = CocodalCrawler()
-        result = asyncio.get_event_loop().run_until_complete(crawler.crawl())
+        result = asyncio.run(crawler.crawl())
 
         # 사이트 비활성 → FAILED가 정상
         assert result.status == CrawlStatus.FAILED
@@ -593,7 +593,7 @@ class TestLiveCrawling:
     def test_quasarzone_live(self):
         """퀘이사존 라이브 크롤링."""
         crawler = QuasarzoneCrawler()
-        result = asyncio.get_event_loop().run_until_complete(crawler.crawl())
+        result = asyncio.run(crawler.crawl())
 
         if result.status == CrawlStatus.FAILED:
             save_crawl_results("quasarzone", [], "FAILED", result.error_msg or "")
@@ -616,7 +616,7 @@ class TestLiveCrawling:
     def test_algumon_live(self):
         """알구몬 라이브 크롤링."""
         crawler = AlgumonCrawler()
-        result = asyncio.get_event_loop().run_until_complete(crawler.crawl())
+        result = asyncio.run(crawler.crawl())
 
         if result.status == CrawlStatus.FAILED:
             save_crawl_results("algumon", [], "FAILED", result.error_msg or "")
@@ -662,7 +662,7 @@ class TestCrawlerSummaryReport:
 
         for name, crawler in crawlers:
             try:
-                result = asyncio.get_event_loop().run_until_complete(crawler.crawl())
+                result = asyncio.run(crawler.crawl())
                 status = result.status.value
                 count = result.items_count
                 error = result.error_msg or ""
@@ -720,3 +720,56 @@ class TestCrawlerSummaryReport:
         # 코코달 제외하고 최소 3개 크롤러가 성공해야 한다
         success_count = sum(1 for s in summary if s["status"] == "success" and s["items_count"] > 0)
         assert success_count >= 3, f"성공한 크롤러가 3개 미만: {success_count}개"
+
+
+# ──────────────────────────────────────────────
+# source collection loop / blocker states
+# ──────────────────────────────────────────────
+
+
+def test_fixture_backed_hotdeal_sources_preserve_source_owned_facts():
+    cases = [
+        (ArcaCrawler(), ARCA_SAMPLE_HTML, "arca_hotdeal:post:12345"),
+        (QuasarzoneCrawler(), QUASARZONE_SAMPLE_HTML, "quasarzone:post:1001"),
+        (AlgumonCrawler(), ALGUMON_SAMPLE_HTML, "algumon"),
+    ]
+
+    for crawler, html, expected_key_prefix in cases:
+        items = asyncio.run(crawler.parse(html))
+        valid = asyncio.run(crawler.validate(items))
+        assert valid, crawler.info.name
+        first = valid[0]
+        assert first.source_url.startswith("http")
+        assert first.source_record_key.startswith(expected_key_prefix)
+        assert first.price_evidence or first.price is None
+        assert first.category_hints or crawler.info.name == "알구몬"
+
+
+def test_quasarzone_collect_pages_stops_on_since_source_key(monkeypatch):
+    crawler = QuasarzoneCrawler()
+    page1 = QUASARZONE_SAMPLE_HTML.replace("</body>", '<a rel="next" href="/bbs/qb_saleinfo?page=2">next</a></body>')
+    page2 = QUASARZONE_SAMPLE_HTML.replace("1001", "1003").replace("1002", "1004")
+    fetched = []
+
+    def fake_fetch(url):
+        fetched.append(url)
+        return page1 if len(fetched) == 1 else page2
+
+    monkeypatch.setattr(crawler, "_fetch_collection_page", fake_fetch)
+    known_key = "quasarzone:post:1001"
+    items = asyncio.run(crawler.collect_pages(max_pages=2, since_source_keys={known_key}))
+
+    assert fetched == [crawler.DEAL_URL]
+    assert all(item.source_record_key != known_key for item in items)
+
+
+def test_cocodal_exposes_exact_blocker_state_without_live_probe():
+    crawler = CocodalCrawler()
+    blocker = crawler.blocker_state()
+    assert blocker == {
+        "status": "blocked_by_key_or_service",
+        "source_id": "cocodal",
+        "reason": "Community source currently unavailable; no fixture-backed HTML contract is available.",
+        "safe_to_collect": False,
+        "next_action": "Re-enable only after the service is reachable and saved fixture diagnostics pass.",
+    }

@@ -70,7 +70,7 @@ MAX_LIVE_AI_BATCH_PROMPT_CHARS = 12000
 MAX_LIVE_ITEMS = 300
 HARD_MAX_LIVE_ITEMS = 500
 LIST_PROPOSAL_FIELDS = {"keywords", "aliases"}
-VALIDATION_RUN_MODES = {"stub", "fixture", "live", "skipped"}
+VALIDATION_RUN_MODES = {"stub", "fixture", "source_replay", "live", "skipped"}
 _TERM_RE = re.compile(r"[0-9a-z가-힣]+", re.IGNORECASE)
 _SECRET_VALUE_RE = re.compile(
     r"(?i)(api[_-]?key|key|token|authorization|secret|credential)(\s*[=:]\s*)[\"']?[^\"'\s,;}]+"
@@ -448,6 +448,17 @@ def build_validation_run_metadata(
         "item_counts": item_counts or {},
     }
 
+
+def infer_default_validation_mode(args: argparse.Namespace) -> str:
+    """Label dry-runs from source artifacts separately from built-in fixtures."""
+    if args.allow_live_provider:
+        return "live"
+    if getattr(args, "input_json", None) or (
+        getattr(args, "allow_live_crawl", False) and getattr(args, "live_crawler", None)
+    ):
+        return "source_replay"
+    return "fixture"
+
 def finish_validation_run_metadata(
     metadata: dict[str, Any],
     *,
@@ -691,7 +702,7 @@ def build_quality_batch_validation_summary(
         "selected_count": selected_count,
         "retained_count": retained_count,
         "invalid_row_count": len(invalid_rows),
-        "input_retention_valid": total_input_count == retained_count + len(invalid_rows),
+        "input_retention_valid": selected_count == retained_count + len(invalid_rows),
         "retention_anomaly_count": len(retention_anomalies),
         "input_anomaly_buckets": dict(input_anomaly_buckets),
         "per_row_input_anomalies": retention_anomalies,
@@ -771,7 +782,7 @@ def build_quality_gate_summary(
         blockers.append(
             f"Only {selected_count} of {total_input_count} input rows were selected; this is a bounded sample, not a full-source quality pass."
         )
-    if total_input_count != retained_count + len(invalid_rows):
+    if selected_count != retained_count + len(invalid_rows):
         blockers.append("Input retention accounting does not balance retained rows plus invalid rows.")
     if invalid_rows:
         blockers.append(f"{len(invalid_rows)} structurally unreadable rows were not retained for validation.")
@@ -1402,7 +1413,11 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--provider-id", help="ai-admin provider_id. Required with --allow-live-provider.")
     parser.add_argument("--provider-key-alias", help="Optional AIStudio key alias used only for observability/no-key skip checks; value is never printed.")
     parser.add_argument("--provider-model", help="Optional provider model name to record in validation_run metadata.")
-    parser.add_argument("--validation-mode", choices=sorted(VALIDATION_RUN_MODES), help="Override artifact validation mode label for stub/fixture/live smoke runs.")
+    parser.add_argument(
+        "--validation-mode",
+        choices=sorted(VALIDATION_RUN_MODES),
+        help="Override artifact validation mode label for stub/fixture/source_replay/live smoke runs.",
+    )
     parser.add_argument("--ai-admin-url", default="http://localhost:8003")
     parser.add_argument(
         "--label-timeout-seconds",
@@ -1496,7 +1511,7 @@ def run_harness(
 
     provider_key_alias = getattr(args, "provider_key_alias", None)
     provider_key_present = bool(provider_key_alias and resolve_secret_alias(provider_key_alias))
-    validation_mode = getattr(args, "validation_mode", None) or ("live" if args.allow_live_provider else "fixture")
+    validation_mode = getattr(args, "validation_mode", None) or infer_default_validation_mode(args)
     if validation_mode not in VALIDATION_RUN_MODES:
         raise ValueError(f"validation_mode must be one of {sorted(VALIDATION_RUN_MODES)}")
     validation_metadata = build_validation_run_metadata(
@@ -1938,7 +1953,7 @@ def run_harness(
         "skipped": skipped,
         "invalid_rows": len(invalid_rows),
         "retention_anomalies": len(retention_anomalies),
-        "input_retention_valid": total_input_count == len(records) + len(invalid_rows),
+        "input_retention_valid": len(items) == len(records) + len(invalid_rows),
         "split_batches": len(split_batches),
         "proposals": len(proposals),
         "publish_eligibility_items": len(

@@ -24,6 +24,13 @@ logger = logging.getLogger(__name__)
 class CocodalCrawler(CrawlerContract):
     """코코달 핫딜 크롤러 — 현재 비활성 (사이트 접속 불가)."""
 
+    BLOCKER_STATE = {
+        "status": "blocked_by_key_or_service",
+        "source_id": "cocodal",
+        "reason": "Community source currently unavailable; no fixture-backed HTML contract is available.",
+        "safe_to_collect": False,
+        "next_action": "Re-enable only after the service is reachable and saved fixture diagnostics pass.",
+    }
     BASE_URL = "https://cocodal.in"
     DEAL_URL = "https://cocodal.in/"
 
@@ -50,9 +57,14 @@ class CocodalCrawler(CrawlerContract):
             status=CrawlStatus.FAILED,
             crawler_name=self.info.name,
             error_msg="사이트 접속 불가 — cocodal.in, cocodal.co.kr 모두 응답 없음. 향후 복구 시 활성화 예정.",
+            quality_details={"blocker_state": self.blocker_state()},
             started_at=started_at,
             finished_at=datetime.now(),
         )
+
+    def blocker_state(self) -> dict[str, object]:
+        """Return the exact source-collection blocker state without probing the live site."""
+        return dict(self.BLOCKER_STATE)
 
     async def parse(self, raw_data: str) -> list[HotdealPost]:
         """파싱 미구현 — 사이트 복구 후 HTML 구조 분석하여 구현 예정."""

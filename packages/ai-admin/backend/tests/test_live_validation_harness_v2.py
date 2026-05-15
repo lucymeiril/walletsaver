@@ -60,6 +60,8 @@ def test_default_dry_run_writes_artifact_without_provider_calls(tmp_path: Path) 
 
     artifact = harness.run_harness(_args(tmp_path), http_json=fail_http)
 
+    assert artifact["validation_run"]["mode"] == "fixture"
+    assert artifact["quality_batch_validation"]["mode"] == "fixture"
     assert artifact["provider_response_summary"]["called"] is False
     assert artifact["provider_response_summary"]["provider_mode"] == "skipped"
     assert artifact["source"]["records_count"] == 2
@@ -205,6 +207,8 @@ def test_artifact_replay_accepts_raw_selected_items_container(tmp_path: Path) ->
 
     artifact = harness.run_harness(_args(tmp_path, input_json=input_json, retain_all_input=True))
 
+    assert artifact["validation_run"]["mode"] == "source_replay"
+    assert artifact["quality_batch_validation"]["mode"] == "source_replay"
     assert artifact["source"]["selected_item_count"] == 1
     assert artifact["quality_batch_validation"]["input_count"] == 1
     assert artifact["raw_records"][0]["raw_title"] == "리플레이 검증 두부 300g"
@@ -251,6 +255,7 @@ def test_multi_source_crawler_artifact_retain_all_rows_and_reports_input_anomali
         _args(tmp_path, input_json=input_json, max_items=2, retain_all_input=True)
     )
 
+    assert artifact["validation_run"]["mode"] == "source_replay"
     summary = artifact["quality_batch_validation"]
     assert summary["input_count"] == 6
     assert summary["selected_count"] == 6
@@ -1515,6 +1520,7 @@ def test_quality_batch_validation_summary_reports_bounded_partial_anomalies_with
     assert gate["sample_only"] is True
     assert gate["claim_scope"] == "bounded_sample"
     assert any("Only 5 of 6 input rows" in blocker for blocker in gate["blockers"])
+    assert not any("retention accounting" in blocker for blocker in gate["blockers"])
     by_id = {row["raw_record_id"]: row for row in summary["per_row_anomalies"]}
     assert "category_changed_raw_vs_final" in by_id[raw_ids[0]]["category"]
     assert "missing_final_keywords" in by_id[raw_ids[0]]["keyword"]
