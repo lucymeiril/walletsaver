@@ -18,6 +18,8 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import os
+from pathlib import Path
 from typing import Optional, Callable
 
 logger = logging.getLogger(__name__)
@@ -40,12 +42,15 @@ class PlaywrightHelper:
         timezone: str = "Asia/Seoul",
         viewport: dict | None = None,
         user_agent: str | None = None,
+        persistent_user_data_dir: str | Path | None = None,
     ):
         self._headless = headless
         self._locale = locale
         self._timezone = timezone
         self._viewport = viewport or {"width": 1920, "height": 1080}
         self._user_agent = user_agent
+        env_profile = os.getenv("CRAWLER_BROWSER_PROFILE_DIR")
+        self._persistent_user_data_dir = Path(persistent_user_data_dir or env_profile) if (persistent_user_data_dir or env_profile) else None
         self._playwright = None
         self._browser = None
         self._context = None
@@ -53,14 +58,6 @@ class PlaywrightHelper:
     async def __aenter__(self):
         from playwright.async_api import async_playwright
         self._playwright = await async_playwright().start()
-        self._browser = await self._playwright.chromium.launch(
-            headless=self._headless,
-            args=[
-                "--no-sandbox",
-                "--disable-dev-shm-usage",
-            ],
-        )
-
         ctx_options = {
             "locale": self._locale,
             "timezone_id": self._timezone,
@@ -69,7 +66,26 @@ class PlaywrightHelper:
         if self._user_agent:
             ctx_options["user_agent"] = self._user_agent
 
-        self._context = await self._browser.new_context(**ctx_options)
+        if self._persistent_user_data_dir:
+            self._persistent_user_data_dir.mkdir(parents=True, exist_ok=True)
+            self._context = await self._playwright.chromium.launch_persistent_context(
+                str(self._persistent_user_data_dir),
+                headless=self._headless,
+                args=[
+                    "--no-sandbox",
+                    "--disable-dev-shm-usage",
+                ],
+                **ctx_options,
+            )
+        else:
+            self._browser = await self._playwright.chromium.launch(
+                headless=self._headless,
+                args=[
+                    "--no-sandbox",
+                    "--disable-dev-shm-usage",
+                ],
+            )
+            self._context = await self._browser.new_context(**ctx_options)
 
         return self
 
@@ -124,6 +140,50 @@ class PlaywrightHelper:
                 await page.wait_for_timeout(extra_wait_ms)
 
             return await page.content()
+        finally:
+            await page.close()
+
+    async def get_rendered_html_with_diagnostics(
+        self,
+        url: str,
+        wait_selector: str | None = None,
+        wait_timeout: int = 15000,
+        extra_wait_ms: int = 2000,
+        scroll_to_bottom: bool = False,
+    ) -> dict:
+        """Render a public page and return HTML plus ordinary browser diagnostics."""
+        page = await self._context.new_page()
+        try:
+            response = await page.goto(url, wait_until="domcontentloaded", timeout=wait_timeout)
+
+            if wait_selector:
+                try:
+                    await page.wait_for_selector(wait_selector, timeout=wait_timeout)
+                except Exception:
+                    logger.debug(f"셀렉터 '{wait_selector}' 대기 타임아웃, 현재 상태로 진행")
+
+            if scroll_to_bottom:
+                await self._scroll_to_bottom(page)
+
+            if extra_wait_ms > 0:
+                await page.wait_for_timeout(extra_wait_ms)
+
+            html = await page.content()
+            final_url = page.url
+            status = response.status if response else None
+            lower = (html or "")[:20000].lower()
+            challenge = any(marker in lower for marker in ("captcha", "recaptcha", "awswaf", "aws-waf", "access denied"))
+            login_required = any(marker in lower for marker in ("로그인", "sign in", "login required"))
+            return {
+                "url": url,
+                "final_url": final_url,
+                "status_code": status,
+                "html": html,
+                "bytes": len((html or "").encode("utf-8")),
+                "challenge_detected": challenge,
+                "login_required": login_required,
+                "persistent_context": bool(self._persistent_user_data_dir),
+            }
         finally:
             await page.close()
 

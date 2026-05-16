@@ -243,6 +243,138 @@ def test_ingest_uses_approved_product_match_before_provider_call(
     assert provider_calls == []
 
 
+def test_ingest_recovers_provider_omitted_rows_with_reviewer_safe_fallback(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class SkipsSecondRowProvider:
+        def __init__(self, config: ProviderConfigContract) -> None:
+            self.config = config
+
+        def call(self, *, prompt: str, schema=None) -> dict:
+            records = re.findall(r"- id=([^;]+); source=[^;]+; title=([^;]+); price=([^\n]+)", prompt)
+            if len(records) == 1 and records[0][0] == "row-mobile":
+                return {"items": []}
+            first_id, first_title, _price = records[0]
+            return {
+                "items": [
+                    {
+                        "raw_record_id": first_id,
+                        "canonical_name": first_title.strip(),
+                        "category_id": "processed.tofu.firm",
+                        "keywords": ["두부"],
+                        "package_quantity": 300,
+                        "package_unit": "g",
+                        "bundle_count": 1,
+                        "confidence": 0.91,
+                    }
+                ]
+            }
+
+    monkeypatch.setattr(
+        ai_ingestion,
+        "provider_from_config",
+        lambda config: SkipsSecondRowProvider(config),
+    )
+
+    res = client.post(
+        "/api/ingest/raw-records/label",
+        json={
+            "provider_id": "google-dev",
+            "source_name": "emart",
+            "max_provider_calls": 2,
+            "records": [
+                {
+                    "raw_record_id": "row-tofu",
+                    "source_name": "emart",
+                    "raw_title": "국산콩 두부 300g",
+                    "raw_price": 2980,
+                },
+                {
+                    "raw_record_id": "row-mobile",
+                    "source_name": "emart",
+                    "raw_title": "[즉시할인] 갤럭시 자급제폰 256GB",
+                    "raw_price": 990000,
+                },
+            ],
+        },
+    )
+
+    assert res.status_code == 200, res.text
+    body = res.json()
+    assert body["status"] == "labeled"
+    assert body["missing_label_count"] == 0
+    assert body["deterministic_recovery_count"] == 1
+
+    proposals = client.get("/api/review/proposals").json()["items"]
+    mobile = [
+        proposal
+        for proposal in proposals
+        if proposal["provenance"]["raw_record_id"] == "row-mobile"
+    ]
+    values_by_field: dict[str, list] = {}
+    for proposal in mobile:
+        values_by_field.setdefault(proposal["target_field"], []).append(proposal["proposed_value"])
+    by_field = {field: values[-1] for field, values in values_by_field.items()}
+    assert by_field["category_id"] == "electronics.mobile"
+    assert "갤럭시" in values_by_field["keywords"]
+    assert by_field["package_quantity"] == 1
+    assert by_field["package_unit"] == "개"
+
+
+def test_ingest_reports_missing_rows_when_reviewer_safe_fallback_cannot_recover(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class EmptyProvider:
+        def __init__(self, config: ProviderConfigContract) -> None:
+            self.config = config
+
+        def call(self, *, prompt: str, schema=None) -> dict:
+            return {"items": []}
+
+    def fallback_still_missing(**kwargs):
+        records = kwargs["records"]
+        return (
+            [],
+            [],
+            records,
+            {
+                "fallback_recovered_count": 0,
+                "fallback_missing_count": len(records),
+                "invalid_response_rows": [],
+                "index_mappings": [],
+            },
+        )
+
+    monkeypatch.setattr(ai_ingestion, "provider_from_config", lambda config: EmptyProvider(config))
+    monkeypatch.setattr(ai_ingestion, "_fallback_proposals_for_missing_records", fallback_still_missing)
+
+    res = client.post(
+        "/api/ingest/raw-records/label",
+        json={
+            "provider_id": "google-dev",
+            "source_name": "emart",
+            "max_provider_calls": 1,
+            "records": [
+                {
+                    "raw_record_id": "row-unrecovered",
+                    "source_name": "emart",
+                    "raw_title": "미복구 상품 1개",
+                    "raw_price": 1000,
+                }
+            ],
+        },
+    )
+
+    assert res.status_code == 200, res.text
+    body = res.json()
+    assert body["status"] == "partial_review_required"
+    assert body["missing_label_count"] == 1
+    assert body["missing_label_raw_record_ids"] == ["row-unrecovered"]
+    assert body["deterministic_recovery_count"] == 0
+
+
 def test_repeated_exact_product_match_batches_accumulate_review_rows_without_ai(
     client: TestClient,
     db: Database,
@@ -1066,17 +1198,18 @@ def test_ingest_missing_provider_labels_retains_raw_records_for_review(
 
     assert res.status_code == 200, res.text
     body = res.json()
-    assert body["status"] == "partial_review_required"
+    assert body["status"] == "labeled"
     assert body["records_stored"] == 1
-    assert body["proposals_stored"] == 0
-    assert body["missing_label_count"] == 1
-    assert body["missing_label_raw_record_ids"] == ["hotdeal:tofu-300g"]
+    assert body["proposals_stored"] > 0
+    assert body["missing_label_count"] == 0
+    assert body["missing_label_raw_record_ids"] == []
+    assert body["deterministic_recovery_count"] == 1
     with db.session_scope() as session:
         rows = build_publish_rows(session, batch_id=body["raw_batch_id"])
     assert len(rows) == 1
     assert rows[0]["raw_record_id"] == "hotdeal:tofu-300g"
     assert rows[0]["eligible"] is False
-    assert "pending_review: no AI proposals linked to raw record" in rows[0]["blockers"]
+    assert "pending_review: no AI proposals linked to raw record" not in rows[0]["blockers"]
 
 
 def test_ingest_retries_missing_labels_before_reporting_raw_only(
@@ -1197,10 +1330,11 @@ def test_ingest_respects_per_request_provider_call_cap_for_missing_label_retries
 
     assert res.status_code == 200, res.text
     body = res.json()
-    assert body["status"] == "partial_review_required"
+    assert body["status"] == "labeled"
     assert body["provider_calls"] == 1
-    assert body["missing_label_count"] == 1
-    assert body["missing_label_raw_record_ids"] == ["emart:milk-2"]
+    assert body["missing_label_count"] == 0
+    assert body["missing_label_raw_record_ids"] == []
+    assert body["deterministic_recovery_count"] == 1
     assert calls == [["emart:milk-1", "emart:milk-2"]]
 
 
@@ -1566,10 +1700,11 @@ def test_ingest_partial_invalid_provider_records_are_actionable(
 
     assert res.status_code == 200, res.text
     body = res.json()
-    assert body["status"] == "partial_review_required"
+    assert body["status"] == "labeled"
     assert body["records_stored"] == 2
-    assert body["missing_label_count"] == 1
-    assert body["missing_label_raw_record_ids"] == ["emart:milk"]
+    assert body["missing_label_count"] == 0
+    assert body["missing_label_raw_record_ids"] == []
+    assert body["deterministic_recovery_count"] == 1
     validation = body["provider_response_validation"]
     assert validation["invalid_response_row_count"] == 2
     assert validation["index_mapping_count"] == 0
@@ -1577,12 +1712,7 @@ def test_ingest_partial_invalid_provider_records_are_actionable(
         "emart:unknown",
         "emart:extra-hallucinated",
     }
-    assert body["reviewer_retry_candidates"]["missing_label"] == [
-        {
-            "raw_record_id": "emart:milk",
-            "reason": "provider returned no usable item for this row",
-        }
-    ]
+    assert body["reviewer_retry_candidates"]["missing_label"] == []
     with db.session_scope() as session:
         rows = build_publish_rows(session, batch_id=body["raw_batch_id"])
         proposals = FieldProposalRepository(session).list()

@@ -757,23 +757,35 @@ class TestCrawlWithMock:
     async def test_lottemart_source_url_202_is_precise_blocked_diagnostic(self):
         """Single-URL no-DB diagnostics should not overclaim collection when WAF returns 202."""
         crawler = LottemartCrawler()
-        waf_resp = MagicMock(
-            status_code=202,
-            text="<html><script>window.awsWafCookieDomainList=[];</script></html>",
-        )
+        async def fake_render_pages(url, *, max_pages, max_requests, timeout_seconds):
+            return [
+                {
+                    "url": url,
+                    "final_url": url,
+                    "status_code": 202,
+                    "html": "<html><script>window.awsWafCookieDomainList=[];</script></html>",
+                    "bytes": 64,
+                    "challenge_detected": True,
+                    "login_required": False,
+                    "persistent_context": False,
+                }
+            ]
 
-        with patch("crawlers.marts.lottemart.crawler.requests.Session.get", return_value=waf_resp) as mock_get:
+        with patch.object(crawler, "_render_source_url_pages", side_effect=fake_render_pages) as mock_browser, \
+             patch("crawlers.marts.lottemart.crawler.requests.Session.get") as mock_get:
             result = await crawler.crawl_incremental(
                 source_url="https://lottemartzetta.com/search?query=%ED%95%A0%EC%9D%B8",
             )
 
-        assert mock_get.call_count == 1
+        assert mock_browser.call_count == 1
+        mock_get.assert_not_called()
         assert result.status == CrawlStatus.FAILED
         assert result.items_count == 0
-        assert result.error_msg == "source_url HTTP 202 (AWS WAF challenge)"
-        assert result.quality_details["collection"]["mode"] == "bounded_live_http_no_db"
+        assert result.error_msg == "source_url browser blocked HTTP 202"
+        assert result.quality_details["collection"]["mode"] == "ordinary_browser_public_no_db"
         assert result.quality_details["fetch"]["blocked"] is True
         assert result.quality_details["fetch"]["auth_bypass_attempted"] is False
+        assert result.quality_details["fetch"]["browser_pages"][0]["status_code"] == 202
         assert "partial_lottemart_waf_blocker" in result.quality_details["alerts"]
 
     @pytest.mark.asyncio

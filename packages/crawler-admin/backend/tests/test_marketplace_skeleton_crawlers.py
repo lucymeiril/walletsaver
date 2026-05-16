@@ -291,39 +291,35 @@ def test_coupang_bounded_live_fetch_parses_one_no_db_page(monkeypatch):
       </li>
     </body></html>
     """
-    calls = []
-
-    class Response:
-        status_code = 200
-        url = "https://www.coupang.com/np/search?q=water"
-        headers = {"content-type": "text/html; charset=utf-8"}
-        content = html.encode("utf-8")
-        text = html
-
-    def fake_get(url, *, headers, timeout, allow_redirects):
-        calls.append(
+    async def fake_render_pages(url, *, max_pages, max_requests, timeout_seconds):
+        assert url == "https://www.coupang.com/np/search?q=water"
+        assert max_pages == 3
+        assert max_requests == 5
+        return [
             {
                 "url": url,
-                "headers": headers,
-                "timeout": timeout,
-                "allow_redirects": allow_redirects,
+                "final_url": url,
+                "status_code": 200,
+                "html": html,
+                "bytes": len(html.encode("utf-8")),
+                "challenge_detected": False,
+                "login_required": False,
+                "persistent_context": False,
             }
-        )
-        return Response()
+        ]
 
-    monkeypatch.setattr("crawlers.shopping.marketplace_skeleton.requests.get", fake_get)
+    monkeypatch.setattr(crawler, "_render_public_pages", fake_render_pages)
 
     result = _run(crawler.crawl_incremental(source_url="https://www.coupang.com/np/search?q=water"))
 
     assert result.status == CrawlStatus.SUCCESS
-    assert len(calls) == 1
-    assert calls[0]["timeout"] == 10
-    assert result.strategy_used == "bounded-http-source-fetch"
-    assert result.quality_details["collection"]["mode"] == "bounded_live_http_no_db"
+    assert result.strategy_used == "ordinary-browser-source-fetch"
+    assert result.quality_details["collection"]["mode"] == "ordinary_browser_public_no_db"
     assert result.quality_details["collection"]["live_network_enabled"] is True
     assert result.quality_details["readiness_gate"]["safe_db_mutation_allowed"] is False
     assert result.quality_details["fetch"]["auth_bypass_attempted"] is False
-    assert result.items[0]["attributes"]["collection_mode"] == "bounded_live_http_no_db"
+    assert result.quality_details["fetch"]["renderer"] == "ordinary_playwright_chromium"
+    assert result.items[0]["attributes"]["collection_mode"] == "ordinary_browser_public_no_db"
     assert result.items[0]["attributes"]["source_request_url"] == "https://www.coupang.com/np/search?q=water"
 
 
@@ -331,21 +327,25 @@ def test_coupang_bounded_live_fetch_reports_access_blocker(monkeypatch):
     registry = _registry()
     crawler = registry.get_crawler("coupang")
 
-    class Response:
-        status_code = 403
-        url = "https://www.coupang.com/np/search?q=water"
-        headers = {"content-type": "text/html"}
-        content = b"blocked"
-        text = "blocked"
+    async def fake_render_pages(url, *, max_pages, max_requests, timeout_seconds):
+        return [
+            {
+                "url": url,
+                "final_url": url,
+                "status_code": 403,
+                "html": "blocked",
+                "bytes": 7,
+                "challenge_detected": False,
+                "login_required": False,
+                "persistent_context": False,
+            }
+        ]
 
-    monkeypatch.setattr(
-        "crawlers.shopping.marketplace_skeleton.requests.get",
-        lambda *args, **kwargs: Response(),
-    )
+    monkeypatch.setattr(crawler, "_render_public_pages", fake_render_pages)
 
     result = _run(crawler.crawl_incremental(source_url="https://www.coupang.com/np/search?q=water"))
 
     assert result.status == CrawlStatus.PARTIAL
     assert "HTTP 403" in result.error_msg
-    assert "no authentication/access-control bypass attempted" in result.error_msg
+    assert "no CAPTCHA solving" in result.error_msg
     assert result.quality_details["fetch"]["blocked"] is True

@@ -136,6 +136,7 @@ class SourceRunPipeline:
         schema_type: str = "source_raw",
         source_url: str | None = None,
         source_input: str | None = None,
+        source_input_path: str | Path | None = None,
         source_input_label: str | None = None,
         force_full: bool = False,
     ) -> SourceRunResult:
@@ -146,6 +147,9 @@ class SourceRunPipeline:
         since = None if force_full else state.get("last_success")
         attempts: list[dict[str, Any]] = []
         errors: list[str] = []
+        if source_input is None and source_input_path is not None:
+            source_input, inferred_label = load_source_input_artifact(source_input_path)
+            source_input_label = source_input_label or inferred_label
 
         try:
             crawler = self.registry.get_crawler(crawler_name)
@@ -175,7 +179,19 @@ class SourceRunPipeline:
 
         if crawl_result is None or crawl_result.status != CrawlStatus.SUCCESS:
             msg = crawl_result.error_msg if crawl_result is not None else "all retries failed"
-            return self._failed_result(crawler_name, source, run_id, since, started, attempts, [*errors, msg])
+            return self._failed_result(
+                crawler_name,
+                source,
+                run_id,
+                since,
+                started,
+                attempts,
+                [*errors, msg],
+                crawl_result=crawl_result,
+                source_input=source_input,
+                source_input_label=source_input_label,
+                source_url=source_url,
+            )
 
         raw_items = [_item_to_dict(item) for item in (crawl_result.items or [])]
         previous = state.get("items", {})
@@ -338,6 +354,10 @@ class SourceRunPipeline:
         started: float,
         attempts: list[dict[str, Any]],
         errors: list[str],
+        crawl_result: Any | None = None,
+        source_input: str | None = None,
+        source_input_label: str | None = None,
+        source_url: str | None = None,
     ) -> SourceRunResult:
         artifact_dir = self.store.artifact_dir(source_name, run_id)
         artifact_dir.mkdir(parents=True, exist_ok=True)
@@ -349,6 +369,11 @@ class SourceRunPipeline:
         )
         manifest_path = artifact_dir / "manifest.json"
         ai_handoff_path = artifact_dir / "ai_handoff.json"
+        quality_details = getattr(crawl_result, "quality_details", {}) or {}
+        item_counts = quality_details.get("item_counts", {}) or {}
+        collection_details = quality_details.get("collection", {}) or {}
+        fetch_details = quality_details.get("fetch", {}) or {}
+        source_input_manifest = _source_input_manifest(source_input, source_input_label)
         manifest = {
             "run_id": run_id,
             "source_name": source_name,
@@ -356,6 +381,11 @@ class SourceRunPipeline:
             "status": "failed",
             "since": since,
             "counts": {
+                "source_raw": int(item_counts.get("source_raw") or 0),
+                "parsed": int(item_counts.get("parsed") or item_counts.get("raw") or 0),
+                "parsed_valid": 0,
+                "parsed_unique": 0,
+                "unique": 0,
                 "found": 0,
                 "new": 0,
                 "changed": 0,
@@ -363,6 +393,16 @@ class SourceRunPipeline:
                 "records_handed_off": 0,
                 "skipped_invalid": 0,
             },
+            "source_url": source_url,
+            "source_input": source_input_manifest,
+            "collection_mode": (
+                "bounded_source_input_no_db"
+                if source_input is not None
+                else collection_details.get("mode") or fetch_details.get("collection_mode")
+            ),
+            "live_network_enabled": False if source_input is not None else collection_details.get("live_network_enabled"),
+            "collection": collection_details,
+            "fetch": fetch_details,
             "artifacts": {"manifest": str(manifest_path), "ai_handoff": str(ai_handoff_path)},
             "retry_attempts": attempts,
             "dead_letter_path": str(dead_letter_path),
@@ -371,7 +411,22 @@ class SourceRunPipeline:
         with open(manifest_path, "w", encoding="utf-8") as fh:
             json.dump(manifest, fh, ensure_ascii=False, indent=2, default=str)
         with open(ai_handoff_path, "w", encoding="utf-8") as fh:
-            json.dump({"run_id": run_id, "records": [], "batches": []}, fh, ensure_ascii=False, indent=2)
+            json.dump(
+                {
+                    "run_id": run_id,
+                    "source_name": source_name,
+                    "crawler_name": crawler_name,
+                    "source_url": source_url,
+                    "source_input": source_input_manifest,
+                    "collection": collection_details,
+                    "fetch": fetch_details,
+                    "records": [],
+                    "batches": [],
+                },
+                fh,
+                ensure_ascii=False,
+                indent=2,
+            )
         return SourceRunResult(
             crawler_name=crawler_name,
             source_name=source_name,
@@ -469,6 +524,27 @@ def _source_input_manifest(source_input: str | None, source_input_label: str | N
         "mode": "caller_supplied_saved_source_input",
         "live_network_enabled": False,
     }
+
+
+def load_source_input_artifact(path: str | Path) -> tuple[str, str]:
+    """Load operator-saved public HTML/JSON/source artifact text for source replay."""
+    artifact_path = Path(path)
+    raw_text = artifact_path.read_text(encoding="utf-8")
+    if artifact_path.suffix.lower() == ".json":
+        try:
+            payload = json.loads(raw_text)
+        except json.JSONDecodeError:
+            return raw_text, str(artifact_path)
+        if isinstance(payload, dict):
+            for key in ("html", "source_html", "raw_html", "json", "source_json", "raw_json", "source", "raw_source", "raw_data"):
+                value = payload.get(key)
+                if isinstance(value, str) and value.strip():
+                    return value, f"{artifact_path}#{key}"
+            for key in ("items", "products", "records", "raw_items"):
+                value = payload.get(key)
+                if isinstance(value, list):
+                    return json.dumps({key: value}, ensure_ascii=False), f"{artifact_path}#{key}"
+    return raw_text, str(artifact_path)
 
 
 def _item_to_dict(item: Any) -> dict[str, Any]:

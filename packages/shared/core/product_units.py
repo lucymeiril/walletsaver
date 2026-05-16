@@ -6,23 +6,23 @@ from typing import Any
 
 _MEASURE_UNIT_PATTERN = r"kg|킬로그램|g|그램|ml|mL|밀리리터|미리리터|l|L|리터"
 _QUANTITY_RE = re.compile(
-    rf"(?<![\d.])(?:\((?P<paren>\d+(?:\.\d+)?)\s*(?P<paren_unit>{_MEASURE_UNIT_PATTERN})\)|(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>{_MEASURE_UNIT_PATTERN}))",
+    rf"(?<![\d.])(?:\((?P<paren>\d+(?:\.\d+)?)\s*(?P<paren_unit>{_MEASURE_UNIT_PATTERN})(?![A-Za-z])\)|(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>{_MEASURE_UNIT_PATTERN})(?![A-Za-z]))",
     re.IGNORECASE,
 )
 _MEASURE_BUNDLE_RE = re.compile(
     r"(?<![\d.])"
-    rf"(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>{_MEASURE_UNIT_PATTERN})"
+    rf"(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>{_MEASURE_UNIT_PATTERN})(?![A-Za-z])"
     r"\s*[xX×*]\s*"
     r"(?P<count>\d+)\s*(?:개입|입|개|팩|봉|병|캔|포|장)?",
     re.IGNORECASE,
 )
 _COUNT_PACKAGE_RE = re.compile(
     r"(?<!\d)(?P<qty>\d+)\s*"
-    r"(?P<unit>개입|봉지|인분|세트|마리|입|개|팩|봉|병|캔|손|매|롤|포|장|족|통)"
+    r"(?P<unit>개입|봉지|인분|세트|마리|입|개|팩|봉|병|캔|손|매|롤|포|장|족|통|인|p|P)"
     r"(?![A-Za-z0-9가-힣])"
 )
 _COUNT_ONLY_PACKAGE_RE = re.compile(
-    r"\(\s*(?P<unit>개입|봉지|인분|세트|마리|입|개|팩|봉|병|캔|손|매|롤|포|장|족|통)\s*\)"
+    r"\(\s*(?P<unit>개입|봉지|인분|세트|마리|입|개|팩|봉|병|캔|손|매|롤|포|장|족|통|인|p|P)\s*\)"
 )
 _DISPLAY_REF_UNIT_RE = re.compile(r"^\s*(?:100\s*g|1\s*kg|100\s*ml|1\s*l)\s*$", re.IGNORECASE)
 _REFERENCE_UNIT_SUFFIX_RE = re.compile(r"^\s*(?:당|/|기준)")

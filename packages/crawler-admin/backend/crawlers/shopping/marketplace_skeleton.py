@@ -10,6 +10,7 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
+import random
 import re
 from datetime import datetime
 from typing import Any, ClassVar
@@ -231,9 +232,11 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
     SEARCH_PATH: ClassVar[str] = "/search"
     SEARCH_QUERY_PARAM: ClassVar[str] = "q"
     PAGE_PARAM: ClassVar[str] = "page"
-    MAX_LIVE_REQUESTS: ClassVar[int] = 1
-    MAX_LIVE_PAGES: ClassVar[int] = 1
-    LIVE_TIMEOUT_SECONDS: ClassVar[int] = 10
+    MAX_LIVE_REQUESTS: ClassVar[int] = 5
+    MAX_LIVE_PAGES: ClassVar[int] = 3
+    LIVE_TIMEOUT_SECONDS: ClassVar[int] = 20
+    LIVE_MIN_DELAY_SECONDS: ClassVar[float] = 2.0
+    LIVE_MAX_DELAY_SECONDS: ClassVar[float] = 5.0
 
     @property
     def info(self) -> CrawlerInfo:
@@ -314,26 +317,39 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
 
         fetch_diagnostics: dict[str, Any] = {
             "source_url": source_url,
-            "requests_attempted": 1,
-            "pages_attempted": 1,
+            "requests_attempted": 0,
+            "pages_attempted": 0,
             "run_limits": run_limits,
             "auth_bypass_attempted": False,
             "cookies_sent": False,
+            "renderer": "ordinary_playwright_chromium",
+            "challenge_solving_attempted": False,
         }
         try:
-            response = await asyncio.to_thread(self._fetch_live_source, source_url, timeout_seconds)
-        except requests.RequestException as exc:
-            blocker = f"{self.SOURCE_ID} bounded live fetch failed: {type(exc).__name__}: {exc}"
+            rendered_pages = await self._render_public_pages(
+                source_url,
+                max_pages=max_pages,
+                max_requests=max_requests,
+                timeout_seconds=timeout_seconds,
+            )
+        except Exception as exc:
+            blocker = f"{self.SOURCE_ID} ordinary browser render failed: {type(exc).__name__}: {exc}"
             fetch_diagnostics.update({"blocked": True, "blocker": blocker})
             return self._blocked_live_result(started_at, source_url, blocker, run_limits, fetch_diagnostics)
 
-        final_url = str(response.url)
+        fetch_diagnostics["pages"] = [
+            {key: page.get(key) for key in ("url", "final_url", "status_code", "bytes", "challenge_detected", "login_required", "persistent_context")}
+            for page in rendered_pages
+        ]
+        fetch_diagnostics["requests_attempted"] = len(rendered_pages)
+        fetch_diagnostics["pages_attempted"] = len(rendered_pages)
+        final_url = str(rendered_pages[-1].get("final_url") or source_url) if rendered_pages else source_url
         fetch_diagnostics.update(
             {
-                "status_code": response.status_code,
+                "status_code": rendered_pages[-1].get("status_code") if rendered_pages else None,
                 "final_url": final_url,
-                "content_type": response.headers.get("content-type", ""),
-                "bytes": len(response.content or b""),
+                "content_type": "text/html; rendered=playwright",
+                "bytes": sum(int(page.get("bytes") or 0) for page in rendered_pages),
             }
         )
         redirect_error = self._validate_live_source_url(final_url)
@@ -341,25 +357,40 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
             blocker = f"{self.SOURCE_ID} bounded live fetch redirected outside the approved source host: {final_url}"
             fetch_diagnostics.update({"blocked": True, "blocker": blocker})
             return self._blocked_live_result(started_at, source_url, blocker, run_limits, fetch_diagnostics)
-        if response.status_code in {401, 403, 429}:
+        blocked_page = next(
+            (
+                page
+                for page in rendered_pages
+                if page.get("status_code") in {202, 401, 403, 429}
+                or page.get("challenge_detected")
+                or page.get("login_required")
+            ),
+            None,
+        )
+        if blocked_page:
+            status_code = blocked_page.get("status_code")
+            reason = f"HTTP {status_code}" if status_code in {202, 401, 403, 429} else "CAPTCHA/login/WAF challenge"
             blocker = (
-                f"{self.SOURCE_ID} bounded live fetch blocked by public site response "
-                f"HTTP {response.status_code}; no authentication/access-control bypass attempted."
+                f"{self.SOURCE_ID} ordinary browser public collection blocked by site response "
+                f"{reason}; no CAPTCHA solving, authentication/access-control bypass, or WAF bypass attempted."
             )
             fetch_diagnostics.update({"blocked": True, "blocker": blocker})
             return self._blocked_live_result(started_at, source_url, blocker, run_limits, fetch_diagnostics)
-        if response.status_code >= 400:
-            blocker = f"{self.SOURCE_ID} bounded live fetch returned HTTP {response.status_code}."
+        error_page = next((page for page in rendered_pages if (page.get("status_code") or 0) >= 400), None)
+        if error_page:
+            blocker = f"{self.SOURCE_ID} ordinary browser public collection returned HTTP {error_page.get('status_code')}."
             fetch_diagnostics.update({"blocked": True, "blocker": blocker})
             return self._blocked_live_result(started_at, source_url, blocker, run_limits, fetch_diagnostics)
 
-        raw_text = response.text or ""
-        source_raw_count = self.count_raw_candidates(raw_text)
-        parsed_items = await self.parse(raw_text)
+        raw_pages = [str(page.get("html") or "") for page in rendered_pages]
+        source_raw_count = sum(self.count_raw_candidates(raw_text) for raw_text in raw_pages)
+        parsed_items: list[DiscountItem] = []
+        for raw_text in raw_pages:
+            parsed_items.extend(await self.parse(raw_text))
         valid_items = await self.validate(parsed_items)
         valid_items = self._tag_collection_metadata(
             valid_items,
-            collection_mode="bounded_live_http_no_db",
+            collection_mode="ordinary_browser_public_no_db",
             source_request_url=source_url,
             source_final_url=final_url,
         )
@@ -379,9 +410,9 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
             invalid_count=max(0, len(parsed_items) - len(valid_items)),
             errors=[],
             fixture_available=False,
-            strategy_used="bounded-http-source-fetch",
+            strategy_used="ordinary-browser-source-fetch",
             live_enabled=True,
-            collection_mode="bounded_live_http_no_db",
+            collection_mode="ordinary_browser_public_no_db",
             source_url=source_url,
             fetch_diagnostics=fetch_diagnostics,
             run_limits=run_limits,
@@ -550,9 +581,9 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
             source_raw_count=0,
             errors=[blocker],
             fixture_available=False,
-            strategy_used="bounded-http-source-fetch",
+            strategy_used="ordinary-browser-source-fetch",
             live_enabled=True,
-            collection_mode="bounded_live_http_no_db",
+            collection_mode="ordinary_browser_public_no_db",
             source_url=source_url,
             fetch_diagnostics=diagnostics,
             run_limits=run_limits,
@@ -569,6 +600,47 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
             timeout=timeout_seconds,
             allow_redirects=True,
         )
+
+    async def _render_public_pages(
+        self,
+        source_url: str,
+        *,
+        max_pages: int,
+        max_requests: int,
+        timeout_seconds: int,
+    ) -> list[dict[str, Any]]:
+        """Collect public pages with ordinary Playwright Chromium and polite delays."""
+        from engine.playwright_helper import PlaywrightHelper
+
+        rendered_pages: list[dict[str, Any]] = []
+        next_url = source_url
+        async with PlaywrightHelper(
+            headless=True,
+            locale="ko-KR",
+            timezone="Asia/Seoul",
+            viewport={"width": 1366, "height": 900},
+        ) as helper:
+            for page_index in range(max_pages):
+                if not next_url or len(rendered_pages) >= max_requests:
+                    break
+                if page_index > 0:
+                    await asyncio.sleep(random.uniform(self.LIVE_MIN_DELAY_SECONDS, self.LIVE_MAX_DELAY_SECONDS))
+                rendered = await helper.get_rendered_html_with_diagnostics(
+                    next_url,
+                    wait_selector=None,
+                    wait_timeout=timeout_seconds * 1000,
+                    extra_wait_ms=1500,
+                    scroll_to_bottom=True,
+                )
+                rendered_pages.append(rendered)
+                status_code = rendered.get("status_code")
+                if status_code in {202, 401, 403, 429} or rendered.get("challenge_detected") or rendered.get("login_required"):
+                    break
+                next_url = self.next_page_url(
+                    str(rendered.get("html") or ""),
+                    current_url=str(rendered.get("final_url") or next_url),
+                )
+        return rendered_pages
 
     def _validate_live_source_url(self, source_url: str) -> str:
         parsed = urlparse(source_url or "")

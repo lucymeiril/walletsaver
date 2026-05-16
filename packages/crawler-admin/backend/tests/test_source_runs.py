@@ -252,11 +252,23 @@ async def test_coupang_source_url_runs_bounded_live_no_db_handoff(tmp_path: Path
         content = html.encode("utf-8")
         text = html
 
-    monkeypatch.setattr(
-        "crawlers.shopping.marketplace_skeleton.requests.get",
-        lambda *args, **kwargs: Response(),
-    )
+    async def fake_render_pages(url, *, max_pages, max_requests, timeout_seconds):
+        return [
+            {
+                "url": url,
+                "final_url": Response.url,
+                "status_code": 200,
+                "html": html,
+                "bytes": len(html.encode("utf-8")),
+                "challenge_detected": False,
+                "login_required": False,
+                "persistent_context": False,
+            }
+        ]
+
     pipeline = SourceRunPipeline(_crawler_registry(), store=SourceRunStore(tmp_path))
+    crawler = pipeline.registry.get_crawler("coupang")
+    monkeypatch.setattr(crawler, "_render_public_pages", fake_render_pages)
 
     result = await pipeline.run_source_incremental(
         "coupang",
@@ -268,7 +280,7 @@ async def test_coupang_source_url_runs_bounded_live_no_db_handoff(tmp_path: Path
     assert result.status == "success"
     assert result.items_found == 1
     manifest = json.loads(Path(result.manifest_path).read_text(encoding="utf-8"))
-    assert manifest["collection_mode"] == "bounded_live_http_no_db"
+    assert manifest["collection_mode"] == "ordinary_browser_public_no_db"
     assert manifest["live_network_enabled"] is True
     assert manifest["source_url"] == "https://www.coupang.com/np/search?q=live"
     assert manifest["counts"]["source_raw"] == 1
@@ -279,7 +291,7 @@ async def test_coupang_source_url_runs_bounded_live_no_db_handoff(tmp_path: Path
 
     handoff = json.loads(Path(result.ai_handoff_path).read_text(encoding="utf-8"))
     record = handoff["records"][0]
-    assert handoff["collection_mode"] == "bounded_live_http_no_db"
+    assert handoff["collection_mode"] == "ordinary_browser_public_no_db"
     assert record["source_record_key"] == "live-coupang"
     assert record["source_url"] == "https://www.coupang.com/vp/products/live-coupang"
     assert record["raw_payload"]["attributes"]["source_request_url"] == "https://www.coupang.com/np/search?q=live"
@@ -287,21 +299,26 @@ async def test_coupang_source_url_runs_bounded_live_no_db_handoff(tmp_path: Path
 
 @pytest.mark.asyncio
 async def test_coupang_source_url_access_blocker_is_not_retried(tmp_path: Path, monkeypatch):
+    pipeline = SourceRunPipeline(_crawler_registry(), store=SourceRunStore(tmp_path), retry_count=3)
+    crawler = pipeline.registry.get_crawler("coupang")
     calls = []
 
-    class Response:
-        status_code = 403
-        url = "https://www.coupang.com/np/search?q=blocked"
-        headers = {"content-type": "text/html"}
-        content = b"blocked"
-        text = "blocked"
+    async def fake_render_pages(url, *, max_pages, max_requests, timeout_seconds):
+        calls.append(url)
+        return [
+            {
+                "url": url,
+                "final_url": url,
+                "status_code": 403,
+                "html": "blocked",
+                "bytes": 7,
+                "challenge_detected": False,
+                "login_required": False,
+                "persistent_context": False,
+            }
+        ]
 
-    def fake_get(*args, **kwargs):
-        calls.append(args)
-        return Response()
-
-    monkeypatch.setattr("crawlers.shopping.marketplace_skeleton.requests.get", fake_get)
-    pipeline = SourceRunPipeline(_crawler_registry(), store=SourceRunStore(tmp_path), retry_count=3)
+    monkeypatch.setattr(crawler, "_render_public_pages", fake_render_pages)
 
     result = await pipeline.run_source_incremental(
         "coupang",
@@ -313,7 +330,32 @@ async def test_coupang_source_url_access_blocker_is_not_retried(tmp_path: Path, 
     assert result.status == "failed"
     assert len(calls) == 1
     assert "HTTP 403" in "; ".join(result.errors or [])
-    assert "no authentication/access-control bypass attempted" in "; ".join(result.errors or [])
+    assert "no CAPTCHA solving" in "; ".join(result.errors or [])
+
+
+@pytest.mark.asyncio
+async def test_operator_saved_source_artifact_path_imports_html_no_db(tmp_path: Path):
+    fixture = (
+        Path(__file__).resolve().parent / "fixtures" / "marketplace_skeleton" / "coupang.html"
+    ).read_text(encoding="utf-8")
+    artifact = tmp_path / "operator-saved-coupang.html"
+    artifact.write_text(fixture, encoding="utf-8")
+    pipeline = SourceRunPipeline(_crawler_registry(), store=SourceRunStore(tmp_path / "runs"))
+
+    result = await pipeline.run_source_incremental(
+        "coupang",
+        source_name="coupang",
+        schema_type="marketplace_discount",
+        source_url="https://www.coupang.com/np/search?q=operator",
+        source_input_path=artifact,
+    )
+
+    assert result.status == "success"
+    assert result.records_handed_off == 1
+    manifest = json.loads(Path(result.manifest_path).read_text(encoding="utf-8"))
+    assert manifest["source_input"]["provided"] is True
+    assert manifest["source_input"]["label"] == str(artifact)
+    assert manifest["collection_mode"] == "bounded_source_input_no_db"
 
 
 @pytest.mark.asyncio

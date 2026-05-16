@@ -25,6 +25,7 @@ from workers.normalizer import NormalizerWorker
 from workers.prompt_curator import PromptCuratorWorker
 from workers.unit_converter import UnitConverterWorker
 from services.ai_ingestion import _record_prompt_line
+from services.seed_taxonomy import is_safe_seed_category, normalize_category_id
 
 
 def _provider() -> AIProviderRef:
@@ -165,6 +166,24 @@ def test_unit_converter_emart_reference_100g_does_not_override_package() -> None
     assert out.diagnostics["records_unmatched"] == 1
 
 
+def test_unit_converter_accepts_retail_count_suffix_p() -> None:
+    batch = _batch(AIWorkerRole.UNIT_CONVERTER, [_record(1, title="천연펄프 수세미 8P 특별기획")])
+    out = UnitConverterWorker().run(batch)
+    fields = {(p.provenance.raw_record_id, p.target_field): p.proposed_value for p in out.field_proposals}
+
+    assert fields[("rec-1", "package_quantity")] == 8.0
+    assert fields[("rec-1", "package_unit")] == "P"
+    assert fields[("rec-1", "display_unit")] == "8P"
+
+
+def test_unit_converter_does_not_treat_storage_gb_as_grams() -> None:
+    batch = _batch(AIWorkerRole.UNIT_CONVERTER, [_record(1, title="갤럭시 자급제폰 256GB")])
+    out = UnitConverterWorker().run(batch)
+
+    assert out.field_proposals == []
+    assert out.diagnostics["records_unmatched"] == 1
+
+
 def test_unit_converter_live_emart_kimbap_kit_price_per_100g() -> None:
     batch = _batch(
         AIWorkerRole.UNIT_CONVERTER,
@@ -233,6 +252,31 @@ def test_classifier_uses_prepared_food_category_for_kimbap_kit() -> None:
     category = next(p for p in out.taxonomy_proposals if p.target_field == "category_id")
 
     assert category.proposed_value == "prepared_food.meal_kit.kimbap"
+
+
+def test_classifier_and_taxonomy_cover_general_non_food_live_rows() -> None:
+    batch = _batch(
+        AIWorkerRole.CLASSIFIER,
+        [
+            _record(1, title="[즉시할인] 갤럭시 자급제폰 256GB"),
+            _record(2, title="모바일 상품권 3만원권"),
+            _record(3, title="패턴토트백 미니백 가방"),
+        ],
+    )
+    out = ClassifierWorker().run(batch)
+    categories = {
+        p.provenance.raw_record_id: p.proposed_value
+        for p in out.taxonomy_proposals
+        if p.target_field == "category_id"
+    }
+
+    assert categories == {
+        "rec-1": "electronics.mobile",
+        "rec-2": "service.voucher",
+        "rec-3": "fashion.bag",
+    }
+    assert all(is_safe_seed_category(value) for value in categories.values())
+    assert normalize_category_id("consumer.electronics.mobile.phone") == "electronics.mobile"
 
 
 def test_classifier_emits_attribute_values() -> None:

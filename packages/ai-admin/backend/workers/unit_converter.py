@@ -29,8 +29,9 @@ def _parse_units(text: str) -> Optional[dict]:
         bundle_count = int(bundle_match.group("count") or bundle_match.group("count_suffix"))
     total = quantity_to_standard_total(parsed["package_quantity"], parsed["package_unit"], bundle_count)
     if total is None:
-        return None
-    total_quantity, standard_unit = total
+        total_quantity, standard_unit = parsed["package_quantity"] * bundle_count, parsed["package_unit"]
+    else:
+        total_quantity, standard_unit = total
     return {
         "raw_match": parsed["raw_match"],
         "package_quantity": parsed["package_quantity"],

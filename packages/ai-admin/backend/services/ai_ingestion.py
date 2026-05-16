@@ -40,9 +40,15 @@ from storage.repositories import (
     ProviderConfigRepository,
     RawCrawlBatchRepository,
 )
-from services.keyword_catalog import KeywordCatalogAdapter, build_keyword_outputs, normalize_keyword
+from services.keyword_catalog import (
+    KeywordCatalogAdapter,
+    build_keyword_outputs,
+    canonical_candidate,
+    normalize_keyword,
+)
 from services.seed_taxonomy import (
     get_category_display_label,
+    is_safe_seed_category,
     normalize_category_id,
     seed_taxonomy_prompt_line,
 )
@@ -84,6 +90,7 @@ _monotonic = time.monotonic
 _LABELING_PROMPT_PREFIX = [
     "WalletSavior raw product data labeling task.",
     "First reuse existing DB keywords/match terms when provided by system context.",
+    "Return exactly one item for every input record. Never skip unfamiliar, non-food, gift-card, ticket, fashion, beauty, electronics, or household rows; use the safest broad category and a title-derived keyword when uncertain.",
     "Return only valid JSON with this shape:",
     '{"items":[{"raw_record_id":"...","canonical_name":"...",'
     '"source_title":"...","sale_price":null,"original_price":null,'
@@ -94,12 +101,50 @@ _LABELING_PROMPT_PREFIX = [
     '"package_unit":null,"display_unit":null,"bundle_count":1,"standard_unit":null,'
     '"standard_unit_price":null,"price_per_100g":null,"confidence":0.0,"notes":"..."}]}',
     "Rules: preserve raw titles, do not invent prices, classify snacks as snacks even if the name contains seafood words.",
+    "If no package size is explicit, use package_quantity=1, package_unit=\"개\", display_unit=\"1개\", bundle_count=1 so every review row has a unit signal.",
     "If source unit=100g but title has pack size like 300g/(200g) or 300g*2, raw price is pack price; set display unit from title and price_per_100g separately.",
     "For bundles like 300g*2, package_quantity=300, bundle_count=2, and standard_unit_price uses sale_price/(quantity*bundle_count).",
     "Put storage/origin/cut/grade facts such as 냉장, 냉동, 베트남, 불고기, 1+등급 in attributes, not keywords.",
     "Use a broad canonical keyword instead of promotional/country variants when possible (e.g. 두부, not 국산두부 or 행사두부).",
     "Records:",
 ]
+_TEXT_TOKEN_RE = re.compile(r"[0-9A-Za-z가-힣]+")
+_PROMO_TITLE_TOKENS = (
+    "행사",
+    "특가",
+    "할인",
+    "쿠폰",
+    "단독",
+    "추가",
+    "무료배송",
+    "정상가",
+    "추천",
+    "기획",
+)
+_FALLBACK_CATEGORY_RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("electronics.mobile", ("갤럭시", "아이폰", "iphone", "자급제", "휴대폰", "스마트폰")),
+    ("electronics.appliance", ("냉장고", "세탁기", "건조기", "워시타워", "공기청정기", "정수기", "선풍기", "써큘레이터", "드라이기")),
+    ("electronics.general", ("블루투스", "이어폰", "스피커", "모니터", "충전기", "노트북", "어댑터")),
+    ("fashion.bag", ("가방", "캐리어", "토트백", "숄더백", "파우치", "백팩")),
+    ("fashion.clothing", ("티셔츠", "저지", "팬츠", "쇼츠", "양말", "폴로", "선글라스", "나이키", "아디다스", "푸마")),
+    ("beauty.skincare", ("세럼", "크림", "토닝", "스킨", "화장품", "마스크팩")),
+    ("beauty.haircare", ("샴푸", "트리트먼트", "헤어", "염색")),
+    ("household.cleaning", ("세제", "수세미", "청소", "진드기", "필터")),
+    ("household.bath", ("샤워기", "수건", "비데", "욕실")),
+    ("household.kitchen", ("식탁", "테이블웨어", "그릇", "컵", "냄비", "주방")),
+    ("household.storage", ("행거", "수납", "정리함", "케이스")),
+    ("service.voucher", ("상품권", "기프트카드", "금액권", "모바일금액권", "페이")),
+    ("service.ticket", ("식사권", "뷔페", "레스토랑", "항공")),
+    ("sports.general", ("배드민턴", "셔틀콕", "운동", "스포츠")),
+    ("pet.general", ("강아지", "고양이", "반려", "펫")),
+    ("produce.vegetable", ("버섯", "당근", "양파", "감자", "고구마", "채소", "야채")),
+    ("produce.fruit", ("과일", "참외", "사과", "감귤", "귤", "망고", "바나나", "복숭아")),
+    ("dairy.cheese", ("치즈",)),
+    ("beverage.coffee", ("커피", "마끼아또", "홍차", "티백")),
+    ("instant.rice", ("즉석밥", "햇반", "누룽지", "죽", "곰탕")),
+    ("processed.meat", ("훈제오리", "오리", "소시지", "햄")),
+    ("seafood.shrimp", ("새우", "새우살")),
+)
 
 
 def _safe_error_message(message: str) -> str:
@@ -732,6 +777,146 @@ def _unique_non_empty_strings(values: list[Any]) -> list[str]:
         seen.add(text)
         result.append(text)
     return result
+
+
+def _clean_fallback_title(title: str) -> str:
+    cleaned = re.sub(r"[\[\(][^\]\)]*(?:할인|쿠폰|특가|증정|단독|청구)[^\]\)]*[\]\)]", " ", title or "")
+    cleaned = re.sub(r"\b\d{1,3}\s*%\s*(?:할인|쿠폰)?\b", " ", cleaned)
+    cleaned = re.sub(r"\s+", " ", cleaned).strip()
+    return cleaned or (title or "").strip()
+
+
+def _compact_text(value: Any) -> str:
+    return "".join(_TEXT_TOKEN_RE.findall(str(value or "").lower()))
+
+
+def _fallback_category_id(record: RawCrawlRecord) -> str:
+    payload = record.raw_payload if isinstance(record.raw_payload, dict) else {}
+    for key in ("category_id", "category_hint", "category", "category_name"):
+        category_id = normalize_category_id(payload.get(key))
+        if category_id and is_safe_seed_category(category_id):
+            return category_id
+    compact_title = _compact_text(record.raw_title)
+    for category_id, tokens in _FALLBACK_CATEGORY_RULES:
+        if any(_compact_text(token) in compact_title for token in tokens):
+            return category_id
+    return "retail.general"
+
+
+def _fallback_keywords(record: RawCrawlRecord, *, limit: int = 2) -> list[str]:
+    payload = record.raw_payload if isinstance(record.raw_payload, dict) else {}
+    raw_values: list[Any] = []
+    for key in ("keywords", "keyword", "tags", "search_terms"):
+        value = payload.get(key)
+        if isinstance(value, list):
+            raw_values.extend(value)
+        elif value not in (None, ""):
+            raw_values.append(value)
+    title = _clean_fallback_title(record.raw_title)
+    raw_values.extend(_TEXT_TOKEN_RE.findall(title))
+    keywords: list[str] = []
+    seen: set[str] = set()
+    for value in raw_values:
+        token = str(value or "").strip()
+        normalized = normalize_keyword(token)
+        if (
+            len(normalized) < 2
+            or normalized.isdigit()
+            or normalized in _PROMO_TITLE_TOKENS
+            or re.fullmatch(r"\d+(?:g|kg|ml|l|개입|개|입|p|gb)", normalized, flags=re.IGNORECASE)
+        ):
+            continue
+        canonical = canonical_candidate(token)
+        if not canonical:
+            continue
+        key = normalize_keyword(canonical)
+        if key in seen:
+            continue
+        seen.add(key)
+        keywords.append(canonical)
+        if len(keywords) >= limit:
+            break
+    return keywords or ["상품"]
+
+
+def _reviewer_safe_fallback_response_item(record: RawCrawlRecord) -> dict[str, Any]:
+    """Create review-only proposals when a provider omits a row after retries."""
+    raw_payload = record.raw_payload if isinstance(record.raw_payload, dict) else {}
+    title = _clean_fallback_title(record.raw_title)
+    unit = normalize_unit_metadata(
+        name=record.raw_title,
+        sale_price=record.raw_price,
+        raw_unit=raw_payload.get("unit"),
+    )
+    package_quantity = unit.get("package_quantity")
+    package_unit = unit.get("package_unit")
+    display_unit = unit.get("display_unit")
+    bundle_count = int(unit.get("bundle_count") or 1)
+    standard_unit = unit.get("standard_unit")
+    standard_unit_price = unit.get("standard_unit_price")
+    if package_quantity is None or not package_unit:
+        package_quantity = 1
+        package_unit = "개"
+        display_unit = "1개"
+        bundle_count = 1
+        standard_unit = "개"
+        standard_unit_price = record.raw_price
+    else:
+        standard_total = quantity_to_standard_total(package_quantity, package_unit, bundle_count)
+        if standard_total is not None:
+            total_quantity, standard_unit = standard_total
+            if record.raw_price is not None and total_quantity:
+                standard_unit_price = round(record.raw_price / total_quantity, 2)
+    return {
+        "raw_record_id": record.raw_record_id,
+        "canonical_name": title,
+        "source_title": record.raw_title,
+        "sale_price": record.raw_price,
+        "original_price": raw_payload.get("original_price"),
+        "discount_percent": raw_payload.get("discount_percent"),
+        "event_name": raw_payload.get("event_name"),
+        "valid_from": raw_payload.get("valid_from") or raw_payload.get("start_date"),
+        "valid_to": raw_payload.get("valid_to") or raw_payload.get("end_date"),
+        "source_url": record.source_url,
+        "image_url": raw_payload.get("image_url") or raw_payload.get("image"),
+        "brand": None,
+        "category_id": _fallback_category_id(record),
+        "keywords": _fallback_keywords(record),
+        "aliases": [record.raw_title] if title != record.raw_title else [],
+        "attributes": unit.get("attributes") or {},
+        "package_quantity": package_quantity,
+        "package_unit": package_unit,
+        "display_unit": display_unit,
+        "bundle_count": bundle_count,
+        "standard_unit": standard_unit,
+        "standard_unit_price": standard_unit_price,
+        "price_per_100g": unit.get("price_per_100g"),
+        "confidence": 0.42,
+        "notes": "reviewer-safe deterministic fallback for provider-omitted row; human approval required",
+    }
+
+
+def _fallback_proposals_for_missing_records(
+    *,
+    ai_batch_id: str,
+    provider_ref: AIProviderRef,
+    records: list[RawCrawlRecord],
+    keyword_catalog: list[Any],
+    learned_keyword_knowledge: list[Any],
+) -> tuple[list[FieldProposal], list[dict[str, Any]], list[RawCrawlRecord], dict[str, Any]]:
+    response = {"items": [_reviewer_safe_fallback_response_item(record) for record in records]}
+    proposals, keyword_proposals, still_missing, validation = _proposals_from_batch_response(
+        ai_batch_id=ai_batch_id,
+        provider_ref=provider_ref,
+        batch_records=records,
+        response=response,
+        keyword_catalog=keyword_catalog,
+        learned_keyword_knowledge=learned_keyword_knowledge,
+    )
+    validation["fallback_recovered_count"] = len(records) - len(still_missing)
+    validation["fallback_missing_count"] = len(still_missing)
+    validation["reason"] = "reviewer_safe_deterministic_recovery_for_provider_omissions"
+    return proposals, keyword_proposals, still_missing, validation
 
 
 def _is_safe_approved_product_match(match: ProductMatchContract) -> bool:
@@ -1378,6 +1563,7 @@ def ingest_and_label_records(
     all_keyword_proposals: list[dict[str, Any]] = []
     missing_label_ids: list[str] = []
     provider_response_validations: list[dict[str, Any]] = []
+    deterministic_recovery_count = 0
     calls = 0
     for index, batch_records in enumerate(split_batches, start=1):
         ai_batch_id = f"{root_batch_id}:ai:{index}"
@@ -1502,6 +1688,20 @@ def ingest_and_label_records(
                 ) from exc
             proposals.extend(retry_proposals)
             keyword_proposals.extend(retry_keyword_proposals)
+        if missing_records:
+            fallback_batch_id = f"{ai_batch_id}:fallback"
+            fallback_proposals, fallback_keyword_proposals, missing_records, fallback_validation = _fallback_proposals_for_missing_records(
+                ai_batch_id=fallback_batch_id,
+                provider_ref=provider_ref,
+                records=missing_records,
+                keyword_catalog=keyword_catalog,
+                learned_keyword_knowledge=learned_keyword_knowledge,
+            )
+            fallback_validation["ai_batch_id"] = fallback_batch_id
+            provider_response_validations.append(fallback_validation)
+            deterministic_recovery_count += int(fallback_validation.get("fallback_recovered_count") or 0)
+            proposals.extend(fallback_proposals)
+            keyword_proposals.extend(fallback_keyword_proposals)
         missing_label_ids.extend(record.raw_record_id for record in missing_records)
         all_proposals.extend(proposals)
         all_keyword_proposals.extend(keyword_proposals)
@@ -1543,6 +1743,7 @@ def ingest_and_label_records(
         "provider_calls": calls,
         "product_match_hits": len(product_match_results),
         "product_match_results": product_match_results,
+        "deterministic_recovery_count": deterministic_recovery_count,
         "proposals_stored": len(all_proposals),
         "keyword_proposals_stored": len(all_keyword_proposals),
         "missing_label_count": len(missing_label_ids),

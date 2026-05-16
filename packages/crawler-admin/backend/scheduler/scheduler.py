@@ -166,6 +166,7 @@ class CrawlScheduler:
         source_name: str | None = None,
         schema_type: str = "source_raw",
         source_url: str | None = None,
+        source_input_path: str | None = None,
         force_full: bool = False,
     ) -> dict[str, Any]:
         """Run incremental source collection now without DB mutation."""
@@ -175,6 +176,7 @@ class CrawlScheduler:
             schema_type,
             source_url,
             force_full=force_full,
+            source_input_path=source_input_path,
         )
 
     def init_from_registry(self) -> int:
@@ -223,6 +225,7 @@ class CrawlScheduler:
         source_url: str | None = None,
         *,
         force_full: bool = False,
+        source_input_path: str | None = None,
     ) -> dict[str, Any]:
         """Incremental source run + tracking for scheduler history."""
         job_id = f"source:{crawler_name}"
@@ -236,6 +239,7 @@ class CrawlScheduler:
                     source_name=source_name,
                     schema_type=schema_type,
                     source_url=source_url,
+                    source_input_path=source_input_path,
                     force_full=force_full,
                 )
                 result_dict = result.to_dict() if hasattr(result, "to_dict") else dict(result)

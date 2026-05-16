@@ -174,36 +174,102 @@ class LottemartCrawler(CrawlerContract):
         raw_count = 0
         parsed: list[DiscountItem] = []
         waf_blocker: dict[str, object] | None = None
+        browser_pages: list[dict[str, object]] = []
+        strategy_used = "requests"
+        skip_http = False
+        try:
+            browser_pages = await self._render_source_url_pages(
+                source_url,
+                max_pages=1,
+                max_requests=1,
+                timeout_seconds=20,
+            )
+            if browser_pages:
+                page = browser_pages[0]
+                status_code = page.get("status_code")
+                if status_code in {202, 401, 403, 429} or page.get("challenge_detected") or page.get("login_required"):
+                    message = (
+                        f"source_url browser blocked HTTP {status_code}"
+                        if status_code in {202, 401, 403, 429}
+                        else "source_url browser blocked by CAPTCHA/login/WAF challenge"
+                    )
+                    errors.append(message)
+                    strategy_used = "ordinary-browser-source-fetch"
+                    waf_blocker = self._waf_blocker_details(
+                        message,
+                        request_url=source_url,
+                        status_code=int(status_code or 0) or None,
+                        blocker=f"public_browser_http_{status_code}" if status_code else "public_browser_challenge",
+                    )
+                    skip_http = True
+                else:
+                    html = str(page.get("html") or "")
+                    raw_count = self.count_raw_candidates(html)
+                    parsed = self._extract_from_initial_state(html) or await self.parse(html)
+                    if parsed:
+                        strategy_used = "ordinary-browser-source-fetch"
+        except Exception as exc:
+            errors.append(f"source_url browser render failed: {type(exc).__name__}: {exc}")
         session = requests.Session()
         try:
-            headers = self._anti_detect.get_random_headers()
-            headers.update({
-                "Referer": f"{self.ZETTA_BASE}/",
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            })
-            response = self._retry_request(
-                source_url,
-                headers=headers,
-                session=session,
-                timeout=20,
-                max_retries=1,
-                allow_redirects=True,
-            )
-            if response.status_code != 200:
-                message = f"source_url HTTP {response.status_code}"
-                if response.status_code == 202 and self._is_aws_waf_challenge(response.text):
-                    message += " (AWS WAF challenge)"
-                    waf_blocker = self._waf_blocker_details(message, request_url=source_url)
-                errors.append(message)
-                strategy_failures.append(StrategyFailure(
-                    strategy_name="requests",
-                    error_type=ErrorType.HTTP_ERROR,
-                    error_msg=message,
-                    status_code=response.status_code,
-                ))
-            else:
-                raw_count = self.count_raw_candidates(response.text)
-                parsed = self._extract_from_initial_state(response.text) or await self.parse(response.text)
+            if not parsed and not skip_http:
+                headers = self._anti_detect.get_random_headers()
+                headers.update({
+                    "Referer": f"{self.ZETTA_BASE}/",
+                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                })
+                response = self._retry_request(
+                    source_url,
+                    headers=headers,
+                    session=session,
+                    timeout=20,
+                    max_retries=1,
+                    allow_redirects=True,
+                )
+                if response.status_code != 200:
+                    message = f"source_url HTTP {response.status_code}"
+                    if response.status_code == 202 and self._is_aws_waf_challenge(response.text):
+                        message += " (AWS WAF challenge)"
+                        waf_blocker = self._waf_blocker_details(message, request_url=source_url)
+                    errors.append(message)
+                    strategy_failures.append(StrategyFailure(
+                        strategy_name="requests",
+                        error_type=ErrorType.HTTP_ERROR,
+                        error_msg=message,
+                        status_code=response.status_code,
+                    ))
+                else:
+                    raw_count = self.count_raw_candidates(response.text)
+                    parsed = self._extract_from_initial_state(response.text) or await self.parse(response.text)
+                if not parsed and not browser_pages:
+                    browser_pages = await self._render_source_url_pages(
+                        source_url,
+                        max_pages=1,
+                        max_requests=1,
+                        timeout_seconds=20,
+                    )
+                    if browser_pages:
+                        page = browser_pages[0]
+                        status_code = page.get("status_code")
+                        if status_code in {202, 401, 403, 429} or page.get("challenge_detected") or page.get("login_required"):
+                            message = (
+                                f"source_url browser blocked HTTP {status_code}"
+                                if status_code in {202, 401, 403, 429}
+                                else "source_url browser blocked by CAPTCHA/login/WAF challenge"
+                            )
+                            errors.append(message)
+                            strategy_used = "ordinary-browser-source-fetch"
+                            waf_blocker = self._waf_blocker_details(
+                                message,
+                                request_url=source_url,
+                                status_code=int(status_code or 0) or None,
+                                blocker=f"public_browser_http_{status_code}" if status_code else "public_browser_challenge",
+                            )
+                        else:
+                            html = str(page.get("html") or "")
+                            raw_count = self.count_raw_candidates(html)
+                            parsed = self._extract_from_initial_state(html) or await self.parse(html)
+                            strategy_used = "ordinary-browser-source-fetch"
         finally:
             session.close()
 
@@ -215,7 +281,7 @@ class LottemartCrawler(CrawlerContract):
             source_raw_count=raw_count,
             invalid_count=max(0, len(parsed) - len(valid_items)),
             errors=errors,
-            strategy_used="requests",
+            strategy_used=strategy_used,
             fallback_used=False,
             queries_attempted=1,
             pages_attempted=1,
@@ -223,19 +289,31 @@ class LottemartCrawler(CrawlerContract):
             fixture_available=None,
         )
         quality_details["collection"] = {
-            "mode": "bounded_live_http_no_db",
+            "mode": "ordinary_browser_public_no_db" if strategy_used.startswith("ordinary-browser") else "bounded_live_http_no_db",
             "live_network_enabled": True,
             "source_url": source_url,
             "auth_bypass_attempted": False,
             "max_requests": 1,
         }
+        quality_details.setdefault("fetch", {})
+        quality_details["fetch"].update(
+            {
+                "renderer": "ordinary_playwright_chromium" if browser_pages else "requests",
+                "browser_pages": [
+                    {key: page.get(key) for key in ("url", "final_url", "status_code", "bytes", "challenge_detected", "login_required", "persistent_context")}
+                    for page in browser_pages
+                ],
+                "challenge_solving_attempted": False,
+                "auth_bypass_attempted": False,
+            }
+        )
         if waf_blocker:
             self._annotate_waf_blocker(quality_details, waf_blocker, valid_count=len(valid_items))
         finished_at = datetime.now()
         return CrawlResult(
             status=CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED,
             crawler_name=self.info.name,
-            strategy_used="requests",
+            strategy_used=strategy_used,
             items_count=len(valid_items),
             items=items_as_dict,
             started_at=started_at,
@@ -475,11 +553,13 @@ class LottemartCrawler(CrawlerContract):
         request_url: str,
         query: str | None = None,
         page: int | None = None,
+        status_code: int | None = 202,
+        blocker: str = "aws_waf_http_202",
     ) -> dict[str, object]:
         return {
             "blocked": True,
-            "blocker": "aws_waf_http_202",
-            "status_code": 202,
+            "blocker": blocker,
+            "status_code": status_code,
             "message": message,
             "request_url": request_url,
             "query": query,
@@ -502,7 +582,12 @@ class LottemartCrawler(CrawlerContract):
         fetch = quality_details.setdefault("fetch", {})
         fetch.update(waf_blocker)
         alerts = quality_details.setdefault("alerts", [])
-        for alert in ("source_blocked_aws_waf_202", "partial_lottemart_waf_blocker"):
+        source_alert = (
+            "source_blocked_aws_waf_202"
+            if waf_blocker.get("blocker") == "aws_waf_http_202"
+            else "source_blocked_public_browser"
+        )
+        for alert in (source_alert, "partial_lottemart_waf_blocker"):
             if alert not in alerts:
                 alerts.append(alert)
         next_action = str(waf_blocker["safe_next_action"])
@@ -518,7 +603,7 @@ class LottemartCrawler(CrawlerContract):
         diagnostics = quality_details.setdefault("operator_diagnostics", [])
         diagnostics.append(
             {
-                "code": "aws_waf_http_202_blocker",
+                "code": str(waf_blocker.get("blocker") or "source_blocked"),
                 "severity": "error" if valid_count < 200 else "warning",
                 "stage": "source_fetch",
                 "message": waf_blocker["message"],
@@ -528,7 +613,7 @@ class LottemartCrawler(CrawlerContract):
                     "target_minimum": 200,
                 },
                 "blocked": True,
-                "status_code": 202,
+                "status_code": waf_blocker.get("status_code"),
                 "auth_bypass_attempted": False,
             }
         )
@@ -768,6 +853,44 @@ class LottemartCrawler(CrawlerContract):
             logger.warning(f"[롯데마트] Playwright 크롤링 실패: {e}")
 
         return items
+
+    async def _render_source_url_pages(
+        self,
+        source_url: str,
+        *,
+        max_pages: int,
+        max_requests: int,
+        timeout_seconds: int,
+    ) -> list[dict[str, object]]:
+        """Render public LotteMart pages with ordinary Playwright; no challenge solving."""
+        from engine.playwright_helper import PlaywrightHelper
+
+        pages: list[dict[str, object]] = []
+        async with PlaywrightHelper(
+            headless=True,
+            locale="ko-KR",
+            timezone="Asia/Seoul",
+            viewport={"width": 1366, "height": 900},
+        ) as helper:
+            next_url = source_url
+            for page_index in range(max_pages):
+                if not next_url or len(pages) >= max_requests:
+                    break
+                if page_index > 0:
+                    import asyncio as _asyncio
+                    await _asyncio.sleep(random.uniform(2.0, 5.0))
+                rendered = await helper.get_rendered_html_with_diagnostics(
+                    next_url,
+                    wait_selector=".product-card-container",
+                    wait_timeout=timeout_seconds * 1000,
+                    extra_wait_ms=1500,
+                    scroll_to_bottom=True,
+                )
+                pages.append(rendered)
+                if rendered.get("status_code") in {202, 401, 403, 429} or rendered.get("challenge_detected") or rendered.get("login_required"):
+                    break
+                break
+        return pages
 
     def _parse_spa_html(self, html: str, query: str = "") -> list[DiscountItem]:
         """lottemartzetta.com SPA에서 렌더링된 HTML의 상품 카드를 파싱한다."""
