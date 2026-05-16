@@ -52,6 +52,8 @@ class AuditEventType:
     DATA_INGESTION = "data.ingestion"
     CRAWL_COMPLETED = "crawler.completed"
     CRAWL_FAILED = "crawler.failed"
+    SOURCE_WORKBENCH_CAPTURE = "source_workbench.capture"
+    SOURCE_WORKBENCH_REGISTER = "source_workbench.register"
 
 
 def audit_log(

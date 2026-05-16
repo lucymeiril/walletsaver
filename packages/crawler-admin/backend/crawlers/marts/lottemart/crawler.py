@@ -24,7 +24,7 @@ import random
 import re
 import time
 from datetime import datetime
-from typing import Optional
+from typing import Any, Optional
 from urllib.parse import quote
 
 import requests
@@ -37,6 +37,7 @@ from core.models import (
 from core.product_units import normalize_unit_metadata
 from crawlers.marts.source_utils import (
     absolute_url,
+    build_source_map_manifest,
     build_source_attributes,
     normalize_source_key,
     parse_period_fields,
@@ -152,6 +153,7 @@ class LottemartCrawler(CrawlerContract):
             "source_url": source_url,
             "auth_bypass_attempted": False,
         }
+        quality_details["source_map"] = self._source_map_manifest(quality_details)
         finished_at = datetime.now()
         return CrawlResult(
             status=CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED,
@@ -309,6 +311,7 @@ class LottemartCrawler(CrawlerContract):
         )
         if waf_blocker:
             self._annotate_waf_blocker(quality_details, waf_blocker, valid_count=len(valid_items))
+        quality_details["source_map"] = self._source_map_manifest(quality_details, blocker=waf_blocker)
         finished_at = datetime.now()
         return CrawlResult(
             status=CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED,
@@ -454,6 +457,7 @@ class LottemartCrawler(CrawlerContract):
             )
             if waf_blocker:
                 self._annotate_waf_blocker(quality_details, waf_blocker, valid_count=len(valid_items))
+            quality_details["source_map"] = self._source_map_manifest(quality_details, blocker=waf_blocker)
 
             finished_at = datetime.now()
             duration = (finished_at - started_at).total_seconds()
@@ -541,6 +545,21 @@ class LottemartCrawler(CrawlerContract):
                 )
         return requests_to_make
 
+    def _source_map_manifest(self, quality_details: dict, blocker: dict[str, object] | None = None) -> dict[str, object]:
+        return build_source_map_manifest(
+            "lottemart",
+            search_queries=self.SEARCH_QUERIES,
+            category_queries=self.CATEGORY_QUERIES,
+            max_pages=self.MAX_PAGES,
+            max_requests=self.MAX_REQUESTS,
+            max_items=self.MAX_ITEMS,
+            parser_contract="lottemart_initial_state_fixture.v1",
+            request_strategy="public_search_initial_state_then_ordinary_browser",
+            parser_inputs=["window.__INITIAL_STATE__", "embedded_json", "product_card_html"],
+            quality=quality_details,
+            blocker=dict(blocker) if blocker else None,
+        )
+
     def _is_aws_waf_challenge(self, html: str) -> bool:
         """Return true for CloudFront/AWS WAF challenge shells, not product pages."""
         sample = (html or "")[:5000].lower()
@@ -565,6 +584,8 @@ class LottemartCrawler(CrawlerContract):
             "query": query,
             "page": page,
             "auth_bypass_attempted": False,
+            "challenge_solving_attempted": False,
+            "credential_use_attempted": False,
             "safe_next_action": (
                 "Do not retry aggressively or attempt authentication/access-control/WAF bypass. "
                 "Use an official/public feed/API, partner API, caller-supplied saved-source export, "
@@ -615,6 +636,8 @@ class LottemartCrawler(CrawlerContract):
                 "blocked": True,
                 "status_code": waf_blocker.get("status_code"),
                 "auth_bypass_attempted": False,
+                "challenge_solving_attempted": False,
+                "credential_use_attempted": False,
             }
         )
         quality_details["operator_diagnostics"] = diagnostics
@@ -629,29 +652,16 @@ class LottemartCrawler(CrawlerContract):
         """
         items: list[DiscountItem] = []
 
-        # __INITIAL_STATE__ JSON 추출
-        idx = html.find("window.__INITIAL_STATE__=")
-        if idx < 0:
+        json_str = self._extract_initial_state_json(html)
+        if not json_str:
             return items
-
-        start = idx + len("window.__INITIAL_STATE__=")
-        script_end = html.find("</script>", start)
-        if script_end < 0:
-            return items
-
-        json_str = html[start:script_end].rstrip().rstrip(";")
         try:
             data = json.loads(json_str)
         except json.JSONDecodeError:
             logger.warning("[롯데마트] __INITIAL_STATE__ JSON 파싱 실패")
             return items
 
-        # productEntities에서 상품 추출
-        product_entities = (
-            data.get("data", {})
-            .get("products", {})
-            .get("productEntities", {})
-        )
+        product_entities = self._find_product_entities(data)
 
         if not product_entities:
             del data  # Free large JSON from memory
@@ -669,22 +679,25 @@ class LottemartCrawler(CrawlerContract):
 
     def count_raw_candidates(self, raw_data: str) -> int:
         """Count source candidate rows before DiscountItem parsing/validation."""
-        idx = raw_data.find("window.__INITIAL_STATE__=")
-        if idx >= 0:
-            start = idx + len("window.__INITIAL_STATE__=")
-            script_end = raw_data.find("</script>", start)
-            if script_end >= 0:
-                try:
-                    data = json.loads(raw_data[start:script_end].rstrip().rstrip(";"))
-                    product_entities = (
-                        data.get("data", {})
-                        .get("products", {})
-                        .get("productEntities", {})
-                    )
-                    if isinstance(product_entities, dict):
-                        return len(product_entities)
-                except json.JSONDecodeError:
-                    pass
+        json_str = self._extract_initial_state_json(raw_data)
+        if json_str:
+            try:
+                data = json.loads(json_str)
+                product_entities = self._find_product_entities(data)
+                if isinstance(product_entities, dict):
+                    return len(product_entities)
+            except json.JSONDecodeError:
+                pass
+        try:
+            data = json.loads(raw_data)
+            if isinstance(data, dict):
+                product_entities = self._find_product_entities(data)
+                if isinstance(product_entities, dict):
+                    return len(product_entities)
+            if isinstance(data, list):
+                return len(data)
+        except json.JSONDecodeError:
+            pass
         json_items = self._extract_json_items(raw_data)
         if json_items:
             return len(json_items)
@@ -696,6 +709,53 @@ class LottemartCrawler(CrawlerContract):
             return count
         except Exception:
             return 0
+
+    def _extract_initial_state_json(self, html: str) -> str:
+        """Extract a LotteMart SPA initial-state object from saved or rendered HTML."""
+        match = re.search(r"window\.__INITIAL_STATE__\s*=\s*", html)
+        if not match:
+            return ""
+        start = match.end()
+        script_end = html.find("</script>", start)
+        candidate = html[start:script_end if script_end >= 0 else len(html)].strip()
+        if not candidate:
+            return ""
+        try:
+            _, end = json.JSONDecoder().raw_decode(candidate)
+            return candidate[:end]
+        except json.JSONDecodeError:
+            return candidate.rstrip().rstrip(";")
+
+    def _find_product_entities(
+        self,
+        data: Any,
+        *,
+        _seen: set[int] | None = None,
+        _depth: int = 0,
+        _max_depth: int = 40,
+    ) -> dict[str, Any]:
+        """Find productEntities even when an operator-saved export wraps app state."""
+        if not isinstance(data, dict):
+            return {}
+        if _depth > _max_depth:
+            return {}
+        _seen = _seen or set()
+        object_id = id(data)
+        if object_id in _seen:
+            return {}
+        _seen.add(object_id)
+        direct_data = data.get("data") if isinstance(data.get("data"), dict) else {}
+        products = direct_data.get("products") if isinstance(direct_data.get("products"), dict) else {}
+        if isinstance(products.get("productEntities"), dict):
+            return products["productEntities"]
+        if isinstance(data.get("productEntities"), dict):
+            return data["productEntities"]
+        for value in data.values():
+            if isinstance(value, dict):
+                found = self._find_product_entities(value, _seen=_seen, _depth=_depth + 1, _max_depth=_max_depth)
+                if found:
+                    return found
+        return {}
 
     def _entity_to_discount_item(self, product: dict, product_id: str = "") -> Optional[DiscountItem]:
         """lottemartzetta productEntity → DiscountItem 변환.
@@ -1042,6 +1102,23 @@ class LottemartCrawler(CrawlerContract):
 
     def _extract_json_items(self, raw_data: str) -> list[dict]:
         """페이지 내 임베디드 JSON 데이터 추출."""
+        try:
+            payload = json.loads(raw_data)
+            if isinstance(payload, list):
+                return [item for item in payload if isinstance(item, dict)]
+            if isinstance(payload, dict):
+                product_entities = self._find_product_entities(payload)
+                if product_entities:
+                    return [
+                        {"_source_product_id": product_id, **product}
+                        for product_id, product in product_entities.items()
+                        if isinstance(product, dict)
+                    ]
+                extracted = self._extract_product_lists(payload)
+                if extracted:
+                    return extracted
+        except json.JSONDecodeError:
+            pass
         patterns = [
             r'var\s+(?:itemList|prodList|goodsList)\s*=\s*(\[.*?\]);',
             r'"itemList"\s*:\s*(\[.*?\])',
@@ -1057,24 +1134,68 @@ class LottemartCrawler(CrawlerContract):
                     continue
         return []
 
+    def _extract_product_lists(
+        self,
+        payload: Any,
+        *,
+        _seen: set[int] | None = None,
+        _depth: int = 0,
+        _max_depth: int = 40,
+    ) -> list[dict]:
+        """Extract product rows from common saved-source JSON envelopes."""
+        if isinstance(payload, list):
+            return [item for item in payload if isinstance(item, dict)]
+        if not isinstance(payload, dict):
+            return []
+        if _depth > _max_depth:
+            return []
+        _seen = _seen or set()
+        object_id = id(payload)
+        if object_id in _seen:
+            return []
+        _seen.add(object_id)
+        for key in ("items", "products", "records", "raw_items", "productList", "goodsList", "itemList"):
+            value = payload.get(key)
+            if isinstance(value, list):
+                return [item for item in value if isinstance(item, dict)]
+            if isinstance(value, dict):
+                nested = self._extract_product_lists(value, _seen=_seen, _depth=_depth + 1, _max_depth=_max_depth)
+                if nested:
+                    return nested
+        for value in payload.values():
+            nested = self._extract_product_lists(value, _seen=_seen, _depth=_depth + 1, _max_depth=_max_depth)
+            if nested:
+                return nested
+        return []
+
     def _json_to_discount_item(self, product: dict) -> Optional[DiscountItem]:
         """JSON 상품 데이터 → DiscountItem 변환."""
         name = (
             product.get("goodsNm")
             or product.get("itemNm")
             or product.get("prodNm")
+            or product.get("productName")
+            or product.get("title")
             or product.get("name", "")
         )
         if not name or len(name) < 2:
             return None
 
+        price = product.get("price") if isinstance(product.get("price"), dict) else {}
         sale_price = self._to_int(
-            product.get("salePrice") or product.get("sellprc")
-            or product.get("sale_price") or product.get("price")
+            product.get("salePrice")
+            or product.get("sellprc")
+            or product.get("sale_price")
+            or product.get("currentPrice")
+            or (price.get("current") or {}).get("amount")
+            or (product.get("price") if not isinstance(product.get("price"), dict) else None)
         )
         original_price = self._to_int(
-            product.get("originPrice") or product.get("norprc")
+            product.get("originPrice")
+            or product.get("norprc")
             or product.get("original_price")
+            or product.get("originalPrice")
+            or (price.get("original") or {}).get("amount")
         )
 
         if not sale_price or sale_price <= 0:
@@ -1084,21 +1205,34 @@ class LottemartCrawler(CrawlerContract):
         if original_price and original_price > sale_price:
             discount_pct = round((1 - sale_price / original_price) * 100, 1)
 
-        image_url = self._absolute_url(product.get("imgUrl") or product.get("goodsImg", ""), self.BASE_URL)
-        category = product.get("categoryNm") or product.get("ctgNm", "")
-        detail_url = product.get("goodsUrl") or product.get("detail_url", "")
+        image = product.get("image") if isinstance(product.get("image"), dict) else {}
+        image_url = self._absolute_url(
+            product.get("imgUrl")
+            or product.get("goodsImg")
+            or product.get("imageUrl")
+            or image.get("src")
+            or "",
+            self.ZETTA_BASE,
+        )
+        category_path = product.get("categoryPath") if isinstance(product.get("categoryPath"), list) else None
+        category = product.get("categoryNm") or product.get("ctgNm") or (category_path[0] if category_path else "")
+        detail_url = product.get("goodsUrl") or product.get("detail_url") or product.get("detailUrl") or product.get("url") or ""
         if detail_url and not detail_url.startswith("http"):
-            detail_url = f"{self.BASE_URL}{detail_url}"
+            detail_url = self._absolute_url(detail_url, self.ZETTA_BASE)
         source_record_key = normalize_source_key(
             "lottemart",
             product.get("goodsNo"),
             product.get("itemId"),
+            product.get("productId"),
+            product.get("productNo"),
+            product.get("_source_product_id"),
             product.get("id"),
             detail_url,
             name,
         )
         valid_from, valid_until, period = parse_period_fields(product)
-        raw_unit = product.get("unit") or product.get("size") or product.get("capacity") or ""
+        size = product.get("size") if isinstance(product.get("size"), dict) else {}
+        raw_unit = product.get("unit") or size.get("value") or product.get("size") or product.get("capacity") or ""
         unit_metadata = normalize_unit_metadata(
             name=name,
             sale_price=sale_price,
@@ -1123,6 +1257,7 @@ class LottemartCrawler(CrawlerContract):
                 detail_url=detail_url,
                 image_url=image_url,
                 category=category,
+                category_path=category_path,
                 period=period,
                 extra=unit_metadata.get("attributes") or {},
             ),
@@ -1258,6 +1393,11 @@ class LottemartCrawler(CrawlerContract):
         """안전한 정수 변환."""
         if value is None:
             return None
+        if isinstance(value, str):
+            value = value.replace(",", "").replace("원", "").strip()
+            match = re.search(r"\d+", value)
+            if match:
+                value = match.group(0)
         try:
             return int(value)
         except (ValueError, TypeError):

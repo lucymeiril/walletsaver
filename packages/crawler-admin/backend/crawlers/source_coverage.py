@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from crawlers.marts.source_utils import MART3_REQUIRED_PRODUCT_CLASSES, build_source_map_manifest
 from crawlers.source_health import build_source_health_row, summarize_source_health_rows
 
 
@@ -339,6 +340,7 @@ def build_source_coverage(
                 "quality_evidence": _quality_evidence(quality),
                 "quality_summary": _quality_summary(quality),
                 "source_health": source_health,
+                "source_map_manifest": _source_map_manifest(source, match, quality),
                 "source_readiness": source_readiness,
                 "source_completion_gate": completion_gate,
                 "mart3_source_collection_readiness": mart3_readiness,
@@ -364,9 +366,114 @@ def build_source_coverage(
             "contract plus bounded diagnostics evidence before any live_ready=true or collecting claim. "
             "registered_unverified means the plugin exists but live collection reliability has not been proven."
         ),
+        "mart3_source_collection_audit": _mart3_source_collection_audit(rows),
         "source_health_dashboard": summarize_source_health_rows(rows),
         "sources": rows,
     }
+
+
+def _source_map_manifest(
+    source: dict[str, Any],
+    match: dict[str, Any] | None,
+    quality: dict[str, Any] | None,
+) -> dict[str, Any] | None:
+    if source.get("required_for") != "mart3" or not match:
+        return None
+    config = match.get("config") or {}
+    source_map = config.get("source_map") or {}
+    bounded = (config.get("live_readiness") or {}).get("bounded_diagnostics") or {}
+    blocker = None
+    last_no_db = bounded.get("last_no_db_result")
+    if bounded.get("status") == "blocked" or last_no_db:
+        blocker = {
+            "blocked": True,
+            "blocker": (last_no_db or {}).get("blocker") or bounded.get("blocker") or "bounded_diagnostics_blocked",
+            "status": bounded.get("status"),
+            "evidence": last_no_db,
+            "safe_next_action": (
+                "Do not bypass WAF/access-control/CAPTCHA. Use saved-source replay, official/public feeds, "
+                "or operator-approved alternate public evidence."
+            ),
+        }
+    return build_source_map_manifest(
+        source["source_id"],
+        search_queries=source_map.get("search_queries") or [],
+        category_queries=source_map.get("category_queries") or [],
+        max_pages=source_map.get("max_pages"),
+        max_requests=source_map.get("max_requests"),
+        max_items=source_map.get("max_items"),
+        parser_contract=config.get("parser_contract") or "",
+        request_strategy=source_map.get("request_strategy") or ((config.get("target") or {}).get("strategy") or ""),
+        dedupe_key=source_map.get("dedupe_key") or "source_record_key_or_source_url",
+        parser_inputs=source_map.get("parser_inputs") or [],
+        quality=quality,
+        blocker=blocker,
+    )
+
+
+def _mart3_source_collection_audit(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    mart_rows = [row for row in rows if row.get("required_for") == "mart3"]
+    blocked_sources = []
+    missing_product_classes: dict[str, list[str]] = {}
+    counts_by_source: dict[str, dict[str, Any]] = {}
+    for row in mart_rows:
+        source_id = row["source_id"]
+        manifest = row.get("source_map_manifest") or {}
+        breadth_plan = manifest.get("breadth_plan") or {}
+        count_breadth = manifest.get("count_breadth") or {}
+        missing_product_classes[source_id] = list(breadth_plan.get("missing_product_classes") or [])
+        counts_by_source[source_id] = {
+            "source_raw": count_breadth.get("source_raw"),
+            "parsed": count_breadth.get("parsed"),
+            "valid": count_breadth.get("valid"),
+            "duplicates_after_validation": count_breadth.get("duplicates_after_validation"),
+            "counts_recorded": count_breadth.get("counts_recorded") is True,
+            "collection_status": row.get("collection_status"),
+        }
+        live_blocker = manifest.get("live_blocker")
+        if live_blocker:
+            blocked_sources.append(
+                {
+                    "source_id": source_id,
+                    "blocker": live_blocker.get("blocker"),
+                    "status": live_blocker.get("status"),
+                    "evidence": live_blocker.get("evidence"),
+                    "safe_next_action": live_blocker.get("safe_next_action"),
+                }
+            )
+    can_realistically_cover = bool(
+        mart_rows
+        and all(row.get("mart3_source_collection_readiness", {}).get("live_service_ready") for row in mart_rows)
+        and all(not missing for missing in missing_product_classes.values())
+    )
+    return {
+        "schema": "mart3_source_collection_audit.v1",
+        "sources": [row["source_id"] for row in mart_rows],
+        "required_product_classes": list(MART3_REQUIRED_PRODUCT_CLASSES),
+        "can_realistically_cover_live_service_product_data": can_realistically_cover,
+        "counts_by_source": counts_by_source,
+        "missing_product_classes_by_source": missing_product_classes,
+        "blocked_sources": blocked_sources,
+        "safe_collection_policy": "Safe public collection only; WAF/access-control/CAPTCHA bypass is not allowed.",
+        "next_fixes": _mart3_next_fixes(mart_rows, missing_product_classes, blocked_sources),
+    }
+
+
+def _mart3_next_fixes(
+    mart_rows: list[dict[str, Any]],
+    missing_product_classes: dict[str, list[str]],
+    blocked_sources: list[dict[str, Any]],
+) -> list[str]:
+    fixes = []
+    if any(not ((row.get("source_map_manifest") or {}).get("count_breadth") or {}).get("counts_recorded") for row in mart_rows):
+        fixes.append("Attach saved-source or bounded no-DB run manifests that record source_raw, parsed, valid, invalid/drop, and duplicate counts.")
+    if any(missing_product_classes.values()):
+        fixes.append("Expand configured public category/search maps for missing product classes; keep gaps visible instead of inventing pass thresholds.")
+    if blocked_sources:
+        fixes.append("For blocked sources, keep diagnostics blocked and use saved-source replay, official/public feeds, or alternate public evidence; do not bypass WAF/CAPTCHA/access control.")
+    if any(not row.get("mart3_source_collection_readiness", {}).get("live_service_ready") for row in mart_rows):
+        fixes.append("Record bounded live diagnostics with max_requests/max_pages/timeout_seconds, evidence_id, captured_at, and operator approval before live_ready=true.")
+    return fixes
 
 
 def _gap_classification(

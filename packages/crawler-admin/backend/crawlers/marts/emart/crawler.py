@@ -30,6 +30,7 @@ from core.models import (
 from core.product_units import normalize_unit_metadata
 from crawlers.marts.source_utils import (
     absolute_url,
+    build_source_map_manifest,
     build_source_attributes,
     normalize_source_key,
     parse_period_fields,
@@ -208,6 +209,17 @@ class EmartCrawler(CrawlerContract):
                 strategy_used="requests",
                 queries_attempted=len(self.SEARCH_QUERIES),
                 pages_attempted=pages_attempted,
+            )
+            quality_details["source_map"] = build_source_map_manifest(
+                "emart",
+                search_queries=self.SEARCH_QUERIES,
+                category_queries=self.CATEGORY_QUERIES,
+                max_pages=self.MAX_PAGES,
+                max_requests=self.MAX_REQUESTS,
+                parser_contract="emart_next_data_fixture.v1",
+                request_strategy="public_search_next_data",
+                parser_inputs=["__NEXT_DATA__", "embedded_json", "product_card_html"],
+                quality=quality_details,
             )
 
             finished_at = datetime.now()

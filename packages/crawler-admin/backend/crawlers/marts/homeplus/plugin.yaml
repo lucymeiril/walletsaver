@@ -29,3 +29,12 @@ output:
   model: DiscountItem
   required_fields: [name, sale_price, detail_url]
   diagnostic_evidence_fields: [source_raw, parsed, valid, detail_url, source_url, image_url, period, unit, category_hint]
+source_map:
+  request_strategy: public_search_playwright_spa
+  search_queries: [할인, 특가, 세일, "1+1", 행사, 과일, 정육, 우유]
+  category_queries: [과일, 채소, 정육, 생수, 유제품, 간편식]
+  max_pages: 1
+  max_requests:
+  max_items: 300
+  dedupe_key: source_record_key_then_source_url
+  parser_inputs: [mfront_unitItemInner_html, embedded_json, legacy_product_card_html]

@@ -108,6 +108,18 @@ def test_source_coverage_reports_registered_and_missing_one_shot_sources():
     assert "live_collection_disabled" in [diag["code"] for diag in rows["emart"]["operator_diagnostics"]]
     assert rows["emart"]["mart3_source_collection_readiness"]["status"] == "source_collection_blocked"
     assert "source_collection_diagnostics_missing" in rows["emart"]["mart3_source_collection_readiness"]["blockers"]
+    assert rows["emart"]["source_map_manifest"]["schema"] == "mart3_source_map_manifest.v1"
+    assert rows["emart"]["source_map_manifest"]["breadth_plan"]["planned_request_count"] == 39
+    assert "eggs" in rows["emart"]["source_map_manifest"]["breadth_plan"]["missing_product_classes"]
+    assert rows["homeplus"]["source_map_manifest"]["collection_surfaces"]["bounded_limits"]["max_items"] == 300
+    assert rows["lottemart"]["source_map_manifest"]["live_blocker"]["blocker"] == "aws_waf_http_202"
+    assert rows["lottemart"]["source_map_manifest"]["live_blocker"]["evidence"]["source_raw"] == 0
+    audit = coverage["mart3_source_collection_audit"]
+    assert audit["schema"] == "mart3_source_collection_audit.v1"
+    assert audit["can_realistically_cover_live_service_product_data"] is False
+    assert audit["counts_by_source"]["emart"]["counts_recorded"] is False
+    assert audit["blocked_sources"][0]["source_id"] == "lottemart"
+    assert "WAF/access-control/CAPTCHA bypass is not allowed" in audit["safe_collection_policy"]
     assert rows["emart"]["can_claim_collecting"] is False
     assert rows["opinet"]["gap_classification"] == "blocked_by_external_key/service"
     assert rows["opinet"]["source_readiness"]["stage"] == "blocked_by_external_key/service"

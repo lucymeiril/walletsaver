@@ -147,8 +147,9 @@ class SourceRunPipeline:
         since = None if force_full else state.get("last_success")
         attempts: list[dict[str, Any]] = []
         errors: list[str] = []
+        source_input_metadata: dict[str, Any] | None = None
         if source_input is None and source_input_path is not None:
-            source_input, inferred_label = load_source_input_artifact(source_input_path)
+            source_input, inferred_label, source_input_metadata = load_source_input_artifact_with_metadata(source_input_path)
             source_input_label = source_input_label or inferred_label
 
         try:
@@ -190,6 +191,7 @@ class SourceRunPipeline:
                 crawl_result=crawl_result,
                 source_input=source_input,
                 source_input_label=source_input_label,
+                source_input_metadata=source_input_metadata,
                 source_url=source_url,
             )
 
@@ -245,10 +247,11 @@ class SourceRunPipeline:
             for record in flat_records:
                 fh.write(json.dumps(record.model_dump(mode="json"), ensure_ascii=False, default=str) + "\n")
 
-        source_input_manifest = _source_input_manifest(source_input, source_input_label)
+        source_input_manifest = _source_input_manifest(source_input, source_input_label, source_input_metadata)
         quality_details = getattr(crawl_result, "quality_details", {}) or {}
         collection_details = quality_details.get("collection", {}) or {}
         fetch_details = quality_details.get("fetch", {}) or {}
+        source_map = quality_details.get("source_map")
         collection_mode = (
             "bounded_source_input_no_db"
             if source_input is not None
@@ -267,6 +270,7 @@ class SourceRunPipeline:
             "live_network_enabled": live_network_enabled,
             "collection": collection_details,
             "fetch": fetch_details,
+            "source_map": source_map,
             "records": [record.model_dump(mode="json") for record in flat_records],
             "batches": [batch.model_dump(mode="json") for batch in batches],
         }
@@ -314,6 +318,7 @@ class SourceRunPipeline:
             "live_network_enabled": live_network_enabled,
             "collection": collection_details,
             "fetch": fetch_details,
+            "source_map": source_map,
             "artifacts": {
                 "manifest": str(manifest_path),
                 "raw_records_jsonl": raw_artifact_uri,
@@ -357,6 +362,7 @@ class SourceRunPipeline:
         crawl_result: Any | None = None,
         source_input: str | None = None,
         source_input_label: str | None = None,
+        source_input_metadata: dict[str, Any] | None = None,
         source_url: str | None = None,
     ) -> SourceRunResult:
         artifact_dir = self.store.artifact_dir(source_name, run_id)
@@ -373,7 +379,8 @@ class SourceRunPipeline:
         item_counts = quality_details.get("item_counts", {}) or {}
         collection_details = quality_details.get("collection", {}) or {}
         fetch_details = quality_details.get("fetch", {}) or {}
-        source_input_manifest = _source_input_manifest(source_input, source_input_label)
+        source_map = quality_details.get("source_map")
+        source_input_manifest = _source_input_manifest(source_input, source_input_label, source_input_metadata)
         manifest = {
             "run_id": run_id,
             "source_name": source_name,
@@ -403,6 +410,7 @@ class SourceRunPipeline:
             "live_network_enabled": False if source_input is not None else collection_details.get("live_network_enabled"),
             "collection": collection_details,
             "fetch": fetch_details,
+            "source_map": source_map,
             "artifacts": {"manifest": str(manifest_path), "ai_handoff": str(ai_handoff_path)},
             "retry_attempts": attempts,
             "dead_letter_path": str(dead_letter_path),
@@ -420,6 +428,7 @@ class SourceRunPipeline:
                     "source_input": source_input_manifest,
                     "collection": collection_details,
                     "fetch": fetch_details,
+                    "source_map": source_map,
                     "records": [],
                     "batches": [],
                 },
@@ -513,38 +522,88 @@ async def _call_crawler(
     return await result if inspect.isawaitable(result) else result
 
 
-def _source_input_manifest(source_input: str | None, source_input_label: str | None) -> dict[str, Any]:
+def _source_input_manifest(
+    source_input: str | None,
+    source_input_label: str | None,
+    source_input_metadata: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     if source_input is None:
         return {"provided": False}
-    return {
+    text = source_input.lstrip()
+    detected_format = (
+        "html"
+        if text.startswith("<") or "<html" in text[:500].lower()
+        else "json"
+        if text.startswith(("{", "["))
+        else "text"
+    )
+    manifest = {
         "provided": True,
         "label": source_input_label,
         "sha1": _hash_text(source_input),
         "bytes": len(source_input.encode("utf-8")),
         "mode": "caller_supplied_saved_source_input",
+        "detected_format": detected_format,
         "live_network_enabled": False,
     }
+    if source_input_metadata:
+        manifest["operator_capture"] = source_input_metadata
+    return manifest
 
 
 def load_source_input_artifact(path: str | Path) -> tuple[str, str]:
     """Load operator-saved public HTML/JSON/source artifact text for source replay."""
+    source_input, label, _metadata = load_source_input_artifact_with_metadata(path)
+    return source_input, label
+
+
+def load_source_input_artifact_with_metadata(path: str | Path) -> tuple[str, str, dict[str, Any] | None]:
+    """Load operator-saved public HTML/JSON/source artifact text plus capture metadata."""
     artifact_path = Path(path)
     raw_text = artifact_path.read_text(encoding="utf-8")
     if artifact_path.suffix.lower() == ".json":
         try:
             payload = json.loads(raw_text)
         except json.JSONDecodeError:
-            return raw_text, str(artifact_path)
+            return raw_text, str(artifact_path), {"artifact_path": str(artifact_path), "artifact_suffix": artifact_path.suffix.lower()}
         if isinstance(payload, dict):
+            metadata = _source_input_capture_metadata(payload, artifact_path)
             for key in ("html", "source_html", "raw_html", "json", "source_json", "raw_json", "source", "raw_source", "raw_data"):
                 value = payload.get(key)
                 if isinstance(value, str) and value.strip():
-                    return value, f"{artifact_path}#{key}"
+                    return value, f"{artifact_path}#{key}", metadata
             for key in ("items", "products", "records", "raw_items"):
                 value = payload.get(key)
                 if isinstance(value, list):
-                    return json.dumps({key: value}, ensure_ascii=False), f"{artifact_path}#{key}"
-    return raw_text, str(artifact_path)
+                    return json.dumps({key: value}, ensure_ascii=False), f"{artifact_path}#{key}", metadata
+    return raw_text, str(artifact_path), {"artifact_path": str(artifact_path), "artifact_suffix": artifact_path.suffix.lower()}
+
+
+def _source_input_capture_metadata(payload: dict[str, Any], artifact_path: Path) -> dict[str, Any]:
+    metadata = {
+        "artifact_path": str(artifact_path),
+        "artifact_suffix": artifact_path.suffix.lower(),
+    }
+    for envelope_key in ("operator_capture", "capture", "metadata", "source_metadata"):
+        value = payload.get(envelope_key)
+        if isinstance(value, dict):
+            for key in (
+                "captured_at",
+                "source_url",
+                "final_url",
+                "browser",
+                "user_agent",
+                "viewport",
+                "notes",
+                "operator",
+                "saved_from",
+            ):
+                if key in value:
+                    metadata[key] = value[key]
+    for key in ("captured_at", "source_url", "final_url"):
+        if key in payload and key not in metadata:
+            metadata[key] = payload[key]
+    return metadata
 
 
 def _item_to_dict(item: Any) -> dict[str, Any]:

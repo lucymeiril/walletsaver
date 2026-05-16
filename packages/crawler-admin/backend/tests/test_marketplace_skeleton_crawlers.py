@@ -40,6 +40,23 @@ def test_marketplace_skeleton_plugins_register_metadata():
         assert config["live_ready"] is False
         assert config["parser_contract"] == "marketplace_skeleton.v1"
         assert config["fixture_contract"] == "marketplace_skeleton_fixture_contracts.v1"
+        assert config["source_contract"] == "marketplace_browser_saved_source.v1"
+        assert config["allowed_source_artifacts"] == [
+            "public_browser_rendered_html",
+            "user_saved_html",
+            "user_saved_json",
+        ]
+        assert config["prohibited_automation"] == [
+            "captcha_solving",
+            "authentication_bypass",
+            "access_control_bypass",
+            "waf_bypass",
+        ]
+        assert config["recurring_registration"] == {
+            "cadence": "manual_fixture_until_verified",
+            "live_network_default": "disabled",
+            "db_mutation_allowed": False,
+        }
         assert config["live_readiness"]["status"] == "skeleton_fixture_only"
         assert config["live_readiness"]["fixture_contract_status"] == "passed"
         assert config["live_readiness"]["bounded_diagnostics"]["status"] == "required_before_live_ready"
@@ -84,6 +101,8 @@ def test_marketplace_skeletons_parse_mock_json_schema():
         assert item.attributes["category_hints"] == ["fixture-brand"]
         assert item.attributes["parser_contract"] == "marketplace_skeleton.v1"
         assert item.attributes["fixture_contract"] == "marketplace_skeleton_fixture_contracts.v1"
+        assert item.attributes["source_contract"] == "marketplace_browser_saved_source.v1"
+        assert item.attributes["ai_db_handoff"] == "no_db_ai_review_only"
 
 
 def test_marketplace_skeletons_parse_saved_fixture_contracts():
@@ -112,6 +131,7 @@ def test_marketplace_skeletons_parse_saved_fixture_contracts():
             assert item.attributes["category_hints"]
             assert item.attributes["parser_contract"] == expected["parser_contract"]
             assert item.attributes["fixture_contract"] == "marketplace_skeleton_fixture_contracts.v1"
+            assert item.attributes["source_contract"] == "marketplace_browser_saved_source.v1"
 
 
 def test_marketplace_skeletons_parse_mock_html_and_report_success():
@@ -143,6 +163,33 @@ def test_marketplace_skeletons_parse_mock_html_and_report_success():
         assert result.quality_details["readiness_gate"]["status"] == "skeleton_fixture_only"
         assert result.quality_details["readiness_gate"]["collecting_claim_allowed"] is False
         assert result.quality_details["readiness_gate"]["safe_db_mutation_allowed"] is False
+        assert result.quality_details["source_contract"] == {
+            "schema": "marketplace_browser_saved_source.v1",
+            "parser_contract": "marketplace_skeleton.v1",
+            "fixture_contract": "marketplace_skeleton_fixture_contracts.v1",
+            "allowed_source_artifacts": [
+                "public_browser_rendered_html",
+                "user_saved_html",
+                "user_saved_json",
+            ],
+            "prohibited_automation": [
+                "captcha_solving",
+                "authentication_bypass",
+                "access_control_bypass",
+                "waf_bypass",
+            ],
+            "ai_db_handoff": "raw_artifact_for_no_db_ai_review_only",
+            "live_crawling_claim_allowed": False,
+            "safe_db_mutation_allowed": False,
+            "collection_mode": "fixture_source_parser",
+            "live_network_enabled": False,
+            "run_limits": {
+                "max_requests": None,
+                "max_pages": None,
+                "timeout_seconds": None,
+            },
+        }
+        assert result.quality_details["readiness_gate"]["source_contract"] == "marketplace_browser_saved_source.v1"
         assert result.quality_details["readiness_gate"]["bounded_diagnostics"]["run_limits"] == {
             "max_requests": None,
             "max_pages": None,
@@ -234,6 +281,8 @@ def test_coupang_and_gmarket_parse_source_cards_edges_and_ai_handoff_rows():
         ]
         assert rows[0].source_url == valid[0].detail_url
         assert rows[0].raw_payload["attributes"]["source_url"] == valid[0].detail_url
+        assert rows[0].raw_payload["attributes"]["source_contract"] == "marketplace_browser_saved_source.v1"
+        assert rows[0].raw_payload["attributes"]["ai_db_handoff"] == "no_db_ai_review_only"
 
 
 def test_marketplace_source_connectors_build_search_and_category_urls():

@@ -225,10 +225,14 @@ async def test_lottemart_saved_source_input_runs_no_db_handoff(tmp_path: Path):
     assert manifest["source_input"]["provided"] is True
     assert manifest["counts"]["source_raw"] == 2
     assert manifest["counts"]["parsed_valid"] == 2
+    assert manifest["source_map"]["schema"] == "mart3_source_map_manifest.v1"
+    assert manifest["source_map"]["count_breadth"]["source_raw"] == 2
+    assert manifest["source_map"]["claim_policy"].startswith("This manifest is an audit map only")
 
     handoff = json.loads(Path(result.ai_handoff_path).read_text(encoding="utf-8"))
     assert handoff["collection_mode"] == "bounded_source_input_no_db"
     assert handoff["fetch"]["strategy_used"] == "saved_source_input"
+    assert handoff["source_map"]["count_breadth"]["valid"] == 2
     assert handoff["records"][0]["source_url"].startswith("https://lottemartzetta.com/products/")
 
 
@@ -356,6 +360,44 @@ async def test_operator_saved_source_artifact_path_imports_html_no_db(tmp_path: 
     assert manifest["source_input"]["provided"] is True
     assert manifest["source_input"]["label"] == str(artifact)
     assert manifest["collection_mode"] == "bounded_source_input_no_db"
+
+
+@pytest.mark.asyncio
+async def test_operator_saved_json_artifact_preserves_capture_metadata(tmp_path: Path):
+    fixture = (
+        Path(__file__).resolve().parent / "fixtures" / "non_marketplace_crawlers" / "lottemart.html"
+    ).read_text(encoding="utf-8")
+    artifact = tmp_path / "operator-saved-lottemart.json"
+    artifact.write_text(
+        json.dumps(
+            {
+                "operator_capture": {
+                    "source_url": "https://lottemartzetta.com/search?query=operator",
+                    "captured_at": "2026-05-16T00:00:00Z",
+                    "browser": "operator-managed browser",
+                },
+                "html": fixture,
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    pipeline = SourceRunPipeline(_crawler_registry(), store=SourceRunStore(tmp_path / "runs"))
+
+    result = await pipeline.run_source_incremental(
+        "lottemart",
+        source_name="lottemart",
+        schema_type="mart_discount",
+        source_url="https://lottemartzetta.com/search?query=operator",
+        source_input_path=artifact,
+    )
+
+    assert result.status == "success"
+    manifest = json.loads(Path(result.manifest_path).read_text(encoding="utf-8"))
+    assert manifest["source_input"]["label"] == f"{artifact}#html"
+    assert manifest["source_input"]["detected_format"] == "html"
+    assert manifest["source_input"]["operator_capture"]["captured_at"] == "2026-05-16T00:00:00Z"
+    assert manifest["source_input"]["operator_capture"]["source_url"].endswith("query=operator")
 
 
 @pytest.mark.asyncio

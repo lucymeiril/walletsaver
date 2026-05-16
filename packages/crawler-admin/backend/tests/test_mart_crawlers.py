@@ -6,6 +6,8 @@
 실제 HTTP 호출 없이 목 데이터로 테스트한다.
 """
 
+import json
+
 import pytest
 from unittest.mock import patch, MagicMock
 
@@ -387,6 +389,20 @@ class TestHomeplusParse:
         assert requests[2]["category_hint"] == "유제품"
         assert requests[3]["url"].endswith("&page=2")
 
+    def test_homeplus_source_requests_preserve_overlapping_category_hints(self):
+        crawler = HomeplusCrawler()
+        crawler.SEARCH_QUERIES = ["할인", "우유"]
+        crawler.CATEGORY_QUERIES = ["우유", "정육"]
+        crawler.MAX_PAGES = 1
+
+        requests = crawler._build_source_requests()
+        by_query = {req["query"]: req for req in requests}
+
+        assert len(requests) == 3
+        assert by_query["우유"]["category_hint"] == "우유"
+        assert by_query["우유"]["request_type"] == "search+category"
+        assert by_query["정육"]["request_type"] == "category"
+
     @pytest.mark.asyncio
     async def test_homeplus_validate_dedupes_by_source_record_key_for_incremental_update(self):
         crawler = HomeplusCrawler()
@@ -426,6 +442,52 @@ class TestHomeplusParse:
         assert first is not None
         assert duplicate is not None
         assert crawler._dedupe_items([first, duplicate]) == [first]
+
+    @pytest.mark.asyncio
+    async def test_homeplus_crawl_exposes_threshold_shaped_breadth_diagnostics(self):
+        crawler = HomeplusCrawler()
+        crawler.MAX_ITEMS = 300
+        items = [
+            crawler._json_to_discount_item({
+                "goodsNo": f"hp-{idx}",
+                "goodsNm": f"홈플러스 테스트 상품 {idx} 100g",
+                "salePrice": "1000",
+                "goodsUrl": f"/goods/detail?goodsNo=hp-{idx}",
+                "categoryNm": "단일카테고리",
+            })
+            for idx in range(201)
+        ]
+        items = [item for item in items if item is not None]
+        diagnostics = crawler._empty_source_diagnostics()
+        diagnostics.update({
+            "queries_attempted": 1,
+            "pages_attempted": 1,
+            "query_distribution": {"할인": 201},
+            "category_distribution": {"단일카테고리": 201},
+            "request_type_distribution": {"search": 201},
+            "request_results": [
+                {
+                    "query": "할인",
+                    "page": 1,
+                    "category_hint": "",
+                    "request_type": "search",
+                    "raw_count": 201,
+                    "new_count": 201,
+                }
+            ],
+        })
+
+        with patch.object(crawler, "_fetch_via_playwright", return_value=(items, 1, diagnostics)):
+            result = await crawler.crawl()
+
+        assert result.status == CrawlStatus.SUCCESS
+        assert result.items_count == 201
+        breadth = result.quality_details["source_breadth"]
+        assert breadth["threshold_shape"]["near_200_count"] is True
+        assert breadth["threshold_shape"]["source_complete_claim_allowed"] is False
+        assert breadth["query_distribution"] == {"할인": 201}
+        assert breadth["category_distribution"] == {"단일카테고리": 201}
+        assert result.quality_details["fetch"]["source_map"]["planned_requests"] > 1
 
 
 class TestLottemartParse:
@@ -479,6 +541,56 @@ class TestLottemartParse:
         assert item.attributes["source_record_key"] == "sku-1"
         assert item.attributes["category_path"] == ["생수/음료", "생수"]
         assert item.attributes["source_url"] == item.detail_url
+
+    @pytest.mark.asyncio
+    async def test_lottemart_saved_json_envelope_parses_nested_state_and_product_rows(self):
+        crawler = LottemartCrawler()
+        nested_state = json.dumps(
+            {
+                "operator_capture": {"source_url": "https://lottemartzetta.com/search?query=water"},
+                "app": {
+                    "data": {
+                        "products": {
+                            "productEntities": {
+                                "sku-json": {
+                                    "name": "오늘좋은 생수 500ml*20입",
+                                    "price": {"current": {"amount": "5,990"}, "original": {"amount": "7,990"}},
+                                    "image": {"src": "/images/water.jpg"},
+                                    "url": "/products/sku-json",
+                                    "categoryPath": ["생수/음료", "생수"],
+                                }
+                            }
+                        }
+                    }
+                },
+            },
+            ensure_ascii=False,
+        )
+        product_rows = json.dumps(
+            {
+                "products": [
+                    {
+                        "productName": "행복생생란 특란 30입",
+                        "salePrice": "6,990원",
+                        "originalPrice": "8,990원",
+                        "detailUrl": "/products/eggs-json",
+                        "imageUrl": "/images/eggs.jpg",
+                        "categoryPath": ["계란/유제품", "계란"],
+                    }
+                ]
+            },
+            ensure_ascii=False,
+        )
+
+        state_items = await crawler.parse(nested_state)
+        row_items = await crawler.parse(product_rows)
+
+        assert crawler.count_raw_candidates(nested_state) == 1
+        assert state_items[0].attributes["source_record_key"] == "sku-json"
+        assert state_items[0].sale_price == 5990
+        assert row_items[0].sale_price == 6990
+        assert row_items[0].detail_url == "https://lottemartzetta.com/products/eggs-json"
+        assert row_items[0].attributes["category_path"] == ["계란/유제품", "계란"]
 
     def test_lottemart_source_requests_include_category_pagination(self):
         crawler = LottemartCrawler()
@@ -787,6 +899,9 @@ class TestCrawlWithMock:
         assert result.quality_details["fetch"]["auth_bypass_attempted"] is False
         assert result.quality_details["fetch"]["browser_pages"][0]["status_code"] == 202
         assert "partial_lottemart_waf_blocker" in result.quality_details["alerts"]
+        assert result.quality_details["source_map"]["live_blocker"]["blocker"] == "public_browser_http_202"
+        assert result.quality_details["source_map"]["count_breadth"]["valid"] == 0
+        assert result.quality_details["source_map"]["claim_policy"].startswith("This manifest is an audit map only")
 
     @pytest.mark.asyncio
     async def test_crawl_http_error(self):
@@ -980,6 +1095,19 @@ class TestLottemartInitialState:
         assert item.detail_url == "https://lottemartzetta.com/products/beef-300"
         assert item.category == ""
         assert item.attributes["brand"] == "롯데축산"
+
+    def test_saved_source_json_search_is_depth_and_cycle_safe(self):
+        crawler = LottemartCrawler()
+        cyclic: dict = {}
+        cyclic["self"] = cyclic
+        deep: dict = {"leaf": [{"name": "too deep"}]}
+        for _ in range(45):
+            deep = {"nested": deep}
+
+        assert crawler._find_product_entities(cyclic) == {}
+        assert crawler._extract_product_lists(cyclic) == []
+        assert crawler._find_product_entities(deep) == {}
+        assert crawler._extract_product_lists(deep) == []
 
 
 # --- 실제 사이트 통합 테스트 (live integration) ---

@@ -24,6 +24,7 @@ import logging
 import random
 import re
 import time
+from collections import Counter
 from datetime import datetime
 from typing import Optional
 from urllib.parse import quote
@@ -38,6 +39,7 @@ from core.models import (
 from core.product_units import normalize_unit_metadata
 from crawlers.marts.source_utils import (
     absolute_url,
+    build_source_map_manifest,
     build_source_attributes,
     normalize_source_key,
     parse_period_fields,
@@ -61,9 +63,12 @@ class HomeplusCrawler(CrawlerContract):
 
     BASE_URL = "https://www.homeplus.co.kr"
     MFRONT_URL = "https://mfront.homeplus.co.kr"
-    # 다양한 검색어로 더 많은 할인 상품 수집
-    SEARCH_QUERIES = ["할인", "특가", "세일", "1+1", "행사", "과일", "정육", "우유"]
-    CATEGORY_QUERIES = ["과일", "채소", "정육", "생수", "유제품", "간편식"]
+    # 다양한 검색어와 장보기 핵심 카테고리로 source breadth를 노출한다.
+    SEARCH_QUERIES = ["할인", "특가", "세일", "1+1", "행사", "반값", "오늘특가", "홈플런"]
+    CATEGORY_QUERIES = [
+        "과일", "채소", "정육", "계란", "쌀", "생수", "우유", "유제품",
+        "간편식", "냉동식품", "라면", "과자", "커피", "세제", "화장지",
+    ]
     # Homeplus is a browser-rendered SPA; keep collection bounded while allowing
     # source-completion diagnostics to clear the 200+ unique-item threshold.
     MAX_ITEMS: int | None = 300
@@ -125,7 +130,12 @@ class HomeplusCrawler(CrawlerContract):
 
         try:
             # Playwright 기반 크롤링 (SPA이므로 항상 Playwright 우선)
-            items, queries_attempted = await self._fetch_via_playwright()
+            fetch_result = await self._fetch_via_playwright()
+            if len(fetch_result) == 3:
+                items, queries_attempted, source_diagnostics = fetch_result
+            else:
+                items, queries_attempted = fetch_result
+                source_diagnostics = self._empty_source_diagnostics()
             strategy = "playwright"
             fallback_used = False
 
@@ -136,6 +146,7 @@ class HomeplusCrawler(CrawlerContract):
                 logger.info("[홈플러스] Playwright 수집 실패, HTTP fallback 시도")
                 items = await self._fetch_via_http()
                 queries_attempted = 0
+                source_diagnostics = self._empty_source_diagnostics()
                 strategy = "requests"
                 fallback_used = True
             elif not items and request_budget_exhausted:
@@ -151,6 +162,22 @@ class HomeplusCrawler(CrawlerContract):
                 strategy_used=strategy,
                 fallback_used=fallback_used,
                 queries_attempted=queries_attempted,
+                pages_attempted=source_diagnostics.get("pages_attempted"),
+            )
+            quality_details["fetch"]["source_map"] = self._source_map_summary()
+            quality_details["fetch"]["source_distribution"] = source_diagnostics
+            quality_details["source_breadth"] = self._source_breadth_summary(items_as_dict, source_diagnostics)
+            quality_details["source_map"] = build_source_map_manifest(
+                "homeplus",
+                search_queries=self.SEARCH_QUERIES,
+                category_queries=self.CATEGORY_QUERIES,
+                max_pages=self.MAX_PAGES,
+                max_requests=self.MAX_REQUESTS,
+                max_items=self.MAX_ITEMS,
+                parser_contract="homeplus_mfront_fixture.v1",
+                request_strategy="public_search_playwright_spa",
+                parser_inputs=["mfront_unitItemInner_html", "embedded_json", "legacy_product_card_html"],
+                quality=quality_details,
             )
 
             finished_at = datetime.now()
@@ -208,7 +235,7 @@ class HomeplusCrawler(CrawlerContract):
 
         return items
 
-    async def _fetch_via_playwright(self) -> tuple[list[DiscountItem], int]:
+    async def _fetch_via_playwright(self) -> tuple[list[DiscountItem], int, dict]:
         """Playwright로 mfront.homeplus.co.kr 검색 페이지를 렌더링하여 상품 데이터를 추출한다.
 
         2025년 기준 홈플러스는 mfront.homeplus.co.kr SPA로 전환되어
@@ -219,18 +246,25 @@ class HomeplusCrawler(CrawlerContract):
         seen_keys: set[str] = set()
         queries_attempted = 0
         max_items = self.MAX_ITEMS
+        diagnostics = self._empty_source_diagnostics()
 
         try:
             from engine.playwright_helper import PlaywrightHelper
 
             async with PlaywrightHelper() as helper:
-                for source_request in self._build_source_requests():
+                source_requests = self._build_source_requests()
+                diagnostics = self._empty_source_diagnostics(source_requests)
+                for source_request in source_requests:
                     if self.MAX_REQUESTS is not None and queries_attempted >= self.MAX_REQUESTS:
                         break
                     query = str(source_request["query"])
                     url = str(source_request["url"])
                     category_hint = str(source_request["category_hint"])
+                    request_type = str(source_request.get("request_type") or "search")
+                    page_num = int(source_request.get("page") or 1)
                     queries_attempted += 1
+                    diagnostics["queries_attempted"] = queries_attempted
+                    diagnostics["pages_attempted"] = diagnostics.get("pages_attempted", 0) + 1
                     try:
                         html = await helper.get_rendered_html(
                             url,
@@ -254,10 +288,28 @@ class HomeplusCrawler(CrawlerContract):
                                 new_count += 1
                                 if max_items is not None and len(items) >= max_items:
                                     logger.info(f"[홈플러스] bounded MAX_ITEMS={max_items} 도달, 조기 종료")
-                                    return items[:max_items], queries_attempted
+                                    diagnostics["item_cap_reached"] = True
+                                    self._record_source_request_result(
+                                        diagnostics, query, page_num, category_hint, request_type, len(page_items), new_count
+                                    )
+                                    return items[:max_items], queries_attempted, diagnostics
+                        self._record_source_request_result(
+                            diagnostics, query, page_num, category_hint, request_type, len(page_items), new_count
+                        )
                         logger.info(f"[홈플러스] '{query}' 검색: {new_count}개 신규 ({len(page_items)}개 중)")
                     except Exception as e:
                         logger.debug(f"[홈플러스] '{query}' 검색 실패: {e}")
+                        diagnostics.setdefault("request_results", []).append(
+                            {
+                                "query": query,
+                                "page": page_num,
+                                "category_hint": category_hint,
+                                "request_type": request_type,
+                                "raw_count": 0,
+                                "new_count": 0,
+                                "error": str(e),
+                            }
+                        )
                         continue
 
                 logger.info(f"[홈플러스] Playwright 총: {len(items)}개 수집")
@@ -267,7 +319,7 @@ class HomeplusCrawler(CrawlerContract):
         except Exception as e:
             logger.warning(f"[홈플러스] Playwright 크롤링 실패: {e}")
 
-        return self._limit_items(items), queries_attempted
+        return self._limit_items(items), queries_attempted, diagnostics
 
     def _dedupe_items(self, items: list[DiscountItem]) -> list[DiscountItem]:
         """Remove source-key duplicates before reporting collection counts."""
@@ -285,23 +337,120 @@ class HomeplusCrawler(CrawlerContract):
         """Build bounded category + pagination source collection requests."""
         max_pages = self.MAX_PAGES if self.MAX_PAGES is not None else 1
         requests_to_make: list[dict[str, str | int]] = []
-        seen: set[tuple[str, int]] = set()
-        for query in [*self.SEARCH_QUERIES, *self.CATEGORY_QUERIES]:
-            category_hint = query if query in self.CATEGORY_QUERIES else ""
+        index_by_key: dict[tuple[str, int], int] = {}
+        for query in self.SEARCH_QUERIES:
             for page_num in range(1, max(1, int(max_pages)) + 1):
                 key = (query, page_num)
-                if key in seen:
-                    continue
-                seen.add(key)
+                index_by_key[key] = len(requests_to_make)
                 requests_to_make.append(
                     {
                         "query": query,
                         "page": page_num,
-                        "category_hint": category_hint,
+                        "category_hint": "",
+                        "request_type": "search",
+                        "url": f"{self.MFRONT_URL}/search?keyword={quote(query)}&page={page_num}",
+                    }
+                )
+        for query in self.CATEGORY_QUERIES:
+            for page_num in range(1, max(1, int(max_pages)) + 1):
+                key = (query, page_num)
+                if key in index_by_key:
+                    request = requests_to_make[index_by_key[key]]
+                    request["category_hint"] = query
+                    request["request_type"] = "search+category"
+                    continue
+                index_by_key[key] = len(requests_to_make)
+                requests_to_make.append(
+                    {
+                        "query": query,
+                        "page": page_num,
+                        "category_hint": query,
+                        "request_type": "category",
                         "url": f"{self.MFRONT_URL}/search?keyword={quote(query)}&page={page_num}",
                     }
                 )
         return requests_to_make
+
+    def _source_map_summary(self) -> dict:
+        requests_to_make = self._build_source_requests()
+        return {
+            "schema": "homeplus_source_map.v1",
+            "search_queries": list(self.SEARCH_QUERIES),
+            "category_queries": list(self.CATEGORY_QUERIES),
+            "planned_requests": len(requests_to_make),
+            "planned_pages": sorted({int(req["page"]) for req in requests_to_make}),
+            "request_type_counts": dict(Counter(str(req.get("request_type") or "search") for req in requests_to_make)),
+            "caps": {
+                "max_items": self.MAX_ITEMS,
+                "max_pages": self.MAX_PAGES if self.MAX_PAGES is not None else 1,
+                "max_requests": self.MAX_REQUESTS,
+            },
+        }
+
+    def _empty_source_diagnostics(self, source_requests: list[dict[str, str | int]] | None = None) -> dict:
+        source_requests = source_requests or self._build_source_requests()
+        return {
+            "schema": "homeplus_source_distribution.v1",
+            "planned_requests": len(source_requests),
+            "queries_attempted": 0,
+            "pages_attempted": 0,
+            "query_distribution": {},
+            "category_distribution": {},
+            "request_type_distribution": {},
+            "request_results": [],
+            "item_cap_reached": False,
+        }
+
+    def _record_source_request_result(
+        self,
+        diagnostics: dict,
+        query: str,
+        page_num: int,
+        category_hint: str,
+        request_type: str,
+        raw_count: int,
+        new_count: int,
+    ) -> None:
+        diagnostics.setdefault("request_results", []).append(
+            {
+                "query": query,
+                "page": page_num,
+                "category_hint": category_hint,
+                "request_type": request_type,
+                "raw_count": raw_count,
+                "new_count": new_count,
+            }
+        )
+        for key_name, value in (
+            ("query_distribution", query),
+            ("category_distribution", category_hint or "uncategorized"),
+            ("request_type_distribution", request_type),
+        ):
+            bucket = diagnostics.setdefault(key_name, {})
+            bucket[value] = int(bucket.get(value, 0)) + new_count
+
+    def _source_breadth_summary(self, items: list[dict], source_diagnostics: dict) -> dict:
+        category_counts: Counter[str] = Counter()
+        for item in items:
+            attrs = item.get("attributes") or {}
+            category = item.get("category") or attrs.get("category_hint") or attrs.get("category") or "uncategorized"
+            category_counts[str(category)] += 1
+        item_count = len(items)
+        return {
+            "schema": "homeplus_source_breadth.v1",
+            "valid_items": item_count,
+            "category_distribution": dict(category_counts),
+            "query_distribution": source_diagnostics.get("query_distribution") or {},
+            "request_type_distribution": source_diagnostics.get("request_type_distribution") or {},
+            "unique_categories": len([name for name, count in category_counts.items() if count > 0 and name != "uncategorized"]),
+            "threshold_shape": {
+                "near_200_count": 199 <= item_count <= 201,
+                "item_cap_reached": bool(source_diagnostics.get("item_cap_reached")),
+                "max_items": self.MAX_ITEMS,
+                "source_complete_claim_allowed": False,
+                "reason": "Counts near 200 are breadth diagnostics only; source completeness requires approved bounded live evidence.",
+            },
+        }
 
     async def parse(self, raw_data: str) -> list[DiscountItem]:
         """HTML/JSON 응답에서 할인 상품을 파싱한다."""

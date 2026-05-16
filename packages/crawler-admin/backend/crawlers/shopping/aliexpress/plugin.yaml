@@ -10,6 +10,20 @@ source_group: marketplace
 live_ready: false
 parser_contract: marketplace_skeleton.v1
 fixture_contract: marketplace_skeleton_fixture_contracts.v1
+source_contract: marketplace_browser_saved_source.v1
+allowed_source_artifacts:
+  - public_browser_rendered_html
+  - user_saved_html
+  - user_saved_json
+prohibited_automation:
+  - captcha_solving
+  - authentication_bypass
+  - access_control_bypass
+  - waf_bypass
+recurring_registration:
+  cadence: manual_fixture_until_verified
+  live_network_default: disabled
+  db_mutation_allowed: false
 live_readiness:
   status: skeleton_fixture_only
   fixture_contract_status: passed

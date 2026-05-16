@@ -163,6 +163,7 @@ _ORIGINAL_PRICE_SELECTOR = ", ".join(
 _IMAGE_SELECTOR = "img[src], img[data-src], img[data-original], img[data-img-src], img[data-lazy], img[srcset]"
 MARKETPLACE_PARSER_CONTRACT = "marketplace_skeleton.v1"
 MARKETPLACE_FIXTURE_CONTRACT = "marketplace_skeleton_fixture_contracts.v1"
+MARKETPLACE_BROWSER_SOURCE_CONTRACT = "marketplace_browser_saved_source.v1"
 MARKETPLACE_REQUIRED_EVIDENCE_BEFORE_LIVE = [
     "fixture_contract_passed",
     "bounded_live_diagnostics_passed",
@@ -173,6 +174,17 @@ MARKETPLACE_OPERATOR_NEXT_ACTIONS = [
     "Run saved-fixture diagnostics and confirm source_raw, parsed, valid, validation-drop, duplicate, and critical-field evidence.",
     "If fixture diagnostics pass, prepare a no-DB AI review artifact; do not mutate production data from connector fixture output.",
     "Only after bounded live diagnostics record max_requests, max_pages, timeout_seconds, evidence_id, and operator approval may live_ready be reconsidered.",
+]
+MARKETPLACE_ALLOWED_SOURCE_ARTIFACTS = [
+    "public_browser_rendered_html",
+    "user_saved_html",
+    "user_saved_json",
+]
+MARKETPLACE_PROHIBITED_AUTOMATION = [
+    "captcha_solving",
+    "authentication_bypass",
+    "access_control_bypass",
+    "waf_bypass",
 ]
 
 
@@ -505,6 +517,19 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
             "no_db": True,
             "run_limits": effective_run_limits,
         }
+        quality_details["source_contract"] = {
+            "schema": MARKETPLACE_BROWSER_SOURCE_CONTRACT,
+            "parser_contract": MARKETPLACE_PARSER_CONTRACT,
+            "fixture_contract": MARKETPLACE_FIXTURE_CONTRACT,
+            "allowed_source_artifacts": MARKETPLACE_ALLOWED_SOURCE_ARTIFACTS,
+            "prohibited_automation": MARKETPLACE_PROHIBITED_AUTOMATION,
+            "ai_db_handoff": "raw_artifact_for_no_db_ai_review_only",
+            "live_crawling_claim_allowed": False,
+            "safe_db_mutation_allowed": False,
+            "collection_mode": collection_mode,
+            "live_network_enabled": live_enabled,
+            "run_limits": effective_run_limits,
+        }
         quality_details["readiness_gate"] = {
             "status": "bounded_live_diagnostic_no_db" if live_enabled else "skeleton_fixture_only",
             "live_ready": False,
@@ -512,6 +537,7 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
             "safe_db_mutation_allowed": False,
             "parser_contract": MARKETPLACE_PARSER_CONTRACT,
             "fixture_contract": MARKETPLACE_FIXTURE_CONTRACT,
+            "source_contract": MARKETPLACE_BROWSER_SOURCE_CONTRACT,
             "fixture_contract_status": "passed",
             "bounded_diagnostics": {
                 "status": "completed_no_db" if live_enabled else "required_before_live_ready",
@@ -826,7 +852,9 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
             "category_hints": [category] if category else [],
             "parser_contract": MARKETPLACE_PARSER_CONTRACT,
             "fixture_contract": MARKETPLACE_FIXTURE_CONTRACT,
+            "source_contract": MARKETPLACE_BROWSER_SOURCE_CONTRACT,
             "collection_mode": "fixture_source_parser",
+            "ai_db_handoff": "no_db_ai_review_only",
         }
         for key, value in (extra or {}).items():
             if value not in (None, ""):

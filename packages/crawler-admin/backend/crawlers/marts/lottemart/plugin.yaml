@@ -1,6 +1,7 @@
 name: lottemart
 display_name: 롯데마트
 category: mart
+source_group: mart
 version: 1.0.0
 description: 롯데마트 전단지 및 할인 행사 상품 정보 수집
 live_ready: false
@@ -27,6 +28,10 @@ live_readiness:
       blocker: aws_waf_http_202_after_partial_collection
   operator_approval:
     status: required_before_live_ready
+  safe_source_paths:
+    public_browser_context: allowed_with_human_intervention_no_bypass
+    saved_html_json_import: allowed_no_network_no_db
+    prohibited: captcha_solving_waf_bypass_credential_abuse
 notes: "Do not claim 200+ live readiness while bounded no-DB diagnostics report AWS WAF HTTP 202; use saved-source replay artifacts for parser/AI handoff checks."
 target:
   url: https://www.lottemart.com
@@ -40,3 +45,12 @@ output:
   model: DiscountItem
   required_fields: [name, sale_price, detail_url]
   diagnostic_evidence_fields: [source_raw, parsed, valid, detail_url, source_url, image_url, period, unit, category_hint]
+source_map:
+  request_strategy: public_search_initial_state_then_ordinary_browser
+  search_queries: [할인, 특가, 과일, 채소, 정육, 세일, 우유, 음료]
+  category_queries: [과일, 채소, 정육, 계란, 생수, 유제품, 간편식]
+  max_pages: 2
+  max_requests:
+  max_items: 300
+  dedupe_key: source_record_key_then_source_url
+  parser_inputs: [window.__INITIAL_STATE__, embedded_json, product_card_html]
