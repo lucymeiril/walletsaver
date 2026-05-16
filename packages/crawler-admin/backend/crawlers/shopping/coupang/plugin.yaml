@@ -7,10 +7,40 @@ schedule: manual
 difficulty: skeleton
 source_id: coupang
 source_group: marketplace
+version: 1.1.0
 live_ready: false
 parser_contract: marketplace_skeleton.v1
 fixture_contract: marketplace_skeleton_fixture_contracts.v1
 source_contract: marketplace_browser_saved_source.v1
+entrypoints:
+  - id: crawl_sale_listing
+    collection_path: public_endpoint
+    intent: sale
+    url_template: "https://www.coupang.com/np/search?component=&q=할인특가&traceId={trace_id}&channel=user&page=1"
+  - id: crawl_catalog_page
+    collection_path: catalog_page
+    intent: catalog
+    url_template: "https://www.coupang.com/np/search?component=&q={query}&traceId={trace_id}&channel=user&page={page}"
+  - id: fetch_single_product
+    collection_path: single_product
+    intent: refresh
+    url_template: "https://www.coupang.com/vp/products/{product_id}"
+  - id: ingest_operator_capture
+    collection_path: operator_capture
+    intent: sale|catalog|refresh
+    notes: 운영자가 자신의 브라우저 세션으로 PLP/PDP 를 캡처하여 입력. 본 슬라이스 시점 라이브 자동화는 100% Akamai 차단.
+catalog_seeds:
+  - 생수 2L
+  - 우유 1L
+  - 계란 30구
+  - 라면 5입
+  - 세탁세제 3L
+coupang_traceId_note: |
+  본 슬라이스의 라이브 시도는 모두 Akamai (edgesuite Reference#18.*) 단계에서
+  차단되어 traceId 가 빈 값/임의 hex/세션-바인딩 중 어느 분기를 타는지 검증
+  하지 못함. plugin.yaml::entrypoints 의 url_template 에 빈 traceId 도
+  허용하는 형식만 기록했고, 라이브 시도가 가능해질 때 본 노트를 갱신할 것.
+  status: blocked_unverified
 allowed_source_artifacts:
   - public_browser_rendered_html
   - user_saved_html
@@ -35,6 +65,7 @@ live_readiness:
       max_requests: null
       max_pages: null
       timeout_seconds: null
+    last_observed_live_blocker: akamai_access_denied
   operator_approval:
     status: required_before_live_ready
   required_evidence:
@@ -43,4 +74,6 @@ live_readiness:
     - bounded_run_limits_recorded
     - operator_approval_recorded
 plugin_aliases: ["coupang"]
-notes: "Registered skeleton/fixture-only: safe mocked HTML/JSON parser coverage; live crawling intentionally disabled. Do not set live_ready=true until fixture contract, bounded diagnostics evidence, run limits, and operator approval are recorded."
+notes: "Registered skeleton/fixture-only: safe mocked HTML/JSON parser coverage; live crawling intentionally disabled. Do not set live_ready=true until fixture contract, bounded diagnostics evidence, run limits, and operator approval are recorded. Live attempts during this slice were 100% blocked by Akamai access denied — operator_capture is the only verified data path."
+
+

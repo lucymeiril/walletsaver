@@ -65,12 +65,12 @@ class LottemartEntrypoints:
         if "__INITIAL_STATE__" in html:
             return StrategyFailure(
                 strategy_name="requests",
-                error_type=ErrorType.PARSING_ERROR,
+                error_type=ErrorType.PARSE_ERROR,
                 error_msg=f"empty_initial_state_spa_shell: {url}",
             )
         return StrategyFailure(
             strategy_name="requests",
-            error_type=ErrorType.PARSING_ERROR,
+            error_type=ErrorType.PARSE_ERROR,
             error_msg=f"no_initial_state_marker: {url}",
         )
 
