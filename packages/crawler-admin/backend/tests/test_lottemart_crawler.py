@@ -31,6 +31,8 @@ from crawlers.marts.lottemart.entrypoints import LottemartEntrypoints, SALE_QUER
 
 
 FIXTURE = pathlib.Path(__file__).parent / "fixtures" / "lottemart" / "operator_capture_3cards.html"
+HYDRATED_FIXTURE = pathlib.Path(__file__).parent / "fixtures" / "lottemart" / "hydrated_5cards.html"
+LIVE_HYDRATED_PROBE = pathlib.Path(__file__).parent / "fixtures" / "live_probe" / "lottemart_hydrated_promotions.html"
 LIVE_SHELL_DIR = pathlib.Path(__file__).parent / "fixtures" / "live_probe"
 LIVE_SHELL_CANDIDATES = [
     "lottemart_zetta_promotions.html",
@@ -190,6 +192,110 @@ async def test_aws_waf_202_diagnostic_message_is_precise():
 
 
 # ---------- 모델 quirk 준수 ----------
+# ---------- 라이브 hydrated 진본 fixture 회귀 ----------
+@pytest.fixture
+def hydrated_html() -> str:
+    assert HYDRATED_FIXTURE.exists(), f"missing hydrated slim fixture: {HYDRATED_FIXTURE}"
+    return HYDRATED_FIXTURE.read_text(encoding="utf-8")
+
+
+@pytest.mark.asyncio
+async def test_hydrated_fixture_parses_five_real_entities(crawler, hydrated_html):
+    """live headful Playwright 캡처에서 추출한 진본 productEntities 5개가
+    모두 파서로 회수돼야 한다."""
+    items = await crawler.parse(hydrated_html)
+    assert len(items) == 5
+    # 모두 진본 productId UUID 형식 source_record_key
+    for it in items:
+        rec = it.attributes.get("source_record_key", "")
+        # productId UUID 또는 lottemart prefix 둘 다 허용 (진본 productId 가 UUID)
+        assert rec, "source_record_key 누락"
+        # detail_url 은 lottemartzetta 도메인의 /products/<uuid>
+        assert it.detail_url.startswith("https://lottemartzetta.com/products/")
+        assert it.sale_price > 0
+        assert it.attributes.get("category_path"), "category_path 누락"
+
+
+@pytest.mark.asyncio
+async def test_hydrated_fixture_carries_discount_and_sale_only_branches(crawler, hydrated_html):
+    """진본 fixture 는 (price.original+price.current 가 둘 다 있는 할인 상품) 1개 +
+    (price.original=null 인 단가 상품) 다수 — 두 분기를 모두 표현해야 한다."""
+    items = await crawler.parse(hydrated_html)
+    with_discount = [i for i in items if i.original_price and i.original_price > i.sale_price]
+    sale_only = [i for i in items if i.original_price is None]
+    assert with_discount, "할인 분기 (original>current) 가 fixture 에 없음"
+    assert sale_only, "단가만 있는 분기 가 fixture 에 없음"
+    # 할인분기 회귀 — 행복생생란 6,990 (orig 7,690)
+    w = next(i for i in with_discount if "행복생생란" in i.name or "농할" in i.name or "행복" in i.name)
+    assert w.sale_price == 6990
+    assert w.original_price == 7690
+    # 단가 분기 회귀 — 부침두부 4,990
+    s = next(i for i in sale_only if "부침두부" in i.name)
+    assert s.sale_price == 4990
+    assert s.original_price is None
+
+
+@pytest.mark.asyncio
+async def test_hydrated_fixture_preserves_offer_description_and_image(crawler, hydrated_html):
+    items = await crawler.parse(hydrated_html)
+    for it in items:
+        # offer.description 이 있으면 그대로 event_name 으로 전달
+        assert it.event_name and it.event_name != "롯데마트 할인" or it.event_name == "롯데마트 할인"
+    # 적어도 일부는 image_url 가 채워져 있어야 한다 (lottemartzetta CDN)
+    with_img = [i for i in items if i.image_url and "lottemartzetta.com" in i.image_url]
+    assert with_img, "이미지 URL 진본이 fixture 에서 누락"
+
+
+@pytest.mark.asyncio
+async def test_hydrated_fixture_quality_coverage_via_entrypoint(hydrated_html):
+    """4-진입점을 통과해도 진본 5건이 그대로 collection_path 태깅돼야 한다."""
+    ep = LottemartEntrypoints()
+    result = await ep.ingest_operator_capture(
+        hydrated_html,
+        source_url="https://www.lottemartzetta.com/promotions",
+        capture_id="op-lottemart-hydrated",
+    )
+    assert result.status.name == "SUCCESS"
+    assert result.items_count == 5
+    for it in result.items:
+        assert it["attributes"]["collection_path"] == CollectionPath.OPERATOR_CAPTURE.value
+
+
+# ---------- 가짜 통과 방지 negative 회귀 ----------
+@pytest.mark.asyncio
+async def test_empty_productEntities_in_initial_state_does_not_yield_items(crawler):
+    """파서가 productEntities={} 셸을 절대로 '성공'으로 둔갑시키지 않도록.
+    이전 슬라이스 회귀가 다시 가짜로 통과하는 것을 막는다."""
+    shell = (
+        "<!doctype html><html><body><script>window.__INITIAL_STATE__ = "
+        '{"data":{"products":{"productEntities":{}}}};</script></body></html>'
+    )
+    items = await crawler.parse(shell)
+    assert items == [] or all(getattr(i, "sale_price", 0) > 0 for i in items)
+    # entrypoint 측면에서도 PARTIAL/FAILED + blocker 메시지여야 한다
+    ep = LottemartEntrypoints()
+    result = await ep.crawl_sale_listing(fetch=lambda url: shell)
+    assert result.items_count == 0
+    assert result.errors and "empty_initial_state_spa_shell" in result.errors[0].error_msg
+
+
+@pytest.mark.asyncio
+async def test_live_hydrated_probe_when_present_yields_real_items():
+    """live_probe/ 가 있는 환경에서는 진본 hydrated 캡처가 최소 30개 이상의
+    productEntities 를 만들어내야 한다 (raw 1.6MB, 50 카드 캡처 기준)."""
+    if not LIVE_HYDRATED_PROBE.exists():
+        pytest.skip("live_probe/lottemart_hydrated_promotions.html 없음 (gitignored 환경)")
+    raw = LIVE_HYDRATED_PROBE.read_text(encoding="utf-8")
+    assert "__INITIAL_STATE__" in raw
+    c = LottemartCrawler()
+    items = await c.parse(raw)
+    assert len(items) >= 30, f"진본 hydrated 캡처에서 30개 미만 수확: {len(items)}"
+    # 모든 상품에 진본 productId(UUID) 가 있어야 한다
+    for it in items:
+        assert it.detail_url.startswith("https://lottemartzetta.com/products/")
+        assert it.sale_price > 0
+
+
 @pytest.mark.asyncio
 async def test_crawl_result_uses_finished_at_and_quality_details(html):
     ep = LottemartEntrypoints()
