@@ -1,10 +1,34 @@
 name: emart
 display_name: 이마트
 category: mart
-version: 1.0.0
-description: 이마트 전단지 및 할인 행사 상품 정보 수집
+version: 1.1.0
+description: 이마트 전단지 및 할인 행사 상품 정보 수집 (SSG Next.js __NEXT_DATA__ 기반)
 live_ready: false
 parser_contract: emart_next_data_fixture.v1
+entrypoints:
+  module: crawlers.marts.emart.entrypoints
+  class: EmartEntrypoints
+  paths:
+    - name: crawl_sale_listing
+      collection_path: public_endpoint
+      crawl_intent: sale
+      live_url_template: "https://emart.ssg.com/search.ssg?target=all&query=행사&page=1"
+    - name: crawl_catalog_page
+      collection_path: catalog_page
+      crawl_intent: catalog
+      args: [category_or_query, page]
+    - name: fetch_single_product
+      collection_path: single_product
+      crawl_intent: refresh
+      args: [url_or_id]
+    - name: ingest_operator_capture
+      collection_path: operator_capture
+      crawl_intent: any
+      args: [html, source_url, capture_id]
+rate_limit_seconds:
+  between_live_gets: 3
+  between_catalog_pages: 5
+  between_search_queries: 5
 live_readiness:
   status: source_collection_diagnostics_required
   fixture_contract_status: passed
@@ -16,11 +40,11 @@ live_readiness:
       timeout_seconds: 20
   operator_approval:
     status: required_before_live_ready
-notes: "Do not claim live-service readiness until source collection diagnostics pass a bounded operator-approved run."
+notes: "SSR + __NEXT_DATA__ JSON. 슬림 fixture tests/fixtures/emart/sale_listing_5cards.html 는 라이브 캡처(emart_search.html, 1.4MB)에서 5개 dataList 추출."
 target:
   url: https://emart.ssg.com
   difficulty: 3
-  strategy: cloudscraper
+  strategy: requests
 schedule:
   cron: "0 7 * * *"
   retry_count: 3
@@ -28,7 +52,7 @@ schedule:
 output:
   model: DiscountItem
   required_fields: [name, sale_price, detail_url]
-  diagnostic_evidence_fields: [source_raw, parsed, valid, detail_url, source_url, image_url, period, unit, category_hint]
+  diagnostic_evidence_fields: [source_raw, parsed, valid, detail_url, source_url, image_url, period, unit, category_hint, collection_path, crawl_intent, source_record_key]
 source_map:
   request_strategy: public_search_next_data
   search_queries: [행사, 할인, 특가, "1+1", 반값, 세일]
@@ -38,3 +62,13 @@ source_map:
   max_items:
   dedupe_key: source_record_key_then_source_url
   parser_inputs: [__NEXT_DATA__, embedded_json, product_card_html]
+  selectors:
+    next_data_script: "script#__NEXT_DATA__"
+    items_path: "props.pageProps.dehydratedState.queries[*].state.data.areaList[*].dataList[*]"
+    name: "itemName"
+    sale_price: "finalPrice | priceInfo.primaryPrice"
+    original_price: "strikeOutPrice | priceInfo.strikeOutPrice"
+    image_url: "itemImgUrl"
+    detail_url: "itemUrl | itemDetailLink"
+    unit_price: "priceInfo.unitPriceDescription"
+
