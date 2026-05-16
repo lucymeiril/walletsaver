@@ -34,8 +34,10 @@ for _path in (str(SHARED), str(DB_BACKEND)):
 from api.routes import admin as admin_routes  # noqa: E402
 from api.routes import ingestion as ingestion_routes  # noqa: E402
 from config import settings  # noqa: E402
+from services.catalog_seed import seed_catalog_taxonomy  # noqa: E402
 from storage.models import (  # noqa: E402
     Base,
+    Category,
     DiscountHistory,
     NormalizedCanonicalProduct,
     NormalizedOfferEvent,
@@ -46,6 +48,9 @@ from storage.models import (  # noqa: E402
     PendingIngestion,
     Product,
 )
+
+MAX_DEFAULT_SAFE_ITEMS = 20
+MAX_LOCAL_PROOF_ITEMS = 1000
 
 
 @dataclass
@@ -127,6 +132,7 @@ def _patch_db_admin_sessions(Session):
     original_ingestion_managed_session = ingestion_routes.managed_session
     original_admin_get_session = admin_routes.get_session
     original_admin_list_backups = admin_routes.list_backups
+    original_limiter_enabled = ingestion_routes.limiter.enabled
 
     def get_test_session():
         return Session()
@@ -145,12 +151,14 @@ def _patch_db_admin_sessions(Session):
 
     ingestion_routes.get_session = get_test_session
     ingestion_routes.managed_session = managed_test_session
+    ingestion_routes.limiter.enabled = False
     admin_routes.get_session = get_test_session
     admin_routes.list_backups = lambda: [{"filename": "local-db-submit-safe-row-scale.sqlite"}]
 
     def restore() -> None:
         ingestion_routes.get_session = original_ingestion_get_session
         ingestion_routes.managed_session = original_ingestion_managed_session
+        ingestion_routes.limiter.enabled = original_limiter_enabled
         admin_routes.get_session = original_admin_get_session
         admin_routes.list_backups = original_admin_list_backups
 
@@ -211,6 +219,10 @@ def _hold_reasons(record: Any, item: dict[str, Any]) -> list[str]:
         reasons.append("missing_image_url")
     if not (item.get("source") or item.get("store") or getattr(record, "source_name", None)):
         reasons.append("missing_source")
+    try:
+        ingestion_routes._validate_discount_item_for_publish(item)
+    except ValueError as exc:
+        reasons.append(f"db_admin_final_approve_blocker:{exc}")
     return reasons
 
 
@@ -244,8 +256,8 @@ def _build_db_admin_payload(candidate: dict[str, Any]) -> dict[str, Any]:
 def run_local_proof(args: LocalProofArgs) -> dict[str, Any]:
     if not args.allow_db_admin_submit:
         raise ValueError("--allow-db-admin-submit is required for the local DB-admin proof")
-    if args.max_items < 1 or args.max_items > 20:
-        raise ValueError("--max-items must be between 1 and 20 for the local DB-admin proof")
+    if args.max_items < 1 or args.max_items > MAX_LOCAL_PROOF_ITEMS:
+        raise ValueError(f"--max-items must be between 1 and {MAX_LOCAL_PROOF_ITEMS} for the local DB-admin proof")
 
     run_id = f"local-db-submit-safe-row-scale-{datetime.now().strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:8]}"
     args.artifact_dir.mkdir(parents=True, exist_ok=True)
@@ -268,7 +280,14 @@ def run_local_proof(args: LocalProofArgs) -> dict[str, Any]:
         item = _price_observation_item(harness.db_item_from_review(record, [], {}))
         reasons = _hold_reasons(record, item)
         if reasons:
-            held_rows.append({"raw_record_id": record.raw_record_id, "reasons": reasons})
+            held_rows.append(
+                {
+                    "raw_record_id": record.raw_record_id,
+                    "source_name": getattr(record, "source_name", None),
+                    "raw_title": getattr(record, "raw_title", None),
+                    "reasons": reasons,
+                }
+            )
             held_reason_counts.update(reasons)
             continue
         safe_candidates.append(
@@ -285,6 +304,8 @@ def run_local_proof(args: LocalProofArgs) -> dict[str, Any]:
 
     api_key = f"local-proof-{uuid.uuid4().hex}"
     Session, engine = _session_factory(db_path)
+    with Session.begin() as session:
+        seed_counts = seed_catalog_taxonomy(session)
     client = _db_admin_client(Session, api_key)
     submit_results: list[dict[str, Any]] = []
     try:
@@ -326,6 +347,7 @@ def run_local_proof(args: LocalProofArgs) -> dict[str, Any]:
         with Session() as session:
             db_counts = {
                 "pending_ingestions": session.scalar(select(func.count()).select_from(PendingIngestion)),
+                "categories": session.scalar(select(func.count()).select_from(Category)),
                 "products": session.scalar(select(func.count()).select_from(Product)),
                 "discount_history": session.scalar(select(func.count()).select_from(DiscountHistory)),
                 "normalized_canonical_products": session.scalar(select(func.count()).select_from(NormalizedCanonicalProduct)),
@@ -374,6 +396,12 @@ def run_local_proof(args: LocalProofArgs) -> dict[str, Any]:
         },
         "db_admin_submit_plan": {
             "mode": "operator_safe_local_price_observation_only",
+            "max_items_requested": args.max_items,
+            "max_items_supported": MAX_LOCAL_PROOF_ITEMS,
+            "large_cap_note": (
+                f"Default is {MAX_DEFAULT_SAFE_ITEMS} rows or fewer for quick smoke proof; larger caps are allowed "
+                "only for local/test DB-admin price-observation-only proof runs."
+            ),
             "submit_allowed_rows": len(safe_candidates),
             "raw_record_ids": [row["raw_record_id"] for row in safe_candidates],
             "confirm_count": len(safe_candidates),
@@ -395,10 +423,12 @@ def run_local_proof(args: LocalProofArgs) -> dict[str, Any]:
             "failed": sum(1 for row in submit_results if row.get("status") == "submit_failed"),
             "results": submit_results,
             "backup_snapshot_listed": backup_response.status_code == 200,
+            "local_rate_limit_disabled": True,
         },
         "local_db": {
             "path": str(db_path),
             "scope": "local_sqlite_test_db_admin",
+            "catalog_seed": seed_counts,
             "counts": db_counts,
         },
     }

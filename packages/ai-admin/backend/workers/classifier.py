@@ -25,9 +25,8 @@ _CATEGORY_KEYWORDS: list[tuple[str, str, float]] = [
     ("밀키트", "prepared_food.meal_kit", 0.88),
     ("꼬마김밥", "prepared_food.deli.kimbap", 0.88),
     ("김밥", "prepared_food.deli.kimbap", 0.84),
-    ("오징어 땅콩", "snack.nut", 0.9),
+    ("땅콩", "snack.nut", 0.82),
     ("초코우유", "dairy.milk.chocolate", 0.88),
-    ("새우깡", "snack.chip", 0.9),
     ("감자칩", "snack.chip", 0.85),
     ("초코", "snack.chocolate", 0.78),
     ("과자", "snack.general", 0.75),
@@ -35,7 +34,7 @@ _CATEGORY_KEYWORDS: list[tuple[str, str, float]] = [
     ("치즈", "dairy.cheese", 0.8),
     ("요거트", "dairy.yogurt", 0.8),
     ("요구르트", "dairy.yogurt", 0.75),
-    ("계란", "dairy.egg", 0.8),
+    ("계란", "livestock.egg", 0.8),
     ("삼겹살", "meat.pork.belly", 0.9),
     ("목살", "meat.pork", 0.85),
     ("돼지고기", "meat.pork", 0.85),
@@ -115,7 +114,7 @@ def _normalize_text(value: str) -> str:
     return _TEXT_RE.sub("", value.lower())
 
 
-def _keyword_match_kind(keyword: str, title: str) -> str | None:
+def _keyword_match_kind(keyword: str, title: str, category_id: str) -> str | None:
     keyword_norm = _normalize_text(keyword)
     if not keyword_norm:
         return None
@@ -126,7 +125,8 @@ def _keyword_match_kind(keyword: str, title: str) -> str | None:
     title_norm = _normalize_text(cleaned)
     if " " in keyword and keyword_norm in title_norm:
         return "phrase"
-    if len(keyword_norm) >= 2 and any(
+    compound_allowed = not category_id.startswith(("seafood.", "produce."))
+    if compound_allowed and len(keyword_norm) >= 2 and any(
         token.startswith(keyword_norm) or token.endswith(keyword_norm)
         for token in token_norms
     ):
@@ -137,25 +137,24 @@ def _keyword_match_kind(keyword: str, title: str) -> str | None:
 
 
 def _best_category_match(title: str) -> tuple[str, str, float, str] | None:
-    matches: list[tuple[int, int, float, str, str, float, str]] = []
+    matches: list[tuple[int, float, int, str, str, str]] = []
     for keyword, category_id, confidence in _CATEGORY_KEYWORDS:
-        match_kind = _keyword_match_kind(keyword, title)
+        match_kind = _keyword_match_kind(keyword, title, category_id)
         if match_kind is None:
             continue
         matches.append(
             (
                 _MATCH_KIND_SCORE[match_kind],
-                len(_normalize_text(keyword)),
                 confidence,
+                len(_normalize_text(keyword)),
                 keyword,
                 category_id,
-                confidence,
                 match_kind,
             )
         )
     if not matches:
         return None
-    _score, _length, _confidence, keyword, category_id, confidence, match_kind = max(matches)
+    _score, confidence, _length, keyword, category_id, match_kind = max(matches)
     return keyword, category_id, confidence, match_kind
 
 

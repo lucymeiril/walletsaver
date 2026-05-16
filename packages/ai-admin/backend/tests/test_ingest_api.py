@@ -166,6 +166,7 @@ def _store_product_match(
     signature_key: str = "풀무원 국산콩 두부 300g",
     status: ProductMatchStatus = ProductMatchStatus.APPROVED,
     provenance_source: ProductMatchProvenanceSource = ProductMatchProvenanceSource.HUMAN,
+    is_active: bool = True,
 ) -> None:
     with db.session_scope() as session:
         ProductMatchStoreRepository(session).save(
@@ -191,6 +192,7 @@ def _store_product_match(
                 status=status,
                 audit_reason="human approved exact product match for ingestion reuse",
                 reviewed_by="reviewer-1" if provenance_source == ProductMatchProvenanceSource.HUMAN else None,
+                is_active=is_active,
             )
         )
 
@@ -241,6 +243,64 @@ def test_ingest_uses_approved_product_match_before_provider_call(
     assert body["ai_batches"] == 0
     assert body["product_match_hits"] == 1
     assert provider_calls == []
+
+
+def test_ingest_does_not_auto_approve_inactive_product_match(
+    client: TestClient,
+    db: Database,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _store_product_match(db, is_active=False)
+    prompts: list[str] = []
+
+    class ProviderForInactiveMatch:
+        def __init__(self, config: ProviderConfigContract) -> None:
+            self.config = config
+
+        def call(self, *, prompt: str, schema=None) -> dict:
+            prompts.append(prompt)
+            return {
+                "items": [
+                    {
+                        "raw_record_id": "emart:tofu",
+                        "canonical_name": "provider reviewed tofu",
+                        "category_id": "processed.tofu.firm",
+                        "keywords": ["두부"],
+                        "aliases": [],
+                        "attributes": {},
+                        "confidence": 0.8,
+                    }
+                ]
+            }
+
+    monkeypatch.setattr(
+        ai_ingestion,
+        "provider_from_config",
+        lambda config: ProviderForInactiveMatch(config),
+    )
+
+    res = client.post(
+        "/api/ingest/raw-records/label",
+        json={
+            "provider_id": "google-dev",
+            "source_name": "emart",
+            "records": [
+                {
+                    "raw_record_id": "emart:tofu",
+                    "source_name": "emart",
+                    "source_url": "https://emart.example/tofu",
+                    "raw_title": "풀무원 국산콩 두부 300g",
+                    "raw_price": 2990,
+                }
+            ],
+        },
+    )
+
+    assert res.status_code == 200, res.text
+    body = res.json()
+    assert body["provider_calls"] == 1
+    assert body["product_match_hits"] == 0
+    assert len(prompts) == 1
 
 
 def test_ingest_recovers_provider_omitted_rows_with_reviewer_safe_fallback(

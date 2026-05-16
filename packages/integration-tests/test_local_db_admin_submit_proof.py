@@ -59,12 +59,20 @@ def test_local_db_admin_submit_proof_publishes_multiple_safe_price_observations(
     assert artifact["provider"]["provider_calls"] == 0
     assert artifact["db_admin_submit_plan"]["submit_allowed_rows"] == 2
     assert artifact["db_admin_submit_plan"]["held_for_review_count"] == 1
-    assert artifact["db_admin_submit_plan"]["held_reason_counts"] == {"missing_source_url": 1}
+    assert artifact["db_admin_submit_plan"]["held_reason_counts"]["missing_source_url"] == 1
+    assert (
+        artifact["db_admin_submit_plan"]["held_reason_counts"][
+            "db_admin_final_approve_blocker:AI-reviewed offer missing customer-visible fields: source_url, package_quantity, package_unit"
+        ]
+        == 1
+    )
     result = artifact["db_admin_submit_result"]
     assert result["submitted_to_db_admin"] == 2
     assert result["ai_safe_final_approved"] == 2
     assert result["public_db_verified"] == 2
     assert result["rollback_re_review_supported"] == 2
+    assert artifact["local_db"]["catalog_seed"]["categories"] > 0
+    assert artifact["local_db"]["counts"]["categories"] > 0
     assert artifact["local_db"]["counts"]["discount_history"] == 2
     assert all(
         row["ai_safe_final_approve"]["public_db_verification"]["verified"]
@@ -84,3 +92,30 @@ def test_local_db_admin_submit_proof_requires_explicit_submit_flag(tmp_path: Pat
                 allow_db_admin_submit=False,
             )
         )
+
+
+def test_local_db_admin_submit_proof_accepts_larger_local_caps(tmp_path: Path) -> None:
+    rows = []
+    for index in range(25):
+        row = dict(_source_rows()[index % 2])
+        row["name"] = f"{row['name']} {index}"
+        row["detail_url"] = f"{row['detail_url']}/{index}"
+        row["image_url"] = f"{row['image_url']}?v={index}"
+        rows.append(row)
+    source = tmp_path / "source-artifact.json"
+    source.write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+
+    artifact = run_local_proof(
+        LocalProofArgs(
+            input_json=source,
+            artifact_dir=tmp_path / "artifacts",
+            max_items=25,
+            allow_db_admin_submit=True,
+            source_name="integration-source",
+        )
+    )
+
+    assert artifact["accepted"] is True
+    assert artifact["source"]["selected_rows"] == 25
+    assert artifact["db_admin_submit_plan"]["max_items_supported"] >= 25
+    assert artifact["db_admin_submit_result"]["submitted_to_db_admin"] == 25

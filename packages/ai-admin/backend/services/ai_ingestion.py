@@ -923,6 +923,7 @@ def _is_safe_approved_product_match(match: ProductMatchContract) -> bool:
     return (
         match.status == ProductMatchStatus.APPROVED
         and match.provenance_source == ProductMatchProvenanceSource.HUMAN
+        and match.is_active
     )
 
 

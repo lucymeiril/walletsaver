@@ -303,7 +303,7 @@ def _discount_rate(value: Any) -> float | None:
     number = _finite_float_or_none(value)
     if number is None:
         return None
-    return number / 100 if number > 1 else number
+    return number / 100 if number >= 1 else number
 
 
 def _row_package_signature(row: dict[str, Any]) -> str:

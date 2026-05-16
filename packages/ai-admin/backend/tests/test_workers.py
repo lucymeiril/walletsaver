@@ -208,21 +208,30 @@ def test_classifier_matches_known_keyword() -> None:
     assert out.diagnostics["needs_human_review"] is True
 
 
-def test_classifier_prefers_snack_phrase_over_seafood_token() -> None:
+def test_classifier_emits_only_safe_seed_category_for_eggs() -> None:
+    batch = _batch(AIWorkerRole.CLASSIFIER, [_record(1, title="무항생제 계란 30구")])
+    out = ClassifierWorker().run(batch)
+    category = next(p for p in out.taxonomy_proposals if p.target_field == "category_id")
+
+    assert category.proposed_value == "livestock.egg"
+    assert is_safe_seed_category(category.proposed_value)
+
+
+def test_classifier_prefers_general_nut_signal_over_seafood_token() -> None:
     batch = _batch(AIWorkerRole.CLASSIFIER, [_record(1, title="오리온 오징어 땅콩 98g")])
     out = ClassifierWorker().run(batch)
     assert out.taxonomy_proposals[0].proposed_value == "snack.nut"
+    assert out.taxonomy_proposals[0].provenance.evidence_text == "땅콩"
     assert out.taxonomy_proposals[0].alternatives[0]["evidence_class"] == "deterministic_keyword"
     assert out.taxonomy_proposals[0].alternatives[0]["trust_label"] == "taxonomy_hint_needs_review"
 
 
-def test_classifier_does_not_reuse_short_catalog_token_inside_unrelated_snack() -> None:
+def test_classifier_does_not_use_exact_product_name_or_short_token_inside_unrelated_snack() -> None:
     batch = _batch(AIWorkerRole.CLASSIFIER, [_record(1, title="오리온 새우깡 90g")])
     out = ClassifierWorker().run(batch)
-    category = next(p for p in out.taxonomy_proposals if p.target_field == "category_id")
 
-    assert category.proposed_value == "snack.chip"
-    assert category.provenance.evidence_text == "새우깡"
+    assert not [p for p in out.taxonomy_proposals if p.target_field == "category_id"]
+    assert out.diagnostics["records_unmatched"] == 1
 
 
 def test_classifier_holdout_like_titles_need_real_product_signal_not_exact_alias() -> None:

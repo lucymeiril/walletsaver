@@ -301,6 +301,21 @@ def test_db_admin_insert_items_publishes_legacy_and_normalized_discount_rows():
     assert all(link.observed_min_price == 1980 for link in links)
 
 
+def test_db_admin_insert_items_treats_one_discount_percent_as_one_percent():
+    Session = _session_factory()
+    item = _ai_publish_item(discount_percent=1, original_price=2000)
+    with Session.begin() as session:
+        saved = _insert_items(session, [item], "DiscountItem")
+
+    with Session() as session:
+        legacy = session.execute(select(DiscountHistory)).scalar_one()
+        offer = session.execute(select(NormalizedOfferEvent)).scalar_one()
+
+    assert saved == 1
+    assert legacy.discount_rate == 1
+    assert offer.discount_rate == 0.01
+
+
 def test_db_admin_insert_items_keeps_conditional_price_non_comparable():
     Session = _session_factory()
     item = _ai_publish_item(
