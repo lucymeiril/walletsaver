@@ -1,8 +1,12 @@
 """Operator source workbench persistence for public/saved crawler evidence.
 
-This module stores operator-provided public page/source artifacts and source
-registrations. It does not solve CAPTCHA, use credentials, bypass WAF/access
-controls, or add stealth behavior.
+이 모듈은 운영자(=프로젝트 관리자) 본인 PC·본인 계정 시나리오에서
+브라우저 캡처/등록 아티팩트를 저장하기 위한 영속화 계층이다.
+
+정책은 ``operator_workbench_policy.OPERATOR_WORKBENCH_POLICY`` 단일 진실을 사용한다.
+과거처럼 본 모듈 안에서 "자동 캡챠/자격증명/우회/스텔스 = False"로
+재정의하는 식의 *작업 마비형 정책*을 다시 박지 말 것
+(이전 사례가 마트3사 중 WAF 보호 사이트 수집을 통째로 막은 적이 있다).
 """
 
 from __future__ import annotations
@@ -15,17 +19,16 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from pipeline.operator_workbench_policy import (
+    OPERATOR_WORKBENCH_POLICY,
+    policy_snapshot,
+)
 
-WORKBENCH_SCHEMA = "operator_source_workbench.v1"
-SAFETY_POLICY = {
-    "public_pages_only": True,
-    "persistent_local_profile_allowed": True,
-    "human_saved_source_import_allowed": True,
-    "automated_captcha_solving": False,
-    "credential_automation": False,
-    "waf_or_access_control_bypass": False,
-    "stealth_evasion": False,
-}
+
+WORKBENCH_SCHEMA = "operator_source_workbench.v2"
+
+# 외부 노출용 호환 별칭 — 기존 호출자가 SAFETY_POLICY를 참조해도 새 정책을 본다.
+SAFETY_POLICY = OPERATOR_WORKBENCH_POLICY
 
 _NETWORK_EVENT_FIELDS = {
     "url",

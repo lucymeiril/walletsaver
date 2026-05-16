@@ -42,7 +42,7 @@ def test_source_workbench_capture_saved_source_feeds_ai_handoff(monkeypatch, tmp
 
     assert resp.status_code == 200
     data = resp.json()
-    assert data["safety_policy"]["automated_captcha_solving"] is False
+    assert data["safety_policy"]["automated_captcha_attempt"] is True
     assert data["capture"]["source_health"]["collection_status"] == "captured_with_evidence"
     assert data["capture"]["network_events"][0]["status_code"] == 200
     assert "request_headers" not in data["capture"]["network_events"][0]
@@ -70,7 +70,7 @@ def test_source_workbench_registers_unverified_public_source(monkeypatch, tmp_pa
     data = resp.json()
     assert data["source_health"]["collection_status"] == "registered_unverified"
     assert data["source_health"]["live_network_default"] == "disabled"
-    assert data["safety_policy"]["waf_or_access_control_bypass"] is False
+    assert data["safety_policy"]["bypass_code_in_live_web_backend"] is False
 
     listed = client.get("/api/source-workbench/sources").json()
     assert listed["sources"][0]["source_name"] == "coupang_weekly_query"

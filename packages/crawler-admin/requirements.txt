@@ -7,6 +7,10 @@ beautifulsoup4>=4.13.0
 lxml>=5.3.0
 selenium>=4.28.0
 playwright>=1.50.0
+# 운영자 워크밴치 정책상 사용 허용된 옵셔널 우회/스텔스 라이브러리.
+# 미설치 환경에서는 해당 전략이 명확한 안내 에러를 던질 뿐, 본체는 유지된다.
+undetected-chromedriver>=3.5.5
+cloudscraper>=1.2.71
 fake-useragent>=2.1.0
 apscheduler>=3.11.0
 pydantic>=2.0

@@ -72,35 +72,46 @@ class TestAntiDetect:
         assert len(USER_AGENTS) >= 15
 
 
-class TestSafeBrowserStrategies:
-    def test_browser_strategy_sources_do_not_include_stealth_evasion(self):
-        from pathlib import Path
+class TestOperatorWorkbenchStrategies:
+    """운영자 워크밴치 정책상 회피/스텔스 라이브러리 사용은 *허용*된다.
 
-        strategy_dir = Path(__file__).resolve().parents[1] / "strategies"
-        combined = "\n".join(
-            [
-                (strategy_dir / "playwright_st.py").read_text(encoding="utf-8"),
-                (strategy_dir / "selenium_st.py").read_text(encoding="utf-8"),
-            ]
-        )
+    과거에 "stealth 키워드/AutomationControlled 등은 코드에 존재 금지"라는
+    *작업 마비형* 테스트가 있었지만, 사용자가 명시적으로 정책을 뒤집었다.
+    여기서는 의도와 단일 진실 정책이 살아 있는지만 검증한다.
+    """
 
-        assert "playwright_stealth" not in combined
-        assert "selenium_stealth" not in combined
-        assert "AutomationControlled" not in combined
-        assert "excludeSwitches" not in combined
-        assert "useAutomationExtension" not in combined
-        assert "user_agent=ua" not in combined
+    def test_operator_workbench_policy_allows_stealth_and_handoff(self):
+        from pipeline.operator_workbench_policy import OPERATOR_WORKBENCH_POLICY
+
+        assert OPERATOR_WORKBENCH_POLICY["automation_flag_hiding_allowed"] is True
+        assert OPERATOR_WORKBENCH_POLICY["automated_captcha_attempt"] is True
+        assert OPERATOR_WORKBENCH_POLICY["challenge_solver_libraries_allowed"] is True
+        assert OPERATOR_WORKBENCH_POLICY["human_handoff_required_on_auto_failure"] is True
+        # 변하지 않는 금지선.
+        assert OPERATOR_WORKBENCH_POLICY["third_party_credential_automation"] is False
+        assert OPERATOR_WORKBENCH_POLICY["bypass_code_in_live_web_backend"] is False
 
     @pytest.mark.asyncio
-    async def test_undetected_strategy_is_disabled_for_safe_collection(self):
+    async def test_undetected_strategy_body_is_restored(self):
+        """본체가 살아있고 의존성 미설치 시 명확한 안내를 던진다.
+
+        이전처럼 "disabled" 문구로 즉시 raise하면 다시 본체가 죽은 것이다.
+        """
         strategy = UndetectedStrategy()
-
-        with pytest.raises(CrawlError, match="undetected browser automation is disabled"):
-            await strategy.fetch("https://example.com")
+        try:
+            await strategy.fetch("about:blank")
+        except CrawlError as exc:
+            message = str(exc)
+            assert "disabled" not in message.lower(), \
+                "본체가 다시 비활성화되어 있다. operator_workbench_policy 의도를 확인하라."
 
     @pytest.mark.asyncio
-    async def test_cloudscraper_strategy_is_disabled_for_safe_collection(self):
+    async def test_cloudscraper_strategy_body_is_restored(self):
         strategy = CloudscraperStrategy()
+        try:
+            await strategy.fetch("https://example.invalid")
+        except CrawlError as exc:
+            message = str(exc)
+            assert "disabled" not in message.lower(), \
+                "본체가 다시 비활성화되어 있다. operator_workbench_policy 의도를 확인하라."
 
-        with pytest.raises(CrawlError, match="cloudscraper challenge-solving is disabled"):
-            await strategy.fetch("https://example.com")
