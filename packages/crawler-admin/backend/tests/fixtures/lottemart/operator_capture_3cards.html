@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<!--
+  롯데마트 (lottemartzetta.com) operator-capture 슬림 fixture (3 카드).
+
+  Provenance & 정직한 출처 표기
+  -----------------------------
+  롯데마트 제타의 공개 PC SSR 페이지(BIG SALE / 기획전 / 검색 / 메인) 6종을
+  tests/fixtures/live_probe/lottemart_zetta_*.html 로 캡처한 결과,
+  __INITIAL_STATE__ 마커는 모두 존재하지만 productList / productEntities
+  안에 실제 상품 행이 채워져 있지 않다(SPA 셸 + CSR XHR 로딩).
+  ‘productList’ 단어는 페이지당 1회, ‘productName’은 i18n placeholder
+  로만 등장 — 즉 공개 SSR HTML 자체로는 상품 데이터를 수확할 수 없다.
+
+  반면 운영자가 Playwright/브라우저로 페이지를 렌더링해 캡처를 떠 주면
+  __INITIAL_STATE__.data.products.productEntities 가 진짜 productEntity
+  shape (name / price.current.amount / price.original.amount / image.src /
+  categoryPath / size.value / offer.description / url / brand)로 채워진다.
+  이 shape 자체는 라이브 검증된 다음 회귀에서 이미 보증된다:
+    tests/test_mart_crawlers.py
+      :: TestLottemart::test_initial_state_preserves_count_and_source_owned_fields
+      :: TestLottemart::test_lottemart_saved_json_envelope_parses_nested_state_and_product_rows
+
+  본 슬림 fixture 는 위 라이브-검증된 shape 를 1:1 로 보존하면서
+  operator_capture 진입점이 통과해야 하는 3개 행만 남겨둔다.
+  값(이름/가격/카테고리/UUID)은 사람이 알아볼 수 있도록 보존된 실 storefront
+  카탈로그(생수/계란/세제) 의 카테고리·단위 표기 컨벤션을 그대로 따른다.
+-->
+<head><meta charset="utf-8"><title>롯데마트 제타 운영자 캡처</title></head>
+<body>
+<script>
+window.__INITIAL_STATE__={
+  "data":{"products":{"productEntities":{
+    "lzt-water-2L6": {
+      "name": "[행사] 오늘좋은 생수 2L*6입",
+      "price": {"current": {"amount": "2,990"}, "original": {"amount": "3,990"}},
+      "image": {"src": "https://image.lottemart.test/operator/water-2l6.jpg"},
+      "categoryPath": ["생수/음료", "생수"],
+      "size": {"value": "2L*6입"},
+      "offer": {"description": "주간특가"},
+      "url": "/products/lzt-water-2L6",
+      "brand": "오늘좋은"
+    },
+    "lzt-eggs-30": {
+      "name": "행복생생란 특란 30입 1.8kg",
+      "price": {"current": {"amount": "6,990"}, "original": {"amount": "8,990"}},
+      "image": {"src": "https://image.lottemart.test/operator/eggs-30.jpg"},
+      "categoryPath": ["계란/유제품", "계란"],
+      "size": {"value": "1.8kg"},
+      "offer": {"description": "농할특가"},
+      "url": "/products/lzt-eggs-30",
+      "brand": "오늘좋은"
+    },
+    "lzt-laundry-3L": {
+      "name": "[1+1] 테크 진한 향기 액체세제 리필 3L",
+      "price": {"current": {"amount": "12,900"}, "original": {"amount": "19,800"}},
+      "image": {"src": "https://image.lottemart.test/operator/tech-3l.jpg"},
+      "categoryPath": ["생활용품", "세탁세제"],
+      "size": {"value": "3L"},
+      "offer": {"description": "1+1 행사"},
+      "url": "/products/lzt-laundry-3L",
+      "brand": "테크"
+    }
+  }}}
+};
+</script>
+</body>
+</html>
