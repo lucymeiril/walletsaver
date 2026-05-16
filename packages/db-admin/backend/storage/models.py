@@ -194,7 +194,11 @@ class Product(Base):
 # ═══════════════════════════════════════════════
 
 class BaselinePrice(Base):
-    """정부 공인 도매가 + 소매 공식 가격 (기준가)"""
+    """마트4사+쿠팡 수집 기준가 테이블.
+
+    과거 정부/KAMIS source 값이 남아 있더라도 레거시 참고용으로만 취급하며,
+    식료품 가격 티어 산출 경로에 다시 연결하지 않는다.
+    """
     __tablename__ = "baseline_prices"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)

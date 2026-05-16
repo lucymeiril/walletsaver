@@ -10,7 +10,7 @@
 | 용어 | 영문 | 설명 | 코드 매핑 |
 |------|------|------|-----------|
 | 지갑 지키미 | Wallet Guardian | 이 프로젝트 이름 | `wallet_guardian` |
-| 기준 가격 | Baseline Price | 정부/마트 정가 기반 평균가. 가격 판단의 기준 | `baseline_prices` 테이블 |
+| 기준 가격 | Baseline Price | 마트4사+쿠팡 최근 N개월 분위수 기반 기준가. 가격 판단의 기준 | `baseline_prices` 테이블 |
 | 가격 오염 | Price Pollution | 핫딜 등 비정상 가격이 평균에 포함되는 것. 절대 금지 | — |
 | 가격 등급 | Price Tier | 현재가 vs 평균가 비율로 판정 (ultra/great/good/wait) | `PriceTier` 모델 |
 | 전략 캐스케이드 | Strategy Cascade | 가벼운 전략부터 시도 → 실패 시 다음 전략 | `StrategyExecutor` |
@@ -25,7 +25,6 @@
 
 | 약어 | 정식 명칭 | URL | 설명 | 코드 매핑 |
 |------|-----------|-----|------|-----------|
-| KAMIS | 농산물유통정보 | kamis.or.kr | 정부 공식 농축수산물 가격 (최고 신뢰도) | `DataSource.GOVERNMENT` |
 | KOSIS | 국가통계포털 | kosis.kr | 통계청 물가지수, 소비자물가 | `DataSource.GOVERNMENT` |
 | OPINET | 오피넷 | opinet.co.kr | 한국석유공사 주유소 가격 | `DataSource.GAS_STATION` |
 | data.go.kr | 공공데이터포털 | data.go.kr | API 키 발급 사이트 | — |
@@ -97,9 +96,9 @@
 
 ---
 
-## 5. KAMIS 카테고리 체계
+## 5. 서비스 카테고리 체계
 
-KAMIS의 분류를 기반으로 프로젝트 카테고리 트리를 구성:
+프로젝트 카테고리 트리는 서비스 내부 소매 비교 기준으로 유지한다:
 
 ```
 전체

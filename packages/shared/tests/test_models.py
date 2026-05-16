@@ -31,15 +31,15 @@ class TestCrawlerInfo:
 
     def test_create_with_all_fields(self):
         info = CrawlerInfo(
-            name="KAMIS",
+            name="쿠팡",
             version="2.0.0",
-            group=CrawlerGroup.PUBLIC_API,
-            description="농축수산물 API",
-            target_url="https://kamis.or.kr",
+            group=CrawlerGroup.MART,
+            description="온라인 리테일 가격 수집",
+            target_url="https://www.coupang.com",
             strategies=["requests"],
             schedule="0 9 * * *",
         )
-        assert info.target_url == "https://kamis.or.kr"
+        assert info.target_url == "https://www.coupang.com"
         assert info.schedule == "0 9 * * *"
 
     def test_serialization(self):

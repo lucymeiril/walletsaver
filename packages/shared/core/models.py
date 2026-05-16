@@ -150,13 +150,14 @@ class DataSource(str, Enum):
     """
     데이터 원본의 신뢰도 계층 — "이 가격을 평균 산출에 넣어도 되는가?"를 결정한다.
 
-    GOVERNMENT/MART_REGULAR → baseline(평균 산출 대상),
+    MART_REGULAR → 식료품 기준가(마트4사+쿠팡 분위수 산출 대상),
+    GOVERNMENT → 공공 통계/행정 데이터,
     MART_DISCOUNT → 할인 이력 기록용,
     HOTDEAL → 참고만(1원 이벤트 같은 이상치가 평균을 오염시키므로 평균에 불포함).
     statistics.compute_stats()와 verification이 이 분류에 의존한다.
     """
-    GOVERNMENT = "government"       # 정부 공식 (KAMIS, KOSIS) — baseline
-    MART_REGULAR = "mart_regular"   # 마트 정가 — baseline
+    GOVERNMENT = "government"       # 공공 통계/행정 데이터 — 식료품 가격 티어 산출에는 사용 금지
+    MART_REGULAR = "mart_regular"   # 마트4사+쿠팡 수집가 — 식료품 baseline
     MART_DISCOUNT = "mart_discount" # 마트 전단 할인가 — discount_history
     HOTDEAL = "hotdeal"             # 핫딜 게시판 — 참고만, 평균에 불포함
     DELIVERY = "delivery"           # 배달앱 — 외식 참고
@@ -176,7 +177,7 @@ class ProductPrice(BaseModel):
     """
     product_name: str                           # "양파", "삼겹살" (표준화된 명칭)
     category: str = ""                          # "채소류 > 근채류"
-    store: str = ""                             # "이마트", "코스트코" 또는 "KAMIS"
+    store: str = ""                             # "이마트", "코스트코", "쿠팡" 등 자체 수집 소스명
     source: DataSource                          # 데이터 원본 신뢰도 분류
     price: int                                  # 가격 (원)
     unit: str = ""                              # "1kg", "100g", "1L"

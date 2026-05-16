@@ -184,7 +184,7 @@ class TestConfidenceScore:
         records = [
             {"price": 3200, "source": src, "recorded_at": now - timedelta(days=d)}
             for d in range(30)
-            for src in ["emart", "homeplus", "lottemart", "kamis"]
+            for src in ["emart", "homeplus", "lottemart", "costco", "coupang"]
         ]
         result = calculate_confidence(records)
         assert result["score"] >= 60

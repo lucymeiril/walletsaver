@@ -47,7 +47,7 @@ def seeded_session(session):
         session.add(BaselinePrice(
             product_id=1,
             price=1500 + (i * 50),
-            source="kamis",
+            source="coupang",
             unit="kg",
             recorded_at=now - timedelta(days=i),
         ))

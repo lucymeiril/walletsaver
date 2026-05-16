@@ -12,7 +12,6 @@ from price_data.collector import (
     validate_price_record,
     import_from_csv,
     import_from_json,
-    parse_kamis_data,
     aggregate_mart_prices,
     batch_import,
     build_price_history,
@@ -122,30 +121,10 @@ class TestJSONImport:
         assert result.valid[0].source == "api"
 
 
-class TestKAMISParser:
-    def test_parse_kamis_format(self):
-        raw = [{
-            "item_name": "배추",
-            "product_id": 1,
-            "unit": "1포기",
-            "dpr1": "3,200",
-            "dpr2": "3,150",
-            "dpr3": "-",
-        }]
-        records = parse_kamis_data(raw)
-        assert len(records) >= 2  # dpr1 + dpr2
-        assert records[0].source == "kamis"
-        assert records[0].price == 3200
-
-    def test_skip_invalid_kamis_prices(self):
-        raw = [{"item_name": "배추", "product_id": 1, "dpr1": "-", "dpr2": ""}]
-        records = parse_kamis_data(raw)
-        assert len(records) == 0
-
-    def test_skip_empty_item_name(self):
-        raw = [{"item_name": "", "product_id": 1, "dpr1": "3000"}]
-        records = parse_kamis_data(raw)
-        assert len(records) == 0
+class TestCollectedQuantilePath:
+    @pytest.mark.skip(reason="TODO: 마트4사+쿠팡 N개월 분위수 기준가 경로 테스트를 보강해야 합니다.")
+    def test_quantile_baseline_path_todo(self):
+        assert False
 
 
 class TestMartAggregation:

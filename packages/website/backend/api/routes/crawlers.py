@@ -22,12 +22,12 @@ async def list_crawlers(request: Request):
     storage = request.app.state.storage
     if storage is None:
         default_crawlers = [
-            {"name": "kamis",    "group": "public",  "status": "idle", "last_run": None, "items_count": 0, "description": "농산물유통정보 공공 API"},
             {"name": "opinet",   "group": "public",  "status": "idle", "last_run": None, "items_count": 0, "description": "오피넷 주유소 가격"},
             {"name": "emart",    "group": "marts",   "status": "idle", "last_run": None, "items_count": 0, "description": "이마트 전단 할인"},
             {"name": "homeplus", "group": "marts",   "status": "idle", "last_run": None, "items_count": 0, "description": "홈플러스 전단 할인"},
             {"name": "lotte",    "group": "marts",   "status": "idle", "last_run": None, "items_count": 0, "description": "롯데마트 전단 할인"},
             {"name": "costco",   "group": "marts",   "status": "idle", "last_run": None, "items_count": 0, "description": "코스트코 할인"},
+            {"name": "coupang",  "group": "marts",   "status": "idle", "last_run": None, "items_count": 0, "description": "쿠팡 수집 가격"},
             {"name": "ppomppu",  "group": "hotdeals", "status": "idle", "last_run": None, "items_count": 0, "description": "뽐뿌 핫딜"},
             {"name": "eomisae",  "group": "hotdeals", "status": "idle", "last_run": None, "items_count": 0, "description": "어미새 핫딜"},
         ]

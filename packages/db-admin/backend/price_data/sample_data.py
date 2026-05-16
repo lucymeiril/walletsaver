@@ -90,12 +90,13 @@ PRODUCT_CATALOG: list[dict] = [
     {"id": 55, "name": "치약",    "category": "생활용품", "unit": "180g",  "base_price": 3500,  "price_range": (2200, 5500),   "seasonal": None},
 ]
 
-# 마트별 가격 편차 계수 (1.0 = 평균)
+# 마트4사+쿠팡 가격 편차 계수 (1.0 = 평균)
 STORE_PROFILES: dict[str, dict] = {
     "emart":     {"name": "이마트",     "price_factor": 0.97, "discount_freq": 0.15, "discount_depth": (0.15, 0.35)},
     "homeplus":  {"name": "홈플러스",   "price_factor": 1.00, "discount_freq": 0.12, "discount_depth": (0.10, 0.30)},
     "lottemart": {"name": "롯데마트",   "price_factor": 1.02, "discount_freq": 0.13, "discount_depth": (0.12, 0.32)},
     "costco":    {"name": "코스트코",   "price_factor": 0.92, "discount_freq": 0.08, "discount_depth": (0.20, 0.40)},
+    "coupang":   {"name": "쿠팡",       "price_factor": 0.95, "discount_freq": 0.10, "discount_depth": (0.08, 0.22)},
 }
 
 # 핫딜 커뮤니티 소스
@@ -127,8 +128,8 @@ def generate_baseline_prices(
     """
     baseline_prices 테이블용 샘플 데이터 생성.
 
-    각 제품 × 마트 × 일별로 현실적 가격을 생성한다.
-    KAMIS 공공데이터 가격도 포함 (주 1회).
+    각 제품 × 마트4사+쿠팡 × 일별로 현실적 가격을 생성한다.
+    가격 등급 기준은 자체 수집 소매 데이터 분위수 경로만 사용한다.
 
     Returns: [{"product_id", "product_name", "price", "source", "unit", "recorded_at"}, ...]
     """
@@ -168,19 +169,6 @@ def generate_baseline_prices(
                     "product_name": product["name"],
                     "price": price,
                     "source": store_key,
-                    "unit": product["unit"],
-                    "recorded_at": current,
-                })
-
-            # KAMIS 공공 데이터 (주 1회, 수요일)
-            if current.weekday() == 2:
-                kamis_price = base * s_factor * trend
-                kamis_price = max(lo, min(hi, round(kamis_price, -1)))
-                records.append({
-                    "product_id": pid,
-                    "product_name": product["name"],
-                    "price": kamis_price,
-                    "source": "kamis",
                     "unit": product["unit"],
                     "recorded_at": current,
                 })

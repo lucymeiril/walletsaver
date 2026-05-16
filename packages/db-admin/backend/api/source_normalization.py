@@ -27,6 +27,8 @@ _SOURCE_ALIASES = {
     "lottemart": "lottemart",
     "코스트코": "costco",
     "costco": "costco",
+    "쿠팡": "coupang",
+    "coupang": "coupang",
 }
 
 

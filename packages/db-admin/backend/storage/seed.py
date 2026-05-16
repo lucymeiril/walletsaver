@@ -3,7 +3,7 @@
 
 왜 존재하는가:
     DB를 초기화한 뒤 빈 테이블만 있으면 API가 빈 배열만 반환한다.
-    KAMIS 기반 농산물 카테고리 + 12개 핵심 품목 + 100개 이상 키워드를 넣어서
+    자체 관리 카테고리 + 핵심 품목 + 100개 이상 키워드를 넣어서
     DB 연결 직후부터 의미 있는 데이터가 표시되도록 한다.
 어디서 쓰이는가:
     py -c "from storage.seed import seed_all; seed_all()"
@@ -26,7 +26,7 @@ from storage.models import (
 
 
 # ═══════════════════════════════════════════════
-# 카테고리 트리 (KAMIS 기반 + 비식품)
+# 카테고리 트리 (서비스 내부 기준 + 비식품)
 # ═══════════════════════════════════════════════
 
 SEED_CATEGORIES = [
@@ -133,22 +133,22 @@ SEED_CATEGORIES = [
 # ═══════════════════════════════════════════════
 
 SEED_PRODUCTS = [
-    {"name": "양파",      "category_id": "vegetable.root.onion",  "unit": "1kg",   "avg": 2350,  "stores": {"emart": 2280, "homeplus": 2380, "lottemart": 2490, "costco": 2190}},
-    {"name": "삼겹살",    "category_id": "meat.pork.belly",       "unit": "100g",  "avg": 1850,  "stores": {"emart": 1680, "homeplus": 1790, "lottemart": 1650, "costco": 1520}},
-    {"name": "계란",      "category_id": "meat.egg",              "unit": "30구",  "avg": 6200,  "stores": {"emart": 5980, "homeplus": 6290, "lottemart": 6100, "costco": 5490}},
-    {"name": "사과",      "category_id": "fruit.apple",           "unit": "1kg",   "avg": 4800,  "stores": {"emart": 5100, "homeplus": 5300, "lottemart": 5200, "costco": 4800}},
-    {"name": "우유",      "category_id": "dairy.milk",            "unit": "1L",    "avg": 2650,  "stores": {"emart": 2590, "homeplus": 2680, "lottemart": 2620, "costco": 2390}},
-    {"name": "쌀",        "category_id": "grain.rice",            "unit": "10kg",  "avg": 28500, "stores": {"emart": 27900, "homeplus": 28200, "lottemart": 28500, "costco": 26500}},
-    {"name": "배추",      "category_id": "vegetable.leaf.cabbage","unit": "1포기", "avg": 3200,  "stores": {"emart": 2800, "homeplus": 2950, "lottemart": 2900, "costco": 2600}},
-    {"name": "감자",      "category_id": "vegetable.root.potato", "unit": "1kg",   "avg": 2800,  "stores": {"emart": 3100, "homeplus": 2900, "lottemart": 3050, "costco": 2700}},
-    {"name": "닭가슴살",  "category_id": "meat.chicken.breast",   "unit": "1kg",   "avg": 8500,  "stores": {"emart": 7900, "homeplus": 8200, "lottemart": 8000, "costco": 7200}},
-    {"name": "두부",      "category_id": "processed.tofu",        "unit": "1모",   "avg": 1800,  "stores": {"emart": 1650, "homeplus": 1700, "lottemart": 1650, "costco": 1500}},
-    {"name": "식용유",    "category_id": "processed.oil",         "unit": "1.8L",  "avg": 5800,  "stores": {"emart": 5500, "homeplus": 5700, "lottemart": 5600, "costco": 4900}},
-    {"name": "라면",      "category_id": "processed.ramen",       "unit": "5입",   "avg": 3900,  "stores": {"emart": 3500, "homeplus": 3600, "lottemart": 3450, "costco": 3200}},
-    {"name": "고등어",    "category_id": "seafood.fish.mackerel",  "unit": "1마리", "avg": 3500,  "stores": {"emart": 3200, "homeplus": 3400, "lottemart": 3300, "costco": 2900}},
-    {"name": "연어",      "category_id": "seafood.fish.salmon",    "unit": "100g",  "avg": 3200,  "stores": {"emart": 3100, "homeplus": 3300, "lottemart": 3200, "costco": 2800}},
-    {"name": "토마토",    "category_id": "vegetable.fruit_veg.tomato", "unit": "1kg", "avg": 4500, "stores": {"emart": 4200, "homeplus": 4500, "lottemart": 4400, "costco": 3900}},
-    {"name": "바나나",    "category_id": "fruit.banana",           "unit": "1송이", "avg": 3800,  "stores": {"emart": 3500, "homeplus": 3700, "lottemart": 3600, "costco": 3200}},
+    {"name": "양파",      "category_id": "vegetable.root.onion",  "unit": "1kg",   "avg": 2350,  "stores": {"emart": 2280, "homeplus": 2380, "lottemart": 2490, "costco": 2190, "coupang": 2290}},
+    {"name": "삼겹살",    "category_id": "meat.pork.belly",       "unit": "100g",  "avg": 1850,  "stores": {"emart": 1680, "homeplus": 1790, "lottemart": 1650, "costco": 1520, "coupang": 1710}},
+    {"name": "계란",      "category_id": "meat.egg",              "unit": "30구",  "avg": 6200,  "stores": {"emart": 5980, "homeplus": 6290, "lottemart": 6100, "costco": 5490, "coupang": 5890}},
+    {"name": "사과",      "category_id": "fruit.apple",           "unit": "1kg",   "avg": 4800,  "stores": {"emart": 5100, "homeplus": 5300, "lottemart": 5200, "costco": 4800, "coupang": 4990}},
+    {"name": "우유",      "category_id": "dairy.milk",            "unit": "1L",    "avg": 2650,  "stores": {"emart": 2590, "homeplus": 2680, "lottemart": 2620, "costco": 2390, "coupang": 2490}},
+    {"name": "쌀",        "category_id": "grain.rice",            "unit": "10kg",  "avg": 28500, "stores": {"emart": 27900, "homeplus": 28200, "lottemart": 28500, "costco": 26500, "coupang": 27100}},
+    {"name": "배추",      "category_id": "vegetable.leaf.cabbage","unit": "1포기", "avg": 3200,  "stores": {"emart": 2800, "homeplus": 2950, "lottemart": 2900, "costco": 2600, "coupang": 2750}},
+    {"name": "감자",      "category_id": "vegetable.root.potato", "unit": "1kg",   "avg": 2800,  "stores": {"emart": 3100, "homeplus": 2900, "lottemart": 3050, "costco": 2700, "coupang": 2840}},
+    {"name": "닭가슴살",  "category_id": "meat.chicken.breast",   "unit": "1kg",   "avg": 8500,  "stores": {"emart": 7900, "homeplus": 8200, "lottemart": 8000, "costco": 7200, "coupang": 7690}},
+    {"name": "두부",      "category_id": "processed.tofu",        "unit": "1모",   "avg": 1800,  "stores": {"emart": 1650, "homeplus": 1700, "lottemart": 1650, "costco": 1500, "coupang": 1590}},
+    {"name": "식용유",    "category_id": "processed.oil",         "unit": "1.8L",  "avg": 5800,  "stores": {"emart": 5500, "homeplus": 5700, "lottemart": 5600, "costco": 4900, "coupang": 5190}},
+    {"name": "라면",      "category_id": "processed.ramen",       "unit": "5입",   "avg": 3900,  "stores": {"emart": 3500, "homeplus": 3600, "lottemart": 3450, "costco": 3200, "coupang": 3330}},
+    {"name": "고등어",    "category_id": "seafood.fish.mackerel",  "unit": "1마리", "avg": 3500,  "stores": {"emart": 3200, "homeplus": 3400, "lottemart": 3300, "costco": 2900, "coupang": 3090}},
+    {"name": "연어",      "category_id": "seafood.fish.salmon",    "unit": "100g",  "avg": 3200,  "stores": {"emart": 3100, "homeplus": 3300, "lottemart": 3200, "costco": 2800, "coupang": 2950}},
+    {"name": "토마토",    "category_id": "vegetable.fruit_veg.tomato", "unit": "1kg", "avg": 4500, "stores": {"emart": 4200, "homeplus": 4500, "lottemart": 4400, "costco": 3900, "coupang": 4090}},
+    {"name": "바나나",    "category_id": "fruit.banana",           "unit": "1송이", "avg": 3800,  "stores": {"emart": 3500, "homeplus": 3700, "lottemart": 3600, "costco": 3200, "coupang": 3390}},
 ]
 
 
@@ -383,7 +383,7 @@ def _seed_products(session: Session) -> list[Product]:
 
 
 def _seed_baseline_prices(session: Session, products: list[Product]) -> int:
-    """최근 30일간의 매장별 기준 가격 시뮬레이션.
+    """최근 30일간의 마트4사+쿠팡 기준 가격 시뮬레이션.
 
     최적화: 모든 레코드를 리스트에 모은 뒤 add_all로 일괄 삽입 — flush 1회.
     """
@@ -402,19 +402,6 @@ def _seed_baseline_prices(session: Session, products: list[Product]) -> int:
                     unit=p.unit,
                     recorded_at=date,
                 ))
-
-        # KAMIS 공식 가격
-        for day_offset in range(30, -1, -1):
-            date = datetime.now() - timedelta(days=day_offset)
-            variation = random.uniform(-0.03, 0.03)
-            price = round(seed_data["avg"] * (1 + variation))
-            records.append(BaselinePrice(
-                product_id=p.id,
-                source="kamis",
-                price=price,
-                unit=p.unit,
-                recorded_at=date,
-            ))
 
     session.add_all(records)
     return len(records)

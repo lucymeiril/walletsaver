@@ -1239,7 +1239,7 @@ def _find_published_row_for_item(session, item: dict, schema_type: str):
         return None
 
     source = _resolve_source(item)
-    model = BaselinePrice if source in ("government", "mart_regular") else DiscountHistory
+    model = BaselinePrice if source == "mart_regular" else DiscountHistory
     table_name = "baseline_prices" if model is BaselinePrice else "discount_history"
     raw_id = item.get("raw_record_id") or _item_provenance(item)
     source_key = item.get("source_record_key")
@@ -1329,7 +1329,6 @@ _SOURCE_TYPE_MAP = {
     "ruliweb": "community_deal",
     "clien": "community_deal",
     "algumon": "algumon",
-    "government": "baseline",
     "mart_regular": "baseline",
 }
 
@@ -1534,7 +1533,7 @@ def _insert_items(session, items: list[dict], schema_type: str) -> int:
                     )
                 else:
                     source = _resolve_source(item)
-                    if source in ("government", "mart_regular"):
+                    if source == "mart_regular":
                         product_name = item.get("name", "")
                         price = _coerce_positive_number(item.get("sale_price") or item.get("price"))
                         if price is None:

@@ -246,7 +246,7 @@ class TestBaselinePrice:
         bp = BaselinePrice(
             product_id=sample_product.id,
             price=1850.0,
-            source="kamis",
+            source="coupang",
             unit="100g",
             recorded_at=datetime.utcnow(),
         )
@@ -667,7 +667,7 @@ class TestSchemaIntegration:
         bp = BaselinePrice(
             product_id=sample_product.id,
             price=1850.0,
-            source="kamis",
+            source="coupang",
             unit="100g",
             recorded_at=datetime.utcnow(),
         )

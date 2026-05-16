@@ -64,11 +64,11 @@ def seeded_session(session):
 
     # Valid baseline price
     session.add(BaselinePrice(
-        product_id=1, price=1500, source="kamis", unit="kg", recorded_at=now,
+        product_id=1, price=1500, source="coupang", unit="kg", recorded_at=now,
     ))
     # Invalid price (zero)
     session.add(BaselinePrice(
-        product_id=1, price=0, source="kamis", unit="kg", recorded_at=now,
+        product_id=1, price=0, source="coupang", unit="kg", recorded_at=now,
     ))
     # Negative price
     session.add(DiscountHistory(
@@ -88,7 +88,7 @@ def seeded_session(session):
 
     # Zombie price: product_id pointing to non-existent product
     session.add(BaselinePrice(
-        product_id=9999, price=1234, source="kamis", unit="kg", recorded_at=now,
+        product_id=9999, price=1234, source="coupang", unit="kg", recorded_at=now,
     ))
 
     # Orphan ProductKeyword: keyword_id doesn't exist

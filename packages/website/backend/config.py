@@ -17,8 +17,7 @@ load_dotenv(BASE_DIR / ".env")
 DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://user:password@localhost:5432/wallet_guardian")
 
 # --- 공공데이터 API Keys ---
-KAMIS_API_KEY: str = os.getenv("KAMIS_API_KEY", "")
-KAMIS_API_ID: str = os.getenv("KAMIS_API_ID", "")
+# 식료품 가격 티어는 자체 수집 소매 데이터로 계산하므로 폐기된 공공 가격 키는 두지 않는다.
 OPINET_API_KEY: str = os.getenv("OPINET_API_KEY", "")
 KOSIS_API_KEY: str = os.getenv("KOSIS_API_KEY", "")
 

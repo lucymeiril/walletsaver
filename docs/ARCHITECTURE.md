@@ -192,7 +192,7 @@ core/     → (아무것도)    ✗ (core는 순수 정의만)
 ### 4.1 핵심 원칙: 테이블 분리로 "가격 오염" 방지
 
 ```
-baseline_prices      ← 정부(KAMIS, KOSIS) + 마트 정가 ONLY → 평균/중간값 산출 기준
+baseline_prices      ← 마트4사+쿠팡 수집가 ONLY → 분위수/평균/중간값 산출 기준
 discount_history     ← 마트 전단 할인가 → "이 할인이 진짜 싼가?" 판단 기준
 hotdeal_prices       ← 핫딜 커뮤니티 → 참고만, 절대 평균에 불포함
 crawl_logs           ← 크롤링 실행 이력 + 진단 리포트
@@ -201,13 +201,13 @@ crawl_logs           ← 크롤링 실행 이력 + 진단 리포트
 ### 4.2 테이블 상세
 
 ```sql
--- 기준 가격 (정부 + 마트 정가만)
+-- 기준 가격 (마트4사+쿠팡 수집가만)
 CREATE TABLE baseline_prices (
     id              SERIAL PRIMARY KEY,
     product_name    VARCHAR(200) NOT NULL,      -- 표준화된 품목명
     category_path   VARCHAR(500),               -- "축산물 > 돼지고기 > 삼겹살"
     category_id     INTEGER REFERENCES categories(id),
-    store           VARCHAR(100),               -- "KAMIS", "이마트", "코스트코"
+    store           VARCHAR(100),               -- "이마트", "코스트코", "쿠팡"
     source          VARCHAR(50) NOT NULL,        -- DataSource enum
     price           INTEGER NOT NULL,            -- 원
     unit            VARCHAR(50),                 -- "1kg", "100g"
@@ -465,8 +465,8 @@ ErrorType (11종)
  
  ┌────────────┐  ┌──────────────┐  ┌───────────┐
  │ GOVERNMENT │  │ MART_REGULAR │  │ MART_DISC │
- │ (KAMIS,    │  │ (마트 정가)   │  │ (전단할인) │
- │  KOSIS)    │  │              │  │           │
+ │ (공공 통계) │  │ (마트4사+쿠팡) │  │ (전단할인) │
+ │            │  │              │  │           │
  │            │  │              │  │           │
  │ → baseline │  │ → baseline   │  │→ discount │
  │   평균에    │  │   평균에     │  │  별도저장  │

@@ -98,12 +98,12 @@ class TestGenerateBaselinePrices:
         for store in STORE_PROFILES:
             assert store in sources, f"마트 {store} 누락"
 
-    def test_includes_kamis_data(self):
+    def test_includes_coupang_data(self):
         records = generate_baseline_prices(
             products=PRODUCT_CATALOG[:1], months=2, seed=42,
         )
-        kamis_records = [r for r in records if r["source"] == "kamis"]
-        assert len(kamis_records) > 0, "KAMIS 데이터 없음"
+        coupang_records = [r for r in records if r["source"] == "coupang"]
+        assert len(coupang_records) > 0, "쿠팡 데이터 없음"
 
     def test_deterministic_with_seed(self):
         r1 = generate_baseline_prices(products=PRODUCT_CATALOG[:1], months=1, seed=99)

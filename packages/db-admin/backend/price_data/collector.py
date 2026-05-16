@@ -1,5 +1,5 @@
 """
-가격 데이터 수집기 — CSV/JSON 임포트, KAMIS 파서, 마트 데이터 집계.
+가격 데이터 수집기 — CSV/JSON 임포트, 마트·쿠팡 데이터 집계.
 
 외부 데이터 소스에서 가격 데이터를 수집하고 정규화하는 인터페이스를 제공한다.
 실제 DB 의존성 없이 순수 데이터 변환 로직만 포함.
@@ -11,7 +11,7 @@ import csv
 import io
 import json
 from datetime import datetime
-from typing import Any, Optional
+from typing import Optional
 
 
 class PriceRecord:
@@ -202,64 +202,6 @@ def import_from_json(json_content: str, source: str = "json_import") -> Validati
             result.invalid.append({"row": i + 1, "data": data, "errors": errors})
 
     return result
-
-
-def parse_kamis_data(raw_data: list[dict]) -> list[PriceRecord]:
-    """
-    KAMIS (농산물유통정보) 형식 데이터를 PriceRecord로 변환.
-
-    KAMIS 응답 형식:
-    {
-        "item_name": "배추",
-        "item_code": "211",
-        "kind_name": "배추",
-        "unit": "1포기",
-        "day1": "3,200",   # 1일 전 가격
-        "day2": "3,150",   # 2일 전 가격
-        ...
-        "dpr1": "3,200",   # 당일 소매 가격
-        "dpr2": "3,150",   # 전일 소매 가격
-    }
-    """
-    records: list[PriceRecord] = []
-
-    for item in raw_data:
-        item_name = item.get("item_name", "").strip()
-        if not item_name:
-            continue
-
-        product_id = item.get("product_id", 0)
-        unit = item.get("unit", "")
-
-        # dpr1 ~ dpr7 파싱 (당일 ~ 7일 전)
-        for day_offset, key in enumerate(["dpr1", "dpr2", "dpr3", "dpr5", "dpr7"]):
-            raw_price = item.get(key, "")
-            if not raw_price or raw_price == "-":
-                continue
-
-            try:
-                price = float(str(raw_price).replace(",", ""))
-                if price <= 0:
-                    continue
-            except (ValueError, TypeError):
-                continue
-
-            recorded_at = datetime.now()
-            if day_offset > 0:
-                from datetime import timedelta
-                recorded_at = recorded_at - timedelta(days=day_offset)
-
-            records.append(PriceRecord(
-                product_id=product_id,
-                product_name=item_name,
-                price=price,
-                source="kamis",
-                unit=unit,
-                recorded_at=recorded_at,
-                raw_data=item,
-            ))
-
-    return records
 
 
 def aggregate_mart_prices(

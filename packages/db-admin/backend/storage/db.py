@@ -504,6 +504,7 @@ class DBStorage(StorageContract):
             "homeplus": {"name": "홈플러스", "color": "#FF6B35"},
             "lottemart": {"name": "롯데마트", "color": "#E4002B"},
             "costco": {"name": "코스트코", "color": "#E31837"},
+            "coupang": {"name": "쿠팡", "color": "#7A3CF0"},
         }
 
         with self.SessionLocal() as session:
@@ -1205,7 +1206,7 @@ class DBStorage(StorageContract):
         최적화: 기존 매장당 2쿼리(baseline+discount) × 4 = 8쿼리 → 2쿼리로 축소.
         GROUP BY source + MAX(recorded_at) 서브쿼리로 매장별 최신가를 한번에 가져옴.
         """
-        store_keys = ["emart", "homeplus", "lottemart", "costco"]
+        store_keys = ["emart", "homeplus", "lottemart", "costco", "coupang"]
         result = {}
 
         # BaselinePrice에서 매장별 최신 가격을 한번에 조회

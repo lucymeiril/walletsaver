@@ -21,9 +21,13 @@ from shared.core.models import (
 class TestDataSource:
     """데이터 원본 신뢰도 분류 테스트."""
 
-    def test_government_is_baseline(self):
-        """정부 데이터는 baseline."""
+    def test_government_source_value_is_preserved(self):
+        """정부 소스 enum 값은 하위 호환성 때문에 유지된다."""
         assert DataSource.GOVERNMENT.value == "government"
+
+    def test_mart_regular_is_baseline(self):
+        """식료품 가격 티어 기준가는 mart_regular 경로를 사용한다."""
+        assert DataSource.MART_REGULAR.value == "mart_regular"
 
     def test_mart_discount_is_not_baseline(self):
         """마트 할인가는 discount_history."""
@@ -107,15 +111,15 @@ class TestProductPrice:
     """가격 레코드 테스트 — 분석용 적합성."""
 
     def test_baseline_source_classification(self):
-        """정부 데이터는 GOVERNMENT 소스."""
+        """자체 수집 기준가는 MART_REGULAR 소스."""
         pp = ProductPrice(
             product_name="양파",
-            source=DataSource.GOVERNMENT,
+            source=DataSource.MART_REGULAR,
             price=2350,
-            store="KAMIS",
+            store="쿠팡",
             unit="1kg",
         )
-        assert pp.source == DataSource.GOVERNMENT
+        assert pp.source == DataSource.MART_REGULAR
 
     def test_price_must_be_positive(self):
         """가격은 정수 (양수) — 프로덕션에서는 validator 추가."""
@@ -213,7 +217,7 @@ class TestDataPipeline:
         baseline = [
             ProductPrice(product_name="양파", source=DataSource.MART_DISCOUNT, price=2480),
             ProductPrice(product_name="양파", source=DataSource.MART_REGULAR, price=3200),
-            ProductPrice(product_name="양파", source=DataSource.GOVERNMENT, price=2350),
+            ProductPrice(product_name="양파", source=DataSource.MART_REGULAR, price=2350),
         ]
         hotdeal = HotdealPost(
             title="양파 5kg 990원 미친가격",

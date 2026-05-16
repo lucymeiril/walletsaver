@@ -9,7 +9,7 @@
 어디서 쓰이는가:
     크롤러가 수집한 원본 상품명 → 카테고리 매칭 → ProductPrice.category 필드에 저장
     → statistics.compute_stats()에서 같은 카테고리의 가격만 모아 통계 산출.
-    KAMIS(농산물유통정보) 분류 체계를 기본 뼈대로 사용.
+    서비스 내부 소매 비교 기준에 맞춘 카테고리 체계를 사용한다.
 """
 
 from __future__ import annotations
@@ -91,7 +91,7 @@ class CategoryNode(BaseModel):
 
 
 class CategoryTree:
-    """계층형 카테고리 트리 — KAMIS(농산물유통정보) 분류 체계 기반으로 구축."""
+    """계층형 카테고리 트리 — 서비스 내부 소매 비교 기준으로 구축."""
 
     def __init__(self):
         self.root = CategoryNode(name="전체", path="전체")
@@ -130,10 +130,10 @@ class CategoryTree:
 
 def build_default_tree() -> CategoryTree:
     """
-    KAMIS 기반 기본 카테고리 트리 구축.
+    서비스 기본 카테고리 트리 구축.
 
-    왜 하드코딩인가: KAMIS 분류 체계는 연 1~2회 변경되는 안정적 구조이므로
-    API 호출 없이 내장 데이터로 충분하다. 변경 시 이 함수만 업데이트하면 된다.
+    왜 하드코딩인가: 가격 비교 핵심 카테고리는 내부 정책 기준으로 천천히 바뀌므로
+    외부 의존 없이 내장 데이터로 관리하는 편이 안정적이다. 변경 시 이 함수만 업데이트하면 된다.
     """
     tree = CategoryTree()
 

@@ -81,7 +81,7 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
 
     app = FastAPI(
         title="지갑 지키미 API",
-        description="물가 비교 서비스 백엔드 — 정부 공공데이터 + 마트 할인 + 커뮤니티 핫딜",
+        description="물가 비교 서비스 백엔드 — 마트4사+쿠팡 수집가 + 마트 할인 + 커뮤니티 핫딜",
         version="0.1.0",
         docs_url="/docs" if is_debug else None,
         redoc_url="/redoc" if is_debug else None,
