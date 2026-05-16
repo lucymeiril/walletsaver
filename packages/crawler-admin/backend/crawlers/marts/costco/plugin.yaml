@@ -2,9 +2,9 @@ name: costco
 display_name: 코스트코
 category: mart
 version: 0.1.0
-description: 코스트코 코리아 할인/특가 상품 정보 수집. 비회원 공개 페이지(특가·핫이벤트)는 크롤러 자동 수집, 회원 전용 페이지는 운영자 워크밴치(헤드풀 크롬) 캡처로 인계받는다.
+description: 코스트코 코리아 공개 스토어프런트(Angular SSR) 카탈로그 수집. 비회원 GET으로도 상품·정가·이미지·단위가가 노출되며, 일부 카드의 회원 전용 가격만 운영자 워크밴치 캡처가 보충한다.
 live_ready: false
-parser_contract: costco_special_event_fixture.v1
+parser_contract: costco_storefront_li_product_list_item.v1
 live_readiness:
   status: source_collection_diagnostics_required
   fixture_contract_status: pending
@@ -20,7 +20,7 @@ notes: "코스트코는 회원제. 공개 특가 페이지는 크롤러가, 회�
 target:
   url: https://www.costco.co.kr
   difficulty: 4
-  strategy: playwright
+  strategy: requests
 schedule:
   cron: "0 8 * * *"
   retry_count: 3
@@ -28,18 +28,31 @@ schedule:
 output:
   model: DiscountItem
   required_fields: [name, sale_price, detail_url]
-  diagnostic_evidence_fields: [source_raw, parsed, valid, detail_url, source_url, image_url, period, unit, category_hint]
+  diagnostic_evidence_fields: [source_raw, parsed, valid, detail_url, source_url, image_url, unit_price_text, is_member_only, category_hint]
 source_map:
-  request_strategy: public_special_event_then_operator_workbench
+  request_strategy: public_storefront_ssr_then_operator_workbench
   public_endpoints:
-    - https://www.costco.co.kr/specialEventList.ec
-    - https://www.costco.co.kr/HotEventList.ec
-  search_queries: [특가, 행사, 할인, 코코]
+    - https://www.costco.co.kr/Special-Price-Offers/c/SpecialPriceOffers
+    - https://www.costco.co.kr/events
+    - https://www.costco.co.kr/
+  selectors:
+    card: "li.product-list-item"
+    name: "a.thumb[title]"
+    sale_price: ".product-price-amount"
+    original_price: ".original-price"
+    unit_price: ".product-price-pre-unit-amount"
+    member_only_flag: ".price-panel-login"
   member_only_inventory:
     source: operator_workbench_capture
     workbench_route: /api/operator-browser
-  max_pages: 2
+    note: 비회원 GET으로도 상품과 정가는 보이며, 회원 전용 가격만 캡처가 필요한 일부 카드에서 보충된다.
+  max_pages: 1
   max_requests:
   max_items:
   dedupe_key: source_record_key_then_source_url
-  parser_inputs: [event_card_html, embedded_json, operator_capture_html]
+  parser_inputs:
+    - "li.product-list-item"
+    - "a.thumb[title]"
+    - ".product-price-amount"
+    - ".original-price"
+    - ".product-price-pre-unit-amount"

@@ -1,20 +1,21 @@
-"""코스트코 크롤러 — 공개 특가/핫이벤트 페이지 + 운영자 워크밴치 캡처 인계.
+"""코스트코 크롤러 — 실제 라이브 DOM(Angular SSR storefront) 기반 파서.
 
-코스트코는 회원제 마트다. 그러나:
-  - **공개 특가 페이지** (``specialEventList.ec``, ``HotEventList.ec``)는 비회원도 접근
-    가능하며 ``특가``/``행사`` 카드 목록을 노출한다. 이 경로는 크롤러가 자동 수집한다.
-  - **회원 전용 인벤토리** (회원 가격, 단독 행사, 멤버십 추천 등)는 본인 계정으로
-    로그인한 운영자 워크밴치(헤드풀 크롬, ``/api/operator-browser``)에서 HTML을
-    캡처한 뒤 ``OperatorWorkbenchStore``로 인계받는다.
+## 어떻게 결정됐나 (TDD 기록)
+2026-05-16 라이브 캡처:
+  - `https://www.costco.co.kr/Special-Price-Offers/c/SpecialPriceOffers` (200 OK, 2.7MB)
+  - 상품 카드: `li.product-list-item` (1페이지 ~48~158개)
+  - 상품 링크/이름: `a.thumb` 의 `title` 속성 + `href="/.../p/{id}"`
+  - 가격: `.product-price-amount` (예: "35,990원")
+  - 단위가: `.product-price-pre-unit-amount` (예: "100㎖당 3,099원")
+  - 회원 전용 가격은 `.price-panel-login` 텍스트가 "회원 전용 아이템" — 비회원 GET 응답에서도 *상품 자체와 정가는* 보인다.
 
-데이터 흐름:
-  공개: HTTP GET → BeautifulSoup 파싱 → DiscountItem
-  회원: 운영자 캡처 HTML → 본 크롤러의 ``parse_event_html`` → DiscountItem
+이전 추정 URL(`specialEventList.ec`)은 **404**라는 사실이 라이브 테스트로 드러났다.
+TDD 위반에 대한 사용자 피드백(2026-05-16)에 따라 fixture 기반으로 재작성됨.
 
-이 모듈은 *공식 약관/봇 차단/우회 같은 "안전 게이트"*를 새로 박지 말 것.
-사용자 정책상 운영자 자기 PC/자기 계정 시나리오는 명시 허용이다.
-이전 사례에서 GPT 에이전트가 비활성화 코드를 박아 마트 한 곳을 통째로
-무력화한 적이 있다 — 다시 그러지 말 것.
+## 회원/비회원 차이 (실제로 확인된 것)
+비회원도 상품 목록·상품명·이미지·정가·단위가는 그대로 본다. 차이는 *일부* 상품의
+세일가가 "회원 전용 아이템" 문구로 숨는 것뿐이다. 따라서 별도 회원 워크밴치 캡처
+경로는 **선택적**이며, 라이브 백엔드에 우회 코드는 박지 않는다(운영자 정책 준수).
 """
 
 from __future__ import annotations
@@ -43,7 +44,6 @@ from crawlers.marts.source_utils import (
     build_source_attributes,
     build_source_map_manifest,
     normalize_source_key,
-    parse_period_fields,
     source_dedup_key,
 )
 from engine.anti_detect import AntiDetect
@@ -51,33 +51,38 @@ from engine.anti_detect import AntiDetect
 logger = logging.getLogger(__name__)
 
 
-# 공개 특가/핫이벤트 페이지. 비회원 접근 가능.
+BASE_URL = "https://www.costco.co.kr"
+
+# 라이브에서 200 OK로 검증된 카탈로그 페이지들 (2026-05-16).
+# 새 페이지를 추가할 때는 반드시 fixture 캡처 후 셀렉터 동치성 확인 — 추정 금지.
 PUBLIC_ENDPOINTS: tuple[str, ...] = (
-    "https://www.costco.co.kr/specialEventList.ec",
-    "https://www.costco.co.kr/HotEventList.ec",
+    f"{BASE_URL}/Special-Price-Offers/c/SpecialPriceOffers",
+    f"{BASE_URL}/events",
+    f"{BASE_URL}/",
 )
+
+
+_WON_RE = re.compile(r"([0-9][0-9,]*)\s*원")
 
 
 @dataclass
 class CostcoCard:
-    """파서 중간 표현 — HTML 카드 1건."""
+    """fixture·라이브 응답 모두에서 사용되는 중간 표현."""
 
     name: str
     sale_price: Optional[float]
     original_price: Optional[float]
+    unit_price_text: Optional[str]
     detail_url: Optional[str]
     image_url: Optional[str]
-    period_text: Optional[str]
+    is_member_only: bool
     raw_html: str
 
 
-_PRICE_RE = re.compile(r"([0-9][0-9,]*)\s*원")
-
-
-def _parse_price(text: Optional[str]) -> Optional[float]:
+def _parse_won(text: Optional[str]) -> Optional[float]:
     if not text:
         return None
-    match = _PRICE_RE.search(text)
+    match = _WON_RE.search(text)
     if not match:
         return None
     try:
@@ -86,83 +91,57 @@ def _parse_price(text: Optional[str]) -> Optional[float]:
         return None
 
 
-def parse_event_html(html: str, *, base_url: str = "https://www.costco.co.kr") -> list[CostcoCard]:
-    """공개/운영자캡처 코스트코 이벤트 HTML에서 상품 카드를 추출한다.
+def parse_costco_listing(html: str) -> list[CostcoCard]:
+    """코스트코 카탈로그 HTML(공개 SSR 응답)에서 상품 카드를 추출한다.
 
-    코스트코 코리아의 ``specialEventList.ec`` / ``HotEventList.ec`` 페이지는
-    ``.eventBox``, ``.product-list .item``, ``li.eventList`` 등 여러 컨테이너를
-    사용해 왔다. 셀렉터를 *관대하게* 시도해 한 곳이라도 맞으면 카드로 인정.
+    셀렉터는 ``tests/fixtures/costco/special_offers_5cards.html``로 회귀 보장된다.
     """
     soup = BeautifulSoup(html, "lxml")
-    candidate_selectors = (
-        ".eventList li",
-        ".eventBox .product-list li",
-        ".eventBox li",
-        "ul.product-list li",
-        "div.product-list .item",
-        "div[class*='event'] li",
-        "div[class*='product'] li",
-    )
-
     cards: list[CostcoCard] = []
-    seen_signatures: set[str] = set()
-    for selector in candidate_selectors:
-        for node in soup.select(selector):
-            name_node = node.select_one(".product-name, .prdName, .name, .title, a[title], img[alt]")
-            if not name_node:
-                continue
-            name = (
-                name_node.get("title")
-                or name_node.get("alt")
-                or name_node.get_text(strip=True)
+    for li in soup.select("li.product-list-item"):
+        thumb = li.select_one("a.thumb[href]")
+        if not thumb:
+            continue
+        href = thumb.get("href") or ""
+        if "/p/" not in href:
+            continue
+        name = (thumb.get("title") or "").strip()
+        if not name:
+            img = li.select_one("img[title], img[alt]")
+            if img:
+                name = (img.get("title") or img.get("alt") or "").strip()
+        if not name:
+            continue
+
+        sale_node = li.select_one(".product-price-amount")
+        original_node = li.select_one(".original-price")
+        unit_node = li.select_one(".product-price-pre-unit-amount")
+        member_only = bool(li.select_one(".price-panel-login"))
+
+        sale_price = _parse_won(sale_node.get_text(" ", strip=True) if sale_node else None)
+        original_price = _parse_won(original_node.get_text(" ", strip=True) if original_node else None)
+        # original-price만 있고 product-price-amount가 없으면 그게 표시가
+        if sale_price is None and original_price is not None:
+            sale_price = original_price
+            original_price = None
+
+        image_url = ""
+        img = li.select_one(".product-image img[src], .product-image img[srcset], picture source[srcset]")
+        if img:
+            image_url = img.get("src") or (img.get("srcset") or "").split()[0] or ""
+
+        cards.append(
+            CostcoCard(
+                name=name,
+                sale_price=sale_price,
+                original_price=original_price,
+                unit_price_text=unit_node.get_text(" ", strip=True) if unit_node else None,
+                detail_url=absolute_url(href, BASE_URL),
+                image_url=absolute_url(image_url, BASE_URL),
+                is_member_only=member_only,
+                raw_html=str(li),
             )
-            name = (name or "").strip()
-            if not name:
-                continue
-
-            sale_text = " ".join(
-                n.get_text(" ", strip=True)
-                for n in node.select(".price, .salePrice, .price2, .sale, .discount")
-            )
-            original_text = " ".join(
-                n.get_text(" ", strip=True)
-                for n in node.select(".price1, .originalPrice, .strike, del")
-            )
-            sale_price = _parse_price(sale_text or node.get_text(" ", strip=True))
-            original_price = _parse_price(original_text) if original_text else None
-
-            link_node = node.select_one("a[href]")
-            detail_url = absolute_url(link_node.get("href") if link_node else None, base_url)
-
-            image_node = node.select_one("img[src], img[data-src]")
-            image_url = absolute_url(
-                (image_node.get("src") or image_node.get("data-src")) if image_node else None,
-                base_url,
-            )
-
-            period_node = node.select_one(".period, .term, .date, time")
-            period_text = period_node.get_text(" ", strip=True) if period_node else None
-
-            signature = f"{name}|{detail_url}|{sale_price}"
-            if signature in seen_signatures:
-                continue
-            seen_signatures.add(signature)
-
-            cards.append(
-                CostcoCard(
-                    name=name,
-                    sale_price=sale_price,
-                    original_price=original_price,
-                    detail_url=detail_url,
-                    image_url=image_url,
-                    period_text=period_text,
-                    raw_html=str(node),
-                )
-            )
-
-        if cards:
-            # 한 셀렉터에서 카드가 잡혔으면 다음 셀렉터는 시도하지 않는다 — 중복 방지.
-            break
+        )
     return cards
 
 
@@ -172,50 +151,46 @@ def cards_to_discount_items(
     source_url: str,
     operator_capture_id: Optional[str] = None,
 ) -> list[DiscountItem]:
-    """파서 중간 표현을 DiscountItem으로 변환한다."""
+    """파서 중간 표현 → DiscountItem.
+
+    회원 전용 가격 미공개 카드는 sale_price=0으로 들어가며 validate()에서 걸러진다.
+    """
     items: list[DiscountItem] = []
     for card in cards:
         source_key = normalize_source_key("costco", card.detail_url or card.name)
-        period_data = {"period_text": card.period_text} if card.period_text else {}
-        period_start, period_end, period_text = parse_period_fields(period_data)
-
         attrs = build_source_attributes(
             source_id="costco",
             source_record_key=source_key,
             detail_url=card.detail_url or source_url,
             image_url=card.image_url or "",
-            period=period_text or "",
             extra={
                 "original_price": card.original_price,
+                "unit_price_text": card.unit_price_text,
+                "is_member_only": card.is_member_only,
                 "operator_capture_id": operator_capture_id,
                 "collection_path": "operator_capture" if operator_capture_id else "public_endpoint",
             },
         )
-
-        item = DiscountItem(
-            name=card.name,
-            store="코스트코",
-            sale_price=card.sale_price or 0.0,
-            original_price=card.original_price,
-            detail_url=card.detail_url or "",
-            image_url=card.image_url or "",
-            period_start=period_start,
-            period_end=period_end,
-            attributes=attrs,
+        items.append(
+            DiscountItem(
+                name=card.name,
+                store="코스트코",
+                sale_price=card.sale_price or 0.0,
+                original_price=card.original_price,
+                detail_url=card.detail_url or "",
+                image_url=card.image_url or "",
+                attributes=attrs,
+            )
         )
-        items.append(item)
     return items
 
 
 class CostcoCrawler(CrawlerContract):
-    """코스트코 코리아 할인 상품 수집기.
-
-    공개 엔드포인트는 자동, 회원 전용은 운영자 워크밴치 캡처를 인계받는다.
-    """
+    """코스트코 코리아 카탈로그 수집기. fixture 기반 셀렉터, 실제 라이브 URL 사용."""
 
     PUBLIC_ENDPOINTS = PUBLIC_ENDPOINTS
     MAX_REQUESTS: Optional[int] = None
-    REQUEST_TIMEOUT = 15
+    REQUEST_TIMEOUT = 20
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=1.0, delay_max=3.0)
@@ -224,20 +199,18 @@ class CostcoCrawler(CrawlerContract):
     def info(self) -> CrawlerInfo:
         return CrawlerInfo(
             name="코스트코",
-            version="0.1.0",
+            version="0.2.0",
             group=CrawlerGroup.MART,
-            description="코스트코 코리아 공개 특가/핫이벤트 + 운영자 워크밴치 회원 캡처",
-            target_url="https://www.costco.co.kr",
+            description="코스트코 코리아 공개 카탈로그(스페셜 할인/이벤트/홈) + 운영자 워크밴치 옵션",
+            target_url=BASE_URL,
             strategies=["requests", "operator_workbench"],
         )
 
     async def crawl(self) -> CrawlResult:
         started_at = datetime.now()
-        logger.info("[코스트코] 공개 엔드포인트 수집 시작")
-
         items: list[DiscountItem] = []
         error_failures: list[StrategyFailure] = []
-        seen = set()
+        seen: set = set()
         attempted = 0
 
         for url in self.PUBLIC_ENDPOINTS:
@@ -246,10 +219,10 @@ class CostcoCrawler(CrawlerContract):
             attempted += 1
             try:
                 headers = self._anti_detect.get_random_headers()
-                headers["Referer"] = "https://www.costco.co.kr/"
+                headers["Referer"] = f"{BASE_URL}/"
                 resp = requests.get(url, headers=headers, timeout=self.REQUEST_TIMEOUT)
                 resp.raise_for_status()
-                cards = parse_event_html(resp.text, base_url="https://www.costco.co.kr")
+                cards = parse_costco_listing(resp.text)
                 for di in cards_to_discount_items(cards, source_url=url):
                     key = source_dedup_key(di)
                     if key in seen:
@@ -278,12 +251,12 @@ class CostcoCrawler(CrawlerContract):
             quality_details={
                 "source_map": build_source_map_manifest(
                     source_id="costco",
-                    search_queries=["특가", "행사", "할인"],
+                    search_queries=["스페셜할인", "이벤트"],
                     category_queries=[],
-                    max_pages=2,
-                    parser_contract="costco_special_event_fixture.v1",
-                    request_strategy="public_special_event_then_operator_workbench",
-                    parser_inputs=["event_card_html", "operator_capture_html"],
+                    max_pages=1,
+                    parser_contract="costco_storefront_li_product_list_item.v1",
+                    request_strategy="public_storefront_ssr",
+                    parser_inputs=["li.product-list-item", "a.thumb[title]", ".product-price-amount"],
                 ),
                 "public_endpoints_attempted": attempted,
                 "operator_capture_supported": True,
@@ -291,12 +264,10 @@ class CostcoCrawler(CrawlerContract):
         )
 
     async def parse(self, raw_data: str) -> list[DiscountItem]:
-        """공개/캡처 HTML 문자열을 DiscountItem으로 변환한다. (CrawlerContract 요구)"""
-        cards = parse_event_html(raw_data, base_url="https://www.costco.co.kr")
-        return cards_to_discount_items(cards, source_url="https://www.costco.co.kr")
+        cards = parse_costco_listing(raw_data)
+        return cards_to_discount_items(cards, source_url=BASE_URL)
 
     async def validate(self, items: list[DiscountItem]) -> list[DiscountItem]:
-        """이름·가격이 의미 있는 행만 살린다."""
         valid: list[DiscountItem] = []
         seen: set = set()
         for item in items:
@@ -305,6 +276,7 @@ class CostcoCrawler(CrawlerContract):
                 continue
             seen.add(key)
             if item.sale_price <= 0:
+                # 회원 전용 가격 미공개 카드 등 — 가격 데이터 없으면 드롭
                 continue
             if len(item.name) < 2:
                 continue
@@ -318,11 +290,6 @@ class CostcoCrawler(CrawlerContract):
         source_url: str,
         capture_id: Optional[str] = None,
     ) -> list[DiscountItem]:
-        """운영자가 워크밴치(헤드풀 크롬)에서 회원 로그인 후 캡처한 HTML을 받아 파싱한다.
-
-        운영자 워크밴치 API에서 이 함수를 호출하면 회원 전용 인벤토리가
-        DiscountItem 리스트로 정규화된다. 캡처 단계의 정책은
-        ``operator_workbench_policy.OPERATOR_WORKBENCH_POLICY``를 따른다.
-        """
-        cards = parse_event_html(html, base_url="https://www.costco.co.kr")
+        """운영자가 워크밴치(헤드풀 크롬)에서 본인 계정으로 캡처한 HTML 인계."""
+        cards = parse_costco_listing(html)
         return cards_to_discount_items(cards, source_url=source_url, operator_capture_id=capture_id)

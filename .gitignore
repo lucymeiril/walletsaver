@@ -8,6 +8,9 @@ venv/
 ENV/
 env/
 
+# 라이브 캡처(메가바이트급 raw 응답) — 슬림 fixture만 커밋
+packages/crawler-admin/backend/tests/fixtures/live_probe/
+
 # Data
 .env
 .env.local
