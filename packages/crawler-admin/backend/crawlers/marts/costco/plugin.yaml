@@ -1,0 +1,45 @@
+name: costco
+display_name: 코스트코
+category: mart
+version: 0.1.0
+description: 코스트코 코리아 할인/특가 상품 정보 수집. 비회원 공개 페이지(특가·핫이벤트)는 크롤러 자동 수집, 회원 전용 페이지는 운영자 워크밴치(헤드풀 크롬) 캡처로 인계받는다.
+live_ready: false
+parser_contract: costco_special_event_fixture.v1
+live_readiness:
+  status: source_collection_diagnostics_required
+  fixture_contract_status: pending
+  bounded_diagnostics:
+    status: required_before_live_ready
+    run_limits:
+      max_requests: 3
+      max_pages: 1
+      timeout_seconds: 20
+  operator_approval:
+    status: required_before_live_ready
+notes: "코스트코는 회원제. 공개 특가 페이지는 크롤러가, 회원 전용 인벤토리는 운영자 워크밴치 캡처로 보충한다."
+target:
+  url: https://www.costco.co.kr
+  difficulty: 4
+  strategy: playwright
+schedule:
+  cron: "0 8 * * *"
+  retry_count: 3
+  retry_delay: 300
+output:
+  model: DiscountItem
+  required_fields: [name, sale_price, detail_url]
+  diagnostic_evidence_fields: [source_raw, parsed, valid, detail_url, source_url, image_url, period, unit, category_hint]
+source_map:
+  request_strategy: public_special_event_then_operator_workbench
+  public_endpoints:
+    - https://www.costco.co.kr/specialEventList.ec
+    - https://www.costco.co.kr/HotEventList.ec
+  search_queries: [특가, 행사, 할인, 코코]
+  member_only_inventory:
+    source: operator_workbench_capture
+    workbench_route: /api/operator-browser
+  max_pages: 2
+  max_requests:
+  max_items:
+  dedupe_key: source_record_key_then_source_url
+  parser_inputs: [event_card_html, embedded_json, operator_capture_html]
