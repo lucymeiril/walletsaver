@@ -35,8 +35,11 @@ SKELETON_FIXTURE = (
 LIVE_BLOCKED_CANDIDATES = [
     "coupang_search.html",
     "coupang_search_생수.blocked.html",
+    "coupang_persistent_blocked.html",
+    "coupang_uc_blocked.html",
 ]
 LIVE_PROBE_DIR = pathlib.Path(__file__).parent / "fixtures" / "live_probe"
+TRACEID_DIAG = LIVE_PROBE_DIR / "coupang_traceId_diag.json"
 
 
 @pytest.fixture
@@ -104,6 +107,65 @@ async def test_sale_listing_against_real_live_blocked_reports_blocker():
     assert result.errors
     msg = result.errors[0].error_msg
     assert "akamai_access_denied" in msg or "empty_challenge_payload" in msg
+
+
+# ---------- traceId 변형 진단 회귀 (Phase A 2차 슬라이스 정직 진단) ----------
+def test_traceId_diag_when_present_confirms_uniform_akamai_block():
+    """Phase A 2차 슬라이스에서 traceId 3종 (empty / random 16-hex / 고정 16-hex)
+    을 직접 비교한 결과가 *모두* Akamai 차단으로 동일하게 분류돼야 한다.
+    이 진단 자체가 '운영자 캡처가 유일한 경로' 라는 결론의 직접 증거다.
+    """
+    import json as _json
+    if not TRACEID_DIAG.exists():
+        pytest.skip("coupang_traceId_diag.json 없음 (live_probe gitignored)")
+    diag = _json.loads(TRACEID_DIAG.read_text(encoding="utf-8"))
+    variants = diag["variants"]
+    assert {v["label"] for v in variants} == {"empty", "random_16hex", "spec_fixed_16hex"}
+    for v in variants:
+        assert v["classification"] in {"akamai_access_denied", "akamai_403"}, (
+            f"traceId={v['label']} 가 Akamai 차단 분류가 아님: {v['classification']!r} "
+            f"-- 이 경우 plugin.yaml::coupang_traceId_note 와 status='blocked' 결정을 재검토 필요"
+        )
+    # 분류가 모두 동일 == traceId 자체로 차단 분기를 트지 못함
+    assert not diag["summary"]["differs_across_variants"], (
+        "traceId variation 이 분기를 야기함 — plugin.yaml note 갱신 필요"
+    )
+
+
+# ---------- 가짜 통과 방지: operator capture fixture 가 'fake/empty' 면 빌드 깨야 함 ----------
+def test_skeleton_fixture_contains_real_card_markers(skeleton_html):
+    """ingest_operator_capture 의 신뢰성 근거가 되는 marketplace_skeleton/coupang.html
+    이 실제 상품 카드 마커를 갖고 있어야 한다 — 빈 셸/차단 페이지였다면 빌드 즉시 실패.
+    """
+    lo = skeleton_html.lower()
+    # 다음 마커 중 적어도 하나는 있어야 한다 — 둘 다 없으면 fake fixture 다
+    real_markers = ["search-product", "product-card", "vp/products/", "data-product-id", '"productlist"', '"products"']
+    found = [m for m in real_markers if m in lo]
+    assert found, (
+        f"coupang skeleton fixture 가 실제 상품 카드 마커를 0개 가지고 있음. "
+        f"빈 셸 또는 Akamai 차단 응답이 fixture 로 들어갔을 가능성. 검색된 마커: {found!r}"
+    )
+    assert len(skeleton_html) > 200, "fixture 크기가 너무 작음 (차단 페이지/완전 셸 의심)"
+
+
+def test_negative_blocked_fixture_cannot_become_operator_capture_source():
+    """직접 차단된 응답을 operator capture 로 잘못 사용했을 때 detect_blocker 가
+    이를 인식하지 못하면 안된다 — 다음 AI 가 또 차단 응답을 fake operator capture
+    로 통과시키지 못하도록."""
+    for name in LIVE_BLOCKED_CANDIDATES:
+        p = LIVE_PROBE_DIR / name
+        if not p.exists():
+            continue
+        body = p.read_text(encoding="utf-8", errors="ignore")
+        if not body.strip():
+            # 빈 파일도 잘못된 fixture 후보지만 detect_blocker 측에서 empty 로 잡혀야 함
+            assert _detect_blocker(body) in {"empty_response", "empty_challenge_payload", "no_response_body"}
+            continue
+        assert _detect_blocker(body) in {
+            "akamai_access_denied",
+            "empty_challenge_payload",
+            "empty_response",
+        }, f"{name} 차단 응답이 blocker 미인식 — fake operator capture 통과 위험"
 
 
 @pytest.mark.asyncio

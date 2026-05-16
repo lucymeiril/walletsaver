@@ -36,11 +36,16 @@ catalog_seeds:
   - 라면 5입
   - 세탁세제 3L
 coupang_traceId_note: |
-  본 슬라이스의 라이브 시도는 모두 Akamai (edgesuite Reference#18.*) 단계에서
-  차단되어 traceId 가 빈 값/임의 hex/세션-바인딩 중 어느 분기를 타는지 검증
-  하지 못함. plugin.yaml::entrypoints 의 url_template 에 빈 traceId 도
-  허용하는 형식만 기록했고, 라이브 시도가 가능해질 때 본 노트를 갱신할 것.
-  status: blocked_unverified
+  Phase A 2nd slice (gap-closure attempt): 본 슬라이스에서 traceId 3종을 모두
+  단발 비교 진단함 — empty / random 16-hex (예: f7f29239c06540ce) / 고정 16-hex
+  (0123456789abcdef). 결과는 tests/fixtures/live_probe/coupang_traceId_diag.json
+  참조: 세 variant 모두 HTTP 403 / 387 bytes / "Access Denied" Akamai edgesuite
+  응답으로 동일 분류 (akamai_access_denied). 응답 본문 SHA-256 만 미세히 다르며
+  이는 Akamai 가 traceId 자체로 분기하지 않는다는 직접 증거. 추가로 Playwright
+  persistent-profile (별도 새 user data dir) 및 undetected-chromedriver 시도
+  역시 즉시 403. 따라서 본 슬라이스 시점에서 traceId variation 으로는 Akamai
+  를 우회할 수 없다는 것이 확정되었고, operator_capture 가 유일한 진본 데이터
+  경로다. status: blocked_verified_traceId_does_not_help
 allowed_source_artifacts:
   - public_browser_rendered_html
   - user_saved_html
