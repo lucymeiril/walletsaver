@@ -305,15 +305,38 @@ def _status_counts(values: list[str]) -> dict[str, int]:
 
 def is_ai_safe_final_approve_eligible(row: dict[str, Any]) -> bool:
     """Only rows with no remaining audit/review caveats may ask DB-admin to final approve."""
-    return bool(
+    status = row.get("status")
+    non_state_blockers = [
+        blocker
+        for blocker in row.get("blockers", [])
+        if not str(blocker).startswith("pending_db_review:")
+    ]
+    ready_to_submit = bool(
         row.get("eligible")
-        and row.get("status") in {
+        and status in {
             PipelineStatus.APPROVED.value,
             PipelineStatus.PUBLISH_FAILED.value,
         }
+    )
+    pending_final_approval = bool(
+        status == PipelineStatus.PENDING_DB_REVIEW.value
+        and row.get("db_ingestion_id")
+    )
+    claim_blockers = list(row.get("claim_blockers") or [])
+    unresolved_claim_blockers = (
+        claim_blockers
+        if not (
+            row.get("price_observation_only") is True
+            and row.get("publication_kind") == "price_observation"
+        )
+        else []
+    )
+    return bool(
+        (ready_to_submit or pending_final_approval)
+        and not non_state_blockers
         and not row.get("blocking_audit_issues")
         and not row.get("post_publish_audit_flags")
-        and not row.get("claim_blockers")
+        and not unresolved_claim_blockers
     )
 
 

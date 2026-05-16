@@ -201,6 +201,122 @@ async def test_coupang_saved_source_input_runs_no_db_handoff(tmp_path: Path):
 
 
 @pytest.mark.asyncio
+async def test_lottemart_saved_source_input_runs_no_db_handoff(tmp_path: Path):
+    fixture = (
+        Path(__file__).resolve().parent / "fixtures" / "non_marketplace_crawlers" / "lottemart.html"
+    ).read_text(encoding="utf-8")
+    pipeline = SourceRunPipeline(_crawler_registry(), store=SourceRunStore(tmp_path))
+
+    result = await pipeline.run_source_incremental(
+        "lottemart",
+        source_name="lottemart",
+        schema_type="mart_discount",
+        source_url="https://lottemartzetta.com/search?query=fixture",
+        source_input=fixture,
+        source_input_label="tests/fixtures/non_marketplace_crawlers/lottemart.html",
+    )
+
+    assert result.status == "success"
+    assert result.items_found == 2
+    assert result.records_handed_off == 2
+    manifest = json.loads(Path(result.manifest_path).read_text(encoding="utf-8"))
+    assert manifest["collection_mode"] == "bounded_source_input_no_db"
+    assert manifest["live_network_enabled"] is False
+    assert manifest["source_input"]["provided"] is True
+    assert manifest["counts"]["source_raw"] == 2
+    assert manifest["counts"]["parsed_valid"] == 2
+
+    handoff = json.loads(Path(result.ai_handoff_path).read_text(encoding="utf-8"))
+    assert handoff["collection_mode"] == "bounded_source_input_no_db"
+    assert handoff["fetch"]["strategy_used"] == "saved_source_input"
+    assert handoff["records"][0]["source_url"].startswith("https://lottemartzetta.com/products/")
+
+
+@pytest.mark.asyncio
+async def test_coupang_source_url_runs_bounded_live_no_db_handoff(tmp_path: Path, monkeypatch):
+    html = """
+    <html><body>
+      <li class="search-product" data-product-id="live-coupang">
+        <a class="search-product-link" href="/vp/products/live-coupang">
+          <span class="name">쿠팡 live 생수 2L</span>
+        </a>
+        <strong class="price-value">4,900원</strong>
+      </li>
+    </body></html>
+    """
+
+    class Response:
+        status_code = 200
+        url = "https://www.coupang.com/np/search?q=live"
+        headers = {"content-type": "text/html; charset=utf-8"}
+        content = html.encode("utf-8")
+        text = html
+
+    monkeypatch.setattr(
+        "crawlers.shopping.marketplace_skeleton.requests.get",
+        lambda *args, **kwargs: Response(),
+    )
+    pipeline = SourceRunPipeline(_crawler_registry(), store=SourceRunStore(tmp_path))
+
+    result = await pipeline.run_source_incremental(
+        "coupang",
+        source_name="coupang",
+        schema_type="marketplace_discount",
+        source_url="https://www.coupang.com/np/search?q=live",
+    )
+
+    assert result.status == "success"
+    assert result.items_found == 1
+    manifest = json.loads(Path(result.manifest_path).read_text(encoding="utf-8"))
+    assert manifest["collection_mode"] == "bounded_live_http_no_db"
+    assert manifest["live_network_enabled"] is True
+    assert manifest["source_url"] == "https://www.coupang.com/np/search?q=live"
+    assert manifest["counts"]["source_raw"] == 1
+    assert manifest["counts"]["parsed"] == 1
+    assert manifest["counts"]["parsed_valid"] == 1
+    assert manifest["counts"]["parsed_unique"] == 1
+    assert manifest["fetch"]["auth_bypass_attempted"] is False
+
+    handoff = json.loads(Path(result.ai_handoff_path).read_text(encoding="utf-8"))
+    record = handoff["records"][0]
+    assert handoff["collection_mode"] == "bounded_live_http_no_db"
+    assert record["source_record_key"] == "live-coupang"
+    assert record["source_url"] == "https://www.coupang.com/vp/products/live-coupang"
+    assert record["raw_payload"]["attributes"]["source_request_url"] == "https://www.coupang.com/np/search?q=live"
+
+
+@pytest.mark.asyncio
+async def test_coupang_source_url_access_blocker_is_not_retried(tmp_path: Path, monkeypatch):
+    calls = []
+
+    class Response:
+        status_code = 403
+        url = "https://www.coupang.com/np/search?q=blocked"
+        headers = {"content-type": "text/html"}
+        content = b"blocked"
+        text = "blocked"
+
+    def fake_get(*args, **kwargs):
+        calls.append(args)
+        return Response()
+
+    monkeypatch.setattr("crawlers.shopping.marketplace_skeleton.requests.get", fake_get)
+    pipeline = SourceRunPipeline(_crawler_registry(), store=SourceRunStore(tmp_path), retry_count=3)
+
+    result = await pipeline.run_source_incremental(
+        "coupang",
+        source_name="coupang",
+        schema_type="marketplace_discount",
+        source_url="https://www.coupang.com/np/search?q=blocked",
+    )
+
+    assert result.status == "failed"
+    assert len(calls) == 1
+    assert "HTTP 403" in "; ".join(result.errors or [])
+    assert "no authentication/access-control bypass attempted" in "; ".join(result.errors or [])
+
+
+@pytest.mark.asyncio
 async def test_source_input_fails_if_crawler_cannot_accept_saved_input(tmp_path: Path):
     pipeline = SourceRunPipeline(
         Registry(SequencedCrawler([[{"name": "should not live crawl", "sale_price": 1}]])),

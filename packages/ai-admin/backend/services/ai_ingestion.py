@@ -861,6 +861,7 @@ def _call_provider_with_retries(
     raw_batch_id: str,
     ai_batch_id: str,
     row_count: int,
+    max_call_attempts: int | None = None,
 ) -> tuple[dict[str, Any], int]:
     last_exc: ProviderResponseError | None = None
     provider_config = provider.config
@@ -871,6 +872,19 @@ def _call_provider_with_retries(
             _MAX_PROVIDER_ATTEMPTS,
         )
     )
+    if max_call_attempts is not None:
+        max_attempts = min(max_attempts, max(0, int(max_call_attempts)))
+    if max_attempts < 1:
+        raise AIIngestionError(
+            "provider call bound exhausted before request",
+            stage="provider_call_bound",
+            status_code=429,
+            provider_id=provider_id,
+            model=model,
+            raw_batch_id=raw_batch_id,
+            ai_batch_id=ai_batch_id,
+            row_count=row_count,
+        )
     min_delay_seconds = float(
         _provider_limit(
             provider_config,
@@ -1277,6 +1291,7 @@ def ingest_and_label_records(
     schema_type: str,
     max_ai_batch_items: int | None = None,
     max_ai_batch_prompt_chars: int | None = None,
+    max_provider_calls: int | None = None,
     provider_factory=None,
 ) -> dict[str, Any]:
     provider_config = ProviderConfigRepository(session).get(provider_id)
@@ -1366,6 +1381,9 @@ def ingest_and_label_records(
     calls = 0
     for index, batch_records in enumerate(split_batches, start=1):
         ai_batch_id = f"{root_batch_id}:ai:{index}"
+        if max_provider_calls is not None and calls >= max_provider_calls:
+            missing_label_ids.extend(record.raw_record_id for record in batch_records)
+            continue
         try:
             prompt = build_labeling_prompt(
                 batch_records,
@@ -1394,6 +1412,9 @@ def ingest_and_label_records(
                 raw_batch_id=root_batch_id,
                 ai_batch_id=ai_batch_id,
                 row_count=len(batch_records),
+                max_call_attempts=(
+                    None if max_provider_calls is None else max_provider_calls - calls
+                ),
             )
         except ProviderConfigurationError as exc:
             raise AIIngestionError(
@@ -1433,6 +1454,8 @@ def ingest_and_label_records(
         for retry_index in range(1, _MISSING_LABEL_RETRY_BATCHES + 1):
             if not missing_records:
                 break
+            if max_provider_calls is not None and calls >= max_provider_calls:
+                break
             retry_batch_id = f"{ai_batch_id}:retry:{retry_index}"
             try:
                 retry_prompt = build_labeling_prompt(
@@ -1450,6 +1473,9 @@ def ingest_and_label_records(
                     raw_batch_id=root_batch_id,
                     ai_batch_id=retry_batch_id,
                     row_count=len(missing_records),
+                    max_call_attempts=(
+                        None if max_provider_calls is None else max_provider_calls - calls
+                    ),
                 )
                 calls += retry_attempts
                 retry_proposals, retry_keyword_proposals, missing_records, retry_validation = _proposals_from_batch_response(

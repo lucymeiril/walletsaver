@@ -6,17 +6,28 @@ description: 롯데마트 전단지 및 할인 행사 상품 정보 수집
 live_ready: false
 parser_contract: lottemart_initial_state_fixture.v1
 live_readiness:
-  status: source_collection_diagnostics_required
+  status: blocked_by_source_waf_http_202
   fixture_contract_status: passed
   bounded_diagnostics:
-    status: required_before_live_ready
+    status: blocked
     run_limits:
       max_requests: 3
       max_pages: 1
       timeout_seconds: 20
+    last_no_db_result:
+      artifact: .walletsavior-live-validation\lottemart-waf-202-resolution\after-r3-final\live-validation-v2-20260516-131244-94bfd81f.json
+      source_raw: 0
+      parsed_valid: 0
+      records: 0
+      blocker: aws_waf_http_202
+    prior_partial_result:
+      source_raw: 100
+      parsed_valid: 50
+      records: 50
+      blocker: aws_waf_http_202_after_partial_collection
   operator_approval:
     status: required_before_live_ready
-notes: "Do not claim live-service readiness until source collection diagnostics pass a bounded operator-approved run."
+notes: "Do not claim 200+ live readiness while bounded no-DB diagnostics report AWS WAF HTTP 202; use saved-source replay artifacts for parser/AI handoff checks."
 target:
   url: https://www.lottemart.com
   difficulty: 3

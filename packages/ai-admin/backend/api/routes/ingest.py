@@ -21,6 +21,12 @@ class IngestLabelPayload(BaseModel):
     records: list[RawCrawlRecord] = Field(min_length=1, max_length=30)
     max_ai_batch_items: int | None = Field(default=None, ge=1, le=MAX_AI_BATCH_ITEMS)
     max_ai_batch_prompt_chars: int | None = Field(default=None, ge=1, le=12_000)
+    max_provider_calls: int | None = Field(
+        default=None,
+        ge=1,
+        le=100,
+        description="Per-request cap for live provider attempts, including retries.",
+    )
 
 
 @router.post("/raw-records/label", status_code=status.HTTP_200_OK)
@@ -38,6 +44,7 @@ def label_raw_records(
             records=payload.records,
             max_ai_batch_items=payload.max_ai_batch_items,
             max_ai_batch_prompt_chars=payload.max_ai_batch_prompt_chars,
+            max_provider_calls=payload.max_provider_calls,
         )
     except AIIngestionError as exc:
         raise HTTPException(status_code=exc.status_code, detail=exc.to_detail()) from exc

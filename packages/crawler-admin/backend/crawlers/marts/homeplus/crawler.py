@@ -64,10 +64,9 @@ class HomeplusCrawler(CrawlerContract):
     # 다양한 검색어로 더 많은 할인 상품 수집
     SEARCH_QUERIES = ["할인", "특가", "세일", "1+1", "행사", "과일", "정육", "우유"]
     CATEGORY_QUERIES = ["과일", "채소", "정육", "생수", "유제품", "간편식"]
-    # Homeplus is a browser-rendered SPA; keep default collection bounded until
-    # live readiness is explicitly approved. Operator diagnostics may tighten
-    # MAX_PAGES/MAX_REQUESTS without changing the normal scheduled path.
-    MAX_ITEMS: int | None = 50
+    # Homeplus is a browser-rendered SPA; keep collection bounded while allowing
+    # source-completion diagnostics to clear the 200+ unique-item threshold.
+    MAX_ITEMS: int | None = 300
     MAX_PAGES: int | None = None
     MAX_REQUESTS: int | None = None
 

@@ -7,6 +7,7 @@ pagination helpers that can be used by bounded diagnostics after approval.
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import json
 import re
@@ -14,6 +15,7 @@ from datetime import datetime
 from typing import Any, ClassVar
 from urllib.parse import parse_qs, urlencode, urljoin, urlparse
 
+import requests
 from bs4 import BeautifulSoup
 
 from core.contracts.crawler import CrawlerContract
@@ -229,6 +231,9 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
     SEARCH_PATH: ClassVar[str] = "/search"
     SEARCH_QUERY_PARAM: ClassVar[str] = "q"
     PAGE_PARAM: ClassVar[str] = "page"
+    MAX_LIVE_REQUESTS: ClassVar[int] = 1
+    MAX_LIVE_PAGES: ClassVar[int] = 1
+    LIVE_TIMEOUT_SECONDS: ClassVar[int] = 10
 
     @property
     def info(self) -> CrawlerInfo:
@@ -263,6 +268,124 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
         if marker and marker.get("data-next-page"):
             return self.build_search_url("", page=_parse_int(marker.get("data-next-page")) or 1) if not current_url else self._replace_page(current_url, marker.get("data-next-page"))
         return ""
+
+    async def crawl_incremental(
+        self,
+        *,
+        since: str | None = None,
+        source_input: str | None = None,
+        source_url: str | None = None,
+        max_pages: int | None = None,
+        max_requests: int | None = None,
+        timeout_seconds: int | None = None,
+    ) -> CrawlResult:
+        if source_input is not None:
+            return await self.crawl(fixture=source_input)
+        if source_url:
+            return await self.crawl_bounded_source_url(
+                source_url,
+                max_pages=max_pages or self.MAX_LIVE_PAGES,
+                max_requests=max_requests or self.MAX_LIVE_REQUESTS,
+                timeout_seconds=timeout_seconds or self.LIVE_TIMEOUT_SECONDS,
+            )
+        return await self.crawl()
+
+    async def crawl_bounded_source_url(
+        self,
+        source_url: str,
+        *,
+        max_pages: int = 1,
+        max_requests: int = 1,
+        timeout_seconds: int = 10,
+    ) -> CrawlResult:
+        started_at = datetime.now()
+        max_pages = max(1, min(int(max_pages), self.MAX_LIVE_PAGES))
+        max_requests = max(1, min(int(max_requests), self.MAX_LIVE_REQUESTS))
+        timeout_seconds = max(1, min(int(timeout_seconds), self.LIVE_TIMEOUT_SECONDS))
+        run_limits = {
+            "max_requests": max_requests,
+            "max_pages": max_pages,
+            "timeout_seconds": timeout_seconds,
+        }
+
+        safe_url_error = self._validate_live_source_url(source_url)
+        if safe_url_error:
+            return self._blocked_live_result(started_at, source_url, safe_url_error, run_limits)
+
+        fetch_diagnostics: dict[str, Any] = {
+            "source_url": source_url,
+            "requests_attempted": 1,
+            "pages_attempted": 1,
+            "run_limits": run_limits,
+            "auth_bypass_attempted": False,
+            "cookies_sent": False,
+        }
+        try:
+            response = await asyncio.to_thread(self._fetch_live_source, source_url, timeout_seconds)
+        except requests.RequestException as exc:
+            blocker = f"{self.SOURCE_ID} bounded live fetch failed: {type(exc).__name__}: {exc}"
+            fetch_diagnostics.update({"blocked": True, "blocker": blocker})
+            return self._blocked_live_result(started_at, source_url, blocker, run_limits, fetch_diagnostics)
+
+        final_url = str(response.url)
+        fetch_diagnostics.update(
+            {
+                "status_code": response.status_code,
+                "final_url": final_url,
+                "content_type": response.headers.get("content-type", ""),
+                "bytes": len(response.content or b""),
+            }
+        )
+        redirect_error = self._validate_live_source_url(final_url)
+        if redirect_error:
+            blocker = f"{self.SOURCE_ID} bounded live fetch redirected outside the approved source host: {final_url}"
+            fetch_diagnostics.update({"blocked": True, "blocker": blocker})
+            return self._blocked_live_result(started_at, source_url, blocker, run_limits, fetch_diagnostics)
+        if response.status_code in {401, 403, 429}:
+            blocker = (
+                f"{self.SOURCE_ID} bounded live fetch blocked by public site response "
+                f"HTTP {response.status_code}; no authentication/access-control bypass attempted."
+            )
+            fetch_diagnostics.update({"blocked": True, "blocker": blocker})
+            return self._blocked_live_result(started_at, source_url, blocker, run_limits, fetch_diagnostics)
+        if response.status_code >= 400:
+            blocker = f"{self.SOURCE_ID} bounded live fetch returned HTTP {response.status_code}."
+            fetch_diagnostics.update({"blocked": True, "blocker": blocker})
+            return self._blocked_live_result(started_at, source_url, blocker, run_limits, fetch_diagnostics)
+
+        raw_text = response.text or ""
+        source_raw_count = self.count_raw_candidates(raw_text)
+        parsed_items = await self.parse(raw_text)
+        valid_items = await self.validate(parsed_items)
+        valid_items = self._tag_collection_metadata(
+            valid_items,
+            collection_mode="bounded_live_http_no_db",
+            source_request_url=source_url,
+            source_final_url=final_url,
+        )
+        fetch_diagnostics.update(
+            {
+                "blocked": False,
+                "source_raw": source_raw_count,
+                "parsed": len(parsed_items),
+                "valid": len(valid_items),
+            }
+        )
+        return self._result(
+            started_at,
+            valid_items,
+            raw_count=len(parsed_items),
+            source_raw_count=source_raw_count,
+            invalid_count=max(0, len(parsed_items) - len(valid_items)),
+            errors=[],
+            fixture_available=False,
+            strategy_used="bounded-http-source-fetch",
+            live_enabled=True,
+            collection_mode="bounded_live_http_no_db",
+            source_url=source_url,
+            fetch_diagnostics=fetch_diagnostics,
+            run_limits=run_limits,
+        )
 
     async def crawl(self, raw_data: str | None = None, fixture: str | None = None, **_: Any) -> CrawlResult:
         started_at = datetime.now()
@@ -318,6 +441,12 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
         invalid_count: int = 0,
         errors: list[str] | None = None,
         fixture_available: bool = True,
+        strategy_used: str = "fixture-source-parser",
+        live_enabled: bool = False,
+        collection_mode: str = "fixture_source_parser",
+        source_url: str | None = None,
+        fetch_diagnostics: dict[str, Any] | None = None,
+        run_limits: dict[str, Any] | None = None,
     ) -> CrawlResult:
         items_as_dict = [item.model_dump(mode="json") for item in items]
         quality_details = summarize_discount_run(
@@ -326,12 +455,27 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
             source_raw_count=source_raw_count,
             invalid_count=invalid_count,
             errors=errors,
-            strategy_used="fixture-source-parser",
-            live_enabled=False,
+            strategy_used=strategy_used,
+            live_enabled=live_enabled,
             fixture_available=fixture_available,
         )
+        effective_run_limits = run_limits or {
+            "max_requests": None,
+            "max_pages": None,
+            "timeout_seconds": None,
+        }
+        quality_details.setdefault("fetch", {})
+        quality_details["fetch"].update(fetch_diagnostics or {})
+        quality_details["fetch"]["collection_mode"] = collection_mode
+        quality_details["collection"] = {
+            "mode": collection_mode,
+            "source_url": source_url,
+            "live_network_enabled": live_enabled,
+            "no_db": True,
+            "run_limits": effective_run_limits,
+        }
         quality_details["readiness_gate"] = {
-            "status": "skeleton_fixture_only",
+            "status": "bounded_live_diagnostic_no_db" if live_enabled else "skeleton_fixture_only",
             "live_ready": False,
             "collecting_claim_allowed": False,
             "safe_db_mutation_allowed": False,
@@ -339,25 +483,24 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
             "fixture_contract": MARKETPLACE_FIXTURE_CONTRACT,
             "fixture_contract_status": "passed",
             "bounded_diagnostics": {
-                "status": "required_before_live_ready",
+                "status": "completed_no_db" if live_enabled else "required_before_live_ready",
                 "evidence_id": None,
                 "captured_at": None,
-                "run_limits": {
-                    "max_requests": None,
-                    "max_pages": None,
-                    "timeout_seconds": None,
-                },
+                "run_limits": effective_run_limits,
+                "fetch": fetch_diagnostics or {},
             },
             "operator_approval": {"status": "required_before_live_ready"},
             "required_evidence_before_live_ready": MARKETPLACE_REQUIRED_EVIDENCE_BEFORE_LIVE,
             "next_actions": MARKETPLACE_OPERATOR_NEXT_ACTIONS,
             "downstream_flow": {
-                "current_stage": "fixture_diagnostics_only",
+                "current_stage": "bounded_live_no_db_diagnostics" if live_enabled else "fixture_diagnostics_only",
                 "next_stage": "no_db_ai_review",
                 "db_mutation_allowed": False,
             },
             "message": (
-                "This marketplace source connector parses saved/source fixtures only; it performs no live network collection."
+                "This marketplace source connector performed a bounded no-DB live diagnostic."
+                if live_enabled
+                else "This marketplace source connector parses saved/source fixtures only; it performs no live network collection."
             ),
         }
         status = CrawlStatus.SUCCESS if items else CrawlStatus.PARTIAL
@@ -367,14 +510,14 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
             message = diagnostic.get("message") or "; ".join(errors or []) or "No marketplace fixture rows parsed."
             stage = diagnostic.get("stage")
             error_type = ErrorType.EMPTY_RESPONSE if stage == "source_zero_raw_rows" else ErrorType.PARSE_ERROR
-            failures.append(StrategyFailure(strategy_name="fixture-source-parser", error_type=error_type, error_msg=message))
+            failures.append(StrategyFailure(strategy_name=strategy_used, error_type=error_type, error_msg=message))
             if not errors:
                 errors = [message]
         finished_at = datetime.now()
         return CrawlResult(
             status=status,
             crawler_name=self.info.name,
-            strategy_used="fixture-source-parser",
+            strategy_used=strategy_used,
             items_count=len(items),
             items=items_as_dict,
             started_at=started_at,
@@ -385,6 +528,80 @@ class MarketplaceSkeletonCrawler(CrawlerContract):
             quality_score=quality_details["score"],
             quality_details=quality_details,
         )
+
+    def _blocked_live_result(
+        self,
+        started_at: datetime,
+        source_url: str,
+        blocker: str,
+        run_limits: dict[str, Any],
+        fetch_diagnostics: dict[str, Any] | None = None,
+    ) -> CrawlResult:
+        diagnostics = {
+            "blocked": True,
+            "blocker": blocker,
+            "run_limits": run_limits,
+            **(fetch_diagnostics or {}),
+        }
+        return self._result(
+            started_at,
+            [],
+            raw_count=0,
+            source_raw_count=0,
+            errors=[blocker],
+            fixture_available=False,
+            strategy_used="bounded-http-source-fetch",
+            live_enabled=True,
+            collection_mode="bounded_live_http_no_db",
+            source_url=source_url,
+            fetch_diagnostics=diagnostics,
+            run_limits=run_limits,
+        )
+
+    def _fetch_live_source(self, source_url: str, timeout_seconds: int) -> requests.Response:
+        return requests.get(
+            source_url,
+            headers={
+                "Accept": "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8",
+                "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.8",
+                "User-Agent": "WalletSaviorCrawler/0.1 bounded-no-db-diagnostic",
+            },
+            timeout=timeout_seconds,
+            allow_redirects=True,
+        )
+
+    def _validate_live_source_url(self, source_url: str) -> str:
+        parsed = urlparse(source_url or "")
+        base = urlparse(self.BASE_URL)
+        if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+            return f"{self.SOURCE_ID} bounded live fetch requires an absolute http(s) source_url."
+        if parsed.username or parsed.password:
+            return f"{self.SOURCE_ID} bounded live fetch refuses source_url credentials."
+        if parsed.netloc.lower() != base.netloc.lower():
+            return (
+                f"{self.SOURCE_ID} bounded live fetch is limited to approved host "
+                f"{base.netloc}; got {parsed.netloc}."
+            )
+        return ""
+
+    def _tag_collection_metadata(
+        self,
+        items: list[DiscountItem],
+        *,
+        collection_mode: str,
+        source_request_url: str,
+        source_final_url: str,
+    ) -> list[DiscountItem]:
+        tagged: list[DiscountItem] = []
+        for item in items:
+            clone = item.model_copy(deep=True)
+            attrs = dict(clone.attributes or {})
+            attrs["collection_mode"] = collection_mode
+            attrs["source_request_url"] = source_request_url
+            attrs["source_final_url"] = source_final_url
+            clone.attributes = attrs
+            tagged.append(clone)
+        return tagged
 
     async def parse(self, raw_data: str) -> list[DiscountItem]:
         text = (raw_data or "").strip()

@@ -276,3 +276,76 @@ def test_marketplace_skeletons_without_fixture_return_zero_result_diagnostics():
         assert result.quality_details["readiness_gate"]["safe_db_mutation_allowed"] is False
         assert "Attach a recent approved fixture or raw_data sample" in diagnostic["next_action"]
         assert diagnostic["counts"] == {"source_raw": 0, "parsed": 0, "valid": 0, "invalid_or_dropped": 0}
+
+
+def test_coupang_bounded_live_fetch_parses_one_no_db_page(monkeypatch):
+    registry = _registry()
+    crawler = registry.get_crawler("coupang")
+    html = """
+    <html><body>
+      <li class="search-product" data-product-id="live-111">
+        <a class="search-product-link" href="/vp/products/live-111">
+          <span class="name">live 생수 2L 6개</span>
+        </a>
+        <strong class="price-value">10,900원</strong>
+      </li>
+    </body></html>
+    """
+    calls = []
+
+    class Response:
+        status_code = 200
+        url = "https://www.coupang.com/np/search?q=water"
+        headers = {"content-type": "text/html; charset=utf-8"}
+        content = html.encode("utf-8")
+        text = html
+
+    def fake_get(url, *, headers, timeout, allow_redirects):
+        calls.append(
+            {
+                "url": url,
+                "headers": headers,
+                "timeout": timeout,
+                "allow_redirects": allow_redirects,
+            }
+        )
+        return Response()
+
+    monkeypatch.setattr("crawlers.shopping.marketplace_skeleton.requests.get", fake_get)
+
+    result = _run(crawler.crawl_incremental(source_url="https://www.coupang.com/np/search?q=water"))
+
+    assert result.status == CrawlStatus.SUCCESS
+    assert len(calls) == 1
+    assert calls[0]["timeout"] == 10
+    assert result.strategy_used == "bounded-http-source-fetch"
+    assert result.quality_details["collection"]["mode"] == "bounded_live_http_no_db"
+    assert result.quality_details["collection"]["live_network_enabled"] is True
+    assert result.quality_details["readiness_gate"]["safe_db_mutation_allowed"] is False
+    assert result.quality_details["fetch"]["auth_bypass_attempted"] is False
+    assert result.items[0]["attributes"]["collection_mode"] == "bounded_live_http_no_db"
+    assert result.items[0]["attributes"]["source_request_url"] == "https://www.coupang.com/np/search?q=water"
+
+
+def test_coupang_bounded_live_fetch_reports_access_blocker(monkeypatch):
+    registry = _registry()
+    crawler = registry.get_crawler("coupang")
+
+    class Response:
+        status_code = 403
+        url = "https://www.coupang.com/np/search?q=water"
+        headers = {"content-type": "text/html"}
+        content = b"blocked"
+        text = "blocked"
+
+    monkeypatch.setattr(
+        "crawlers.shopping.marketplace_skeleton.requests.get",
+        lambda *args, **kwargs: Response(),
+    )
+
+    result = _run(crawler.crawl_incremental(source_url="https://www.coupang.com/np/search?q=water"))
+
+    assert result.status == CrawlStatus.PARTIAL
+    assert "HTTP 403" in result.error_msg
+    assert "no authentication/access-control bypass attempted" in result.error_msg
+    assert result.quality_details["fetch"]["blocked"] is True

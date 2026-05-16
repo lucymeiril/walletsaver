@@ -20,6 +20,7 @@ from services.review_publish import (
     build_publish_rows,
     build_raw_ai_audit,
     db_item_from_review,
+    is_ai_safe_final_approve_eligible,
     publish_blockers,
 )
 from storage import (
@@ -196,6 +197,55 @@ def test_db_admin_adapter_payload_is_built_from_publish_candidate() -> None:
         "publication_kind": "price_observation",
     }
     assert payload["items"][0]["ai_review_audit"]["human_decision_ids"] == ["decision-1"]
+
+
+def test_pending_db_review_final_approve_eligibility_preserves_critical_blockers() -> None:
+    base_row = {
+        "status": PipelineStatus.PENDING_DB_REVIEW.value,
+        "eligible": False,
+        "db_ingestion_id": "782",
+        "blocking_audit_issues": [],
+        "post_publish_audit_flags": [],
+        "claim_blockers": [],
+    }
+
+    assert is_ai_safe_final_approve_eligible(
+        {
+            **base_row,
+            "blockers": [
+                "pending_db_review: already submitted to DB-admin; wait for final DB-admin approval"
+            ],
+        }
+    ) is True
+    assert is_ai_safe_final_approve_eligible(
+        {
+            **base_row,
+            "blockers": [
+                "pending_review: critical AI proposals must be human approved",
+                "pending_db_review: already submitted to DB-admin; wait for final DB-admin approval",
+            ],
+        }
+    ) is False
+
+
+def test_price_observation_claim_blocker_does_not_block_final_approve() -> None:
+    assert is_ai_safe_final_approve_eligible(
+        {
+            "status": PipelineStatus.PENDING_DB_REVIEW.value,
+            "eligible": False,
+            "db_ingestion_id": "price-observation-1",
+            "publication_kind": "price_observation",
+            "price_observation_only": True,
+            "blockers": [
+                "pending_db_review: already submitted to DB-admin; wait for final DB-admin approval"
+            ],
+            "blocking_audit_issues": [],
+            "post_publish_audit_flags": [],
+            "claim_blockers": [
+                "hotdeal_claim_blocked: missing verified original_price/discount_percent/source_event/historical_baseline"
+            ],
+        }
+    ) is True
 
 
 def test_source_owned_fields_win_over_conflicting_ai_proposals() -> None:

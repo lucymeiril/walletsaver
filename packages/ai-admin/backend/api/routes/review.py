@@ -1237,18 +1237,26 @@ async def publish_approved_records(
     with db.session_scope() as session:
         rows = build_publish_rows(session, batch_id=payload.batch_id)
     selected_ids = set(payload.raw_record_ids)
-    candidates = [
-        row
-        for row in rows
-        if row["eligible"] and (not selected_ids or row["raw_record_id"] in selected_ids)
-    ]
+    def _selected_publish_candidate(row: dict[str, Any]) -> bool:
+        if selected_ids and row["raw_record_id"] not in selected_ids:
+            return False
+        if row["eligible"]:
+            return True
+        return bool(
+            selected_ids
+            and row.get("status") == PipelineStatus.PENDING_DB_REVIEW.value
+            and row.get("ai_safe_final_approve_eligible")
+            and row.get("db_ingestion_id")
+        )
+
+    candidates = [row for row in rows if _selected_publish_candidate(row)]
     preflight_failures: list[dict[str, Any]] = []
     if selected_ids:
         missing = selected_ids - {row["raw_record_id"] for row in rows}
         blocked = [
             row
             for row in rows
-            if row["raw_record_id"] in selected_ids and not row["eligible"]
+            if row["raw_record_id"] in selected_ids and not _selected_publish_candidate(row)
         ]
         if missing or blocked:
             preflight_failures = [

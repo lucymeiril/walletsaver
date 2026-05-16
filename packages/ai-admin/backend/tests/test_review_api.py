@@ -1228,6 +1228,69 @@ def test_publish_safe_final_approve_failure_leaves_visible_db_review_handoff(
     assert row["db_ingestion_result"]["requires_db_admin_review"] is True
 
 
+def test_publish_retry_final_approves_selected_pending_db_review_row(
+    client: TestClient, db: Database, monkeypatch
+) -> None:
+    _seed_publish_batch(db)
+    _approve_publish_proposals(client, "pub-1")
+    final_approve_calls = []
+
+    async def fake_submit(payload):
+        return {"id": 782, "status": "pending"}
+
+    async def failing_final_approve(ingestion_id, *, notes=None):
+        raise RuntimeError("temporary DB-admin final approval outage")
+
+    monkeypatch.setattr(review_routes, "_submit_to_db_admin", fake_submit)
+    monkeypatch.setattr(review_routes, "_ai_safe_final_approve_db_admin", failing_final_approve)
+
+    first = client.post(
+        "/api/review/publish-approved",
+        json={"raw_record_ids": ["pub-1"], "reviewer_id": "lucy", "confirm_count": 1},
+    )
+    assert first.status_code == 200, first.text
+    assert first.json()["pending_db_review"] == 1
+    assert first.json()["final_approve_failed"] == 1
+
+    row = client.get("/api/review/publish-eligibility").json()["items"][0]
+    assert row["status"] == "pending_db_review"
+    assert row["eligible"] is False
+    assert row["ai_safe_final_approve_eligible"] is True
+    assert row["db_ingestion_id"] == "782"
+
+    async def successful_final_approve(ingestion_id, *, notes=None):
+        final_approve_calls.append({"ingestion_id": ingestion_id, "notes": notes})
+        return {
+            "id": int(ingestion_id),
+            "status": "approved",
+            "saved": 1,
+            "public_db_verification": {"verified": True, "verified_count": 1, "expected_count": 1},
+            "rollback_supported": True,
+            "re_review_supported": True,
+            "operator_next_action": "rollback or re-review if audit fails",
+        }
+
+    monkeypatch.setattr(review_routes, "_ai_safe_final_approve_db_admin", successful_final_approve)
+    retry = client.post(
+        "/api/review/publish-approved",
+        json={"raw_record_ids": ["pub-1"], "reviewer_id": "lucy", "confirm_count": 1},
+    )
+
+    assert retry.status_code == 200, retry.text
+    body = retry.json()
+    assert body["published"] == 1
+    assert body["submitted_to_db_admin"] == 1
+    assert body["pending_db_review"] == 0
+    assert body["ai_safe_final_approved"] == 1
+    assert body["public_db_verified"] == 1
+    assert body["results"][0]["skipped_duplicate"] is True
+    assert final_approve_calls[0]["ingestion_id"] == "782"
+
+    row = client.get("/api/review/publish-eligibility").json()["items"][0]
+    assert row["status"] == "published"
+    assert row["db_ingestion_result"]["already_submitted"] is True
+
+
 def test_publish_one_click_submits_eligible_rows_and_reports_selected_holds(
     client: TestClient, db: Database, monkeypatch
 ) -> None:

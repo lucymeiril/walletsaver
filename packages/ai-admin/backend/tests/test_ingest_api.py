@@ -1147,6 +1147,63 @@ def test_ingest_retries_missing_labels_before_reporting_raw_only(
     assert any(seconds >= 10 for seconds in sleeps)
 
 
+def test_ingest_respects_per_request_provider_call_cap_for_missing_label_retries(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    calls: list[list[str]] = []
+    monkeypatch.setattr(ai_ingestion, "_provider_call_history", {})
+
+    class MissingOneProvider:
+        provider_mode = "live"
+
+        def __init__(self, config: ProviderConfigContract) -> None:
+            self.config = config
+
+        def call(self, *, prompt: str, schema=None) -> dict:
+            record_ids = re.findall(r"- id=([^;]+);", prompt)
+            calls.append(record_ids)
+            return {
+                "items": [
+                    {
+                        "raw_record_id": record_ids[0],
+                        "canonical_name": "호출 제한 상품",
+                        "category_id": "dairy.milk",
+                        "keywords": ["우유"],
+                        "aliases": [],
+                        "attributes": {},
+                    }
+                ]
+            }
+
+    monkeypatch.setattr(
+        ai_ingestion,
+        "provider_from_config",
+        lambda config: MissingOneProvider(config),
+    )
+
+    res = client.post(
+        "/api/ingest/raw-records/label",
+        json={
+            "provider_id": "google-dev",
+            "source_name": "emart",
+            "max_provider_calls": 1,
+            "records": [
+                {"raw_record_id": "emart:milk-1", "source_name": "emart", "raw_title": "서울우유 1L", "raw_price": 2980},
+                {"raw_record_id": "emart:milk-2", "source_name": "emart", "raw_title": "매일우유 1L", "raw_price": 2880},
+            ],
+        },
+    )
+
+    assert res.status_code == 200, res.text
+    body = res.json()
+    assert body["status"] == "partial_review_required"
+    assert body["provider_calls"] == 1
+    assert body["missing_label_count"] == 1
+    assert body["missing_label_raw_record_ids"] == ["emart:milk-2"]
+    assert calls == [["emart:milk-1", "emart:milk-2"]]
+
+
 def test_live_provider_rate_limits_use_provider_configuration(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

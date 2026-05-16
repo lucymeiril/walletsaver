@@ -33,7 +33,7 @@ import requests
 from core.contracts.crawler import CrawlerContract
 from core.models import (
     CrawlerInfo, CrawlerGroup, CrawlResult, CrawlStatus,
-    DiscountItem,
+    DiscountItem, ErrorType, StrategyFailure,
 )
 from core.product_units import normalize_unit_metadata
 from crawlers.marts.source_utils import (
@@ -63,8 +63,10 @@ class LottemartCrawler(CrawlerContract):
     # 다양한 검색어로 더 많은 상품 수집
     SEARCH_QUERIES = ["할인", "특가", "과일", "채소", "정육", "세일", "우유", "음료"]
     CATEGORY_QUERIES = ["과일", "채소", "정육", "계란", "생수", "유제품", "간편식"]
+    MAX_ITEMS: int | None = 300
     MAX_PAGES = 2
     MAX_REQUESTS: int | None = None
+    PLAYWRIGHT_FALLBACK_QUERY_CAP = 3
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=1.0, delay_max=3.0)
@@ -108,6 +110,144 @@ class LottemartCrawler(CrawlerContract):
             strategies=["requests", "playwright"],
         )
 
+    async def crawl_incremental(
+        self,
+        *,
+        since: str | None = None,
+        source_input: str | None = None,
+        source_url: str | None = None,
+    ) -> CrawlResult:
+        """Source-run entrypoint for bounded no-DB diagnostics.
+
+        ``source_input`` replays saved HTML/JSON without network access. ``source_url``
+        performs a single public GET so blocked responses can be captured without
+        retry amplification.
+        """
+        if source_input is not None:
+            return await self._crawl_saved_source_input(source_input, source_url=source_url)
+        if source_url is not None:
+            return await self._crawl_source_url_once(source_url)
+        return await self.crawl()
+
+    async def _crawl_saved_source_input(self, source_input: str, *, source_url: str | None = None) -> CrawlResult:
+        started_at = datetime.now()
+        raw_count = self.count_raw_candidates(source_input)
+        parsed = await self.parse(source_input)
+        valid_items = await self.validate(parsed)
+        items_as_dict = [item.model_dump(mode="json") for item in valid_items]
+        quality_details = summarize_discount_run(
+            items_as_dict,
+            raw_count=len(parsed),
+            source_raw_count=raw_count,
+            invalid_count=max(0, len(parsed) - len(valid_items)),
+            strategy_used="saved_source_input",
+            fallback_used=False,
+            queries_attempted=0,
+            pages_attempted=0,
+            live_enabled=False,
+            fixture_available=True,
+        )
+        quality_details["collection"] = {
+            "mode": "bounded_source_input_no_db",
+            "live_network_enabled": False,
+            "source_url": source_url,
+            "auth_bypass_attempted": False,
+        }
+        finished_at = datetime.now()
+        return CrawlResult(
+            status=CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED,
+            crawler_name=self.info.name,
+            strategy_used="saved_source_input",
+            items_count=len(valid_items),
+            items=items_as_dict,
+            started_at=started_at,
+            finished_at=finished_at,
+            duration_seconds=(finished_at - started_at).total_seconds(),
+            error_msg=None if valid_items else "saved source input produced zero valid LotteMart items",
+            quality_score=quality_details["score"],
+            quality_details=quality_details,
+        )
+
+    async def _crawl_source_url_once(self, source_url: str) -> CrawlResult:
+        started_at = datetime.now()
+        errors: list[str] = []
+        strategy_failures: list[StrategyFailure] = []
+        raw_count = 0
+        parsed: list[DiscountItem] = []
+        waf_blocker: dict[str, object] | None = None
+        session = requests.Session()
+        try:
+            headers = self._anti_detect.get_random_headers()
+            headers.update({
+                "Referer": f"{self.ZETTA_BASE}/",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            })
+            response = self._retry_request(
+                source_url,
+                headers=headers,
+                session=session,
+                timeout=20,
+                max_retries=1,
+                allow_redirects=True,
+            )
+            if response.status_code != 200:
+                message = f"source_url HTTP {response.status_code}"
+                if response.status_code == 202 and self._is_aws_waf_challenge(response.text):
+                    message += " (AWS WAF challenge)"
+                    waf_blocker = self._waf_blocker_details(message, request_url=source_url)
+                errors.append(message)
+                strategy_failures.append(StrategyFailure(
+                    strategy_name="requests",
+                    error_type=ErrorType.HTTP_ERROR,
+                    error_msg=message,
+                    status_code=response.status_code,
+                ))
+            else:
+                raw_count = self.count_raw_candidates(response.text)
+                parsed = self._extract_from_initial_state(response.text) or await self.parse(response.text)
+        finally:
+            session.close()
+
+        valid_items = await self.validate(parsed)
+        items_as_dict = [item.model_dump(mode="json") for item in valid_items]
+        quality_details = summarize_discount_run(
+            items_as_dict,
+            raw_count=len(parsed),
+            source_raw_count=raw_count,
+            invalid_count=max(0, len(parsed) - len(valid_items)),
+            errors=errors,
+            strategy_used="requests",
+            fallback_used=False,
+            queries_attempted=1,
+            pages_attempted=1,
+            live_enabled=True,
+            fixture_available=None,
+        )
+        quality_details["collection"] = {
+            "mode": "bounded_live_http_no_db",
+            "live_network_enabled": True,
+            "source_url": source_url,
+            "auth_bypass_attempted": False,
+            "max_requests": 1,
+        }
+        if waf_blocker:
+            self._annotate_waf_blocker(quality_details, waf_blocker, valid_count=len(valid_items))
+        finished_at = datetime.now()
+        return CrawlResult(
+            status=CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED,
+            crawler_name=self.info.name,
+            strategy_used="requests",
+            items_count=len(valid_items),
+            items=items_as_dict,
+            started_at=started_at,
+            finished_at=finished_at,
+            duration_seconds=(finished_at - started_at).total_seconds(),
+            error_msg="; ".join(errors) if errors and not valid_items else None,
+            errors=strategy_failures,
+            quality_score=quality_details["score"],
+            quality_details=quality_details,
+        )
+
     async def crawl(self) -> CrawlResult:
         """롯데마트 할인 상품을 크롤링한다.
 
@@ -122,9 +262,11 @@ class LottemartCrawler(CrawlerContract):
 
         all_items: list[DiscountItem] = []
         errors: list[str] = []
+        strategy_failures: list[StrategyFailure] = []
         seen_ids: set[str] = set()
         source_raw_count = 0
         pages_attempted = 0
+        waf_blocker: dict[str, object] | None = None
 
         # Reuse TCP connections across multiple search queries
         session = requests.Session()
@@ -152,8 +294,21 @@ class LottemartCrawler(CrawlerContract):
                     response = self._retry_request(url, headers=headers, session=session, timeout=20, allow_redirects=True)
 
                     if response.status_code != 200:
-                        logger.warning(f"[롯데마트] 검색 '{query}' p{page_num} HTTP {response.status_code}")
-                        errors.append(f"검색 '{query}' p{page_num} HTTP {response.status_code}")
+                        message = f"검색 '{query}' p{page_num} HTTP {response.status_code}"
+                        if response.status_code == 202 and self._is_aws_waf_challenge(response.text):
+                            message += " (AWS WAF challenge)"
+                            waf_blocker = self._waf_blocker_details(message, request_url=url, query=query, page=page_num)
+                        logger.warning(f"[롯데마트] {message}")
+                        errors.append(message)
+                        strategy_failures.append(StrategyFailure(
+                            strategy_name="requests",
+                            error_type=ErrorType.HTTP_ERROR,
+                            error_msg=message,
+                            status_code=response.status_code,
+                        ))
+                        if response.status_code == 202:
+                            logger.warning("[롯데마트] HTTP 202 challenge 감지, 추가 요청 중단")
+                            break
                         continue
 
                     source_raw_count += self.count_raw_candidates(response.text)
@@ -176,8 +331,13 @@ class LottemartCrawler(CrawlerContract):
                             seen_ids.add(key)
                             all_items.append(item)
                             new_count += 1
+                            if self.MAX_ITEMS is not None and len(all_items) >= self.MAX_ITEMS:
+                                break
 
                     logger.info(f"[롯데마트] 검색 '{query}' p{page_num}: {new_count}개 신규 ({len(items)}개 중)")
+                    if self.MAX_ITEMS is not None and len(all_items) >= self.MAX_ITEMS:
+                        logger.info(f"[롯데마트] bounded MAX_ITEMS={self.MAX_ITEMS} 도달, 조기 종료")
+                        break
 
                 except Exception as e:
                     logger.warning(f"[롯데마트] 검색 '{query}' 실패: {e}")
@@ -186,8 +346,9 @@ class LottemartCrawler(CrawlerContract):
 
             fallback_used = False
 
-            # HTTP로 충분한 데이터를 수집하지 못한 경우 Playwright 폴백
-            if len(all_items) < 10:
+            # HTTP 수집 부족 또는 WAF로 200건 미만에서 멈춘 경우 정상 브라우저 렌더링 경로 1회 시도
+            target_items = min(self.MAX_ITEMS or 300, 200)
+            if len(all_items) < 10 or (waf_blocker is not None and len(all_items) < target_items):
                 logger.info("[롯데마트] HTTP 수집 부족 → Playwright 폴백 시도")
                 try:
                     pw_items = await self._fetch_via_playwright()
@@ -214,6 +375,8 @@ class LottemartCrawler(CrawlerContract):
                 queries_attempted=len(self.SEARCH_QUERIES),
                 pages_attempted=pages_attempted,
             )
+            if waf_blocker:
+                self._annotate_waf_blocker(quality_details, waf_blocker, valid_count=len(valid_items))
 
             finished_at = datetime.now()
             duration = (finished_at - started_at).total_seconds()
@@ -230,6 +393,7 @@ class LottemartCrawler(CrawlerContract):
                 finished_at=finished_at,
                 duration_seconds=duration,
                 error_msg="; ".join(errors) if errors and not valid_items else None,
+                errors=strategy_failures,
                 quality_score=quality_details["score"],
                 quality_details=quality_details,
             )
@@ -279,9 +443,13 @@ class LottemartCrawler(CrawlerContract):
         """Build bounded search/category pagination source requests."""
         requests_to_make: list[dict[str, str | int]] = []
         seen: set[tuple[str, int]] = set()
-        for query in [*self.SEARCH_QUERIES, *self.CATEGORY_QUERIES]:
-            category_hint = query if query in self.CATEGORY_QUERIES else ""
-            for page_num in range(1, self.MAX_PAGES + 1):
+        queries = [*self.SEARCH_QUERIES, *self.CATEGORY_QUERIES]
+        # Prefer breadth-first page-1 coverage across public search/category pages before
+        # deeper pagination, so bounded diagnostics do not spend early requests on likely
+        # duplicate page variants before discovering source blocking.
+        for page_num in range(1, self.MAX_PAGES + 1):
+            for query in queries:
+                category_hint = query if query in self.CATEGORY_QUERIES else ""
                 key = (query, page_num)
                 if key in seen:
                     continue
@@ -295,6 +463,77 @@ class LottemartCrawler(CrawlerContract):
                     }
                 )
         return requests_to_make
+
+    def _is_aws_waf_challenge(self, html: str) -> bool:
+        """Return true for CloudFront/AWS WAF challenge shells, not product pages."""
+        sample = (html or "")[:5000].lower()
+        return "awswaf" in sample or "aws-waf" in sample or "aws waf" in sample
+
+    def _waf_blocker_details(
+        self,
+        message: str,
+        *,
+        request_url: str,
+        query: str | None = None,
+        page: int | None = None,
+    ) -> dict[str, object]:
+        return {
+            "blocked": True,
+            "blocker": "aws_waf_http_202",
+            "status_code": 202,
+            "message": message,
+            "request_url": request_url,
+            "query": query,
+            "page": page,
+            "auth_bypass_attempted": False,
+            "safe_next_action": (
+                "Do not retry aggressively or attempt authentication/access-control bypass. "
+                "Use saved-source replay or a manually approved browser-rendered source artifact."
+            ),
+        }
+
+    def _annotate_waf_blocker(
+        self,
+        quality_details: dict,
+        waf_blocker: dict[str, object],
+        *,
+        valid_count: int,
+    ) -> None:
+        fetch = quality_details.setdefault("fetch", {})
+        fetch.update(waf_blocker)
+        alerts = quality_details.setdefault("alerts", [])
+        for alert in ("source_blocked_aws_waf_202", "partial_lottemart_waf_blocker"):
+            if alert not in alerts:
+                alerts.append(alert)
+        next_action = str(waf_blocker["safe_next_action"])
+        next_actions = quality_details.setdefault("next_actions", [])
+        if next_action not in next_actions:
+            next_actions.append(next_action)
+        quality_summary = quality_details.setdefault("quality_summary", {})
+        quality_summary["status"] = "blocked" if valid_count < 200 else quality_summary.get("status", "warning")
+        quality_summary["registered_vs_collecting"] = quality_summary["status"]
+        summary_actions = quality_summary.setdefault("next_actions", [])
+        if next_action not in summary_actions:
+            summary_actions.append(next_action)
+        diagnostics = quality_details.setdefault("operator_diagnostics", [])
+        diagnostics.append(
+            {
+                "code": "aws_waf_http_202_blocker",
+                "severity": "error" if valid_count < 200 else "warning",
+                "stage": "source_fetch",
+                "message": waf_blocker["message"],
+                "next_action": next_action,
+                "counts": {
+                    "valid": valid_count,
+                    "target_minimum": 200,
+                },
+                "blocked": True,
+                "status_code": 202,
+                "auth_bypass_attempted": False,
+            }
+        )
+        quality_details["operator_diagnostics"] = diagnostics
+        quality_summary["diagnostic_count"] = len(diagnostics)
 
     def _extract_from_initial_state(self, html: str) -> list[DiscountItem]:
         """window.__INITIAL_STATE__ Redux 상태에서 productEntities를 추출한다.
@@ -492,8 +731,12 @@ class LottemartCrawler(CrawlerContract):
             from engine.playwright_helper import PlaywrightHelper
 
             async with PlaywrightHelper() as helper:
-                for query in self.SEARCH_QUERIES[:3]:  # Playwright는 느리므로 3개만
-                    url = f"{self.ZETTA_BASE}/search?query={quote(query)}"
+                request_cap = self.PLAYWRIGHT_FALLBACK_QUERY_CAP
+                if self.MAX_REQUESTS is not None:
+                    request_cap = max(1, min(request_cap, self.MAX_REQUESTS))
+                for source_request in self._build_source_requests()[:request_cap]:
+                    query = str(source_request["query"])
+                    url = str(source_request["url"])
                     try:
                         html = await helper.get_rendered_html(
                             url,
@@ -511,6 +754,8 @@ class LottemartCrawler(CrawlerContract):
                             page_items = self._parse_spa_html(html, query)
                             items.extend(page_items)
                             logger.info(f"[롯데마트] Playwright '{query}': {len(page_items)}개 (html)")
+                        if self.MAX_ITEMS is not None and len(items) >= self.MAX_ITEMS:
+                            break
                     except Exception as e:
                         logger.debug(f"[롯데마트] Playwright 검색 '{query}' 실패: {e}")
                         continue

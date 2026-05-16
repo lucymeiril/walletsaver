@@ -764,6 +764,56 @@ def test_chunked_live_labeling_enforces_max_provider_call_bound(tmp_path: Path) 
             http_json=fail_http,
         )
 
+
+def test_chunked_live_labeling_passes_remaining_provider_call_cap(tmp_path: Path) -> None:
+    input_json = tmp_path / "four-live-rows.json"
+    input_json.write_text(
+        json.dumps(
+            [
+                {"name": f"남은 호출 제한 상품 {index}", "sale_price": 1000 + index, "source": "emart"}
+                for index in range(4)
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    caps: list[int] = []
+
+    def fake_http(method: str, url: str, *, body=None, **_kwargs):
+        if method == "POST" and url.endswith("/api/ingest/raw-records/label"):
+            caps.append(body["max_provider_calls"])
+            return {
+                "status": "labeled",
+                "raw_batch_id": f"batch-{len(caps)}",
+                "provider_mode": "stub",
+                "provider_calls": 2 if len(caps) == 1 else 1,
+                "ai_batches": 1,
+                "proposal_ids": [],
+            }
+        if method == "GET" and "/api/review/audit?" in url:
+            return {"issues": []}
+        if method == "GET" and "/api/review/publish-eligibility?" in url:
+            return {"items": []}
+        raise AssertionError(f"unexpected HTTP call: {method} {url}")
+
+    artifact = harness.run_harness(
+        _args(
+            tmp_path,
+            input_json=input_json,
+            retain_all_input=True,
+            allow_live_provider=True,
+            provider_id="google-dev",
+            validation_mode="live",
+            ai_batch_size=2,
+            max_provider_calls=3,
+        ),
+        http_json=fake_http,
+    )
+
+    assert caps == [3, 1]
+    assert artifact["provider_response_summary"]["provider_calls"] == 3
+
+
 def test_no_key_live_opt_in_is_observably_skipped_without_provider_call(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -1123,6 +1173,88 @@ def test_db_admin_submit_skips_when_no_rows_are_eligible(tmp_path: Path) -> None
         "skipped": True,
         "reason": "no eligible rows after publish eligibility gates",
     }
+
+
+def test_db_admin_submit_posts_selected_ai_safe_pending_final_approval(tmp_path: Path) -> None:
+    raw_record_id = "pending-final-approval-row"
+    calls: list[tuple[str, str, dict | None]] = []
+
+    def fake_http(method: str, url: str, *, body=None, **_kwargs):
+        calls.append((method, url, body))
+        if method == "POST" and url.endswith("/api/ingest/raw-records/label"):
+            return {
+                "raw_batch_id": "batch-pending-final",
+                "provider_calls": 1,
+                "ai_batches": 1,
+                "proposal_ids": [],
+            }
+        if method == "GET" and "/api/review/audit?" in url:
+            return {"issues": []}
+        if method == "GET" and "/api/review/publish-eligibility?" in url:
+            return {
+                "items": [
+                    {
+                        "raw_record_id": raw_record_id,
+                        "status": "pending_db_review",
+                        "eligible": False,
+                        "ai_safe_final_approve_eligible": True,
+                        "db_ingestion_id": "782",
+                        "item": {
+                            "name": "풀무원 국산콩 두부 300g",
+                            "sale_price": 1980,
+                            "source_url": "https://emart.example/products/tofu-300g",
+                        },
+                        "blockers": [
+                            "pending_db_review: already submitted to DB-admin; wait for final DB-admin approval or rollback the pending ingestion before resubmitting"
+                        ],
+                    }
+                ]
+            }
+        if method == "POST" and url.endswith("/api/review/publish-approved"):
+            assert body == {
+                "raw_record_ids": [raw_record_id],
+                "reviewer_id": "manual-test",
+                "confirm_count": 1,
+                "batch_id": "batch-pending-final",
+            }
+            return {
+                "submitted_to_db_admin": 1,
+                "ai_safe_final_approved": 1,
+                "public_db_verified": 1,
+                "rollback_re_review_supported": 1,
+                "pending_db_review": 0,
+                "results": [
+                    {
+                        "raw_record_id": raw_record_id,
+                        "status": "published",
+                        "skipped_duplicate": True,
+                        "ai_safe_final_approve": {
+                            "status": "approved",
+                            "saved": 1,
+                            "public_db_verification": {"verified": True},
+                            "rollback_supported": True,
+                            "re_review_supported": True,
+                        },
+                    }
+                ],
+            }
+        raise AssertionError(f"unexpected HTTP call: {method} {url}")
+
+    artifact = harness.run_harness(
+        _args(
+            tmp_path,
+            allow_live_provider=True,
+            provider_id="google-dev",
+            allow_db_admin_submit=True,
+            max_items=1,
+        ),
+        http_json=fake_http,
+    )
+
+    assert any(method == "POST" and url.endswith("/api/review/publish-approved") for method, url, _ in calls)
+    assert artifact["db_admin_submit_result"]["ai_safe_final_approved"] == 1
+    assert artifact["db_admin_acceptance"]["accepted"] is True
+
 
 def test_db_admin_submit_posts_eligible_rows_and_records_raw_vs_final(tmp_path: Path) -> None:
     calls: list[tuple[str, str, dict | None]] = []

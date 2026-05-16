@@ -155,11 +155,18 @@ class SourceRunPipeline:
         crawl_result = None
         for attempt in range(1, self.retry_count + 1):
             try:
-                crawl_result = await _call_crawler(crawler, since=since, source_input=source_input)
+                crawl_result = await _call_crawler(
+                    crawler,
+                    since=since,
+                    source_input=source_input,
+                    source_url=source_url,
+                )
                 attempts.append({"attempt": attempt, "status": getattr(crawl_result.status, "value", crawl_result.status)})
                 if crawl_result.status == CrawlStatus.SUCCESS:
                     break
                 errors.append(crawl_result.error_msg or f"status={crawl_result.status}")
+                if ((getattr(crawl_result, "quality_details", {}) or {}).get("fetch", {}) or {}).get("blocked"):
+                    break
             except Exception as exc:
                 attempts.append({"attempt": attempt, "status": "failed", "error": str(exc)})
                 errors.append(str(exc))
@@ -223,14 +230,27 @@ class SourceRunPipeline:
                 fh.write(json.dumps(record.model_dump(mode="json"), ensure_ascii=False, default=str) + "\n")
 
         source_input_manifest = _source_input_manifest(source_input, source_input_label)
+        quality_details = getattr(crawl_result, "quality_details", {}) or {}
+        collection_details = quality_details.get("collection", {}) or {}
+        fetch_details = quality_details.get("fetch", {}) or {}
+        collection_mode = (
+            "bounded_source_input_no_db"
+            if source_input is not None
+            else collection_details.get("mode") or fetch_details.get("collection_mode") or "crawler_default_no_db"
+        )
+        live_network_enabled = False if source_input is not None else collection_details.get("live_network_enabled")
+        parsed_unique_count = len({stable_source_key(source, item) for item in raw_items})
         handoff = {
             "run_id": run_id,
             "source_name": source,
             "crawler_name": crawler_name,
             "schema_type": schema_type,
+            "source_url": source_url,
             "source_input": source_input_manifest,
-            "collection_mode": "bounded_source_input_no_db" if source_input is not None else "crawler_default_no_db",
-            "live_network_enabled": False if source_input is not None else None,
+            "collection_mode": collection_mode,
+            "live_network_enabled": live_network_enabled,
+            "collection": collection_details,
+            "fetch": fetch_details,
             "records": [record.model_dump(mode="json") for record in flat_records],
             "batches": [batch.model_dump(mode="json") for batch in batches],
         }
@@ -258,12 +278,13 @@ class SourceRunPipeline:
             "completed_at": now,
             "counts": {
                 "source_raw": int(
-                    ((getattr(crawl_result, "quality_details", {}) or {}).get("item_counts", {}) or {}).get(
-                        "source_raw"
-                    )
+                    (quality_details.get("item_counts", {}) or {}).get("source_raw")
                     or len(raw_items)
                 ),
+                "parsed": int((quality_details.get("item_counts", {}) or {}).get("parsed") or len(raw_items)),
                 "parsed_valid": len(raw_items),
+                "parsed_unique": parsed_unique_count,
+                "unique": parsed_unique_count,
                 "found": len(raw_items),
                 "new": counts["new"],
                 "changed": counts["changed"],
@@ -271,9 +292,12 @@ class SourceRunPipeline:
                 "records_handed_off": len(flat_records),
                 "skipped_invalid": skipped_invalid,
             },
+            "source_url": source_url,
             "source_input": source_input_manifest,
-            "collection_mode": "bounded_source_input_no_db" if source_input is not None else "crawler_default_no_db",
-            "live_network_enabled": False if source_input is not None else None,
+            "collection_mode": collection_mode,
+            "live_network_enabled": live_network_enabled,
+            "collection": collection_details,
+            "fetch": fetch_details,
             "artifacts": {
                 "manifest": str(manifest_path),
                 "raw_records_jsonl": raw_artifact_uri,
@@ -390,11 +414,19 @@ def source_fingerprint(item: dict[str, Any]) -> str:
     return _hash_text(json.dumps(stable, ensure_ascii=False, sort_keys=True, default=str))
 
 
-async def _call_crawler(crawler: Any, *, since: str | None, source_input: str | None = None) -> Any:
+async def _call_crawler(
+    crawler: Any,
+    *,
+    since: str | None,
+    source_input: str | None = None,
+    source_url: str | None = None,
+) -> Any:
     if hasattr(crawler, "crawl_incremental"):
         crawl_incremental = crawler.crawl_incremental
         signature = inspect.signature(crawl_incremental)
         kwargs: dict[str, Any] = {"since": since}
+        if source_url is not None and "source_url" in signature.parameters:
+            kwargs["source_url"] = source_url
         if source_input is not None:
             if "source_input" in signature.parameters:
                 kwargs["source_input"] = source_input
@@ -411,6 +443,8 @@ async def _call_crawler(crawler: Any, *, since: str | None, source_input: str | 
     kwargs = {}
     if "since" in signature.parameters:
         kwargs["since"] = since
+    if source_url is not None and "source_url" in signature.parameters:
+        kwargs["source_url"] = source_url
     if source_input is not None:
         if "fixture" in signature.parameters:
             kwargs["fixture"] = source_input

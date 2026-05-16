@@ -1635,6 +1635,7 @@ def run_harness(
             chunk_statuses: list[dict[str, Any]] = []
             first_chunk_error: BaseException | None = None
             http_label_attempts = 0
+            provider_call_attempts_consumed = 0
             last_label_call_at: float | None = None
             for chunk_index, batch in enumerate(split_batches, start=1):
                 raw_record_ids = [record.raw_record_id for record in batch]
@@ -1646,6 +1647,7 @@ def run_harness(
                     "records": [_record_payload(record) for record in batch],
                     "max_ai_batch_items": args.ai_batch_size,
                     "max_ai_batch_prompt_chars": args.ai_batch_prompt_chars,
+                    "max_provider_calls": max(1, args.max_provider_calls - provider_call_attempts_consumed),
                 }
                 chunk_attempts: list[dict[str, Any]] = []
                 result: dict[str, Any] | None = None
@@ -1653,7 +1655,10 @@ def run_harness(
                 blocked_retry_detail: dict[str, Any] | None = None
                 retryable = False
                 for attempt_index in range(1, args.label_chunk_retries + 2):
-                    if http_label_attempts >= args.max_provider_calls:
+                    if (
+                        http_label_attempts >= args.max_provider_calls
+                        or provider_call_attempts_consumed >= args.max_provider_calls
+                    ):
                         blocked_retry_detail = {
                             "class": "ProviderCallBoundExceeded",
                             "message": (
@@ -1661,6 +1666,7 @@ def run_harness(
                             ),
                             "location": None,
                             "attempted_label_calls": http_label_attempts,
+                            "attempted_provider_calls": provider_call_attempts_consumed,
                             "max_provider_calls": args.max_provider_calls,
                         }
                         final_error_detail = blocked_retry_detail
@@ -1706,6 +1712,7 @@ def run_harness(
                         if not retryable:
                             break
                 if result is not None:
+                    provider_call_attempts_consumed += int(result.get("provider_calls") or 0)
                     ingest_results.append(result)
                     chunk_statuses.append(
                         {
@@ -1857,7 +1864,11 @@ def run_harness(
             }
             if args.allow_db_admin_submit:
                 eligible_items = review_fetch.get("publish_eligibility", {}).get("items", [])
-                eligible_ids = [row["raw_record_id"] for row in eligible_items if row.get("eligible")]
+                eligible_ids = [
+                    row["raw_record_id"]
+                    for row in eligible_items
+                    if row.get("eligible") or row.get("ai_safe_final_approve_eligible")
+                ]
                 if eligible_ids:
                     db_admin_result = http_json(
                         "POST",
