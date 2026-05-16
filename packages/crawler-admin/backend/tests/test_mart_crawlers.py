@@ -721,16 +721,18 @@ class TestCrawlWithMock:
         )
 
         with patch("crawlers.marts.lottemart.crawler.requests.Session.get", side_effect=[first_resp, waf_resp]) as mock_get, \
-             patch.object(crawler, "_fetch_via_playwright", return_value=[]):
+             patch.object(crawler, "_fetch_via_playwright", return_value=[]) as mock_playwright:
             result = await crawler.crawl()
 
         assert mock_get.call_count == 2
+        mock_playwright.assert_not_called()
         assert result.status == CrawlStatus.SUCCESS
         assert result.items_count == 2
         assert result.quality_details["source_errors"] == ["검색 '특가' p1 HTTP 202 (AWS WAF challenge)"]
         assert result.errors[0].status_code == 202
         assert result.quality_details["fetch"]["blocked"] is True
         assert result.quality_details["fetch"]["blocker"] == "aws_waf_http_202"
+        assert result.quality_details["fetch"]["auth_bypass_attempted"] is False
         assert "source_blocked_aws_waf_202" in result.quality_details["alerts"]
         assert result.quality_details["quality_summary"]["status"] == "blocked"
 

@@ -30,7 +30,7 @@ class BaseStrategy(ABC):
     """
     전략 베이스 클래스 — Template Method 패턴으로 공통 흐름을 강제한다.
 
-    fetch() 흐름: 봇 탐지 회피 딜레이 → _do_fetch(서브클래스 구현) → 에러를 CrawlError로 래핑
+    fetch() 흐름: 요청 간 딜레이 → _do_fetch(서브클래스 구현) → 에러를 CrawlError로 래핑
     왜 에러를 래핑하는가: executor는 CrawlError만 catch하므로,
     requests.ConnectionError 같은 라이브러리 예외를 그대로 던지면 cascade가 깨진다.
     """
@@ -56,9 +56,9 @@ class BaseStrategy(ABC):
     async def fetch(self, url: str, **options) -> str:
         """
         URL에서 콘텐츠를 가져온다.
-        AntiDetect 딜레이를 적용하고, 에러를 CrawlError로 래핑한다.
+        요청 간 딜레이를 적용하고, 에러를 CrawlError로 래핑한다.
         """
-        # 봇 탐지 회피: 인간처럼 불규칙한 간격을 둬야 차단 안 당함
+        # Rate-limit requests; do not use this as WAF/access-control bypass.
         delay = self._anti_detect.get_random_delay()
         logger.debug(f"[{self.name}] 딜레이: {delay:.1f}초")
         await asyncio.sleep(delay)

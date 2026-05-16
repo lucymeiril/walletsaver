@@ -1,7 +1,8 @@
 """
-전략 ③ — Selenium + Stealth.
+전략 ③ — Selenium rendering.
 
 JavaScript 렌더링이 필요한 동적 SPA 사이트용.
+WAF/로그인/CAPTCHA 우회에는 사용하지 않는다.
 difficulty: 3
 """
 
@@ -20,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 class SeleniumStrategy(BaseStrategy):
-    """Selenium + selenium-stealth로 JS 렌더링 크롤링."""
+    """Ordinary Selenium renderer for public pages; no stealth/evasion."""
 
     def __init__(
         self,
@@ -58,40 +59,14 @@ class SeleniumStrategy(BaseStrategy):
         if self._headless:
             options.add_argument("--headless=new")
 
-        # 안티봇 탐지 회피 옵션
-        options.add_argument("--disable-blink-features=AutomationControlled")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-gpu")
         options.add_argument("--js-flags=--max-old-space-size=256")
         options.add_argument("--single-process")
         options.add_argument("--disable-extensions")
-        options.add_argument(f"--user-agent={self._anti_detect.get_random_user_agent()}")
-
-        # 프록시 설정
-        proxy = self._anti_detect.get_random_proxy()
-        if proxy:
-            options.add_argument(f"--proxy-server={proxy}")
-
-        options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        options.add_experimental_option("useAutomationExtension", False)
 
         driver = webdriver.Chrome(options=options)
-
-        # selenium-stealth 적용
-        try:
-            from selenium_stealth import stealth
-            stealth(
-                driver,
-                languages=["ko-KR", "ko", "en-US", "en"],
-                vendor="Google Inc.",
-                platform="Win32",
-                webgl_vendor="Intel Inc.",
-                renderer="Intel Iris OpenGL Engine",
-                fix_hairline=True,
-            )
-        except ImportError:
-            logger.warning("selenium-stealth 미설치. 기본 Selenium으로 진행.")
 
         driver.set_page_load_timeout(self._wait_timeout * 3)
 

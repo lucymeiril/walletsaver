@@ -6,12 +6,11 @@ Playwright 헬퍼 — SPA 사이트 크롤링을 위한 공유 유틸리티.
 
 핵심 기능:
   - headless Chromium 브라우저 관리
-  - stealth 모드 자동 적용
   - 페이지 로딩 대기 (selector/timeout 기반)
   - API 응답 인터셉트 (XHR/Fetch 가로채기)
   - 안전한 리소스 정리 (context manager)
 
-의존: playwright, playwright-stealth (선택)
+의존: playwright
 """
 
 from __future__ import annotations
@@ -57,7 +56,6 @@ class PlaywrightHelper:
         self._browser = await self._playwright.chromium.launch(
             headless=self._headless,
             args=[
-                "--disable-blink-features=AutomationControlled",
                 "--no-sandbox",
                 "--disable-dev-shm-usage",
             ],
@@ -72,13 +70,6 @@ class PlaywrightHelper:
             ctx_options["user_agent"] = self._user_agent
 
         self._context = await self._browser.new_context(**ctx_options)
-
-        # stealth 모드 적용 — 봇 탐지 우회
-        try:
-            from playwright_stealth import stealth_async
-            await stealth_async(self._context)
-        except ImportError:
-            logger.debug("playwright-stealth 미설치, 기본 모드로 진행")
 
         return self
 

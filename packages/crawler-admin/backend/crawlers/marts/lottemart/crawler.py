@@ -6,11 +6,10 @@
 검색 페이지(/search?query=...)를 통해 상품 데이터를 수집하고,
 __INITIAL_STATE__의 productEntities에서 직접 추출한다.
 
-봇 탐지 회피 전략:
-  - 검색어별 1~3초 랜덤 딜레이 (AntiDetect)
-  - User-Agent 로테이션
-  - Referer 헤더로 정상 브라우저 흉내
-  - HTTP 요청 실패 시 Playwright 브라우저 렌더링으로 폴백
+수집 전략:
+  - 검색어별 1~3초 랜덤 딜레이
+  - HTTP 요청 실패 시 일반 Playwright 브라우저 렌더링으로 폴백
+  - AWS WAF/접근제어 응답은 우회하지 않고 차단 진단으로 기록
 
 데이터 흐름: __INITIAL_STATE__ JSON → DiscountItem → ProductPrice → DB
 용도: 할인 이력 DB 구축 (discount_history)
@@ -52,10 +51,10 @@ logger = logging.getLogger(__name__)
 class LottemartCrawler(CrawlerContract):
     """롯데마트 크롤러 — lottemartzetta.com __INITIAL_STATE__ 기반 할인 상품 수집.
 
-    봇 탐지 회피 전략:
-      - 검색어별 1~3초 랜덤 딜레이 (AntiDetect)
-      - User-Agent 로테이션
-      - HTTP 실패 시 Playwright 브라우저 렌더링으로 자동 전환
+    수집 전략:
+      - 검색어별 1~3초 랜덤 딜레이
+      - HTTP 실패 시 일반 Playwright 브라우저 렌더링으로 자동 전환
+      - AWS WAF/접근제어 응답은 우회하지 않고 차단 진단으로 기록
     """
 
     BASE_URL = "https://www.lottemart.com"
@@ -287,7 +286,7 @@ class LottemartCrawler(CrawlerContract):
                         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
                     })
 
-                    # 봇 탐지 회피 딜레이 + jitter
+                    # Rate-limit requests with jitter; do not bypass WAF/access-control.
                     delay = self._anti_detect.get_random_delay()
                     await _asyncio.sleep(delay + random.uniform(0, 0.5))
 
@@ -346,9 +345,9 @@ class LottemartCrawler(CrawlerContract):
 
             fallback_used = False
 
-            # HTTP 수집 부족 또는 WAF로 200건 미만에서 멈춘 경우 정상 브라우저 렌더링 경로 1회 시도
-            target_items = min(self.MAX_ITEMS or 300, 200)
-            if len(all_items) < 10 or (waf_blocker is not None and len(all_items) < target_items):
+            # HTTP 수집 부족 시 일반 브라우저 렌더링 경로 1회 시도.
+            # WAF/접근제어 응답은 브라우저로 우회하지 않고 차단 진단으로 남긴다.
+            if waf_blocker is None and len(all_items) < 10:
                 logger.info("[롯데마트] HTTP 수집 부족 → Playwright 폴백 시도")
                 try:
                     pw_items = await self._fetch_via_playwright()
@@ -487,8 +486,9 @@ class LottemartCrawler(CrawlerContract):
             "page": page,
             "auth_bypass_attempted": False,
             "safe_next_action": (
-                "Do not retry aggressively or attempt authentication/access-control bypass. "
-                "Use saved-source replay or a manually approved browser-rendered source artifact."
+                "Do not retry aggressively or attempt authentication/access-control/WAF bypass. "
+                "Use an official/public feed/API, partner API, caller-supplied saved-source export, "
+                "manual source import, or an alternate public source."
             ),
         }
 

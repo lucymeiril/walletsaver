@@ -1343,6 +1343,63 @@ def _redact(value: Any) -> Any:
         return [_redact(item) for item in value]
     return value
 
+def build_db_admin_submit_plan(publish_items: list[Any]) -> dict[str, Any]:
+    """Select only rows safe for the one-shot submit + ai-safe-final-approve path."""
+    rows = [item for item in publish_items if isinstance(item, dict)]
+    safe_rows: list[dict[str, Any]] = []
+    held_rows: list[dict[str, Any]] = []
+    reason_counts: Counter[str] = Counter()
+
+    for row in rows:
+        raw_id = row.get("raw_record_id")
+        if row.get("ai_safe_final_approve_eligible") is True:
+            safe_rows.append(row)
+            continue
+
+        reasons: list[str] = []
+        if not row.get("eligible"):
+            reasons.extend(str(blocker) for blocker in row.get("blockers") or ["not publish eligible"])
+        elif row.get("post_publish_audit_flags"):
+            reasons.append("post_publish_audit_flags")
+        elif row.get("blocking_audit_issues"):
+            reasons.append("blocking_audit_issues")
+        else:
+            reasons.append("eligible_but_not_ai_safe_final_approve")
+        for reason in reasons:
+            reason_counts[reason] += 1
+        held_rows.append(
+            {
+                "raw_record_id": raw_id,
+                "status": row.get("status"),
+                "eligible": row.get("eligible"),
+                "ai_safe_final_approve_eligible": row.get("ai_safe_final_approve_eligible"),
+                "db_handoff_mode": row.get("db_handoff_mode"),
+                "publication_kind": row.get("publication_kind"),
+                "discount_claim_status": row.get("discount_claim_status"),
+                "reasons": _dedupe_list(reasons),
+            }
+        )
+
+    safe_ids = [str(row["raw_record_id"]) for row in safe_rows if row.get("raw_record_id")]
+    return {
+        "mode": "ai_safe_final_approve_only",
+        "submit_allowed_rows": len(safe_ids),
+        "raw_record_ids": safe_ids,
+        "confirm_count": len(safe_ids),
+        "held_for_review_count": len(held_rows),
+        "held_for_review_rows": held_rows[:100],
+        "held_reason_counts": dict(sorted(reason_counts.items())),
+        "eligible_but_not_final_safe_count": sum(
+            1
+            for row in rows
+            if row.get("eligible") and row.get("ai_safe_final_approve_eligible") is not True
+        ),
+        "operator_safety_rule": (
+            "Only rows marked ai_safe_final_approve_eligible are submitted; eligible rows "
+            "with keyword/category/unit/audit caveats stay held for DB-admin/manual review."
+        ),
+    }
+
 def effective_live_items_cap(args: argparse.Namespace) -> int:
     cap = int(getattr(args, "max_live_items_cap", MAX_LIVE_ITEMS))
     allow_large = bool(getattr(args, "allow_large_live_batch", False))
@@ -1621,6 +1678,7 @@ def run_harness(
     provider_error: BaseException | None = None
     review_fetch: dict[str, Any] = {}
     db_admin_result: dict[str, Any] | None = None
+    db_admin_submit_plan: dict[str, Any] = build_db_admin_submit_plan([])
     api_key = resolve_secret_alias(args.ai_admin_api_key_alias) if args.ai_admin_api_key_alias else None
     provider_skip_reason = None
     if args.allow_live_provider and provider_key_alias and not provider_key_present:
@@ -1863,12 +1921,10 @@ def run_harness(
                 "publish_eligibility": {"items": publish_items},
             }
             if args.allow_db_admin_submit:
-                eligible_items = review_fetch.get("publish_eligibility", {}).get("items", [])
-                eligible_ids = [
-                    row["raw_record_id"]
-                    for row in eligible_items
-                    if row.get("eligible") or row.get("ai_safe_final_approve_eligible")
-                ]
+                db_admin_submit_plan = build_db_admin_submit_plan(
+                    review_fetch.get("publish_eligibility", {}).get("items", [])
+                )
+                eligible_ids = db_admin_submit_plan["raw_record_ids"]
                 if eligible_ids:
                     db_admin_result = http_json(
                         "POST",
@@ -1885,7 +1941,8 @@ def run_harness(
                 else:
                     db_admin_result = {
                         "skipped": True,
-                        "reason": "no eligible rows after publish eligibility gates",
+                        "reason": "no ai-safe-final-approve eligible rows after publish eligibility gates",
+                        "db_admin_submit_plan": db_admin_submit_plan,
                     }
         except Exception as exc:
             provider_error = exc
@@ -2032,6 +2089,7 @@ def run_harness(
         "proposals": _redact(proposals),
         "audit_issues": review_fetch.get("audit", local_audit),
         "publish_blockers": review_fetch.get("publish_eligibility", {"items": local_publish_rows}),
+        "db_admin_submit_plan": _redact(db_admin_submit_plan),
         "db_admin_submit_result": _redact(db_admin_result),
         "db_admin_acceptance": _redact(db_admin_acceptance),
         "raw_vs_final": raw_vs_final,

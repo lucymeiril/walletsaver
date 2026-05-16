@@ -1,14 +1,11 @@
-"""
-전략 ④ — undetected-chromedriver.
+"""Disabled undetected browser strategy.
 
-강화된 봇 탐지 우회 (Selenium ChromeDriver 패치 버전).
-difficulty: 4
+Undetected browser automation is not a safe source-collection path for this
+project because it can be interpreted as bot/WAF challenge evasion.
 """
 
 from __future__ import annotations
 
-import asyncio
-import logging
 from typing import Optional
 
 from core.exceptions import CrawlError
@@ -16,11 +13,9 @@ from core.models import ErrorType
 from engine.anti_detect import AntiDetect
 from engine.strategies.base import BaseStrategy
 
-logger = logging.getLogger(__name__)
-
 
 class UndetectedStrategy(BaseStrategy):
-    """undetected-chromedriver로 강화된 봇 탐지 우회."""
+    """Disabled: do not use undetected browser automation for collection."""
 
     def __init__(
         self,
@@ -31,7 +26,6 @@ class UndetectedStrategy(BaseStrategy):
         super().__init__(anti_detect)
         self._headless = headless
         self._wait_timeout = wait_timeout
-        self._driver = None
 
     @property
     def name(self) -> str:
@@ -42,122 +36,9 @@ class UndetectedStrategy(BaseStrategy):
         return 4
 
     async def _do_fetch(self, url: str, **options) -> str:
-        wait_timeout = options.get("wait_timeout", self._wait_timeout)
-        loop = asyncio.get_running_loop()
-        html = await loop.run_in_executor(None, self._fetch_sync, url, wait_timeout)
-        return html
-
-    def _fetch_sync(self, url: str, wait_timeout: int) -> str:
-        """동기 undetected-chromedriver fetch."""
-        try:
-            import undetected_chromedriver as uc
-        except ImportError:
-            raise CrawlError(
-                "undetected-chromedriver가 설치되지 않았습니다. pip install undetected-chromedriver",
-                error_type=ErrorType.UNKNOWN,
-                strategy_name=self.name,
-            )
-
-        options = uc.ChromeOptions()
-        if self._headless:
-            options.add_argument("--headless=new")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--js-flags=--max-old-space-size=256")
-        options.add_argument(f"--user-agent={self._anti_detect.get_random_user_agent()}")
-
-        proxy = self._anti_detect.get_random_proxy()
-        if proxy:
-            options.add_argument(f"--proxy-server={proxy}")
-
-        driver = uc.Chrome(options=options)
-        self._driver = driver
-
-        # Register with watchdog — undetected-chromedriver spawns a separate Chrome binary
-        from engine.browser_watchdog import get_browser_watchdog
-        watchdog = get_browser_watchdog()
-        try:
-            pid = driver.browser_pid  # undetected-chromedriver exposes this
-            if pid:
-                watchdog.register_pid(pid)
-        except AttributeError:
-            pass
-        try:
-            pid = driver.service.process.pid
-            watchdog.register_pid(pid)
-        except Exception:
-            pass
-
-        try:
-            driver.get(url)
-            import time
-            time.sleep(wait_timeout * 0.5)
-
-            html = driver.page_source
-
-            if not html or len(html.strip()) < 100:
-                raise CrawlError(
-                    "빈 응답",
-                    error_type=ErrorType.EMPTY_RESPONSE,
-                    strategy_name=self.name,
-                )
-
-            html_lower = html.lower()
-            if "captcha" in html_lower or "recaptcha" in html_lower:
-                raise CrawlError(
-                    "CAPTCHA 감지",
-                    error_type=ErrorType.CAPTCHA_DETECTED,
-                    strategy_name=self.name,
-                )
-
-            return html
-
-        except CrawlError:
-            raise
-        except Exception as e:
-            raise CrawlError(
-                f"undetected-chromedriver 오류: {e}",
-                error_type=ErrorType.UNKNOWN,
-                strategy_name=self.name,
-            )
-        finally:
-            self._safe_quit_driver(driver)
-            self._driver = None
-
-    def _safe_quit_driver(self, driver) -> None:
-        """Quit the undetected-chromedriver and verify all processes are dead."""
-        from engine.browser_watchdog import get_browser_watchdog
-        watchdog = get_browser_watchdog()
-
-        pids_to_check = []
-        try:
-            pids_to_check.append(driver.browser_pid)
-        except (AttributeError, Exception):
-            pass
-        try:
-            pids_to_check.append(driver.service.process.pid)
-        except Exception:
-            pass
-
-        try:
-            driver.quit()
-        except Exception:
-            pass
-
-        for pid in pids_to_check:
-            if pid:
-                try:
-                    import psutil
-                    proc = psutil.Process(pid)
-                    if proc.is_running():
-                        proc.kill()
-                        proc.wait(timeout=5)
-                        logger.warning("[UndetectedStrategy] force-killed PID=%d", pid)
-                except Exception:
-                    pass
-                watchdog.unregister_pid(pid)
-
-    async def cleanup(self) -> None:
-        if self._driver:
-            self._safe_quit_driver(self._driver)
-            self._driver = None
+        raise CrawlError(
+            "undetected browser automation is disabled; use ordinary Playwright/Selenium, "
+            "saved-source input, or an official/public feed/API instead.",
+            error_type=ErrorType.UNKNOWN,
+            strategy_name=self.name,
+        )

@@ -20,7 +20,7 @@ author: walletSavior-team
 target:
   url: https://example.com/deals
   difficulty: 2          # 1(쉬움) ~ 5(어려움)
-  strategy: requests     # 기본 전략: requests, cloudscraper, selenium, undetected, playwright
+  strategy: requests     # 기본 전략: requests, selenium, playwright
 
 # 스케줄 설정
 schedule:

@@ -1171,7 +1171,32 @@ def test_db_admin_submit_skips_when_no_rows_are_eligible(tmp_path: Path) -> None
 
     assert artifact["db_admin_submit_result"] == {
         "skipped": True,
-        "reason": "no eligible rows after publish eligibility gates",
+        "reason": "no ai-safe-final-approve eligible rows after publish eligibility gates",
+        "db_admin_submit_plan": {
+            "mode": "ai_safe_final_approve_only",
+            "submit_allowed_rows": 0,
+            "raw_record_ids": [],
+            "confirm_count": 0,
+            "held_for_review_count": 1,
+            "held_for_review_rows": [
+                {
+                    "raw_record_id": "x",
+                    "status": None,
+                    "eligible": False,
+                    "ai_safe_final_approve_eligible": None,
+                    "db_handoff_mode": None,
+                    "publication_kind": None,
+                    "discount_claim_status": None,
+                    "reasons": ["not publish eligible"],
+                }
+            ],
+            "held_reason_counts": {"not publish eligible": 1},
+            "eligible_but_not_final_safe_count": 0,
+            "operator_safety_rule": (
+                "Only rows marked ai_safe_final_approve_eligible are submitted; eligible rows "
+                "with keyword/category/unit/audit caveats stay held for DB-admin/manual review."
+            ),
+        },
     }
 
 
@@ -1289,6 +1314,9 @@ def test_db_admin_submit_posts_eligible_rows_and_records_raw_vs_final(tmp_path: 
                     {
                         "raw_record_id": raw_record_id,
                         "eligible": True,
+                        "ai_safe_final_approve_eligible": True,
+                        "status": "approved",
+                        "db_handoff_mode": "ai_safe_final_approve",
                         "item": {
                             "name": "풀무원 국산콩 두부 300g",
                             "sale_price": 1980,
@@ -1343,6 +1371,139 @@ def test_db_admin_submit_posts_eligible_rows_and_records_raw_vs_final(tmp_path: 
     assert comparison["final_keywords"] == ["두부"]
     assert comparison["publication_kind"] == "price_observation"
     assert comparison["price_observation_only"] is True
+    assert artifact["db_admin_submit_plan"]["submit_allowed_rows"] == 1
+
+
+def test_db_admin_submit_holds_eligible_rows_that_are_not_final_approve_safe(tmp_path: Path) -> None:
+    def fake_http(method: str, url: str, *, body=None, **_kwargs):
+        if method == "POST" and url.endswith("/api/ingest/raw-records/label"):
+            return {
+                "raw_batch_id": "batch-needs-db-review",
+                "provider_calls": 1,
+                "ai_batches": 1,
+                "proposal_ids": [],
+            }
+        if method == "GET" and "/api/review/audit?" in url:
+            return {"issues": []}
+        if method == "GET" and "/api/review/publish-eligibility?" in url:
+            return {
+                "items": [
+                    {
+                        "raw_record_id": "keyword-review-row",
+                        "status": "approved",
+                        "eligible": True,
+                        "ai_safe_final_approve_eligible": False,
+                        "db_handoff_mode": "db_admin_review",
+                        "publication_kind": "price_observation",
+                        "post_publish_audit_flags": [{"code": "db_keyword_proposal_unresolved"}],
+                        "blockers": [],
+                    }
+                ]
+            }
+        if method == "POST" and url.endswith("/api/review/publish-approved"):
+            raise AssertionError("eligible-but-not-final-safe rows must stay held")
+        raise AssertionError(f"unexpected HTTP call: {method} {url}")
+
+    artifact = harness.run_harness(
+        _args(
+            tmp_path,
+            allow_live_provider=True,
+            provider_id="google-dev",
+            allow_db_admin_submit=True,
+            max_items=1,
+        ),
+        http_json=fake_http,
+    )
+
+    plan = artifact["db_admin_submit_plan"]
+    assert plan["submit_allowed_rows"] == 0
+    assert plan["eligible_but_not_final_safe_count"] == 1
+    assert plan["held_reason_counts"] == {"post_publish_audit_flags": 1}
+    assert artifact["db_admin_submit_result"]["skipped"] is True
+
+
+def test_db_admin_submit_batches_multiple_ai_safe_rows_and_holds_caveats(tmp_path: Path) -> None:
+    posted_body: dict | None = None
+
+    def fake_http(method: str, url: str, *, body=None, **_kwargs):
+        nonlocal posted_body
+        if method == "POST" and url.endswith("/api/ingest/raw-records/label"):
+            return {
+                "raw_batch_id": "batch-multi-safe",
+                "provider_calls": 1,
+                "ai_batches": 1,
+                "proposal_ids": [],
+            }
+        if method == "GET" and "/api/review/audit?" in url:
+            return {"issues": []}
+        if method == "GET" and "/api/review/publish-eligibility?" in url:
+            return {
+                "items": [
+                    {
+                        "raw_record_id": "safe-price-observation-1",
+                        "status": "approved",
+                        "eligible": True,
+                        "ai_safe_final_approve_eligible": True,
+                        "db_handoff_mode": "ai_safe_final_approve",
+                        "publication_kind": "price_observation",
+                        "blockers": [],
+                    },
+                    {
+                        "raw_record_id": "safe-price-observation-2",
+                        "status": "approved",
+                        "eligible": True,
+                        "ai_safe_final_approve_eligible": True,
+                        "db_handoff_mode": "ai_safe_final_approve",
+                        "publication_kind": "price_observation",
+                        "blockers": [],
+                    },
+                    {
+                        "raw_record_id": "keyword-review-row",
+                        "status": "approved",
+                        "eligible": True,
+                        "ai_safe_final_approve_eligible": False,
+                        "db_handoff_mode": "db_admin_review",
+                        "publication_kind": "price_observation",
+                        "post_publish_audit_flags": [{"code": "db_keyword_proposal_unresolved"}],
+                        "blockers": [],
+                    },
+                ]
+            }
+        if method == "POST" and url.endswith("/api/review/publish-approved"):
+            posted_body = body
+            return {
+                "submitted_to_db_admin": 2,
+                "ai_safe_final_approved": 2,
+                "public_db_verified": 2,
+                "rollback_re_review_supported": 2,
+                "pending_db_review": 0,
+                "results": [
+                    {"raw_record_id": "safe-price-observation-1", "status": "published"},
+                    {"raw_record_id": "safe-price-observation-2", "status": "published"},
+                ],
+            }
+        raise AssertionError(f"unexpected HTTP call: {method} {url}")
+
+    artifact = harness.run_harness(
+        _args(
+            tmp_path,
+            allow_live_provider=True,
+            provider_id="google-dev",
+            allow_db_admin_submit=True,
+            max_items=2,
+        ),
+        http_json=fake_http,
+    )
+
+    assert posted_body == {
+        "raw_record_ids": ["safe-price-observation-1", "safe-price-observation-2"],
+        "reviewer_id": "manual-test",
+        "confirm_count": 2,
+        "batch_id": "batch-multi-safe",
+    }
+    assert artifact["db_admin_submit_plan"]["submit_allowed_rows"] == 2
+    assert artifact["db_admin_submit_plan"]["held_for_review_count"] == 1
+    assert artifact["db_admin_acceptance"]["ai_safe_final_approved"] == 2
 
 def test_provider_items_from_proposals_merges_lists_and_attributes() -> None:
     provider_items = harness.provider_items_from_proposals(

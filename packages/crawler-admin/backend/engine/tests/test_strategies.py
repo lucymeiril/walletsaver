@@ -4,6 +4,9 @@ AntiDetect 및 전략 기본 기능 테스트 (TDD).
 
 import pytest
 from engine.anti_detect import AntiDetect, USER_AGENTS
+from core.exceptions import CrawlError
+from engine.strategies.cloudscraper_st import CloudscraperStrategy
+from engine.strategies.undetected_st import UndetectedStrategy
 
 
 class TestAntiDetect:
@@ -67,3 +70,37 @@ class TestAntiDetect:
     def test_user_agent_pool_size(self):
         """UA 풀에 충분한 수가 있다."""
         assert len(USER_AGENTS) >= 15
+
+
+class TestSafeBrowserStrategies:
+    def test_browser_strategy_sources_do_not_include_stealth_evasion(self):
+        from pathlib import Path
+
+        strategy_dir = Path(__file__).resolve().parents[1] / "strategies"
+        combined = "\n".join(
+            [
+                (strategy_dir / "playwright_st.py").read_text(encoding="utf-8"),
+                (strategy_dir / "selenium_st.py").read_text(encoding="utf-8"),
+            ]
+        )
+
+        assert "playwright_stealth" not in combined
+        assert "selenium_stealth" not in combined
+        assert "AutomationControlled" not in combined
+        assert "excludeSwitches" not in combined
+        assert "useAutomationExtension" not in combined
+        assert "user_agent=ua" not in combined
+
+    @pytest.mark.asyncio
+    async def test_undetected_strategy_is_disabled_for_safe_collection(self):
+        strategy = UndetectedStrategy()
+
+        with pytest.raises(CrawlError, match="undetected browser automation is disabled"):
+            await strategy.fetch("https://example.com")
+
+    @pytest.mark.asyncio
+    async def test_cloudscraper_strategy_is_disabled_for_safe_collection(self):
+        strategy = CloudscraperStrategy()
+
+        with pytest.raises(CrawlError, match="cloudscraper challenge-solving is disabled"):
+            await strategy.fetch("https://example.com")

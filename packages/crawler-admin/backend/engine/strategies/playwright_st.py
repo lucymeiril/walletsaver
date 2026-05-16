@@ -1,7 +1,7 @@
 """
-전략 ⑤ — Playwright + Stealth.
+전략 ⑤ — Playwright rendering.
 
-최고 수준의 봇 탐지 우회. 가장 무거운 전략.
+JavaScript 렌더링이 필요한 공개 페이지용. WAF/로그인/CAPTCHA 우회에는 사용하지 않는다.
 difficulty: 5
 """
 
@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class PlaywrightStrategy(BaseStrategy):
-    """Playwright + playwright-stealth로 최고 수준 봇 우회."""
+    """Ordinary Playwright renderer for public pages; no stealth/evasion."""
 
     def __init__(
         self,
@@ -57,14 +57,9 @@ class PlaywrightStrategy(BaseStrategy):
         pw = await async_playwright().start()
         self._playwright = pw
 
-        ua = self._anti_detect.get_random_user_agent()
-        proxy = self._anti_detect.get_random_proxy()
-        proxy_config = {"server": proxy} if proxy else None
-
         browser = await pw.chromium.launch(
             headless=self._headless,
             args=[
-                "--disable-blink-features=AutomationControlled",
                 "--no-sandbox",
                 "--disable-dev-shm-usage",
                 "--js-flags=--max-old-space-size=256",
@@ -75,19 +70,10 @@ class PlaywrightStrategy(BaseStrategy):
         self._browser = browser
 
         context = await browser.new_context(
-            user_agent=ua,
             locale="ko-KR",
             timezone_id="Asia/Seoul",
             viewport={"width": 1920, "height": 1080},
-            proxy=proxy_config,
         )
-
-        # playwright-stealth 적용
-        try:
-            from playwright_stealth import stealth_async
-            await stealth_async(context)
-        except ImportError:
-            logger.warning("playwright-stealth 미설치. 기본 Playwright로 진행.")
 
         page = await context.new_page()
 
