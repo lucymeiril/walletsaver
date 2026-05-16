@@ -32,6 +32,8 @@ from crawlers.marts.homeplus.entrypoints import (
 
 
 FIXTURE_JSON = pathlib.Path(__file__).parent / "fixtures" / "homeplus" / "sale_listing_3items.json"
+DC_MIXED_FIXTURE = pathlib.Path(__file__).parent / "fixtures" / "homeplus" / "sale_listing_5items_dc_mixed.json"
+LIVE_DC_PROBE = pathlib.Path(__file__).parent / "fixtures" / "live_probe" / "homeplus_dc_행사.json"
 
 
 @pytest.fixture
@@ -152,6 +154,103 @@ async def test_sale_listing_against_spa_shell_html_reports_blocker():
     assert result.items_count == 0
     assert result.errors
     assert "spa_shell_no_embedded_json" in result.errors[0].error_msg or "no_recognised_payload" in result.errors[0].error_msg
+
+
+# ---------- dc 분기 진본 fixture 회귀 (Phase A 게이트) ----------
+@pytest.fixture
+def dc_mixed_raw() -> str:
+    assert DC_MIXED_FIXTURE.exists(), f"missing dc-mixed fixture: {DC_MIXED_FIXTURE}"
+    return DC_MIXED_FIXTURE.read_text(encoding="utf-8")
+
+
+@pytest.fixture
+def dc_mixed_envelope():
+    return json.loads(DC_MIXED_FIXTURE.read_text(encoding="utf-8"))
+
+
+def test_dc_mixed_fixture_yields_three_discount_and_two_sale_only(dc_mixed_raw):
+    items = _try_parse_mfront_envelope(dc_mixed_raw)
+    assert items is not None and len(items) == 5
+    with_dc = [i for i in items if i.original_price is not None]
+    sale_only = [i for i in items if i.original_price is None]
+    assert len(with_dc) == 3, f"dcPrice 채워진 분기 3개여야 함 — 실제 {len(with_dc)}"
+    assert len(sale_only) == 2, f"dcPrice null fallback 분기 2개여야 함 — 실제 {len(sale_only)}"
+
+
+def test_dc_branch_maps_sale_price_to_dcPrice_and_original_to_salePrice(dc_mixed_raw, dc_mixed_envelope):
+    """dcPrice 채워진 행은: sale_price=dcPrice, original_price=salePrice (정가).
+    그래야만 사용자 화면에서 '50%↓' 가 정상적으로 표시된다."""
+    items = _try_parse_mfront_envelope(dc_mixed_raw)
+    by_no = {i.attributes["item_no"]: i for i in items}
+    for raw in dc_mixed_envelope["data"]["dataList"]:
+        if raw.get("dcPrice") is None:
+            continue
+        it = by_no[raw["itemNo"]]
+        assert it.sale_price == int(raw["dcPrice"]), (
+            f"dc 분기 sale_price 매핑 오류: {it.name} sale={it.sale_price} expect={raw['dcPrice']}"
+        )
+        assert it.original_price == int(raw["salePrice"])
+        assert it.original_price > it.sale_price
+        # discount_percent 도 0 이상으로 채워져야 한다
+        assert it.discount_percent is not None and it.discount_percent > 0
+
+
+def test_null_dcPrice_branch_falls_back_to_salePrice(dc_mixed_raw, dc_mixed_envelope):
+    """dcPrice=null 행은: sale_price=salePrice(원가), original_price=None."""
+    items = _try_parse_mfront_envelope(dc_mixed_raw)
+    by_no = {i.attributes["item_no"]: i for i in items}
+    for raw in dc_mixed_envelope["data"]["dataList"]:
+        if raw.get("dcPrice") is not None:
+            continue
+        it = by_no[raw["itemNo"]]
+        assert it.sale_price == int(raw["salePrice"])
+        assert it.original_price is None
+        assert it.discount_percent is None or it.discount_percent == 0
+
+
+# ---------- 가짜 통과 방지: dcPrice 가 100% null 인 fixture 는 빌드를 깨야 한다 ----------
+def test_negative_all_null_dcPrice_fixture_is_not_a_valid_phaseA_artifact(raw_json):
+    """예전 슬라이스의 sale_listing_3items.json 처럼 dcPrice 가 전부 null 인
+    fixture 만 갖고 Phase A 를 통과시키지 못하도록, 그런 fixture 에는 dc 분기
+    회귀가 0건이라는 것을 명시적으로 확정한다.
+
+    => Phase A 의 진정 통과 기준: dcPrice 채워진 행을 포함한 fixture 가 존재해야 한다.
+    """
+    items = _try_parse_mfront_envelope(raw_json)
+    assert items is not None
+    dc_branch = [i for i in items if i.original_price is not None and i.original_price > i.sale_price]
+    assert dc_branch == [], (
+        "sale_listing_3items.json 은 의도적으로 dcPrice=null 만 갖고 있으며 "
+        "Phase A 진정 통과의 단독 근거가 될 수 없다. dc 분기를 가진 fixture "
+        "(sale_listing_5items_dc_mixed.json) 가 필수."
+    )
+    # 따라서 두 fixture 가 모두 존재해야만 진정한 Phase A 통과.
+    assert DC_MIXED_FIXTURE.exists(), "dc 분기 fixture 가 누락되면 Phase A 미통과"
+
+
+def test_live_dc_probe_when_present_has_at_least_one_populated_row():
+    """live_probe/homeplus_dc_행사.json 이 있는 환경에서는 적어도 1행 이상
+    dcPrice 가 채워져 있어야 한다 — 진본 라이브 캡처 보장."""
+    if not LIVE_DC_PROBE.exists():
+        pytest.skip("live_probe/homeplus_dc_행사.json 없음 (gitignored)")
+    env = json.loads(LIVE_DC_PROBE.read_text(encoding="utf-8"))
+    assert env.get("returnStatus") == 200
+    dl = env["data"]["dataList"]
+    dc_rows = [r for r in dl if r.get("dcPrice") is not None]
+    assert dc_rows, "라이브 캡처에 dcPrice 채워진 행이 0건 — Phase A 미통과"
+    assert len(dl) >= 20, "라이브 캡처 행 수 너무 적음 — 페이지네이션 인식 의심"
+
+
+@pytest.mark.asyncio
+async def test_entrypoint_quality_on_dc_mixed_fixture(dc_mixed_raw):
+    """4-진입점이 dc 분기 fixture 를 받았을 때 5건 모두 SUCCESS 로 통과."""
+    ep = HomeplusEntrypoints()
+    result = await ep.crawl_sale_listing(fetch=lambda url: dc_mixed_raw)
+    assert result.status.name == "SUCCESS"
+    assert result.items_count == 5
+    # 누락률: sale_price 채워진 비율 100%
+    filled = sum(1 for it in result.items if it["sale_price"] > 0)
+    assert filled == 5
 
 
 # ---------- 모델 quirk 준수 ----------
