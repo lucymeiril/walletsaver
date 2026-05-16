@@ -54,6 +54,9 @@ class AuditEventType:
     CRAWL_FAILED = "crawler.failed"
     SOURCE_WORKBENCH_CAPTURE = "source_workbench.capture"
     SOURCE_WORKBENCH_REGISTER = "source_workbench.register"
+    OPERATOR_BROWSER_SESSION_OPEN = "operator_browser.session_open"
+    OPERATOR_BROWSER_SESSION_ACTION = "operator_browser.session_action"
+    OPERATOR_BROWSER_SESSION_CLOSE = "operator_browser.session_close"
 
 
 def audit_log(

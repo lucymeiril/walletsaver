@@ -106,6 +106,7 @@ def create_app() -> FastAPI:
     from api.routes.plugins import router as plugins_router
     from api.routes.ai_export import router as ai_export_router
     from api.routes.source_workbench import router as source_workbench_router
+    from api.routes.operator_browser import router as operator_browser_router
 
     from fastapi import Depends
     from api.security.auth import verify_api_key
@@ -120,6 +121,7 @@ def create_app() -> FastAPI:
     app.include_router(plugins_router, dependencies=_auth)
     app.include_router(ai_export_router, dependencies=_auth)
     app.include_router(source_workbench_router, dependencies=_auth)
+    app.include_router(operator_browser_router, dependencies=_auth)
 
     # ── Health Check ─────────────────────────────────────────
 
