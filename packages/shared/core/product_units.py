@@ -16,16 +16,24 @@ _MEASURE_BUNDLE_RE = re.compile(
     r"(?P<count>\d+)\s*(?:개입|입|개|팩|봉|병|캔|포|장)?",
     re.IGNORECASE,
 )
+_COUNT_UNIT_PATTERN = r"개입|봉지|인분|세트|마리|회분|구|입|개|팩|봉|병|캔|손|매|롤|포|장|족|통|인|p|P|t|T"
+_COUNT_BUNDLE_RE = re.compile(
+    r"(?<!\d)(?P<qty>\d+)\s*"
+    rf"(?P<unit>{_COUNT_UNIT_PATTERN})"
+    r"\s*[xX×*]\s*"
+    r"(?P<count>\d+)\s*(?:개입|입|개|팩|봉|병|캔|포|장|ea|EA)?"
+    r"(?![A-Za-z0-9가-힣])"
+)
 _COUNT_PACKAGE_RE = re.compile(
     r"(?<!\d)(?P<qty>\d+)\s*"
-    r"(?P<unit>개입|봉지|인분|세트|마리|입|개|팩|봉|병|캔|손|매|롤|포|장|족|통|인|p|P)"
+    rf"(?P<unit>{_COUNT_UNIT_PATTERN})"
     r"(?![A-Za-z0-9가-힣])"
 )
 _COUNT_ONLY_PACKAGE_RE = re.compile(
-    r"\(\s*(?P<unit>개입|봉지|인분|세트|마리|입|개|팩|봉|병|캔|손|매|롤|포|장|족|통|인|p|P)\s*\)"
+    rf"\(\s*(?:[^)]*,\s*)?(?P<unit>{_COUNT_UNIT_PATTERN})\s*\)"
 )
 _DISPLAY_REF_UNIT_RE = re.compile(r"^\s*(?:100\s*g|1\s*kg|100\s*ml|1\s*l)\s*$", re.IGNORECASE)
-_REFERENCE_UNIT_SUFFIX_RE = re.compile(r"^\s*(?:당|/|기준)")
+_REFERENCE_UNIT_SUFFIX_RE = re.compile(r"^\s*(?:당|기준|/\s*(?:당|[0-9,]+\s*원|원))")
 
 _STORAGE_HINTS = {
     "냉장": "chilled",
@@ -114,6 +122,23 @@ def _is_reference_unit_match(text: str, match: re.Match[str]) -> bool:
 def parse_package_quantity(text: str) -> dict[str, Any] | None:
     """Extract the sold package quantity from title text (e.g. 300g, (200g), 1.5L, 5입)."""
     text = text or ""
+    count_bundle_matches = list(_COUNT_BUNDLE_RE.finditer(text))
+    if count_bundle_matches:
+        match = max(count_bundle_matches, key=lambda item: item.start())
+        quantity = float(match.group("qty"))
+        if quantity <= 0:
+            return None
+        bundle_count = int(match.group("count"))
+        if bundle_count <= 0:
+            return None
+        unit = match.group("unit")
+        return {
+            "raw_match": match.group(0),
+            "package_quantity": quantity,
+            "package_unit": unit,
+            "display_unit": f"{int(quantity)}{unit}×{bundle_count}",
+            "bundle_count": bundle_count,
+        }
     bundle_matches = list(_MEASURE_BUNDLE_RE.finditer(text))
     if bundle_matches:
         match = max(bundle_matches, key=lambda item: item.start())

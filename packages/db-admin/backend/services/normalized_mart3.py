@@ -35,7 +35,8 @@ def publish_mart3_rows(
     placements: list[dict[str, Any]] = []
     for row in rows:
         category_id = row.get("category_id") or "mart3.uncategorized"
-        _ensure_category(session, category_id, row.get("category_name") or category_id)
+        if not str(category_id).startswith("ai."):
+            _ensure_category(session, category_id, row.get("category_name") or category_id)
 
         product = _upsert_product(session, row, category_id, projection_version)
         package_signature = _row_package_signature(row)
@@ -290,10 +291,13 @@ def _upsert_week_bucket(
 
 
 def _price_facts(row: dict[str, Any]) -> PromotionPriceFacts:
+    discount_percent = row.get("discount_percent")
     return PromotionPriceFacts.from_source(
         current_price=row.get("price", row.get("current_price", row.get("sale_price"))),
         original_price=row.get("original_price"),
-        discount_rate=_discount_rate(row.get("discount_rate", row.get("discount_percent"))),
+        discount_rate=_discount_percent_rate(discount_percent)
+        if discount_percent is not None
+        else _discount_rate(row.get("discount_rate")),
         price_state=row.get("price_state"),
         promotion_type=row.get("promotion_type") or PromotionType.UNKNOWN,
     ).with_safe_calculations()
@@ -304,6 +308,13 @@ def _discount_rate(value: Any) -> float | None:
     if number is None:
         return None
     return number / 100 if number >= 1 else number
+
+
+def _discount_percent_rate(value: Any) -> float | None:
+    number = _finite_float_or_none(value)
+    if number is None:
+        return None
+    return number / 100
 
 
 def _row_package_signature(row: dict[str, Any]) -> str:

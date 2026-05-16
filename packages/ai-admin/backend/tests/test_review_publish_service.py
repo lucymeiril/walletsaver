@@ -98,6 +98,53 @@ def _seed_emart_record(session, raw_id: str) -> None:
         proposal_repo.save(proposal)
 
 
+def _raw_record(raw_id: str, title: str, **payload_overrides) -> RawCrawlRecord:
+    payload = {
+        "source": "emart",
+        "store": "이마트",
+        "name": title,
+        "sale_price": 10000,
+        "source_url": f"https://emart.example/products/{raw_id}",
+        "image_url": f"https://emart.example/images/{raw_id}.jpg",
+    }
+    payload.update(payload_overrides)
+    return RawCrawlRecord(
+        raw_record_id=raw_id,
+        source_name="emart",
+        source_record_key=raw_id,
+        source_url=payload["source_url"],
+        raw_title=title,
+        raw_price=payload["sale_price"],
+        raw_payload=payload,
+    )
+
+
+def test_db_item_from_review_defaults_physical_rows_to_single_count_unit() -> None:
+    item = db_item_from_review(_raw_record("hanger", "심플 높이조절 행거"), [], {})
+
+    assert item["package_quantity"] == 1
+    assert item["package_unit"] == "개"
+    assert item["display_unit"] == "1개"
+    assert item["standard_unit"] == "개"
+    assert item["standard_unit_price"] == 10000
+
+
+def test_service_or_option_rows_remain_held_without_synthetic_package_unit() -> None:
+    voucher = _raw_record("voucher", "모바일금액권 1만원권 (2%할인)")
+    voucher_item = db_item_from_review(voucher, [], {})
+
+    assert voucher_item["package_quantity"] is None
+    assert voucher_item["package_unit"] is None
+    blockers = publish_blockers(voucher, [], [], {}, [])
+    assert "held: non_comparable_package_metadata: service_voucher_or_option_selection" in blockers
+
+    option_row = _raw_record("choice", "기능성 양말 10종택1")
+    option_item = db_item_from_review(option_row, [], {})
+    assert option_item["package_quantity"] is None
+    assert option_item["package_unit"] is None
+    assert any("non_comparable_package_metadata" in blocker for blocker in publish_blockers(option_row, [], [], {}, []))
+
+
 def test_publish_service_marks_emart_row_eligible_and_preserves_offer_metadata(db: Database) -> None:
     with db.session_scope() as session:
         RawCrawlBatchRepository(session).save(

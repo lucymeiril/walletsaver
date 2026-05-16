@@ -45,6 +45,26 @@ SOURCE_ALIASES = {
     "롯데마트": "lottemart",
 }
 
+CATEGORY_ALIASES = {
+    "곡류>쌀": "grain.rice",
+}
+
+SOURCE_COMPARISON_UNIT_BASIS = {
+    "",
+    "1개",
+    "1매",
+    "1m",
+    "1ml",
+    "10g",
+    "10m",
+    "10ml",
+    "10매",
+    "100g",
+    "100ml",
+    "1kg",
+    "1l",
+}
+
 
 def _load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -86,13 +106,21 @@ def _str(value: Any) -> str:
     return str(value).strip()
 
 
+def _category_key(value: Any) -> str:
+    text = _str(value)
+    return text.replace(" ", "")
+
+
 def _field_equal(left: Any, right: Any, field: str) -> bool:
     if field == "source":
         return SOURCE_ALIASES.get(_str(left).lower(), _str(left).lower()) == SOURCE_ALIASES.get(
             _str(right).lower(), _str(right).lower()
         )
-    if field == "category" and _str(left) == "" and _str(right) in {"", "mart3.uncategorized", "uncategorized"}:
-        return True
+    if field == "category":
+        left_text, right_text = _str(left), _str(right)
+        if left_text == "" and right_text in {"", "mart3.uncategorized", "uncategorized"}:
+            return True
+        return CATEGORY_ALIASES.get(_category_key(left), left_text) == CATEGORY_ALIASES.get(_category_key(right), right_text)
     if field == "discount_percent" and {_num(left), _num(right)} <= {0.0, None}:
         return True
     if field in {
@@ -121,12 +149,14 @@ def _is_suspicious_diff(source: dict[str, Any], target: dict[str, Any], diff: di
         return source_value not in (None, "")
     if field == "bundle_count":
         return _num(source_value) not in (None, 1.0)
+    if field == "category":
+        return _str(source_value) != ""
     if field == "unit":
         source_unit = _str(source_value).lower()
         target_has_package = target.get("package_quantity") not in (None, "") and target.get("package_unit") not in (None, "")
         # SSG-style rows often expose the comparison basis ("100g") as unit,
         # while the DB projection stores the package unit parsed from the title.
-        return not (target_has_package and source_unit in {"", "10g", "100g", "1kg", "100ml", "1l"})
+        return not (target_has_package and source_unit in SOURCE_COMPARISON_UNIT_BASIS)
     return True
 
 

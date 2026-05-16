@@ -114,3 +114,42 @@ def test_standalone_unit_price_reference_is_not_treated_as_package() -> None:
     assert parsed["package_quantity"] is None
     assert parsed["package_unit"] is None
     assert parsed["display_unit"] is None
+
+
+def test_slash_package_and_count_bundle_patterns_parse_without_product_patches() -> None:
+    parsed = parse_package_quantity("[생물][국산] 새꼬막 (1kg/봉)")
+    assert parsed == {
+        "raw_match": "1kg",
+        "package_quantity": 1.0,
+        "package_unit": "kg",
+        "display_unit": "1kg",
+    }
+
+    parsed = parse_package_quantity("행복한 대란 30구 (15구 X 2ea)")
+    assert parsed == {
+        "raw_match": "15구 X 2ea",
+        "package_quantity": 15.0,
+        "package_unit": "구",
+        "display_unit": "15구×2",
+        "bundle_count": 2,
+    }
+
+
+def test_parenthesized_count_unit_with_descriptor_parses_as_single_unit() -> None:
+    assert parse_package_quantity("[해동][국산] 국산 새우 (특, 마리)") == {
+        "raw_match": "(특, 마리)",
+        "package_quantity": 1.0,
+        "package_unit": "마리",
+        "display_unit": "1마리",
+    }
+    assert parse_package_quantity("싱크대배수관 세정제(1회분)") == {
+        "raw_match": "1회분",
+        "package_quantity": 1.0,
+        "package_unit": "회분",
+        "display_unit": "1회분",
+    }
+
+
+def test_dimension_and_device_capacity_numbers_are_not_package_units() -> None:
+    assert parse_package_quantity("보쉬 V4 클리어비젼 400mm") is None
+    assert parse_package_quantity("아이폰 17 프로 256GB 자급제") is None

@@ -141,6 +141,13 @@ HOTDEAL_CLAIM_BLOCKED_MESSAGE = (
     "hotdeal_claim_blocked: missing verified original_price/discount_percent/"
     "source_event/historical_baseline; publish as price_observation only"
 )
+NON_COMPARABLE_PACKAGE_TITLE_RE = re.compile(
+    r"상품권|금액권|기프트\s*카드|기프트카드|렌탈|구독|항공|여행|티켓|입장권|이용권|식사권|"
+    r"\d+\s*(?:종|컬러|color|색상)\s*(?:택\s*1|택일|중\s*(?:택)?\s*1)|택\s*1|택일",
+    re.IGNORECASE,
+)
+NON_COMPARABLE_PACKAGE_CATEGORY_PREFIXES = ("service.", "travel.", "ticket.", "voucher.")
+REFERENCE_RAW_UNIT_RE = re.compile(r"^\s*(?:100\s*g|1\s*kg|100\s*ml|1\s*l)\s*$", re.IGNORECASE)
 SOURCE_OWNED_PROPOSAL_FIELDS = {
     "price",
     "sale_price",
@@ -167,6 +174,19 @@ SOURCE_OWNED_PROPOSAL_FIELDS = {
     "start_date",
     "end_date",
 }
+
+
+def non_comparable_package_reason(title: str | None, category_id: str | None = None) -> str | None:
+    """Return why a row should stay held instead of receiving a synthetic package unit."""
+    normalized_category = normalize_category_id(category_id)
+    if normalized_category and any(
+        normalized_category.startswith(prefix)
+        for prefix in NON_COMPARABLE_PACKAGE_CATEGORY_PREFIXES
+    ):
+        return "non_comparable_package_metadata: service_or_voucher_category"
+    if NON_COMPARABLE_PACKAGE_TITLE_RE.search(title or ""):
+        return "non_comparable_package_metadata: service_voucher_or_option_selection"
+    return None
 
 
 def proposals_by_raw_record(
@@ -1173,6 +1193,25 @@ def _blocking_audit_issues(audit_issues: list[dict[str, Any]]) -> list[dict[str,
 
 
 def _package_metadata_blockers(record: RawCrawlRecord, item: dict[str, Any]) -> list[str]:
+    package_missing = any(
+        item.get(field) in (None, "")
+        for field in ("display_unit", "package_quantity", "package_unit")
+    )
+    if package_missing:
+        reason = non_comparable_package_reason(
+            record.raw_title,
+            item.get("category_id") or item.get("category"),
+        )
+        if reason:
+            return [
+                f"held: {reason}",
+                "data_quality: package metadata is not meaningful for this row; keep for manual review",
+            ]
+        if REFERENCE_RAW_UNIT_RE.match(str(_first_present(record.raw_payload or {}, "unit", "raw_unit", "sellUnitCapacity") or "")):
+            return [
+                "held: non_comparable_package_metadata: reference_unit_without_package_size",
+                "data_quality: source unit is a reference price unit, not a sold package size",
+            ]
     unit_metadata = normalize_unit_metadata(
         name=record.raw_title,
         sale_price=record.raw_price,
@@ -1531,6 +1570,20 @@ def db_item_from_review(
         )
         or 1
     )
+    if (
+        package_quantity in (None, "")
+        and package_unit in (None, "")
+        and not REFERENCE_RAW_UNIT_RE.match(str(_first_present(raw_payload, "unit", "raw_unit", "sellUnitCapacity") or ""))
+        and not non_comparable_package_reason(
+            record.raw_title,
+            category_id or category if isinstance(category, str) else category_id,
+        )
+    ):
+        package_quantity = 1
+        package_unit = "개"
+        display_unit = display_unit or "1개"
+        standard_unit = "개"
+        standard_unit_price = price
     if price is not None and package_quantity and package_unit:
         standard_total = quantity_to_standard_total(package_quantity, str(package_unit), bundle_count)
         if standard_total is not None:

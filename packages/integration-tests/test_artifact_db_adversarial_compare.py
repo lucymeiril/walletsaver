@@ -98,6 +98,113 @@ def test_compare_rows_does_not_treat_package_enrichment_as_source_fact_change() 
     assert comparison["counts"]["suspicious_fields"] == 0
 
 
+def test_compare_rows_does_not_treat_count_basis_unit_as_source_fact_change() -> None:
+    source_rows = [
+        {
+            "raw_record_id": "emart:url:tissue",
+            "name": "뽑아쓰는 키친타월 140매x4입",
+            "sale_price": 10900,
+            "detail_url": "https://example.invalid/tissue",
+            "source": "이마트",
+            "unit": "10매",
+            "category": "크리넥스",
+        }
+    ]
+    target_rows = [
+        {
+            "match_key": "emart:url:tissue",
+            "row_kind": "proof_public_verification",
+            "raw_title": "뽑아쓰는 키친타월 140매x4입",
+            "current_price": 10900,
+            "detail_url": "https://example.invalid/tissue",
+            "source_url": "https://example.invalid/tissue",
+            "source": "emart",
+            "unit": "4입",
+            "package_quantity": 4,
+            "package_unit": "입",
+            "bundle_count": 1,
+            "category": "크리넥스",
+        }
+    ]
+
+    comparison = compare_rows(source_rows, target_rows)
+
+    assert comparison["counts"]["matched_rows"] == 1
+    assert comparison["counts"]["changed_rows"] == 1
+    assert comparison["counts"]["suspicious_fields"] == 0
+
+
+def test_compare_rows_accepts_known_category_taxonomy_mapping() -> None:
+    source_rows = [
+        {
+            "raw_record_id": "emart:url:rice",
+            "name": "강화섬쌀밥 200g*4개",
+            "sale_price": 4886,
+            "detail_url": "https://example.invalid/rice",
+            "source": "이마트",
+            "unit": "100g",
+            "category": "곡류 > 쌀",
+        }
+    ]
+    target_rows = [
+        {
+            "match_key": "emart:url:rice",
+            "row_kind": "proof_public_verification",
+            "raw_title": "강화섬쌀밥 200g*4개",
+            "current_price": 4886,
+            "detail_url": "https://example.invalid/rice",
+            "source_url": "https://example.invalid/rice",
+            "source": "emart",
+            "unit": "200g×4",
+            "package_quantity": 200,
+            "package_unit": "g",
+            "bundle_count": 4,
+            "price_per_100g": 610.75,
+            "standard_unit_price": 6107.5,
+            "category": "grain.rice",
+        }
+    ]
+
+    comparison = compare_rows(source_rows, target_rows)
+
+    assert comparison["counts"]["matched_rows"] == 1
+    assert comparison["counts"]["suspicious_fields"] == 0
+    assert not any(diff["field"] == "category" for diff in comparison["changed_rows"][0]["diffs"])
+
+
+def test_compare_rows_does_not_treat_ai_category_enrichment_as_source_fact_change() -> None:
+    source_rows = [
+        {
+            "raw_record_id": "emart-fixture:fixture-shrimp",
+            "name": "흰다리 새우살 300g",
+            "sale_price": 7980,
+            "detail_url": "https://example.invalid/shrimp",
+            "source": "emart",
+            "category": None,
+        }
+    ]
+    target_rows = [
+        {
+            "match_key": "emart-fixture:fixture-shrimp",
+            "row_kind": "proof_public_verification",
+            "raw_title": "흰다리 새우살 300g",
+            "current_price": 7980,
+            "detail_url": "https://example.invalid/shrimp",
+            "source_url": "https://example.invalid/shrimp",
+            "source": "emart",
+            "unit": "300g",
+            "package_quantity": 300,
+            "package_unit": "g",
+            "category": "seafood.frozen",
+        }
+    ]
+
+    comparison = compare_rows(source_rows, target_rows)
+
+    assert comparison["counts"]["matched_rows"] == 1
+    assert comparison["counts"]["suspicious_fields"] == 0
+
+
 def test_normalize_public_row_uses_nested_public_verification_fields() -> None:
     row = {
         "table": "discount_history",

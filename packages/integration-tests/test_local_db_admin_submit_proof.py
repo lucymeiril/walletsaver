@@ -62,7 +62,7 @@ def test_local_db_admin_submit_proof_publishes_multiple_safe_price_observations(
     assert artifact["db_admin_submit_plan"]["held_reason_counts"]["missing_source_url"] == 1
     assert (
         artifact["db_admin_submit_plan"]["held_reason_counts"][
-            "db_admin_final_approve_blocker:AI-reviewed offer missing customer-visible fields: source_url, package_quantity, package_unit"
+            "db_admin_final_approve_blocker:AI-reviewed offer missing customer-visible fields: source_url"
         ]
         == 1
     )
@@ -119,3 +119,41 @@ def test_local_db_admin_submit_proof_accepts_larger_local_caps(tmp_path: Path) -
     assert artifact["source"]["selected_rows"] == 25
     assert artifact["db_admin_submit_plan"]["max_items_supported"] >= 25
     assert artifact["db_admin_submit_result"]["submitted_to_db_admin"] == 25
+
+
+def test_local_db_admin_submit_proof_explains_service_package_holds(tmp_path: Path) -> None:
+    source = tmp_path / "source-artifact.json"
+    source.write_text(
+        json.dumps(
+            [
+                {
+                    "name": "모바일금액권 1만원권 (2%할인)",
+                    "store": "이마트",
+                    "sale_price": 9800,
+                    "detail_url": "https://emart.example/item/voucher",
+                    "source": "emart",
+                    "image_url": "https://emart.example/item/voucher.jpg",
+                }
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    artifact = run_local_proof(
+        LocalProofArgs(
+            input_json=source,
+            artifact_dir=tmp_path / "artifacts",
+            max_items=1,
+            allow_db_admin_submit=True,
+            source_name="integration-source",
+        )
+    )
+
+    assert artifact["db_admin_submit_plan"]["submit_allowed_rows"] == 0
+    assert (
+        artifact["db_admin_submit_plan"]["held_reason_counts"][
+            "non_comparable_package_metadata: service_voucher_or_option_selection"
+        ]
+        == 1
+    )

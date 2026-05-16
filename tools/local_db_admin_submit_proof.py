@@ -5,6 +5,7 @@ import argparse
 import copy
 import importlib.util
 import json
+import re
 import sys
 import uuid
 from collections import Counter
@@ -51,6 +52,12 @@ from storage.models import (  # noqa: E402
 
 MAX_DEFAULT_SAFE_ITEMS = 20
 MAX_LOCAL_PROOF_ITEMS = 1000
+NON_COMPARABLE_PACKAGE_RE = re.compile(
+    r"상품권|금액권|기프트\s*카드|기프트카드|렌탈|구독|항공|여행|티켓|입장권|이용권|식사권|"
+    r"\d+\s*(?:종|컬러|color|색상)\s*(?:택\s*1|택일|중\s*(?:택)?\s*1)|택\s*1|택일",
+    re.IGNORECASE,
+)
+REFERENCE_RAW_UNIT_RE = re.compile(r"^\s*(?:100\s*g|1\s*kg|100\s*ml|1\s*l)\s*$", re.IGNORECASE)
 
 
 @dataclass
@@ -219,6 +226,18 @@ def _hold_reasons(record: Any, item: dict[str, Any]) -> list[str]:
         reasons.append("missing_image_url")
     if not (item.get("source") or item.get("store") or getattr(record, "source_name", None)):
         reasons.append("missing_source")
+    if (
+        any(item.get(field) in (None, "") for field in ("package_quantity", "package_unit"))
+        and NON_COMPARABLE_PACKAGE_RE.search(str(item.get("name") or item.get("source_title") or getattr(record, "raw_title", "")))
+    ):
+        reasons.append("non_comparable_package_metadata: service_voucher_or_option_selection")
+    raw_payload = getattr(record, "raw_payload", {}) if isinstance(getattr(record, "raw_payload", {}), dict) else {}
+    raw_unit = raw_payload.get("unit") or raw_payload.get("raw_unit") or raw_payload.get("sellUnitCapacity")
+    if (
+        any(item.get(field) in (None, "") for field in ("package_quantity", "package_unit"))
+        and REFERENCE_RAW_UNIT_RE.match(str(raw_unit or ""))
+    ):
+        reasons.append("non_comparable_package_metadata: reference_unit_without_package_size")
     try:
         ingestion_routes._validate_discount_item_for_publish(item)
     except ValueError as exc:

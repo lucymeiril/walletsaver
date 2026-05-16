@@ -1835,6 +1835,7 @@ def _build_normalized_discount_row(item: dict, product_name: str, source: str, p
         "current_price": price,
         "original_price": item.get("original_price") or raw_data.get("original_price"),
         "discount_rate": item.get("discount_rate") if item.get("discount_rate") is not None else item.get("discount_percent"),
+        "discount_percent": item.get("discount_percent") if item.get("discount_percent") is not None else raw_data.get("discount_percent"),
         "price_state": item.get("price_state") or raw_data.get("price_state"),
         "promotion_type": promotion_type,
         "event_name": item.get("event_name") or raw_data.get("event_name"),
