@@ -1090,16 +1090,19 @@ def proposals_from_labeling_response(
             raw_unit=record.raw_payload.get("unit") if isinstance(record.raw_payload, dict) else None,
         )
         if deterministic_unit.get("package_quantity") is not None:
+            bundle_count = int(deterministic_unit.get("bundle_count") or 1)
             item = {
                 **item,
                 "package_quantity": deterministic_unit["package_quantity"],
                 "package_unit": deterministic_unit["package_unit"],
                 "display_unit": deterministic_unit["display_unit"],
+                "bundle_count": bundle_count,
                 "price_per_100g": deterministic_unit["price_per_100g"],
             }
             standard_total = quantity_to_standard_total(
                 deterministic_unit["package_quantity"],
                 deterministic_unit["package_unit"],
+                bundle_count,
             )
             if standard_total is not None:
                 total_quantity, standard_unit = standard_total
@@ -1114,6 +1117,26 @@ def proposals_from_labeling_response(
                 "category_id": normalize_category_id(item.get("category_id")),
                 "category_display_label": get_category_display_label(item.get("category_id")),
             }
+        for positive_field in ("package_quantity", "bundle_count"):
+            positive_value = item.get(positive_field)
+            if positive_value in (None, ""):
+                continue
+            try:
+                is_invalid_positive = float(positive_value) <= 0
+            except (TypeError, ValueError):
+                raise response_error(
+                    f"provider response field {positive_field} for {record_id} must be a positive number",
+                    item_index=index,
+                    raw_record_id=record_id,
+                    field=positive_field,
+                )
+            if is_invalid_positive:
+                raise response_error(
+                    f"provider response field {positive_field} for {record_id} must be greater than zero",
+                    item_index=index,
+                    raw_record_id=record_id,
+                    field=positive_field,
+                )
 
         scalar_fields: tuple[tuple[str, AIWorkerRole, ProposalType], ...] = (
             ("canonical_name", AIWorkerRole.NORMALIZER, ProposalType.NORMALIZED_FIELD),

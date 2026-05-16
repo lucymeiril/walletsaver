@@ -135,6 +135,8 @@ class SourceRunPipeline:
         source_name: str | None = None,
         schema_type: str = "source_raw",
         source_url: str | None = None,
+        source_input: str | None = None,
+        source_input_label: str | None = None,
         force_full: bool = False,
     ) -> SourceRunResult:
         started = time.monotonic()
@@ -153,7 +155,7 @@ class SourceRunPipeline:
         crawl_result = None
         for attempt in range(1, self.retry_count + 1):
             try:
-                crawl_result = await _call_crawler(crawler, since=since)
+                crawl_result = await _call_crawler(crawler, since=since, source_input=source_input)
                 attempts.append({"attempt": attempt, "status": getattr(crawl_result.status, "value", crawl_result.status)})
                 if crawl_result.status == CrawlStatus.SUCCESS:
                     break
@@ -220,11 +222,15 @@ class SourceRunPipeline:
             for record in flat_records:
                 fh.write(json.dumps(record.model_dump(mode="json"), ensure_ascii=False, default=str) + "\n")
 
+        source_input_manifest = _source_input_manifest(source_input, source_input_label)
         handoff = {
             "run_id": run_id,
             "source_name": source,
             "crawler_name": crawler_name,
             "schema_type": schema_type,
+            "source_input": source_input_manifest,
+            "collection_mode": "bounded_source_input_no_db" if source_input is not None else "crawler_default_no_db",
+            "live_network_enabled": False if source_input is not None else None,
             "records": [record.model_dump(mode="json") for record in flat_records],
             "batches": [batch.model_dump(mode="json") for batch in batches],
         }
@@ -251,6 +257,13 @@ class SourceRunPipeline:
             "since": since,
             "completed_at": now,
             "counts": {
+                "source_raw": int(
+                    ((getattr(crawl_result, "quality_details", {}) or {}).get("item_counts", {}) or {}).get(
+                        "source_raw"
+                    )
+                    or len(raw_items)
+                ),
+                "parsed_valid": len(raw_items),
                 "found": len(raw_items),
                 "new": counts["new"],
                 "changed": counts["changed"],
@@ -258,6 +271,9 @@ class SourceRunPipeline:
                 "records_handed_off": len(flat_records),
                 "skipped_invalid": skipped_invalid,
             },
+            "source_input": source_input_manifest,
+            "collection_mode": "bounded_source_input_no_db" if source_input is not None else "crawler_default_no_db",
+            "live_network_enabled": False if source_input is not None else None,
             "artifacts": {
                 "manifest": str(manifest_path),
                 "raw_records_jsonl": raw_artifact_uri,
@@ -374,17 +390,51 @@ def source_fingerprint(item: dict[str, Any]) -> str:
     return _hash_text(json.dumps(stable, ensure_ascii=False, sort_keys=True, default=str))
 
 
-async def _call_crawler(crawler: Any, *, since: str | None) -> Any:
+async def _call_crawler(crawler: Any, *, since: str | None, source_input: str | None = None) -> Any:
     if hasattr(crawler, "crawl_incremental"):
-        result = crawler.crawl_incremental(since=since)
+        crawl_incremental = crawler.crawl_incremental
+        signature = inspect.signature(crawl_incremental)
+        kwargs: dict[str, Any] = {"since": since}
+        if source_input is not None:
+            if "source_input" in signature.parameters:
+                kwargs["source_input"] = source_input
+            elif "fixture" in signature.parameters:
+                kwargs["fixture"] = source_input
+            elif "raw_data" in signature.parameters:
+                kwargs["raw_data"] = source_input
+            else:
+                raise ValueError("crawler does not support caller-supplied source_input")
+        result = crawl_incremental(**kwargs)
         return await result if inspect.isawaitable(result) else result
     crawl = crawler.crawl
     signature = inspect.signature(crawl)
+    kwargs = {}
     if "since" in signature.parameters:
-        result = crawl(since=since)
-    else:
-        result = crawl()
+        kwargs["since"] = since
+    if source_input is not None:
+        if "fixture" in signature.parameters:
+            kwargs["fixture"] = source_input
+        elif "raw_data" in signature.parameters:
+            kwargs["raw_data"] = source_input
+        elif "source_input" in signature.parameters:
+            kwargs["source_input"] = source_input
+        else:
+            raise ValueError("crawler does not support caller-supplied source_input")
+    result = crawl(**kwargs)
     return await result if inspect.isawaitable(result) else result
+
+
+def _source_input_manifest(source_input: str | None, source_input_label: str | None) -> dict[str, Any]:
+    if source_input is None:
+        return {"provided": False}
+    return {
+        "provided": True,
+        "label": source_input_label,
+        "sha1": _hash_text(source_input),
+        "bytes": len(source_input.encode("utf-8")),
+        "mode": "caller_supplied_saved_source_input",
+        "live_network_enabled": False,
+    }
 
 
 def _item_to_dict(item: Any) -> dict[str, Any]:

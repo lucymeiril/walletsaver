@@ -118,8 +118,12 @@ def parse_package_quantity(text: str) -> dict[str, Any] | None:
     if bundle_matches:
         match = max(bundle_matches, key=lambda item: item.start())
         quantity = float(match.group("qty"))
+        if quantity <= 0:
+            return None
         unit = _normalize_unit(match.group("unit"))
         bundle_count = int(match.group("count"))
+        if bundle_count <= 0:
+            return None
         display_qty = f"{int(quantity) if quantity.is_integer() else quantity:g}{unit}"
         return {
             "raw_match": match.group(0),
@@ -148,6 +152,8 @@ def parse_package_quantity(text: str) -> dict[str, Any] | None:
         qty_text = match.group("qty")
         unit = match.group("unit")
         quantity = float(qty_text)
+        if quantity <= 0:
+            return None
         return {
             "raw_match": match.group(0),
             "package_quantity": quantity,
@@ -165,6 +171,8 @@ def parse_package_quantity(text: str) -> dict[str, Any] | None:
     qty_text = match.group("paren") or match.group("qty")
     unit_text = match.group("paren_unit") or match.group("unit")
     quantity = float(qty_text)
+    if quantity <= 0:
+        return None
     unit = _normalize_unit(unit_text)
     return {
         "raw_match": match.group(0),

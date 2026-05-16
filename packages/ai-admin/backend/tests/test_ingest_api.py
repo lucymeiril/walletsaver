@@ -887,6 +887,105 @@ def test_labeling_response_overrides_emart_100g_hint_with_package_metadata() -> 
     assert ("keywords", "냉장") not in values
 
 
+def test_labeling_response_recomputes_bundle_standard_unit_price() -> None:
+    provider = ai_ingestion._provider_ref(
+        ProviderConfigContract(
+            provider_id="local",
+            provider_kind="gemini",
+            display_name="Local",
+            default_model="fake",
+            secret_alias="NONE",
+        )
+    )
+    records = [
+        ai_ingestion.RawCrawlRecord(
+            raw_record_id="emart-tofu-bundle",
+            source_name="emart",
+            raw_title="국산콩 촌두부 300g*2",
+            raw_price=3136,
+            raw_payload={"unit": "100g"},
+        )
+    ]
+
+    proposals = ai_ingestion.proposals_from_labeling_response(
+        batch_id="b-emart-bundle",
+        provider=provider,
+        records=records,
+        response={
+            "items": [
+                {
+                    "raw_record_id": "emart-tofu-bundle",
+                    "canonical_name": "국산콩 촌두부",
+                    "source_title": "국산콩 촌두부 300g*2",
+                    "sale_price": 3136,
+                    "package_quantity": 300,
+                    "package_unit": "g",
+                    "display_unit": "300g×2",
+                    "bundle_count": 2,
+                    "standard_unit": "kg",
+                    "standard_unit_price": 10453.33,
+                    "price_per_100g": 522.67,
+                }
+            ]
+        },
+    )
+    values = {(p.target_field, p.proposed_value) for p in proposals}
+
+    assert ("package_quantity", 300.0) in values
+    assert ("package_unit", "g") in values
+    assert ("display_unit", "300g×2") in values
+    assert ("bundle_count", 2) in values
+    assert ("standard_unit", "kg") in values
+    assert ("standard_unit_price", 5226.67) in values
+    assert ("price_per_100g", 522.67) in values
+
+
+def test_labeling_response_rejects_zero_count_bundle_title() -> None:
+    provider = ai_ingestion._provider_ref(
+        ProviderConfigContract(
+            provider_id="local",
+            provider_kind="gemini",
+            display_name="Local",
+            default_model="fake",
+            secret_alias="NONE",
+        )
+    )
+    records = [
+        ai_ingestion.RawCrawlRecord(
+            raw_record_id="bad-zero-bundle",
+            source_name="emart",
+            raw_title="비정상 묶음 300g*0",
+            raw_price=3000,
+            raw_payload={"unit": "100g"},
+        )
+    ]
+
+    with pytest.raises(ProviderResponseError) as exc_info:
+        ai_ingestion.proposals_from_labeling_response(
+            batch_id="b-bad-zero-bundle",
+            provider=provider,
+            records=records,
+            response={
+                "items": [
+                    {
+                        "raw_record_id": "bad-zero-bundle",
+                        "canonical_name": "비정상 묶음",
+                        "source_title": "비정상 묶음 300g*0",
+                        "sale_price": 3000,
+                        "package_quantity": 300,
+                        "package_unit": "g",
+                        "display_unit": "300g",
+                        "bundle_count": 0,
+                        "standard_unit": "kg",
+                        "standard_unit_price": 10000,
+                    }
+                ]
+            },
+        )
+
+    assert "bundle_count" in str(exc_info.value)
+
+
 def test_labeling_response_normalizes_korean_category_id_to_safe_dot_id() -> None:
     provider = ai_ingestion._provider_ref(
         ProviderConfigContract(

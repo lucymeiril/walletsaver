@@ -132,6 +132,26 @@ response is not enough. In `--real-readiness`, missing source input, live AI
 labeling, provider calls, DB-admin preflight/submit/final approve, or requested
 website verification blocks the run instead of falling back to fixture/stub.
 
+Executable empty-DB to website acceptance sequence:
+
+1. Run `py tools\one_shot_db_build_orchestrator.py --local-empty-db-rehearsal`
+   first. This proves the local empty-DB service boundary only; do not call it
+   live-ready.
+2. Produce/choose a crawler source artifact JSON. For mart3 bounded acceptance,
+   run `py tools\mart3_live_input_plan.py` and use the printed
+   `actual_db_acceptance_command`.
+3. Restart ai-admin, verify `/health`, and confirm provider/API-key aliases are
+   configured without printing secret values.
+4. Run the strict command with `--real-readiness`, `--crawler-batch-json`,
+   `--allow-live-ai-provider`, `--allow-live-ai-labeling`, provider choice,
+   `--allow-db-mutation`, and, for website completion,
+   `--allow-live-website --website-url <url>`.
+5. Human/admin acceptance is the DB-admin `ai-safe-final-approve` evidence:
+   saved rows, public DB verification, rollback/re-review evidence, and no
+   pending/failed rows.
+6. Website acceptance passes only when semantic product-detail API responses
+   match the DB-admin public verification rows.
+
 ```powershell
 Push-Location packages\db-admin\backend
 py -m pytest tests\test_normalized_mart3_slice.py tests\test_models.py tests\test_ingestion_insert.py tests\test_price_calc.py -q

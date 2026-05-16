@@ -145,6 +145,7 @@ def build_plan(
     command = [
         "py",
         "tools\\one_shot_db_build_orchestrator.py",
+        "--real-readiness",
         "--crawler-batch-json",
         _rel(input_path),
         "--artifact-dir",
@@ -226,6 +227,7 @@ def build_plan(
             "Provider and ai-admin API keys must be configured by alias/environment only; never put secret values in commands.",
             "Run the actual command exactly once for this 6-row batch; do not add --allow-large-live-batch.",
             "The actual command must enter through tools\\one_shot_db_build_orchestrator.py with --allow-db-mutation; it forwards --allow-db-admin-submit to tools\\run_live_model_batch.py only after DB-admin mutation preflight reports ready_to_mutate.",
+            "Keep --real-readiness on the actual command so fixture/stub fallback, missing provider calls, missing final approval, and missing requested website checks block instead of passing.",
             "Treat acceptance as passed only when the orchestrator DB-admin safety phase passes and the delegated live batch reports db_admin_acceptance.accepted true with submitted_to_db_admin >= 1, ai_safe_final_approved >= 1, public_db_verified >= ai_safe_final_approved, rollback/re-review evidence or next action present, and no pending/failed rows.",
             "If no rows are eligible, stop and inspect publish blockers; do not broaden collection.",
         ],

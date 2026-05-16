@@ -814,6 +814,27 @@ def test_publish_blockers_accept_reference_unit_without_false_package_requiremen
     assert not any("missing DB-admin package field" in blocker for blocker in blockers)
 
 
+def test_db_item_ignores_zero_package_quantity_from_source() -> None:
+    record = RawCrawlRecord(
+        raw_record_id="zero-package",
+        source_name="emart",
+        source_record_key="zero-package",
+        source_url="https://emart.example/zero-package",
+        raw_title="전단 예약상품 0g",
+        raw_price=1980,
+        raw_payload={
+            "package_quantity": 0,
+            "package_unit": "g",
+            "source_url": "https://emart.example/zero-package",
+            "image_url": "https://emart.example/zero-package.jpg",
+        },
+    )
+
+    item = db_item_from_review(record, [], {})
+
+    assert item["package_quantity"] is None
+
+
 def test_publish_blockers_still_reject_partial_package_metadata() -> None:
     record = RawCrawlRecord(
         raw_record_id="partial-package",

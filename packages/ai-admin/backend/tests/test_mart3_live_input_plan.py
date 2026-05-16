@@ -51,6 +51,7 @@ def test_build_plan_uses_two_items_per_mart_and_bounded_db_acceptance_command(tm
     assert plan["caps"]["ai_batch_size"] == 2
     command = plan["commands"]["actual_db_acceptance_run"]
     assert command[1] == "tools\\one_shot_db_build_orchestrator.py"
+    assert "--real-readiness" in command
     assert command[command.index("--live-batch-max-items") + 1] == "6"
     assert command[command.index("--live-batch-max-provider-calls") + 1] == "3"
     assert command[command.index("--live-batch-ai-batch-size") + 1] == "2"
@@ -61,6 +62,7 @@ def test_build_plan_uses_two_items_per_mart_and_bounded_db_acceptance_command(tm
     assert "--allow-db-mutation" in command
     assert "--allow-db-admin-submit" not in command
     assert "--allow-large-live-batch" not in command
+    assert any("--real-readiness" in requirement and "fixture/stub fallback" in requirement for requirement in plan["db_submit_final_approve_requirements"])
     assert any("--allow-db-admin-submit" in requirement and "preflight" in requirement for requirement in plan["db_submit_final_approve_requirements"])
     assert "AIza" not in json.dumps(plan, ensure_ascii=False)
 

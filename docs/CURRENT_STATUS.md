@@ -124,6 +124,12 @@ DB-admin `public_db_verification` rows; an HTTP 200 response alone blocks rather
 than passing. The artifact reports each real leg, provider calls, DB
 submit/final approve evidence, website verification, and exact blockers.
 
+Plain acceptance sequence: rehearse an empty local DB, create a source artifact,
+run live AI labeling with bounded provider calls, require DB-admin
+submit/`ai-safe-final-approve`, then verify the website product API against the
+saved DB-admin public verification rows. Mart3 command generation now includes
+`--real-readiness` so missing real legs block instead of passing.
+
 ## Risks
 
 - Accidentally inventing prices from AI labels or discount text would destroy trust.

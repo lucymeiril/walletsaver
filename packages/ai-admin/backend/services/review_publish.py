@@ -1480,7 +1480,7 @@ def db_item_from_review(
     package_quantity = (
         unit_metadata.get("package_quantity")
         if has_deterministic_package
-        else _first_number(raw_payload.get("package_quantity"), fields.get("package_quantity"))
+        else _first_positive_number(raw_payload.get("package_quantity"), fields.get("package_quantity"))
     )
     package_unit = (
         unit_metadata.get("package_unit")

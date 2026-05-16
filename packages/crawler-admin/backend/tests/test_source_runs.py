@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from core.models import CrawlResult, CrawlStatus
+from crawlers.registry.registry import CrawlerRegistry
 from pipeline.source_runs import SourceRunPipeline, SourceRunStore
 from scheduler.scheduler import CrawlScheduler
 
@@ -32,6 +33,13 @@ class Registry:
 
     def get_crawler(self, crawler_name):
         return self.crawler
+
+
+def _crawler_registry():
+    crawlers_dir = Path(__file__).resolve().parents[1] / "crawlers"
+    registry = CrawlerRegistry(crawlers_dir=crawlers_dir)
+    registry.discover()
+    return registry
 
 
 @pytest.mark.asyncio
@@ -156,3 +164,56 @@ async def test_scheduler_source_run_records_manifest_and_retry_dead_letter(tmp_p
     assert manifest["counts"]["records_handed_off"] == 0
     history = scheduler.tracker.get_history(job_id="source:emart")
     assert history[0]["result"]["status"] == "failed"
+
+
+@pytest.mark.asyncio
+async def test_coupang_saved_source_input_runs_no_db_handoff(tmp_path: Path):
+    fixture = (
+        Path(__file__).resolve().parent / "fixtures" / "marketplace_skeleton" / "coupang.html"
+    ).read_text(encoding="utf-8")
+    pipeline = SourceRunPipeline(_crawler_registry(), store=SourceRunStore(tmp_path))
+
+    result = await pipeline.run_source_incremental(
+        "coupang",
+        source_name="coupang",
+        schema_type="marketplace_discount",
+        source_url="https://www.coupang.com/np/search?q=fixture",
+        source_input=fixture,
+        source_input_label="tests/fixtures/marketplace_skeleton/coupang.html",
+    )
+
+    assert result.status == "success"
+    assert result.items_found == 1
+    assert result.records_handed_off == 1
+    manifest = json.loads(Path(result.manifest_path).read_text(encoding="utf-8"))
+    assert manifest["collection_mode"] == "bounded_source_input_no_db"
+    assert manifest["live_network_enabled"] is False
+    assert manifest["source_input"]["provided"] is True
+    assert manifest["counts"]["source_raw"] == 1
+    assert manifest["counts"]["parsed_valid"] == 1
+
+    handoff = json.loads(Path(result.ai_handoff_path).read_text(encoding="utf-8"))
+    record = handoff["records"][0]
+    assert handoff["collection_mode"] == "bounded_source_input_no_db"
+    assert record["source_record_key"] == "fixture-coupang"
+    assert record["source_url"] == "https://www.coupang.com/vp/products/fixture-coupang"
+    assert record["raw_payload"]["attributes"]["collection_mode"] == "fixture_source_parser"
+
+
+@pytest.mark.asyncio
+async def test_source_input_fails_if_crawler_cannot_accept_saved_input(tmp_path: Path):
+    pipeline = SourceRunPipeline(
+        Registry(SequencedCrawler([[{"name": "should not live crawl", "sale_price": 1}]])),
+        store=SourceRunStore(tmp_path),
+        retry_count=1,
+    )
+
+    result = await pipeline.run_source_incremental(
+        "legacy",
+        source_name="legacy",
+        source_input="<html>saved</html>",
+        source_input_label="saved.html",
+    )
+
+    assert result.status == "failed"
+    assert "source_input" in "; ".join(result.errors or [])
