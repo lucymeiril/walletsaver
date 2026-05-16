@@ -1,10 +1,40 @@
 name: homeplus
 display_name: 홈플러스
 category: mart
-version: 1.0.0
-description: 홈플러스 전단지 및 할인 행사 상품 정보 수집
+version: 1.1.0
+description: 홈플러스 전단지 및 할인 행사 상품 정보 수집 (mfront search API 우선, SPA HTML 폴백)
 live_ready: false
 parser_contract: homeplus_mfront_fixture.v1
+entrypoints:
+  - id: crawl_sale_listing
+    collection_path: public_endpoint
+    intent: sale
+    url_template: "https://mfront.homeplus.co.kr/search?keyword=할인&page=1"
+    payload: json_envelope_returnstatus200_data_dataList
+  - id: crawl_catalog_page
+    collection_path: catalog_page
+    intent: catalog
+    url_template: "https://mfront.homeplus.co.kr/search?keyword={query}&page={page}"
+  - id: fetch_single_product
+    collection_path: single_product
+    intent: refresh
+    url_template: "https://mfront.homeplus.co.kr/item?itemNo={item_no}&storeType=HYPER"
+  - id: ingest_operator_capture
+    collection_path: operator_capture
+    intent: sale|catalog|refresh
+selectors:
+  api_envelope_root: "$.returnStatus==200 && $.data.dataList[*]"
+  api_keys:
+    name: itemNm
+    sale_price: dcPrice|salePrice|singlePrice
+    original_price: salePrice (when dcPrice present)
+    item_no: itemNo
+    doc_id: docId
+    unit_price: unitPrice
+    category: scateNm|mcateNm|lcateNm|rcateNm
+    event_name: eventInfo.eventBtnText
+  spa_card: ".unitItemInner, .product-item, .goods_item, .event_item, .item_box, .prod_wrap"
+rate_limit_seconds: 3
 live_readiness:
   status: bounded_fixture_ready_live_disabled
   fixture_contract_status: passed
