@@ -9,6 +9,8 @@ import Plugins from './pages/Plugins/Plugins';
 import Logs from './pages/Logs/Logs';
 import Schedule from './pages/Schedule/Schedule';
 import DataReviewPage from './pages/DataReview/DataReviewPage';
+import RunHistory from './pages/RunHistory/RunHistory';
+import AdHoc from './pages/AdHoc/AdHoc';
 import { isAuthenticated, subscribe, autoLoginDev } from './stores/authStore';
 
 function useAuth() {
@@ -44,6 +46,8 @@ export default function App() {
             <Route path="/plugins" element={<ErrorBoundary><Plugins /></ErrorBoundary>} />
             <Route path="/logs" element={<ErrorBoundary><Logs /></ErrorBoundary>} />
             <Route path="/schedule" element={<ErrorBoundary><Schedule /></ErrorBoundary>} />
+            <Route path="/runs" element={<ErrorBoundary><RunHistory /></ErrorBoundary>} />
+            <Route path="/adhoc" element={<ErrorBoundary><AdHoc /></ErrorBoundary>} />
           </Route>
         </Routes>
       </ErrorBoundary>

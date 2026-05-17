@@ -107,6 +107,7 @@ def create_app() -> FastAPI:
     from api.routes.ai_export import router as ai_export_router
     from api.routes.source_workbench import router as source_workbench_router
     from api.routes.operator_browser import router as operator_browser_router
+    from api.routes.orchestrator import router as orchestrator_router
 
     from fastapi import Depends
     from api.security.auth import verify_api_key
@@ -122,6 +123,17 @@ def create_app() -> FastAPI:
     app.include_router(ai_export_router, dependencies=_auth)
     app.include_router(source_workbench_router, dependencies=_auth)
     app.include_router(operator_browser_router, dependencies=_auth)
+    app.include_router(orchestrator_router, dependencies=_auth)
+
+    @app.on_event("startup")
+    async def _register_plugins():
+        """F1 — 마트 플러그인 어댑터를 PluginRegistry에 등록."""
+        for mod_name in ("emart", "homeplus", "lottemart", "costco"):
+            try:
+                mod = __import__(f"crawlers.marts.{mod_name}.plugin", fromlist=["register"])
+                mod.register()
+            except Exception as exc:
+                logger.warning("[App] plugin %s registration failed: %s", mod_name, exc)
 
     # ── Health Check ─────────────────────────────────────────
 

@@ -1,0 +1,110 @@
+.page {
+  max-width: 800px;
+  padding: var(--space-lg);
+}
+
+.pageTitle {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  margin-bottom: var(--space-xs);
+}
+
+.subtitle {
+  color: var(--text3);
+  margin-bottom: var(--space-lg);
+}
+
+.form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field span {
+  font-size: var(--fs-sm);
+  color: var(--text2);
+  font-weight: var(--fw-semi);
+}
+
+.field input, .field select {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-size: var(--fs-sm);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.submit {
+  padding: 8px 18px;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--accent, #3b82f6);
+  color: white;
+  font-weight: var(--fw-semi);
+  cursor: pointer;
+}
+
+.submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.secondary {
+  padding: 8px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.error {
+  background: var(--red-bg, #fee);
+  color: var(--red, #c00);
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  margin-top: var(--space-md);
+}
+
+.resultCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+  margin: var(--space-md) 0;
+}
+
+.errors {
+  background: var(--bg2);
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  margin: var(--space-sm) 0;
+}
+
+.seedStatus {
+  margin-top: var(--space-sm);
+  color: var(--green, #22c55e);
+  font-weight: var(--fw-semi);
+}

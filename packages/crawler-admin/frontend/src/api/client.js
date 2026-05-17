@@ -297,4 +297,24 @@ export const api = {
   getAiProviders: (aiAdminBaseUrl) => fetchWithTimeout(
     `${API_BASE}/ai-export/providers?${new URLSearchParams({ ai_admin_base_url: aiAdminBaseUrl })}`,
   ).then(r => r.json()),
+  // 오케스트레이터 v1 API
+  getOrchestratorPlugins: () => fetchWithTimeout(`${API_BASE}/v1/plugins`).then(r => r.json()),
+  getOrchestratorSchedules: () => fetchWithTimeout(`${API_BASE}/v1/schedules`).then(r => r.json()),
+  createOrchestratorSchedule: (data) => fetchWithTimeout(`${API_BASE}/v1/schedules`, {
+    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data),
+  }).then(r => r.json()),
+  updateOrchestratorSchedule: (id, data) => fetchWithTimeout(`${API_BASE}/v1/schedules/${id}`, {
+    method: 'PATCH', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data),
+  }).then(r => r.json()),
+  deleteOrchestratorSchedule: (id) => fetchWithTimeout(`${API_BASE}/v1/schedules/${id}`, { method: 'DELETE' }).then(r => r.json()),
+  triggerRun: (data) => fetchWithTimeout(`${API_BASE}/v1/runs/trigger`, {
+    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data),
+  }).then(r => r.json()),
+  runAdHoc: (data) => fetchWithTimeout(`${API_BASE}/v1/runs/ad-hoc`, {
+    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data),
+    timeoutMs: 120000,
+  }).then(r => r.json()),
+  getRuns: (params = {}) => fetchWithTimeout(`${API_BASE}/v1/runs?${new URLSearchParams(params)}`).then(r => r.json()),
+  getRunLogs: (runId) => fetchWithTimeout(`${API_BASE}/v1/runs/${runId}/logs`).then(r => r.json()),
+  retryRun: (runId) => fetchWithTimeout(`${API_BASE}/v1/runs/${runId}/retry`, { method: 'POST' }).then(r => r.json()),
 };

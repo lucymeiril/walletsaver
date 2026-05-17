@@ -10,6 +10,8 @@ import {
   X,
   ClipboardCheck,
   LogOut,
+  History,
+  Search,
 } from 'lucide-react';
 import { logout } from '../stores/authStore';
 import styles from './AdminLayout.module.css';
@@ -21,6 +23,8 @@ const navItems = [
   { to: '/plugins', label: '플러그인', icon: Puzzle },
   { to: '/logs', label: '로그', icon: FileText },
   { to: '/schedule', label: '스케줄', icon: Clock },
+  { to: '/runs', label: '실행 히스토리', icon: History },
+  { to: '/adhoc', label: 'Ad-hoc 수집', icon: Search },
 ];
 
 export default function AdminLayout() {

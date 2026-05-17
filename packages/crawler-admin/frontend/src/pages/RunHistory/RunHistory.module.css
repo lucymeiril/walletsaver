@@ -1,0 +1,136 @@
+.page {
+  max-width: 1400px;
+  padding: var(--space-lg);
+}
+
+.pageTitle {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  margin-bottom: var(--space-lg);
+}
+
+.filters {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+  align-items: center;
+}
+
+.filters select {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.refresh {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.error {
+  background: var(--red-bg, #fee);
+  color: var(--red, #c00);
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-md);
+}
+
+.tableCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  font-size: var(--fs-sm);
+}
+
+.table th {
+  background: var(--bg2);
+  color: var(--text3);
+  font-weight: var(--fw-semi);
+  text-transform: uppercase;
+  font-size: var(--fs-xs);
+}
+
+.row {
+  cursor: pointer;
+}
+
+.row:hover {
+  background: var(--bg2);
+}
+
+.mono {
+  font-family: monospace;
+  font-size: var(--fs-xs);
+}
+
+.empty {
+  text-align: center;
+  color: var(--text3);
+  padding: var(--space-lg) !important;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semi);
+  color: white;
+}
+
+.badge_success { background: var(--green, #22c55e); }
+.badge_partial { background: var(--yellow, #eab308); color: #333; }
+.badge_failed  { background: var(--red, #ef4444); }
+.badge_running { background: var(--accent, #3b82f6); }
+.badge_default { background: var(--text3, #888); }
+
+.retry {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font-size: var(--fs-xs);
+}
+
+.logPanel {
+  background: var(--bg2);
+  padding: var(--space-md) !important;
+}
+
+.logTitle {
+  font-weight: var(--fw-semi);
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.logBody {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-sm);
+  font-size: var(--fs-xs);
+  white-space: pre-wrap;
+  max-height: 300px;
+  overflow: auto;
+}
