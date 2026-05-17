@@ -1060,6 +1060,7 @@ def _save_keyword_learning(
                 target_value=target_value,
                 positive_examples=positive_examples,
                 negative_examples=negative_examples,
+                success_count=(existing.success_count + 1) if existing else 1,
                 created_from_decision_id=reviewer_decision_id,
             )
         )
