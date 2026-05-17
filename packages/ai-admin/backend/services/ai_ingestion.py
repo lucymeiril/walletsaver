@@ -1122,6 +1122,269 @@ def _call_provider_with_retries(
     )
 
 
+def _call_provider_with_shrink_retries(
+    *,
+    records: list[RawCrawlRecord],
+    provider: ProviderAdapter,
+    provider_ref: AIProviderRef,
+    provider_id: str,
+    model: str,
+    raw_batch_id: str,
+    ai_batch_id: str,
+    keyword_catalog: list[Any],
+    learned_keyword_knowledge: list[Any],
+    max_prompt_chars: int | None = None,
+    _shrink_log: list[dict[str, Any]] | None = None,
+) -> tuple[list[FieldProposal], list[dict[str, Any]], list[dict[str, Any]]]:
+    """배치 크기를 절반씩 축소하며 재시도하는 provider 호출 함수.
+
+    기존 _call_provider_with_retries는 동일 배치·동일 크기로 최대 3회 재시도한다.
+    이 함수는 그 대신 실패 시 배치를 절반으로 분할해 각각 독립 호출한다.
+    단일 아이템(N=1)이 retryable 실패하거나 빈 응답을 반환하면 더 이상 쪼갤 수 없으므로
+    _fallback_proposals_for_missing_records()를 호출해 인간 리뷰 큐로 폴백한다.
+
+    이렇게 설계한 이유: provider quota·timeout 오류는 배치가 클수록 자주 발생하며,
+    절반씩 쪼개면 성공률이 올라가고 무한 재시도 루프 없이 전체 처리가 완료된다.
+    분할 깊이는 log₂(N)으로 자연 상한되어 무한 분할이 발생하지 않는다.
+    다음 AI가 이 함수를 "비효율적인 재시도 루프"로 오해해 리팩토링하지 않도록
+    이 분할 전략이 의도적임을 명시한다.
+
+    Returns:
+        (proposals, keyword_proposals, shrink_log)
+        shrink_log: 각 provider 호출 시도의 기록 목록.
+            outcome 값:
+              "ok"              — 호출 성공 (일부 items 누락 시에도 ok)
+              "retryable_error" — 재시도 가능한 오류 또는 빈 응답
+              "fallback"        — N=1 최종 실패로 인한 인간 큐 폴백
+    """
+    if _shrink_log is None:
+        _shrink_log = []
+    n = len(records)
+
+    try:
+        prompt = build_labeling_prompt(
+            records,
+            catalog=keyword_catalog,
+            learned_knowledge=learned_keyword_knowledge,
+            max_prompt_chars=max_prompt_chars,
+        )
+    except ValueError as exc:
+        raise AIIngestionError(
+            str(exc),
+            stage="batch_validation",
+            status_code=400,
+            provider_id=provider_id,
+            model=model,
+            raw_batch_id=raw_batch_id,
+            ai_batch_id=ai_batch_id,
+            row_count=n,
+        ) from exc
+
+    if _is_live_provider(provider):
+        _reserve_live_provider_call(provider_id, provider.config)
+
+    try:
+        response = provider.call(prompt=prompt, schema=labeling_response_schema())
+    except ProviderConfigurationError as exc:
+        raise AIIngestionError(
+            str(exc),
+            stage="provider_configuration",
+            status_code=400,
+            provider_id=provider_id,
+            model=model,
+            raw_batch_id=raw_batch_id,
+            ai_batch_id=ai_batch_id,
+            row_count=n,
+        ) from exc
+    except ProviderResponseError as exc:
+        if not _is_transient_provider_error(exc):
+            # non-retryable (400, schema error 등) — 즉시 raise, 분할하지 않는다.
+            raise AIIngestionError(
+                str(exc),
+                stage="provider_call",
+                status_code=502,
+                provider_id=exc.provider_id or provider_id,
+                model=exc.model or model,
+                raw_batch_id=raw_batch_id,
+                ai_batch_id=ai_batch_id,
+                row_count=n,
+                invalid_rows=getattr(exc, "invalid_rows", []),
+                provider_error_detail=exc.to_detail(),
+            ) from exc
+        # retryable (quota, timeout, 5xx) — 배치를 분할하거나 단일 아이템을 폴백한다.
+        _shrink_log.append({"batch_size": n, "outcome": "retryable_error"})
+        return _shrink_split_or_fallback(
+            records=records,
+            provider=provider,
+            provider_ref=provider_ref,
+            provider_id=provider_id,
+            model=model,
+            raw_batch_id=raw_batch_id,
+            ai_batch_id=ai_batch_id,
+            keyword_catalog=keyword_catalog,
+            learned_keyword_knowledge=learned_keyword_knowledge,
+            max_prompt_chars=max_prompt_chars,
+            shrink_log=_shrink_log,
+        )
+
+    # 호출 성공 — 응답을 파싱하고 누락 아이템을 확인한다.
+    try:
+        proposals, keyword_proposals, missing_records, _id_validation = _proposals_from_batch_response(
+            ai_batch_id=ai_batch_id,
+            provider_ref=provider_ref,
+            batch_records=records,
+            response=response,
+            keyword_catalog=keyword_catalog,
+            learned_keyword_knowledge=learned_keyword_knowledge,
+        )
+    except ProviderResponseError as exc:
+        raise AIIngestionError(
+            str(exc),
+            stage="provider_response_validation",
+            status_code=502,
+            provider_id=exc.provider_id or provider_id,
+            model=exc.model or model,
+            raw_batch_id=raw_batch_id,
+            ai_batch_id=ai_batch_id,
+            row_count=n,
+            invalid_rows=getattr(exc, "invalid_rows", []),
+        ) from exc
+
+    if len(missing_records) == n:
+        # 빈 응답: 호출은 성공했지만 모든 아이템이 누락 — retryable failure로 간주한다.
+        _shrink_log.append({"batch_size": n, "outcome": "retryable_error"})
+        return _shrink_split_or_fallback(
+            records=records,
+            provider=provider,
+            provider_ref=provider_ref,
+            provider_id=provider_id,
+            model=model,
+            raw_batch_id=raw_batch_id,
+            ai_batch_id=ai_batch_id,
+            keyword_catalog=keyword_catalog,
+            learned_keyword_knowledge=learned_keyword_knowledge,
+            max_prompt_chars=max_prompt_chars,
+            shrink_log=_shrink_log,
+        )
+
+    # 부분 또는 완전 성공
+    _shrink_log.append({"batch_size": n, "outcome": "ok"})
+
+    if missing_records:
+        # 부분 성공: 누락된 아이템에 대해 동일한 shrink 메커니즘을 재귀 적용한다.
+        missing_proposals, missing_kw, _ = _call_provider_with_shrink_retries(
+            records=missing_records,
+            provider=provider,
+            provider_ref=provider_ref,
+            provider_id=provider_id,
+            model=model,
+            raw_batch_id=raw_batch_id,
+            ai_batch_id=f"{ai_batch_id}:missing",
+            keyword_catalog=keyword_catalog,
+            learned_keyword_knowledge=learned_keyword_knowledge,
+            max_prompt_chars=max_prompt_chars,
+            _shrink_log=_shrink_log,
+        )
+        proposals.extend(missing_proposals)
+        keyword_proposals.extend(missing_kw)
+
+    return proposals, keyword_proposals, _shrink_log
+
+
+def _shrink_split_or_fallback(
+    *,
+    records: list[RawCrawlRecord],
+    provider: ProviderAdapter,
+    provider_ref: AIProviderRef,
+    provider_id: str,
+    model: str,
+    raw_batch_id: str,
+    ai_batch_id: str,
+    keyword_catalog: list[Any],
+    learned_keyword_knowledge: list[Any],
+    max_prompt_chars: int | None,
+    shrink_log: list[dict[str, Any]],
+) -> tuple[list[FieldProposal], list[dict[str, Any]], list[dict[str, Any]]]:
+    """retryable 실패 후 N>=2이면 절반씩 분할해 재귀 호출, N==1이면 인간 큐로 폴백하는 헬퍼.
+
+    이 함수는 _call_provider_with_shrink_retries의 분할/폴백 경로를 분리해
+    가독성을 높인다. shrink_log는 공유 참조로 전달되어 모든 재귀 호출이 동일 로그에
+    기록된다. provider는 rate 보호를 위해 순차 호출(병렬 금지)한다.
+    """
+    n = len(records)
+    if n == 1:
+        # 더 이상 분할 불가 — 인간 리뷰 큐로 폴백
+        return _shrink_fallback_single(
+            record=records[0],
+            provider_ref=provider_ref,
+            provider_id=provider_id,
+            model=model,
+            raw_batch_id=raw_batch_id,
+            ai_batch_id=ai_batch_id,
+            keyword_catalog=keyword_catalog,
+            learned_keyword_knowledge=learned_keyword_knowledge,
+            shrink_log=shrink_log,
+        )
+    mid = n // 2
+    left_proposals, left_kw, _ = _call_provider_with_shrink_retries(
+        records=records[:mid],
+        provider=provider,
+        provider_ref=provider_ref,
+        provider_id=provider_id,
+        model=model,
+        raw_batch_id=raw_batch_id,
+        ai_batch_id=f"{ai_batch_id}:s0",
+        keyword_catalog=keyword_catalog,
+        learned_keyword_knowledge=learned_keyword_knowledge,
+        max_prompt_chars=max_prompt_chars,
+        _shrink_log=shrink_log,
+    )
+    right_proposals, right_kw, _ = _call_provider_with_shrink_retries(
+        records=records[mid:],
+        provider=provider,
+        provider_ref=provider_ref,
+        provider_id=provider_id,
+        model=model,
+        raw_batch_id=raw_batch_id,
+        ai_batch_id=f"{ai_batch_id}:s1",
+        keyword_catalog=keyword_catalog,
+        learned_keyword_knowledge=learned_keyword_knowledge,
+        max_prompt_chars=max_prompt_chars,
+        _shrink_log=shrink_log,
+    )
+    return left_proposals + right_proposals, left_kw + right_kw, shrink_log
+
+
+def _shrink_fallback_single(
+    *,
+    record: RawCrawlRecord,
+    provider_ref: AIProviderRef,
+    provider_id: str,
+    model: str,
+    raw_batch_id: str,
+    ai_batch_id: str,
+    keyword_catalog: list[Any],
+    learned_keyword_knowledge: list[Any],
+    shrink_log: list[dict[str, Any]],
+) -> tuple[list[FieldProposal], list[dict[str, Any]], list[dict[str, Any]]]:
+    """N=1 배치가 retryable 에러로 실패했을 때 인간 리뷰 큐로 폴백하는 헬퍼.
+
+    더 이상 배치를 쪼갤 수 없는 단일 아이템은 confidence=0.42 reviewer-safe fallback
+    proposal로 생성돼 인간 큐에 투입된다. shrink_log에 fallback=True를 기록해
+    자동 라벨링이 아님을 명시한다.
+    """
+    fallback_batch_id = f"{ai_batch_id}:fallback"
+    proposals, keyword_proposals, _still_missing, _validation = _fallback_proposals_for_missing_records(
+        ai_batch_id=fallback_batch_id,
+        provider_ref=provider_ref,
+        records=[record],
+        keyword_catalog=keyword_catalog,
+        learned_keyword_knowledge=learned_keyword_knowledge,
+    )
+    shrink_log.append({"batch_size": 1, "outcome": "fallback", "fallback": True})
+    return proposals, keyword_proposals, shrink_log
+
+
 def _proposals_from_batch_response(
     *,
     ai_batch_id: str,
