@@ -5,12 +5,27 @@ import argparse
 import json
 import math
 import sqlite3
+import sys
 import uuid
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+# Ensure the tools/ directory is importable regardless of CWD
+_TOOLS_DIR = str(Path(__file__).resolve().parent)
+if _TOOLS_DIR not in sys.path:
+    sys.path.insert(0, _TOOLS_DIR)
+
+from adversarial_compare_extensions import (  # noqa: E402
+    analyze_ai_confidence,
+    analyze_category_distribution,
+    analyze_volume_sanity,
+    build_mart_stats_for_table,
+    collect_launch_gate_blockers,
+    format_markdown_summary_table,
+    semantic_spotcheck,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LIVE_PROOF_DIR = REPO_ROOT / ".walletsavior-live-validation" / "live-db-submit-safe-row-scale"
@@ -483,10 +498,36 @@ def build_comparison(proof_json: Path, output_dir: Path = DEFAULT_OUTPUT_DIR) ->
         "proof_public_rows": len(proof_rows),
         "sqlite_projection_rows": len(sqlite_rows),
     }
+
+    # ------------------------------------------------------------------
+    # Extended analysis (D1–D4)
+    # ------------------------------------------------------------------
+    # Use the normalised source rows so 'source' is already canonicalised
+    normalized_sources = [normalize_source_row(r) for r in source_rows]
+    # Final DB rows: prefer SQLite projection; fall back to proof rows
+    final_db_rows = sqlite_rows if sqlite_rows else proof_rows
+
+    cat_analysis = analyze_category_distribution(final_db_rows)
+    conf_analysis = analyze_ai_confidence(final_db_rows)
+    vol_analysis = analyze_volume_sanity(normalized_sources, final_db_rows)
+    spotcheck = semantic_spotcheck(final_db_rows)
+
+    blockers = collect_launch_gate_blockers(
+        imbalance_alerts=cat_analysis["category_imbalance_alerts"],
+        starvation_alerts=cat_analysis["category_sibling_starvation_alerts"],
+        confidence_alerts=conf_analysis["low_confidence_alerts"],
+        volume_alerts=vol_analysis["volume_alerts"],
+        semantic_alerts=spotcheck["semantic_alerts"],
+    )
+
+    mart_stats = build_mart_stats_for_table(
+        normalized_sources, proof_rows, final_db_rows, spotcheck, vol_analysis
+    )
+
     output_dir.mkdir(parents=True, exist_ok=True)
     out_path = output_dir / f"artifact-db-adversarial-compare-{datetime.now().strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:8]}.json"
     artifact = {
-        "schema": "walletsavior.artifact_db_adversarial_compare.v1",
+        "schema": "walletsavior.artifact_db_adversarial_compare.v2",
         "created_at": datetime.now().isoformat(),
         "summary": {
             "compared": [
@@ -510,6 +551,11 @@ def build_comparison(proof_json: Path, output_dir: Path = DEFAULT_OUTPUT_DIR) ->
                 "duplicate_keys",
                 "missing_rows",
                 "suspicious_changed_fields",
+                # v2 additions
+                "category_distribution_per_mart",
+                "ai_confidence_distribution",
+                "mart_volume_sanity",
+                "semantic_spotcheck",
             ],
             "result": (
                 f"{aggregate_counts['matched_rows']} matched, {aggregate_counts['missing_rows']} missing, "
@@ -517,6 +563,7 @@ def build_comparison(proof_json: Path, output_dir: Path = DEFAULT_OUTPUT_DIR) ->
                 f"{aggregate_counts['duplicate_key_groups']} duplicate key groups, "
                 f"{aggregate_counts['suspicious_fields']} suspicious field changes"
             ),
+            "launch_gate_blockers": len(blockers),
         },
         "selection": {
             "mode": "latest_live_db_submit_safe_row_scale",
@@ -535,10 +582,31 @@ def build_comparison(proof_json: Path, output_dir: Path = DEFAULT_OUTPUT_DIR) ->
             "source_vs_public_verification": proof_comparison,
             "source_vs_local_sqlite_projection": sqlite_comparison,
         },
-        "blockers": [],
+        # ------ v2 extended keys ------
+        "category_distribution_per_mart": cat_analysis["category_distribution_per_mart"],
+        "category_imbalance_alerts": cat_analysis["category_imbalance_alerts"],
+        "category_sibling_starvation_alerts": cat_analysis["category_sibling_starvation_alerts"],
+        "ai_confidence_distribution": conf_analysis["ai_confidence_distribution"],
+        "low_confidence_alerts": conf_analysis["low_confidence_alerts"],
+        "mart_volume_sanity": vol_analysis["mart_volume_sanity"],
+        "volume_alerts": vol_analysis["volume_alerts"],
+        "semantic_spotcheck": spotcheck["semantic_spotcheck"],
+        "semantic_alerts": spotcheck["semantic_alerts"],
+        "overall_launch_gate_blockers": blockers,
+        # legacy key preserved for callers that check artifact["blockers"]
+        "blockers": blockers,
     }
     artifact["artifact_path"] = str(out_path)
-    out_path.write_text(json.dumps(artifact, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+    artifact["_mart_stats_for_table"] = mart_stats  # consumed by main(), not persisted
+    out_path.write_text(
+        json.dumps(
+            {k: v for k, v in artifact.items() if k != "_mart_stats_for_table"},
+            ensure_ascii=False,
+            indent=2,
+            default=str,
+        ),
+        encoding="utf-8",
+    )
     return artifact
 
 
@@ -553,7 +621,18 @@ def main(argv: list[str] | None = None) -> int:
     args = build_arg_parser().parse_args(argv)
     proof_json = args.proof_json or latest_live_proof()
     artifact = build_comparison(proof_json.resolve(), args.output_dir)
+    # Structured JSON summary (machine-readable)
     print(json.dumps({"artifact_path": artifact["artifact_path"], **artifact["aggregate_counts"]}, ensure_ascii=False))
+    # Human-readable markdown table
+    mart_stats = artifact.get("_mart_stats_for_table") or {}
+    if mart_stats:
+        print()
+        print(format_markdown_summary_table(mart_stats))
+    blockers = artifact.get("overall_launch_gate_blockers", [])
+    if blockers:
+        print(f"\n⚠️  LAUNCH GATE BLOCKERS ({len(blockers)})")
+        for b in blockers:
+            print(f"  • [{b.get('alert_type')}] {b.get('reason') or b.get('mart') or ''}")
     return 0
 
 
