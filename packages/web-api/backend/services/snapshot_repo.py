@@ -203,3 +203,162 @@ class SnapshotRepo:
                 source_url=r["source_url"], last_seen_at=r["last_seen_at"],
             ))
         return rows
+
+    # ── Fuel 주유소 조회 ────────────────────────────────────────────────────
+
+    def has_fuel_tables(self) -> bool:
+        """fuel_station 테이블이 존재하는지 확인."""
+        conn = self._get_conn()
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='fuel_station'"
+        )
+        return cur.fetchone() is not None
+
+    def fuel_stations(
+        self,
+        sido: Optional[str] = None,
+        sigungu: Optional[str] = None,
+        brand: Optional[str] = None,
+    ) -> list[dict]:
+        """주유소 목록 조회 (필터: sido, sigungu, brand)."""
+        conn = self._get_conn()
+        cur = conn.cursor()
+        conditions: list[str] = []
+        params: list = []
+        if sido:
+            conditions.append("sido = ?")
+            params.append(sido)
+        if sigungu:
+            conditions.append("sigungu = ?")
+            params.append(sigungu)
+        if brand:
+            conditions.append("brand = ?")
+            params.append(brand)
+        where = ("WHERE " + " AND ".join(conditions)) if conditions else ""
+        cur.execute(
+            f"SELECT id, brand, name, address, sido, sigungu, lat, lng, "
+            f"self_service, has_car_wash, has_convenience, opinet_id "
+            f"FROM fuel_station {where} ORDER BY name",
+            params,
+        )
+        rows = []
+        for r in cur.fetchall():
+            rows.append({
+                "id": r["id"], "brand": r["brand"], "name": r["name"],
+                "address": r["address"], "sido": r["sido"], "sigungu": r["sigungu"],
+                "lat": r["lat"], "lng": r["lng"],
+                "self_service": bool(r["self_service"]),
+                "has_car_wash": bool(r["has_car_wash"]),
+                "has_convenience": bool(r["has_convenience"]),
+                "opinet_id": r["opinet_id"],
+            })
+        return rows
+
+    def fuel_station_by_id(self, station_id: str) -> Optional[dict]:
+        """단일 주유소 조회."""
+        conn = self._get_conn()
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT id, brand, name, address, sido, sigungu, lat, lng, "
+            "self_service, has_car_wash, has_convenience, opinet_id "
+            "FROM fuel_station WHERE id = ?",
+            (station_id,),
+        )
+        r = cur.fetchone()
+        if not r:
+            return None
+        return {
+            "id": r["id"], "brand": r["brand"], "name": r["name"],
+            "address": r["address"], "sido": r["sido"], "sigungu": r["sigungu"],
+            "lat": r["lat"], "lng": r["lng"],
+            "self_service": bool(r["self_service"]),
+            "has_car_wash": bool(r["has_car_wash"]),
+            "has_convenience": bool(r["has_convenience"]),
+            "opinet_id": r["opinet_id"],
+        }
+
+    def fuel_prices_for_station(self, station_id: str) -> list[dict]:
+        """주유소의 최신 가격 목록."""
+        conn = self._get_conn()
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT station_id, fuel_kind, price, observed_at "
+            "FROM fuel_price_latest WHERE station_id = ?",
+            (station_id,),
+        )
+        rows = []
+        for r in cur.fetchall():
+            rows.append({
+                "fuel_kind": r["fuel_kind"],
+                "price": r["price"],
+                "observed_at": r["observed_at"],
+            })
+        return rows
+
+    def fuel_prices_by_kind(self, fuel_kind: str) -> list[dict]:
+        """전체 주유소의 특정 유종 최신 가격."""
+        conn = self._get_conn()
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT station_id, fuel_kind, price, observed_at "
+            "FROM fuel_price_latest WHERE fuel_kind = ?",
+            (fuel_kind,),
+        )
+        rows = []
+        for r in cur.fetchall():
+            rows.append({
+                "station_id": r["station_id"],
+                "fuel_kind": r["fuel_kind"],
+                "price": r["price"],
+                "observed_at": r["observed_at"],
+            })
+        return rows
+
+    def fuel_grade(self, sido: str, sigungu: str, fuel_kind: str) -> Optional[dict]:
+        """특정 지역·유종 가격 등급 조회."""
+        conn = self._get_conn()
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT sido, sigungu, fuel_kind, sample_size, p25, p50, p75, "
+            "computed_at, sufficient "
+            "FROM fuel_price_grade WHERE sido = ? AND sigungu = ? AND fuel_kind = ?",
+            (sido, sigungu, fuel_kind),
+        )
+        r = cur.fetchone()
+        if not r:
+            return None
+        return {
+            "sido": r["sido"], "sigungu": r["sigungu"], "fuel_kind": r["fuel_kind"],
+            "sample_size": r["sample_size"],
+            "p25": r["p25"], "p50": r["p50"], "p75": r["p75"],
+            "computed_at": r["computed_at"],
+            "sufficient": bool(r["sufficient"]),
+        }
+
+    def fuel_sido_list(self) -> list[str]:
+        """저장된 주유소의 시도 목록 (중복 제거, 정렬)."""
+        conn = self._get_conn()
+        cur = conn.cursor()
+        cur.execute("SELECT DISTINCT sido FROM fuel_station ORDER BY sido")
+        return [r["sido"] for r in cur.fetchall()]
+
+    def fuel_sigungu_list(self, sido: Optional[str] = None) -> list[str]:
+        """저장된 주유소의 시군구 목록."""
+        conn = self._get_conn()
+        cur = conn.cursor()
+        if sido:
+            cur.execute(
+                "SELECT DISTINCT sigungu FROM fuel_station WHERE sido = ? ORDER BY sigungu",
+                (sido,),
+            )
+        else:
+            cur.execute("SELECT DISTINCT sigungu FROM fuel_station ORDER BY sigungu")
+        return [r["sigungu"] for r in cur.fetchall()]
+
+    def fuel_brand_list(self) -> list[str]:
+        """저장된 주유소의 브랜드 목록 (중복 제거, 정렬)."""
+        conn = self._get_conn()
+        cur = conn.cursor()
+        cur.execute("SELECT DISTINCT brand FROM fuel_station ORDER BY brand")
+        return [r["brand"] for r in cur.fetchall()]

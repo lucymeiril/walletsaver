@@ -1,0 +1,69 @@
+name: opinet
+display_name: 오피넷 주유소
+category: fuel
+version: 1.0.0
+description: 오피넷(opinet.co.kr) 저가주유소 검색 페이지 HTML 파싱 — 휘발유/경유/LPG 가격 + 위치
+live_ready: false
+parser_contract: opinet_low_price_fixture.v1
+entrypoints:
+  module: crawlers.opinet.crawler
+  class: OpinetCrawler
+  paths:
+    - name: crawl_from_fixture
+      collection_path: fixture_html
+      crawl_intent: fuel_price
+      args: [fixture_path, source_url]
+    - name: live_crawl
+      collection_path: live_endpoint
+      crawl_intent: fuel_price
+      args: [sido, sigungu, fuel_kind]
+rate_limit_seconds:
+  between_live_gets: 5
+  between_region_queries: 10
+live_readiness:
+  status: operator_approval_required
+  fixture_contract_status: passed
+  bounded_diagnostics:
+    status: required_before_live_ready
+    run_limits:
+      max_requests: 3
+      max_pages: 1
+      timeout_seconds: 20
+  operator_approval:
+    status: required_before_live_ready
+notes: |
+  오피넷(한국석유공사) 공식 사이트 저가주유소 검색 페이지.
+  URL: https://www.opinet.co.kr/searRgSelect.do (POST 요청, area1=시도코드, area2=시군구코드)
+  공개 API 키 미보유 시 HTML 파싱으로 시작.
+  API 키 도입 시: https://www.opinet.co.kr/api/lowpriceDrtyStation.do 사용 가능.
+  좌표(lat/lng)는 searRgSelect.do 기본 응답에 포함되지 않음 — 별도 상세페이지 또는 API 필요.
+target:
+  url: https://www.opinet.co.kr/searRgSelect.do
+  difficulty: 2
+  strategy: requests_post
+schedule:
+  cron: "0 6 * * *"
+  retry_count: 3
+  retry_delay: 300
+output:
+  model: FuelStation + FuelPriceObservation
+  required_fields: [name, brand, address, price]
+  diagnostic_evidence_fields: [name, brand, address, self_service, gasoline_regular, diesel, lpg, opinet_id]
+source_map:
+  request_strategy: post_form
+  post_params:
+    area1: "시도코드 (01=서울, 41=경기, ...)"
+    area2: "시군구코드"
+    cnt: "20"
+    sel_nm: "B027 (휘발유) | B034 (경유) | B049 (LPG)"
+  table_selector: "tbody#tb_sub"
+  columns:
+    rank: 0
+    name: 1
+    brand: 2
+    address: 3
+    self_service: 4
+    gasoline_regular: 5
+    gasoline_premium: 6
+    diesel: 7
+    lpg: 8

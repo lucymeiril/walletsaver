@@ -1,0 +1,32 @@
+# 알구몬 핫딜 카테고리 매핑
+#
+# 알구몬은 커뮤니티(뽐뿌/클리앙/퀘이사존 등)의 게시 카테고리를 집약한다.
+# 키 형식: 알구몬 source_community 또는 category_hints 첫 번째 토큰 (소문자 변환)
+#
+# 미매핑 raw → reason="UNMAPPED_NEW_CATEGORY"
+
+mappings:
+  # 커뮤니티 기반 카테고리 힌트
+  "전자": electronics
+  "전자제품": electronics
+  "디지털": electronics
+  "컴퓨터": computer
+  "PC": computer
+  "pc": computer
+  "모바일": mobile_phone
+  "스마트폰": mobile_phone
+  "태블릿": mobile_phone
+  "가전": home_appliance
+  "생활가전": home_appliance
+  "게임": games_software
+  "식품": processed_food
+  "식료품": processed_food
+  "과자": confectionery
+  "생활": household
+  "생활용품": household
+  "주방": home_kitchen
+  "화장품": skin_care
+  "뷰티": skin_care
+  "의류": fashion_apparel
+  "패션": fashion_apparel
+  "건강": health_supplement

@@ -43,6 +43,9 @@ class MartKind(str, Enum):
     LOTTEMART = "LOTTEMART"
     COSTCO = "COSTCO"
     COUPANG = "COUPANG"
+    ALGUMON = "ALGUMON"
+    ARCALIVE = "ARCALIVE"
+    KOKODALIN = "KOKODALIN"
 
 
 class UnitPriceBasis(str, Enum):

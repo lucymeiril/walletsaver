@@ -1,0 +1,30 @@
+# 코코달인 (코스트코) 카테고리 매핑
+#
+# 코코달인 API의 category_name 필드 값 → WalletSavior 카테고리 노드
+# 키 형식: API 응답의 category_name 원문 (한글)
+#
+# 미매핑 raw → reason="UNMAPPED_NEW_CATEGORY"
+
+mappings:
+  # 코스트코 주요 카테고리
+  "식품": processed_food
+  "냉동/냉장": frozen_chilled
+  "음료": processed_food
+  "생수/음료": processed_food
+  "견과류/스낵": snack_nut
+  "과자/스낵": confectionery
+  "건강기능식품": health_supplement
+  "영양제": vitamin
+  "바디케어": body_hand_care
+  "스킨케어": skin_care
+  "뷰티": skin_care
+  "세제/청소": household
+  "생활용품": household
+  "주방용품": home_kitchen
+  "화장지/위생": bath_tissue
+  "주방타올": kitchen_towel
+  "가전": home_appliance
+  "전자": electronics
+  "컴퓨터": computer
+  "의류": fashion_apparel
+  "스포츠": fashion_apparel

@@ -281,3 +281,37 @@ def map_emart(
     """
     # pylint: disable=unused-argument
     return None, REASON_EMART_NO_CATEGORY
+
+
+def map_algumon(
+    category_hint: str,
+) -> tuple[MappedCategory | None, str | None]:
+    """
+    알구몬 카테고리 힌트(커뮤니티 or 게시 카테고리)를 통합 트리 노드로 변환.
+
+    키: category_hints 첫 번째 토큰 원문
+    반환:
+      (MappedCategory, None) 성공
+      (None, reason_code)    실패
+    """
+    if not category_hint or not category_hint.strip():
+        return None, REASON_INVALID_INPUT
+    raw_key = category_hint.strip()
+    return _resolve(raw_key, "algumon", raw_key)
+
+
+def map_kokodalin(
+    category_name: str,
+) -> tuple[MappedCategory | None, str | None]:
+    """
+    코코달인 API category_name을 통합 트리 노드로 변환.
+
+    키: API 응답의 category_name 원문 (한글)
+    반환:
+      (MappedCategory, None) 성공
+      (None, reason_code)    실패
+    """
+    if not category_name or not category_name.strip():
+        return None, REASON_INVALID_INPUT
+    raw_key = category_name.strip()
+    return _resolve(raw_key, "kokodalin", raw_key)

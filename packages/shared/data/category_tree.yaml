@@ -416,3 +416,45 @@ nodes:
     parent_id: tool_equipment
     display_order: 1
     default_unit_kind: EACH
+
+  # ───────────────────────────────────────────────
+  # L1: 전자/디지털 (hotdeal 소스에서 자주 등장)
+  # ───────────────────────────────────────────────
+  - id: electronics
+    name_kr: 전자/디지털
+    name_en: Electronics & Digital
+    parent_id: null
+    display_order: 10
+    default_unit_kind: EACH
+
+  # L2: 컴퓨터/PC 주변기기
+  - id: computer
+    name_kr: 컴퓨터/PC
+    name_en: Computer & PC
+    parent_id: electronics
+    display_order: 1
+    default_unit_kind: EACH
+
+  # L2: 모바일/태블릿
+  - id: mobile_phone
+    name_kr: 모바일/태블릿
+    name_en: Mobile & Tablet
+    parent_id: electronics
+    display_order: 2
+    default_unit_kind: EACH
+
+  # L2: 가전제품
+  - id: home_appliance
+    name_kr: 가전제품
+    name_en: Home Appliance
+    parent_id: electronics
+    display_order: 3
+    default_unit_kind: EACH
+
+  # L2: 게임/소프트웨어
+  - id: games_software
+    name_kr: 게임/소프트웨어
+    name_en: Games & Software
+    parent_id: electronics
+    display_order: 4
+    default_unit_kind: EACH

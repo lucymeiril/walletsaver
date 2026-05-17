@@ -945,3 +945,189 @@ def merge_into_canonical(
             cid = result.canonical.id
             groups.setdefault(cid, []).append(result)
     return groups
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 알구몬 / 아카라이브 — 핫딜 게시글 best-effort 정규화
+# ─────────────────────────────────────────────────────────────────────────────
+
+def canonicalize_algumon(raw_post: dict, observed_at: datetime) -> CanonicalizationResult:
+    """
+    알구몬 핫딜 게시글 dict → CanonicalizationResult (best-effort).
+
+    raw_post 키: title, url, price (Optional[int]), source_community, category_hints
+    """
+    from .category_mapper import map_algumon
+    from .canonical_models import MartKind
+
+    title = (raw_post.get("title") or "").strip()
+    item_id = raw_post.get("source_record_key") or raw_post.get("url") or title
+    price = raw_post.get("price")
+    sale_price = int(price) if price is not None and price >= 0 else 0
+    hints: list[str] = raw_post.get("category_hints") or []
+
+    reasons: list[str] = []
+
+    if not price or sale_price <= 0:
+        reasons.append("PRICE_INVALID")
+
+    category_path_internal: Optional[str] = None
+    for hint in hints:
+        mapped_cat, _ = map_algumon(hint)
+        if mapped_cat:
+            category_path_internal = "/".join(mapped_cat.internal_path)
+            break
+    if not category_path_internal:
+        reasons.append("CATEGORY_UNMAPPED")
+
+    parsed = parse_product_name(title)
+    brand = parsed.brand
+    name_core = parsed.name_core
+    final_qty = parsed.pack_quantity
+    final_unit = parsed.pack_unit
+
+    if final_unit == UnitKind.UNKNOWN:
+        final_qty = 1.0
+        final_unit = UnitKind.EACH
+
+    return _build_result(
+        mart=MartKind.ALGUMON,
+        mart_item_id=str(item_id),
+        mart_item_name_raw=title,
+        brand=brand,
+        name_core=name_core,
+        pack_quantity=final_qty,
+        pack_unit=final_unit,
+        sale_price=sale_price,
+        regular_price=None,
+        on_sale=False,
+        discount_rate=None,
+        event_labels=[],
+        observed_at=observed_at,
+        raw=raw_post,
+        reasons=reasons,
+        source_url=raw_post.get("url"),
+        category_path_internal=category_path_internal,
+    )
+
+
+def canonicalize_arcalive(raw_post: dict, observed_at: datetime) -> CanonicalizationResult:
+    """아카라이브 핫딜 게시글 dict → CanonicalizationResult (best-effort)."""
+    from .category_mapper import map_algumon
+    from .canonical_models import MartKind
+
+    title = (raw_post.get("title") or "").strip()
+    item_id = raw_post.get("source_record_key") or raw_post.get("url") or title
+    price = raw_post.get("price")
+    sale_price = int(price) if price is not None and price >= 0 else 0
+    hints: list[str] = raw_post.get("category_hints") or []
+    store_category = raw_post.get("category") or ""
+    if store_category and store_category not in hints:
+        hints = [store_category] + hints
+
+    reasons: list[str] = []
+
+    if not price or sale_price <= 0:
+        reasons.append("PRICE_INVALID")
+
+    category_path_internal: Optional[str] = None
+    for hint in hints:
+        mapped_cat, _ = map_algumon(hint)
+        if mapped_cat:
+            category_path_internal = "/".join(mapped_cat.internal_path)
+            break
+    if not category_path_internal:
+        reasons.append("CATEGORY_UNMAPPED")
+
+    parsed = parse_product_name(title)
+    brand = parsed.brand
+    name_core = parsed.name_core
+    final_qty = parsed.pack_quantity
+    final_unit = parsed.pack_unit
+
+    if final_unit == UnitKind.UNKNOWN:
+        final_qty = 1.0
+        final_unit = UnitKind.EACH
+
+    return _build_result(
+        mart=MartKind.ARCALIVE,
+        mart_item_id=str(item_id),
+        mart_item_name_raw=title,
+        brand=brand,
+        name_core=name_core,
+        pack_quantity=final_qty,
+        pack_unit=final_unit,
+        sale_price=sale_price,
+        regular_price=None,
+        on_sale=False,
+        discount_rate=None,
+        event_labels=[],
+        observed_at=observed_at,
+        raw=raw_post,
+        reasons=reasons,
+        source_url=raw_post.get("url"),
+        category_path_internal=category_path_internal,
+    )
+
+
+def canonicalize_kokodalin(api_item: dict, observed_at: datetime) -> CanonicalizationResult:
+    """코코달인 API 상품 dict → CanonicalizationResult."""
+    from .category_mapper import map_kokodalin
+    from .canonical_models import MartKind
+
+    item_name = (api_item.get("product_name") or "").strip()
+    item_id = str(api_item.get("product_id", ""))
+
+    def _safe_int(val) -> int:
+        try:
+            return int(val) if val is not None else 0
+        except (ValueError, TypeError):
+            return 0
+
+    sale_price = _safe_int(api_item.get("sale_price"))
+    normal_price = _safe_int(api_item.get("normal_price"))
+    regular_price: Optional[int] = normal_price if normal_price > sale_price else None
+    on_sale = bool(regular_price and regular_price > sale_price)
+    discount_pct: Optional[int] = None
+    if on_sale and regular_price:
+        discount_pct = round((regular_price - sale_price) / regular_price * 100)
+
+    reasons: list[str] = []
+
+    category_name = (api_item.get("category_name") or "").strip()
+    mapped_cat, _ = map_kokodalin(category_name) if category_name else (None, "INVALID_INPUT")
+    category_path_internal: Optional[str] = None
+    if mapped_cat:
+        category_path_internal = "/".join(mapped_cat.internal_path)
+    else:
+        reasons.append("CATEGORY_UNMAPPED")
+
+    parsed = parse_product_name(item_name)
+    brand = parsed.brand
+    final_qty = parsed.pack_quantity
+    final_unit = parsed.pack_unit
+    if final_unit == UnitKind.UNKNOWN:
+        final_qty = 1.0
+        final_unit = UnitKind.EACH
+
+    detail_url = f"https://www.cocodalin.com/product.html?id={item_id}" if item_id else None
+
+    return _build_result(
+        mart=MartKind.KOKODALIN,
+        mart_item_id=item_id,
+        mart_item_name_raw=item_name,
+        brand=brand,
+        name_core=parsed.name_core,
+        pack_quantity=final_qty,
+        pack_unit=final_unit,
+        sale_price=sale_price,
+        regular_price=regular_price,
+        on_sale=on_sale,
+        discount_rate=discount_pct,
+        event_labels=[],
+        observed_at=observed_at,
+        raw=api_item,
+        reasons=reasons,
+        source_url=detail_url,
+        category_path_internal=category_path_internal,
+    )

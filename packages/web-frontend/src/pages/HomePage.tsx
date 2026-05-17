@@ -87,6 +87,28 @@ export default function HomePage() {
               marginBottom: '32px',
             }}
           >
+            {/* 주유소 진입 카드 */}
+            <a
+              href="/fuels"
+              style={{
+                padding: '16px',
+                textAlign: 'center',
+                border: '2px solid #bfdbfe',
+                borderRadius: '12px',
+                textDecoration: 'none',
+                color: '#1d4ed8',
+                background: '#eff6ff',
+                fontWeight: 600,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '4px',
+              }}
+              data-testid="fuel-entry-card"
+            >
+              <span style={{ fontSize: '24px' }}>⛽</span>
+              <span>주유소 가격</span>
+            </a>
             {rootCategories.length > 0
               ? rootCategories.map((cat) => (
                   <a
