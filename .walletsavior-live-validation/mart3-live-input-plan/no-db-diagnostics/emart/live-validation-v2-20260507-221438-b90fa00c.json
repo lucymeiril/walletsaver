@@ -1,0 +1,414 @@
+{
+  "run_id": "live-validation-v2-20260507-221438-b90fa00c",
+  "created_at": "2026-05-07T22:14:50.966673",
+  "command_shape": "py tools\\live_validation_harness_v2.py [--input-json data.json | --allow-live-crawl --live-crawler emart] [--allow-live-provider --provider-id google-dev] [--allow-db-admin-submit]",
+  "validation_run": {
+    "mode": "fixture",
+    "provider": null,
+    "model": null,
+    "key_present": false,
+    "live_opt_in": false,
+    "live_call_attempted": false,
+    "live_call_succeeded": false,
+    "skip_reason": "offline fixture/dry-run; live provider not opted in",
+    "error": null,
+    "started_at": "2026-05-07T13:14:38Z",
+    "finished_at": "2026-05-07T13:14:50Z",
+    "item_counts": {
+      "input_items": 0,
+      "selected_items": 0,
+      "retained_items": 0,
+      "records": 0,
+      "skipped": 0,
+      "invalid_rows": 0,
+      "retention_anomalies": 0,
+      "input_retention_valid": true,
+      "split_batches": 0,
+      "proposals": 0,
+      "publish_eligibility_items": 0,
+      "provider_calls": null,
+      "provider_call_attempts": null,
+      "partial_review_required": false,
+      "missing_label_count": 0
+    }
+  },
+  "decisions": {
+    "manual_only": true,
+    "dry_run_no_provider": true,
+    "live_crawl_allowed": true,
+    "live_provider_allowed": false,
+    "db_admin_submit_allowed": false,
+    "provider_secret_handling": "harness passes provider_id only; ai-admin resolves provider secret_alias via existing resolver",
+    "provider_key_alias_checked": false,
+    "bounds": {
+      "max_items": 2,
+      "retain_all_input": false,
+      "allow_large_live_batch": false,
+      "max_live_items_cap": 300,
+      "hard_max_live_items_cap": 500,
+      "max_pages": 1,
+      "max_crawler_requests": 1,
+      "max_provider_calls": 0,
+      "ai_batch_size": 20,
+      "ai_batch_prompt_chars": 8000,
+      "label_timeout_seconds": 240.0,
+      "label_timeout_seconds_requested": 240.0,
+      "label_timeout_seconds_cap": 900.0,
+      "label_chunk_retries": 1,
+      "label_call_min_interval_seconds": 12.0,
+      "label_call_min_interval_seconds_requested": 12.0
+    }
+  },
+  "source": {
+    "selected_item_count": 0,
+    "records_count": 0,
+    "skipped_count": 0,
+    "invalid_rows": [],
+    "retention_anomalies": [],
+    "input_artifact_sources": [],
+    "live_crawl": {
+      "crawler_name": "emart",
+      "status": "CrawlStatus.FAILED",
+      "strategy_used": "requests",
+      "items_count": 0,
+      "crawler_items_count": 0,
+      "errors": [
+        {
+          "strategy_name": "requests",
+          "error_type": "unknown",
+          "error_msg": "검색 '행사' p1: exceptions must derive from BaseException",
+          "status_code": null,
+          "timestamp": "2026-05-07T22:14:50.962479"
+        },
+        {
+          "strategy_name": "requests",
+          "error_type": "empty_response",
+          "error_msg": "Input was available but source extraction found zero candidate rows. Check fixture contents, source candidate selectors/JSON paths, request URL, status/rate limiting, source blocking, and query terms.",
+          "status_code": null,
+          "timestamp": "2026-05-07T22:14:50.962857"
+        }
+      ],
+      "error_msg": "검색 '행사' p1: exceptions must derive from BaseException; Input was available but source extraction found zero candidate rows. Check fixture contents, source candidate selectors/JSON paths, request URL, status/rate limiting, source blocking, and query terms.",
+      "quality_score": 0.0,
+      "quality_details": {
+        "schema": "crawler_run_summary.v1",
+        "score": 0.0,
+        "item_counts": {
+          "raw": 0,
+          "source_raw": 0,
+          "parsed": 0,
+          "valid": 0,
+          "invalid_or_dropped": 0,
+          "duplicates_after_validation": 0
+        },
+        "coverage": {
+          "name": 0.0,
+          "sale_price": 0.0,
+          "original_price": 0.0,
+          "discount_percent": 0.0,
+          "image_url": 0.0,
+          "detail_url": 0.0,
+          "unit": 0.0
+        },
+        "critical_field_thresholds": {
+          "name": 1.0,
+          "sale_price": 1.0,
+          "detail_url": 0.8
+        },
+        "fetch": {
+          "strategy_used": "requests",
+          "fallback_used": false,
+          "queries_attempted": 1,
+          "pages_attempted": 1,
+          "live_enabled": null,
+          "fixture_available": null
+        },
+        "alerts": [
+          "zero_valid_items",
+          "low_name_coverage",
+          "missing_sale_price",
+          "low_detail_url_coverage",
+          "low_image_coverage",
+          "source_errors_present",
+          "zero_source_raw_rows"
+        ],
+        "source_error_count": 1,
+        "source_errors": [
+          "검색 '행사' p1: exceptions must derive from BaseException"
+        ],
+        "operator_diagnostics": [
+          {
+            "code": "source_zero_raw_rows",
+            "severity": "error",
+            "stage": "source_zero_raw_rows",
+            "message": "Input was available but source extraction found zero candidate rows. Check fixture contents, source candidate selectors/JSON paths, request URL, status/rate limiting, source blocking, and query terms.",
+            "next_action": "The run had input but found zero source candidate rows. Replay the saved/mock response and confirm it contains product cards or JSON product objects; then check request URL, query terms, headers, status/rate-limit handling, and source blocking before any live one-shot run.",
+            "counts": {
+              "source_raw": 0,
+              "parsed": 0,
+              "valid": 0,
+              "invalid_or_dropped": 0
+            },
+            "live_enabled": null,
+            "fixture_available": null,
+            "source_errors": [
+              "검색 '행사' p1: exceptions must derive from BaseException"
+            ]
+          }
+        ],
+        "quality_summary": {
+          "status": "failing",
+          "score": 0.0,
+          "registered_vs_collecting": "failing",
+          "critical_field_coverage": {
+            "name": 0.0,
+            "sale_price": 0.0,
+            "detail_url": 0.0
+          },
+          "low_critical_fields": [
+            {
+              "field": "name",
+              "coverage": 0.0,
+              "threshold": 1.0,
+              "present": 0,
+              "total": 0
+            },
+            {
+              "field": "sale_price",
+              "coverage": 0.0,
+              "threshold": 1.0,
+              "present": 0,
+              "total": 0
+            },
+            {
+              "field": "detail_url",
+              "coverage": 0.0,
+              "threshold": 0.8,
+              "present": 0,
+              "total": 0
+            }
+          ],
+          "zero_result_stage": "source_zero_raw_rows",
+          "diagnostic_count": 1,
+          "next_actions": [
+            "The run had input but found zero source candidate rows. Replay the saved/mock response and confirm it contains product cards or JSON product objects; then check request URL, query terms, headers, status/rate-limit handling, and source blocking before any live one-shot run."
+          ]
+        },
+        "next_actions": [
+          "The run had input but found zero source candidate rows. Replay the saved/mock response and confirm it contains product cards or JSON product objects; then check request URL, query terms, headers, status/rate-limit handling, and source blocking before any live one-shot run."
+        ],
+        "zero_result_diagnostic": {
+          "stage": "source_zero_raw_rows",
+          "message": "Input was available but source extraction found zero candidate rows. Check fixture contents, source candidate selectors/JSON paths, request URL, status/rate limiting, source blocking, and query terms.",
+          "operator_action": "Input was available but source extraction found zero candidate rows. Check fixture contents, source candidate selectors/JSON paths, request URL, status/rate limiting, source blocking, and query terms.",
+          "next_action": "The run had input but found zero source candidate rows. Replay the saved/mock response and confirm it contains product cards or JSON product objects; then check request URL, query terms, headers, status/rate-limit handling, and source blocking before any live one-shot run.",
+          "crawler_next_action": "The run had input but found zero source candidate rows. Replay the saved/mock response and confirm it contains product cards or JSON product objects; then check request URL, query terms, headers, status/rate-limit handling, and source blocking before any live one-shot run.",
+          "dry_run_safe": true,
+          "counts": {
+            "source_raw": 0,
+            "parsed": 0,
+            "valid": 0,
+            "invalid_or_dropped": 0
+          },
+          "live_enabled": null,
+          "fixture_available": null,
+          "source_errors": [
+            "검색 '행사' p1: exceptions must derive from BaseException"
+          ]
+        }
+      },
+      "alerts": [
+        "zero_valid_items",
+        "low_name_coverage",
+        "missing_sale_price",
+        "low_detail_url_coverage",
+        "low_image_coverage",
+        "source_errors_present",
+        "zero_source_raw_rows"
+      ],
+      "zero_result_diagnostic": {
+        "stage": "source_zero_raw_rows",
+        "message": "Input was available but source extraction found zero candidate rows. Check fixture contents, source candidate selectors/JSON paths, request URL, status/rate limiting, source blocking, and query terms.",
+        "operator_action": "Input was available but source extraction found zero candidate rows. Check fixture contents, source candidate selectors/JSON paths, request URL, status/rate limiting, source blocking, and query terms.",
+        "next_action": "The run had input but found zero source candidate rows. Replay the saved/mock response and confirm it contains product cards or JSON product objects; then check request URL, query terms, headers, status/rate-limit handling, and source blocking before any live one-shot run.",
+        "crawler_next_action": "The run had input but found zero source candidate rows. Replay the saved/mock response and confirm it contains product cards or JSON product objects; then check request URL, query terms, headers, status/rate-limit handling, and source blocking before any live one-shot run.",
+        "dry_run_safe": true,
+        "counts": {
+          "source_raw": 0,
+          "parsed": 0,
+          "valid": 0,
+          "invalid_or_dropped": 0
+        },
+        "live_enabled": null,
+        "fixture_available": null,
+        "source_errors": [
+          "검색 '행사' p1: exceptions must derive from BaseException"
+        ]
+      },
+      "run_limits": {
+        "max_items": 2,
+        "max_pages": 1,
+        "max_requests": 1
+      },
+      "items": []
+    },
+    "alerts": [
+      "zero_valid_items",
+      "low_name_coverage",
+      "missing_sale_price",
+      "low_detail_url_coverage",
+      "low_image_coverage",
+      "source_errors_present",
+      "zero_source_raw_rows",
+      "harness_zero_selected_items"
+    ],
+    "diagnostics": [
+      {
+        "scope": "crawler",
+        "stage": "source_zero_raw_rows",
+        "message": "Input was available but source extraction found zero candidate rows. Check fixture contents, source candidate selectors/JSON paths, request URL, status/rate limiting, source blocking, and query terms.",
+        "operator_action": "Input was available but source extraction found zero candidate rows. Check fixture contents, source candidate selectors/JSON paths, request URL, status/rate limiting, source blocking, and query terms.",
+        "next_action": "The run had input but found zero source candidate rows. Replay the saved/mock response and confirm it contains product cards or JSON product objects; then check request URL, query terms, headers, status/rate-limit handling, and source blocking before any live one-shot run.",
+        "crawler_next_action": "The run had input but found zero source candidate rows. Replay the saved/mock response and confirm it contains product cards or JSON product objects; then check request URL, query terms, headers, status/rate-limit handling, and source blocking before any live one-shot run.",
+        "dry_run_safe": true,
+        "counts": {
+          "source_raw": 0,
+          "parsed": 0,
+          "valid": 0,
+          "invalid_or_dropped": 0
+        },
+        "live_enabled": null,
+        "fixture_available": null,
+        "source_errors": [
+          "검색 '행사' p1: exceptions must derive from BaseException"
+        ]
+      },
+      {
+        "scope": "harness_source_selection",
+        "stage": "crawler_returned_zero_selected_items",
+        "message": "Live crawler yielded zero selected items for the harness. Inspect crawler quality_details.zero_result_diagnostic, errors, network/source-block signals, and selectors.",
+        "operator_action": "Fix crawler/source diagnostics before running provider or DB-admin validation.",
+        "counts": {
+          "crawler_items": 0,
+          "selected_items": 0,
+          "records": 0
+        }
+      }
+    ]
+  },
+  "raw_selected_items": [],
+  "raw_records": [],
+  "prompt_budget": [],
+  "provider_response_summary": {
+    "called": false,
+    "provider_mode": "skipped",
+    "reason": "dry-run/no-provider mode"
+  },
+  "label_timeout_seconds": 240.0,
+  "proposals": [],
+  "audit_issues": {
+    "batch_id": "live-validation-v2-20260507-221438-b90fa00c:raw",
+    "raw_record_count": 0,
+    "covered_record_count": 0,
+    "missing_record_count": 0,
+    "proposal_count": 0,
+    "issue_count": 0,
+    "status": "ok",
+    "issues": []
+  },
+  "publish_blockers": {
+    "items": []
+  },
+  "db_admin_submit_result": null,
+  "db_admin_acceptance": {
+    "accepted": false,
+    "db_admin_submit_allowed": false,
+    "submit_success": false,
+    "ai_safe_final_approved": 0,
+    "public_db_verified": 0,
+    "blocked_rows_held_for_review": true,
+    "blocked_rows_audited": true,
+    "rollback_re_review_evidence_or_next_action": false,
+    "blockers": [
+      "DB-admin submit was not explicitly allowed."
+    ]
+  },
+  "raw_vs_final": [],
+  "quality_batch_validation": {
+    "purpose": "bounded_quality_repetition_not_full_all_source_one_shot",
+    "mode": "fixture",
+    "db_admin_submit_allowed": false,
+    "input_count": 0,
+    "selected_count": 0,
+    "retained_count": 0,
+    "invalid_row_count": 0,
+    "input_retention_valid": true,
+    "retention_anomaly_count": 0,
+    "input_anomaly_buckets": {},
+    "per_row_input_anomalies": [],
+    "max_items": 2,
+    "ai_batch_size": 20,
+    "ai_batch_prompt_chars": 8000,
+    "split_batch_count": 0,
+    "max_provider_calls": 0,
+    "provider": {
+      "called": false,
+      "mode": "skipped",
+      "provider_id": null,
+      "model": null,
+      "ai_batches": null,
+      "call_attempts": 0,
+      "http_label_calls": null,
+      "chunk_count": null,
+      "successful_chunk_count": null,
+      "failed_chunk_count": null,
+      "partial_results": false,
+      "proposals_stored": null,
+      "keyword_proposals_stored": null
+    },
+    "label_chunks": [],
+    "retryable_provider_failures": [],
+    "missing_label_retry": {
+      "status": "not_called",
+      "partial_review_required": false,
+      "missing_label_count": 0,
+      "missing_label_raw_record_ids": [],
+      "retry_batches_configured": 2
+    },
+    "reviewer_retry_candidates": {
+      "purpose": "one_more_targeted_reviewer_retry_before_human_admin",
+      "source": "deterministic_quality_batch_validation_no_live_reviewer_ai",
+      "candidate_count": 0,
+      "group_count": 0,
+      "groups": [],
+      "human_admin_fallback": "Rows still failing after the future reviewer retry remain in DB-admin/manual review; eligible rows can continue through publish gates."
+    },
+    "anomaly_counts": {
+      "category": 0,
+      "keyword": 0,
+      "unit": 0,
+      "price": 0,
+      "image": 0
+    },
+    "rows_with_any_anomaly": 0,
+    "per_row_anomalies": [],
+    "honesty_notes": [
+      "This validates only the bounded selected rows, not a full all-source one-shot build.",
+      "DB-admin mutation is disabled unless --allow-db-admin-submit is explicit."
+    ]
+  },
+  "holdout_generalization": {
+    "evidence": [],
+    "counts": {},
+    "generalization_success_count": 0,
+    "rule": "exact_catalog and learned_alias are reuse, never generalization success",
+    "todo_hooks": [
+      "Load production catalog/learned exports via --catalog-json and --learned-json."
+    ]
+  },
+  "risks": [
+    "Live crawl/provider/DB-admin paths are operator-gated but can touch external systems when explicitly enabled.",
+    "Dry-run artifacts use no provider output; customer-safety verdicts remain blockers until human/provider proposals exist."
+  ],
+  "artifact_path": ".walletsavior-live-validation\\mart3-live-input-plan\\no-db-diagnostics\\emart\\live-validation-v2-20260507-221438-b90fa00c.json"
+}

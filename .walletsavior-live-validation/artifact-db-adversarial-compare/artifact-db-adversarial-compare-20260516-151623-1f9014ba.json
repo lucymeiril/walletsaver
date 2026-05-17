@@ -1,0 +1,128 @@
+{
+  "schema": "walletsavior.artifact_db_adversarial_compare.v1",
+  "created_at": "2026-05-16T15:16:23.809999",
+  "summary": {
+    "compared": [
+      "raw_title",
+      "current_price",
+      "original_price",
+      "discount_percent",
+      "source_url",
+      "detail_url",
+      "image_url",
+      "unit",
+      "package_quantity",
+      "package_unit",
+      "bundle_count",
+      "price_per_100g",
+      "standard_unit_price",
+      "category",
+      "source",
+      "product_count",
+      "history_count",
+      "duplicate_keys",
+      "missing_rows",
+      "suspicious_changed_fields"
+    ],
+    "result": "3 matched, 0 missing, 0 changed, 0 duplicate key groups, 0 suspicious field changes"
+  },
+  "selection": {
+    "mode": "latest_live_db_submit_safe_row_scale",
+    "proof_json": "E:\\pdf\\capston01\\.walletsavior-live-validation\\live-db-submit-safe-row-scale\\local-db-submit-safe-row-scale-20260516-144644-5a5e7b2e.json",
+    "sqlite_db": "E:\\pdf\\capston01\\.walletsavior-live-validation\\live-db-submit-safe-row-scale\\local-db-submit-safe-row-scale-20260516-144644-5a5e7b2e.sqlite",
+    "source_input_json": "E:\\pdf\\capston01\\.walletsavior-live-validation\\mart3-live-input-plan\\mart3-live-crawler-batch-3row.json",
+    "reason": "no newer local DB one-shot artifact was present during comparison"
+  },
+  "db_counts": {
+    "proof_product_rows": 3,
+    "proof_discount_history_rows": 3,
+    "sqlite": {
+      "products": 3,
+      "discount_history": 3,
+      "normalized_source_listings": 3,
+      "normalized_offer_events": 3
+    }
+  },
+  "aggregate_counts": {
+    "matched_rows": 3,
+    "missing_rows": 0,
+    "changed_rows": 0,
+    "duplicate_key_groups": 0,
+    "suspicious_fields": 0,
+    "source_rows": 3,
+    "proof_public_rows": 3,
+    "sqlite_projection_rows": 3
+  },
+  "comparisons": {
+    "source_vs_public_verification": {
+      "counts": {
+        "source_rows": 3,
+        "target_rows": 3,
+        "matched_rows": 3,
+        "missing_rows": 0,
+        "extra_target_rows": 0,
+        "changed_rows": 0,
+        "duplicate_key_groups": 0,
+        "suspicious_fields": 0
+      },
+      "matched": [
+        {
+          "match_key": "emart|https://emart.ssg.com/item/itemView.ssg?itemId=1000823623226&siteNo=6001&salestrNo=2037|친환경 대추방울토마토 600g/팩",
+          "target_row_kind": "proof_public_verification",
+          "diffs": []
+        },
+        {
+          "match_key": "lottemart|https://lottemartzetta.com/products/a348e9d3-d1af-43bd-9683-eedeff262db4|[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+          "target_row_kind": "proof_public_verification",
+          "diffs": []
+        },
+        {
+          "match_key": "homeplus|https://mfront.homeplus.co.kr/item?itemNo=120074651&storeType=HYPER|농심 신라면 120G*5입",
+          "target_row_kind": "proof_public_verification",
+          "diffs": []
+        }
+      ],
+      "missing_source_rows": [],
+      "extra_target_rows": [],
+      "changed_rows": [],
+      "duplicate_keys": [],
+      "suspicious_changed_fields": []
+    },
+    "source_vs_local_sqlite_projection": {
+      "counts": {
+        "source_rows": 3,
+        "target_rows": 3,
+        "matched_rows": 3,
+        "missing_rows": 0,
+        "extra_target_rows": 0,
+        "changed_rows": 0,
+        "duplicate_key_groups": 0,
+        "suspicious_fields": 0
+      },
+      "matched": [
+        {
+          "match_key": "emart|https://emart.ssg.com/item/itemView.ssg?itemId=1000823623226&siteNo=6001&salestrNo=2037|친환경 대추방울토마토 600g/팩",
+          "target_row_kind": "sqlite_normalized_projection",
+          "diffs": []
+        },
+        {
+          "match_key": "lottemart|https://lottemartzetta.com/products/a348e9d3-d1af-43bd-9683-eedeff262db4|[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+          "target_row_kind": "sqlite_normalized_projection",
+          "diffs": []
+        },
+        {
+          "match_key": "homeplus|https://mfront.homeplus.co.kr/item?itemNo=120074651&storeType=HYPER|농심 신라면 120G*5입",
+          "target_row_kind": "sqlite_normalized_projection",
+          "diffs": []
+        }
+      ],
+      "missing_source_rows": [],
+      "extra_target_rows": [],
+      "changed_rows": [],
+      "duplicate_keys": [],
+      "suspicious_changed_fields": []
+    }
+  },
+  "blockers": [],
+  "artifact_path": "E:\\pdf\\capston01\\.walletsavior-live-validation\\artifact-db-adversarial-compare\\artifact-db-adversarial-compare-20260516-151623-1f9014ba.json"
+}

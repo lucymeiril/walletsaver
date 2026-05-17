@@ -1,0 +1,1671 @@
+{
+  "run_id": "live-validation-v2-20260507-103908-0444cd6a",
+  "created_at": "2026-05-07T10:39:29.814635",
+  "command_shape": "py tools\\live_validation_harness_v2.py [--input-json data.json | --allow-live-crawl --live-crawler emart] [--allow-live-provider --provider-id google-dev] [--allow-db-admin-submit]",
+  "validation_run": {
+    "mode": "live",
+    "provider": "google-gemini31-live-matrix",
+    "model": "gemini-3.1-flash-lite-preview",
+    "key_present": false,
+    "live_opt_in": true,
+    "live_call_attempted": true,
+    "live_call_succeeded": false,
+    "skip_reason": null,
+    "error": {
+      "class": "RuntimeError",
+      "message": "POST http://127.0.0.1:8003/api/ingest/raw-records/label failed with HTTP 502: {'detail': {'error': 'ai_ingestion_error', 'stage': 'provider_response_validation', 'message': 'provider response item 0 has unknown raw_record_id', 'provider_id': 'google-gemini31-live-matrix', 'model': 'gemini-3.1-flash-lite-preview', 'raw_batch_id': 'raw-20260507103908-dcb90615', 'ai_batch_id': 'raw-20260507103908-dcb90615:ai:1', 'row_count': 10, 'invalid_rows': [{'item_index': 0, 'raw_record_id': 'emart:url:99663ac53a26b79b', 'field': 'raw_record_id', 'reason': 'provider response item 0 has unknown raw_record_id'}]}}",
+      "location": {
+        "file": "live_validation_harness_v2.py",
+        "function": "_http_json",
+        "line": 833
+      }
+    },
+    "started_at": "2026-05-07T01:39:08Z",
+    "finished_at": "2026-05-07T01:39:29Z",
+    "item_counts": {
+      "input_items": 395,
+      "selected_items": 10,
+      "retained_items": 10,
+      "records": 10,
+      "skipped": 0,
+      "invalid_rows": 0,
+      "retention_anomalies": 0,
+      "input_retention_valid": false,
+      "split_batches": 1,
+      "proposals": 0,
+      "publish_eligibility_items": 0,
+      "provider_calls": 0,
+      "provider_call_attempts": 0,
+      "partial_review_required": false,
+      "missing_label_count": 10
+    }
+  },
+  "decisions": {
+    "manual_only": true,
+    "dry_run_no_provider": false,
+    "live_crawl_allowed": false,
+    "live_provider_allowed": true,
+    "db_admin_submit_allowed": false,
+    "provider_secret_handling": "harness passes provider_id only; ai-admin resolves provider secret_alias via existing resolver",
+    "provider_key_alias_checked": false,
+    "bounds": {
+      "max_items": 10,
+      "retain_all_input": false,
+      "max_pages": 1,
+      "max_provider_calls": 1,
+      "ai_batch_size": 20,
+      "ai_batch_prompt_chars": 8000,
+      "label_timeout_seconds": 240.0,
+      "label_timeout_seconds_requested": 240.0,
+      "label_timeout_seconds_cap": 900.0
+    }
+  },
+  "source": {
+    "selected_item_count": 10,
+    "records_count": 10,
+    "skipped_count": 0,
+    "invalid_rows": [],
+    "retention_anomalies": [],
+    "input_artifact_sources": [],
+    "live_crawl": null,
+    "alerts": [],
+    "diagnostics": []
+  },
+  "raw_selected_items": [
+    {
+      "name": "친환경 대추방울토마토 600g/팩",
+      "normalized_name": "",
+      "store": "이마트",
+      "original_price": 5480,
+      "sale_price": 4110,
+      "discount_percent": 25.0,
+      "unit": "600g",
+      "display_unit": "600g",
+      "package_quantity": 600.0,
+      "package_unit": "g",
+      "price_per_100g": 685.0,
+      "attributes": {
+        "collection": "자연주의"
+      },
+      "category": "",
+      "event_name": "이마트 할인",
+      "valid_from": null,
+      "valid_until": null,
+      "image_url": "https://sitem.ssgcdn.com/26/32/62/item/1000823623226_i1_232.jpg",
+      "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823623226&siteNo=6001&salestrNo=2037",
+      "crawled_at": "2026-05-07T09:36:08.374290"
+    },
+    {
+      "name": "고산지 사과 (청송) 1.3kg내외 봉",
+      "normalized_name": "",
+      "store": "이마트",
+      "original_price": 16980,
+      "sale_price": 12980,
+      "discount_percent": 23.6,
+      "unit": "1.3kg",
+      "display_unit": "1.3kg",
+      "package_quantity": 1.3,
+      "package_unit": "kg",
+      "price_per_100g": 998.46,
+      "attributes": {
+        "storage_type": "ambient",
+        "storage_label": "상온"
+      },
+      "category": "",
+      "event_name": "이마트 할인",
+      "valid_from": null,
+      "valid_until": null,
+      "image_url": "https://sitem.ssgcdn.com/24/23/61/item/1000823612324_i1_232.jpg",
+      "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823612324&siteNo=6001&salestrNo=2037",
+      "crawled_at": "2026-05-07T09:36:08.374344"
+    },
+    {
+      "name": "GAP 죽장 사과 1.3kg (4~6입) 봉",
+      "normalized_name": "",
+      "store": "이마트",
+      "original_price": 16980,
+      "sale_price": 12980,
+      "discount_percent": 23.6,
+      "unit": "6입",
+      "display_unit": "6입",
+      "package_quantity": 6.0,
+      "package_unit": "입",
+      "price_per_100g": null,
+      "attributes": {
+        "storage_type": "ambient",
+        "storage_label": "상온"
+      },
+      "category": "",
+      "event_name": "이마트 할인",
+      "valid_from": null,
+      "valid_until": null,
+      "image_url": "https://sitem.ssgcdn.com/52/21/61/item/1000823612152_i1_232.jpg",
+      "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823612152&siteNo=6001&salestrNo=2037",
+      "crawled_at": "2026-05-07T09:36:08.374375"
+    },
+    {
+      "name": "한우 양념 소불고기 (600g)",
+      "normalized_name": "",
+      "store": "이마트",
+      "original_price": 29980,
+      "sale_price": 19980,
+      "discount_percent": 33.4,
+      "unit": "600g",
+      "display_unit": "600g",
+      "package_quantity": 600.0,
+      "package_unit": "g",
+      "price_per_100g": 3330.0,
+      "attributes": {
+        "origin": "domestic",
+        "origin_label": "한우",
+        "cut": "bulgogi",
+        "cut_label": "불고기"
+      },
+      "category": "",
+      "event_name": "이마트 할인",
+      "valid_from": null,
+      "valid_until": null,
+      "image_url": "https://sitem.ssgcdn.com/62/77/62/item/1000823627762_i1_232.jpg",
+      "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823627762&siteNo=6001&salestrNo=2037",
+      "crawled_at": "2026-05-07T09:36:08.374401"
+    },
+    {
+      "name": "미국산 항공직송 체리 250g (9.5row) 팩",
+      "normalized_name": "",
+      "store": "이마트",
+      "original_price": 13800,
+      "sale_price": 9980,
+      "discount_percent": 27.7,
+      "unit": "250g",
+      "display_unit": "250g",
+      "package_quantity": 250.0,
+      "package_unit": "g",
+      "price_per_100g": 3992.0,
+      "attributes": {},
+      "category": "",
+      "event_name": "이마트 할인",
+      "valid_from": null,
+      "valid_until": null,
+      "image_url": "https://sitem.ssgcdn.com/38/67/62/item/1000823626738_i1_232.jpg",
+      "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823626738&siteNo=7009&salestrNo=2551",
+      "crawled_at": "2026-05-07T09:36:08.374427"
+    },
+    {
+      "name": "안동 사과 1.3kg (5~6입) 봉",
+      "normalized_name": "",
+      "store": "이마트",
+      "original_price": 18800,
+      "sale_price": 11800,
+      "discount_percent": 37.2,
+      "unit": "6입",
+      "display_unit": "6입",
+      "package_quantity": 6.0,
+      "package_unit": "입",
+      "price_per_100g": null,
+      "attributes": {
+        "storage_type": "ambient",
+        "storage_label": "상온"
+      },
+      "category": "",
+      "event_name": "이마트 할인",
+      "valid_from": null,
+      "valid_until": null,
+      "image_url": "https://sitem.ssgcdn.com/01/42/61/item/1000823614201_i1_232.jpg",
+      "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823614201&siteNo=7009&salestrNo=2551",
+      "crawled_at": "2026-05-07T09:36:08.374447"
+    },
+    {
+      "name": "당도선별 하우스 봄 수박 4~5kg미만",
+      "normalized_name": "",
+      "store": "이마트",
+      "original_price": 28800,
+      "sale_price": 18800,
+      "discount_percent": 34.7,
+      "unit": "5kg",
+      "display_unit": "5kg",
+      "package_quantity": 5.0,
+      "package_unit": "kg",
+      "price_per_100g": 376.0,
+      "attributes": {},
+      "category": "",
+      "event_name": "이마트 할인",
+      "valid_from": null,
+      "valid_until": null,
+      "image_url": "https://sitem.ssgcdn.com/03/84/26/item/1000824268403_i1_232.jpg",
+      "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000824268403&siteNo=7009&salestrNo=2551",
+      "crawled_at": "2026-05-07T09:36:08.374467"
+    },
+    {
+      "name": "[냉장/미국산] 프라임 윗등심 스테이크 (500g)",
+      "normalized_name": "",
+      "store": "이마트",
+      "original_price": 29800,
+      "sale_price": 20860,
+      "discount_percent": 30.0,
+      "unit": "500g",
+      "display_unit": "500g",
+      "package_quantity": 500.0,
+      "package_unit": "g",
+      "price_per_100g": 4172.0,
+      "attributes": {
+        "storage_type": "chilled",
+        "storage_label": "냉장",
+        "cut": "sirloin",
+        "cut_label": "등심"
+      },
+      "category": "",
+      "event_name": "이마트 할인",
+      "valid_from": null,
+      "valid_until": null,
+      "image_url": "https://sitem.ssgcdn.com/94/94/61/item/1000823619494_i1_232.jpg",
+      "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823619494&siteNo=7009&salestrNo=2551",
+      "crawled_at": "2026-05-07T09:36:08.374487"
+    },
+    {
+      "name": "당도선별 하우스 봄 수박 5~6kg미만",
+      "normalized_name": "",
+      "store": "이마트",
+      "original_price": 31800,
+      "sale_price": 21800,
+      "discount_percent": 31.4,
+      "unit": "6kg",
+      "display_unit": "6kg",
+      "package_quantity": 6.0,
+      "package_unit": "kg",
+      "price_per_100g": 363.33,
+      "attributes": {},
+      "category": "",
+      "event_name": "이마트 할인",
+      "valid_from": null,
+      "valid_until": null,
+      "image_url": "https://sitem.ssgcdn.com/57/84/26/item/1000824268457_i1_232.jpg",
+      "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000824268457&siteNo=7009&salestrNo=2551",
+      "crawled_at": "2026-05-07T09:36:08.374506"
+    },
+    {
+      "name": "당도선별 하우스 봄 수박 6~7kg미만",
+      "normalized_name": "",
+      "store": "이마트",
+      "original_price": 33800,
+      "sale_price": 23800,
+      "discount_percent": 29.6,
+      "unit": "7kg",
+      "display_unit": "7kg",
+      "package_quantity": 7.0,
+      "package_unit": "kg",
+      "price_per_100g": 340.0,
+      "attributes": {},
+      "category": "",
+      "event_name": "이마트 할인",
+      "valid_from": null,
+      "valid_until": null,
+      "image_url": "https://sitem.ssgcdn.com/91/84/26/item/1000824268491_i1_232.jpg",
+      "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000824268491&siteNo=7009&salestrNo=2551",
+      "crawled_at": "2026-05-07T09:36:08.374525"
+    }
+  ],
+  "raw_records": [
+    {
+      "raw_record_id": "이마트:url:99663ac53a26b79b",
+      "source_name": "이마트",
+      "source_record_key": null,
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823623226&siteNo=6001&salestrNo=2037",
+      "raw_title": "친환경 대추방울토마토 600g/팩",
+      "raw_price": 4110,
+      "raw_payload": {
+        "name": "친환경 대추방울토마토 600g/팩",
+        "normalized_name": "",
+        "store": "이마트",
+        "original_price": 5480,
+        "sale_price": 4110,
+        "discount_percent": 25.0,
+        "unit": "600g",
+        "display_unit": "600g",
+        "package_quantity": 600.0,
+        "package_unit": "g",
+        "price_per_100g": 685.0,
+        "attributes": {
+          "collection": "자연주의"
+        },
+        "category": "",
+        "event_name": "이마트 할인",
+        "valid_from": null,
+        "valid_until": null,
+        "image_url": "https://sitem.ssgcdn.com/26/32/62/item/1000823623226_i1_232.jpg",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823623226&siteNo=6001&salestrNo=2037",
+        "crawled_at": "2026-05-07T09:36:08.374290"
+      },
+      "crawled_at": "2026-05-07T10:39:08.493144"
+    },
+    {
+      "raw_record_id": "이마트:url:59c6424034aa0e42",
+      "source_name": "이마트",
+      "source_record_key": null,
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823612324&siteNo=6001&salestrNo=2037",
+      "raw_title": "고산지 사과 (청송) 1.3kg내외 봉",
+      "raw_price": 12980,
+      "raw_payload": {
+        "name": "고산지 사과 (청송) 1.3kg내외 봉",
+        "normalized_name": "",
+        "store": "이마트",
+        "original_price": 16980,
+        "sale_price": 12980,
+        "discount_percent": 23.6,
+        "unit": "1.3kg",
+        "display_unit": "1.3kg",
+        "package_quantity": 1.3,
+        "package_unit": "kg",
+        "price_per_100g": 998.46,
+        "attributes": {
+          "storage_type": "ambient",
+          "storage_label": "상온"
+        },
+        "category": "",
+        "event_name": "이마트 할인",
+        "valid_from": null,
+        "valid_until": null,
+        "image_url": "https://sitem.ssgcdn.com/24/23/61/item/1000823612324_i1_232.jpg",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823612324&siteNo=6001&salestrNo=2037",
+        "crawled_at": "2026-05-07T09:36:08.374344"
+      },
+      "crawled_at": "2026-05-07T10:39:08.493226"
+    },
+    {
+      "raw_record_id": "이마트:url:8d9332637d1f9330",
+      "source_name": "이마트",
+      "source_record_key": null,
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823612152&siteNo=6001&salestrNo=2037",
+      "raw_title": "GAP 죽장 사과 1.3kg (4~6입) 봉",
+      "raw_price": 12980,
+      "raw_payload": {
+        "name": "GAP 죽장 사과 1.3kg (4~6입) 봉",
+        "normalized_name": "",
+        "store": "이마트",
+        "original_price": 16980,
+        "sale_price": 12980,
+        "discount_percent": 23.6,
+        "unit": "6입",
+        "display_unit": "6입",
+        "package_quantity": 6.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "attributes": {
+          "storage_type": "ambient",
+          "storage_label": "상온"
+        },
+        "category": "",
+        "event_name": "이마트 할인",
+        "valid_from": null,
+        "valid_until": null,
+        "image_url": "https://sitem.ssgcdn.com/52/21/61/item/1000823612152_i1_232.jpg",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823612152&siteNo=6001&salestrNo=2037",
+        "crawled_at": "2026-05-07T09:36:08.374375"
+      },
+      "crawled_at": "2026-05-07T10:39:08.493245"
+    },
+    {
+      "raw_record_id": "이마트:url:46f336325ed7ccd9",
+      "source_name": "이마트",
+      "source_record_key": null,
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823627762&siteNo=6001&salestrNo=2037",
+      "raw_title": "한우 양념 소불고기 (600g)",
+      "raw_price": 19980,
+      "raw_payload": {
+        "name": "한우 양념 소불고기 (600g)",
+        "normalized_name": "",
+        "store": "이마트",
+        "original_price": 29980,
+        "sale_price": 19980,
+        "discount_percent": 33.4,
+        "unit": "600g",
+        "display_unit": "600g",
+        "package_quantity": 600.0,
+        "package_unit": "g",
+        "price_per_100g": 3330.0,
+        "attributes": {
+          "origin": "domestic",
+          "origin_label": "한우",
+          "cut": "bulgogi",
+          "cut_label": "불고기"
+        },
+        "category": "",
+        "event_name": "이마트 할인",
+        "valid_from": null,
+        "valid_until": null,
+        "image_url": "https://sitem.ssgcdn.com/62/77/62/item/1000823627762_i1_232.jpg",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823627762&siteNo=6001&salestrNo=2037",
+        "crawled_at": "2026-05-07T09:36:08.374401"
+      },
+      "crawled_at": "2026-05-07T10:39:08.493258"
+    },
+    {
+      "raw_record_id": "이마트:url:8af2d1dad93b8617",
+      "source_name": "이마트",
+      "source_record_key": null,
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823626738&siteNo=7009&salestrNo=2551",
+      "raw_title": "미국산 항공직송 체리 250g (9.5row) 팩",
+      "raw_price": 9980,
+      "raw_payload": {
+        "name": "미국산 항공직송 체리 250g (9.5row) 팩",
+        "normalized_name": "",
+        "store": "이마트",
+        "original_price": 13800,
+        "sale_price": 9980,
+        "discount_percent": 27.7,
+        "unit": "250g",
+        "display_unit": "250g",
+        "package_quantity": 250.0,
+        "package_unit": "g",
+        "price_per_100g": 3992.0,
+        "attributes": {},
+        "category": "",
+        "event_name": "이마트 할인",
+        "valid_from": null,
+        "valid_until": null,
+        "image_url": "https://sitem.ssgcdn.com/38/67/62/item/1000823626738_i1_232.jpg",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823626738&siteNo=7009&salestrNo=2551",
+        "crawled_at": "2026-05-07T09:36:08.374427"
+      },
+      "crawled_at": "2026-05-07T10:39:08.493268"
+    },
+    {
+      "raw_record_id": "이마트:url:401f875d993815aa",
+      "source_name": "이마트",
+      "source_record_key": null,
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823614201&siteNo=7009&salestrNo=2551",
+      "raw_title": "안동 사과 1.3kg (5~6입) 봉",
+      "raw_price": 11800,
+      "raw_payload": {
+        "name": "안동 사과 1.3kg (5~6입) 봉",
+        "normalized_name": "",
+        "store": "이마트",
+        "original_price": 18800,
+        "sale_price": 11800,
+        "discount_percent": 37.2,
+        "unit": "6입",
+        "display_unit": "6입",
+        "package_quantity": 6.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "attributes": {
+          "storage_type": "ambient",
+          "storage_label": "상온"
+        },
+        "category": "",
+        "event_name": "이마트 할인",
+        "valid_from": null,
+        "valid_until": null,
+        "image_url": "https://sitem.ssgcdn.com/01/42/61/item/1000823614201_i1_232.jpg",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823614201&siteNo=7009&salestrNo=2551",
+        "crawled_at": "2026-05-07T09:36:08.374447"
+      },
+      "crawled_at": "2026-05-07T10:39:08.493277"
+    },
+    {
+      "raw_record_id": "이마트:url:217ca113e9357945",
+      "source_name": "이마트",
+      "source_record_key": null,
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000824268403&siteNo=7009&salestrNo=2551",
+      "raw_title": "당도선별 하우스 봄 수박 4~5kg미만",
+      "raw_price": 18800,
+      "raw_payload": {
+        "name": "당도선별 하우스 봄 수박 4~5kg미만",
+        "normalized_name": "",
+        "store": "이마트",
+        "original_price": 28800,
+        "sale_price": 18800,
+        "discount_percent": 34.7,
+        "unit": "5kg",
+        "display_unit": "5kg",
+        "package_quantity": 5.0,
+        "package_unit": "kg",
+        "price_per_100g": 376.0,
+        "attributes": {},
+        "category": "",
+        "event_name": "이마트 할인",
+        "valid_from": null,
+        "valid_until": null,
+        "image_url": "https://sitem.ssgcdn.com/03/84/26/item/1000824268403_i1_232.jpg",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000824268403&siteNo=7009&salestrNo=2551",
+        "crawled_at": "2026-05-07T09:36:08.374467"
+      },
+      "crawled_at": "2026-05-07T10:39:08.493289"
+    },
+    {
+      "raw_record_id": "이마트:url:80f80ee0839b0058",
+      "source_name": "이마트",
+      "source_record_key": null,
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823619494&siteNo=7009&salestrNo=2551",
+      "raw_title": "[냉장/미국산] 프라임 윗등심 스테이크 (500g)",
+      "raw_price": 20860,
+      "raw_payload": {
+        "name": "[냉장/미국산] 프라임 윗등심 스테이크 (500g)",
+        "normalized_name": "",
+        "store": "이마트",
+        "original_price": 29800,
+        "sale_price": 20860,
+        "discount_percent": 30.0,
+        "unit": "500g",
+        "display_unit": "500g",
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "price_per_100g": 4172.0,
+        "attributes": {
+          "storage_type": "chilled",
+          "storage_label": "냉장",
+          "cut": "sirloin",
+          "cut_label": "등심"
+        },
+        "category": "",
+        "event_name": "이마트 할인",
+        "valid_from": null,
+        "valid_until": null,
+        "image_url": "https://sitem.ssgcdn.com/94/94/61/item/1000823619494_i1_232.jpg",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823619494&siteNo=7009&salestrNo=2551",
+        "crawled_at": "2026-05-07T09:36:08.374487"
+      },
+      "crawled_at": "2026-05-07T10:39:08.493307"
+    },
+    {
+      "raw_record_id": "이마트:url:bb0f8eb57885d790",
+      "source_name": "이마트",
+      "source_record_key": null,
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000824268457&siteNo=7009&salestrNo=2551",
+      "raw_title": "당도선별 하우스 봄 수박 5~6kg미만",
+      "raw_price": 21800,
+      "raw_payload": {
+        "name": "당도선별 하우스 봄 수박 5~6kg미만",
+        "normalized_name": "",
+        "store": "이마트",
+        "original_price": 31800,
+        "sale_price": 21800,
+        "discount_percent": 31.4,
+        "unit": "6kg",
+        "display_unit": "6kg",
+        "package_quantity": 6.0,
+        "package_unit": "kg",
+        "price_per_100g": 363.33,
+        "attributes": {},
+        "category": "",
+        "event_name": "이마트 할인",
+        "valid_from": null,
+        "valid_until": null,
+        "image_url": "https://sitem.ssgcdn.com/57/84/26/item/1000824268457_i1_232.jpg",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000824268457&siteNo=7009&salestrNo=2551",
+        "crawled_at": "2026-05-07T09:36:08.374506"
+      },
+      "crawled_at": "2026-05-07T10:39:08.493317"
+    },
+    {
+      "raw_record_id": "이마트:url:9dd4d5e66f533b44",
+      "source_name": "이마트",
+      "source_record_key": null,
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000824268491&siteNo=7009&salestrNo=2551",
+      "raw_title": "당도선별 하우스 봄 수박 6~7kg미만",
+      "raw_price": 23800,
+      "raw_payload": {
+        "name": "당도선별 하우스 봄 수박 6~7kg미만",
+        "normalized_name": "",
+        "store": "이마트",
+        "original_price": 33800,
+        "sale_price": 23800,
+        "discount_percent": 29.6,
+        "unit": "7kg",
+        "display_unit": "7kg",
+        "package_quantity": 7.0,
+        "package_unit": "kg",
+        "price_per_100g": 340.0,
+        "attributes": {},
+        "category": "",
+        "event_name": "이마트 할인",
+        "valid_from": null,
+        "valid_until": null,
+        "image_url": "https://sitem.ssgcdn.com/91/84/26/item/1000824268491_i1_232.jpg",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000824268491&siteNo=7009&salestrNo=2551",
+        "crawled_at": "2026-05-07T09:36:08.374525"
+      },
+      "crawled_at": "2026-05-07T10:39:08.493327"
+    }
+  ],
+  "prompt_budget": [
+    {
+      "batch_index": 1,
+      "record_count": 10,
+      "raw_record_ids": [
+        "이마트:url:99663ac53a26b79b",
+        "이마트:url:59c6424034aa0e42",
+        "이마트:url:8d9332637d1f9330",
+        "이마트:url:46f336325ed7ccd9",
+        "이마트:url:8af2d1dad93b8617",
+        "이마트:url:401f875d993815aa",
+        "이마트:url:217ca113e9357945",
+        "이마트:url:80f80ee0839b0058",
+        "이마트:url:bb0f8eb57885d790",
+        "이마트:url:9dd4d5e66f533b44"
+      ],
+      "prompt_chars": 4814,
+      "max_prompt_chars": 8000,
+      "within_budget": true
+    }
+  ],
+  "provider_response_summary": {
+    "called": true,
+    "provider_mode": "failed",
+    "provider_id": "google-gemini31-live-matrix",
+    "model": "gemini-3.1-flash-lite-preview",
+    "raw_batch_id": null,
+    "raw_batch_ids": [],
+    "provider_calls": 0,
+    "ai_batches": 0,
+    "http_label_calls": 1,
+    "chunks": [
+      {
+        "chunk_index": 1,
+        "status": "failed",
+        "record_count": 10,
+        "raw_record_ids": [
+          "이마트:url:99663ac53a26b79b",
+          "이마트:url:59c6424034aa0e42",
+          "이마트:url:8d9332637d1f9330",
+          "이마트:url:46f336325ed7ccd9",
+          "이마트:url:8af2d1dad93b8617",
+          "이마트:url:401f875d993815aa",
+          "이마트:url:217ca113e9357945",
+          "이마트:url:80f80ee0839b0058",
+          "이마트:url:bb0f8eb57885d790",
+          "이마트:url:9dd4d5e66f533b44"
+        ],
+        "error": {
+          "class": "RuntimeError",
+          "message": "POST http://127.0.0.1:8003/api/ingest/raw-records/label failed with HTTP 502: {'detail': {'error': 'ai_ingestion_error', 'stage': 'provider_response_validation', 'message': 'provider response item 0 has unknown raw_record_id', 'provider_id': 'google-gemini31-live-matrix', 'model': 'gemini-3.1-flash-lite-preview', 'raw_batch_id': 'raw-20260507103908-dcb90615', 'ai_batch_id': 'raw-20260507103908-dcb90615:ai:1', 'row_count': 10, 'invalid_rows': [{'item_index': 0, 'raw_record_id': 'emart:url:99663ac53a26b79b', 'field': 'raw_record_id', 'reason': 'provider response item 0 has unknown raw_record_id'}]}}",
+          "location": {
+            "file": "live_validation_harness_v2.py",
+            "function": "_http_json",
+            "line": 833
+          }
+        },
+        "retryable": true,
+        "missing_label_count": 10,
+        "missing_label_raw_record_ids": [
+          "이마트:url:99663ac53a26b79b",
+          "이마트:url:59c6424034aa0e42",
+          "이마트:url:8d9332637d1f9330",
+          "이마트:url:46f336325ed7ccd9",
+          "이마트:url:8af2d1dad93b8617",
+          "이마트:url:401f875d993815aa",
+          "이마트:url:217ca113e9357945",
+          "이마트:url:80f80ee0839b0058",
+          "이마트:url:bb0f8eb57885d790",
+          "이마트:url:9dd4d5e66f533b44"
+        ]
+      }
+    ],
+    "chunk_count": 1,
+    "successful_chunk_count": 0,
+    "failed_chunk_count": 1,
+    "retryable_failure_count": 1,
+    "retryable_failures": [
+      {
+        "chunk_index": 1,
+        "status": "failed",
+        "record_count": 10,
+        "raw_record_ids": [
+          "이마트:url:99663ac53a26b79b",
+          "이마트:url:59c6424034aa0e42",
+          "이마트:url:8d9332637d1f9330",
+          "이마트:url:46f336325ed7ccd9",
+          "이마트:url:8af2d1dad93b8617",
+          "이마트:url:401f875d993815aa",
+          "이마트:url:217ca113e9357945",
+          "이마트:url:80f80ee0839b0058",
+          "이마트:url:bb0f8eb57885d790",
+          "이마트:url:9dd4d5e66f533b44"
+        ],
+        "error": {
+          "class": "RuntimeError",
+          "message": "POST http://127.0.0.1:8003/api/ingest/raw-records/label failed with HTTP 502: {'detail': {'error': 'ai_ingestion_error', 'stage': 'provider_response_validation', 'message': 'provider response item 0 has unknown raw_record_id', 'provider_id': 'google-gemini31-live-matrix', 'model': 'gemini-3.1-flash-lite-preview', 'raw_batch_id': 'raw-20260507103908-dcb90615', 'ai_batch_id': 'raw-20260507103908-dcb90615:ai:1', 'row_count': 10, 'invalid_rows': [{'item_index': 0, 'raw_record_id': 'emart:url:99663ac53a26b79b', 'field': 'raw_record_id', 'reason': 'provider response item 0 has unknown raw_record_id'}]}}",
+          "location": {
+            "file": "live_validation_harness_v2.py",
+            "function": "_http_json",
+            "line": 833
+          }
+        },
+        "retryable": true,
+        "missing_label_count": 10,
+        "missing_label_raw_record_ids": [
+          "이마트:url:99663ac53a26b79b",
+          "이마트:url:59c6424034aa0e42",
+          "이마트:url:8d9332637d1f9330",
+          "이마트:url:46f336325ed7ccd9",
+          "이마트:url:8af2d1dad93b8617",
+          "이마트:url:401f875d993815aa",
+          "이마트:url:217ca113e9357945",
+          "이마트:url:80f80ee0839b0058",
+          "이마트:url:bb0f8eb57885d790",
+          "이마트:url:9dd4d5e66f533b44"
+        ]
+      }
+    ],
+    "partial_results": false,
+    "status": "failed_retryable",
+    "partial_review_required": true,
+    "missing_label_count": 10,
+    "missing_label_raw_record_ids": [
+      "이마트:url:99663ac53a26b79b",
+      "이마트:url:59c6424034aa0e42",
+      "이마트:url:8d9332637d1f9330",
+      "이마트:url:46f336325ed7ccd9",
+      "이마트:url:8af2d1dad93b8617",
+      "이마트:url:401f875d993815aa",
+      "이마트:url:217ca113e9357945",
+      "이마트:url:80f80ee0839b0058",
+      "이마트:url:bb0f8eb57885d790",
+      "이마트:url:9dd4d5e66f533b44"
+    ],
+    "proposals_stored": 0,
+    "keyword_proposals_stored": 0,
+    "error": {
+      "class": "RuntimeError",
+      "message": "POST http://127.0.0.1:8003/api/ingest/raw-records/label failed with HTTP 502: {'detail': {'error': 'ai_ingestion_error', 'stage': 'provider_response_validation', 'message': 'provider response item 0 has unknown raw_record_id', 'provider_id': 'google-gemini31-live-matrix', 'model': 'gemini-3.1-flash-lite-preview', 'raw_batch_id': 'raw-20260507103908-dcb90615', 'ai_batch_id': 'raw-20260507103908-dcb90615:ai:1', 'row_count': 10, 'invalid_rows': [{'item_index': 0, 'raw_record_id': 'emart:url:99663ac53a26b79b', 'field': 'raw_record_id', 'reason': 'provider response item 0 has unknown raw_record_id'}]}}",
+      "location": {
+        "file": "live_validation_harness_v2.py",
+        "function": "_http_json",
+        "line": 833
+      }
+    }
+  },
+  "label_timeout_seconds": 240.0,
+  "proposals": [],
+  "audit_issues": {
+    "issues": []
+  },
+  "publish_blockers": {
+    "items": []
+  },
+  "db_admin_submit_result": null,
+  "raw_vs_final": [
+    {
+      "raw_record_id": "이마트:url:99663ac53a26b79b",
+      "raw_title": "친환경 대추방울토마토 600g/팩",
+      "final_name": "친환경 대추방울토마토 600g/팩",
+      "raw_price": 4110,
+      "final_sale_price": 4110,
+      "raw_original_price": 5480,
+      "final_original_price": 5480,
+      "raw_discount_percent": 25.0,
+      "final_discount_percent": 25.0,
+      "raw_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823623226&siteNo=6001&salestrNo=2037",
+      "final_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823623226&siteNo=6001&salestrNo=2037",
+      "raw_image_url": "https://sitem.ssgcdn.com/26/32/62/item/1000823623226_i1_232.jpg",
+      "final_image_url": "https://sitem.ssgcdn.com/26/32/62/item/1000823623226_i1_232.jpg",
+      "raw_category_id": null,
+      "final_category_id": null,
+      "raw_keywords": null,
+      "final_keywords": [],
+      "publication_kind": "hotdeal",
+      "price_observation_only": false,
+      "blockers": [
+        "pending_review: no AI proposals linked to raw record"
+      ]
+    },
+    {
+      "raw_record_id": "이마트:url:59c6424034aa0e42",
+      "raw_title": "고산지 사과 (청송) 1.3kg내외 봉",
+      "final_name": "고산지 사과 (청송) 1.3kg내외 봉",
+      "raw_price": 12980,
+      "final_sale_price": 12980,
+      "raw_original_price": 16980,
+      "final_original_price": 16980,
+      "raw_discount_percent": 23.6,
+      "final_discount_percent": 23.6,
+      "raw_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823612324&siteNo=6001&salestrNo=2037",
+      "final_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823612324&siteNo=6001&salestrNo=2037",
+      "raw_image_url": "https://sitem.ssgcdn.com/24/23/61/item/1000823612324_i1_232.jpg",
+      "final_image_url": "https://sitem.ssgcdn.com/24/23/61/item/1000823612324_i1_232.jpg",
+      "raw_category_id": null,
+      "final_category_id": null,
+      "raw_keywords": null,
+      "final_keywords": [],
+      "publication_kind": "hotdeal",
+      "price_observation_only": false,
+      "blockers": [
+        "pending_review: no AI proposals linked to raw record"
+      ]
+    },
+    {
+      "raw_record_id": "이마트:url:8d9332637d1f9330",
+      "raw_title": "GAP 죽장 사과 1.3kg (4~6입) 봉",
+      "final_name": "GAP 죽장 사과 1.3kg (4~6입) 봉",
+      "raw_price": 12980,
+      "final_sale_price": 12980,
+      "raw_original_price": 16980,
+      "final_original_price": 16980,
+      "raw_discount_percent": 23.6,
+      "final_discount_percent": 23.6,
+      "raw_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823612152&siteNo=6001&salestrNo=2037",
+      "final_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823612152&siteNo=6001&salestrNo=2037",
+      "raw_image_url": "https://sitem.ssgcdn.com/52/21/61/item/1000823612152_i1_232.jpg",
+      "final_image_url": "https://sitem.ssgcdn.com/52/21/61/item/1000823612152_i1_232.jpg",
+      "raw_category_id": null,
+      "final_category_id": null,
+      "raw_keywords": null,
+      "final_keywords": [],
+      "publication_kind": "hotdeal",
+      "price_observation_only": false,
+      "blockers": [
+        "pending_review: no AI proposals linked to raw record"
+      ]
+    },
+    {
+      "raw_record_id": "이마트:url:46f336325ed7ccd9",
+      "raw_title": "한우 양념 소불고기 (600g)",
+      "final_name": "한우 양념 소불고기 (600g)",
+      "raw_price": 19980,
+      "final_sale_price": 19980,
+      "raw_original_price": 29980,
+      "final_original_price": 29980,
+      "raw_discount_percent": 33.4,
+      "final_discount_percent": 33.4,
+      "raw_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823627762&siteNo=6001&salestrNo=2037",
+      "final_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823627762&siteNo=6001&salestrNo=2037",
+      "raw_image_url": "https://sitem.ssgcdn.com/62/77/62/item/1000823627762_i1_232.jpg",
+      "final_image_url": "https://sitem.ssgcdn.com/62/77/62/item/1000823627762_i1_232.jpg",
+      "raw_category_id": null,
+      "final_category_id": null,
+      "raw_keywords": null,
+      "final_keywords": [],
+      "publication_kind": "hotdeal",
+      "price_observation_only": false,
+      "blockers": [
+        "pending_review: no AI proposals linked to raw record"
+      ]
+    },
+    {
+      "raw_record_id": "이마트:url:8af2d1dad93b8617",
+      "raw_title": "미국산 항공직송 체리 250g (9.5row) 팩",
+      "final_name": "미국산 항공직송 체리 250g (9.5row) 팩",
+      "raw_price": 9980,
+      "final_sale_price": 9980,
+      "raw_original_price": 13800,
+      "final_original_price": 13800,
+      "raw_discount_percent": 27.7,
+      "final_discount_percent": 27.7,
+      "raw_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823626738&siteNo=7009&salestrNo=2551",
+      "final_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823626738&siteNo=7009&salestrNo=2551",
+      "raw_image_url": "https://sitem.ssgcdn.com/38/67/62/item/1000823626738_i1_232.jpg",
+      "final_image_url": "https://sitem.ssgcdn.com/38/67/62/item/1000823626738_i1_232.jpg",
+      "raw_category_id": null,
+      "final_category_id": null,
+      "raw_keywords": null,
+      "final_keywords": [],
+      "publication_kind": "hotdeal",
+      "price_observation_only": false,
+      "blockers": [
+        "pending_review: no AI proposals linked to raw record"
+      ]
+    },
+    {
+      "raw_record_id": "이마트:url:401f875d993815aa",
+      "raw_title": "안동 사과 1.3kg (5~6입) 봉",
+      "final_name": "안동 사과 1.3kg (5~6입) 봉",
+      "raw_price": 11800,
+      "final_sale_price": 11800,
+      "raw_original_price": 18800,
+      "final_original_price": 18800,
+      "raw_discount_percent": 37.2,
+      "final_discount_percent": 37.2,
+      "raw_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823614201&siteNo=7009&salestrNo=2551",
+      "final_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823614201&siteNo=7009&salestrNo=2551",
+      "raw_image_url": "https://sitem.ssgcdn.com/01/42/61/item/1000823614201_i1_232.jpg",
+      "final_image_url": "https://sitem.ssgcdn.com/01/42/61/item/1000823614201_i1_232.jpg",
+      "raw_category_id": null,
+      "final_category_id": null,
+      "raw_keywords": null,
+      "final_keywords": [],
+      "publication_kind": "hotdeal",
+      "price_observation_only": false,
+      "blockers": [
+        "pending_review: no AI proposals linked to raw record"
+      ]
+    },
+    {
+      "raw_record_id": "이마트:url:217ca113e9357945",
+      "raw_title": "당도선별 하우스 봄 수박 4~5kg미만",
+      "final_name": "당도선별 하우스 봄 수박 4~5kg미만",
+      "raw_price": 18800,
+      "final_sale_price": 18800,
+      "raw_original_price": 28800,
+      "final_original_price": 28800,
+      "raw_discount_percent": 34.7,
+      "final_discount_percent": 34.7,
+      "raw_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000824268403&siteNo=7009&salestrNo=2551",
+      "final_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000824268403&siteNo=7009&salestrNo=2551",
+      "raw_image_url": "https://sitem.ssgcdn.com/03/84/26/item/1000824268403_i1_232.jpg",
+      "final_image_url": "https://sitem.ssgcdn.com/03/84/26/item/1000824268403_i1_232.jpg",
+      "raw_category_id": null,
+      "final_category_id": null,
+      "raw_keywords": null,
+      "final_keywords": [],
+      "publication_kind": "hotdeal",
+      "price_observation_only": false,
+      "blockers": [
+        "pending_review: no AI proposals linked to raw record"
+      ]
+    },
+    {
+      "raw_record_id": "이마트:url:80f80ee0839b0058",
+      "raw_title": "[냉장/미국산] 프라임 윗등심 스테이크 (500g)",
+      "final_name": "[냉장/미국산] 프라임 윗등심 스테이크 (500g)",
+      "raw_price": 20860,
+      "final_sale_price": 20860,
+      "raw_original_price": 29800,
+      "final_original_price": 29800,
+      "raw_discount_percent": 30.0,
+      "final_discount_percent": 30.0,
+      "raw_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823619494&siteNo=7009&salestrNo=2551",
+      "final_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000823619494&siteNo=7009&salestrNo=2551",
+      "raw_image_url": "https://sitem.ssgcdn.com/94/94/61/item/1000823619494_i1_232.jpg",
+      "final_image_url": "https://sitem.ssgcdn.com/94/94/61/item/1000823619494_i1_232.jpg",
+      "raw_category_id": null,
+      "final_category_id": null,
+      "raw_keywords": null,
+      "final_keywords": [],
+      "publication_kind": "hotdeal",
+      "price_observation_only": false,
+      "blockers": [
+        "pending_review: no AI proposals linked to raw record"
+      ]
+    },
+    {
+      "raw_record_id": "이마트:url:bb0f8eb57885d790",
+      "raw_title": "당도선별 하우스 봄 수박 5~6kg미만",
+      "final_name": "당도선별 하우스 봄 수박 5~6kg미만",
+      "raw_price": 21800,
+      "final_sale_price": 21800,
+      "raw_original_price": 31800,
+      "final_original_price": 31800,
+      "raw_discount_percent": 31.4,
+      "final_discount_percent": 31.4,
+      "raw_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000824268457&siteNo=7009&salestrNo=2551",
+      "final_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000824268457&siteNo=7009&salestrNo=2551",
+      "raw_image_url": "https://sitem.ssgcdn.com/57/84/26/item/1000824268457_i1_232.jpg",
+      "final_image_url": "https://sitem.ssgcdn.com/57/84/26/item/1000824268457_i1_232.jpg",
+      "raw_category_id": null,
+      "final_category_id": null,
+      "raw_keywords": null,
+      "final_keywords": [],
+      "publication_kind": "hotdeal",
+      "price_observation_only": false,
+      "blockers": [
+        "pending_review: no AI proposals linked to raw record"
+      ]
+    },
+    {
+      "raw_record_id": "이마트:url:9dd4d5e66f533b44",
+      "raw_title": "당도선별 하우스 봄 수박 6~7kg미만",
+      "final_name": "당도선별 하우스 봄 수박 6~7kg미만",
+      "raw_price": 23800,
+      "final_sale_price": 23800,
+      "raw_original_price": 33800,
+      "final_original_price": 33800,
+      "raw_discount_percent": 29.6,
+      "final_discount_percent": 29.6,
+      "raw_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000824268491&siteNo=7009&salestrNo=2551",
+      "final_source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000824268491&siteNo=7009&salestrNo=2551",
+      "raw_image_url": "https://sitem.ssgcdn.com/91/84/26/item/1000824268491_i1_232.jpg",
+      "final_image_url": "https://sitem.ssgcdn.com/91/84/26/item/1000824268491_i1_232.jpg",
+      "raw_category_id": null,
+      "final_category_id": null,
+      "raw_keywords": null,
+      "final_keywords": [],
+      "publication_kind": "hotdeal",
+      "price_observation_only": false,
+      "blockers": [
+        "pending_review: no AI proposals linked to raw record"
+      ]
+    }
+  ],
+  "quality_batch_validation": {
+    "purpose": "bounded_quality_repetition_not_full_all_source_one_shot",
+    "mode": "live",
+    "db_admin_submit_allowed": false,
+    "input_count": 395,
+    "selected_count": 10,
+    "retained_count": 10,
+    "invalid_row_count": 0,
+    "input_retention_valid": false,
+    "retention_anomaly_count": 0,
+    "input_anomaly_buckets": {},
+    "per_row_input_anomalies": [],
+    "max_items": 10,
+    "ai_batch_size": 20,
+    "ai_batch_prompt_chars": 8000,
+    "split_batch_count": 1,
+    "max_provider_calls": 1,
+    "provider": {
+      "called": true,
+      "mode": "failed",
+      "provider_id": "google-gemini31-live-matrix",
+      "model": "gemini-3.1-flash-lite-preview",
+      "ai_batches": 0,
+      "call_attempts": 0,
+      "http_label_calls": 1,
+      "chunk_count": 1,
+      "successful_chunk_count": 0,
+      "failed_chunk_count": 1,
+      "partial_results": false,
+      "proposals_stored": 0,
+      "keyword_proposals_stored": 0
+    },
+    "label_chunks": [
+      {
+        "chunk_index": 1,
+        "status": "failed",
+        "record_count": 10,
+        "raw_record_ids": [
+          "이마트:url:99663ac53a26b79b",
+          "이마트:url:59c6424034aa0e42",
+          "이마트:url:8d9332637d1f9330",
+          "이마트:url:46f336325ed7ccd9",
+          "이마트:url:8af2d1dad93b8617",
+          "이마트:url:401f875d993815aa",
+          "이마트:url:217ca113e9357945",
+          "이마트:url:80f80ee0839b0058",
+          "이마트:url:bb0f8eb57885d790",
+          "이마트:url:9dd4d5e66f533b44"
+        ],
+        "error": {
+          "class": "RuntimeError",
+          "message": "POST http://127.0.0.1:8003/api/ingest/raw-records/label failed with HTTP 502: {'detail': {'error': 'ai_ingestion_error', 'stage': 'provider_response_validation', 'message': 'provider response item 0 has unknown raw_record_id', 'provider_id': 'google-gemini31-live-matrix', 'model': 'gemini-3.1-flash-lite-preview', 'raw_batch_id': 'raw-20260507103908-dcb90615', 'ai_batch_id': 'raw-20260507103908-dcb90615:ai:1', 'row_count': 10, 'invalid_rows': [{'item_index': 0, 'raw_record_id': 'emart:url:99663ac53a26b79b', 'field': 'raw_record_id', 'reason': 'provider response item 0 has unknown raw_record_id'}]}}",
+          "location": {
+            "file": "live_validation_harness_v2.py",
+            "function": "_http_json",
+            "line": 833
+          }
+        },
+        "retryable": true,
+        "missing_label_count": 10,
+        "missing_label_raw_record_ids": [
+          "이마트:url:99663ac53a26b79b",
+          "이마트:url:59c6424034aa0e42",
+          "이마트:url:8d9332637d1f9330",
+          "이마트:url:46f336325ed7ccd9",
+          "이마트:url:8af2d1dad93b8617",
+          "이마트:url:401f875d993815aa",
+          "이마트:url:217ca113e9357945",
+          "이마트:url:80f80ee0839b0058",
+          "이마트:url:bb0f8eb57885d790",
+          "이마트:url:9dd4d5e66f533b44"
+        ]
+      }
+    ],
+    "retryable_provider_failures": [
+      {
+        "chunk_index": 1,
+        "status": "failed",
+        "record_count": 10,
+        "raw_record_ids": [
+          "이마트:url:99663ac53a26b79b",
+          "이마트:url:59c6424034aa0e42",
+          "이마트:url:8d9332637d1f9330",
+          "이마트:url:46f336325ed7ccd9",
+          "이마트:url:8af2d1dad93b8617",
+          "이마트:url:401f875d993815aa",
+          "이마트:url:217ca113e9357945",
+          "이마트:url:80f80ee0839b0058",
+          "이마트:url:bb0f8eb57885d790",
+          "이마트:url:9dd4d5e66f533b44"
+        ],
+        "error": {
+          "class": "RuntimeError",
+          "message": "POST http://127.0.0.1:8003/api/ingest/raw-records/label failed with HTTP 502: {'detail': {'error': 'ai_ingestion_error', 'stage': 'provider_response_validation', 'message': 'provider response item 0 has unknown raw_record_id', 'provider_id': 'google-gemini31-live-matrix', 'model': 'gemini-3.1-flash-lite-preview', 'raw_batch_id': 'raw-20260507103908-dcb90615', 'ai_batch_id': 'raw-20260507103908-dcb90615:ai:1', 'row_count': 10, 'invalid_rows': [{'item_index': 0, 'raw_record_id': 'emart:url:99663ac53a26b79b', 'field': 'raw_record_id', 'reason': 'provider response item 0 has unknown raw_record_id'}]}}",
+          "location": {
+            "file": "live_validation_harness_v2.py",
+            "function": "_http_json",
+            "line": 833
+          }
+        },
+        "retryable": true,
+        "missing_label_count": 10,
+        "missing_label_raw_record_ids": [
+          "이마트:url:99663ac53a26b79b",
+          "이마트:url:59c6424034aa0e42",
+          "이마트:url:8d9332637d1f9330",
+          "이마트:url:46f336325ed7ccd9",
+          "이마트:url:8af2d1dad93b8617",
+          "이마트:url:401f875d993815aa",
+          "이마트:url:217ca113e9357945",
+          "이마트:url:80f80ee0839b0058",
+          "이마트:url:bb0f8eb57885d790",
+          "이마트:url:9dd4d5e66f533b44"
+        ]
+      }
+    ],
+    "missing_label_retry": {
+      "status": "failed_retryable",
+      "partial_review_required": true,
+      "missing_label_count": 10,
+      "missing_label_raw_record_ids": [
+        "이마트:url:99663ac53a26b79b",
+        "이마트:url:59c6424034aa0e42",
+        "이마트:url:8d9332637d1f9330",
+        "이마트:url:46f336325ed7ccd9",
+        "이마트:url:8af2d1dad93b8617",
+        "이마트:url:401f875d993815aa",
+        "이마트:url:217ca113e9357945",
+        "이마트:url:80f80ee0839b0058",
+        "이마트:url:bb0f8eb57885d790",
+        "이마트:url:9dd4d5e66f533b44"
+      ],
+      "retry_batches_configured": 2
+    },
+    "reviewer_retry_candidates": {
+      "purpose": "one_more_targeted_reviewer_retry_before_human_admin",
+      "source": "deterministic_quality_batch_validation_no_live_reviewer_ai",
+      "candidate_count": 10,
+      "group_count": 2,
+      "groups": [
+        {
+          "missing_field": "missing_label",
+          "prompt_category": "full_record_label_retry",
+          "row_count": 10,
+          "raw_record_ids": [
+            "이마트:url:99663ac53a26b79b",
+            "이마트:url:59c6424034aa0e42",
+            "이마트:url:8d9332637d1f9330",
+            "이마트:url:46f336325ed7ccd9",
+            "이마트:url:8af2d1dad93b8617",
+            "이마트:url:401f875d993815aa",
+            "이마트:url:217ca113e9357945",
+            "이마트:url:80f80ee0839b0058",
+            "이마트:url:bb0f8eb57885d790",
+            "이마트:url:9dd4d5e66f533b44"
+          ],
+          "items": [
+            {
+              "raw_record_id": "이마트:url:99663ac53a26b79b",
+              "raw_title": "친환경 대추방울토마토 600g/팩",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_label_after_configured_retries"
+              ],
+              "recommended_retry_prompt_category": "full_record_label_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:59c6424034aa0e42",
+              "raw_title": "고산지 사과 (청송) 1.3kg내외 봉",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_label_after_configured_retries"
+              ],
+              "recommended_retry_prompt_category": "full_record_label_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:8d9332637d1f9330",
+              "raw_title": "GAP 죽장 사과 1.3kg (4~6입) 봉",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_label_after_configured_retries"
+              ],
+              "recommended_retry_prompt_category": "full_record_label_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:46f336325ed7ccd9",
+              "raw_title": "한우 양념 소불고기 (600g)",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_label_after_configured_retries"
+              ],
+              "recommended_retry_prompt_category": "full_record_label_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:8af2d1dad93b8617",
+              "raw_title": "미국산 항공직송 체리 250g (9.5row) 팩",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_label_after_configured_retries"
+              ],
+              "recommended_retry_prompt_category": "full_record_label_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:401f875d993815aa",
+              "raw_title": "안동 사과 1.3kg (5~6입) 봉",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_label_after_configured_retries"
+              ],
+              "recommended_retry_prompt_category": "full_record_label_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:217ca113e9357945",
+              "raw_title": "당도선별 하우스 봄 수박 4~5kg미만",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_label_after_configured_retries"
+              ],
+              "recommended_retry_prompt_category": "full_record_label_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:80f80ee0839b0058",
+              "raw_title": "[냉장/미국산] 프라임 윗등심 스테이크 (500g)",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_label_after_configured_retries"
+              ],
+              "recommended_retry_prompt_category": "full_record_label_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:bb0f8eb57885d790",
+              "raw_title": "당도선별 하우스 봄 수박 5~6kg미만",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_label_after_configured_retries"
+              ],
+              "recommended_retry_prompt_category": "full_record_label_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:9dd4d5e66f533b44",
+              "raw_title": "당도선별 하우스 봄 수박 6~7kg미만",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_label_after_configured_retries"
+              ],
+              "recommended_retry_prompt_category": "full_record_label_retry"
+            }
+          ]
+        },
+        {
+          "missing_field": "category",
+          "prompt_category": "taxonomy_classification_retry",
+          "row_count": 10,
+          "raw_record_ids": [
+            "이마트:url:99663ac53a26b79b",
+            "이마트:url:59c6424034aa0e42",
+            "이마트:url:8d9332637d1f9330",
+            "이마트:url:46f336325ed7ccd9",
+            "이마트:url:8af2d1dad93b8617",
+            "이마트:url:401f875d993815aa",
+            "이마트:url:217ca113e9357945",
+            "이마트:url:80f80ee0839b0058",
+            "이마트:url:bb0f8eb57885d790",
+            "이마트:url:9dd4d5e66f533b44"
+          ],
+          "items": [
+            {
+              "raw_record_id": "이마트:url:99663ac53a26b79b",
+              "raw_title": "친환경 대추방울토마토 600g/팩",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_final_category_id"
+              ],
+              "recommended_retry_prompt_category": "taxonomy_classification_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:59c6424034aa0e42",
+              "raw_title": "고산지 사과 (청송) 1.3kg내외 봉",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_final_category_id"
+              ],
+              "recommended_retry_prompt_category": "taxonomy_classification_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:8d9332637d1f9330",
+              "raw_title": "GAP 죽장 사과 1.3kg (4~6입) 봉",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_final_category_id"
+              ],
+              "recommended_retry_prompt_category": "taxonomy_classification_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:46f336325ed7ccd9",
+              "raw_title": "한우 양념 소불고기 (600g)",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_final_category_id"
+              ],
+              "recommended_retry_prompt_category": "taxonomy_classification_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:8af2d1dad93b8617",
+              "raw_title": "미국산 항공직송 체리 250g (9.5row) 팩",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_final_category_id"
+              ],
+              "recommended_retry_prompt_category": "taxonomy_classification_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:401f875d993815aa",
+              "raw_title": "안동 사과 1.3kg (5~6입) 봉",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_final_category_id"
+              ],
+              "recommended_retry_prompt_category": "taxonomy_classification_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:217ca113e9357945",
+              "raw_title": "당도선별 하우스 봄 수박 4~5kg미만",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_final_category_id"
+              ],
+              "recommended_retry_prompt_category": "taxonomy_classification_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:80f80ee0839b0058",
+              "raw_title": "[냉장/미국산] 프라임 윗등심 스테이크 (500g)",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_final_category_id"
+              ],
+              "recommended_retry_prompt_category": "taxonomy_classification_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:bb0f8eb57885d790",
+              "raw_title": "당도선별 하우스 봄 수박 5~6kg미만",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_final_category_id"
+              ],
+              "recommended_retry_prompt_category": "taxonomy_classification_retry"
+            },
+            {
+              "raw_record_id": "이마트:url:9dd4d5e66f533b44",
+              "raw_title": "당도선별 하우스 봄 수박 6~7kg미만",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_final_category_id"
+              ],
+              "recommended_retry_prompt_category": "taxonomy_classification_retry"
+            }
+          ]
+        }
+      ],
+      "human_admin_fallback": "Rows still failing after the future reviewer retry remain in DB-admin/manual review; eligible rows can continue through publish gates."
+    },
+    "anomaly_counts": {
+      "category": 10,
+      "keyword": 10,
+      "unit": 0,
+      "price": 0,
+      "image": 0
+    },
+    "rows_with_any_anomaly": 10,
+    "per_row_anomalies": [
+      {
+        "raw_record_id": "이마트:url:99663ac53a26b79b",
+        "raw_title": "친환경 대추방울토마토 600g/팩",
+        "publication_kind": "hotdeal",
+        "category": [
+          "missing_final_category_id"
+        ],
+        "keyword": [
+          "missing_final_keywords"
+        ],
+        "unit": [],
+        "price": [],
+        "image": [],
+        "blockers": [],
+        "audit_issue_codes": [],
+        "has_any_anomaly": true
+      },
+      {
+        "raw_record_id": "이마트:url:59c6424034aa0e42",
+        "raw_title": "고산지 사과 (청송) 1.3kg내외 봉",
+        "publication_kind": "hotdeal",
+        "category": [
+          "missing_final_category_id"
+        ],
+        "keyword": [
+          "missing_final_keywords"
+        ],
+        "unit": [],
+        "price": [],
+        "image": [],
+        "blockers": [],
+        "audit_issue_codes": [],
+        "has_any_anomaly": true
+      },
+      {
+        "raw_record_id": "이마트:url:8d9332637d1f9330",
+        "raw_title": "GAP 죽장 사과 1.3kg (4~6입) 봉",
+        "publication_kind": "hotdeal",
+        "category": [
+          "missing_final_category_id"
+        ],
+        "keyword": [
+          "missing_final_keywords"
+        ],
+        "unit": [],
+        "price": [],
+        "image": [],
+        "blockers": [],
+        "audit_issue_codes": [],
+        "has_any_anomaly": true
+      },
+      {
+        "raw_record_id": "이마트:url:46f336325ed7ccd9",
+        "raw_title": "한우 양념 소불고기 (600g)",
+        "publication_kind": "hotdeal",
+        "category": [
+          "missing_final_category_id"
+        ],
+        "keyword": [
+          "missing_final_keywords"
+        ],
+        "unit": [],
+        "price": [],
+        "image": [],
+        "blockers": [],
+        "audit_issue_codes": [],
+        "has_any_anomaly": true
+      },
+      {
+        "raw_record_id": "이마트:url:8af2d1dad93b8617",
+        "raw_title": "미국산 항공직송 체리 250g (9.5row) 팩",
+        "publication_kind": "hotdeal",
+        "category": [
+          "missing_final_category_id"
+        ],
+        "keyword": [
+          "missing_final_keywords"
+        ],
+        "unit": [],
+        "price": [],
+        "image": [],
+        "blockers": [],
+        "audit_issue_codes": [],
+        "has_any_anomaly": true
+      },
+      {
+        "raw_record_id": "이마트:url:401f875d993815aa",
+        "raw_title": "안동 사과 1.3kg (5~6입) 봉",
+        "publication_kind": "hotdeal",
+        "category": [
+          "missing_final_category_id"
+        ],
+        "keyword": [
+          "missing_final_keywords"
+        ],
+        "unit": [],
+        "price": [],
+        "image": [],
+        "blockers": [],
+        "audit_issue_codes": [],
+        "has_any_anomaly": true
+      },
+      {
+        "raw_record_id": "이마트:url:217ca113e9357945",
+        "raw_title": "당도선별 하우스 봄 수박 4~5kg미만",
+        "publication_kind": "hotdeal",
+        "category": [
+          "missing_final_category_id"
+        ],
+        "keyword": [
+          "missing_final_keywords"
+        ],
+        "unit": [],
+        "price": [],
+        "image": [],
+        "blockers": [],
+        "audit_issue_codes": [],
+        "has_any_anomaly": true
+      },
+      {
+        "raw_record_id": "이마트:url:80f80ee0839b0058",
+        "raw_title": "[냉장/미국산] 프라임 윗등심 스테이크 (500g)",
+        "publication_kind": "hotdeal",
+        "category": [
+          "missing_final_category_id"
+        ],
+        "keyword": [
+          "missing_final_keywords"
+        ],
+        "unit": [],
+        "price": [],
+        "image": [],
+        "blockers": [],
+        "audit_issue_codes": [],
+        "has_any_anomaly": true
+      },
+      {
+        "raw_record_id": "이마트:url:bb0f8eb57885d790",
+        "raw_title": "당도선별 하우스 봄 수박 5~6kg미만",
+        "publication_kind": "hotdeal",
+        "category": [
+          "missing_final_category_id"
+        ],
+        "keyword": [
+          "missing_final_keywords"
+        ],
+        "unit": [],
+        "price": [],
+        "image": [],
+        "blockers": [],
+        "audit_issue_codes": [],
+        "has_any_anomaly": true
+      },
+      {
+        "raw_record_id": "이마트:url:9dd4d5e66f533b44",
+        "raw_title": "당도선별 하우스 봄 수박 6~7kg미만",
+        "publication_kind": "hotdeal",
+        "category": [
+          "missing_final_category_id"
+        ],
+        "keyword": [
+          "missing_final_keywords"
+        ],
+        "unit": [],
+        "price": [],
+        "image": [],
+        "blockers": [],
+        "audit_issue_codes": [],
+        "has_any_anomaly": true
+      }
+    ],
+    "honesty_notes": [
+      "This validates only the bounded selected rows, not a full all-source one-shot build.",
+      "DB-admin mutation is disabled unless --allow-db-admin-submit is explicit."
+    ]
+  },
+  "holdout_generalization": {
+    "evidence": [
+      {
+        "raw_record_id": "이마트:url:99663ac53a26b79b",
+        "raw_title": "친환경 대추방울토마토 600g/팩",
+        "evidence_class": "deterministic_raw",
+        "trust_label": "deterministic_structured",
+        "reason": "raw item contains deterministic structured signals",
+        "counts_as_generalization": false
+      },
+      {
+        "raw_record_id": "이마트:url:59c6424034aa0e42",
+        "raw_title": "고산지 사과 (청송) 1.3kg내외 봉",
+        "evidence_class": "deterministic_raw",
+        "trust_label": "deterministic_structured",
+        "reason": "raw item contains deterministic structured signals",
+        "counts_as_generalization": false
+      },
+      {
+        "raw_record_id": "이마트:url:8d9332637d1f9330",
+        "raw_title": "GAP 죽장 사과 1.3kg (4~6입) 봉",
+        "evidence_class": "deterministic_raw",
+        "trust_label": "deterministic_structured",
+        "reason": "raw item contains deterministic structured signals",
+        "counts_as_generalization": false
+      },
+      {
+        "raw_record_id": "이마트:url:46f336325ed7ccd9",
+        "raw_title": "한우 양념 소불고기 (600g)",
+        "evidence_class": "deterministic_raw",
+        "trust_label": "deterministic_structured",
+        "reason": "raw item contains deterministic structured signals",
+        "counts_as_generalization": false
+      },
+      {
+        "raw_record_id": "이마트:url:8af2d1dad93b8617",
+        "raw_title": "미국산 항공직송 체리 250g (9.5row) 팩",
+        "evidence_class": "deterministic_raw",
+        "trust_label": "deterministic_structured",
+        "reason": "raw item contains deterministic structured signals",
+        "counts_as_generalization": false
+      },
+      {
+        "raw_record_id": "이마트:url:401f875d993815aa",
+        "raw_title": "안동 사과 1.3kg (5~6입) 봉",
+        "evidence_class": "deterministic_raw",
+        "trust_label": "deterministic_structured",
+        "reason": "raw item contains deterministic structured signals",
+        "counts_as_generalization": false
+      },
+      {
+        "raw_record_id": "이마트:url:217ca113e9357945",
+        "raw_title": "당도선별 하우스 봄 수박 4~5kg미만",
+        "evidence_class": "deterministic_raw",
+        "trust_label": "deterministic_structured",
+        "reason": "raw item contains deterministic structured signals",
+        "counts_as_generalization": false
+      },
+      {
+        "raw_record_id": "이마트:url:80f80ee0839b0058",
+        "raw_title": "[냉장/미국산] 프라임 윗등심 스테이크 (500g)",
+        "evidence_class": "deterministic_raw",
+        "trust_label": "deterministic_structured",
+        "reason": "raw item contains deterministic structured signals",
+        "counts_as_generalization": false
+      },
+      {
+        "raw_record_id": "이마트:url:bb0f8eb57885d790",
+        "raw_title": "당도선별 하우스 봄 수박 5~6kg미만",
+        "evidence_class": "deterministic_raw",
+        "trust_label": "deterministic_structured",
+        "reason": "raw item contains deterministic structured signals",
+        "counts_as_generalization": false
+      },
+      {
+        "raw_record_id": "이마트:url:9dd4d5e66f533b44",
+        "raw_title": "당도선별 하우스 봄 수박 6~7kg미만",
+        "evidence_class": "deterministic_raw",
+        "trust_label": "deterministic_structured",
+        "reason": "raw item contains deterministic structured signals",
+        "counts_as_generalization": false
+      }
+    ],
+    "counts": {
+      "deterministic_raw": 10
+    },
+    "generalization_success_count": 0,
+    "rule": "exact_catalog and learned_alias are reuse, never generalization success",
+    "todo_hooks": [
+      "Load production catalog/learned exports via --catalog-json and --learned-json."
+    ]
+  },
+  "risks": [
+    "Live crawl/provider/DB-admin paths are operator-gated but can touch external systems when explicitly enabled.",
+    "Dry-run artifacts use no provider output; customer-safety verdicts remain blockers until human/provider proposals exist."
+  ],
+  "artifact_path": "E:\\pdf\\capston01\\walletSavior\\.walletsavior-live-validation\\live-model-batch\\live-validation-v2-20260507-103908-0444cd6a.json"
+}

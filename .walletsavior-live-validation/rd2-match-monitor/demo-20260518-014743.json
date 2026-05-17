@@ -1,0 +1,42 @@
+{
+  "frontend_build": "SUCCESS (22 modules, dist generated)",
+  "tests_result": {
+    "total": 18,
+    "failed": 0,
+    "passed": 18
+  },
+  "generated_at": "2026-05-18T01:47:46.2558360+09:00",
+  "api_endpoints": [
+    "GET /api/match-monitor/cumulative",
+    "GET /api/match-monitor/runs?n=20"
+  ],
+  "simulation": {
+    "cycle2": {
+      "ai_call_rate": 30.0,
+      "ai_escalated": 0,
+      "queue_initial": 3,
+      "gate_passed": 3,
+      "notes": "Second cycle: 7 items pre-matched (ProductMatch cache hit), only 3 need AI. 30% AI call rate.",
+      "learned_knowledge_total_snapshot": 2,
+      "ai_resolved": 3,
+      "total_input": 10,
+      "gate_escalated": 0,
+      "ai_called": 3,
+      "product_match_total_snapshot": 8
+    },
+    "cycle1": {
+      "ai_call_rate": 100.0,
+      "ai_escalated": 2,
+      "queue_initial": 10,
+      "gate_passed": 8,
+      "notes": "First cycle: all items new, all go to AI. 100% AI call rate.",
+      "learned_knowledge_total_snapshot": 0,
+      "ai_resolved": 8,
+      "total_input": 10,
+      "gate_escalated": 2,
+      "ai_called": 10,
+      "product_match_total_snapshot": 0
+    },
+    "trend": "ai_call_rate drops 100% -> 30% as ProductMatch accumulates"
+  }
+}

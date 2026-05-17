@@ -3,6 +3,7 @@ import ProvidersPanel from './ProvidersPanel.jsx';
 import JobsPanel from './JobsPanel.jsx';
 import PromptPacksPanel from './PromptPacksPanel.jsx';
 import ReviewQueuePanel from './ReviewQueuePanel.jsx';
+import MatchMonitorPanel from './MatchMonitorPanel.jsx';
 
 function useFetchJson(url) {
   const [state, setState] = useState({ status: 'loading', data: null, error: null });
@@ -319,6 +320,7 @@ export default function App() {
       <p className="subtitle">초보자용 운영 홈 — 먼저 추천 액션만 따라가세요.</p>
       <GuidedHomePanel onOpenAdvanced={openAdvanced} />
       <ReviewQueuePanel />
+      <MatchMonitorPanel />
       <details
         id="advanced-controls"
         className="panel advanced-shell anchor-offset"

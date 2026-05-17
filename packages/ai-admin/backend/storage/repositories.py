@@ -11,7 +11,7 @@ import hashlib
 import re
 from typing import Any, Optional
 
-from sqlalchemy import delete, select
+from sqlalchemy import delete, func, select
 from sqlalchemy.orm import Session
 
 from core.contracts.ai_pipeline import (
@@ -47,6 +47,7 @@ from .models import (
     AIJob,
     FieldProposal,
     KeywordProposal,
+    LabelingRunLog,
     LearnedKnowledge,
     ProductMatch,
     PromptPack,
@@ -538,6 +539,24 @@ class ProductMatchStoreRepository:
     def __init__(self, session: Session) -> None:
         self.session = session
 
+    def count_all(self) -> int:
+        from sqlalchemy import func
+        return self.session.execute(select(func.count()).select_from(ProductMatch)).scalar() or 0
+
+    def count_by_status(self) -> dict[str, int]:
+        from sqlalchemy import func
+        rows = self.session.execute(
+            select(ProductMatch.status, func.count()).group_by(ProductMatch.status)
+        ).all()
+        return {status: count for status, count in rows}
+
+    def count_by_source(self) -> dict[str, int]:
+        from sqlalchemy import func
+        rows = self.session.execute(
+            select(ProductMatch.source_name, func.count()).group_by(ProductMatch.source_name)
+        ).all()
+        return {src: count for src, count in rows}
+
     def save(self, contract: ProductMatchContract) -> ProductMatchContract:
         match_id = contract.match_id or _product_match_id(
             contract.source_id,
@@ -810,6 +829,21 @@ class ProductMatchStoreRepository:
         )
         return self.session.execute(stmt).scalars().first()
 
+    def count_all(self) -> int:
+        return self.session.execute(select(func.count()).select_from(ProductMatch)).scalar() or 0
+
+    def count_by_status(self) -> dict[str, int]:
+        rows = self.session.execute(
+            select(ProductMatch.status, func.count()).group_by(ProductMatch.status)
+        ).all()
+        return {status: count for status, count in rows}
+
+    def count_by_source(self) -> dict[str, int]:
+        rows = self.session.execute(
+            select(ProductMatch.source_name, func.count()).group_by(ProductMatch.source_name)
+        ).all()
+        return {src: count for src, count in rows}
+
 
 def _product_match_id(source_id: str, source_name: str, signature_key: str) -> str:
     identity = f"{source_id}\x1f{source_name}\x1f{signature_key}"
@@ -878,6 +912,31 @@ def _product_match_to_contract(row: ProductMatch) -> ProductMatchContract:
 class LearnedKnowledgeRepository:
     def __init__(self, session: Session) -> None:
         self.session = session
+
+    def count_all(self) -> int:
+        from sqlalchemy import func
+        return self.session.execute(select(func.count()).select_from(LearnedKnowledge)).scalar() or 0
+
+    def count_by_type(self) -> dict[str, int]:
+        from sqlalchemy import func
+        rows = self.session.execute(
+            select(LearnedKnowledge.knowledge_type, func.count()).group_by(LearnedKnowledge.knowledge_type)
+        ).all()
+        return {ktype: count for ktype, count in rows}
+
+    def success_count_distribution(self) -> dict[str, int]:
+        """Returns distribution of success_count (0, 1-5, 6-20, 21+)"""
+        from sqlalchemy import func, case
+        bucket = case(
+            (LearnedKnowledge.success_count == 0, "0"),
+            (LearnedKnowledge.success_count <= 5, "1-5"),
+            (LearnedKnowledge.success_count <= 20, "6-20"),
+            else_="21+",
+        )
+        rows = self.session.execute(
+            select(bucket, func.count()).group_by(bucket)
+        ).all()
+        return {label: count for label, count in rows}
 
     def save(self, contract: LearnedKnowledgeContract) -> None:
         existing = self.session.get(LearnedKnowledge, contract.knowledge_id)
@@ -1075,3 +1134,55 @@ def _job_to_contract(row: AIJob) -> ControlJobContract:
         created_at=row.created_at,
         updated_at=row.updated_at,
     )
+
+
+# --------------------------------------------------------------------------------------
+# LabelingRunLog
+# --------------------------------------------------------------------------------------
+
+
+class LabelingRunLogRepository:
+    def __init__(self, session: Session) -> None:
+        self.session = session
+
+    def save(self, run_id: str, **fields) -> None:
+        existing = self.session.get(LabelingRunLog, run_id)
+        if existing is None:
+            self.session.add(LabelingRunLog(run_id=run_id, **fields))
+        else:
+            for k, v in fields.items():
+                setattr(existing, k, v)
+        self.session.flush()
+
+    def list_recent(self, limit: int = 20) -> list[dict]:
+        from sqlalchemy import desc
+        rows = self.session.execute(
+            select(LabelingRunLog).order_by(desc(LabelingRunLog.run_at)).limit(limit)
+        ).scalars().all()
+        return [_run_log_to_dict(r) for r in rows]
+
+    def count(self) -> int:
+        from sqlalchemy import func
+        return self.session.execute(select(func.count()).select_from(LabelingRunLog)).scalar() or 0
+
+
+def _run_log_to_dict(row: LabelingRunLog) -> dict:
+    ai_call_rate = (row.ai_called / row.total_input * 100) if row.total_input > 0 else 0.0
+    return {
+        "run_id": row.run_id,
+        "run_at": row.run_at.isoformat() if row.run_at else None,
+        "mode": row.mode,
+        "ai_provider_kind": row.ai_provider_kind,
+        "total_input": row.total_input,
+        "queue_initial": row.queue_initial,
+        "ai_called": row.ai_called,
+        "ai_resolved": row.ai_resolved,
+        "ai_escalated": row.ai_escalated,
+        "gate_passed": row.gate_passed,
+        "gate_escalated": row.gate_escalated,
+        "canonical_created": row.canonical_created,
+        "product_match_total_snapshot": row.product_match_total_snapshot,
+        "learned_knowledge_total_snapshot": row.learned_knowledge_total_snapshot,
+        "ai_call_rate": round(ai_call_rate, 1),
+        "by_mart": row.by_mart or {},
+    }

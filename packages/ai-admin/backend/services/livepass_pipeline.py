@@ -486,3 +486,45 @@ def run_livepass(
         mode="dry_run" if dry_run else "commit",
         ai_provider_kind=ai_provider_kind,
     )
+
+
+def emit_run_to_control_db(
+    report: "LivepassReport",
+    control_session: Any,
+    *,
+    product_match_total: int = 0,
+    learned_knowledge_total: int = 0,
+) -> str:
+    """Save a LivepassReport as a LabelingRunLog in the ai_control DB.
+
+    Call this after run_livepass to persist run stats for the monitor dashboard.
+    Returns the generated run_id.
+    """
+    import uuid
+    from storage.repositories import LabelingRunLogRepository
+
+    run_id = f"run-{uuid.uuid4().hex[:16]}"
+    repo = LabelingRunLogRepository(control_session)
+    repo.save(
+        run_id=run_id,
+        run_at=datetime.now(),
+        mode=report.mode,
+        ai_provider_kind=report.ai_provider_kind,
+        total_input=report.total_input,
+        queue_initial=report.queue_initial,
+        ai_called=report.queue_initial,
+        ai_resolved=report.ai_resolved,
+        ai_escalated=report.ai_escalated,
+        gate_passed=report.gate_passed,
+        gate_escalated=report.gate_escalated,
+        canonical_created=report.canonical_created,
+        product_match_total_snapshot=product_match_total,
+        learned_knowledge_total_snapshot=learned_knowledge_total,
+        by_mart=report.by_mart,
+    )
+    try:
+        control_session.commit()
+    except Exception:
+        control_session.rollback()
+        raise
+    return run_id

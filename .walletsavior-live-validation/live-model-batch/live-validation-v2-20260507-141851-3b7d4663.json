@@ -1,0 +1,2901 @@
+{
+  "run_id": "live-validation-v2-20260507-141851-3b7d4663",
+  "created_at": "2026-05-07T14:19:10.661495",
+  "command_shape": "py tools\\live_validation_harness_v2.py [--input-json data.json | --allow-live-crawl --live-crawler emart] [--allow-live-provider --provider-id google-dev] [--allow-db-admin-submit]",
+  "validation_run": {
+    "mode": "live",
+    "provider": "google-gemini31-live-matrix",
+    "model": "gemini-3.1-flash-lite-preview",
+    "key_present": false,
+    "live_opt_in": true,
+    "live_call_attempted": true,
+    "live_call_succeeded": true,
+    "skip_reason": null,
+    "error": null,
+    "started_at": "2026-05-07T05:18:51Z",
+    "finished_at": "2026-05-07T05:19:10Z",
+    "item_counts": {
+      "input_items": 2,
+      "selected_items": 2,
+      "retained_items": 2,
+      "records": 2,
+      "skipped": 0,
+      "invalid_rows": 0,
+      "retention_anomalies": 0,
+      "input_retention_valid": true,
+      "split_batches": 1,
+      "proposals": 37,
+      "publish_eligibility_items": 2,
+      "provider_calls": 1,
+      "provider_call_attempts": 1,
+      "partial_review_required": false,
+      "missing_label_count": 0
+    }
+  },
+  "decisions": {
+    "manual_only": true,
+    "dry_run_no_provider": false,
+    "live_crawl_allowed": false,
+    "live_provider_allowed": true,
+    "db_admin_submit_allowed": false,
+    "provider_secret_handling": "harness passes provider_id only; ai-admin resolves provider secret_alias via existing resolver",
+    "provider_key_alias_checked": false,
+    "bounds": {
+      "max_items": 2,
+      "retain_all_input": false,
+      "allow_large_live_batch": false,
+      "max_live_items_cap": 300,
+      "hard_max_live_items_cap": 500,
+      "max_pages": 1,
+      "max_provider_calls": 1,
+      "ai_batch_size": 20,
+      "ai_batch_prompt_chars": 8000,
+      "label_timeout_seconds": 240.0,
+      "label_timeout_seconds_requested": 240.0,
+      "label_timeout_seconds_cap": 900.0
+    }
+  },
+  "source": {
+    "selected_item_count": 2,
+    "records_count": 2,
+    "skipped_count": 0,
+    "invalid_rows": [],
+    "retention_anomalies": [],
+    "input_artifact_sources": [
+      {
+        "index": 0,
+        "container": "sources",
+        "source_name": "marketplace-fixture",
+        "crawler_name": "marketplace_product_fixture",
+        "schema_type": "shopping_product",
+        "row_count": 2,
+        "quality_details": {
+          "fixture": true,
+          "alerts": []
+        },
+        "alerts": null,
+        "zero_result_diagnostic": null
+      }
+    ],
+    "live_crawl": null,
+    "alerts": [],
+    "diagnostics": []
+  },
+  "raw_selected_items": [
+    {
+      "external_id": "fixture-market-tangerine-3kg",
+      "product_name": "제주 감귤 선물세트 3kg",
+      "current_price": 19900,
+      "link": "https://example.invalid/marketplace/items/tangerine-3kg",
+      "image": "https://example.invalid/marketplace/images/tangerine-3kg.jpg",
+      "store": "fixture-smartstore",
+      "unit": "3kg",
+      "source_name": "marketplace-fixture",
+      "crawler_name": "marketplace_product_fixture",
+      "schema_type": "shopping_product"
+    },
+    {
+      "external_id": "fixture-market-oatmeal-1kg",
+      "product_name": "퀵오트 오트밀 1kg",
+      "current_price": "5,500원",
+      "link": "https://example.invalid/marketplace/items/oatmeal-1kg",
+      "image": "https://example.invalid/marketplace/images/oatmeal-1kg.jpg",
+      "store": "fixture-openmarket",
+      "unit": "1kg",
+      "source_name": "marketplace-fixture",
+      "crawler_name": "marketplace_product_fixture",
+      "schema_type": "shopping_product"
+    }
+  ],
+  "raw_records": [
+    {
+      "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+      "source_name": "marketplace-fixture",
+      "source_record_key": "fixture-market-tangerine-3kg",
+      "source_url": "https://example.invalid/marketplace/items/tangerine-3kg",
+      "raw_title": "제주 감귤 선물세트 3kg",
+      "raw_price": 19900,
+      "raw_payload": {
+        "external_id": "fixture-market-tangerine-3kg",
+        "product_name": "제주 감귤 선물세트 3kg",
+        "current_price": 19900,
+        "link": "https://example.invalid/marketplace/items/tangerine-3kg",
+        "image": "https://example.invalid/marketplace/images/tangerine-3kg.jpg",
+        "store": "fixture-smartstore",
+        "unit": "3kg",
+        "source_name": "marketplace-fixture",
+        "crawler_name": "marketplace_product_fixture",
+        "schema_type": "shopping_product"
+      },
+      "crawled_at": "2026-05-07T14:18:51.003408"
+    },
+    {
+      "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+      "source_name": "marketplace-fixture",
+      "source_record_key": "fixture-market-oatmeal-1kg",
+      "source_url": "https://example.invalid/marketplace/items/oatmeal-1kg",
+      "raw_title": "퀵오트 오트밀 1kg",
+      "raw_price": 5500,
+      "raw_payload": {
+        "external_id": "fixture-market-oatmeal-1kg",
+        "product_name": "퀵오트 오트밀 1kg",
+        "current_price": "5,500원",
+        "link": "https://example.invalid/marketplace/items/oatmeal-1kg",
+        "image": "https://example.invalid/marketplace/images/oatmeal-1kg.jpg",
+        "store": "fixture-openmarket",
+        "unit": "1kg",
+        "source_name": "marketplace-fixture",
+        "crawler_name": "marketplace_product_fixture",
+        "schema_type": "shopping_product"
+      },
+      "crawled_at": "2026-05-07T14:18:51.003514"
+    }
+  ],
+  "prompt_budget": [
+    {
+      "batch_index": 1,
+      "record_count": 2,
+      "raw_record_ids": [
+        "marketplace-fixture:fixture-market-tangerine-3kg",
+        "marketplace-fixture:fixture-market-oatmeal-1kg"
+      ],
+      "prompt_chars": 1763,
+      "max_prompt_chars": 8000,
+      "within_budget": true
+    }
+  ],
+  "provider_response_summary": {
+    "called": true,
+    "provider_mode": "live",
+    "provider_id": "google-gemini31-live-matrix",
+    "model": "gemini-3.1-flash-lite-preview",
+    "raw_batch_id": "raw-20260507141851-cd6f5db4",
+    "raw_batch_ids": [
+      "raw-20260507141851-cd6f5db4"
+    ],
+    "provider_calls": 1,
+    "ai_batches": 1,
+    "http_label_calls": 1,
+    "chunks": [
+      {
+        "chunk_index": 1,
+        "status": "success",
+        "record_count": 2,
+        "raw_record_ids": [
+          "marketplace-fixture:fixture-market-tangerine-3kg",
+          "marketplace-fixture:fixture-market-oatmeal-1kg"
+        ],
+        "raw_batch_id": "raw-20260507141851-cd6f5db4",
+        "provider_calls": 1,
+        "ai_batches": 1,
+        "missing_label_count": 0,
+        "missing_label_raw_record_ids": [],
+        "provider_response_validation": {
+          "invalid_response_row_count": 0,
+          "invalid_response_rows": [],
+          "index_mapping_count": 0,
+          "index_mappings": [],
+          "batch_summaries": [
+            {
+              "item_count": 2,
+              "request_record_count": 2,
+              "valid_response_row_count": 2,
+              "invalid_response_row_count": 0,
+              "invalid_response_rows": [],
+              "index_mapping_count": 0,
+              "index_mappings": [],
+              "missing_label_count": 0,
+              "reason": null,
+              "ai_batch_id": "raw-20260507141851-cd6f5db4:ai:1"
+            }
+          ],
+          "reason": null
+        }
+      }
+    ],
+    "chunk_count": 1,
+    "successful_chunk_count": 1,
+    "failed_chunk_count": 0,
+    "retryable_failure_count": 0,
+    "retryable_failures": [],
+    "partial_results": false,
+    "status": "labeled",
+    "partial_review_required": false,
+    "missing_label_count": 0,
+    "missing_label_raw_record_ids": [],
+    "provider_response_validation": {
+      "invalid_response_row_count": 0,
+      "index_mapping_count": 0,
+      "batch_summaries": [
+        {
+          "invalid_response_row_count": 0,
+          "invalid_response_rows": [],
+          "index_mapping_count": 0,
+          "index_mappings": [],
+          "batch_summaries": [
+            {
+              "item_count": 2,
+              "request_record_count": 2,
+              "valid_response_row_count": 2,
+              "invalid_response_row_count": 0,
+              "invalid_response_rows": [],
+              "index_mapping_count": 0,
+              "index_mappings": [],
+              "missing_label_count": 0,
+              "reason": null,
+              "ai_batch_id": "raw-20260507141851-cd6f5db4:ai:1"
+            }
+          ],
+          "reason": null
+        }
+      ],
+      "reason": null
+    },
+    "proposals_stored": 37,
+    "keyword_proposals_stored": 4
+  },
+  "label_timeout_seconds": 240.0,
+  "proposals": [
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:canonical_name:canonical_name",
+      "proposal_type": "normalized_field",
+      "target_field": "canonical_name",
+      "proposed_value": "감귤",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.715974"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:source_title:source_title",
+      "proposal_type": "normalized_field",
+      "target_field": "source_title",
+      "proposed_value": "제주 감귤 선물세트 3kg",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.715994"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:category_id:category_id",
+      "proposal_type": "category",
+      "target_field": "category_id",
+      "proposed_value": "produce.fruit",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "classifier",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716012"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:sale_price:sale_price",
+      "proposal_type": "normalized_field",
+      "target_field": "sale_price",
+      "proposed_value": 19900,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716021"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:source_url:source_url",
+      "proposal_type": "normalized_field",
+      "target_field": "source_url",
+      "proposed_value": "https://example.invalid/marketplace/items/tangerine-3kg",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716033"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:image_url:image_url",
+      "proposal_type": "normalized_field",
+      "target_field": "image_url",
+      "proposed_value": "https://example.invalid/marketplace/images/tangerine-3kg.jpg",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716042"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:package_quantity:package_quantity",
+      "proposal_type": "normalized_field",
+      "target_field": "package_quantity",
+      "proposed_value": 3,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716053"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:package_unit:package_unit",
+      "proposal_type": "normalized_field",
+      "target_field": "package_unit",
+      "proposed_value": "kg",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716060"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:display_unit:display_unit",
+      "proposal_type": "normalized_field",
+      "target_field": "display_unit",
+      "proposed_value": "3kg",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716070"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:bundle_count:bundle_count",
+      "proposal_type": "normalized_field",
+      "target_field": "bundle_count",
+      "proposed_value": 1,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716078"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:standard_unit:standard_unit",
+      "proposal_type": "normalized_field",
+      "target_field": "standard_unit",
+      "proposed_value": "kg",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716088"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:standard_unit_price:standard_unit_price",
+      "proposal_type": "normalized_field",
+      "target_field": "standard_unit_price",
+      "proposed_value": 6633.33,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716096"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:price_per_100g:price_per_100g",
+      "proposal_type": "normalized_field",
+      "target_field": "price_per_100g",
+      "proposed_value": 663.33,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716104"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:attributes.origin:attr:origin",
+      "proposal_type": "attribute_value",
+      "target_field": "attributes.origin",
+      "proposed_value": "제주",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "classifier",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716119"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:attributes.storage_label:attr:storage_label",
+      "proposal_type": "attribute_value",
+      "target_field": "attributes.storage_label",
+      "proposed_value": "상온",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "classifier",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716133"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:attributes.storage_type:attr:storage_type",
+      "proposal_type": "attribute_value",
+      "target_field": "attributes.storage_type",
+      "proposed_value": "ambient",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "classifier",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716142"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:keywords:kw:0",
+      "proposal_type": "keyword",
+      "target_field": "keywords",
+      "proposed_value": "귤",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "keyword_generator",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [
+        {
+          "word": "귤",
+          "keyword_id": "[REDACTED_ALIAS_VALUE]",
+          "matched_term": "귤",
+          "category_id": "agriculture.fruit.tangerine",
+          "evidence_class": "exact_catalog",
+          "trust_label": "reuse_exact_catalog"
+        }
+      ],
+      "created_at": "2026-05-07T14:19:06.716163"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:keywords:kw:1",
+      "proposal_type": "keyword",
+      "target_field": "keywords",
+      "proposed_value": "감귤",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "keyword_generator",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [
+        {
+          "word": "감귤",
+          "keyword_id": "[REDACTED_ALIAS_VALUE]",
+          "matched_term": "밀감",
+          "category_id": "agriculture.fruit.tangerine",
+          "evidence_class": "exact_catalog",
+          "trust_label": "reuse_exact_catalog"
+        }
+      ],
+      "created_at": "2026-05-07T14:19:06.716198"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:0",
+      "proposal_type": "alias",
+      "target_field": "aliases",
+      "proposed_value": "귤",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "keyword_generator",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716220"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:1",
+      "proposal_type": "alias",
+      "target_field": "aliases",
+      "proposed_value": "제주감귤",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "keyword_generator",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716229"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:2",
+      "proposal_type": "alias",
+      "target_field": "aliases",
+      "proposed_value": "밀감",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-smartstore",
+        "worker_role": "keyword_generator",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716236"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:canonical_name:canonical_name",
+      "proposal_type": "normalized_field",
+      "target_field": "canonical_name",
+      "proposed_value": "오트밀",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-openmarket",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 0.9,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716334"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:source_title:source_title",
+      "proposal_type": "normalized_field",
+      "target_field": "source_title",
+      "proposed_value": "퀵오트 오트밀 1kg",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-openmarket",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 0.9,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716344"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-oatmeal-1kg:category_id:category_id",
+      "proposal_type": "category",
+      "target_field": "category_id",
+      "proposed_value": "processed.grain.oatmeal",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-openmarket",
+        "worker_role": "classifier",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 0.9,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716356"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:sale_price:sale_price",
+      "proposal_type": "normalized_field",
+      "target_field": "sale_price",
+      "proposed_value": 5500,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-openmarket",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 0.9,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716363"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:source_url:source_url",
+      "proposal_type": "normalized_field",
+      "target_field": "source_url",
+      "proposed_value": "https://example.invalid/marketplace/items/oatmeal-1kg",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-openmarket",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 0.9,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716370"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:image_url:image_url",
+      "proposal_type": "normalized_field",
+      "target_field": "image_url",
+      "proposed_value": "https://example.invalid/marketplace/images/oatmeal-1kg.jpg",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-openmarket",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 0.9,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716382"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:package_quantity:package_quantity",
+      "proposal_type": "normalized_field",
+      "target_field": "package_quantity",
+      "proposed_value": 1,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-openmarket",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 0.9,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716389"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:package_unit:package_unit",
+      "proposal_type": "normalized_field",
+      "target_field": "package_unit",
+      "proposed_value": "kg",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-openmarket",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 0.9,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716396"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:display_unit:display_unit",
+      "proposal_type": "normalized_field",
+      "target_field": "display_unit",
+      "proposed_value": "1kg",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-openmarket",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 0.9,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716403"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:bundle_count:bundle_count",
+      "proposal_type": "normalized_field",
+      "target_field": "bundle_count",
+      "proposed_value": 1,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-openmarket",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 0.9,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716413"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:standard_unit:standard_unit",
+      "proposal_type": "normalized_field",
+      "target_field": "standard_unit",
+      "proposed_value": "kg",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-openmarket",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 0.9,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716421"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:standard_unit_price:standard_unit_price",
+      "proposal_type": "normalized_field",
+      "target_field": "standard_unit_price",
+      "proposed_value": 5500,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-openmarket",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 0.9,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716430"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:price_per_100g:price_per_100g",
+      "proposal_type": "normalized_field",
+      "target_field": "price_per_100g",
+      "proposed_value": 550,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-openmarket",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 0.9,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716440"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-oatmeal-1kg:attributes.type:attr:type",
+      "proposal_type": "attribute_value",
+      "target_field": "attributes.type",
+      "proposed_value": "퀵오트",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-openmarket",
+        "worker_role": "classifier",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 0.9,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716452"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-oatmeal-1kg:keywords:kw:0",
+      "proposal_type": "keyword",
+      "target_field": "keywords",
+      "proposed_value": "오트밀",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-openmarket",
+        "worker_role": "keyword_generator",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 0.9,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716468"
+    },
+    {
+      "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-oatmeal-1kg:aliases:alias:0",
+      "proposal_type": "alias",
+      "target_field": "aliases",
+      "proposed_value": "귀리",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_field": "raw_title",
+        "evidence_text": "fixture-openmarket",
+        "worker_role": "keyword_generator",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 0.9,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-07T14:19:06.716485"
+    }
+  ],
+  "audit_issues": {
+    "issues": [
+      {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_name": "marketplace-fixture",
+        "raw_title": "퀵오트 오트밀 1kg",
+        "code": "unknown_taxonomy_category",
+        "message": "category_id is not in the AI-admin safe seed taxonomy; hold in review until a human maps it to an existing seed category or explicitly approves a DB-admin taxonomy change",
+        "proposed": "processed.grain.oatmeal",
+        "allowed_seed_categories": [
+          "beverage.coffee",
+          "beverage.juice",
+          "beverage.soda",
+          "beverage.water",
+          "daily.detergent",
+          "dairy.cheese",
+          "dairy.egg",
+          "dairy.milk",
+          "dairy.milk.chocolate",
+          "dairy.yogurt",
+          "grain.rice",
+          "instant.noodle",
+          "instant.rice",
+          "meat.beef",
+          "meat.beef.bulgogi",
+          "meat.beef.hanwoo",
+          "meat.beef.soup_cut",
+          "meat.chicken",
+          "meat.chicken.breast",
+          "meat.pork",
+          "meat.pork.belly",
+          "prepared_food.deli.kimbap",
+          "prepared_food.meal_kit",
+          "prepared_food.meal_kit.kimbap",
+          "processed.meal.kimbap",
+          "processed.sauce.ssamjang",
+          "processed.tofu.firm",
+          "produce.fruit",
+          "produce.vegetable",
+          "seafood.fish",
+          "seafood.frozen",
+          "seafood.shrimp",
+          "seafood.squid",
+          "snack.chip",
+          "snack.chocolate",
+          "snack.general",
+          "snack.nut",
+          "vegetable.cabbage"
+        ],
+        "review_context": {
+          "raw_record": {
+            "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+            "source_name": "marketplace-fixture",
+            "source_record_key": "fixture-market-oatmeal-1kg",
+            "source_url": "https://example.invalid/marketplace/items/oatmeal-1kg",
+            "raw_title": "퀵오트 오트밀 1kg",
+            "raw_price": 5500,
+            "raw_payload": {
+              "external_id": "fixture-market-oatmeal-1kg",
+              "product_name": "퀵오트 오트밀 1kg",
+              "current_price": "5,500원",
+              "link": "https://example.invalid/marketplace/items/oatmeal-1kg",
+              "image": "https://example.invalid/marketplace/images/oatmeal-1kg.jpg",
+              "store": "fixture-openmarket",
+              "unit": "1kg",
+              "source_name": "marketplace-fixture",
+              "crawler_name": "marketplace_product_fixture",
+              "schema_type": "shopping_product"
+            },
+            "crawled_at": "2026-05-07T14:18:51.003514"
+          },
+          "proposed_categories": {
+            "category_id": [
+              "processed.grain.oatmeal"
+            ]
+          }
+        },
+        "taxonomy_alias_proposal": {
+          "proposal_type": "taxonomy_alias_proposal",
+          "status": "human_reviewing",
+          "proposed_alias": "processed.grain.oatmeal",
+          "normalized_candidate": "processed.grain.oatmeal",
+          "raw_title": "퀵오트 오트밀 1kg",
+          "source_name": "marketplace-fixture",
+          "action": "review_existing_seed_mapping_or_create_db_admin_taxonomy_change; do_not_add_code_alias_until repeated cross-source evidence exists"
+        }
+      },
+      {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "source_name": "marketplace-fixture",
+        "raw_title": "퀵오트 오트밀 1kg",
+        "code": "inflated_confidence_after_validation_failure",
+        "message": "provider confidence is too high for proposals that failed deterministic validation",
+        "max_confidence": 0.9,
+        "validation_issue_codes": [
+          "unknown_taxonomy_category"
+        ]
+      }
+    ]
+  },
+  "publish_blockers": {
+    "items": [
+      {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "batch_id": "raw-20260507141851-cd6f5db4",
+        "source_name": "marketplace-fixture",
+        "raw_title": "제주 감귤 선물세트 3kg",
+        "status": "pending_review",
+        "eligible": false,
+        "publication_kind": "price_observation",
+        "price_observation_only": true,
+        "discount_claim_status": "hotdeal_claim_blocked",
+        "claim_basis": "current_price_observation",
+        "claim_blockers": [
+          "hotdeal_claim_blocked: missing verified original_price/discount_percent/source_event/historical_baseline; publish as price_observation only; missing=original_price,discount_percent,source_event,historical_baseline"
+        ],
+        "post_publish_audit_flags": [
+          {
+            "code": "ai_suggested_category_id",
+            "source": "field_proposal",
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:category_id:category_id",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "ai_suggested_keywords",
+            "source": "field_proposal",
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:keywords:kw:0",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "ai_suggested_keywords",
+            "source": "field_proposal",
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:keywords:kw:1",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "ai_suggested_aliases",
+            "source": "field_proposal",
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:0",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "ai_suggested_aliases",
+            "source": "field_proposal",
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:1",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "ai_suggested_aliases",
+            "source": "field_proposal",
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:2",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "db_keyword_proposal_unresolved",
+            "source": "keyword_proposal",
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_proposal:4ba99f3f0e3d",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "db_keyword_proposal_unresolved",
+            "source": "keyword_proposal",
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_proposal:5363a172d254",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          }
+        ],
+        "blocking_audit_issues": [],
+        "retryable": false,
+        "retractable": false,
+        "blockers": [
+          "pending_review: critical AI proposals must be human approved",
+          "approved: at least one human-approved proposal is required"
+        ],
+        "keyword_proposals": [
+          {
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_proposal:4ba99f3f0e3d",
+            "proposed_keyword": "감귤",
+            "match_terms": [
+              "감귤"
+            ],
+            "category_suggestion": "agriculture.fruit.tangerine",
+            "confidence": 1.0,
+            "reason": "AI keyword is ambiguous against existing DB keywords and needs human merge/alias decision",
+            "triggering_records": [
+              {
+                "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+                "source_name": "marketplace-fixture",
+                "source_record_key": "fixture-market-tangerine-3kg",
+                "source_url": "https://example.invalid/marketplace/items/tangerine-3kg",
+                "raw_title": "제주 감귤 선물세트 3kg",
+                "raw_price": 19900,
+                "raw_payload": {
+                  "external_id": "fixture-market-tangerine-3kg",
+                  "product_name": "제주 감귤 선물세트 3kg",
+                  "current_price": 19900,
+                  "link": "https://example.invalid/marketplace/items/tangerine-3kg",
+                  "image": "https://example.invalid/marketplace/images/tangerine-3kg.jpg",
+                  "store": "fixture-smartstore",
+                  "unit": "3kg",
+                  "source_name": "marketplace-fixture",
+                  "crawler_name": "marketplace_product_fixture",
+                  "schema_type": "shopping_product"
+                },
+                "crawled_at": "2026-05-07T14:18:51.003408"
+              }
+            ],
+            "source_values": [
+              "감귤"
+            ],
+            "status": "ai_proposed",
+            "reviewer_id": null,
+            "rejection_reason": null,
+            "persisted_keyword_id": null,
+            "created_at": "2026-05-07T14:19:06.750944",
+            "updated_at": "2026-05-07T14:19:06.750944",
+            "decided_at": null
+          },
+          {
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_proposal:5363a172d254",
+            "proposed_keyword": "제주감귤",
+            "match_terms": [
+              "제주감귤"
+            ],
+            "category_suggestion": "agriculture.fruit.tangerine",
+            "confidence": 1.0,
+            "reason": "AI keyword is ambiguous against existing DB keywords and needs human merge/alias decision",
+            "triggering_records": [
+              {
+                "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+                "source_name": "marketplace-fixture",
+                "source_record_key": "fixture-market-tangerine-3kg",
+                "source_url": "https://example.invalid/marketplace/items/tangerine-3kg",
+                "raw_title": "제주 감귤 선물세트 3kg",
+                "raw_price": 19900,
+                "raw_payload": {
+                  "external_id": "fixture-market-tangerine-3kg",
+                  "product_name": "제주 감귤 선물세트 3kg",
+                  "current_price": 19900,
+                  "link": "https://example.invalid/marketplace/items/tangerine-3kg",
+                  "image": "https://example.invalid/marketplace/images/tangerine-3kg.jpg",
+                  "store": "fixture-smartstore",
+                  "unit": "3kg",
+                  "source_name": "marketplace-fixture",
+                  "crawler_name": "marketplace_product_fixture",
+                  "schema_type": "shopping_product"
+                },
+                "crawled_at": "2026-05-07T14:18:51.003408"
+              }
+            ],
+            "source_values": [
+              "제주감귤"
+            ],
+            "status": "ai_proposed",
+            "reviewer_id": null,
+            "rejection_reason": null,
+            "persisted_keyword_id": null,
+            "created_at": "2026-05-07T14:19:06.755151",
+            "updated_at": "2026-05-07T14:19:06.755151",
+            "decided_at": null
+          }
+        ],
+        "audit_issues": [],
+        "proposal_ids": [
+          "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:canonical_name:canonical_name",
+          "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:source_title:source_title",
+          "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:category_id:category_id",
+          "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:sale_price:sale_price",
+          "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:source_url:source_url",
+          "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:image_url:image_url",
+          "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:package_quantity:package_quantity",
+          "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:package_unit:package_unit",
+          "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:display_unit:display_unit",
+          "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:bundle_count:bundle_count",
+          "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:standard_unit:standard_unit",
+          "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:standard_unit_price:standard_unit_price",
+          "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:price_per_100g:price_per_100g",
+          "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:attributes.origin:attr:origin",
+          "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:attributes.storage_label:attr:storage_label",
+          "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:attributes.storage_type:attr:storage_type",
+          "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:keywords:kw:0",
+          "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:keywords:kw:1",
+          "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:0",
+          "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:1",
+          "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:2"
+        ],
+        "human_decision_ids": [],
+        "db_ingestion_id": null,
+        "db_ingestion_result": null,
+        "publish_attempts": 0,
+        "requested_by": null,
+        "requested_at": null,
+        "published_at": null,
+        "last_error": null,
+        "item": {
+          "name": "제주 감귤 선물세트 3kg",
+          "canonical_name": "제주 감귤 선물세트 3kg",
+          "source_title": "제주 감귤 선물세트 3kg",
+          "sale_price": 19900,
+          "current_price": 19900,
+          "original_price": null,
+          "discount_percent": null,
+          "discount_rate": null,
+          "source": "fixture-smartstore",
+          "store": "fixture-smartstore",
+          "source_url": "https://example.invalid/marketplace/items/tangerine-3kg",
+          "detail_url": "https://example.invalid/marketplace/items/tangerine-3kg",
+          "image_url": "https://example.invalid/marketplace/images/tangerine-3kg.jpg",
+          "event_name": null,
+          "valid_from": null,
+          "valid_to": null,
+          "unit": "3kg",
+          "display_unit": "3kg",
+          "package_quantity": 3.0,
+          "package_unit": "kg",
+          "bundle_count": 1,
+          "standard_unit": "kg",
+          "standard_unit_price": 6633.33,
+          "price_per_100g": 663.33,
+          "category": "produce.fruit",
+          "category_id": "produce.fruit",
+          "keywords": [
+            "귤",
+            "감귤"
+          ],
+          "attributes": {
+            "storage_type": "ambient",
+            "storage_label": "상온"
+          },
+          "raw_data": {
+            "raw_record": {
+              "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+              "source_name": "marketplace-fixture",
+              "source_record_key": "fixture-market-tangerine-3kg",
+              "source_url": "https://example.invalid/marketplace/items/tangerine-3kg",
+              "raw_title": "제주 감귤 선물세트 3kg",
+              "raw_price": 19900,
+              "raw_payload": {
+                "external_id": "fixture-market-tangerine-3kg",
+                "product_name": "제주 감귤 선물세트 3kg",
+                "current_price": 19900,
+                "link": "https://example.invalid/marketplace/items/tangerine-3kg",
+                "image": "https://example.invalid/marketplace/images/tangerine-3kg.jpg",
+                "store": "fixture-smartstore",
+                "unit": "3kg",
+                "source_name": "marketplace-fixture",
+                "crawler_name": "marketplace_product_fixture",
+                "schema_type": "shopping_product"
+              },
+              "crawled_at": "2026-05-07T14:18:51.003408"
+            },
+            "raw_payload": {
+              "external_id": "fixture-market-tangerine-3kg",
+              "product_name": "제주 감귤 선물세트 3kg",
+              "current_price": 19900,
+              "link": "https://example.invalid/marketplace/items/tangerine-3kg",
+              "image": "https://example.invalid/marketplace/images/tangerine-3kg.jpg",
+              "store": "fixture-smartstore",
+              "unit": "3kg",
+              "source_name": "marketplace-fixture",
+              "crawler_name": "marketplace_product_fixture",
+              "schema_type": "shopping_product"
+            },
+            "canonical_product": {
+              "canonical_name": "제주 감귤 선물세트 3kg",
+              "brand": null,
+              "category_id": "produce.fruit",
+              "aliases": [
+                "귤",
+                "제주감귤",
+                "밀감"
+              ],
+              "keywords": [
+                "귤",
+                "감귤"
+              ],
+              "attributes": {
+                "storage_type": "ambient",
+                "storage_label": "상온"
+              }
+            },
+            "product_variant": {
+              "canonical_product_public_id": null,
+              "variant_name": "제주 감귤 선물세트 3kg",
+              "package_quantity": 3.0,
+              "package_unit": "kg",
+              "display_unit": "3kg",
+              "bundle_count": 1,
+              "standard_unit": "kg",
+              "attributes": {
+                "storage_type": "ambient",
+                "storage_label": "상온"
+              }
+            },
+            "sale_offer": {
+              "source_name": "fixture-smartstore",
+              "source_record_key": "fixture-market-tangerine-3kg",
+              "source_title": "제주 감귤 선물세트 3kg",
+              "source_url": "https://example.invalid/marketplace/items/tangerine-3kg",
+              "image_url": "https://example.invalid/marketplace/images/tangerine-3kg.jpg",
+              "price": 19900,
+              "original_price": null,
+              "discount_rate": null,
+              "event_name": null,
+              "standard_unit_price": 6633.33,
+              "price_per_100g": 663.33,
+              "valid_from": null,
+              "valid_to": null,
+              "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+              "raw_evidence": {
+                "raw_title": "제주 감귤 선물세트 3kg",
+                "raw_price": 19900,
+                "raw_unit": "3kg",
+                "raw_payload": {
+                  "external_id": "fixture-market-tangerine-3kg",
+                  "product_name": "제주 감귤 선물세트 3kg",
+                  "current_price": 19900,
+                  "link": "https://example.invalid/marketplace/items/tangerine-3kg",
+                  "image": "https://example.invalid/marketplace/images/tangerine-3kg.jpg",
+                  "store": "fixture-smartstore",
+                  "unit": "3kg",
+                  "source_name": "marketplace-fixture",
+                  "crawler_name": "marketplace_product_fixture",
+                  "schema_type": "shopping_product"
+                }
+              },
+              "audit_provenance": {
+                "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+                "proposal_ids": [
+                  "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:canonical_name:canonical_name",
+                  "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:source_title:source_title",
+                  "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:category_id:category_id",
+                  "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:sale_price:sale_price",
+                  "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:source_url:source_url",
+                  "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:image_url:image_url",
+                  "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:package_quantity:package_quantity",
+                  "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:package_unit:package_unit",
+                  "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:display_unit:display_unit",
+                  "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:bundle_count:bundle_count",
+                  "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:standard_unit:standard_unit",
+                  "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:standard_unit_price:standard_unit_price",
+                  "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:price_per_100g:price_per_100g",
+                  "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:attributes.origin:attr:origin",
+                  "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:attributes.storage_label:attr:storage_label",
+                  "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:attributes.storage_type:attr:storage_type",
+                  "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:keywords:kw:0",
+                  "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:keywords:kw:1",
+                  "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:0",
+                  "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:1",
+                  "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:2"
+                ],
+                "approved_fields": {
+                  "category_id": "produce.fruit",
+                  "keywords": [
+                    "귤",
+                    "감귤"
+                  ],
+                  "aliases": [
+                    "귤",
+                    "제주감귤",
+                    "밀감"
+                  ]
+                }
+              }
+            },
+            "attributes": {
+              "storage_type": "ambient",
+              "storage_label": "상온"
+            },
+            "raw_evidence": {
+              "raw_title": "제주 감귤 선물세트 3kg",
+              "raw_price": 19900,
+              "raw_unit": "3kg",
+              "raw_payload": {
+                "external_id": "fixture-market-tangerine-3kg",
+                "product_name": "제주 감귤 선물세트 3kg",
+                "current_price": 19900,
+                "link": "https://example.invalid/marketplace/items/tangerine-3kg",
+                "image": "https://example.invalid/marketplace/images/tangerine-3kg.jpg",
+                "store": "fixture-smartstore",
+                "unit": "3kg",
+                "source_name": "marketplace-fixture",
+                "crawler_name": "marketplace_product_fixture",
+                "schema_type": "shopping_product"
+              }
+            },
+            "audit_provenance": {
+              "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+              "proposal_ids": [
+                "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:canonical_name:canonical_name",
+                "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:source_title:source_title",
+                "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:category_id:category_id",
+                "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:sale_price:sale_price",
+                "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:source_url:source_url",
+                "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:image_url:image_url",
+                "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:package_quantity:package_quantity",
+                "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:package_unit:package_unit",
+                "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:display_unit:display_unit",
+                "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:bundle_count:bundle_count",
+                "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:standard_unit:standard_unit",
+                "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:standard_unit_price:standard_unit_price",
+                "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:price_per_100g:price_per_100g",
+                "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:attributes.origin:attr:origin",
+                "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:attributes.storage_label:attr:storage_label",
+                "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:attributes.storage_type:attr:storage_type",
+                "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:keywords:kw:0",
+                "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:keywords:kw:1",
+                "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:0",
+                "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:1",
+                "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:2"
+              ],
+              "approved_fields": {
+                "category_id": "produce.fruit",
+                "keywords": [
+                  "귤",
+                  "감귤"
+                ],
+                "aliases": [
+                  "귤",
+                  "제주감귤",
+                  "밀감"
+                ]
+              }
+            },
+            "display_unit": "3kg",
+            "package_quantity": 3.0,
+            "package_unit": "kg",
+            "category_evidence": {
+              "safe_category_id": "produce.fruit",
+              "safe_category_display_label": "농산/과일",
+              "candidates": [
+                {
+                  "raw": "produce.fruit",
+                  "normalized": "produce.fruit",
+                  "display_label": "농산/과일",
+                  "safe_seed": true
+                }
+              ]
+            },
+            "publication": {
+              "publication_kind": "price_observation",
+              "price_observation_only": true,
+              "discount_claim_status": "hotdeal_claim_blocked",
+              "claim_basis": "current_price_observation",
+              "claim_blockers": [
+                "hotdeal_claim_blocked: missing verified original_price/discount_percent/source_event/historical_baseline; publish as price_observation only; missing=original_price,discount_percent,source_event,historical_baseline"
+              ],
+              "observed_at": "2026-05-07T14:18:51.003408"
+            },
+            "post_publish_audit_flags": [
+              {
+                "code": "ai_suggested_category_id",
+                "source": "field_proposal",
+                "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:category_id:category_id",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "ai_suggested_keywords",
+                "source": "field_proposal",
+                "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:keywords:kw:0",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "ai_suggested_keywords",
+                "source": "field_proposal",
+                "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:keywords:kw:1",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "ai_suggested_aliases",
+                "source": "field_proposal",
+                "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:0",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "ai_suggested_aliases",
+                "source": "field_proposal",
+                "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:1",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "ai_suggested_aliases",
+                "source": "field_proposal",
+                "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:2",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "db_keyword_proposal_unresolved",
+                "source": "keyword_proposal",
+                "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_proposal:4ba99f3f0e3d",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "db_keyword_proposal_unresolved",
+                "source": "keyword_proposal",
+                "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_proposal:5363a172d254",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              }
+            ]
+          },
+          "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+          "source_record_key": "fixture-market-tangerine-3kg",
+          "ai_review_audit": {
+            "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+            "proposal_ids": [
+              "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:canonical_name:canonical_name",
+              "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:source_title:source_title",
+              "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:category_id:category_id",
+              "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:sale_price:sale_price",
+              "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:source_url:source_url",
+              "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-tangerine-3kg:image_url:image_url",
+              "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:package_quantity:package_quantity",
+              "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:package_unit:package_unit",
+              "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:display_unit:display_unit",
+              "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:bundle_count:bundle_count",
+              "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:standard_unit:standard_unit",
+              "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:standard_unit_price:standard_unit_price",
+              "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-tangerine-3kg:price_per_100g:price_per_100g",
+              "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:attributes.origin:attr:origin",
+              "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:attributes.storage_label:attr:storage_label",
+              "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:attributes.storage_type:attr:storage_type",
+              "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:keywords:kw:0",
+              "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:keywords:kw:1",
+              "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:0",
+              "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:1",
+              "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:2"
+            ],
+            "approved_fields": {
+              "category_id": "produce.fruit",
+              "keywords": [
+                "귤",
+                "감귤"
+              ],
+              "aliases": [
+                "귤",
+                "제주감귤",
+                "밀감"
+              ]
+            }
+          },
+          "raw_unit": "3kg",
+          "category_display_label": "농산/과일",
+          "observed_at": "2026-05-07T14:18:51.003408",
+          "publication_kind": "price_observation",
+          "price_observation_only": true,
+          "discount_claim_status": "hotdeal_claim_blocked",
+          "claim_basis": "current_price_observation",
+          "claim_blockers": [
+            "hotdeal_claim_blocked: missing verified original_price/discount_percent/source_event/historical_baseline; publish as price_observation only; missing=original_price,discount_percent,source_event,historical_baseline"
+          ],
+          "post_publish_audit_flags": [
+            {
+              "code": "ai_suggested_category_id",
+              "source": "field_proposal",
+              "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-tangerine-3kg:category_id:category_id",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "ai_suggested_keywords",
+              "source": "field_proposal",
+              "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:keywords:kw:0",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "ai_suggested_keywords",
+              "source": "field_proposal",
+              "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:keywords:kw:1",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "ai_suggested_aliases",
+              "source": "field_proposal",
+              "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:0",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "ai_suggested_aliases",
+              "source": "field_proposal",
+              "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:1",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "ai_suggested_aliases",
+              "source": "field_proposal",
+              "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-tangerine-3kg:aliases:alias:2",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "db_keyword_proposal_unresolved",
+              "source": "keyword_proposal",
+              "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_proposal:4ba99f3f0e3d",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "db_keyword_proposal_unresolved",
+              "source": "keyword_proposal",
+              "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_proposal:5363a172d254",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            }
+          ]
+        },
+        "ai_safe_final_approve_eligible": false,
+        "db_handoff_mode": "db_admin_review"
+      },
+      {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "batch_id": "raw-20260507141851-cd6f5db4",
+        "source_name": "marketplace-fixture",
+        "raw_title": "퀵오트 오트밀 1kg",
+        "status": "pending_review",
+        "eligible": false,
+        "publication_kind": "price_observation",
+        "price_observation_only": true,
+        "discount_claim_status": "hotdeal_claim_blocked",
+        "claim_basis": "current_price_observation",
+        "claim_blockers": [
+          "hotdeal_claim_blocked: missing verified original_price/discount_percent/source_event/historical_baseline; publish as price_observation only; missing=original_price,discount_percent,source_event,historical_baseline"
+        ],
+        "post_publish_audit_flags": [
+          {
+            "code": "ai_suggested_category_id",
+            "source": "field_proposal",
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-oatmeal-1kg:category_id:category_id",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "ai_suggested_keywords",
+            "source": "field_proposal",
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-oatmeal-1kg:keywords:kw:0",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "ai_suggested_aliases",
+            "source": "field_proposal",
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-oatmeal-1kg:aliases:alias:0",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "db_keyword_proposal_unresolved",
+            "source": "keyword_proposal",
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_proposal:91053ee49f1d",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "db_keyword_proposal_unresolved",
+            "source": "keyword_proposal",
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_proposal:216219acf979",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          }
+        ],
+        "blocking_audit_issues": [
+          {
+            "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+            "source_name": "marketplace-fixture",
+            "raw_title": "퀵오트 오트밀 1kg",
+            "code": "unknown_taxonomy_category",
+            "message": "category_id is not in the AI-admin safe seed taxonomy; hold in review until a human maps it to an existing seed category or explicitly approves a DB-admin taxonomy change",
+            "proposed": "processed.grain.oatmeal",
+            "allowed_seed_categories": [
+              "beverage.coffee",
+              "beverage.juice",
+              "beverage.soda",
+              "beverage.water",
+              "daily.detergent",
+              "dairy.cheese",
+              "dairy.egg",
+              "dairy.milk",
+              "dairy.milk.chocolate",
+              "dairy.yogurt",
+              "grain.rice",
+              "instant.noodle",
+              "instant.rice",
+              "meat.beef",
+              "meat.beef.bulgogi",
+              "meat.beef.hanwoo",
+              "meat.beef.soup_cut",
+              "meat.chicken",
+              "meat.chicken.breast",
+              "meat.pork",
+              "meat.pork.belly",
+              "prepared_food.deli.kimbap",
+              "prepared_food.meal_kit",
+              "prepared_food.meal_kit.kimbap",
+              "processed.meal.kimbap",
+              "processed.sauce.ssamjang",
+              "processed.tofu.firm",
+              "produce.fruit",
+              "produce.vegetable",
+              "seafood.fish",
+              "seafood.frozen",
+              "seafood.shrimp",
+              "seafood.squid",
+              "snack.chip",
+              "snack.chocolate",
+              "snack.general",
+              "snack.nut",
+              "vegetable.cabbage"
+            ],
+            "review_context": {
+              "raw_record": {
+                "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+                "source_name": "marketplace-fixture",
+                "source_record_key": "fixture-market-oatmeal-1kg",
+                "source_url": "https://example.invalid/marketplace/items/oatmeal-1kg",
+                "raw_title": "퀵오트 오트밀 1kg",
+                "raw_price": 5500,
+                "raw_payload": {
+                  "external_id": "fixture-market-oatmeal-1kg",
+                  "product_name": "퀵오트 오트밀 1kg",
+                  "current_price": "5,500원",
+                  "link": "https://example.invalid/marketplace/items/oatmeal-1kg",
+                  "image": "https://example.invalid/marketplace/images/oatmeal-1kg.jpg",
+                  "store": "fixture-openmarket",
+                  "unit": "1kg",
+                  "source_name": "marketplace-fixture",
+                  "crawler_name": "marketplace_product_fixture",
+                  "schema_type": "shopping_product"
+                },
+                "crawled_at": "2026-05-07T14:18:51.003514"
+              },
+              "proposed_categories": {
+                "category_id": [
+                  "processed.grain.oatmeal"
+                ]
+              }
+            },
+            "taxonomy_alias_proposal": {
+              "proposal_type": "taxonomy_alias_proposal",
+              "status": "human_reviewing",
+              "proposed_alias": "processed.grain.oatmeal",
+              "normalized_candidate": "processed.grain.oatmeal",
+              "raw_title": "퀵오트 오트밀 1kg",
+              "source_name": "marketplace-fixture",
+              "action": "review_existing_seed_mapping_or_create_db_admin_taxonomy_change; do_not_add_code_alias_until repeated cross-source evidence exists"
+            }
+          },
+          {
+            "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+            "source_name": "marketplace-fixture",
+            "raw_title": "퀵오트 오트밀 1kg",
+            "code": "inflated_confidence_after_validation_failure",
+            "message": "provider confidence is too high for proposals that failed deterministic validation",
+            "max_confidence": 0.9,
+            "validation_issue_codes": [
+              "unknown_taxonomy_category"
+            ]
+          }
+        ],
+        "retryable": false,
+        "retractable": false,
+        "blockers": [
+          "pending_review: critical AI proposals must be human approved",
+          "approved: at least one human-approved proposal is required",
+          "data_quality: unknown_taxonomy_category",
+          "data_quality: inflated_confidence_after_validation_failure"
+        ],
+        "keyword_proposals": [
+          {
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_proposal:91053ee49f1d",
+            "proposed_keyword": "오트밀",
+            "match_terms": [
+              "오트밀"
+            ],
+            "category_suggestion": "processed.grain.oatmeal",
+            "confidence": 0.9,
+            "reason": "AI keyword did not safely match an existing DB keyword",
+            "triggering_records": [
+              {
+                "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+                "source_name": "marketplace-fixture",
+                "source_record_key": "fixture-market-oatmeal-1kg",
+                "source_url": "https://example.invalid/marketplace/items/oatmeal-1kg",
+                "raw_title": "퀵오트 오트밀 1kg",
+                "raw_price": 5500,
+                "raw_payload": {
+                  "external_id": "fixture-market-oatmeal-1kg",
+                  "product_name": "퀵오트 오트밀 1kg",
+                  "current_price": "5,500원",
+                  "link": "https://example.invalid/marketplace/items/oatmeal-1kg",
+                  "image": "https://example.invalid/marketplace/images/oatmeal-1kg.jpg",
+                  "store": "fixture-openmarket",
+                  "unit": "1kg",
+                  "source_name": "marketplace-fixture",
+                  "crawler_name": "marketplace_product_fixture",
+                  "schema_type": "shopping_product"
+                },
+                "crawled_at": "2026-05-07T14:18:51.003514"
+              }
+            ],
+            "source_values": [
+              "오트밀"
+            ],
+            "status": "ai_proposed",
+            "reviewer_id": null,
+            "rejection_reason": null,
+            "persisted_keyword_id": null,
+            "created_at": "2026-05-07T14:19:06.756178",
+            "updated_at": "2026-05-07T14:19:06.756178",
+            "decided_at": null
+          },
+          {
+            "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_proposal:216219acf979",
+            "proposed_keyword": "귀리",
+            "match_terms": [
+              "귀리"
+            ],
+            "category_suggestion": "processed.grain.oatmeal",
+            "confidence": 0.9,
+            "reason": "AI keyword did not safely match an existing DB keyword",
+            "triggering_records": [
+              {
+                "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+                "source_name": "marketplace-fixture",
+                "source_record_key": "fixture-market-oatmeal-1kg",
+                "source_url": "https://example.invalid/marketplace/items/oatmeal-1kg",
+                "raw_title": "퀵오트 오트밀 1kg",
+                "raw_price": 5500,
+                "raw_payload": {
+                  "external_id": "fixture-market-oatmeal-1kg",
+                  "product_name": "퀵오트 오트밀 1kg",
+                  "current_price": "5,500원",
+                  "link": "https://example.invalid/marketplace/items/oatmeal-1kg",
+                  "image": "https://example.invalid/marketplace/images/oatmeal-1kg.jpg",
+                  "store": "fixture-openmarket",
+                  "unit": "1kg",
+                  "source_name": "marketplace-fixture",
+                  "crawler_name": "marketplace_product_fixture",
+                  "schema_type": "shopping_product"
+                },
+                "crawled_at": "2026-05-07T14:18:51.003514"
+              }
+            ],
+            "source_values": [
+              "귀리"
+            ],
+            "status": "ai_proposed",
+            "reviewer_id": null,
+            "rejection_reason": null,
+            "persisted_keyword_id": null,
+            "created_at": "2026-05-07T14:19:06.757051",
+            "updated_at": "2026-05-07T14:19:06.757051",
+            "decided_at": null
+          }
+        ],
+        "audit_issues": [
+          {
+            "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+            "source_name": "marketplace-fixture",
+            "raw_title": "퀵오트 오트밀 1kg",
+            "code": "unknown_taxonomy_category",
+            "message": "category_id is not in the AI-admin safe seed taxonomy; hold in review until a human maps it to an existing seed category or explicitly approves a DB-admin taxonomy change",
+            "proposed": "processed.grain.oatmeal",
+            "allowed_seed_categories": [
+              "beverage.coffee",
+              "beverage.juice",
+              "beverage.soda",
+              "beverage.water",
+              "daily.detergent",
+              "dairy.cheese",
+              "dairy.egg",
+              "dairy.milk",
+              "dairy.milk.chocolate",
+              "dairy.yogurt",
+              "grain.rice",
+              "instant.noodle",
+              "instant.rice",
+              "meat.beef",
+              "meat.beef.bulgogi",
+              "meat.beef.hanwoo",
+              "meat.beef.soup_cut",
+              "meat.chicken",
+              "meat.chicken.breast",
+              "meat.pork",
+              "meat.pork.belly",
+              "prepared_food.deli.kimbap",
+              "prepared_food.meal_kit",
+              "prepared_food.meal_kit.kimbap",
+              "processed.meal.kimbap",
+              "processed.sauce.ssamjang",
+              "processed.tofu.firm",
+              "produce.fruit",
+              "produce.vegetable",
+              "seafood.fish",
+              "seafood.frozen",
+              "seafood.shrimp",
+              "seafood.squid",
+              "snack.chip",
+              "snack.chocolate",
+              "snack.general",
+              "snack.nut",
+              "vegetable.cabbage"
+            ],
+            "review_context": {
+              "raw_record": {
+                "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+                "source_name": "marketplace-fixture",
+                "source_record_key": "fixture-market-oatmeal-1kg",
+                "source_url": "https://example.invalid/marketplace/items/oatmeal-1kg",
+                "raw_title": "퀵오트 오트밀 1kg",
+                "raw_price": 5500,
+                "raw_payload": {
+                  "external_id": "fixture-market-oatmeal-1kg",
+                  "product_name": "퀵오트 오트밀 1kg",
+                  "current_price": "5,500원",
+                  "link": "https://example.invalid/marketplace/items/oatmeal-1kg",
+                  "image": "https://example.invalid/marketplace/images/oatmeal-1kg.jpg",
+                  "store": "fixture-openmarket",
+                  "unit": "1kg",
+                  "source_name": "marketplace-fixture",
+                  "crawler_name": "marketplace_product_fixture",
+                  "schema_type": "shopping_product"
+                },
+                "crawled_at": "2026-05-07T14:18:51.003514"
+              },
+              "proposed_categories": {
+                "category_id": [
+                  "processed.grain.oatmeal"
+                ]
+              }
+            },
+            "taxonomy_alias_proposal": {
+              "proposal_type": "taxonomy_alias_proposal",
+              "status": "human_reviewing",
+              "proposed_alias": "processed.grain.oatmeal",
+              "normalized_candidate": "processed.grain.oatmeal",
+              "raw_title": "퀵오트 오트밀 1kg",
+              "source_name": "marketplace-fixture",
+              "action": "review_existing_seed_mapping_or_create_db_admin_taxonomy_change; do_not_add_code_alias_until repeated cross-source evidence exists"
+            }
+          },
+          {
+            "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+            "source_name": "marketplace-fixture",
+            "raw_title": "퀵오트 오트밀 1kg",
+            "code": "inflated_confidence_after_validation_failure",
+            "message": "provider confidence is too high for proposals that failed deterministic validation",
+            "max_confidence": 0.9,
+            "validation_issue_codes": [
+              "unknown_taxonomy_category"
+            ]
+          }
+        ],
+        "proposal_ids": [
+          "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:canonical_name:canonical_name",
+          "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:source_title:source_title",
+          "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-oatmeal-1kg:category_id:category_id",
+          "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:sale_price:sale_price",
+          "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:source_url:source_url",
+          "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:image_url:image_url",
+          "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:package_quantity:package_quantity",
+          "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:package_unit:package_unit",
+          "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:display_unit:display_unit",
+          "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:bundle_count:bundle_count",
+          "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:standard_unit:standard_unit",
+          "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:standard_unit_price:standard_unit_price",
+          "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:price_per_100g:price_per_100g",
+          "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-oatmeal-1kg:attributes.type:attr:type",
+          "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-oatmeal-1kg:keywords:kw:0",
+          "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-oatmeal-1kg:aliases:alias:0"
+        ],
+        "human_decision_ids": [],
+        "db_ingestion_id": null,
+        "db_ingestion_result": null,
+        "publish_attempts": 0,
+        "requested_by": null,
+        "requested_at": null,
+        "published_at": null,
+        "last_error": null,
+        "item": {
+          "name": "퀵오트 오트밀 1kg",
+          "canonical_name": "퀵오트 오트밀 1kg",
+          "source_title": "퀵오트 오트밀 1kg",
+          "sale_price": 5500,
+          "current_price": 5500,
+          "original_price": null,
+          "discount_percent": null,
+          "discount_rate": null,
+          "source": "fixture-openmarket",
+          "store": "fixture-openmarket",
+          "source_url": "https://example.invalid/marketplace/items/oatmeal-1kg",
+          "detail_url": "https://example.invalid/marketplace/items/oatmeal-1kg",
+          "image_url": "https://example.invalid/marketplace/images/oatmeal-1kg.jpg",
+          "event_name": null,
+          "valid_from": null,
+          "valid_to": null,
+          "unit": "1kg",
+          "display_unit": "1kg",
+          "package_quantity": 1.0,
+          "package_unit": "kg",
+          "bundle_count": 1,
+          "standard_unit": "kg",
+          "standard_unit_price": 5500.0,
+          "price_per_100g": 550.0,
+          "category": null,
+          "category_id": null,
+          "keywords": [
+            "오트밀"
+          ],
+          "attributes": {},
+          "raw_data": {
+            "raw_record": {
+              "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+              "source_name": "marketplace-fixture",
+              "source_record_key": "fixture-market-oatmeal-1kg",
+              "source_url": "https://example.invalid/marketplace/items/oatmeal-1kg",
+              "raw_title": "퀵오트 오트밀 1kg",
+              "raw_price": 5500,
+              "raw_payload": {
+                "external_id": "fixture-market-oatmeal-1kg",
+                "product_name": "퀵오트 오트밀 1kg",
+                "current_price": "5,500원",
+                "link": "https://example.invalid/marketplace/items/oatmeal-1kg",
+                "image": "https://example.invalid/marketplace/images/oatmeal-1kg.jpg",
+                "store": "fixture-openmarket",
+                "unit": "1kg",
+                "source_name": "marketplace-fixture",
+                "crawler_name": "marketplace_product_fixture",
+                "schema_type": "shopping_product"
+              },
+              "crawled_at": "2026-05-07T14:18:51.003514"
+            },
+            "raw_payload": {
+              "external_id": "fixture-market-oatmeal-1kg",
+              "product_name": "퀵오트 오트밀 1kg",
+              "current_price": "5,500원",
+              "link": "https://example.invalid/marketplace/items/oatmeal-1kg",
+              "image": "https://example.invalid/marketplace/images/oatmeal-1kg.jpg",
+              "store": "fixture-openmarket",
+              "unit": "1kg",
+              "source_name": "marketplace-fixture",
+              "crawler_name": "marketplace_product_fixture",
+              "schema_type": "shopping_product"
+            },
+            "canonical_product": {
+              "canonical_name": "퀵오트 오트밀 1kg",
+              "brand": null,
+              "category_id": null,
+              "aliases": [
+                "귀리"
+              ],
+              "keywords": [
+                "오트밀"
+              ],
+              "attributes": {}
+            },
+            "product_variant": {
+              "canonical_product_public_id": null,
+              "variant_name": "퀵오트 오트밀 1kg",
+              "package_quantity": 1.0,
+              "package_unit": "kg",
+              "display_unit": "1kg",
+              "bundle_count": 1,
+              "standard_unit": "kg",
+              "attributes": {}
+            },
+            "sale_offer": {
+              "source_name": "fixture-openmarket",
+              "source_record_key": "fixture-market-oatmeal-1kg",
+              "source_title": "퀵오트 오트밀 1kg",
+              "source_url": "https://example.invalid/marketplace/items/oatmeal-1kg",
+              "image_url": "https://example.invalid/marketplace/images/oatmeal-1kg.jpg",
+              "price": 5500,
+              "original_price": null,
+              "discount_rate": null,
+              "event_name": null,
+              "standard_unit_price": 5500.0,
+              "price_per_100g": 550.0,
+              "valid_from": null,
+              "valid_to": null,
+              "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+              "raw_evidence": {
+                "raw_title": "퀵오트 오트밀 1kg",
+                "raw_price": 5500,
+                "raw_unit": "1kg",
+                "raw_payload": {
+                  "external_id": "fixture-market-oatmeal-1kg",
+                  "product_name": "퀵오트 오트밀 1kg",
+                  "current_price": "5,500원",
+                  "link": "https://example.invalid/marketplace/items/oatmeal-1kg",
+                  "image": "https://example.invalid/marketplace/images/oatmeal-1kg.jpg",
+                  "store": "fixture-openmarket",
+                  "unit": "1kg",
+                  "source_name": "marketplace-fixture",
+                  "crawler_name": "marketplace_product_fixture",
+                  "schema_type": "shopping_product"
+                }
+              },
+              "audit_provenance": {
+                "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+                "proposal_ids": [
+                  "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:canonical_name:canonical_name",
+                  "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:source_title:source_title",
+                  "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-oatmeal-1kg:category_id:category_id",
+                  "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:sale_price:sale_price",
+                  "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:source_url:source_url",
+                  "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:image_url:image_url",
+                  "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:package_quantity:package_quantity",
+                  "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:package_unit:package_unit",
+                  "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:display_unit:display_unit",
+                  "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:bundle_count:bundle_count",
+                  "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:standard_unit:standard_unit",
+                  "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:standard_unit_price:standard_unit_price",
+                  "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:price_per_100g:price_per_100g",
+                  "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-oatmeal-1kg:attributes.type:attr:type",
+                  "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-oatmeal-1kg:keywords:kw:0",
+                  "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-oatmeal-1kg:aliases:alias:0"
+                ],
+                "approved_fields": {
+                  "category_id": "processed.grain.oatmeal",
+                  "keywords": [
+                    "오트밀"
+                  ],
+                  "aliases": [
+                    "귀리"
+                  ]
+                }
+              }
+            },
+            "attributes": {},
+            "raw_evidence": {
+              "raw_title": "퀵오트 오트밀 1kg",
+              "raw_price": 5500,
+              "raw_unit": "1kg",
+              "raw_payload": {
+                "external_id": "fixture-market-oatmeal-1kg",
+                "product_name": "퀵오트 오트밀 1kg",
+                "current_price": "5,500원",
+                "link": "https://example.invalid/marketplace/items/oatmeal-1kg",
+                "image": "https://example.invalid/marketplace/images/oatmeal-1kg.jpg",
+                "store": "fixture-openmarket",
+                "unit": "1kg",
+                "source_name": "marketplace-fixture",
+                "crawler_name": "marketplace_product_fixture",
+                "schema_type": "shopping_product"
+              }
+            },
+            "audit_provenance": {
+              "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+              "proposal_ids": [
+                "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:canonical_name:canonical_name",
+                "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:source_title:source_title",
+                "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-oatmeal-1kg:category_id:category_id",
+                "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:sale_price:sale_price",
+                "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:source_url:source_url",
+                "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:image_url:image_url",
+                "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:package_quantity:package_quantity",
+                "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:package_unit:package_unit",
+                "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:display_unit:display_unit",
+                "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:bundle_count:bundle_count",
+                "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:standard_unit:standard_unit",
+                "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:standard_unit_price:standard_unit_price",
+                "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:price_per_100g:price_per_100g",
+                "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-oatmeal-1kg:attributes.type:attr:type",
+                "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-oatmeal-1kg:keywords:kw:0",
+                "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-oatmeal-1kg:aliases:alias:0"
+              ],
+              "approved_fields": {
+                "category_id": "processed.grain.oatmeal",
+                "keywords": [
+                  "오트밀"
+                ],
+                "aliases": [
+                  "귀리"
+                ]
+              }
+            },
+            "display_unit": "1kg",
+            "package_quantity": 1.0,
+            "package_unit": "kg",
+            "category_evidence": {
+              "safe_category_id": null,
+              "safe_category_display_label": "",
+              "candidates": [
+                {
+                  "raw": "processed.grain.oatmeal",
+                  "normalized": "processed.grain.oatmeal",
+                  "display_label": "processed.grain.oatmeal",
+                  "safe_seed": false
+                }
+              ]
+            },
+            "publication": {
+              "publication_kind": "price_observation",
+              "price_observation_only": true,
+              "discount_claim_status": "hotdeal_claim_blocked",
+              "claim_basis": "current_price_observation",
+              "claim_blockers": [
+                "hotdeal_claim_blocked: missing verified original_price/discount_percent/source_event/historical_baseline; publish as price_observation only; missing=original_price,discount_percent,source_event,historical_baseline"
+              ],
+              "observed_at": "2026-05-07T14:18:51.003514"
+            },
+            "post_publish_audit_flags": [
+              {
+                "code": "ai_suggested_category_id",
+                "source": "field_proposal",
+                "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-oatmeal-1kg:category_id:category_id",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "ai_suggested_keywords",
+                "source": "field_proposal",
+                "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-oatmeal-1kg:keywords:kw:0",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "ai_suggested_aliases",
+                "source": "field_proposal",
+                "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-oatmeal-1kg:aliases:alias:0",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "db_keyword_proposal_unresolved",
+                "source": "keyword_proposal",
+                "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_proposal:91053ee49f1d",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "db_keyword_proposal_unresolved",
+                "source": "keyword_proposal",
+                "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_proposal:216219acf979",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              }
+            ]
+          },
+          "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+          "source_record_key": "fixture-market-oatmeal-1kg",
+          "ai_review_audit": {
+            "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+            "proposal_ids": [
+              "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:canonical_name:canonical_name",
+              "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:source_title:source_title",
+              "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-oatmeal-1kg:category_id:category_id",
+              "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:sale_price:sale_price",
+              "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:source_url:source_url",
+              "raw-20260507141851-cd6f5db4:ai:1:normalizer:marketplace-fixture:fixture-market-oatmeal-1kg:image_url:image_url",
+              "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:package_quantity:package_quantity",
+              "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:package_unit:package_unit",
+              "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:display_unit:display_unit",
+              "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:bundle_count:bundle_count",
+              "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:standard_unit:standard_unit",
+              "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:standard_unit_price:standard_unit_price",
+              "raw-20260507141851-cd6f5db4:ai:1:unit_converter:marketplace-fixture:fixture-market-oatmeal-1kg:price_per_100g:price_per_100g",
+              "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-oatmeal-1kg:attributes.type:attr:type",
+              "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-oatmeal-1kg:keywords:kw:0",
+              "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-oatmeal-1kg:aliases:alias:0"
+            ],
+            "approved_fields": {
+              "category_id": "processed.grain.oatmeal",
+              "keywords": [
+                "오트밀"
+              ],
+              "aliases": [
+                "귀리"
+              ]
+            }
+          },
+          "raw_unit": "1kg",
+          "category_display_label": "",
+          "observed_at": "2026-05-07T14:18:51.003514",
+          "publication_kind": "price_observation",
+          "price_observation_only": true,
+          "discount_claim_status": "hotdeal_claim_blocked",
+          "claim_basis": "current_price_observation",
+          "claim_blockers": [
+            "hotdeal_claim_blocked: missing verified original_price/discount_percent/source_event/historical_baseline; publish as price_observation only; missing=original_price,discount_percent,source_event,historical_baseline"
+          ],
+          "post_publish_audit_flags": [
+            {
+              "code": "ai_suggested_category_id",
+              "source": "field_proposal",
+              "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:classifier:marketplace-fixture:fixture-market-oatmeal-1kg:category_id:category_id",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "ai_suggested_keywords",
+              "source": "field_proposal",
+              "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-oatmeal-1kg:keywords:kw:0",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "ai_suggested_aliases",
+              "source": "field_proposal",
+              "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_generator:marketplace-fixture:fixture-market-oatmeal-1kg:aliases:alias:0",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "db_keyword_proposal_unresolved",
+              "source": "keyword_proposal",
+              "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_proposal:91053ee49f1d",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "db_keyword_proposal_unresolved",
+              "source": "keyword_proposal",
+              "proposal_id": "raw-20260507141851-cd6f5db4:ai:1:keyword_proposal:216219acf979",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            }
+          ]
+        },
+        "ai_safe_final_approve_eligible": false,
+        "db_handoff_mode": "db_admin_review"
+      }
+    ]
+  },
+  "db_admin_submit_result": null,
+  "raw_vs_final": [
+    {
+      "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+      "raw_title": "제주 감귤 선물세트 3kg",
+      "final_name": "제주 감귤 선물세트 3kg",
+      "raw_price": 19900,
+      "final_sale_price": 19900,
+      "raw_original_price": null,
+      "final_original_price": null,
+      "raw_discount_percent": null,
+      "final_discount_percent": null,
+      "raw_source_url": "https://example.invalid/marketplace/items/tangerine-3kg",
+      "final_source_url": "https://example.invalid/marketplace/items/tangerine-3kg",
+      "raw_image_url": "https://example.invalid/marketplace/images/tangerine-3kg.jpg",
+      "final_image_url": "https://example.invalid/marketplace/images/tangerine-3kg.jpg",
+      "raw_category_id": null,
+      "final_category_id": "produce.fruit",
+      "raw_keywords": null,
+      "final_keywords": [
+        "귤",
+        "감귤"
+      ],
+      "publication_kind": "price_observation",
+      "price_observation_only": true,
+      "blockers": [
+        "pending_review: critical AI proposals must be human approved",
+        "approved: at least one human-approved proposal is required"
+      ]
+    },
+    {
+      "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+      "raw_title": "퀵오트 오트밀 1kg",
+      "final_name": "퀵오트 오트밀 1kg",
+      "raw_price": 5500,
+      "final_sale_price": 5500,
+      "raw_original_price": null,
+      "final_original_price": null,
+      "raw_discount_percent": null,
+      "final_discount_percent": null,
+      "raw_source_url": "https://example.invalid/marketplace/items/oatmeal-1kg",
+      "final_source_url": "https://example.invalid/marketplace/items/oatmeal-1kg",
+      "raw_image_url": "https://example.invalid/marketplace/images/oatmeal-1kg.jpg",
+      "final_image_url": "https://example.invalid/marketplace/images/oatmeal-1kg.jpg",
+      "raw_category_id": null,
+      "final_category_id": null,
+      "raw_keywords": null,
+      "final_keywords": [
+        "오트밀"
+      ],
+      "publication_kind": "price_observation",
+      "price_observation_only": true,
+      "blockers": [
+        "pending_review: critical AI proposals must be human approved",
+        "approved: at least one human-approved proposal is required",
+        "data_quality: unknown_taxonomy_category",
+        "data_quality: inflated_confidence_after_validation_failure"
+      ]
+    }
+  ],
+  "quality_batch_validation": {
+    "purpose": "bounded_quality_repetition_not_full_all_source_one_shot",
+    "mode": "live",
+    "db_admin_submit_allowed": false,
+    "input_count": 2,
+    "selected_count": 2,
+    "retained_count": 2,
+    "invalid_row_count": 0,
+    "input_retention_valid": true,
+    "retention_anomaly_count": 0,
+    "input_anomaly_buckets": {},
+    "per_row_input_anomalies": [],
+    "max_items": 2,
+    "ai_batch_size": 20,
+    "ai_batch_prompt_chars": 8000,
+    "split_batch_count": 1,
+    "max_provider_calls": 1,
+    "provider": {
+      "called": true,
+      "mode": "live",
+      "provider_id": "google-gemini31-live-matrix",
+      "model": "gemini-3.1-flash-lite-preview",
+      "ai_batches": 1,
+      "call_attempts": 1,
+      "http_label_calls": 1,
+      "chunk_count": 1,
+      "successful_chunk_count": 1,
+      "failed_chunk_count": 0,
+      "partial_results": false,
+      "proposals_stored": 37,
+      "keyword_proposals_stored": 4
+    },
+    "label_chunks": [
+      {
+        "chunk_index": 1,
+        "status": "success",
+        "record_count": 2,
+        "raw_record_ids": [
+          "marketplace-fixture:fixture-market-tangerine-3kg",
+          "marketplace-fixture:fixture-market-oatmeal-1kg"
+        ],
+        "raw_batch_id": "raw-20260507141851-cd6f5db4",
+        "provider_calls": 1,
+        "ai_batches": 1,
+        "missing_label_count": 0,
+        "missing_label_raw_record_ids": [],
+        "provider_response_validation": {
+          "invalid_response_row_count": 0,
+          "invalid_response_rows": [],
+          "index_mapping_count": 0,
+          "index_mappings": [],
+          "batch_summaries": [
+            {
+              "item_count": 2,
+              "request_record_count": 2,
+              "valid_response_row_count": 2,
+              "invalid_response_row_count": 0,
+              "invalid_response_rows": [],
+              "index_mapping_count": 0,
+              "index_mappings": [],
+              "missing_label_count": 0,
+              "reason": null,
+              "ai_batch_id": "raw-20260507141851-cd6f5db4:ai:1"
+            }
+          ],
+          "reason": null
+        }
+      }
+    ],
+    "retryable_provider_failures": [],
+    "missing_label_retry": {
+      "status": "labeled",
+      "partial_review_required": false,
+      "missing_label_count": 0,
+      "missing_label_raw_record_ids": [],
+      "retry_batches_configured": 2
+    },
+    "reviewer_retry_candidates": {
+      "purpose": "one_more_targeted_reviewer_retry_before_human_admin",
+      "source": "deterministic_quality_batch_validation_no_live_reviewer_ai",
+      "candidate_count": 1,
+      "group_count": 1,
+      "groups": [
+        {
+          "missing_field": "category",
+          "prompt_category": "taxonomy_classification_retry",
+          "row_count": 1,
+          "raw_record_ids": [
+            "marketplace-fixture:fixture-market-oatmeal-1kg"
+          ],
+          "items": [
+            {
+              "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+              "raw_title": "퀵오트 오트밀 1kg",
+              "publication_kind": "price_observation",
+              "reasons": [
+                "unknown_taxonomy_category",
+                "data_quality: unknown_taxonomy_category",
+                "missing_final_category_id"
+              ],
+              "recommended_retry_prompt_category": "taxonomy_classification_retry"
+            }
+          ]
+        }
+      ],
+      "human_admin_fallback": "Rows still failing after the future reviewer retry remain in DB-admin/manual review; eligible rows can continue through publish gates."
+    },
+    "anomaly_counts": {
+      "category": 1,
+      "keyword": 0,
+      "unit": 0,
+      "price": 0,
+      "image": 0
+    },
+    "rows_with_any_anomaly": 1,
+    "per_row_anomalies": [
+      {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "raw_title": "제주 감귤 선물세트 3kg",
+        "publication_kind": "price_observation",
+        "category": [],
+        "keyword": [],
+        "unit": [],
+        "price": [],
+        "image": [],
+        "blockers": [
+          "pending_review: critical AI proposals must be human approved",
+          "approved: at least one human-approved proposal is required"
+        ],
+        "audit_issue_codes": [],
+        "has_any_anomaly": false
+      },
+      {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "raw_title": "퀵오트 오트밀 1kg",
+        "publication_kind": "price_observation",
+        "category": [
+          "unknown_taxonomy_category",
+          "data_quality: unknown_taxonomy_category",
+          "missing_final_category_id"
+        ],
+        "keyword": [],
+        "unit": [],
+        "price": [],
+        "image": [],
+        "blockers": [
+          "pending_review: critical AI proposals must be human approved",
+          "approved: at least one human-approved proposal is required",
+          "data_quality: unknown_taxonomy_category",
+          "data_quality: inflated_confidence_after_validation_failure"
+        ],
+        "audit_issue_codes": [
+          "inflated_confidence_after_validation_failure",
+          "unknown_taxonomy_category"
+        ],
+        "has_any_anomaly": true
+      }
+    ],
+    "honesty_notes": [
+      "This validates only the bounded selected rows, not a full all-source one-shot build.",
+      "DB-admin mutation is disabled unless --allow-db-admin-submit is explicit."
+    ]
+  },
+  "holdout_generalization": {
+    "evidence": [
+      {
+        "raw_record_id": "marketplace-fixture:fixture-market-tangerine-3kg",
+        "raw_title": "제주 감귤 선물세트 3kg",
+        "evidence_class": "deterministic_raw",
+        "trust_label": "deterministic_structured",
+        "reason": "raw item contains deterministic structured signals",
+        "counts_as_generalization": false
+      },
+      {
+        "raw_record_id": "marketplace-fixture:fixture-market-oatmeal-1kg",
+        "raw_title": "퀵오트 오트밀 1kg",
+        "evidence_class": "deterministic_raw",
+        "trust_label": "deterministic_structured",
+        "reason": "raw item contains deterministic structured signals",
+        "counts_as_generalization": false
+      }
+    ],
+    "counts": {
+      "deterministic_raw": 2
+    },
+    "generalization_success_count": 0,
+    "rule": "exact_catalog and learned_alias are reuse, never generalization success",
+    "todo_hooks": [
+      "Load production catalog/learned exports via --catalog-json and --learned-json."
+    ]
+  },
+  "risks": [
+    "Live crawl/provider/DB-admin paths are operator-gated but can touch external systems when explicitly enabled.",
+    "Dry-run artifacts use no provider output; customer-safety verdicts remain blockers until human/provider proposals exist."
+  ],
+  "artifact_path": "E:\\pdf\\capston01\\walletSavior\\.walletsavior-live-validation\\live-model-batch\\live-validation-v2-20260507-141851-3b7d4663.json"
+}

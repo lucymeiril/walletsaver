@@ -1,0 +1,388 @@
+{
+  "schema": "walletsavior.artifact_db_adversarial_compare.v1",
+  "created_at": "2026-05-16T18:39:56.501048",
+  "summary": {
+    "compared": [
+      "raw_title",
+      "current_price",
+      "original_price",
+      "discount_percent",
+      "source_url",
+      "detail_url",
+      "image_url",
+      "unit",
+      "package_quantity",
+      "package_unit",
+      "bundle_count",
+      "price_per_100g",
+      "standard_unit_price",
+      "category",
+      "source",
+      "product_count",
+      "history_count",
+      "duplicate_keys",
+      "missing_rows",
+      "suspicious_changed_fields"
+    ],
+    "result": "2 matched, 0 missing, 4 changed, 0 duplicate key groups, 0 suspicious field changes"
+  },
+  "selection": {
+    "mode": "latest_live_db_submit_safe_row_scale",
+    "proof_json": "E:\\pdf\\capston01\\.walletsavior-live-validation\\post-live-local-db-one-shot\\local-db-submit-safe-row-scale-20260516-183834-f961a0f0.json",
+    "sqlite_db": "E:\\pdf\\capston01\\.walletsavior-live-validation\\post-live-local-db-one-shot\\local-db-submit-safe-row-scale-20260516-183834-f961a0f0.sqlite",
+    "source_input_json": "E:\\pdf\\capston01\\.walletsavior-live-validation\\live-model-batch\\live-validation-v2-20260516-183608-ba456613.json",
+    "reason": "no newer local DB one-shot artifact was present during comparison"
+  },
+  "db_counts": {
+    "proof_product_rows": 2,
+    "proof_discount_history_rows": 2,
+    "sqlite": {
+      "products": 2,
+      "discount_history": 2,
+      "normalized_source_listings": 2,
+      "normalized_offer_events": 2
+    }
+  },
+  "aggregate_counts": {
+    "matched_rows": 2,
+    "missing_rows": 0,
+    "changed_rows": 4,
+    "duplicate_key_groups": 0,
+    "suspicious_fields": 0,
+    "source_rows": 2,
+    "proof_public_rows": 2,
+    "sqlite_projection_rows": 2
+  },
+  "comparisons": {
+    "source_vs_public_verification": {
+      "counts": {
+        "source_rows": 2,
+        "target_rows": 2,
+        "matched_rows": 2,
+        "missing_rows": 0,
+        "extra_target_rows": 0,
+        "changed_rows": 2,
+        "duplicate_key_groups": 0,
+        "suspicious_fields": 0
+      },
+      "matched": [
+        {
+          "match_key": "emart-fixture:fixture-kimbap-kit",
+          "target_row_kind": "proof_public_verification",
+          "diffs": [
+            {
+              "field": "unit",
+              "source": null,
+              "target": "157g"
+            },
+            {
+              "field": "package_quantity",
+              "source": null,
+              "target": 157.0
+            },
+            {
+              "field": "package_unit",
+              "source": null,
+              "target": "g"
+            },
+            {
+              "field": "price_per_100g",
+              "source": null,
+              "target": 4445.86
+            },
+            {
+              "field": "standard_unit_price",
+              "source": null,
+              "target": 44458.6
+            },
+            {
+              "field": "category",
+              "source": null,
+              "target": "prepared_food.meal_kit"
+            }
+          ]
+        },
+        {
+          "match_key": "emart-fixture:fixture-shrimp",
+          "target_row_kind": "proof_public_verification",
+          "diffs": [
+            {
+              "field": "unit",
+              "source": null,
+              "target": "300g"
+            },
+            {
+              "field": "package_quantity",
+              "source": null,
+              "target": 300.0
+            },
+            {
+              "field": "package_unit",
+              "source": null,
+              "target": "g"
+            },
+            {
+              "field": "price_per_100g",
+              "source": null,
+              "target": 2660.0
+            },
+            {
+              "field": "standard_unit_price",
+              "source": null,
+              "target": 26600.0
+            },
+            {
+              "field": "category",
+              "source": null,
+              "target": "seafood.frozen"
+            }
+          ]
+        }
+      ],
+      "missing_source_rows": [],
+      "extra_target_rows": [],
+      "changed_rows": [
+        {
+          "match_key": "emart-fixture:fixture-kimbap-kit",
+          "target_row_kind": "proof_public_verification",
+          "diffs": [
+            {
+              "field": "unit",
+              "source": null,
+              "target": "157g"
+            },
+            {
+              "field": "package_quantity",
+              "source": null,
+              "target": 157.0
+            },
+            {
+              "field": "package_unit",
+              "source": null,
+              "target": "g"
+            },
+            {
+              "field": "price_per_100g",
+              "source": null,
+              "target": 4445.86
+            },
+            {
+              "field": "standard_unit_price",
+              "source": null,
+              "target": 44458.6
+            },
+            {
+              "field": "category",
+              "source": null,
+              "target": "prepared_food.meal_kit"
+            }
+          ]
+        },
+        {
+          "match_key": "emart-fixture:fixture-shrimp",
+          "target_row_kind": "proof_public_verification",
+          "diffs": [
+            {
+              "field": "unit",
+              "source": null,
+              "target": "300g"
+            },
+            {
+              "field": "package_quantity",
+              "source": null,
+              "target": 300.0
+            },
+            {
+              "field": "package_unit",
+              "source": null,
+              "target": "g"
+            },
+            {
+              "field": "price_per_100g",
+              "source": null,
+              "target": 2660.0
+            },
+            {
+              "field": "standard_unit_price",
+              "source": null,
+              "target": 26600.0
+            },
+            {
+              "field": "category",
+              "source": null,
+              "target": "seafood.frozen"
+            }
+          ]
+        }
+      ],
+      "duplicate_keys": [],
+      "suspicious_changed_fields": []
+    },
+    "source_vs_local_sqlite_projection": {
+      "counts": {
+        "source_rows": 2,
+        "target_rows": 2,
+        "matched_rows": 2,
+        "missing_rows": 0,
+        "extra_target_rows": 0,
+        "changed_rows": 2,
+        "duplicate_key_groups": 0,
+        "suspicious_fields": 0
+      },
+      "matched": [
+        {
+          "match_key": "emart-fixture:fixture-kimbap-kit",
+          "target_row_kind": "sqlite_normalized_projection",
+          "diffs": [
+            {
+              "field": "unit",
+              "source": null,
+              "target": "157g"
+            },
+            {
+              "field": "package_quantity",
+              "source": null,
+              "target": 157.0
+            },
+            {
+              "field": "package_unit",
+              "source": null,
+              "target": "g"
+            },
+            {
+              "field": "price_per_100g",
+              "source": null,
+              "target": 4445.86
+            },
+            {
+              "field": "standard_unit_price",
+              "source": null,
+              "target": 44458.6
+            },
+            {
+              "field": "category",
+              "source": null,
+              "target": "prepared_food.meal_kit"
+            }
+          ]
+        },
+        {
+          "match_key": "emart-fixture:fixture-shrimp",
+          "target_row_kind": "sqlite_normalized_projection",
+          "diffs": [
+            {
+              "field": "unit",
+              "source": null,
+              "target": "300g"
+            },
+            {
+              "field": "package_quantity",
+              "source": null,
+              "target": 300.0
+            },
+            {
+              "field": "package_unit",
+              "source": null,
+              "target": "g"
+            },
+            {
+              "field": "price_per_100g",
+              "source": null,
+              "target": 2660.0
+            },
+            {
+              "field": "standard_unit_price",
+              "source": null,
+              "target": 26600.0
+            },
+            {
+              "field": "category",
+              "source": null,
+              "target": "seafood.frozen"
+            }
+          ]
+        }
+      ],
+      "missing_source_rows": [],
+      "extra_target_rows": [],
+      "changed_rows": [
+        {
+          "match_key": "emart-fixture:fixture-kimbap-kit",
+          "target_row_kind": "sqlite_normalized_projection",
+          "diffs": [
+            {
+              "field": "unit",
+              "source": null,
+              "target": "157g"
+            },
+            {
+              "field": "package_quantity",
+              "source": null,
+              "target": 157.0
+            },
+            {
+              "field": "package_unit",
+              "source": null,
+              "target": "g"
+            },
+            {
+              "field": "price_per_100g",
+              "source": null,
+              "target": 4445.86
+            },
+            {
+              "field": "standard_unit_price",
+              "source": null,
+              "target": 44458.6
+            },
+            {
+              "field": "category",
+              "source": null,
+              "target": "prepared_food.meal_kit"
+            }
+          ]
+        },
+        {
+          "match_key": "emart-fixture:fixture-shrimp",
+          "target_row_kind": "sqlite_normalized_projection",
+          "diffs": [
+            {
+              "field": "unit",
+              "source": null,
+              "target": "300g"
+            },
+            {
+              "field": "package_quantity",
+              "source": null,
+              "target": 300.0
+            },
+            {
+              "field": "package_unit",
+              "source": null,
+              "target": "g"
+            },
+            {
+              "field": "price_per_100g",
+              "source": null,
+              "target": 2660.0
+            },
+            {
+              "field": "standard_unit_price",
+              "source": null,
+              "target": 26600.0
+            },
+            {
+              "field": "category",
+              "source": null,
+              "target": "seafood.frozen"
+            }
+          ]
+        }
+      ],
+      "duplicate_keys": [],
+      "suspicious_changed_fields": []
+    }
+  },
+  "blockers": [],
+  "artifact_path": ".walletsavior-live-validation\\artifact-db-adversarial-compare\\artifact-db-adversarial-compare-20260516-183956-85528f08.json"
+}

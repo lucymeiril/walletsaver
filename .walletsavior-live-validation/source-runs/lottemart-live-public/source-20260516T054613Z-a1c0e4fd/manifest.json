@@ -1,0 +1,58 @@
+{
+  "run_id": "source-20260516T054613Z-a1c0e4fd",
+  "source_name": "lottemart-live-public",
+  "crawler_name": "lottemart",
+  "status": "success",
+  "since": null,
+  "completed_at": "2026-05-16T05:46:14.568906+00:00",
+  "counts": {
+    "source_raw": 50,
+    "parsed": 50,
+    "parsed_valid": 50,
+    "parsed_unique": 50,
+    "unique": 50,
+    "found": 50,
+    "new": 50,
+    "changed": 0,
+    "skipped_unchanged": 0,
+    "records_handed_off": 50,
+    "skipped_invalid": 0
+  },
+  "source_url": "https://lottemartzetta.com/search?query=%EC%83%9D%EC%88%98",
+  "source_input": {
+    "provided": false
+  },
+  "collection_mode": "bounded_live_http_no_db",
+  "live_network_enabled": true,
+  "collection": {
+    "mode": "bounded_live_http_no_db",
+    "live_network_enabled": true,
+    "source_url": "https://lottemartzetta.com/search?query=%EC%83%9D%EC%88%98",
+    "auth_bypass_attempted": false,
+    "max_requests": 1
+  },
+  "fetch": {
+    "strategy_used": "requests",
+    "fallback_used": false,
+    "queries_attempted": 1,
+    "pages_attempted": 1,
+    "live_enabled": true,
+    "fixture_available": null,
+    "renderer": "requests",
+    "browser_pages": [],
+    "challenge_solving_attempted": false,
+    "auth_bypass_attempted": false
+  },
+  "artifacts": {
+    "manifest": "E:\\pdf\\capston01\\.walletsavior-live-validation\\source-runs\\lottemart-live-public\\source-20260516T054613Z-a1c0e4fd\\manifest.json",
+    "raw_records_jsonl": "E:\\pdf\\capston01\\.walletsavior-live-validation\\source-runs\\lottemart-live-public\\source-20260516T054613Z-a1c0e4fd\\raw_records.jsonl",
+    "ai_handoff": "E:\\pdf\\capston01\\.walletsavior-live-validation\\source-runs\\lottemart-live-public\\source-20260516T054613Z-a1c0e4fd\\ai_handoff.json"
+  },
+  "retry_attempts": [
+    {
+      "attempt": 1,
+      "status": "success"
+    }
+  ],
+  "dead_letter_path": null
+}

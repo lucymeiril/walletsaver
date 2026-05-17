@@ -43,6 +43,7 @@ def create_app() -> FastAPI:
     from api.routes.prompts import router as prompts_router
     from api.routes.review import router as review_router
     from api.routes.workers import router as workers_router
+    from api.routes.match_monitor import router as match_monitor_router
 
     app.include_router(capabilities_router)
     app.include_router(providers_router)
@@ -51,6 +52,7 @@ def create_app() -> FastAPI:
     app.include_router(prompts_router)
     app.include_router(review_router)
     app.include_router(workers_router)
+    app.include_router(match_monitor_router)
 
     @app.get("/health")
     async def health():

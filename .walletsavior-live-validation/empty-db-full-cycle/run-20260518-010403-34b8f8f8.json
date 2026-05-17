@@ -1,0 +1,27 @@
+{
+  "run_id": "34b8f8f8",
+  "timestamp": "20260518-010403",
+  "slice": "rd-empty-db-full-cycle",
+  "total_records": 12,
+  "sources": [
+    "costco",
+    "emart",
+    "homeplus",
+    "lottemart"
+  ],
+  "cycle1": {
+    "product_match_hits": 0,
+    "provider_calls": 3,
+    "proposals_stored": 126,
+    "status": "labeled"
+  },
+  "product_match_registered": 12,
+  "cycle2": {
+    "product_match_hits": 12,
+    "auto_match_rate": 1.0,
+    "provider_calls": 0,
+    "proposals_stored": 139,
+    "status": "labeled"
+  },
+  "gate_passed": true
+}

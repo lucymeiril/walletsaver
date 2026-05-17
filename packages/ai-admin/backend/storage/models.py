@@ -314,3 +314,25 @@ class LearnedKnowledge(Base):
     )
     applied_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     success_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
+
+class LabelingRunLog(Base):
+    """Per-labeling-run statistics for the match monitor dashboard."""
+
+    __tablename__ = "labeling_run_logs"
+
+    run_id: Mapped[str] = mapped_column(String(120), primary_key=True)
+    run_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.now)
+    mode: Mapped[str] = mapped_column(String(40), nullable=False, default="dry_run")
+    ai_provider_kind: Mapped[str] = mapped_column(String(40), nullable=False, default="mock")
+    total_input: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    queue_initial: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    ai_called: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    ai_resolved: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    ai_escalated: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    gate_passed: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    gate_escalated: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    canonical_created: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    product_match_total_snapshot: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    learned_knowledge_total_snapshot: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    by_mart: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)

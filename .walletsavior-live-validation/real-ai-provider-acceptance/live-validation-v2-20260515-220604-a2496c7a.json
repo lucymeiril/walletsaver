@@ -1,0 +1,4191 @@
+{
+  "run_id": "live-validation-v2-20260515-220604-a2496c7a",
+  "created_at": "2026-05-15T22:06:12.603821",
+  "command_shape": "py tools\\live_validation_harness_v2.py [--input-json data.json | --allow-live-crawl --live-crawler emart] [--allow-live-provider --provider-id google-dev] [--allow-db-admin-submit]",
+  "validation_run": {
+    "mode": "live",
+    "provider": "google-gemini31-live-matrix",
+    "model": "gemini-3.1-flash-lite-preview",
+    "key_present": true,
+    "live_opt_in": true,
+    "live_call_attempted": true,
+    "live_call_succeeded": true,
+    "skip_reason": null,
+    "error": null,
+    "started_at": "2026-05-15T13:06:04Z",
+    "finished_at": "2026-05-15T13:06:12Z",
+    "item_counts": {
+      "input_items": 2,
+      "selected_items": 2,
+      "retained_items": 2,
+      "records": 2,
+      "skipped": 0,
+      "invalid_rows": 0,
+      "retention_anomalies": 0,
+      "input_retention_valid": true,
+      "split_batches": 1,
+      "proposals": 40,
+      "publish_eligibility_items": 2,
+      "provider_calls": 1,
+      "provider_call_attempts": 1,
+      "partial_review_required": false,
+      "missing_label_count": 0
+    }
+  },
+  "decisions": {
+    "manual_only": true,
+    "dry_run_no_provider": false,
+    "live_crawl_allowed": false,
+    "live_provider_allowed": true,
+    "db_admin_submit_allowed": false,
+    "provider_secret_handling": "harness passes provider_id only; ai-admin resolves provider secret_alias via existing resolver",
+    "provider_key_alias_checked": true,
+    "bounds": {
+      "max_items": 2,
+      "retain_all_input": false,
+      "allow_large_live_batch": false,
+      "max_live_items_cap": 300,
+      "hard_max_live_items_cap": 500,
+      "max_pages": 1,
+      "max_crawler_requests": 1,
+      "max_provider_calls": 1,
+      "ai_batch_size": 20,
+      "ai_batch_prompt_chars": 8000,
+      "label_timeout_seconds": 240.0,
+      "label_timeout_seconds_requested": 240.0,
+      "label_timeout_seconds_cap": 900.0,
+      "label_chunk_retries": 1,
+      "label_call_min_interval_seconds": 12.0,
+      "label_call_min_interval_seconds_requested": 12.0
+    }
+  },
+  "source": {
+    "selected_item_count": 2,
+    "records_count": 2,
+    "skipped_count": 0,
+    "invalid_rows": [],
+    "retention_anomalies": [],
+    "input_artifact_sources": [],
+    "live_crawl": null,
+    "alerts": [],
+    "diagnostics": []
+  },
+  "raw_selected_items": [
+    {
+      "product_id": "fixture-kimbap-kit",
+      "name": "한돈으로 만든 햄꼬마김밥키트157g",
+      "sale_price": "6,980원",
+      "original_price": "8,980원",
+      "discount_percent": 22,
+      "detail_url": "https://example.invalid/emart/kimbap-kit",
+      "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+      "source": "emart-fixture",
+      "category_hint": "밀키트/델리",
+      "attributes": {
+        "collection": "manual-live-validation-v2"
+      },
+      "expected_ai": {
+        "canonical_name": "햄꼬마김밥키트 157g",
+        "category_id": "prepared_food.meal_kit.kimbap",
+        "keywords": [
+          "꼬마김밥키트"
+        ],
+        "attributes": {
+          "collection": "manual-live-validation-v2"
+        }
+      },
+      "holdout_expected_class": "new_unknown"
+    },
+    {
+      "product_id": "fixture-shrimp",
+      "name": "베트남산 냉동 새우살 300g",
+      "sale_price": "7,980원",
+      "original_price": "9,980원",
+      "discount_percent": 20,
+      "detail_url": "https://example.invalid/emart/shrimp",
+      "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+      "source": "emart-fixture",
+      "category_hint": "수산/냉동",
+      "origin": "베트남",
+      "storage_type": "냉동",
+      "expected_ai": {
+        "category_id": "seafood.frozen",
+        "keywords": [
+          "새우"
+        ],
+        "attributes": {
+          "origin": "베트남",
+          "storage_type": "냉동"
+        }
+      },
+      "holdout_expected_class": "deterministic_raw"
+    }
+  ],
+  "raw_records": [
+    {
+      "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+      "source_name": "emart-fixture",
+      "source_record_key": "fixture-kimbap-kit",
+      "source_url": "https://example.invalid/emart/kimbap-kit",
+      "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+      "raw_price": 6980,
+      "raw_payload": {
+        "product_id": "fixture-kimbap-kit",
+        "name": "한돈으로 만든 햄꼬마김밥키트157g",
+        "sale_price": "6,980원",
+        "original_price": "8,980원",
+        "discount_percent": 22,
+        "detail_url": "https://example.invalid/emart/kimbap-kit",
+        "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+        "source": "emart-fixture",
+        "category_hint": "밀키트/델리",
+        "attributes": {
+          "collection": "manual-live-validation-v2"
+        },
+        "expected_ai": {
+          "canonical_name": "햄꼬마김밥키트 157g",
+          "category_id": "prepared_food.meal_kit.kimbap",
+          "keywords": [
+            "꼬마김밥키트"
+          ],
+          "attributes": {
+            "collection": "manual-live-validation-v2"
+          }
+        },
+        "holdout_expected_class": "new_unknown"
+      },
+      "crawled_at": "2026-05-15T22:06:04.472683"
+    },
+    {
+      "raw_record_id": "emart-fixture:fixture-shrimp",
+      "source_name": "emart-fixture",
+      "source_record_key": "fixture-shrimp",
+      "source_url": "https://example.invalid/emart/shrimp",
+      "raw_title": "베트남산 냉동 새우살 300g",
+      "raw_price": 7980,
+      "raw_payload": {
+        "product_id": "fixture-shrimp",
+        "name": "베트남산 냉동 새우살 300g",
+        "sale_price": "7,980원",
+        "original_price": "9,980원",
+        "discount_percent": 20,
+        "detail_url": "https://example.invalid/emart/shrimp",
+        "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+        "source": "emart-fixture",
+        "category_hint": "수산/냉동",
+        "origin": "베트남",
+        "storage_type": "냉동",
+        "expected_ai": {
+          "category_id": "seafood.frozen",
+          "keywords": [
+            "새우"
+          ],
+          "attributes": {
+            "origin": "베트남",
+            "storage_type": "냉동"
+          }
+        },
+        "holdout_expected_class": "deterministic_raw"
+      },
+      "crawled_at": "2026-05-15T22:06:04.472782"
+    }
+  ],
+  "prompt_budget": [
+    {
+      "batch_index": 1,
+      "record_count": 2,
+      "raw_record_ids": [
+        "emart-fixture:fixture-kimbap-kit",
+        "emart-fixture:fixture-shrimp"
+      ],
+      "prompt_chars": 1823,
+      "max_prompt_chars": 8000,
+      "within_budget": true
+    }
+  ],
+  "provider_response_summary": {
+    "called": true,
+    "provider_mode": "live",
+    "provider_id": "google-gemini31-live-matrix",
+    "model": "gemini-3.1-flash-lite-preview",
+    "raw_batch_id": "raw-20260515220604-793f03a1",
+    "raw_batch_ids": [
+      "raw-20260515220604-793f03a1"
+    ],
+    "provider_calls": 1,
+    "max_provider_calls": 1,
+    "provider_call_bound_exhausted": false,
+    "provider_call_bound_exhaustion": null,
+    "ai_batches": 1,
+    "http_label_calls": 1,
+    "chunks": [
+      {
+        "chunk_index": 1,
+        "status": "success",
+        "record_count": 2,
+        "raw_record_ids": [
+          "emart-fixture:fixture-kimbap-kit",
+          "emart-fixture:fixture-shrimp"
+        ],
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "success",
+            "slept_seconds": 0.0
+          }
+        ],
+        "raw_batch_id": "raw-20260515220604-793f03a1",
+        "provider_calls": 1,
+        "ai_batches": 1,
+        "missing_label_count": 0,
+        "missing_label_raw_record_ids": [],
+        "provider_response_validation": {
+          "invalid_response_row_count": 0,
+          "invalid_response_rows": [],
+          "index_mapping_count": 0,
+          "index_mappings": [],
+          "batch_summaries": [
+            {
+              "item_count": 2,
+              "request_record_count": 2,
+              "valid_response_row_count": 2,
+              "invalid_response_row_count": 0,
+              "invalid_response_rows": [],
+              "index_mapping_count": 0,
+              "index_mappings": [],
+              "missing_label_count": 0,
+              "reason": null,
+              "ai_batch_id": "raw-20260515220604-793f03a1:ai:1"
+            }
+          ],
+          "reason": null
+        }
+      }
+    ],
+    "chunk_count": 1,
+    "successful_chunk_count": 1,
+    "failed_chunk_count": 0,
+    "retryable_failure_count": 0,
+    "retryable_failures": [],
+    "label_chunk_retries": 1,
+    "label_call_min_interval_seconds": 12.0,
+    "partial_results": false,
+    "status": "labeled",
+    "partial_review_required": false,
+    "missing_label_count": 0,
+    "missing_label_raw_record_ids": [],
+    "provider_response_validation": {
+      "invalid_response_row_count": 0,
+      "index_mapping_count": 0,
+      "batch_summaries": [
+        {
+          "invalid_response_row_count": 0,
+          "invalid_response_rows": [],
+          "index_mapping_count": 0,
+          "index_mappings": [],
+          "batch_summaries": [
+            {
+              "item_count": 2,
+              "request_record_count": 2,
+              "valid_response_row_count": 2,
+              "invalid_response_row_count": 0,
+              "invalid_response_rows": [],
+              "index_mapping_count": 0,
+              "index_mappings": [],
+              "missing_label_count": 0,
+              "reason": null,
+              "ai_batch_id": "raw-20260515220604-793f03a1:ai:1"
+            }
+          ],
+          "reason": null
+        }
+      ],
+      "reason": null
+    },
+    "proposals_stored": 40,
+    "keyword_proposals_stored": 1
+  },
+  "label_timeout_seconds": 240.0,
+  "proposals": [
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:canonical_name:canonical_name",
+      "proposal_type": "normalized_field",
+      "target_field": "canonical_name",
+      "proposed_value": "밀키트",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557500"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_title:source_title",
+      "proposal_type": "normalized_field",
+      "target_field": "source_title",
+      "proposed_value": "한돈으로 만든 햄꼬마김밥키트157g",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557512"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:category_id:category_id",
+      "proposal_type": "category",
+      "target_field": "category_id",
+      "proposed_value": "prepared_food.meal_kit",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "classifier",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557519"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:sale_price:sale_price",
+      "proposal_type": "normalized_field",
+      "target_field": "sale_price",
+      "proposed_value": 6980,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557525"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:original_price:original_price",
+      "proposal_type": "normalized_field",
+      "target_field": "original_price",
+      "proposed_value": 8980,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557532"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:discount_percent:discount_percent",
+      "proposal_type": "normalized_field",
+      "target_field": "discount_percent",
+      "proposed_value": 22,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557539"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_url:source_url",
+      "proposal_type": "normalized_field",
+      "target_field": "source_url",
+      "proposed_value": "https://example.invalid/emart/kimbap-kit",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557545"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:image_url:image_url",
+      "proposal_type": "normalized_field",
+      "target_field": "image_url",
+      "proposed_value": "https://example.invalid/emart/images/kimbap-kit.jpg",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557552"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_quantity:package_quantity",
+      "proposal_type": "normalized_field",
+      "target_field": "package_quantity",
+      "proposed_value": 157,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557559"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_unit:package_unit",
+      "proposal_type": "normalized_field",
+      "target_field": "package_unit",
+      "proposed_value": "g",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557566"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:display_unit:display_unit",
+      "proposal_type": "normalized_field",
+      "target_field": "display_unit",
+      "proposed_value": "157g",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557572"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:bundle_count:bundle_count",
+      "proposal_type": "normalized_field",
+      "target_field": "bundle_count",
+      "proposed_value": 1,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557578"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit:standard_unit",
+      "proposal_type": "normalized_field",
+      "target_field": "standard_unit",
+      "proposed_value": "kg",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557584"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit_price:standard_unit_price",
+      "proposal_type": "normalized_field",
+      "target_field": "standard_unit_price",
+      "proposed_value": 44458.6,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557590"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:price_per_100g:price_per_100g",
+      "proposal_type": "normalized_field",
+      "target_field": "price_per_100g",
+      "proposed_value": 4445.86,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557596"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:attributes.origin:attr:origin",
+      "proposal_type": "attribute_value",
+      "target_field": "attributes.origin",
+      "proposed_value": "한돈",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "classifier",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557606"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-kimbap-kit:keywords:kw:0",
+      "proposal_type": "keyword",
+      "target_field": "keywords",
+      "proposed_value": "밀키트",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_field": "raw_title",
+        "evidence_text": "한돈으로 만든 햄꼬마김밥키트157g",
+        "worker_role": "keyword_generator",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [
+        {
+          "word": "밀키트",
+          "keyword_id": "[REDACTED_ALIAS_VALUE]",
+          "matched_term": "밀키트",
+          "category_id": "processed.instant.meal_kit",
+          "evidence_class": "exact_catalog",
+          "trust_label": "reuse_exact_catalog"
+        }
+      ],
+      "created_at": "2026-05-15T22:06:07.557620"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:canonical_name:canonical_name",
+      "proposal_type": "normalized_field",
+      "target_field": "canonical_name",
+      "proposed_value": "새우",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557720"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_title:source_title",
+      "proposal_type": "normalized_field",
+      "target_field": "source_title",
+      "proposed_value": "베트남산 냉동 새우살 300g",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557727"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:category_id:category_id",
+      "proposal_type": "category",
+      "target_field": "category_id",
+      "proposed_value": "seafood.crustacean.shrimp",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "classifier",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557734"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:sale_price:sale_price",
+      "proposal_type": "normalized_field",
+      "target_field": "sale_price",
+      "proposed_value": 7980,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557740"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:original_price:original_price",
+      "proposal_type": "normalized_field",
+      "target_field": "original_price",
+      "proposed_value": 9980,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557746"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:discount_percent:discount_percent",
+      "proposal_type": "normalized_field",
+      "target_field": "discount_percent",
+      "proposed_value": 20,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557752"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_url:source_url",
+      "proposal_type": "normalized_field",
+      "target_field": "source_url",
+      "proposed_value": "https://example.invalid/emart/shrimp",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557759"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:image_url:image_url",
+      "proposal_type": "normalized_field",
+      "target_field": "image_url",
+      "proposed_value": "https://example.invalid/emart/images/shrimp.jpg",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "normalizer",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557765"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_quantity:package_quantity",
+      "proposal_type": "normalized_field",
+      "target_field": "package_quantity",
+      "proposed_value": 300,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557771"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_unit:package_unit",
+      "proposal_type": "normalized_field",
+      "target_field": "package_unit",
+      "proposed_value": "g",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557777"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:display_unit:display_unit",
+      "proposal_type": "normalized_field",
+      "target_field": "display_unit",
+      "proposed_value": "300g",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557783"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:bundle_count:bundle_count",
+      "proposal_type": "normalized_field",
+      "target_field": "bundle_count",
+      "proposed_value": 1,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557790"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit:standard_unit",
+      "proposal_type": "normalized_field",
+      "target_field": "standard_unit",
+      "proposed_value": "kg",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557796"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit_price:standard_unit_price",
+      "proposal_type": "normalized_field",
+      "target_field": "standard_unit_price",
+      "proposed_value": 26600,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557802"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:price_per_100g:price_per_100g",
+      "proposal_type": "normalized_field",
+      "target_field": "price_per_100g",
+      "proposed_value": 2660,
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "unit_converter",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557808"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut:attr:cut",
+      "proposal_type": "attribute_value",
+      "target_field": "attributes.cut",
+      "proposed_value": "shrimp_meat",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "classifier",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557817"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut_label:attr:cut_label",
+      "proposal_type": "attribute_value",
+      "target_field": "attributes.cut_label",
+      "proposed_value": "새우살",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "classifier",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557825"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin:attr:origin",
+      "proposal_type": "attribute_value",
+      "target_field": "attributes.origin",
+      "proposed_value": "vietnam",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "classifier",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557832"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin_label:attr:origin_label",
+      "proposal_type": "attribute_value",
+      "target_field": "attributes.origin_label",
+      "proposed_value": "베트남산",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "classifier",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557840"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage:attr:storage",
+      "proposal_type": "attribute_value",
+      "target_field": "attributes.storage",
+      "proposed_value": "냉동",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "classifier",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557847"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_label:attr:storage_label",
+      "proposal_type": "attribute_value",
+      "target_field": "attributes.storage_label",
+      "proposed_value": "냉동",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "classifier",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557854"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_type:attr:storage_type",
+      "proposal_type": "attribute_value",
+      "target_field": "attributes.storage_type",
+      "proposed_value": "frozen",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "classifier",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [],
+      "created_at": "2026-05-15T22:06:07.557861"
+    },
+    {
+      "proposal_id": "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-shrimp:keywords:kw:0",
+      "proposal_type": "keyword",
+      "target_field": "keywords",
+      "proposed_value": "새우",
+      "status": "ai_proposed",
+      "provenance": {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_field": "raw_title",
+        "evidence_text": "베트남산 냉동 새우살 300g",
+        "worker_role": "keyword_generator",
+        "provider": {
+          "provider_kind": "gemini",
+          "provider_name": "google-gemini31-live-matrix",
+          "model_name": "gemini-3.1-flash-lite-preview",
+          "secret_alias": "GOOGLE_API_KEY"
+        },
+        "prompt_pack": null,
+        "confidence": 1.0,
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+      "alternatives": [
+        {
+          "word": "새우",
+          "keyword_id": "[REDACTED_ALIAS_VALUE]",
+          "matched_term": "새우",
+          "category_id": "seafood.crustacean.shrimp",
+          "evidence_class": "exact_catalog",
+          "trust_label": "reuse_exact_catalog"
+        }
+      ],
+      "created_at": "2026-05-15T22:06:07.557872"
+    }
+  ],
+  "audit_issues": {
+    "issues": [
+      {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_name": "emart-fixture",
+        "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+        "code": "mismatched_canonical_name",
+        "message": "expected canonical_name was not proposed",
+        "expected": "햄꼬마김밥키트 157g",
+        "actual": [
+          "밀키트"
+        ]
+      },
+      {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_name": "emart-fixture",
+        "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+        "code": "mismatched_category_id",
+        "message": "expected category_id was not proposed",
+        "expected": "prepared_food.meal_kit.kimbap",
+        "actual": [
+          "prepared_food.meal_kit"
+        ]
+      },
+      {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_name": "emart-fixture",
+        "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+        "code": "mismatched_keywords",
+        "message": "expected keywords were not proposed",
+        "expected": [
+          "꼬마김밥키트"
+        ],
+        "actual": [
+          "밀키트"
+        ],
+        "missing": [
+          "꼬마김밥키트"
+        ]
+      },
+      {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_name": "emart-fixture",
+        "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+        "code": "name_signal_mismatch",
+        "message": "canonical name does not share any signal with raw title",
+        "proposed": "밀키트"
+      },
+      {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_name": "emart-fixture",
+        "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+        "code": "overbroad_canonical_name",
+        "message": "prepared-food canonical name is too broad for the raw title",
+        "proposed": "밀키트"
+      },
+      {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "source_name": "emart-fixture",
+        "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+        "code": "inflated_confidence_after_validation_failure",
+        "message": "provider confidence is too high for proposals that failed deterministic validation",
+        "max_confidence": 1.0,
+        "validation_issue_codes": [
+          "overbroad_canonical_name"
+        ]
+      },
+      {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_name": "emart-fixture",
+        "raw_title": "베트남산 냉동 새우살 300g",
+        "code": "mismatched_category_id",
+        "message": "expected category_id was not proposed",
+        "expected": "seafood.frozen",
+        "actual": [
+          "seafood.crustacean.shrimp"
+        ]
+      },
+      {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_name": "emart-fixture",
+        "raw_title": "베트남산 냉동 새우살 300g",
+        "code": "unknown_taxonomy_category",
+        "message": "category_id is not in the AI-admin safe seed taxonomy; hold in review until a human maps it to an existing seed category or explicitly approves a DB-admin taxonomy change",
+        "proposed": "seafood.crustacean.shrimp",
+        "allowed_seed_categories": [
+          "bakery.bread",
+          "beverage.coffee",
+          "beverage.general",
+          "beverage.juice",
+          "beverage.soda",
+          "beverage.water",
+          "daily.detergent",
+          "dairy.cheese",
+          "dairy.milk",
+          "dairy.milk.chocolate",
+          "dairy.yogurt",
+          "grain.rice",
+          "household.tissue",
+          "instant.noodle",
+          "instant.rice",
+          "livestock.egg",
+          "meat.beef",
+          "meat.beef.bulgogi",
+          "meat.beef.hanwoo",
+          "meat.beef.soup_cut",
+          "meat.chicken",
+          "meat.chicken.breast",
+          "meat.pork",
+          "meat.pork.belly",
+          "prepared_food.deli.kimbap",
+          "prepared_food.meal_kit",
+          "prepared_food.meal_kit.kimbap",
+          "processed.meal.kimbap",
+          "processed.meat",
+          "processed.sauce",
+          "processed.sauce.ssamjang",
+          "processed.tofu.firm",
+          "produce.fruit",
+          "produce.vegetable",
+          "seafood.fish",
+          "seafood.frozen",
+          "seafood.shellfish",
+          "seafood.shrimp",
+          "seafood.squid",
+          "snack.chip",
+          "snack.chocolate",
+          "snack.general",
+          "snack.ice_cream",
+          "snack.nut",
+          "vegetable.cabbage"
+        ],
+        "review_context": {
+          "raw_record": {
+            "raw_record_id": "emart-fixture:fixture-shrimp",
+            "source_name": "emart-fixture",
+            "source_record_key": "fixture-shrimp",
+            "source_url": "https://example.invalid/emart/shrimp",
+            "raw_title": "베트남산 냉동 새우살 300g",
+            "raw_price": 7980,
+            "raw_payload": {
+              "product_id": "fixture-shrimp",
+              "name": "베트남산 냉동 새우살 300g",
+              "sale_price": "7,980원",
+              "original_price": "9,980원",
+              "discount_percent": 20,
+              "detail_url": "https://example.invalid/emart/shrimp",
+              "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+              "source": "emart-fixture",
+              "category_hint": "수산/냉동",
+              "origin": "베트남",
+              "storage_type": "냉동",
+              "expected_ai": {
+                "category_id": "seafood.frozen",
+                "keywords": [
+                  "새우"
+                ],
+                "attributes": {
+                  "origin": "베트남",
+                  "storage_type": "냉동"
+                }
+              },
+              "holdout_expected_class": "deterministic_raw"
+            },
+            "crawled_at": "2026-05-15T22:06:04.472782"
+          },
+          "proposed_categories": {
+            "category_id": [
+              "seafood.crustacean.shrimp"
+            ]
+          }
+        },
+        "taxonomy_alias_proposal": {
+          "proposal_type": "taxonomy_alias_proposal",
+          "status": "human_reviewing",
+          "proposed_alias": "seafood.crustacean.shrimp",
+          "normalized_candidate": "seafood.crustacean.shrimp",
+          "raw_title": "베트남산 냉동 새우살 300g",
+          "source_name": "emart-fixture",
+          "action": "review_existing_seed_mapping_or_create_db_admin_taxonomy_change; do_not_add_code_alias_until repeated cross-source evidence exists"
+        }
+      },
+      {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "source_name": "emart-fixture",
+        "raw_title": "베트남산 냉동 새우살 300g",
+        "code": "inflated_confidence_after_validation_failure",
+        "message": "provider confidence is too high for proposals that failed deterministic validation",
+        "max_confidence": 1.0,
+        "validation_issue_codes": [
+          "unknown_taxonomy_category"
+        ]
+      }
+    ]
+  },
+  "publish_blockers": {
+    "items": [
+      {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "batch_id": "raw-20260515220604-793f03a1",
+        "source_name": "emart-fixture",
+        "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+        "status": "pending_review",
+        "eligible": false,
+        "publication_kind": "hotdeal",
+        "price_observation_only": false,
+        "discount_claim_status": "verified",
+        "claim_basis": "source_declared_original_discount",
+        "claim_blockers": [],
+        "post_publish_audit_flags": [
+          {
+            "code": "mismatched_canonical_name",
+            "source": "raw_ai_audit",
+            "message": "expected canonical_name was not proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "mismatched_category_id",
+            "source": "raw_ai_audit",
+            "message": "expected category_id was not proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "mismatched_keywords",
+            "source": "raw_ai_audit",
+            "message": "expected keywords were not proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "name_signal_mismatch",
+            "source": "raw_ai_audit",
+            "message": "canonical name does not share any signal with raw title",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "ai_suggested_category_id",
+            "source": "field_proposal",
+            "proposal_id": "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:category_id:category_id",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "ai_suggested_keywords",
+            "source": "field_proposal",
+            "proposal_id": "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-kimbap-kit:keywords:kw:0",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "db_keyword_proposal_unresolved",
+            "source": "keyword_proposal",
+            "proposal_id": "raw-20260515220604-793f03a1:ai:1:keyword_proposal:d53d31723ebe",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          }
+        ],
+        "blocking_audit_issues": [
+          {
+            "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+            "source_name": "emart-fixture",
+            "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+            "code": "overbroad_canonical_name",
+            "message": "prepared-food canonical name is too broad for the raw title",
+            "proposed": "밀키트"
+          },
+          {
+            "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+            "source_name": "emart-fixture",
+            "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+            "code": "inflated_confidence_after_validation_failure",
+            "message": "provider confidence is too high for proposals that failed deterministic validation",
+            "max_confidence": 1.0,
+            "validation_issue_codes": [
+              "overbroad_canonical_name"
+            ]
+          }
+        ],
+        "retryable": false,
+        "retractable": false,
+        "blockers": [
+          "pending_review: critical AI proposals must be human approved",
+          "approved: at least one human-approved proposal is required",
+          "data_quality: overbroad_canonical_name",
+          "data_quality: inflated_confidence_after_validation_failure"
+        ],
+        "keyword_proposals": [
+          {
+            "proposal_id": "raw-20260515220604-793f03a1:ai:1:keyword_proposal:d53d31723ebe",
+            "proposed_keyword": "김밥",
+            "match_terms": [
+              "김밥"
+            ],
+            "category_suggestion": "processed.instant.meal_kit",
+            "confidence": 1.0,
+            "reason": "AI keyword is ambiguous against existing DB keywords and needs human merge/alias decision",
+            "triggering_records": [
+              {
+                "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+                "source_name": "emart-fixture",
+                "source_record_key": "fixture-kimbap-kit",
+                "source_url": "https://example.invalid/emart/kimbap-kit",
+                "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+                "raw_price": 6980,
+                "raw_payload": {
+                  "product_id": "fixture-kimbap-kit",
+                  "name": "한돈으로 만든 햄꼬마김밥키트157g",
+                  "sale_price": "6,980원",
+                  "original_price": "8,980원",
+                  "discount_percent": 22,
+                  "detail_url": "https://example.invalid/emart/kimbap-kit",
+                  "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+                  "source": "emart-fixture",
+                  "category_hint": "밀키트/델리",
+                  "attributes": {
+                    "collection": "manual-live-validation-v2"
+                  },
+                  "expected_ai": {
+                    "canonical_name": "햄꼬마김밥키트 157g",
+                    "category_id": "prepared_food.meal_kit.kimbap",
+                    "keywords": [
+                      "꼬마김밥키트"
+                    ],
+                    "attributes": {
+                      "collection": "manual-live-validation-v2"
+                    }
+                  },
+                  "holdout_expected_class": "new_unknown"
+                },
+                "crawled_at": "2026-05-15T22:06:04.472683"
+              }
+            ],
+            "source_values": [
+              "김밥"
+            ],
+            "status": "ai_proposed",
+            "reviewer_id": null,
+            "rejection_reason": null,
+            "persisted_keyword_id": null,
+            "created_at": "2026-05-15T22:06:07.573325",
+            "updated_at": "2026-05-15T22:06:07.573325",
+            "decided_at": null
+          }
+        ],
+        "audit_issues": [
+          {
+            "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+            "source_name": "emart-fixture",
+            "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+            "code": "mismatched_canonical_name",
+            "message": "expected canonical_name was not proposed",
+            "expected": "햄꼬마김밥키트 157g",
+            "actual": [
+              "밀키트"
+            ]
+          },
+          {
+            "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+            "source_name": "emart-fixture",
+            "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+            "code": "mismatched_category_id",
+            "message": "expected category_id was not proposed",
+            "expected": "prepared_food.meal_kit.kimbap",
+            "actual": [
+              "prepared_food.meal_kit"
+            ]
+          },
+          {
+            "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+            "source_name": "emart-fixture",
+            "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+            "code": "mismatched_keywords",
+            "message": "expected keywords were not proposed",
+            "expected": [
+              "꼬마김밥키트"
+            ],
+            "actual": [
+              "밀키트"
+            ],
+            "missing": [
+              "꼬마김밥키트"
+            ]
+          },
+          {
+            "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+            "source_name": "emart-fixture",
+            "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+            "code": "name_signal_mismatch",
+            "message": "canonical name does not share any signal with raw title",
+            "proposed": "밀키트"
+          },
+          {
+            "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+            "source_name": "emart-fixture",
+            "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+            "code": "overbroad_canonical_name",
+            "message": "prepared-food canonical name is too broad for the raw title",
+            "proposed": "밀키트"
+          },
+          {
+            "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+            "source_name": "emart-fixture",
+            "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+            "code": "inflated_confidence_after_validation_failure",
+            "message": "provider confidence is too high for proposals that failed deterministic validation",
+            "max_confidence": 1.0,
+            "validation_issue_codes": [
+              "overbroad_canonical_name"
+            ]
+          }
+        ],
+        "proposal_ids": [
+          "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:canonical_name:canonical_name",
+          "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_title:source_title",
+          "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:category_id:category_id",
+          "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:sale_price:sale_price",
+          "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:original_price:original_price",
+          "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:discount_percent:discount_percent",
+          "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_url:source_url",
+          "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:image_url:image_url",
+          "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_quantity:package_quantity",
+          "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_unit:package_unit",
+          "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:display_unit:display_unit",
+          "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:bundle_count:bundle_count",
+          "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit:standard_unit",
+          "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit_price:standard_unit_price",
+          "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:price_per_100g:price_per_100g",
+          "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:attributes.origin:attr:origin",
+          "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-kimbap-kit:keywords:kw:0"
+        ],
+        "human_decision_ids": [],
+        "db_ingestion_id": null,
+        "db_ingestion_result": null,
+        "publish_attempts": 0,
+        "requested_by": null,
+        "requested_at": null,
+        "published_at": null,
+        "last_error": null,
+        "item": {
+          "name": "한돈으로 만든 햄꼬마김밥키트157g",
+          "canonical_name": "한돈으로 만든 햄꼬마김밥키트157g",
+          "source_title": "한돈으로 만든 햄꼬마김밥키트157g",
+          "sale_price": 6980,
+          "current_price": 6980,
+          "original_price": 8980,
+          "discount_percent": 22.0,
+          "discount_rate": 22.0,
+          "price_state": "normal",
+          "promotion_type": "unknown",
+          "source": "emart-fixture",
+          "store": "emart-fixture",
+          "source_url": "https://example.invalid/emart/kimbap-kit",
+          "detail_url": "https://example.invalid/emart/kimbap-kit",
+          "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+          "event_name": null,
+          "valid_from": null,
+          "valid_to": null,
+          "unit": "157g",
+          "display_unit": "157g",
+          "package_quantity": 157.0,
+          "package_unit": "g",
+          "bundle_count": 1,
+          "standard_unit": "kg",
+          "standard_unit_price": 44458.6,
+          "price_per_100g": 4445.86,
+          "category": "prepared_food.meal_kit",
+          "category_id": "prepared_food.meal_kit",
+          "keywords": [
+            "밀키트"
+          ],
+          "attributes": {
+            "collection": "manual-live-validation-v2"
+          },
+          "raw_data": {
+            "raw_record": {
+              "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+              "source_name": "emart-fixture",
+              "source_record_key": "fixture-kimbap-kit",
+              "source_url": "https://example.invalid/emart/kimbap-kit",
+              "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+              "raw_price": 6980,
+              "raw_payload": {
+                "product_id": "fixture-kimbap-kit",
+                "name": "한돈으로 만든 햄꼬마김밥키트157g",
+                "sale_price": "6,980원",
+                "original_price": "8,980원",
+                "discount_percent": 22,
+                "detail_url": "https://example.invalid/emart/kimbap-kit",
+                "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+                "source": "emart-fixture",
+                "category_hint": "밀키트/델리",
+                "attributes": {
+                  "collection": "manual-live-validation-v2"
+                },
+                "expected_ai": {
+                  "canonical_name": "햄꼬마김밥키트 157g",
+                  "category_id": "prepared_food.meal_kit.kimbap",
+                  "keywords": [
+                    "꼬마김밥키트"
+                  ],
+                  "attributes": {
+                    "collection": "manual-live-validation-v2"
+                  }
+                },
+                "holdout_expected_class": "new_unknown"
+              },
+              "crawled_at": "2026-05-15T22:06:04.472683"
+            },
+            "raw_payload": {
+              "product_id": "fixture-kimbap-kit",
+              "name": "한돈으로 만든 햄꼬마김밥키트157g",
+              "sale_price": "6,980원",
+              "original_price": "8,980원",
+              "discount_percent": 22,
+              "detail_url": "https://example.invalid/emart/kimbap-kit",
+              "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+              "source": "emart-fixture",
+              "category_hint": "밀키트/델리",
+              "attributes": {
+                "collection": "manual-live-validation-v2"
+              },
+              "expected_ai": {
+                "canonical_name": "햄꼬마김밥키트 157g",
+                "category_id": "prepared_food.meal_kit.kimbap",
+                "keywords": [
+                  "꼬마김밥키트"
+                ],
+                "attributes": {
+                  "collection": "manual-live-validation-v2"
+                }
+              },
+              "holdout_expected_class": "new_unknown"
+            },
+            "canonical_product": {
+              "canonical_name": "한돈으로 만든 햄꼬마김밥키트157g",
+              "brand": null,
+              "category_id": "prepared_food.meal_kit",
+              "aliases": [],
+              "keywords": [
+                "밀키트"
+              ],
+              "attributes": {
+                "collection": "manual-live-validation-v2"
+              }
+            },
+            "product_variant": {
+              "canonical_product_public_id": null,
+              "variant_name": "한돈으로 만든 햄꼬마김밥키트157g",
+              "package_quantity": 157.0,
+              "package_unit": "g",
+              "display_unit": "157g",
+              "bundle_count": 1,
+              "standard_unit": "kg",
+              "attributes": {
+                "collection": "manual-live-validation-v2"
+              }
+            },
+            "sale_offer": {
+              "source_name": "emart-fixture",
+              "source_record_key": "fixture-kimbap-kit",
+              "source_title": "한돈으로 만든 햄꼬마김밥키트157g",
+              "source_url": "https://example.invalid/emart/kimbap-kit",
+              "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+              "price_state": "normal",
+              "promotion_type": "unknown",
+              "price": 6980,
+              "original_price": 8980,
+              "discount_rate": 0.22,
+              "event_name": null,
+              "standard_unit_price": 44458.6,
+              "price_per_100g": 4445.86,
+              "valid_from": null,
+              "valid_to": null,
+              "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+              "raw_evidence": {
+                "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+                "raw_price": 6980,
+                "raw_unit": null,
+                "raw_payload": {
+                  "product_id": "fixture-kimbap-kit",
+                  "name": "한돈으로 만든 햄꼬마김밥키트157g",
+                  "sale_price": "6,980원",
+                  "original_price": "8,980원",
+                  "discount_percent": 22,
+                  "detail_url": "https://example.invalid/emart/kimbap-kit",
+                  "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+                  "source": "emart-fixture",
+                  "category_hint": "밀키트/델리",
+                  "attributes": {
+                    "collection": "manual-live-validation-v2"
+                  },
+                  "expected_ai": {
+                    "canonical_name": "햄꼬마김밥키트 157g",
+                    "category_id": "prepared_food.meal_kit.kimbap",
+                    "keywords": [
+                      "꼬마김밥키트"
+                    ],
+                    "attributes": {
+                      "collection": "manual-live-validation-v2"
+                    }
+                  },
+                  "holdout_expected_class": "new_unknown"
+                }
+              },
+              "audit_provenance": {
+                "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+                "proposal_ids": [
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:canonical_name:canonical_name",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_title:source_title",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:category_id:category_id",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:sale_price:sale_price",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:original_price:original_price",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:discount_percent:discount_percent",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_url:source_url",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:image_url:image_url",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_quantity:package_quantity",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_unit:package_unit",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:display_unit:display_unit",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:bundle_count:bundle_count",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit:standard_unit",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit_price:standard_unit_price",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:price_per_100g:price_per_100g",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:attributes.origin:attr:origin",
+                  "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-kimbap-kit:keywords:kw:0"
+                ],
+                "approved_fields": {
+                  "category_id": "prepared_food.meal_kit",
+                  "keywords": [
+                    "밀키트"
+                  ]
+                },
+                "ignored_source_owned_ai_fields": {}
+              }
+            },
+            "price_semantics": {
+              "price_state": "normal",
+              "promotion_type": "unknown",
+              "comparable_price_available": false
+            },
+            "attributes": {
+              "collection": "manual-live-validation-v2"
+            },
+            "raw_evidence": {
+              "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+              "raw_price": 6980,
+              "raw_unit": null,
+              "raw_payload": {
+                "product_id": "fixture-kimbap-kit",
+                "name": "한돈으로 만든 햄꼬마김밥키트157g",
+                "sale_price": "6,980원",
+                "original_price": "8,980원",
+                "discount_percent": 22,
+                "detail_url": "https://example.invalid/emart/kimbap-kit",
+                "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+                "source": "emart-fixture",
+                "category_hint": "밀키트/델리",
+                "attributes": {
+                  "collection": "manual-live-validation-v2"
+                },
+                "expected_ai": {
+                  "canonical_name": "햄꼬마김밥키트 157g",
+                  "category_id": "prepared_food.meal_kit.kimbap",
+                  "keywords": [
+                    "꼬마김밥키트"
+                  ],
+                  "attributes": {
+                    "collection": "manual-live-validation-v2"
+                  }
+                },
+                "holdout_expected_class": "new_unknown"
+              }
+            },
+            "audit_provenance": {
+              "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+              "proposal_ids": [
+                "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:canonical_name:canonical_name",
+                "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_title:source_title",
+                "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:category_id:category_id",
+                "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:sale_price:sale_price",
+                "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:original_price:original_price",
+                "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:discount_percent:discount_percent",
+                "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_url:source_url",
+                "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:image_url:image_url",
+                "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_quantity:package_quantity",
+                "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_unit:package_unit",
+                "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:display_unit:display_unit",
+                "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:bundle_count:bundle_count",
+                "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit:standard_unit",
+                "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit_price:standard_unit_price",
+                "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:price_per_100g:price_per_100g",
+                "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:attributes.origin:attr:origin",
+                "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-kimbap-kit:keywords:kw:0"
+              ],
+              "approved_fields": {
+                "category_id": "prepared_food.meal_kit",
+                "keywords": [
+                  "밀키트"
+                ]
+              },
+              "ignored_source_owned_ai_fields": {}
+            },
+            "display_unit": "157g",
+            "package_quantity": 157.0,
+            "package_unit": "g",
+            "category_evidence": {
+              "safe_category_id": "prepared_food.meal_kit",
+              "safe_category_display_label": "밀키트/델리",
+              "candidates": [
+                {
+                  "raw": "prepared_food.meal_kit",
+                  "normalized": "prepared_food.meal_kit",
+                  "display_label": "밀키트/델리",
+                  "safe_seed": true
+                },
+                {
+                  "raw": "밀키트/델리",
+                  "normalized": "prepared_food.meal_kit",
+                  "display_label": "밀키트/델리",
+                  "safe_seed": true
+                }
+              ]
+            },
+            "publication": {
+              "publication_kind": "hotdeal",
+              "price_observation_only": false,
+              "discount_claim_status": "verified",
+              "claim_basis": "source_declared_original_discount",
+              "claim_blockers": [],
+              "observed_at": "2026-05-15T22:06:04.472683"
+            },
+            "normalized": {
+              "contract_version": "normalized-mart3-v1",
+              "ai_override_policy": "source_owned_price_link_period_image_fields_win",
+              "canonical_product": {
+                "public_product_id": null,
+                "canonical_name": "한돈으로 만든 햄꼬마김밥키트157g",
+                "brand": null,
+                "category_id": "prepared_food.meal_kit",
+                "category_name": "prepared_food.meal_kit",
+                "aliases": [],
+                "keywords": [
+                  "밀키트"
+                ],
+                "attributes": {
+                  "collection": "manual-live-validation-v2"
+                },
+                "primary_image_url": "https://example.invalid/emart/images/kimbap-kit.jpg"
+              },
+              "product_variant": {
+                "public_variant_id": null,
+                "variant_name": "한돈으로 만든 햄꼬마김밥키트157g",
+                "package_quantity": 157.0,
+                "package_unit": "g",
+                "display_unit": "157g",
+                "bundle_count": 1,
+                "standard_unit": "kg",
+                "attributes": {
+                  "collection": "manual-live-validation-v2"
+                },
+                "package_signature": "qty-157.0-unit-g-bundle-1-display-157g",
+                "source_package_signature": "qty-157.0-unit-g-bundle-1-display-157g",
+                "package_evidence_source": "deterministic_source",
+                "package_match_status": "source_confirmed"
+              },
+              "source_listing": {
+                "public_source_listing_id": null,
+                "source_name": "emart-fixture",
+                "source_record_key": "fixture-kimbap-kit",
+                "source_title": "한돈으로 만든 햄꼬마김밥키트157g",
+                "source_title_key": "한돈으로 만든 햄꼬마김밥키트157g",
+                "source_url": "https://example.invalid/emart/kimbap-kit",
+                "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+                "source_unit_text": "157g"
+              },
+              "offer_event": {
+                "public_offer_event_id": null,
+                "price_state": "normal",
+                "promotion_type": "unknown",
+                "price": 6980,
+                "current_price": 6980,
+                "original_price": 8980,
+                "discount_rate": 0.22,
+                "discount_percent": 22.0,
+                "event_name": null,
+                "valid_from": null,
+                "valid_to": null,
+                "standard_unit_price": 44458.6,
+                "price_per_100g": 4445.86,
+                "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+                "raw_evidence": {
+                  "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+                  "raw_price": 6980,
+                  "raw_unit": null,
+                  "raw_payload": {
+                    "product_id": "fixture-kimbap-kit",
+                    "name": "한돈으로 만든 햄꼬마김밥키트157g",
+                    "sale_price": "6,980원",
+                    "original_price": "8,980원",
+                    "discount_percent": 22,
+                    "detail_url": "https://example.invalid/emart/kimbap-kit",
+                    "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+                    "source": "emart-fixture",
+                    "category_hint": "밀키트/델리",
+                    "attributes": {
+                      "collection": "manual-live-validation-v2"
+                    },
+                    "expected_ai": {
+                      "canonical_name": "햄꼬마김밥키트 157g",
+                      "category_id": "prepared_food.meal_kit.kimbap",
+                      "keywords": [
+                        "꼬마김밥키트"
+                      ],
+                      "attributes": {
+                        "collection": "manual-live-validation-v2"
+                      }
+                    },
+                    "holdout_expected_class": "new_unknown"
+                  }
+                },
+                "audit_provenance": {
+                  "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+                  "proposal_ids": [
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:canonical_name:canonical_name",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_title:source_title",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:category_id:category_id",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:sale_price:sale_price",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:original_price:original_price",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:discount_percent:discount_percent",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_url:source_url",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:image_url:image_url",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_quantity:package_quantity",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_unit:package_unit",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:display_unit:display_unit",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:bundle_count:bundle_count",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit:standard_unit",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit_price:standard_unit_price",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:price_per_100g:price_per_100g",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:attributes.origin:attr:origin",
+                    "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-kimbap-kit:keywords:kw:0"
+                  ],
+                  "approved_fields": {
+                    "category_id": "prepared_food.meal_kit",
+                    "keywords": [
+                      "밀키트"
+                    ]
+                  },
+                  "ignored_source_owned_ai_fields": {}
+                },
+                "offer_state": "active"
+              },
+              "source_owned_fields": {
+                "price": 6980,
+                "source_url": "https://example.invalid/emart/kimbap-kit",
+                "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+                "event_name": null,
+                "valid_from": null,
+                "valid_to": null
+              }
+            },
+            "normalized_metadata": {
+              "contract_version": "normalized-mart3-v1",
+              "ai_override_policy": "source_owned_price_link_period_image_fields_win",
+              "canonical_product": {
+                "public_product_id": null,
+                "canonical_name": "한돈으로 만든 햄꼬마김밥키트157g",
+                "brand": null,
+                "category_id": "prepared_food.meal_kit",
+                "category_name": "prepared_food.meal_kit",
+                "aliases": [],
+                "keywords": [
+                  "밀키트"
+                ],
+                "attributes": {
+                  "collection": "manual-live-validation-v2"
+                },
+                "primary_image_url": "https://example.invalid/emart/images/kimbap-kit.jpg"
+              },
+              "product_variant": {
+                "public_variant_id": null,
+                "variant_name": "한돈으로 만든 햄꼬마김밥키트157g",
+                "package_quantity": 157.0,
+                "package_unit": "g",
+                "display_unit": "157g",
+                "bundle_count": 1,
+                "standard_unit": "kg",
+                "attributes": {
+                  "collection": "manual-live-validation-v2"
+                },
+                "package_signature": "qty-157.0-unit-g-bundle-1-display-157g",
+                "source_package_signature": "qty-157.0-unit-g-bundle-1-display-157g",
+                "package_evidence_source": "deterministic_source",
+                "package_match_status": "source_confirmed"
+              },
+              "source_listing": {
+                "public_source_listing_id": null,
+                "source_name": "emart-fixture",
+                "source_record_key": "fixture-kimbap-kit",
+                "source_title": "한돈으로 만든 햄꼬마김밥키트157g",
+                "source_title_key": "한돈으로 만든 햄꼬마김밥키트157g",
+                "source_url": "https://example.invalid/emart/kimbap-kit",
+                "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+                "source_unit_text": "157g"
+              },
+              "offer_event": {
+                "public_offer_event_id": null,
+                "price_state": "normal",
+                "promotion_type": "unknown",
+                "price": 6980,
+                "current_price": 6980,
+                "original_price": 8980,
+                "discount_rate": 0.22,
+                "discount_percent": 22.0,
+                "event_name": null,
+                "valid_from": null,
+                "valid_to": null,
+                "standard_unit_price": 44458.6,
+                "price_per_100g": 4445.86,
+                "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+                "raw_evidence": {
+                  "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+                  "raw_price": 6980,
+                  "raw_unit": null,
+                  "raw_payload": {
+                    "product_id": "fixture-kimbap-kit",
+                    "name": "한돈으로 만든 햄꼬마김밥키트157g",
+                    "sale_price": "6,980원",
+                    "original_price": "8,980원",
+                    "discount_percent": 22,
+                    "detail_url": "https://example.invalid/emart/kimbap-kit",
+                    "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+                    "source": "emart-fixture",
+                    "category_hint": "밀키트/델리",
+                    "attributes": {
+                      "collection": "manual-live-validation-v2"
+                    },
+                    "expected_ai": {
+                      "canonical_name": "햄꼬마김밥키트 157g",
+                      "category_id": "prepared_food.meal_kit.kimbap",
+                      "keywords": [
+                        "꼬마김밥키트"
+                      ],
+                      "attributes": {
+                        "collection": "manual-live-validation-v2"
+                      }
+                    },
+                    "holdout_expected_class": "new_unknown"
+                  }
+                },
+                "audit_provenance": {
+                  "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+                  "proposal_ids": [
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:canonical_name:canonical_name",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_title:source_title",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:category_id:category_id",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:sale_price:sale_price",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:original_price:original_price",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:discount_percent:discount_percent",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_url:source_url",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:image_url:image_url",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_quantity:package_quantity",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_unit:package_unit",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:display_unit:display_unit",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:bundle_count:bundle_count",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit:standard_unit",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit_price:standard_unit_price",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:price_per_100g:price_per_100g",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:attributes.origin:attr:origin",
+                    "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-kimbap-kit:keywords:kw:0"
+                  ],
+                  "approved_fields": {
+                    "category_id": "prepared_food.meal_kit",
+                    "keywords": [
+                      "밀키트"
+                    ]
+                  },
+                  "ignored_source_owned_ai_fields": {}
+                },
+                "offer_state": "active"
+              },
+              "source_owned_fields": {
+                "price": 6980,
+                "source_url": "https://example.invalid/emart/kimbap-kit",
+                "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+                "event_name": null,
+                "valid_from": null,
+                "valid_to": null
+              }
+            },
+            "post_publish_audit_flags": [
+              {
+                "code": "mismatched_canonical_name",
+                "source": "raw_ai_audit",
+                "message": "expected canonical_name was not proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "mismatched_category_id",
+                "source": "raw_ai_audit",
+                "message": "expected category_id was not proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "mismatched_keywords",
+                "source": "raw_ai_audit",
+                "message": "expected keywords were not proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "name_signal_mismatch",
+                "source": "raw_ai_audit",
+                "message": "canonical name does not share any signal with raw title",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "ai_suggested_category_id",
+                "source": "field_proposal",
+                "proposal_id": "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:category_id:category_id",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "ai_suggested_keywords",
+                "source": "field_proposal",
+                "proposal_id": "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-kimbap-kit:keywords:kw:0",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "db_keyword_proposal_unresolved",
+                "source": "keyword_proposal",
+                "proposal_id": "raw-20260515220604-793f03a1:ai:1:keyword_proposal:d53d31723ebe",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              }
+            ]
+          },
+          "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+          "source_record_key": "fixture-kimbap-kit",
+          "ai_review_audit": {
+            "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+            "proposal_ids": [
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:canonical_name:canonical_name",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_title:source_title",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:category_id:category_id",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:sale_price:sale_price",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:original_price:original_price",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:discount_percent:discount_percent",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_url:source_url",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:image_url:image_url",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_quantity:package_quantity",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_unit:package_unit",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:display_unit:display_unit",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:bundle_count:bundle_count",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit:standard_unit",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit_price:standard_unit_price",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:price_per_100g:price_per_100g",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:attributes.origin:attr:origin",
+              "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-kimbap-kit:keywords:kw:0"
+            ],
+            "approved_fields": {
+              "category_id": "prepared_food.meal_kit",
+              "keywords": [
+                "밀키트"
+              ]
+            },
+            "ignored_source_owned_ai_fields": {}
+          },
+          "raw_unit": null,
+          "category_display_label": "밀키트/델리",
+          "observed_at": "2026-05-15T22:06:04.472683",
+          "publication_kind": "hotdeal",
+          "price_observation_only": false,
+          "discount_claim_status": "verified",
+          "claim_basis": "source_declared_original_discount",
+          "claim_blockers": [],
+          "normalized_metadata": {
+            "contract_version": "normalized-mart3-v1",
+            "ai_override_policy": "source_owned_price_link_period_image_fields_win",
+            "canonical_product": {
+              "public_product_id": null,
+              "canonical_name": "한돈으로 만든 햄꼬마김밥키트157g",
+              "brand": null,
+              "category_id": "prepared_food.meal_kit",
+              "category_name": "prepared_food.meal_kit",
+              "aliases": [],
+              "keywords": [
+                "밀키트"
+              ],
+              "attributes": {
+                "collection": "manual-live-validation-v2"
+              },
+              "primary_image_url": "https://example.invalid/emart/images/kimbap-kit.jpg"
+            },
+            "product_variant": {
+              "public_variant_id": null,
+              "variant_name": "한돈으로 만든 햄꼬마김밥키트157g",
+              "package_quantity": 157.0,
+              "package_unit": "g",
+              "display_unit": "157g",
+              "bundle_count": 1,
+              "standard_unit": "kg",
+              "attributes": {
+                "collection": "manual-live-validation-v2"
+              },
+              "package_signature": "qty-157.0-unit-g-bundle-1-display-157g",
+              "source_package_signature": "qty-157.0-unit-g-bundle-1-display-157g",
+              "package_evidence_source": "deterministic_source",
+              "package_match_status": "source_confirmed"
+            },
+            "source_listing": {
+              "public_source_listing_id": null,
+              "source_name": "emart-fixture",
+              "source_record_key": "fixture-kimbap-kit",
+              "source_title": "한돈으로 만든 햄꼬마김밥키트157g",
+              "source_title_key": "한돈으로 만든 햄꼬마김밥키트157g",
+              "source_url": "https://example.invalid/emart/kimbap-kit",
+              "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+              "source_unit_text": "157g"
+            },
+            "offer_event": {
+              "public_offer_event_id": null,
+              "price_state": "normal",
+              "promotion_type": "unknown",
+              "price": 6980,
+              "current_price": 6980,
+              "original_price": 8980,
+              "discount_rate": 0.22,
+              "discount_percent": 22.0,
+              "event_name": null,
+              "valid_from": null,
+              "valid_to": null,
+              "standard_unit_price": 44458.6,
+              "price_per_100g": 4445.86,
+              "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+              "raw_evidence": {
+                "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+                "raw_price": 6980,
+                "raw_unit": null,
+                "raw_payload": {
+                  "product_id": "fixture-kimbap-kit",
+                  "name": "한돈으로 만든 햄꼬마김밥키트157g",
+                  "sale_price": "6,980원",
+                  "original_price": "8,980원",
+                  "discount_percent": 22,
+                  "detail_url": "https://example.invalid/emart/kimbap-kit",
+                  "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+                  "source": "emart-fixture",
+                  "category_hint": "밀키트/델리",
+                  "attributes": {
+                    "collection": "manual-live-validation-v2"
+                  },
+                  "expected_ai": {
+                    "canonical_name": "햄꼬마김밥키트 157g",
+                    "category_id": "prepared_food.meal_kit.kimbap",
+                    "keywords": [
+                      "꼬마김밥키트"
+                    ],
+                    "attributes": {
+                      "collection": "manual-live-validation-v2"
+                    }
+                  },
+                  "holdout_expected_class": "new_unknown"
+                }
+              },
+              "audit_provenance": {
+                "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+                "proposal_ids": [
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:canonical_name:canonical_name",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_title:source_title",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:category_id:category_id",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:sale_price:sale_price",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:original_price:original_price",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:discount_percent:discount_percent",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_url:source_url",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:image_url:image_url",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_quantity:package_quantity",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_unit:package_unit",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:display_unit:display_unit",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:bundle_count:bundle_count",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit:standard_unit",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit_price:standard_unit_price",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:price_per_100g:price_per_100g",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:attributes.origin:attr:origin",
+                  "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-kimbap-kit:keywords:kw:0"
+                ],
+                "approved_fields": {
+                  "category_id": "prepared_food.meal_kit",
+                  "keywords": [
+                    "밀키트"
+                  ]
+                },
+                "ignored_source_owned_ai_fields": {}
+              },
+              "offer_state": "active"
+            },
+            "source_owned_fields": {
+              "price": 6980,
+              "source_url": "https://example.invalid/emart/kimbap-kit",
+              "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+              "event_name": null,
+              "valid_from": null,
+              "valid_to": null
+            }
+          },
+          "price": 6980,
+          "source_name": "emart-fixture",
+          "variant_name": "한돈으로 만든 햄꼬마김밥키트157g",
+          "source_unit_text": "157g",
+          "listing_image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+          "raw_evidence": {
+            "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+            "raw_price": 6980,
+            "raw_unit": null,
+            "raw_payload": {
+              "product_id": "fixture-kimbap-kit",
+              "name": "한돈으로 만든 햄꼬마김밥키트157g",
+              "sale_price": "6,980원",
+              "original_price": "8,980원",
+              "discount_percent": 22,
+              "detail_url": "https://example.invalid/emart/kimbap-kit",
+              "image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+              "source": "emart-fixture",
+              "category_hint": "밀키트/델리",
+              "attributes": {
+                "collection": "manual-live-validation-v2"
+              },
+              "expected_ai": {
+                "canonical_name": "햄꼬마김밥키트 157g",
+                "category_id": "prepared_food.meal_kit.kimbap",
+                "keywords": [
+                  "꼬마김밥키트"
+                ],
+                "attributes": {
+                  "collection": "manual-live-validation-v2"
+                }
+              },
+              "holdout_expected_class": "new_unknown"
+            }
+          },
+          "audit_provenance": {
+            "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+            "proposal_ids": [
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:canonical_name:canonical_name",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_title:source_title",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:category_id:category_id",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:sale_price:sale_price",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:original_price:original_price",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:discount_percent:discount_percent",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:source_url:source_url",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-kimbap-kit:image_url:image_url",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_quantity:package_quantity",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:package_unit:package_unit",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:display_unit:display_unit",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:bundle_count:bundle_count",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit:standard_unit",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:standard_unit_price:standard_unit_price",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-kimbap-kit:price_per_100g:price_per_100g",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:attributes.origin:attr:origin",
+              "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-kimbap-kit:keywords:kw:0"
+            ],
+            "approved_fields": {
+              "category_id": "prepared_food.meal_kit",
+              "keywords": [
+                "밀키트"
+              ]
+            },
+            "ignored_source_owned_ai_fields": {}
+          },
+          "crawled_at": "2026-05-15T22:06:04.472683",
+          "post_publish_audit_flags": [
+            {
+              "code": "mismatched_canonical_name",
+              "source": "raw_ai_audit",
+              "message": "expected canonical_name was not proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "mismatched_category_id",
+              "source": "raw_ai_audit",
+              "message": "expected category_id was not proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "mismatched_keywords",
+              "source": "raw_ai_audit",
+              "message": "expected keywords were not proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "name_signal_mismatch",
+              "source": "raw_ai_audit",
+              "message": "canonical name does not share any signal with raw title",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "ai_suggested_category_id",
+              "source": "field_proposal",
+              "proposal_id": "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-kimbap-kit:category_id:category_id",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "ai_suggested_keywords",
+              "source": "field_proposal",
+              "proposal_id": "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-kimbap-kit:keywords:kw:0",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "db_keyword_proposal_unresolved",
+              "source": "keyword_proposal",
+              "proposal_id": "raw-20260515220604-793f03a1:ai:1:keyword_proposal:d53d31723ebe",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            }
+          ]
+        },
+        "ai_safe_final_approve_eligible": false,
+        "db_handoff_mode": "db_admin_review"
+      },
+      {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "batch_id": "raw-20260515220604-793f03a1",
+        "source_name": "emart-fixture",
+        "raw_title": "베트남산 냉동 새우살 300g",
+        "status": "pending_review",
+        "eligible": false,
+        "publication_kind": "hotdeal",
+        "price_observation_only": false,
+        "discount_claim_status": "verified",
+        "claim_basis": "source_declared_original_discount",
+        "claim_blockers": [],
+        "post_publish_audit_flags": [
+          {
+            "code": "mismatched_category_id",
+            "source": "raw_ai_audit",
+            "message": "expected category_id was not proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "ai_suggested_category_id",
+            "source": "field_proposal",
+            "proposal_id": "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:category_id:category_id",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          },
+          {
+            "code": "ai_suggested_keywords",
+            "source": "field_proposal",
+            "proposal_id": "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-shrimp:keywords:kw:0",
+            "status": "ai_proposed",
+            "severity": "post_publish_audit"
+          }
+        ],
+        "blocking_audit_issues": [
+          {
+            "raw_record_id": "emart-fixture:fixture-shrimp",
+            "source_name": "emart-fixture",
+            "raw_title": "베트남산 냉동 새우살 300g",
+            "code": "unknown_taxonomy_category",
+            "message": "category_id is not in the AI-admin safe seed taxonomy; hold in review until a human maps it to an existing seed category or explicitly approves a DB-admin taxonomy change",
+            "proposed": "seafood.crustacean.shrimp",
+            "allowed_seed_categories": [
+              "bakery.bread",
+              "beverage.coffee",
+              "beverage.general",
+              "beverage.juice",
+              "beverage.soda",
+              "beverage.water",
+              "daily.detergent",
+              "dairy.cheese",
+              "dairy.milk",
+              "dairy.milk.chocolate",
+              "dairy.yogurt",
+              "grain.rice",
+              "household.tissue",
+              "instant.noodle",
+              "instant.rice",
+              "livestock.egg",
+              "meat.beef",
+              "meat.beef.bulgogi",
+              "meat.beef.hanwoo",
+              "meat.beef.soup_cut",
+              "meat.chicken",
+              "meat.chicken.breast",
+              "meat.pork",
+              "meat.pork.belly",
+              "prepared_food.deli.kimbap",
+              "prepared_food.meal_kit",
+              "prepared_food.meal_kit.kimbap",
+              "processed.meal.kimbap",
+              "processed.meat",
+              "processed.sauce",
+              "processed.sauce.ssamjang",
+              "processed.tofu.firm",
+              "produce.fruit",
+              "produce.vegetable",
+              "seafood.fish",
+              "seafood.frozen",
+              "seafood.shellfish",
+              "seafood.shrimp",
+              "seafood.squid",
+              "snack.chip",
+              "snack.chocolate",
+              "snack.general",
+              "snack.ice_cream",
+              "snack.nut",
+              "vegetable.cabbage"
+            ],
+            "review_context": {
+              "raw_record": {
+                "raw_record_id": "emart-fixture:fixture-shrimp",
+                "source_name": "emart-fixture",
+                "source_record_key": "fixture-shrimp",
+                "source_url": "https://example.invalid/emart/shrimp",
+                "raw_title": "베트남산 냉동 새우살 300g",
+                "raw_price": 7980,
+                "raw_payload": {
+                  "product_id": "fixture-shrimp",
+                  "name": "베트남산 냉동 새우살 300g",
+                  "sale_price": "7,980원",
+                  "original_price": "9,980원",
+                  "discount_percent": 20,
+                  "detail_url": "https://example.invalid/emart/shrimp",
+                  "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+                  "source": "emart-fixture",
+                  "category_hint": "수산/냉동",
+                  "origin": "베트남",
+                  "storage_type": "냉동",
+                  "expected_ai": {
+                    "category_id": "seafood.frozen",
+                    "keywords": [
+                      "새우"
+                    ],
+                    "attributes": {
+                      "origin": "베트남",
+                      "storage_type": "냉동"
+                    }
+                  },
+                  "holdout_expected_class": "deterministic_raw"
+                },
+                "crawled_at": "2026-05-15T22:06:04.472782"
+              },
+              "proposed_categories": {
+                "category_id": [
+                  "seafood.crustacean.shrimp"
+                ]
+              }
+            },
+            "taxonomy_alias_proposal": {
+              "proposal_type": "taxonomy_alias_proposal",
+              "status": "human_reviewing",
+              "proposed_alias": "seafood.crustacean.shrimp",
+              "normalized_candidate": "seafood.crustacean.shrimp",
+              "raw_title": "베트남산 냉동 새우살 300g",
+              "source_name": "emart-fixture",
+              "action": "review_existing_seed_mapping_or_create_db_admin_taxonomy_change; do_not_add_code_alias_until repeated cross-source evidence exists"
+            }
+          },
+          {
+            "raw_record_id": "emart-fixture:fixture-shrimp",
+            "source_name": "emart-fixture",
+            "raw_title": "베트남산 냉동 새우살 300g",
+            "code": "inflated_confidence_after_validation_failure",
+            "message": "provider confidence is too high for proposals that failed deterministic validation",
+            "max_confidence": 1.0,
+            "validation_issue_codes": [
+              "unknown_taxonomy_category"
+            ]
+          }
+        ],
+        "retryable": false,
+        "retractable": false,
+        "blockers": [
+          "pending_review: critical AI proposals must be human approved",
+          "approved: at least one human-approved proposal is required",
+          "data_quality: unknown_taxonomy_category",
+          "data_quality: inflated_confidence_after_validation_failure"
+        ],
+        "keyword_proposals": [],
+        "audit_issues": [
+          {
+            "raw_record_id": "emart-fixture:fixture-shrimp",
+            "source_name": "emart-fixture",
+            "raw_title": "베트남산 냉동 새우살 300g",
+            "code": "mismatched_category_id",
+            "message": "expected category_id was not proposed",
+            "expected": "seafood.frozen",
+            "actual": [
+              "seafood.crustacean.shrimp"
+            ]
+          },
+          {
+            "raw_record_id": "emart-fixture:fixture-shrimp",
+            "source_name": "emart-fixture",
+            "raw_title": "베트남산 냉동 새우살 300g",
+            "code": "unknown_taxonomy_category",
+            "message": "category_id is not in the AI-admin safe seed taxonomy; hold in review until a human maps it to an existing seed category or explicitly approves a DB-admin taxonomy change",
+            "proposed": "seafood.crustacean.shrimp",
+            "allowed_seed_categories": [
+              "bakery.bread",
+              "beverage.coffee",
+              "beverage.general",
+              "beverage.juice",
+              "beverage.soda",
+              "beverage.water",
+              "daily.detergent",
+              "dairy.cheese",
+              "dairy.milk",
+              "dairy.milk.chocolate",
+              "dairy.yogurt",
+              "grain.rice",
+              "household.tissue",
+              "instant.noodle",
+              "instant.rice",
+              "livestock.egg",
+              "meat.beef",
+              "meat.beef.bulgogi",
+              "meat.beef.hanwoo",
+              "meat.beef.soup_cut",
+              "meat.chicken",
+              "meat.chicken.breast",
+              "meat.pork",
+              "meat.pork.belly",
+              "prepared_food.deli.kimbap",
+              "prepared_food.meal_kit",
+              "prepared_food.meal_kit.kimbap",
+              "processed.meal.kimbap",
+              "processed.meat",
+              "processed.sauce",
+              "processed.sauce.ssamjang",
+              "processed.tofu.firm",
+              "produce.fruit",
+              "produce.vegetable",
+              "seafood.fish",
+              "seafood.frozen",
+              "seafood.shellfish",
+              "seafood.shrimp",
+              "seafood.squid",
+              "snack.chip",
+              "snack.chocolate",
+              "snack.general",
+              "snack.ice_cream",
+              "snack.nut",
+              "vegetable.cabbage"
+            ],
+            "review_context": {
+              "raw_record": {
+                "raw_record_id": "emart-fixture:fixture-shrimp",
+                "source_name": "emart-fixture",
+                "source_record_key": "fixture-shrimp",
+                "source_url": "https://example.invalid/emart/shrimp",
+                "raw_title": "베트남산 냉동 새우살 300g",
+                "raw_price": 7980,
+                "raw_payload": {
+                  "product_id": "fixture-shrimp",
+                  "name": "베트남산 냉동 새우살 300g",
+                  "sale_price": "7,980원",
+                  "original_price": "9,980원",
+                  "discount_percent": 20,
+                  "detail_url": "https://example.invalid/emart/shrimp",
+                  "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+                  "source": "emart-fixture",
+                  "category_hint": "수산/냉동",
+                  "origin": "베트남",
+                  "storage_type": "냉동",
+                  "expected_ai": {
+                    "category_id": "seafood.frozen",
+                    "keywords": [
+                      "새우"
+                    ],
+                    "attributes": {
+                      "origin": "베트남",
+                      "storage_type": "냉동"
+                    }
+                  },
+                  "holdout_expected_class": "deterministic_raw"
+                },
+                "crawled_at": "2026-05-15T22:06:04.472782"
+              },
+              "proposed_categories": {
+                "category_id": [
+                  "seafood.crustacean.shrimp"
+                ]
+              }
+            },
+            "taxonomy_alias_proposal": {
+              "proposal_type": "taxonomy_alias_proposal",
+              "status": "human_reviewing",
+              "proposed_alias": "seafood.crustacean.shrimp",
+              "normalized_candidate": "seafood.crustacean.shrimp",
+              "raw_title": "베트남산 냉동 새우살 300g",
+              "source_name": "emart-fixture",
+              "action": "review_existing_seed_mapping_or_create_db_admin_taxonomy_change; do_not_add_code_alias_until repeated cross-source evidence exists"
+            }
+          },
+          {
+            "raw_record_id": "emart-fixture:fixture-shrimp",
+            "source_name": "emart-fixture",
+            "raw_title": "베트남산 냉동 새우살 300g",
+            "code": "inflated_confidence_after_validation_failure",
+            "message": "provider confidence is too high for proposals that failed deterministic validation",
+            "max_confidence": 1.0,
+            "validation_issue_codes": [
+              "unknown_taxonomy_category"
+            ]
+          }
+        ],
+        "proposal_ids": [
+          "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:canonical_name:canonical_name",
+          "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_title:source_title",
+          "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:category_id:category_id",
+          "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:sale_price:sale_price",
+          "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:original_price:original_price",
+          "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:discount_percent:discount_percent",
+          "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_url:source_url",
+          "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:image_url:image_url",
+          "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_quantity:package_quantity",
+          "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_unit:package_unit",
+          "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:display_unit:display_unit",
+          "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:bundle_count:bundle_count",
+          "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit:standard_unit",
+          "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit_price:standard_unit_price",
+          "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:price_per_100g:price_per_100g",
+          "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut:attr:cut",
+          "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut_label:attr:cut_label",
+          "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin:attr:origin",
+          "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin_label:attr:origin_label",
+          "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage:attr:storage",
+          "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_label:attr:storage_label",
+          "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_type:attr:storage_type",
+          "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-shrimp:keywords:kw:0"
+        ],
+        "human_decision_ids": [],
+        "db_ingestion_id": null,
+        "db_ingestion_result": null,
+        "publish_attempts": 0,
+        "requested_by": null,
+        "requested_at": null,
+        "published_at": null,
+        "last_error": null,
+        "item": {
+          "name": "베트남산 냉동 새우살 300g",
+          "canonical_name": "베트남산 냉동 새우살 300g",
+          "source_title": "베트남산 냉동 새우살 300g",
+          "sale_price": 7980,
+          "current_price": 7980,
+          "original_price": 9980,
+          "discount_percent": 20.0,
+          "discount_rate": 20.0,
+          "price_state": "normal",
+          "promotion_type": "unknown",
+          "source": "emart-fixture",
+          "store": "emart-fixture",
+          "source_url": "https://example.invalid/emart/shrimp",
+          "detail_url": "https://example.invalid/emart/shrimp",
+          "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+          "event_name": null,
+          "valid_from": null,
+          "valid_to": null,
+          "unit": "300g",
+          "display_unit": "300g",
+          "package_quantity": 300.0,
+          "package_unit": "g",
+          "bundle_count": 1,
+          "standard_unit": "kg",
+          "standard_unit_price": 26600.0,
+          "price_per_100g": 2660.0,
+          "category": "seafood.frozen",
+          "category_id": "seafood.frozen",
+          "keywords": [
+            "새우"
+          ],
+          "attributes": {
+            "storage_type": "냉동",
+            "storage_label": "냉동",
+            "origin": "베트남",
+            "origin_label": "베트남산",
+            "cut": "shrimp_meat",
+            "cut_label": "새우살"
+          },
+          "raw_data": {
+            "raw_record": {
+              "raw_record_id": "emart-fixture:fixture-shrimp",
+              "source_name": "emart-fixture",
+              "source_record_key": "fixture-shrimp",
+              "source_url": "https://example.invalid/emart/shrimp",
+              "raw_title": "베트남산 냉동 새우살 300g",
+              "raw_price": 7980,
+              "raw_payload": {
+                "product_id": "fixture-shrimp",
+                "name": "베트남산 냉동 새우살 300g",
+                "sale_price": "7,980원",
+                "original_price": "9,980원",
+                "discount_percent": 20,
+                "detail_url": "https://example.invalid/emart/shrimp",
+                "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+                "source": "emart-fixture",
+                "category_hint": "수산/냉동",
+                "origin": "베트남",
+                "storage_type": "냉동",
+                "expected_ai": {
+                  "category_id": "seafood.frozen",
+                  "keywords": [
+                    "새우"
+                  ],
+                  "attributes": {
+                    "origin": "베트남",
+                    "storage_type": "냉동"
+                  }
+                },
+                "holdout_expected_class": "deterministic_raw"
+              },
+              "crawled_at": "2026-05-15T22:06:04.472782"
+            },
+            "raw_payload": {
+              "product_id": "fixture-shrimp",
+              "name": "베트남산 냉동 새우살 300g",
+              "sale_price": "7,980원",
+              "original_price": "9,980원",
+              "discount_percent": 20,
+              "detail_url": "https://example.invalid/emart/shrimp",
+              "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+              "source": "emart-fixture",
+              "category_hint": "수산/냉동",
+              "origin": "베트남",
+              "storage_type": "냉동",
+              "expected_ai": {
+                "category_id": "seafood.frozen",
+                "keywords": [
+                  "새우"
+                ],
+                "attributes": {
+                  "origin": "베트남",
+                  "storage_type": "냉동"
+                }
+              },
+              "holdout_expected_class": "deterministic_raw"
+            },
+            "canonical_product": {
+              "canonical_name": "베트남산 냉동 새우살 300g",
+              "brand": null,
+              "category_id": "seafood.frozen",
+              "aliases": [],
+              "keywords": [
+                "새우"
+              ],
+              "attributes": {
+                "storage_type": "냉동",
+                "storage_label": "냉동",
+                "origin": "베트남",
+                "origin_label": "베트남산",
+                "cut": "shrimp_meat",
+                "cut_label": "새우살"
+              }
+            },
+            "product_variant": {
+              "canonical_product_public_id": null,
+              "variant_name": "베트남산 냉동 새우살 300g",
+              "package_quantity": 300.0,
+              "package_unit": "g",
+              "display_unit": "300g",
+              "bundle_count": 1,
+              "standard_unit": "kg",
+              "attributes": {
+                "storage_type": "냉동",
+                "storage_label": "냉동",
+                "origin": "베트남",
+                "origin_label": "베트남산",
+                "cut": "shrimp_meat",
+                "cut_label": "새우살"
+              }
+            },
+            "sale_offer": {
+              "source_name": "emart-fixture",
+              "source_record_key": "fixture-shrimp",
+              "source_title": "베트남산 냉동 새우살 300g",
+              "source_url": "https://example.invalid/emart/shrimp",
+              "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+              "price_state": "normal",
+              "promotion_type": "unknown",
+              "price": 7980,
+              "original_price": 9980,
+              "discount_rate": 0.2,
+              "event_name": null,
+              "standard_unit_price": 26600.0,
+              "price_per_100g": 2660.0,
+              "valid_from": null,
+              "valid_to": null,
+              "raw_record_id": "emart-fixture:fixture-shrimp",
+              "raw_evidence": {
+                "raw_title": "베트남산 냉동 새우살 300g",
+                "raw_price": 7980,
+                "raw_unit": null,
+                "raw_payload": {
+                  "product_id": "fixture-shrimp",
+                  "name": "베트남산 냉동 새우살 300g",
+                  "sale_price": "7,980원",
+                  "original_price": "9,980원",
+                  "discount_percent": 20,
+                  "detail_url": "https://example.invalid/emart/shrimp",
+                  "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+                  "source": "emart-fixture",
+                  "category_hint": "수산/냉동",
+                  "origin": "베트남",
+                  "storage_type": "냉동",
+                  "expected_ai": {
+                    "category_id": "seafood.frozen",
+                    "keywords": [
+                      "새우"
+                    ],
+                    "attributes": {
+                      "origin": "베트남",
+                      "storage_type": "냉동"
+                    }
+                  },
+                  "holdout_expected_class": "deterministic_raw"
+                }
+              },
+              "audit_provenance": {
+                "raw_record_id": "emart-fixture:fixture-shrimp",
+                "proposal_ids": [
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:canonical_name:canonical_name",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_title:source_title",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:category_id:category_id",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:sale_price:sale_price",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:original_price:original_price",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:discount_percent:discount_percent",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_url:source_url",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:image_url:image_url",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_quantity:package_quantity",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_unit:package_unit",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:display_unit:display_unit",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:bundle_count:bundle_count",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit:standard_unit",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit_price:standard_unit_price",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:price_per_100g:price_per_100g",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut:attr:cut",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut_label:attr:cut_label",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin:attr:origin",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin_label:attr:origin_label",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage:attr:storage",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_label:attr:storage_label",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_type:attr:storage_type",
+                  "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-shrimp:keywords:kw:0"
+                ],
+                "approved_fields": {
+                  "category_id": "seafood.crustacean.shrimp",
+                  "keywords": [
+                    "새우"
+                  ]
+                },
+                "ignored_source_owned_ai_fields": {}
+              }
+            },
+            "price_semantics": {
+              "price_state": "normal",
+              "promotion_type": "unknown",
+              "comparable_price_available": false
+            },
+            "attributes": {
+              "storage_type": "냉동",
+              "storage_label": "냉동",
+              "origin": "베트남",
+              "origin_label": "베트남산",
+              "cut": "shrimp_meat",
+              "cut_label": "새우살"
+            },
+            "raw_evidence": {
+              "raw_title": "베트남산 냉동 새우살 300g",
+              "raw_price": 7980,
+              "raw_unit": null,
+              "raw_payload": {
+                "product_id": "fixture-shrimp",
+                "name": "베트남산 냉동 새우살 300g",
+                "sale_price": "7,980원",
+                "original_price": "9,980원",
+                "discount_percent": 20,
+                "detail_url": "https://example.invalid/emart/shrimp",
+                "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+                "source": "emart-fixture",
+                "category_hint": "수산/냉동",
+                "origin": "베트남",
+                "storage_type": "냉동",
+                "expected_ai": {
+                  "category_id": "seafood.frozen",
+                  "keywords": [
+                    "새우"
+                  ],
+                  "attributes": {
+                    "origin": "베트남",
+                    "storage_type": "냉동"
+                  }
+                },
+                "holdout_expected_class": "deterministic_raw"
+              }
+            },
+            "audit_provenance": {
+              "raw_record_id": "emart-fixture:fixture-shrimp",
+              "proposal_ids": [
+                "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:canonical_name:canonical_name",
+                "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_title:source_title",
+                "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:category_id:category_id",
+                "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:sale_price:sale_price",
+                "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:original_price:original_price",
+                "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:discount_percent:discount_percent",
+                "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_url:source_url",
+                "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:image_url:image_url",
+                "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_quantity:package_quantity",
+                "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_unit:package_unit",
+                "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:display_unit:display_unit",
+                "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:bundle_count:bundle_count",
+                "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit:standard_unit",
+                "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit_price:standard_unit_price",
+                "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:price_per_100g:price_per_100g",
+                "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut:attr:cut",
+                "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut_label:attr:cut_label",
+                "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin:attr:origin",
+                "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin_label:attr:origin_label",
+                "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage:attr:storage",
+                "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_label:attr:storage_label",
+                "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_type:attr:storage_type",
+                "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-shrimp:keywords:kw:0"
+              ],
+              "approved_fields": {
+                "category_id": "seafood.crustacean.shrimp",
+                "keywords": [
+                  "새우"
+                ]
+              },
+              "ignored_source_owned_ai_fields": {}
+            },
+            "display_unit": "300g",
+            "package_quantity": 300.0,
+            "package_unit": "g",
+            "category_evidence": {
+              "safe_category_id": "seafood.frozen",
+              "safe_category_display_label": "수산/냉동",
+              "candidates": [
+                {
+                  "raw": "seafood.crustacean.shrimp",
+                  "normalized": "seafood.crustacean.shrimp",
+                  "display_label": "seafood.crustacean.shrimp",
+                  "safe_seed": false
+                },
+                {
+                  "raw": "수산/냉동",
+                  "normalized": "seafood.frozen",
+                  "display_label": "수산/냉동",
+                  "safe_seed": true
+                }
+              ]
+            },
+            "publication": {
+              "publication_kind": "hotdeal",
+              "price_observation_only": false,
+              "discount_claim_status": "verified",
+              "claim_basis": "source_declared_original_discount",
+              "claim_blockers": [],
+              "observed_at": "2026-05-15T22:06:04.472782"
+            },
+            "normalized": {
+              "contract_version": "normalized-mart3-v1",
+              "ai_override_policy": "source_owned_price_link_period_image_fields_win",
+              "canonical_product": {
+                "public_product_id": null,
+                "canonical_name": "베트남산 냉동 새우살 300g",
+                "brand": null,
+                "category_id": "seafood.frozen",
+                "category_name": "seafood.frozen",
+                "aliases": [],
+                "keywords": [
+                  "새우"
+                ],
+                "attributes": {
+                  "storage_type": "냉동",
+                  "storage_label": "냉동",
+                  "origin": "베트남",
+                  "origin_label": "베트남산",
+                  "cut": "shrimp_meat",
+                  "cut_label": "새우살"
+                },
+                "primary_image_url": "https://example.invalid/emart/images/shrimp.jpg"
+              },
+              "product_variant": {
+                "public_variant_id": null,
+                "variant_name": "베트남산 냉동 새우살 300g",
+                "package_quantity": 300.0,
+                "package_unit": "g",
+                "display_unit": "300g",
+                "bundle_count": 1,
+                "standard_unit": "kg",
+                "attributes": {
+                  "storage_type": "냉동",
+                  "storage_label": "냉동",
+                  "origin": "베트남",
+                  "origin_label": "베트남산",
+                  "cut": "shrimp_meat",
+                  "cut_label": "새우살"
+                },
+                "package_signature": "qty-300.0-unit-g-bundle-1-display-300g",
+                "source_package_signature": "qty-300.0-unit-g-bundle-1-display-300g",
+                "package_evidence_source": "deterministic_source",
+                "package_match_status": "source_confirmed"
+              },
+              "source_listing": {
+                "public_source_listing_id": null,
+                "source_name": "emart-fixture",
+                "source_record_key": "fixture-shrimp",
+                "source_title": "베트남산 냉동 새우살 300g",
+                "source_title_key": "베트남산 냉동 새우살 300g",
+                "source_url": "https://example.invalid/emart/shrimp",
+                "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+                "source_unit_text": "300g"
+              },
+              "offer_event": {
+                "public_offer_event_id": null,
+                "price_state": "normal",
+                "promotion_type": "unknown",
+                "price": 7980,
+                "current_price": 7980,
+                "original_price": 9980,
+                "discount_rate": 0.2,
+                "discount_percent": 20.0,
+                "event_name": null,
+                "valid_from": null,
+                "valid_to": null,
+                "standard_unit_price": 26600.0,
+                "price_per_100g": 2660.0,
+                "raw_record_id": "emart-fixture:fixture-shrimp",
+                "raw_evidence": {
+                  "raw_title": "베트남산 냉동 새우살 300g",
+                  "raw_price": 7980,
+                  "raw_unit": null,
+                  "raw_payload": {
+                    "product_id": "fixture-shrimp",
+                    "name": "베트남산 냉동 새우살 300g",
+                    "sale_price": "7,980원",
+                    "original_price": "9,980원",
+                    "discount_percent": 20,
+                    "detail_url": "https://example.invalid/emart/shrimp",
+                    "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+                    "source": "emart-fixture",
+                    "category_hint": "수산/냉동",
+                    "origin": "베트남",
+                    "storage_type": "냉동",
+                    "expected_ai": {
+                      "category_id": "seafood.frozen",
+                      "keywords": [
+                        "새우"
+                      ],
+                      "attributes": {
+                        "origin": "베트남",
+                        "storage_type": "냉동"
+                      }
+                    },
+                    "holdout_expected_class": "deterministic_raw"
+                  }
+                },
+                "audit_provenance": {
+                  "raw_record_id": "emart-fixture:fixture-shrimp",
+                  "proposal_ids": [
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:canonical_name:canonical_name",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_title:source_title",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:category_id:category_id",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:sale_price:sale_price",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:original_price:original_price",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:discount_percent:discount_percent",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_url:source_url",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:image_url:image_url",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_quantity:package_quantity",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_unit:package_unit",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:display_unit:display_unit",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:bundle_count:bundle_count",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit:standard_unit",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit_price:standard_unit_price",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:price_per_100g:price_per_100g",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut:attr:cut",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut_label:attr:cut_label",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin:attr:origin",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin_label:attr:origin_label",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage:attr:storage",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_label:attr:storage_label",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_type:attr:storage_type",
+                    "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-shrimp:keywords:kw:0"
+                  ],
+                  "approved_fields": {
+                    "category_id": "seafood.crustacean.shrimp",
+                    "keywords": [
+                      "새우"
+                    ]
+                  },
+                  "ignored_source_owned_ai_fields": {}
+                },
+                "offer_state": "active"
+              },
+              "source_owned_fields": {
+                "price": 7980,
+                "source_url": "https://example.invalid/emart/shrimp",
+                "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+                "event_name": null,
+                "valid_from": null,
+                "valid_to": null
+              }
+            },
+            "normalized_metadata": {
+              "contract_version": "normalized-mart3-v1",
+              "ai_override_policy": "source_owned_price_link_period_image_fields_win",
+              "canonical_product": {
+                "public_product_id": null,
+                "canonical_name": "베트남산 냉동 새우살 300g",
+                "brand": null,
+                "category_id": "seafood.frozen",
+                "category_name": "seafood.frozen",
+                "aliases": [],
+                "keywords": [
+                  "새우"
+                ],
+                "attributes": {
+                  "storage_type": "냉동",
+                  "storage_label": "냉동",
+                  "origin": "베트남",
+                  "origin_label": "베트남산",
+                  "cut": "shrimp_meat",
+                  "cut_label": "새우살"
+                },
+                "primary_image_url": "https://example.invalid/emart/images/shrimp.jpg"
+              },
+              "product_variant": {
+                "public_variant_id": null,
+                "variant_name": "베트남산 냉동 새우살 300g",
+                "package_quantity": 300.0,
+                "package_unit": "g",
+                "display_unit": "300g",
+                "bundle_count": 1,
+                "standard_unit": "kg",
+                "attributes": {
+                  "storage_type": "냉동",
+                  "storage_label": "냉동",
+                  "origin": "베트남",
+                  "origin_label": "베트남산",
+                  "cut": "shrimp_meat",
+                  "cut_label": "새우살"
+                },
+                "package_signature": "qty-300.0-unit-g-bundle-1-display-300g",
+                "source_package_signature": "qty-300.0-unit-g-bundle-1-display-300g",
+                "package_evidence_source": "deterministic_source",
+                "package_match_status": "source_confirmed"
+              },
+              "source_listing": {
+                "public_source_listing_id": null,
+                "source_name": "emart-fixture",
+                "source_record_key": "fixture-shrimp",
+                "source_title": "베트남산 냉동 새우살 300g",
+                "source_title_key": "베트남산 냉동 새우살 300g",
+                "source_url": "https://example.invalid/emart/shrimp",
+                "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+                "source_unit_text": "300g"
+              },
+              "offer_event": {
+                "public_offer_event_id": null,
+                "price_state": "normal",
+                "promotion_type": "unknown",
+                "price": 7980,
+                "current_price": 7980,
+                "original_price": 9980,
+                "discount_rate": 0.2,
+                "discount_percent": 20.0,
+                "event_name": null,
+                "valid_from": null,
+                "valid_to": null,
+                "standard_unit_price": 26600.0,
+                "price_per_100g": 2660.0,
+                "raw_record_id": "emart-fixture:fixture-shrimp",
+                "raw_evidence": {
+                  "raw_title": "베트남산 냉동 새우살 300g",
+                  "raw_price": 7980,
+                  "raw_unit": null,
+                  "raw_payload": {
+                    "product_id": "fixture-shrimp",
+                    "name": "베트남산 냉동 새우살 300g",
+                    "sale_price": "7,980원",
+                    "original_price": "9,980원",
+                    "discount_percent": 20,
+                    "detail_url": "https://example.invalid/emart/shrimp",
+                    "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+                    "source": "emart-fixture",
+                    "category_hint": "수산/냉동",
+                    "origin": "베트남",
+                    "storage_type": "냉동",
+                    "expected_ai": {
+                      "category_id": "seafood.frozen",
+                      "keywords": [
+                        "새우"
+                      ],
+                      "attributes": {
+                        "origin": "베트남",
+                        "storage_type": "냉동"
+                      }
+                    },
+                    "holdout_expected_class": "deterministic_raw"
+                  }
+                },
+                "audit_provenance": {
+                  "raw_record_id": "emart-fixture:fixture-shrimp",
+                  "proposal_ids": [
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:canonical_name:canonical_name",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_title:source_title",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:category_id:category_id",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:sale_price:sale_price",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:original_price:original_price",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:discount_percent:discount_percent",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_url:source_url",
+                    "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:image_url:image_url",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_quantity:package_quantity",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_unit:package_unit",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:display_unit:display_unit",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:bundle_count:bundle_count",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit:standard_unit",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit_price:standard_unit_price",
+                    "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:price_per_100g:price_per_100g",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut:attr:cut",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut_label:attr:cut_label",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin:attr:origin",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin_label:attr:origin_label",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage:attr:storage",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_label:attr:storage_label",
+                    "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_type:attr:storage_type",
+                    "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-shrimp:keywords:kw:0"
+                  ],
+                  "approved_fields": {
+                    "category_id": "seafood.crustacean.shrimp",
+                    "keywords": [
+                      "새우"
+                    ]
+                  },
+                  "ignored_source_owned_ai_fields": {}
+                },
+                "offer_state": "active"
+              },
+              "source_owned_fields": {
+                "price": 7980,
+                "source_url": "https://example.invalid/emart/shrimp",
+                "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+                "event_name": null,
+                "valid_from": null,
+                "valid_to": null
+              }
+            },
+            "post_publish_audit_flags": [
+              {
+                "code": "mismatched_category_id",
+                "source": "raw_ai_audit",
+                "message": "expected category_id was not proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "ai_suggested_category_id",
+                "source": "field_proposal",
+                "proposal_id": "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:category_id:category_id",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              },
+              {
+                "code": "ai_suggested_keywords",
+                "source": "field_proposal",
+                "proposal_id": "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-shrimp:keywords:kw:0",
+                "status": "ai_proposed",
+                "severity": "post_publish_audit"
+              }
+            ]
+          },
+          "raw_record_id": "emart-fixture:fixture-shrimp",
+          "source_record_key": "fixture-shrimp",
+          "ai_review_audit": {
+            "raw_record_id": "emart-fixture:fixture-shrimp",
+            "proposal_ids": [
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:canonical_name:canonical_name",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_title:source_title",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:category_id:category_id",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:sale_price:sale_price",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:original_price:original_price",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:discount_percent:discount_percent",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_url:source_url",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:image_url:image_url",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_quantity:package_quantity",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_unit:package_unit",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:display_unit:display_unit",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:bundle_count:bundle_count",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit:standard_unit",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit_price:standard_unit_price",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:price_per_100g:price_per_100g",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut:attr:cut",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut_label:attr:cut_label",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin:attr:origin",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin_label:attr:origin_label",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage:attr:storage",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_label:attr:storage_label",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_type:attr:storage_type",
+              "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-shrimp:keywords:kw:0"
+            ],
+            "approved_fields": {
+              "category_id": "seafood.crustacean.shrimp",
+              "keywords": [
+                "새우"
+              ]
+            },
+            "ignored_source_owned_ai_fields": {}
+          },
+          "raw_unit": null,
+          "category_display_label": "수산/냉동",
+          "observed_at": "2026-05-15T22:06:04.472782",
+          "publication_kind": "hotdeal",
+          "price_observation_only": false,
+          "discount_claim_status": "verified",
+          "claim_basis": "source_declared_original_discount",
+          "claim_blockers": [],
+          "normalized_metadata": {
+            "contract_version": "normalized-mart3-v1",
+            "ai_override_policy": "source_owned_price_link_period_image_fields_win",
+            "canonical_product": {
+              "public_product_id": null,
+              "canonical_name": "베트남산 냉동 새우살 300g",
+              "brand": null,
+              "category_id": "seafood.frozen",
+              "category_name": "seafood.frozen",
+              "aliases": [],
+              "keywords": [
+                "새우"
+              ],
+              "attributes": {
+                "storage_type": "냉동",
+                "storage_label": "냉동",
+                "origin": "베트남",
+                "origin_label": "베트남산",
+                "cut": "shrimp_meat",
+                "cut_label": "새우살"
+              },
+              "primary_image_url": "https://example.invalid/emart/images/shrimp.jpg"
+            },
+            "product_variant": {
+              "public_variant_id": null,
+              "variant_name": "베트남산 냉동 새우살 300g",
+              "package_quantity": 300.0,
+              "package_unit": "g",
+              "display_unit": "300g",
+              "bundle_count": 1,
+              "standard_unit": "kg",
+              "attributes": {
+                "storage_type": "냉동",
+                "storage_label": "냉동",
+                "origin": "베트남",
+                "origin_label": "베트남산",
+                "cut": "shrimp_meat",
+                "cut_label": "새우살"
+              },
+              "package_signature": "qty-300.0-unit-g-bundle-1-display-300g",
+              "source_package_signature": "qty-300.0-unit-g-bundle-1-display-300g",
+              "package_evidence_source": "deterministic_source",
+              "package_match_status": "source_confirmed"
+            },
+            "source_listing": {
+              "public_source_listing_id": null,
+              "source_name": "emart-fixture",
+              "source_record_key": "fixture-shrimp",
+              "source_title": "베트남산 냉동 새우살 300g",
+              "source_title_key": "베트남산 냉동 새우살 300g",
+              "source_url": "https://example.invalid/emart/shrimp",
+              "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+              "source_unit_text": "300g"
+            },
+            "offer_event": {
+              "public_offer_event_id": null,
+              "price_state": "normal",
+              "promotion_type": "unknown",
+              "price": 7980,
+              "current_price": 7980,
+              "original_price": 9980,
+              "discount_rate": 0.2,
+              "discount_percent": 20.0,
+              "event_name": null,
+              "valid_from": null,
+              "valid_to": null,
+              "standard_unit_price": 26600.0,
+              "price_per_100g": 2660.0,
+              "raw_record_id": "emart-fixture:fixture-shrimp",
+              "raw_evidence": {
+                "raw_title": "베트남산 냉동 새우살 300g",
+                "raw_price": 7980,
+                "raw_unit": null,
+                "raw_payload": {
+                  "product_id": "fixture-shrimp",
+                  "name": "베트남산 냉동 새우살 300g",
+                  "sale_price": "7,980원",
+                  "original_price": "9,980원",
+                  "discount_percent": 20,
+                  "detail_url": "https://example.invalid/emart/shrimp",
+                  "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+                  "source": "emart-fixture",
+                  "category_hint": "수산/냉동",
+                  "origin": "베트남",
+                  "storage_type": "냉동",
+                  "expected_ai": {
+                    "category_id": "seafood.frozen",
+                    "keywords": [
+                      "새우"
+                    ],
+                    "attributes": {
+                      "origin": "베트남",
+                      "storage_type": "냉동"
+                    }
+                  },
+                  "holdout_expected_class": "deterministic_raw"
+                }
+              },
+              "audit_provenance": {
+                "raw_record_id": "emart-fixture:fixture-shrimp",
+                "proposal_ids": [
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:canonical_name:canonical_name",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_title:source_title",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:category_id:category_id",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:sale_price:sale_price",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:original_price:original_price",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:discount_percent:discount_percent",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_url:source_url",
+                  "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:image_url:image_url",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_quantity:package_quantity",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_unit:package_unit",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:display_unit:display_unit",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:bundle_count:bundle_count",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit:standard_unit",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit_price:standard_unit_price",
+                  "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:price_per_100g:price_per_100g",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut:attr:cut",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut_label:attr:cut_label",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin:attr:origin",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin_label:attr:origin_label",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage:attr:storage",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_label:attr:storage_label",
+                  "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_type:attr:storage_type",
+                  "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-shrimp:keywords:kw:0"
+                ],
+                "approved_fields": {
+                  "category_id": "seafood.crustacean.shrimp",
+                  "keywords": [
+                    "새우"
+                  ]
+                },
+                "ignored_source_owned_ai_fields": {}
+              },
+              "offer_state": "active"
+            },
+            "source_owned_fields": {
+              "price": 7980,
+              "source_url": "https://example.invalid/emart/shrimp",
+              "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+              "event_name": null,
+              "valid_from": null,
+              "valid_to": null
+            }
+          },
+          "price": 7980,
+          "source_name": "emart-fixture",
+          "variant_name": "베트남산 냉동 새우살 300g",
+          "source_unit_text": "300g",
+          "listing_image_url": "https://example.invalid/emart/images/shrimp.jpg",
+          "raw_evidence": {
+            "raw_title": "베트남산 냉동 새우살 300g",
+            "raw_price": 7980,
+            "raw_unit": null,
+            "raw_payload": {
+              "product_id": "fixture-shrimp",
+              "name": "베트남산 냉동 새우살 300g",
+              "sale_price": "7,980원",
+              "original_price": "9,980원",
+              "discount_percent": 20,
+              "detail_url": "https://example.invalid/emart/shrimp",
+              "image_url": "https://example.invalid/emart/images/shrimp.jpg",
+              "source": "emart-fixture",
+              "category_hint": "수산/냉동",
+              "origin": "베트남",
+              "storage_type": "냉동",
+              "expected_ai": {
+                "category_id": "seafood.frozen",
+                "keywords": [
+                  "새우"
+                ],
+                "attributes": {
+                  "origin": "베트남",
+                  "storage_type": "냉동"
+                }
+              },
+              "holdout_expected_class": "deterministic_raw"
+            }
+          },
+          "audit_provenance": {
+            "raw_record_id": "emart-fixture:fixture-shrimp",
+            "proposal_ids": [
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:canonical_name:canonical_name",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_title:source_title",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:category_id:category_id",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:sale_price:sale_price",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:original_price:original_price",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:discount_percent:discount_percent",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:source_url:source_url",
+              "raw-20260515220604-793f03a1:ai:1:normalizer:emart-fixture:fixture-shrimp:image_url:image_url",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_quantity:package_quantity",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:package_unit:package_unit",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:display_unit:display_unit",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:bundle_count:bundle_count",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit:standard_unit",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:standard_unit_price:standard_unit_price",
+              "raw-20260515220604-793f03a1:ai:1:unit_converter:emart-fixture:fixture-shrimp:price_per_100g:price_per_100g",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut:attr:cut",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.cut_label:attr:cut_label",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin:attr:origin",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.origin_label:attr:origin_label",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage:attr:storage",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_label:attr:storage_label",
+              "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:attributes.storage_type:attr:storage_type",
+              "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-shrimp:keywords:kw:0"
+            ],
+            "approved_fields": {
+              "category_id": "seafood.crustacean.shrimp",
+              "keywords": [
+                "새우"
+              ]
+            },
+            "ignored_source_owned_ai_fields": {}
+          },
+          "crawled_at": "2026-05-15T22:06:04.472782",
+          "post_publish_audit_flags": [
+            {
+              "code": "mismatched_category_id",
+              "source": "raw_ai_audit",
+              "message": "expected category_id was not proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "ai_suggested_category_id",
+              "source": "field_proposal",
+              "proposal_id": "raw-20260515220604-793f03a1:ai:1:classifier:emart-fixture:fixture-shrimp:category_id:category_id",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            },
+            {
+              "code": "ai_suggested_keywords",
+              "source": "field_proposal",
+              "proposal_id": "raw-20260515220604-793f03a1:ai:1:keyword_generator:emart-fixture:fixture-shrimp:keywords:kw:0",
+              "status": "ai_proposed",
+              "severity": "post_publish_audit"
+            }
+          ]
+        },
+        "ai_safe_final_approve_eligible": false,
+        "db_handoff_mode": "db_admin_review"
+      }
+    ]
+  },
+  "db_admin_submit_result": null,
+  "db_admin_acceptance": {
+    "accepted": false,
+    "db_admin_submit_allowed": false,
+    "submit_success": false,
+    "ai_safe_final_approved": 0,
+    "public_db_verified": 0,
+    "blocked_rows_held_for_review": true,
+    "blocked_rows_audited": true,
+    "rollback_re_review_evidence_or_next_action": false,
+    "blockers": [
+      "DB-admin submit was not explicitly allowed."
+    ]
+  },
+  "raw_vs_final": [
+    {
+      "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+      "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+      "final_name": "한돈으로 만든 햄꼬마김밥키트157g",
+      "raw_price": 6980,
+      "final_sale_price": 6980,
+      "raw_original_price": "8,980원",
+      "final_original_price": 8980,
+      "raw_discount_percent": 22,
+      "final_discount_percent": 22.0,
+      "raw_source_url": "https://example.invalid/emart/kimbap-kit",
+      "final_source_url": "https://example.invalid/emart/kimbap-kit",
+      "raw_image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+      "final_image_url": "https://example.invalid/emart/images/kimbap-kit.jpg",
+      "raw_category_id": null,
+      "final_category_id": "prepared_food.meal_kit",
+      "raw_keywords": null,
+      "final_keywords": [
+        "밀키트"
+      ],
+      "publication_kind": "hotdeal",
+      "price_observation_only": false,
+      "blockers": [
+        "pending_review: critical AI proposals must be human approved",
+        "approved: at least one human-approved proposal is required",
+        "data_quality: overbroad_canonical_name",
+        "data_quality: inflated_confidence_after_validation_failure"
+      ]
+    },
+    {
+      "raw_record_id": "emart-fixture:fixture-shrimp",
+      "raw_title": "베트남산 냉동 새우살 300g",
+      "final_name": "베트남산 냉동 새우살 300g",
+      "raw_price": 7980,
+      "final_sale_price": 7980,
+      "raw_original_price": "9,980원",
+      "final_original_price": 9980,
+      "raw_discount_percent": 20,
+      "final_discount_percent": 20.0,
+      "raw_source_url": "https://example.invalid/emart/shrimp",
+      "final_source_url": "https://example.invalid/emart/shrimp",
+      "raw_image_url": "https://example.invalid/emart/images/shrimp.jpg",
+      "final_image_url": "https://example.invalid/emart/images/shrimp.jpg",
+      "raw_category_id": null,
+      "final_category_id": "seafood.frozen",
+      "raw_keywords": null,
+      "final_keywords": [
+        "새우"
+      ],
+      "publication_kind": "hotdeal",
+      "price_observation_only": false,
+      "blockers": [
+        "pending_review: critical AI proposals must be human approved",
+        "approved: at least one human-approved proposal is required",
+        "data_quality: unknown_taxonomy_category",
+        "data_quality: inflated_confidence_after_validation_failure"
+      ]
+    }
+  ],
+  "quality_batch_validation": {
+    "purpose": "bounded_quality_repetition_not_full_all_source_one_shot",
+    "mode": "live",
+    "db_admin_submit_allowed": false,
+    "input_count": 2,
+    "selected_count": 2,
+    "retained_count": 2,
+    "invalid_row_count": 0,
+    "input_retention_valid": true,
+    "retention_anomaly_count": 0,
+    "input_anomaly_buckets": {},
+    "per_row_input_anomalies": [],
+    "max_items": 2,
+    "ai_batch_size": 20,
+    "ai_batch_prompt_chars": 8000,
+    "split_batch_count": 1,
+    "max_provider_calls": 1,
+    "provider": {
+      "called": true,
+      "mode": "live",
+      "provider_id": "google-gemini31-live-matrix",
+      "model": "gemini-3.1-flash-lite-preview",
+      "ai_batches": 1,
+      "call_attempts": 1,
+      "http_label_calls": 1,
+      "chunk_count": 1,
+      "successful_chunk_count": 1,
+      "failed_chunk_count": 0,
+      "partial_results": false,
+      "proposals_stored": 40,
+      "keyword_proposals_stored": 1
+    },
+    "label_chunks": [
+      {
+        "chunk_index": 1,
+        "status": "success",
+        "record_count": 2,
+        "raw_record_ids": [
+          "emart-fixture:fixture-kimbap-kit",
+          "emart-fixture:fixture-shrimp"
+        ],
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "success",
+            "slept_seconds": 0.0
+          }
+        ],
+        "raw_batch_id": "raw-20260515220604-793f03a1",
+        "provider_calls": 1,
+        "ai_batches": 1,
+        "missing_label_count": 0,
+        "missing_label_raw_record_ids": [],
+        "provider_response_validation": {
+          "invalid_response_row_count": 0,
+          "invalid_response_rows": [],
+          "index_mapping_count": 0,
+          "index_mappings": [],
+          "batch_summaries": [
+            {
+              "item_count": 2,
+              "request_record_count": 2,
+              "valid_response_row_count": 2,
+              "invalid_response_row_count": 0,
+              "invalid_response_rows": [],
+              "index_mapping_count": 0,
+              "index_mappings": [],
+              "missing_label_count": 0,
+              "reason": null,
+              "ai_batch_id": "raw-20260515220604-793f03a1:ai:1"
+            }
+          ],
+          "reason": null
+        }
+      }
+    ],
+    "retryable_provider_failures": [],
+    "missing_label_retry": {
+      "status": "labeled",
+      "partial_review_required": false,
+      "missing_label_count": 0,
+      "missing_label_raw_record_ids": [],
+      "retry_batches_configured": 2
+    },
+    "reviewer_retry_candidates": {
+      "purpose": "one_more_targeted_reviewer_retry_before_human_admin",
+      "source": "deterministic_quality_batch_validation_no_live_reviewer_ai",
+      "candidate_count": 2,
+      "group_count": 1,
+      "groups": [
+        {
+          "missing_field": "category",
+          "prompt_category": "taxonomy_classification_retry",
+          "row_count": 2,
+          "raw_record_ids": [
+            "emart-fixture:fixture-kimbap-kit",
+            "emart-fixture:fixture-shrimp"
+          ],
+          "items": [
+            {
+              "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+              "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "mismatched_category_id"
+              ],
+              "recommended_retry_prompt_category": "taxonomy_classification_retry"
+            },
+            {
+              "raw_record_id": "emart-fixture:fixture-shrimp",
+              "raw_title": "베트남산 냉동 새우살 300g",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "mismatched_category_id",
+                "unknown_taxonomy_category",
+                "data_quality: unknown_taxonomy_category"
+              ],
+              "recommended_retry_prompt_category": "taxonomy_classification_retry"
+            }
+          ]
+        }
+      ],
+      "human_admin_fallback": "Rows still failing after the future reviewer retry remain in DB-admin/manual review; eligible rows can continue through publish gates."
+    },
+    "anomaly_counts": {
+      "category": 2,
+      "keyword": 1,
+      "unit": 0,
+      "price": 0,
+      "image": 0
+    },
+    "rows_with_any_anomaly": 2,
+    "per_row_anomalies": [
+      {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+        "publication_kind": "hotdeal",
+        "category": [
+          "mismatched_category_id"
+        ],
+        "keyword": [
+          "mismatched_keywords"
+        ],
+        "unit": [],
+        "price": [],
+        "image": [],
+        "blockers": [
+          "pending_review: critical AI proposals must be human approved",
+          "approved: at least one human-approved proposal is required",
+          "data_quality: overbroad_canonical_name",
+          "data_quality: inflated_confidence_after_validation_failure"
+        ],
+        "audit_issue_codes": [
+          "inflated_confidence_after_validation_failure",
+          "mismatched_canonical_name",
+          "mismatched_category_id",
+          "mismatched_keywords",
+          "name_signal_mismatch",
+          "overbroad_canonical_name"
+        ],
+        "has_any_anomaly": true
+      },
+      {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "raw_title": "베트남산 냉동 새우살 300g",
+        "publication_kind": "hotdeal",
+        "category": [
+          "mismatched_category_id",
+          "unknown_taxonomy_category",
+          "data_quality: unknown_taxonomy_category"
+        ],
+        "keyword": [],
+        "unit": [],
+        "price": [],
+        "image": [],
+        "blockers": [
+          "pending_review: critical AI proposals must be human approved",
+          "approved: at least one human-approved proposal is required",
+          "data_quality: unknown_taxonomy_category",
+          "data_quality: inflated_confidence_after_validation_failure"
+        ],
+        "audit_issue_codes": [
+          "inflated_confidence_after_validation_failure",
+          "mismatched_category_id",
+          "unknown_taxonomy_category"
+        ],
+        "has_any_anomaly": true
+      }
+    ],
+    "honesty_notes": [
+      "This validates only the bounded selected rows, not a full all-source one-shot build.",
+      "DB-admin mutation is disabled unless --allow-db-admin-submit is explicit."
+    ]
+  },
+  "holdout_generalization": {
+    "evidence": [
+      {
+        "raw_record_id": "emart-fixture:fixture-kimbap-kit",
+        "raw_title": "한돈으로 만든 햄꼬마김밥키트157g",
+        "evidence_class": "new_unknown",
+        "trust_label": "unresolved_new_product_holdout",
+        "reason": "operator-provided holdout_expected_class",
+        "counts_as_generalization": true
+      },
+      {
+        "raw_record_id": "emart-fixture:fixture-shrimp",
+        "raw_title": "베트남산 냉동 새우살 300g",
+        "evidence_class": "deterministic_raw",
+        "trust_label": "deterministic_structured",
+        "reason": "operator-provided holdout_expected_class",
+        "counts_as_generalization": false
+      }
+    ],
+    "counts": {
+      "new_unknown": 1,
+      "deterministic_raw": 1
+    },
+    "generalization_success_count": 1,
+    "rule": "exact_catalog and learned_alias are reuse, never generalization success",
+    "todo_hooks": [
+      "Load production catalog/learned exports via --catalog-json and --learned-json."
+    ]
+  },
+  "risks": [
+    "Live crawl/provider/DB-admin paths are operator-gated but can touch external systems when explicitly enabled.",
+    "Dry-run artifacts use no provider output; customer-safety verdicts remain blockers until human/provider proposals exist."
+  ],
+  "artifact_path": ".walletsavior-live-validation\\real-ai-provider-acceptance\\live-validation-v2-20260515-220604-a2496c7a.json"
+}

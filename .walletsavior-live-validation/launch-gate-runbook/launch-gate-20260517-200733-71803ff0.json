@@ -1,0 +1,1094 @@
+{
+  "schema": "walletsavior.launch_gate_runbook.v1",
+  "meta": {
+    "schema": "walletsavior.launch_gate_runbook.v1",
+    "timestamp": "2026-05-17T20:07:33.914801",
+    "run_id": "71803ff0",
+    "git_sha": "0ffaf0553517",
+    "provider_mode": "fallback",
+    "input_paths": [
+      "E:\\pdf\\capston01\\.walletsavior-live-validation\\mart3-full-coverage-diagnostics\\emart",
+      "E:\\pdf\\capston01\\.walletsavior-live-validation\\mart3-full-coverage-diagnostics\\homeplus",
+      "E:\\pdf\\capston01\\.walletsavior-live-validation\\mart3-full-coverage-diagnostics\\lottemart"
+    ],
+    "max_items_per_mart": null
+  },
+  "per_mart_stage_counts": {
+    "emart": {
+      "crawler_rows": 274,
+      "ingested_rows": 274,
+      "ai_proposals": 274,
+      "gates_passed": 0,
+      "publish_approved": 0,
+      "public_snapshot_rows": 0
+    },
+    "homeplus": {
+      "crawler_rows": 199,
+      "ingested_rows": 199,
+      "ai_proposals": 199,
+      "gates_passed": 0,
+      "publish_approved": 0,
+      "public_snapshot_rows": 0
+    },
+    "lottemart": {
+      "crawler_rows": 50,
+      "ingested_rows": 50,
+      "ai_proposals": 50,
+      "gates_passed": 0,
+      "publish_approved": 0,
+      "public_snapshot_rows": 0
+    }
+  },
+  "per_mart_attrition_reasons": {
+    "emart": {
+      "low_confidence": 274
+    },
+    "homeplus": {
+      "low_confidence": 199
+    },
+    "lottemart": {
+      "low_confidence": 50
+    }
+  },
+  "adversarial_compare_v2": {
+    "schema": "walletsavior.artifact_db_adversarial_compare.v2",
+    "mode": "runbook_embedded",
+    "category_distribution_per_mart": {
+      "emart": {
+        "total": 274,
+        "categories": {
+          "retail.general": {
+            "count": 189,
+            "ratio": 0.6898
+          },
+          "produce.fruit": {
+            "count": 45,
+            "ratio": 0.1642
+          },
+          "processed.meat": {
+            "count": 13,
+            "ratio": 0.0474
+          },
+          "instant.rice": {
+            "count": 9,
+            "ratio": 0.0328
+          },
+          "produce.vegetable": {
+            "count": 4,
+            "ratio": 0.0146
+          },
+          "household.kitchen": {
+            "count": 3,
+            "ratio": 0.0109
+          },
+          "pet.general": {
+            "count": 3,
+            "ratio": 0.0109
+          },
+          "seafood.shrimp": {
+            "count": 2,
+            "ratio": 0.0073
+          },
+          "dairy.cheese": {
+            "count": 2,
+            "ratio": 0.0073
+          },
+          "sports.general": {
+            "count": 1,
+            "ratio": 0.0036
+          },
+          "beauty.haircare": {
+            "count": 1,
+            "ratio": 0.0036
+          },
+          "fashion.bag": {
+            "count": 1,
+            "ratio": 0.0036
+          },
+          "beverage.coffee": {
+            "count": 1,
+            "ratio": 0.0036
+          }
+        }
+      },
+      "homeplus": {
+        "total": 199,
+        "categories": {
+          "retail.general": {
+            "count": 107,
+            "ratio": 0.5377
+          },
+          "produce.fruit": {
+            "count": 34,
+            "ratio": 0.1709
+          },
+          "produce.vegetable": {
+            "count": 32,
+            "ratio": 0.1608
+          },
+          "household.kitchen": {
+            "count": 7,
+            "ratio": 0.0352
+          },
+          "seafood.shrimp": {
+            "count": 4,
+            "ratio": 0.0201
+          },
+          "household.bath": {
+            "count": 3,
+            "ratio": 0.0151
+          },
+          "dairy.cheese": {
+            "count": 3,
+            "ratio": 0.0151
+          },
+          "beauty.skincare": {
+            "count": 3,
+            "ratio": 0.0151
+          },
+          "fashion.clothing": {
+            "count": 2,
+            "ratio": 0.0101
+          },
+          "electronics.appliance": {
+            "count": 1,
+            "ratio": 0.005
+          },
+          "processed.meat": {
+            "count": 1,
+            "ratio": 0.005
+          },
+          "beverage.coffee": {
+            "count": 1,
+            "ratio": 0.005
+          },
+          "sports.general": {
+            "count": 1,
+            "ratio": 0.005
+          }
+        }
+      },
+      "lottemart": {
+        "total": 50,
+        "categories": {
+          "retail.general": {
+            "count": 29,
+            "ratio": 0.58
+          },
+          "produce.vegetable": {
+            "count": 11,
+            "ratio": 0.22
+          },
+          "produce.fruit": {
+            "count": 7,
+            "ratio": 0.14
+          },
+          "seafood.shrimp": {
+            "count": 1,
+            "ratio": 0.02
+          },
+          "household.kitchen": {
+            "count": 1,
+            "ratio": 0.02
+          },
+          "instant.rice": {
+            "count": 1,
+            "ratio": 0.02
+          }
+        }
+      }
+    },
+    "category_imbalance_alerts": [
+      {
+        "alert_type": "category_imbalance_alert",
+        "mart": "emart",
+        "category": "retail.general",
+        "count": 189,
+        "ratio": 0.6898,
+        "threshold": 0.6
+      }
+    ],
+    "category_sibling_starvation_alerts": [
+      {
+        "alert_type": "category_sibling_starvation_alert",
+        "mart": "emart",
+        "category": "retail.general",
+        "count": 189,
+        "l1_parent": "retail",
+        "siblings_present": []
+      },
+      {
+        "alert_type": "category_sibling_starvation_alert",
+        "mart": "homeplus",
+        "category": "retail.general",
+        "count": 107,
+        "l1_parent": "retail",
+        "siblings_present": []
+      }
+    ],
+    "ai_confidence_distribution": {
+      "available": true,
+      "count": 523,
+      "p10": 0.42,
+      "p25": 0.42,
+      "p50": 0.42,
+      "p75": 0.42,
+      "p90": 0.42,
+      "histogram": {
+        "0.0-0.5": 523,
+        "0.5-0.7": 0,
+        "0.7-0.8": 0,
+        "0.8-0.9": 0,
+        "0.9-1.0": 0
+      },
+      "histogram_ratios": {
+        "0.0-0.5": 1.0,
+        "0.5-0.7": 0.0,
+        "0.7-0.8": 0.0,
+        "0.8-0.9": 0.0,
+        "0.9-1.0": 0.0
+      }
+    },
+    "low_confidence_alerts": [
+      {
+        "alert_type": "low_confidence_tail_alert",
+        "reason": "p25=0.42 < threshold=0.7",
+        "metric": "p25",
+        "value": 0.42,
+        "threshold": 0.7
+      },
+      {
+        "alert_type": "low_confidence_tail_alert",
+        "reason": "0.0-0.5 bin ratio=1.0 > threshold=0.05",
+        "metric": "bin_0.0-0.5",
+        "value": 1.0,
+        "threshold": 0.05
+      }
+    ],
+    "mart_volume_sanity": {
+      "costco": {
+        "crawler_count": 0,
+        "final_db_count": 0,
+        "min_threshold": 80
+      },
+      "coupang": {
+        "crawler_count": 0,
+        "final_db_count": 0,
+        "min_threshold": 50
+      },
+      "emart": {
+        "crawler_count": 274,
+        "final_db_count": 0,
+        "min_threshold": 200
+      },
+      "homeplus": {
+        "crawler_count": 199,
+        "final_db_count": 0,
+        "min_threshold": 150
+      },
+      "lottemart": {
+        "crawler_count": 50,
+        "final_db_count": 0,
+        "min_threshold": 100
+      }
+    },
+    "volume_alerts": [
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "costco",
+        "final_db_count": 0,
+        "min_threshold": 80,
+        "deficit": 80
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "coupang",
+        "final_db_count": 0,
+        "min_threshold": 50,
+        "deficit": 50
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "emart",
+        "final_db_count": 0,
+        "min_threshold": 200,
+        "deficit": 200
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "emart",
+        "crawler_count": 274,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "homeplus",
+        "final_db_count": 0,
+        "min_threshold": 150,
+        "deficit": 150
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "homeplus",
+        "crawler_count": 199,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "lottemart",
+        "final_db_count": 0,
+        "min_threshold": 100,
+        "deficit": 100
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "lottemart",
+        "crawler_count": 50,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      }
+    ],
+    "semantic_spotcheck": {
+      "sampled": 90,
+      "checked": 49,
+      "pass_rate": 0.0204,
+      "flagged": [
+        {
+          "raw_record_id": "emart:1000632086945",
+          "mart": "emart",
+          "raw_title": "대추방울토마토 750g 팩",
+          "category": "produce.fruit",
+          "expected_prefix": "vegetable",
+          "matched_keyword": "토마토",
+          "reason": "title contains '토마토' but category 'produce.fruit' does not start with 'vegetable'"
+        },
+        {
+          "raw_record_id": "emart:1000754411240",
+          "mart": "emart",
+          "raw_title": "hy 제주당근 요거트 500ml",
+          "category": "produce.vegetable",
+          "expected_prefix": "dairy",
+          "matched_keyword": "요거트",
+          "reason": "title contains '요거트' but category 'produce.vegetable' does not start with 'dairy'"
+        },
+        {
+          "raw_record_id": "emart:1000066603696",
+          "mart": "emart",
+          "raw_title": "DHA참치 135g*4입",
+          "category": "retail.general",
+          "expected_prefix": "seafood",
+          "matched_keyword": "참치",
+          "reason": "title contains '참치' but category 'retail.general' does not start with 'seafood'"
+        },
+        {
+          "raw_record_id": "emart:1000361288950",
+          "mart": "emart",
+          "raw_title": "[수산대전쿠폰적용가 20,400원][품질보장] 자포니카 품종 민물장어 1kg(1-2미/손질후 600g-650g)+소스2+생강채",
+          "category": "retail.general",
+          "expected_prefix": "condiment",
+          "matched_keyword": "소스",
+          "reason": "title contains '소스' but category 'retail.general' does not start with 'condiment'"
+        },
+        {
+          "raw_record_id": "emart:1000790913496",
+          "mart": "emart",
+          "raw_title": "동원 자연산 진 고등어 300g",
+          "category": "retail.general",
+          "expected_prefix": "seafood",
+          "matched_keyword": "고등어",
+          "reason": "title contains '고등어' but category 'retail.general' does not start with 'seafood'"
+        },
+        {
+          "raw_record_id": "emart:1000719295489",
+          "mart": "emart",
+          "raw_title": "목우촌 주부9단 닭가슴살스테이크 105g*4",
+          "category": "retail.general",
+          "expected_prefix": "meat",
+          "matched_keyword": "닭가슴살",
+          "reason": "title contains '닭가슴살' but category 'retail.general' does not start with 'meat'"
+        },
+        {
+          "raw_record_id": "emart:1000772512204",
+          "mart": "emart",
+          "raw_title": "필리핀산 스위트마운틴 바나나 1kg",
+          "category": "produce.fruit",
+          "expected_prefix": "fruit",
+          "matched_keyword": "바나나",
+          "reason": "title contains '바나나' but category 'produce.fruit' does not start with 'fruit'"
+        },
+        {
+          "raw_record_id": "emart:1000051465495",
+          "mart": "emart",
+          "raw_title": "[수산대전쿠폰적용가 64,720원][물맛남] 제주직송 갈치 특대 3미 12토막 (1미당400g-500g)",
+          "category": "retail.general",
+          "expected_prefix": "seafood",
+          "matched_keyword": "갈치",
+          "reason": "title contains '갈치' but category 'retail.general' does not start with 'seafood'"
+        },
+        {
+          "raw_record_id": "emart:1000791614987",
+          "mart": "emart",
+          "raw_title": "신상 농심 배홍동막국수 114g*4개",
+          "category": "retail.general",
+          "expected_prefix": "fruit",
+          "matched_keyword": "배",
+          "reason": "title contains '배' but category 'retail.general' does not start with 'fruit'"
+        },
+        {
+          "raw_record_id": "emart:1000262703535",
+          "mart": "emart",
+          "raw_title": "살코기참치135g",
+          "category": "retail.general",
+          "expected_prefix": "seafood",
+          "matched_keyword": "참치",
+          "reason": "title contains '참치' but category 'retail.general' does not start with 'seafood'"
+        },
+        {
+          "raw_record_id": "emart:1000031728895",
+          "mart": "emart",
+          "raw_title": "더 진한 순수 플레인 요거트 1.8L",
+          "category": "retail.general",
+          "expected_prefix": "dairy",
+          "matched_keyword": "요거트",
+          "reason": "title contains '요거트' but category 'retail.general' does not start with 'dairy'"
+        },
+        {
+          "raw_record_id": "emart:1000714541165",
+          "mart": "emart",
+          "raw_title": "스페인냉동대패돈목심 500g",
+          "category": "retail.general",
+          "expected_prefix": "convenience",
+          "matched_keyword": "냉동",
+          "reason": "title contains '냉동' but category 'retail.general' does not start with 'convenience'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-47c7334a51b191be",
+          "mart": "homeplus",
+          "raw_title": "ThePet 바른먹거리 촉촉한닭고기 300G",
+          "category": "retail.general",
+          "expected_prefix": "meat",
+          "matched_keyword": "닭고기",
+          "reason": "title contains '닭고기' but category 'retail.general' does not start with 'meat'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-29cdfebf24c3703c",
+          "mart": "homeplus",
+          "raw_title": "풀무원 국산콩두부로 만든 유부초밥 165G",
+          "category": "retail.general",
+          "expected_prefix": "soy",
+          "matched_keyword": "두부",
+          "reason": "title contains '두부' but category 'retail.general' does not start with 'soy'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-6cf9f8807af2feb2",
+          "mart": "homeplus",
+          "raw_title": "12Brix 유명산지 부사사과 3-7입(봉)",
+          "category": "produce.fruit",
+          "expected_prefix": "fruit",
+          "matched_keyword": "사과",
+          "reason": "title contains '사과' but category 'produce.fruit' does not start with 'fruit'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-d83eaa87c3c45e53",
+          "mart": "homeplus",
+          "raw_title": "한돈 YBD 황금돼지 삼겹살 100G/돼지고기",
+          "category": "retail.general",
+          "expected_prefix": "meat",
+          "matched_keyword": "삼겹살",
+          "reason": "title contains '삼겹살' but category 'retail.general' does not start with 'meat'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-03e5685bb9e43ca6",
+          "mart": "homeplus",
+          "raw_title": "풀무원 생만두 고기배추 400G",
+          "category": "retail.general",
+          "expected_prefix": "vegetable",
+          "matched_keyword": "배추",
+          "reason": "title contains '배추' but category 'retail.general' does not start with 'vegetable'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-ec9d557274cecdd8",
+          "mart": "homeplus",
+          "raw_title": "풀무원 노엣지피자 토마토&미트콤보 350G",
+          "category": "retail.general",
+          "expected_prefix": "vegetable",
+          "matched_keyword": "토마토",
+          "reason": "title contains '토마토' but category 'retail.general' does not start with 'vegetable'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-365ac79e984cd64f",
+          "mart": "homeplus",
+          "raw_title": "simplus 냉동 아보카도 500G (페루산)",
+          "category": "produce.fruit",
+          "expected_prefix": "convenience",
+          "matched_keyword": "냉동",
+          "reason": "title contains '냉동' but category 'produce.fruit' does not start with 'convenience'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-7eb7a7953ec31ef5",
+          "mart": "homeplus",
+          "raw_title": "서울우유 멸균 흰우유 200ML*24",
+          "category": "retail.general",
+          "expected_prefix": "dairy",
+          "matched_keyword": "우유",
+          "reason": "title contains '우유' but category 'retail.general' does not start with 'dairy'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-8fd085af50dc7ce1",
+          "mart": "homeplus",
+          "raw_title": "대추방울토마토 500G(팩)",
+          "category": "produce.fruit",
+          "expected_prefix": "vegetable",
+          "matched_keyword": "토마토",
+          "reason": "title contains '토마토' but category 'produce.fruit' does not start with 'vegetable'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-89a80e735f27ded3",
+          "mart": "homeplus",
+          "raw_title": "완숙토마토 1.5KG(박스)",
+          "category": "produce.fruit",
+          "expected_prefix": "vegetable",
+          "matched_keyword": "토마토",
+          "reason": "title contains '토마토' but category 'produce.fruit' does not start with 'vegetable'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-e5ddd783faddefb5",
+          "mart": "homeplus",
+          "raw_title": "생생 한돈 간장 불고기 800G",
+          "category": "retail.general",
+          "expected_prefix": "condiment",
+          "matched_keyword": "간장",
+          "reason": "title contains '간장' but category 'retail.general' does not start with 'condiment'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-9b170cf71ac35269",
+          "mart": "homeplus",
+          "raw_title": "맛난이 배 2.5KG(봉)",
+          "category": "produce.fruit",
+          "expected_prefix": "fruit",
+          "matched_keyword": "배",
+          "reason": "title contains '배' but category 'produce.fruit' does not start with 'fruit'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-d714cf1006c367b2",
+          "mart": "homeplus",
+          "raw_title": "풀무원다논 액티비아 딸기 블루베리 130ML*8",
+          "category": "retail.general",
+          "expected_prefix": "fruit",
+          "matched_keyword": "딸기",
+          "reason": "title contains '딸기' but category 'retail.general' does not start with 'fruit'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-42d52eec617bc64c",
+          "mart": "homeplus",
+          "raw_title": "풀무원 함흥 비빔냉면 2인 460G",
+          "category": "retail.general",
+          "expected_prefix": "noodle",
+          "matched_keyword": "냉면",
+          "reason": "title contains '냉면' but category 'retail.general' does not start with 'noodle'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-163d7d091564b92b",
+          "mart": "homeplus",
+          "raw_title": "한돈 일품포크 삼겹살 100G/돼지고기",
+          "category": "retail.general",
+          "expected_prefix": "meat",
+          "matched_keyword": "삼겹살",
+          "reason": "title contains '삼겹살' but category 'retail.general' does not start with 'meat'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-75e0adbb8564a747",
+          "mart": "homeplus",
+          "raw_title": "친환경 오이맛고추 150G(봉)",
+          "category": "produce.vegetable",
+          "expected_prefix": "vegetable",
+          "matched_keyword": "오이",
+          "reason": "title contains '오이' but category 'produce.vegetable' does not start with 'vegetable'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-29fdc0b57d7cf080",
+          "mart": "homeplus",
+          "raw_title": "완숙 토마토 950G(봉)",
+          "category": "produce.fruit",
+          "expected_prefix": "vegetable",
+          "matched_keyword": "토마토",
+          "reason": "title contains '토마토' but category 'produce.fruit' does not start with 'vegetable'"
+        },
+        {
+          "raw_record_id": "source-6921c494be:key-9e5e2722052e92b5",
+          "mart": "homeplus",
+          "raw_title": "양배추(국산)통",
+          "category": "produce.vegetable",
+          "expected_prefix": "vegetable",
+          "matched_keyword": "배추",
+          "reason": "title contains '배추' but category 'produce.vegetable' does not start with 'vegetable'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:5c27d3fc-0e12-4e73-9266-9e8ed8ed9a58",
+          "mart": "lottemart",
+          "raw_title": "[농할할인가 1,992원]  배추 (개)",
+          "category": "produce.vegetable",
+          "expected_prefix": "vegetable",
+          "matched_keyword": "배추",
+          "reason": "title contains '배추' but category 'produce.vegetable' does not start with 'vegetable'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:5886b598-0769-4426-8dc3-904d865566a2",
+          "mart": "lottemart",
+          "raw_title": "풀무원 특등급 무농약 국산 콩나물 (340G)",
+          "category": "produce.vegetable",
+          "expected_prefix": "soy",
+          "matched_keyword": "콩나물",
+          "reason": "title contains '콩나물' but category 'produce.vegetable' does not start with 'soy'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:23b0f597-9883-4bc1-ad4a-140d5ee37930",
+          "mart": "lottemart",
+          "raw_title": "풀무원 국산 찌개두부 (340G)",
+          "category": "produce.vegetable",
+          "expected_prefix": "soy",
+          "matched_keyword": "두부",
+          "reason": "title contains '두부' but category 'produce.vegetable' does not start with 'soy'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:6bdea4ad-ae2b-47cc-ae3e-9e4853f24413",
+          "mart": "lottemart",
+          "raw_title": "필리핀산 돌 스위티오 바나나 (1KG 내외)",
+          "category": "produce.fruit",
+          "expected_prefix": "fruit",
+          "matched_keyword": "바나나",
+          "reason": "title contains '바나나' but category 'produce.fruit' does not start with 'fruit'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:5fa489db-4ee8-4a83-9658-59e74ca086ee",
+          "mart": "lottemart",
+          "raw_title": "CJ 백설 다담 순두부찌개 양념 (140G)",
+          "category": "retail.general",
+          "expected_prefix": "condiment",
+          "matched_keyword": "양념",
+          "reason": "title contains '양념' but category 'retail.general' does not start with 'condiment'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:40c999e4-3461-4c7b-9fa0-1b4fbc760746",
+          "mart": "lottemart",
+          "raw_title": "[농할할인가 3,992원]  햇 양파 (2KG/망)",
+          "category": "produce.vegetable",
+          "expected_prefix": "vegetable",
+          "matched_keyword": "양파",
+          "reason": "title contains '양파' but category 'produce.vegetable' does not start with 'vegetable'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:fa2bad02-2f79-4183-9140-e99e92565ddc",
+          "mart": "lottemart",
+          "raw_title": "풀무원 Soga두부 (찌개용) (300G)",
+          "category": "produce.vegetable",
+          "expected_prefix": "soy",
+          "matched_keyword": "두부",
+          "reason": "title contains '두부' but category 'produce.vegetable' does not start with 'soy'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:fa70e7ae-8af4-403f-94ee-6cf22c4a1f38",
+          "mart": "lottemart",
+          "raw_title": "CJ 동치미 냉면육수 (1인) (300G)",
+          "category": "retail.general",
+          "expected_prefix": "noodle",
+          "matched_keyword": "냉면",
+          "reason": "title contains '냉면' but category 'retail.general' does not start with 'noodle'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:904a6634-e24b-47a4-8639-b6f46cc3148a",
+          "mart": "lottemart",
+          "raw_title": "CJ 비비고 바지락칼국수 (642G)",
+          "category": "retail.general",
+          "expected_prefix": "noodle",
+          "matched_keyword": "국수",
+          "reason": "title contains '국수' but category 'retail.general' does not start with 'noodle'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:fd6f0ef3-b965-4573-95e3-772812886fb1",
+          "mart": "lottemart",
+          "raw_title": "대추 방울토마토 (2KG)",
+          "category": "produce.fruit",
+          "expected_prefix": "vegetable",
+          "matched_keyword": "토마토",
+          "reason": "title contains '토마토' but category 'produce.fruit' does not start with 'vegetable'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:50328f24-d2c9-4808-8a9b-f123e6bd0c07",
+          "mart": "lottemart",
+          "raw_title": "서울우유 포리커피 컵 (200ML)",
+          "category": "household.kitchen",
+          "expected_prefix": "dairy",
+          "matched_keyword": "우유",
+          "reason": "title contains '우유' but category 'household.kitchen' does not start with 'dairy'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:9f4a776d-108c-47c8-aa28-416123cdb058",
+          "mart": "lottemart",
+          "raw_title": "풀무원 국산 부침두부 (340G)",
+          "category": "produce.vegetable",
+          "expected_prefix": "soy",
+          "matched_keyword": "두부",
+          "reason": "title contains '두부' but category 'produce.vegetable' does not start with 'soy'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:8660fc78-ce61-42f8-856e-645d9984ef30",
+          "mart": "lottemart",
+          "raw_title": "오늘좋은 닭가슴살 블랙페퍼 (110G)",
+          "category": "retail.general",
+          "expected_prefix": "meat",
+          "matched_keyword": "닭가슴살",
+          "reason": "title contains '닭가슴살' but category 'retail.general' does not start with 'meat'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:74c36d3f-1fcd-4f70-8eb4-73c1649d4b72",
+          "mart": "lottemart",
+          "raw_title": "완숙토마토 (개)",
+          "category": "produce.fruit",
+          "expected_prefix": "vegetable",
+          "matched_keyword": "토마토",
+          "reason": "title contains '토마토' but category 'produce.fruit' does not start with 'vegetable'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:6810e2de-4205-42a9-ae0f-b79a9161a6eb",
+          "mart": "lottemart",
+          "raw_title": "매일 바이오 그릭요거트 무가당 플레인 (400G)",
+          "category": "retail.general",
+          "expected_prefix": "dairy",
+          "matched_keyword": "요거트",
+          "reason": "title contains '요거트' but category 'retail.general' does not start with 'dairy'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:6fad94be-8d0f-4df8-8774-f5e30c09d830",
+          "mart": "lottemart",
+          "raw_title": "CJ 제일제당 고메 함박 스테이크 (152G)",
+          "category": "retail.general",
+          "expected_prefix": "meat",
+          "matched_keyword": "스테이크",
+          "reason": "title contains '스테이크' but category 'retail.general' does not start with 'meat'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:64d2c9e5-d9ad-4593-a171-66de81fe0100",
+          "mart": "lottemart",
+          "raw_title": "[농할할인가 2,992원]  국내산 큰 양배추 (통)",
+          "category": "produce.vegetable",
+          "expected_prefix": "vegetable",
+          "matched_keyword": "배추",
+          "reason": "title contains '배추' but category 'produce.vegetable' does not start with 'vegetable'"
+        },
+        {
+          "raw_record_id": "source-aa9f608340:bcaf7fe2-7306-4938-aad0-e4f8c79bba1b",
+          "mart": "lottemart",
+          "raw_title": "제스프리 골드키위 (EA)",
+          "category": "produce.fruit",
+          "expected_prefix": "fruit",
+          "matched_keyword": "키위",
+          "reason": "title contains '키위' but category 'produce.fruit' does not start with 'fruit'"
+        }
+      ],
+      "per_mart": {
+        "emart": {
+          "sampled": 30,
+          "checked": 12,
+          "flagged": 12
+        },
+        "homeplus": {
+          "sampled": 30,
+          "checked": 18,
+          "flagged": 18
+        },
+        "lottemart": {
+          "sampled": 30,
+          "checked": 19,
+          "flagged": 18
+        }
+      }
+    },
+    "semantic_alerts": [
+      {
+        "alert_type": "semantic_spotcheck_alert",
+        "pass_rate": 0.0204,
+        "threshold": 0.8,
+        "checked": 49,
+        "flagged": 48
+      }
+    ],
+    "overall_launch_gate_blockers": [
+      {
+        "alert_type": "category_imbalance_alert",
+        "mart": "emart",
+        "category": "retail.general",
+        "count": 189,
+        "ratio": 0.6898,
+        "threshold": 0.6
+      },
+      {
+        "alert_type": "low_confidence_tail_alert",
+        "reason": "p25=0.42 < threshold=0.7",
+        "metric": "p25",
+        "value": 0.42,
+        "threshold": 0.7
+      },
+      {
+        "alert_type": "low_confidence_tail_alert",
+        "reason": "0.0-0.5 bin ratio=1.0 > threshold=0.05",
+        "metric": "bin_0.0-0.5",
+        "value": 1.0,
+        "threshold": 0.05
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "costco",
+        "final_db_count": 0,
+        "min_threshold": 80,
+        "deficit": 80
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "coupang",
+        "final_db_count": 0,
+        "min_threshold": 50,
+        "deficit": 50
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "emart",
+        "final_db_count": 0,
+        "min_threshold": 200,
+        "deficit": 200
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "emart",
+        "crawler_count": 274,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "homeplus",
+        "final_db_count": 0,
+        "min_threshold": 150,
+        "deficit": 150
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "homeplus",
+        "crawler_count": 199,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "lottemart",
+        "final_db_count": 0,
+        "min_threshold": 100,
+        "deficit": 100
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "lottemart",
+        "crawler_count": 50,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      },
+      {
+        "alert_type": "semantic_spotcheck_alert",
+        "pass_rate": 0.0204,
+        "threshold": 0.8,
+        "checked": 49,
+        "flagged": 48
+      }
+    ],
+    "blockers": [
+      {
+        "alert_type": "category_imbalance_alert",
+        "mart": "emart",
+        "category": "retail.general",
+        "count": 189,
+        "ratio": 0.6898,
+        "threshold": 0.6
+      },
+      {
+        "alert_type": "low_confidence_tail_alert",
+        "reason": "p25=0.42 < threshold=0.7",
+        "metric": "p25",
+        "value": 0.42,
+        "threshold": 0.7
+      },
+      {
+        "alert_type": "low_confidence_tail_alert",
+        "reason": "0.0-0.5 bin ratio=1.0 > threshold=0.05",
+        "metric": "bin_0.0-0.5",
+        "value": 1.0,
+        "threshold": 0.05
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "costco",
+        "final_db_count": 0,
+        "min_threshold": 80,
+        "deficit": 80
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "coupang",
+        "final_db_count": 0,
+        "min_threshold": 50,
+        "deficit": 50
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "emart",
+        "final_db_count": 0,
+        "min_threshold": 200,
+        "deficit": 200
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "emart",
+        "crawler_count": 274,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "homeplus",
+        "final_db_count": 0,
+        "min_threshold": 150,
+        "deficit": 150
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "homeplus",
+        "crawler_count": 199,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "lottemart",
+        "final_db_count": 0,
+        "min_threshold": 100,
+        "deficit": 100
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "lottemart",
+        "crawler_count": 50,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      },
+      {
+        "alert_type": "semantic_spotcheck_alert",
+        "pass_rate": 0.0204,
+        "threshold": 0.8,
+        "checked": 49,
+        "flagged": 48
+      }
+    ]
+  },
+  "launch_gate_blockers": [
+    {
+      "alert_type": "category_imbalance_alert",
+      "mart": "emart",
+      "category": "retail.general",
+      "count": 189,
+      "ratio": 0.6898,
+      "threshold": 0.6
+    },
+    {
+      "alert_type": "low_confidence_tail_alert",
+      "reason": "p25=0.42 < threshold=0.7",
+      "metric": "p25",
+      "value": 0.42,
+      "threshold": 0.7
+    },
+    {
+      "alert_type": "low_confidence_tail_alert",
+      "reason": "0.0-0.5 bin ratio=1.0 > threshold=0.05",
+      "metric": "bin_0.0-0.5",
+      "value": 1.0,
+      "threshold": 0.05
+    },
+    {
+      "alert_type": "volume_undercount_alert",
+      "mart": "costco",
+      "final_db_count": 0,
+      "min_threshold": 80,
+      "deficit": 80
+    },
+    {
+      "alert_type": "volume_undercount_alert",
+      "mart": "coupang",
+      "final_db_count": 0,
+      "min_threshold": 50,
+      "deficit": 50
+    },
+    {
+      "alert_type": "volume_undercount_alert",
+      "mart": "emart",
+      "final_db_count": 0,
+      "min_threshold": 200,
+      "deficit": 200
+    },
+    {
+      "alert_type": "pipeline_attrition_alert",
+      "mart": "emart",
+      "crawler_count": 274,
+      "final_db_count": 0,
+      "ratio": 0.0,
+      "attrition_threshold": 0.5
+    },
+    {
+      "alert_type": "volume_undercount_alert",
+      "mart": "homeplus",
+      "final_db_count": 0,
+      "min_threshold": 150,
+      "deficit": 150
+    },
+    {
+      "alert_type": "pipeline_attrition_alert",
+      "mart": "homeplus",
+      "crawler_count": 199,
+      "final_db_count": 0,
+      "ratio": 0.0,
+      "attrition_threshold": 0.5
+    },
+    {
+      "alert_type": "volume_undercount_alert",
+      "mart": "lottemart",
+      "final_db_count": 0,
+      "min_threshold": 100,
+      "deficit": 100
+    },
+    {
+      "alert_type": "pipeline_attrition_alert",
+      "mart": "lottemart",
+      "crawler_count": 50,
+      "final_db_count": 0,
+      "ratio": 0.0,
+      "attrition_threshold": 0.5
+    },
+    {
+      "alert_type": "semantic_spotcheck_alert",
+      "pass_rate": 0.0204,
+      "threshold": 0.8,
+      "checked": 49,
+      "flagged": 48
+    }
+  ],
+  "human_summary_md_path": "E:\\pdf\\capston01\\.walletsavior-live-validation\\launch-gate-runbook\\launch-gate-20260517-200733-71803ff0.md",
+  "verdict": "needs_more_work"
+}

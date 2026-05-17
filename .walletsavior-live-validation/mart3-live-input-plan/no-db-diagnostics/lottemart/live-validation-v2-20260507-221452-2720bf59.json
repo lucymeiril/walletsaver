@@ -1,0 +1,1082 @@
+{
+  "run_id": "live-validation-v2-20260507-221452-2720bf59",
+  "created_at": "2026-05-07T22:14:55.927700",
+  "command_shape": "py tools\\live_validation_harness_v2.py [--input-json data.json | --allow-live-crawl --live-crawler emart] [--allow-live-provider --provider-id google-dev] [--allow-db-admin-submit]",
+  "validation_run": {
+    "mode": "fixture",
+    "provider": null,
+    "model": null,
+    "key_present": false,
+    "live_opt_in": false,
+    "live_call_attempted": false,
+    "live_call_succeeded": false,
+    "skip_reason": "offline fixture/dry-run; live provider not opted in",
+    "error": null,
+    "started_at": "2026-05-07T13:14:52Z",
+    "finished_at": "2026-05-07T13:14:55Z",
+    "item_counts": {
+      "input_items": 50,
+      "selected_items": 2,
+      "retained_items": 2,
+      "records": 2,
+      "skipped": 0,
+      "invalid_rows": 0,
+      "retention_anomalies": 0,
+      "input_retention_valid": false,
+      "split_batches": 1,
+      "proposals": 0,
+      "publish_eligibility_items": 2,
+      "provider_calls": null,
+      "provider_call_attempts": null,
+      "partial_review_required": false,
+      "missing_label_count": 0
+    }
+  },
+  "decisions": {
+    "manual_only": true,
+    "dry_run_no_provider": true,
+    "live_crawl_allowed": true,
+    "live_provider_allowed": false,
+    "db_admin_submit_allowed": false,
+    "provider_secret_handling": "harness passes provider_id only; ai-admin resolves provider secret_alias via existing resolver",
+    "provider_key_alias_checked": false,
+    "bounds": {
+      "max_items": 2,
+      "retain_all_input": false,
+      "allow_large_live_batch": false,
+      "max_live_items_cap": 300,
+      "hard_max_live_items_cap": 500,
+      "max_pages": 1,
+      "max_crawler_requests": 1,
+      "max_provider_calls": 0,
+      "ai_batch_size": 20,
+      "ai_batch_prompt_chars": 8000,
+      "label_timeout_seconds": 240.0,
+      "label_timeout_seconds_requested": 240.0,
+      "label_timeout_seconds_cap": 900.0,
+      "label_chunk_retries": 1,
+      "label_call_min_interval_seconds": 12.0,
+      "label_call_min_interval_seconds_requested": 12.0
+    }
+  },
+  "source": {
+    "selected_item_count": 2,
+    "records_count": 2,
+    "skipped_count": 0,
+    "invalid_rows": [],
+    "retention_anomalies": [],
+    "input_artifact_sources": [],
+    "live_crawl": {
+      "crawler_name": "lottemart",
+      "status": "CrawlStatus.SUCCESS",
+      "strategy_used": "requests",
+      "items_count": 2,
+      "crawler_items_count": 50,
+      "errors": [],
+      "error_msg": null,
+      "quality_score": 92.2,
+      "quality_details": {
+        "schema": "crawler_run_summary.v1",
+        "score": 92.2,
+        "item_counts": {
+          "raw": 50,
+          "source_raw": 50,
+          "parsed": 50,
+          "valid": 50,
+          "invalid_or_dropped": 0,
+          "duplicates_after_validation": 0
+        },
+        "coverage": {
+          "name": 1.0,
+          "sale_price": 1.0,
+          "original_price": 0.02,
+          "discount_percent": 0.02,
+          "image_url": 1.0,
+          "detail_url": 1.0,
+          "unit": 1.0
+        },
+        "critical_field_thresholds": {
+          "name": 1.0,
+          "sale_price": 1.0,
+          "detail_url": 0.8
+        },
+        "fetch": {
+          "strategy_used": "requests",
+          "fallback_used": false,
+          "queries_attempted": 1,
+          "pages_attempted": null,
+          "live_enabled": null,
+          "fixture_available": null
+        },
+        "alerts": [],
+        "source_error_count": 0,
+        "source_errors": [],
+        "operator_diagnostics": [],
+        "quality_summary": {
+          "status": "collecting",
+          "score": 92.2,
+          "registered_vs_collecting": "collecting",
+          "critical_field_coverage": {
+            "name": 1.0,
+            "sale_price": 1.0,
+            "detail_url": 1.0
+          },
+          "low_critical_fields": [],
+          "zero_result_stage": null,
+          "diagnostic_count": 0,
+          "next_actions": []
+        },
+        "next_actions": [],
+        "zero_result_diagnostic": null
+      },
+      "alerts": [],
+      "zero_result_diagnostic": null,
+      "run_limits": {
+        "max_items": 2,
+        "max_pages": 1,
+        "max_requests": 1
+      },
+      "items": [
+        {
+          "name": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+          "normalized_name": "",
+          "store": "롯데마트",
+          "original_price": 7690,
+          "sale_price": 6990,
+          "discount_percent": 9.1,
+          "unit": "1.8kg",
+          "display_unit": "1.8kg",
+          "package_quantity": 1.8,
+          "package_unit": "kg",
+          "price_per_100g": 388.33,
+          "attributes": {
+            "brand": "단독기획"
+          },
+          "category": "정육ㆍ계란",
+          "event_name": "[농할] 행복생생란 700원 할인 (1판 한정)",
+          "valid_from": null,
+          "valid_until": null,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/20594509-9cc0-4b71-8446-f5227a0cab1c/300x300.jpg",
+          "detail_url": "https://lottemartzetta.com/products/a348e9d3-d1af-43bd-9683-eedeff262db4",
+          "crawled_at": "2026-05-07T22:14:55.918877"
+        },
+        {
+          "name": "오늘좋은 1등급우유 (900ML*2)",
+          "normalized_name": "",
+          "store": "롯데마트",
+          "original_price": null,
+          "sale_price": 3790,
+          "discount_percent": null,
+          "unit": "900ml×2",
+          "display_unit": "900ml×2",
+          "package_quantity": 900.0,
+          "package_unit": "ml",
+          "price_per_100g": null,
+          "attributes": {
+            "quality_grade": "1",
+            "brand": "오늘좋은"
+          },
+          "category": "우유ㆍ유제품",
+          "event_name": "[L.PAY] PB WEEK 행사상품 2개↑ 10% 할인",
+          "valid_from": null,
+          "valid_until": null,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c94dd1b8-80ff-4a9a-a902-de5c868a9e1e/300x300.jpg",
+          "detail_url": "https://lottemartzetta.com/products/7ce15c1f-a025-4394-8e84-e2b52f0127d2",
+          "crawled_at": "2026-05-07T22:14:55.918993"
+        }
+      ]
+    },
+    "alerts": [],
+    "diagnostics": []
+  },
+  "raw_selected_items": [
+    {
+      "name": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+      "normalized_name": "",
+      "store": "롯데마트",
+      "original_price": 7690,
+      "sale_price": 6990,
+      "discount_percent": 9.1,
+      "unit": "1.8kg",
+      "display_unit": "1.8kg",
+      "package_quantity": 1.8,
+      "package_unit": "kg",
+      "price_per_100g": 388.33,
+      "attributes": {
+        "brand": "단독기획"
+      },
+      "category": "정육ㆍ계란",
+      "event_name": "[농할] 행복생생란 700원 할인 (1판 한정)",
+      "valid_from": null,
+      "valid_until": null,
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/20594509-9cc0-4b71-8446-f5227a0cab1c/300x300.jpg",
+      "detail_url": "https://lottemartzetta.com/products/a348e9d3-d1af-43bd-9683-eedeff262db4",
+      "crawled_at": "2026-05-07T22:14:55.918877"
+    },
+    {
+      "name": "오늘좋은 1등급우유 (900ML*2)",
+      "normalized_name": "",
+      "store": "롯데마트",
+      "original_price": null,
+      "sale_price": 3790,
+      "discount_percent": null,
+      "unit": "900ml×2",
+      "display_unit": "900ml×2",
+      "package_quantity": 900.0,
+      "package_unit": "ml",
+      "price_per_100g": null,
+      "attributes": {
+        "quality_grade": "1",
+        "brand": "오늘좋은"
+      },
+      "category": "우유ㆍ유제품",
+      "event_name": "[L.PAY] PB WEEK 행사상품 2개↑ 10% 할인",
+      "valid_from": null,
+      "valid_until": null,
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c94dd1b8-80ff-4a9a-a902-de5c868a9e1e/300x300.jpg",
+      "detail_url": "https://lottemartzetta.com/products/7ce15c1f-a025-4394-8e84-e2b52f0127d2",
+      "crawled_at": "2026-05-07T22:14:55.918993"
+    }
+  ],
+  "raw_records": [
+    {
+      "raw_record_id": "source-aa9f608340:url:9f3446302d0c9f75",
+      "source_name": "롯데마트",
+      "source_record_key": null,
+      "source_url": "https://lottemartzetta.com/products/a348e9d3-d1af-43bd-9683-eedeff262db4",
+      "raw_title": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+      "raw_price": 6990,
+      "raw_payload": {
+        "name": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+        "normalized_name": "",
+        "store": "롯데마트",
+        "original_price": 7690,
+        "sale_price": 6990,
+        "discount_percent": 9.1,
+        "unit": "1.8kg",
+        "display_unit": "1.8kg",
+        "package_quantity": 1.8,
+        "package_unit": "kg",
+        "price_per_100g": 388.33,
+        "attributes": {
+          "brand": "단독기획"
+        },
+        "category": "정육ㆍ계란",
+        "event_name": "[농할] 행복생생란 700원 할인 (1판 한정)",
+        "valid_from": null,
+        "valid_until": null,
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/20594509-9cc0-4b71-8446-f5227a0cab1c/300x300.jpg",
+        "detail_url": "https://lottemartzetta.com/products/a348e9d3-d1af-43bd-9683-eedeff262db4",
+        "crawled_at": "2026-05-07T22:14:55.918877"
+      },
+      "crawled_at": "2026-05-07T22:14:55.926155"
+    },
+    {
+      "raw_record_id": "source-aa9f608340:url:8fe3dbdeddda80fe",
+      "source_name": "롯데마트",
+      "source_record_key": null,
+      "source_url": "https://lottemartzetta.com/products/7ce15c1f-a025-4394-8e84-e2b52f0127d2",
+      "raw_title": "오늘좋은 1등급우유 (900ML*2)",
+      "raw_price": 3790,
+      "raw_payload": {
+        "name": "오늘좋은 1등급우유 (900ML*2)",
+        "normalized_name": "",
+        "store": "롯데마트",
+        "original_price": null,
+        "sale_price": 3790,
+        "discount_percent": null,
+        "unit": "900ml×2",
+        "display_unit": "900ml×2",
+        "package_quantity": 900.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "attributes": {
+          "quality_grade": "1",
+          "brand": "오늘좋은"
+        },
+        "category": "우유ㆍ유제품",
+        "event_name": "[L.PAY] PB WEEK 행사상품 2개↑ 10% 할인",
+        "valid_from": null,
+        "valid_until": null,
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c94dd1b8-80ff-4a9a-a902-de5c868a9e1e/300x300.jpg",
+        "detail_url": "https://lottemartzetta.com/products/7ce15c1f-a025-4394-8e84-e2b52f0127d2",
+        "crawled_at": "2026-05-07T22:14:55.918993"
+      },
+      "crawled_at": "2026-05-07T22:14:55.926234"
+    }
+  ],
+  "prompt_budget": [
+    {
+      "batch_index": 1,
+      "record_count": 2,
+      "raw_record_ids": [
+        "source-aa9f608340:url:9f3446302d0c9f75",
+        "source-aa9f608340:url:8fe3dbdeddda80fe"
+      ],
+      "prompt_chars": 2089,
+      "max_prompt_chars": 8000,
+      "within_budget": true
+    }
+  ],
+  "provider_response_summary": {
+    "called": false,
+    "provider_mode": "skipped",
+    "reason": "dry-run/no-provider mode"
+  },
+  "label_timeout_seconds": 240.0,
+  "proposals": [],
+  "audit_issues": {
+    "batch_id": "live-validation-v2-20260507-221452-2720bf59:raw",
+    "raw_record_count": 2,
+    "covered_record_count": 0,
+    "missing_record_count": 2,
+    "proposal_count": 0,
+    "issue_count": 2,
+    "status": "warning",
+    "issues": [
+      {
+        "raw_record_id": "source-aa9f608340:url:9f3446302d0c9f75",
+        "source_name": "롯데마트",
+        "raw_title": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+        "code": "missing_all_proposals",
+        "message": "raw record has no active AI proposals"
+      },
+      {
+        "raw_record_id": "source-aa9f608340:url:8fe3dbdeddda80fe",
+        "source_name": "롯데마트",
+        "raw_title": "오늘좋은 1등급우유 (900ML*2)",
+        "code": "missing_all_proposals",
+        "message": "raw record has no active AI proposals"
+      }
+    ]
+  },
+  "publish_blockers": {
+    "items": [
+      {
+        "raw_record_id": "source-aa9f608340:url:9f3446302d0c9f75",
+        "item": {
+          "name": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+          "canonical_name": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+          "source_title": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+          "sale_price": 6990,
+          "current_price": 6990,
+          "original_price": 7690,
+          "discount_percent": 9.1,
+          "discount_rate": 9.1,
+          "source": "롯데마트",
+          "store": "롯데마트",
+          "source_url": "https://lottemartzetta.com/products/a348e9d3-d1af-43bd-9683-eedeff262db4",
+          "detail_url": "https://lottemartzetta.com/products/a348e9d3-d1af-43bd-9683-eedeff262db4",
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/20594509-9cc0-4b71-8446-f5227a0cab1c/300x300.jpg",
+          "event_name": "[농할] 행복생생란 700원 할인 (1판 한정)",
+          "valid_from": null,
+          "valid_to": null,
+          "unit": "1.8kg",
+          "display_unit": "1.8kg",
+          "package_quantity": 1.8,
+          "package_unit": "kg",
+          "bundle_count": 1,
+          "standard_unit": "kg",
+          "standard_unit_price": 3883.33,
+          "price_per_100g": 388.33,
+          "category": "정육ㆍ계란",
+          "category_id": null,
+          "keywords": [],
+          "attributes": {
+            "brand": "단독기획"
+          },
+          "raw_data": {
+            "raw_record": {
+              "raw_record_id": "source-aa9f608340:url:9f3446302d0c9f75",
+              "source_name": "롯데마트",
+              "source_record_key": null,
+              "source_url": "https://lottemartzetta.com/products/a348e9d3-d1af-43bd-9683-eedeff262db4",
+              "raw_title": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+              "raw_price": 6990,
+              "raw_payload": {
+                "name": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+                "normalized_name": "",
+                "store": "롯데마트",
+                "original_price": 7690,
+                "sale_price": 6990,
+                "discount_percent": 9.1,
+                "unit": "1.8kg",
+                "display_unit": "1.8kg",
+                "package_quantity": 1.8,
+                "package_unit": "kg",
+                "price_per_100g": 388.33,
+                "attributes": {
+                  "brand": "단독기획"
+                },
+                "category": "정육ㆍ계란",
+                "event_name": "[농할] 행복생생란 700원 할인 (1판 한정)",
+                "valid_from": null,
+                "valid_until": null,
+                "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/20594509-9cc0-4b71-8446-f5227a0cab1c/300x300.jpg",
+                "detail_url": "https://lottemartzetta.com/products/a348e9d3-d1af-43bd-9683-eedeff262db4",
+                "crawled_at": "2026-05-07T22:14:55.918877"
+              },
+              "crawled_at": "2026-05-07T22:14:55.926155"
+            },
+            "raw_payload": {
+              "name": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+              "normalized_name": "",
+              "store": "롯데마트",
+              "original_price": 7690,
+              "sale_price": 6990,
+              "discount_percent": 9.1,
+              "unit": "1.8kg",
+              "display_unit": "1.8kg",
+              "package_quantity": 1.8,
+              "package_unit": "kg",
+              "price_per_100g": 388.33,
+              "attributes": {
+                "brand": "단독기획"
+              },
+              "category": "정육ㆍ계란",
+              "event_name": "[농할] 행복생생란 700원 할인 (1판 한정)",
+              "valid_from": null,
+              "valid_until": null,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/20594509-9cc0-4b71-8446-f5227a0cab1c/300x300.jpg",
+              "detail_url": "https://lottemartzetta.com/products/a348e9d3-d1af-43bd-9683-eedeff262db4",
+              "crawled_at": "2026-05-07T22:14:55.918877"
+            },
+            "canonical_product": {
+              "canonical_name": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+              "brand": null,
+              "category_id": null,
+              "aliases": [],
+              "keywords": [],
+              "attributes": {
+                "brand": "단독기획"
+              }
+            },
+            "product_variant": {
+              "canonical_product_public_id": null,
+              "variant_name": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+              "package_quantity": 1.8,
+              "package_unit": "kg",
+              "display_unit": "1.8kg",
+              "bundle_count": 1,
+              "standard_unit": "kg",
+              "attributes": {
+                "brand": "단독기획"
+              }
+            },
+            "sale_offer": {
+              "source_name": "롯데마트",
+              "source_record_key": null,
+              "source_title": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+              "source_url": "https://lottemartzetta.com/products/a348e9d3-d1af-43bd-9683-eedeff262db4",
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/20594509-9cc0-4b71-8446-f5227a0cab1c/300x300.jpg",
+              "price": 6990,
+              "original_price": 7690,
+              "discount_rate": 0.091,
+              "event_name": "[농할] 행복생생란 700원 할인 (1판 한정)",
+              "standard_unit_price": 3883.33,
+              "price_per_100g": 388.33,
+              "valid_from": null,
+              "valid_to": null,
+              "raw_record_id": "source-aa9f608340:url:9f3446302d0c9f75",
+              "raw_evidence": {
+                "raw_title": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+                "raw_price": 6990,
+                "raw_unit": "1.8kg",
+                "raw_payload": {
+                  "name": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+                  "normalized_name": "",
+                  "store": "롯데마트",
+                  "original_price": 7690,
+                  "sale_price": 6990,
+                  "discount_percent": 9.1,
+                  "unit": "1.8kg",
+                  "display_unit": "1.8kg",
+                  "package_quantity": 1.8,
+                  "package_unit": "kg",
+                  "price_per_100g": 388.33,
+                  "attributes": {
+                    "brand": "단독기획"
+                  },
+                  "category": "정육ㆍ계란",
+                  "event_name": "[농할] 행복생생란 700원 할인 (1판 한정)",
+                  "valid_from": null,
+                  "valid_until": null,
+                  "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/20594509-9cc0-4b71-8446-f5227a0cab1c/300x300.jpg",
+                  "detail_url": "https://lottemartzetta.com/products/a348e9d3-d1af-43bd-9683-eedeff262db4",
+                  "crawled_at": "2026-05-07T22:14:55.918877"
+                }
+              },
+              "audit_provenance": {
+                "raw_record_id": "source-aa9f608340:url:9f3446302d0c9f75",
+                "proposal_ids": [],
+                "approved_fields": {}
+              }
+            },
+            "attributes": {
+              "brand": "단독기획"
+            },
+            "raw_evidence": {
+              "raw_title": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+              "raw_price": 6990,
+              "raw_unit": "1.8kg",
+              "raw_payload": {
+                "name": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+                "normalized_name": "",
+                "store": "롯데마트",
+                "original_price": 7690,
+                "sale_price": 6990,
+                "discount_percent": 9.1,
+                "unit": "1.8kg",
+                "display_unit": "1.8kg",
+                "package_quantity": 1.8,
+                "package_unit": "kg",
+                "price_per_100g": 388.33,
+                "attributes": {
+                  "brand": "단독기획"
+                },
+                "category": "정육ㆍ계란",
+                "event_name": "[농할] 행복생생란 700원 할인 (1판 한정)",
+                "valid_from": null,
+                "valid_until": null,
+                "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/20594509-9cc0-4b71-8446-f5227a0cab1c/300x300.jpg",
+                "detail_url": "https://lottemartzetta.com/products/a348e9d3-d1af-43bd-9683-eedeff262db4",
+                "crawled_at": "2026-05-07T22:14:55.918877"
+              }
+            },
+            "audit_provenance": {
+              "raw_record_id": "source-aa9f608340:url:9f3446302d0c9f75",
+              "proposal_ids": [],
+              "approved_fields": {}
+            },
+            "display_unit": "1.8kg",
+            "package_quantity": 1.8,
+            "package_unit": "kg",
+            "category_evidence": {
+              "safe_category_id": null,
+              "safe_category_display_label": "",
+              "candidates": [
+                {
+                  "raw": "정육ㆍ계란",
+                  "normalized": "정육ㆍ계란",
+                  "display_label": "정육ㆍ계란",
+                  "safe_seed": false
+                }
+              ]
+            },
+            "publication": {
+              "publication_kind": "hotdeal",
+              "price_observation_only": false,
+              "discount_claim_status": "verified",
+              "claim_basis": "source_declared_original_discount",
+              "claim_blockers": [],
+              "observed_at": "2026-05-07T22:14:55.926155"
+            }
+          },
+          "raw_record_id": "source-aa9f608340:url:9f3446302d0c9f75",
+          "source_record_key": null,
+          "ai_review_audit": {
+            "raw_record_id": "source-aa9f608340:url:9f3446302d0c9f75",
+            "proposal_ids": [],
+            "approved_fields": {}
+          },
+          "raw_unit": "1.8kg",
+          "category_display_label": "정육ㆍ계란",
+          "observed_at": "2026-05-07T22:14:55.926155",
+          "publication_kind": "hotdeal",
+          "price_observation_only": false,
+          "discount_claim_status": "verified",
+          "claim_basis": "source_declared_original_discount",
+          "claim_blockers": []
+        },
+        "blockers": [
+          "pending_review: no AI proposals linked to raw record"
+        ]
+      },
+      {
+        "raw_record_id": "source-aa9f608340:url:8fe3dbdeddda80fe",
+        "item": {
+          "name": "오늘좋은 1등급우유 (900ML*2)",
+          "canonical_name": "오늘좋은 1등급우유 (900ML*2)",
+          "source_title": "오늘좋은 1등급우유 (900ML*2)",
+          "sale_price": 3790,
+          "current_price": 3790,
+          "original_price": null,
+          "discount_percent": null,
+          "discount_rate": null,
+          "source": "롯데마트",
+          "store": "롯데마트",
+          "source_url": "https://lottemartzetta.com/products/7ce15c1f-a025-4394-8e84-e2b52f0127d2",
+          "detail_url": "https://lottemartzetta.com/products/7ce15c1f-a025-4394-8e84-e2b52f0127d2",
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c94dd1b8-80ff-4a9a-a902-de5c868a9e1e/300x300.jpg",
+          "event_name": "[L.PAY] PB WEEK 행사상품 2개↑ 10% 할인",
+          "valid_from": null,
+          "valid_to": null,
+          "unit": "900ml×2",
+          "display_unit": "900ml×2",
+          "package_quantity": 900.0,
+          "package_unit": "ml",
+          "bundle_count": 2,
+          "standard_unit": "L",
+          "standard_unit_price": 2105.56,
+          "price_per_100g": null,
+          "category": "우유ㆍ유제품",
+          "category_id": null,
+          "keywords": [],
+          "attributes": {
+            "quality_grade": "1",
+            "brand": "오늘좋은"
+          },
+          "raw_data": {
+            "raw_record": {
+              "raw_record_id": "source-aa9f608340:url:8fe3dbdeddda80fe",
+              "source_name": "롯데마트",
+              "source_record_key": null,
+              "source_url": "https://lottemartzetta.com/products/7ce15c1f-a025-4394-8e84-e2b52f0127d2",
+              "raw_title": "오늘좋은 1등급우유 (900ML*2)",
+              "raw_price": 3790,
+              "raw_payload": {
+                "name": "오늘좋은 1등급우유 (900ML*2)",
+                "normalized_name": "",
+                "store": "롯데마트",
+                "original_price": null,
+                "sale_price": 3790,
+                "discount_percent": null,
+                "unit": "900ml×2",
+                "display_unit": "900ml×2",
+                "package_quantity": 900.0,
+                "package_unit": "ml",
+                "price_per_100g": null,
+                "attributes": {
+                  "quality_grade": "1",
+                  "brand": "오늘좋은"
+                },
+                "category": "우유ㆍ유제품",
+                "event_name": "[L.PAY] PB WEEK 행사상품 2개↑ 10% 할인",
+                "valid_from": null,
+                "valid_until": null,
+                "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c94dd1b8-80ff-4a9a-a902-de5c868a9e1e/300x300.jpg",
+                "detail_url": "https://lottemartzetta.com/products/7ce15c1f-a025-4394-8e84-e2b52f0127d2",
+                "crawled_at": "2026-05-07T22:14:55.918993"
+              },
+              "crawled_at": "2026-05-07T22:14:55.926234"
+            },
+            "raw_payload": {
+              "name": "오늘좋은 1등급우유 (900ML*2)",
+              "normalized_name": "",
+              "store": "롯데마트",
+              "original_price": null,
+              "sale_price": 3790,
+              "discount_percent": null,
+              "unit": "900ml×2",
+              "display_unit": "900ml×2",
+              "package_quantity": 900.0,
+              "package_unit": "ml",
+              "price_per_100g": null,
+              "attributes": {
+                "quality_grade": "1",
+                "brand": "오늘좋은"
+              },
+              "category": "우유ㆍ유제품",
+              "event_name": "[L.PAY] PB WEEK 행사상품 2개↑ 10% 할인",
+              "valid_from": null,
+              "valid_until": null,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c94dd1b8-80ff-4a9a-a902-de5c868a9e1e/300x300.jpg",
+              "detail_url": "https://lottemartzetta.com/products/7ce15c1f-a025-4394-8e84-e2b52f0127d2",
+              "crawled_at": "2026-05-07T22:14:55.918993"
+            },
+            "canonical_product": {
+              "canonical_name": "오늘좋은 1등급우유 (900ML*2)",
+              "brand": null,
+              "category_id": null,
+              "aliases": [],
+              "keywords": [],
+              "attributes": {
+                "quality_grade": "1",
+                "brand": "오늘좋은"
+              }
+            },
+            "product_variant": {
+              "canonical_product_public_id": null,
+              "variant_name": "오늘좋은 1등급우유 (900ML*2)",
+              "package_quantity": 900.0,
+              "package_unit": "ml",
+              "display_unit": "900ml×2",
+              "bundle_count": 2,
+              "standard_unit": "L",
+              "attributes": {
+                "quality_grade": "1",
+                "brand": "오늘좋은"
+              }
+            },
+            "sale_offer": {
+              "source_name": "롯데마트",
+              "source_record_key": null,
+              "source_title": "오늘좋은 1등급우유 (900ML*2)",
+              "source_url": "https://lottemartzetta.com/products/7ce15c1f-a025-4394-8e84-e2b52f0127d2",
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c94dd1b8-80ff-4a9a-a902-de5c868a9e1e/300x300.jpg",
+              "price": 3790,
+              "original_price": null,
+              "discount_rate": null,
+              "event_name": "[L.PAY] PB WEEK 행사상품 2개↑ 10% 할인",
+              "standard_unit_price": 2105.56,
+              "price_per_100g": null,
+              "valid_from": null,
+              "valid_to": null,
+              "raw_record_id": "source-aa9f608340:url:8fe3dbdeddda80fe",
+              "raw_evidence": {
+                "raw_title": "오늘좋은 1등급우유 (900ML*2)",
+                "raw_price": 3790,
+                "raw_unit": "900ml×2",
+                "raw_payload": {
+                  "name": "오늘좋은 1등급우유 (900ML*2)",
+                  "normalized_name": "",
+                  "store": "롯데마트",
+                  "original_price": null,
+                  "sale_price": 3790,
+                  "discount_percent": null,
+                  "unit": "900ml×2",
+                  "display_unit": "900ml×2",
+                  "package_quantity": 900.0,
+                  "package_unit": "ml",
+                  "price_per_100g": null,
+                  "attributes": {
+                    "quality_grade": "1",
+                    "brand": "오늘좋은"
+                  },
+                  "category": "우유ㆍ유제품",
+                  "event_name": "[L.PAY] PB WEEK 행사상품 2개↑ 10% 할인",
+                  "valid_from": null,
+                  "valid_until": null,
+                  "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c94dd1b8-80ff-4a9a-a902-de5c868a9e1e/300x300.jpg",
+                  "detail_url": "https://lottemartzetta.com/products/7ce15c1f-a025-4394-8e84-e2b52f0127d2",
+                  "crawled_at": "2026-05-07T22:14:55.918993"
+                }
+              },
+              "audit_provenance": {
+                "raw_record_id": "source-aa9f608340:url:8fe3dbdeddda80fe",
+                "proposal_ids": [],
+                "approved_fields": {}
+              }
+            },
+            "attributes": {
+              "quality_grade": "1",
+              "brand": "오늘좋은"
+            },
+            "raw_evidence": {
+              "raw_title": "오늘좋은 1등급우유 (900ML*2)",
+              "raw_price": 3790,
+              "raw_unit": "900ml×2",
+              "raw_payload": {
+                "name": "오늘좋은 1등급우유 (900ML*2)",
+                "normalized_name": "",
+                "store": "롯데마트",
+                "original_price": null,
+                "sale_price": 3790,
+                "discount_percent": null,
+                "unit": "900ml×2",
+                "display_unit": "900ml×2",
+                "package_quantity": 900.0,
+                "package_unit": "ml",
+                "price_per_100g": null,
+                "attributes": {
+                  "quality_grade": "1",
+                  "brand": "오늘좋은"
+                },
+                "category": "우유ㆍ유제품",
+                "event_name": "[L.PAY] PB WEEK 행사상품 2개↑ 10% 할인",
+                "valid_from": null,
+                "valid_until": null,
+                "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c94dd1b8-80ff-4a9a-a902-de5c868a9e1e/300x300.jpg",
+                "detail_url": "https://lottemartzetta.com/products/7ce15c1f-a025-4394-8e84-e2b52f0127d2",
+                "crawled_at": "2026-05-07T22:14:55.918993"
+              }
+            },
+            "audit_provenance": {
+              "raw_record_id": "source-aa9f608340:url:8fe3dbdeddda80fe",
+              "proposal_ids": [],
+              "approved_fields": {}
+            },
+            "display_unit": "900ml×2",
+            "package_quantity": 900.0,
+            "package_unit": "ml",
+            "category_evidence": {
+              "safe_category_id": null,
+              "safe_category_display_label": "",
+              "candidates": [
+                {
+                  "raw": "우유ㆍ유제품",
+                  "normalized": "우유ㆍ유제품",
+                  "display_label": "우유ㆍ유제품",
+                  "safe_seed": false
+                }
+              ]
+            },
+            "publication": {
+              "publication_kind": "price_observation",
+              "price_observation_only": true,
+              "discount_claim_status": "hotdeal_claim_blocked",
+              "claim_basis": "current_price_observation",
+              "claim_blockers": [
+                "hotdeal_claim_blocked: missing verified original_price/discount_percent/source_event/historical_baseline; publish as price_observation only; missing=original_price,discount_percent,historical_baseline"
+              ],
+              "observed_at": "2026-05-07T22:14:55.926234"
+            }
+          },
+          "raw_record_id": "source-aa9f608340:url:8fe3dbdeddda80fe",
+          "source_record_key": null,
+          "ai_review_audit": {
+            "raw_record_id": "source-aa9f608340:url:8fe3dbdeddda80fe",
+            "proposal_ids": [],
+            "approved_fields": {}
+          },
+          "raw_unit": "900ml×2",
+          "category_display_label": "우유ㆍ유제품",
+          "observed_at": "2026-05-07T22:14:55.926234",
+          "publication_kind": "price_observation",
+          "price_observation_only": true,
+          "discount_claim_status": "hotdeal_claim_blocked",
+          "claim_basis": "current_price_observation",
+          "claim_blockers": [
+            "hotdeal_claim_blocked: missing verified original_price/discount_percent/source_event/historical_baseline; publish as price_observation only; missing=original_price,discount_percent,historical_baseline"
+          ]
+        },
+        "blockers": [
+          "pending_review: no AI proposals linked to raw record"
+        ]
+      }
+    ]
+  },
+  "db_admin_submit_result": null,
+  "db_admin_acceptance": {
+    "accepted": false,
+    "db_admin_submit_allowed": false,
+    "submit_success": false,
+    "ai_safe_final_approved": 0,
+    "public_db_verified": 0,
+    "blocked_rows_held_for_review": true,
+    "blocked_rows_audited": true,
+    "rollback_re_review_evidence_or_next_action": false,
+    "blockers": [
+      "DB-admin submit was not explicitly allowed."
+    ]
+  },
+  "raw_vs_final": [
+    {
+      "raw_record_id": "source-aa9f608340:url:9f3446302d0c9f75",
+      "raw_title": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+      "final_name": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+      "raw_price": 6990,
+      "final_sale_price": 6990,
+      "raw_original_price": 7690,
+      "final_original_price": 7690,
+      "raw_discount_percent": 9.1,
+      "final_discount_percent": 9.1,
+      "raw_source_url": "https://lottemartzetta.com/products/a348e9d3-d1af-43bd-9683-eedeff262db4",
+      "final_source_url": "https://lottemartzetta.com/products/a348e9d3-d1af-43bd-9683-eedeff262db4",
+      "raw_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/20594509-9cc0-4b71-8446-f5227a0cab1c/300x300.jpg",
+      "final_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/20594509-9cc0-4b71-8446-f5227a0cab1c/300x300.jpg",
+      "raw_category_id": null,
+      "final_category_id": null,
+      "raw_keywords": null,
+      "final_keywords": [],
+      "publication_kind": "hotdeal",
+      "price_observation_only": false,
+      "blockers": [
+        "pending_review: no AI proposals linked to raw record"
+      ]
+    },
+    {
+      "raw_record_id": "source-aa9f608340:url:8fe3dbdeddda80fe",
+      "raw_title": "오늘좋은 1등급우유 (900ML*2)",
+      "final_name": "오늘좋은 1등급우유 (900ML*2)",
+      "raw_price": 3790,
+      "final_sale_price": 3790,
+      "raw_original_price": null,
+      "final_original_price": null,
+      "raw_discount_percent": null,
+      "final_discount_percent": null,
+      "raw_source_url": "https://lottemartzetta.com/products/7ce15c1f-a025-4394-8e84-e2b52f0127d2",
+      "final_source_url": "https://lottemartzetta.com/products/7ce15c1f-a025-4394-8e84-e2b52f0127d2",
+      "raw_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c94dd1b8-80ff-4a9a-a902-de5c868a9e1e/300x300.jpg",
+      "final_image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c94dd1b8-80ff-4a9a-a902-de5c868a9e1e/300x300.jpg",
+      "raw_category_id": null,
+      "final_category_id": null,
+      "raw_keywords": null,
+      "final_keywords": [],
+      "publication_kind": "price_observation",
+      "price_observation_only": true,
+      "blockers": [
+        "pending_review: no AI proposals linked to raw record"
+      ]
+    }
+  ],
+  "quality_batch_validation": {
+    "purpose": "bounded_quality_repetition_not_full_all_source_one_shot",
+    "mode": "fixture",
+    "db_admin_submit_allowed": false,
+    "input_count": 50,
+    "selected_count": 2,
+    "retained_count": 2,
+    "invalid_row_count": 0,
+    "input_retention_valid": false,
+    "retention_anomaly_count": 0,
+    "input_anomaly_buckets": {},
+    "per_row_input_anomalies": [],
+    "max_items": 2,
+    "ai_batch_size": 20,
+    "ai_batch_prompt_chars": 8000,
+    "split_batch_count": 1,
+    "max_provider_calls": 0,
+    "provider": {
+      "called": false,
+      "mode": "skipped",
+      "provider_id": null,
+      "model": null,
+      "ai_batches": null,
+      "call_attempts": 0,
+      "http_label_calls": null,
+      "chunk_count": null,
+      "successful_chunk_count": null,
+      "failed_chunk_count": null,
+      "partial_results": false,
+      "proposals_stored": null,
+      "keyword_proposals_stored": null
+    },
+    "label_chunks": [],
+    "retryable_provider_failures": [],
+    "missing_label_retry": {
+      "status": "not_called",
+      "partial_review_required": false,
+      "missing_label_count": 0,
+      "missing_label_raw_record_ids": [],
+      "retry_batches_configured": 2
+    },
+    "reviewer_retry_candidates": {
+      "purpose": "one_more_targeted_reviewer_retry_before_human_admin",
+      "source": "deterministic_quality_batch_validation_no_live_reviewer_ai",
+      "candidate_count": 2,
+      "group_count": 1,
+      "groups": [
+        {
+          "missing_field": "category",
+          "prompt_category": "taxonomy_classification_retry",
+          "row_count": 2,
+          "raw_record_ids": [
+            "source-aa9f608340:url:9f3446302d0c9f75",
+            "source-aa9f608340:url:8fe3dbdeddda80fe"
+          ],
+          "items": [
+            {
+              "raw_record_id": "source-aa9f608340:url:9f3446302d0c9f75",
+              "raw_title": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+              "publication_kind": "hotdeal",
+              "reasons": [
+                "missing_final_category_id"
+              ],
+              "recommended_retry_prompt_category": "taxonomy_classification_retry"
+            },
+            {
+              "raw_record_id": "source-aa9f608340:url:8fe3dbdeddda80fe",
+              "raw_title": "오늘좋은 1등급우유 (900ML*2)",
+              "publication_kind": "price_observation",
+              "reasons": [
+                "missing_final_category_id"
+              ],
+              "recommended_retry_prompt_category": "taxonomy_classification_retry"
+            }
+          ]
+        }
+      ],
+      "human_admin_fallback": "Rows still failing after the future reviewer retry remain in DB-admin/manual review; eligible rows can continue through publish gates."
+    },
+    "anomaly_counts": {
+      "category": 2,
+      "keyword": 2,
+      "unit": 0,
+      "price": 0,
+      "image": 0
+    },
+    "rows_with_any_anomaly": 2,
+    "per_row_anomalies": [
+      {
+        "raw_record_id": "source-aa9f608340:url:9f3446302d0c9f75",
+        "raw_title": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+        "publication_kind": "hotdeal",
+        "category": [
+          "missing_final_category_id"
+        ],
+        "keyword": [
+          "missing_final_keywords"
+        ],
+        "unit": [],
+        "price": [],
+        "image": [],
+        "blockers": [
+          "pending_review: no AI proposals linked to raw record"
+        ],
+        "audit_issue_codes": [
+          "missing_all_proposals"
+        ],
+        "has_any_anomaly": true
+      },
+      {
+        "raw_record_id": "source-aa9f608340:url:8fe3dbdeddda80fe",
+        "raw_title": "오늘좋은 1등급우유 (900ML*2)",
+        "publication_kind": "price_observation",
+        "category": [
+          "missing_final_category_id"
+        ],
+        "keyword": [
+          "missing_final_keywords"
+        ],
+        "unit": [],
+        "price": [],
+        "image": [],
+        "blockers": [
+          "pending_review: no AI proposals linked to raw record"
+        ],
+        "audit_issue_codes": [
+          "missing_all_proposals"
+        ],
+        "has_any_anomaly": true
+      }
+    ],
+    "honesty_notes": [
+      "This validates only the bounded selected rows, not a full all-source one-shot build.",
+      "DB-admin mutation is disabled unless --allow-db-admin-submit is explicit."
+    ]
+  },
+  "holdout_generalization": {
+    "evidence": [
+      {
+        "raw_record_id": "source-aa9f608340:url:9f3446302d0c9f75",
+        "raw_title": "[농할할인가 6,990원]  행복생생란 (특란, 30입) (1.8KG)",
+        "evidence_class": "deterministic_raw",
+        "trust_label": "deterministic_structured",
+        "reason": "raw item contains deterministic structured signals",
+        "counts_as_generalization": false
+      },
+      {
+        "raw_record_id": "source-aa9f608340:url:8fe3dbdeddda80fe",
+        "raw_title": "오늘좋은 1등급우유 (900ML*2)",
+        "evidence_class": "deterministic_raw",
+        "trust_label": "deterministic_structured",
+        "reason": "raw item contains deterministic structured signals",
+        "counts_as_generalization": false
+      }
+    ],
+    "counts": {
+      "deterministic_raw": 2
+    },
+    "generalization_success_count": 0,
+    "rule": "exact_catalog and learned_alias are reuse, never generalization success",
+    "todo_hooks": [
+      "Load production catalog/learned exports via --catalog-json and --learned-json."
+    ]
+  },
+  "risks": [
+    "Live crawl/provider/DB-admin paths are operator-gated but can touch external systems when explicitly enabled.",
+    "Dry-run artifacts use no provider output; customer-safety verdicts remain blockers until human/provider proposals exist."
+  ],
+  "artifact_path": ".walletsavior-live-validation\\mart3-live-input-plan\\no-db-diagnostics\\lottemart\\live-validation-v2-20260507-221452-2720bf59.json"
+}

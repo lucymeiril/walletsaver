@@ -1,0 +1,872 @@
+{
+  "schema": "walletsavior.ai_live_run.v1",
+  "run_id": "381c5cfe",
+  "timestamp": "20260518-002032",
+  "provider_id": "google-gemini31-live-matrix",
+  "dry_run": false,
+  "verdict": "needs_more_work",
+  "crawl_capture": {
+    "emart": {
+      "count": 274,
+      "blocked": false
+    },
+    "homeplus": {
+      "count": 199,
+      "blocked": false
+    },
+    "lottemart": {
+      "count": 50,
+      "blocked": true
+    },
+    "costco": {
+      "count": 232,
+      "blocked": false
+    }
+  },
+  "learned_empty_result": {
+    "backup_path": "E:\\pdf\\capston01\\.walletsavior-live-validation\\ai-live-run\\learned-backup-20260518-002032.json",
+    "keyword_alias_before": 0,
+    "keyword_alias_after": 0,
+    "product_matches_before": 0,
+    "product_matches_after": 0
+  },
+  "per_mart_stage_counts": {
+    "emart": {
+      "crawler_rows": 274,
+      "ingested_rows": 274,
+      "ai_proposals": 0,
+      "gates_passed": 0,
+      "publish_approved": 0,
+      "public_snapshot_rows": 0
+    },
+    "homeplus": {
+      "crawler_rows": 199,
+      "ingested_rows": 199,
+      "ai_proposals": 0,
+      "gates_passed": 0,
+      "publish_approved": 0,
+      "public_snapshot_rows": 0
+    },
+    "lottemart": {
+      "crawler_rows": 50,
+      "ingested_rows": 50,
+      "ai_proposals": 0,
+      "gates_passed": 0,
+      "publish_approved": 0,
+      "public_snapshot_rows": 0
+    },
+    "costco": {
+      "crawler_rows": 232,
+      "ingested_rows": 232,
+      "ai_proposals": 0,
+      "gates_passed": 0,
+      "publish_approved": 0,
+      "public_snapshot_rows": 0
+    }
+  },
+  "stage_drop_totals": {
+    "ai_ingestion": 0,
+    "queue_ai_router": 0,
+    "postcheck_gate": 0,
+    "review_publish": 0,
+    "oneshot_public_db": 0
+  },
+  "confidence_histogram": {
+    "total": 0,
+    "ge_0_9": {
+      "count": 0,
+      "pct": 0.0,
+      "label": "≥0.9 (고신뢰도)"
+    },
+    "ge_0_7_lt_0_9": {
+      "count": 0,
+      "pct": 0.0,
+      "label": "0.7~0.9 (중신뢰도)"
+    },
+    "lt_0_7": {
+      "count": 0,
+      "pct": 0.0,
+      "label": "<0.7 (저신뢰도·폴백)"
+    }
+  },
+  "proposal_counts": {
+    "total_keyword_proposals": 0,
+    "unique_categories_proposed": 0,
+    "retail_general_count": 0,
+    "retail_general_ratio": 0.0,
+    "per_mart_keyword_counts": {}
+  },
+  "adversarial_v2": {
+    "schema": "walletsavior.artifact_db_adversarial_compare.v2",
+    "mode": "ai_live_run_embedded",
+    "category_distribution_per_mart": {},
+    "category_imbalance_alerts": [],
+    "ai_confidence_distribution": {
+      "available": false,
+      "reason": "no ai_confidence field found in rows"
+    },
+    "mart_volume_sanity": {
+      "costco": {
+        "crawler_count": 232,
+        "final_db_count": 0,
+        "min_threshold": 80
+      },
+      "coupang": {
+        "crawler_count": 0,
+        "final_db_count": 0,
+        "min_threshold": 50
+      },
+      "emart": {
+        "crawler_count": 274,
+        "final_db_count": 0,
+        "min_threshold": 200
+      },
+      "homeplus": {
+        "crawler_count": 199,
+        "final_db_count": 0,
+        "min_threshold": 150
+      },
+      "lottemart": {
+        "crawler_count": 50,
+        "final_db_count": 0,
+        "min_threshold": 100
+      }
+    },
+    "volume_alerts": [
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "costco",
+        "final_db_count": 0,
+        "min_threshold": 80,
+        "deficit": 80
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "costco",
+        "crawler_count": 232,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "coupang",
+        "final_db_count": 0,
+        "min_threshold": 50,
+        "deficit": 50
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "emart",
+        "final_db_count": 0,
+        "min_threshold": 200,
+        "deficit": 200
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "emart",
+        "crawler_count": 274,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "homeplus",
+        "final_db_count": 0,
+        "min_threshold": 150,
+        "deficit": 150
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "homeplus",
+        "crawler_count": 199,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "lottemart",
+        "final_db_count": 0,
+        "min_threshold": 100,
+        "deficit": 100
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "lottemart",
+        "crawler_count": 50,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      }
+    ],
+    "semantic_spotcheck": {
+      "sampled": 0,
+      "checked": 0,
+      "pass_rate": 1.0,
+      "flagged": [],
+      "per_mart": {}
+    },
+    "semantic_alerts": [],
+    "overall_launch_gate_blockers": [
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "costco",
+        "final_db_count": 0,
+        "min_threshold": 80,
+        "deficit": 80
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "costco",
+        "crawler_count": 232,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "coupang",
+        "final_db_count": 0,
+        "min_threshold": 50,
+        "deficit": 50
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "emart",
+        "final_db_count": 0,
+        "min_threshold": 200,
+        "deficit": 200
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "emart",
+        "crawler_count": 274,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "homeplus",
+        "final_db_count": 0,
+        "min_threshold": 150,
+        "deficit": 150
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "homeplus",
+        "crawler_count": 199,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      },
+      {
+        "alert_type": "volume_undercount_alert",
+        "mart": "lottemart",
+        "final_db_count": 0,
+        "min_threshold": 100,
+        "deficit": 100
+      },
+      {
+        "alert_type": "pipeline_attrition_alert",
+        "mart": "lottemart",
+        "crawler_count": 50,
+        "final_db_count": 0,
+        "ratio": 0.0,
+        "attrition_threshold": 0.5
+      }
+    ]
+  },
+  "escalation_reasons": [
+    {
+      "mart": "emart",
+      "batch_idx": 0,
+      "batch_size": 20,
+      "error": "AI batch prompt is 8527 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "emart",
+      "batch_idx": 1,
+      "batch_size": 20,
+      "error": "AI batch prompt is 8487 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "emart",
+      "batch_idx": 2,
+      "batch_size": 20,
+      "error": "AI batch prompt is 8498 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "emart",
+      "batch_idx": 3,
+      "batch_size": 20,
+      "error": "AI batch prompt is 8078 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "emart",
+      "batch_idx": 4,
+      "batch_size": 20,
+      "error": "AI batch prompt is 8341 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "emart",
+      "batch_idx": 5,
+      "batch_size": 20,
+      "error": "AI batch prompt is 7898 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "emart",
+      "batch_idx": 6,
+      "batch_size": 20,
+      "error": "AI batch prompt is 8102 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "emart",
+      "batch_idx": 7,
+      "batch_size": 20,
+      "error": "AI batch prompt is 8467 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "emart",
+      "batch_idx": 8,
+      "batch_size": 20,
+      "error": "AI batch prompt is 8008 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "emart",
+      "batch_idx": 9,
+      "batch_size": 20,
+      "error": "AI batch prompt is 8106 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "emart",
+      "batch_idx": 10,
+      "batch_size": 20,
+      "error": "AI batch prompt is 8196 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "emart",
+      "batch_idx": 11,
+      "batch_size": 20,
+      "error": "AI batch prompt is 8522 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "emart",
+      "batch_idx": 12,
+      "batch_size": 20,
+      "error": "AI batch prompt is 7956 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "emart",
+      "batch_idx": 13,
+      "batch_size": 14,
+      "error": "AI batch prompt is 5977 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "homeplus",
+      "batch_idx": 0,
+      "batch_size": 20,
+      "error": "AI batch prompt is 8135 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "homeplus",
+      "batch_idx": 1,
+      "batch_size": 20,
+      "error": "AI batch prompt is 8142 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "homeplus",
+      "batch_idx": 2,
+      "batch_size": 20,
+      "error": "AI batch prompt is 8071 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "homeplus",
+      "batch_idx": 3,
+      "batch_size": 20,
+      "error": "AI batch prompt is 7794 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "homeplus",
+      "batch_idx": 4,
+      "batch_size": 20,
+      "error": "AI batch prompt is 7949 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "homeplus",
+      "batch_idx": 5,
+      "batch_size": 20,
+      "error": "AI batch prompt is 7891 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "homeplus",
+      "batch_idx": 6,
+      "batch_size": 20,
+      "error": "AI batch prompt is 8194 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "homeplus",
+      "batch_idx": 7,
+      "batch_size": 20,
+      "error": "AI batch prompt is 8051 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "homeplus",
+      "batch_idx": 8,
+      "batch_size": 20,
+      "error": "AI batch prompt is 7941 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "homeplus",
+      "batch_idx": 9,
+      "batch_size": 19,
+      "error": "AI batch prompt is 7725 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "lottemart",
+      "batch_idx": 0,
+      "batch_size": 20,
+      "error": "AI batch prompt is 9770 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "lottemart",
+      "batch_idx": 1,
+      "batch_size": 20,
+      "error": "AI batch prompt is 9788 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "lottemart",
+      "batch_idx": 2,
+      "batch_size": 10,
+      "error": "AI batch prompt is 5722 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "costco",
+      "batch_idx": 0,
+      "batch_size": 20,
+      "error": "AI batch prompt is 5356 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "costco",
+      "batch_idx": 1,
+      "batch_size": 20,
+      "error": "AI batch prompt is 5320 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "costco",
+      "batch_idx": 2,
+      "batch_size": 20,
+      "error": "AI batch prompt is 5296 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "costco",
+      "batch_idx": 3,
+      "batch_size": 20,
+      "error": "AI batch prompt is 5331 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "costco",
+      "batch_idx": 4,
+      "batch_size": 20,
+      "error": "AI batch prompt is 5409 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "costco",
+      "batch_idx": 5,
+      "batch_size": 20,
+      "error": "AI batch prompt is 5439 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "costco",
+      "batch_idx": 6,
+      "batch_size": 20,
+      "error": "AI batch prompt is 5428 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "costco",
+      "batch_idx": 7,
+      "batch_size": 20,
+      "error": "AI batch prompt is 5617 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "costco",
+      "batch_idx": 8,
+      "batch_size": 20,
+      "error": "AI batch prompt is 5451 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "costco",
+      "batch_idx": 9,
+      "batch_size": 20,
+      "error": "AI batch prompt is 5487 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "costco",
+      "batch_idx": 10,
+      "batch_size": 20,
+      "error": "AI batch prompt is 5448 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "costco",
+      "batch_idx": 11,
+      "batch_size": 12,
+      "error": "AI batch prompt is 3906 chars; max is 2000",
+      "type": "provider_error"
+    },
+    {
+      "mart": "lottemart",
+      "type": "capture_fail_fast",
+      "error": "롯데마트 캡처 건수 50건 — 임계값 200건 미달. WAF(AWS WAF) 차단 의심. 기존 캡처 데이터로 진행."
+    }
+  ],
+  "per_mart_escalation": {
+    "emart": {
+      "escalated": 14,
+      "fallback": 0,
+      "quota_exhausted": false,
+      "shrink_log_summary": {
+        "total_batches": 14,
+        "total_shrink_calls": 0,
+        "ok_calls": 0,
+        "fallback_calls": 0,
+        "retryable_error_calls": 0,
+        "quota_exhausted": false,
+        "batch_errors": [
+          {
+            "batch_idx": 0,
+            "batch_size": 20,
+            "error": "AI batch prompt is 8527 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 1,
+            "batch_size": 20,
+            "error": "AI batch prompt is 8487 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 2,
+            "batch_size": 20,
+            "error": "AI batch prompt is 8498 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 3,
+            "batch_size": 20,
+            "error": "AI batch prompt is 8078 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 4,
+            "batch_size": 20,
+            "error": "AI batch prompt is 8341 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 5,
+            "batch_size": 20,
+            "error": "AI batch prompt is 7898 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 6,
+            "batch_size": 20,
+            "error": "AI batch prompt is 8102 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 7,
+            "batch_size": 20,
+            "error": "AI batch prompt is 8467 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 8,
+            "batch_size": 20,
+            "error": "AI batch prompt is 8008 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 9,
+            "batch_size": 20,
+            "error": "AI batch prompt is 8106 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 10,
+            "batch_size": 20,
+            "error": "AI batch prompt is 8196 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 11,
+            "batch_size": 20,
+            "error": "AI batch prompt is 8522 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 12,
+            "batch_size": 20,
+            "error": "AI batch prompt is 7956 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 13,
+            "batch_size": 14,
+            "error": "AI batch prompt is 5977 chars; max is 2000",
+            "type": "provider_error"
+          }
+        ]
+      }
+    },
+    "homeplus": {
+      "escalated": 10,
+      "fallback": 0,
+      "quota_exhausted": false,
+      "shrink_log_summary": {
+        "total_batches": 10,
+        "total_shrink_calls": 0,
+        "ok_calls": 0,
+        "fallback_calls": 0,
+        "retryable_error_calls": 0,
+        "quota_exhausted": false,
+        "batch_errors": [
+          {
+            "batch_idx": 0,
+            "batch_size": 20,
+            "error": "AI batch prompt is 8135 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 1,
+            "batch_size": 20,
+            "error": "AI batch prompt is 8142 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 2,
+            "batch_size": 20,
+            "error": "AI batch prompt is 8071 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 3,
+            "batch_size": 20,
+            "error": "AI batch prompt is 7794 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 4,
+            "batch_size": 20,
+            "error": "AI batch prompt is 7949 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 5,
+            "batch_size": 20,
+            "error": "AI batch prompt is 7891 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 6,
+            "batch_size": 20,
+            "error": "AI batch prompt is 8194 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 7,
+            "batch_size": 20,
+            "error": "AI batch prompt is 8051 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 8,
+            "batch_size": 20,
+            "error": "AI batch prompt is 7941 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 9,
+            "batch_size": 19,
+            "error": "AI batch prompt is 7725 chars; max is 2000",
+            "type": "provider_error"
+          }
+        ]
+      }
+    },
+    "lottemart": {
+      "escalated": 3,
+      "fallback": 0,
+      "quota_exhausted": false,
+      "shrink_log_summary": {
+        "total_batches": 3,
+        "total_shrink_calls": 0,
+        "ok_calls": 0,
+        "fallback_calls": 0,
+        "retryable_error_calls": 0,
+        "quota_exhausted": false,
+        "batch_errors": [
+          {
+            "batch_idx": 0,
+            "batch_size": 20,
+            "error": "AI batch prompt is 9770 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 1,
+            "batch_size": 20,
+            "error": "AI batch prompt is 9788 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 2,
+            "batch_size": 10,
+            "error": "AI batch prompt is 5722 chars; max is 2000",
+            "type": "provider_error"
+          }
+        ]
+      }
+    },
+    "costco": {
+      "escalated": 12,
+      "fallback": 0,
+      "quota_exhausted": false,
+      "shrink_log_summary": {
+        "total_batches": 12,
+        "total_shrink_calls": 0,
+        "ok_calls": 0,
+        "fallback_calls": 0,
+        "retryable_error_calls": 0,
+        "quota_exhausted": false,
+        "batch_errors": [
+          {
+            "batch_idx": 0,
+            "batch_size": 20,
+            "error": "AI batch prompt is 5356 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 1,
+            "batch_size": 20,
+            "error": "AI batch prompt is 5320 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 2,
+            "batch_size": 20,
+            "error": "AI batch prompt is 5296 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 3,
+            "batch_size": 20,
+            "error": "AI batch prompt is 5331 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 4,
+            "batch_size": 20,
+            "error": "AI batch prompt is 5409 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 5,
+            "batch_size": 20,
+            "error": "AI batch prompt is 5439 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 6,
+            "batch_size": 20,
+            "error": "AI batch prompt is 5428 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 7,
+            "batch_size": 20,
+            "error": "AI batch prompt is 5617 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 8,
+            "batch_size": 20,
+            "error": "AI batch prompt is 5451 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 9,
+            "batch_size": 20,
+            "error": "AI batch prompt is 5487 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 10,
+            "batch_size": 20,
+            "error": "AI batch prompt is 5448 chars; max is 2000",
+            "type": "provider_error"
+          },
+          {
+            "batch_idx": 11,
+            "batch_size": 12,
+            "error": "AI batch prompt is 3906 chars; max is 2000",
+            "type": "provider_error"
+          }
+        ]
+      }
+    }
+  },
+  "load_errors": [],
+  "costco_capture": {
+    "count": 232,
+    "blocked": false,
+    "ban_evidence": null,
+    "capture_path": "E:\\pdf\\capston01\\.walletsavior-live-validation\\ai-live-run\\costco-capture\\costco-cocodalin-capture-20260518-002050.json",
+    "failure_count": 0
+  },
+  "lottemart_status": {
+    "count": 50,
+    "blocked": true,
+    "threshold": 200,
+    "ban_evidence": "롯데마트 캡처 건수 50건 — 임계값 200건 미달. WAF(AWS WAF) 차단 의심. 기존 캡처 데이터로 진행."
+  }
+}

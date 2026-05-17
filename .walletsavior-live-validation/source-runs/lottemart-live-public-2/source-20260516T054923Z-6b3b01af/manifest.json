@@ -1,0 +1,78 @@
+{
+  "run_id": "source-20260516T054923Z-6b3b01af",
+  "source_name": "lottemart-live-public-2",
+  "crawler_name": "lottemart",
+  "status": "failed",
+  "since": null,
+  "counts": {
+    "source_raw": 0,
+    "parsed": 0,
+    "parsed_valid": 0,
+    "parsed_unique": 0,
+    "unique": 0,
+    "found": 0,
+    "new": 0,
+    "changed": 0,
+    "skipped_unchanged": 0,
+    "records_handed_off": 0,
+    "skipped_invalid": 0
+  },
+  "source_url": "https://lottemartzetta.com/search?query=%EC%83%9D%EC%88%98",
+  "source_input": {
+    "provided": false
+  },
+  "collection_mode": "bounded_live_http_no_db",
+  "live_network_enabled": true,
+  "collection": {
+    "mode": "bounded_live_http_no_db",
+    "live_network_enabled": true,
+    "source_url": "https://lottemartzetta.com/search?query=%EC%83%9D%EC%88%98",
+    "auth_bypass_attempted": false,
+    "max_requests": 1
+  },
+  "fetch": {
+    "strategy_used": "requests",
+    "fallback_used": false,
+    "queries_attempted": 1,
+    "pages_attempted": 1,
+    "live_enabled": true,
+    "fixture_available": null,
+    "renderer": "ordinary_playwright_chromium",
+    "browser_pages": [
+      {
+        "url": "https://lottemartzetta.com/search?query=%EC%83%9D%EC%88%98",
+        "final_url": "https://lottemartzetta.com/search?query=%EC%83%9D%EC%88%98",
+        "status_code": 403,
+        "bytes": 923,
+        "challenge_detected": false,
+        "login_required": false,
+        "persistent_context": true
+      }
+    ],
+    "challenge_solving_attempted": false,
+    "auth_bypass_attempted": false,
+    "blocked": true,
+    "blocker": "aws_waf_http_202",
+    "status_code": 202,
+    "message": "source_url browser blocked HTTP 403",
+    "request_url": "https://lottemartzetta.com/search?query=%EC%83%9D%EC%88%98",
+    "query": null,
+    "page": null,
+    "safe_next_action": "Do not retry aggressively or attempt authentication/access-control/WAF bypass. Use an official/public feed/API, partner API, caller-supplied saved-source export, manual source import, or an alternate public source."
+  },
+  "artifacts": {
+    "manifest": "E:\\pdf\\capston01\\.walletsavior-live-validation\\source-runs\\lottemart-live-public-2\\source-20260516T054923Z-6b3b01af\\manifest.json",
+    "ai_handoff": "E:\\pdf\\capston01\\.walletsavior-live-validation\\source-runs\\lottemart-live-public-2\\source-20260516T054923Z-6b3b01af\\ai_handoff.json"
+  },
+  "retry_attempts": [
+    {
+      "attempt": 1,
+      "status": "failed"
+    }
+  ],
+  "dead_letter_path": "E:\\pdf\\capston01\\packages\\crawler-admin\\backend\\data\\dead_letter\\lottemart_source_run_20260516T054951.jsonl",
+  "errors": [
+    "source_url browser blocked HTTP 403",
+    "source_url browser blocked HTTP 403"
+  ]
+}
