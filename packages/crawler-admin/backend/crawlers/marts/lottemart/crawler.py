@@ -426,10 +426,27 @@ class LottemartCrawler(CrawlerContract):
 
             fallback_used = False
 
-            # HTTP 수집 부족 시 일반 브라우저 렌더링 경로 1회 시도.
+            # HTTP 수집 부족 시 프로모션 페이지 스크롤 전략 시도.
+            # SSR 은 50건만 제공하고 나머지는 스크롤 XHR 로만 로드됨.
             # WAF/접근제어 응답은 브라우저로 우회하지 않고 차단 진단으로 남긴다.
+            if waf_blocker is None and len(all_items) < 200:
+                logger.info("[롯데마트] HTTP 수집 200건 미달 → 프로모션 페이지 스크롤 전략 시도")
+                try:
+                    scroll_items = await self._fetch_promotions_scroll(target_count=220, max_scrolls=16)
+                    fallback_used = bool(scroll_items)
+                    for item in scroll_items:
+                        key = source_dedup_key(item)
+                        if key not in seen_ids:
+                            seen_ids.add(key)
+                            all_items.append(item)
+                    logger.info(f"[롯데마트] 스크롤 전략 후 총: {len(all_items)}개")
+                except Exception as e:
+                    logger.warning(f"[롯데마트] 스크롤 전략 실패: {e}")
+                    errors.append(f"ScrollStrategy: {e}")
+
+            # 스크롤 전략도 부족하면 Playwright 검색 폴백
             if waf_blocker is None and len(all_items) < 10:
-                logger.info("[롯데마트] HTTP 수집 부족 → Playwright 폴백 시도")
+                logger.info("[롯데마트] 스크롤도 부족 → Playwright 검색 폴백 시도")
                 try:
                     pw_items = await self._fetch_via_playwright()
                     fallback_used = True
@@ -444,13 +461,14 @@ class LottemartCrawler(CrawlerContract):
 
             valid_items = await self.validate(all_items)
             items_as_dict = [item.model_dump(mode="json") for item in valid_items]
+            strategy = "playwright_scroll" if fallback_used else "requests"
             quality_details = summarize_discount_run(
                 items_as_dict,
                 raw_count=len(all_items),
                 source_raw_count=source_raw_count,
                 invalid_count=max(0, len(all_items) - len(valid_items)),
                 errors=errors,
-                strategy_used="playwright" if fallback_used else "requests",
+                strategy_used=strategy,
                 fallback_used=fallback_used,
                 queries_attempted=len(self.SEARCH_QUERIES),
                 pages_attempted=pages_attempted,
@@ -467,7 +485,7 @@ class LottemartCrawler(CrawlerContract):
             return CrawlResult(
                 status=status,
                 crawler_name=self.info.name,
-                strategy_used="playwright" if fallback_used else "requests",
+                strategy_used=strategy,
                 items_count=len(valid_items),
                 items=items_as_dict,
                 started_at=started_at,
@@ -973,52 +991,94 @@ class LottemartCrawler(CrawlerContract):
         return items
 
     def _parse_spa_card(self, card) -> Optional[DiscountItem]:
-        """lottemartzetta.com SPA 상품 카드 → DiscountItem."""
-        # 상품명: [class*="name"], [class*="title"], h3, h4, strong
-        name_el = card.select_one(
-            "[class*='name'], [class*='title'], h3, h4, strong"
-        )
-        if not name_el:
-            return None
-        name = name_el.get_text(strip=True)
+        """lottemartzetta.com SPA 상품 카드 → DiscountItem.
+
+        lottemartzetta.com v2 DOM 구조 (실 캡처 기반):
+          - 상품명: data-test="fop-product-link" 내 span 텍스트
+                    또는 img[data-test="lazy-load-image"] alt 속성
+          - 현재가: data-test="fop-price" 텍스트 (예: "6,990원")
+          - 원가:   data-test="fop-original-price" 텍스트 (옵션)
+          - 이미지: img[data-test="lazy-load-image"] src
+          - UUID:   data-synthetics="product-id:<uuid>" → detail_url 구성
+        """
+        # --- 상품명 추출 (data-test 기반 선택자 우선) ---
+        name = ""
+        # 1순위: 이미지 alt 속성 (신뢰도 높음 — 서버에서 설정)
+        img_el = card.select_one('[data-test="lazy-load-image"]')
+        if img_el:
+            name = (img_el.get("alt") or "").strip()
+        # 2순위: 상품 링크 span 텍스트
+        if not name:
+            link_el = card.select_one('[data-test="fop-product-link"]')
+            if link_el:
+                name = link_el.get_text(strip=True)
+        # 3순위: 구형 클래스 기반 폴백 (이전 DOM 구조 호환)
+        if not name:
+            name_el = card.select_one("[class*='name'], [class*='title'], h3, h4, strong")
+            if name_el:
+                name = name_el.get_text(strip=True)
         if not name or len(name) < 2:
             return None
 
-        # 가격 — "가격4,990원" 형태에서 "가격" 접두사 제거 후 숫자 추출
-        prices: list[int] = []
-        for el in card.select("[class*='price']"):
-            text = el.get_text(strip=True)
-            text = re.sub(r'^가격', '', text)
-            price = self._extract_price(text)
-            if price and price > 0:
-                prices.append(price)
+        # 프로모션 접두사 제거: "[농할할인가 7,490원]" 같은 부분
+        clean_name = re.sub(r"^\[.*?\]\s*", "", name).strip() or name
 
-        if not prices:
+        # --- 가격 추출 (data-test 기반 선택자 우선) ---
+        sale_price_el = card.select_one('[data-test="fop-price"]')
+        original_price_el = card.select_one('[data-test="fop-original-price"]')
+
+        sale_price = None
+        original_price = None
+
+        if sale_price_el:
+            sale_price = self._extract_price(sale_price_el.get_text(strip=True))
+        if original_price_el:
+            original_price = self._extract_price(original_price_el.get_text(strip=True))
+
+        # 구형 DOM 구조 폴백: [class*='price'] 순회
+        if not sale_price:
+            prices: list[int] = []
+            for el in card.select("[class*='price']"):
+                text = re.sub(r'^가격', '', el.get_text(strip=True))
+                p = self._extract_price(text)
+                if p and p > 0:
+                    prices.append(p)
+            if prices:
+                prices_sorted = sorted(set(prices))
+                sale_price = prices_sorted[0]
+                if len(prices_sorted) > 1:
+                    original_price = prices_sorted[-1]
+
+        if not sale_price or sale_price <= 0:
             return None
 
-        prices = sorted(set(prices))
-        sale_price = prices[0]
-        original_price = prices[-1] if len(prices) > 1 and prices[-1] != prices[0] else None
+        # original_price 는 현재가보다 커야 의미 있음
+        if original_price is not None and original_price <= sale_price:
+            original_price = None
 
-        # 상세 URL
+        # --- 상품 UUID → detail_url ---
         detail_url = ""
-        link_el = card.select_one("a[href*='products']")
-        if not link_el:
-            link_el = card.select_one("a[href]")
-        if link_el:
-            href = link_el.get("href", "")
-            if href.startswith("http"):
-                detail_url = href
-            elif href.startswith("/"):
-                detail_url = f"{self.ZETTA_BASE}{href}"
+        uuid_attr = card.find(attrs={"data-synthetics": re.compile(r"^product-id:[a-f0-9-]{36}$")})
+        if uuid_attr:
+            product_uuid = uuid_attr["data-synthetics"].split(":", 1)[1]
+            detail_url = f"{self.ZETTA_BASE}/products/{product_uuid}"
+        # 폴백: href 기반 (상대 URL 보정)
+        if not detail_url:
+            link_el = card.select_one("a[href*='products']") or card.select_one("a[href]")
+            if link_el:
+                href = link_el.get("href", "")
+                detail_url = self._absolute_url(href, self.ZETTA_BASE)
 
-        # 이미지
+        # --- 이미지 URL ---
         image_url = ""
-        img_el = card.select_one("img")
         if img_el:
-            image_url = img_el.get("src") or img_el.get("data-src", "")
+            image_url = img_el.get("src") or img_el.get("data-src") or ""
+        if not image_url:
+            img_any = card.select_one("img")
+            if img_any:
+                image_url = img_any.get("src") or img_any.get("data-src") or ""
 
-        # 할인/행사 정보
+        # --- 할인율 / 행사명 ---
         card_text = card.get_text(" ", strip=True)
         discount_pct = None
         event_name = "롯데마트 할인"
@@ -1026,14 +1086,14 @@ class LottemartCrawler(CrawlerContract):
         discount_match = re.search(r'(\d+)%\s*할인', card_text)
         if discount_match:
             discount_pct = float(discount_match.group(1))
-            context_match = re.search(r'([^,]*,?\s*\d+%\s*할인)', card_text)
-            if context_match:
-                event_name = context_match.group(1).strip()
+            ctx = re.search(r'([^,]{0,30}\d+%\s*할인[^,]{0,30})', card_text)
+            if ctx:
+                event_name = ctx.group(1).strip()
 
         if discount_pct is None and original_price and original_price > sale_price:
             discount_pct = round((1 - sale_price / original_price) * 100, 1)
 
-        # 단위 정보
+        # --- 단위 정보 ---
         unit = ""
         unit_match = re.search(
             r'(\d+(?:\.\d+)?\s*(?:g|kg|ml|L|개|팩|봉|매|입)(?:\([^)]+\))?)',
@@ -1041,15 +1101,11 @@ class LottemartCrawler(CrawlerContract):
         )
         if unit_match:
             unit = unit_match.group(1)
-        unit_metadata = normalize_unit_metadata(
-            name=name,
-            sale_price=sale_price,
-            raw_unit=unit,
-        )
+        unit_metadata = normalize_unit_metadata(name=clean_name, sale_price=sale_price, raw_unit=unit)
         display_unit = unit_metadata.get("display_unit") or unit
 
         return DiscountItem(
-            name=name,
+            name=clean_name,
             store="롯데마트",
             original_price=original_price,
             sale_price=sale_price,
@@ -1061,7 +1117,215 @@ class LottemartCrawler(CrawlerContract):
             price_per_100g=unit_metadata.get("price_per_100g"),
             attributes=build_source_attributes(
                 "lottemart",
-                source_record_key=normalize_source_key("lottemart", detail_url, name),
+                source_record_key=normalize_source_key("lottemart", detail_url, clean_name),
+                detail_url=detail_url,
+                image_url=image_url,
+                extra=unit_metadata.get("attributes") or {},
+            ),
+            image_url=image_url,
+            detail_url=detail_url,
+            event_name=event_name,
+        )
+
+    async def _fetch_promotions_scroll(
+        self,
+        *,
+        target_count: int = 220,
+        max_scroll_steps: int = 120,
+    ) -> list[DiscountItem]:
+        """Playwright로 프로모션 페이지를 점진적 스크롤하며 200건 이상 상품을 수집한다.
+
+        lottemartzetta.com/promotions 는 SSR 으로 50건을 제공하고 나머지는
+        교차 관찰자(Intersection Observer)가 카드를 감지하면
+        XHR(PUT /api/webproductpagews/v6/products)로 24건씩 로드된다.
+
+        구현 전략:
+          1. 뷰포트 높이 단위(600px)로 점진적 스크롤 → 모든 카드가 뷰포트에 진입
+          2. XHR 응답(PUT /api/webproductpagews/v6/products) JSON을 직접 수집
+          3. JSON에서 DiscountItem 생성 → DOM 파싱 불필요 (스켈레톤 문제 해결)
+          4. 목표 건수 도달 또는 스크롤 단계 소진 시 종료
+
+        운영자 정책: 페이지 이동(navigation) 시 ban 방지 ≥10초 간격 적용.
+        """
+        import asyncio as _asyncio
+        try:
+            from playwright.async_api import async_playwright
+        except ImportError:
+            logger.warning("[롯데마트] playwright 미설치 — pip install playwright && playwright install chromium")
+            return []
+
+        collected_products: list[dict] = []
+        seen_product_ids: set[str] = set()
+
+        url = f"{self.ZETTA_BASE}/promotions?source=header%20button"
+        logger.info(f"[롯데마트] 스크롤 수집 시작 (API 인터셉트): {url}")
+
+        try:
+            async with async_playwright() as pw:
+                browser = await pw.chromium.launch(
+                    headless=True,
+                    args=["--no-sandbox", "--disable-dev-shm-usage"],
+                )
+                context = await browser.new_context(
+                    locale="ko-KR",
+                    timezone_id="Asia/Seoul",
+                    viewport={"width": 1366, "height": 900},
+                    user_agent=(
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                        "AppleWebKit/537.36 (KHTML, like Gecko) "
+                        "Chrome/125.0.0.0 Safari/537.36"
+                    ),
+                )
+                page = await context.new_page()
+
+                # XHR 응답 인터셉트: PUT /api/webproductpagews/v6/products
+                async def on_response(response):
+                    if "webproductpagews/v6/products" in response.url and response.status == 200:
+                        try:
+                            data = await response.json()
+                            products = data.get("products", [])
+                            for prod in products:
+                                pid = prod.get("productId") or prod.get("id")
+                                if pid and pid not in seen_product_ids:
+                                    seen_product_ids.add(pid)
+                                    collected_products.append(prod)
+                            logger.info(
+                                f"[롯데마트] XHR 수신: {len(products)}건 → 누적 {len(collected_products)}건"
+                            )
+                        except Exception as ex:
+                            logger.debug(f"[롯데마트] XHR 파싱 실패: {ex}")
+
+                page.on("response", on_response)
+
+                try:
+                    # 운영자 정책: ban 방지 ≥10초 간격 (페이지 초기 로드 후 대기 포함)
+                    await page.goto(url, wait_until="domcontentloaded", timeout=30000)
+                    await _asyncio.sleep(5.0)
+
+                    # SSR 초기 50건 수집 (fop-price 로드된 것만)
+                    initial_html = await page.content()
+                    initial_items = self._parse_spa_html(initial_html, query="promotions_initial")
+                    for item in initial_items:
+                        uuid_from_url = (item.detail_url or "").rsplit("/", 1)[-1]
+                        if uuid_from_url and uuid_from_url not in seen_product_ids:
+                            seen_product_ids.add(uuid_from_url)
+                    logger.info(f"[롯데마트] 초기 DOM 파싱: {len(initial_items)}건")
+
+                    # 점진적 스크롤 — 600px 씩 이동 (교차 관찰자가 각 카드를 감지하도록)
+                    scroll_pos = 0
+                    stall_count = 0
+                    prev_collected = len(collected_products)
+
+                    for step in range(max_scroll_steps):
+                        total_loaded = len(collected_products) + len(initial_items)
+                        if total_loaded >= target_count:
+                            break
+
+                        scroll_pos += 600
+                        await page.evaluate(f"window.scrollTo(0, {scroll_pos})")
+                        await _asyncio.sleep(2.5)
+
+                        # 스크롤이 페이지 끝에 도달했는지 확인
+                        page_height = await page.evaluate("document.body.scrollHeight")
+                        if scroll_pos >= page_height:
+                            # 페이지 끝 — 모든 카드가 로드될 때까지 잠시 대기
+                            await _asyncio.sleep(5.0)
+                            logger.info(f"[롯데마트] 페이지 끝 도달 (step={step})")
+                            break
+
+                        # 진행 상태 로그 (10단계마다)
+                        if step % 10 == 0:
+                            new_collected = len(collected_products)
+                            logger.info(
+                                f"[롯데마트] 스크롤 step={step} pos={scroll_pos}px "
+                                f"XHR수집={new_collected}건 DOM={len(initial_items)}건"
+                            )
+                            if new_collected == prev_collected and step > 20:
+                                stall_count += 1
+                                if stall_count >= 3:
+                                    logger.info("[롯데마트] 10단계 연속 미증가, 중단")
+                                    break
+                            else:
+                                stall_count = 0
+                            prev_collected = new_collected
+
+                    final_total = len(collected_products) + len(initial_items)
+                    logger.info(
+                        f"[롯데마트] 스크롤 완료: XHR={len(collected_products)}건 + DOM={len(initial_items)}건 = {final_total}건"
+                    )
+
+                finally:
+                    await browser.close()
+
+        except Exception as e:
+            logger.warning(f"[롯데마트] 스크롤 수집 실패: {type(e).__name__}: {e}")
+            return []
+
+        # XHR JSON → DiscountItem 변환
+        items: list[DiscountItem] = []
+
+        # DOM 파싱 결과 먼저 추가
+        if "initial_items" in dir():
+            items.extend(initial_items)  # type: ignore[name-defined]
+
+        for prod in collected_products:
+            item = self._api_product_to_discount_item(prod)
+            if item:
+                items.append(item)
+
+        logger.info(f"[롯데마트] 최종 변환: {len(items)}개 DiscountItem")
+        return items
+
+    def _api_product_to_discount_item(self, prod: dict) -> Optional[DiscountItem]:
+        """PUT /api/webproductpagews/v6/products 응답 상품 → DiscountItem."""
+        name = (prod.get("name") or "").strip()
+        if not name or len(name) < 2:
+            return None
+
+        clean_name = re.sub(r"^\[.*?\]\s*", "", name).strip() or name
+
+        price_obj = prod.get("price") or {}
+        sale_price_raw = price_obj.get("amount")
+        if not sale_price_raw:
+            return None
+        try:
+            sale_price = int(float(sale_price_raw))
+        except (ValueError, TypeError):
+            return None
+        if sale_price <= 0:
+            return None
+
+        product_uuid = prod.get("productId") or prod.get("id") or ""
+        detail_url = f"{self.ZETTA_BASE}/products/{product_uuid}" if product_uuid else ""
+
+        image_obj = prod.get("image") or {}
+        image_url = image_obj.get("src") or ""
+
+        promotions = prod.get("promotions") or []
+        event_name = "롯데마트 할인"
+        if promotions:
+            event_name = promotions[0].get("description") or event_name
+
+        pack_size = (prod.get("packSizeDescription") or "").strip()
+        unit_metadata = normalize_unit_metadata(
+            name=clean_name, sale_price=sale_price, raw_unit=pack_size
+        )
+        display_unit = unit_metadata.get("display_unit") or pack_size
+
+        return DiscountItem(
+            name=clean_name,
+            store="롯데마트",
+            original_price=None,
+            sale_price=sale_price,
+            discount_percent=None,
+            unit=display_unit or "",
+            display_unit=display_unit or "",
+            package_quantity=unit_metadata.get("package_quantity"),
+            package_unit=unit_metadata.get("package_unit") or "",
+            price_per_100g=unit_metadata.get("price_per_100g"),
+            attributes=build_source_attributes(
+                "lottemart",
+                source_record_key=normalize_source_key("lottemart", detail_url, clean_name),
                 detail_url=detail_url,
                 image_url=image_url,
                 extra=unit_metadata.get("attributes") or {},
