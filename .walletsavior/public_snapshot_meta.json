@@ -1,0 +1,65 @@
+{
+  "generated_at": "2026-05-17T17:03:40.518310",
+  "window_months": 6,
+  "input_counts": {
+    "emart": 5,
+    "homeplus": 5,
+    "lottemart": 5,
+    "costco": 5
+  },
+  "total_input": 20,
+  "livepass_pass_rate": 1.0,
+  "ai_provider_kind": "mock",
+  "total_canonical": 20,
+  "sufficient_grades": 0,
+  "insufficient_grades": 20,
+  "grade_sample": [
+    {
+      "canonical_id": "053853e87a1d…",
+      "sample_size": 1,
+      "p10": null,
+      "p25": null,
+      "p50": 1100.0,
+      "p75": null,
+      "sufficient": false
+    },
+    {
+      "canonical_id": "10bea87a379b…",
+      "sample_size": 1,
+      "p10": null,
+      "p25": null,
+      "p50": 9900.0,
+      "p75": null,
+      "sufficient": false
+    },
+    {
+      "canonical_id": "1962b25bc595…",
+      "sample_size": 1,
+      "p10": null,
+      "p25": null,
+      "p50": 1500.0,
+      "p75": null,
+      "sufficient": false
+    },
+    {
+      "canonical_id": "1a5fec0b9409…",
+      "sample_size": 1,
+      "p10": null,
+      "p25": null,
+      "p50": 392.74,
+      "p75": null,
+      "sufficient": false
+    },
+    {
+      "canonical_id": "1d4cc144b876…",
+      "sample_size": 1,
+      "p10": null,
+      "p25": null,
+      "p50": 2157.6,
+      "p75": null,
+      "sufficient": false
+    }
+  ],
+  "snapshot_path": "E:\\pdf\\capston01\\.walletsavior\\public_snapshot.sqlite",
+  "meta_json_path": "E:\\pdf\\capston01\\.walletsavior\\public_snapshot_meta.json"
+}
