@@ -1,0 +1,30 @@
+# 이마트 카테고리 매핑
+#
+# ⚠️ 이마트 검색결과 API 응답에는 카테고리 필드가 없음.
+#
+# 이유:
+#   이마트 검색결과 JSON (Next.js __NEXT_DATA__) 내 각 상품은
+#   itemId, itemName, siteNo, salestrNo, brandName, itemImgUrl 등만 노출되며
+#   displayCategory, categoryPath 등 분류 정보를 포함하지 않음.
+#   (확인된 fixture: emart/sale_listing_5cards.json, siteNo=7009/6001, salestrNo=2551/2037)
+#
+# 처리 방침 (B3):
+#   map_emart()는 항상 (None, "EMART_NO_CATEGORY_IN_RESPONSE") 반환.
+#   해당 상품은 ProductReviewQueue로 보내진다.
+#
+# B4 작업자에게:
+#   이마트 카테고리 획득 방법 후보:
+#     1) 개별 상품 상세 URL(/emart/search/detail?itemId=...)에서 breadcrumb 파싱
+#     2) itemName 텍스트 토큰 기반 분류 (NLP/규칙)
+#        예: "양배추" → vegetable, "감자" → potato, "소불고기" → beef_bulgogi
+#     3) 이마트 카테고리 브라우즈 API (/emart/search/category) 별도 크롤
+#   권장: (1) + (2) 병행 — 상세 페이지에서 breadcrumb 실패 시 상품명으로 fallback.
+#   이 파일에 매핑 추가 시 key 형식: "itemName_token" 또는 "siteNo:categoryCode"
+
+mappings: {}
+# 향후 이마트 카테고리 정보 획득 후 아래 형식으로 추가:
+# "keyword_or_category_code": internal_node_id
+# 예:
+# "양배추": leaf_vegetable
+# "감자": root_vegetable
+# "7009:VEGETABLE": vegetable

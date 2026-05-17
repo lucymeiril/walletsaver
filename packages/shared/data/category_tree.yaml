@@ -1,0 +1,418 @@
+# WalletSavior 통합 카테고리 트리
+#
+# 설계 원칙:
+#   - 최대 4단계 깊이 (L1 대분류 → L2 중분류 → L3 소분류 → L4 세분류)
+#   - 4사 fixture에 등장한 상품만 시드로 포함 (최소 트리 원칙)
+#   - id는 stable snake_case 영문 slug — 코드 변경 없이 추가 가능
+#   - default_unit_kind: 가격 비교 시 단위 정규화에 사용
+#     GRAM_PER_100G / EACH / ROLL / ML_PER_100ML / SET
+#
+# 향후 라이브 데이터에서 새 카테고리 발견 시 여기에만 추가하면 됨.
+# 변환기(category_mapper.py)와 매핑 테이블(category_mappings/*.yaml)은
+# 이 파일을 참조하며, id 변경 시 매핑 테이블도 함께 수정 필요.
+
+nodes:
+
+  # ───────────────────────────────────────────────
+  # L1: 신선식품
+  # ───────────────────────────────────────────────
+  - id: fresh_food
+    name_kr: 신선식품
+    name_en: Fresh Food
+    parent_id: null
+    display_order: 1
+    default_unit_kind: GRAM_PER_100G
+
+  # L2: 채소
+  - id: vegetable
+    name_kr: 채소
+    name_en: Vegetable
+    parent_id: fresh_food
+    display_order: 1
+    default_unit_kind: GRAM_PER_100G
+
+  # L3: 엽채류 (양배추 등 잎채소)
+  - id: leaf_vegetable
+    name_kr: 엽채류
+    name_en: Leaf Vegetable
+    parent_id: vegetable
+    display_order: 1
+    default_unit_kind: GRAM_PER_100G
+
+  # L4: 양배추
+  - id: cabbage
+    name_kr: 양배추
+    name_en: Cabbage
+    parent_id: leaf_vegetable
+    display_order: 1
+    default_unit_kind: GRAM_PER_100G
+
+  # L3: 근채류 (감자 등 뿌리채소)
+  - id: root_vegetable
+    name_kr: 근채류
+    name_en: Root Vegetable
+    parent_id: vegetable
+    display_order: 2
+    default_unit_kind: GRAM_PER_100G
+
+  # L4: 감자
+  - id: potato
+    name_kr: 감자
+    name_en: Potato
+    parent_id: root_vegetable
+    display_order: 1
+    default_unit_kind: GRAM_PER_100G
+
+  # L3: 과채류 (파프리카, 고추 등 열매채소)
+  - id: fruit_vegetable
+    name_kr: 과채류
+    name_en: Fruit Vegetable
+    parent_id: vegetable
+    display_order: 3
+    default_unit_kind: EACH
+
+  # L4: 파프리카
+  - id: paprika
+    name_kr: 파프리카
+    name_en: Paprika
+    parent_id: fruit_vegetable
+    display_order: 1
+    default_unit_kind: EACH
+
+  # L2: 과일
+  - id: fruit
+    name_kr: 과일
+    name_en: Fruit
+    parent_id: fresh_food
+    display_order: 2
+    default_unit_kind: EACH
+
+  # L3: 열대/아열대과일 (키위, 파인애플 등)
+  - id: tropical_fruit
+    name_kr: 열대과일
+    name_en: Tropical Fruit
+    parent_id: fruit
+    display_order: 1
+    default_unit_kind: EACH
+
+  # L4: 키위
+  - id: kiwi
+    name_kr: 키위
+    name_en: Kiwi
+    parent_id: tropical_fruit
+    display_order: 1
+    default_unit_kind: EACH
+
+  # L2: 곡류
+  - id: grain
+    name_kr: 곡류
+    name_en: Grain
+    parent_id: fresh_food
+    display_order: 3
+    default_unit_kind: GRAM_PER_100G
+
+  # L3: 쌀
+  - id: rice
+    name_kr: 쌀
+    name_en: Rice
+    parent_id: grain
+    display_order: 1
+    default_unit_kind: GRAM_PER_100G
+
+  # L2: 정육/계란 (홈플러스·롯데마트 분류 기준 병합)
+  - id: meat_egg
+    name_kr: 정육·계란
+    name_en: Meat & Egg
+    parent_id: fresh_food
+    display_order: 4
+    default_unit_kind: GRAM_PER_100G
+
+  # L3: 소고기 (국내산)
+  - id: beef
+    name_kr: 소고기
+    name_en: Beef
+    parent_id: meat_egg
+    display_order: 1
+    default_unit_kind: GRAM_PER_100G
+
+  # L4: 소불고기/국거리 (국내산 소고기 부위별 가공)
+  - id: beef_bulgogi
+    name_kr: 소불고기·국거리
+    name_en: Beef Bulgogi
+    parent_id: beef
+    display_order: 1
+    default_unit_kind: GRAM_PER_100G
+
+  # L3: 수입육 (호주, 미국 등)
+  - id: imported_beef
+    name_kr: 수입육
+    name_en: Imported Beef
+    parent_id: meat_egg
+    display_order: 2
+    default_unit_kind: GRAM_PER_100G
+
+  # L3: 계란
+  - id: egg
+    name_kr: 계란
+    name_en: Egg
+    parent_id: meat_egg
+    display_order: 3
+    default_unit_kind: EACH
+
+  # L2: 수산물
+  - id: seafood
+    name_kr: 수산물
+    name_en: Seafood
+    parent_id: fresh_food
+    display_order: 5
+    default_unit_kind: GRAM_PER_100G
+
+  # L3: 생선류 (굴비, 고등어 등)
+  - id: fish
+    name_kr: 생선류
+    name_en: Fish
+    parent_id: seafood
+    display_order: 1
+    default_unit_kind: GRAM_PER_100G
+
+  # L4: 굴비/조기
+  - id: croaker
+    name_kr: 굴비·조기
+    name_en: Croaker
+    parent_id: fish
+    display_order: 1
+    default_unit_kind: EACH
+
+  # ───────────────────────────────────────────────
+  # L1: 가공식품
+  # ───────────────────────────────────────────────
+  - id: processed_food
+    name_kr: 가공식품
+    name_en: Processed Food
+    parent_id: null
+    display_order: 2
+    default_unit_kind: GRAM_PER_100G
+
+  # L2: 두부/콩류 (롯데마트: 채소 > 두부ㆍ나또ㆍ콩나물ㆍ숙주나물)
+  - id: tofu_soy
+    name_kr: 두부·콩류
+    name_en: Tofu & Soy
+    parent_id: processed_food
+    display_order: 1
+    default_unit_kind: GRAM_PER_100G
+
+  # L3: 두부
+  - id: tofu
+    name_kr: 두부
+    name_en: Tofu
+    parent_id: tofu_soy
+    display_order: 1
+    default_unit_kind: GRAM_PER_100G
+
+  # L2: 스낵/견과
+  - id: snack_nut
+    name_kr: 스낵·견과
+    name_en: Snack & Nut
+    parent_id: processed_food
+    display_order: 2
+    default_unit_kind: GRAM_PER_100G
+
+  # L3: 견과 (믹스넛, 하루견과 등)
+  - id: nut
+    name_kr: 견과
+    name_en: Nut
+    parent_id: snack_nut
+    display_order: 1
+    default_unit_kind: GRAM_PER_100G
+
+  # L2: 간편식/밀키트
+  - id: convenience_meal
+    name_kr: 간편식·밀키트
+    name_en: Convenience Meal
+    parent_id: processed_food
+    display_order: 3
+    default_unit_kind: EACH
+
+  # L3: 밀키트 (짬뽕, 중식 등)
+  - id: meal_kit
+    name_kr: 밀키트
+    name_en: Meal Kit
+    parent_id: convenience_meal
+    display_order: 1
+    default_unit_kind: EACH
+
+  # L2: 과자/시리얼 (홈플러스 3-item 픽스처 포함)
+  - id: confectionery
+    name_kr: 과자·시리얼
+    name_en: Confectionery & Cereal
+    parent_id: processed_food
+    display_order: 4
+    default_unit_kind: GRAM_PER_100G
+
+  # L3: 파이/케이크류 (허쉬 크림파이 등)
+  - id: pie_cake
+    name_kr: 파이·케이크류
+    name_en: Pie & Cake
+    parent_id: confectionery
+    display_order: 1
+    default_unit_kind: GRAM_PER_100G
+
+  # L2: 냉장/냉동식품 (홈플러스 3-item 픽스처: 냉장/냉동/밀키트)
+  - id: frozen_chilled
+    name_kr: 냉장·냉동식품
+    name_en: Frozen & Chilled Food
+    parent_id: processed_food
+    display_order: 5
+    default_unit_kind: GRAM_PER_100G
+
+  # L3: 냉장치킨/닭꼬치 (simplus 숯불닭꼬치)
+  - id: chilled_chicken
+    name_kr: 냉장치킨·꼬치
+    name_en: Chilled Chicken
+    parent_id: frozen_chilled
+    display_order: 1
+    default_unit_kind: GRAM_PER_100G
+
+  # L2: 식용유/소스류 (홈플러스: 장류/양념/제빵)
+  - id: cooking_oil_sauce
+    name_kr: 식용유·소스류
+    name_en: Cooking Oil & Sauce
+    parent_id: processed_food
+    display_order: 6
+    default_unit_kind: ML_PER_100ML
+
+  # L3: 올리브유
+  - id: olive_oil
+    name_kr: 올리브유
+    name_en: Olive Oil
+    parent_id: cooking_oil_sauce
+    display_order: 1
+    default_unit_kind: ML_PER_100ML
+
+  # ───────────────────────────────────────────────
+  # L1: 생활용품
+  # ───────────────────────────────────────────────
+  - id: household
+    name_kr: 생활용품
+    name_en: Household
+    parent_id: null
+    display_order: 3
+    default_unit_kind: EACH
+
+  # L2: 위생용품 (화장지, 키친타월)
+  - id: sanitary
+    name_kr: 위생용품
+    name_en: Sanitary Products
+    parent_id: household
+    display_order: 1
+    default_unit_kind: ROLL
+
+  # L3: 화장지 (코스트코: BathFacial-Tissue)
+  - id: bath_tissue
+    name_kr: 화장지
+    name_en: Bath Tissue
+    parent_id: sanitary
+    display_order: 1
+    default_unit_kind: ROLL
+
+  # L3: 키친타월 (홈플러스: 화장지/키친타월/물티슈 > 키친타월)
+  - id: kitchen_towel
+    name_kr: 키친타월
+    name_en: Kitchen Towel
+    parent_id: sanitary
+    display_order: 2
+    default_unit_kind: ROLL
+
+  # ───────────────────────────────────────────────
+  # L1: 뷰티·헬스
+  # ───────────────────────────────────────────────
+  - id: beauty_health
+    name_kr: 뷰티·헬스
+    name_en: Beauty & Health
+    parent_id: null
+    display_order: 4
+    default_unit_kind: EACH
+
+  # L2: 스킨케어 (코스트코: BathBodyOral-Care/Body-LotionBody-Cream)
+  - id: skin_care
+    name_kr: 스킨케어
+    name_en: Skin Care
+    parent_id: beauty_health
+    display_order: 1
+    default_unit_kind: ML_PER_100ML
+
+  # L3: 바디/핸드케어 (바디크림, 손크림)
+  - id: body_hand_care
+    name_kr: 바디·핸드케어
+    name_en: Body & Hand Care
+    parent_id: skin_care
+    display_order: 1
+    default_unit_kind: ML_PER_100ML
+
+  # L2: 건강기능식품 (코스트코: HealthSupplement/VitaminMineral)
+  - id: health_supplement
+    name_kr: 건강기능식품
+    name_en: Health Supplement
+    parent_id: beauty_health
+    display_order: 2
+    default_unit_kind: EACH
+
+  # L3: 비타민 (코스트코: Multi-Vitamin)
+  - id: vitamin
+    name_kr: 비타민
+    name_en: Vitamin
+    parent_id: health_supplement
+    display_order: 1
+    default_unit_kind: EACH
+
+  # ───────────────────────────────────────────────
+  # L1: 패션의류
+  # ───────────────────────────────────────────────
+  - id: fashion_apparel
+    name_kr: 패션의류
+    name_en: Fashion & Apparel
+    parent_id: null
+    display_order: 5
+    default_unit_kind: EACH
+
+  # L2: 양말/속옷 (홈플러스: 패션잡화 > 양말/스타킹)
+  - id: socks_underwear
+    name_kr: 양말·속옷
+    name_en: Socks & Underwear
+    parent_id: fashion_apparel
+    display_order: 1
+    default_unit_kind: SET
+
+  # L3: 양말
+  - id: socks
+    name_kr: 양말
+    name_en: Socks
+    parent_id: socks_underwear
+    display_order: 1
+    default_unit_kind: SET
+
+  # ───────────────────────────────────────────────
+  # L1: 가정·주방
+  # ───────────────────────────────────────────────
+  - id: home_kitchen
+    name_kr: 가정·주방
+    name_en: Home & Kitchen
+    parent_id: null
+    display_order: 6
+    default_unit_kind: EACH
+
+  # L2: 공구/장비 (코스트코: HardwareAutomotive/Power-ToolsWork-Equipment)
+  - id: tool_equipment
+    name_kr: 공구·장비
+    name_en: Tool & Equipment
+    parent_id: home_kitchen
+    display_order: 1
+    default_unit_kind: EACH
+
+  # L3: 운반용품 (Stanley 핸드트럭)
+  - id: moving_equipment
+    name_kr: 운반용품
+    name_en: Moving Equipment
+    parent_id: tool_equipment
+    display_order: 1
+    default_unit_kind: EACH
