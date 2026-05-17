@@ -113,3 +113,32 @@ def test_client(mini_snapshot_path, monkeypatch):
     importlib.reload(app_module)
     from fastapi.testclient import TestClient
     return TestClient(app_module.create_app())
+
+
+@pytest.fixture
+def board_db_path(tmp_path):
+    return str(tmp_path / "board.sqlite")
+
+
+@pytest.fixture
+def board_image_dir(tmp_path):
+    p = tmp_path / "board_images"
+    p.mkdir()
+    return str(p)
+
+
+@pytest.fixture
+def board_test_client(mini_snapshot_path, board_db_path, board_image_dir, monkeypatch):
+    monkeypatch.setenv("WALLETSAVIOR_PUBLIC_DB", mini_snapshot_path)
+    monkeypatch.setenv("WALLETSAVIOR_BOARD_DB", board_db_path)
+    monkeypatch.setenv("WALLETSAVIOR_BOARD_IMAGE_DIR", board_image_dir)
+    # reset SQLAlchemy engine cache so the new env var is honored
+    from storage import board_models
+    board_models.reset_engine_cache()
+    import importlib
+    import api.app as app_module
+    importlib.reload(app_module)
+    from fastapi.testclient import TestClient
+    client = TestClient(app_module.create_app())
+    yield client
+    board_models.reset_engine_cache()
