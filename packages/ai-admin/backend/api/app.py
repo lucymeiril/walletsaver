@@ -46,6 +46,10 @@ def create_app() -> FastAPI:
     from api.routes.match_monitor import router as match_monitor_router
     # pending_db_review 자동 escalation 큐 라우트
     from api.routes.escalation import router as escalation_router
+    # P0 §11 — undo, threshold, alias audit, user feedback, rule_mapper stats
+    from api.routes.p0_ai import router as p0_ai_router
+    # rd3-rawvsdb-gate — raw vs DB row count 비교 게이트
+    from api.routes.raw_vs_db_gate import router as raw_vs_db_gate_router
 
     app.include_router(capabilities_router)
     app.include_router(providers_router)
@@ -56,6 +60,8 @@ def create_app() -> FastAPI:
     app.include_router(workers_router)
     app.include_router(match_monitor_router)
     app.include_router(escalation_router)
+    app.include_router(p0_ai_router)
+    app.include_router(raw_vs_db_gate_router)
 
     @app.get("/health")
     async def health():

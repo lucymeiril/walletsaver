@@ -1,5 +1,101 @@
 import { useCallback, useEffect, useState } from 'react';
 
+// ── rd3-rawvsdb-gate: 드롭 매트릭스 훅 ──────────────────────────────────────
+
+function useRawVsDbSummary() {
+  const [state, setState] = useState({ loading: true, error: null, items: [] });
+  const refresh = useCallback(() => {
+    setState((s) => ({ ...s, loading: true, error: null }));
+    fetch('/api/raw_vs_db_gate/summary?limit=20')
+      .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+      .then((data) => setState({ loading: false, error: null, items: data.items || [] }))
+      .catch((err) => setState({ loading: false, error: err.message, items: [] }));
+  }, []);
+  useEffect(() => { refresh(); }, [refresh]);
+  return { ...state, refresh };
+}
+
+function pctColor(pct) {
+  if (pct === null || pct === undefined) return '#888';
+  if (pct > 0.1) return '#f44336';
+  if (pct > 0.05) return '#ff9800';
+  return '#4caf50';
+}
+
+function PctBadge({ pct }) {
+  if (pct === null || pct === undefined) return <span style={{ color: '#888' }}>-</span>;
+  const pctStr = `${(pct * 100).toFixed(1)}%`;
+  return <span style={{ color: pctColor(pct), fontWeight: 600 }}>{pctStr}</span>;
+}
+
+function DropMatrixCard() {
+  const { loading, error, items, refresh } = useRawVsDbSummary();
+
+  return (
+    <div className="card" style={{ marginBottom: 16, padding: 16 }} id="drop-matrix">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+        <strong>📉 Raw vs DB 드롭 매트릭스</strong>
+        <button
+          className="primary-button"
+          type="button"
+          onClick={refresh}
+          disabled={loading}
+          style={{ padding: '4px 10px', fontSize: 12 }}
+        >
+          {loading ? '로딩 중...' : '새로고침'}
+        </button>
+      </div>
+      <div className="muted" style={{ fontSize: 12, marginBottom: 10 }}>
+        마트별 raw→DB 드롭률 · 5% 초과 시 🔴 (silent gap 의심)
+      </div>
+      {error && <div style={{ color: '#f66', fontSize: 13 }}>오류: {error}</div>}
+      {!loading && !error && items.length === 0 && (
+        <div className="muted">배치 기록 없음</div>
+      )}
+      {items.length > 0 && (
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid #444', textAlign: 'left' }}>
+                <th style={{ padding: '4px 8px' }}>배치 ID</th>
+                <th style={{ padding: '4px 8px' }}>상태</th>
+                <th style={{ padding: '4px 8px' }}>raw</th>
+                <th style={{ padding: '4px 8px' }}>저장</th>
+                <th style={{ padding: '4px 8px' }}>드롭률</th>
+                <th style={{ padding: '4px 8px' }}>마트별</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item) => (
+                <tr key={item.source_run_id} style={{ borderBottom: '1px solid #2a2a2a' }}>
+                  <td style={{ padding: '4px 8px', fontFamily: 'monospace', fontSize: 11, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={item.source_run_id}>
+                    {item.source_run_id}
+                  </td>
+                  <td style={{ padding: '4px 8px' }}>
+                    <span className={`badge ${item.status === 'pass' ? 'ok' : item.status === 'fail' ? 'err' : ''}`}>
+                      {item.status === 'fail' ? '🔴 fail' : item.status === 'pass' ? '✅ pass' : item.status}
+                    </span>
+                  </td>
+                  <td style={{ padding: '4px 8px' }}>{item.raw_count}</td>
+                  <td style={{ padding: '4px 8px' }}>{item.ai_raw_count}</td>
+                  <td style={{ padding: '4px 8px' }}><PctBadge pct={item.drop_pct} /></td>
+                  <td style={{ padding: '4px 8px', fontSize: 11 }}>
+                    {item.by_mart && Object.entries(item.by_mart).map(([mart, stats]) => (
+                      <span key={mart} style={{ marginRight: 8, whiteSpace: 'nowrap' }}>
+                        {mart}: <PctBadge pct={stats.drop_pct} />
+                      </span>
+                    ))}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /** pending_db_review 알람 상태를 폴링한다 (60초 주기). */
 function useEscalationAlarm() {
   const [alarm, setAlarm] = useState(null);
@@ -163,6 +259,9 @@ export default function MatchMonitorPanel() {
 
       {/* pending_db_review 임계 초과 시 빨간 카드 */}
       <EscalationAlarmCard alarm={escalationAlarm} />
+
+      {/* rd3-rawvsdb-gate: Raw vs DB 드롭 매트릭스 카드 */}
+      <DropMatrixCard />
 
       {error && (
         <div className="muted" style={{ color: '#f66', marginBottom: 12 }}>

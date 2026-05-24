@@ -610,6 +610,134 @@ async def _invoke_plugin_crawl(plugin: CrawlerPlugin, targets: list[str] | None)
         return await plugin.crawl()
 
 
+# rd3-pipe-silent-gap-fix: 크롤 직후 ai-admin /api/ingest/raw-records/label 로 자동 전송.
+# 환경변수 두 개(URL + provider)가 모두 설정된 경우에만 동작하므로 기존 운영/테스트는 영향 없음.
+# 전송 시 ai_export.forward_raw_records_to_ai_admin 가 records_stored 와 records_sent 를
+# 비교하여 silent drop 을 RawExportError 로 끌어올리고, 여기서 그 예외를
+# failure_reasons + log_lines 에 명시 기록해 JobsPanel 에 빨간 알람으로 노출시킨다.
+_FORWARD_URL_ENV = "WALLETSAVIOR_AI_ADMIN_FORWARD_URL"
+_FORWARD_PROVIDER_ENV = "WALLETSAVIOR_AI_ADMIN_FORWARD_PROVIDER"
+_FORWARD_API_KEY_ENV = "WALLETSAVIOR_AI_ADMIN_FORWARD_API_KEY"
+_FORWARD_SCHEMA_ENV = "WALLETSAVIOR_AI_ADMIN_FORWARD_SCHEMA"
+
+
+def _rawvsdb_gate_check(
+    run_id: str,
+    store: "OrchestratorStore",
+    forward_url: str,
+    api_key: Optional[str] = None,
+) -> Optional[dict]:
+    """rd3-rawvsdb-gate: forward 완료 후 ai-admin의 raw vs DB row count gate를 호출한다.
+
+    GET /api/raw_vs_db_gate?run_id={run_id} 를 호출하고:
+      - drop > 5% (status=fail) 이면 run을 partial로 마킹하고 failure_reasons에 기록.
+      - ai-admin 오프라인/오류 시 soft-fail (run 상태 변경 없음).
+    """
+    import json as _json
+    from urllib.request import Request, urlopen
+    from urllib.error import HTTPError, URLError
+    import socket as _socket
+
+    try:
+        base = forward_url.strip().rstrip("/")
+        gate_url = f"{base}/api/raw_vs_db_gate?run_id={run_id}"
+        headers: dict = {}
+        if api_key:
+            headers["X-API-Key"] = api_key
+        req = Request(gate_url, headers=headers, method="GET")
+        with urlopen(req, timeout=10.0) as resp:
+            body = resp.read().decode("utf-8")
+            data = _json.loads(body) if body else {}
+    except (HTTPError, URLError, TimeoutError, _socket.timeout, OSError) as exc:
+        store.append_log(run_id, f"rawvsdb_gate: ai-admin 호출 실패 (soft-fail) — {exc!r}")
+        return None
+    except Exception as exc:  # pragma: no cover
+        store.append_log(run_id, f"rawvsdb_gate: 예상치 못한 오류 (soft-fail) — {exc!r}")
+        return None
+
+    status = data.get("status")
+    drop_pct = data.get("drop_pct")
+    store.append_log(
+        run_id,
+        f"rawvsdb_gate: status={status} drop_pct={drop_pct} "
+        f"raw={data.get('raw_count')} ai_raw={data.get('ai_raw_count')}",
+    )
+    if status == "fail":
+        msg = (
+            f"rawvsdb_gate_fail: raw→DB drop {drop_pct:.1%} > threshold {data.get('threshold', 0.05):.1%} "
+            f"(raw={data.get('raw_count')}, ai_raw={data.get('ai_raw_count')})"
+        )
+        existing = store.get_run(run_id) or {}
+        reasons = list(existing.get("failure_reasons") or [])
+        reasons.append(msg)
+        store.update_run_status(
+            run_id,
+            status="partial",
+            items_found=existing.get("items_found", 0),
+            items_saved=existing.get("items_saved", 0),
+            failure_reasons=reasons,
+            finished=False,
+        )
+    return data
+
+
+def _auto_forward_to_ai_admin(
+    plugin: CrawlerPlugin,
+    batch: "RawBatch",
+    run_id: str,
+    store: "OrchestratorStore",
+) -> Optional[dict]:
+    forward_url = os.environ.get(_FORWARD_URL_ENV)
+    provider_id = os.environ.get(_FORWARD_PROVIDER_ENV)
+    if not forward_url or not provider_id:
+        return None
+    items = list(getattr(batch, "items", None) or [])
+    if not items:
+        store.append_log(run_id, "ai_admin_forward: 0건 → 전송 건너뜀")
+        return {"records_sent": 0, "skipped_reason": "empty_batch"}
+    try:
+        from pipeline.ai_export import forward_raw_records_to_ai_admin, RawExportError
+    except Exception as exc:  # pragma: no cover
+        store.append_log(run_id, f"ai_admin_forward: import 실패 — {exc!r}")
+        return {"error": "import_failed"}
+    schema_type = os.environ.get(_FORWARD_SCHEMA_ENV) or "mart_discount"
+    api_key = os.environ.get(_FORWARD_API_KEY_ENV) or None
+    source_name = getattr(plugin, "mart_kind", None) or plugin.name
+    try:
+        result = forward_raw_records_to_ai_admin(
+            items,
+            ai_admin_base_url=forward_url,
+            provider_id=provider_id,
+            source_name=source_name,
+            crawler_name=plugin.name,
+            schema_type=schema_type,
+            api_key=api_key,
+        )
+        store.append_log(
+            run_id,
+            "ai_admin_forward: "
+            f"sent={result.get('records_sent')} accepted={result.get('records_accepted')} "
+            f"drop={result.get('drop_count')} wire_log={result.get('wire_log_path') or '-'}",
+        )
+        return result
+    except RawExportError as exc:
+        msg = f"ai_admin_forward_failed: {exc}"
+        store.append_log(run_id, msg)
+        # silent drop 검출 시 run 을 partial 로 표시하고 reason 누적.
+        existing = store.get_run(run_id) or {}
+        reasons = list(existing.get("failure_reasons") or [])
+        reasons.append(msg)
+        store.update_run_status(
+            run_id,
+            status="partial",
+            items_found=batch.items_found,
+            items_saved=batch.items_saved,
+            failure_reasons=reasons,
+            finished=False,
+        )
+        return {"error": str(exc), "drop_detected": True}
+
+
 def _persist_run_result(
     store: OrchestratorStore,
     run_id: str,
@@ -661,7 +789,24 @@ async def _execute_plugin_async(
     store.append_log(run_id, f"플러그인 {plugin.name} 실행 시작")
     try:
         batch = await _invoke_plugin_crawl(plugin, targets)
-        return _persist_run_result(store, run_id, batch, None)
+        result = _persist_run_result(store, run_id, batch, None)
+        # rd3-pipe-silent-gap-fix: persist 이후에 forward 를 시도해야 run 상태(partial/success)가
+        # silent drop 결과를 반영하며 덮어쓰이지 않는다.
+        forward_summary = _auto_forward_to_ai_admin(plugin, batch, run_id, store)
+        if forward_summary is not None:
+            result["ai_admin_forward"] = forward_summary
+            if forward_summary.get("drop_detected"):
+                result["status"] = "partial"
+            # rd3-rawvsdb-gate: forward 성공/부분 성공 후 gate 체크 (soft-fail).
+            forward_url = os.environ.get(_FORWARD_URL_ENV)
+            api_key = os.environ.get(_FORWARD_API_KEY_ENV) or None
+            if forward_url and not forward_summary.get("skipped_reason"):
+                gate_result = _rawvsdb_gate_check(run_id, store, forward_url, api_key)
+                if gate_result is not None:
+                    result["rawvsdb_gate"] = gate_result
+                    if gate_result.get("status") == "fail":
+                        result["status"] = "partial"
+        return result
     except Exception as exc:  # pragma: no cover - 예외 흐름은 테스트에서 패치로 검증
         logger.exception("[orchestrator] plugin %s failed", plugin.name)
         return _persist_run_result(store, run_id, None, exc)
