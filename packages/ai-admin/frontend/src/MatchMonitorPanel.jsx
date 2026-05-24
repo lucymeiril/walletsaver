@@ -1,5 +1,52 @@
 import { useCallback, useEffect, useState } from 'react';
 
+/** pending_db_review 알람 상태를 폴링한다 (60초 주기). */
+function useEscalationAlarm() {
+  const [alarm, setAlarm] = useState(null);
+  useEffect(() => {
+    let cancelled = false;
+    const fetchAlarm = () => {
+      fetch('/api/escalation/alarm')
+        .then((r) => r.ok ? r.json() : null)
+        .then((data) => { if (!cancelled && data) setAlarm(data); })
+        .catch(() => {});
+    };
+    fetchAlarm();
+    const timer = setInterval(fetchAlarm, 60_000);
+    return () => { cancelled = true; clearInterval(timer); };
+  }, []);
+  return alarm;
+}
+
+/** pending_db_review 정체 알람 빨간 카드 — 임계 도달 시에만 표시된다. */
+function EscalationAlarmCard({ alarm }) {
+  if (!alarm?.alarm_triggered) return null;
+  return (
+    <div style={{
+      background: '#4a1010',
+      border: '2px solid #f44',
+      borderRadius: 6,
+      padding: '10px 14px',
+      marginBottom: 14,
+      display: 'flex',
+      alignItems: 'center',
+      gap: 12,
+    }}>
+      <span style={{ fontSize: 22 }}>🚨</span>
+      <div>
+        <strong style={{ color: '#ff5555' }}>DB 검수 정체 알람</strong>
+        <div style={{ fontSize: 12, color: '#fcc', marginTop: 2 }}>
+          {alarm.alarm_reason} ·&nbsp;
+          <a href="#pending-escalation" style={{ color: '#f99' }}>Escalation 큐에서 처리하세요</a>
+        </div>
+      </div>
+      <div style={{ marginLeft: 'auto', fontSize: 12, color: '#aaa', textAlign: 'right' }}>
+        정체 {alarm.total_pending}건 · 최대 {alarm.max_stale_hours}h
+      </div>
+    </div>
+  );
+}
+
 function useMatchMonitor() {
   const [state, setState] = useState({ loading: true, error: null, cumulative: null, runs: [] });
 
@@ -96,6 +143,8 @@ function RunsTable({ runs }) {
 
 export default function MatchMonitorPanel() {
   const { loading, error, cumulative, runs, refresh } = useMatchMonitor();
+  // pending_db_review 알람 — 임계 도달 시 빨간 카드 표시
+  const escalationAlarm = useEscalationAlarm();
 
   const pm = cumulative?.product_match || {};
   const lk = cumulative?.learned_knowledge || {};
@@ -111,6 +160,9 @@ export default function MatchMonitorPanel() {
           {loading ? '로딩 중...' : '새로고침'}
         </button>
       </div>
+
+      {/* pending_db_review 임계 초과 시 빨간 카드 */}
+      <EscalationAlarmCard alarm={escalationAlarm} />
 
       {error && (
         <div className="muted" style={{ color: '#f66', marginBottom: 12 }}>

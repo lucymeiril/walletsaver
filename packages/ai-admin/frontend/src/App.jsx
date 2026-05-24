@@ -4,6 +4,8 @@ import JobsPanel from './JobsPanel.jsx';
 import PromptPacksPanel from './PromptPacksPanel.jsx';
 import ReviewQueuePanel from './ReviewQueuePanel.jsx';
 import MatchMonitorPanel from './MatchMonitorPanel.jsx';
+// pending_db_review 자동 escalation 큐 패널
+import PendingEscalationPanel from './PendingEscalationPanel.jsx';
 
 function useFetchJson(url) {
   const [state, setState] = useState({ status: 'loading', data: null, error: null });
@@ -321,6 +323,8 @@ export default function App() {
       <GuidedHomePanel onOpenAdvanced={openAdvanced} />
       <ReviewQueuePanel />
       <MatchMonitorPanel />
+      {/* pending_db_review escalation 큐: 정체 건 처리 및 알람 */}
+      <PendingEscalationPanel />
       <details
         id="advanced-controls"
         className="panel advanced-shell anchor-offset"
