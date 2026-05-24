@@ -649,7 +649,7 @@ def run_mart_pipeline_real(
     # Stage 3: split into batches and call provider
     from services.ai_ingestion import split_records_for_ai
 
-    batches = split_records_for_ai(records, max_batch_items=20, max_prompt_chars=12000)
+    batches, _batch_truncations = split_records_for_ai(records, max_batch_items=20, max_prompt_chars=12000)
     print(f"  [{mart_name}] {len(records)}건 → {len(batches)}배치", flush=True)
 
     all_proposals = []
@@ -1074,6 +1074,16 @@ def run_ai_live_run(
     artifact_dir.mkdir(parents=True, exist_ok=True)
     out_name = f"run-{timestamp}-{run_id}"
 
+    # -----------------------------------------------------------------------
+    # Wire logging auto-setup: always activate for non-dry-run runs so there
+    # is irrefutable HTTP-level evidence of real provider calls.
+    # -----------------------------------------------------------------------
+    wire_log_path_str = os.environ.get("WALLETSAVIOR_WIRE_LOG_PATH", "").strip()
+    if not wire_log_path_str and not dry_run:
+        wire_log_path_str = str(artifact_dir / f"wire-log-{timestamp}-{run_id}.jsonl")
+        os.environ["WALLETSAVIOR_WIRE_LOG_PATH"] = wire_log_path_str
+        print(f"[WIRE] Auto-activating wire log: {wire_log_path_str}", flush=True)
+
     print(f"\n{'='*60}", flush=True)
     print(f"WalletSavior rd-ai-live-run | provider={provider_id} | dry_run={dry_run}", flush=True)
     print(f"run_id: {run_id}", flush=True)
@@ -1281,6 +1291,45 @@ def run_ai_live_run(
     # -----------------------------------------------------------------------
     print("\nStep 6: 산출물 생성...", flush=True)
 
+    # Collect wire log stats before writing the report
+    wire_log_stats: dict[str, Any] = {"enabled": False}
+    _active_wire_log_path = os.environ.get("WALLETSAVIOR_WIRE_LOG_PATH", "").strip()
+    if _active_wire_log_path and not dry_run:
+        _wlp = Path(_active_wire_log_path)
+        if _wlp.exists():
+            try:
+                _lines = _wlp.read_text(encoding="utf-8").splitlines()
+                _wire_entries = [json.loads(ln) for ln in _lines if ln.strip()]
+                _ok = sum(1 for e in _wire_entries if 200 <= e.get("status", 0) < 300)
+                _total = len(_wire_entries)
+                _google = sum(1 for e in _wire_entries if e.get("is_google_genai"))
+                wire_log_stats = {
+                    "enabled": True,
+                    "path": _active_wire_log_path,
+                    "total_http_calls": _total,
+                    "ok_http_calls": _ok,
+                    "failed_http_calls": _total - _ok,
+                    "google_genai_calls": _google,
+                    "sample_entries": _wire_entries[:3],
+                }
+                print(
+                    f"  [WIRE] {_google} Google GenAI calls, {_ok}/{_total} HTTP 200, "
+                    f"log: {_active_wire_log_path}",
+                    flush=True,
+                )
+                if _google == 0:
+                    print(
+                        "  ⚠️ [WIRE] ZERO Google GenAI calls captured — "
+                        "provider may not have made real HTTP calls!",
+                        flush=True,
+                    )
+            except Exception as _wl_exc:
+                wire_log_stats = {"enabled": True, "path": _active_wire_log_path, "read_error": str(_wl_exc)}
+        else:
+            wire_log_stats = {"enabled": True, "path": _active_wire_log_path, "exists": False,
+                              "warning": "wire log file not created — wire logger may not have been attached"}
+            print("  ⚠️ [WIRE] Wire log file was not created!", flush=True)
+
     # Summary: escalation reasons
     escalation_reasons: list[dict] = []
     for mart_name, res in per_mart_results.items():
@@ -1310,6 +1359,7 @@ def run_ai_live_run(
         "provider_id": provider_id,
         "dry_run": dry_run,
         "verdict": verdict,
+        "wire_log_stats": wire_log_stats,
         "crawl_capture": {
             "emart": {"count": per_mart_results.get("emart", {}).get("crawler_rows", 0), "blocked": False},
             "homeplus": {"count": per_mart_results.get("homeplus", {}).get("crawler_rows", 0), "blocked": False},
@@ -1393,6 +1443,7 @@ def run_ai_live_run(
         "escalation_reasons": escalation_reasons,
         "costco_capture": json_report["costco_capture"],
         "lottemart_status": lottemart_status,
+        "wire_log_stats": wire_log_stats,
     }
 
 
@@ -1446,6 +1497,23 @@ def main(argv: list[str] | None = None) -> int:
             file=sys.stderr,
         )
         return 1
+
+    # WALLETSAVIOR_AI_LIVE_FORCE=1: require wire logging to be active.
+    force_live = os.environ.get("WALLETSAVIOR_AI_LIVE_FORCE", "").strip() == "1"
+    wire_log_path = os.environ.get("WALLETSAVIOR_WIRE_LOG_PATH", "").strip()
+    if force_live and not wire_log_path:
+        print(
+            "WARNING: WALLETSAVIOR_AI_LIVE_FORCE=1 is set but WALLETSAVIOR_WIRE_LOG_PATH "
+            "is not — set WALLETSAVIOR_WIRE_LOG_PATH to capture wire-level HTTP evidence.",
+            file=sys.stderr,
+            flush=True,
+        )
+    if force_live:
+        print(
+            f"[FORCE-LIVE] ⚡ WALLETSAVIOR_AI_LIVE_FORCE=1 — "
+            f"cache bypass confirmed, wire log: {wire_log_path or '(not set)'}",
+            flush=True,
+        )
 
     try:
         result = run_ai_live_run(

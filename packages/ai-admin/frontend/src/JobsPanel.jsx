@@ -218,6 +218,11 @@ export default function JobsPanel() {
             </span>
             <span className="row" style={{ gap: 6 }}>
               <span className={`badge ${statusBadgeClass(j.status)}`}>{j.status}</span>
+              {j.truncated_count > 0 && (
+                <span className="badge warn" title="일부 레코드가 prompt budget 초과로 자동 절단됨">
+                  절단 {j.truncated_count}건
+                </span>
+              )}
               {j.status === 'queued' && (
                 <button onClick={() => action(j.job_id, 'pause')}>일시정지</button>
               )}

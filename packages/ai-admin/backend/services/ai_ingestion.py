@@ -90,6 +90,174 @@ _provider_call_history: dict[str, list[float]] = {}
 _sleep = time.sleep
 _monotonic = time.monotonic
 
+# ---------------------------------------------------------------------------
+# Prompt truncation helpers
+#
+# Why truncate instead of reject?
+# A single record exceeding the prompt budget must NOT kill the entire batch
+# (운영자 떠넘김 금지). We preserve a marker so reviewers and audits know
+# something was cut — the original is always recoverable from the raw DB.
+# ---------------------------------------------------------------------------
+
+# Payload keys that tend to carry long free-text; truncate these first so we
+# disturb the structured fields (price/unit/date) as little as possible.
+_TRUNCATABLE_PAYLOAD_KEYS: tuple[str, ...] = (
+    "description",
+    "content",
+    "body",
+    "detail",
+    "text",
+    "summary",
+    "category_hint",   # can be a long taxonomy path
+    "image_url",       # URLs can be hundreds of chars
+    "image",
+)
+
+
+def _make_truncation_marker(orig_len: int) -> str:
+    return f"\u2026[truncated:{orig_len}chars]"
+
+
+def _truncate_str(s: str, max_len: int) -> str:
+    """Shorten *s* to *max_len* chars, appending a preservation marker.
+
+    The marker records the original length so reviewers know exactly how much
+    was removed. We never return an empty string — the marker alone is kept
+    even if max_len is very small.
+    """
+    if len(s) <= max_len:
+        return s
+    marker = _make_truncation_marker(len(s))
+    available = max_len - len(marker)
+    if available < 1:
+        return marker[:max_len]
+    return s[:available] + marker
+
+
+def _truncate_record_to_fit(
+    record: RawCrawlRecord,
+    prompt_char_limit: int,
+    catalog: list[Any] | None,
+    learned_knowledge: list[Any] | None,
+) -> tuple[RawCrawlRecord, dict[str, Any] | None]:
+    """Return a (possibly truncated) copy of *record* that fits within
+    *prompt_char_limit*.
+
+    Strategy (priority order):
+    1. Truncate long free-text payload fields (description, image_url, …).
+    2. Truncate raw_title — the main user-visible text.
+    3. If still over after aggressive title truncation, return the record as-is
+       but mark it as an oversized single-record batch; provider call proceeds
+       with the oversized prompt rather than crashing the whole batch.
+
+    Returns ``(record, None)`` when no truncation is needed.
+    Returns ``(truncated_record, meta_dict)`` otherwise.
+    """
+    record_chars = _prompt_chars_for(
+        [record], catalog, learned_knowledge, max_prompt_chars=prompt_char_limit
+    )
+    if record_chars <= prompt_char_limit:
+        return record, None
+
+    orig_chars = record_chars
+
+    # ── Step 1: truncate long payload fields ──────────────────────────────
+    payload = dict(record.raw_payload)
+    payload_changed = False
+    for key in _TRUNCATABLE_PAYLOAD_KEYS:
+        val = payload.get(key)
+        if not isinstance(val, str) or len(val) <= 50:
+            continue
+        excess = record_chars - prompt_char_limit
+        new_len = max(20, len(val) - excess - 5)
+        payload[key] = _truncate_str(val, new_len)
+        payload_changed = True
+        candidate = record.model_copy(update={"raw_payload": payload})
+        record_chars = _prompt_chars_for(
+            [candidate], catalog, learned_knowledge, max_prompt_chars=prompt_char_limit
+        )
+        record = candidate
+        if record_chars <= prompt_char_limit:
+            meta: dict[str, Any] = {
+                "raw_record_id": record.raw_record_id,
+                "orig_chars": orig_chars,
+                "final_chars": record_chars,
+                "truncated_field": key,
+            }
+            _logger.warning(
+                "ai_ingest_oversized_record_truncated",
+                extra={**meta, "prompt_char_limit": prompt_char_limit},
+            )
+            return record, meta
+
+    # ── Step 2: truncate raw_title ─────────────────────────────────────────
+    orig_title = record.raw_title
+    excess = record_chars - prompt_char_limit
+    marker = _make_truncation_marker(len(orig_title))
+    new_title_len = max(len(marker) + 1, len(orig_title) - excess - 5)
+    candidate = record.model_copy(update={"raw_title": _truncate_str(orig_title, new_title_len)})
+    record_chars = _prompt_chars_for(
+        [candidate], catalog, learned_knowledge, max_prompt_chars=prompt_char_limit
+    )
+    if record_chars <= prompt_char_limit:
+        meta = {
+            "raw_record_id": record.raw_record_id,
+            "orig_chars": orig_chars,
+            "final_chars": record_chars,
+            "truncated_field": "raw_title",
+        }
+        _logger.warning(
+            "ai_ingest_oversized_record_truncated",
+            extra={**meta, "prompt_char_limit": prompt_char_limit},
+        )
+        return candidate, meta
+
+    # ── Step 3: aggressive binary-search title reduction ──────────────────
+    lo, hi = len(marker) + 1, len(orig_title)
+    best_record, best_chars = candidate, record_chars
+    for _ in range(20):
+        mid = (lo + hi) // 2
+        if mid == lo:
+            break
+        t = record.model_copy(update={"raw_title": _truncate_str(orig_title, mid)})
+        c = _prompt_chars_for(
+            [t], catalog, learned_knowledge, max_prompt_chars=prompt_char_limit
+        )
+        if c <= prompt_char_limit:
+            best_record, best_chars = t, c
+            lo = mid + 1
+        else:
+            hi = mid - 1
+
+    if best_chars <= prompt_char_limit:
+        meta = {
+            "raw_record_id": best_record.raw_record_id,
+            "orig_chars": orig_chars,
+            "final_chars": best_chars,
+            "truncated_field": "raw_title",
+        }
+        _logger.warning(
+            "ai_ingest_oversized_record_truncated",
+            extra={**meta, "prompt_char_limit": prompt_char_limit},
+        )
+        return best_record, meta
+
+    # ── Step 4: nothing fits — oversized single-record batch ──────────────
+    # We proceed anyway rather than crashing; the provider will handle it or
+    # the shrink-retry path will fall back. Never drop the record silently.
+    meta = {
+        "raw_record_id": record.raw_record_id,
+        "orig_chars": orig_chars,
+        "final_chars": record_chars,
+        "truncated_field": "none",
+        "oversized_single_batch": True,
+    }
+    _logger.warning(
+        "ai_ingest_oversized_record_truncated",
+        extra={**meta, "prompt_char_limit": prompt_char_limit},
+    )
+    return record, meta
+
 
 _LABELING_PROMPT_PREFIX = [
     "WalletSavior raw product data labeling task.",
@@ -587,26 +755,39 @@ def split_records_for_ai(
     learned_knowledge: list[Any] | None = None,
     max_batch_items: int | None = None,
     max_prompt_chars: int | None = None,
-) -> list[list[RawCrawlRecord]]:
-    """Split records without cutting a record across batches."""
+) -> tuple[list[list[RawCrawlRecord]], list[dict[str, Any]]]:
+    """Split records into prompt-budget-safe batches without cutting a record across batches.
+
+    Returns ``(batches, oversized_truncations)`` where *oversized_truncations*
+    is a list of metadata dicts for any record whose prompt contribution
+    exceeded the budget and had to be truncated (or forced into a solo batch).
+
+    Design: a single record that exceeds the budget is NEVER rejected —
+    we truncate it or put it in its own batch.  Killing the whole ingest
+    because of one long record violates the operator contract.
+    """
     batch_item_limit, prompt_char_limit = _validate_ai_batch_limits(
         max_batch_items=max_batch_items,
         max_prompt_chars=max_prompt_chars,
     )
     batches: list[list[RawCrawlRecord]] = []
+    oversized_truncations: list[dict[str, Any]] = []
     current: list[RawCrawlRecord] = []
     for record in records:
-        record_chars = _prompt_chars_for(
-            [record],
-            catalog,
-            learned_knowledge,
-            max_prompt_chars=prompt_char_limit,
+        # Truncate this record if its solo prompt contribution exceeds budget.
+        record, trunc_meta = _truncate_record_to_fit(
+            record, prompt_char_limit, catalog, learned_knowledge
         )
-        if record_chars > prompt_char_limit:
-            raise ValueError(
-                f"record {record.raw_record_id} is {record_chars} chars; "
-                f"max batch prompt chars is {prompt_char_limit}"
-            )
+        if trunc_meta is not None:
+            oversized_truncations.append(trunc_meta)
+            if trunc_meta.get("oversized_single_batch"):
+                # Even after truncation it doesn't fit — flush and isolate.
+                if current:
+                    batches.append(current)
+                    current = []
+                batches.append([record])
+                continue
+
         would_exceed = (
             len(current) >= batch_item_limit
             or _prompt_chars_for(
@@ -622,7 +803,7 @@ def split_records_for_ai(
         current.append(record)
     if current:
         batches.append(current)
-    return batches
+    return batches, oversized_truncations
 
 
 def build_labeling_prompt(
@@ -632,7 +813,14 @@ def build_labeling_prompt(
     learned_knowledge: list[Any] | None = None,
     max_prompt_chars: int | None = None,
 ) -> str:
-    """Build a strict JSON prompt for product labeling/classification."""
+    """Build a strict JSON prompt for product labeling/classification.
+
+    If the assembled prompt exceeds *max_prompt_chars*, the catalog/context
+    section is already trimmed by ``_bounded_prompt_lines``.  In the rare
+    case where the record section itself is still over budget (shouldn't
+    happen after ``split_records_for_ai`` pre-truncates), we emit a warning
+    and return the prompt as-is rather than raising — never block the call.
+    """
     _batch_items, prompt_char_limit = _validate_ai_batch_limits(max_prompt_chars=max_prompt_chars)
     prompt = "\n".join(
         _bounded_prompt_lines(
@@ -643,8 +831,15 @@ def build_labeling_prompt(
         )
     )
     if len(prompt) > prompt_char_limit:
-        raise ValueError(
-            f"AI batch prompt is {len(prompt)} chars; max is {prompt_char_limit}"
+        _logger.warning(
+            "ai_ingest_oversized_record_truncated",
+            extra={
+                "stage": "build_labeling_prompt",
+                "prompt_chars": len(prompt),
+                "prompt_char_limit": prompt_char_limit,
+                "record_count": len(records),
+                "raw_record_ids": [r.raw_record_id for r in records],
+            },
         )
     return prompt
 
@@ -1829,7 +2024,7 @@ def ingest_and_label_records(
             max_batch_items=max_ai_batch_items,
             max_prompt_chars=max_ai_batch_prompt_chars,
         )
-        split_batches = split_records_for_ai(
+        split_batches, split_truncations = split_records_for_ai(
             provider_records,
             catalog=keyword_catalog,
             learned_knowledge=learned_keyword_knowledge,

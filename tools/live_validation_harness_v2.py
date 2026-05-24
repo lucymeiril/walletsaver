@@ -1647,7 +1647,7 @@ def run_harness(
         invalid_rows=invalid_rows,
         retention_anomalies=retention_anomalies,
     )
-    split_batches = split_records_for_ai(
+    split_batches, _split_truncations = split_records_for_ai(
         records,
         max_batch_items=args.ai_batch_size,
         max_prompt_chars=args.ai_batch_prompt_chars,

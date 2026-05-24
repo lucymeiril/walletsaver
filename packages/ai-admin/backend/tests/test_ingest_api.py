@@ -2013,7 +2013,7 @@ def test_split_records_builds_bounded_prompts_for_realistic_emart_records() -> N
         for i in range(30)
     ]
 
-    batches = ai_ingestion.split_records_for_ai(records)
+    batches, _truncations = ai_ingestion.split_records_for_ai(records)
 
     assert sum(len(batch) for batch in batches) == 30
     assert all(len(batch) <= 30 for batch in batches)

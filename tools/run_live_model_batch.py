@@ -507,7 +507,7 @@ def estimate_provider_call_count(args: argparse.Namespace) -> int:
             records,
             max_batch_items=args.ai_batch_size,
             max_prompt_chars=args.ai_batch_prompt_chars,
-        )
+        )[0]
     )
 
 
