@@ -28,6 +28,8 @@ const Header = memo(function Header() {
   const notifications = useStore((st) => st.notifications);
   const theme = useStore((st) => st.theme);
   const toggleTheme = useStore((st) => st.toggleTheme);
+  const hotdealerMode = useStore((st) => st.hotdealerMode);
+  const toggleHotdealerMode = useStore((st) => st.toggleHotdealerMode);
   const openLoginModal = useStore((st) => st.openLoginModal);
   const cartItems = useCartStore((st) => st.items);
   const location = useLocation();
@@ -124,6 +126,20 @@ const Header = memo(function Header() {
               aria-label="검색"
             >
               <Search size={20} />
+            </button>
+
+            {/* 핫딜러 모드 ON/OFF — 상세 가격 정보 레이어 전환 */}
+            <button
+              className={`${s.iconBtn} ${hotdealerMode ? s.iconBtnActive : ''}`}
+              onClick={toggleHotdealerMode}
+              aria-label={hotdealerMode ? '핫딜러 모드 끄기' : '핫딜러 모드 켜기'}
+              title={hotdealerMode ? '핫딜러 모드 ON — 클릭으로 끄기' : '핫딜러 모드 OFF — 클릭으로 켜기'}
+              aria-pressed={hotdealerMode}
+            >
+              🔥
+              <span className={s.hotdealerLabel} style={{ fontSize: 11, marginLeft: 2, fontWeight: hotdealerMode ? 700 : 400 }}>
+                핫딜러 {hotdealerMode ? 'ON' : 'OFF'}
+              </span>
             </button>
 
             <button

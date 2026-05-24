@@ -4,6 +4,9 @@ import { api } from '../../api/client';
 import { Play, Settings, Plus, Power, X, CheckSquare, Square, Loader, ChevronDown, ChevronRight } from 'lucide-react';
 import styles from './Crawlers.module.css';
 
+// TODO: 크롤러 카드에 "실패 재시도" 퀵버튼 추가 필요 — 현재 실패 재시도는 실행 히스토리(/run-history) 페이지에만 있어
+//       직관성 부족. 마지막 실행이 실패(status==='error')인 크롤러에 한해 카드 우하단에 재시도 버튼 노출 권장.
+
 const CATEGORIES = [
   { key: 'all', label: '전체' },
   { key: 'mart', label: '마트' },

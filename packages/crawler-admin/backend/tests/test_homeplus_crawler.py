@@ -253,7 +253,69 @@ async def test_entrypoint_quality_on_dc_mixed_fixture(dc_mixed_raw):
     assert filled == 5
 
 
-# ---------- 모델 quirk 준수 ----------
+# ---------- plugin.yaml 측정 기반 회귀 게이트 ----------
+def test_plugin_yaml_minimum_rows_is_measurement_based():
+    """plugin.yaml minimum_rows 가 실 라이브 측정(N=544) 기반 435 이상인지 검증.
+
+    목적: cap(300) 기반 가짜 minimum_rows(195) 로 회귀하지 않도록 방지.
+    기준: live-run-20260524T192330.json — N=544, floor(N×0.80)=435
+    """
+    import yaml
+    import pathlib
+    plugin_yaml_path = pathlib.Path(__file__).parent.parent / "crawlers" / "marts" / "homeplus" / "plugin.yaml"
+    assert plugin_yaml_path.exists(), f"plugin.yaml 없음: {plugin_yaml_path}"
+    config = yaml.safe_load(plugin_yaml_path.read_text(encoding="utf-8"))
+    minimum_rows = config["output"]["minimum_rows"]
+    max_items = config["source_map"]["max_items"]
+    # N=544 기반: minimum_rows=435, max_items=653
+    # 회귀 방지: cap(300) 기반 가짜값(195) 재진입 금지
+    assert minimum_rows >= 435, (
+        f"minimum_rows={minimum_rows} 가 실 측정 기반 435 미만. "
+        f"cap(300)×0.65=195 수준으로 회귀 금지. live-run-20260524T192330.json 참조."
+    )
+    assert max_items >= 653, (
+        f"max_items={max_items} 가 실 측정 기반 653 미만. "
+        f"N=544, ceil(N×1.2)=653 이 최솟값."
+    )
+
+
+def test_plugin_yaml_measurement_override_env_documented():
+    """plugin.yaml 에 측정 실행 환경변수 override 경로가 명시돼 있는지 검증."""
+    import yaml
+    import pathlib
+    plugin_yaml_path = pathlib.Path(__file__).parent.parent / "crawlers" / "marts" / "homeplus" / "plugin.yaml"
+    config = yaml.safe_load(plugin_yaml_path.read_text(encoding="utf-8"))
+    source_map = config.get("source_map", {})
+    assert "measurement_override_env" in source_map, (
+        "source_map.measurement_override_env 가 plugin.yaml 에 없음. "
+        "운영 cap 유지하며 측정 실행 경로(HOMEPLUS_MEASUREMENT_MAX_ITEMS)를 문서화해야 함."
+    )
+
+
+def test_homeplus_crawler_measurement_env_overrides_max_items():
+    """HOMEPLUS_MEASUREMENT_MAX_ITEMS=5000 시 MAX_ITEMS=5000 으로 적용되는지 확인."""
+    import os
+    from crawlers.marts.homeplus.crawler import HomeplusCrawler
+
+    old = os.environ.pop("HOMEPLUS_MEASUREMENT_MAX_ITEMS", None)
+    try:
+        os.environ["HOMEPLUS_MEASUREMENT_MAX_ITEMS"] = "5000"
+        crawler = HomeplusCrawler()
+        assert crawler.MAX_ITEMS == 5000, f"MAX_ITEMS={crawler.MAX_ITEMS} (expected 5000)"
+
+        os.environ["HOMEPLUS_MEASUREMENT_MAX_ITEMS"] = "0"
+        crawler2 = HomeplusCrawler()
+        assert crawler2.MAX_ITEMS is None, f"MAX_ITEMS={crawler2.MAX_ITEMS} (expected None for cap 해제)"
+
+        os.environ["HOMEPLUS_MEASUREMENT_MAX_ITEMS"] = "none"
+        crawler3 = HomeplusCrawler()
+        assert crawler3.MAX_ITEMS is None, f"MAX_ITEMS={crawler3.MAX_ITEMS} (expected None)"
+    finally:
+        if old is None:
+            os.environ.pop("HOMEPLUS_MEASUREMENT_MAX_ITEMS", None)
+        else:
+            os.environ["HOMEPLUS_MEASUREMENT_MAX_ITEMS"] = old
+
 @pytest.mark.asyncio
 async def test_crawl_result_uses_finished_at_and_items_are_dicts(raw_json):
     ep = HomeplusEntrypoints()

@@ -16,6 +16,8 @@ const NAV = [
   { to: '/analytics',      label: '분석',       icon: BarChart3 },
   { to: '/integrity',      label: '무결성',     icon: ShieldCheck },
   { to: '/community',      label: '커뮤니티',   icon: MessageSquareWarning },
+  // TODO: DB 유지보수 메뉴 추가 필요 — DB 비우기(초기화), 직접 SQL 쿼리 실행, 마이그레이션 실행/롤백
+  //       현재 관리자 운영 시 CLI로만 가능해 운영 효율 저하. /maintenance 라우트 신규 개발 필요.
 ];
 
 export default function AdminLayout() {
