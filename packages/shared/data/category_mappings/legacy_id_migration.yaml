@@ -1,0 +1,248 @@
+# WalletSavior 레거시 카테고리 ID → category_tree.yaml 공식 ID 마이그레이션 규칙
+#
+# 형식: "old_id": "tree_node_id"
+#
+# 커버 범위:
+#   A. ai-admin/seed_taxonomy.py dot-notation IDs
+#   B. classifier.py 결정론적 IDs
+#   C. db-admin/category_data/categories.py dot-notation IDs
+#   D. 정수 IDs (구 DB 시딩)
+#   E. 한글 IDs (raw 크롤 레거시)
+#
+# 매핑 불가(예: service.voucher, sports.general 등): 이 파일에 포함하지 않음
+# → validate_category_id()가 escalation 큐로 전달.
+#
+# 확장 방법: 이 파일에 새 항목 추가 후 reload_migration_map() 호출 또는 서버 재기동.
+
+mappings:
+  # ─────────────────────────────────────────────────────────────
+  # A + B. ai-admin seed_taxonomy.py / classifier.py 도트 표기 IDs
+  # ─────────────────────────────────────────────────────────────
+
+  # 밀키트 / 델리
+  "prepared_food.meal_kit.kimbap": "meal_kit"
+  "prepared_food.meal_kit":        "meal_kit"
+  "prepared_food.deli.kimbap":     "meal_kit"
+  "instant.rice":                  "convenience_meal"
+
+  # 스낵 / 견과
+  "snack.nut":                     "nut"
+  "snack.chip":                    "confectionery"
+  "snack.chocolate":               "confectionery"
+  "snack.general":                 "confectionery"
+  "snack.ice_cream":               "frozen_chilled"
+  "bakery.bread":                  "confectionery"
+
+  # 유제품 → 가공식품으로 상위 매핑 (tree에 dairy 노드 없음)
+  "dairy.milk":                    "processed_food"
+  "dairy.milk.chocolate":          "processed_food"
+  "dairy.cheese":                  "processed_food"
+  "dairy.yogurt":                  "processed_food"
+
+  # 축산 / 계란
+  "livestock.egg":                 "egg"
+  "meat.pork.belly":               "meat_egg"
+  "meat.pork":                     "meat_egg"
+  "meat.beef":                     "beef"
+  "meat.beef.hanwoo":              "beef"
+  "meat.beef.bulgogi":             "beef_bulgogi"
+  "meat.beef.soup_cut":            "beef"
+  "meat.chicken":                  "meat_egg"
+  "meat.chicken.breast":           "meat_egg"
+  "processed.meat":                "meat_egg"
+
+  # 수산물
+  "seafood.fish":                  "fish"
+  "seafood.squid":                 "fish"
+  "seafood.shrimp":                "seafood"
+  "seafood.frozen":                "seafood"
+  "seafood.shellfish":             "seafood"
+
+  # 농산물
+  "produce.fruit":                 "fruit"
+  "produce.vegetable":             "vegetable"
+  "vegetable.cabbage":             "cabbage"
+  "grain.rice":                    "rice"
+
+  # 즉석 / 가공식품
+  "instant.noodle":                "processed_food"
+  "processed.tofu.firm":           "tofu"
+  "processed.sauce":               "cooking_oil_sauce"
+  "processed.sauce.ssamjang":      "cooking_oil_sauce"
+  "processed.spread":              "cooking_oil_sauce"
+  "processed.rice_cake":           "convenience_meal"
+  "processed.meal.kimbap":         "meal_kit"
+
+  # 음료 → 가공식품으로 상위 매핑 (tree에 beverage 노드 없음)
+  "beverage.water":                "processed_food"
+  "beverage.juice":                "processed_food"
+  "beverage.soda":                 "processed_food"
+  "beverage.coffee":               "processed_food"
+  "beverage.general":              "processed_food"
+
+  # 생활용품
+  "household.tissue":              "bath_tissue"
+  "household.storage":             "household"
+  "household.cleaning":            "household"
+  "household.bath":                "household"
+  "household.kitchen":             "household"
+  "household.general":             "household"
+  "daily.detergent":               "household"
+
+  # 뷰티 / 헬스
+  "beauty.skincare":               "skin_care"
+  "beauty.haircare":               "beauty_health"
+  "beauty.general":                "beauty_health"
+
+  # 패션
+  "fashion.clothing":              "fashion_apparel"
+  "fashion.bag":                   "fashion_apparel"
+  "fashion.accessory":             "fashion_apparel"
+
+  # 전자 / 가전
+  "electronics.mobile":            "mobile_phone"
+  "electronics.appliance":         "home_appliance"
+  "electronics.general":           "electronics"
+
+  # ─────────────────────────────────────────────────────────────
+  # C. db-admin/category_data/categories.py dot-notation IDs
+  # ─────────────────────────────────────────────────────────────
+
+  "agriculture":                         "fresh_food"
+  "agriculture.leafy":                   "leaf_vegetable"
+  "agriculture.leafy.napa_cabbage":      "leaf_vegetable"
+  "agriculture.leafy.cabbage":           "cabbage"
+  "agriculture.leafy.spinach":           "leaf_vegetable"
+  "agriculture.leafy.lettuce":           "leaf_vegetable"
+  "agriculture.leafy.perilla":           "leaf_vegetable"
+  "agriculture.leafy.chive":             "leaf_vegetable"
+  "agriculture.leafy.bean_sprout":       "leaf_vegetable"
+  "agriculture.leafy.green_onion":       "leaf_vegetable"
+  "agriculture.fruit_veg":               "fruit_vegetable"
+  "agriculture.fruit_veg.tomato":        "fruit_vegetable"
+  "agriculture.fruit_veg.cucumber":      "fruit_vegetable"
+  "agriculture.fruit_veg.chili":         "fruit_vegetable"
+  "agriculture.fruit_veg.paprika":       "paprika"
+  "agriculture.fruit_veg.eggplant":      "fruit_vegetable"
+  "agriculture.fruit_veg.corn":          "fruit_vegetable"
+  "agriculture.root":                    "root_vegetable"
+  "agriculture.root.potato":             "potato"
+  "agriculture.root.sweet_potato":       "root_vegetable"
+  "agriculture.root.carrot":             "root_vegetable"
+  "agriculture.root.radish":             "root_vegetable"
+  "agriculture.root.onion":              "root_vegetable"
+  "agriculture.root.garlic":             "root_vegetable"
+  "agriculture.root.ginger":             "root_vegetable"
+  "agriculture.fruit":                   "fruit"
+  "agriculture.fruit.apple":             "fruit"
+  "agriculture.fruit.pear":              "fruit"
+  "agriculture.fruit.tangerine":         "fruit"
+  "agriculture.fruit.strawberry":        "fruit"
+  "agriculture.fruit.grape":             "fruit"
+  "agriculture.fruit.watermelon":        "fruit"
+  "agriculture.fruit.banana":            "fruit"
+  "agriculture.fruit.kiwi":              "kiwi"
+  "agriculture.fruit.mango":             "tropical_fruit"
+  "agriculture.mushroom":                "vegetable"
+  "agriculture.mushroom.king_oyster":    "vegetable"
+  "agriculture.mushroom.shiitake":       "vegetable"
+  "agriculture.grain":                   "grain"
+  "agriculture.grain.rice":              "rice"
+  "agriculture.grain.barley":            "grain"
+  "agriculture.egg":                     "egg"
+  "seafood":                             "seafood"
+  "seafood.fish.croaker":                "croaker"
+  "processed":                           "processed_food"
+  "processed.tofu":                      "tofu"
+  "processed.snack_nut":                 "snack_nut"
+  "processed.snack_nut.nut":             "nut"
+  "processed.convenience_meal":          "convenience_meal"
+  "processed.convenience_meal.meal_kit": "meal_kit"
+  "processed.confectionery":             "confectionery"
+  "processed.confectionery.pie_cake":    "pie_cake"
+  "processed.frozen_chilled":            "frozen_chilled"
+  "processed.frozen_chilled.chilled_chicken": "chilled_chicken"
+  "processed.oil_sauce":                 "cooking_oil_sauce"
+  "processed.oil_sauce.olive_oil":       "olive_oil"
+
+  # ─────────────────────────────────────────────────────────────
+  # D. 정수 IDs (구 DB 시딩 — 추정 매핑)
+  # ─────────────────────────────────────────────────────────────
+
+  "1":  "fresh_food"
+  "2":  "vegetable"
+  "3":  "fruit"
+  "4":  "meat_egg"
+  "5":  "seafood"
+  "6":  "grain"
+  "7":  "processed_food"
+  "8":  "convenience_meal"
+  "9":  "household"
+  "10": "beauty_health"
+  "11": "electronics"
+  "12": "fashion_apparel"
+  "13": "home_kitchen"
+  "14": "snack_nut"
+  "15": "tofu_soy"
+  "16": "frozen_chilled"
+  "17": "cooking_oil_sauce"
+  "18": "confectionery"
+  "19": "health_supplement"
+  "20": "skin_care"
+  "21": "socks_underwear"
+  "22": "tool_equipment"
+  "23": "games_software"
+  "24": "computer"
+  "25": "mobile_phone"
+  "26": "home_appliance"
+  "27": "sanitary"
+  "28": "bath_tissue"
+  "29": "kitchen_towel"
+
+  # ─────────────────────────────────────────────────────────────
+  # E. 한글 IDs (raw 크롤 / AI 즉석 생성 레거시)
+  # ─────────────────────────────────────────────────────────────
+
+  "정육":      "meat_egg"
+  "정육계란":  "meat_egg"
+  "계란":      "egg"
+  "달걀":      "egg"
+  "가전":      "home_appliance"
+  "생활용품":  "household"
+  "신선식품":  "fresh_food"
+  "채소":      "vegetable"
+  "과일":      "fruit"
+  "수산물":    "seafood"
+  "수산":      "seafood"
+  "곡류":      "grain"
+  "가공식품":  "processed_food"
+  "두부":      "tofu"
+  "간편식":    "convenience_meal"
+  "밀키트":    "meal_kit"
+  "과자":      "confectionery"
+  "냉동식품":  "frozen_chilled"
+  "식용유":    "cooking_oil_sauce"
+  "올리브유":  "olive_oil"
+  "뷰티":      "beauty_health"
+  "패션":      "fashion_apparel"
+  "의류":      "fashion_apparel"
+  "가정주방":  "home_kitchen"
+  "전자":      "electronics"
+  "컴퓨터":    "computer"
+  "모바일":    "mobile_phone"
+  "비타민":    "vitamin"
+  "양말":      "socks"
+  "화장지":    "bath_tissue"
+  "키친타월":  "kitchen_towel"
+  "소고기":    "beef"
+  "수입육":    "imported_beef"
+  "불고기":    "beef_bulgogi"
+  "닭고기":    "meat_egg"
+  "돼지고기":  "meat_egg"
+  "생선":      "fish"
+  "굴비":      "croaker"
+  "쌀":        "rice"
+  "견과":      "nut"
+  "스킨케어":  "skin_care"
+  "보디케어":  "body_hand_care"
+  "건강기능식품": "health_supplement"

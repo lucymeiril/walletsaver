@@ -416,6 +416,14 @@ def normalize_category_id(value: Any) -> str:
     raw = str(value or "").strip().lower()
     if raw in SAFE_SEED_CATEGORY_IDS:
         return raw
+    # tree 기반 게이트 우선 조회 (category_tree.yaml 직접 매칭 + migration map)
+    try:
+        from core.category_id_gate import canonical_tree_id
+        tree_id = canonical_tree_id(raw)
+        if tree_id:
+            return tree_id
+    except ImportError:
+        pass
     compact = _compact_category_alias(raw)
     return (
         SAFE_SEED_CATEGORY_ALIASES.get(compact)
@@ -466,9 +474,38 @@ def is_safe_seed_category(value: Any) -> bool:
     return normalize_category_id(value) in SAFE_SEED_CATEGORY_IDS
 
 
+def is_valid_tree_category(value: Any) -> bool:
+    """category_tree.yaml 기준으로 유효한 category_id인지 검증한다."""
+    try:
+        from core.category_id_gate import is_valid_tree_category as _gate_check
+        return _gate_check(str(value or "").strip())
+    except ImportError:
+        return is_safe_seed_category(value)
+
+
+def to_tree_category_id(value: Any) -> str | None:
+    """legacy ID를 category_tree.yaml ID로 변환한다. 미등록이면 None."""
+    try:
+        from core.category_id_gate import canonical_tree_id
+        return canonical_tree_id(str(value or "").strip())
+    except ImportError:
+        normalized = normalize_category_id(value)
+        return normalized if normalized in SAFE_SEED_CATEGORY_IDS else None
+
+
 def seed_taxonomy_prompt_line() -> str:
-    categories = ", ".join(PROMPT_CATEGORY_HINT_IDS)
+    # tree IDs를 우선 힌트로 제공, 구 dot-notation 힌트도 fallback으로 포함
+    tree_hint_ids = (
+        "meal_kit", "convenience_meal", "nut", "confectionery",
+        "processed_food", "egg", "meat_egg", "beef", "beef_bulgogi",
+        "fish", "seafood", "fruit", "vegetable", "grain", "rice",
+        "household", "bath_tissue", "kitchen_towel",
+        "beauty_health", "skin_care", "fashion_apparel", "socks",
+        "mobile_phone", "home_appliance", "electronics",
+    )
+    legacy_hint_ids = ", ".join(PROMPT_CATEGORY_HINT_IDS)
+    tree_hints = ", ".join(tree_hint_ids)
     return (
-        "Official category_id hints: "
-        f"{categories}"
+        f"Official category_id hints (tree IDs): {tree_hints}. "
+        f"Legacy aliases (auto-migrated): {legacy_hint_ids}"
     )

@@ -2,10 +2,14 @@
 from __future__ import annotations
 
 from datetime import datetime
+import logging
+import os
 import re
 import time
 from typing import Any, Protocol
 from uuid import uuid4
+
+_logger = logging.getLogger("walletsavior.ai_ingestion")
 
 from sqlalchemy.orm import Session
 
@@ -122,28 +126,26 @@ _PROMO_TITLE_TOKENS = (
     "기획",
 )
 _FALLBACK_CATEGORY_RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
-    ("electronics.mobile", ("갤럭시", "아이폰", "iphone", "자급제", "휴대폰", "스마트폰")),
-    ("electronics.appliance", ("냉장고", "세탁기", "건조기", "워시타워", "공기청정기", "정수기", "선풍기", "써큘레이터", "드라이기")),
-    ("electronics.general", ("블루투스", "이어폰", "스피커", "모니터", "충전기", "노트북", "어댑터")),
-    ("fashion.bag", ("가방", "캐리어", "토트백", "숄더백", "파우치", "백팩")),
-    ("fashion.clothing", ("티셔츠", "저지", "팬츠", "쇼츠", "양말", "폴로", "선글라스", "나이키", "아디다스", "푸마")),
-    ("beauty.skincare", ("세럼", "크림", "토닝", "스킨", "화장품", "마스크팩")),
-    ("beauty.haircare", ("샴푸", "트리트먼트", "헤어", "염색")),
-    ("household.cleaning", ("세제", "수세미", "청소", "진드기", "필터")),
-    ("household.bath", ("샤워기", "수건", "비데", "욕실")),
-    ("household.kitchen", ("식탁", "테이블웨어", "그릇", "컵", "냄비", "주방")),
-    ("household.storage", ("행거", "수납", "정리함", "케이스")),
-    ("service.voucher", ("상품권", "기프트카드", "금액권", "모바일금액권", "페이")),
-    ("service.ticket", ("식사권", "뷔페", "레스토랑", "항공")),
-    ("sports.general", ("배드민턴", "셔틀콕", "운동", "스포츠")),
-    ("pet.general", ("강아지", "고양이", "반려", "펫")),
-    ("produce.vegetable", ("버섯", "당근", "양파", "감자", "고구마", "채소", "야채")),
-    ("produce.fruit", ("과일", "참외", "사과", "감귤", "귤", "망고", "바나나", "복숭아")),
-    ("dairy.cheese", ("치즈",)),
-    ("beverage.coffee", ("커피", "마끼아또", "홍차", "티백")),
-    ("instant.rice", ("즉석밥", "햇반", "누룽지", "죽", "곰탕")),
-    ("processed.meat", ("훈제오리", "오리", "소시지", "햄")),
-    ("seafood.shrimp", ("새우", "새우살")),
+    ("mobile_phone",   ("갤럭시", "아이폰", "iphone", "자급제", "휴대폰", "스마트폰")),
+    ("home_appliance", ("냉장고", "세탁기", "건조기", "워시타워", "공기청정기", "정수기", "선풍기", "써큘레이터", "드라이기")),
+    ("electronics",    ("블루투스", "이어폰", "스피커", "모니터", "충전기", "노트북", "어댑터")),
+    ("fashion_apparel", ("가방", "캐리어", "토트백", "숄더백", "파우치", "백팩")),
+    ("fashion_apparel", ("티셔츠", "저지", "팬츠", "쇼츠", "양말", "폴로", "선글라스", "나이키", "아디다스", "푸마")),
+    ("skin_care",      ("세럼", "크림", "토닝", "스킨", "화장품", "마스크팩")),
+    ("beauty_health",  ("샴푸", "트리트먼트", "헤어", "염색")),
+    ("household",      ("세제", "수세미", "청소", "진드기", "필터")),
+    ("household",      ("샤워기", "수건", "비데", "욕실")),
+    ("home_kitchen",   ("식탁", "테이블웨어", "그릇", "컵", "냄비", "주방")),
+    ("household",      ("행거", "수납", "정리함", "케이스")),
+    # 서비스/상품권 — tree에 해당 노드 없음: 미분류 처리 후 escalation
+    # ("service.voucher", ...) 제거 — 잡종 ID 자동 생성 분기 제거
+    ("vegetable",      ("버섯", "당근", "양파", "감자", "고구마", "채소", "야채")),
+    ("fruit",          ("과일", "참외", "사과", "감귤", "귤", "망고", "바나나", "복숭아")),
+    ("processed_food", ("치즈",)),
+    ("processed_food", ("커피", "마끼아또", "홍차", "티백")),
+    ("convenience_meal", ("즉석밥", "햇반", "누룽지", "죽", "곰탕")),
+    ("meat_egg",       ("훈제오리", "오리", "소시지", "햄")),
+    ("seafood",        ("새우", "새우살")),
 )
 
 
@@ -800,7 +802,7 @@ def _fallback_category_id(record: RawCrawlRecord) -> str:
     for category_id, tokens in _FALLBACK_CATEGORY_RULES:
         if any(_compact_text(token) in compact_title for token in tokens):
             return category_id
-    return "retail.general"
+    return "processed_food"
 
 
 def _fallback_keywords(record: RawCrawlRecord, *, limit: int = 2) -> list[str]:
@@ -1008,13 +1010,29 @@ def product_match_precheck(
     records: list[RawCrawlRecord],
     root_batch_id: str,
 ) -> tuple[list[FieldProposal], list[RawCrawlRecord], list[dict[str, Any]]]:
-    """Reuse human-approved exact source signature matches before provider calls."""
+    """Reuse human-approved exact source signature matches before provider calls.
+
+    When ``WALLETSAVIOR_AI_LIVE_FORCE=1`` is set in the environment every
+    record is treated as unmatched, forcing a real provider call.  Any cache
+    hit that would have been returned is logged at WARNING level so auditors
+    can measure the natural hit-ratio without requiring a separate dry-run.
+    """
+    force_live = os.environ.get("WALLETSAVIOR_AI_LIVE_FORCE", "").strip() == "1"
     proposals: list[FieldProposal] = []
     unmatched: list[RawCrawlRecord] = []
     matched: list[dict[str, Any]] = []
     for record in records:
         match = _find_approved_product_match(repository, record)
         if match is None:
+            unmatched.append(record)
+            continue
+        if force_live:
+            _logger.warning(
+                "[FORCE_LIVE] cache hit bypassed for record %s (match_id=%s) — "
+                "WALLETSAVIOR_AI_LIVE_FORCE=1",
+                record.raw_record_id,
+                match.match_id,
+            )
             unmatched.append(record)
             continue
         ai_batch_id = f"{root_batch_id}:match:{record.raw_record_id}"
@@ -1033,6 +1051,11 @@ def product_match_precheck(
                 "status": match.status.value,
                 "provenance_source": match.provenance_source.value,
             }
+        )
+    if force_live and unmatched:
+        _logger.warning(
+            "[FORCE_LIVE] WALLETSAVIOR_AI_LIVE_FORCE=1: all %d records sent to provider (cache bypassed)",
+            len(unmatched),
         )
     return proposals, unmatched, matched
 
