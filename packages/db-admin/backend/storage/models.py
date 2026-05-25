@@ -128,13 +128,22 @@ class Category(Base):
     __tablename__ = "categories"
 
     id: Mapped[str] = mapped_column(String(100), primary_key=True)  # "meat.pork.belly"
-    name: Mapped[str] = mapped_column(String(100), nullable=False)  # "삼겹살"
+    name: Mapped[str] = mapped_column(String(100), nullable=False)  # "삼겹살" (legacy label)
     parent_id: Mapped[Optional[str]] = mapped_column(ForeignKey("categories.id"))
     depth: Mapped[int] = mapped_column(Integer, default=0)
     sort_order: Mapped[int] = mapped_column(Integer, default=0)
     icon: Mapped[Optional[str]] = mapped_column(String(50))
     attributes: Mapped[Optional[dict]] = mapped_column(JSON)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+
+    # ── RD8 C4 필드 ──────────────────────────────────────────────────────────
+    display_name_ko: Mapped[Optional[str]] = mapped_column(String(100))
+    unit_kind_default: Mapped[Optional[str]] = mapped_column(String(30))
+    keyword_seeds: Mapped[Optional[list]] = mapped_column(JSON)
+    notes: Mapped[Optional[str]] = mapped_column(Text)
+    source: Mapped[Optional[str]] = mapped_column(String(50))   # e.g. 'rd8_seed'
+    created_at: Mapped[Optional[datetime]] = mapped_column(DateTime)
+    updated_at: Mapped[Optional[datetime]] = mapped_column(DateTime)
 
     parent: Mapped[Optional["Category"]] = relationship("Category", remote_side="Category.id")
     products: Mapped[list["Product"]] = relationship(back_populates="category")
@@ -1158,7 +1167,7 @@ class ProductMatch(Base):
 
 # source 허용 리터럴 — CHECK constraint 및 @validates가 공유하는 단일 진실 집합.
 # 이 집합을 줄이거나 변경하면 기존 데이터와 호환성이 깨지므로 마이그레이션이 필요하다.
-_MATCHING_ENTRY_VALID_SOURCES = frozenset({"crawler-auto", "human", "external-ai"})
+_MATCHING_ENTRY_VALID_SOURCES = frozenset({"crawler-auto", "human", "external-ai", "rd8_c3_seed"})
 
 
 class MatchingEntry(Base):
@@ -1271,7 +1280,7 @@ class MatchingEntry(Base):
         ),
         # source enum CHECK — 절대 제거 금지 (위 docstring 참조)
         CheckConstraint(
-            "source IN ('crawler-auto', 'human', 'external-ai')",
+            "source IN ('crawler-auto', 'human', 'external-ai', 'rd8_c3_seed')",
             name="ck_matching_source_enum",
         ),
         Index("ix_matching_category", "category_id"),
