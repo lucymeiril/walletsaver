@@ -50,6 +50,10 @@ def create_app() -> FastAPI:
     from api.routes.p0_ai import router as p0_ai_router
     # rd3-rawvsdb-gate — raw vs DB row count 비교 게이트
     from api.routes.raw_vs_db_gate import router as raw_vs_db_gate_router
+    # p1-ai-admin-evidence-schema — brand_alias evidence 적재 endpoint
+    from api.routes.evidence import router as evidence_router
+    # 외부 분류 export — miss만 JSONL/CSV로 export, manifest 멱등성 보장
+    from api.routes.export import router as export_router
 
     app.include_router(capabilities_router)
     app.include_router(providers_router)
@@ -62,6 +66,8 @@ def create_app() -> FastAPI:
     app.include_router(escalation_router)
     app.include_router(p0_ai_router)
     app.include_router(raw_vs_db_gate_router)
+    app.include_router(evidence_router)
+    app.include_router(export_router)
 
     @app.get("/health")
     async def health():
