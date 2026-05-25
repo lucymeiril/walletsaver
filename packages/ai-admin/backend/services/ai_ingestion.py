@@ -56,6 +56,7 @@ from services.seed_taxonomy import (
     normalize_category_id,
     seed_taxonomy_prompt_line,
 )
+from services.rule_mapper import record_rule_hit as _record_rule_hit
 
 
 _TRANSIENT_PROVIDER_MARKERS = (
@@ -83,7 +84,10 @@ _MAX_PROVIDER_BACKOFF_SECONDS = 60.0
 _MIN_PROVIDER_REQUEST_INTERVAL_SECONDS = 12.0
 _MAX_PROVIDER_CALLS_PER_MINUTE = 5
 _MAX_PROVIDER_CALLS_PER_DAY = 300
-MAX_OPERATOR_AI_BATCH_PROMPT_CHARS = 12_000
+# rd5-batch-bigger: 사용자 직격 "30건인데 왜 ai 요청이 여러 번 발생함? 30개 이상씩 묶어서 한 번에 요청 보내고
+# 한 번에 json 응답 받고 파싱". Gemma 4 는 128k token context, 60_000 chars 는 충분히 안전한 상한.
+# 기존 12_000 은 8000 chars budget 위에서 30건이 prompt 만들면서 자주 4-5 sub-batch 로 잘리는 원인이었음.
+MAX_OPERATOR_AI_BATCH_PROMPT_CHARS = 60_000
 _PROVIDER_RATE_WINDOW_SECONDS = 60.0
 _PROVIDER_DAILY_WINDOW_SECONDS = 86400.0
 _provider_call_history: dict[str, list[float]] = {}
@@ -1230,6 +1234,7 @@ def product_match_precheck(
             )
             unmatched.append(record)
             continue
+        _record_rule_hit(record.source_name, record.raw_title)
         ai_batch_id = f"{root_batch_id}:match:{record.raw_record_id}"
         proposals.extend(
             _proposals_from_product_match(
@@ -2031,6 +2036,9 @@ def ingest_and_label_records(
             max_batch_items=max_ai_batch_items,
             max_prompt_chars=max_ai_batch_prompt_chars,
         )
+        # rd3-422-fix: 잘린 record 가 있으면 응답에 구조화 메타로 surface.
+        # 사용자 헌법: "오류가 발생하면 정확히 어디서 어떤 종류의 에러가 발생한
+        # 건지 검증할 수도 있어야". 단순 warning log 만으로는 검증 불가.
     except ValueError as exc:
         raise AIIngestionError(
             str(exc),
@@ -2095,6 +2103,44 @@ def ingest_and_label_records(
                 ai_batch_id=ai_batch_id,
                 row_count=len(batch_records),
             ) from exc
+        except ProviderResponseError as exc:
+            # rd5-partial-save-fix: 사용자 직격 "ai 요청 몇 번 발생했는데도 싹 다 결과물 날리네".
+            # 한 sub-batch 가 504/quota 등으로 retry 다 소진했다고 해서 이미 성공한 다른
+            # sub-batch 의 proposals 까지 통째로 날리지 않는다. 이 batch 의 record 만 missing
+            # 으로 기록하고 루프를 계속한다. 마지막에 missing > 0 이면 status=partial_review_required.
+            provider_response_validations.append(
+                {
+                    "ai_batch_id": ai_batch_id,
+                    "provider_call_failed": True,
+                    "error": str(exc),
+                    "row_count": len(batch_records),
+                }
+            )
+            missing_label_ids.extend(record.raw_record_id for record in batch_records)
+            calls += getattr(exc, "attempts", 0) or 1
+            continue
+        except AIIngestionError as exc:
+            # rd5-partial-save-fix-2: _call_provider_with_retries 가 3회 retry 소진 후 raise
+            # 하는 경우는 ProviderResponseError 가 아니라 AIIngestionError(stage=provider_call,
+            # status=502) 다. 사용자 직격 "504 DEADLINE_EXCEEDED ... ai 요청 몇 번 발생했는데도
+            # 싹 다 결과물 날리네" 의 진짜 원인. 이 sub-batch 만 missing 으로 기록하고 다음
+            # sub-batch 로 진행. provider_configuration / batch_validation / response_validation
+            # 처럼 코드/스키마/설정 결함은 즉시 재raise — partial save 의미가 없다.
+            partial_save_stages = {"provider_call", "provider_call_bound", "provider_rate_limit"}
+            if exc.stage not in partial_save_stages:
+                raise
+            provider_response_validations.append(
+                {
+                    "ai_batch_id": ai_batch_id,
+                    "provider_call_failed": True,
+                    "error": str(exc),
+                    "row_count": len(batch_records),
+                    "stage": exc.stage,
+                }
+            )
+            missing_label_ids.extend(record.raw_record_id for record in batch_records)
+            calls += 1
+            continue
         calls += attempts
         try:
             proposals, keyword_proposals, missing_records, response_validation = _proposals_from_batch_response(
@@ -2230,6 +2276,8 @@ def ingest_and_label_records(
         "keyword_proposals_stored": len(all_keyword_proposals),
         "missing_label_count": len(missing_label_ids),
         "missing_label_raw_record_ids": missing_label_ids,
+        "oversized_truncations": split_truncations,
+        "oversized_truncations_count": len(split_truncations),
         "reviewer_retry_candidates": {
             "missing_label": [
                 {
