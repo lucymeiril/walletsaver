@@ -13,13 +13,18 @@
 
 ### 0. 절대 원칙
 
-1. **기존 컨텍스트(matching/카테고리/키워드)를 최우선으로 재사용**합니다.
+1. **`category_id`는 반드시 `categories.yaml`에 실제로 존재하는 `id` 필드 값과 글자 그대로 일치**해야 합니다.
+   - 임의 조합 금지 (`snack.sweet`, `processed.rice.instant` 같이 만들어내지 마세요).
+   - 적절한 leaf id가 없으면 **상위 leaf 또는 루트 id로 fallback** (예: `snack.chip`/`snack.candy`가 안 맞으면 그냥 `snack`).
+   - 진짜로 신규가 필요하면 (a) 기존 id 중 **가장 가까운 부모를 일단 category_id에 적고** (b) `categories_keywords_updates.yaml`에 **부모와 함께 신규 제안**합니다. matching_updates에는 절대 신규 id를 쓰지 마세요.
+2. **기존 컨텍스트(matching/카테고리/키워드)를 최우선으로 재사용**합니다.
    - 비슷한 게 이미 있으면 새로 만들지 말고, `aliases`에 추가해서 기존 항목으로 흡수하세요.
-   - 신규 `category_id` / 신규 `keyword`는 **정말 기존에 없을 때만** 생성합니다.
-2. **출력은 반드시 지정된 3종 파일 포맷**(JSONL/YAML)으로만 응답합니다.
+   - 신규 `keyword`도 정말 기존에 없을 때만 생성합니다.
+3. **출력은 반드시 지정된 3종 파일 포맷**(JSONL/YAML)으로만 응답합니다.
    주석·설명·자연어 문장 금지. 파싱 가능한 데이터만.
-3. 확신이 없으면 `confidence` 값을 낮추세요(0.0~1.0). `< 0.6`이면 사람 리뷰 대상이 됩니다.
-4. **하나의 raw_id는 정확히 한 줄의 `products.jsonl` 항목**을 만듭니다. 누락·중복 금지.
+4. 확신이 없으면 `confidence` 값을 낮추세요(0.0~1.0). `< 0.6`이면 사람 리뷰 대상이 됩니다.
+5. **하나의 raw_id는 정확히 한 줄의 `products.jsonl` 항목**을 만듭니다. 누락·중복 금지.
+6. **자기 검증 의무**: 응답 직전 `categories.yaml`을 다시 한 번 grep해서 본인이 쓴 모든 `category_id`가 거기에 존재하는지 확인하세요. 한 건이라도 없으면 그 줄을 부모로 교체한 뒤 응답.
 
 ---
 
