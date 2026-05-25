@@ -1,0 +1,70 @@
+# categories_keywords_updates.yaml
+# 최상위 키: categories (신규 카테고리 제안 목록), keywords (키워드 갱신 목록)
+# 신규 카테고리는 categories 테이블에 즉시 쓰지 않고 category_review_queue에 보관됩니다.
+# 키워드는 keywords 테이블에 즉시 반영됩니다.
+
+categories:
+  - id: "instant_food"
+    label: "즉석조리식품"
+    parent_id: "processed"
+    reason: "레토르트·간편식 수요 증가로 processed 하위에 별도 분류 필요. 현재 processed에 섞여 있어 키워드 노이즈가 발생함."
+  - id: "premium_snack"
+    label: "프리미엄 과자"
+    parent_id: "snack"
+    reason: "수입과자·프리미엄 스낵 SKU가 급증해 snack 하위에 가격대별 분류가 필요함."
+
+keywords:
+  - keyword: "즉석면"
+    category_hint: "processed"
+    synonyms: ["봉지라면", "컵라면", "인스턴트라면"]
+  - keyword: "라면"
+    category_hint: "processed"
+    synonyms: ["라면류"]
+  - keyword: "통조림"
+    category_hint: "processed"
+    synonyms: ["캔류", "캔식품"]
+  - keyword: "즉석밥"
+    category_hint: "processed"
+    synonyms: ["간편밥", "HMR밥"]
+  - keyword: "만두"
+    category_hint: "processed"
+    synonyms: ["교자", "군만두", "찐만두"]
+  - keyword: "과자"
+    category_hint: "snack"
+    synonyms: ["스낵", "과자류"]
+  - keyword: "크래커"
+    category_hint: "snack"
+    synonyms: ["비스킷", "크리스피"]
+  - keyword: "우유"
+    category_hint: "dairy"
+    synonyms: ["흰우유", "원유", "순수우유"]
+  - keyword: "요거트"
+    category_hint: "dairy"
+    synonyms: ["요플레", "발효유", "그릭요거트"]
+  - keyword: "탄산음료"
+    category_hint: "beverage"
+    synonyms: ["콜라", "사이다", "스파클링"]
+  - keyword: "생수"
+    category_hint: "beverage"
+    synonyms: ["물", "미네랄워터", "정수"]
+  - keyword: "참치"
+    category_hint: "seafood"
+    synonyms: ["참치캔", "참치통조림"]
+  - keyword: "어묵"
+    category_hint: "seafood"
+    synonyms: ["오뎅", "어묵바", "어묵탕"]
+  - keyword: "닭고기"
+    category_hint: "livestock"
+    synonyms: ["치킨", "닭", "닭가슴살"]
+  - keyword: "계란"
+    category_hint: "livestock"
+    synonyms: ["달걀", "달걀류"]
+  - keyword: "비타민"
+    category_hint: "health"
+    synonyms: ["비타민C", "비타민D", "영양제"]
+  - keyword: "레토르트"
+    category_hint: "instant_food"
+    synonyms: ["간편식", "즉석조리"]
+  - keyword: "수입과자"
+    category_hint: "premium_snack"
+    synonyms: ["프리미엄과자", "해외과자"]

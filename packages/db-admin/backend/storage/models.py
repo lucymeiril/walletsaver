@@ -165,6 +165,16 @@ class Product(Base):
     categorization_method: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
     # "auto" | "suggested" | "manual" | "corrected"
 
+    # ── RD8 D1 추가 컬럼 (migration f1a2b3c4d5e6) ─────────────────────────────
+    brand: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
+    name_core: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    pack_qty: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    pack_unit: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    unit_kind: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
+    display_name: Mapped[Optional[str]] = mapped_column(String(400), nullable=True)
+    source_marts: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
+    aliases: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
+
     category: Mapped[Optional["Category"]] = relationship(back_populates="products")
     # lazy="selectin" — 상품 목록 조회 시 N+1 방지, 필요할 때만 서브쿼리로 일괄 로딩
     baseline_prices: Mapped[list["BaselinePrice"]] = relationship(
@@ -1223,6 +1233,14 @@ class MatchingEntry(Base):
     # notes: 운영자 메모 (nullable)
     notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
+    # ── RD8 L3 추가 컬럼 ────────────────────────────────────────────────────────
+    # pack_unit_kind: 단위 분류 캐시 (migration f3c4d5e6f7a8에서 DB 컬럼 추가됨)
+    pack_unit_kind: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
+    # source_record_key: 크롤러 원본 레코드 키. 멱등성 보장용.
+    source_record_key: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    # aliases: 동일 항목의 표기 변형 목록. JSON list[str]. 최대 50개.
+    aliases: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
+
     __table_args__ = (
         # confidence 범위 CHECK — 절대 제거 금지 (위 docstring 참조)
         CheckConstraint(
@@ -1253,3 +1271,73 @@ class MatchingEntry(Base):
                 f"받은 값: {value!r}"
             )
         return value
+
+
+# ═══════════════════════════════════════════════
+# RD8 L3: Import 감사 로그
+# ═══════════════════════════════════════════════
+
+class ImportsAudit(Base):
+    """외부 LLM 분류 결과 import 이력 감사 로그.
+
+    apply_import() 호출마다 한 행이 기록된다.
+    같은 파일을 2회 apply하면 audit 행은 2개 생기지만 DB 상태는 변화 없음 (멱등성).
+    """
+    __tablename__ = "imports_audit"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    file_type: Mapped[str] = mapped_column(String(30), nullable=False)   # matching|categories|products
+    file_hash: Mapped[str] = mapped_column(String(64), nullable=False)   # sha256 hex (64자)
+    importer: Mapped[str] = mapped_column(String(255), nullable=False)   # email 또는 "anonymous"
+    timestamp: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )
+    dry_run: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    total_rows: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    passed_rows: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    applied_counts: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    ok: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    error_message: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    __table_args__ = (
+        Index("ix_imports_audit_file_hash", "file_hash"),
+        Index("ix_imports_audit_timestamp", "timestamp"),
+        Index("ix_imports_audit_file_type", "file_type"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# RD8 L3: 카테고리 검토 큐
+# ═══════════════════════════════════════════════
+
+class CategoryReviewQueue(Base):
+    """외부 LLM이 제안한 신규 카테고리 — 운영자 검토 대기 큐.
+
+    신규 카테고리는 categories 테이블에 즉시 쓰지 않는다.
+    운영자가 approve 하면 별도 승인 API를 통해 DB에 반영된다.
+    """
+    __tablename__ = "category_review_queue"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    proposed_id: Mapped[str] = mapped_column(String(100), nullable=False)
+    parent_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    label: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
+    label_en: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
+    reason: Mapped[str] = mapped_column(Text, nullable=False)
+    similar_existing: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
+    source_file_hash: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    status: Mapped[str] = mapped_column(String(20), nullable=False, default="pending")
+    # pending | approved | rejected
+    submitted_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )
+    reviewed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    reviewer: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+
+    __table_args__ = (
+        Index("ix_cat_review_status", "status"),
+        Index("ix_cat_review_proposed_id", "proposed_id"),
+        UniqueConstraint("proposed_id", "source_file_hash", name="uq_cat_review_proposal"),
+    )

@@ -642,6 +642,9 @@ class TestSchemaIntegration:
             "product_matches",       # 마트별 상품 매칭 테이블
             "gov_wholesale_prices",  # 정부 공인 도매가 앵커
             "matching_entries",      # 크롤러 raw → canonical 매칭 룩업 테이블
+            "alert_disappeared_skus",   # 가격 알림 — 단종/품절 SKU 추적
+            "imports_audit",            # RD8 L3: 외부 LLM import 이력 감사 로그
+            "category_review_queue",    # RD8 L3: 신규 카테고리 제안 운영자 검토 큐
         }
         assert expected == set(inspector_tables)
 
