@@ -311,7 +311,7 @@ export default function AdvancedPage({ onGoReview }) {
             : 'AI 제안이 없습니다 — 처리 가동',
         cta,
         run: handleEnqueue,
-        disabled: enqueue.busy,
+        disabled: true, /* 2026-05-25 보류: AI 라이브 파이프라인 비활성화 */
       };
     }
     if (state.pendingReviewCount > 0) {
@@ -348,6 +348,11 @@ export default function AdvancedPage({ onGoReview }) {
 
   return (
     <div className="advanced advanced-v2" data-testid="advanced-page-v2">
+      {/* 페이지 설명 */}
+      <p className="page-desc muted small" style={{ marginBottom: 14 }}>
+        수집 → AI 처리 → 발행까지의 파이프라인 운영 화면입니다.
+        일반 사용자는 홈/검수 탭을 이용하고, 여기서는 잡 관리·공급자 설정·원시 데이터 비우기 등 고급 작업을 수행합니다.
+      </p>
       <header className="adv-hero">
         <div>
           <h2>⚙️ 고급 — 파이프라인 운영</h2>
@@ -383,6 +388,12 @@ export default function AdvancedPage({ onGoReview }) {
           >
             다음
           </span>
+          {/* 2026-05-25 보류: AI 라이브 파이프라인 비활성화 배지 */}
+          {nextAction.disabled && nextAction.cta === 'AI 처리 가동 (E)' && (
+            <span className="badge deprecated" style={{ marginLeft: 6 }}>
+              🚧 보류 — 외부 분류 워크플로우 사용
+            </span>
+          )}
           <strong>{nextAction.label}</strong>
           <button
             type="button"
@@ -543,14 +554,16 @@ export default function AdvancedPage({ onGoReview }) {
 
       {/* rd5-danger-zone: 사용자 비판 "비우기 어디 갔냐" — 고급 탭에서 직접 접근 가능. */}
       <section className="adv-section-list" data-testid="adv-danger-zone">
-        <h3 className="muted small" style={{ marginBottom: 8 }}>위험 작업 (직접 펼쳐서만 사용)</h3>
+        <h3 style={{ marginBottom: 8, fontSize: '0.88rem', color: 'var(--danger)' }}>
+          ⚠ 데이터 비우기 — AI 제안·raw 레코드 일괄 삭제 (펼쳐서 사용)
+        </h3>
         <details
           className="inline-details"
           open={openSection === 'danger'}
           onToggle={(e) => e.currentTarget.open && setOpenSection('danger')}
-          style={{ borderColor: '#c00' }}
+          style={{ borderColor: 'var(--danger)' }}
         >
-          <summary style={{ color: '#c00', fontWeight: 600 }}>
+          <summary style={{ color: 'var(--danger)', fontWeight: 600 }}>
             ⚠ 검수 큐 비우기 / raw 레코드 비우기 (위험)
           </summary>
           <div style={{ marginTop: 12, display: 'grid', gap: 16 }}>

@@ -410,6 +410,10 @@ export default function ClassificationPage() {
             <FolderTree size={22} />
             분류 관리
           </h2>
+          {/* 페이지 설명 — 카테고리 트리와 검색 키워드를 관리하는 페이지 */}
+          <p style={{ margin: '4px 0 0', fontSize: 'var(--fs-sm)', color: 'var(--text3)' }}>
+            상품 카테고리 트리와 검색 키워드를 관리합니다. 왼쪽에서 카테고리를 선택하면 오른쪽에 키워드가 표시됩니다.
+          </p>
           <LastUpdated
             timestamp={lastFetchedAt.categories}
             onRefresh={() => { fetchCategories(); fetchKeywordStats(); }}

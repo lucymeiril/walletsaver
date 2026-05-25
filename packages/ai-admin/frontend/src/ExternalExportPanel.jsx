@@ -82,7 +82,7 @@ export default function ExternalExportPanel() {
         );
       }
       const body = await res.json();
-      setHistoryState({ loading: false, items: body.items || body || [], error: null });
+      setHistoryState({ loading: false, items: body.exports || body.items || (Array.isArray(body) ? body : []), error: null });
     } catch (err) {
       setHistoryState({ loading: false, items: [], error: err.message || String(err) });
     }
@@ -183,6 +183,11 @@ export default function ExternalExportPanel() {
       className="panel export-panel"
       data-testid="external-export-panel"
     >
+      {/* ── 페이지 설명 ── */}
+      <p className="page-desc muted small" style={{ marginBottom: 14 }}>
+        매칭 미히트(캡처됐으나 상품 DB에 연결 안 된) 데이터를 JSONL/CSV로 추출합니다.
+        추출 후 외부에서 분류하고 db-admin 「분류 Import」로 업로드하면 DB에 반영됩니다.
+      </p>
       {/* ── 헤더 ── */}
       <div className="row export-panel-header">
         <div>

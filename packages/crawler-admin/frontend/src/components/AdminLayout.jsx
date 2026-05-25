@@ -12,6 +12,7 @@ import {
   LogOut,
   History,
   Search,
+  Bell,
 } from 'lucide-react';
 import { logout } from '../stores/authStore';
 import styles from './AdminLayout.module.css';
@@ -25,6 +26,8 @@ const navItems = [
   { to: '/schedule', label: '스케줄', icon: Clock },
   { to: '/runs', label: '실행 히스토리', icon: History },
   { to: '/adhoc', label: 'Ad-hoc 수집', icon: Search },
+  // 주간 알림 — 사라진 SKU 감지 결과 (cr3 신설)
+  { to: '/weekly-alerts', label: '주간 알림', icon: Bell },
 ];
 
 export default function AdminLayout() {

@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAdminStore from '../../stores/adminStore';
 import {
@@ -14,8 +14,10 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts';
-import { RefreshCw, AlertTriangle, ExternalLink, Clock } from 'lucide-react';
+import { RefreshCw, AlertTriangle, ExternalLink, Clock, Rocket, Database } from 'lucide-react';
 import styles from './Dashboard.module.css';
+import EmptyState from '../../components/EmptyState';
+import FirstCrawlModal from '../../components/FirstCrawlModal';
 
 const STATUS_LABEL = { success: '성공', failure: '실패', partial: '부분', running: '실행중' };
 const STATUS_COLORS = {
@@ -81,6 +83,17 @@ export default function Dashboard() {
   const crawlerCards = stats.crawlerCards || [];
   const freshness = stats.freshness || [];
 
+  const [firstCrawlOpen, setFirstCrawlOpen] = useState(false);
+
+  // 빈 상태 판정: 어떤 실행 데이터도 없고, 신선도 전부 unknown 또는 비어있는 경우
+  const isFreshAllUnknown = freshness.length === 0 || freshness.every((f) => f.status === 'unknown' || !f.lastUpdate);
+  const isInitialEmpty = useMemo(() => (
+    (stats.todayCrawls || 0) === 0 &&
+    crawlerCards.length === 0 &&
+    errorTrendData.length === 0 &&
+    isFreshAllUnknown
+  ), [stats.todayCrawls, crawlerCards.length, errorTrendData.length, isFreshAllUnknown]);
+
   if (loading) {
     return (
       <div className={styles.page}>
@@ -96,7 +109,13 @@ export default function Dashboard() {
     <div className={styles.page}>
       {/* 헤더: 제목 + 새로고침 */}
       <div className={styles.header}>
-        <h1 className={styles.pageTitle}>대시보드</h1>
+        <div>
+          <h1 className={styles.pageTitle}>대시보드</h1>
+          {/* 페이지 설명 — 크롤러 전체 상태를 한눈에 */}
+          <p style={{ margin: '4px 0 0', fontSize: '0.82rem', color: 'var(--text3)' }}>
+            마트별 크롤러 실행 상태, 데이터 신선도, 에러 추이를 한눈에 확인합니다.
+          </p>
+        </div>
         <div className={styles.headerRight}>
           {lastRefreshed && (
             <span className={styles.lastRefreshed}>
@@ -167,6 +186,19 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* 초기 빈 상태 — 다음 액션 명시 (db-admin EmptyState 패턴 적용) */}
+      {isInitialEmpty && (
+        <EmptyState
+          icon={Rocket}
+          title="크롤 실행 이력이 아직 없어요"
+          description="첫 크롤을 실행해 마트 데이터를 수집해 보세요. 크롤러 관리에서 개별 실행도 가능합니다."
+          action={() => setFirstCrawlOpen(true)}
+          actionLabel="첫 크롤 실행하기"
+          secondaryAction={() => navigate('/crawlers')}
+          secondaryActionLabel="크롤러 관리로 이동"
+        />
+      )}
+
       {/* 크롤러별 상태 카드 */}
       {crawlerCards.length > 0 && (
         <section className={styles.section}>
@@ -194,7 +226,22 @@ export default function Dashboard() {
       {/* 데이터 신선도 패널 */}
       {freshness.length > 0 && (
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>데이터 신선도</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+            <h2 className={styles.sectionTitle}>데이터 신선도</h2>
+            {isFreshAllUnknown && (
+              <button
+                onClick={() => setFirstCrawlOpen(true)}
+                style={{
+                  padding: '6px 12px', borderRadius: 8, border: 0,
+                  background: 'var(--accent, #38bdf8)', color: '#0b1220',
+                  cursor: 'pointer', fontWeight: 600, fontSize: '.82rem',
+                  display: 'inline-flex', alignItems: 'center', gap: 6,
+                }}
+              >
+                <Rocket size={14} /> 첫 크롤 실행하기
+              </button>
+            )}
+          </div>
           <div className={styles.freshnessGrid}>
             {freshness.map((f) => (
               <div
@@ -206,7 +253,7 @@ export default function Dashboard() {
                   {FRESHNESS_LABEL[f.status]}
                 </span>
                 <span className={styles.freshnessTime}>
-                  {f.lastUpdate ? formatTime(f.lastUpdate) : '데이터 없음'}
+                  {f.lastUpdate ? formatTime(f.lastUpdate) : '아직 적재 전 — 크롤 실행 필요'}
                 </span>
               </div>
             ))}
@@ -246,9 +293,13 @@ export default function Dashboard() {
               </PieChart>
             </ResponsiveContainer>
           ) : (
-            <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text3)' }}>
-              아직 실행 데이터가 없습니다
-            </div>
+            <EmptyState
+              icon={Database}
+              title="아직 실행 데이터가 없어요"
+              description="크롤을 실행하면 성공/실패/부분 분포가 여기에 표시됩니다."
+              action={() => setFirstCrawlOpen(true)}
+              actionLabel="첫 크롤 실행하기"
+            />
           )}
         </div>
 
@@ -292,12 +343,24 @@ export default function Dashboard() {
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text3)' }}>
-              아직 에러 데이터가 없습니다
-            </div>
+            <EmptyState
+              icon={AlertTriangle}
+              title="에러 데이터가 없어요"
+              description="크롤 실행 후 발생한 에러가 여기에 누적됩니다."
+              action={() => navigate('/logs')}
+              actionLabel="로그 보기"
+            />
           )}
         </div>
       </div>
+
+      <FirstCrawlModal
+        isOpen={firstCrawlOpen}
+        onClose={() => setFirstCrawlOpen(false)}
+        onLaunched={() => {
+          setTimeout(() => fetchDashboard(), 1500);
+        }}
+      />
     </div>
   );
 }
