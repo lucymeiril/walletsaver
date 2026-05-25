@@ -13,4 +13,5 @@ schedule:
   retry_delay: 300
 output:
   model: DiscountItem
+  minimum_rows: 50
   required_fields: [name, sale_price]

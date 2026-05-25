@@ -52,6 +52,49 @@ class ErrorType(str, Enum):
     UNKNOWN = "unknown"
 
 
+class CrawlerFailureKind(str, Enum):
+    """모니터링 패널 노출용 failure_kind — 마트 크롤러 ingest 보고 통일 enum.
+
+    p1-crawler-anchor-failure-kind 스펙에 따라 모든 마트 크롤러가
+    동일한 이 enum으로 failure 를 보고해야 한다.
+
+    network : HTTP 연결 오류, ConnectionError, DNS 실패
+    parse   : HTML/JSON 파싱 실패, 구조 변경으로 인한 셀렉터 미스
+    empty   : 크롤링 성공했으나 유효 상품 0건
+    cap     : CAPTCHA, Akamai Bot Manager, JS challenge 등 봇 차단
+    waf     : WAF(403/406), IP 차단(IP_BANNED), 429 rate-limit
+    timeout : 요청 타임아웃
+    unknown : 분류 불가
+    """
+    NETWORK = "network"
+    PARSE = "parse"
+    EMPTY = "empty"
+    CAP = "cap"
+    WAF = "waf"
+    TIMEOUT = "timeout"
+    UNKNOWN = "unknown"
+
+
+def error_type_to_failure_kind(error_type: "ErrorType") -> "CrawlerFailureKind":
+    """ErrorType → CrawlerFailureKind 매핑 헬퍼.
+
+    모든 마트 크롤러가 이 함수로 failure_kind를 결정해야 일관성이 유지된다.
+    """
+    _MAP = {
+        ErrorType.NETWORK_ERROR: CrawlerFailureKind.NETWORK,
+        ErrorType.TIMEOUT: CrawlerFailureKind.TIMEOUT,
+        ErrorType.PARSE_ERROR: CrawlerFailureKind.PARSE,
+        ErrorType.DOM_CHANGED: CrawlerFailureKind.PARSE,
+        ErrorType.EMPTY_RESPONSE: CrawlerFailureKind.EMPTY,
+        ErrorType.CAPTCHA_DETECTED: CrawlerFailureKind.CAP,
+        ErrorType.JS_CHALLENGE: CrawlerFailureKind.CAP,
+        ErrorType.IP_BANNED: CrawlerFailureKind.WAF,
+        ErrorType.HTTP_ERROR: CrawlerFailureKind.WAF,
+        ErrorType.LOGIN_REQUIRED: CrawlerFailureKind.WAF,
+    }
+    return _MAP.get(error_type, CrawlerFailureKind.UNKNOWN)
+
+
 class CrawlerGroup(str, Enum):
     """크롤러를 데이터 성격별로 묶는 그룹 — 스케줄링 주기·신뢰도 정책이 그룹별로 다르다."""
     PUBLIC_API = "public"       # 공공 API
@@ -118,6 +161,17 @@ class StrategyFailure(BaseModel):
     error_msg: str
     status_code: Optional[int] = None
     timestamp: datetime = Field(default_factory=datetime.now)
+    # p1-crawler-anchor-failure-kind: 모니터링 패널 노출용 일관 failure_kind
+    failure_kind: Optional[CrawlerFailureKind] = None
+
+    def model_post_init(self, __context: Any) -> None:
+        """error_type 으로부터 failure_kind 자동 설정 (명시 지정 우선)."""
+        if self.failure_kind is None:
+            object.__setattr__(
+                self,
+                "failure_kind",
+                error_type_to_failure_kind(self.error_type),
+            )
 
 
 class DiagnosisReport(BaseModel):

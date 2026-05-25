@@ -40,13 +40,17 @@ export async function searchProducts(params: {
   q?: string
   category?: string
   page?: number
+  page_size?: number
   sort?: string
+  include_pending?: boolean
 }): Promise<SearchResult> {
   const url = new URL(`${BASE}/products/search`, window.location.origin)
   if (params.q) url.searchParams.set('q', params.q)
   if (params.category) url.searchParams.set('category', params.category)
   if (params.page) url.searchParams.set('page', String(params.page))
+  if (params.page_size) url.searchParams.set('page_size', String(params.page_size))
   if (params.sort) url.searchParams.set('sort', params.sort)
+  if (params.include_pending) url.searchParams.set('include_pending', 'true')
   const res = await fetch(url.toString())
   if (!res.ok) throw new Error(`search ${res.status}`)
   return res.json()

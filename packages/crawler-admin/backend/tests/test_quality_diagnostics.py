@@ -428,7 +428,7 @@ def test_high_priority_non_marketplace_fixtures_produce_bounded_quality_evidence
         assert health["next_action_state"]["state"] == "monitor"
         assert health["live_network_default"] == "disabled"
 
-    for source_id in ("emart", "homeplus", "lottemart"):
+    for source_id in ("emart", "homeplus"):
         row = rows[source_id]
         counts = row["quality_evidence"]["counts"]
         critical_coverage = row["quality_evidence"]["critical_field_coverage"]
@@ -458,6 +458,19 @@ def test_high_priority_non_marketplace_fixtures_produce_bounded_quality_evidence
         assert health["next_action_state"]["state"] == "await_bounded_live_diagnostics_approval"
         assert readiness["stage"] == "fixture_passing"
         assert readiness["bounded_diagnostic_ready"] is False
+
+    # lottemart: plugin.yaml live_ready=true 로 전환 — WAF 202 escalation 검증 완료(314건).
+    # 따라서 'collecting' 상태로 인식돼야 한다.
+    lottemart = rows["lottemart"]
+    lm_counts = lottemart["quality_evidence"]["counts"]
+    lm_critical = lottemart["quality_evidence"]["critical_field_coverage"]
+    assert lottemart["quality_evidence"]["has_quality_evidence"] is True
+    assert lottemart["quality_evidence"]["collection_status"] == "collecting"
+    assert lm_counts["source_raw"] > 0
+    assert lm_counts["valid"] > 0
+    assert lm_critical["name"] == 1.0
+    assert lm_critical["sale_price"] == 1.0
+    assert lm_critical["detail_url"] == 1.0
 
     homeplus = rows["homeplus"]
     homeplus_counts = homeplus["quality_evidence"]["counts"]

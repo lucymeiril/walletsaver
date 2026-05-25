@@ -179,6 +179,10 @@ const useStore = create(
         theme: state.theme === 'light' ? 'dark' : 'light',
       })),
 
+      // 핫딜러 모드 — ON 시 상세 가격 정보·할인율 레이어 추가 노출
+      hotdealerMode: false,
+      toggleHotdealerMode: () => set((state) => ({ hotdealerMode: !state.hotdealerMode })),
+
       // 필터/정렬 환경설정
       filterPreferences: {
         hotdealCategory: 'all',
@@ -196,6 +200,7 @@ const useStore = create(
       name: 'wallet-savior-store',
       partialize: (state) => ({
         theme: state.theme,
+        hotdealerMode: state.hotdealerMode,
         favorites: state.favorites,
         favoriteItems: state.favoriteItems,
         recentSearches: state.recentSearches,

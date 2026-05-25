@@ -11,6 +11,10 @@ from uuid import uuid4
 
 _logger = logging.getLogger("walletsavior.ai_ingestion")
 
+# 2026-05-25 보류: 504 무한 회귀 문제로 live AI pipeline 비활성화.
+# 외부 분류 워크플로우로 전환. 삭제 금지; 향후 복귀 시 flag만 켜면 됨.
+WALLETSAVIOR_LIVE_AI_ENABLED = os.environ.get("WALLETSAVIOR_LIVE_AI_ENABLED", "false").lower() in ("1", "true", "yes")
+
 from sqlalchemy.orm import Session
 
 from core.contracts.ai_pipeline import (
@@ -1966,6 +1970,15 @@ def ingest_and_label_records(
     max_provider_calls: int | None = None,
     provider_factory=None,
 ) -> dict[str, Any]:
+    if not WALLETSAVIOR_LIVE_AI_ENABLED:
+        raise AIIngestionError(
+            "live AI pipeline is currently disabled; use external classification workflow",
+            stage="deprecated",
+            status_code=503,
+            provider_id=provider_id,
+            row_count=len(records),
+        )
+    
     provider_config = ProviderConfigRepository(session).get(provider_id)
     if provider_config is None:
         raise AIIngestionError(

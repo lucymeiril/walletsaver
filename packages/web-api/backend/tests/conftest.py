@@ -58,7 +58,29 @@ def _create_mini_snapshot(db_path: str):
         source_url TEXT,
         last_seen_at TEXT
     );
+    CREATE TABLE IF NOT EXISTS canonical_id_redirect (
+        from_id TEXT PRIMARY KEY,
+        to_id TEXT NOT NULL,
+        reason TEXT NOT NULL,
+        created_at TEXT
+    );
+    CREATE TABLE IF NOT EXISTS raw_crawl_record (
+        id TEXT PRIMARY KEY,
+        raw_title TEXT NOT NULL,
+        raw_price INTEGER,
+        mart TEXT,
+        captured_at TEXT
+    );
     """)
+
+    # p1-web-api-resolver-contract: redirect 테스트 데이터
+    cur.executemany(
+        "INSERT OR REPLACE INTO canonical_id_redirect VALUES (?,?,?,?)",
+        [
+            ("old_tofu_stable_id", "prod_tofu_001", "merge", "2024-01-01"),
+            ("very_old_tofu_id",   "old_tofu_stable_id", "merge", "2023-01-01"),
+        ],
+    )
 
     cur.executemany("INSERT OR REPLACE INTO category_node VALUES (?,?,?,?,?,?)", [
         ("fresh_food", None, "신선식품", "fresh_food", 1, "신선식품"),

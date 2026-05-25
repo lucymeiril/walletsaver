@@ -138,6 +138,38 @@ const putJson = (url, data, { signal, timeout } = {}) =>
 const del = (url, { signal, timeout } = {}) =>
   fetchWithTimeout(url, { method: 'DELETE', signal }, timeout).then(json);
 
+// ─── FormData POST (파일 업로드용, Content-Type을 수동 설정하지 않아 브라우저가 boundary 포함) ───
+function postFormData(url, formData, { signal, onProgress } = {}) {
+  return new Promise((resolve, reject) => {
+    const token = getAccessToken();
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url);
+    if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+    if (signal) signal.addEventListener('abort', () => xhr.abort());
+
+    if (onProgress && xhr.upload) {
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
+      };
+    }
+
+    xhr.onload = () => {
+      if (xhr.status === 401) { authLogout(); reject(Object.assign(new Error('인증이 만료되었습니다.'), { status: 401 })); return; }
+      let data;
+      try { data = JSON.parse(xhr.responseText); } catch { data = {}; }
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(data);
+      } else {
+        const msg = data.detail || data.message || `HTTP ${xhr.status}`;
+        reject(Object.assign(new Error(msg), { status: xhr.status, data }));
+      }
+    };
+    xhr.onerror = () => reject(new Error('네트워크 오류가 발생했습니다.'));
+    xhr.onabort = () => reject(Object.assign(new DOMException('요청이 취소되었습니다.', 'AbortError'), { name: 'AbortError' }));
+    xhr.send(formData);
+  });
+}
+
 // 모든 URL에 trailing slash를 사용 — FastAPI의 router.get("/") 패턴과 일치시켜
 // 307 리다이렉트로 인한 POST body 손실을 방지한다.
 export const api = {
@@ -259,6 +291,13 @@ export const api = {
     postJson(`${API_BASE}/admin/integrity/recheck`, check ? { check } : {}, { ...opts, timeout: LONG_TIMEOUT }),
   repairIntegrity: (check, confirm, opts) =>
     postJson(`${API_BASE}/admin/integrity/repair`, { check, confirm }, { ...opts, timeout: LONG_TIMEOUT }),
+  // Maintenance — DB 비우기 / 마이그레이션 / 이상 데이터 검토
+  maintenancePurge: (scope, note, opts) =>
+    postJson(`${API_BASE}/admin/maintenance/purge`, { scope, confirm: true, note: note || null }, { ...opts, timeout: LONG_TIMEOUT }),
+  maintenanceMigrate: (revision, opts) =>
+    postJson(`${API_BASE}/admin/maintenance/migrate`, { revision: revision || 'head' }, { ...opts, timeout: LONG_TIMEOUT }),
+  maintenanceIntegrity: (opts) =>
+    get(`${API_BASE}/admin/maintenance/integrity`, { ...opts, timeout: LONG_TIMEOUT }),
   // Community moderation
   getCommunityPosts: (params = {}, opts) =>
     get(`${API_BASE}/community/posts?${new URLSearchParams(params)}`, opts),
@@ -266,4 +305,20 @@ export const api = {
     del(`${API_BASE}/community/posts/${id}`, opts),
   restoreCommunityPost: (id, opts) =>
     postJson(`${API_BASE}/community/posts/${id}/restore`, {}, opts),
+  // Import classified
+  previewImport: (file, mode, { signal, onProgress } = {}) => {
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('mode', mode);
+    return postFormData(`${API_BASE}/import/classified/preview`, fd, { signal, onProgress });
+  },
+  confirmImport: (file, mode, traceId, { signal, onProgress } = {}) => {
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('mode', mode);
+    if (traceId) fd.append('trace_id', traceId);
+    return postFormData(`${API_BASE}/import/classified/confirm`, fd, { signal, onProgress });
+  },
+  getImportFailureCsvUrl: (traceId) =>
+    `${API_BASE}/import/classified/failure-csv/${traceId}`,
 };

@@ -14,7 +14,7 @@ from sqlalchemy.orm import Session
 from core.contracts.ai_pipeline import MAX_AI_BATCH_ITEMS, RawCrawlRecord
 from api.deps import get_db_session
 from providers.google_genai import ProviderConfigurationError, ProviderResponseError
-from services.ai_ingestion import AIIngestionError, ingest_and_label_records
+from services.ai_ingestion import AIIngestionError, WALLETSAVIOR_LIVE_AI_ENABLED, ingest_and_label_records
 from storage.models import (
     FieldProposal as FieldProposalModel,
     KeywordProposal as KeywordProposalModel,
@@ -137,6 +137,15 @@ def process_missing_proposals(
     payload: ProcessMissingPayload,
     session: Session = Depends(get_db_session),
 ) -> dict[str, Any]:
+    if not WALLETSAVIOR_LIVE_AI_ENABLED:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={
+                "status": "deprecated",
+                "detail": "live AI pipeline disabled; export to external classifier",
+            },
+        )
+    
     started_at = time.monotonic()
     missing_rows = _select_missing_raw_records(session, payload.limit)
     if not missing_rows:

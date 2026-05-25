@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { describe, it, expect, vi } from 'vitest'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { ProductCard } from '../components/ProductCard'
 import type { ProductSummary } from '../types'
@@ -23,6 +23,103 @@ function makeProduct(overrides: Partial<ProductSummary> = {}): ProductSummary {
     ...overrides,
   }
 }
+
+function makePendingProduct(overrides: Partial<ProductSummary> = {}): ProductSummary {
+  return {
+    canonical_id: 'pending_raw_001',
+    name_core: '이마트 미분류 과자 A',
+    brand: null,
+    pack_quantity: null,
+    pack_unit: null,
+    category_id: null,
+    image_url: null,
+    p10: null,
+    p25: null,
+    p50: null,
+    p75: null,
+    sufficient: false,
+    grade_label: 'INSUFFICIENT_DATA',
+    marts: ['EMART'],
+    status: 'pending_classification',
+    pending_raw_id: 'raw_001',
+    price: 3500,
+    captured_at: '2024-06-01T10:00:00',
+    ...overrides,
+  }
+}
+
+describe('ProductCard — pending_classification', () => {
+  it('"분류 대기중" 배지 렌더링', () => {
+    render(
+      <MemoryRouter>
+        <ProductCard product={makePendingProduct()} />
+      </MemoryRouter>
+    )
+    expect(screen.getByTestId('pending-badge')).toHaveTextContent('분류 대기중')
+  })
+
+  it('상품명 표시', () => {
+    render(
+      <MemoryRouter>
+        <ProductCard product={makePendingProduct()} />
+      </MemoryRouter>
+    )
+    expect(screen.getByText('이마트 미분류 과자 A')).toBeInTheDocument()
+  })
+
+  it('가격 표시 (price 필드)', () => {
+    render(
+      <MemoryRouter>
+        <ProductCard product={makePendingProduct({ price: 3500 })} />
+      </MemoryRouter>
+    )
+    expect(screen.getByTestId('pending-price')).toHaveTextContent('₩3,500')
+  })
+
+  it('가격 없을 때 pending-price 미표시', () => {
+    render(
+      <MemoryRouter>
+        <ProductCard product={makePendingProduct({ price: null })} />
+      </MemoryRouter>
+    )
+    expect(screen.queryByTestId('pending-price')).toBeNull()
+  })
+
+  it('"분류 요청" 버튼 클릭 시 토스트 표시', async () => {
+    vi.useFakeTimers()
+    render(
+      <MemoryRouter>
+        <ProductCard product={makePendingProduct()} />
+      </MemoryRouter>
+    )
+    const btn = screen.getByTestId('request-classify-btn')
+    expect(btn).toHaveTextContent('분류 요청')
+    fireEvent.click(btn)
+    expect(screen.getByTestId('classify-toast')).toBeInTheDocument()
+    vi.useRealTimers()
+  })
+
+  it('마트 레이블 표시', () => {
+    render(
+      <MemoryRouter>
+        <ProductCard product={makePendingProduct({ marts: ['EMART'] })} />
+      </MemoryRouter>
+    )
+    expect(screen.getByText('이마트')).toBeInTheDocument()
+  })
+
+  it('aria-label에 상품명 포함', () => {
+    render(
+      <MemoryRouter>
+        <ProductCard product={makePendingProduct()} />
+      </MemoryRouter>
+    )
+    expect(screen.getByRole('article')).toHaveAttribute(
+      'aria-label',
+      '분류 대기 상품: 이마트 미분류 과자 A'
+    )
+  })
+})
 
 describe('ProductCard', () => {
   it('HOT_DEAL 배지 렌더링', () => {
@@ -74,7 +171,7 @@ describe('ProductCard', () => {
       </MemoryRouter>
     )
     const discountEl = screen.getByTestId('discount-pct')
-    expect(discountEl.textContent).toMatch(/^-\d+%$/)
+    expect(discountEl.textContent).toMatch(/^-\d+%\s*[↓↑—]?$/)
   })
 
   it('p10/p50 없을 때 대시(-) 표시', () => {

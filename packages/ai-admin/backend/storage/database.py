@@ -45,6 +45,28 @@ class Database:
         Base.metadata.create_all(self.engine)
         self._ensure_provider_config_columns()
         self._ensure_product_match_columns()
+        self._ensure_review_decision_columns()
+
+    def _ensure_review_decision_columns(self) -> None:
+        """Add §4-E undo columns to existing review_decisions tables."""
+        defaults = {
+            "undoable_until": "DATETIME",
+            "downstream_application_count": "INTEGER NOT NULL DEFAULT 0",
+            "reused_in_run_ids": "JSON NOT NULL DEFAULT '[]'",
+            "is_undone": "BOOLEAN NOT NULL DEFAULT 0",
+            "undone_at": "DATETIME",
+            "undone_by": "VARCHAR(120)",
+        }
+        inspector = inspect(self.engine)
+        if "review_decisions" not in inspector.get_table_names():
+            return
+        existing = {column["name"] for column in inspector.get_columns("review_decisions")}
+        with self.engine.begin() as connection:
+            for column_name, column_type in defaults.items():
+                if column_name not in existing:
+                    connection.execute(
+                        text(f"ALTER TABLE review_decisions ADD COLUMN {column_name} {column_type}")
+                    )
 
     def _ensure_provider_config_columns(self) -> None:
         """Add operator-tunable provider limit columns to existing local DBs."""

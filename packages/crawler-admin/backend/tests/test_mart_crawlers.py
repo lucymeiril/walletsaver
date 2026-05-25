@@ -818,8 +818,12 @@ class TestCrawlWithMock:
         assert result.quality_details["alerts"]
 
     @pytest.mark.asyncio
-    async def test_lottemart_stops_on_aws_waf_202_after_partial_success(self):
-        """AWS WAF 202 챌린지를 만나면 추가 요청을 중단하고 원인 증거를 남긴다."""
+    async def test_lottemart_escalates_to_playwright_scroll_on_aws_waf_202(self):
+        """AWS WAF 202 챌린지를 만나도 폴백을 묵살하지 않는다.
+        plugin.yaml waf_strategy.escalation 대로:
+          requests → playwright_headless → playwright_headful 자동 escalation.
+        헤드풀은 p0-crawler-impl 1급 워크밴치. 운영자 개입 게이트 없음.
+        구 동작(2건에서 stop)이 회귀로 재발하는 것을 막는다."""
         from engine.anti_detect import AntiDetect
         crawler = LottemartCrawler(anti_detect=AntiDetect(delay_min=0.0, delay_max=0.01))
         crawler.SEARCH_QUERIES = ["할인", "특가", "정육"]
@@ -832,21 +836,31 @@ class TestCrawlWithMock:
             text="<html><script>window.awsWafCookieDomainList=[];</script></html>",
         )
 
+        scroll_calls: list[dict] = []
+
+        async def _fake_scroll(*, target_count=220, max_scroll_steps=120, headful=False):
+            scroll_calls.append({"headful": headful})
+            return []
+
         with patch("crawlers.marts.lottemart.crawler.requests.Session.get", side_effect=[first_resp, waf_resp]) as mock_get, \
+             patch.object(crawler, "_fetch_promotions_scroll", side_effect=_fake_scroll) as mock_scroll, \
              patch.object(crawler, "_fetch_via_playwright", return_value=[]) as mock_playwright:
             result = await crawler.crawl()
 
         assert mock_get.call_count == 2
-        mock_playwright.assert_not_called()
-        assert result.status == CrawlStatus.SUCCESS
-        assert result.items_count == 2
-        assert result.quality_details["source_errors"] == ["검색 '특가' p1 HTTP 202 (AWS WAF challenge)"]
+        # WAF 202 후에 스크롤 폴백이 *반드시* 호출돼야 한다 (옛 회귀 가드)
+        assert scroll_calls, "WAF 202 후 스크롤 폴백 묵살됨 — 사용자 헌법 위반"
+        # 헤드리스가 빈 결과 → 헤드풀 escalation 까지 시도해야 한다
+        assert any(c["headful"] for c in scroll_calls), (
+            "헤드리스만 시도하고 headful escalation 미수행"
+        )
+        # WAF blocker 시그널은 여전히 남되, 정직하게 보고 (회복 못 했으니 alert 유지)
         assert result.errors[0].status_code == 202
         assert result.quality_details["fetch"]["blocked"] is True
         assert result.quality_details["fetch"]["blocker"] == "aws_waf_http_202"
         assert result.quality_details["fetch"]["auth_bypass_attempted"] is False
-        assert "source_blocked_aws_waf_202" in result.quality_details["alerts"]
-        assert result.quality_details["quality_summary"]["status"] == "blocked"
+        # 헤드풀까지 시도했지만 mock 으로 빈 결과 → 부분 결과만 회수
+        assert result.items_count == 2
 
     @pytest.mark.asyncio
     async def test_lottemart_saved_source_input_replays_without_network(self):

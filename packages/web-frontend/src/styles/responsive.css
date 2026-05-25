@@ -1,0 +1,59 @@
+/* web-FINAL §7-2: 모바일 반응형 브레이크포인트.
+   의도: 컴포넌트 인라인 스타일이 잡지 못하는 레이아웃 분기를 미디어 쿼리로 보완.
+   1024+ 데스크탑 / 768~1023 태블릿 / 480~767 모바일 / <480 좁은 모바일.
+   후속 AI에게: 추가 미디어 쿼리는 가급적 이 파일에 모을 것. */
+
+:root {
+  --bp-mobile: 480px;
+  --bp-tablet: 768px;
+  --bp-desktop: 1024px;
+  --touch-min: 44px;
+}
+
+/* 모든 버튼/링크 최소 터치 영역 — §7-3 */
+button,
+a[role='button'],
+.touch-target {
+  min-height: var(--touch-min);
+}
+
+/* < 768px: 카드 그리드 2열, 카드 패딩 축소 */
+@media (max-width: 767px) {
+  .ws-card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+    gap: 12px !important;
+  }
+  .ws-product-detail {
+    padding: 12px 8px !important;
+  }
+  .ws-mart-table {
+    font-size: 12px !important;
+  }
+  .ws-mart-table th,
+  .ws-mart-table td {
+    padding: 6px 4px !important;
+  }
+  .ws-pc-pagination {
+    display: none !important;
+  }
+  .ws-mobile-loadmore {
+    display: block !important;
+  }
+}
+
+/* < 480px: 1열 */
+@media (max-width: 479px) {
+  .ws-card-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* >= 768px: PC 페이지네이션 노출, 모바일 더보기 숨김 */
+@media (min-width: 768px) {
+  .ws-mobile-loadmore {
+    display: none !important;
+  }
+  .ws-pc-pagination {
+    display: flex !important;
+  }
+}

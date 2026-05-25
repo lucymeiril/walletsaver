@@ -1,0 +1,72 @@
+{
+  "products": [
+    {
+      "code": "602630",
+      "name": "바이오더마 아토덤 울트라 크림 500ml x 2입",
+      "url": "/BeautyHouseholdPersonal-Care/BathBodyOral-Care/Body-LotionBody-Cream/Bioderma-Atoderm-Ultra-Cream-500ml-x-2/p/602630",
+      "price": {
+        "value": 35990,
+        "currencyIso": "KRW",
+        "formattedValue": "35,990원"
+      },
+      "images": [
+        {
+          "imageType": "PRIMARY",
+          "format": "product",
+          "url": "/medias/sys_master/images/h23/h67/415027616120862.jpg"
+        }
+      ]
+    },
+    {
+      "code": "801234",
+      "name": "코스트코 유기농 우유 1L x 6입",
+      "url": "/FoodandBeverage/Dairy/Milk/Costco-Organic-Milk-1L-6-pack/p/801234",
+      "price": {
+        "value": 18900,
+        "currencyIso": "KRW",
+        "formattedValue": "18,900원"
+      },
+      "images": [
+        {
+          "imageType": "PRIMARY",
+          "format": "product",
+          "url": "/medias/sys_master/images/abc/def/milk.jpg"
+        }
+      ]
+    },
+    {
+      "code": "999999",
+      "name": "닭가슴살 훈제 200g x 10입",
+      "url": "/FreshFood/Poultry/Chicken/Smoked-Chicken-Breast-200g-10pack/p/999999",
+      "price": {
+        "value": 24900,
+        "currencyIso": "KRW",
+        "formattedValue": "24,900원"
+      },
+      "wasPrice": {
+        "value": 28000,
+        "currencyIso": "KRW"
+      },
+      "images": [
+        {
+          "imageType": "PRIMARY",
+          "format": "product",
+          "url": "/medias/sys_master/images/chicken.jpg"
+        }
+      ]
+    }
+  ],
+  "pagination": {
+    "currentPage": 0,
+    "pageSize": 24,
+    "sort": "relevanceByDate",
+    "totalPages": 3,
+    "totalResults": 70
+  },
+  "sorts": [],
+  "currentQuery": {
+    "query": {
+      "value": ":relevanceByDate:allCategories:FoodandBeverage"
+    }
+  }
+}

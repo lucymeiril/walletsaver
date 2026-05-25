@@ -46,7 +46,22 @@ class ForwardToAIRequest(RawBatchRequest):
     ai_admin_base_url: str = Field(min_length=1)
     provider_id: str = Field(min_length=1)
     ai_admin_api_key: Optional[str] = None
-    timeout_seconds: float = Field(default=30.0, gt=0, le=120)
+    # rd4-timeout-fix: ai-admin은 batch 당 N×Gemma 라이브 호출(~10-20s/call)을 직렬로 돌리므로
+    # 30s 기본은 거의 항상 timeout → 422 가짜 분류된다. 600s 기본, 1800s 상한으로 확장.
+    # 사용자 비판: "POST /api/ai-export/raw-records/label HTTP/1.1 422 ... timed out" 무한 반복.
+    timeout_seconds: float = Field(default=600.0, gt=0, le=1800)
+
+
+_ERROR_KIND_STATUS = {
+    "timeout": 504,
+    "connection": 502,
+    "silent_drop": 502,
+    "validation": 422,
+}
+
+
+def _status_for_export_error(exc: RawExportError) -> int:
+    return _ERROR_KIND_STATUS.get(getattr(exc, "kind", "validation"), 422)
 
 
 @router.post("/raw-batch", response_model=RawBatchResponse)
@@ -68,7 +83,7 @@ async def export_raw_batch(body: RawBatchRequest) -> RawBatchResponse:
             batch_id=batch.batch_id,
         )
     except RawExportError as exc:
-        raise HTTPException(status_code=422, detail=str(exc))
+        raise HTTPException(status_code=_status_for_export_error(exc), detail=str(exc))
 
     return RawBatchResponse(
         batch=batch.model_dump(mode="json"),
@@ -96,7 +111,7 @@ async def forward_raw_records_to_ai(body: ForwardToAIRequest) -> dict[str, Any]:
             timeout_seconds=body.timeout_seconds,
         )
     except RawExportError as exc:
-        raise HTTPException(status_code=422, detail=str(exc))
+        raise HTTPException(status_code=_status_for_export_error(exc), detail=str(exc))
 
 
 @router.get("/providers")
@@ -111,4 +126,4 @@ async def list_ai_providers(
             timeout_seconds=timeout_seconds,
         )
     except RawExportError as exc:
-        raise HTTPException(status_code=422, detail=str(exc))
+        raise HTTPException(status_code=_status_for_export_error(exc), detail=str(exc))

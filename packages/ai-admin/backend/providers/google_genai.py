@@ -7,6 +7,7 @@ file must never log or return the resolved secret value.
 from __future__ import annotations
 
 import json
+import os
 import re
 import traceback
 from dataclasses import dataclass
@@ -18,6 +19,44 @@ from core.contracts.control_plane import ProviderConfigContract
 from runtime import configure_utf8_runtime
 
 from .secret_resolver import env_setup_hint, resolve_secret_alias
+from .wire_logger import attach_wire_logger_to_genai_client, get_wire_logger_from_env
+
+
+# Default HTTP timeout (seconds) applied to the google-genai SDK's internal
+# httpx client. 180s comfortably covers gemma-4 large-batch latency observed
+# in live probes (16–25s per single request) while still bounding stalls.
+_DEFAULT_GENAI_TIMEOUT_SECONDS = 180.0
+_MIN_GENAI_TIMEOUT_SECONDS = 5.0
+# Bound output tokens to prevent gemma "thinking" models from running until the
+# raw HTTP response stalls. 16384 comfortably covers 12-record JSON batches.
+_DEFAULT_GENAI_MAX_OUTPUT_TOKENS = 16384
+_MIN_GENAI_MAX_OUTPUT_TOKENS = 256
+
+
+def _resolve_genai_timeout_seconds() -> float:
+    raw = os.environ.get("WALLETSAVIOR_GENAI_TIMEOUT_SECONDS", "").strip()
+    if not raw:
+        return _DEFAULT_GENAI_TIMEOUT_SECONDS
+    try:
+        value = float(raw)
+    except ValueError:
+        return _DEFAULT_GENAI_TIMEOUT_SECONDS
+    if value < _MIN_GENAI_TIMEOUT_SECONDS:
+        return _MIN_GENAI_TIMEOUT_SECONDS
+    return value
+
+
+def _resolve_genai_max_output_tokens() -> int:
+    raw = os.environ.get("WALLETSAVIOR_GENAI_MAX_OUTPUT_TOKENS", "").strip()
+    if not raw:
+        return _DEFAULT_GENAI_MAX_OUTPUT_TOKENS
+    try:
+        value = int(raw)
+    except ValueError:
+        return _DEFAULT_GENAI_MAX_OUTPUT_TOKENS
+    if value < _MIN_GENAI_MAX_OUTPUT_TOKENS:
+        return _MIN_GENAI_MAX_OUTPUT_TOKENS
+    return value
 
 
 class ProviderConfigurationError(ValueError):
@@ -92,13 +131,9 @@ _NOT_FOUND_ERROR_MARKERS = (
 _STATIC_GOOGLE_MODEL_NAMES = (
     ("gemini-2.5-flash", "Gemini 2.5 Flash"),
     ("gemini-2.5-flash-lite", "Gemini 2.5 Flash Lite"),
-    ("gemini-3.1-flash-lite-preview", "Gemini 3.1 Flash Lite Preview"),
+    ("gemini-3.1-flash-lite", "Gemini 3.1 Flash Lite"),
     ("gemini-3.1-pro-preview", "Gemini 3.1 Pro Preview"),
     ("gemini-3-flash-preview", "Gemini 3 Flash Preview"),
-    ("gemini-2.0-flash", "Gemini 2.0 Flash"),
-    ("gemini-2.0-flash-lite", "Gemini 2.0 Flash Lite"),
-    ("gemini-1.5-flash", "Gemini 1.5 Flash"),
-    ("gemini-1.5-pro", "Gemini 1.5 Pro"),
     ("gemma-4-31b-it", "Gemma 4 31B IT"),
     ("gemma-4-26b-a4b-it", "Gemma 4 26B A4B IT"),
 )
@@ -281,11 +316,34 @@ class GoogleGenAIProvider:
         if self._client is None:
             try:
                 from google import genai
+                from google.genai import types as _genai_types
             except ImportError as exc:
                 raise ProviderConfigurationError(
                     "google-genai package is not installed"
                 ) from exc
-            self._client = genai.Client(api_key=self._api_key())
+            # Hardening: the google-genai SDK (>=1.0) leaves its internal httpx
+            # client with no read timeout by default. When the upstream API
+            # returns a non-2xx response or stalls mid-stream, the next retry
+            # blocks indefinitely on ssl.recv. We surface those as bounded
+            # timeouts so callers (ingest, oneshot rehearsal) can react.
+            # Operators can override via WALLETSAVIOR_GENAI_TIMEOUT_SECONDS.
+            timeout_seconds = _resolve_genai_timeout_seconds()
+            http_options = _genai_types.HttpOptions(
+                timeout=int(timeout_seconds * 1000)
+            )
+            self._client = genai.Client(
+                api_key=self._api_key(),
+                http_options=http_options,
+            )
+            # Inject wire-level HTTP interceptor if env var is set.
+            wire_logger = get_wire_logger_from_env()
+            if wire_logger is not None:
+                attached = attach_wire_logger_to_genai_client(self._client, wire_logger)
+                if not attached:
+                    import logging as _logging
+                    _logging.getLogger("walletsavior.wire_logger").warning(
+                        "[WIRE] Wire logger could not be attached to genai client"
+                    )
         return self._client
 
     def validate_config(self) -> None:
@@ -295,6 +353,18 @@ class GoogleGenAIProvider:
             raise ProviderConfigurationError("GoogleGenAIProvider requires gemini kind")
         if not self.config.default_model:
             raise ProviderConfigurationError("default_model is required")
+
+    def _build_fallback_config(self) -> dict[str, Any]:
+        """Fallback config used by the no-json-mode retry paths.
+
+        Mirrors :pyattr:`config_kwargs` minus response_mime_type/schema so we
+        keep the bounded max-output-tokens hardening even when the SDK rejected
+        JSON mode on the first attempt.
+        """
+        return {
+            "temperature": 0.1,
+            "max_output_tokens": _resolve_genai_max_output_tokens(),
+        }
 
     def call(self, *, prompt: str, schema: dict[str, Any] | None = None) -> dict[str, Any]:
         """Call Google GenAI once and parse a JSON object response."""
@@ -308,7 +378,10 @@ class GoogleGenAIProvider:
                 "google-genai package is not installed"
             ) from exc
 
-        config_kwargs: dict[str, Any] = {"temperature": 0.1}
+        config_kwargs: dict[str, Any] = {
+            "temperature": 0.1,
+            "max_output_tokens": _resolve_genai_max_output_tokens(),
+        }
         use_json_mode = model_supports_json_mode(
             self.config.provider_kind, self.config.default_model
         )
@@ -341,7 +414,7 @@ class GoogleGenAIProvider:
                 response = client.models.generate_content(
                     model=self.config.default_model,
                     contents=_sdk_transport_safe_text(_json_only_prompt(prompt)),
-                    config=types.GenerateContentConfig(temperature=0.1),
+                    config=types.GenerateContentConfig(**self._build_fallback_config()),
                 )
             except Exception as retry_exc:
                 message = _sanitize_provider_error(str(retry_exc))
@@ -361,7 +434,7 @@ class GoogleGenAIProvider:
                     response = client.models.generate_content(
                         model=self.config.default_model,
                         contents=_sdk_transport_safe_text(_json_only_prompt(prompt)),
-                        config=types.GenerateContentConfig(temperature=0.1),
+                        config=types.GenerateContentConfig(**self._build_fallback_config()),
                     )
                     parsed = _extract_json_object(getattr(response, "text", "") or "")
                 except Exception as fallback_exc:

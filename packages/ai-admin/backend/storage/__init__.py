@@ -13,6 +13,7 @@ from .database import (
 )
 from .models import Base
 from .repositories import (
+    BrandAliasEvidenceRepository,
     FieldProposalRepository,
     JobQueueSqlRepository,
     KeywordProposalRepository,
@@ -32,6 +33,7 @@ __all__ = [
     "create_database",
     "get_default_database",
     "reset_default_database",
+    "BrandAliasEvidenceRepository",
     "FieldProposalRepository",
     "JobQueueSqlRepository",
     "KeywordProposalRepository",

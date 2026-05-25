@@ -26,7 +26,9 @@ if _proj in sys.path:
     sys.path.remove(_proj)
 
 # DB_BACKEND first so storage.models resolves to db-admin, not proj/
+# ROOT 추가: tools.xxx import 경로 해결 (tools/ 패키지는 루트 하위)
 for p in [
+    str(ROOT),
     str(DB_BACKEND),
     str(WEBSITE_BACKEND),
     str(CRAWLER_BACKEND),

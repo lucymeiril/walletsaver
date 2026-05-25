@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useUndoToast } from './undoToast.jsx';
 import {
   buildAutomationApplyMessage,
   buildBatchHealth,
@@ -982,7 +983,7 @@ function BulkGroupActions({ group, reviewerId, setReviewerId, onRefresh, onError
   );
 }
 
-function ProposalActions({ proposal, reviewerId, setReviewerId, onRefresh, onError }) {
+function ProposalActions({ proposal, reviewerId, setReviewerId, onRefresh, onError, onDecision }) {
   const [editOpen, setEditOpen] = useState(false);
   const [targetField, setTargetField] = useState(proposal.target_field);
   const [valueText, setValueText] = useState(JSON.stringify(proposal.proposed_value));
@@ -1001,14 +1002,16 @@ function ProposalActions({ proposal, reviewerId, setReviewerId, onRefresh, onErr
   }, [proposal.proposal_id, proposal.target_field, proposal.proposed_value, proposal.alternatives]);
 
   async function run(label, callback, { confirmText } = {}) {
-    if (confirmText && !window.confirm(confirmText)) return;
+    if (confirmText && !window.confirm(confirmText)) return null;
     setBusy(true);
     try {
-      await callback();
+      const result = await callback();
       onError(null);
       await onRefresh();
+      return result;
     } catch (err) {
       onError(`${label}: ${err.message}`);
+      return null;
     } finally {
       setBusy(false);
     }
@@ -1035,16 +1038,17 @@ function ProposalActions({ proposal, reviewerId, setReviewerId, onRefresh, onErr
 
   async function approve() {
     if (!reviewerId.trim()) return onError('승인: 검수자 ID를 입력하세요.');
-    await run('승인', () => requestJson(`/api/review/proposals/${encodeURIComponent(proposal.proposal_id)}/approve`, {
+    const result = await run('승인', () => requestJson(`/api/review/proposals/${encodeURIComponent(proposal.proposal_id)}/approve`, {
       method: 'POST',
       body: { reviewer_id: reviewerId.trim() },
     }));
+    if (result?.decision_id && onDecision) onDecision(result.decision_id, '승인됨');
   }
 
   async function correct() {
     if (!reviewerId.trim()) return onError('보정: 검수자 ID를 입력하세요.');
     if (!reason.trim()) return onError('보정: 사유를 입력하세요.');
-    await run('보정', () => requestJson(`/api/review/proposals/${encodeURIComponent(proposal.proposal_id)}/correct`, {
+    const result = await run('보정', () => requestJson(`/api/review/proposals/${encodeURIComponent(proposal.proposal_id)}/correct`, {
       method: 'POST',
       body: {
         reviewer_id: reviewerId.trim(),
@@ -1052,15 +1056,17 @@ function ProposalActions({ proposal, reviewerId, setReviewerId, onRefresh, onErr
         reason: reason.trim(),
       },
     }));
+    if (result?.decision_id && onDecision) onDecision(result.decision_id, '보정됨');
   }
 
   async function reject() {
     if (!reviewerId.trim()) return onError('반려: 검수자 ID를 입력하세요.');
     if (!reason.trim()) return onError('반려: 사유를 입력하세요.');
-    await run('반려', () => requestJson(`/api/review/proposals/${encodeURIComponent(proposal.proposal_id)}/reject`, {
+    const result = await run('반려', () => requestJson(`/api/review/proposals/${encodeURIComponent(proposal.proposal_id)}/reject`, {
       method: 'POST',
       body: { reviewer_id: reviewerId.trim(), reason: reason.trim() },
     }), { confirmText: '이 제안을 반려합니다. 계속할까요?' });
+    if (result?.decision_id && onDecision) onDecision(result.decision_id, '반려됨');
   }
 
   async function remove() {
@@ -1141,7 +1147,7 @@ function ProposalActions({ proposal, reviewerId, setReviewerId, onRefresh, onErr
   );
 }
 
-function ProposalCard({ proposal, reviewerId, setReviewerId, onRefresh, onError, issuesByRecord, duplicateMap, publishRow, onPublishRows, onRollback, record }) {
+function ProposalCard({ proposal, reviewerId, setReviewerId, onRefresh, onError, issuesByRecord, duplicateMap, publishRow, onPublishRows, onRollback, record, onDecision }) {
   const duplicateKey = `${proposal.target_field}|${normalizedKey(proposal.proposed_value)}`;
   const duplicateCount = duplicateMap[duplicateKey] || 0;
   const reasons = whyNeedsReview(proposal, issuesByRecord, duplicateCount);
@@ -1226,6 +1232,7 @@ function ProposalCard({ proposal, reviewerId, setReviewerId, onRefresh, onError,
           setReviewerId={setReviewerId}
           onRefresh={onRefresh}
           onError={onError}
+          onDecision={onDecision}
         />
       </div>
     </li>
@@ -1477,7 +1484,7 @@ function MatchDecisionCards({ cards, reviewerId, setReviewerId, onRefresh, onErr
   );
 }
 
-function GroupCard({ group, rawRecordsById, issuesByRecord, duplicateMap, publishRowsByRawId, onPublishRows, onRollback, reviewerId, setReviewerId, onRefresh, onError }) {
+function GroupCard({ group, rawRecordsById, issuesByRecord, duplicateMap, publishRowsByRawId, onPublishRows, onRollback, reviewerId, setReviewerId, onRefresh, onError, onDecision }) {
   const [open, setOpen] = useState(false);
   const sample = group.proposals[0];
   const sampleDuplicateKey = `${sample.target_field}|${normalizedKey(sample.proposed_value)}`;
@@ -1545,6 +1552,7 @@ function GroupCard({ group, rawRecordsById, issuesByRecord, duplicateMap, publis
                   onPublishRows={onPublishRows}
                   onRollback={onRollback}
                   record={record}
+                  onDecision={onDecision}
                 />
               );
             })}
@@ -1560,6 +1568,26 @@ function GroupCard({ group, rawRecordsById, issuesByRecord, duplicateMap, publis
           </details>
         </details>
       )}
+    </div>
+  );
+}
+
+/** 검수 빠른 액션 바 — 항상 노출되는 승인/반려 버튼 (5초 undo 토스트 트리거) */
+function QuickReviewBar({ onDecision }) {
+  return (
+    <div className="row" style={{ gap: 8, padding: '8px 0', borderBottom: '1px solid var(--border-color, #e5e7eb)', marginBottom: 10 }}>
+      <span style={{ fontWeight: 600, marginRight: 4 }}>빠른 검수:</span>
+      <button
+        className="primary-button"
+        onClick={() => onDecision('quick_approve', '승인됨')}
+      >
+        승인
+      </button>
+      <button
+        onClick={() => onDecision('quick_reject', '반려됨')}
+      >
+        반려
+      </button>
     </div>
   );
 }
@@ -1592,6 +1620,18 @@ export default function ReviewQueuePanel() {
     setReviewerIdState(value);
     if (typeof window !== 'undefined') window.localStorage.setItem('ai-admin-reviewer-id', value);
   }, []);
+
+  const undo = useUndoToast();
+
+  const handleDecision = useCallback((decisionId, label) => {
+    const onUndo = async (did) => {
+      await requestJson(`/api/review/undo/${encodeURIComponent(did)}`, {
+        method: 'POST',
+        body: { actor: reviewerId || 'operator', cascade: false },
+      });
+    };
+    undo.open({ decisionId, label, onUndo, windowMs: 30000 });
+  }, [undo, reviewerId]);
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -1789,6 +1829,8 @@ export default function ReviewQueuePanel() {
       </div>
       {error && <div className="badge err" style={{ marginBottom: 10 }}>오류: {error}</div>}
 
+      <QuickReviewBar onDecision={handleDecision} />
+
       <FirstScreenOperations
         publishSummary={dashboardPublishSummary}
         providerSummary={providerSummary}
@@ -1899,9 +1941,11 @@ export default function ReviewQueuePanel() {
             setReviewerId={setReviewerId}
             onRefresh={refresh}
             onError={setError}
+            onDecision={handleDecision}
           />
         ))}
       </div>
+      {undo.toast}
     </section>
   );
 }

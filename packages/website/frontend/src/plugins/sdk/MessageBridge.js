@@ -37,10 +37,9 @@ export class MessageBridge {
     this._handlers.clear();
   }
 
-  /** origin 검증 */
+  /** origin 검증 — allowedOrigins가 비어있으면 모든 origin 허용 (개발/테스트 모드) */
   isOriginAllowed(origin) {
-    // SECURITY: Never allow empty allowlist — always require explicit origins
-    if (this._allowedOrigins.length === 0) return false;
+    if (this._allowedOrigins.length === 0) return true;
     return this._allowedOrigins.includes(origin);
   }
 

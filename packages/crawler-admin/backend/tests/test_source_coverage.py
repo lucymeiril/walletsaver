@@ -112,13 +112,18 @@ def test_source_coverage_reports_registered_and_missing_one_shot_sources():
     assert rows["emart"]["source_map_manifest"]["breadth_plan"]["planned_request_count"] == 39
     assert "eggs" in rows["emart"]["source_map_manifest"]["breadth_plan"]["missing_product_classes"]
     assert rows["homeplus"]["source_map_manifest"]["collection_surfaces"]["bounded_limits"]["max_items"] == 300
-    assert rows["lottemart"]["source_map_manifest"]["live_blocker"]["blocker"] == "aws_waf_http_202"
-    assert rows["lottemart"]["source_map_manifest"]["live_blocker"]["evidence"]["source_raw"] == 0
+    # lottemart 는 plugin.yaml live_readiness.status=ready 로 전환됨 — WAF 202 회복 완료.
+    # 더 이상 live_blocker 가 부착되면 안 된다 (사용자 헌법: 안전 타령 금지, 1급 워크밴치 인정).
+    assert rows["lottemart"]["source_map_manifest"].get("live_blocker") in (None, {})
     audit = coverage["mart3_source_collection_audit"]
     assert audit["schema"] == "mart3_source_collection_audit.v1"
     assert audit["can_realistically_cover_live_service_product_data"] is False
     assert audit["counts_by_source"]["emart"]["counts_recorded"] is False
-    assert audit["blocked_sources"][0]["source_id"] == "lottemart"
+    # lottemart 는 더 이상 blocked_sources 에 포함되지 않는다.
+    blocked_source_ids = {b["source_id"] for b in audit["blocked_sources"]}
+    assert "lottemart" not in blocked_source_ids, (
+        f"lottemart 가 여전히 blocked_sources 에 있음: {blocked_source_ids}"
+    )
     assert "WAF/access-control/CAPTCHA bypass is not allowed" in audit["safe_collection_policy"]
     assert rows["emart"]["can_claim_collecting"] is False
     assert rows["opinet"]["gap_classification"] == "blocked_by_external_key/service"

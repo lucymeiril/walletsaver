@@ -75,6 +75,7 @@ from services.review_automation import (
     build_automation_preview,
 )
 from services.seed_taxonomy import is_safe_seed_category, normalize_category_id
+from services.undo_window import open_undo_window, DEFAULT_UNDO_WINDOW_SECONDS
 
 router = APIRouter(prefix="/api/review", tags=["review"])
 
@@ -377,6 +378,277 @@ def update_proposal(
         updated = proposal.model_copy(update=update)
         repo.save(updated)
         return _proposal_payload(updated)
+
+
+class BulkArchiveFilters(BaseModel):
+    """제안 비우기 필터.
+
+    모든 필드는 선택. 빈 필터는 전체 ai_proposed/human_reviewing/rejected 를 의미.
+    위험 방지를 위해 published/approved/publishing 상태는 절대 archive 대상에서 제외한다.
+    """
+
+    statuses: Optional[list[str]] = None
+    proposal_types: Optional[list[str]] = None
+    source_names: Optional[list[str]] = None
+    target_fields: Optional[list[str]] = None
+    created_before: Optional[datetime] = None
+    created_after: Optional[datetime] = None
+
+
+class BulkArchiveRequest(BaseModel):
+    reviewer_id: str = Field(min_length=1, default="operator")
+    filters: BulkArchiveFilters = Field(default_factory=BulkArchiveFilters)
+    reason: Optional[str] = None
+    # rd4-bulk-archive-expand: 발행대기/승인됨/발행됨 도 비우고 싶다는 사용자 요구.
+    # 위험하므로 기본은 False, 명시적 opt-in 시에만 위험 상태 포함.
+    include_publishing: bool = False
+    include_approved: bool = False
+    include_published: bool = False
+
+
+_ARCHIVE_ELIGIBLE = {
+    PipelineStatus.AI_PROPOSED.value,
+    PipelineStatus.HUMAN_REVIEWING.value,
+    PipelineStatus.REJECTED.value,
+    PipelineStatus.HELD.value,
+    PipelineStatus.NEEDS_REWORK.value,
+    PipelineStatus.SUPERSEDED.value,
+    PipelineStatus.DEAD_LETTER.value,
+}
+
+_ARCHIVE_DANGER_STATUS = {
+    "include_publishing": PipelineStatus.PUBLISHING.value if hasattr(PipelineStatus, "PUBLISHING") else "publishing",
+    "include_approved": PipelineStatus.APPROVED.value if hasattr(PipelineStatus, "APPROVED") else "approved",
+    "include_published": PipelineStatus.PUBLISHED.value if hasattr(PipelineStatus, "PUBLISHED") else "published",
+}
+
+_BULK_ARCHIVE_UNDO_WINDOW_SECONDS = 30
+
+
+def _purge_expired_undo_tokens(session=None) -> None:
+    """만료된 active 토큰을 status='expired' 로 전이.
+
+    DB 영속 저장. 호출자 세션이 있으면 그 세션을 사용한다.
+    """
+    from storage.models import BulkArchiveAuditRow
+    from sqlalchemy import update as _update
+
+    now = datetime.now()
+
+    def _do(s):
+        s.execute(
+            _update(BulkArchiveAuditRow)
+            .where(BulkArchiveAuditRow.status == "active")
+            .where(BulkArchiveAuditRow.expires_at < now)
+            .values(status="expired")
+        )
+
+    if session is not None:
+        _do(session)
+
+
+def _match_archive_filters(
+    session,
+    filters: BulkArchiveFilters,
+    *,
+    include_publishing: bool = False,
+    include_approved: bool = False,
+    include_published: bool = False,
+) -> list[FieldProposalContract]:
+    from storage.models import FieldProposal as FPRow, RawCrawlRecord as RCRow
+    from sqlalchemy import select as _sel
+
+    eligible = set(_ARCHIVE_ELIGIBLE)
+    if include_publishing:
+        eligible.add(PipelineStatus.PUBLISHING.value)
+    if include_approved:
+        eligible.add(PipelineStatus.APPROVED.value)
+    if include_published:
+        eligible.add(PipelineStatus.PUBLISHED.value)
+
+    stmt = _sel(FPRow).where(FPRow.status.in_(eligible))
+    if filters.statuses:
+        stmt = stmt.where(FPRow.status.in_(list(filters.statuses)))
+    if filters.proposal_types:
+        stmt = stmt.where(FPRow.proposal_type.in_(list(filters.proposal_types)))
+    if filters.target_fields:
+        stmt = stmt.where(FPRow.target_field.in_(list(filters.target_fields)))
+    if filters.created_before:
+        stmt = stmt.where(FPRow.created_at < filters.created_before)
+    if filters.created_after:
+        stmt = stmt.where(FPRow.created_at >= filters.created_after)
+    rows = list(session.execute(stmt).scalars().all())
+
+    if filters.source_names:
+        names = set(filters.source_names)
+        raw_ids = [r.provenance.get("raw_record_id") for r in rows if isinstance(r.provenance, dict)]
+        raw_ids = [r for r in raw_ids if r]
+        if not raw_ids:
+            return []
+        raw_rows = session.execute(
+            _sel(RCRow.raw_record_id, RCRow.source_name).where(RCRow.raw_record_id.in_(raw_ids))
+        ).all()
+        keep = {rid for rid, sn in raw_rows if sn in names}
+        rows = [r for r in rows if isinstance(r.provenance, dict) and r.provenance.get("raw_record_id") in keep]
+
+    return [_proposal_to_contract_row(r) for r in rows]
+
+
+def _proposal_to_contract_row(row) -> FieldProposalContract:
+    return FieldProposalContract(
+        proposal_id=row.proposal_id,
+        proposal_type=ProposalType(row.proposal_type),
+        target_field=row.target_field,
+        proposed_value=row.proposed_value,
+        status=PipelineStatus(row.status),
+        provenance=FieldProvenance.model_validate(row.provenance),
+        alternatives=list(row.alternatives or []),
+        created_at=row.created_at,
+    )
+
+
+@router.post("/proposals/bulk-archive/preview")
+def bulk_archive_preview(
+    payload: BulkArchiveRequest,
+    db: Database = Depends(get_db),
+) -> dict[str, Any]:
+    """비우기 미리보기. 영향받는 건수와 샘플(최대 5)을 돌려준다."""
+    with db.session_scope() as session:
+        _purge_expired_undo_tokens(session)
+        matched = _match_archive_filters(
+            session,
+            payload.filters,
+            include_publishing=payload.include_publishing,
+            include_approved=payload.include_approved,
+            include_published=payload.include_published,
+        )
+        sample = [_proposal_payload(p) for p in matched[:5]]
+        by_status: dict[str, int] = {}
+        by_type: dict[str, int] = {}
+        for p in matched:
+            by_status[p.status.value] = by_status.get(p.status.value, 0) + 1
+            by_type[p.proposal_type.value] = by_type.get(p.proposal_type.value, 0) + 1
+        return {
+            "matched": len(matched),
+            "sample": sample,
+            "by_status": by_status,
+            "by_type": by_type,
+        }
+
+
+@router.post("/proposals/bulk-archive")
+def bulk_archive(
+    payload: BulkArchiveRequest,
+    db: Database = Depends(get_db),
+) -> dict[str, Any]:
+    """필터 일치 제안을 일괄 archive(삭제)하고 30초 undo 토큰을 발급한다.
+
+    감사 + undo 토큰은 `bulk_archive_audit` 테이블에 영속화되므로 서버 재기동
+    시에도 30초 윈도 내라면 undo 가능.
+    """
+    import logging as _logging
+    import uuid as _uuid
+    from datetime import timedelta as _td
+    from storage.models import BulkArchiveAuditRow
+
+    with db.session_scope() as session:
+        _purge_expired_undo_tokens(session)
+        matched = _match_archive_filters(
+            session,
+            payload.filters,
+            include_publishing=payload.include_publishing,
+            include_approved=payload.include_approved,
+            include_published=payload.include_published,
+        )
+        if not matched:
+            return {"archived": 0, "undo_token": None, "expires_at": None}
+
+        repo = FieldProposalRepository(session)
+        snapshots: list[dict[str, Any]] = []
+        for p in matched:
+            snapshots.append(p.model_dump(mode="json"))
+            repo.delete(p.proposal_id)
+
+        token = _uuid.uuid4().hex
+        now = datetime.now()
+        expires_at = now + _td(seconds=_BULK_ARCHIVE_UNDO_WINDOW_SECONDS)
+        session.add(BulkArchiveAuditRow(
+            token=token,
+            reviewer_id=payload.reviewer_id,
+            reason=payload.reason,
+            snapshots=snapshots,
+            archived_count=len(snapshots),
+            status="active",
+            archived_at=now,
+            expires_at=expires_at,
+        ))
+        _logging.getLogger("ai-admin").info(
+            "bulk_archive reviewer=%s count=%d reason=%s token=%s",
+            payload.reviewer_id, len(snapshots), payload.reason, token,
+        )
+        return {
+            "archived": len(snapshots),
+            "undo_token": token,
+            "expires_at": expires_at.isoformat(),
+            "by_status": {
+                s: sum(1 for d in snapshots if d.get("status") == s)
+                for s in {d.get("status") for d in snapshots if d.get("status")}
+            },
+        }
+
+
+@router.post("/proposals/bulk-archive/undo")
+def bulk_archive_undo(
+    payload: dict[str, Any],
+    db: Database = Depends(get_db),
+) -> dict[str, Any]:
+    """undo 토큰으로 직전 archive를 복원. 30초 지나면 410을 반환한다.
+
+    multi-worker 환경에서 동일 토큰의 동시 undo가 정확히 1번만 성공하도록
+    원자적 CAS (`UPDATE ... WHERE token=? AND status='active'`) 의 rowcount==1
+    인 worker만 실제 복원을 수행한다. 나머지는 410 으로 거절한다.
+    """
+    import logging as _logging
+    from sqlalchemy import update as _update, select as _sel
+    from storage.models import BulkArchiveAuditRow
+
+    token = (payload or {}).get("undo_token")
+    if not token:
+        raise HTTPException(status_code=400, detail="undo_token required")
+
+    now = datetime.now()
+    with db.session_scope() as session:
+        # 만료된 active 토큰을 먼저 expired로 전이 (이 트랜잭션 내에서)
+        _purge_expired_undo_tokens(session)
+
+        # ── 원자적 CAS: active → undone ──
+        # SQLite/Postgres 모두에서 단일 UPDATE 문은 행 단위로 직렬화되므로,
+        # 동시 호출 중 단 1개의 트랜잭션만 rowcount==1 을 받는다.
+        result = session.execute(
+            _update(BulkArchiveAuditRow)
+            .where(BulkArchiveAuditRow.token == token)
+            .where(BulkArchiveAuditRow.status == "active")
+            .where(BulkArchiveAuditRow.expires_at >= now)
+            .values(status="undone", undone_at=now,
+                    undone_by=(payload or {}).get("reviewer_id"))
+        )
+        if (result.rowcount or 0) != 1:
+            raise HTTPException(status_code=410, detail="undo window expired")
+
+        row = session.execute(
+            _sel(BulkArchiveAuditRow).where(BulkArchiveAuditRow.token == token)
+        ).scalar_one()
+        repo = FieldProposalRepository(session)
+        restored = 0
+        for dump in (row.snapshots or []):
+            contract = FieldProposalContract.model_validate(dump)
+            repo.save(contract)
+            restored += 1
+        _logging.getLogger("ai-admin").info(
+            "bulk_archive_undo reviewer=%s count=%d token=%s",
+            row.reviewer_id, restored, token,
+        )
+        return {"restored": restored}
 
 
 @router.delete("/proposals/{proposal_id}")
@@ -1164,6 +1436,7 @@ def approve(
             raise HTTPException(status_code=404, detail=str(exc)) from exc
         except ValueError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
+        open_undo_window(session, decision.decision_id, window_seconds=DEFAULT_UNDO_WINDOW_SECONDS)
         return decision.model_dump(mode="json")
 
 
@@ -1606,6 +1879,7 @@ def correct(
             raise HTTPException(status_code=404, detail=str(exc)) from exc
         except ValueError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
+        open_undo_window(session, decision.decision_id, window_seconds=DEFAULT_UNDO_WINDOW_SECONDS)
         return decision.model_dump(mode="json")
 
 
@@ -1626,4 +1900,5 @@ def reject(
             raise HTTPException(status_code=404, detail=str(exc)) from exc
         except ValueError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
+        open_undo_window(session, decision.decision_id, window_seconds=DEFAULT_UNDO_WINDOW_SECONDS)
         return decision.model_dump(mode="json")

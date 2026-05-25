@@ -291,7 +291,8 @@ class TestBuildRawBatch:
         assert all(len(records) <= MAX_AI_BATCH_ITEMS for records in record_batches)
 
     def test_build_raw_batches_splits_by_prompt_chars_with_korean_records(self):
-        long_name = "오리온 오징어 땅콩 " + ("고소한맛" * 80)
+        # 한도 상향(8000자) 반영 — 1 record 당 ~800자 × 12 = 9600자 로 강제 분할 트리거.
+        long_name = "오리온 오징어 땅콩 " + ("고소한맛" * 200)
         items = [
             {"name": long_name, "sale_price": "1,980원", "product_id": f"sku-{i}"}
             for i in range(12)
@@ -308,7 +309,12 @@ class TestBuildRawBatch:
             assert len(records) <= MAX_AI_BATCH_ITEMS
             assert sum(len(r.prompt_text()) for r in records) <= MAX_AI_BATCH_PROMPT_CHARS
 
-    def test_split_rejects_long_single_record_clearly(self):
+    def test_split_isolates_long_single_record_into_solo_batch(self):
+        """rd3-422-fix: 단일 record 가 prompt 한도를 넘어도 422 거절 금지.
+
+        ai-admin 의 _truncate_record_to_fit 가 solo batch 를 받아 segment-aware
+        처리 + oversized_truncations 응답으로 운영자에게 보고한다.
+        """
         rec = to_raw_record(
             {"title": "가" * (MAX_AI_BATCH_PROMPT_CHARS + 10), "id": "too-long"},
             source_name="emart",
@@ -316,8 +322,9 @@ class TestBuildRawBatch:
             batch_id="raw-long",
         )
         assert rec is not None
-        with pytest.raises(RawExportError, match="record emart:too-long prompt text"):
-            split_raw_records_for_ai([rec])
+        batches = split_raw_records_for_ai([rec])
+        assert len(batches) == 1
+        assert batches[0] == [rec]
 
     def test_forward_posts_ai_ingest_contract_in_safe_batches(self):
         calls = []

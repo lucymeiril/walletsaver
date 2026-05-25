@@ -2,11 +2,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { fetchMe, logout } from '../api/client'
 import type { AuthUser } from '../types'
+import { useMode } from '../context/ModeContext'
 
 export default function NavBar() {
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loaded, setLoaded] = useState(false)
   const nav = useNavigate()
+  const { mode, toggle } = useMode()
 
   useEffect(() => {
     fetchMe().then((u) => {
@@ -45,6 +47,25 @@ export default function NavBar() {
       <Link to="/board/hotdeal" style={linkStyle}>핫딜</Link>
       <Link to="/board/free" style={linkStyle}>자유</Link>
       <span style={{ flex: 1 }} />
+      {/* web-FINAL §6: 초심자/핫딜러 모드 토글. localStorage 저장 → 상품 상세/카드 밀도 분기. */}
+      <button
+        type="button"
+        onClick={toggle}
+        data-testid="mode-toggle"
+        data-mode={mode}
+        aria-pressed={mode === 'pro'}
+        aria-label={mode === 'pro' ? '핫딜러 모드 켜짐' : '핫딜러 모드 꺼짐'}
+        style={{
+          ...linkStyle,
+          background: mode === 'pro' ? '#fef3c7' : 'transparent',
+          color: mode === 'pro' ? '#92400e' : '#6b7280',
+          border: '1px solid ' + (mode === 'pro' ? '#fcd34d' : '#d1d5db'),
+          cursor: 'pointer',
+          fontWeight: 600,
+        }}
+      >
+        ⚙ 핫딜러 {mode === 'pro' ? 'ON' : 'OFF'}
+      </button>
       {loaded && !user && (
         <>
           <Link to="/login" style={linkStyle}>로그인</Link>

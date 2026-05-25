@@ -14,13 +14,25 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
+import os
 import socket
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any, Callable, Iterable, Optional
 from urllib.parse import urlparse
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
+
+# rd3-pipe-silent-gap-fix: 크롤러→ai-admin 브릿지에서 silent drop을 감시한다.
+# 기존에는 forward()가 HTTP 200만 받으면 성공으로 간주했고, ai-admin이 records_stored 를
+# 적게 반환해도 호출자가 알 길이 없어서 코스트코 OCC 995×3건이 0건으로 흡수됐다.
+# - WALLETSAVIOR_CRAWL_FORWARD_WIRE_LOG_PATH 가 설정되면 forward 호출마다 JSONL 한 줄을 기록한다.
+# - records_sent vs records_stored 가 다르면 RawExportError("ai_admin_silent_drop") 으로 즉시 차단한다.
+# 다음 AI가 이 모듈을 리팩토링할 때 이 두 가드가 사라지면 silent gap 회귀가 발생한다.
+_logger = logging.getLogger(__name__)
+_FORWARD_WIRE_LOG_ENV = "WALLETSAVIOR_CRAWL_FORWARD_WIRE_LOG_PATH"
 
 from core.contracts import (
     MAX_AI_BATCH_ITEMS,
@@ -63,7 +75,15 @@ _RECORD_KEY_KEYS: tuple[str, ...] = (
 
 
 class RawExportError(ValueError):
-    """배치 한도 위반 등 raw export 단계의 안전한 예외."""
+    """배치 한도 위반 등 raw export 단계의 안전한 예외.
+
+    rd4-422-fix: kind 속성으로 timeout / connection / validation / silent_drop 등을 구분해
+    라우터가 4xx vs 5xx 매핑을 정확히 할 수 있게 한다. 기본은 'validation' (=4xx).
+    """
+
+    def __init__(self, message: str, *, kind: str = "validation") -> None:
+        super().__init__(message)
+        self.kind = kind
 
 
 HttpPost = Callable[[str, dict[str, Any], dict[str, str], float], tuple[int, dict[str, Any]]]
@@ -275,7 +295,19 @@ def _enforce_batch_limits(records: list[RawCrawlRecord]) -> None:
 
 
 def split_raw_records_for_ai(records: list[RawCrawlRecord]) -> list[list[RawCrawlRecord]]:
-    """RawCrawlRecord를 AI ingest 호출 한도(30개/2000자)에 맞춰 record-safe 분할."""
+    """RawCrawlRecord를 AI ingest 호출 한도(30개/8000자)에 맞춰 record-safe 분할.
+
+    단일 record 가 prompt 한도를 초과하면 ``RawExportError`` 를 발생시키지 않고
+    **solo batch 로 격리** 하여 ai-admin 으로 전달한다. ai-admin 의
+    ``split_records_for_ai`` / ``_truncate_record_to_fit`` 가 이 경우를 다루며
+    ``oversized_truncations`` 메타데이터를 응답에 포함한다.
+
+    배경: 이전 구현은 2000자 한도에 한 글자라도 넘으면 422 로 전체 배치를 거절했고,
+    사용자 라이브 화면에 ``ai_ingest_oversized_record_truncated`` 폭주 + 422 가
+    동시에 발생했다 (한도 자체가 너무 작았고 거절 정책이 운영자 떠넘김이었음).
+    한도를 8000자로 올리는 변경(MAX_AI_BATCH_PROMPT_CHARS) 과 함께, 그래도 넘는
+    예외 record 는 명확한 단일 batch 로 격리 + 구조화 메타 전달로 처리한다.
+    """
     batches: list[list[RawCrawlRecord]] = []
     current: list[RawCrawlRecord] = []
     current_chars = 0
@@ -283,10 +315,24 @@ def split_raw_records_for_ai(records: list[RawCrawlRecord]) -> list[list[RawCraw
     for record in records:
         record_chars = len(record.prompt_text())
         if record_chars > MAX_AI_BATCH_PROMPT_CHARS:
-            raise RawExportError(
-                f"record {record.raw_record_id} prompt text is {record_chars} chars; "
-                f"max is {MAX_AI_BATCH_PROMPT_CHARS}"
+            # Solo-batch isolation: flush current and send oversized record alone.
+            # ai-admin 가 segment-aware truncation + oversized_truncations 응답으로
+            # 운영자에게 명시적으로 보고한다. 운영자 떠넘김 금지.
+            _logger.warning(
+                "raw_export_single_record_exceeds_prompt_budget",
+                extra={
+                    "raw_record_id": record.raw_record_id,
+                    "record_chars": record_chars,
+                    "prompt_char_limit": MAX_AI_BATCH_PROMPT_CHARS,
+                    "action": "solo_batch_isolation",
+                },
             )
+            if current:
+                batches.append(current)
+                current = []
+                current_chars = 0
+            batches.append([record])
+            continue
 
         would_exceed = (
             len(current) >= MAX_AI_BATCH_ITEMS
@@ -431,8 +477,16 @@ def _post_json(
         except json.JSONDecodeError:
             data = {"detail": response_body}
         return exc.code, data
-    except (URLError, TimeoutError, socket.timeout, OSError) as exc:
-        raise RawExportError(f"failed to call ai-admin ingest endpoint: {exc}") from exc
+    except (TimeoutError, socket.timeout) as exc:
+        raise RawExportError(
+            f"failed to call ai-admin ingest endpoint: timed out after {timeout_seconds:.0f}s",
+            kind="timeout",
+        ) from exc
+    except (URLError, OSError) as exc:
+        raise RawExportError(
+            f"failed to call ai-admin ingest endpoint: {exc}",
+            kind="connection",
+        ) from exc
 
 
 def _get_json(
@@ -456,8 +510,16 @@ def _get_json(
         except json.JSONDecodeError:
             data = {"detail": response_body}
         return exc.code, data
-    except (URLError, TimeoutError, socket.timeout, OSError) as exc:
-        raise RawExportError(f"failed to call ai-admin providers endpoint: {exc}") from exc
+    except (TimeoutError, socket.timeout) as exc:
+        raise RawExportError(
+            f"failed to call ai-admin providers endpoint: timed out after {timeout_seconds:.0f}s",
+            kind="timeout",
+        ) from exc
+    except (URLError, OSError) as exc:
+        raise RawExportError(
+            f"failed to call ai-admin providers endpoint: {exc}",
+            kind="connection",
+        ) from exc
 
 
 def _format_ai_admin_error(data: dict[str, Any]) -> str:
@@ -527,6 +589,33 @@ def fetch_ai_admin_providers(
     return data
 
 
+def _write_forward_wire_log(entry: dict[str, Any]) -> Optional[str]:
+    """forward 호출 결과를 JSONL 한 줄로 기록(env-gated). 실패해도 호출은 막지 않는다."""
+    path = os.environ.get(_FORWARD_WIRE_LOG_ENV)
+    if not path:
+        return None
+    try:
+        log_path = Path(path)
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        with log_path.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(entry, ensure_ascii=False, default=str) + "\n")
+        return str(log_path)
+    except OSError as exc:
+        _logger.warning("forward wire log write failed: %s", exc)
+        return None
+
+
+def _accepted_count_from_response(data: dict[str, Any]) -> Optional[int]:
+    """ai-admin 응답에서 raw_crawl_records 에 실제 적재된 행 수를 추출."""
+    if not isinstance(data, dict):
+        return None
+    for key in ("records_stored", "records_saved", "raw_records_stored"):
+        v = data.get(key)
+        if isinstance(v, int):
+            return v
+    return None
+
+
 def forward_raw_records_to_ai_admin(
     items: list[dict[str, Any]],
     *,
@@ -579,6 +668,8 @@ def forward_raw_records_to_ai_admin(
     endpoint = _ai_admin_endpoint(ai_admin_base_url, "/api/ingest/raw-records/label")
 
     responses: list[dict[str, Any]] = []
+    accepted_total = 0
+    per_batch_drops: list[dict[str, Any]] = []
     for batch, records in zip(batches, record_batches):
         payload = {
             "provider_id": provider_id,
@@ -594,12 +685,70 @@ def forward_raw_records_to_ai_admin(
                 f"ai-admin ingest failed for {batch.batch_id}: "
                 f"status={status_code}, detail={detail}"
             )
+        # rd3-pipe-silent-gap-fix: 200 OK여도 records_stored 가 expected보다 적으면 silent drop.
+        accepted = _accepted_count_from_response(data)
+        expected = len(records)
+        if accepted is not None and accepted < expected:
+            per_batch_drops.append(
+                {
+                    "batch_id": batch.batch_id,
+                    "expected": expected,
+                    "accepted": accepted,
+                    "drop": expected - accepted,
+                }
+            )
+        accepted_total += accepted if accepted is not None else expected
         responses.append({"raw_export_batch_id": batch.batch_id, **data})
 
-    return {
+    expected_total = sum(len(r) for r in record_batches)
+    drop_total = max(0, expected_total - accepted_total)
+    # rd3-422-fix: ai-admin 가 반환한 oversized_truncations 를 응답 + wire-log 에 누적.
+    oversized_truncations_total: list[dict[str, Any]] = []
+    for resp in responses:
+        trunc = resp.get("oversized_truncations") or []
+        if isinstance(trunc, list):
+            oversized_truncations_total.extend(trunc)
+    result = {
         "batches_sent": len(record_batches),
-        "records_sent": sum(len(records) for records in record_batches),
+        "records_sent": expected_total,
+        "records_accepted": accepted_total,
+        "drop_count": drop_total,
+        "per_batch_drops": per_batch_drops,
         "skipped_count": skipped,
         "invalid_rows": invalid_rows,
+        "oversized_truncations": oversized_truncations_total,
+        "oversized_truncations_count": len(oversized_truncations_total),
         "responses": responses,
     }
+    wire_log_path = _write_forward_wire_log(
+        {
+            "ts": datetime.now(timezone.utc).isoformat(),
+            "source_name": source_name,
+            "crawler_name": crawler_name,
+            "schema_type": schema_type,
+            "ai_admin_base_url": ai_admin_base_url,
+            "provider_id": provider_id,
+            "root_batch_id": root_batch_id,
+            "items_in": len(items),
+            "skipped": skipped,
+            "records_sent": expected_total,
+            "records_accepted": accepted_total,
+            "drop_count": drop_total,
+            "per_batch_drops": per_batch_drops,
+            "oversized_truncations_count": len(oversized_truncations_total),
+            "oversized_truncations": oversized_truncations_total,
+            "status": "drop" if drop_total > 0 else ("truncated" if oversized_truncations_total else "ok"),
+        }
+    )
+    if wire_log_path:
+        result["wire_log_path"] = wire_log_path
+
+    if drop_total > 0:
+        # 명시적으로 차단: JobsPanel/wire_log 알람이 빨간색으로 표시되도록 RawExportError 로 끌어올린다.
+        raise RawExportError(
+            "ai_admin_silent_drop: "
+            f"source={source_name} sent={expected_total} accepted={accepted_total} "
+            f"drop={drop_total} per_batch={per_batch_drops}"
+        )
+
+    return result

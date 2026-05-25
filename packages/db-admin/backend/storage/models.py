@@ -12,14 +12,14 @@
     PostgreSQL (운영) — 네이티브 JSON, 인덱스 최적화
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from sqlalchemy import (
     String, Integer, Float, Boolean, Text, DateTime, ForeignKey,
-    Index, UniqueConstraint, JSON, Enum as SAEnum,
+    Index, UniqueConstraint, CheckConstraint, JSON, Enum as SAEnum,
 )
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, validates
 
 import enum
 
@@ -742,6 +742,33 @@ class NormalizedOfferWeekLink(Base):
 
 
 # ═══════════════════════════════════════════════
+# 주간 diff — 사라진 SKU alert
+# ═══════════════════════════════════════════════
+
+class AlertDisappearedSku(Base):
+    """사라진 SKU alert — 매주 diff 실행 시 이전 주에 있다가 당주 크롤에서 빠진 SKU 기록."""
+    __tablename__ = "alert_disappeared_skus"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    mart: Mapped[str] = mapped_column(String(120), nullable=False)
+    source_record_key: Mapped[str] = mapped_column(String(255), nullable=False)
+    last_seen_title: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    last_seen_price: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    last_captured_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    detected_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
+    resolved_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+
+    __table_args__ = (
+        # 동일 mart+key 조합이 open 상태로 중복 삽입되지 않도록 partial unique
+        # (SQLite UniqueConstraint는 resolved_at IS NULL 필터를 지원하지 않으므로
+        #  애플리케이션 레벨에서 중복을 방지하고 인덱스만 생성)
+        Index("ix_alert_sku_mart_key", "mart", "source_record_key"),
+        Index("ix_alert_sku_detected", "detected_at"),
+        Index("ix_alert_sku_resolved", "resolved_at"),
+    )
+
+
+# ═══════════════════════════════════════════════
 # 대기열 (Pending Ingestion)
 # ═══════════════════════════════════════════════
 
@@ -981,3 +1008,248 @@ class UserActivity(Base):
     __table_args__ = (
         Index("ix_activity_user_type_date", "user_id", "activity_type", "created_at"),
     )
+
+
+# ═══════════════════════════════════════════════
+# 정부 농축산물 도매가 앵커 (KAMIS 생산경로 금지 — 별도 공공데이터 출처)
+# 출처: 서울시 공공데이터포털 농수산물 도매시장 시세 (GARAK_WHOLESALE 등)
+# ═══════════════════════════════════════════════
+
+class GovWholesaleSource(str, enum.Enum):
+    """정부 공인 도매가 출처 — KAMIS 생산경로는 포함하지 않음."""
+    GARAK_WHOLESALE = "GARAK_WHOLESALE"   # 서울 가락시장 (서울시 공공데이터포털 OA-1170)
+    GANGSEO_WHOLESALE = "GANGSEO_WHOLESALE"  # 서울 강서시장
+    SEOUL_WHOLESALE = "SEOUL_WHOLESALE"   # 서울시 농수산물 도매시장 통합
+    MAFRA_WHOLESALE = "MAFRA_WHOLESALE"   # 농림축산식품부 직접 제공 도매가
+
+
+class GovWholesalePrice(Base):
+    """정부 제공 농축산물 도매가 앵커.
+
+    상한/하한/핫딜 가격 산정의 기준선으로 사용한다.
+    KAMIS(aT 소매가 지수)는 생산 경로에서 금지되어 있으므로
+    이 테이블은 반드시 서울시·농림부 등 별도 공공데이터 출처만 적재한다.
+    """
+    __tablename__ = "gov_wholesale_prices"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+
+    # 품목 정보 (정부 분류 그대로)
+    product_name: Mapped[str] = mapped_column(String(100), nullable=False)
+    category_code: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+
+    # 도매시장 정보
+    wholesale_market: Mapped[str] = mapped_column(String(100), nullable=False)
+    source: Mapped[GovWholesaleSource] = mapped_column(SAEnum(GovWholesaleSource), nullable=False)
+    api_dataset_code: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+
+    # 가격 (원/단위)
+    unit: Mapped[str] = mapped_column(String(30), nullable=False)
+    avg_price: Mapped[float] = mapped_column(Float, nullable=False)
+    min_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    max_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+
+    # 가격 앵커 계산 (avg_price 기준 %)
+    upper_bound_rate: Mapped[float] = mapped_column(Float, default=1.30)  # 상한: 도매가 130%
+    lower_bound_rate: Mapped[float] = mapped_column(Float, default=0.70)  # 하한: 도매가 70%
+    hotdeal_rate: Mapped[float] = mapped_column(Float, default=0.85)       # 핫딜: 도매가 85% 이하
+
+    # 날짜
+    recorded_date: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    fetched_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    __table_args__ = (
+        Index("ix_gov_wholesale_product_date", "product_name", "recorded_date"),
+        Index("ix_gov_wholesale_source", "source"),
+        Index("ix_gov_wholesale_market", "wholesale_market"),
+    )
+
+    @property
+    def upper_bound(self) -> float:
+        return round(self.avg_price * self.upper_bound_rate, 0)
+
+    @property
+    def lower_bound(self) -> float:
+        return round(self.avg_price * self.lower_bound_rate, 0)
+
+    @property
+    def hotdeal_threshold(self) -> float:
+        return round(self.avg_price * self.hotdeal_rate, 0)
+
+
+# ═══════════════════════════════════════════════
+# 마트 상품 매칭 (multi-mart product match)
+# ═══════════════════════════════════════════════
+
+class ProductMatch(Base):
+    """동일 상품의 마트별 매칭 테이블.
+
+    한 canonical product_id 를 이마트/홈플러스/롯데마트 등
+    N개 마트의 실제 상품 ID에 매핑한다.
+    같은 product_id 가 여러 마트에 매칭될 수 있으나,
+    (product_id, mart_name) 쌍은 유일해야 한다.
+    """
+    __tablename__ = "product_matches"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
+    mart_name: Mapped[str] = mapped_column(String(50), nullable=False)  # 이마트 | 홈플러스 | 롯데마트 | 코스트코
+    mart_product_id: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
+    mart_product_name: Mapped[Optional[str]] = mapped_column(String(300), nullable=True)
+    mart_unit: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    confidence: Mapped[float] = mapped_column(Float, default=1.0)  # 매칭 신뢰도 0~1
+    match_method: Mapped[str] = mapped_column(String(30), default="manual")
+    # "manual" | "auto" | "ai_suggested" | "corrected"
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    product: Mapped["Product"] = relationship(
+        "Product",
+        backref="product_matches",
+        passive_deletes=True,
+    )
+
+    __table_args__ = (
+        UniqueConstraint("product_id", "mart_name", name="uq_product_mart"),
+        Index("ix_product_match_product", "product_id"),
+        Index("ix_product_match_mart", "mart_name"),
+        Index("ix_product_match_active", "is_active"),
+    )
+
+
+# ═══════════════════════════════════════════════
+# 매칭 테이블 (Matching Entries)
+# 새 크롤 파이프라인: crawler raw → matching_table hit → DB 직행
+# miss인 경우만 외부 LLM 분류 후 import. DB가 단일 진실 소스.
+# ═══════════════════════════════════════════════
+
+# source 허용 리터럴 — CHECK constraint 및 @validates가 공유하는 단일 진실 집합.
+# 이 집합을 줄이거나 변경하면 기존 데이터와 호환성이 깨지므로 마이그레이션이 필요하다.
+_MATCHING_ENTRY_VALID_SOURCES = frozenset({"crawler-auto", "human", "external-ai"})
+
+
+class MatchingEntry(Base):
+    """크롤러 raw 상품 → canonical_product_id 매칭 룩업 테이블.
+
+    왜 필요한가:
+        AI live pipeline 대신 사전 구축된 매칭 테이블로 전환.
+        크롤러가 raw 상품을 정규화(brand|name_core|pack_qty|pack_unit)한 후
+        match_key로 이 테이블을 조회하면 hit 시 canonical_product_id를 바로 얻는다.
+        miss인 경우만 외부 LLM 분류 파이프라인에 보내고, 결과를 이 테이블에 재적재한다.
+
+    match_key:
+        brand|name_core|pack_qty|pack_unit을 파이프 구분자로 연결한 정규화 문자열.
+        예: "CJ|햇반|210.000000|g"
+        UNIQUE constraint — 같은 정규화 결과가 두 번 등록되지 않도록 DB 레벨에서 보장.
+
+    confidence:
+        [0.0, 1.0] 범위 FLOAT. CHECK constraint를 절대 제거하지 말 것.
+        0~1 범위 외 값은 매칭 알고리즘 버그 또는 외부 AI 오류 신호이므로 DB에서 차단해야 한다.
+
+    source:
+        'crawler-auto' | 'human' | 'external-ai' 세 가지만 허용.
+        CHECK constraint + @validates 이중 방어. constraint를 제거하면
+        외부 import 시 잘못된 문자열이 DB에 조용히 들어올 수 있다.
+
+    category_id:
+        categories.id FK (String(100) — Category PK가 문자열임에 주의).
+        태스크 명세에 "INT NULL"로 기술되어 있으나 실제 categories.id는 String(100)이므로
+        올바른 FK 참조를 위해 String(100)으로 정의한다.
+
+    keyword_ids:
+        JSON list[int] — 관련 키워드 ID 목록. 빈 리스트([])도 유효값이다.
+
+    last_used_at:
+        pipeline이 hit할 때마다 갱신. hit_count와 함께 매칭 품질 모니터링에 사용.
+    """
+    __tablename__ = "matching_entries"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+
+    # match_key: brand|name_core|pack_qty|pack_unit 정규화 결과
+    # UNIQUE — 동일 정규화 결과를 두 번 등록하면 IntegrityError
+    match_key: Mapped[str] = mapped_column(Text, unique=True, nullable=False)
+
+    # 디버깅용 분해 필드 — match_key를 파싱하지 않고 DB에서 바로 확인 가능
+    brand: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
+    name_core: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    pack_qty: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    pack_unit: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+
+    # canonical_product_id: CanonicalProduct.id soft 참조 (nullable).
+    # 현재는 FK 제약 없음 — canonical_products 테이블이 CanonicalBase 소속이라
+    # 같은 metadata가 아니므로 DDL FK로 강화하려면 별도 마이그레이션 필요.
+    # null 허용: 외부 AI 분류 완료 전에는 canonical_id가 미정임.
+    canonical_product_id: Mapped[Optional[str]] = mapped_column(String(40), nullable=True)
+
+    # category_id: categories.id FK
+    # 주의: Category.id는 String(100) (예: "meat.pork.belly") — INT가 아님
+    category_id: Mapped[Optional[str]] = mapped_column(
+        String(100), ForeignKey("categories.id"), nullable=True
+    )
+
+    # keyword_ids: list[int] JSON. 빈 리스트([])도 정상값. NULL ≠ []이므로 구분 필요.
+    keyword_ids: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
+
+    # confidence: 매칭 신뢰도 [0.0, 1.0].
+    # CHECK constraint 절대 제거 금지 — 범위 위반은 알고리즘 버그 신호.
+    confidence: Mapped[float] = mapped_column(Float, nullable=False, default=1.0)
+
+    # source: 매칭 출처. 허용값 = _MATCHING_ENTRY_VALID_SOURCES.
+    # CHECK constraint 절대 제거 금지 — 외부 LLM import 시 오타 차단이 목적.
+    source: Mapped[str] = mapped_column(String(20), nullable=False)
+
+    # 타임스탬프 (UTC timezone-aware)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
+    # last_used_at: pipeline hit 시마다 갱신. NULL = 아직 한 번도 사용 안 됨.
+    last_used_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+
+    # hit_count: 매칭 성공 횟수 — 품질 모니터링 및 miss 임계치 판단에 활용
+    hit_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
+    # notes: 운영자 메모 (nullable)
+    notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    __table_args__ = (
+        # confidence 범위 CHECK — 절대 제거 금지 (위 docstring 참조)
+        CheckConstraint(
+            "confidence >= 0.0 AND confidence <= 1.0",
+            name="ck_matching_confidence_range",
+        ),
+        # source enum CHECK — 절대 제거 금지 (위 docstring 참조)
+        CheckConstraint(
+            "source IN ('crawler-auto', 'human', 'external-ai')",
+            name="ck_matching_source_enum",
+        ),
+        Index("ix_matching_category", "category_id"),
+        Index("ix_matching_source", "source"),
+    )
+
+    @validates("source")
+    def validate_source(self, key: str, value: str) -> str:
+        """Python ORM 레벨에서 source 값을 검증한다.
+
+        CHECK constraint가 DB 레벨을 방어하고,
+        이 validator가 Python 레벨을 방어한다 (이중 방어).
+        외부 AI import 스크립트가 잘못된 source 값을 넘길 경우
+        DB flush 이전에 ValueError를 발생시켜 빠른 실패를 보장한다.
+        """
+        if value not in _MATCHING_ENTRY_VALID_SOURCES:
+            raise ValueError(
+                f"MatchingEntry.source 허용값: {sorted(_MATCHING_ENTRY_VALID_SOURCES)}, "
+                f"받은 값: {value!r}"
+            )
+        return value

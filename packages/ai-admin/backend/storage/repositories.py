@@ -45,6 +45,7 @@ from core.contracts.ai_pipeline import AIWorkerRole, ProviderKind
 
 from .models import (
     AIJob,
+    BrandAliasEvidence,
     FieldProposal,
     KeywordProposal,
     LabelingRunLog,
@@ -1186,3 +1187,119 @@ def _run_log_to_dict(row: LabelingRunLog) -> dict:
         "ai_call_rate": round(ai_call_rate, 1),
         "by_mart": row.by_mart or {},
     }
+
+# --------------------------------------------------------------------------------------
+# BrandAliasEvidence  (p1-ai-admin-evidence-schema)
+# --------------------------------------------------------------------------------------
+
+
+class BrandAliasEvidenceRepository:
+    """brand_alias_evidence 테이블 CRUD."""
+
+    def __init__(self, session: Session) -> None:
+        self.session = session
+
+    def upsert(
+        self,
+        *,
+        brand_alias: str,
+        canonical_brand: str,
+        source_batch_id: str,
+        evidence_score: float = 0.0,
+    ) -> dict:
+        """brand_alias + canonical_brand 쌍을 upsert.
+
+        이미 존재하면 trigger_count 증가 + source_batch_ids 업데이트.
+        새 레코드면 status='suggested' 로 삽입.
+        """
+        import uuid
+        from datetime import datetime as _dt
+
+        stmt = select(BrandAliasEvidence).where(
+            BrandAliasEvidence.brand_alias == brand_alias,
+            BrandAliasEvidence.canonical_brand == canonical_brand,
+        )
+        row = self.session.execute(stmt).scalar_one_or_none()
+        now = _dt.now()
+        if row is None:
+            row = BrandAliasEvidence(
+                evidence_id=str(uuid.uuid4()),
+                brand_alias=brand_alias,
+                canonical_brand=canonical_brand,
+                status="suggested",
+                source_batch_ids=[source_batch_id],
+                evidence_score=evidence_score,
+                trigger_count=1,
+                created_at=now,
+                updated_at=now,
+            )
+            self.session.add(row)
+        else:
+            batch_ids: list = list(row.source_batch_ids or [])
+            if source_batch_id not in batch_ids:
+                batch_ids.append(source_batch_id)
+            row.source_batch_ids = batch_ids
+            row.trigger_count = (row.trigger_count or 0) + 1
+            row.evidence_score = max(row.evidence_score or 0.0, evidence_score)
+            row.updated_at = now
+        self.session.flush()
+        return {
+            "evidence_id": row.evidence_id,
+            "brand_alias": row.brand_alias,
+            "canonical_brand": row.canonical_brand,
+            "status": row.status,
+            "trigger_count": row.trigger_count,
+            "evidence_score": row.evidence_score,
+        }
+
+    def list_suggested(self, *, min_score: float = 0.0) -> list[dict]:
+        stmt = (
+            select(BrandAliasEvidence)
+            .where(
+                BrandAliasEvidence.status == "suggested",
+                BrandAliasEvidence.evidence_score >= min_score,
+            )
+            .order_by(BrandAliasEvidence.evidence_score.desc())
+        )
+        rows = self.session.execute(stmt).scalars().all()
+        return [self._to_dict(r) for r in rows]
+
+    def approve(self, evidence_id: str, *, approved_by: str) -> Optional[dict]:
+        from datetime import datetime as _dt
+        row = self.session.get(BrandAliasEvidence, evidence_id)
+        if row is None:
+            return None
+        row.status = "approved"
+        row.approved_by = approved_by
+        row.approved_at = _dt.now()
+        row.updated_at = _dt.now()
+        self.session.flush()
+        return self._to_dict(row)
+
+    def reject(self, evidence_id: str, *, reason: str = "") -> Optional[dict]:
+        from datetime import datetime as _dt
+        row = self.session.get(BrandAliasEvidence, evidence_id)
+        if row is None:
+            return None
+        row.status = "rejected"
+        row.rejected_reason = reason
+        row.updated_at = _dt.now()
+        self.session.flush()
+        return self._to_dict(row)
+
+    @staticmethod
+    def _to_dict(row: BrandAliasEvidence) -> dict:
+        return {
+            "evidence_id": row.evidence_id,
+            "brand_alias": row.brand_alias,
+            "canonical_brand": row.canonical_brand,
+            "status": row.status,
+            "source_batch_ids": row.source_batch_ids,
+            "evidence_score": row.evidence_score,
+            "trigger_count": row.trigger_count,
+            "approved_by": row.approved_by,
+            "approved_at": row.approved_at.isoformat() if row.approved_at else None,
+            "rejected_reason": row.rejected_reason,
+            "created_at": row.created_at.isoformat() if row.created_at else None,
+            "updated_at": row.updated_at.isoformat() if row.updated_at else None,
+        }

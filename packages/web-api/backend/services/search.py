@@ -83,6 +83,7 @@ def search_products(
     page: int,
     page_size: int,
     sort: str,
+    include_pending: bool = False,
 ) -> dict:
     """Search products with optional text query and category filter."""
     products = repo.all_products()
@@ -175,7 +176,34 @@ def search_products(
             "sufficient": g.sufficient if g else False,
             "grade_label": grade_label,
             "marts": [a.mart for a in aliases.get(p.id, [])],
+            "status": "published",
         })
+
+    # 미분류 pending 항목 추가
+    if include_pending:
+        pending_raws = repo.pending_raw_records()
+        for raw in pending_raws:
+            items.append({
+                "canonical_id": f"pending_raw_{raw['id']}",
+                "name_core": raw["raw_title"],
+                "brand": None,
+                "pack_quantity": None,
+                "pack_unit": None,
+                "category_id": None,
+                "image_url": None,
+                "p10": None,
+                "p25": None,
+                "p50": None,
+                "p75": None,
+                "sufficient": False,
+                "grade_label": "INSUFFICIENT_DATA",
+                "marts": [raw["mart"]] if raw.get("mart") else [],
+                "status": "pending_classification",
+                "pending_raw_id": raw["id"],
+                "price": raw.get("raw_price"),
+                "captured_at": raw.get("captured_at"),
+            })
+        total = len(items)
 
     return {
         "total": total,

@@ -107,6 +107,23 @@ def _plan_blockers(row: dict[str, Any], fixture_snapshot: dict[str, Any]) -> lis
     if fixture_snapshot.get("status") == "missing":
         blockers.append("fixture_snapshot_missing")
 
+    # crawler-FINAL §6-C 3단 데이터 품질 게이트 + §5-D 영구등록 검토 큐의 일관성을 위해,
+    # quality_evidence 없이 registered_unverified 상태로 머무는 소스는 명시 차단 사유를 남긴다.
+    collection_status = row.get("collection_status")
+    quality_evidence = row.get("quality_evidence") or {}
+    if (
+        collection_status == "registered_unverified"
+        and fixture_snapshot.get("status") == "missing"
+        and not quality_evidence.get("has_quality_evidence")
+    ):
+        blockers.append("current_collection_status:registered_unverified")
+
+    # marketplace 그룹은 별도 게이트 (쿠팡/아카라이브 등 — 라이브 보류) — FINAL §2-2.
+    if row.get("group") == "marketplace":
+        gate = row.get("live_readiness_gate") or {}
+        gate_reason = "bounded_diagnostics_required" if not gate.get("passed") else "operator_approval_required"
+        blockers.append(f"marketplace_gate:{gate_reason}")
+
     return blockers
 
 

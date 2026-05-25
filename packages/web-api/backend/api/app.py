@@ -12,6 +12,7 @@ from api.routes import (
     boards,
     moderation,
     fuels,
+    feedback,
 )
 
 
@@ -37,6 +38,7 @@ def create_app() -> FastAPI:
     app.include_router(boards.router, prefix="/api/v1")
     app.include_router(moderation.router, prefix="/api/v1")
     app.include_router(fuels.router, prefix="/api/v1")
+    app.include_router(feedback.router, prefix="/api/v1")
 
     return app
 

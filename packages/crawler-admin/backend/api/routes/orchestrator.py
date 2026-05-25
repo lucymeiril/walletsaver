@@ -194,3 +194,25 @@ async def retry_run_endpoint(run_id: str):
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc))
     return {"run_id": new_run_id, "retried_from": run_id}
+
+
+@router.post("/runs/retry-last-failed/{plugin_name}", status_code=202)
+async def retry_last_failed_endpoint(plugin_name: str):
+    """플러그인(=크롤러)의 마지막 실패 run을 1-click 재시도.
+
+    Crawlers 페이지의 카드 우하단 퀵버튼에서 호출. 마지막 실행이 실패가 아닐 경우 404.
+    실패 run을 찾으면 기존 retry_run 경로를 그대로 재사용해 멱등성/감사 기록 동작 유지.
+    """
+    _ensure_plugins_registered()
+    page = orch.get_run_store().list_runs(plugin_name=plugin_name, status="failed", page=1, page_size=1)
+    items = page.get("items", [])
+    if not items:
+        raise HTTPException(status_code=404, detail=f"{plugin_name}의 최근 실패 run을 찾을 수 없습니다.")
+    failed_run_id = items[0].get("run_id") or items[0].get("id")
+    if not failed_run_id:
+        raise HTTPException(status_code=500, detail="실패 run의 ID를 확인할 수 없습니다.")
+    try:
+        new_run_id = orch.retry_run(failed_run_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc))
+    return {"run_id": new_run_id, "retried_from": failed_run_id, "plugin_name": plugin_name}

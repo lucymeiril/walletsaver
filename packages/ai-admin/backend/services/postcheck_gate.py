@@ -210,6 +210,8 @@ class PostcheckGate:
         sibling_provider: (canonical_id: str) -> list[str]
             해당 canonical_id로 묶인 다른 마트 항목의 현재 category_node_id 목록.
             첫 데이터이면 빈 리스트 반환.
+        confidence_min: Gate 2의 신뢰도 하한선. 기본값은 CONFIDENCE_MIN(0.7).
+            ThresholdCalibration DB에서 읽은 값으로 재정의 가능.
     """
 
     def __init__(
@@ -217,12 +219,35 @@ class PostcheckGate:
         category_tree: dict,
         price_stats_provider: Callable[[str], list[int]],
         sibling_provider: Callable[[str], list[str]],
+        confidence_min: float = CONFIDENCE_MIN,
     ) -> None:
         self._category_tree = category_tree
         self._valid_ids: set[str] = _build_id_set(category_tree)
         self._parent_map: dict[str, Optional[str]] = _build_parent_map(category_tree)
         self._price_stats_provider = price_stats_provider
         self._sibling_provider = sibling_provider
+        self._confidence_min = confidence_min
+
+    @classmethod
+    def create_with_thresholds(
+        cls,
+        session,
+        category_tree: dict,
+        price_stats_provider: Callable[[str], list[int]],
+        sibling_provider: Callable[[str], list[str]],
+    ) -> "PostcheckGate":
+        """Factory that reads `confidence_min` from ThresholdCalibration DB.
+
+        Falls back to CONFIDENCE_MIN if no calibrated value exists.
+        """
+        from services.threshold_calibrator import get_active_threshold, DEFAULT_CONFIDENCE_MIN
+        confidence_min = get_active_threshold(session, "confidence_min", DEFAULT_CONFIDENCE_MIN)
+        return cls(
+            category_tree,
+            price_stats_provider,
+            sibling_provider,
+            confidence_min=confidence_min,
+        )
 
     # ── 개별 게이트 ───────────────────────────────────────────────────────
 
@@ -261,8 +286,8 @@ class PostcheckGate:
         diag["vague_penalty"] = penalty
         diag["confidence_adjusted"] = adjusted
 
-        if adjusted < CONFIDENCE_MIN:
-            if vague_count > 0 and raw_conf >= CONFIDENCE_MIN:
+        if adjusted < self._confidence_min:
+            if vague_count > 0 and raw_conf >= self._confidence_min:
                 return adjusted, "GATE_VAGUE_REASONING"
             return adjusted, "GATE_LOW_CONFIDENCE"
         return adjusted, None

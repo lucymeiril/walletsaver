@@ -1,40 +1,100 @@
 name: costco
 display_name: 코스트코
 category: mart
-version: 0.1.0
-description: 코스트코 코리아 공개 스토어프런트(Angular SSR) 카탈로그 수집. 비회원 GET으로도 상품·정가·이미지·단위가가 노출되며, 일부 카드의 회원 전용 가격만 운영자 워크밴치 캡처가 보충한다.
-live_ready: false
+version: 0.6.0
+schema_version: 2
+description: 코스트코 코리아 본 사이트(costco.co.kr) 전용 수집기. v0.6.0 — SAP Hybris OCC REST 직접 호출 (워크밴치 1회 cookie/CSRF). crawler-FINAL §2-1 라이브 995×3 검증.
+live_ready: true
 parser_contract: costco_storefront_li_product_list_item.v1
+
+# crawler-FINAL §3-B capability schema v2 — OccRestApi 엔진 매핑.
+capabilities:
+  transport: [xhr, html]
+  render: [none]
+  pagination: [page_param]
+  extraction: [jsonpath, css]
+  session: [cookie_jar]
+  anti_blocker: [ua_rotation, sleep]
+
+# v2 surface 별 source_map (FINAL §3-B). 구 코드는 아래 legacy source_map dict 사용.
+source_map_v2:
+  - id: occ_special_price_pc
+    surface: pc_web
+    url_template: "https://www.costco.co.kr/Special-Price-Offers/c/SpecialPriceOffers?currentPage={page}"
+    parser_inputs: [occ_rest_response, li.product-list-item]
+    selectors:
+      card: "li.product-list-item"
+      name: "a.thumb[title]"
+      sale_price: ".product-price-amount"
+
+output:
+  model: DiscountItem
+  minimum_rows: 900
+  required_fields: [name, sale_price, detail_url]
+  field_coverage_thresholds: { name: 0.95, sale_price: 0.90, detail_url: 0.85 }
+  diagnostic_evidence_fields: [source_raw, parsed, valid, detail_url, source_url, image_url, unit_price_text, is_member_only, category_hint]
+
+waf_strategy:
+  detect: [akamai_403, http_429]
+  escalation:
+    - { from: requests, to: playwright_headless, after_failures: 2, cooldown_sec: 300 }
+    - { from: playwright_headless, to: operator_workbench, after_failures: 2, cooldown_sec: 1800 }
+
 live_readiness:
-  status: source_collection_diagnostics_required
-  fixture_contract_status: pending
+  status: validated_2026_05_16
+  fixture_contract_status: confirmed
   bounded_diagnostics:
-    status: required_before_live_ready
+    status: completed
     run_limits:
-      max_requests: 3
-      max_pages: 1
+      max_requests: 38
+      max_pages: 8
       timeout_seconds: 20
   operator_approval:
-    status: required_before_live_ready
-notes: "코스트코는 회원제. 공개 특가 페이지는 크롤러가, 회원 전용 인벤토리는 운영자 워크밴치 캡처로 보충한다."
+    status: approved
+
+notes: "본 사이트 다중 경로 수집. 카테고리 15 + Special-Price-Offers 7페이지 + 검색 15 = 37 URL. 페이지 sleep 10초. OccRestApi 엔진 (FINAL §3-A). 코코달인은 별개 플러그인."
+
 target:
   url: https://www.costco.co.kr
   difficulty: 4
   strategy: requests
+
 schedule:
   cron: "0 8 * * *"
   retry_count: 3
   retry_delay: 300
-output:
-  model: DiscountItem
-  required_fields: [name, sale_price, detail_url]
-  diagnostic_evidence_fields: [source_raw, parsed, valid, detail_url, source_url, image_url, unit_price_text, is_member_only, category_hint]
+
+rate_limit:
+  per_domain_rps: 0.1
+  page_sleep_sec: 10
+  jitter_sec: [2, 8]
+
+# 구 source_map (dict 형) — crawler.py / source_coverage.py 가 직접 사용. 보존.
 source_map:
-  request_strategy: public_storefront_ssr_then_operator_workbench
+  request_strategy: costco_site_only_multipath
   public_endpoints:
     - https://www.costco.co.kr/Special-Price-Offers/c/SpecialPriceOffers
-    - https://www.costco.co.kr/events
-    - https://www.costco.co.kr/
+    - https://www.costco.co.kr/c/FoodandBeverage
+    - https://www.costco.co.kr/c/FreshFood
+    - https://www.costco.co.kr/c/FrozenRefrigerated
+    - https://www.costco.co.kr/c/HealthBeauty
+    - https://www.costco.co.kr/c/Electronics
+    - https://www.costco.co.kr/c/Furniture
+    - https://www.costco.co.kr/c/ClothingFootwear
+    - https://www.costco.co.kr/c/OutdoorSports
+    - https://www.costco.co.kr/c/KitchenDining
+    - https://www.costco.co.kr/c/PetSupplies
+    - https://www.costco.co.kr/c/BabyKids
+    - https://www.costco.co.kr/c/Office
+    - https://www.costco.co.kr/c/CleaningProducts
+    - https://www.costco.co.kr/c/Automotive
+  pagination:
+    pattern: "?currentPage={page}"
+    base: https://www.costco.co.kr/Special-Price-Offers/c/SpecialPriceOffers
+    max_pages: 8
+  search_keywords:
+    pattern: "/search?text={keyword}"
+    keywords: [우유, 계란, 휴지, 세제, 샴푸, 라면, 과자, 음료, 커피, 치즈, 고기, 생선, 과일, 채소, 빵]
   selectors:
     card: "li.product-list-item"
     name: "a.thumb[title]"
@@ -46,7 +106,8 @@ source_map:
     source: operator_workbench_capture
     workbench_route: /api/operator-browser
     note: 비회원 GET으로도 상품과 정가는 보이며, 회원 전용 가격만 캡처가 필요한 일부 카드에서 보충된다.
-  max_pages: 1
+  page_sleep_seconds: 10
+  max_pages: 8
   max_requests:
   max_items:
   dedupe_key: source_record_key_then_source_url

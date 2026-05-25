@@ -638,6 +638,10 @@ class TestSchemaIntegration:
             "normalized_canonical_products", "normalized_product_variants",
             "normalized_source_listings", "normalized_offer_events",
             "normalized_week_buckets", "normalized_offer_week_links",
+            # 아래 테이블은 models.py에 추가된 것들 — expected 목록에 포함
+            "product_matches",       # 마트별 상품 매칭 테이블
+            "gov_wholesale_prices",  # 정부 공인 도매가 앵커
+            "matching_entries",      # 크롤러 raw → canonical 매칭 룩업 테이블
         }
         assert expected == set(inspector_tables)
 

@@ -36,7 +36,7 @@ export default function Input({
             type="button"
             className={s.toggle}
             onClick={() => setShowPassword(!showPassword)}
-            aria-label="비밀번호 표시/숨기기"
+            aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
             tabIndex={0}
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}

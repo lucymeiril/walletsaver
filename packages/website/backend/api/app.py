@@ -136,7 +136,9 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
                 "db-admin", "backend"
             ))
             if db_admin_path not in sys.path:
-                sys.path.insert(0, db_admin_path)
+                # append (not insert) — prepending shadows website's own `services`
+                # package with db-admin's, breaking `from services.auth_service import ...`
+                sys.path.append(db_admin_path)
 
             from storage.db import DBStorage
 

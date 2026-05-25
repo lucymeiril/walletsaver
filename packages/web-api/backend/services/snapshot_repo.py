@@ -362,3 +362,37 @@ class SnapshotRepo:
         cur = conn.cursor()
         cur.execute("SELECT DISTINCT brand FROM fuel_station ORDER BY brand")
         return [r["brand"] for r in cur.fetchall()]
+
+    # ── 미분류 raw 레코드 ───────────────────────────────────────────────────────
+
+    def pending_raw_records(self) -> list[dict]:
+        """matching miss인 raw_crawl_record 목록을 반환한다.
+
+        raw_crawl_record 테이블이 없거나 비어 있으면 빈 리스트를 반환해
+        기존 스냅샷과 하위 호환성을 유지한다.
+
+        반환 항목 구조:
+            id, raw_title, raw_price (int|None), mart (str|None), captured_at (str|None)
+        """
+        conn = self._get_conn()
+        cur = conn.cursor()
+        # 테이블 존재 여부 먼저 확인
+        cur.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='raw_crawl_record'"
+        )
+        if cur.fetchone() is None:
+            return []
+        cur.execute(
+            "SELECT id, raw_title, raw_price, mart, captured_at "
+            "FROM raw_crawl_record ORDER BY captured_at DESC"
+        )
+        rows = []
+        for r in cur.fetchall():
+            rows.append({
+                "id": r["id"],
+                "raw_title": r["raw_title"],
+                "raw_price": r["raw_price"],
+                "mart": r["mart"],
+                "captured_at": r["captured_at"],
+            })
+        return rows

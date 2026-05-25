@@ -108,6 +108,7 @@ def create_app() -> FastAPI:
     from api.routes.source_workbench import router as source_workbench_router
     from api.routes.operator_browser import router as operator_browser_router
     from api.routes.orchestrator import router as orchestrator_router
+    from api.routes.weekly import router as weekly_router
 
     from fastapi import Depends
     from api.security.auth import verify_api_key
@@ -124,6 +125,7 @@ def create_app() -> FastAPI:
     app.include_router(source_workbench_router, dependencies=_auth)
     app.include_router(operator_browser_router, dependencies=_auth)
     app.include_router(orchestrator_router, dependencies=_auth)
+    app.include_router(weekly_router, dependencies=_auth)
 
     @app.on_event("startup")
     async def _register_plugins():

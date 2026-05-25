@@ -223,6 +223,126 @@ class ReviewDecisionRecord(Base):
     decided_at: Mapped[datetime] = mapped_column(
         DateTime, nullable=False, default=datetime.now
     )
+    # §4-E v5 undo window — operator can rollback within `undoable_until`.
+    # `downstream_application_count` rises every time this decision was reused as a
+    # learned alias / canonical match in a subsequent labeling run; once > 0 the undo
+    # turns into "cascade revert" mode (must explicitly cascade).
+    # `reused_in_run_ids` lists `LabelingRunLog.run_id` for the same purpose.
+    undoable_until: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    downstream_application_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    reused_in_run_ids: Mapped[list[str]] = mapped_column(JSON, nullable=False, default=list)
+    is_undone: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    undone_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    undone_by: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+
+
+class AliasAuditLog(Base):
+    """§4-B alias audit — every alias add / disable / re-enable / decay is logged.
+
+    The product-match store and `LearnedKnowledge` are auto-learning assets. Spec §14
+    forbids sealing them, so we log every change with provenance + recall path
+    (`recoverable_via_decision_id`) instead.
+    """
+
+    __tablename__ = "alias_audit_log"
+
+    audit_id: Mapped[str] = mapped_column(String(120), primary_key=True)
+    alias_kind: Mapped[str] = mapped_column(String(40), nullable=False, index=True)
+    # one of: keyword_alias, category_alias, product_match, learned_knowledge
+    alias_key: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
+    action: Mapped[str] = mapped_column(String(40), nullable=False, index=True)
+    # create, disable, re-enable, decay, recall, recover
+    before_value: Mapped[Any] = mapped_column(JSON, nullable=True)
+    after_value: Mapped[Any] = mapped_column(JSON, nullable=True)
+    actor: Mapped[str] = mapped_column(String(120), nullable=False, default="system")
+    reason: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    related_decision_id: Mapped[Optional[str]] = mapped_column(String(120), nullable=True, index=True)
+    related_match_id: Mapped[Optional[str]] = mapped_column(String(120), nullable=True, index=True)
+    related_knowledge_id: Mapped[Optional[str]] = mapped_column(String(120), nullable=True, index=True)
+    recoverable_via_decision_id: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=datetime.now, index=True
+    )
+
+
+class BulkArchiveAuditRow(Base):
+    """AI 제안 일괄 비우기(bulk-archive) 감사 + undo 토큰의 영속 저장소.
+
+    설계 목적:
+      * 운영자가 비운 제안의 스냅샷을 DB에 저장 (서버 재기동에도 30초 undo 유효).
+      * `status` 컬럼 + atomic `UPDATE ... WHERE status='active'` 로 multi-worker
+        race-free 단일 undo 보장 (CAS 패턴, rowcount==1 인 worker만 성공).
+      * 만료된 토큰은 일정 주기로 status='expired' 로 전이.
+    """
+
+    __tablename__ = "bulk_archive_audit"
+
+    token: Mapped[str] = mapped_column(String(64), primary_key=True)
+    reviewer_id: Mapped[str] = mapped_column(String(120), nullable=False, index=True)
+    reason: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    snapshots: Mapped[Any] = mapped_column(JSON, nullable=False, default=list)
+    archived_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    status: Mapped[str] = mapped_column(
+        String(20), nullable=False, default="active", index=True
+    )  # active | undone | expired
+    archived_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=datetime.now, index=True
+    )
+    expires_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, index=True)
+    undone_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    undone_by: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+
+
+class UserFeedback(Base):
+    """§9 — sourced from website / web-api 신고 (reports) endpoint.
+
+    Captured here as a bounded queue so the AI learning loop can consume it
+    (downvote-on-match, prompt-injection of past reports, etc.). Pure data ingest;
+    consumers decide what to do with it.
+    """
+
+    __tablename__ = "user_feedback"
+
+    feedback_id: Mapped[str] = mapped_column(String(120), primary_key=True)
+    kind: Mapped[str] = mapped_column(String(40), nullable=False, index=True)
+    # one of: bad_match, wrong_category, wrong_canonical, missing_keyword, other
+    raw_record_id: Mapped[Optional[str]] = mapped_column(String(120), nullable=True, index=True)
+    match_id: Mapped[Optional[str]] = mapped_column(String(120), nullable=True, index=True)
+    knowledge_id: Mapped[Optional[str]] = mapped_column(String(120), nullable=True, index=True)
+    category_id: Mapped[Optional[str]] = mapped_column(String(120), nullable=True, index=True)
+    reporter_id: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+    note: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    status: Mapped[str] = mapped_column(String(40), nullable=False, default="open", index=True)
+    # open → reviewed → applied / dismissed
+    handled_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    handled_by: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+    resolution: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=datetime.now, index=True
+    )
+
+
+class ThresholdCalibration(Base):
+    """§4-A 표본 본조건 — data-driven thresholds.
+
+    Every periodic calibration writes one row per `metric_name`. The newest row is
+    the active threshold; older rows stay for audit/regression.
+    """
+
+    __tablename__ = "threshold_calibration"
+
+    calibration_id: Mapped[str] = mapped_column(String(120), primary_key=True)
+    metric_name: Mapped[str] = mapped_column(String(120), nullable=False, index=True)
+    # e.g. confidence_min, learned_alias_min_sources, learned_alias_min_titles,
+    #      learned_alias_min_settled, vague_penalty_threshold
+    value: Mapped[float] = mapped_column(Float, nullable=False)
+    sample_size: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    method: Mapped[str] = mapped_column(String(64), nullable=False, default="percentile")
+    method_params: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False, default=dict)
+    notes: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=datetime.now, index=True
+    )
 
 
 class AIPublishRecord(Base):
@@ -336,3 +456,48 @@ class LabelingRunLog(Base):
     product_match_total_snapshot: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     learned_knowledge_total_snapshot: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     by_mart: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+
+
+# ══════════════════════════════════════════════════════
+# p1-ai-admin-evidence-schema — BrandAliasEvidence
+# ══════════════════════════════════════════════════════
+
+class BrandAliasEvidence(Base):
+    """AI가 제안한 brand_alias 근거(evidence) 적재 테이블.
+
+    AI가 RawCrawlRecord 배치를 처리하면서 동일 brand의 이표기(예: '풀무원' vs '풀무원식품')를
+    발견하면 이 테이블에 suggested 상태로 적재한다. 운영자가 approved/rejected로 전환한다.
+
+    source_batch_ids:
+        JSON array — 이 evidence를 생성한 RawCrawlBatch id 목록.
+        복수 배치에서 같은 alias가 반복 등장하면 count가 올라가 evidence_score가 높아진다.
+
+    evidence_score:
+        0.0~1.0 — 배치 내 등장 빈도 + AI 확신도를 혼합한 점수.
+        임계값(기본 0.6) 이상이면 operator 알림 대상.
+    """
+
+    __tablename__ = "brand_alias_evidence"
+
+    evidence_id: Mapped[str] = mapped_column(String(120), primary_key=True)
+    brand_alias: Mapped[str] = mapped_column(String(200), nullable=False, index=True)
+    canonical_brand: Mapped[str] = mapped_column(String(200), nullable=False, index=True)
+    status: Mapped[str] = mapped_column(
+        String(40), nullable=False, default="suggested", index=True
+    )
+    source_batch_ids: Mapped[list[Any]] = mapped_column(JSON, nullable=False, default=list)
+    evidence_score: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    trigger_count: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+    approved_by: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+    approved_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    rejected_reason: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=datetime.now
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, nullable=False, default=datetime.now
+    )
+
+    __table_args__ = (
+        UniqueConstraint("brand_alias", "canonical_brand", name="uq_brand_alias_evidence"),
+    )

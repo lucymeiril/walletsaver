@@ -384,11 +384,13 @@ def _source_map_manifest(
     bounded = (config.get("live_readiness") or {}).get("bounded_diagnostics") or {}
     blocker = None
     last_no_db = bounded.get("last_no_db_result")
-    if bounded.get("status") == "blocked" or last_no_db:
+    # status=ready 인 소스는 blocker 를 부여하지 않는다 (live escalation 으로 회복됨).
+    bounded_status = bounded.get("status")
+    if bounded_status == "blocked" or (last_no_db and bounded_status != "ready"):
         blocker = {
             "blocked": True,
             "blocker": (last_no_db or {}).get("blocker") or bounded.get("blocker") or "bounded_diagnostics_blocked",
-            "status": bounded.get("status"),
+            "status": bounded_status,
             "evidence": last_no_db,
             "safe_next_action": (
                 "Do not bypass WAF/access-control/CAPTCHA. Use saved-source replay, official/public feeds, "

@@ -317,4 +317,16 @@ export const api = {
   getRuns: (params = {}) => fetchWithTimeout(`${API_BASE}/v1/runs?${new URLSearchParams(params)}`).then(r => r.json()),
   getRunLogs: (runId) => fetchWithTimeout(`${API_BASE}/v1/runs/${runId}/logs`).then(r => r.json()),
   retryRun: (runId) => fetchWithTimeout(`${API_BASE}/v1/runs/${runId}/retry`, { method: 'POST' }).then(r => r.json()),
+  retryLastFailed: (pluginName) =>
+    fetchWithTimeout(`${API_BASE}/v1/runs/retry-last-failed/${encodeURIComponent(pluginName)}`, { method: 'POST' })
+      .then(async (r) => {
+        const text = await r.text();
+        const data = text ? JSON.parse(text) : {};
+        if (!r.ok) {
+          const err = new Error(data.detail || `재시도 실패 (status=${r.status})`);
+          err.status = r.status;
+          throw err;
+        }
+        return data;
+      }),
 };

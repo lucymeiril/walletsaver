@@ -197,6 +197,12 @@ export default function LivePipelinePanel({ onGoToReview, onGoToAdvanced }) {
         >
           {errInfo ? '문제' : nextStep.idx === 3 ? '정상' : `다음: ${STEP_TITLES[nextStep.idx] || '확인'}`}
         </span>
+        {/* 2026-05-25 보류: AI 라이브 파이프라인 비활성화 배지 */}
+        {nextStep.idx === 1 && (
+          <span className="badge deprecated" style={{ marginLeft: 6 }}>
+            🚧 보류 — 외부 분류 워크플로우 사용
+          </span>
+        )}
         <div>
           <strong>{nextStep.label}</strong>
           {enqueueState.msg && (
@@ -209,7 +215,7 @@ export default function LivePipelinePanel({ onGoToReview, onGoToAdvanced }) {
           type="button"
           className="primary-button"
           onClick={nextStep.go}
-          disabled={enqueueState.busy}
+          disabled={enqueueState.busy || nextStep.idx === 1}
           data-testid="next-action-button"
         >
           {enqueueState.busy ? '실행 중…' : nextStep.action}

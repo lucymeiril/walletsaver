@@ -77,6 +77,20 @@ class HomeplusCrawler(CrawlerContract):
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=1.0, delay_max=3.0)
+        # Measurement override: HOMEPLUS_MEASUREMENT_MAX_ITEMS env var allows
+        # a bounded live measurement run without changing the production cap.
+        # Set to "0" or "none" to remove the cap entirely for measurement.
+        import os
+        _env = os.environ.get("HOMEPLUS_MEASUREMENT_MAX_ITEMS")
+        if _env is not None:
+            _env = _env.strip().lower()
+            if _env in ("", "none", "null", "0"):
+                self.MAX_ITEMS = None
+            else:
+                try:
+                    self.MAX_ITEMS = int(_env)
+                except ValueError:
+                    pass  # keep class default
 
     def _retry_request(self, url: str, *, headers: dict | None = None,
                        session: requests.Session | None = None,

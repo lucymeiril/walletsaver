@@ -1,7 +1,7 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import {
   LayoutDashboard, Package, DollarSign,
-  FolderTree, BarChart3, Menu, X, Database, Inbox, LogOut, ShieldCheck, MessageSquareWarning,
+  FolderTree, BarChart3, Menu, X, Database, Inbox, LogOut, ShieldCheck, MessageSquareWarning, Wrench, Upload,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { logout } from '../stores/authStore';
@@ -15,9 +15,9 @@ const NAV = [
   { to: '/classification', label: '분류 관리',  icon: FolderTree },
   { to: '/analytics',      label: '분석',       icon: BarChart3 },
   { to: '/integrity',      label: '무결성',     icon: ShieldCheck },
+  { to: '/maintenance',    label: 'DB 유지보수', icon: Wrench },
   { to: '/community',      label: '커뮤니티',   icon: MessageSquareWarning },
-  // TODO: DB 유지보수 메뉴 추가 필요 — DB 비우기(초기화), 직접 SQL 쿼리 실행, 마이그레이션 실행/롤백
-  //       현재 관리자 운영 시 CLI로만 가능해 운영 효율 저하. /maintenance 라우트 신규 개발 필요.
+  { to: '/import',         label: '분류 Import', icon: Upload },
 ];
 
 export default function AdminLayout() {

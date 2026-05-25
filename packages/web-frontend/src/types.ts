@@ -40,6 +40,19 @@ export interface ProductSummary {
   sufficient: boolean
   grade_label: GradeLabel
   marts: string[]
+  // web-FINAL §3-2: 4축 검사 + 통일 산식용 필드.
+  // 서버가 아직 안 내려줘도 클라이언트는 fallback 으로 sufficient + sample_size 일부 활용.
+  current_low?: number | null
+  current_low_window_days?: number | null
+  sample_count?: number | null
+  last_seen_days?: number | null
+  has_active_source?: boolean | null
+  unit_known?: boolean | null
+  // wb1-pending-card: 분류 대기 상태
+  status?: 'published' | 'pending_classification'
+  pending_raw_id?: string | null
+  price?: number | null
+  captured_at?: string | null
 }
 
 export interface MartAlias {
@@ -60,6 +73,14 @@ export interface ProductDetail {
   image_url: string | null
   price_grade: PriceGrade
   mart_aliases: MartAlias[]
+  // web-FINAL §3-2 추가 컨텍스트. 없으면 카드 동일 fallback.
+  current_low?: number | null
+  current_low_window_days?: number | null
+  current_low_label?: string | null
+  sample_count?: number | null
+  last_seen_days?: number | null
+  has_active_source?: boolean | null
+  unit_known?: boolean | null
 }
 
 export interface AutocompleteSuggestion {

@@ -12,15 +12,15 @@ The public PC SSR captures saved in ``tests/fixtures/live_probe/lottemart_zetta_
 (395 KB ~ 1.7 MB each, real lottemartzetta.com responses) all contain the
 ``__INITIAL_STATE__`` marker but their ``productEntities`` are empty — the
 storefront ships a SPA shell and loads products via XHR after page load.
-The lottemart entrypoints surface this honestly: ``crawl_sale_listing`` and
-``crawl_catalog_page`` return a PARTIAL result with an
-``empty_initial_state_spa_shell`` blocker, while
-``ingest_operator_capture`` (the only path that actually carries data)
-parses the same productEntity shape end-to-end.
+
+Scroll strategy: _fetch_promotions_scroll intercepts PUT /api/webproductpagews/v6/products
+XHR responses triggered by Intersection Observer as user scrolls. Confirmed 266+
+items capturable in recon. The entrypoints use this to get 200+ items autonomously.
 """
 
 from __future__ import annotations
 
+import inspect
 import pathlib
 
 import pytest
@@ -306,3 +306,208 @@ async def test_crawl_result_uses_finished_at_and_quality_details(html):
     assert "quality_details" in result.model_dump()
     # items 는 dict 직렬화돼야 함 — 모델 quirk
     assert all(isinstance(it, dict) for it in result.items)
+
+
+# ---------- 스크롤 전략 파라미터 회귀 ----------
+# ---------- 헤드풀 escalation (WAF 202 → playwright_headful 1급 워크밴치) ----------
+def test_fetch_promotions_scroll_accepts_headful_kwarg():
+    """plugin.yaml waf_strategy.escalation 가 playwright_headful 을 1급으로 선언하므로
+    _fetch_promotions_scroll 은 headful kwarg 를 받아 헤드풀 워크밴치 escalation
+    경로를 노출해야 한다. 우회 코드가 아니라 정식 경로."""
+    c = LottemartCrawler()
+    sig = inspect.signature(c._fetch_promotions_scroll)
+    assert "headful" in sig.parameters, (
+        "_fetch_promotions_scroll 에 headful kwarg 없음 — WAF 202 escalation 불가"
+    )
+    assert sig.parameters["headful"].default is False  # 기본은 headless, escalation 시에만 True
+
+
+@pytest.mark.asyncio
+async def test_crawl_escalates_to_headful_on_waf_202(monkeypatch):
+    """크롤러는 HTTP path 에서 WAF 202 를 만나도 폴백을 묵살하면 안 된다.
+    plugin.yaml waf_strategy.escalation 대로:
+      requests → playwright_headless → playwright_headful
+    경로를 자동 수행해야 한다 — 운영자 개입 없이."""
+    import requests as _requests
+
+    waf_body = '<html><body>awswaf challenge awsWafCookieDomainList</body></html>'
+
+    class _WafResp:
+        status_code = 202
+        text = waf_body
+        @property
+        def content(self): return waf_body.encode()
+
+    def _fake_get(self, url, **kwargs):  # type: ignore[no-untyped-def]
+        return _WafResp()
+
+    monkeypatch.setattr(_requests.Session, "get", _fake_get)
+
+    headful_calls: list[bool] = []
+    fake_items: list = []
+
+    async def _fake_scroll(self, *, target_count=220, max_scroll_steps=120, headful=False):
+        headful_calls.append(headful)
+        if headful:
+            # 헤드풀 escalation 이 실제로 호출되면 240+ 회수
+            from core.models import DiscountItem
+            from datetime import date
+            out = []
+            for i in range(245):
+                out.append(DiscountItem(
+                    name=f"테스트상품{i}",
+                    store="롯데마트",
+                    sale_price=1000 + i,
+                    detail_url=f"https://lottemartzetta.com/products/uuid-{i}",
+                    period_start=date.today(),
+                    period_end=date.today(),
+                    attributes={"source_record_key": f"uuid-{i}"},
+                ))
+            return out
+        return []
+
+    monkeypatch.setattr(LottemartCrawler, "_fetch_promotions_scroll", _fake_scroll)
+    # _fetch_via_playwright 도 빠른 no-op (호출되면 안 됨, 안전망)
+    async def _fake_pw(self): return []
+    monkeypatch.setattr(LottemartCrawler, "_fetch_via_playwright", _fake_pw)
+
+    c = LottemartCrawler()
+    # 빠른 테스트: 검색 쿼리 1개로 제한
+    c.SEARCH_QUERIES = ["할인"]
+    c.CATEGORY_QUERIES = []
+    c.MAX_PAGES = 1
+    # anti_detect sleep 단축
+    c._anti_detect.delay_min = 0
+    c._anti_detect.delay_max = 0
+    result = await c.crawl()
+
+    assert True in headful_calls, (
+        f"headful escalation 이 호출되지 않음 — WAF 묵살. calls={headful_calls}"
+    )
+    assert result.items_count >= 240, f"headful escalation 후 240 미달: {result.items_count}"
+    assert result.strategy_used == "playwright_headful_scroll"
+    # WAF blocker 가 회복됐으므로 source_map.blocker 는 None
+    assert result.quality_details.get("source_map", {}).get("blocker") in (None, {}, "")
+    # 회복 메타데이터 존재
+    assert "waf_escalation" in result.quality_details
+    assert result.quality_details["waf_escalation"]["resolved_via"] == "playwright_headful_scroll"
+
+
+@pytest.mark.asyncio
+async def test_crawl_does_not_skip_fallback_on_waf_blocker(monkeypatch):
+    """회귀 가드: 'waf_blocker_active' 라는 이유로 폴백을 묵살하던 옛 분기
+    재발 방지. WAF 가 떨어져도 스크롤은 *반드시* 호출된다."""
+    import requests as _requests
+
+    class _WafResp:
+        status_code = 202
+        text = '<html>awsWafCookieDomainList</html>'
+        @property
+        def content(self): return self.text.encode()
+
+    def _fake_get(self, url, **kwargs):  # type: ignore[no-untyped-def]
+        return _WafResp()
+
+    monkeypatch.setattr(_requests.Session, "get", _fake_get)
+
+    scroll_invocations: list[dict] = []
+
+    async def _fake_scroll(self, *, target_count=220, max_scroll_steps=120, headful=False):
+        scroll_invocations.append({"headful": headful})
+        return []
+
+    monkeypatch.setattr(LottemartCrawler, "_fetch_promotions_scroll", _fake_scroll)
+    async def _fake_pw(self): return []
+    monkeypatch.setattr(LottemartCrawler, "_fetch_via_playwright", _fake_pw)
+
+    c = LottemartCrawler()
+    c.SEARCH_QUERIES = ["할인"]
+    c.CATEGORY_QUERIES = []
+    c.MAX_PAGES = 1
+    c._anti_detect.delay_min = 0
+    c._anti_detect.delay_max = 0
+    await c.crawl()
+    assert scroll_invocations, "WAF 떨어졌다고 스크롤 폴백을 묵살함 — 옛 회귀 재발"
+    # 헤드리스 시도 후 240 미달이라 헤드풀까지 escalation 해야 함
+    assert any(call["headful"] for call in scroll_invocations), (
+        "헤드리스만 호출하고 헤드풀 escalation 까지 가지 않음"
+    )
+
+
+def test_fetch_promotions_scroll_accepts_max_scroll_steps_kwarg():
+    """max_scrolls 오타 버그 회귀 방지 — 함수 시그니처에 max_scroll_steps 가 있어야 한다.
+
+    이전에 crawl() 이 max_scrolls=16 (존재하지 않는 kwarg) 를 넘겨
+    TypeError 가 조용히 삼켜지면서 스크롤 전략이 전혀 실행되지 않았다.
+    """
+    c = LottemartCrawler()
+    sig = inspect.signature(c._fetch_promotions_scroll)
+    assert "max_scroll_steps" in sig.parameters, (
+        "_fetch_promotions_scroll 에 max_scroll_steps kwarg 없음 "
+        "— crawl() 호출 시 TypeError 로 스크롤 전략이 묵살된다."
+    )
+    assert "max_scrolls" not in sig.parameters, (
+        "오타 max_scrolls 가 시그니처에 들어 있음"
+    )
+
+
+def test_waf_blocker_details_has_no_operator_intervention_message():
+    """_waf_blocker_details 에 safe_next_action 운영자 개입 메시지가 없어야 한다."""
+    c = LottemartCrawler()
+    details = c._waf_blocker_details(
+        "test blocked",
+        request_url="https://lottemartzetta.com/test",
+    )
+    assert "safe_next_action" not in details, (
+        "운영자 개입 메시지(safe_next_action)가 아직 남아 있음"
+    )
+
+
+# ---------- XHR API 응답 shape 회귀 ----------
+_API_PRODUCT_SAMPLE = {
+    "productId": "8660fc78-ce61-42f8-856e-645d9984ef30",
+    "retailerProductId": "OS8809251334528",
+    "type": "REGULAR",
+    "name": "오늘좋은 닭가슴살 블랙페퍼 (110G)",
+    "brand": "오늘좋은",
+    "packSizeDescription": "110g",
+    "price": {"amount": "3590", "currency": "KRW"},
+    "promotions": [
+        {
+            "promoId": "4430dfd8-1295-4785-8181-cc352b3dd892",
+            "description": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "type": "OFFER",
+        }
+    ],
+    "image": {
+        "src": "https://lottemartzetta.com/images-v3/932dcbc7/a5acf33b/300x300.jpg",
+        "description": "오늘좋은 닭가슴살 블랙페퍼 (110G)",
+    },
+}
+
+
+def test_api_product_to_discount_item_real_shape():
+    """PUT /api/webproductpagews/v6/products 응답 상품이 DiscountItem 으로 변환돼야 한다.
+
+    API 는 price.amount (현재가만), promotions[].description (행사명) 구조.
+    recon 에서 실 캡처한 product shape 기반.
+    """
+    c = LottemartCrawler()
+    item = c._api_product_to_discount_item(_API_PRODUCT_SAMPLE)
+    assert item is not None
+    assert item.name == "오늘좋은 닭가슴살 블랙페퍼 (110G)"
+    assert item.sale_price == 3590
+    assert item.original_price is None  # API 응답은 원가 미포함
+    assert "무료" in item.event_name
+    assert item.detail_url.startswith("https://lottemartzetta.com/products/8660fc78")
+    assert "lottemartzetta.com/images-v3" in item.image_url
+
+
+def test_api_product_to_discount_item_no_promotions():
+    """promotions 없는 API 상품도 기본 이벤트명으로 변환돼야 한다."""
+    c = LottemartCrawler()
+    prod = dict(_API_PRODUCT_SAMPLE)
+    prod["promotions"] = []
+    item = c._api_product_to_discount_item(prod)
+    assert item is not None
+    assert item.event_name == "롯데마트 할인"

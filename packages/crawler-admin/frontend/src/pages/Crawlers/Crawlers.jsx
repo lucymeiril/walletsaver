@@ -1,11 +1,8 @@
 import { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react';
 import useAdminStore from '../../stores/adminStore';
 import { api } from '../../api/client';
-import { Play, Settings, Plus, Power, X, CheckSquare, Square, Loader, ChevronDown, ChevronRight } from 'lucide-react';
+import { Play, Settings, Plus, Power, X, CheckSquare, Square, Loader, ChevronDown, ChevronRight, RotateCcw } from 'lucide-react';
 import styles from './Crawlers.module.css';
-
-// TODO: 크롤러 카드에 "실패 재시도" 퀵버튼 추가 필요 — 현재 실패 재시도는 실행 히스토리(/run-history) 페이지에만 있어
-//       직관성 부족. 마지막 실행이 실패(status==='error')인 크롤러에 한해 카드 우하단에 재시도 버튼 노출 권장.
 
 const CATEGORIES = [
   { key: 'all', label: '전체' },
@@ -273,6 +270,26 @@ export default function Crawlers() {
     }
   }, [runStates, runCrawler, setRunState, startPolling, clearRunState]);
 
+  const handleRetryLastFailed = useCallback(async (crawler) => {
+    const id = crawler.id;
+    setRunState(id, { phase: 'starting', success: true, message: '🔁 마지막 실패 run을 찾는 중...' });
+    try {
+      const data = await api.retryLastFailed(crawler.id);
+      setRunState(id, {
+        phase: 'running',
+        success: true,
+        message: `🔁 재시도 시작 — 새 run: ${data.run_id || '(생성됨)'}`,
+      });
+      startPolling(id);
+    } catch (err) {
+      const msg = err?.status === 404
+        ? '재시도할 실패 run이 없습니다. (마지막 실행이 성공이거나 기록이 없음)'
+        : (err?.message || '재시도 실패');
+      setRunState(id, { phase: 'done', success: false, message: `❌ ${msg}` });
+      clearRunState(id, 5000);
+    }
+  }, [setRunState, startPolling, clearRunState]);
+
   const handleBulkRun = useCallback(async () => {
     if (checkedIds.size === 0) return;
     setBulkRunning(true);
@@ -391,6 +408,9 @@ export default function Crawlers() {
     const rs = runStates[crawler.id];
     const isRunning = rs?.phase === 'running' || rs?.phase === 'starting';
     const isChecked = checkedIds.has(crawler.id);
+    const recent = crawler.recentRuns || [];
+    const lastRun = recent.length > 0 ? recent[recent.length - 1] : null;
+    const lastRunFailed = lastRun && (lastRun.status === 'failed' || lastRun.status === 'error');
 
     return (
       <div key={crawler.id} className={`${styles.card} ${isRunning ? styles.cardRunning : ''}`}>
@@ -463,6 +483,20 @@ export default function Crawlers() {
             <Power size={14} />
             {crawler.status === 'active' ? '활성' : '비활성'}
           </button>
+          {lastRunFailed && (
+            <button
+              className={styles.actionBtn}
+              title="마지막 실패 run 재시도"
+              aria-label={`${crawler.name} 마지막 실패 재시도`}
+              data-testid={`retry-last-failed-${crawler.id}`}
+              onClick={() => handleRetryLastFailed(crawler)}
+              disabled={isRunning}
+              style={{ marginLeft: 'auto', background: '#fef2f2', color: '#dc2626', borderColor: '#fecaca' }}
+            >
+              <RotateCcw size={14} />
+              실패 재시도
+            </button>
+          )}
         </div>
       </div>
     );
