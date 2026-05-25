@@ -102,7 +102,7 @@ export function SearchBar({ initialQuery = '', onSearch }: SearchBarProps) {
         >
           {suggestions.map((s, i) => (
             <li
-              key={i}
+              key={s.token ?? s.display ?? i}
               role="option"
               aria-selected={false}
               onMouseDown={() => handleSuggestionClick(s)}

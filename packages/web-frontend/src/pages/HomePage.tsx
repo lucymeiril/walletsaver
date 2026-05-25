@@ -16,6 +16,9 @@ export default function HomePage() {
   const [rootCategories, setRootCategories] = useState<CategoryNode[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [includePending, setIncludePending] = useState(false)
+  // mcp2-fix: 검색 결과 정렬 상태 추가
+  const [sortOption, setSortOption] = useState<string>('recent')
 
   useEffect(() => {
     fetchCategories()
@@ -27,7 +30,7 @@ export default function HomePage() {
     if (q) {
       setLoading(true)
       setError(null)
-      searchProducts({ q, sort: 'recent' })
+      searchProducts({ q, sort: sortOption, include_pending: includePending })
         .then((data) => {
           setSearchResults(data.items)
           setLoading(false)
@@ -39,7 +42,7 @@ export default function HomePage() {
     } else {
       setSearchResults([])
       setLoading(true)
-      searchProducts({ sort: 'hot_deal', page_size: 12 } as Parameters<typeof searchProducts>[0])
+      searchProducts({ sort: 'hot_deal', page_size: 12, include_pending: includePending })
         .then((data) => {
           setHotDeals(data.items)
           setLoading(false)
@@ -49,7 +52,7 @@ export default function HomePage() {
           setLoading(false)
         })
     }
-  }, [q])
+  }, [q, includePending, sortOption])
 
   const handleSearch = useCallback(
     (newQ: string) => {
@@ -150,9 +153,35 @@ export default function HomePage() {
 
       {/* Products section */}
       <section aria-label={q ? '검색 결과' : '오늘의 핫딜'}>
-        <h2 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '12px' }}>
-          {q ? `"${q}" 검색 결과` : '오늘의 핫딜 TOP 12'}
-        </h2>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: 600, margin: 0 }}>
+            {q ? `"${q}" 검색 결과` : '오늘의 핫딜 TOP 12'}
+          </h2>
+          {q && (
+            <select
+              data-testid="search-sort-select"
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+              style={{ padding: '5px 8px', borderRadius: '6px', border: '1px solid #e5e7eb', fontSize: '13px' }}
+            >
+              <option value="recent">최신순</option>
+              <option value="hot_deal">핫딜 순</option>
+              <option value="price_asc">낮은 가격순</option>
+              <option value="price_desc">높은 가격순</option>
+            </select>
+          )}
+          <label
+            data-testid="pending-toggle"
+            style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#6b7280', cursor: 'pointer' }}
+          >
+            <input
+              type="checkbox"
+              checked={includePending}
+              onChange={(e) => setIncludePending(e.target.checked)}
+            />
+            분류 대기 포함
+          </label>
+        </div>
         {error && (
           <p style={{ color: '#dc2626' }}>오류: {error}</p>
         )}
