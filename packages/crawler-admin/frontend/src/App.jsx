@@ -12,6 +12,7 @@ import DataReviewPage from './pages/DataReview/DataReviewPage';
 import RunHistory from './pages/RunHistory/RunHistory';
 import AdHoc from './pages/AdHoc/AdHoc';
 import WeeklyAlertsPage from './pages/WeeklyAlerts/WeeklyAlertsPage';
+import ExternalExportPanel from './pages/ExternalExport/ExternalExportPanel';
 import { isAuthenticated, subscribe, autoLoginDev } from './stores/authStore';
 
 function useAuth() {
@@ -51,6 +52,8 @@ export default function App() {
             <Route path="/adhoc" element={<ErrorBoundary><AdHoc /></ErrorBoundary>} />
             {/* 주간 알림 — 사라진 SKU 목록 (cr3 신설) */}
             <Route path="/weekly-alerts" element={<ErrorBoundary><WeeklyAlertsPage /></ErrorBoundary>} />
+            {/* 외부 분류 내보내기 — raw batch LLM 분류용 export (rd7 신설) */}
+            <Route path="/external-export" element={<ErrorBoundary><ExternalExportPanel /></ErrorBoundary>} />
           </Route>
         </Routes>
       </ErrorBoundary>

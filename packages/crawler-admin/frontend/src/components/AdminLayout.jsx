@@ -13,6 +13,7 @@ import {
   History,
   Search,
   Bell,
+  PackageOpen,
 } from 'lucide-react';
 import { logout } from '../stores/authStore';
 import styles from './AdminLayout.module.css';
@@ -28,6 +29,8 @@ const navItems = [
   { to: '/adhoc', label: 'Ad-hoc 수집', icon: Search },
   // 주간 알림 — 사라진 SKU 감지 결과 (cr3 신설)
   { to: '/weekly-alerts', label: '주간 알림', icon: Bell },
+  // 외부 분류 내보내기 — raw batch → LLM 분류용 export (rd7 신설)
+  { to: '/external-export', label: '외부 분류 내보내기', icon: PackageOpen },
 ];
 
 export default function AdminLayout() {

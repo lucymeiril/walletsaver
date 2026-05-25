@@ -329,4 +329,15 @@ export const api = {
         }
         return data;
       }),
+  // 외부 분류 export (crawler-admin 전용)
+  getRecentExports: (limit = 20) =>
+    fetchWithTimeout(`${API_BASE}/export/raw-batch/recent?limit=${limit}`).then(r => r.json()),
+  triggerRawBatchExport: (payload) =>
+    fetchWithTimeout(`${API_BASE}/export/raw-batch`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).then(r => r.json()),
+  getRawBatchExportDownloadUrl: (exportId) =>
+    `${API_BASE}/export/raw-batch/${encodeURIComponent(exportId)}/download`,
 };
