@@ -109,6 +109,8 @@ def create_app() -> FastAPI:
     from api.routes.operator_browser import router as operator_browser_router
     from api.routes.orchestrator import router as orchestrator_router
     from api.routes.weekly import router as weekly_router
+    # RD7: raw-batch export 파이프라인 (crawler-admin으로 이전)
+    from api.routes.raw_batch_export import router as raw_batch_export_router
 
     from fastapi import Depends
     from api.security.auth import verify_api_key
@@ -126,6 +128,7 @@ def create_app() -> FastAPI:
     app.include_router(operator_browser_router, dependencies=_auth)
     app.include_router(orchestrator_router, dependencies=_auth)
     app.include_router(weekly_router, dependencies=_auth)
+    app.include_router(raw_batch_export_router, dependencies=_auth)
 
     @app.on_event("startup")
     async def _register_plugins():

@@ -62,3 +62,17 @@ SSE_MAX_DURATION: int = int(os.getenv("SSE_MAX_DURATION", "1800"))
 # --- Audit ---
 AUDIT_LOG_MAX_BYTES: int = int(os.getenv("AUDIT_LOG_MAX_BYTES", str(50 * 1024 * 1024)))
 AUDIT_LOG_BACKUP_COUNT: int = int(os.getenv("AUDIT_LOG_BACKUP_COUNT", "10"))
+
+# --- 외부 DB 읽기 전용 접근 (export 컨텍스트 파일용) ---
+# ai-admin control DB (raw_crawl_records 원본)
+_AI_ADMIN_DB_DEFAULT = BASE_DIR.parent.parent / "ai-admin" / "backend" / "ai_control.db"
+AI_ADMIN_DATABASE_URL: str = os.getenv(
+    "AI_ADMIN_DATABASE_URL",
+    f"sqlite:///{_AI_ADMIN_DB_DEFAULT.as_posix()}",
+)
+# db-admin DB (matching_entries / categories / keywords)
+_DB_ADMIN_DB_DEFAULT = BASE_DIR.parent.parent / "db-admin" / "backend" / "walletguardian.db"
+DB_ADMIN_DATABASE_URL: str = os.getenv(
+    "DB_ADMIN_DATABASE_URL",
+    f"sqlite:///{_DB_ADMIN_DB_DEFAULT.as_posix()}",
+)
