@@ -321,4 +321,25 @@ export const api = {
   },
   getImportFailureCsvUrl: (traceId) =>
     `${API_BASE}/import/classified/failure-csv/${traceId}`,
+  // Bundle import (RD7) — 3-file import
+  previewBundleImport: (matchingFile, taxonomyFile, productsFile, { mode = 'lenient', batchId, signal, onProgress } = {}) => {
+    const fd = new FormData();
+    if (matchingFile) fd.append('matching_file', matchingFile);
+    if (taxonomyFile) fd.append('taxonomy_file', taxonomyFile);
+    if (productsFile) fd.append('products_file', productsFile);
+    fd.append('mode', mode);
+    if (batchId) fd.append('batch_id', batchId);
+    return postFormData(`${API_BASE}/import/bundle/preview`, fd, { signal, onProgress });
+  },
+  confirmBundleImport: (matchingFile, taxonomyFile, productsFile, { mode = 'lenient', batchId, signal, onProgress } = {}) => {
+    const fd = new FormData();
+    if (matchingFile) fd.append('matching_file', matchingFile);
+    if (taxonomyFile) fd.append('taxonomy_file', taxonomyFile);
+    if (productsFile) fd.append('products_file', productsFile);
+    fd.append('mode', mode);
+    if (batchId) fd.append('batch_id', batchId);
+    return postFormData(`${API_BASE}/import/bundle/confirm`, fd, { signal, onProgress });
+  },
+  getBundleFailureCsvUrl: (batchId) =>
+    `${API_BASE}/import/bundle/${batchId}/failures.csv`,
 };

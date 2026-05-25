@@ -410,3 +410,93 @@
 .success { background: rgba(52, 211, 153, 0.15); color: #22c55e; border: 1px solid rgba(52, 211, 153, 0.3); }
 .error   { background: rgba(239, 68, 68, 0.15);  color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
 .info    { background: rgba(59, 130, 246, 0.15); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); }
+
+/* ── 탭 네비게이션 ── */
+.tabNav {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0;
+}
+
+.tabBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--text2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  margin-bottom: -2px;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+.tabBtn:hover { color: var(--text); background: var(--bg2); }
+
+.tabActive {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: transparent;
+}
+
+/* ── Bundle 슬롯 ── */
+.bundleSlots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.bundleSlot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 18px 14px;
+  border: 2px dashed var(--border2);
+  border-radius: var(--radius);
+  background: var(--bg2);
+  cursor: pointer;
+  min-height: 100px;
+  transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+  text-align: center;
+  position: relative;
+}
+.bundleSlot:hover { border-color: var(--accent); background: var(--bg3); }
+.bundleSlot.dropzoneHasFile { border-color: var(--green); background: rgba(52, 211, 153, 0.04); }
+
+.bundleSlotLabel {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semi);
+  color: var(--text);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.bundleDesc {
+  font-size: var(--fs-sm);
+  color: var(--text2);
+  margin: 0 0 16px;
+  line-height: var(--lh-relaxed);
+}
+
+/* ── Legacy 배지 ── */
+.legacyBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  margin-bottom: 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(251, 191, 36, 0.08);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  color: var(--yellow);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+}

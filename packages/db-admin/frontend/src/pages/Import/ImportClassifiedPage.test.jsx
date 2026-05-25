@@ -8,6 +8,9 @@ vi.mock('../../api/client', () => ({
     previewImport: vi.fn(),
     confirmImport: vi.fn(),
     getImportFailureCsvUrl: vi.fn((id) => `/api/import/classified/failure-csv/${id}`),
+    previewBundleImport: vi.fn(),
+    confirmBundleImport: vi.fn(),
+    getBundleFailureCsvUrl: vi.fn((id) => `/api/import/bundle/${id}/failures.csv`),
   },
 }));
 
@@ -75,9 +78,14 @@ function makeFile(name = 'test.jsonl') {
   });
 }
 
+function renderLegacy() {
+  render(<ImportClassifiedPage />);
+  fireEvent.click(screen.getByTestId('tab-legacy'));
+}
+
 describe('ImportClassifiedPage', () => {
   it('초기 렌더: 드래그드롭 영역, 모드 라디오, Preview 버튼 표시', () => {
-    render(<ImportClassifiedPage />);
+    renderLegacy();
     expect(screen.getByLabelText('파일 업로드 영역')).toBeTruthy();
     expect(screen.getByDisplayValue('strict')).toBeTruthy();
     expect(screen.getByDisplayValue('lenient')).toBeTruthy();
@@ -86,7 +94,7 @@ describe('ImportClassifiedPage', () => {
   });
 
   it('파일 드롭 → 파일명 표시, Preview 버튼 활성화', () => {
-    render(<ImportClassifiedPage />);
+    renderLegacy();
     const zone = screen.getByLabelText('파일 업로드 영역');
     const file = makeFile('sample.jsonl');
 
@@ -99,7 +107,7 @@ describe('ImportClassifiedPage', () => {
   });
 
   it('잘못된 확장자 드롭 → 오류 toast, 파일 미설정', () => {
-    render(<ImportClassifiedPage />);
+    renderLegacy();
     const zone = screen.getByLabelText('파일 업로드 영역');
     const badFile = new File(['data'], 'data.txt', { type: 'text/plain' });
 
@@ -110,7 +118,7 @@ describe('ImportClassifiedPage', () => {
   });
 
   it('Preview 버튼 클릭 → api.previewImport 호출, diff 카운트 렌더', async () => {
-    render(<ImportClassifiedPage />);
+    renderLegacy();
     const zone = screen.getByLabelText('파일 업로드 영역');
     fireEvent.drop(zone, { dataTransfer: { files: [makeFile()] } });
 
@@ -125,7 +133,7 @@ describe('ImportClassifiedPage', () => {
   });
 
   it('preview_rows 테이블 렌더 — 추가/수정 배지', async () => {
-    render(<ImportClassifiedPage />);
+    renderLegacy();
     fireEvent.drop(screen.getByLabelText('파일 업로드 영역'), {
       dataTransfer: { files: [makeFile()] },
     });
@@ -139,7 +147,7 @@ describe('ImportClassifiedPage', () => {
   });
 
   it('conflict 항목 있으면 ImportConflictList 렌더 (빨간 톤 박스)', async () => {
-    render(<ImportClassifiedPage />);
+    renderLegacy();
     fireEvent.drop(screen.getByLabelText('파일 업로드 영역'), {
       dataTransfer: { files: [makeFile()] },
     });
@@ -152,7 +160,7 @@ describe('ImportClassifiedPage', () => {
   });
 
   it('Confirm 버튼 클릭 → api.confirmImport 호출, 결과 화면 렌더', async () => {
-    render(<ImportClassifiedPage />);
+    renderLegacy();
     fireEvent.drop(screen.getByLabelText('파일 업로드 영역'), {
       dataTransfer: { files: [makeFile()] },
     });
@@ -182,7 +190,7 @@ describe('ImportClassifiedPage', () => {
       failure_csv_url: '/api/import/classified/failure-csv/tr_abc123',
     });
 
-    render(<ImportClassifiedPage />);
+    renderLegacy();
     fireEvent.drop(screen.getByLabelText('파일 업로드 영역'), {
       dataTransfer: { files: [makeFile()] },
     });
@@ -197,7 +205,7 @@ describe('ImportClassifiedPage', () => {
   it('preview ok=false → Confirm 버튼 비활성', async () => {
     api.previewImport.mockResolvedValueOnce(PREVIEW_WITH_ERRORS);
 
-    render(<ImportClassifiedPage />);
+    renderLegacy();
     fireEvent.drop(screen.getByLabelText('파일 업로드 영역'), {
       dataTransfer: { files: [makeFile()] },
     });
@@ -208,7 +216,7 @@ describe('ImportClassifiedPage', () => {
   });
 
   it('모드 lenient으로 전환 후 Preview → api에 lenient 전달', async () => {
-    render(<ImportClassifiedPage />);
+    renderLegacy();
     fireEvent.drop(screen.getByLabelText('파일 업로드 영역'), {
       dataTransfer: { files: [makeFile()] },
     });
