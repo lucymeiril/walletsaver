@@ -87,7 +87,17 @@ def _result_to_dict(res: BundleResult) -> dict:
         "matching_conflicts": res.matching_conflicts,
         "taxonomy_categories_added": res.taxonomy_categories_added,
         "taxonomy_keywords_added": res.taxonomy_keywords_added,
+        # products_added = 신규 product INSERT 수 (하위 호환 필드)
         "products_added": res.products_added,
+        # 상세 카운터 (Fix-1: D-VERIFY-002)
+        "products_processed": res.products_processed,
+        "products_created": res.products_created,
+        "products_matched": res.products_matched,
+        "aliases_added": res.aliases_added,
+        "baselines_upserted": res.baselines_upserted,
+        "baselines_skipped": res.baselines_skipped,
+        "source_marts_extended": res.source_marts_extended,
+        "products_rejected": res.products_rejected,
         "products_skipped": res.products_skipped,
         "failure_rows": res.failure_rows,
         "failure_csv_url": (

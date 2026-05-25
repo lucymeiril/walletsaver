@@ -33,6 +33,9 @@ from services.matching_sync import (
 )
 from storage.models import Category, Keyword, MatchingEntry
 
+# brand가 없음을 나타내는 sentinel 값 집합 (Fix-4: D-VERIFY 재현 #2)
+_NULL_BRAND_MARKERS: frozenset[str] = frozenset({"브랜드없음", "no_brand", ""})
+
 logger = logging.getLogger(__name__)
 
 
@@ -80,8 +83,18 @@ class BundleResult:
     matching_conflicts: int = 0
     taxonomy_categories_added: int = 0
     taxonomy_keywords_added: int = 0
-    products_added: int = 0
-    products_skipped: int = 0
+    # ── products 카운터 (Fix-1: D-VERIFY-002 — 의미별 분리) ──────────────────
+    # products_added: 신규 Product INSERT 수 (구 의미와 동일하게 유지 — API 하위호환)
+    products_added: int = 0         # = products_created (backward compat alias)
+    products_processed: int = 0     # 처리한 products.jsonl row 수 (유효 + 중복 포함)
+    products_created: int = 0       # 진짜 신규 product INSERT 수
+    products_matched: int = 0       # 기존 product를 찾은 수 (dedup)
+    aliases_added: int = 0          # product.aliases 에 새로 추가된 raw_name 수
+    baselines_upserted: int = 0     # BaselinePrice 신규 INSERT 수
+    baselines_skipped: int = 0      # 동일 (product_id, mart_code, recorded_at) 기존 row → 업데이트만
+    source_marts_extended: int = 0  # product.source_marts 에 마트가 추가된 수
+    products_rejected: int = 0      # mart_code/name_core 누락으로 거부된 row 수
+    products_skipped: int = 0       # match_key 없음으로 skip된 row 수
     failure_rows: list[dict] = field(default_factory=list)
     idempotent: bool = False
 
@@ -348,15 +361,36 @@ def apply_products(
     session: Session,
     rows: list[dict],
     mode: str,
-) -> tuple[int, int, list[dict]]:
-    """products.jsonl을 DB(BaselinePrice)에 적용한다.
+) -> dict:
+    """products.jsonl을 DB(Product + BaselinePrice)에 적용한다.
+
+    Fix-1 (D-VERIFY-002): 카운터 의미 분리 — 신규 product 수, alias 추가 수 등 분리.
+    Fix-2 (D-VERIFY-003): product 생성/갱신 시 unit = pack_unit 으로 동기화.
+    Fix-3 (D-VERIFY-004): canonicalize_pack 호출 → kg↔g, L↔ml 같은 product로 흡수.
+    Fix-4 (자기검열 #2):   brand=null/"브랜드없음" → mart_code 로 fallback.
+                           name_core=None → reject + 오류 로그.
+    Fix-5 (자기검열 #3):   mart_code=None/공백 → INSERT 거부, 오류 로그.
 
     Returns:
-        (added, skipped_no_match, failure_rows)
+        dict with keys: processed, created, matched, aliases_added, baselines_upserted,
+                        baselines_skipped, source_marts_extended, rejected, skipped, failures
     """
     from storage.models import BaselinePrice, Product
+    from services.unit_utils import (
+        canonicalize_pack,
+        classify_unit_kind,
+        normalize_unit_price,
+        build_display_name,
+    )
 
-    added = 0
+    processed = 0
+    created = 0
+    matched = 0
+    aliases_added = 0
+    baselines_upserted = 0
+    baselines_skipped = 0
+    source_marts_extended = 0
+    rejected = 0
     skipped = 0
     failures: list[dict] = []
 
@@ -366,16 +400,27 @@ def apply_products(
 
     for i, row in enumerate(rows):
         mk = row.get("match_key", "")
+
+        # Fix-5: mart_code/mart 없으면 거부
+        mart = (row.get("mart") or "").strip()
+        if not mart:
+            rejected += 1
+            msg = f"products row {i}: mart_code 없음 → INSERT 거부"
+            logger.warning(msg)
+            failures.append({"row": i, "msg": "mart_code 없음 → INSERT 거부"})
+            if mode == "strict":
+                raise ValueError(msg)
+            continue
+
         if not mk or mk not in existing_keys:
             skipped += 1
             continue
 
         price_raw = row.get("price")
-        mart = row.get("mart", "")
-        if price_raw is None or not mart:
-            failures.append({"row": i, "msg": "price 또는 mart 누락"})
+        if price_raw is None:
+            failures.append({"row": i, "msg": "price 누락"})
             if mode == "strict":
-                raise ValueError(f"products row {i}: price 또는 mart 누락")
+                raise ValueError(f"products row {i}: price 누락")
             continue
 
         try:
@@ -401,42 +446,146 @@ def apply_products(
 
         matching_entry = existing_keys[mk]
 
-        # 연결된 Product 찾기 / 생성
-        product = None
-        if matching_entry.canonical_product_id:
-            product = session.query(Product).filter_by(
-                id=matching_entry.canonical_product_id
-            ).first()
+        # Fix-4: name_core=None → 거부
+        name_core_raw = (matching_entry.name_core or "").strip()
+        if not name_core_raw:
+            rejected += 1
+            msg = f"products row {i}: matching_entry.name_core가 None → INSERT 거부"
+            logger.warning(msg)
+            failures.append({"row": i, "msg": "name_core 없음 → INSERT 거부"})
+            if mode == "strict":
+                raise ValueError(msg)
+            continue
+
+        # Fix-4: brand fallback — None/"브랜드없음"/""/"no_brand" → mart_code
+        brand_raw = (matching_entry.brand or "").strip()
+        if not brand_raw or brand_raw in _NULL_BRAND_MARKERS:
+            brand = mart  # mart_code를 brand fallback으로 사용
+        else:
+            brand = brand_raw
+
+        # Fix-3: pack 단위 표준화 (kg→g, L→ml 등)
+        raw_pack_qty = matching_entry.pack_qty
+        raw_pack_unit = (matching_entry.pack_unit or "").strip() or None
+        if raw_pack_qty is not None and raw_pack_unit:
+            canon_qty, canon_unit = canonicalize_pack(raw_pack_qty, raw_pack_unit)
+        else:
+            canon_qty, canon_unit = raw_pack_qty, raw_pack_unit
+
+        unit_kind = classify_unit_kind(canon_unit)
+
+        # find_or_create Product — UNIQUE(brand, name_core, pack_qty, pack_unit)
+        product = session.query(Product).filter_by(
+            brand=brand,
+            name_core=name_core_raw,
+            pack_qty=canon_qty,
+            pack_unit=canon_unit,
+        ).first()
 
         if product is None:
-            # 이름: matching_entry name_core + brand 기반
-            name = f"{matching_entry.brand or ''} {matching_entry.name_core or ''}".strip() or mk
+            display = build_display_name(brand, name_core_raw, canon_qty, canon_unit)
             product = Product(
-                name=name,
+                name=display,
                 category_id=matching_entry.category_id,
-                unit=str(matching_entry.pack_unit or "개"),
+                # Fix-2: unit = pack_unit (레거시 호환, 신규 코드는 pack_unit 사용)
+                unit=str(canon_unit or "EA"),
                 source_type="mart_crawl",
+                brand=brand,
+                name_core=name_core_raw,
+                pack_qty=canon_qty,
+                pack_unit=canon_unit,
+                unit_kind=unit_kind,
+                display_name=display,
+                source_marts=[mart],
+                aliases=[],
             )
             session.add(product)
             session.flush()  # product.id 확보
+            created += 1
+        else:
+            matched += 1
+            # Fix-2: 기존 product.unit도 동기화
+            expected_unit = str(canon_unit or "EA")
+            if product.unit != expected_unit:
+                product.unit = expected_unit
+            if product.unit_kind != unit_kind:
+                product.unit_kind = unit_kind
 
-        bp = BaselinePrice(
+        # matching_entry.canonical_product_id 갱신 (soft-link)
+        if matching_entry.canonical_product_id != product.id:
+            matching_entry.canonical_product_id = str(product.id)
+
+        # source_marts 갱신
+        existing_marts = list(product.source_marts or [])
+        if mart not in existing_marts:
+            existing_marts.append(mart)
+            product.source_marts = existing_marts
+            source_marts_extended += 1
+
+        # aliases 갱신 (raw_name이 있을 때만)
+        raw_name = row.get("raw_name", "")
+        if raw_name:
+            existing_aliases = list(product.aliases or [])
+            if raw_name not in existing_aliases:
+                existing_aliases.append(raw_name)
+                product.aliases = existing_aliases
+                aliases_added += 1
+
+        # 정규화 단가 계산
+        norm_price, norm_basis = normalize_unit_price(price_val, canon_qty, canon_unit, unit_kind)
+
+        # UPSERT BaselinePrice — UNIQUE(product_id, mart_code, recorded_at)
+        bp = session.query(BaselinePrice).filter_by(
             product_id=product.id,
-            price=price_val,
-            source=mart,
-            unit=str(matching_entry.pack_unit or "개"),
+            mart_code=mart,
             recorded_at=captured_dt,
-            raw_data={
-                "raw_id": row.get("raw_id"),
-                "match_key": mk,
-                "mart": mart,
-            },
-        )
-        session.add(bp)
-        added += 1
+        ).first()
+
+        if bp is None:
+            bp = BaselinePrice(
+                product_id=product.id,
+                price=price_val,
+                source=mart,
+                mart_code=mart,
+                unit=str(canon_unit or "EA"),
+                recorded_at=captured_dt,
+                pack_qty_snapshot=canon_qty,
+                pack_unit_snapshot=canon_unit,
+                unit_price_normalized=norm_price,
+                unit_price_basis=norm_basis,
+                raw_data={
+                    "raw_id": row.get("raw_id"),
+                    "match_key": mk,
+                    "mart": mart,
+                },
+            )
+            session.add(bp)
+            baselines_upserted += 1
+        else:
+            # 동일 (product_id, mart_code, recorded_at) → 가격/단가만 갱신
+            bp.price = price_val
+            bp.unit_price_normalized = norm_price
+            bp.unit_price_basis = norm_basis
+            bp.pack_qty_snapshot = canon_qty
+            bp.pack_unit_snapshot = canon_unit
+            baselines_skipped += 1
+
+        processed += 1
 
     session.flush()
-    return added, skipped, failures
+
+    return {
+        "processed": processed,
+        "created": created,
+        "matched": matched,
+        "aliases_added": aliases_added,
+        "baselines_upserted": baselines_upserted,
+        "baselines_skipped": baselines_skipped,
+        "source_marts_extended": source_marts_extended,
+        "rejected": rejected,
+        "skipped": skipped,
+        "failures": failures,
+    }
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -563,10 +712,19 @@ def apply_bundle(
 
     # ── STEP 3: products ──
     if products_rows:
-        added, skipped, prod_failures = apply_products(session, products_rows, mode)
-        result.products_added = added
-        result.products_skipped = skipped
-        for pf in prod_failures:
+        prod_result = apply_products(session, products_rows, mode)
+        result.products_processed = prod_result["processed"]
+        result.products_created = prod_result["created"]
+        result.products_matched = prod_result["matched"]
+        result.aliases_added = prod_result["aliases_added"]
+        result.baselines_upserted = prod_result["baselines_upserted"]
+        result.baselines_skipped = prod_result["baselines_skipped"]
+        result.source_marts_extended = prod_result["source_marts_extended"]
+        result.products_rejected = prod_result["rejected"]
+        result.products_skipped = prod_result["skipped"]
+        # products_added = products_created (하위 호환 alias)
+        result.products_added = prod_result["created"]
+        for pf in prod_result["failures"]:
             failure_rows.append({"file": "products.jsonl", **pf})
 
     result.failure_rows = failure_rows

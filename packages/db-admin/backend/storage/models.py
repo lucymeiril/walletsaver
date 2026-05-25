@@ -151,6 +151,8 @@ class Product(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     category_id: Mapped[Optional[str]] = mapped_column(ForeignKey("categories.id"))
+    # ⚠️ 레거시 호환 컬럼. 신규 코드는 pack_unit/pack_unit_kind 사용.
+    # bundle_import에서 product 생성/갱신 시 unit=pack_unit으로 동기화.
     unit: Mapped[str] = mapped_column(String(50), default="개")
     description: Mapped[Optional[str]] = mapped_column(Text)
     image_url: Mapped[Optional[str]] = mapped_column(String(500))
@@ -174,6 +176,8 @@ class Product(Base):
     display_name: Mapped[Optional[str]] = mapped_column(String(400), nullable=True)
     source_marts: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
     aliases: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
+    # ── RD8 D-verify 보정: canonical_product_id (migration f4d5e6f7a8b9) ──────
+    canonical_product_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
 
     category: Mapped[Optional["Category"]] = relationship(back_populates="products")
     # lazy="selectin" — 상품 목록 조회 시 N+1 방지, 필요할 때만 서브쿼리로 일괄 로딩
@@ -193,9 +197,12 @@ class Product(Base):
     __table_args__ = (
         Index("ix_products_name", "name"),
         Index("ix_products_category", "category_id"),
-        # source_type 필터 빈번 — 핫딜/마트/기준가 분류 필터링용
         Index("ix_products_source_type", "source_type"),
         Index("ix_products_active", "is_active"),
+        # RD8 D1: UNIQUE — 동일 정규화 품목은 하나만 (brand, name_core, pack_qty, pack_unit)
+        # SQLite NULL 처리 주의: NULL값 컬럼이 포함된 경우 각 NULL은 서로 다른 것으로 취급됨.
+        # 따라서 brand/pack_unit을 brand fallback/canonicalize 후에는 NULL이 되지 않도록 관리.
+        UniqueConstraint("brand", "name_core", "pack_qty", "pack_unit", name="uq_product_canonical"),
     )
 
 
@@ -222,10 +229,25 @@ class BaselinePrice(Base):
 
     product: Mapped["Product"] = relationship(back_populates="baseline_prices")
 
+    # ── RD8 D1 추가 컬럼 (migration f2b3c4d5e6f7) ─────────────────────────────
+    # mart_code: 정규화된 마트 코드 (emart / homeplus / lottemart / costco 등)
+    mart_code: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    # pack_*_snapshot: 가격 수집 시점의 용량 정보 스냅샷
+    pack_qty_snapshot: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    pack_unit_snapshot: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    # unit_price_normalized: weight→원/100g, volume→원/100ml, count/pack→None
+    unit_price_normalized: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    # unit_price_basis: 정규화 기준 단위. "g" 또는 "ml"
+    unit_price_basis: Mapped[Optional[str]] = mapped_column(String(10), nullable=True)
+
     __table_args__ = (
         Index("ix_baseline_product_date", "product_id", "recorded_at"),
-        # 매장별 최신 기준가 조회 최적화
         Index("ix_baseline_product_source", "product_id", "source"),
+        # RD8 D1: UNIQUE — (product_id, mart_code, recorded_at) 조합으로 UPSERT 멱등성 보장
+        # mart_code=NULL 행이 들어오면 NULL≠NULL 이므로 UNIQUE 충돌 미감지 → mart_code 강제 not-null 정책으로 방어
+        UniqueConstraint("product_id", "mart_code", "recorded_at", name="uq_baseline_product_mart_date"),
+        Index("ix_baseline_mart_code", "mart_code"),
+        Index("ix_baseline_product_mart", "product_id", "mart_code"),
     )
 
 
