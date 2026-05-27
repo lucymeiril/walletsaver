@@ -42,6 +42,7 @@ _RUN_HISTORY_FILE = _BACKEND_DIR / "crawler_run_history.json"
 MAX_RECENT_RUNS = 5
 
 _SSE_MAX_DURATION = int(os.getenv("SSE_MAX_DURATION", "1800"))
+_TERMINAL_STATUSES = {"success", "failed", "partial_failure"}
 
 
 def _load_status() -> dict[str, str]:
@@ -436,11 +437,31 @@ async def run_crawler(crawler_id: str, request: Request):
 
 async def _run_and_store(crawler_id: str, pipeline: CrawlPipeline):
     """백그라운드: 크롤러 실행 → 파이프라인 → DB Admin 대기열 제출 → 이력 기록."""
+    async def publish_progress(payload: dict[str, Any]) -> None:
+        current = _crawl_results.setdefault(crawler_id, {"crawler_id": crawler_id})
+        quality = payload.get("quality_details") if isinstance(payload.get("quality_details"), dict) else {}
+        current.update({
+            "crawler_id": crawler_id,
+            "status": "running",
+            "progress_stage": payload.get("stage", current.get("progress_stage", "running")),
+            "items_found": payload.get("items_found", current.get("items_found", 0)),
+            "items_valid": payload.get("items_valid", current.get("items_valid", 0)),
+            "items_saved": payload.get("items_saved", current.get("items_saved", 0)),
+            "errors": payload.get("errors", current.get("errors", [])),
+        })
+        if payload.get("strategy_used"):
+            current["strategy_used"] = payload["strategy_used"]
+        for key in ("pages_attempted", "queries_attempted", "source_raw_count", "items_count", "deduplicated_count", "invalid_count"):
+            if key in payload:
+                current[key] = payload[key]
+            elif key in quality:
+                current[key] = quality[key]
+
     try:
         async with get_semaphore():
-            result = await pipeline.run_crawler(crawler_id)
+            result = await pipeline.run_crawler(crawler_id, progress_callback=publish_progress)
 
-        _crawl_results[crawler_id] = {
+        final_payload = {
             "crawler_id": crawler_id,
             "status": result.status,
             "items_found": result.items_found,
@@ -448,8 +469,16 @@ async def _run_and_store(crawler_id: str, pipeline: CrawlPipeline):
             "items_saved": result.items_saved,
             "duration": result.duration,
             "errors": result.errors,
+            "progress_stage": "finished",
+            "quality_score": result.quality_score,
+            "quality_details": result.quality_details,
             "finished_at": datetime.now(timezone.utc).isoformat(),
         }
+        if isinstance(result.quality_details, dict):
+            for key in ("pages_attempted", "queries_attempted", "source_raw_count", "items_count", "deduplicated_count", "invalid_count"):
+                if key in result.quality_details:
+                    final_payload[key] = result.quality_details[key]
+        _crawl_results[crawler_id] = final_payload
         _append_run_history(crawler_id, result.status, result.duration)
         logger.info(
             f"Crawler '{crawler_id}' completed: {result.status} "
@@ -516,7 +545,7 @@ async def stream_crawler_status(crawler_id: str, request: Request):
                 yield f"data: {current_json}\n\n"
 
             # 완료 상태면 스트림 종료
-            if result.get("status") in ("success", "failed"):
+            if result.get("status") in _TERMINAL_STATUSES:
                 break
 
             await asyncio.sleep(1)

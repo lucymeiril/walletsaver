@@ -1,0 +1,11 @@
+.fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg2, #f3f4f6);
+  color: var(--text3, #9ca3af);
+  border-radius: 8px;
+  min-height: 80px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}

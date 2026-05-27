@@ -83,7 +83,7 @@ class ApiClient {
   clearToken() {}
 
   async request(path, options = {}) {
-    const { timeout = DEFAULT_TIMEOUT, signal: externalSignal, silent = false, ...fetchOptions } = options;
+    const { timeout = DEFAULT_TIMEOUT, signal: externalSignal, ...fetchOptions } = options;
 
     const headers = {
       'Content-Type': 'application/json',
@@ -134,10 +134,7 @@ class ApiClient {
       } else {
         const store = useStore.getState();
         store.logout();
-        // 자동 모달 노출은 사용자 명시 액션에서만. silent 옵션이면 모달을 띄우지 않는다.
-        if (!silent) {
-          store.openLoginModal();
-        }
+        store.openLoginModal();
         throw new ApiError(ERROR_MESSAGES.unauthorized, 401, 'unauthorized');
       }
     }

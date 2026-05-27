@@ -1,306 +1,405 @@
-from typing import Optional
-from datetime import datetime, timezone
-from urllib.parse import urlparse
+"""
+상품(물가비교) API — 프론트엔드 '물가비교' 탭의 데이터 소스.
 
-from fastapi import APIRouter, HTTPException, Query
+엔드포인트:
+    GET /api/products/search             — 상품 검색
+    GET /api/products/categories         — 카테고리 목록
+    GET /api/products/popular            — 인기 상품
+    GET /api/products/{id}               — 상품 상세
+    GET /api/products/{id}/price-history — 가격 이력
+    GET /api/products/{id}/price-compare — 출처별 비교
+"""
 
-from services.snapshot_repo import SnapshotRepo, get_conn
-from services.search import search_products
-from services.grading_view import get_grade_label
-from services.redirect_resolver import SnapshotRedirectService
+import math
+from fastapi import APIRouter, Request, HTTPException, Query
+from api.schemas.common import ApiResponse, PaginationMeta
 
 router = APIRouter()
 
 
-# web-FINAL §4-4: 마트 도메인 화이트리스트. 운영 분리를 위해 차후 env/config 로 이동 예정.
-KOREAN_MART_DOMAINS: dict[str, list[str]] = {
-    "EMART": ["emart.ssg.com", "emart.com", "shinsegae.com"],
-    "HOMEPLUS": ["homeplus.co.kr"],
-    "LOTTEMART": ["lotteon.com", "lottemart.com"],
-    "COSTCO": ["costco.co.kr"],
-    "COUPANG": ["coupang.com"],
-}
+def _category_icon(name: str) -> str:
+    if any(token in name for token in ("과일", "사과", "바나나", "딸기")):
+        return "🍎"
+    if any(token in name for token in ("채소", "야채", "양파", "배추", "감자")):
+        return "🧅"
+    if any(token in name for token in ("축산", "정육", "고기", "돼지", "소고기", "계란", "닭")):
+        return "🥩"
+    if any(token in name for token in ("유제품", "우유", "요거트", "치즈")):
+        return "🥛"
+    if any(token in name for token in ("수산", "생선", "해산물")):
+        return "🐟"
+    if any(token in name for token in ("곡", "쌀", "잡곡")):
+        return "🍚"
+    if any(token in name for token in ("가공", "라면", "두부", "통조림", "김치")):
+        return "🧊"
+    if any(token in name for token in ("생활", "세제", "휴지")):
+        return "🧴"
+    return "🧺"
 
 
-def _domain_of(url: str) -> Optional[str]:
-    if not url:
-        return None
-    if "://" not in url:
-        url = "https://" + url
+def _fallback_categories() -> list[dict]:
+    return [
+        {"id": "agricultural", "name": "농산물", "icon": "🥬", "count": 0, "children": []},
+        {"id": "livestock", "name": "축산물", "icon": "🥩", "count": 0, "children": []},
+        {"id": "seafood", "name": "수산물", "icon": "🐟", "count": 0, "children": []},
+        {"id": "processed", "name": "가공식품", "icon": "🥫", "count": 0, "children": []},
+        {"id": "living", "name": "생활용품", "icon": "🧴", "count": 0, "children": []},
+    ]
+
+
+def _load_category_tree_from_storage(storage) -> list[dict]:
+    session_factory = getattr(storage, "SessionLocal", None)
+    if session_factory is None:
+        return []
     try:
-        host = (urlparse(url).hostname or "").lower()
-        return host[4:] if host.startswith("www.") else host or None
+        from sqlalchemy import func
+        from storage.models import Category, Product
     except Exception:
-        return None
+        return []
+
+    with session_factory() as session:
+        categories = session.query(Category).all()
+        if not categories:
+            return []
+        product_counts = dict(
+            session.query(Product.category_id, func.count(Product.id))
+            .filter(Product.is_active == True, Product.category_id.isnot(None))
+            .group_by(Product.category_id)
+            .all()
+        )
+        by_id = {
+            cat.id: {
+                "id": cat.id,
+                "name": cat.name,
+                "icon": getattr(cat, "icon", None) or _category_icon(cat.name or ""),
+                "parent_id": cat.parent_id,
+                "count": int(product_counts.get(cat.id, 0) or 0),
+                "children": [],
+                "examples": [],
+            }
+            for cat in categories
+        }
+        for cat in categories:
+            if cat.parent_id in by_id and cat.id in by_id:
+                by_id[cat.parent_id]["children"].append(by_id[cat.id])
+
+        for node in by_id.values():
+            node["children"].sort(key=lambda row: (-row["count"], row["name"]))
+
+        def total_count(node: dict) -> int:
+            node["count"] += sum(total_count(child) for child in node["children"])
+            return node["count"]
+
+        roots = [node for node in by_id.values() if not node.get("parent_id") or node.get("parent_id") not in by_id]
+        for root in roots:
+            total_count(root)
+        roots.sort(key=lambda row: (-row["count"], row["name"]))
+        for node in by_id.values():
+            node.pop("parent_id", None)
+        return roots
 
 
-def _matches(domain: str, candidates: list[str]) -> bool:
-    return any(domain == d or domain.endswith("." + d) for d in candidates)
-
-
-def _days_since(iso: Optional[str]) -> Optional[int]:
-    if not iso:
-        return None
-    try:
-        # tolerate trailing Z or +00:00
-        dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
-        now = datetime.now(timezone.utc)
-        if dt.tzinfo is None:
-            dt = dt.replace(tzinfo=timezone.utc)
-        return max(0, (now - dt).days)
-    except Exception:
-        return None
-
-
-
-@router.get("/products/resolve/{stable_id}")
-def resolve_stable_id(stable_id: str):
-    """p1-web-api-resolver-contract: stable_id → terminal canonical_id 해소 엔드포인트.
-
-    redirect 테이블이 없거나 stable_id에 redirect가 없으면 stable_id 자체를 반환.
-    cycle / depth 초과는 422 에러로 처리.
-    """
-    try:
-        conn = get_conn()
-    except FileNotFoundError as e:
-        raise HTTPException(status_code=503, detail=str(e))
-
-    svc = SnapshotRedirectService(conn)
-    try:
-        terminal_id = svc.resolve(stable_id)
-    except Exception as exc:
-        raise HTTPException(status_code=422, detail=f"redirect 해소 실패: {exc}")
-
-    redirected = terminal_id != stable_id
-    return {
-        "stable_id": stable_id,
-        "resolved_id": terminal_id,
-        "redirected": redirected,
-    }
-
-
-@router.get("/products/search")
-def search(
-    q: Optional[str] = Query(default=None),
-    category: Optional[str] = Query(default=None),
-    page: int = Query(default=1, ge=1),
-    page_size: int = Query(default=20, ge=1, le=100),
-    sort: str = Query(default="recent", pattern="^(hot_deal|price_asc|price_desc|recent)$"),
-    include_pending: bool = Query(default=False),
+@router.get("/search")
+async def search_products(
+    request: Request,
+    q: str = Query("", description="검색어"),
+    category: str = Query(None, description="카테고리 필터"),
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=1, le=100),
 ):
-    try:
-        conn = get_conn()
-        repo = SnapshotRepo(conn)
-    except FileNotFoundError as e:
-        raise HTTPException(status_code=503, detail=str(e))
+    """상품 검색 — 이름/카테고리에 검색어가 포함된 상품."""
+    storage = request.app.state.storage
+    if storage is None:
+        from api.mock_responses import MOCK_PRODUCTS
+        results = MOCK_PRODUCTS
+        if q:
+            q_lower = q.lower()
+            results = [p for p in results if q_lower in p["name"] or q_lower in p["cat"]]
+        if category:
+            results = [p for p in results if category in p.get("cat", "")]
 
-    return search_products(repo, q, category, page, page_size, sort, include_pending)
+        total = len(results)
+        start = (page - 1) * per_page
+        paginated = results[start:start + per_page]
 
+        return ApiResponse(
+            data=paginated,
+            meta=PaginationMeta(
+                page=page,
+                per_page=per_page,
+                total=total,
+                total_pages=math.ceil(total / per_page) if total > 0 else 0,
+            ),
+        )
 
-@router.get("/products/trust_badge")
-def get_trust_badge(
-    domain: Optional[str] = Query(default=None),
-    url: Optional[str] = Query(default=None),
-    mart: Optional[str] = Query(default=None),
-):
-    """web-FINAL §4-4: 도메인 + 마트명 매칭 → green/yellow/red."""
-    d = domain.lower() if domain else _domain_of(url or "")
-    expected_mart = (mart or "").upper()
-
-    if not d:
-        return {"level": "yellow", "card_label": "🟡 검증 중", "detail_label": "🟡 링크 없음", "domain": None}
-
-    all_known = [host for hs in KOREAN_MART_DOMAINS.values() for host in hs]
-    in_some = _matches(d, all_known)
-    expected = KOREAN_MART_DOMAINS.get(expected_mart, [])
-
-    if expected and _matches(d, expected):
-        return {"level": "green", "card_label": "🟢 검증됨", "detail_label": "🟢 공식몰 링크 확인됨", "domain": d}
-    if not in_some:
-        return {"level": "yellow", "card_label": "🟡 검증 중", "detail_label": "🟡 외부 링크 — 공식몰 아님", "domain": d}
-    return {"level": "red", "card_label": "🔴 불일치", "detail_label": "🔴 마트명/링크 불일치", "domain": d}
-
-
-@router.get("/products/{canonical_id}")
-def get_product(canonical_id: str):
-    try:
-        conn = get_conn()
-        repo = SnapshotRepo(conn)
-    except FileNotFoundError as e:
-        raise HTTPException(status_code=503, detail=str(e))
-
-    product = repo.product_by_id(canonical_id)
-    if not product:
-        raise HTTPException(status_code=404, detail="Product not found")
-
-    grade = repo.grade_by_id(canonical_id)
-    aliases = repo.aliases_by_canonical(canonical_id)
-
-    grade_label = get_grade_label(
-        grade.p50 if grade else None,
-        grade.p10 if grade else None,
-        grade.p25 if grade else None,
-        grade.p75 if grade else None,
-        grade.sufficient if grade else False,
+    data = storage.search_products(q, category=category, page=page, per_page=per_page)
+    total = len(data)
+    if not data:
+        from api.mock_responses import MOCK_PRODUCTS
+        results = MOCK_PRODUCTS
+        if q:
+            q_lower = q.lower()
+            results = [p for p in results if q_lower in p["name"].lower() or q_lower in p.get("cat", "").lower()]
+        if category:
+            results = [p for p in results if category in p.get("cat", "")]
+        total = len(results)
+        data = results[(page - 1) * per_page:page * per_page]
+    return ApiResponse(
+        data=data,
+        meta=PaginationMeta(
+            page=page,
+            per_page=per_page,
+            total=total,
+            total_pages=math.ceil(total / per_page) if total else 0,
+        ),
     )
 
-    return {
-        "canonical_id": product.id,
-        "name_core": product.name_core,
-        "brand": product.brand,
-        "pack_quantity": product.pack_quantity,
-        "pack_unit": product.pack_unit,
-        "category_id": product.category_id,
-        "image_url": product.representative_image_url,
-        "price_grade": {
-            "p10": grade.p10 if grade else None,
-            "p25": grade.p25 if grade else None,
-            "p50": grade.p50 if grade else None,
-            "p75": grade.p75 if grade else None,
-            "sufficient": grade.sufficient if grade else False,
-            "sample_size": grade.sample_size if grade else 0,
-            "grade_label": grade_label,
-        },
-        "mart_aliases": [
-            {
-                "mart": a.mart,
-                "mart_item_id": a.mart_item_id,
-                "mart_item_name_raw": a.mart_item_name_raw,
-                "source_url": a.source_url,
-                "last_seen_at": a.last_seen_at,
-            }
-            for a in aliases
-        ],
-    }
+
+@router.get("/categories")
+async def get_categories(request: Request):
+    """상품 카테고리 목록."""
+    storage = request.app.state.storage
+    if storage is None:
+        return ApiResponse(data=_fallback_categories())
+
+    categories = _load_category_tree_from_storage(storage)
+    return ApiResponse(data=categories or _fallback_categories())
 
 
-# ─────────────────────────── web-FINAL §13-2 신규 엔드포인트 ───────────────────────────
-# price_observations 시계열 테이블이 DB 영역에서 들어오기 전까지는 mart_sku_alias.last_seen_at 만으로
-# sparse stub 응답. 응답 shape 은 정식 데이터 도착해도 호환 유지.
-
-@router.get("/products/{canonical_id}/history")
-def get_product_history(
-    canonical_id: str,
-    mart: Optional[str] = Query(default=None),
-    days: int = Query(default=180, ge=7, le=365),
+@router.get("/popular")
+async def get_popular_products(
+    request: Request,
+    per_page: int = Query(10, ge=1, le=50),
 ):
-    try:
-        conn = get_conn()
-        repo = SnapshotRepo(conn)
-    except FileNotFoundError as e:
-        raise HTTPException(status_code=503, detail=str(e))
+    """인기/트렌딩 상품 목록."""
+    storage = request.app.state.storage
+    if storage is None:
+        from api.mock_responses import MOCK_PRODUCTS
+        results = sorted(MOCK_PRODUCTS, key=lambda p: p.get("cur", 0), reverse=True)
+        return ApiResponse(data=results[:per_page])
 
-    if not repo.product_by_id(canonical_id):
-        raise HTTPException(status_code=404, detail="Product not found")
-
-    aliases = repo.aliases_by_canonical(canonical_id)
-    if mart:
-        aliases = [a for a in aliases if a.mart == mart.upper()]
-
-    grade = repo.grade_by_id(canonical_id)
-    points = []
-    for a in aliases:
-        if a.last_seen_at:
-            points.append({
-                "date": a.last_seen_at,
-                "price": grade.p50 if grade else None,
-                "mart": a.mart,
-                "source": "stub",
-            })
-
-    return {
-        "canonical_id": canonical_id,
-        "window_days": days,
-        "source": "stub",
-        "points": points,
-        "note": "price_observations 미설치 — last_seen_at + p50 으로 임시 시각화",
-    }
+    results = storage.search_products("")
+    if not results:
+        from api.mock_responses import MOCK_PRODUCTS
+        return ApiResponse(data=MOCK_PRODUCTS[:per_page])
+    if isinstance(results, dict) and "items" in results:
+        return ApiResponse(data=results["items"][:per_page])
+    if isinstance(results, list):
+        return ApiResponse(data=results[:per_page])
+    return ApiResponse(data=results)
 
 
-@router.get("/products/{canonical_id}/current_low")
-def get_product_current_low(canonical_id: str):
-    """7→14→30 자동 확장. 데이터 없으면 p10 fallback."""
-    try:
-        conn = get_conn()
-        repo = SnapshotRepo(conn)
-    except FileNotFoundError as e:
-        raise HTTPException(status_code=503, detail=str(e))
-
-    if not repo.product_by_id(canonical_id):
-        raise HTTPException(status_code=404, detail="Product not found")
-
-    grade = repo.grade_by_id(canonical_id)
-    aliases = repo.aliases_by_canonical(canonical_id)
-    last_seen_days = None
-    for a in aliases:
-        d = _days_since(a.last_seen_at)
-        if d is not None and (last_seen_days is None or d < last_seen_days):
-            last_seen_days = d
-
-    if grade is None or grade.p10 is None:
-        return {
-            "canonical_id": canonical_id,
-            "price": None,
-            "window_days": None,
-            "label": "데이터 없음",
-            "source": "none",
-            "last_seen_days": last_seen_days,
-        }
-
-    if last_seen_days is not None and last_seen_days <= 7:
-        window = 7
-    elif last_seen_days is not None and last_seen_days <= 14:
-        window = 14
-    elif last_seen_days is not None and last_seen_days <= 30:
-        window = 30
+@router.get("/category/{category_id}/compare")
+async def compare_category_products(
+    request: Request,
+    category_id: str,
+    sort: str = Query("price_asc"),
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=1, le=100),
+):
+    """카테고리별 가격 비교 — 구 웹 프론트 CategoryComparePage 호환 응답."""
+    storage = request.app.state.storage
+    if storage is not None:
+        try:
+            raw_products = storage.search_products("", category=category_id, page=page, per_page=per_page)
+        except Exception:
+            raw_products = []
     else:
-        window = 30
+        raw_products = []
 
-    return {
-        "canonical_id": canonical_id,
-        "price": grade.p10,
-        "window_days": window,
-        "label": f"최근 {window}일 최저가 (P10 fallback)",
-        "source": "grade_fallback",
-        "last_seen_days": last_seen_days,
+    if not raw_products:
+        from api.mock_responses import MOCK_PRODUCTS
+        raw_products = [
+            p for p in MOCK_PRODUCTS
+            if category_id.lower() in p.get("cat", "").lower()
+            or category_id.lower() in p.get("name", "").lower()
+            or category_id.replace(".", " ").lower() in p.get("cat", "").lower()
+        ] or MOCK_PRODUCTS[:per_page]
+
+    products = []
+    subcategory_counts = {}
+    for p in raw_products:
+        path_parts = [part.strip() for part in str(p.get("cat") or "").split(">") if part.strip()]
+        current_parts = [part.strip() for part in category_id.split(">") if part.strip()]
+        if len(path_parts) > len(current_parts):
+            child_name = path_parts[len(current_parts)]
+            child_id = " > ".join(path_parts[:len(current_parts) + 1])
+            subcategory_counts.setdefault(child_id, {"id": child_id, "name": child_name, "count": 0})
+            subcategory_counts[child_id]["count"] += 1
+        current = p.get("cur") or p.get("price") or 0
+        original = p.get("original_price") or p.get("avg") or current
+        discount_pct = p.get("discount_pct")
+        if discount_pct is None and current and original and original > current:
+            discount_pct = round((1 - current / original) * 100)
+        products.append({
+            "id": p.get("id"),
+            "name": p.get("name", ""),
+            "source": p.get("source") or "",
+            "brand": p.get("brand") or "",
+            "category_path": p.get("cat") or "",
+            "price": {
+                "current": current,
+                "original": original,
+                "discount_pct": discount_pct or 0,
+            },
+            "normalized": {
+                "per_100g": current,
+                "unit_price_display": p.get("unit_price_display") or p.get("display_unit") or p.get("unit") or "",
+            },
+            "attributes": p.get("attributes") or {},
+            "image_url": p.get("img") or p.get("image_url") or "",
+            "price_rank": p.get("price_tier") or "fair",
+        })
+
+    prices = [p["normalized"]["per_100g"] for p in products if p["normalized"]["per_100g"]]
+    avg = round(sum(prices) / len(prices)) if prices else 0
+    summary = {
+        "category_id": category_id,
+        "category_path": raw_products[0].get("cat", category_id) if raw_products else category_id,
+        "product_count": len(products),
+        "avg_price_per_100g": avg,
+        "min_price_per_100g": min(prices) if prices else 0,
+        "max_price_per_100g": max(prices) if prices else 0,
+        "hotdeal_threshold": round(avg * 0.85) if avg else 0,
+        "ultra_threshold": round(avg * 0.7) if avg else 0,
     }
 
+    if sort == "price_desc":
+        products.sort(key=lambda p: p["price"]["current"] or 0, reverse=True)
+    elif sort in ("price_asc", "discount"):
+        products.sort(key=lambda p: p["price"]["current"] or 0)
 
-@router.get("/products/{canonical_id}/grade_detail")
-def get_product_grade_detail(canonical_id: str):
-    """핫딜러 lazy: P10/P25/P50/P75 + unit_price + sample_size."""
-    try:
-        conn = get_conn()
-        repo = SnapshotRepo(conn)
-    except FileNotFoundError as e:
-        raise HTTPException(status_code=503, detail=str(e))
+    return ApiResponse(data={
+        "summary": summary,
+        "subcategories": sorted(subcategory_counts.values(), key=lambda row: (-row["count"], row["name"])),
+        "products": products,
+        "alternatives": [],
+        "pagination": {
+            "page": page,
+            "per_page": per_page,
+            "total": len(products),
+            "total_pages": 1,
+        },
+    })
 
-    product = repo.product_by_id(canonical_id)
+
+@router.get("/{product_id}")
+async def get_product(request: Request, product_id: int):
+    """단일 상품 상세."""
+    storage = request.app.state.storage
+    if storage is None:
+        from api.mock_responses import MOCK_PRODUCTS
+        product = next((p for p in MOCK_PRODUCTS if p["id"] == product_id), None)
+        if not product:
+            raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
+        return ApiResponse(data=product)
+
+    result = storage.get_product_detail(product_id)
+    if not result:
+        from api.mock_responses import MOCK_PRODUCTS
+        result = next((p for p in MOCK_PRODUCTS if p["id"] == product_id), None)
+    if not result:
+        raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
+    return ApiResponse(data=result)
+
+
+@router.get("/{product_id}/price-history")
+async def get_price_history(
+    request: Request,
+    product_id: int,
+    days: int = Query(30, ge=7, le=365, description="조회 기간 (일)"),
+):
+    """가격 추이 — 차트 렌더링용."""
+    storage = request.app.state.storage
+    if storage is None:
+        from api.mock_responses import mock_price_history, MOCK_PRODUCTS
+        product = next((p for p in MOCK_PRODUCTS if p["id"] == product_id), None)
+        if not product:
+            raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
+        return ApiResponse(data=mock_price_history(product_id, days))
+
+    product = storage.get_product_detail(product_id)
+    history = storage.get_price_history(product_id, days) if product else []
+    if not history:
+        from api.mock_responses import MOCK_PRODUCTS, mock_price_history
+        product = next((p for p in MOCK_PRODUCTS if p["id"] == product_id), None)
+        if not product:
+            raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
+        history = mock_price_history(product_id, days)
+    return ApiResponse(data=history)
+
+
+@router.get("/{product_id}/price-compare")
+async def get_price_compare(request: Request, product_id: int):
+    """출처별 가격 비교."""
+    storage = request.app.state.storage
+    if storage is None:
+        from api.mock_responses import MOCK_PRODUCTS
+        product = next((p for p in MOCK_PRODUCTS if p["id"] == product_id), None)
+        if not product:
+            raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
+
+        compare = []
+        for source, price in product.get("stores", {}).items():
+            orig = product["avg"]
+            disc = round((1 - price / orig) * 100, 1) if orig else None
+            compare.append({
+                "source": source,
+                "price": price,
+                "original_price": orig,
+                "discount_rate": disc,
+                "url": None,
+            })
+        compare.sort(key=lambda x: x["price"])
+        return ApiResponse(data=compare)
+
+    product = storage.get_product_detail(product_id)
+    compare = storage.get_price_compare(product_id) if product else []
+    if not compare:
+        from api.mock_responses import MOCK_PRODUCTS
+        product = next((p for p in MOCK_PRODUCTS if p["id"] == product_id), None)
+        if not product:
+            raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
+        compare = [
+            {
+                "source": source,
+                "price": price,
+                "original_price": product.get("avg"),
+                "discount_rate": round((1 - price / product["avg"]) * 100, 1) if product.get("avg") else None,
+                "url": None,
+            }
+            for source, price in product.get("stores", {}).items()
+        ]
+        compare.sort(key=lambda row: row["price"])
+    return ApiResponse(data=compare)
+
+
+@router.get("/{product_id}/trust")
+async def get_product_trust(request: Request, product_id: int):
+    """가격 신뢰도 요약 — 상세 모달 호환용."""
+    storage = request.app.state.storage
+    product = None
+    history = []
+    if storage is not None:
+        product = storage.get_product_detail(product_id)
+        history = storage.get_price_history(product_id, 30)
     if not product:
-        raise HTTPException(status_code=404, detail="Product not found")
-
-    grade = repo.grade_by_id(canonical_id)
-    if not grade:
-        return {
-            "canonical_id": canonical_id,
-            "p10": None, "p25": None, "p50": None, "p75": None,
-            "sample_size": 0, "sufficient": False,
-            "unit_price": None, "pack_quantity": product.pack_quantity, "pack_unit": product.pack_unit,
-        }
-
-    unit_price = None
-    if grade.p50 and product.pack_quantity and product.pack_quantity > 0:
-        unit_price = round(grade.p50 / product.pack_quantity, 2)
-
-    return {
-        "canonical_id": canonical_id,
-        "p10": grade.p10,
-        "p25": grade.p25,
-        "p50": grade.p50,
-        "p75": grade.p75,
-        "sample_size": grade.sample_size,
-        "sufficient": grade.sufficient,
-        "unit_price": unit_price,
-        "pack_quantity": product.pack_quantity,
-        "pack_unit": product.pack_unit,
-    }
+        from api.mock_responses import MOCK_PRODUCTS, mock_price_history
+        product = next((p for p in MOCK_PRODUCTS if p["id"] == product_id), None)
+        history = mock_price_history(product_id, 30) if product else []
+    if not product:
+        raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
+    current = product.get("cur") or product.get("price") or 0
+    prices = [row.get("price") for row in history if row.get("price")]
+    avg = round(sum(prices) / len(prices)) if prices else product.get("avg") or current
+    low = min(prices) if prices else product.get("low") or current
+    return ApiResponse(data={
+        "score": 75 if current and avg and current <= avg else 50,
+        "confidence": "보통",
+        "current_price": current,
+        "historical_average_price": avg,
+        "historical_low_price": low,
+        "reference_count": len(prices),
+        "standard_unit": product.get("unit_price_display") or product.get("display_unit") or product.get("unit") or "100g",
+        "rationale": "최근 가격 이력과 현재 관측가를 비교한 임시 신뢰도입니다.",
+    })

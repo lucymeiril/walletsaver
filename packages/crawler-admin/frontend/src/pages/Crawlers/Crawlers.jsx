@@ -28,6 +28,47 @@ const POLL_INTERVAL_BASE = 2000;
 const POLL_INTERVAL_MAX = 10000;
 const POLL_BACKOFF_FACTOR = 1.5;
 const MAX_POLLS = 120;
+const MART_LABELS = { emart: '이마트', homeplus: '홈플러스', lottemart: '롯데마트', costco: '코스트코' };
+const SUCCESS_STATUSES = new Set(['success', 'partial_failure']);
+
+function inferMart(crawler) {
+  const haystack = `${crawler.id || ''} ${crawler.name || ''}`.toLowerCase();
+  return ['emart', 'homeplus', 'lottemart', 'costco'].find((mart) => haystack.includes(mart)) || crawler.category || 'unknown';
+}
+
+function buildCounterSummary(data = {}, crawler) {
+  const quality = data.quality_details || {};
+  const mart = data.mart || inferMart(crawler);
+  const errors = Array.isArray(data.errors) ? data.errors.length : (data.error_count ?? quality.error_count ?? 0);
+  const found = data.total_collected ?? data.items_found ?? data.items_count ?? data.source_raw_count ?? quality.source_raw_count ?? data.total ?? 0;
+  const valid = data.items_valid ?? data.valid_items ?? data.new_items ?? 0;
+  const saved = data.items_saved ?? data.saved_items ?? 0;
+  const duplicates = data.duplicates ?? data.duplicate_count ?? data.deduplicated_count ?? quality.deduplicated_count ?? 0;
+  const filtered = data.filtered ?? data.filtered_count ?? quality.invalid_count ?? Math.max(0, found - (valid || saved || 0));
+  return {
+    mart,
+    total: found,
+    valid,
+    saved,
+    duplicates,
+    filtered,
+    errors,
+  };
+}
+
+function CounterChips({ summary }) {
+  if (!summary) return null;
+  const label = MART_LABELS[summary.mart] || summary.mart;
+  const chips = [
+    ['총 수집', summary.total], ['유효', summary.valid], ['저장', summary.saved], ['중복', summary.duplicates], ['오류', summary.errors],
+  ];
+  return (
+    <div className={styles.counterChips} aria-label={`${label} 수집 카운터`}>
+      <span className={styles.counterMart}>{label}</span>
+      {chips.map(([name, value]) => <span key={name} className={styles.counterChip}>{name} {Number(value || 0).toLocaleString()}</span>)}
+    </div>
+  );
+}
 
 function isValidUrl(str) {
   try {
@@ -105,11 +146,19 @@ export default function Crawlers() {
   const [checkedIds, setCheckedIds] = useState(new Set());
   const [collapsedGroups, setCollapsedGroups] = useState(new Set());
   const [bulkRunning, setBulkRunning] = useState(false);
+  const [clockTick, setClockTick] = useState(() => Date.now());
   const pollRefs = useRef({});
 
   useEffect(() => {
     fetchCrawlers();
   }, [fetchCrawlers]);
+
+  useEffect(() => {
+    const hasRunning = Object.values(runStates).some((state) => state?.phase === 'running' || state?.phase === 'starting');
+    if (!hasRunning) return undefined;
+    const timer = setInterval(() => setClockTick(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, [runStates]);
 
   useEffect(() => {
     return () => {
@@ -148,12 +197,13 @@ export default function Crawlers() {
     try {
       const sse = api.subscribeCrawlerStatus(id, {
         onData: (data) => {
-          const elapsed = ((Date.now() - startTime) / 1000).toFixed(0);
-          if (data.status === 'success') {
+          if (SUCCESS_STATUSES.has(data.status)) {
+            const partial = data.status === 'partial_failure';
             setRunState(id, {
               phase: 'done',
-              success: true,
-              message: `✅ 크롤링 완료 — ${data.items_found ?? 0}건 발견, ${data.items_saved ?? 0}건 저장 (${(data.duration ?? 0).toFixed(1)}초)`,
+              success: !partial,
+              message: `${partial ? '⚠️ 부분 완료' : '✅ 크롤링 완료'} — ${data.items_found ?? 0}건 발견, ${data.items_saved ?? 0}건 저장 (${(data.duration ?? 0).toFixed(1)}초)`,
+              summary: buildCounterSummary(data, { id }),
             });
             fetchCrawlers();
             clearRunState(id);
@@ -168,7 +218,9 @@ export default function Crawlers() {
             setRunState(id, {
               phase: 'running',
               success: true,
-              message: `⏳ 크롤링 실행 중... (${elapsed}초 경과)`,
+              startedAt: startTime,
+              message: `⏳ 크롤링 실행 중...${data.progress_stage ? ` (${data.progress_stage})` : ''}`,
+              summary: buildCounterSummary(data, { id }),
             });
           }
         },
@@ -195,15 +247,17 @@ export default function Crawlers() {
 
     const poll = async () => {
       pollCount++;
-      const elapsed = ((Date.now() - startTime) / 1000).toFixed(0);
+      let data = {};
       try {
-        const data = await api.getCrawlerStatus(id);
+        data = await api.getCrawlerStatus(id);
         consecutiveFailures = 0;
-        if (data.status === 'success') {
+        if (SUCCESS_STATUSES.has(data.status)) {
+          const partial = data.status === 'partial_failure';
           setRunState(id, {
             phase: 'done',
-            success: true,
-            message: `✅ 크롤링 완료 — ${data.items_found ?? 0}건 발견, ${data.items_saved ?? 0}건 저장 (${(data.duration ?? 0).toFixed(1)}초)`,
+            success: !partial,
+            message: `${partial ? '⚠️ 부분 완료' : '✅ 크롤링 완료'} — ${data.items_found ?? 0}건 발견, ${data.items_saved ?? 0}건 저장 (${(data.duration ?? 0).toFixed(1)}초)`,
+            summary: buildCounterSummary(data, { id }),
           });
           delete pollRefs.current[id];
           fetchCrawlers();
@@ -233,7 +287,9 @@ export default function Crawlers() {
       setRunState(id, {
         phase: 'running',
         success: true,
-        message: `⏳ 크롤링 실행 중... (${elapsed}초 경과)`,
+        startedAt: startTime,
+        message: `⏳ 크롤링 실행 중...${data.progress_stage ? ` (${data.progress_stage})` : ''}`,
+        summary: buildCounterSummary(data, { id }),
       });
 
       if (pollCount >= MAX_POLLS) {
@@ -259,10 +315,10 @@ export default function Crawlers() {
     // Prevent duplicate runs — ignore if crawler is already running
     if (runStates[id]?.phase === 'running') return;
 
-    setRunState(id, { phase: 'starting', success: true, message: '크롤러 실행 요청 중...' });
+    setRunState(id, { phase: 'starting', success: true, startedAt: Date.now(), message: '크롤러 실행 요청 중...' });
     const result = await runCrawler(id);
     if (result) {
-      setRunState(id, { phase: 'running', success: true, message: '⏳ 크롤링 실행 중... (0초 경과)' });
+      setRunState(id, { phase: 'running', success: true, startedAt: Date.now(), message: '⏳ 크롤링 실행 중...', summary: buildCounterSummary(result, { id }) });
       startPolling(id);
     } else {
       setRunState(id, { phase: 'done', success: false, message: '❌ 실행 실패: 요청을 처리할 수 없습니다.' });
@@ -299,14 +355,14 @@ export default function Crawlers() {
       const results = resp.results || [];
       for (const r of results) {
         if (r.status === 'running') {
-          setRunState(r.crawler_id, { phase: 'running', success: true, message: '⏳ 크롤링 실행 중... (0초 경과)' });
+          setRunState(r.crawler_id, { phase: 'running', success: true, startedAt: Date.now(), message: '⏳ 크롤링 실행 중...', summary: buildCounterSummary(r, { id: r.crawler_id }) });
           startPolling(r.crawler_id);
         } else {
           setRunState(r.crawler_id, { phase: 'done', success: false, message: r.message || r.error || '실행 실패' });
           clearRunState(r.crawler_id, 4000);
         }
       }
-    } catch (err) {
+    } catch {
       for (const id of ids) {
         setRunState(id, { phase: 'done', success: false, message: '벌크 실행에 실패했습니다. 잠시 후 다시 시도해 주세요.' });
         clearRunState(id, 4000);
@@ -373,7 +429,7 @@ export default function Crawlers() {
       await api.updateCrawlerSettings(settingsModal, settingsData);
       setSettingsModal(null);
       setSettingsErrors({});
-    } catch (err) {
+    } catch {
       alert('설정 저장에 실패했습니다. 잠시 후 다시 시도해 주세요.');
     }
     setSettingsLoading(false);
@@ -411,6 +467,8 @@ export default function Crawlers() {
     const recent = crawler.recentRuns || [];
     const lastRun = recent.length > 0 ? recent[recent.length - 1] : null;
     const lastRunFailed = lastRun && (lastRun.status === 'failed' || lastRun.status === 'error');
+    const elapsedSec = isRunning && rs?.startedAt ? Math.max(1, Math.floor((clockTick - rs.startedAt) / 1000)) : null;
+    const counterSummary = rs?.summary || (isRunning ? buildCounterSummary({}, crawler) : null);
 
     return (
       <div key={crawler.id} className={`${styles.card} ${isRunning ? styles.cardRunning : ''}`}>
@@ -456,8 +514,12 @@ export default function Crawlers() {
 
         {rs && (
           <div className={`${styles.runResult} ${rs.success ? styles.runResultSuccess : styles.runResultFail}`}>
-            {isRunning && <Spinner />}
-            <span>{rs.message}</span>
+            <div className={styles.runStatusLine}>
+              {isRunning && <Spinner />}
+              <span>{rs.message}</span>
+              {elapsedSec != null && <span className={styles.elapsedBadge}>{elapsedSec}초 경과</span>}
+            </div>
+            <CounterChips summary={counterSummary} />
           </div>
         )}
 

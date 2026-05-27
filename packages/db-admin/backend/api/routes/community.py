@@ -37,6 +37,21 @@ def _post_row(session, post: Post) -> dict:
     }
 
 
+def _comment_row(comment: Comment) -> dict:
+    author = comment.author.nickname if comment.author else None
+    return {
+        "id": comment.id,
+        "post_id": comment.post_id,
+        "parent_id": comment.parent_id,
+        "content": comment.content,
+        "author_id": comment.author_id,
+        "author": author,
+        "is_deleted": comment.is_deleted,
+        "created_at": comment.created_at.isoformat() if comment.created_at else None,
+        "updated_at": comment.updated_at.isoformat() if comment.updated_at else None,
+    }
+
+
 @router.get("/posts")
 def list_posts(
     status: str = Query("active", pattern="^(active|deleted|all|reported)$"),
@@ -95,6 +110,29 @@ def list_posts(
         session.close()
 
 
+@router.get("/posts/{post_id}")
+def get_post_detail(post_id: int, identity: dict = Depends(require_viewer)):
+    """Return full post content and comments for moderation review."""
+    session = get_session()
+    try:
+        post = session.get(Post, post_id)
+        if not post:
+            raise HTTPException(404, "Post not found")
+        comments = (
+            session.query(Comment)
+            .outerjoin(User, Comment.author_id == User.id)
+            .filter(Comment.post_id == post_id)
+            .order_by(Comment.created_at.asc(), Comment.id.asc())
+            .all()
+        )
+        return {
+            "post": _post_row(session, post),
+            "comments": [_comment_row(comment) for comment in comments],
+        }
+    finally:
+        session.close()
+
+
 @router.delete("/posts/{post_id}")
 def delete_post(post_id: int, request: Request, identity: dict = Depends(require_moderator)):
     """Soft-delete a community post."""
@@ -115,3 +153,25 @@ def restore_post(post_id: int, request: Request, identity: dict = Depends(requir
             raise HTTPException(404, "Post not found")
         post.is_deleted = False
         return {"restored": True, "id": post_id}
+
+
+@router.delete("/comments/{comment_id}")
+def delete_comment(comment_id: int, request: Request, identity: dict = Depends(require_moderator)):
+    """Soft-delete a community comment."""
+    with managed_session() as session:
+        comment = session.get(Comment, comment_id)
+        if not comment:
+            raise HTTPException(404, "Comment not found")
+        comment.is_deleted = True
+        return {"deleted": True, "id": comment_id}
+
+
+@router.post("/comments/{comment_id}/restore")
+def restore_comment(comment_id: int, request: Request, identity: dict = Depends(require_moderator)):
+    """Restore a soft-deleted community comment."""
+    with managed_session() as session:
+        comment = session.get(Comment, comment_id)
+        if not comment:
+            raise HTTPException(404, "Comment not found")
+        comment.is_deleted = False
+        return {"restored": True, "id": comment_id}

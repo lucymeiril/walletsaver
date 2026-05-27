@@ -38,16 +38,21 @@ const ISSUE_FILTERS = [
   { key: 'outlier', label: '이상치' },
 ];
 
+const G1_PRODUCT_FIELDS = [
+  'mart', 'mart_native_code', 'unit_price_displayed', 'unit_price_basis_raw', 'external_seller',
+  'mart_native_category_path', 'mart_native_category_id', 'canonical_url', 'canon_hash', 'mart_internal_seller_id',
+];
+
 const COMMON_EDIT_FIELDS = [
   'title', 'name', 'price', 'sale_price', 'original_price', 'source', 'source_community',
-  'url', 'product_url', 'category', 'category_id', 'valid_from', 'valid_to',
+  'url', 'product_url', 'category', 'category_id', ...G1_PRODUCT_FIELDS, 'valid_from', 'valid_to',
   'start_date', 'end_date', 'image_url', 'unit',
 ];
 
 const getSchemaDefaultKeys = (schemaType) => (
   schemaType === 'HotdealPost'
     ? ['title', 'url', 'price', 'source_community', 'category', 'valid_from', 'valid_to']
-    : ['name', 'sale_price', 'original_price', 'source', 'url', 'category', 'valid_from', 'valid_to']
+    : ['name', 'sale_price', 'original_price', 'source', 'url', 'category', ...G1_PRODUCT_FIELDS, 'valid_from', 'valid_to']
 );
 
 const getEditableKeys = (row, allKeys, schemaType) => (

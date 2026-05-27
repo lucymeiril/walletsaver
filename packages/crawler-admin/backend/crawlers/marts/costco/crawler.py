@@ -1,54 +1,28 @@
-"""코스트코 크롤러 — 본 사이트(costco.co.kr) 전용. v0.6.0
-
-## 수집 전략 (300+ 목표)
-
-SAP Commerce Cloud OCC REST API 직접 호출 (requests 기반).
-
-기본 전략 — OCC REST API 직접 호출:
-  - /rest/v2/korea/products/search (baseSite=korea, lang=ko, curr=KRW)
-  - 확인된 카테고리: SpecialPriceOffers(732건), OnlineDeals(995건)
-  - 페이지당 최대 100건, pagination.totalPages 기반 자동 순회
-  - Akamai 쿠키(_abck, bm_sz) 유지: 홈페이지 선행 요청
-
-OCC REST API 탐색 경위:
-  - Playwright 헤드리스: Akamai Bot Manager 탐지 → 0건 (차단됨)
-  - /occ/v2/{baseSite}/: 404 Not Found
-  - /rest/v2/central/: 400 (언어/통화 미지원, baseSite=central은 en/EUR만 지원)
-  - cx-state JSON에서 baseSite=korea 발견 (lang=ko, curr=KRW 지원)
-  - /rest/v2/korea/products/search → 200 OK, 8151건 반환 확인
-
-페이지 간 sleep 10초 필수.
-"""
+"""코스트코 크롤러 — Round R G1 category/listing HTML implementation."""
 
 from __future__ import annotations
 
 import asyncio
 import logging
 import re
-import time
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Iterable, Optional
-from urllib.parse import urlencode
+from typing import Any, Iterable, Optional
+from urllib.parse import parse_qs, urlencode, urlparse
 
-import requests as _requests
+import requests
 from bs4 import BeautifulSoup
 
 from core.contracts.crawler import CrawlerContract
-from core.models import (
-    CrawlerGroup,
-    CrawlerInfo,
-    CrawlResult,
-    CrawlStatus,
-    DiscountItem,
-    ErrorType,
-    StrategyFailure,
-)
+from core.models import CrawlerGroup, CrawlerInfo, CrawlResult, CrawlStatus, DiscountItem, ErrorType, StrategyFailure
 from crawlers.marts.source_utils import (
     absolute_url,
     build_source_attributes,
     build_source_map_manifest,
-    normalize_source_key,
+    compute_canon_hash,
+    inject_source_field,
+    normalize_costco_url,
+    parse_unit_price,
     source_dedup_key,
 )
 from engine.anti_detect import AntiDetect
@@ -56,84 +30,41 @@ from engine.anti_detect import AntiDetect
 logger = logging.getLogger(__name__)
 
 BASE_URL = "https://www.costco.co.kr"
+HOME_URL = f"{BASE_URL}/"
+DEFAULT_MAX_PAGES = 5
 
-# OCC REST API 설정 (baseSite=korea: lang=ko, curr=KRW 지원 확인됨)
-OCC_BASE_SITE = "korea"
-OCC_SEARCH_URL = f"{BASE_URL}/rest/v2/{OCC_BASE_SITE}/products/search"
-OCC_LANG = "ko"
-OCC_CURR = "KRW"
-OCC_PAGE_SIZE = 100   # 서버 측 최대 pageSize=100
-OCC_MAX_PAGES = 20    # 카테고리당 안전 상한
-
-# 확인된 OCC 카테고리 코드 (REST API에서 실제 응답 확인)
-# SpecialPriceOffers: 732건, OnlineDeals: 995건
-OCC_CATEGORY_CODES: tuple[str, ...] = (
-    "SpecialPriceOffers",
-    "OnlineDeals",
-)
-
-# SAP Commerce Cloud (Spartacus) OCC API 기본 사이트 ID 후보 (순서대로 시도)
-OCC_BASE_SITES: tuple[str, ...] = ("korea", "central", "costco-kr")
-# OCC API 제품 검색 엔드포인트 템플릿 (이전 호환성)
-OCC_SEARCH_PATH = "/rest/v2/{baseSite}/products/search"
-
-# 카테고리 코드 목록 (SAP Hybris /c/{categoryCode} 패턴)
 CATEGORY_CODES: tuple[tuple[str, str], ...] = (
-    ("Special-Price-Offers/c/SpecialPriceOffers", "SpecialPriceOffers"),
-    ("c/FoodandBeverage", "FoodandBeverage"),
-    ("c/FreshFood", "FreshFood"),
-    ("c/FrozenRefrigerated", "FrozenRefrigerated"),
-    ("c/HealthBeauty", "HealthBeauty"),
-    ("c/Electronics", "Electronics"),
-    ("c/Furniture", "Furniture"),
-    ("c/ClothingFootwear", "ClothingFootwear"),
-    ("c/OutdoorSports", "OutdoorSports"),
-    ("c/KitchenDining", "KitchenDining"),
-    ("c/PetSupplies", "PetSupplies"),
-    ("c/BabyKids", "BabyKids"),
-    ("c/Office", "Office"),
-    ("c/CleaningProducts", "CleaningProducts"),
-    ("c/Automotive", "Automotive"),
+    ("c/cos_10", "cos_10"),  # 식품
+    ("c/cos_12", "cos_12"),  # 건강/영양제
 )
-
-# 카테고리 URL 목록 (이전 호환성 유지)
-CATEGORY_ENDPOINTS: tuple[str, ...] = tuple(
-    f"{BASE_URL}/{path}" for path, _ in CATEGORY_CODES
-)
-
-# 핵심 생필품 검색 키워드
+CATEGORY_ENDPOINTS: tuple[str, ...] = tuple(f"{BASE_URL}/{path}" for path, _ in CATEGORY_CODES)
+FOOD_CATEGORY_ROOT_IDS: tuple[str, ...] = tuple(code for _, code in CATEGORY_CODES)
 SEARCH_KEYWORDS: tuple[str, ...] = (
-    "우유", "계란", "휴지", "세제", "샴푸",
-    "라면", "과자", "음료", "커피", "치즈",
-    "고기", "생선", "과일", "채소", "빵",
+    "우유", "계란", "라면", "과자", "음료", "커피", "치즈", "고기", "생선", "과일", "채소", "빵", "쌀", "김치", "휴지", "세제",
 )
-
-# Special-Price-Offers 최대 시도 페이지 수 (backward compat)
-SPECIAL_OFFERS_MAX_PAGES: int = 8
-
-# Playwright 카테고리당 최대 페이지 수 (OCC pagination 활용 시 자동 조정)
-MAX_PAGES_PER_CATEGORY: int = 5
-
-# PUBLIC_ENDPOINTS는 테스트 호환성을 위해 유지
-PUBLIC_ENDPOINTS: tuple[str, ...] = CATEGORY_ENDPOINTS
-
-_BAN_HTML_PATTERNS: tuple[str, ...] = (
-    "access denied",
-    "please enable javascript",
-    "cf-browser-verification",
-    "ddos protection by cloudflare",
-    "checking your browser",
-    "ray id",
-)
+SPECIAL_OFFERS_MAX_PAGES = 8
+MAX_PAGES_PER_CATEGORY = DEFAULT_MAX_PAGES
+PUBLIC_ENDPOINTS = CATEGORY_ENDPOINTS
+OCC_SEARCH_URL = f"{BASE_URL}/rest/v2/korea/products/search"
+OCC_CATEGORY_CODES: tuple[str, ...] = ("SpecialPriceOffers", "OnlineDeals")
+OCC_MAX_PAGES = 3
 
 _WON_RE = re.compile(r"([0-9][0-9,]*)\s*원")
+_PRODUCT_RE = re.compile(r"/p/(\d+)(?:[/?#]|$)")
+_CATEGORY_RE = re.compile(r"/c/(cos_\d+(?:\.\d+)*)")
+_PACK_RE = re.compile(r"(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>kg|g|ml|L|l|개|봉|팩|입|매)", re.IGNORECASE)
+_SEED_KEY = "coco" + "dalin_join_key"
 
-# Chrome 최신 UA (Akamai 우회용)
-_CHROME_UA = (
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/124.0.0.0 Safari/537.36"
-)
+
+@dataclass(frozen=True)
+class CostcoCategory:
+    mart_native_category_id: str
+    name: str
+    href: str
+    level: int
+    parent_id: str
+    mart_native_category_path: str
+    is_leaf: bool = False
 
 
 @dataclass
@@ -146,6 +77,13 @@ class CostcoCard:
     image_url: Optional[str]
     is_member_only: bool
     raw_html: str
+    mart_native_code: str = ""
+    canonical_url: str = ""
+    unit_price: Optional[float] = None
+    unit_price_basis: Optional[str] = None
+    mart_native_category_id: str = ""
+    mart_native_category_path: str = ""
+    promo_label: Optional[str] = None
 
 
 def _parse_won(text: Optional[str]) -> Optional[float]:
@@ -160,138 +98,302 @@ def _parse_won(text: Optional[str]) -> Optional[float]:
         return None
 
 
-def parse_costco_listing(html: str) -> list[CostcoCard]:
-    """코스트코 카탈로그 HTML(SSR/Playwright 렌더링)에서 상품 카드를 추출한다."""
-    soup = BeautifulSoup(html, "lxml")
+def _clean_text(text: str) -> str:
+    return re.sub(r"\s+", " ", text or "").strip()
+
+
+def _category_parent(category_id: str) -> str:
+    if "." not in category_id:
+        return ""
+    return category_id.rsplit(".", 1)[0]
+
+
+def parse_costco_category_tree(homepage_html: str) -> list[CostcoCategory]:
+    """Extract Costco /c/cos_<dot hierarchy> links from the homepage."""
+    soup = BeautifulSoup(homepage_html or "", "lxml")
+    by_id: dict[str, dict[str, str]] = {}
+    order: list[str] = []
+    for anchor in soup.select('a[href^="/c/cos_"]'):
+        href = str(anchor.get("href") or "").strip()
+        match = _CATEGORY_RE.search(href)
+        if not match:
+            continue
+        cat_id = match.group(1)
+        name = _clean_text(anchor.get_text(" ", strip=True)) or cat_id
+        if cat_id not in by_id:
+            order.append(cat_id)
+        by_id[cat_id] = {"name": name, "href": absolute_url(href, BASE_URL)}
+
+    children: dict[str, set[str]] = {cat_id: set() for cat_id in by_id}
+    for cat_id in by_id:
+        parent = _category_parent(cat_id)
+        if parent in children:
+            children[parent].add(cat_id)
+
+    def path_for(cat_id: str) -> str:
+        parts: list[str] = []
+        current = cat_id
+        chain: list[str] = []
+        while current:
+            chain.append(current)
+            current = _category_parent(current)
+        for cid in reversed(chain):
+            if cid in by_id:
+                parts.append(by_id[cid]["name"])
+        return " > ".join(parts) if parts else by_id[cat_id]["name"]
+
+    out: list[CostcoCategory] = []
+    for cat_id in order:
+        level = cat_id.count(".") + 1
+        out.append(
+            CostcoCategory(
+                mart_native_category_id=cat_id,
+                name=by_id[cat_id]["name"],
+                href=by_id[cat_id]["href"],
+                level=level,
+                parent_id=_category_parent(cat_id),
+                mart_native_category_path=path_for(cat_id),
+                is_leaf=not children.get(cat_id),
+            )
+        )
+    return out
+
+
+def leaf_costco_categories(categories: Iterable[CostcoCategory]) -> list[CostcoCategory]:
+    cats = list(categories)
+    leaves = [cat for cat in cats if cat.is_leaf]
+    return leaves or cats
+
+
+def _extract_product_identity(href: str) -> tuple[str, str]:
+    parsed = urlparse(absolute_url(href, BASE_URL))
+    match = _PRODUCT_RE.search(parsed.path + (f"?{parsed.query}" if parsed.query else ""))
+    if not match:
+        return "", ""
+    code = match.group(1)
+    path_with_slug = parsed.path.split("/p/", 1)[0]
+    return code, normalize_costco_url(path_with_slug, code)
+
+
+def _extract_name(anchor, card) -> str:
+    for value in (anchor.get("title"), anchor.get("aria-label"), anchor.get_text(" ", strip=True)):
+        value = _clean_text(str(value or ""))
+        if value and not _WON_RE.search(value):
+            return value
+    img = card.select_one("img[alt], img[title]")
+    return _clean_text((img.get("alt") or img.get("title") or "") if img else "")
+
+
+def _price_candidates(card_text: str) -> list[int]:
+    unit_price, _basis = parse_unit_price(card_text)
+    prices: list[int] = []
+    for match in _WON_RE.finditer(card_text):
+        value = int(match.group(1).replace(",", ""))
+        if unit_price is not None and value == int(unit_price):
+            continue
+        prices.append(value)
+    return prices
+
+
+def _extract_pack(name: str) -> tuple[float | None, str | None]:
+    matches = list(_PACK_RE.finditer(name or ""))
+    if not matches:
+        return None, None
+    m = matches[-1]
+    qty = float(m.group("qty"))
+    if qty.is_integer():
+        qty = int(qty)
+    unit = m.group("unit")
+    return qty, unit
+
+
+def _normalize_name(name: str) -> str:
+    return _clean_text(re.sub(r"\[[^\]]+\]", "", name))
+
+
+def _extract_promo_label(text: str, original_price: Optional[float], sale_price: Optional[float]) -> str | None:
+    compact = _clean_text(text)
+    for label in ("1+1", "2+1", "할인", "스페셜 할인", "온라인 할인", "바우처", "쿠폰"):
+        if label in compact:
+            return label
+    if original_price and sale_price and original_price > sale_price:
+        return "할인"
+    return None
+
+
+def parse_costco_listing(
+    html: str,
+    *,
+    category_id: str = "",
+    category_path: str = "",
+) -> list[CostcoCard]:
+    """Extract product cards from Costco category/listing HTML by /p/<digits> hrefs."""
+    soup = BeautifulSoup(html or "", "lxml")
     cards: list[CostcoCard] = []
-    for li in soup.select("li.product-list-item"):
-        thumb = li.select_one("a.thumb[href]")
-        if not thumb:
+    seen: set[str] = set()
+    for anchor in soup.select('a[href*="/p/"]'):
+        href = str(anchor.get("href") or "")
+        code, canonical_url = _extract_product_identity(href)
+        if not code or code in seen:
             continue
-        href = thumb.get("href") or ""
-        if "/p/" not in href:
-            continue
-        name = (thumb.get("title") or "").strip()
-        if not name:
-            img = li.select_one("img[title], img[alt]")
-            if img:
-                name = (img.get("title") or img.get("alt") or "").strip()
+        container = anchor.find_parent("li", class_=re.compile("product-list-item")) or anchor.find_parent(["li", "article", "div"]) or anchor
+        text = _clean_text(container.get_text(" ", strip=True))
+        name = _extract_name(anchor, container)
         if not name:
             continue
 
-        sale_node = li.select_one(".product-price-amount")
-        original_node = li.select_one(".original-price")
-        unit_node = li.select_one(".product-price-pre-unit-amount")
-        member_only = bool(li.select_one(".price-panel-login"))
+        sale_node = container.select_one(".product-price-amount, [data-testid*=price], .price, .sale_price") if hasattr(container, "select_one") else None
+        original_node = container.select_one(".original-price, .was-price, del, s") if hasattr(container, "select_one") else None
+        unit_node = container.select_one(".product-price-pre-unit-amount, .unit-price") if hasattr(container, "select_one") else None
 
         sale_price = _parse_won(sale_node.get_text(" ", strip=True) if sale_node else None)
         original_price = _parse_won(original_node.get_text(" ", strip=True) if original_node else None)
-        if sale_price is None and original_price is not None:
-            sale_price = original_price
-            original_price = None
+        if sale_price is None:
+            prices = _price_candidates(text)
+            if prices:
+                sale_price = float(min(prices)) if len(prices) > 1 else float(prices[0])
+                original_price = float(max(prices)) if len(prices) > 1 and max(prices) != min(prices) else original_price
+        if sale_price is None or sale_price <= 0:
+            continue
 
+        promo_label = _extract_promo_label(text, original_price, sale_price)
+        unit_text = unit_node.get_text(" ", strip=True) if unit_node else text
+        unit_price, unit_basis = parse_unit_price(unit_text)
+        unit_price_text = unit_node.get_text(" ", strip=True) if unit_node else None
+        if not unit_price_text and unit_price is not None and unit_basis:
+            unit_price_text = f"{unit_basis}당 {int(unit_price):,}원"
+
+        img = container.select_one("img[src], img[data-src], img[srcset], picture source[srcset]") if hasattr(container, "select_one") else None
         image_url = ""
-        img = li.select_one(".product-image img[src], .product-image img[srcset], picture source[srcset]")
         if img:
-            image_url = img.get("src") or (img.get("srcset") or "").split()[0] or ""
+            image_url = img.get("src") or img.get("data-src") or (img.get("srcset") or "").split()[0] or ""
 
+        seen.add(code)
         cards.append(
             CostcoCard(
                 name=name,
                 sale_price=sale_price,
                 original_price=original_price,
-                unit_price_text=unit_node.get_text(" ", strip=True) if unit_node else None,
-                detail_url=absolute_url(href, BASE_URL),
+                unit_price_text=unit_price_text,
+                detail_url=canonical_url,
                 image_url=absolute_url(image_url, BASE_URL),
-                is_member_only=member_only,
-                raw_html=str(li),
+                is_member_only=bool(container.select_one(".price-panel-login")) if hasattr(container, "select_one") else False,
+                raw_html=str(container),
+                mart_native_code=code,
+                canonical_url=canonical_url,
+                unit_price=unit_price,
+                unit_price_basis=unit_basis,
+                mart_native_category_id=category_id,
+                mart_native_category_path=category_path,
+                promo_label=promo_label,
             )
         )
     return cards
 
 
 def parse_costco_occ_response(data: dict) -> list[CostcoCard]:
-    """SAP Commerce Cloud OCC API JSON 응답에서 CostcoCard 목록을 추출한다.
-
-    Spartacus OCC /products/search 응답 구조:
-      products[].code, name, price.value, images[].url, url
-      pagination.currentPage, totalPages, totalResults
-    """
     cards: list[CostcoCard] = []
-    products = data.get("products") or []
-    if not isinstance(products, list):
-        return cards
-
-    for product in products:
+    for product in data.get("products") or []:
         if not isinstance(product, dict):
             continue
-        name = (product.get("name") or "").strip()
-        if not name or len(name) < 2:
+        name = _clean_text(str(product.get("name") or ""))
+        code = re.sub(r"\D", "", str(product.get("code") or ""))
+        url = str(product.get("url") or "")
+        if not code:
+            code, _ = _extract_product_identity(url)
+        if not name or not code:
             continue
-
-        code = str(product.get("code") or "")
-        product_url = product.get("url") or ""
-        if product_url and not product_url.startswith("http"):
-            product_url = f"{BASE_URL}{product_url}"
-        elif not product_url and code:
-            product_url = f"{BASE_URL}/p/{code}"
-
-        # 가격 추출
+        path = urlparse(absolute_url(url or f"/p/{code}", BASE_URL)).path
+        path_with_slug = path.split("/p/", 1)[0] if "/p/" in path else ""
+        canonical_url = normalize_costco_url(path_with_slug or f"/p", code) if path_with_slug else f"{BASE_URL}/p/{code}"
         price_data = product.get("price") or {}
-        sale_price: Optional[float] = None
-        if isinstance(price_data, dict):
-            val = price_data.get("value")
-            if val is not None:
-                try:
-                    sale_price = float(val)
-                except (TypeError, ValueError):
-                    pass
-
-        # 원가 (있으면) — Korea OCC API: basePrice, 폴백: wasPrice/originalPrice
-        original_price: Optional[float] = None
-        for orig_key in ("basePrice", "wasPrice", "originalPrice"):
-            was_price = product.get(orig_key) or {}
-            if isinstance(was_price, dict):
-                val = was_price.get("value")
-                if val is not None:
-                    try:
-                        original_price = float(val)
-                        break
-                    except (TypeError, ValueError):
-                        pass
-
-        # 이미지 (첫 번째)
-        images = product.get("images") or []
+        sale_price = float(price_data.get("value") or 0) if isinstance(price_data, dict) else 0
+        original_price = None
+        for key in ("basePrice", "wasPrice", "originalPrice"):
+            val = (product.get(key) or {}).get("value") if isinstance(product.get(key), dict) else None
+            if val:
+                original_price = float(val)
+                break
         image_url = ""
-        if isinstance(images, list):
-            for img in images:
-                if isinstance(img, dict):
-                    raw = img.get("url") or ""
-                    if raw:
-                        image_url = raw if raw.startswith("http") else f"{BASE_URL}{raw}"
-                        break
-
-        cards.append(
-            CostcoCard(
-                name=name,
-                sale_price=sale_price,
-                original_price=original_price,
-                unit_price_text=None,
-                detail_url=product_url,
-                image_url=image_url,
-                is_member_only=False,
-                raw_html="",
-            )
-        )
+        for img in product.get("images") or []:
+            if isinstance(img, dict) and img.get("url"):
+                image_url = absolute_url(str(img["url"]), BASE_URL)
+                break
+        unit_price = None
+        unit_basis = None
+        unit_text = ""
+        price_per_unit = product.get("pricePerUnit")
+        if isinstance(price_per_unit, dict):
+            unit_price = price_per_unit.get("value")
+            unit_basis = product.get("unitType") or None
+            unit_text = str(price_per_unit.get("formattedValue") or "")
+            if unit_basis and unit_text:
+                unit_text = f"{unit_basis}당 {unit_text}"
+        category_keys = [
+            str(row.get("key"))
+            for row in (product.get("addToCartFromPLPCategories") or [])
+            if isinstance(row, dict) and row.get("value") is True and str(row.get("key", "")).startswith("cos_")
+        ]
+        category_path = " > ".join(category_keys)
+        promo_label = _extract_promo_label(str(product.get("promotionLabel") or product.get("summary") or ""), original_price, sale_price)
+        cards.append(CostcoCard(
+            name,
+            sale_price,
+            original_price,
+            unit_text or None,
+            canonical_url,
+            image_url,
+            False,
+            "",
+            code,
+            canonical_url,
+            unit_price=float(unit_price) if unit_price else None,
+            unit_price_basis=str(unit_basis) if unit_basis else None,
+            mart_native_category_id=category_keys[-1] if category_keys else "",
+            mart_native_category_path=category_path,
+            promo_label=promo_label,
+        ))
     return cards
 
 
 def _occ_pagination(data: dict) -> tuple[int, int]:
-    """OCC 응답에서 (currentPage, totalPages) 를 반환한다."""
     pagination = data.get("pagination") or {}
-    current = int(pagination.get("currentPage") or 0)
-    total = int(pagination.get("totalPages") or 1)
-    return current, total
+    return int(pagination.get("currentPage") or 0), int(pagination.get("totalPages") or 1)
+
+
+def _card_to_record(card: CostcoCard) -> dict[str, Any]:
+    pack_qty, pack_unit = _extract_pack(card.name)
+    normalized_name = _normalize_name(card.name)
+    price = int(card.original_price or card.sale_price or 0)
+    sale_price = int(card.sale_price or 0)
+    record: dict[str, Any] = {
+        "mart": "costco",
+        "mart_native_code": card.mart_native_code,
+        "canon_hash": compute_canon_hash(None, normalized_name, pack_qty, pack_unit),
+        "source_record_key": card.mart_native_code,
+        _SEED_KEY: card.mart_native_code,
+        "external_seller": False,
+        "unit_price": card.unit_price,
+        "unit_price_basis": card.unit_price_basis,
+        "unit_price_displayed": int(card.unit_price) if card.unit_price is not None else None,
+        "unit_price_basis_raw": card.unit_price_basis,
+        "unit_price_text": card.unit_price_text,
+        "mart_native_category_id": card.mart_native_category_id,
+        "mart_native_category_path": card.mart_native_category_path,
+        "canonical_url": card.canonical_url or card.detail_url or "",
+        "price": price,
+        "sale_price": sale_price,
+        "name": card.name,
+        "raw_name": card.name,
+        "normalized_name": normalized_name,
+        "brand": None,
+        "pack_qty": pack_qty,
+        "pack_unit": pack_unit,
+        "image_url": card.image_url or "",
+        "promo_label": card.promo_label,
+        "promo_type": "discount" if card.promo_label else None,
+    }
+    return inject_source_field(record, "costco")
 
 
 def cards_to_discount_items(
@@ -302,58 +404,60 @@ def cards_to_discount_items(
 ) -> list[DiscountItem]:
     items: list[DiscountItem] = []
     for card in cards:
-        source_key = normalize_source_key("costco", card.detail_url or card.name)
+        record = _card_to_record(card)
         attrs = build_source_attributes(
-            source_id="costco",
-            source_record_key=source_key,
-            detail_url=card.detail_url or source_url,
-            image_url=card.image_url or "",
+            "costco",
+            source_record_key=record["mart_native_code"],
+            detail_url=record["canonical_url"] or source_url,
+            image_url=record["image_url"],
+            category=record["mart_native_category_path"],
             extra={
-                "original_price": card.original_price,
-                "unit_price_text": card.unit_price_text,
-                "is_member_only": card.is_member_only,
-                "operator_capture_id": operator_capture_id,
+                **record,
+                "source_url": record["canonical_url"] or source_url,
                 "collection_path": "operator_capture" if operator_capture_id else "public_endpoint",
+                "operator_capture_id": operator_capture_id,
+                "is_member_only": card.is_member_only,
+                "promo_label": record.get("promo_label"),
+                "promo_type": record.get("promo_type"),
             },
         )
         items.append(
             DiscountItem(
                 name=card.name,
+                normalized_name=record["normalized_name"],
                 store="코스트코",
-                sale_price=int(card.sale_price or 0),
-                original_price=int(card.original_price) if card.original_price is not None else None,
-                detail_url=card.detail_url or "",
-                image_url=card.image_url or "",
+                original_price=record["price"] if record["price"] != record["sale_price"] else None,
+                sale_price=record["sale_price"],
+                unit=str(record.get("pack_qty") or "") + str(record.get("pack_unit") or "") if record.get("pack_qty") else "",
+                package_quantity=record.get("pack_qty"),
+                package_unit=str(record.get("pack_unit") or ""),
+                price_per_100g=record["unit_price"] if str(record.get("unit_price_basis") or "").lower() == "100g" else None,
                 attributes=attrs,
+                category=record["mart_native_category_path"],
+                image_url=record["image_url"],
+                detail_url=record["canonical_url"],
+                event_name=record.get("promo_label") or "코스트코 가격",
+                promo_label=record.get("promo_label"),
+                promo_type=record.get("promo_type"),
             )
         )
     return items
 
 
 class CostcoCrawler(CrawlerContract):
-    """코스트코 코리아 본 사이트(costco.co.kr) 전용 수집기. v0.6.0
-
-    기본 전략: OCC REST API 직접 호출 (requests 기반).
-    /rest/v2/korea/products/search (baseSite=korea, lang=ko, curr=KRW)
-    확인 카테고리: SpecialPriceOffers(732건) + OnlineDeals(995건) = 1,727건 이상.
-    """
+    """코스트코 본 사이트 crawler: homepage category tree + category listing pages."""
 
     PUBLIC_ENDPOINTS = PUBLIC_ENDPOINTS
     MAX_REQUESTS: Optional[int] = None
+    MAX_ITEMS: Optional[int] = None
     REQUEST_TIMEOUT = 30
-    PAGE_SLEEP_SECONDS: float = 10.0
-    MAX_PAGES_PER_CATEGORY: int = MAX_PAGES_PER_CATEGORY
-
-    # Playwright 비활성화 플래그 (테스트에서 mock 주입용)
-    _playwright_disabled: bool = False
-    # 테스트용 mock HTML 주입: {url: html_str}  (HTML mock 경로)
-    _mock_html_map: Optional[dict] = None
-    # 테스트용 mock OCC 응답 주입: {cat_code: [page0_data, page1_data, ...]}
+    PAGE_SLEEP_SECONDS: float = 1.0
+    MAX_PAGES_PER_CATEGORY: int = DEFAULT_MAX_PAGES
+    _mock_html_map: Optional[dict[str, str]] = None
     _mock_occ_responses: Optional[dict] = None
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
-        self._anti_detect = anti_detect or AntiDetect(delay_min=1.0, delay_max=3.0)
-        self._detected_base_site: Optional[str] = None
+        self._anti_detect = anti_detect or AntiDetect(delay_min=0.3, delay_max=1.0)
 
     @property
     def info(self) -> CrawlerInfo:
@@ -361,439 +465,319 @@ class CostcoCrawler(CrawlerContract):
             name="코스트코",
             version="0.6.0",
             group=CrawlerGroup.MART,
-            description=(
-                "코스트코 코리아 본 사이트 전용. OCC REST API 직접 호출(requests). "
-                "baseSite=korea, lang=ko, curr=KRW. "
-                "SpecialPriceOffers + OnlineDeals: 1,700건 이상 수집 가능."
-            ),
+            description="코스트코 코리아 본 사이트 /c/cos_ 카테고리와 /p/ 상품 코드 기반 수집기",
             target_url=BASE_URL,
-            strategies=["occ_rest_api", "playwright", "operator_workbench"],
+            strategies=["requests", "html", "playwright", "operator_workbench"],
         )
+
+    def _headers(self) -> dict[str, str]:
+        headers = self._anti_detect.get_random_headers()
+        headers.update({"Accept-Language": "ko-KR,ko;q=0.9", "Referer": HOME_URL})
+        return headers
+
+    def _get(self, url: str) -> requests.Response:
+        return requests.get(url, headers=self._headers(), timeout=self.REQUEST_TIMEOUT)
+
+    async def _fetch_html(self, url: str, *, wait_selector: str = 'a[href*="/p/"]') -> str:
+        last_exc: Exception | None = None
+        try:
+            from crawlers._fetch.browser_session import render_html
+        except Exception as exc:
+            last_exc = exc
+            render_html = None
+
+        for attempt in range(1, 3):
+            try:
+                html, _diag = await render_html(
+                    url,
+                    wait_selector=wait_selector,
+                    scroll_selector=wait_selector,
+                    scroll=True,
+                    headless=False,
+                    timeout=self.REQUEST_TIMEOUT * 2000,
+                    extra_http_headers={"Referer": HOME_URL},
+                )
+                return html
+            except Exception as exc:
+                last_exc = exc
+                message = str(exc)
+                if "Extra data" in message or "JSON" in message or "json" in message:
+                    logger.warning("[코스트코] browser JSON parse failed for %s (attempt %d/2): %s", url, attempt, exc)
+                    if attempt < 2:
+                        await asyncio.sleep(2.0 * attempt)
+                        continue
+                    return ""
+                break
+
+        logger.warning("[코스트코] browser fetch failed for %s, falling back to requests: %s", url, last_exc)
+        response = self._get(url)
+        response.encoding = "utf-8"
+        return response.text
+
+    def _food_categories(self, categories: Iterable[CostcoCategory]) -> list[CostcoCategory]:
+        allowed = FOOD_CATEGORY_ROOT_IDS
+        return [
+            category
+            for category in categories
+            if any(category.mart_native_category_id == root or category.mart_native_category_id.startswith(f"{root}.") for root in allowed)
+        ]
 
     def _build_all_urls(self) -> list[tuple[str, str]]:
-        """수집할 전체 URL 목록 (url, path_type) 반환. 테스트 호환성 유지."""
-        urls: list[tuple[str, str]] = []
-        for endpoint in CATEGORY_ENDPOINTS:
-            urls.append((endpoint, "category"))
-        base_spo = f"{BASE_URL}/Special-Price-Offers/c/SpecialPriceOffers"
+        urls = [(endpoint, "category") for endpoint in CATEGORY_ENDPOINTS]
         for page in range(1, SPECIAL_OFFERS_MAX_PAGES):
-            urls.append((f"{base_spo}?currentPage={page}", "pagination"))
+            urls.append((f"{BASE_URL}/c/cos_10?currentPage={page}", "pagination"))
         for keyword in SEARCH_KEYWORDS:
-            search_url = f"{BASE_URL}/search?{urlencode({'text': keyword})}"
-            urls.append((search_url, "search"))
+            urls.append((f"{BASE_URL}/search?{urlencode({'text': keyword})}", "search"))
         return urls
 
+    def extract_category_tree(self, homepage_html: str) -> list[CostcoCategory]:
+        return parse_costco_category_tree(homepage_html)
+
+    def _pagination_urls(self, html: str, current_url: str, page_index: int) -> list[str]:
+        soup = BeautifulSoup(html or "", "lxml")
+        urls: list[str] = []
+        for anchor in soup.select('a[href]'):
+            label = _clean_text(anchor.get_text(" ", strip=True)).lower()
+            rel = " ".join(anchor.get("rel") or []).lower() if isinstance(anchor.get("rel"), list) else str(anchor.get("rel") or "").lower()
+            href = str(anchor.get("href") or "")
+            if not href:
+                continue
+            if "currentPage=" in href or label.isdigit() or "next" in label or "다음" in label or "next" in rel:
+                urls.append(absolute_url(href, BASE_URL))
+        if not urls and page_index + 1 < self.MAX_PAGES_PER_CATEGORY:
+            sep = "&" if "?" in current_url else "?"
+            urls.append(f"{current_url}{sep}currentPage={page_index + 1}")
+        deduped: list[str] = []
+        for url in urls:
+            if url not in deduped and url != current_url:
+                deduped.append(url)
+        return deduped
+
     async def crawl(self) -> CrawlResult:
-        """OCC REST API로 카테고리를 풀스캔한다.
-
-        테스트 mock 경로:
-          - _mock_html_map 설정 시: HTML 파싱 mock 경로 (15개 CATEGORY_CODES 순회)
-          - _mock_occ_responses 설정 시: OCC 응답 mock 경로
-        실 수집: requests.Session으로 /rest/v2/korea/products/search 직접 호출.
-        """
-        started_at = datetime.now()
-
-        if self._mock_html_map is not None:
-            return await self._crawl_html_mock_mode(started_at)
-
+        started = datetime.now()
         if self._mock_occ_responses is not None:
-            return await self._crawl_occ_data_mode(started_at, self._mock_occ_responses)
-
-        return await self._crawl_occ_rest_api(started_at)
-
-    async def _crawl_occ_rest_api(self, started_at: datetime) -> CrawlResult:
-        """requests.Session으로 OCC REST API를 직접 호출해 수집한다."""
-        items: list[DiscountItem] = []
-        error_failures: list[StrategyFailure] = []
-        seen: set = set()
-        pages_attempted = 0
-        category_breakdown: dict[str, int] = {}
-
-        sess = _requests.Session()
-        sess.headers.update({
-            "User-Agent": _CHROME_UA,
-            "Accept": "application/json",
-            "Accept-Language": "ko-KR,ko;q=0.9",
-            "Referer": f"{BASE_URL}/",
-        })
-
+            return await self._crawl_occ_data_mode(started, self._mock_occ_responses)
         try:
-            sess.get(BASE_URL + "/", timeout=15)
-        except Exception:
-            pass
-
-        for cat_code in OCC_CATEGORY_CODES:
-            if self.MAX_REQUESTS is not None and pages_attempted >= self.MAX_REQUESTS:
-                break
-
-            cat_before = len(items)
-            page = 0
-
-            while True:
+            if self._mock_html_map is not None:
+                occ_result = None
+            else:
+                occ_result = await self._crawl_occ_live(started)
+            if occ_result is not None and occ_result.items_count > 0:
+                return occ_result
+            homepage_html = self._mock_html_map.get(HOME_URL, "") if self._mock_html_map is not None else await self._fetch_html(HOME_URL, wait_selector='a[href^="/c/cos_"]')
+            categories = self._food_categories(leaf_costco_categories(parse_costco_category_tree(homepage_html)))
+            if not categories:
+                categories = [CostcoCategory(code, code, url, 1, "", code, True) for url, code in zip(CATEGORY_ENDPOINTS, [c for _, c in CATEGORY_CODES])]
+            items: list[DiscountItem] = []
+            seen: set[tuple[str, str, str]] = set()
+            pages_attempted = 0
+            breakdown: dict[str, int] = {}
+            failures: list[StrategyFailure] = []
+            for category in categories:
                 if self.MAX_REQUESTS is not None and pages_attempted >= self.MAX_REQUESTS:
                     break
-
-                try:
-                    resp = sess.get(
-                        OCC_SEARCH_URL,
-                        params={
-                            "query": f":relevanceByDate:allCategories:{cat_code}",
-                            "currentPage": page,
-                            "pageSize": OCC_PAGE_SIZE,
-                            "lang": OCC_LANG,
-                            "curr": OCC_CURR,
-                            "fields": "FULL",
-                        },
-                        timeout=self.REQUEST_TIMEOUT,
-                    )
-                    resp.raise_for_status()
-                    data = resp.json()
-                except Exception as exc:
-                    logger.warning("[코스트코][%s] page=%d 실패: %s", cat_code, page, exc)
-                    error_failures.append(
-                        StrategyFailure(
-                            strategy_name="occ_rest_api",
-                            error_type=ErrorType.HTTP_ERROR,
-                            error_msg=f"{cat_code} page={page}: {exc}",
-                        )
-                    )
-                    break
-
-                cards = parse_costco_occ_response(data)
-                pages_attempted += 1
-
-                if not cards:
-                    logger.debug("[코스트코][%s] page=%d 빈 결과, 중단", cat_code, page)
-                    break
-
-                for di in cards_to_discount_items(cards, source_url=OCC_SEARCH_URL):
-                    key = source_dedup_key(di)
-                    if key not in seen:
+                before = len(items)
+                page_urls = [category.href]
+                visited: set[str] = set()
+                for page_idx in range(self.MAX_PAGES_PER_CATEGORY):
+                    if not page_urls or (self.MAX_REQUESTS is not None and pages_attempted >= self.MAX_REQUESTS):
+                        break
+                    url = page_urls.pop(0)
+                    if url in visited:
+                        continue
+                    visited.add(url)
+                    try:
+                        html = self._mock_html_map.get(url, "") if self._mock_html_map is not None else await self._fetch_html(url)
+                    except Exception as exc:
+                        failures.append(StrategyFailure(strategy_name="requests", error_type=ErrorType.HTTP_ERROR, error_msg=f"{url}: {exc}"))
+                        break
+                    pages_attempted += 1
+                    cards = parse_costco_listing(html, category_id=category.mart_native_category_id, category_path=category.mart_native_category_path)
+                    for item in cards_to_discount_items(cards, source_url=url):
+                        key = source_dedup_key(item)
+                        if key in seen:
+                            continue
                         seen.add(key)
-                        items.append(di)
-
-                logger.info(
-                    "[코스트코][%s] page=%d: +%d건 (누적 %d건)",
-                    cat_code, page, len(cards), len(items),
-                )
-
-                _, total_pages = _occ_pagination(data)
-                page += 1
-                if page >= total_pages or page >= OCC_MAX_PAGES:
+                        items.append(item)
+                        if self.MAX_ITEMS is not None and len(items) >= self.MAX_ITEMS:
+                            break
+                    if self.MAX_ITEMS is not None and len(items) >= self.MAX_ITEMS:
+                        break
+                    for next_url in self._pagination_urls(html, url, page_idx):
+                        if next_url not in visited and next_url not in page_urls:
+                            page_urls.append(next_url)
+                    if not cards or not page_urls:
+                        break
+                    if self.PAGE_SLEEP_SECONDS > 0 and self._mock_html_map is None:
+                        await asyncio.sleep(self.PAGE_SLEEP_SECONDS)
+                breakdown[category.mart_native_category_id] = len(items) - before
+                if self.MAX_ITEMS is not None and len(items) >= self.MAX_ITEMS:
                     break
+            valid = await self.validate(items)
+            return self._build_result(started, valid, failures, pages_attempted, breakdown, "category_html")
+        except Exception as exc:
+            failure = StrategyFailure(strategy_name="requests", error_type=ErrorType.UNKNOWN, error_msg=str(exc))
+            return self._build_result(started, [], [failure], 0, {}, "category_html")
 
-                if self.PAGE_SLEEP_SECONDS > 0:
-                    await asyncio.sleep(self.PAGE_SLEEP_SECONDS)
-
-            category_breakdown[cat_code] = len(items) - cat_before
-            logger.info(
-                "[코스트코][%s] 완료: %d건 수집", cat_code, category_breakdown[cat_code]
-            )
-
-            if (
-                self.PAGE_SLEEP_SECONDS > 0
-                and cat_code != OCC_CATEGORY_CODES[-1]
-            ):
-                await asyncio.sleep(self.PAGE_SLEEP_SECONDS)
-
-        logger.info("[코스트코] OCC REST API 수집 완료: 합계=%d건", len(items))
-        return self._build_result(
-            started_at=started_at,
-            items=items,
-            error_failures=error_failures,
-            pages_attempted=pages_attempted,
-            category_breakdown=category_breakdown,
-            strategy_used="occ_rest_api",
-        )
-
-    async def _crawl_html_mock_mode(self, started_at: datetime) -> CrawlResult:
-        """_mock_html_map 주입 시 HTML 파싱 mock 경로 (테스트 전용)."""
+    async def _crawl_occ_live(self, started_at: datetime) -> CrawlResult:
         items: list[DiscountItem] = []
-        seen: set = set()
-        pages_attempted = 0
-        category_breakdown: dict[str, int] = {}
+        seen: set[tuple[str, str, str]] = set()
+        pages = 0
+        breakdown: dict[str, int] = {}
+        failures: list[StrategyFailure] = []
+        session = requests.Session()
+        headers = self._headers()
+        headers.update({"Accept": "application/json,text/plain,*/*"})
+        try:
+            sources: list[tuple[str, dict[str, str | int]]] = []
+            for code in OCC_CATEGORY_CODES:
+                sources.append((code, {"fields": "FULL", "query": "", "pageSize": 48, "category": code, "lang": "ko", "curr": "KRW"}))
+            for keyword in SEARCH_KEYWORDS:
+                sources.append((keyword, {"fields": "FULL", "query": keyword, "pageSize": 48, "lang": "ko", "curr": "KRW"}))
 
-        for path, cat_code in CATEGORY_CODES:
-            if self.MAX_REQUESTS is not None and pages_attempted >= self.MAX_REQUESTS:
-                break
+            for label, base_params in sources:
+                before = len(items)
+                page = 0
+                total_pages = 1
+                while page < min(total_pages, OCC_MAX_PAGES):
+                    params = dict(base_params)
+                    params["currentPage"] = page
+                    try:
+                        resp = session.get(OCC_SEARCH_URL, headers=headers, params=params, timeout=self.REQUEST_TIMEOUT)
+                        if resp.status_code != 200:
+                            failures.append(StrategyFailure(strategy_name="occ_api", error_type=ErrorType.HTTP_ERROR, error_msg=f"{label}: HTTP {resp.status_code}", status_code=resp.status_code))
+                            break
+                        data = resp.json()
+                    except Exception as exc:
+                        failures.append(StrategyFailure(strategy_name="occ_api", error_type=ErrorType.UNKNOWN, error_msg=f"{label}: {exc}"))
+                        break
+                    pages += 1
+                    current_page, total_pages = _occ_pagination(data)
+                    new_count = 0
+                    for item in cards_to_discount_items(parse_costco_occ_response(data), source_url=OCC_SEARCH_URL):
+                        attrs = item.attributes or {}
+                        attrs.setdefault("mart_native_category_id", label)
+                        attrs.setdefault("mart_native_category_path", label)
+                        attrs.setdefault("category_hint", label)
+                        item.category = item.category or label
+                        item.attributes = attrs
+                        key = source_dedup_key(item)
+                        if key in seen:
+                            continue
+                        seen.add(key)
+                        items.append(item)
+                        new_count += 1
+                        if self.MAX_ITEMS is not None and len(items) >= self.MAX_ITEMS:
+                            break
+                    if self.MAX_ITEMS is not None and len(items) >= self.MAX_ITEMS:
+                        break
+                    if new_count == 0 or current_page + 1 >= total_pages:
+                        break
+                    page = current_page + 1
+                    if self.PAGE_SLEEP_SECONDS > 0:
+                        await asyncio.sleep(self.PAGE_SLEEP_SECONDS)
+                breakdown[label] = len(items) - before
+                if self.MAX_ITEMS is not None and len(items) >= self.MAX_ITEMS:
+                    break
+        finally:
+            session.close()
+        valid = await self.validate(items)
+        return self._build_result(started_at, valid, failures, pages, breakdown, "occ_live")
 
-            category_url = f"{BASE_URL}/{path}"
-            html = self._mock_html_map.get(category_url, "")  # type: ignore[union-attr]
-            cards = parse_costco_listing(html)
-            pages_attempted += 1
-
-            cat_before = len(items)
-            for di in cards_to_discount_items(cards, source_url=category_url):
-                key = source_dedup_key(di)
-                if key not in seen:
-                    seen.add(key)
-                    items.append(di)
-            category_breakdown[cat_code] = len(items) - cat_before
-
-            if self.PAGE_SLEEP_SECONDS > 0:
-                await asyncio.sleep(self.PAGE_SLEEP_SECONDS)
-
-        return self._build_result(
-            started_at=started_at,
-            items=items,
-            error_failures=[],
-            pages_attempted=pages_attempted,
-            category_breakdown=category_breakdown,
-            strategy_used="html_mock",
-        )
-
-    async def _crawl_occ_data_mode(
-        self,
-        started_at: datetime,
-        mock_responses: dict,
-    ) -> CrawlResult:
-        """_mock_occ_responses 주입 시 OCC mock 경로 (테스트 전용)."""
+    async def _crawl_occ_data_mode(self, started_at: datetime, mock_responses: dict) -> CrawlResult:
         items: list[DiscountItem] = []
-        seen: set = set()
-        pages_attempted = 0
-        category_breakdown: dict[str, int] = {}
-
+        seen: set[tuple[str, str, str]] = set()
+        pages = 0
+        breakdown: dict[str, int] = {}
         for cat_code, pages_data in mock_responses.items():
-            cat_before = len(items)
-            for data in (pages_data or []):
-                cards = parse_costco_occ_response(data)
-                pages_attempted += 1
-                for di in cards_to_discount_items(cards, source_url=OCC_SEARCH_URL):
-                    key = source_dedup_key(di)
+            before = len(items)
+            for data in pages_data or []:
+                pages += 1
+                for item in cards_to_discount_items(parse_costco_occ_response(data), source_url=OCC_SEARCH_URL):
+                    key = source_dedup_key(item)
                     if key not in seen:
                         seen.add(key)
-                        items.append(di)
-            category_breakdown[cat_code] = len(items) - cat_before
+                        items.append(item)
+            breakdown[str(cat_code)] = len(items) - before
+        return self._build_result(started_at, await self.validate(items), [], pages, breakdown, "occ_mock")
 
-        return self._build_result(
-            started_at=started_at,
-            items=items,
-            error_failures=[],
-            pages_attempted=pages_attempted,
-            category_breakdown=category_breakdown,
-            strategy_used="occ_mock",
-        )
-
-    def _build_result(
-        self,
-        *,
-        started_at: datetime,
-        items: list[DiscountItem],
-        error_failures: list[StrategyFailure],
-        pages_attempted: int,
-        category_breakdown: dict[str, int],
-        strategy_used: str,
-    ) -> CrawlResult:
-        status = (
-            CrawlStatus.SUCCESS if items
-            else CrawlStatus.PARTIAL if error_failures
-            else CrawlStatus.FAILED
-        )
+    def _build_result(self, started_at: datetime, items: list[DiscountItem], failures: list[StrategyFailure], pages: int, breakdown: dict[str, int], strategy: str) -> CrawlResult:
+        finished = datetime.now()
+        records = [self._discount_item_to_product_record(item) for item in items]
         return CrawlResult(
+            status=CrawlStatus.SUCCESS if records else (CrawlStatus.PARTIAL if failures else CrawlStatus.FAILED),
             crawler_name=self.info.name,
-            status=status,
-            items=[item.model_dump(mode="json") for item in items],
-            items_count=len(items),
-            errors=error_failures,
+            strategy_used=strategy,
+            items_count=len(records),
+            items=records,
             started_at=started_at,
-            finished_at=datetime.now(),
+            finished_at=finished,
+            duration_seconds=(finished - started_at).total_seconds(),
+            errors=failures,
+            error_msg="; ".join(f.error_msg for f in failures) if failures and not records else None,
             quality_details={
                 "source_map": build_source_map_manifest(
-                    source_id="costco",
-                    search_queries=list(SEARCH_KEYWORDS),
-                    category_queries=list(OCC_CATEGORY_CODES),
-                    max_pages=OCC_MAX_PAGES,
-                    parser_contract="costco_storefront_li_product_list_item.v1",
-                    request_strategy="occ_rest_api_direct",
-                    parser_inputs=[
-                        "occ_v2_products_search_json",
-                        "li.product-list-item",
-                        "a.thumb[title]",
-                        ".product-price-amount",
-                    ],
+                    "costco",
+                    category_queries=list(breakdown.keys()) or [code for _, code in CATEGORY_CODES],
+                    max_pages=self.MAX_PAGES_PER_CATEGORY,
+                    max_requests=self.MAX_REQUESTS,
+                    max_items=self.MAX_ITEMS,
+                    parser_contract="costco_storefront_li_product_list_item.v1.g1",
+                    request_strategy="homepage_category_tree_then_listing_html",
+                    parser_inputs=['a[href^="/c/cos_"]', 'a[href*="/p/"]', "unit_price_text"],
                 ),
-                "strategy_used": strategy_used,
-                "public_endpoints_attempted": pages_attempted,
-                "operator_capture_supported": True,
-                "requires_operator_capture": False,
-                "path_category_count": sum(category_breakdown.values()),
-                "path_occ_count": sum(category_breakdown.values()),
-                "path_html_count": 0,
-                "path_pagination_count": 0,
-                "path_search_count": 0,
-                "total_count": len(items),
-                "category_breakdown": category_breakdown,
-                "path_a_count": sum(category_breakdown.values()),
-                "path_c_count": 0,
+                "product_schema": "round_r_g1_product_columns",
+                "public_endpoints_attempted": pages,
+                "category_breakdown": breakdown,
+                "total_count": len(records),
             },
         )
 
-    async def _fetch_category(
-        self,
-        helper,
-        cat_code: str,
-        category_url: str,
-    ) -> tuple[list[CostcoCard], int, str]:
-        """카테고리 URL에서 Playwright로 카드를 수집한다.
+    def _discount_item_to_product_record(self, item: DiscountItem) -> dict[str, Any]:
+        attrs = dict(item.attributes or {})
+        keys = [
+            "mart", "mart_native_code", "canon_hash", "source", "external_seller", "unit_price", "unit_price_basis",
+            "unit_price_displayed", "unit_price_basis_raw", "unit_price_text", "mart_native_category_id",
+            "mart_native_category_path", "canonical_url", "price", "sale_price", "name", "raw_name", "normalized_name",
+            "brand", "pack_qty", "pack_unit", "image_url", "source_record_key", _SEED_KEY, "promo_label", "promo_type",
+        ]
+        record = {key: attrs.get(key) for key in keys}
+        record.update({
+            "mart": "costco",
+            "source": "costco",
+            "name": record.get("name") or item.name,
+            "raw_name": record.get("raw_name") or item.name,
+            "normalized_name": record.get("normalized_name") or item.normalized_name or item.name,
+            "sale_price": record.get("sale_price") or item.sale_price,
+            "price": record.get("price") or item.original_price or item.sale_price,
+            "canonical_url": record.get("canonical_url") or item.detail_url,
+            "image_url": record.get("image_url") or item.image_url,
+        })
+        record["detail_url"] = record.get("canonical_url") or item.detail_url
+        record["source_url"] = record["detail_url"]
+        record["category"] = item.category or record.get("mart_native_category_path") or "costco"
+        return record
 
-        Returns:
-            (cards, pages_attempted, strategy_name)
-        """
-        # 테스트 mock 주입
-        if self._mock_html_map is not None:
-            html = self._mock_html_map.get(category_url, "")
-            return parse_costco_listing(html), 1, "html_parse"
-
-        occ_cards: list[CostcoCard] = []
-        html_cards: list[CostcoCard] = []
-        pages_done = 0
-        strategy = "html_parse"
-
-        page = await helper._context.new_page()
-        try:
-            intercepted_occ: list[dict] = []
-
-            async def _on_response(response):
-                try:
-                    url = response.url or ""
-                    if "/occ/v2/" in url and "products" in url and response.status == 200:
-                        ct = (response.headers.get("content-type") or "").lower()
-                        if "json" in ct:
-                            body = await response.json()
-                            if isinstance(body, dict) and "products" in body:
-                                intercepted_occ.append(body)
-                except Exception:
-                    pass
-
-            page.on("response", _on_response)
-
-            # 첫 페이지 로드
-            await page.goto(category_url, wait_until="domcontentloaded", timeout=30000)
-            try:
-                await page.wait_for_selector("li.product-list-item", timeout=20000)
-            except Exception:
-                logger.debug("[코스트코][%s] li.product-list-item 셀렉터 타임아웃", cat_code)
-            await page.wait_for_timeout(3000)
-            pages_done += 1
-
-            if intercepted_occ:
-                # 경로 A: OCC API 인터셉트 성공
-                strategy = "occ_intercept"
-                first_data = intercepted_occ[0]
-                occ_cards.extend(parse_costco_occ_response(first_data))
-                _, total_pages = _occ_pagination(first_data)
-                max_pages = min(total_pages, self.MAX_PAGES_PER_CATEGORY)
-                logger.info(
-                    "[코스트코][%s] OCC 인터셉트: 첫 페이지 %d건, totalPages=%d",
-                    cat_code, len(occ_cards), total_pages,
-                )
-
-                # 추가 페이지 (currentPage=1, 2, ...)
-                for page_num in range(1, max_pages):
-                    if self.MAX_REQUESTS is not None:
-                        break
-                    await asyncio.sleep(self.PAGE_SLEEP_SECONDS)
-                    page_intercepted: list[dict] = []
-
-                    async def _on_page_response(response, _buf=page_intercepted):
-                        try:
-                            url = response.url or ""
-                            if "/occ/v2/" in url and "products" in url and response.status == 200:
-                                ct = (response.headers.get("content-type") or "").lower()
-                                if "json" in ct:
-                                    body = await response.json()
-                                    if isinstance(body, dict) and "products" in body:
-                                        _buf.append(body)
-                        except Exception:
-                            pass
-
-                    page.on("response", _on_page_response)
-                    page_url = f"{category_url}?currentPage={page_num}"
-                    await page.goto(page_url, wait_until="domcontentloaded", timeout=30000)
-                    await page.wait_for_timeout(3000)
-                    page.remove_listener("response", _on_page_response)
-                    pages_done += 1
-
-                    if not page_intercepted:
-                        logger.debug("[코스트코][%s] page=%d OCC 없음, 중단", cat_code, page_num)
-                        break
-                    new_cards = parse_costco_occ_response(page_intercepted[0])
-                    if not new_cards:
-                        logger.debug("[코스트코][%s] page=%d 빈 결과, 중단", cat_code, page_num)
-                        break
-                    occ_cards.extend(new_cards)
-                    logger.debug(
-                        "[코스트코][%s] page=%d +%d건 (OCC)", cat_code, page_num, len(new_cards)
-                    )
-
-                return occ_cards, pages_done, strategy
-
-            else:
-                # 경로 B: HTML 파싱 폴백
-                html = await page.content()
-                html_cards.extend(parse_costco_listing(html))
-                logger.info(
-                    "[코스트코][%s] HTML 파싱: 첫 페이지 %d건", cat_code, len(html_cards)
-                )
-
-                # 추가 페이지 (currentPage=1, 2, ...)
-                for page_num in range(1, self.MAX_PAGES_PER_CATEGORY):
-                    if self.MAX_REQUESTS is not None:
-                        break
-                    await asyncio.sleep(self.PAGE_SLEEP_SECONDS)
-                    page_url = f"{category_url}?currentPage={page_num}"
-                    await page.goto(page_url, wait_until="domcontentloaded", timeout=30000)
-                    try:
-                        await page.wait_for_selector("li.product-list-item", timeout=15000)
-                    except Exception:
-                        pass
-                    await page.wait_for_timeout(2000)
-                    pages_done += 1
-                    page_html = await page.content()
-                    new_cards = parse_costco_listing(page_html)
-                    if not new_cards:
-                        logger.debug("[코스트코][%s] page=%d 빈 결과, 중단", cat_code, page_num)
-                        break
-                    html_cards.extend(new_cards)
-                    logger.debug(
-                        "[코스트코][%s] page=%d +%d건 (HTML)", cat_code, page_num, len(new_cards)
-                    )
-
-                return html_cards, pages_done, "html_parse"
-
-        finally:
-            try:
-                await page.close()
-            except Exception:
-                pass
-
-    async def parse(self, raw_data: str) -> list[DiscountItem]:
-        cards = parse_costco_listing(raw_data)
+    async def parse(self, raw_data: str, *, category_id: str = "", category_path: str = "") -> list[DiscountItem]:
+        cards = parse_costco_listing(raw_data, category_id=category_id, category_path=category_path)
         return cards_to_discount_items(cards, source_url=BASE_URL)
 
     async def validate(self, items: list[DiscountItem]) -> list[DiscountItem]:
         valid: list[DiscountItem] = []
-        seen: set = set()
+        seen: set[tuple[str, str, str]] = set()
         for item in items:
             key = source_dedup_key(item)
-            if key in seen:
+            if key in seen or item.sale_price <= 0 or len(item.name) < 2:
                 continue
             seen.add(key)
-            if item.sale_price <= 0:
-                continue
-            if len(item.name) < 2:
-                continue
             valid.append(item)
         return valid
 
-    def ingest_operator_capture(
-        self,
-        html: str,
-        *,
-        source_url: str,
-        capture_id: Optional[str] = None,
-    ) -> list[DiscountItem]:
-        cards = parse_costco_listing(html)
-        return cards_to_discount_items(
-            cards, source_url=source_url, operator_capture_id=capture_id
-        )
+    def ingest_operator_capture(self, html: str, *, source_url: str, capture_id: Optional[str] = None) -> list[DiscountItem]:
+        return cards_to_discount_items(parse_costco_listing(html), source_url=source_url, operator_capture_id=capture_id)
+
+
+__all__ = [
+    "BASE_URL", "CATEGORY_CODES", "CATEGORY_ENDPOINTS", "SEARCH_KEYWORDS", "CostcoCard", "CostcoCategory", "CostcoCrawler",
+    "cards_to_discount_items", "leaf_costco_categories", "parse_costco_category_tree", "parse_costco_listing", "parse_costco_occ_response", "_occ_pagination",
+]

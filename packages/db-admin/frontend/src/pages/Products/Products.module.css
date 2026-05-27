@@ -213,6 +213,19 @@
 
 /* 상세 */
 .detail { padding: 24px; }
+.preWrap {
+  white-space: pre-wrap; word-break: break-word; margin-bottom: 18px;
+  padding: 14px; border-radius: var(--radius-sm); background: var(--surface);
+  color: var(--text2); font-family: inherit;
+}
+.commentList { display: flex; flex-direction: column; gap: 10px; }
+.commentItem {
+  display: flex; justify-content: space-between; gap: 12px; align-items: flex-start;
+  padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+.commentItem p { margin-top: 4px; color: var(--text2); white-space: pre-wrap; word-break: break-word; }
+.deletedText { color: var(--text3) !important; text-decoration: line-through; opacity: .75; }
 .detailImage { margin-bottom: 16px; text-align: center; }
 .detailImage img { max-width: 200px; max-height: 200px; border-radius: var(--radius); object-fit: contain; }
 .detailGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }

@@ -38,6 +38,10 @@ function formatDateRange(from, to) {
   return `${formatDate(from)} ~ ${formatDate(to)}`;
 }
 
+function unitPriceText(p) {
+  return p.unit_price_display || p.offer_raw_data?.unit_price_display || (p.unit_price_displayed ? `${p.unit_price_displayed.toLocaleString()}원/${p.unit_price_basis_raw || '단위'}` : '-');
+}
+
 function ProductRow({ p, selected, onToggleSelect, expanded, onToggleExpand, rowHistory, onDetail, onEdit, onDelete }) {
   const badge = getStatusBadge(p);
   return (
@@ -54,6 +58,7 @@ function ProductRow({ p, selected, onToggleSelect, expanded, onToggleExpand, row
         </td>
         <td onClick={onDetail}>{p.category}</td>
         <td onClick={onDetail}>{p.currentPrice ? `${p.currentPrice.toLocaleString()}원` : '-'}</td>
+        <td onClick={onDetail}>{unitPriceText(p)}</td>
         <td onClick={onDetail}>
           {p.discountRate ? (
             <span className={s.discountBadge}>{p.discountRate.toFixed(1)}%</span>
@@ -86,7 +91,7 @@ function ProductRow({ p, selected, onToggleSelect, expanded, onToggleExpand, row
       </tr>
       {expanded && (
         <tr className={s.expandedRow}>
-          <td colSpan={11}>
+          <td colSpan={12}>
             <div className={s.expandedContent}>
               <h4 className={s.expandTitle}>가격 이력 (30일)</h4>
               {rowHistory && rowHistory.length > 0 ? (
@@ -137,6 +142,7 @@ export default function ProductTable({
               <th className={s.sortableCol} onClick={() => onToggleSort('price')}>
                 현재가 <SortIcon col="price" sortBy={sortBy} sortDir={sortDir} />
               </th>
+              <th>단위 환산가</th>
               <th className={s.sortableCol} onClick={() => onToggleSort('discount_rate')}>
                 할인율 <SortIcon col="discount_rate" sortBy={sortBy} sortDir={sortDir} />
               </th>

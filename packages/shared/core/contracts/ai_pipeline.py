@@ -19,11 +19,7 @@ from ..promotion_semantics import PriceState, PromotionPriceFacts, PromotionType
 
 
 MAX_AI_BATCH_ITEMS = 30
-# 2026-05-24: 2000자에서 8000자로 상향. 사용자가 본 422 폭주의 직접 원인.
-# Gemma 4 26B (a4b-it) 등 production 타겟 모델은 8K+ 토큰 컨텍스트를 지원하므로
-# 2000자 한도는 단일 상품 설명(2022자 사례)도 거부하게 만들어 운영 차단을
-#야기했다. 12000자 운영자 상한(MAX_OPERATOR_AI_BATCH_PROMPT_CHARS)은 유지.
-MAX_AI_BATCH_PROMPT_CHARS = 8000
+MAX_AI_BATCH_PROMPT_CHARS = 2000
 
 
 class PipelineStatus(str, Enum):
@@ -134,7 +130,7 @@ class AIJobBatch(BaseModel):
     """
     ai-admin 워커가 처리하는 record-safe 배치.
 
-    한 요청은 최대 30개 record, 최대 8000자 prompt context로 제한한다. 긴 데이터는
+    한 요청은 최대 30개 record, 최대 2000자 prompt context로 제한한다. 긴 데이터는
     레코드 중간을 자르지 않고 배치 자체를 거절해 호출자가 안전하게 다시 나누게 한다.
     """
 

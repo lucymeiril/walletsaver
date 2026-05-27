@@ -1,0 +1,93 @@
+[
+  {
+    "name": "home",
+    "method": "GET",
+    "url": "https://lottemartzetta.com/",
+    "status": 200,
+    "final_url": "https://lottemartzetta.com/",
+    "len": 868613,
+    "markers": [
+      "__INITIAL_STATE__",
+      "productEntities",
+      "awswaf",
+      "products"
+    ],
+    "content_type": "text/html;charset=utf-8"
+  },
+  {
+    "name": "promotions",
+    "method": "GET",
+    "url": "https://lottemartzetta.com/promotions?source=header%20button",
+    "status": 200,
+    "final_url": "https://lottemartzetta.com/promotions?source=header%20button",
+    "len": 1700556,
+    "markers": [
+      "__INITIAL_STATE__",
+      "productEntities",
+      "awswaf",
+      "products",
+      "OS880"
+    ],
+    "content_type": "text/html;charset=utf-8"
+  },
+  {
+    "name": "search_sale",
+    "method": "GET",
+    "url": "https://lottemartzetta.com/search?query=%ED%95%A0%EC%9D%B8&page=1",
+    "status": 200,
+    "final_url": "https://lottemartzetta.com/products",
+    "len": 1652534,
+    "markers": [
+      "__INITIAL_STATE__",
+      "productEntities",
+      "awswaf",
+      "products",
+      "OS880"
+    ],
+    "content_type": "text/html;charset=utf-8"
+  },
+  {
+    "name": "search_milk",
+    "method": "GET",
+    "url": "https://lottemartzetta.com/search?query=%EC%9A%B0%EC%9C%A0&page=1",
+    "status": 200,
+    "final_url": "https://lottemartzetta.com/products",
+    "len": 1652534,
+    "markers": [
+      "__INITIAL_STATE__",
+      "productEntities",
+      "awswaf",
+      "products",
+      "OS880"
+    ],
+    "content_type": "text/html;charset=utf-8"
+  },
+  {
+    "name": "detail_os",
+    "method": "GET",
+    "url": "https://lottemartzetta.com/products/OS8801114111147/details",
+    "status": 200,
+    "final_url": "https://lottemartzetta.com/products/OS8801114111147/details",
+    "len": 615380,
+    "markers": [
+      "__INITIAL_STATE__",
+      "productEntities",
+      "awswaf",
+      "products",
+      "OS880"
+    ],
+    "content_type": "text/html;charset=utf-8"
+  },
+  {
+    "name": "api_products_get",
+    "method": "GET",
+    "url": "https://lottemartzetta.com/api/webproductpagews/v6/products",
+    "status": 405,
+    "final_url": "https://lottemartzetta.com/api/webproductpagews/v6/products",
+    "len": 286,
+    "markers": [
+      "products"
+    ],
+    "content_type": "application/json"
+  }
+]

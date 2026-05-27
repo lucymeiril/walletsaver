@@ -12,6 +12,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 from storage.models import Base
 # p1-db-orm-wire: canonical_models.py 의 CanonicalBase도 함께 import
 from storage.canonical_models import CanonicalBase
+from storage.opinet_models import OpinetBase
 
 config = context.config
 
@@ -39,6 +40,10 @@ for table in Base.metadata.tables.values():
     table.to_metadata(_combined_meta)
 
 for table in CanonicalBase.metadata.tables.values():
+    if table.name not in _combined_meta.tables:
+        table.to_metadata(_combined_meta)
+
+for table in OpinetBase.metadata.tables.values():
     if table.name not in _combined_meta.tables:
         table.to_metadata(_combined_meta)
 

@@ -30,7 +30,7 @@ def get_engine(url: str | None = None):
     싱글턴 SQLAlchemy 엔진을 반환한다.
 
     첫 호출에서 엔진을 생성하고 이후 호출에서는 동일 인스턴스를 반환.
-    SQLite: NullPool + WAL 모드 + busy_timeout 5초
+    SQLite: NullPool + WAL 모드 + busy_timeout 30초
     PostgreSQL: QueuePool + pool_size/max_overflow/pool_recycle
     """
     global _engine
@@ -46,7 +46,7 @@ def get_engine(url: str | None = None):
     is_sqlite = url.startswith("sqlite")
 
     if is_sqlite:
-        connect_args["check_same_thread"] = False
+        connect_args.update({"timeout": 30, "check_same_thread": False})
         # In-memory SQLite must share one connection (StaticPool);
         # file-based SQLite needs per-request connections (NullPool) for thread safety.
         is_memory = url in ("sqlite://", "sqlite:///:memory:")
@@ -58,20 +58,19 @@ def get_engine(url: str | None = None):
             max_overflow=settings.DB_MAX_OVERFLOW,
             pool_timeout=settings.DB_POOL_TIMEOUT,
             pool_recycle=settings.DB_POOL_RECYCLE,
-            pool_pre_ping=True,
         )
 
     _engine = create_engine(
-        url, echo=False, connect_args=connect_args, **pool_kwargs,
+        url, echo=False, connect_args=connect_args, pool_pre_ping=True, **pool_kwargs,
     )
 
     # ── SQLite 전용 PRAGMA 설정 ──
     if is_sqlite:
         @event.listens_for(_engine, "connect")
-        def _set_sqlite_pragmas(dbapi_conn, connection_record):
-            cursor = dbapi_conn.cursor()
+        def _set_sqlite_pragmas(dbapi_connection, _):
+            cursor = dbapi_connection.cursor()
             cursor.execute("PRAGMA journal_mode=WAL")
-            cursor.execute("PRAGMA busy_timeout=5000")
+            cursor.execute("PRAGMA busy_timeout=30000")
             cursor.execute("PRAGMA synchronous=NORMAL")
             cursor.execute("PRAGMA foreign_keys=ON")
             cursor.close()

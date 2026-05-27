@@ -150,7 +150,7 @@ def test_mart_yaml_v2_resolves_to_expected_engine(mart, expected_engine, expecte
     "mart,expected_min_rows",
     [
         ("emart", 270),
-        ("homeplus", 195),
+        ("homeplus", 435),
         ("cocodalin", 50),
     ],
 )

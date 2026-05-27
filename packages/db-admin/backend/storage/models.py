@@ -12,11 +12,11 @@
     PostgreSQL (운영) — 네이티브 JSON, 인덱스 최적화
 """
 
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from typing import Optional
 
 from sqlalchemy import (
-    String, Integer, Float, Boolean, Text, DateTime, ForeignKey,
+    String, Integer, Float, Boolean, Text, Date, DateTime, ForeignKey,
     Index, UniqueConstraint, CheckConstraint, JSON, Enum as SAEnum,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, validates
@@ -66,6 +66,17 @@ class OAuthProvider(str, enum.Enum):
     GOOGLE = "google"
     KAKAO = "kakao"
     NAVER = "naver"
+
+
+class HotdealSourceSite(str, enum.Enum):
+    ALGUMON = "algumon"
+    PPOMPPU = "ppomppu"
+    FMKOREA = "fmkorea"
+    CLIEN = "clien"
+    QUASARZONE = "quasarzone"
+    ARCA = "arca"
+    COCODAL = "cocodal"
+    OTHER = "other"
 
 
 # ═══════════════════════════════════════════════
@@ -150,6 +161,84 @@ class Category(Base):
 
 
 # ═══════════════════════════════════════════════
+# Round R G2 통합 카테고리
+# ═══════════════════════════════════════════════
+
+_VALID_MARTS = frozenset({"emart", "homeplus", "lottemart", "costco"})
+_VALID_MAPPING_TRUSTS = frozenset({"human", "external-ai", "auto-aggregate"})
+
+
+class UnifiedCategory(Base):
+    """4사 native category를 연결할 통합 카테고리 트리."""
+    __tablename__ = "unified_categories"
+
+    id: Mapped[str] = mapped_column(String(100), primary_key=True)
+    parent_id: Mapped[Optional[str]] = mapped_column(ForeignKey("unified_categories.id"), nullable=True)
+    slug: Mapped[str] = mapped_column(String(100), nullable=False)
+    name_ko: Mapped[str] = mapped_column(String(100), nullable=False)
+    level: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    sort_order: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    source_origin: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+
+    parent: Mapped[Optional["UnifiedCategory"]] = relationship(
+        "UnifiedCategory", remote_side="UnifiedCategory.id", back_populates="children"
+    )
+    children: Mapped[list["UnifiedCategory"]] = relationship(
+        "UnifiedCategory", back_populates="parent", cascade="all, delete-orphan"
+    )
+    mappings: Mapped[list["MartCategoryMapping"]] = relationship(
+        back_populates="unified_category", cascade="all, delete-orphan"
+    )
+    products: Mapped[list["Product"]] = relationship(back_populates="unified_category")
+
+    __table_args__ = (
+        Index("ix_unified_categories_parent", "parent_id"),
+        Index("ix_unified_categories_level_sort", "level", "sort_order"),
+    )
+
+
+class MartCategoryMapping(Base):
+    """마트 native category → 통합 카테고리 매핑."""
+    __tablename__ = "mart_category_mappings"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    mart: Mapped[str] = mapped_column(String(20), nullable=False)
+    mart_native_id: Mapped[str] = mapped_column(String(100), nullable=False)
+    mart_native_path: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    unified_category_id: Mapped[str] = mapped_column(ForeignKey("unified_categories.id"), nullable=False)
+    trust: Mapped[str] = mapped_column(String(20), nullable=False, default="auto-aggregate")
+    confidence: Mapped[float] = mapped_column(Float, nullable=False, default=1.0)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc)
+    )
+    decided_by: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+
+    unified_category: Mapped["UnifiedCategory"] = relationship(back_populates="mappings")
+
+    __table_args__ = (
+        UniqueConstraint("mart", "mart_native_id", name="uq_mart_category_mapping_native"),
+        CheckConstraint("mart IN ('emart', 'homeplus', 'lottemart', 'costco')", name="ck_mart_category_mapping_mart"),
+        CheckConstraint("trust IN ('human', 'external-ai', 'auto-aggregate')", name="ck_mart_category_mapping_trust"),
+        CheckConstraint("confidence >= 0.0 AND confidence <= 1.0", name="ck_mart_category_mapping_confidence"),
+        Index("ix_mart_category_mappings_mart", "mart"),
+        Index("ix_mart_category_mappings_unified", "unified_category_id"),
+    )
+
+    @validates("mart")
+    def validate_mart(self, key: str, value: str) -> str:
+        if value not in _VALID_MARTS:
+            raise ValueError(f"mart 허용값: {sorted(_VALID_MARTS)}, 받은 값: {value!r}")
+        return value
+
+    @validates("trust")
+    def validate_trust(self, key: str, value: str) -> str:
+        if value not in _VALID_MAPPING_TRUSTS:
+            raise ValueError(f"trust 허용값: {sorted(_VALID_MAPPING_TRUSTS)}, 받은 값: {value!r}")
+        return value
+
+
+# ═══════════════════════════════════════════════
 # 상품
 # ═══════════════════════════════════════════════
 
@@ -188,7 +277,23 @@ class Product(Base):
     # ── RD8 D-verify 보정: canonical_product_id (migration f4d5e6f7a8b9) ──────
     canonical_product_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
 
+    # ── Round R G1: mart-native identity and displayed pricing fields ──────
+    mart: Mapped[Optional[str]] = mapped_column(String(20), nullable=True, index=True)
+    mart_native_code: Mapped[Optional[str]] = mapped_column(String(64), nullable=True, index=True)
+    canon_hash: Mapped[Optional[str]] = mapped_column(String(40), nullable=True, index=True)
+    external_seller: Mapped[Optional[bool]] = mapped_column(Boolean, nullable=True, default=False)
+    unit_price_displayed: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    unit_price_basis_raw: Mapped[Optional[str]] = mapped_column(String(16), nullable=True)
+    mart_native_category_id: Mapped[Optional[str]] = mapped_column(String(64), nullable=True, index=True)
+    mart_native_category_path: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    unified_category_id: Mapped[Optional[str]] = mapped_column(ForeignKey("unified_categories.id"), nullable=True, index=True)
+    canonical_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    mart_internal_seller_id: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    promo_label: Mapped[Optional[str]] = mapped_column(String(40), nullable=True)
+    promo_type: Mapped[Optional[str]] = mapped_column(String(40), nullable=True)
+ 
     category: Mapped[Optional["Category"]] = relationship(back_populates="products")
+    unified_category: Mapped[Optional["UnifiedCategory"]] = relationship(back_populates="products")
     # lazy="selectin" — 상품 목록 조회 시 N+1 방지, 필요할 때만 서브쿼리로 일괄 로딩
     baseline_prices: Mapped[list["BaselinePrice"]] = relationship(
         back_populates="product", cascade="all, delete-orphan", lazy="selectin",
@@ -208,10 +313,34 @@ class Product(Base):
         Index("ix_products_category", "category_id"),
         Index("ix_products_source_type", "source_type"),
         Index("ix_products_active", "is_active"),
-        # RD8 D1: UNIQUE — 동일 정규화 품목은 하나만 (brand, name_core, pack_qty, pack_unit)
-        # SQLite NULL 처리 주의: NULL값 컬럼이 포함된 경우 각 NULL은 서로 다른 것으로 취급됨.
-        # 따라서 brand/pack_unit을 brand fallback/canonicalize 후에는 NULL이 되지 않도록 관리.
-        UniqueConstraint("brand", "name_core", "pack_qty", "pack_unit", name="uq_product_canonical"),
+        Index("ix_products_mart_native", "mart", "mart_native_code"),
+        UniqueConstraint("mart", "mart_native_code", name="uq_products_mart_native"),
+    )
+
+
+class PriceHistory(Base):
+    """Round R mart-native product price time series."""
+    __tablename__ = "price_history"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    product_id: Mapped[Optional[int]] = mapped_column(ForeignKey("products.id"), nullable=True, index=True)
+    mart: Mapped[str] = mapped_column(String(20), nullable=False, index=True)
+    canon_key: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
+    week_of: Mapped[Optional[date]] = mapped_column(Date, nullable=True, index=True)
+    observed_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, index=True)
+    price: Mapped[float] = mapped_column(Float, nullable=False)
+    sale_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    unit_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    period_start: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    period_end: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    source_run_id: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    __table_args__ = (
+        UniqueConstraint("mart", "canon_key", "observed_at", name="uq_price_history_mart_canon_observed"),
+        UniqueConstraint("product_id", "week_of", "mart", name="uq_price_history_product_week_mart"),
+        Index("ix_price_history_mart_canon_observed", "mart", "canon_key", observed_at.desc()),
+        Index("ix_price_history_product_week", "product_id", "week_of"),
     )
 
 
@@ -311,6 +440,61 @@ class HotdealPrice(Base):
         Index("ix_hotdeal_source", "source"),
         # crawled_at 단독: 최신 핫딜 정렬용
         Index("ix_hotdeal_crawled_at", "crawled_at"),
+    )
+
+
+class HotdealPost(Base):
+    """핫딜 원문 게시글 저장소 — 마트 Product와 분리된 참고 데이터."""
+    __tablename__ = "hotdeal_posts"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    source_site: Mapped[HotdealSourceSite] = mapped_column(
+        SAEnum(HotdealSourceSite, values_callable=lambda values: [item.value for item in values], name="hotdeal_source_site"),
+        nullable=False,
+    )
+    source_native_id: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    title: Mapped[str] = mapped_column(String(500), nullable=False)
+    url: Mapped[str] = mapped_column(String(1000), nullable=False)
+    posted_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    expires_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    original_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    discount_rate: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    shop_name: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
+    category_raw: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
+    tags: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    fetched_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    hash_dedup: Mapped[str] = mapped_column(String(64), nullable=False)
+
+    comment_snapshots: Mapped[list["HotdealCommentSnapshot"]] = relationship(
+        back_populates="hotdeal", cascade="all, delete-orphan", lazy="selectin",
+    )
+
+    __table_args__ = (
+        UniqueConstraint("hash_dedup", name="uq_hotdeal_posts_hash_dedup"),
+        Index("ix_hotdeal_posts_source_native", "source_site", "source_native_id"),
+        Index("ix_hotdeal_posts_posted_at", "posted_at"),
+        Index("ix_hotdeal_posts_fetched_at", "fetched_at"),
+        Index("ix_hotdeal_posts_active", "is_active"),
+    )
+
+
+class HotdealCommentSnapshot(Base):
+    """핫딜 댓글/추천 수 주기적 스냅샷."""
+    __tablename__ = "hotdeal_comment_snapshots"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    hotdeal_id: Mapped[int] = mapped_column(ForeignKey("hotdeal_posts.id", ondelete="CASCADE"), nullable=False)
+    comment_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    vote_up: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    vote_down: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    snapshot_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+
+    hotdeal: Mapped["HotdealPost"] = relationship(back_populates="comment_snapshots")
+
+    __table_args__ = (
+        Index("ix_hotdeal_comment_snapshots_hotdeal", "hotdeal_id", "snapshot_at"),
     )
 
 
@@ -1301,6 +1485,63 @@ class MatchingEntry(Base):
                 f"MatchingEntry.source 허용값: {sorted(_MATCHING_ENTRY_VALID_SOURCES)}, "
                 f"받은 값: {value!r}"
             )
+        return value
+
+
+# ═══════════════════════════════════════════════
+# 상품명 기반 자동 매칭 규칙
+# ═══════════════════════════════════════════════
+
+_VALID_PRODUCT_MATCH_PATTERN_TYPES = frozenset({"exact", "normalized", "regex"})
+
+
+class ProductMatchRule(Base):
+    """상품 제목/정규화 키 기반 자동 분류 매칭 규칙.
+
+    mart_category_mappings는 native category → unified category 매핑이고,
+    이 테이블은 이전에 분류한 상품 제목 패턴을 재사용해 신규 크롤 상품을
+    canonical product/category로 자동 연결하는 운영자 관리 테이블이다.
+    """
+    __tablename__ = "product_match_rules"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    pattern_type: Mapped[str] = mapped_column(String(20), nullable=False)
+    pattern_value: Mapped[str] = mapped_column(String(500), nullable=False)
+    canonical_category_id: Mapped[Optional[str]] = mapped_column(
+        String(100), ForeignKey("unified_categories.id"), nullable=True
+    )
+    canonical_product_id: Mapped[Optional[int]] = mapped_column(
+        Integer, ForeignKey("products.id"), nullable=True
+    )
+    trust: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+    created_by: Mapped[str] = mapped_column(String(100), nullable=False, default="admin")
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc)
+    )
+    hit_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
+    canonical_category: Mapped[Optional["UnifiedCategory"]] = relationship("UnifiedCategory")
+    canonical_product: Mapped[Optional["Product"]] = relationship("Product")
+
+    __table_args__ = (
+        UniqueConstraint("pattern_type", "pattern_value", name="uq_product_match_rule_pattern"),
+        CheckConstraint("pattern_type IN ('exact', 'normalized', 'regex')", name="ck_product_match_rule_pattern_type"),
+        CheckConstraint("trust >= 0 AND trust <= 2", name="ck_product_match_rule_trust"),
+        Index("ix_product_match_rules_pattern", "pattern_type", "pattern_value"),
+        Index("ix_product_match_rules_category", "canonical_category_id"),
+        Index("ix_product_match_rules_product", "canonical_product_id"),
+    )
+
+    @validates("pattern_type")
+    def validate_pattern_type(self, key: str, value: str) -> str:
+        if value not in _VALID_PRODUCT_MATCH_PATTERN_TYPES:
+            raise ValueError(f"pattern_type 허용값: {sorted(_VALID_PRODUCT_MATCH_PATTERN_TYPES)}, 받은 값: {value!r}")
+        return value
+
+    @validates("trust")
+    def validate_trust(self, key: str, value: int) -> int:
+        if value < 0 or value > 2:
+            raise ValueError("trust는 0..2 범위여야 합니다")
         return value
 
 

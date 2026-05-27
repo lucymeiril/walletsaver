@@ -71,6 +71,8 @@ class TestDiscountItem:
         )
         assert item.discount_percent == 38.0
         assert item.event_name == "주간특가"
+        assert item.promo_label is None
+        assert item.promo_type is None
 
     def test_to_product_price_conversion(self):
         """DiscountItem → ProductPrice 변환 정확성."""

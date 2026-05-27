@@ -11,7 +11,6 @@ import useDebounce from '../../hooks/useDebounce';
 import useAbortController from '../../hooks/useAbortController';
 import Spinner from '../../components/common/Spinner';
 import EmptyState from '../../components/common/EmptyState';
-import PriceGauge from '../../components/common/PriceGauge';
 import s from './PricePage.module.css';
 
 function highlightMatch(text, query) {
@@ -585,9 +584,6 @@ export default function PricePage() {
                 <span>📊 상세 가격 분석</span>
                 {detailOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
               </div>
-
-              {/* PriceGauge: displayPrice = current_low ?? p10 (p50 폴백 금지) */}
-              <PriceGauge product={product} />
 
               {detailOpen && (
                 <div className={s.detailPanel}>

@@ -24,8 +24,8 @@ export const authService = {
     }
   },
 
-  async getProfile(options = {}) {
-    const res = await api.get('/api/auth/me', undefined, options);
+  async getProfile() {
+    const res = await api.get('/api/auth/me');
     return res.json();
   },
 

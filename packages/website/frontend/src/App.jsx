@@ -55,9 +55,9 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  // 앱 부팅 시 세션 복원: 쿠키 없으면 401 발생이 정상. 자동 로그인 모달 띄우지 않음.
+  // Restore session from httpOnly cookie on app mount
   useEffect(() => {
-    authService.getProfile({ silent: true })
+    authService.getProfile()
       .then((profile) => {
         login({ ...profile });
         mergeOnLogin();

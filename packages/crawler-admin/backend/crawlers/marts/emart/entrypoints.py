@@ -1,22 +1,14 @@
 """이마트 4-진입점 어댑터 (Phase A).
 
-이미 작성된 ``EmartCrawler``(SSG ``__NEXT_DATA__`` 파서)를 재사용해
-다음 네 가지 collection_path 를 모두 노출한다:
-
-* sale_listing  — 검색 "행사" (public_endpoint, intent=sale)
-* catalog_page  — 임의 query 1페이지 (catalog_page, intent=catalog)
-* single_product — 상품 상세 1건 (single_product, intent=refresh)
-* operator_capture — 운영자 워크밴치/프론트가 붙여넣은 HTML (operator_capture)
-
-본 모듈은 ``EmartCrawler`` 의 ``parse()`` 메서드만 사용하므로 라이브
-네트워크 호출이 필요 없을 때(테스트, 운영자 캡처)도 곧바로 동작한다.
+Round R G1 이후 ``EmartCrawler`` 는 카테고리 HTML 상품 카드 파서를
+사용한다. 이 어댑터는 기존 네 가지 collection_path 계약을 유지한다.
 """
 
 from __future__ import annotations
 
 from datetime import datetime
 from typing import Optional
-from urllib.parse import quote, urlparse
+from urllib.parse import urlparse
 
 import requests
 
@@ -31,7 +23,7 @@ from crawlers.marts.entry_points import (
 )
 
 
-SALE_QUERY = "행사"
+SALE_QUERY = "과일"
 
 
 class EmartEntrypoints:
@@ -56,7 +48,8 @@ class EmartEntrypoints:
     async def crawl_sale_listing(self, *, fetch=None) -> CrawlResult:
         """현재 할인 1페이지 — 라이브 호출 (또는 주입된 fetch 콜백)."""
         started = datetime.now()
-        url = f"{self._crawler.SEARCH_URL}?target=all&query={quote(SALE_QUERY)}&page=1"
+        category_id = next(iter(self._crawler.CATEGORY_IDS), SALE_QUERY)
+        url = self._crawler._category_url(category_id, 1)
         errors: list[StrategyFailure] = []
         items: list[DiscountItem] = []
         try:
@@ -69,7 +62,10 @@ class EmartEntrypoints:
 
     async def crawl_catalog_page(self, category_or_query: str, page: int = 1, *, fetch=None) -> CrawlResult:
         started = datetime.now()
-        url = f"{self._crawler.SEARCH_URL}?target=all&query={quote(category_or_query)}&page={int(page)}"
+        category_id = category_or_query
+        if category_or_query in self._crawler.CATEGORY_IDS.values():
+            category_id = next((cid for cid, path in self._crawler.CATEGORY_IDS.items() if path == category_or_query), category_or_query)
+        url = self._crawler._category_url(str(category_id), int(page))
         errors: list[StrategyFailure] = []
         items: list[DiscountItem] = []
         try:

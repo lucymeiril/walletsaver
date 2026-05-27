@@ -21,11 +21,15 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    # matching_entries: aliases 추가
-    op.add_column(
-        "matching_entries",
-        sa.Column("aliases", sa.JSON(), nullable=True, comment="표기 변형 목록. JSON list[str]. 최대 50개."),
-    )
+    # matching_entries: aliases 추가 (병행 브랜치 h6a7b8c9d0e1에서도 추가하므로 idempotent 처리)
+    bind = op.get_bind()
+    insp = sa.inspect(bind)
+    existing_cols = {c["name"] for c in insp.get_columns("matching_entries")}
+    if "aliases" not in existing_cols:
+        op.add_column(
+            "matching_entries",
+            sa.Column("aliases", sa.JSON(), nullable=True, comment="표기 변형 목록. JSON list[str]. 최대 50개."),
+        )
 
     # imports_audit 테이블
     op.create_table(

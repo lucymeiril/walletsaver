@@ -97,7 +97,7 @@ async def get_dashboard_stats(days: int = Query(7, ge=1, le=90)):
     status_distribution = {
         "success": status_counter.get("success", 0),
         "failure": status_counter.get("failed", 0),
-        "partial": status_counter.get("partial", 0),
+        "partial": status_counter.get("partial", 0) + status_counter.get("partial_failure", 0),
     }
 
     # --- 에러 추이 (날짜 범위 지원) ---
@@ -143,7 +143,7 @@ async def get_dashboard_stats(days: int = Query(7, ge=1, le=90)):
             })
 
     # --- 크롤러별 상태 카드 ---
-    status_mapping = {"success": "success", "failed": "failure", "running": "running"}
+    status_mapping = {"success": "success", "failed": "failure", "partial_failure": "partial", "running": "running"}
     crawler_cards = []
     for job_id, entry in sorted(latest_by_crawler.items()):
         raw_status = entry["status"]

@@ -134,11 +134,11 @@ class DBStorage(StorageContract):
                 "DATABASE_URL",
                 "sqlite:///walletguardian.db",
             )
-        # SQLite 전용 설정 — check_same_thread=False로 멀티스레드 접근 허용
+        # SQLite 전용 설정 — 30초 busy timeout + 멀티스레드 접근 허용
         connect_args = {}
         is_sqlite = database_url.startswith("sqlite")
         if is_sqlite:
-            connect_args["check_same_thread"] = False
+            connect_args.update({"timeout": 30, "check_same_thread": False})
 
         # ── Connection Pool 설정 ──
         # SQLite: 단일 파일 DB이므로 QueuePool(기본), pool 옵션 불필요
@@ -151,13 +151,21 @@ class DBStorage(StorageContract):
                 "max_overflow": settings.DB_MAX_OVERFLOW,
                 "pool_timeout": settings.DB_POOL_TIMEOUT,
                 "pool_recycle": settings.DB_POOL_RECYCLE,
-                "pool_pre_ping": True,  # stale 연결 자동 감지/교체
             }
 
         self.engine = create_engine(
-            database_url, echo=False, connect_args=connect_args,
+            database_url, echo=False, connect_args=connect_args, pool_pre_ping=True,
             **pool_kwargs,
         )
+
+        if is_sqlite:
+            @event.listens_for(self.engine, "connect")
+            def _set_sqlite_pragma(dbapi_connection, _):
+                cursor = dbapi_connection.cursor()
+                cursor.execute("PRAGMA journal_mode=WAL")
+                cursor.execute("PRAGMA busy_timeout=30000")
+                cursor.execute("PRAGMA synchronous=NORMAL")
+                cursor.close()
 
         # 커넥션 풀 모니터링 — checkout/checkin 시 로깅 (DEBUG 레벨)
         if not is_sqlite:

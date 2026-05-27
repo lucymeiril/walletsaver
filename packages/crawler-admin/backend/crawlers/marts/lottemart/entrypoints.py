@@ -7,7 +7,7 @@ WAF 진단 (AWS WAF HTTP 202) 로직을 그대로 재사용해 다음 네 가지
 * sale_listing  — lottemartzetta.com/search?query=할인 (public_endpoint, intent=sale)
 * catalog_page  — 검색/카테고리 1페이지 (catalog_page, intent=catalog)
 * single_product — /products/<id> 상세 (single_product, intent=refresh)
-* operator_capture — Playwright/운영자 캡처 HTML (operator_capture)
+* operator_capture — 운영자 저장 HTML/JSON (operator_capture)
 
 라이브 PC SSR 페이지는 SPA 셸이라 __INITIAL_STATE__ 의 productEntities 가
 실제로는 비어 있을 때가 많다. 이 경우 ``crawl_sale_listing`` /

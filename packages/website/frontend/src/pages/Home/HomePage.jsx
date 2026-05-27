@@ -9,8 +9,6 @@ import useModalStore from '../../stores/modalStore';
 import useCartStore from '../../stores/cartStore';
 import useAbortController from '../../hooks/useAbortController';
 import EmptyState from '../../components/common/EmptyState';
-import TrustBadge from '../../components/common/TrustBadge';
-import PriceGauge from '../../components/common/PriceGauge';
 import s from './HomePage.module.css';
 
 const CATEGORIES = [
@@ -41,27 +39,13 @@ function normalizeMartItems(data) {
   }));
 }
 
-function SectionError({ onRetry, message }) {
+function SectionError({ onRetry }) {
   return (
-    <div className={s.sectionError} role="status" aria-live="polite">
-      <p>{message || '백엔드 연결이 끊겼습니다. 잠시 후 다시 시도해 주세요.'}</p>
+    <div className={s.sectionError}>
+      <p>데이터를 불러오지 못했습니다.</p>
       {onRetry && (
         <button className={s.retryBtn} onClick={onRetry}>
-          <RefreshCw size={14} /> 재연결
-        </button>
-      )}
-    </div>
-  );
-}
-
-function SectionEmpty({ title, hint, actionLabel, onAction }) {
-  return (
-    <div className={s.sectionError} role="status" aria-live="polite">
-      <p><strong>{title || '아직 표시할 데이터가 없어요'}</strong></p>
-      {hint && <p style={{ fontSize: '.85rem', color: 'var(--text3)', margin: 0 }}>{hint}</p>}
-      {onAction && actionLabel && (
-        <button className={s.retryBtn} onClick={onAction}>
-          {actionLabel}
+          <RefreshCw size={14} /> 다시 시도
         </button>
       )}
     </div>
@@ -85,7 +69,6 @@ export default function HomePage() {
     recentSearches, addRecentSearch, clearRecentSearches,
     addToShoppingList, addToast, setLocation,
     savedLocation, setSavedLocation,
-    hotdealerMode,
   } = useStore();
   const addCartItem = useCartStore((st) => st.addItem);
 
@@ -547,14 +530,7 @@ export default function HomePage() {
             {[0, 1, 2].map(i => <SkeletonCard key={i} className={s.skeletonTopDeal} />)}
           </div>
         ) : sectionError.hotdeals ? (
-          <SectionError onRetry={() => fetchAllData(coords)} message="핫딜 백엔드 연결이 끊겼습니다." />
-        ) : topHotdeals.length === 0 ? (
-          <SectionEmpty
-            title="오늘 표시할 핫딜이 아직 모이지 않았어요"
-            hint="크롤러가 첫 데이터를 적재 중일 수 있어요. 잠시 후 새로고침해 주세요."
-            actionLabel="전체 핫딜 보기"
-            onAction={() => navigate('/hotdeal')}
-          />
+          <SectionError onRetry={() => fetchAllData(coords)} />
         ) : (
           <div className={s.topDealGrid}>
             {topHotdeals.map((d, i) => {
@@ -621,8 +597,8 @@ export default function HomePage() {
             {[...Array(8)].map((_, i) => <SkeletonCard key={i} className={s.skeletonPrice} />)}
           </div>
         ) : sectionError.products ? (
-          <SectionError onRetry={() => fetchAllData(coords)} message="물가 백엔드 연결이 끊겼습니다." />
-        ) : categorySummary.length > 0 && categorySummary.some(c => c.avg_price > 0) ? (
+          <SectionError onRetry={() => fetchAllData(coords)} />
+        ) : categorySummary.length > 0 ? (
           <div className={s.priceGrid}>
             {categorySummary.slice(0, 8).map(cat => (
               <div key={cat.category_id} className={s.priceCard} onClick={() => navigate(`/price/category/${cat.category_id}`)}>
@@ -634,7 +610,7 @@ export default function HomePage() {
                 </div>
                 <div className={s.priceCardName}>{cat.name}</div>
                 <div className={s.priceCardPrice}>
-                  {cat.avg_price > 0 ? `평균 ${fmt(cat.avg_price)}원` : '아직 적재 전'}
+                  {cat.avg_price > 0 ? `평균 ${fmt(cat.avg_price)}원` : '가격 미정'}
                 </div>
                 {cat.min_price > 0 && (
                   <div className={s.catMinPrice}>
@@ -646,13 +622,6 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-        ) : categorySummary.length > 0 ? (
-          <SectionEmpty
-            title="모든 카테고리의 가격이 아직 적재되지 않았어요"
-            hint="크롤링 → AI 매칭 파이프가 첫 가격 데이터를 수집 중입니다. 잠시 후 새로고침해 주세요."
-            actionLabel="전체 물가 페이지로 이동"
-            onAction={() => navigate('/price')}
-          />
         ) : (
           <div className={s.priceGrid}>
             {products.filter(p => {
@@ -703,12 +672,9 @@ export default function HomePage() {
               );
             })}
             {products.filter(p => (p.cur ?? p.price ?? p.sale_price ?? p.current_price ?? 0) > 0).length === 0 && (
-              <SectionEmpty
-                title="물가 데이터가 아직 없어요"
-                hint="크롤러/매칭 파이프가 첫 적재 중일 수 있어요."
-                actionLabel="전체 물가 페이지로 이동"
-                onAction={() => navigate('/price')}
-              />
+              <div className={s.sectionError}>
+                <p>물가 데이터를 수집 중입니다.</p>
+              </div>
             )}
           </div>
         )}
@@ -911,42 +877,6 @@ export default function HomePage() {
           </div>
         )}
       </section>
-
-      {/* 판매자 신뢰 등급 — TrustBadge 3종 (공식/검증/주의) */}
-      <section className={s.sec}>
-      <div className={s.secHead}>
-        <div>
-          <h2 className={s.secTitle}>🛡️ 판매자 신뢰 등급</h2>
-          <p className={s.secDesc}>공식·검증·주의 판매처를 한눈에 확인하세요</p>
-        </div>
-      </div>
-      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', padding: '4px 0' }}>
-        <TrustBadge kind="official" variant="detail" />
-        <TrustBadge kind="verified" variant="detail" />
-        <TrustBadge kind="caution" variant="detail" />
-      </div>
-      <div style={{ marginTop: 10, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-        <TrustBadge kind="official" variant="card" />
-        <TrustBadge kind="verified" variant="card" />
-        <TrustBadge kind="caution" variant="card" />
-      </div>
-      </section>
-
-      {/* 핫딜러 모드 — ON 시 추가 가격 분석 레이어 노출 */}
-      {hotdealerMode && (
-      <section className={s.sec}>
-        <div className={s.secHead}>
-          <div>
-            <h2 className={s.secTitle}>🔥 핫딜러 모드: 상세 가격 분석</h2>
-            <p className={s.secDesc}>전문 핫딜러를 위한 심층 가격 정보</p>
-          </div>
-        </div>
-        <PriceGauge product={{ current_low: 1290, p10: 1200, p50: 1600, p90: 2100 }} />
-        <div style={{ marginTop: 8, fontSize: 13, color: '#888' }}>
-          ※ 핫딜러 모드: 상세 가격 분위수, 최저가 트래킹, 알림 설정이 활성화됩니다.
-        </div>
-      </section>
-      )}
     </div>
   );
 }

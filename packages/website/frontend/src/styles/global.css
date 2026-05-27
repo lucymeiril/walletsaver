@@ -37,13 +37,6 @@ img { max-width: 100%; display: block; }
 ::selection { background: var(--accent); color: var(--bg); }
 .hidden { display: none !important; }
 
-/* Mobile bottom-nav clearance — prevents fixed 60px BottomNav from overlapping content */
-@media (max-width: 768px) {
-  main {
-    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
-  }
-}
-
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }

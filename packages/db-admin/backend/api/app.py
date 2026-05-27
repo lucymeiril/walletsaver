@@ -16,6 +16,7 @@ from sqlalchemy import text
 from config import settings
 from api.middleware.security_headers import SecurityHeadersMiddleware
 from api.middleware.rate_limit import limiter, rate_limit_exceeded_handler, GLOBAL_LIMIT
+from api.security import MAX_REQUEST_BODY_BYTES
 
 _lifecycle_logger = logging.getLogger("lifecycle")
 
@@ -104,8 +105,6 @@ async def lifespan(app: FastAPI):
     _lifecycle_logger.info("Shutdown: complete")
 
 
-MAX_REQUEST_BODY_BYTES = 10 * 1024 * 1024  # 10MB
-
 _api_logger = logging.getLogger("api")
 
 
@@ -180,6 +179,8 @@ def create_app() -> FastAPI:
     from api.routes.maintenance import router as maintenance_router
     from api.routes.matching_import import router as matching_import_router
     from api.routes.import_bundle import router as import_bundle_router
+    from api.routes.external_ai import router as external_ai_router
+    from api.routes.matching_rules import router as matching_rules_router
 
     # Payload size limit
     app.add_middleware(RequestSizeLimitMiddleware)
@@ -203,6 +204,8 @@ def create_app() -> FastAPI:
     app.include_router(maintenance_router, prefix="/api")
     app.include_router(matching_import_router, prefix="/api")
     app.include_router(import_bundle_router, prefix="/api")
+    app.include_router(external_ai_router, prefix="/api")
+    app.include_router(matching_rules_router, prefix="/api")
     # ingestion 라우터는 이미 /api/ingestions 접두어가 있음
     app.include_router(ingestion_router)
 
@@ -273,3 +276,4 @@ def create_app() -> FastAPI:
         return payload
 
     return app
+

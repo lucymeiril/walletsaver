@@ -9,6 +9,7 @@ const Dashboard          = lazy(() => import('./pages/Dashboard/Dashboard'));
 const Products           = lazy(() => import('./pages/Products/Products'));
 const Prices             = lazy(() => import('./pages/Prices/Prices'));
 const ClassificationPage = lazy(() => import('./pages/Classification/ClassificationPage'));
+const MatchingTablePage  = lazy(() => import('./pages/MatchingTable/MatchingTablePage'));
 const Analytics          = lazy(() => import('./pages/Analytics/Analytics'));
 const InboxPage          = lazy(() => import('./pages/Inbox/InboxPage'));
 const IntegrityPage      = lazy(() => import('./pages/Integrity/IntegrityPage'));
@@ -69,6 +70,7 @@ export default function App() {
             <Route path="/products"       element={<PageBoundary><Products /></PageBoundary>} />
             <Route path="/prices"         element={<PageBoundary><Prices /></PageBoundary>} />
             <Route path="/classification" element={<PageBoundary><ClassificationPage /></PageBoundary>} />
+            <Route path="/matching"       element={<PageBoundary><MatchingTablePage /></PageBoundary>} />
             <Route path="/categories"     element={<Navigate to="/classification" replace />} />
             <Route path="/keywords"       element={<Navigate to="/classification" replace />} />
             <Route path="/analytics"      element={<PageBoundary><Analytics /></PageBoundary>} />

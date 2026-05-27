@@ -1,20 +1,8 @@
 """
-홈플러스 크롤러 — 전단지 및 할인 행사 상품 정보 수집.
+홈플러스 크롤러 — requests-only legacy flow restored for mfront JSON APIs.
 
-홈플러스는 mfront.homeplus.co.kr SPA로 전환되어
-서버사이드 HTML만으로는 상품 데이터를 추출할 수 없다.
-Playwright 브라우저 렌더링으로 검색 결과를 수집하고,
-.unitItemInner 카드에서 상품 정보를 파싱한다.
-
-봇 탐지 회피 전략:
-  - 검색어별 1~3초 랜덤 딜레이 (AntiDetect)
-  - User-Agent 로테이션
-  - Playwright stealth 모드로 자동화 탐지 우회
-  - 검색어 간 점진적 크롤링
-
-데이터 흐름: Playwright HTML → DiscountItem → ProductPrice → DB
-용도: 할인 이력 DB 구축 (discount_history)
-의존: core/ 만
+Round T keeps Homeplus on the old HTTP parser path: no Playwright, no added
+concurrency, and 429 handling only by sleeping longer before retrying.
 """
 
 from __future__ import annotations
@@ -27,22 +15,24 @@ import time
 from collections import Counter
 from datetime import datetime
 from typing import Optional
-from urllib.parse import quote
+from urllib.parse import parse_qs, quote, urlencode, urlparse
 
 import requests
 
 from core.contracts.crawler import CrawlerContract
-from core.models import (
-    CrawlerInfo, CrawlerGroup, CrawlResult, CrawlStatus,
-    DiscountItem,
-)
+from core.models import CrawlerInfo, CrawlerGroup, CrawlResult, CrawlStatus, DiscountItem
 from core.product_units import normalize_unit_metadata
 from crawlers.marts.source_utils import (
     absolute_url,
-    build_source_map_manifest,
     build_source_attributes,
+    build_source_map_manifest,
+    classify_external_seller_homeplus,
+    compute_canon_hash,
+    inject_source_field,
+    normalize_homeplus_url,
     normalize_source_key,
     parse_period_fields,
+    parse_unit_price,
     source_dedup_key,
 )
 from engine.anti_detect import AntiDetect
@@ -52,130 +42,78 @@ logger = logging.getLogger(__name__)
 
 
 class HomeplusCrawler(CrawlerContract):
-    """홈플러스 크롤러 — mfront.homeplus.co.kr SPA Playwright 기반 상품 수집.
-
-    봇 탐지 회피 전략:
-      - 검색어별 1~3초 랜덤 딜레이 (AntiDetect)
-      - User-Agent 로테이션
-      - Playwright stealth 모드로 봇 탐지 우회
-      - 스크롤로 lazy-load 상품 트리거
-    """
+    """홈플러스 크롤러 — legacy requests API + HTML parser."""
 
     BASE_URL = "https://www.homeplus.co.kr"
     MFRONT_URL = "https://mfront.homeplus.co.kr"
-    # 다양한 검색어와 장보기 핵심 카테고리로 source breadth를 노출한다.
-    SEARCH_QUERIES = ["할인", "특가", "세일", "1+1", "행사", "반값", "오늘특가", "홈플런"]
-    CATEGORY_QUERIES = [
+    CATEGORY_API = f"{MFRONT_URL}/category/item.json"
+    EXPRESS_CATEGORY_API = f"{MFRONT_URL}/express/category/item.json"
+    SEARCH_API = f"{MFRONT_URL}/totalsearch/total/search/item.json"
+    EXPRESS_SEARCH_API = f"{MFRONT_URL}/express/search.json"
+    EVENT_URL = "https://www.homeplus.co.kr/event/eventMain.do"
+
+    SEARCH_QUERIES = [
         "과일", "채소", "정육", "계란", "쌀", "생수", "우유", "유제품",
         "간편식", "냉동식품", "라면", "과자", "커피", "세제", "화장지",
     ]
-    # Homeplus is a browser-rendered SPA; keep collection bounded while allowing
-    # source-completion diagnostics to clear the 200+ unique-item threshold.
-    MAX_ITEMS: int | None = 300
-    MAX_PAGES: int | None = None
+    CATEGORY_QUERIES = list(SEARCH_QUERIES)
+    STORE_TYPES = ("HYPER", "EXP")
+    # Round V: mfront top category IDs limited to food/fresh/daily/kitchen/baby scopes.
+    CATEGORY_IDS = (1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 22, 23)
+    DEFAULT_CATEGORY_DEPTH = 0
+    DEFAULT_PER_PAGE = 100
+    HYPER_DELIVERY_FILTER = "HYPER_DRCT"
+    PRODUCT_CARD_SELECTOR = ".unitItemInner"
+    PROMO_LABEL_RE = re.compile(r"\d+\s*\+\s*\d+")
+    MAX_ITEMS: int | None = None
+    MAX_PAGES: int | None = 3
     MAX_REQUESTS: int | None = None
 
-    def __init__(self, anti_detect: Optional[AntiDetect] = None):
-        self._anti_detect = anti_detect or AntiDetect(delay_min=1.0, delay_max=3.0)
-        # Measurement override: HOMEPLUS_MEASUREMENT_MAX_ITEMS env var allows
-        # a bounded live measurement run without changing the production cap.
-        # Set to "0" or "none" to remove the cap entirely for measurement.
+    def __init__(self, anti_detect: Optional[AntiDetect] = None, max_scroll_attempts: int | None = None):
+        self._anti_detect = anti_detect or AntiDetect(delay_min=2.5, delay_max=5.0)
+        self.max_scroll_attempts = int(max_scroll_attempts or 30)
         import os
-        _env = os.environ.get("HOMEPLUS_MEASUREMENT_MAX_ITEMS")
-        if _env is not None:
-            _env = _env.strip().lower()
-            if _env in ("", "none", "null", "0"):
+        env_cap = os.environ.get("HOMEPLUS_MEASUREMENT_MAX_ITEMS")
+        if env_cap is not None:
+            value = env_cap.strip().lower()
+            if value in ("", "none", "null", "0"):
                 self.MAX_ITEMS = None
             else:
                 try:
-                    self.MAX_ITEMS = int(_env)
+                    self.MAX_ITEMS = int(value)
                 except ValueError:
-                    pass  # keep class default
-
-    def _retry_request(self, url: str, *, headers: dict | None = None,
-                       session: requests.Session | None = None,
-                       timeout: int = 15, max_retries: int = 3,
-                       **kwargs) -> requests.Response:
-        """HTTP GET with exponential backoff for transient failures."""
-        requester = session or requests
-        last_exc = None
-        for attempt in range(max_retries):
-            try:
-                resp = requester.get(url, headers=headers, timeout=timeout, **kwargs)
-                if resp.status_code == 429:  # Rate limited — back off
-                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
-                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
-                    time.sleep(wait)
-                    continue
-                return resp
-            except (requests.exceptions.ConnectionError,
-                    requests.exceptions.Timeout) as e:
-                last_exc = e
-                if attempt < max_retries - 1:
-                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
-                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
-                                   f"retrying in {wait:.1f}s: {e}")
-                    time.sleep(wait)
-                else:
-                    raise
-        raise last_exc  # type: ignore[misc]
+                    pass
 
     @property
     def info(self) -> CrawlerInfo:
         return CrawlerInfo(
             name="홈플러스",
-            version="2.0.0",
+            version="3.0.0-round-t-legacy",
             group=CrawlerGroup.MART,
-            description="홈플러스 할인 상품 정보 수집 (mfront SPA Playwright 기반)",
-            target_url=self.BASE_URL,
-            strategies=["playwright", "requests"],
+            description="홈플러스 할인 상품 정보 수집 (requests-only mfront JSON API)",
+            target_url=self.MFRONT_URL,
+            strategies=["requests", "json-api", "html-fallback"],
         )
 
     async def crawl(self) -> CrawlResult:
-        """홈플러스 할인 상품을 크롤링한다.
-
-        전략:
-          mfront.homeplus.co.kr은 완전한 SPA이므로 Playwright 렌더링이 필수.
-          /search?keyword= 검색 URL로 검색어별 상품을 수집한다.
-          HTTP 요청은 SPA 셸만 반환하므로 Playwright를 기본 전략으로 사용한다.
-        """
         started_at = datetime.now()
-        logger.info("[홈플러스] 크롤링 시작")
-
+        logger.info("[홈플러스] requests-only 크롤링 시작")
+        strategy = "requests_json_api"
+        source_diagnostics = self._empty_source_diagnostics()
         try:
-            # Playwright 기반 크롤링 (SPA이므로 항상 Playwright 우선)
-            fetch_result = await self._fetch_via_playwright()
-            if len(fetch_result) == 3:
-                items, queries_attempted, source_diagnostics = fetch_result
-            else:
-                items, queries_attempted = fetch_result
-                source_diagnostics = self._empty_source_diagnostics()
-            strategy = "playwright"
-            fallback_used = False
-
-            # Playwright 실패 시 HTTP fallback 시도. Bounded live diagnostics
-            # with MAX_REQUESTS exhausted must not make an extra request.
-            request_budget_exhausted = self.MAX_REQUESTS is not None and queries_attempted >= self.MAX_REQUESTS
-            if not items and not request_budget_exhausted:
-                logger.info("[홈플러스] Playwright 수집 실패, HTTP fallback 시도")
-                items = await self._fetch_via_http()
-                queries_attempted = 0
-                source_diagnostics = self._empty_source_diagnostics()
-                strategy = "requests"
-                fallback_used = True
-            elif not items and request_budget_exhausted:
-                logger.info(f"[홈플러스] bounded MAX_REQUESTS={self.MAX_REQUESTS} 도달, HTTP fallback 생략")
-
+            items, requests_attempted, source_diagnostics = await self._fetch_via_playwright()
             items = self._dedupe_items(items)
             valid_items = await self.validate(items)
             items_as_dict = [item.model_dump(mode="json") for item in valid_items]
+            for _d in items_as_dict:
+                _d["source"] = _d.get("source") or "homeplus"
             quality_details = summarize_discount_run(
                 items_as_dict,
                 raw_count=len(items),
                 invalid_count=max(0, len(items) - len(valid_items)),
                 strategy_used=strategy,
-                fallback_used=fallback_used,
-                queries_attempted=queries_attempted,
+                fallback_used=False,
+                queries_attempted=requests_attempted,
                 pages_attempted=source_diagnostics.get("pages_attempted"),
             )
             quality_details["fetch"]["source_map"] = self._source_map_summary()
@@ -188,19 +126,15 @@ class HomeplusCrawler(CrawlerContract):
                 max_pages=self.MAX_PAGES,
                 max_requests=self.MAX_REQUESTS,
                 max_items=self.MAX_ITEMS,
-                parser_contract="homeplus_mfront_fixture.v1",
-                request_strategy="public_search_playwright_spa",
-                parser_inputs=["mfront_unitItemInner_html", "embedded_json", "legacy_product_card_html"],
+                parser_contract="homeplus_round_t_requests_api.v1",
+                request_strategy="public_mfront_json_api_requests_only",
+                parser_inputs=["category_item_json", "totalsearch_json", "mfront_unitItemInner_html", "legacy_product_card_html"],
                 quality=quality_details,
             )
-
             finished_at = datetime.now()
             duration = (finished_at - started_at).total_seconds()
-            status = CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED
-            logger.info(f"[홈플러스] 크롤링 완료: {len(valid_items)}개, {duration:.2f}초")
-
             return CrawlResult(
-                status=status,
+                status=CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED,
                 crawler_name=self.info.name,
                 strategy_used=strategy,
                 items_count=len(valid_items),
@@ -212,143 +146,202 @@ class HomeplusCrawler(CrawlerContract):
                 quality_score=quality_details["score"],
                 quality_details=quality_details,
             )
-
-        except Exception as e:
-            logger.error(f"[홈플러스] 크롤링 실패: {e}", exc_info=True)
+        except Exception as exc:
+            logger.error("[홈플러스] 크롤링 실패: %s", exc, exc_info=True)
             return CrawlResult(
                 status=CrawlStatus.FAILED,
                 crawler_name=self.info.name,
-                error_msg=str(e),
+                error_msg=str(exc),
                 started_at=started_at,
                 finished_at=datetime.now(),
             )
 
-    async def _fetch_via_http(self) -> list[DiscountItem]:
-        """HTTP 요청으로 홈플러스 상품 데이터를 수집한다 (fallback).
-
-        mfront SPA가 아닌 front.homeplus.co.kr의 이벤트 페이지에서
-        JSON/HTML 데이터 추출을 시도한다.
-        """
-        items: list[DiscountItem] = []
-        headers = self._anti_detect.get_random_headers()
-        headers.update({
-            "Referer": "https://www.homeplus.co.kr/",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        })
-
-        try:
-            response = self._retry_request(
-                f"{self.BASE_URL}/event/eventMain.do",
-                headers=headers, timeout=20, allow_redirects=True,
-            )
-            if response.status_code == 200:
-                items = await self.parse(response.text)
-                items = self._limit_items(self._dedupe_items(items))
-        except Exception as e:
-            logger.debug(f"[홈플러스] HTTP fallback 실패: {e}")
-
-        return items
+    def _retry_request(
+        self,
+        url: str,
+        *,
+        headers: dict | None = None,
+        session: requests.Session | None = None,
+        timeout: int = 20,
+        max_retries: int = 3,
+        **kwargs,
+    ) -> requests.Response:
+        requester = session or requests
+        last_exc: BaseException | None = None
+        last_resp: requests.Response | None = None
+        for attempt in range(max_retries):
+            try:
+                resp = requester.get(url, headers=headers, timeout=timeout, **kwargs)
+                last_resp = resp
+                if resp.status_code == 429:
+                    wait = 8 + (attempt * 8) + random.uniform(1.0, 3.0)
+                    logger.warning("[홈플러스] 429 rate limit, sleeping %.1fs before retry", wait)
+                    time.sleep(wait)
+                    continue
+                return resp
+            except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as exc:
+                last_exc = exc
+                if attempt >= max_retries - 1:
+                    raise
+                wait = 4 + (attempt * 4) + random.uniform(1.0, 2.0)
+                logger.warning("[홈플러스] request failed (%s/%s), sleeping %.1fs: %s", attempt + 1, max_retries, wait, exc)
+                time.sleep(wait)
+        if last_resp is not None:
+            return last_resp
+        raise last_exc or requests.HTTPError("request retry exhausted")
 
     async def _fetch_via_playwright(self) -> tuple[list[DiscountItem], int, dict]:
-        """Playwright로 mfront.homeplus.co.kr 검색 페이지를 렌더링하여 상품 데이터를 추출한다.
+        """Backward-compatible test hook; implementation is requests-only."""
+        return await self._fetch_via_http()
 
-        2025년 기준 홈플러스는 mfront.homeplus.co.kr SPA로 전환되어
-        /search?keyword= 검색 URL이 유일하게 상품을 반환한다.
-        .unitItemInner 카드에서 상품 정보를 파싱한다.
-        """
+    async def _fetch_via_http(self) -> tuple[list[DiscountItem], int, dict]:
         items: list[DiscountItem] = []
-        seen_keys: set[str] = set()
-        queries_attempted = 0
-        max_items = self.MAX_ITEMS
-        diagnostics = self._empty_source_diagnostics()
-
-        try:
-            from engine.playwright_helper import PlaywrightHelper
-
-            async with PlaywrightHelper() as helper:
-                source_requests = self._build_source_requests()
-                diagnostics = self._empty_source_diagnostics(source_requests)
-                for source_request in source_requests:
-                    if self.MAX_REQUESTS is not None and queries_attempted >= self.MAX_REQUESTS:
-                        break
-                    query = str(source_request["query"])
-                    url = str(source_request["url"])
-                    category_hint = str(source_request["category_hint"])
-                    request_type = str(source_request.get("request_type") or "search")
-                    page_num = int(source_request.get("page") or 1)
-                    queries_attempted += 1
-                    diagnostics["queries_attempted"] = queries_attempted
-                    diagnostics["pages_attempted"] = diagnostics.get("pages_attempted", 0) + 1
-                    try:
-                        html = await helper.get_rendered_html(
-                            url,
-                            wait_selector=".unitItemInner",
-                            wait_timeout=20000,
-                            extra_wait_ms=3000,
-                            scroll_to_bottom=max_items is None,
-                        )
-                        page_items = await self.parse(html)
-                        if category_hint:
-                            for item in page_items:
-                                if not item.category:
-                                    item.category = category_hint
-                                item.attributes.setdefault("category_hint", item.category or category_hint)
-                        new_count = 0
-                        for item in page_items:
-                            key = source_dedup_key(item)
-                            if key not in seen_keys:
-                                seen_keys.add(key)
-                                items.append(item)
-                                new_count += 1
-                                if max_items is not None and len(items) >= max_items:
-                                    logger.info(f"[홈플러스] bounded MAX_ITEMS={max_items} 도달, 조기 종료")
-                                    diagnostics["item_cap_reached"] = True
-                                    self._record_source_request_result(
-                                        diagnostics, query, page_num, category_hint, request_type, len(page_items), new_count
-                                    )
-                                    return items[:max_items], queries_attempted, diagnostics
-                        self._record_source_request_result(
-                            diagnostics, query, page_num, category_hint, request_type, len(page_items), new_count
-                        )
-                        logger.info(f"[홈플러스] '{query}' 검색: {new_count}개 신규 ({len(page_items)}개 중)")
-                    except Exception as e:
-                        logger.debug(f"[홈플러스] '{query}' 검색 실패: {e}")
-                        diagnostics.setdefault("request_results", []).append(
-                            {
-                                "query": query,
-                                "page": page_num,
-                                "category_hint": category_hint,
-                                "request_type": request_type,
-                                "raw_count": 0,
-                                "new_count": 0,
-                                "error": str(e),
-                            }
-                        )
-                        continue
-
-                logger.info(f"[홈플러스] Playwright 총: {len(items)}개 수집")
-
-        except ImportError:
-            logger.warning("[홈플러스] playwright 미설치 — pip install playwright && playwright install chromium")
-        except Exception as e:
-            logger.warning(f"[홈플러스] Playwright 크롤링 실패: {e}")
-
-        return self._limit_items(items), queries_attempted, diagnostics
-
-    def _dedupe_items(self, items: list[DiscountItem]) -> list[DiscountItem]:
-        """Remove source-key duplicates before reporting collection counts."""
-        deduped: list[DiscountItem] = []
         seen_keys: set[tuple[str, str, str]] = set()
-        for item in items:
-            key = source_dedup_key(item)
-            if key in seen_keys:
-                continue
-            seen_keys.add(key)
-            deduped.append(item)
-        return deduped
+        requests_attempted = 0
+        source_requests = self._build_source_requests()
+        diagnostics = self._empty_source_diagnostics(source_requests)
+        session = requests.Session()
+        headers = self._headers()
+
+        for source_request in source_requests:
+            if self.MAX_REQUESTS is not None and requests_attempted >= self.MAX_REQUESTS:
+                break
+            max_pages_value = source_request.get("max_pages") if source_request.get("max_pages") is not None else self.MAX_PAGES
+            max_pages = max(1, int(max_pages_value)) if max_pages_value is not None else None
+            page_num = 1
+            while max_pages is None or page_num <= max_pages:
+                if self.MAX_REQUESTS is not None and requests_attempted >= self.MAX_REQUESTS:
+                    break
+                api_url, params = self._api_request_for_source(source_request, page_num)
+                requests_attempted += 1
+                diagnostics["queries_attempted"] = requests_attempted
+                diagnostics["pages_attempted"] = diagnostics.get("pages_attempted", 0) + 1
+                raw_count = 0
+                new_count = 0
+                try:
+                    response = self._retry_request(
+                        api_url,
+                        headers=headers,
+                        session=session,
+                        timeout=20,
+                        params=params,
+                        allow_redirects=True,
+                    )
+                    if response.status_code != 200:
+                        raise requests.HTTPError(f"HTTP {response.status_code}")
+                    page_items = await self.parse(response.text, store_type=str(source_request.get("store_type") or "HYPER"))
+                    raw_count = len(page_items)
+                    for item in page_items:
+                        if source_request.get("category_hint") and not item.category:
+                            item.category = str(source_request["category_hint"])
+                        attrs = item.attributes or {}
+                        attrs.setdefault("mart_native_category_id", str(source_request.get("category_id") or ""))
+                        attrs.setdefault("category_hint", item.category or str(source_request.get("category_hint") or ""))
+                        item.attributes = attrs
+                        key = source_dedup_key(item)
+                        if key in seen_keys:
+                            continue
+                        seen_keys.add(key)
+                        items.append(item)
+                        new_count += 1
+                        if self.MAX_ITEMS is not None and len(items) >= self.MAX_ITEMS:
+                            diagnostics["item_cap_reached"] = True
+                            self._record_source_request_result(diagnostics, source_request, page_num, raw_count, new_count)
+                            return items[: self.MAX_ITEMS], requests_attempted, diagnostics
+                    self._record_source_request_result(diagnostics, source_request, page_num, raw_count, new_count)
+                    if not self._has_next_page(response.text, page_num):
+                        break
+                except Exception as exc:
+                    logger.debug("[홈플러스] requests source failed: %s %s", source_request.get("url"), exc)
+                    self._record_source_request_result(diagnostics, source_request, page_num, raw_count, new_count, error=str(exc))
+                    break
+                page_num += 1
+                self._polite_sleep()
+        return self._limit_items(items), requests_attempted, diagnostics
+
+    def _headers(self) -> dict:
+        headers = self._anti_detect.get_random_headers()
+        headers.update({
+            "Accept": "application/json,text/plain,*/*",
+            "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.8",
+            "Referer": f"{self.MFRONT_URL}/list?categoryDepth=0&categoryId=1&delivery={self.HYPER_DELIVERY_FILTER}",
+            "Origin": self.MFRONT_URL,
+        })
+        return headers
+
+    def _polite_sleep(self) -> None:
+        delay_getter = getattr(self._anti_detect, "get_random_delay", None)
+        delay = delay_getter() if callable(delay_getter) else random.uniform(2.5, 5.0)
+        try:
+            delay = float(delay or 0)
+        except (TypeError, ValueError):
+            delay = 0
+        if delay > 0:
+            time.sleep(delay)
+
+    def _api_request_for_source(self, source_request: dict, page_num: int) -> tuple[str, dict[str, str | int]]:
+        store_type = self._normalize_store_type(str(source_request.get("store_type") or "HYPER"))
+        request_type = str(source_request.get("request_type") or "category_list")
+        per_page = int(source_request.get("per_page") or self.DEFAULT_PER_PAGE)
+        if request_type.startswith("search"):
+            url = self.EXPRESS_SEARCH_API if store_type == "EXP" else self.SEARCH_API
+            params: dict[str, str | int] = {"keyword": str(source_request.get("query") or ""), "page": page_num, "perPage": per_page}
+            if store_type == "HYPER":
+                params["delivery"] = self.HYPER_DELIVERY_FILTER
+            return url, params
+        url = self.EXPRESS_CATEGORY_API if store_type == "EXP" else self.CATEGORY_API
+        params = {
+            "categoryId": int(source_request.get("category_id") or 1),
+            "categoryDepth": int(source_request.get("category_depth") or self.DEFAULT_CATEGORY_DEPTH),
+            "page": page_num,
+            "perPage": per_page,
+        }
+        if store_type == "HYPER":
+            params["delivery"] = self.HYPER_DELIVERY_FILTER
+        return url, params
+
+    def _has_next_page(self, raw_data: str, page_num: int) -> bool:
+        try:
+            data = json.loads(raw_data)
+            pagination = data.get("pagination") or (data.get("data") or {}).get("pagination") or {}
+            total_page = int(pagination.get("totalPage") or 0)
+            return total_page > page_num
+        except Exception:
+            return False
+
+    def _build_homeplus_category_url(self, store_type: str, category_id: int) -> str:
+        store_type = self._normalize_store_type(store_type)
+        prefix = "/express/list" if store_type == "EXP" else "/list"
+        params: dict[str, str | int] = {"categoryDepth": self.DEFAULT_CATEGORY_DEPTH, "categoryId": int(category_id)}
+        if store_type == "HYPER":
+            params["delivery"] = self.HYPER_DELIVERY_FILTER
+        return f"{self.MFRONT_URL}{prefix}?{urlencode(params)}"
 
     def _build_source_requests(self) -> list[dict[str, str | int]]:
-        """Build bounded category + pagination source collection requests."""
+        legacy_overrides = (
+            self.SEARCH_QUERIES != type(self).SEARCH_QUERIES
+            or self.CATEGORY_QUERIES != type(self).CATEGORY_QUERIES
+            or (self.MAX_PAGES is not None and self.MAX_PAGES != type(self).MAX_PAGES)
+        )
+        if legacy_overrides:
+            return self._build_legacy_search_source_requests()
+        requests_to_make: list[dict[str, str | int]] = []
+        for store_type in self.STORE_TYPES:
+            for category_id in self.CATEGORY_IDS:
+                requests_to_make.append({
+                    "query": store_type,
+                    "page": 1,
+                    "store_type": store_type,
+                    "category_id": int(category_id),
+                    "category_depth": self.DEFAULT_CATEGORY_DEPTH,
+                    "category_hint": str(category_id),
+                    "request_type": "category_list",
+                    "per_page": self.DEFAULT_PER_PAGE,
+                    "url": self._build_homeplus_category_url(store_type, int(category_id)),
+                })
+        return requests_to_make
+
+    def _build_legacy_search_source_requests(self) -> list[dict[str, str | int]]:
         max_pages = self.MAX_PAGES if self.MAX_PAGES is not None else 1
         requests_to_make: list[dict[str, str | int]] = []
         index_by_key: dict[tuple[str, int], int] = {}
@@ -356,15 +349,15 @@ class HomeplusCrawler(CrawlerContract):
             for page_num in range(1, max(1, int(max_pages)) + 1):
                 key = (query, page_num)
                 index_by_key[key] = len(requests_to_make)
-                requests_to_make.append(
-                    {
-                        "query": query,
-                        "page": page_num,
-                        "category_hint": "",
-                        "request_type": "search",
-                        "url": f"{self.MFRONT_URL}/search?keyword={quote(query)}&page={page_num}",
-                    }
-                )
+                requests_to_make.append({
+                    "query": query,
+                    "page": page_num,
+                    "store_type": "HYPER",
+                    "category_hint": "",
+                    "request_type": "search",
+                    "per_page": self.DEFAULT_PER_PAGE,
+                    "url": f"{self.MFRONT_URL}/search?keyword={quote(query)}&page={page_num}",
+                })
         for query in self.CATEGORY_QUERIES:
             for page_num in range(1, max(1, int(max_pages)) + 1):
                 key = (query, page_num)
@@ -374,32 +367,42 @@ class HomeplusCrawler(CrawlerContract):
                     request["request_type"] = "search+category"
                     continue
                 index_by_key[key] = len(requests_to_make)
-                requests_to_make.append(
-                    {
-                        "query": query,
-                        "page": page_num,
-                        "category_hint": query,
-                        "request_type": "category",
-                        "url": f"{self.MFRONT_URL}/search?keyword={quote(query)}&page={page_num}",
-                    }
-                )
+                requests_to_make.append({
+                    "query": query,
+                    "page": page_num,
+                    "store_type": "HYPER",
+                    "category_hint": query,
+                    "request_type": "category",
+                    "per_page": self.DEFAULT_PER_PAGE,
+                    "url": f"{self.MFRONT_URL}/search?keyword={quote(query)}&page={page_num}",
+                })
         return requests_to_make
 
     def _source_map_summary(self) -> dict:
         requests_to_make = self._build_source_requests()
+        pages = sorted({int(req.get("page", 1)) for req in requests_to_make}) or [1]
         return {
             "schema": "homeplus_source_map.v1",
             "search_queries": list(self.SEARCH_QUERIES),
             "category_queries": list(self.CATEGORY_QUERIES),
             "planned_requests": len(requests_to_make),
-            "planned_pages": sorted({int(req["page"]) for req in requests_to_make}),
+            "planned_pages": pages,
             "request_type_counts": dict(Counter(str(req.get("request_type") or "search") for req in requests_to_make)),
-            "caps": {
-                "max_items": self.MAX_ITEMS,
-                "max_pages": self.MAX_PAGES if self.MAX_PAGES is not None else 1,
-                "max_requests": self.MAX_REQUESTS,
-            },
+            "caps": {"max_items": self.MAX_ITEMS, "max_pages": self.MAX_PAGES, "max_requests": self.MAX_REQUESTS},
         }
+
+    def harvest_category_tree_fixture(self) -> list[dict[str, str | int]]:
+        return [
+            {
+                "mart": "homeplus",
+                "storeType": store_type,
+                "mart_native_category_id": int(category_id),
+                "categoryDepth": self.DEFAULT_CATEGORY_DEPTH,
+                "url": self._build_homeplus_category_url(store_type, int(category_id)),
+            }
+            for store_type in self.STORE_TYPES
+            for category_id in self.CATEGORY_IDS
+        ]
 
     def _empty_source_diagnostics(self, source_requests: list[dict[str, str | int]] | None = None) -> dict:
         source_requests = source_requests or self._build_source_requests()
@@ -415,26 +418,21 @@ class HomeplusCrawler(CrawlerContract):
             "item_cap_reached": False,
         }
 
-    def _record_source_request_result(
-        self,
-        diagnostics: dict,
-        query: str,
-        page_num: int,
-        category_hint: str,
-        request_type: str,
-        raw_count: int,
-        new_count: int,
-    ) -> None:
-        diagnostics.setdefault("request_results", []).append(
-            {
-                "query": query,
-                "page": page_num,
-                "category_hint": category_hint,
-                "request_type": request_type,
-                "raw_count": raw_count,
-                "new_count": new_count,
-            }
-        )
+    def _record_source_request_result(self, diagnostics: dict, source_request: dict, page_num: int, raw_count: int, new_count: int, error: str | None = None) -> None:
+        query = str(source_request.get("query") or source_request.get("store_type") or "")
+        category_hint = str(source_request.get("category_hint") or "")
+        request_type = str(source_request.get("request_type") or "category_list")
+        record = {
+            "query": query,
+            "page": page_num,
+            "category_hint": category_hint,
+            "request_type": request_type,
+            "raw_count": raw_count,
+            "new_count": new_count,
+        }
+        if error:
+            record["error"] = error
+        diagnostics.setdefault("request_results", []).append(record)
         for key_name, value in (
             ("query_distribution", query),
             ("category_distribution", category_hint or "uncategorized"),
@@ -466,29 +464,509 @@ class HomeplusCrawler(CrawlerContract):
             },
         }
 
-    async def parse(self, raw_data: str) -> list[DiscountItem]:
-        """HTML/JSON 응답에서 할인 상품을 파싱한다."""
+    async def parse(self, raw_data: str, store_type: str = "HYPER") -> list[DiscountItem]:
         items: list[DiscountItem] = []
-
-        # JSON 데이터 블록 추출 시도
         json_items = self._extract_json_items(raw_data)
         if json_items:
             for product in json_items:
-                item = self._json_to_discount_item(product)
+                item = self._json_to_discount_item(product, store_type=store_type)
                 if item:
                     items.append(item)
             return items
-
-        # HTML 파싱 fallback
         try:
             from bs4 import BeautifulSoup
             soup = BeautifulSoup(raw_data, "html.parser")
-            items = self._parse_html(soup)
-            del soup  # Free parsed HTML tree from memory
-        except Exception as e:
-            logger.warning(f"[홈플러스] HTML 파싱 실패: {e}")
-
+            items = self._parse_html(soup, store_type=store_type)
+            del soup
+        except Exception as exc:
+            logger.warning("[홈플러스] HTML 파싱 실패: %s", exc)
         return items
+
+    def _extract_json_items(self, raw_data: str) -> list[dict]:
+        try:
+            parsed = json.loads(raw_data)
+            items = self._json_items_from_obj(parsed)
+            if items:
+                return items
+        except Exception:
+            pass
+        patterns = [
+            r'var\s+(?:itemList|prodList|goodsList)\s*=\s*(\[.*?\]);',
+            r'"(?:itemList|goods|products|dataList)"\s*:\s*(\[.*?\])',
+        ]
+        for pattern in patterns:
+            match = re.search(pattern, raw_data, re.DOTALL)
+            if match:
+                try:
+                    parsed = json.loads(match.group(1))
+                    if isinstance(parsed, list):
+                        return [row for row in parsed if isinstance(row, dict)]
+                except json.JSONDecodeError:
+                    continue
+        return []
+
+    def _json_items_from_obj(self, obj) -> list[dict]:
+        if isinstance(obj, list):
+            return [row for row in obj if isinstance(row, dict)]
+        if not isinstance(obj, dict):
+            return []
+        for key in ("dataList", "itemList", "goodsList", "products", "items"):
+            value = obj.get(key)
+            if isinstance(value, list):
+                return [row for row in value if isinstance(row, dict)]
+        data = obj.get("data")
+        if isinstance(data, dict):
+            return self._json_items_from_obj(data)
+        return []
+
+    def _json_to_discount_item(self, product: dict, store_type: str = "HYPER") -> Optional[DiscountItem]:
+        name = str(product.get("itemNm") or product.get("goodsNm") or product.get("prodNm") or product.get("name") or "").strip()
+        if len(name) < 2:
+            return None
+        sale_price = self._to_int(product.get("dcPrice") or product.get("salePrice") or product.get("sellprc") or product.get("price"))
+        original_price = self._to_int(product.get("singlePrice") or product.get("originPrice") or product.get("norprc") or product.get("original_price"))
+        if original_price == sale_price:
+            original_price = None
+        if not sale_price or sale_price <= 0:
+            return None
+        discount_pct = self._to_float(product.get("dcRate") or product.get("frontDcRate"))
+        if discount_pct is None and original_price and original_price > sale_price:
+            discount_pct = round((1 - sale_price / original_price) * 100, 1)
+        item_no = self._extract_item_no_from_product(product)
+        store_type = self._normalize_store_type(str(product.get("storeType") or store_type))
+        category = self._category_from_product(product)
+        category_path = [value for value in (product.get("lcateNm"), product.get("mcateNm"), product.get("scateNm"), product.get("dcateNm")) if value]
+        detail_url = self._permanent_product_url(item_no, name) if item_no else self._normalize_legacy_detail_url(str(product.get("goodsUrl") or product.get("detail_url") or ""))
+        canonical_url = normalize_homeplus_url(item_no, store_type) if item_no else detail_url
+        image_url = self._absolute_url(str(product.get("imgUrl") or product.get("goodsImg") or product.get("imageUrl") or ""), self.MFRONT_URL)
+        raw_unit = product.get("unit") or product.get("goodsUnit") or product.get("capacity") or self._display_unit_from_api(product)
+        unit_metadata = normalize_unit_metadata(name=name, sale_price=sale_price, raw_unit=raw_unit or "")
+        display_unit = unit_metadata.get("display_unit") or raw_unit or ""
+        unit_price_info = self._unit_price_from_product(product)
+        brand = str(product.get("brandNm") or self._extract_brand(name) or "").strip()
+        normalized_name = re.sub(r"\[[^\]]+\]", "", name)
+        normalized_name = re.sub(r"\s+", " ", normalized_name).strip()
+        promo_label = self._extract_json_promo_label(product)
+        valid_from, valid_until, period = parse_period_fields(product)
+        event_info = product.get("eventInfo") if isinstance(product.get("eventInfo"), dict) else {}
+        if not valid_until and event_info:
+            _, valid_until, period = parse_period_fields({"valid_until": event_info.get("eventEndDt")})
+        source_record_key = normalize_source_key("homeplus", item_no, product.get("goodsNo"), product.get("docId"), detail_url, name)
+        pack_qty = unit_metadata.get("package_quantity") or ""
+        pack_unit = unit_metadata.get("package_unit") or ""
+        attrs = {
+            **(unit_metadata.get("attributes") or {}),
+            **unit_price_info,
+            **build_source_attributes(
+                "homeplus",
+                source_record_key=source_record_key,
+                detail_url=detail_url,
+                image_url=image_url,
+                category=category,
+                period=period,
+            ),
+            "storeType": store_type,
+            "mart_native_code": item_no,
+            "canonical_url": canonical_url,
+            "permanent_url": detail_url,
+            "mart_native_category_id": str(product.get("rcateCd") or product.get("categoryId") or ""),
+            "mart_native_category_path": " > ".join(category_path),
+            "external_seller": classify_external_seller_homeplus(" ".join(map(str, product.get("deliveryLabelList") or [])) + " " + str(product.get("itemShipMethodNm") or "")),
+            "canon_hash": compute_canon_hash(brand, normalized_name, pack_qty, pack_unit),
+            "brand": brand,
+            "raw_name": name,
+            "normalized_name": normalized_name,
+            "docId": product.get("docId") or "",
+        }
+        if promo_label:
+            attrs["promo_label"] = promo_label
+        attrs = inject_source_field(attrs, "homeplus")
+        return DiscountItem(
+            name=name,
+            normalized_name=normalized_name,
+            store="홈플러스",
+            original_price=original_price,
+            sale_price=sale_price,
+            discount_percent=discount_pct,
+            unit=display_unit or "",
+            display_unit=display_unit or "",
+            package_quantity=unit_metadata.get("package_quantity"),
+            package_unit=unit_metadata.get("package_unit") or "",
+            price_per_100g=unit_metadata.get("price_per_100g"),
+            attributes=attrs,
+            category=category,
+            event_name=promo_label or product.get("stickerEvent") or "홈플러스 할인",
+            valid_from=valid_from,
+            valid_until=valid_until,
+            image_url=image_url,
+            detail_url=detail_url,
+            promo_label=promo_label,
+        )
+
+    def _extract_item_no_from_product(self, product: dict) -> str:
+        for key in ("itemNo", "itemId"):
+            raw = product.get(key)
+            digits = re.sub(r"\D", "", str(raw or ""))
+            if digits:
+                return digits.zfill(9) if len(digits) <= 9 else digits
+        for key in ("goodsNo", "id"):
+            raw = str(product.get(key) or "").strip()
+            if re.fullmatch(r"\d{9,}", raw):
+                return raw
+        return ""
+
+    def _category_from_product(self, product: dict) -> str:
+        for key in ("categoryNm", "ctgNm", "dcateNm", "scateNm", "mcateNm", "lcateNm", "rcateNm", "category"):
+            value = product.get(key)
+            if value:
+                return str(value).strip()
+        return ""
+
+    def _display_unit_from_api(self, product: dict) -> str:
+        total = product.get("totalUnitQty")
+        unit = product.get("unitMeasure")
+        if total and unit:
+            try:
+                qty = int(float(total)) if float(total).is_integer() else float(total)
+                return f"{qty}{unit}"
+            except Exception:
+                return f"{total}{unit}"
+        return ""
+
+    def _unit_price_from_product(self, product: dict) -> dict:
+        unit_price = self._to_float(product.get("unitPrice"))
+        unit_qty = product.get("unitQty")
+        measure = product.get("unitMeasure")
+        result: dict = {}
+        if unit_price:
+            result["unit_price_displayed"] = unit_price
+        if unit_qty and measure:
+            try:
+                qty = int(float(unit_qty)) if float(unit_qty).is_integer() else float(unit_qty)
+            except Exception:
+                qty = unit_qty
+            result["unit_price_basis_raw"] = f"{qty}{measure}"
+        return result
+
+    def _extract_json_promo_label(self, product: dict) -> str | None:
+        candidates: list[str] = []
+        for key in ("stickerEvent", "eventBtnText", "promoLabel", "promotionLabel"):
+            value = product.get(key)
+            if value:
+                candidates.append(str(value))
+        event_info = product.get("eventInfo")
+        if isinstance(event_info, dict):
+            candidates.extend(str(v) for v in event_info.values() if v)
+        for key in ("stickerEventList", "eventFlagList", "benefitLabelList", "labelList", "eventInfoList"):
+            value = product.get(key)
+            if isinstance(value, list):
+                for entry in value:
+                    if isinstance(entry, dict):
+                        candidates.extend(str(v) for v in entry.values() if v)
+                    elif entry:
+                        candidates.append(str(entry))
+        for value in candidates:
+            match = self.PROMO_LABEL_RE.search(value)
+            if match:
+                return re.sub(r"\s*\+\s*", "+", match.group(0))
+        return None
+
+    def _permanent_product_url(self, item_no: str, name: str) -> str:
+        slug_source = re.sub(r"[^0-9A-Za-z가-힣]+", "-", name).strip("-") or item_no
+        slug = quote(slug_source[:80])
+        return f"{self.MFRONT_URL}/p/{slug}/{item_no}"
+
+    def _normalize_legacy_detail_url(self, raw_url: str) -> str:
+        raw_url = str(raw_url or "").strip()
+        if not raw_url:
+            return ""
+        parsed = urlparse(raw_url)
+        path = parsed.path or ""
+        query = parse_qs(parsed.query)
+        if path.startswith("/p/"):
+            return self._absolute_url(raw_url, self.MFRONT_URL)
+        if "gnbNo" in query or "promoNo" in query:
+            return ""
+        if path == "/item" and re.fullmatch(r"\d+", (query.get("itemNo") or [""])[0]):
+            return self._absolute_url(raw_url, self.MFRONT_URL)
+        if path.startswith("/goods/detail"):
+            return self._absolute_url(raw_url, self.BASE_URL)
+        return self._absolute_url(raw_url, self.BASE_URL)
+
+    def _parse_html(self, soup, store_type: str = "HYPER") -> list[DiscountItem]:
+        items: list[DiscountItem] = []
+        mfront_cards = soup.select(".unitItemInner")
+        if mfront_cards:
+            for card in mfront_cards:
+                item = self._parse_mfront_card(card, store_type=store_type)
+                if item:
+                    items.append(item)
+            return items
+        for card in soup.select(".product-item, .goods_item, .event_item, .item_box, .prod_wrap"):
+            item = self._parse_product_card(card)
+            if item:
+                items.append(item)
+        return items
+
+    def _parse_mfront_card(self, card, store_type: str = "HYPER") -> Optional[DiscountItem]:
+        store_type = self._normalize_store_type(store_type)
+        img_el = card.select_one("img")
+        image_url = img_el.get("src") or img_el.get("data-src", "") if img_el else ""
+        full_text = card.get_text(separator=" ", strip=True)
+        item_no, link_store_type = self._extract_homeplus_item_identity(card, store_type)
+        if not item_no:
+            return None
+        store_type = link_store_type or store_type
+        canonical_url = normalize_homeplus_url(item_no, store_type)
+        prices = []
+        for pv in card.select(".priceValue"):
+            price = self._extract_price(pv.get_text(strip=True))
+            if price and price > 0:
+                prices.append(price)
+        if not prices:
+            price_container = card.select_one(".price") or card
+            for match in re.finditer(r"(\d{1,3}(?:,\d{3})+)\s*원", price_container.get_text(" ")):
+                prices.append(int(match.group(1).replace(",", "")))
+        unit_price_info = self._parse_homeplus_unit_price(full_text)
+        prices = [price for price in prices if price != unit_price_info.get("unit_price_displayed")]
+        if not prices:
+            return None
+        sale_price = min(prices)
+        original_price = max(prices) if len(prices) >= 2 else None
+        if sale_price <= 0:
+            return None
+        discount_pct = None
+        pct_match = re.search(r"(\d{1,2})%", full_text)
+        if pct_match:
+            discount_pct = float(pct_match.group(1))
+        elif original_price and original_price > sale_price:
+            discount_pct = round((1 - sale_price / original_price) * 100, 1)
+        name = self._extract_mfront_name(card, img_el)
+        if len(name) < 2:
+            return None
+        category = card.get("data-category") or card.get("data-ctg-nm") or card.get("data-category-name") or ""
+        unit_metadata = normalize_unit_metadata(name=name, sale_price=sale_price)
+        display_unit = unit_metadata.get("display_unit")
+        brand = self._extract_brand(name)
+        normalized_name = re.sub(r"\[[^\]]+\]", "", name)
+        normalized_name = re.sub(r"\s+", " ", normalized_name).strip()
+        pack_qty = unit_metadata.get("package_quantity") or ""
+        pack_unit = unit_metadata.get("package_unit") or ""
+        promo_label = self._extract_homeplus_promo_label(card)
+        attrs = {
+            **(unit_metadata.get("attributes") or {}),
+            **unit_price_info,
+            **build_source_attributes(
+                "homeplus",
+                source_record_key=normalize_source_key("homeplus", item_no, canonical_url, name),
+                detail_url=canonical_url,
+                image_url=image_url,
+                category=category,
+            ),
+            "storeType": store_type,
+            "mart_native_code": item_no,
+            "canonical_url": canonical_url,
+            "external_seller": classify_external_seller_homeplus(full_text),
+            "canon_hash": compute_canon_hash(brand, normalized_name, pack_qty, pack_unit),
+            "brand": brand,
+            "raw_name": name,
+            "normalized_name": normalized_name,
+        }
+        if promo_label:
+            attrs["promo_label"] = promo_label
+        attrs = inject_source_field(attrs, "homeplus")
+        return DiscountItem(
+            name=name,
+            normalized_name=normalized_name,
+            store="홈플러스",
+            original_price=original_price,
+            sale_price=sale_price,
+            discount_percent=discount_pct,
+            unit=display_unit or "",
+            display_unit=display_unit or "",
+            package_quantity=unit_metadata.get("package_quantity"),
+            package_unit=unit_metadata.get("package_unit") or "",
+            price_per_100g=unit_metadata.get("price_per_100g"),
+            attributes=attrs,
+            category=category,
+            image_url=image_url,
+            detail_url=canonical_url,
+            event_name=promo_label or "홈플러스 할인",
+            promo_label=promo_label,
+        )
+
+    def _extract_homeplus_promo_label(self, card) -> str | None:
+        candidates = []
+        for selector in (".promotionFlag .flag", ".moreBtnWrap .list-btn", ".recomComment", ".flag", ".badge"):
+            for el in card.select(selector):
+                candidates.extend(value for value in (str(el.get("title") or "").strip(), el.get_text(" ", strip=True)) if value)
+        for value in candidates:
+            match = self.PROMO_LABEL_RE.search(value)
+            if match:
+                return re.sub(r"\s*\+\s*", "+", match.group(0).strip())
+        return None
+
+    def _parse_homeplus_unit_price(self, text: str) -> dict:
+        parsed = parse_unit_price(text)
+        if isinstance(parsed, dict):
+            return parsed
+        if isinstance(parsed, tuple) and len(parsed) >= 2:
+            price, basis = parsed[0], parsed[1]
+            if price is None or basis is None:
+                return {}
+            return {"unit_price_displayed": int(price), "unit_price_basis_raw": str(basis)}
+        return {}
+
+    def _extract_homeplus_item_identity(self, card, default_store_type: str = "HYPER") -> tuple[str, str]:
+        default_store_type = self._normalize_store_type(default_store_type)
+        for attr in ("data-item-no", "data-itemno", "data-item_no", "data-goods-no"):
+            digits = re.sub(r"\D", "", str(card.get(attr) or ""))
+            if re.fullmatch(r"\d{9}", digits):
+                return digits, default_store_type
+        for link in card.select("a[href]"):
+            href = str(link.get("href") or "").strip()
+            parsed = urlparse(href)
+            path = parsed.path or href.split("?", 1)[0]
+            if path != "/item" and not path.endswith("/item"):
+                continue
+            query = parse_qs(parsed.query)
+            item_no = (query.get("itemNo") or [""])[0]
+            if not re.fullmatch(r"\d{9}", item_no):
+                continue
+            return item_no, self._normalize_store_type((query.get("storeType") or [default_store_type])[0])
+        return "", default_store_type
+
+    def _extract_mfront_name(self, card, img_el) -> str:
+        for selector in (".itemName", ".productName", ".unit_title", "[class*='name' i]", "[class*='Name']", "[class*='title' i]"):
+            el = card.select_one(selector)
+            if el:
+                text = el.get_text(strip=True)
+                if len(text) >= 2:
+                    return text
+        if img_el:
+            alt = (img_el.get("alt") or "").strip()
+            if len(alt) >= 2:
+                return alt
+        full = card.get_text(separator="|", strip=True)
+        name = re.sub(r"\d{1,3}(?:,\d{3})*\s*원", "", full)
+        name = re.sub(r"\d{1,2}%", "", name)
+        name = re.sub(r"\d+\.\d+/\d+", "", name)
+        name = re.sub(r"(상품할인|매직배송|무료배송|당일배송|만원[↑↓]?)", "", name)
+        name = re.sub(r"\|", " ", name)
+        name = re.sub(r"\s+", " ", name).strip()
+        return name[:100] if name else ""
+
+    def _parse_product_card(self, card) -> Optional[DiscountItem]:
+        name_el = card.select_one(".product-name, .goods_name, .item_name, .prod_name, a[href*='goods']")
+        if not name_el:
+            return None
+        name = name_el.get_text(strip=True)
+        if len(name) < 2:
+            return None
+        sale_price = self._extract_price_from_element(card, ".sale_price, .price .num, .discount_price, .spc_price")
+        original_price = self._extract_price_from_element(card, ".origin_price, .normal_price, .org_price, .before_price")
+        if not sale_price or sale_price <= 0:
+            return None
+        discount_pct = round((1 - sale_price / original_price) * 100, 1) if original_price and original_price > sale_price else None
+        img_el = card.select_one("img")
+        image_url = img_el.get("src") or img_el.get("data-src", "") if img_el else ""
+        link_el = card.select_one("a[href]")
+        detail_url = self._normalize_legacy_detail_url(link_el.get("href", "")) if link_el else ""
+        unit_metadata = normalize_unit_metadata(name=name, sale_price=sale_price)
+        display_unit = unit_metadata.get("display_unit")
+        category = card.get("data-category") or card.get("data-ctg-nm") or card.get("data-category-name") or ""
+        if not category:
+            category_el = card.select_one(".category, .breadcrumb, .location")
+            category = category_el.get_text(" > ", strip=True) if category_el else ""
+        return DiscountItem(
+            name=name,
+            store="홈플러스",
+            original_price=original_price,
+            sale_price=sale_price,
+            discount_percent=discount_pct,
+            unit=display_unit or "",
+            display_unit=display_unit or "",
+            package_quantity=unit_metadata.get("package_quantity"),
+            package_unit=unit_metadata.get("package_unit") or "",
+            price_per_100g=unit_metadata.get("price_per_100g"),
+            attributes={
+                **(unit_metadata.get("attributes") or {}),
+                **build_source_attributes("homeplus", source_record_key=normalize_source_key("homeplus", detail_url, name), detail_url=detail_url, image_url=image_url, category=category),
+            },
+            category=category,
+            image_url=image_url,
+            detail_url=detail_url,
+            event_name="홈플러스 할인",
+        )
+
+    def _absolute_url(self, url: str, base_url: str) -> str:
+        return absolute_url(url, base_url)
+
+    def _extract_price_from_element(self, card, selectors: str) -> Optional[int]:
+        for selector in selectors.split(","):
+            el = card.select_one(selector.strip())
+            if el:
+                price = self._extract_price(el.get_text(strip=True))
+                if price is not None:
+                    return price
+        return None
+
+    def _extract_price(self, text: str) -> Optional[int]:
+        if not text:
+            return None
+        for pattern in (r"(\d{1,3}(?:,\d{3})+)", r"(\d{3,})"):
+            match = re.search(pattern, text)
+            if match:
+                return int(match.group(1).replace(",", ""))
+        return None
+
+    def _to_int(self, value) -> Optional[int]:
+        if value in (None, ""):
+            return None
+        try:
+            return int(float(str(value).replace(",", "")))
+        except (ValueError, TypeError):
+            return None
+
+    def _to_float(self, value) -> Optional[float]:
+        if value in (None, ""):
+            return None
+        try:
+            return float(str(value).replace(",", ""))
+        except (ValueError, TypeError):
+            return None
+
+    def _normalize_store_type(self, store_type: str | None) -> str:
+        value = str(store_type or "HYPER").upper()
+        return value if value in {"HYPER", "EXP"} else "HYPER"
+
+    def _extract_brand(self, name: str) -> str:
+        match = re.match(r"\[([^\]]+)\]", name or "")
+        if match:
+            return match.group(1).strip()
+        parts = (name or "").split()
+        return parts[0] if parts else ""
+
+    @staticmethod
+    def _homeplus_scroll_stop_signals(*, unchanged_streak: int, end_marker_present: bool, latest_xhr_empty: bool) -> dict:
+        signals = {
+            "unchanged_5": int(unchanged_streak) >= 5,
+            "end_marker": bool(end_marker_present),
+            "latest_xhr_empty": bool(latest_xhr_empty),
+        }
+        satisfied = sum(1 for value in signals.values() if value)
+        return {**signals, "satisfied": satisfied, "stop": satisfied >= 2}
+
+    def _dedupe_items(self, items: list[DiscountItem]) -> list[DiscountItem]:
+        deduped: list[DiscountItem] = []
+        seen_keys: set[tuple[str, str, str]] = set()
+        for item in items:
+            key = source_dedup_key(item)
+            if key in seen_keys:
+                continue
+            seen_keys.add(key)
+            deduped.append(item)
+        return deduped
 
     def _limit_items(self, items: list[DiscountItem]) -> list[DiscountItem]:
         if self.MAX_ITEMS is None:
@@ -496,7 +974,6 @@ class HomeplusCrawler(CrawlerContract):
         return items[: max(0, int(self.MAX_ITEMS))]
 
     def count_raw_candidates(self, raw_data: str) -> int:
-        """Count source candidate rows before DiscountItem parsing/validation."""
         json_items = self._extract_json_items(raw_data)
         if json_items:
             return len(json_items)
@@ -509,372 +986,15 @@ class HomeplusCrawler(CrawlerContract):
         except Exception:
             return 0
 
-    def _absolute_url(self, url: str, base_url: str) -> str:
-        """Normalize source-relative URLs while preserving absolute URLs."""
-        return absolute_url(url, base_url)
-
-    def _extract_json_items(self, raw_data: str) -> list[dict]:
-        """페이지 내 임베디드 JSON 데이터 추출."""
-        patterns = [
-            r'var\s+(?:itemList|prodList|goodsList)\s*=\s*(\[.*?\]);',
-            r'"itemList"\s*:\s*(\[.*?\])',
-            r'"goods"\s*:\s*(\[.*?\])',
-            r'"products"\s*:\s*(\[.*?\])',
-        ]
-        for pattern in patterns:
-            match = re.search(pattern, raw_data, re.DOTALL)
-            if match:
-                try:
-                    return json.loads(match.group(1))
-                except json.JSONDecodeError:
-                    continue
-        return []
-
-    def _json_to_discount_item(self, product: dict) -> Optional[DiscountItem]:
-        """JSON 상품 데이터 → DiscountItem 변환."""
-        name = (
-            product.get("goodsNm")
-            or product.get("itemNm")
-            or product.get("prodNm")
-            or product.get("name", "")
-        )
-        if not name or len(name) < 2:
-            return None
-
-        sale_price = self._to_int(
-            product.get("salePrice") or product.get("sellprc")
-            or product.get("sale_price") or product.get("price")
-        )
-        original_price = self._to_int(
-            product.get("originPrice") or product.get("norprc")
-            or product.get("original_price")
-        )
-
-        if not sale_price or sale_price <= 0:
-            return None
-
-        discount_pct = None
-        if original_price and original_price > sale_price:
-            discount_pct = round((1 - sale_price / original_price) * 100, 1)
-
-        image_url = self._absolute_url(product.get("imgUrl") or product.get("goodsImg", ""), self.BASE_URL)
-        category = product.get("categoryNm") or product.get("ctgNm") or product.get("category") or ""
-        detail_url = product.get("goodsUrl") or product.get("detail_url", "")
-        if detail_url and not detail_url.startswith("http"):
-            detail_url = f"{self.BASE_URL}{detail_url}"
-        source_record_key = normalize_source_key(
-            "homeplus",
-            product.get("goodsNo"),
-            product.get("itemId"),
-            product.get("id"),
-            detail_url,
-            name,
-        )
-        valid_from, valid_until, period = parse_period_fields(product)
-        raw_unit = product.get("unit") or product.get("goodsUnit") or product.get("capacity") or ""
-        unit_metadata = normalize_unit_metadata(
-            name=name,
-            sale_price=sale_price,
-            raw_unit=raw_unit,
-        )
-        display_unit = unit_metadata.get("display_unit") or raw_unit
-
-        return DiscountItem(
-            name=name,
-            store="홈플러스",
-            original_price=original_price,
-            sale_price=sale_price,
-            discount_percent=discount_pct,
-            unit=display_unit or "",
-            display_unit=display_unit or "",
-            package_quantity=unit_metadata.get("package_quantity"),
-            package_unit=unit_metadata.get("package_unit") or "",
-            price_per_100g=unit_metadata.get("price_per_100g"),
-            attributes=build_source_attributes(
-                "homeplus",
-                source_record_key=source_record_key,
-                detail_url=detail_url,
-                image_url=image_url,
-                category=category,
-                period=period,
-                extra=unit_metadata.get("attributes") or {},
-            ),
-            category=category,
-            event_name=product.get("eventNm", "홈플러스 할인"),
-            valid_from=valid_from,
-            valid_until=valid_until,
-            image_url=image_url,
-            detail_url=detail_url,
-        )
-
-    def _parse_html(self, soup) -> list[DiscountItem]:
-        """HTML에서 상품 정보를 파싱한다."""
-        items: list[DiscountItem] = []
-
-        # mfront.homeplus.co.kr 카드 (우선)
-        mfront_cards = soup.select(".unitItemInner")
-        if mfront_cards:
-            logger.info(f"[홈플러스] mfront 상품 카드: {len(mfront_cards)}개")
-            for card in mfront_cards:
-                try:
-                    item = self._parse_mfront_card(card)
-                    if item:
-                        items.append(item)
-                except Exception as e:
-                    logger.debug(f"[홈플러스] mfront 카드 파싱 오류: {e}")
-                    continue
-            return items
-
-        # 기존 카드 (fallback)
-        product_cards = soup.select(
-            ".product-item, .goods_item, .event_item, .item_box, .prod_wrap"
-        )
-        logger.info(f"[홈플러스] HTML 상품 카드: {len(product_cards)}개")
-
-        for card in product_cards:
-            try:
-                item = self._parse_product_card(card)
-                if item:
-                    items.append(item)
-            except Exception as e:
-                logger.debug(f"[홈플러스] 카드 파싱 오류: {e}")
-                continue
-
-        return items
-
-    def _parse_mfront_card(self, card) -> Optional[DiscountItem]:
-        """mfront.homeplus.co.kr 상품 카드(.unitItemInner) → DiscountItem."""
-        # --- 이미지 ---
-        img_el = card.select_one("img")
-        image_url = ""
-        if img_el:
-            image_url = img_el.get("src") or img_el.get("data-src", "")
-
-        # --- 링크 ---
-        link_el = card.select_one("a[href]")
-        detail_url = ""
-        if link_el:
-            href = link_el.get("href", "")
-            if href:
-                detail_url = href if href.startswith("http") else f"{self.MFRONT_URL}{href}"
-
-        # --- 가격: .priceValue 요소들 ---
-        price_values = card.select(".priceValue")
-        prices: list[int] = []
-        for pv in price_values:
-            p = self._extract_price(pv.get_text(strip=True))
-            if p and p > 0:
-                prices.append(p)
-
-        # fallback: .price 컨테이너에서 가격 패턴 추출
-        if not prices:
-            price_container = card.select_one(".price")
-            if price_container:
-                for m in re.finditer(r"(\d{1,3}(?:,\d{3})+)\s*원", price_container.get_text()):
-                    prices.append(int(m.group(1).replace(",", "")))
-
-        if not prices:
-            return None
-
-        # 가격 할당: 2개 이상이면 (원가, 할인가), 1개면 할인가만
-        if len(prices) >= 2:
-            original_price = max(prices)
-            sale_price = min(prices)
-        else:
-            sale_price = prices[0]
-            original_price = None
-
-        if sale_price <= 0:
-            return None
-
-        # --- 할인율 ---
-        full_text = card.get_text(separator=" ", strip=True)
-        discount_pct = None
-        pct_match = re.search(r"(\d{1,2})%", full_text)
-        if pct_match:
-            discount_pct = float(pct_match.group(1))
-        elif original_price and original_price > sale_price:
-            discount_pct = round((1 - sale_price / original_price) * 100, 1)
-
-        # --- 상품명 ---
-        name = self._extract_mfront_name(card, img_el)
-        if not name or len(name) < 2:
-            return None
-        category = (
-            card.get("data-category")
-            or card.get("data-ctg-nm")
-            or card.get("data-category-name")
-            or ""
-        )
-        unit_metadata = normalize_unit_metadata(name=name, sale_price=sale_price)
-        display_unit = unit_metadata.get("display_unit")
-
-        return DiscountItem(
-            name=name,
-            store="홈플러스",
-            original_price=original_price,
-            sale_price=sale_price,
-            discount_percent=discount_pct,
-            unit=display_unit or "",
-            display_unit=display_unit or "",
-            package_quantity=unit_metadata.get("package_quantity"),
-            package_unit=unit_metadata.get("package_unit") or "",
-            price_per_100g=unit_metadata.get("price_per_100g"),
-            attributes={
-                **(unit_metadata.get("attributes") or {}),
-                **build_source_attributes(
-                    "homeplus",
-                    source_record_key=normalize_source_key("homeplus", detail_url, name),
-                    detail_url=detail_url,
-                    image_url=image_url,
-                    category=category,
-                ),
-            },
-            category=category,
-            image_url=image_url,
-            detail_url=detail_url,
-            event_name="홈플러스 할인",
-        )
-
-    def _extract_mfront_name(self, card, img_el) -> str:
-        """mfront 카드에서 상품명을 추출한다."""
-        # 1) 전용 이름 클래스 탐색
-        for sel in (".itemName", ".productName", ".unit_title",
-                    "[class*='name' i]", "[class*='Name']", "[class*='title' i]"):
-            el = card.select_one(sel)
-            if el:
-                txt = el.get_text(strip=True)
-                if txt and len(txt) >= 2:
-                    return txt
-
-        # 2) 이미지 alt 텍스트
-        if img_el:
-            alt = (img_el.get("alt") or "").strip()
-            if alt and len(alt) >= 2:
-                return alt
-
-        # 3) 전체 텍스트에서 가격/배송 정보 제거
-        full = card.get_text(separator="|", strip=True)
-        name = re.sub(r"\d{1,3}(?:,\d{3})*\s*원", "", full)
-        name = re.sub(r"\d{1,2}%", "", name)
-        name = re.sub(r"\d+\.\d+/\d+", "", name)
-        name = re.sub(r"(상품할인|매직배송|무료배송|당일배송|만원[↑↓]?)", "", name)
-        name = re.sub(r"\|", " ", name)
-        name = re.sub(r"\s+", " ", name).strip()
-        return name[:100] if name else ""
-
-    def _parse_product_card(self, card) -> Optional[DiscountItem]:
-        """개별 상품 카드 HTML → DiscountItem."""
-        name_el = card.select_one(
-            ".product-name, .goods_name, .item_name, .prod_name, a[href*='goods']"
-        )
-        if not name_el:
-            return None
-        name = name_el.get_text(strip=True)
-        if not name or len(name) < 2:
-            return None
-
-        sale_price = self._extract_price_from_element(
-            card, ".sale_price, .price .num, .discount_price, .spc_price"
-        )
-        original_price = self._extract_price_from_element(
-            card, ".origin_price, .normal_price, .org_price, .before_price"
-        )
-
-        if not sale_price or sale_price <= 0:
-            return None
-
-        discount_pct = None
-        if original_price and original_price > sale_price:
-            discount_pct = round((1 - sale_price / original_price) * 100, 1)
-
-        img_el = card.select_one("img")
-        image_url = ""
-        if img_el:
-            image_url = img_el.get("src") or img_el.get("data-src", "")
-
-        link_el = card.select_one("a[href]")
-        detail_url = ""
-        if link_el:
-            href = link_el.get("href", "")
-            detail_url = href if href.startswith("http") else f"{self.BASE_URL}{href}"
-        unit_metadata = normalize_unit_metadata(name=name, sale_price=sale_price)
-        display_unit = unit_metadata.get("display_unit")
-
-        return DiscountItem(
-            name=name,
-            store="홈플러스",
-            original_price=original_price,
-            sale_price=sale_price,
-            discount_percent=discount_pct,
-            unit=display_unit or "",
-            display_unit=display_unit or "",
-            package_quantity=unit_metadata.get("package_quantity"),
-            package_unit=unit_metadata.get("package_unit") or "",
-            price_per_100g=unit_metadata.get("price_per_100g"),
-            attributes={
-                **(unit_metadata.get("attributes") or {}),
-                **build_source_attributes(
-                    "homeplus",
-                    source_record_key=normalize_source_key("homeplus", detail_url, name),
-                    detail_url=detail_url,
-                    image_url=image_url,
-                ),
-            },
-            image_url=image_url,
-            detail_url=detail_url,
-            event_name="홈플러스 할인",
-        )
-
-    def _extract_price_from_element(self, card, selectors: str) -> Optional[int]:
-        """CSS 셀렉터로 가격 요소를 찾아 정수 변환."""
-        for selector in selectors.split(","):
-            el = card.select_one(selector.strip())
-            if el:
-                price = self._extract_price(el.get_text(strip=True))
-                if price is not None:
-                    return price
-        return None
-
-    def _extract_price(self, text: str) -> Optional[int]:
-        """텍스트에서 가격(원)을 추출한다."""
-        if not text:
-            return None
-        patterns = [
-            r"(\d{1,3}(?:,\d{3})+)",
-            r"(\d{3,})",
-        ]
-        for pattern in patterns:
-            match = re.search(pattern, text)
-            if match:
-                return int(match.group(1).replace(",", ""))
-        return None
-
-    def _to_int(self, value) -> Optional[int]:
-        """안전한 정수 변환."""
-        if value is None:
-            return None
-        try:
-            return int(value)
-        except (ValueError, TypeError):
-            return None
-
     async def validate(self, items: list[DiscountItem]) -> list[DiscountItem]:
-        """유효한 할인 상품만 필터링."""
-        valid = []
+        valid: list[DiscountItem] = []
         seen = set()
-
         for item in items:
             key = source_dedup_key(item)
             if key in seen:
                 continue
             seen.add(key)
-
-            if item.sale_price <= 0:
+            if item.sale_price <= 0 or len(item.name) < 2:
                 continue
-            if len(item.name) < 2:
-                continue
-
             valid.append(item)
-
         return valid

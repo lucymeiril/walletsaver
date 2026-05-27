@@ -548,7 +548,7 @@ export default function CommunityPage() {
         {!loading && fetchError && (
           <div style={{ textAlign: 'center', padding: '2rem 0' }}>
             <p style={{ color: 'var(--red, #ef4444)', marginBottom: '0.75rem' }}>⚠️ 게시글을 불러오는 데 실패했습니다</p>
-            <button className={s.submitBtn} onClick={refreshPosts} style={{ display: 'inline-flex', width: 'auto', padding: '0.5rem 1.2rem' }}>다시 시도</button>
+            <button className={s.submitBtn} onClick={refreshPosts} style={{ display: 'inline-flex', padding: '0.5rem 1.2rem' }}>다시 시도</button>
           </div>
         )}
         {!loading && !fetchError && paginatedPosts.length === 0 && (
@@ -616,7 +616,7 @@ export default function CommunityPage() {
             </div>
           ))
         )}
-        {paginatedPosts.length === 0 && pinnedPosts.length === 0 && !loading && !fetchError && (
+        {paginatedPosts.length === 0 && pinnedPosts.length === 0 && !loading && (
           <div className={s.emptyState}>
             <div className={s.emptyIcon}>{board === 'hotdeal' ? '🔥' : '💬'}</div>
             <p className={s.emptyText}>

@@ -1,0 +1,1754 @@
+schema: unified_category_tree.v1
+authoritative_mart: lottemart
+authoritative_reason: emart recon decision was sparse (1 fixture categories); lottemart has richest harvested tree (320 fixture categories).
+source_inventory:
+  counts:
+    emart:
+      db_distinct: 1
+      fixture_distinct: 1
+      source_native_values: 1
+    homeplus:
+      db_distinct: 3
+      fixture_distinct: 54
+      source_native_values: 1
+    lottemart:
+      db_distinct: 5
+      fixture_distinct: 320
+      source_native_values: 324
+    costco:
+      db_distinct: 2
+      fixture_distinct: 4
+      source_native_values: 4
+  recon_top_categories:
+    emart:
+    - 사용자 지적대로 **"새벽배송" / "주간배송" / "트레이더스"** 등 여러 자체상품 하위 라벨이 같은 `cdtl_ico_item` 클래스로 등장 — 화이트리스트로 잘라내면 누락 위험.
+    - 메인 페이지 nav `a[href*="dispCtgId"]` 14개가 1차 분류(과일·채소·...·건강식품).
+    - 카테고리 페이지에서 하위 카테고리 nav도 같은 패턴 — 재귀 크롤로 트리 추출 가능.
+    homeplus:
+    - 최상위 카테고리는 메인 페이지 nav에서 `categoryId=1~27`로 일관된 ID. 31개 정도.
+    - 하위 카테고리도 같은 `/list` 패턴 + `categoryDepth` 증가.
+    - 사이드바에 하위 카테고리/필터가 모두 노출되므로 트리 스크레이프 단순.
+    lottemart:
+    - 메인 nav에 최상위 카테고리 25+개 노출. `__INITIAL_STATE__.data` 안에 카테고리 트리 들어있을 가능성 높음.
+    - '존재 확인. 최상위 키: `data, session, control, router, retailerSettings, cookieConsent`.'
+    costco:
+    - '카테고리: `/c/cos_<숫자.숫자.숫자>` — 점 구분 계층 코드. 예: `cos_10` = 식품, `cos_10.1` = 쌀/잡곡, `cos_1.5.3` = All Mac.'
+    - '## 카테고리 트리 — 식품군'
+    - '식품 최상위: `cos_10`'
+    - '하위 일부: `cos_10.1` 쌀/잡곡 등 — G1에서 풀 트리 수집.'
+nodes:
+- id: food
+  name: 식품
+  parent_id: null
+  children:
+  - food.fruit
+  - food.vegetables
+  - food.rice-grains
+  - food.meat-eggs
+  - food.seafood
+  - food.deli
+  - food.bakery
+  - food.dairy
+  - food.kimchi-sides
+  - food.noodles-rice
+  - food.condiments
+  - food.ready-meals
+  - food.snacks
+  - food.icecream
+  - food.beverages
+  - food.coffee-tea
+  - food.health-food
+  - food.imported
+  source_natives:
+    emart:
+    - '6000095494'
+    homeplus:
+    - '1'
+    lottemart:
+    - '001'
+    - '001001'
+    - '001002'
+    - '001003'
+    - '001004'
+    - '001005'
+    - '001006'
+    - '001007'
+    - 001008
+    - 001009
+    - '001010'
+    - '001011'
+    - '001012'
+    - '001013'
+    - '002'
+    - '002001'
+    - '002002'
+    - '002003'
+    - '002004'
+    - '002005'
+    - '002006'
+    - '002007'
+    - 002008
+    - 002009
+    - '002010'
+    - '002011'
+    - '002012'
+    - '002013'
+    - '002014'
+    - '002015'
+    - '003'
+    - '003001'
+    - '003002'
+    - '003003'
+    - '003004'
+    - '003005'
+    - '003006'
+    - '003007'
+    - 003008
+    - 003009
+    - '004'
+    - '004001'
+    - '004002'
+    - '004003'
+    - '004004'
+    - '004005'
+    - '004006'
+    - '004007'
+    - 004008
+    - 004009
+    - '004010'
+    - '005'
+    - '005001'
+    - '005002'
+    - '005003'
+    - '005004'
+    - '005005'
+    - '005006'
+    - '005007'
+    - 005008
+    - 005009
+    - '005010'
+    - '006'
+    - '006001'
+    - '006002'
+    - '006003'
+    - '006004'
+    - '006005'
+    - '006006'
+    - '006007'
+    - 006008
+    - 006009
+    - '006010'
+    - '006014'
+    - '007'
+    - '007001'
+    - '007002'
+    - '007003'
+    - '007004'
+    - '007005'
+    - '007006'
+    - '007007'
+    - 007008
+    - 008
+    - 008001
+    - 008002
+    - 008003
+    - 008005
+    - 008006
+    - 008007
+    - 009
+    - 009001
+    - 009002
+    - 009003
+    - 009004
+    - 009006
+    - '010'
+    - '010001'
+    - '010002'
+    - '010003'
+    - '010004'
+    - '011'
+    - '011001'
+    - '011002'
+    - '011003'
+    - '011004'
+    - '012'
+    - '012001'
+    - '012002'
+    - '012004'
+    - '012005'
+    - '012006'
+    - '012007'
+    - 012008
+    - 012009
+    - '012010'
+    - '012011'
+    - '012012'
+    - '012013'
+    - '012014'
+    - '013'
+    - '013001'
+    - '013002'
+    - '013003'
+    - '013004'
+    - '013005'
+    - '013006'
+    - '013007'
+    - 013008
+    - 013009
+    - '013010'
+    - '013012'
+    - '013013'
+    - '013014'
+    - '014'
+    - '014001'
+    - '014002'
+    - '014003'
+    - '014004'
+    - '014005'
+    - '015'
+    - '015001'
+    - '015002'
+    - '015003'
+    - '015004'
+    - '015005'
+    - '015006'
+    - '015007'
+    - '016'
+    - '016001'
+    - '016002'
+    - '016003'
+    - '016004'
+    - '016005'
+    - '016006'
+    - '017'
+    - '017001'
+    - '017002'
+    - '017003'
+    - '017004'
+    - '017005'
+    - '017006'
+    - '017007'
+    - 017008
+    - 017009
+    - '017010'
+    - '017011'
+    - 018
+    - 018001
+    - 018002
+    - 018003
+    - 018005
+    - 019
+    - 019001
+    - 019002
+    - 019003
+    - 019004
+    - 019005
+    - 019006
+    - 019007
+    - '020002'
+    - '020003'
+    - '020004'
+    - '021'
+    - '021001'
+    - '021002'
+    - '021003'
+    - '021004'
+    - '021005'
+    - '021006'
+    - '021007'
+    - 021009
+    - '021010'
+    - '021011'
+    - '023'
+    - '023001'
+    - '023002'
+    - '023003'
+    - '023004'
+    - '023005'
+    - '023006'
+    - '023007'
+    - 023008
+    - '023010'
+    - '023011'
+    - '023012'
+    - '024014'
+    - '026002'
+    - '026004'
+    - '026005'
+    - '026006'
+    - '026013'
+    - '026014'
+    - 029
+    - 029001
+    - 029006
+    - 029008
+    - '030007'
+    - '031012'
+    - '032'
+    - '032001'
+    - '032002'
+    - '032003'
+    - '032004'
+    - '033'
+    - '033005'
+    - '033006'
+    - '033007'
+    - 033008
+    - 033009
+    - '033010'
+    - '033011'
+    - '033012'
+    - 간편식ㆍ밀키트
+    - 과일
+    - 정육ㆍ계란
+    - 채소
+    costco:
+    - '801234'
+    - '999999'
+    - cos_10
+    - cos_10.1
+- id: food.fruit
+  name: 과일
+  parent_id: food
+  children:
+  - food.fruit.citrus
+  - food.fruit.apple-pear
+  - food.fruit.tomato
+  - food.fruit.berries
+  - food.fruit.grape
+  - food.fruit.kiwi-pineapple
+  - food.fruit.juice
+  source_natives:
+    emart:
+    - '6000095494'
+    homeplus: []
+    lottemart:
+    - '001'
+    - '001001'
+    - '001002'
+    - '001003'
+    - '001004'
+    - '001005'
+    - '001006'
+    - '001007'
+    - 001008
+    - 001009
+    - '001010'
+    - '001011'
+    - '001012'
+    - '001013'
+    - '002014'
+    - '002015'
+    - '003007'
+    - '015005'
+    - '017004'
+    - 019003
+    - '026005'
+    - '026006'
+    - 과일
+    costco: []
+- id: food.fruit.citrus
+  name: 귤/감귤류
+  parent_id: food.fruit
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '001001'
+    costco: []
+- id: food.fruit.apple-pear
+  name: 사과/배
+  parent_id: food.fruit
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '001002'
+    - '002014'
+    - '002015'
+    - '026005'
+    - '026006'
+    costco: []
+- id: food.fruit.tomato
+  name: 토마토
+  parent_id: food.fruit
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '001003'
+    costco: []
+- id: food.fruit.berries
+  name: 딸기/베리/체리
+  parent_id: food.fruit
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '001004'
+    costco: []
+- id: food.fruit.grape
+  name: 포도/샤인머스캣
+  parent_id: food.fruit
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '001005'
+    costco: []
+- id: food.fruit.kiwi-pineapple
+  name: 키위/파인애플
+  parent_id: food.fruit
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '001010'
+    - 과일
+    costco: []
+- id: food.fruit.juice
+  name: 주스/과채음료
+  parent_id: food.fruit
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart: []
+    costco: []
+- id: food.vegetables
+  name: 채소
+  parent_id: food
+  children:
+  - food.vegetables.kiwi-pineapple
+  - food.vegetables.tofu-bean-sprouts
+  - food.vegetables.root-vegetables
+  - food.vegetables.aromatics
+  - food.vegetables.pepper-paprika
+  source_natives:
+    emart:
+    - '6000095494'
+    homeplus: []
+    lottemart:
+    - '002'
+    - '002001'
+    - '002002'
+    - '002003'
+    - '002004'
+    - '002005'
+    - '002006'
+    - '002007'
+    - 002008
+    - 002009
+    - '002010'
+    - '002011'
+    - '002012'
+    - '002013'
+    - '006005'
+    - '007004'
+    - '012005'
+    - '013014'
+    - '015001'
+    - '016001'
+    - 019001
+    - '030007'
+    - 채소
+    costco: []
+- id: food.vegetables.kiwi-pineapple
+  name: 키위/파인애플
+  parent_id: food.vegetables
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart: []
+    costco: []
+- id: food.vegetables.tofu-bean-sprouts
+  name: 두부/콩나물
+  parent_id: food.vegetables
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '002010'
+    - 채소
+    costco: []
+- id: food.vegetables.root-vegetables
+  name: 감자/고구마/당근
+  parent_id: food.vegetables
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '002001'
+    - '002003'
+    costco: []
+- id: food.vegetables.aromatics
+  name: 양파/파/마늘
+  parent_id: food.vegetables
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '002002'
+    - '002005'
+    - '002012'
+    - '007004'
+    - '015001'
+    - '016001'
+    - '030007'
+    - 채소
+    costco: []
+- id: food.vegetables.pepper-paprika
+  name: 고추/파프리카
+  parent_id: food.vegetables
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart: []
+    costco: []
+- id: food.rice-grains
+  name: 쌀/잡곡/견과
+  parent_id: food
+  children:
+  - food.rice-grains.tofu-bean-sprouts
+  - food.rice-grains.rice
+  - food.rice-grains.mixed-grains
+  - food.rice-grains.nuts
+  source_natives:
+    emart: []
+    homeplus:
+    - '1'
+    lottemart:
+    - '003'
+    - '003001'
+    - '003002'
+    - '003003'
+    - '003004'
+    - '003005'
+    - '003006'
+    - 003008
+    - 003009
+    costco:
+    - cos_10.1
+- id: food.rice-grains.tofu-bean-sprouts
+  name: 두부/콩나물
+  parent_id: food.rice-grains
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart: []
+    costco: []
+- id: food.rice-grains.rice
+  name: 쌀/백미
+  parent_id: food.rice-grains
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '003001'
+    - '003002'
+    - '003003'
+    - '003004'
+    - '003005'
+    - '003006'
+    - 003008
+    - 003009
+    costco:
+    - cos_10.1
+- id: food.rice-grains.mixed-grains
+  name: 잡곡/혼합곡
+  parent_id: food.rice-grains
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart: []
+    costco: []
+- id: food.rice-grains.nuts
+  name: 견과
+  parent_id: food.rice-grains
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart: []
+    costco: []
+- id: food.meat-eggs
+  name: 정육/계란
+  parent_id: food
+  children:
+  - food.meat-eggs.beef
+  - food.meat-eggs.pork
+  - food.meat-eggs.chicken
+  - food.meat-eggs.eggs
+  source_natives:
+    emart: []
+    homeplus:
+    - '1'
+    lottemart:
+    - '004'
+    - '004001'
+    - '004002'
+    - '004003'
+    - '004004'
+    - '004005'
+    - '004006'
+    - '004007'
+    - 004008
+    - 004009
+    - '004010'
+    - '006004'
+    - '013005'
+    - '014'
+    - '014001'
+    - '014002'
+    - '014003'
+    - '014004'
+    - '014005'
+    - 정육ㆍ계란
+    costco: []
+- id: food.meat-eggs.beef
+  name: 소고기
+  parent_id: food.meat-eggs
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '004003'
+    - '004004'
+    costco: []
+- id: food.meat-eggs.pork
+  name: 돼지고기
+  parent_id: food.meat-eggs
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '004005'
+    - '004006'
+    costco: []
+- id: food.meat-eggs.chicken
+  name: 닭고기/닭가슴살
+  parent_id: food.meat-eggs
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '004007'
+    - '014001'
+    - '014002'
+    - '014003'
+    - '014004'
+    - '014005'
+    costco: []
+- id: food.meat-eggs.eggs
+  name: 계란
+  parent_id: food.meat-eggs
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '004001'
+    - '004002'
+    - 004008
+    - 004009
+    - '004010'
+    - 정육ㆍ계란
+    costco: []
+- id: food.seafood
+  name: 수산/건해산
+  parent_id: food
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '005'
+    - '005001'
+    - '005002'
+    - '005003'
+    - '005004'
+    - '005005'
+    - '005006'
+    - '005007'
+    - 005008
+    - 005009
+    - '005010'
+    - '031012'
+    - '032'
+    - '032001'
+    - '032002'
+    - '032003'
+    - '032004'
+    costco: []
+- id: food.deli
+  name: 델리/즉석조리
+  parent_id: food
+  children:
+  - food.deli.chicken
+  - food.deli.instant-rice
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '006'
+    - '006001'
+    - '006002'
+    - '006003'
+    - '006006'
+    - '006007'
+    - 006008
+    - 006009
+    - '006010'
+    - '006014'
+    - 009003
+    - '010'
+    - '010001'
+    - '010002'
+    - '010003'
+    - '010004'
+    - '013006'
+    - 013008
+    - 013009
+    - '013010'
+    costco: []
+- id: food.deli.chicken
+  name: 닭고기/닭가슴살
+  parent_id: food.deli
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '006002'
+    - '013006'
+    costco: []
+- id: food.deli.instant-rice
+  name: 즉석밥/컵밥
+  parent_id: food.deli
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart: []
+    costco: []
+- id: food.bakery
+  name: 베이커리/빵
+  parent_id: food
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '007'
+    - '007001'
+    - '007002'
+    - '007003'
+    - '007005'
+    - '007006'
+    - '007007'
+    - 007008
+    - '012012'
+    - 033008
+    costco: []
+- id: food.dairy
+  name: 우유/유제품
+  parent_id: food
+  children:
+  - food.dairy.milk
+  - food.dairy.soy-milk
+  - food.dairy.yogurt
+  - food.dairy.cheese-butter
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - 008
+    - 008001
+    - 008002
+    - 008003
+    - 008005
+    - 008006
+    - 008007
+    - '020004'
+    - '033007'
+    costco: []
+- id: food.dairy.milk
+  name: 우유
+  parent_id: food.dairy
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - 008001
+    - 008002
+    - 008003
+    - 008005
+    - 008006
+    - 008007
+    costco: []
+- id: food.dairy.soy-milk
+  name: 두유
+  parent_id: food.dairy
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart: []
+    costco: []
+- id: food.dairy.yogurt
+  name: 요거트/요구르트
+  parent_id: food.dairy
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart: []
+    costco: []
+- id: food.dairy.cheese-butter
+  name: 치즈/버터
+  parent_id: food.dairy
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart: []
+    costco: []
+- id: food.kimchi-sides
+  name: 김치/반찬
+  parent_id: food
+  children:
+  - food.kimchi-sides.tofu-bean-sprouts
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - 009
+    - 009001
+    - 009002
+    - 009004
+    - 009006
+    costco: []
+- id: food.kimchi-sides.tofu-bean-sprouts
+  name: 두부/콩나물
+  parent_id: food.kimchi-sides
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart: []
+    costco: []
+- id: food.noodles-rice
+  name: 라면/면/즉석밥
+  parent_id: food
+  children:
+  - food.noodles-rice.ramen
+  - food.noodles-rice.instant-rice
+  source_natives:
+    emart: []
+    homeplus:
+    - '1'
+    lottemart:
+    - '011'
+    - '011001'
+    - '011002'
+    - '011003'
+    - '011004'
+    - '013002'
+    - '013004'
+    - '015004'
+    - '033010'
+    costco: []
+- id: food.noodles-rice.ramen
+  name: 라면
+  parent_id: food.noodles-rice
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart: []
+    costco: []
+- id: food.noodles-rice.instant-rice
+  name: 즉석밥/컵밥
+  parent_id: food.noodles-rice
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart: []
+    costco: []
+- id: food.condiments
+  name: 양념/오일/소스
+  parent_id: food
+  children:
+  - food.condiments.oil
+  - food.condiments.sauce
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '012'
+    - '012001'
+    - '012002'
+    - '012004'
+    - '012006'
+    - '012007'
+    - 012008
+    - 012009
+    - '012010'
+    - '012011'
+    - '012013'
+    - '012014'
+    - '021007'
+    - 033009
+    costco: []
+- id: food.condiments.oil
+  name: 식용유/참기름
+  parent_id: food.condiments
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '012001'
+    - '012002'
+    - '012004'
+    - '012006'
+    - '012007'
+    - 012008
+    - 012009
+    - '012010'
+    - '012011'
+    - '012013'
+    - '012014'
+    costco: []
+- id: food.condiments.sauce
+  name: 소스/장류
+  parent_id: food.condiments
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - 033009
+    costco: []
+- id: food.ready-meals
+  name: 간편식/밀키트
+  parent_id: food
+  children:
+  - food.ready-meals.chicken
+  - food.ready-meals.meal-kit
+  - food.ready-meals.soup-stew
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '013'
+    - '013001'
+    - '013003'
+    - '013007'
+    - '013012'
+    - '013013'
+    - '015002'
+    - '020002'
+    - 간편식ㆍ밀키트
+    costco: []
+- id: food.ready-meals.chicken
+  name: 닭고기/닭가슴살
+  parent_id: food.ready-meals
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart: []
+    costco: []
+- id: food.ready-meals.meal-kit
+  name: 밀키트
+  parent_id: food.ready-meals
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '013001'
+    - '013003'
+    - '013007'
+    - '013012'
+    - '013013'
+    - 간편식ㆍ밀키트
+    costco: []
+- id: food.ready-meals.soup-stew
+  name: 국/탕/찌개
+  parent_id: food.ready-meals
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '015002'
+    costco: []
+- id: food.snacks
+  name: 과자/간식
+  parent_id: food
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '015'
+    - '015003'
+    - '015006'
+    - '015007'
+    - '026002'
+    - '026004'
+    - '026014'
+    - '033012'
+    costco: []
+- id: food.icecream
+  name: 아이스크림/빙과
+  parent_id: food
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '016'
+    - '016002'
+    - '016003'
+    - '016004'
+    - '016005'
+    - '016006'
+    - '023'
+    - '023001'
+    - '023002'
+    - '023003'
+    - '023004'
+    - '023005'
+    - '023006'
+    - '023007'
+    - 023008
+    - '023010'
+    - '023011'
+    - '023012'
+    costco: []
+- id: food.beverages
+  name: 생수/음료
+  parent_id: food
+  children:
+  - food.beverages.water
+  - food.beverages.juice
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '017'
+    - '017001'
+    - '017002'
+    - '017003'
+    - '017005'
+    - '017006'
+    - '017007'
+    - 017008
+    - 017009
+    - '017010'
+    - '017011'
+    - 019006
+    - '033011'
+    costco: []
+- id: food.beverages.water
+  name: 생수
+  parent_id: food.beverages
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '017001'
+    - '017002'
+    - '017003'
+    - '017005'
+    - '017006'
+    - '017007'
+    - 017008
+    - 017009
+    - '017010'
+    - '017011'
+    costco: []
+- id: food.beverages.juice
+  name: 주스/과채음료
+  parent_id: food.beverages
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart: []
+    costco: []
+- id: food.coffee-tea
+  name: 커피/차
+  parent_id: food
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - 018
+    - 018001
+    - 018002
+    - 018003
+    - 018005
+    - 019
+    - 019002
+    - 019004
+    - 019005
+    - 019007
+    - '021005'
+    - '024014'
+    - 029
+    - 029001
+    - 029006
+    - 029008
+    costco: []
+- id: food.health-food
+  name: 건강식품
+  parent_id: food
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '020003'
+    - '021'
+    - '021001'
+    - '021002'
+    - '021003'
+    - '021004'
+    - '021006'
+    - 021009
+    - '021010'
+    - '021011'
+    - '026013'
+    costco: []
+- id: food.imported
+  name: 수입식품
+  parent_id: food
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '033'
+    - '033005'
+    - '033006'
+    costco: []
+- id: baby
+  name: 분유/기저귀/유아용품
+  parent_id: null
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '020'
+    - '020001'
+    - '020005'
+    - '020006'
+    - '020007'
+    - 020008
+    - '022002'
+    - '031006'
+    costco: []
+- id: household
+  name: 생활용품
+  parent_id: null
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '022'
+    - '022001'
+    - '022003'
+    - '022004'
+    - '022005'
+    - '022006'
+    - '022007'
+    - 022008
+    - 022009
+    - 026009
+    costco: []
+- id: beauty
+  name: 헤어/바디/뷰티
+  parent_id: null
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - 028005
+    costco: []
+- id: kitchen
+  name: 주방용품
+  parent_id: null
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '024'
+    - '024001'
+    - '024002'
+    - '024003'
+    - '024004'
+    - '024005'
+    - '024006'
+    - '024007'
+    - 024008
+    - 024009
+    - '024010'
+    - '024011'
+    - '024012'
+    - '024013'
+    - '024015'
+    costco: []
+- id: home
+  name: 홈인테리어/침구
+  parent_id: null
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '025'
+    - '025001'
+    - '025002'
+    - '025003'
+    - '025004'
+    - '025005'
+    - '025006'
+    - '025007'
+    - 025008
+    - 025009
+    - '025010'
+    - '025011'
+    - '025012'
+    costco: []
+- id: pet
+  name: 반려동물
+  parent_id: null
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '026'
+    - '026001'
+    - '026003'
+    - '026007'
+    - 026008
+    - '026010'
+    - '026011'
+    - '026012'
+    costco: []
+- id: fashion
+  name: 패션/잡화
+  parent_id: null
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '027'
+    - '027001'
+    - '027002'
+    - '027003'
+    - '027004'
+    - '027005'
+    - 028
+    - 028001
+    - 028002
+    - 028003
+    - 028004
+    - 028006
+    - 028007
+    - '036002'
+    costco: []
+- id: sports-auto
+  name: 스포츠/자동차
+  parent_id: null
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '031007'
+    costco: []
+- id: stationery
+  name: 문구/사무용품
+  parent_id: null
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '030'
+    - '030001'
+    - '030002'
+    - '030003'
+    - '030004'
+    - '030005'
+    costco: []
+- id: toys
+  name: 완구/취미
+  parent_id: null
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '031'
+    - '031001'
+    - '031002'
+    - '031003'
+    - '031004'
+    - '031005'
+    - 031008
+    - '031010'
+    - '031011'
+    costco: []
+- id: digital
+  name: 가전/디지털/게임
+  parent_id: null
+  children: []
+  source_natives:
+    emart: []
+    homeplus: []
+    lottemart:
+    - '036'
+    - '036001'
+    costco: []
+review_queue:
+- mart: costco
+  native_id: '602630'
+  path: BeautyHouseholdPersonal-Care > BathBodyOral-Care > Body-LotionBody-Cream
+  source: fixture:occ_products_3items.json
+  reason: no keyword overlap with unified v1 taxonomy
+  suggested_nodes: []
+  status: needs_review
+- mart: costco
+  native_id: cocodalin_1
+  path: 가공식품
+  source: fixture:cocodalin_productlist_cat10.json
+  reason: no keyword overlap with unified v1 taxonomy
+  suggested_nodes: []
+  status: needs_review
+- mart: emart
+  native_id: '6000095494'
+  path: fixture category page
+  source: fixture:emart_category_sample.html
+  reason: no keyword overlap with unified v1 taxonomy
+  suggested_nodes: []
+  status: needs_review
+- mart: emart
+  native_id: '6000095494'
+  path: 과일/채소
+  source: db
+  reason: emart path combines fruit and vegetables
+  suggested_nodes:
+  - food.fruit
+  - food.vegetables
+  status: needs_review
+- mart: homeplus
+  native_id: '1'
+  path: EXP categoryId=1
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '10'
+  path: EXP categoryId=10
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '11'
+  path: EXP categoryId=11
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '12'
+  path: EXP categoryId=12
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '13'
+  path: EXP categoryId=13
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '14'
+  path: EXP categoryId=14
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '15'
+  path: EXP categoryId=15
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '16'
+  path: EXP categoryId=16
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '17'
+  path: EXP categoryId=17
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '18'
+  path: EXP categoryId=18
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '19'
+  path: EXP categoryId=19
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '2'
+  path: EXP categoryId=2
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '20'
+  path: EXP categoryId=20
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '21'
+  path: EXP categoryId=21
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '22'
+  path: EXP categoryId=22
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '23'
+  path: EXP categoryId=23
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '24'
+  path: EXP categoryId=24
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '25'
+  path: EXP categoryId=25
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '26'
+  path: EXP categoryId=26
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '27'
+  path: EXP categoryId=27
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '3'
+  path: EXP categoryId=3
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '4'
+  path: EXP categoryId=4
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '5'
+  path: EXP categoryId=5
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '6'
+  path: EXP categoryId=6
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '7'
+  path: EXP categoryId=7
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '8'
+  path: EXP categoryId=8
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '9'
+  path: EXP categoryId=9
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '1'
+  path: HYPER categoryId=1
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '10'
+  path: HYPER categoryId=10
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '11'
+  path: HYPER categoryId=11
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '12'
+  path: HYPER categoryId=12
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '13'
+  path: HYPER categoryId=13
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '14'
+  path: HYPER categoryId=14
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '15'
+  path: HYPER categoryId=15
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '16'
+  path: HYPER categoryId=16
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '17'
+  path: HYPER categoryId=17
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '18'
+  path: HYPER categoryId=18
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '19'
+  path: HYPER categoryId=19
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '2'
+  path: HYPER categoryId=2
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '20'
+  path: HYPER categoryId=20
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '21'
+  path: HYPER categoryId=21
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '22'
+  path: HYPER categoryId=22
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '23'
+  path: HYPER categoryId=23
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '24'
+  path: HYPER categoryId=24
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '25'
+  path: HYPER categoryId=25
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '26'
+  path: HYPER categoryId=26
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '27'
+  path: HYPER categoryId=27
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '3'
+  path: HYPER categoryId=3
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '4'
+  path: HYPER categoryId=4
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '5'
+  path: HYPER categoryId=5
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '6'
+  path: HYPER categoryId=6
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '7'
+  path: HYPER categoryId=7
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '8'
+  path: HYPER categoryId=8
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review
+- mart: homeplus
+  native_id: '9'
+  path: HYPER categoryId=9
+  source: fixture:homeplus_category_tree_g1.json
+  reason: homeplus fixture has categoryId only; needs name harvest before mapping
+  suggested_nodes: []
+  status: needs_review

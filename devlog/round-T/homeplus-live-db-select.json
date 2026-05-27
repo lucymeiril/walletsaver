@@ -1,0 +1,88 @@
+{
+  "status": "CrawlStatus.SUCCESS",
+  "items_count": 20,
+  "items_saved": 20,
+  "select_sql": "SELECT mart, mart_native_code, name, price, promo_label, canonical_url AS url FROM products WHERE mart='homeplus' LIMIT 10",
+  "rows": [
+    {
+      "mart": "homeplus",
+      "mart_native_code": "069191859",
+      "name": "simplus 냉동 아보카도 500G (페루산)",
+      "price": 6990,
+      "promo_label": null,
+      "url": "https://mfront.homeplus.co.kr/p/simplus-%EB%83%89%EB%8F%99-%EC%95%84%EB%B3%B4%EC%B9%B4%EB%8F%84-500G-%ED%8E%98%EB%A3%A8%EC%82%B0/069191859"
+    },
+    {
+      "mart": "homeplus",
+      "mart_native_code": "069655559",
+      "name": "12Brix 성주참외 3-5입(봉)",
+      "price": 14990,
+      "promo_label": null,
+      "url": "https://mfront.homeplus.co.kr/p/12Brix-%EC%84%B1%EC%A3%BC%EC%B0%B8%EC%99%B8-3-5%EC%9E%85-%EB%B4%89/069655559"
+    },
+    {
+      "mart": "homeplus",
+      "mart_native_code": "069818454",
+      "name": "simplus 냉동 트리플베리 1KG",
+      "price": 13900,
+      "promo_label": null,
+      "url": "https://mfront.homeplus.co.kr/p/simplus-%EB%83%89%EB%8F%99-%ED%8A%B8%EB%A6%AC%ED%94%8C%EB%B2%A0%EB%A6%AC-1KG/069818454"
+    },
+    {
+      "mart": "homeplus",
+      "mart_native_code": "070141164",
+      "name": "지리산 산청 곶감 6입 200G(팩)",
+      "price": 9990,
+      "promo_label": "1+1",
+      "url": "https://mfront.homeplus.co.kr/p/%EC%A7%80%EB%A6%AC%EC%82%B0-%EC%82%B0%EC%B2%AD-%EA%B3%B6%EA%B0%90-6%EC%9E%85-200G-%ED%8C%A9/070141164"
+    },
+    {
+      "mart": "homeplus",
+      "mart_native_code": "070217415",
+      "name": "한입 파인애플 90G*6입",
+      "price": 8990,
+      "promo_label": null,
+      "url": "https://mfront.homeplus.co.kr/p/%ED%95%9C%EC%9E%85-%ED%8C%8C%EC%9D%B8%EC%95%A0%ED%94%8C-90G-6%EC%9E%85/070217415"
+    },
+    {
+      "mart": "homeplus",
+      "mart_native_code": "070368535",
+      "name": "12Brix 맛난이 부사사과 3-7입(봉)",
+      "price": 15990,
+      "promo_label": null,
+      "url": "https://mfront.homeplus.co.kr/p/12Brix-%EB%A7%9B%EB%82%9C%EC%9D%B4-%EB%B6%80%EC%82%AC%EC%82%AC%EA%B3%BC-3-7%EC%9E%85-%EB%B4%89/070368535"
+    },
+    {
+      "mart": "homeplus",
+      "mart_native_code": "070486337",
+      "name": "대추방울토마토 900G(박스)",
+      "price": 9990,
+      "promo_label": null,
+      "url": "https://mfront.homeplus.co.kr/p/%EB%8C%80%EC%B6%94%EB%B0%A9%EC%9A%B8%ED%86%A0%EB%A7%88%ED%86%A0-900G-%EB%B0%95%EC%8A%A4/070486337"
+    },
+    {
+      "mart": "homeplus",
+      "mart_native_code": "070489000",
+      "name": "대추방울토마토 500G(팩)",
+      "price": 5990,
+      "promo_label": null,
+      "url": "https://mfront.homeplus.co.kr/p/%EB%8C%80%EC%B6%94%EB%B0%A9%EC%9A%B8%ED%86%A0%EB%A7%88%ED%86%A0-500G-%ED%8C%A9/070489000"
+    },
+    {
+      "mart": "homeplus",
+      "mart_native_code": "070499984",
+      "name": "햇 청도 감말랭이 300G(팩)",
+      "price": 9990,
+      "promo_label": null,
+      "url": "https://mfront.homeplus.co.kr/p/%ED%96%87-%EC%B2%AD%EB%8F%84-%EA%B0%90%EB%A7%90%EB%9E%AD%EC%9D%B4-300G-%ED%8C%A9/070499984"
+    },
+    {
+      "mart": "homeplus",
+      "mart_native_code": "070862036",
+      "name": "Simplus 미국산 냉동 블루베리 1KG",
+      "price": 9990,
+      "promo_label": null,
+      "url": "https://mfront.homeplus.co.kr/p/Simplus-%EB%AF%B8%EA%B5%AD%EC%82%B0-%EB%83%89%EB%8F%99-%EB%B8%94%EB%A3%A8%EB%B2%A0%EB%A6%AC-1KG/070862036"
+    }
+  ]
+}

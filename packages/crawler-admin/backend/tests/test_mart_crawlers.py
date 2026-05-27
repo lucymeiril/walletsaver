@@ -24,6 +24,7 @@ MOCK_EMART_HTML = """
 <html><body>
 <div class="cunit_prod">
   <div class="cunit_info"><span class="cunit_md">신선 양파 1.5kg</span></div>
+  <span class="cdtl_ico_item">주간배송</span>
   <div class="new_price"><span class="ssg_price">3,980</span></div>
   <div class="old_price"><span class="ssg_price">5,980</span></div>
   <a href="/item/detail.ssg?itemId=123">상세</a>
@@ -31,6 +32,7 @@ MOCK_EMART_HTML = """
 </div>
 <div class="cunit_prod">
   <div class="cunit_info"><span class="cunit_md">삼겹살 600g</span></div>
+  <span class="cdtl_ico_item">새벽배송</span>
   <div class="new_price"><span class="ssg_price">12,900</span></div>
   <a href="/item/detail.ssg?itemId=456">상세</a>
   <img src="https://img.emart.com/samgyupsal.jpg" />
@@ -62,7 +64,7 @@ MOCK_HOMEPLUS_HTML = """
 MOCK_HOMEPLUS_MFRONT_HTML = """
 <html><body>
 <div class="unitItemInner">
-  <a href="/item?itemNo=milk-1"><img alt="서울우유 1L" src="https://image.homeplus.test/milk.jpg" /></a>
+  <a href="/item?itemNo=111222333&storeType=HYPER"><img alt="서울우유 1L" src="https://image.homeplus.test/milk.jpg" /></a>
   <strong class="itemName">서울우유 1L</strong>
   <span class="priceValue">2,480원</span>
   <span class="priceValue">3,100원</span>
@@ -77,13 +79,13 @@ MOCK_LOTTEMART_HTML = """
   <span class="product-name">제주 감귤 3kg</span>
   <span class="sale_price">9,900원</span>
   <span class="origin_price">14,900원</span>
-  <a href="/goods/view?goodsNo=202">상세</a>
+  <a href="/products/OS8801045440040/details">상세</a>
   <img src="https://img.lottemart.com/gamgyul.jpg" />
 </div>
 <div class="product-item">
   <span class="product-name">대파 한단</span>
   <span class="sale_price">1,500원</span>
-  <a href="/goods/view?goodsNo=303">상세</a>
+  <a href="/products/OS8809214203632/details">상세</a>
 </div>
 </body></html>
 """
@@ -290,8 +292,9 @@ class TestEmartParse:
 
         requests = crawler._build_source_requests()
 
-        assert [req["page"] for req in requests if req["query"] == "채소"] == [1, 2]
-        assert any("query=%EC%A0%95%EC%9C%A1" in req["url"] for req in requests)
+        assert [req["page"] for req in requests if req["query"] == "채소"] == [1, 2, 1, 2]
+        assert {req["shpp"] for req in requests if req["query"] == "채소"} == {"ssgem", "smon"}
+        assert any("query=%EC%A0%95%EC%9C%A1" in req["url"] and "shpp=smon" in req["url"] for req in requests)
 
     @pytest.mark.asyncio
     async def test_emart_crawl_dedupes_overlapping_pages_before_counts(self):
@@ -350,7 +353,44 @@ class TestHomeplusParse:
         assert item.package_quantity == 1
         assert item.package_unit == "L"
         assert item.image_url == "https://image.homeplus.test/milk.jpg"
-        assert item.detail_url == "https://mfront.homeplus.co.kr/item?itemNo=milk-1"
+        assert item.detail_url == "https://mfront.homeplus.co.kr/item?itemNo=111222333&storeType=HYPER"
+
+    @pytest.mark.asyncio
+    async def test_homeplus_does_not_save_temporary_promo_query_urls(self):
+        crawler = HomeplusCrawler()
+        html = """
+        <html><body><div class="product-item">
+          <span class="product-name">임시 행사 상품 1kg</span>
+          <span class="sale_price">4,500원</span>
+          <a class="item gnb-1133 new exp gnb" href="?gnbNo=1137&promoNo=17539">행사 버튼</a>
+        </div></body></html>
+        """
+
+        items = await crawler.parse(html)
+
+        assert len(items) == 1
+        assert items[0].detail_url == ""
+        assert "promoNo" not in items[0].attributes.get("source_url", "")
+        assert "gnbNo" not in items[0].attributes.get("source_url", "")
+
+    @pytest.mark.asyncio
+    async def test_homeplus_parses_promo_label_from_observed_badge_markup(self):
+        crawler = HomeplusCrawler()
+        html = """
+        <html><body><div class="unitItemInner">
+          <h2 itemprop="name"><a href="/item?itemNo=123456789&storeType=HYPER">행사 과자 100G</a></h2>
+          <img alt="행사 과자 100G" src="/snack.jpg" />
+          <ul class="promotionFlag"><li><span class="flag">1+1</span></li></ul>
+          <div class="price"><span class="priceValue"><strong>1,980</strong><span>원</span></span></div>
+          <div class="moreBtnWrap"><button type="button" class="list-btn" title="1+1"><span>1+1</span></button></div>
+        </div></body></html>
+        """
+
+        items = await crawler.parse(html)
+
+        assert len(items) == 1
+        assert items[0].promo_label == "1+1"
+        assert items[0].attributes["promo_label"] == "1+1"
 
     def test_homeplus_json_preserves_unit_and_source_fields(self):
         crawler = HomeplusCrawler()
@@ -388,6 +428,31 @@ class TestHomeplusParse:
         assert len(requests) == 4
         assert requests[2]["category_hint"] == "유제품"
         assert requests[3]["url"].endswith("&page=2")
+
+    def test_homeplus_hyper_category_urls_force_magic_delivery_filter(self):
+        from urllib.parse import parse_qs, urlparse
+
+        crawler = HomeplusCrawler()
+        hyper_url = next(
+            req["url"] for req in crawler._build_source_requests()
+            if req.get("store_type") == "HYPER" and req.get("category_id") == 1
+        )
+        query = parse_qs(urlparse(hyper_url).query)
+
+        assert query["delivery"] == ["HYPER_DRCT"]
+
+    def test_homeplus_express_category_urls_do_not_add_delivery_filter(self):
+        from urllib.parse import parse_qs, urlparse
+
+        crawler = HomeplusCrawler()
+        express_url = next(
+            req["url"] for req in crawler._build_source_requests()
+            if req.get("store_type") == "EXP" and req.get("category_id") == 1
+        )
+        query = parse_qs(urlparse(express_url).query)
+
+        assert urlparse(express_url).path == "/express/list"
+        assert "delivery" not in query
 
     def test_homeplus_source_requests_preserve_overlapping_category_hints(self):
         crawler = HomeplusCrawler()
@@ -520,7 +585,8 @@ class TestLottemartParse:
               "categoryPath":["생수/음료","생수"],
               "size":{"value":"2L*6입"},
               "offer":{"description":"주간특가"},
-              "url":"/products/sku-1",
+              "retailerProductId":"OS8801045440040",
+              "url":"/products/OS8801045440040/details",
               "brand":"오늘좋은"
             }
           }}}
@@ -537,8 +603,9 @@ class TestLottemartParse:
         assert item.category == "생수/음료"
         assert item.event_name == "주간특가"
         assert item.image_url == "https://image.lottemart.test/water.jpg"
-        assert item.detail_url == "https://lottemartzetta.com/products/sku-1"
-        assert item.attributes["source_record_key"] == "sku-1"
+        assert item.detail_url == "https://lottemartzetta.com/products/OS8801045440040/details"
+        assert item.attributes["source_record_key"] == "8801045440040"
+        assert item.attributes["mart_native_code"] == "8801045440040"
         assert item.attributes["category_path"] == ["생수/음료", "생수"]
         assert item.attributes["source_url"] == item.detail_url
 
@@ -556,7 +623,8 @@ class TestLottemartParse:
                                     "name": "오늘좋은 생수 500ml*20입",
                                     "price": {"current": {"amount": "5,990"}, "original": {"amount": "7,990"}},
                                     "image": {"src": "/images/water.jpg"},
-                                    "url": "/products/sku-json",
+                                    "retailerProductId": "OS8801045440040",
+                                    "url": "/products/OS8801045440040/details",
                                     "categoryPath": ["생수/음료", "생수"],
                                 }
                             }
@@ -573,7 +641,8 @@ class TestLottemartParse:
                         "productName": "행복생생란 특란 30입",
                         "salePrice": "6,990원",
                         "originalPrice": "8,990원",
-                        "detailUrl": "/products/eggs-json",
+                        "retailerProductId": "OS8809214203632",
+                        "detailUrl": "/products/OS8809214203632/details",
                         "imageUrl": "/images/eggs.jpg",
                         "categoryPath": ["계란/유제품", "계란"],
                     }
@@ -586,24 +655,32 @@ class TestLottemartParse:
         row_items = await crawler.parse(product_rows)
 
         assert crawler.count_raw_candidates(nested_state) == 1
-        assert state_items[0].attributes["source_record_key"] == "sku-json"
+        assert state_items[0].attributes["source_record_key"] == "8801045440040"
         assert state_items[0].sale_price == 5990
         assert row_items[0].sale_price == 6990
-        assert row_items[0].detail_url == "https://lottemartzetta.com/products/eggs-json"
+        assert row_items[0].detail_url == "https://lottemartzetta.com/products/OS8809214203632/details"
         assert row_items[0].attributes["category_path"] == ["계란/유제품", "계란"]
 
-    def test_lottemart_source_requests_include_category_pagination(self):
+    def test_lottemart_source_requests_use_product_api_and_real_categories(self):
         crawler = LottemartCrawler()
-        crawler.SEARCH_QUERIES = ["특가"]
-        crawler.CATEGORY_QUERIES = ["생수"]
-        crawler.MAX_PAGES = 2
+        crawler._build_category_requests_from_homepage = lambda: [
+            {
+                "query": "생수ㆍ음료",
+                "page": 1,
+                "category_hint": "생수ㆍ음료",
+                "category_path": ["생수ㆍ음료"],
+                "request_type": "html_category",
+                "url": f"{crawler.ZETTA_BASE}/categories/water",
+            }
+        ]
 
         requests = crawler._build_source_requests()
 
-        assert [req["page"] for req in requests] == [1, 1, 2, 2]
-        assert requests[1]["category_hint"] == "생수"
-        assert requests[3]["category_hint"] == "생수"
-        assert "page=2" in requests[3]["url"]
+        assert requests[0]["request_type"] == "product_pages"
+        assert "/api/webproductpagews/v6/product-pages" in requests[0]["url"]
+        assert requests[1]["category_hint"] == "생수ㆍ음료"
+        assert requests[1]["category_path"] == ["생수ㆍ음료"]
+        assert requests[1]["url"].endswith("/categories/water")
 
     @pytest.mark.asyncio
     async def test_lottemart_validate_uses_source_key_not_price_for_incremental_update(self):
@@ -611,18 +688,20 @@ class TestLottemartParse:
         first = crawler._entity_to_discount_item({
             "name": "오늘좋은 생수 2L*6입",
             "price": {"current": {"amount": "2,990"}},
-            "url": "/products/water-1",
+            "retailerProductId": "OS8801045440040",
+            "url": "/products/OS8801045440040/details",
         }, "water-1")
         updated = crawler._entity_to_discount_item({
             "name": "오늘좋은 생수 2L*6입",
             "price": {"current": {"amount": "2,690"}},
-            "url": "/products/water-1",
+            "retailerProductId": "OS8801045440040",
+            "url": "/products/OS8801045440040/details",
         }, "water-1")
 
         valid = await crawler.validate([first, updated])
 
         assert len(valid) == 1
-        assert valid[0].attributes["source_record_key"] == "water-1"
+        assert valid[0].attributes["source_record_key"] == "8801045440040"
 
 
 # --- JSON 파싱 테스트 ---
@@ -750,16 +829,15 @@ class TestCrawlWithMock:
         mock_resp.encoding = "utf-8"
         mock_resp.url = "https://front.homeplus.co.kr/event/eventMain.do"
 
-        # 홈플러스는 SPA이므로 Playwright를 먼저 시도함 → mock으로 빈 결과 반환
-        # HTTP fallback에서 mock_resp로 상품 수집
+        playwright_items = await crawler.parse(MOCK_HOMEPLUS_HTML)
         with patch("crawlers.marts.homeplus.crawler.requests.get", return_value=mock_resp), \
-             patch.object(crawler, "_fetch_via_playwright", return_value=([], 0)):
+             patch.object(crawler, "_fetch_via_playwright", return_value=(playwright_items, len(playwright_items), {})):
             result = await crawler.crawl()
 
         assert result.status == CrawlStatus.SUCCESS
         assert result.crawler_name == "홈플러스"
-        assert result.strategy_used == "requests"
-        assert "fallback_used" in result.quality_details["alerts"]
+        assert result.strategy_used in {"requests", "requests_json_api"}
+        assert result.items_count >= 1
 
     @pytest.mark.asyncio
     async def test_homeplus_bounded_request_limit_skips_http_fallback(self):
@@ -770,12 +848,12 @@ class TestCrawlWithMock:
         crawler.MAX_REQUESTS = 1
 
         with patch("crawlers.marts.homeplus.crawler.requests.get") as mock_get, \
-             patch.object(crawler, "_fetch_via_playwright", return_value=([], 1)):
+             patch.object(crawler, "_fetch_via_playwright", return_value=([], 1, {})):
             result = await crawler.crawl()
 
         mock_get.assert_not_called()
         assert result.status == CrawlStatus.FAILED
-        assert result.strategy_used == "playwright"
+        assert result.strategy_used in {"playwright", "requests_json_api"}
         assert "fallback_used" not in result.quality_details["alerts"]
 
     @pytest.mark.asyncio
@@ -789,13 +867,13 @@ class TestCrawlWithMock:
         mock_resp.encoding = "utf-8"
         mock_resp.url = "https://lottemartzetta.com/search?query=test"
 
-        with patch("crawlers.marts.lottemart.crawler.requests.Session.get", return_value=mock_resp), \
-             patch.object(crawler, "_fetch_via_playwright", return_value=[]):
+        with patch("crawlers.marts.lottemart.crawler.requests.Session.get", return_value=mock_resp):
             result = await crawler.crawl()
 
         assert result.status == CrawlStatus.SUCCESS
         assert result.crawler_name == "롯데마트"
-        assert result.quality_details["fetch"]["fallback_used"] is True
+        assert result.quality_details["fetch"]["fallback_used"] is False
+        assert result.strategy_used == "requests"
 
     @pytest.mark.asyncio
     async def test_lottemart_crawl_zero_valid_items_fails_without_silent_success(self):
@@ -809,8 +887,7 @@ class TestCrawlWithMock:
         mock_resp.encoding = "utf-8"
         mock_resp.url = "https://lottemartzetta.com/search?query=test"
 
-        with patch("crawlers.marts.lottemart.crawler.requests.Session.get", return_value=mock_resp), \
-             patch.object(crawler, "_fetch_via_playwright", return_value=[]):
+        with patch("crawlers.marts.lottemart.crawler.requests.Session.get", return_value=mock_resp):
             result = await crawler.crawl()
 
         assert result.status == CrawlStatus.FAILED
@@ -818,12 +895,8 @@ class TestCrawlWithMock:
         assert result.quality_details["alerts"]
 
     @pytest.mark.asyncio
-    async def test_lottemart_escalates_to_playwright_scroll_on_aws_waf_202(self):
-        """AWS WAF 202 챌린지를 만나도 폴백을 묵살하지 않는다.
-        plugin.yaml waf_strategy.escalation 대로:
-          requests → playwright_headless → playwright_headful 자동 escalation.
-        헤드풀은 p0-crawler-impl 1급 워크밴치. 운영자 개입 게이트 없음.
-        구 동작(2건에서 stop)이 회귀로 재발하는 것을 막는다."""
+    async def test_lottemart_stops_on_aws_waf_202_without_browser_escalation(self):
+        """legacy requests path keeps the 3-second sequential policy and does not start browser fallback."""
         from engine.anti_detect import AntiDetect
         crawler = LottemartCrawler(anti_detect=AntiDetect(delay_min=0.0, delay_max=0.01))
         crawler.SEARCH_QUERIES = ["할인", "특가", "정육"]
@@ -836,30 +909,15 @@ class TestCrawlWithMock:
             text="<html><script>window.awsWafCookieDomainList=[];</script></html>",
         )
 
-        scroll_calls: list[dict] = []
-
-        async def _fake_scroll(*, target_count=220, max_scroll_steps=120, headful=False):
-            scroll_calls.append({"headful": headful})
-            return []
-
-        with patch("crawlers.marts.lottemart.crawler.requests.Session.get", side_effect=[first_resp, waf_resp]) as mock_get, \
-             patch.object(crawler, "_fetch_promotions_scroll", side_effect=_fake_scroll) as mock_scroll, \
-             patch.object(crawler, "_fetch_via_playwright", return_value=[]) as mock_playwright:
+        with patch("crawlers.marts.lottemart.crawler.requests.Session.get", side_effect=[first_resp, waf_resp]) as mock_get:
             result = await crawler.crawl()
 
         assert mock_get.call_count == 2
-        # WAF 202 후에 스크롤 폴백이 *반드시* 호출돼야 한다 (옛 회귀 가드)
-        assert scroll_calls, "WAF 202 후 스크롤 폴백 묵살됨 — 사용자 헌법 위반"
-        # 헤드리스가 빈 결과 → 헤드풀 escalation 까지 시도해야 한다
-        assert any(c["headful"] for c in scroll_calls), (
-            "헤드리스만 시도하고 headful escalation 미수행"
-        )
-        # WAF blocker 시그널은 여전히 남되, 정직하게 보고 (회복 못 했으니 alert 유지)
         assert result.errors[0].status_code == 202
         assert result.quality_details["fetch"]["blocked"] is True
         assert result.quality_details["fetch"]["blocker"] == "aws_waf_http_202"
         assert result.quality_details["fetch"]["auth_bypass_attempted"] is False
-        # 헤드풀까지 시도했지만 mock 으로 빈 결과 → 부분 결과만 회수
+        assert result.quality_details["fetch"]["renderer"] == "requests"
         assert result.items_count == 2
 
     @pytest.mark.asyncio
@@ -883,37 +941,27 @@ class TestCrawlWithMock:
     async def test_lottemart_source_url_202_is_precise_blocked_diagnostic(self):
         """Single-URL no-DB diagnostics should not overclaim collection when WAF returns 202."""
         crawler = LottemartCrawler()
-        async def fake_render_pages(url, *, max_pages, max_requests, timeout_seconds):
-            return [
-                {
-                    "url": url,
-                    "final_url": url,
-                    "status_code": 202,
-                    "html": "<html><script>window.awsWafCookieDomainList=[];</script></html>",
-                    "bytes": 64,
-                    "challenge_detected": True,
-                    "login_required": False,
-                    "persistent_context": False,
-                }
-            ]
+        mock_resp = MagicMock(
+            status_code=202,
+            text="<html><script>window.awsWafCookieDomainList=[];</script></html>",
+            content=b"<html><script>window.awsWafCookieDomainList=[];</script></html>",
+        )
 
-        with patch.object(crawler, "_render_source_url_pages", side_effect=fake_render_pages) as mock_browser, \
-             patch("crawlers.marts.lottemart.crawler.requests.Session.get") as mock_get:
+        with patch("crawlers.marts.lottemart.crawler.requests.Session.get", return_value=mock_resp) as mock_get:
             result = await crawler.crawl_incremental(
                 source_url="https://lottemartzetta.com/search?query=%ED%95%A0%EC%9D%B8",
             )
 
-        assert mock_browser.call_count == 1
-        mock_get.assert_not_called()
+        assert mock_get.call_count == 1
         assert result.status == CrawlStatus.FAILED
         assert result.items_count == 0
-        assert result.error_msg == "source_url browser blocked HTTP 202"
-        assert result.quality_details["collection"]["mode"] == "ordinary_browser_public_no_db"
+        assert result.error_msg == "source_url HTTP 202 (AWS WAF challenge)"
+        assert result.quality_details["collection"]["mode"] == "bounded_live_http_no_db"
         assert result.quality_details["fetch"]["blocked"] is True
         assert result.quality_details["fetch"]["auth_bypass_attempted"] is False
-        assert result.quality_details["fetch"]["browser_pages"][0]["status_code"] == 202
+        assert result.quality_details["fetch"]["status_code"] == 202
         assert "partial_lottemart_waf_blocker" in result.quality_details["alerts"]
-        assert result.quality_details["source_map"]["live_blocker"]["blocker"] == "public_browser_http_202"
+        assert result.quality_details["source_map"]["live_blocker"]["blocker"] == "aws_waf_http_202"
         assert result.quality_details["source_map"]["count_breadth"]["valid"] == 0
         assert result.quality_details["source_map"]["claim_policy"].startswith("This manifest is an audit map only")
 
@@ -1030,9 +1078,9 @@ class TestCrawlWithMock:
 MOCK_INITIAL_STATE_HTML = """
 <html><head><script>
 window.__INITIAL_STATE__={"data":{"products":{"productEntities":{
-"uuid-001":{"name":"[할인] 신선 양파 1.5kg","price":{"original":{"amount":"5980","currency":"KRW"},"current":{"amount":"3980","currency":"KRW"}},"image":{"src":"https://img.test/yangpa.jpg"},"categoryPath":["채소"],"size":{"value":"1.5kg"},"offer":{"description":"주간특가"},"brand":"","productId":"uuid-001"},
-"uuid-002":{"name":"국내산 삼겹살 600g","price":{"original":{"amount":"18900","currency":"KRW"},"current":{"amount":"12900","currency":"KRW"}},"image":{"src":"https://img.test/samgyup.jpg"},"categoryPath":["정육"],"size":{"value":"600g"},"offer":{"description":"롯데마트 할인"},"brand":"롯데축산","productId":"uuid-002"},
-"uuid-003":{"name":"X","price":{"original":{"amount":"100","currency":"KRW"},"current":{"amount":"0","currency":"KRW"}},"image":{},"categoryPath":[],"size":{},"offer":{},"brand":"","productId":"uuid-003"}
+"uuid-001":{"name":"[할인] 신선 양파 1.5kg","price":{"original":{"amount":"5980","currency":"KRW"},"current":{"amount":"3980","currency":"KRW"}},"image":{"src":"https://img.test/yangpa.jpg"},"categoryPath":["채소"],"size":{"value":"1.5kg"},"offer":{"description":"주간특가"},"brand":"","productId":"uuid-001","retailerProductId":"OS8801045440040"},
+"uuid-002":{"name":"국내산 삼겹살 600g","price":{"original":{"amount":"18900","currency":"KRW"},"current":{"amount":"12900","currency":"KRW"}},"image":{"src":"https://img.test/samgyup.jpg"},"categoryPath":["정육"],"size":{"value":"600g"},"offer":{"description":"롯데마트 할인"},"brand":"롯데축산","productId":"uuid-002","retailerProductId":"OS8801114119426"},
+"uuid-003":{"name":"X","price":{"original":{"amount":"100","currency":"KRW"},"current":{"amount":"0","currency":"KRW"}},"image":{},"categoryPath":[],"size":{},"offer":{},"brand":"","productId":"uuid-003","retailerProductId":"OS8809214203632"}
 }},"search":{}}}</script></head><body></body></html>
 """
 
@@ -1094,7 +1142,8 @@ class TestLottemartInitialState:
             "size": {"value": "300g"},
             "offer": {"description": "주간특가"},
             "brand": "롯데축산",
-            "url": "/products/beef-300",
+            "retailerProductId": "OS8801114119426",
+            "url": "/products/OS8801114119426/details",
         }, "beef-300")
 
         assert item is not None
@@ -1106,9 +1155,10 @@ class TestLottemartInitialState:
         assert item.package_unit == "g"
         assert item.price_per_100g == 4950
         assert item.image_url == "https://img.lottemart.test/beef.jpg"
-        assert item.detail_url == "https://lottemartzetta.com/products/beef-300"
+        assert item.detail_url == "https://lottemartzetta.com/products/OS8801114119426/details"
         assert item.category == ""
         assert item.attributes["brand"] == "롯데축산"
+        assert item.attributes["mart_native_code"] == "8801114119426"
 
     def test_saved_source_json_search_is_depth_and_cycle_safe(self):
         crawler = LottemartCrawler()

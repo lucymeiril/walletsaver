@@ -1,7 +1,7 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import {
   LayoutDashboard, Package, DollarSign,
-  FolderTree, BarChart3, Menu, X, Database, Inbox, LogOut, ShieldCheck, MessageSquareWarning, Wrench, Upload,
+  FolderTree, BarChart3, Menu, X, Database, Inbox, LogOut, ShieldCheck, MessageSquareWarning, Wrench, Upload, Table2,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { logout } from '../stores/authStore';
@@ -13,6 +13,7 @@ const NAV = [
   { to: '/products',       label: '상품',       icon: Package },
   { to: '/prices',         label: '가격',       icon: DollarSign },
   { to: '/classification', label: '분류 관리',  icon: FolderTree },
+  { to: '/matching',       label: '매칭 테이블', icon: Table2 },
   { to: '/analytics',      label: '분석',       icon: BarChart3 },
   { to: '/integrity',      label: '무결성',     icon: ShieldCheck },
   { to: '/maintenance',    label: 'DB 유지보수', icon: Wrench },

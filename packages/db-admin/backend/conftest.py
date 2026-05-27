@@ -21,6 +21,11 @@ shared_dir = backend_dir.parent.parent / "shared"
 if str(shared_dir) not in sys.path:
     sys.path.insert(0, str(shared_dir))
 
+# db_admin.* import alias 패키지는 저장소 루트에 있다.
+repo_root = backend_dir.parent.parent.parent
+if str(repo_root) not in sys.path:
+    sys.path.append(str(repo_root))
+
 # Flush cached config from other packages (crawler-admin) to avoid import conflicts
 if "config" in sys.modules:
     cached_config = sys.modules["config"]

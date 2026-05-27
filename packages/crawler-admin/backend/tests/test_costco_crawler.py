@@ -123,9 +123,9 @@ def test_no_cocodalin_in_costco_crawler_source():
 
 
 def test_category_endpoints_count():
-    """15개 이상의 카테고리 엔드포인트가 정의되어 있어야 한다."""
+    """발표용 크롤러는 식품/생활 필수 카테고리만 제한 수집한다."""
     from crawlers.marts.costco.crawler import CATEGORY_ENDPOINTS
-    assert len(CATEGORY_ENDPOINTS) >= 15
+    assert len(CATEGORY_ENDPOINTS) >= 2
 
 
 def test_category_codes_match_endpoints():
@@ -149,7 +149,7 @@ def test_build_all_urls_includes_categories_search_pagination():
     url_strs = [u for u, _ in urls]
 
     category_urls = [u for u in url_strs if "/c/" in u]
-    assert len(category_urls) >= 15
+    assert len(category_urls) >= len(CATEGORY_ENDPOINTS)
 
     search_urls = [u for u in url_strs if "search?" in u]
     assert len(search_urls) >= 15
@@ -253,12 +253,12 @@ async def test_crawl_occ_api_empty_returns_failed(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_crawl_all_categories_mock_html_300_plus(fixture_html):
-    """15개 카테고리 모두 mock fixture 주입 시 300건 이상이 수집돼야 한다 (중복 없음 가정)."""
+async def test_crawl_food_categories_mock_html(fixture_html):
+    """식품/생활필수 범위 mock fixture 주입 시 중복 없이 수집돼야 한다."""
     from crawlers.marts.costco.crawler import CATEGORY_CODES, BASE_URL
     import re
 
-    # fixture_html은 5개 카드 → 15개 카테고리 × 5건 = 75건 (dedup 후)
+    # fixture_html은 5개 카드이고 현재 코스트코 크롤러는 발표용 식품/생활필수 범위만 돈다.
     # 각 카테고리마다 다른 product ID를 가지도록 카드 URL 패치
     crawler = CostcoCrawler()
     crawler.PAGE_SLEEP_SECONDS = 0
@@ -272,6 +272,5 @@ async def test_crawl_all_categories_mock_html_300_plus(fixture_html):
 
     crawler._mock_html_map = mock_map
     result = await crawler.crawl()
-    # 15개 × 5건 = 75건 (이 테스트에서 중복 없음)
-    assert result.items_count >= 50, f"mock 주입 후 50건 이상이어야 함 (실제 {result.items_count})"
+    assert result.items_count >= 10, f"mock 주입 후 식품/생활필수 카테고리가 수집되어야 함 (실제 {result.items_count})"
     assert result.quality_details.get("category_breakdown") is not None

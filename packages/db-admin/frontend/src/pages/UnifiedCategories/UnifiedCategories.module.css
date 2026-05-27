@@ -1,0 +1,162 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.title {
+  margin: 0;
+  font-size: 26px;
+  color: var(--text1);
+}
+
+.subtitle {
+  margin: 6px 0 0;
+  color: var(--text3);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(420px, 1.4fr);
+  gap: 18px;
+}
+
+.panel {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px;
+  min-height: 520px;
+}
+
+.panel h2 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.tree {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.treeButton {
+  border: 0;
+  background: transparent;
+  color: var(--text2);
+  text-align: left;
+  padding: 7px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.treeButton:hover,
+.treeButton.active {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.tab {
+  border: 1px solid var(--line);
+  background: var(--bg1);
+  color: var(--text2);
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.mappingList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mappingCard {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  background: var(--bg1);
+}
+
+.mappingCard.needsReview {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.mappingTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--text1);
+  font-weight: 700;
+}
+
+.path {
+  margin: 6px 0;
+  color: var(--text3);
+  font-size: 13px;
+  word-break: keep-all;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px;
+  background: var(--bg2);
+  color: var(--text1);
+}
+
+.save {
+  border: 0;
+  border-radius: 10px;
+  background: var(--primary);
+  color: white;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.badge {
+  font-size: 12px;
+  border-radius: 999px;
+  padding: 3px 8px;
+  background: var(--bg3);
+  color: var(--text2);
+}
+
+.error {
+  color: #ef4444;
+}
+
+@media (max-width: 980px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

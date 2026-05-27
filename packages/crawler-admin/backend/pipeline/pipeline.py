@@ -7,7 +7,7 @@ import logging
 import os
 import time
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 
 import httpx
 
@@ -32,6 +32,8 @@ from pipeline.db_admin_auth import get_db_admin_auth
 from pipeline.source_runs import SourceRunPipeline, SourceRunResult, SourceRunStore
 
 logger = logging.getLogger(__name__)
+
+ProgressCallback = Callable[[dict[str, Any]], Any]
 
 # DB-Admin API endpoint (port 8002, configurable via env)
 DB_ADMIN_API_URL = os.getenv(
@@ -122,10 +124,15 @@ class CrawlPipeline:
             force_full=force_full,
         )
 
-    async def run_crawler(self, crawler_name: str) -> PipelineResult:
+    async def run_crawler(
+        self,
+        crawler_name: str,
+        progress_callback: ProgressCallback | None = None,
+    ) -> PipelineResult:
         """단일 크롤러를 파이프라인 전체 흐름으로 실행."""
         start = time.monotonic()
         errors: list[str] = []
+        await self._emit_progress(progress_callback, stage="started", items_found=0, items_valid=0, items_saved=0)
 
         await self.event_bus.publish(Event(
             event_type=CRAWL_STARTED,
@@ -137,7 +144,13 @@ class CrawlPipeline:
         try:
             crawler = self.registry.get_crawler(crawler_name)
         except (KeyError, ImportError) as exc:
+            await self._emit_progress(progress_callback, stage="failed", errors=[str(exc)])
             return self._fail(crawler_name, str(exc), start)
+
+        try:
+            setattr(crawler, "progress_callback", progress_callback)
+        except Exception:
+            logger.debug("[Pipeline] %s crawler does not accept progress_callback", crawler_name)
 
         config = self.registry._registry.get(crawler_name, {}).get("config", {})
         # schedule은 cron 문자열일 수 있으므로 dict인 경우만 .get() 사용
@@ -151,8 +164,18 @@ class CrawlPipeline:
 
         crawl_result: CrawlResult | None = None
         for attempt in range(1, retry_count + 1):
+            await self._emit_progress(progress_callback, stage="crawl_attempt", attempt=attempt, retry_count=retry_count)
             try:
                 crawl_result = await crawler.crawl()
+                await self._emit_progress(
+                    progress_callback,
+                    stage="crawl_finished",
+                    attempt=attempt,
+                    crawler_status=str(crawl_result.status.value),
+                    items_found=crawl_result.items_count,
+                    strategy_used=crawl_result.strategy_used,
+                    quality_details=crawl_result.quality_details,
+                )
                 if crawl_result.status == CrawlStatus.SUCCESS:
                     break
                 errors.append(
@@ -160,10 +183,12 @@ class CrawlPipeline:
                 )
             except Exception as exc:
                 errors.append(f"attempt {attempt}: {exc}")
+                await self._emit_progress(progress_callback, stage="crawl_error", attempt=attempt, errors=list(errors))
                 if attempt < retry_count:
                     await asyncio.sleep(min(attempt * 2, 10))
 
         if crawl_result is None or crawl_result.status != CrawlStatus.SUCCESS:
+            await self._emit_progress(progress_callback, stage="failed", errors=list(errors))
             return self._fail(
                 crawler_name,
                 crawl_result.error_msg if crawl_result else "all retries failed",
@@ -173,7 +198,15 @@ class CrawlPipeline:
 
         raw_items = crawl_result.items or []
         items_found = len(raw_items)
+        await self._emit_progress(
+            progress_callback,
+            stage="items_collected",
+            items_found=items_found,
+            strategy_used=crawl_result.strategy_used,
+            quality_details=crawl_result.quality_details,
+        )
         if items_found == 0:
+            await self._emit_progress(progress_callback, stage="failed", items_found=0, errors=[*errors, "no items collected"])
             return self._fail(crawler_name, "no items collected", start, errors)
 
         # 2. Parse — 이미 dict 리스트이므로 pass-through
@@ -207,6 +240,7 @@ class CrawlPipeline:
         items = enrich_with_category(items)
 
         items_valid = len(items)
+        await self._emit_progress(progress_callback, stage="validated", items_found=items_found, items_valid=items_valid, errors=list(errors))
         quality_details = summarize_discount_run(
             items,
             raw_count=items_found,
@@ -227,6 +261,7 @@ class CrawlPipeline:
             records = to_discount_history(items, source="mart_discount")
 
         # 5. Store — 대기열 또는 직접 DB 저장
+        await self._emit_progress(progress_callback, stage="storing", items_found=items_found, items_valid=items_valid, items_saved=0)
         if SKIP_REVIEW:
             items_saved = await self._store(records, errors)
         else:
@@ -243,6 +278,14 @@ class CrawlPipeline:
             )
 
         duration = time.monotonic() - start
+        await self._emit_progress(
+            progress_callback,
+            stage="stored",
+            items_found=items_found,
+            items_valid=items_valid,
+            items_saved=items_saved,
+            errors=list(errors),
+        )
 
         # Determine status based on actual persistence outcome
         if items_saved == 0 and items_valid > 0:
@@ -327,6 +370,16 @@ class CrawlPipeline:
 
     # --- internal helpers ---
 
+    async def _emit_progress(self, callback: ProgressCallback | None, **payload: Any) -> None:
+        if callback is None:
+            return
+        try:
+            result = callback(payload)
+            if hasattr(result, "__await__"):
+                await result
+        except Exception:
+            logger.debug("[Pipeline] progress callback failed", exc_info=True)
+
     async def _store(
         self, records: list[dict[str, Any]], errors: list[str],
         *, _max_retries: int = 3,
@@ -393,64 +446,103 @@ class CrawlPipeline:
         if not items:
             return 0
 
-        payload = {
-            "crawler_name": crawler_name,
-            "crawl_status": crawl_status,
-            "items": items,
-            "schema_type": schema_type,
-            "strategy_used": strategy_used,
-            "duration_seconds": round(duration_seconds, 2),
-            "errors": [{"message": e} for e in errors],
-            "quality_score": quality_score,
-            "quality_details": quality_details,
-        }
+        chunk_size = 100
+        total_saved = 0
+        auth = get_db_admin_auth()
 
-        last_exc: Exception | None = None
-        for attempt in range(1, _max_retries + 1):
-            try:
-                auth = get_db_admin_auth()
-                headers = await auth.get_headers()
-                async with httpx.AsyncClient(timeout=30) as client:
-                    resp = await client.post(
-                        INGESTION_API_URL, json=payload, headers=headers,
-                    )
-                    if resp.status_code == 401:
-                        headers = await auth.handle_401()
+        for offset in range(0, len(items), chunk_size):
+            chunk = items[offset : offset + chunk_size]
+            chunk_index = (offset // chunk_size) + 1
+            payload = {
+                "crawler_name": crawler_name,
+                "crawl_status": crawl_status,
+                "items": chunk,
+                "schema_type": schema_type,
+                "strategy_used": strategy_used,
+                "duration_seconds": round(duration_seconds, 2),
+                "errors": [{"message": e} for e in errors],
+                "quality_score": quality_score,
+                "quality_details": {
+                    **(quality_details or {}),
+                    "ingestion_chunk": {
+                        "index": chunk_index,
+                        "offset": offset,
+                        "size": len(chunk),
+                        "total_items": len(items),
+                    },
+                },
+            }
+
+            last_exc: Exception | None = None
+            chunk_saved = False
+            for attempt in range(1, _max_retries + 1):
+                try:
+                    headers = await auth.get_headers()
+                    async with httpx.AsyncClient(timeout=30) as client:
                         resp = await client.post(
                             INGESTION_API_URL, json=payload, headers=headers,
                         )
-                    resp.raise_for_status()
-                    audit_log(
-                        AuditEventType.DATA_SUBMISSION,
-                        resource=crawler_name,
-                        detail={
-                            "item_count": len(items),
-                            "schema_type": schema_type,
-                            "strategy": strategy_used,
-                        },
-                    )
-                    return len(items)
-            except httpx.HTTPStatusError as exc:
-                last_exc = exc
-                if exc.response.status_code < 500:
-                    break
-                if attempt < _max_retries:
-                    await asyncio.sleep(2 ** attempt + random.random())
-            except (httpx.ConnectError, httpx.TimeoutException) as exc:
-                last_exc = exc
-                if attempt < _max_retries:
-                    await asyncio.sleep(2 ** attempt + random.random())
+                        if resp.status_code == 401:
+                            headers = await auth.handle_401()
+                            resp = await client.post(
+                                INGESTION_API_URL, json=payload, headers=headers,
+                            )
+                        resp.raise_for_status()
+                        total_saved += len(chunk)
+                        chunk_saved = True
+                        last_exc = None
+                        audit_log(
+                            AuditEventType.DATA_SUBMISSION,
+                            resource=crawler_name,
+                            detail={
+                                "item_count": len(chunk),
+                                "schema_type": schema_type,
+                                "strategy": strategy_used,
+                                "chunk_index": chunk_index,
+                            },
+                        )
+                        break
+                except httpx.HTTPStatusError as exc:
+                    last_exc = exc
+                    if exc.response.status_code == 429 and attempt < _max_retries:
+                        retry_after = exc.response.headers.get("Retry-After")
+                        try:
+                            wait = float(retry_after) if retry_after else 5.0 * attempt
+                        except ValueError:
+                            wait = 5.0 * attempt
+                        await asyncio.sleep(wait + random.random())
+                        continue
+                    if exc.response.status_code < 500:
+                        break
+                    if attempt < _max_retries:
+                        await asyncio.sleep(2 ** attempt + random.random())
+                except (httpx.ConnectError, httpx.TimeoutException) as exc:
+                    last_exc = exc
+                    if attempt < _max_retries:
+                        await asyncio.sleep(2 ** attempt + random.random())
+            else:
+                pass
 
-        err_msg = str(last_exc) if last_exc else "unknown"
-        errors.append(f"ingestion_submit: {err_msg}")
-        logger.warning("[Pipeline] ingestion submit failed after %d retries: %s", _max_retries, err_msg)
-        write_dead_letter(
-            payload.get("items", []),
-            crawler_name=crawler_name,
-            target="ingestion",
-            error_msg=err_msg,
-        )
-        return 0
+            if not chunk_saved and last_exc is not None:
+                err_msg = str(last_exc)
+                errors.append(f"ingestion_submit chunk {chunk_index}: {err_msg}")
+                logger.warning(
+                    "[Pipeline] ingestion chunk %d failed after %d retries: %s",
+                    chunk_index,
+                    _max_retries,
+                    err_msg,
+                )
+                write_dead_letter(
+                    chunk,
+                    crawler_name=crawler_name,
+                    target="ingestion",
+                    error_msg=err_msg,
+                )
+
+            if offset + chunk_size < len(items):
+                await asyncio.sleep(3)
+
+        return total_saved
 
     def _fail(
         self,

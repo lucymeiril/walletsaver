@@ -315,7 +315,8 @@
 /* Run Result Banner */
 .runResult {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   gap: var(--space-xs);
   padding: 8px 12px;
   border-radius: var(--radius-sm);
@@ -323,6 +324,12 @@
   font-weight: var(--fw-medium);
   margin-bottom: var(--space-md);
 }
+
+.runStatusLine { display: flex; align-items: center; gap: var(--space-xs); }
+.elapsedBadge { margin-left: auto; padding: 1px 7px; border-radius: 99px; background: rgba(15, 23, 42, 0.08); color: var(--text2); }
+.counterChips { display: flex; flex-wrap: wrap; gap: 4px; }
+.counterMart, .counterChip { padding: 2px 7px; border-radius: 99px; background: rgba(255,255,255,.55); color: var(--text2); font-size: 11px; }
+.counterMart { font-weight: var(--fw-bold); color: var(--accent); }
 
 .runResultSuccess {
   background: rgba(52, 211, 153, 0.12);

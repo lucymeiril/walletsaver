@@ -21,7 +21,7 @@ from storage.models import (
     PriceTier, PostType, VoteType, CrawlStatus, UserRole, OAuthProvider,
     # Models
     User, OAuthAccount, Category, Product,
-    BaselinePrice, DiscountHistory, HotdealPrice,
+    BaselinePrice, DiscountHistory, HotdealPrice, PriceHistory,
     GasStation, Restaurant,
     Post, PostImage, Comment, Vote,
     Favorite, PriceAlert, CrawlLog, Keyword,
@@ -623,8 +623,9 @@ class TestSchemaIntegration:
         """모든 테이블이 정상 생성되는지 확인."""
         inspector_tables = Base.metadata.tables.keys()
         expected = {
-            "users", "oauth_accounts", "categories", "products",
-            "baseline_prices", "discount_history", "hotdeal_prices",
+            "users", "oauth_accounts", "categories", "unified_categories",
+            "mart_category_mappings", "products",
+            "baseline_prices", "discount_history", "hotdeal_prices", "price_history",
             "gas_stations", "restaurants",
             "posts", "post_images", "comments", "votes",
             "favorites", "price_alerts", "crawl_logs", "keywords",
@@ -633,6 +634,7 @@ class TestSchemaIntegration:
             "pending_categorizations", "category_corrections",
             "audit_logs",
             "hotdeal_comments", "hotdeal_votes",
+            "hotdeal_posts", "hotdeal_comment_snapshots",
             "cart_items", "wishlist_items", "user_activities",
             "product_keywords",
             "normalized_canonical_products", "normalized_product_variants",
@@ -642,6 +644,7 @@ class TestSchemaIntegration:
             "product_matches",       # 마트별 상품 매칭 테이블
             "gov_wholesale_prices",  # 정부 공인 도매가 앵커
             "matching_entries",      # 크롤러 raw → canonical 매칭 룩업 테이블
+            "product_match_rules",   # 상품 제목/정규화 키 기반 자동 분류 매칭 규칙
             "alert_disappeared_skus",   # 가격 알림 — 단종/품절 SKU 추적
             "imports_audit",            # RD8 L3: 외부 LLM import 이력 감사 로그
             "category_review_queue",    # RD8 L3: 신규 카테고리 제안 운영자 검토 큐

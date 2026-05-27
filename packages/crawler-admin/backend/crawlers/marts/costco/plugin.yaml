@@ -5,7 +5,26 @@ version: 0.6.0
 schema_version: 2
 description: 코스트코 코리아 본 사이트(costco.co.kr) 전용 수집기. v0.6.0 — SAP Hybris OCC REST 직접 호출 (워크밴치 1회 cookie/CSRF). crawler-FINAL §2-1 라이브 995×3 검증.
 live_ready: true
-parser_contract: costco_storefront_li_product_list_item.v1
+parser_contract: costco_category_cos_listing.g1
+entrypoints:
+  module: crawlers.marts.costco.entrypoints
+  class: CostcoEntrypoints
+  paths:
+    - name: crawl_sale_listing
+      collection_path: public_endpoint
+      crawl_intent: sale
+      live_url_template: "https://www.costco.co.kr/c/cos_10"
+    - name: crawl_catalog_page
+      collection_path: catalog_page
+      crawl_intent: catalog
+      args: [category_or_query, page]
+    - name: fetch_single_product
+      collection_path: single_product
+      crawl_intent: refresh
+      args: [url_or_id]
+    - name: ingest_operator_capture
+      collection_path: operator_capture
+      crawl_intent: sale|catalog|refresh
 
 # crawler-FINAL §3-B capability schema v2 — OccRestApi 엔진 매핑.
 capabilities:

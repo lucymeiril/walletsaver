@@ -95,10 +95,23 @@ def build_result(
     if extras:
         quality.update(extras)
     status = CrawlStatus.SUCCESS if items else (CrawlStatus.PARTIAL if errors else CrawlStatus.FAILED)
+    serialized_items: list[dict] = []
+    for raw_item in items:
+        as_dict = raw_item.model_dump(mode="json")
+        # ingestion validator (db-admin ingestion.py:1636) requires non-empty source.
+        # Sites do not expose mart name in product payloads, so derive from crawler_name.
+        if not as_dict.get("source"):
+            as_dict["source"] = crawler_name
+        # mirror into attributes so downstream review/inspect UIs surface it too
+        attrs = as_dict.get("attributes")
+        if isinstance(attrs, dict) and not attrs.get("source"):
+            attrs["source"] = crawler_name
+            as_dict["attributes"] = attrs
+        serialized_items.append(as_dict)
     return CrawlResult(
         crawler_name=crawler_name,
         status=status,
-        items=[i.model_dump(mode="json") for i in items],
+        items=serialized_items,
         items_count=len(items),
         errors=list(errors or []),
         started_at=started_at,

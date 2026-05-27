@@ -1,30 +1,24 @@
 """
-롯데마트 크롤러 — 전단지 및 할인 행사 상품 정보 수집.
+롯데마트 크롤러 — requests 기반 legacy 수집 경로.
 
-롯데마트는 lottemartzetta.com SPA로 리다이렉트되며,
-서버사이드에서 window.__INITIAL_STATE__ (Redux 상태)에 상품 데이터를 포함한다.
+롯데마트 lottemartzetta.com 공개 HTML의 window.__INITIAL_STATE__
+productEntities를 순차 GET으로 수집한다. browser 렌더링/인터셉트 없이
+requests.Session, UA/Referer/Accept-Language, 3초 고정 sleep으로만 동작한다.
 
-수집 전략:
-  - 1차: HTTP GET /promotions, /search → __INITIAL_STATE__ productEntities (SSR 50건)
-  - 2차: Playwright 헤드리스 스크롤 → Intersection Observer 트리거
-          PUT /api/webproductpagews/v6/products XHR 인터셉트 (200+건)
-  - 검색어별 1~3초 랜덤 딜레이
-
-데이터 흐름: __INITIAL_STATE__ JSON / XHR JSON → DiscountItem → ProductPrice → DB
-용도: 할인 이력 DB 구축 (discount_history)
-의존: core/ 만
+데이터 흐름: __INITIAL_STATE__ JSON / 저장 JSON / HTML 카드 → DiscountItem → Product → DB
+의존: core/ 만 (DB 저장 메서드는 호출 시 db-admin 모델을 지연 import)
 """
 
 from __future__ import annotations
 
 import json
 import logging
-import random
 import re
 import time
 from datetime import datetime
 from typing import Any, Optional
-from urllib.parse import quote
+from pathlib import Path
+from urllib.parse import urlencode
 
 import requests
 
@@ -38,8 +32,10 @@ from crawlers.marts.source_utils import (
     absolute_url,
     build_source_map_manifest,
     build_source_attributes,
-    normalize_source_key,
+    compute_canon_hash,
+    normalize_lottemart_url,
     parse_period_fields,
+    parse_unit_price,
     source_dedup_key,
 )
 from engine.anti_detect import AntiDetect
@@ -47,29 +43,67 @@ from pipeline.quality import summarize_discount_run
 
 logger = logging.getLogger(__name__)
 
+SLEEP_BETWEEN_LIVE_GETS = 8.0
+PROMO_LABEL_RE = re.compile(r"(?<!\d)(\d+)\s*\+\s*(\d+)(?!\d)")
+
+
 
 class LottemartCrawler(CrawlerContract):
-    """롯데마트 크롤러 — lottemartzetta.com __INITIAL_STATE__ + XHR 스크롤 기반 할인 상품 수집.
+    """롯데마트 크롤러 — requests-only legacy __INITIAL_STATE__ 수집.
 
-    수집 전략:
-      - 1차: HTTP GET로 __INITIAL_STATE__ SSR 50건 수집
-      - 2차: Playwright 헤드리스 스크롤 — Intersection Observer가 카드 진입 시
-              PUT /api/webproductpagews/v6/products XHR 인터셉트로 200+건 수집
-      - 검색어별 1~3초 랜덤 딜레이
+    검색/프로모션 HTML을 순차 GET하고 상품은 productEntities, 저장 JSON,
+    일반 HTML 카드에서만 파싱한다. 브라우저 렌더링/인터셉트는 사용하지 않는다.
     """
 
     BASE_URL = "https://www.lottemart.com"
     ZETTA_BASE = "https://lottemartzetta.com"
-    # 다양한 검색어로 더 많은 상품 수집
-    SEARCH_QUERIES = ["할인", "특가", "과일", "채소", "정육", "세일", "우유", "음료"]
-    CATEGORY_QUERIES = ["과일", "채소", "정육", "계란", "생수", "유제품", "간편식"]
-    MAX_ITEMS: int | None = 300
-    MAX_PAGES = 2
+    PRODUCT_PAGE_API = f"{ZETTA_BASE}/api/webproductpagews/v6/product-pages"
+    SEARCH_QUERIES = ["과일", "채소", "정육", "계란", "생수", "유제품", "간편식", "라면", "과자"]
+    CATEGORY_QUERIES = ["과일", "채소", "정육", "계란", "생수", "유제품", "간편식", "라면", "과자"]
+    FOOD_ROOT_CATEGORY_NAMES = {
+        "과일", "채소", "쌀ㆍ잡곡ㆍ견과류", "정육ㆍ계란", "수산물ㆍ건해산물",
+        "델리ㆍ즉석조리", "베이커리ㆍ빵ㆍ잼", "우유ㆍ유제품", "김치ㆍ반찬ㆍ젓갈",
+        "라면ㆍ통조림ㆍ즉석밥", "건면ㆍ생면ㆍ면요리", "양념ㆍ오일ㆍ분말류",
+        "간편식ㆍ밀키트", "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살", "과자ㆍ스낵ㆍ간식",
+        "아이스크림ㆍ빙과류", "생수ㆍ음료", "커피ㆍ원두", "차ㆍ액상차ㆍ핫초코",
+        "수입식품",
+    }
+    DEFAULT_PRODUCT_PAGE_SIZE = 300
+    MAX_ITEMS: int | None = None
+    MAX_PAGES: int | None = None
     MAX_REQUESTS: int | None = None
-    PLAYWRIGHT_FALLBACK_QUERY_CAP = 3
+    MAX_PAGES_PER_CATEGORY = 3
+    MAX_CATEGORY_URLS = 36
+    UNIQUE_ITEM_CAP = 5000
+    DUPLICATE_RATIO_STOP = 0.30
+    NEW_ITEM_RATIO_STOP = 0.05
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
-        self._anti_detect = anti_detect or AntiDetect(delay_min=1.0, delay_max=3.0)
+        self._anti_detect = anti_detect or AntiDetect(delay_min=SLEEP_BETWEEN_LIVE_GETS, delay_max=SLEEP_BETWEEN_LIVE_GETS)
+
+    async def _publish_progress(self, **payload: Any) -> None:
+        callback = getattr(self, "progress_callback", None)
+        if not callback:
+            return
+        try:
+            result = callback(payload)
+            if hasattr(result, "__await__"):
+                await result
+        except Exception:
+            logger.debug("[롯데마트] progress callback failed", exc_info=True)
+
+    def _live_headers(self, *, referer: str | None = None) -> dict[str, str]:
+        headers = self._anti_detect.get_random_headers()
+        headers.update({
+            "User-Agent": headers.get("User-Agent") or (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+            ),
+            "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Referer": referer or f"{self.ZETTA_BASE}/",
+        })
+        return headers
 
     def _retry_request(self, url: str, *, headers: dict | None = None,
                        session: requests.Session | None = None,
@@ -77,13 +111,15 @@ class LottemartCrawler(CrawlerContract):
                        **kwargs) -> requests.Response:
         """HTTP GET with exponential backoff for transient failures."""
         requester = session or requests
-        last_exc = None
+        last_exc: BaseException | None = None
+        last_resp: requests.Response | None = None
         for attempt in range(max_retries):
             try:
                 resp = requester.get(url, headers=headers, timeout=timeout, **kwargs)
+                last_resp = resp
                 if resp.status_code == 429:  # Rate limited — back off
-                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
-                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    wait = (2 ** attempt)
+                    logger.warning(f"[{self.info.name}] rate limited (429), retrying in {wait:.1f}s")
                     time.sleep(wait)
                     continue
                 return resp
@@ -91,13 +127,16 @@ class LottemartCrawler(CrawlerContract):
                     requests.exceptions.Timeout) as e:
                 last_exc = e
                 if attempt < max_retries - 1:
-                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
+                    wait = (2 ** attempt)
                     logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
                                    f"retrying in {wait:.1f}s: {e}")
                     time.sleep(wait)
                 else:
                     raise
-        raise last_exc  # type: ignore[misc]
+        if last_resp is not None:
+            logger.warning(f"[{self.info.name}] rate limited after {max_retries} retries; returning last 429 response")
+            return last_resp
+        raise last_exc or requests.HTTPError(f"[{self.info.name}] retry exhausted without response")
 
     @property
     def info(self) -> CrawlerInfo:
@@ -105,9 +144,9 @@ class LottemartCrawler(CrawlerContract):
             name="롯데마트",
             version="2.0.0",
             group=CrawlerGroup.MART,
-            description="롯데마트 할인 상품 정보 수집 (lottemartzetta __INITIAL_STATE__ 기반)",
+            description="롯데마트 할인 상품 정보 수집 (requests legacy __INITIAL_STATE__ 기반)",
             target_url=self.BASE_URL,
-            strategies=["requests", "playwright"],
+            strategies=["requests"],
         )
 
     async def crawl_incremental(
@@ -117,12 +156,6 @@ class LottemartCrawler(CrawlerContract):
         source_input: str | None = None,
         source_url: str | None = None,
     ) -> CrawlResult:
-        """Source-run entrypoint for bounded no-DB diagnostics.
-
-        ``source_input`` replays saved HTML/JSON without network access. ``source_url``
-        performs a single public GET so blocked responses can be captured without
-        retry amplification.
-        """
         if source_input is not None:
             return await self._crawl_saved_source_input(source_input, source_url=source_url)
         if source_url is not None:
@@ -135,6 +168,8 @@ class LottemartCrawler(CrawlerContract):
         parsed = await self.parse(source_input)
         valid_items = await self.validate(parsed)
         items_as_dict = [item.model_dump(mode="json") for item in valid_items]
+        for _d in items_as_dict:
+            _d["source"] = _d.get("source") or "lottemart"
         quality_details = summarize_discount_run(
             items_as_dict,
             raw_count=len(parsed),
@@ -170,120 +205,59 @@ class LottemartCrawler(CrawlerContract):
         )
 
     async def _crawl_source_url_once(self, source_url: str) -> CrawlResult:
+        """Fetch one public URL via requests only; no browser escalation."""
         started_at = datetime.now()
         errors: list[str] = []
         strategy_failures: list[StrategyFailure] = []
         raw_count = 0
         parsed: list[DiscountItem] = []
         waf_blocker: dict[str, object] | None = None
-        browser_pages: list[dict[str, object]] = []
-        strategy_used = "requests"
-        skip_http = False
+        response: requests.Response | None = None
+
+        session = requests.Session()
         try:
-            browser_pages = await self._render_source_url_pages(
+            response = self._retry_request(
                 source_url,
-                max_pages=1,
-                max_requests=1,
-                timeout_seconds=20,
+                headers=self._live_headers(referer=f"{self.ZETTA_BASE}/"),
+                session=session,
+                timeout=20,
+                max_retries=1,
+                allow_redirects=True,
             )
-            if browser_pages:
-                page = browser_pages[0]
-                status_code = page.get("status_code")
-                if status_code in {202, 401, 403, 429} or page.get("challenge_detected") or page.get("login_required"):
-                    message = (
-                        f"source_url browser blocked HTTP {status_code}"
-                        if status_code in {202, 401, 403, 429}
-                        else "source_url browser blocked by CAPTCHA/login/WAF challenge"
-                    )
-                    errors.append(message)
-                    strategy_used = "ordinary-browser-source-fetch"
+            if response.status_code != 200:
+                message = f"source_url HTTP {response.status_code}"
+                if response.status_code in {202, 403, 429} and self._is_aws_waf_challenge(response.text):
+                    message += " (AWS WAF challenge)"
                     waf_blocker = self._waf_blocker_details(
                         message,
                         request_url=source_url,
-                        status_code=int(status_code or 0) or None,
-                        blocker=f"public_browser_http_{status_code}" if status_code else "public_browser_challenge",
-                    )
-                    skip_http = True
-                else:
-                    html = str(page.get("html") or "")
-                    raw_count = self.count_raw_candidates(html)
-                    parsed = self._extract_from_initial_state(html) or await self.parse(html)
-                    if parsed:
-                        strategy_used = "ordinary-browser-source-fetch"
-        except Exception as exc:
-            errors.append(f"source_url browser render failed: {type(exc).__name__}: {exc}")
-        session = requests.Session()
-        try:
-            if not parsed and not skip_http:
-                headers = self._anti_detect.get_random_headers()
-                headers.update({
-                    "Referer": f"{self.ZETTA_BASE}/",
-                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                })
-                response = self._retry_request(
-                    source_url,
-                    headers=headers,
-                    session=session,
-                    timeout=20,
-                    max_retries=1,
-                    allow_redirects=True,
-                )
-                if response.status_code != 200:
-                    message = f"source_url HTTP {response.status_code}"
-                    if response.status_code == 202 and self._is_aws_waf_challenge(response.text):
-                        message += " (AWS WAF challenge)"
-                        waf_blocker = self._waf_blocker_details(message, request_url=source_url)
-                    errors.append(message)
-                    strategy_failures.append(StrategyFailure(
-                        strategy_name="requests",
-                        error_type=ErrorType.HTTP_ERROR,
-                        error_msg=message,
                         status_code=response.status_code,
-                    ))
-                else:
-                    raw_count = self.count_raw_candidates(response.text)
-                    parsed = self._extract_from_initial_state(response.text) or await self.parse(response.text)
-                if not parsed and not browser_pages:
-                    browser_pages = await self._render_source_url_pages(
-                        source_url,
-                        max_pages=1,
-                        max_requests=1,
-                        timeout_seconds=20,
+                        blocker="aws_waf_http_202" if response.status_code == 202 else f"http_{response.status_code}",
                     )
-                    if browser_pages:
-                        page = browser_pages[0]
-                        status_code = page.get("status_code")
-                        if status_code in {202, 401, 403, 429} or page.get("challenge_detected") or page.get("login_required"):
-                            message = (
-                                f"source_url browser blocked HTTP {status_code}"
-                                if status_code in {202, 401, 403, 429}
-                                else "source_url browser blocked by CAPTCHA/login/WAF challenge"
-                            )
-                            errors.append(message)
-                            strategy_used = "ordinary-browser-source-fetch"
-                            waf_blocker = self._waf_blocker_details(
-                                message,
-                                request_url=source_url,
-                                status_code=int(status_code or 0) or None,
-                                blocker=f"public_browser_http_{status_code}" if status_code else "public_browser_challenge",
-                            )
-                        else:
-                            html = str(page.get("html") or "")
-                            raw_count = self.count_raw_candidates(html)
-                            parsed = self._extract_from_initial_state(html) or await self.parse(html)
-                            strategy_used = "ordinary-browser-source-fetch"
+                errors.append(message)
+                strategy_failures.append(StrategyFailure(
+                    strategy_name="requests",
+                    error_type=ErrorType.HTTP_ERROR,
+                    error_msg=message,
+                    status_code=response.status_code,
+                ))
+            else:
+                raw_count = self.count_raw_candidates(response.text)
+                parsed = self._extract_from_initial_state(response.text) or await self.parse(response.text)
         finally:
             session.close()
 
         valid_items = await self.validate(parsed)
         items_as_dict = [item.model_dump(mode="json") for item in valid_items]
+        for _d in items_as_dict:
+            _d["source"] = _d.get("source") or "lottemart"
         quality_details = summarize_discount_run(
             items_as_dict,
             raw_count=len(parsed),
             source_raw_count=raw_count,
             invalid_count=max(0, len(parsed) - len(valid_items)),
             errors=errors,
-            strategy_used=strategy_used,
+            strategy_used="requests",
             fallback_used=False,
             queries_attempted=1,
             pages_attempted=1,
@@ -291,24 +265,21 @@ class LottemartCrawler(CrawlerContract):
             fixture_available=None,
         )
         quality_details["collection"] = {
-            "mode": "ordinary_browser_public_no_db" if strategy_used.startswith("ordinary-browser") else "bounded_live_http_no_db",
+            "mode": "bounded_live_http_no_db",
             "live_network_enabled": True,
             "source_url": source_url,
             "auth_bypass_attempted": False,
             "max_requests": 1,
+            "sleep_between_live_gets_sec": SLEEP_BETWEEN_LIVE_GETS,
         }
         quality_details.setdefault("fetch", {})
-        quality_details["fetch"].update(
-            {
-                "renderer": "ordinary_playwright_chromium" if browser_pages else "requests",
-                "browser_pages": [
-                    {key: page.get(key) for key in ("url", "final_url", "status_code", "bytes", "challenge_detected", "login_required", "persistent_context")}
-                    for page in browser_pages
-                ],
-                "challenge_solving_attempted": False,
-                "auth_bypass_attempted": False,
-            }
-        )
+        quality_details["fetch"].update({
+            "renderer": "requests",
+            "status_code": response.status_code if response is not None else None,
+            "bytes": len(response.content) if response is not None else 0,
+            "challenge_solving_attempted": False,
+            "auth_bypass_attempted": False,
+        })
         if waf_blocker:
             self._annotate_waf_blocker(quality_details, waf_blocker, valid_count=len(valid_items))
         quality_details["source_map"] = self._source_map_manifest(quality_details, blocker=waf_blocker)
@@ -316,7 +287,7 @@ class LottemartCrawler(CrawlerContract):
         return CrawlResult(
             status=CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED,
             crawler_name=self.info.name,
-            strategy_used=strategy_used,
+            strategy_used="requests",
             items_count=len(valid_items),
             items=items_as_dict,
             started_at=started_at,
@@ -329,210 +300,205 @@ class LottemartCrawler(CrawlerContract):
         )
 
     async def crawl(self) -> CrawlResult:
-        """롯데마트 할인 상품을 크롤링한다.
-
-        전략 순서:
-          1차: HTTP 직접 요청으로 lottemartzetta.com/search 페이지의
-               __INITIAL_STATE__ JSON에서 productEntities 추출
-          2차: Playwright 브라우저 렌더링 (HTTP 실패 시 폴백)
-        """
-        started_at = datetime.now()
-        logger.info("[롯데마트] 크롤링 시작")
+        """롯데마트 공개 페이지를 requests-only legacy 방식으로 순차 수집한다."""
         import asyncio as _asyncio
+
+        started_at = datetime.now()
+        logger.info("[롯데마트] requests legacy 크롤링 시작")
 
         all_items: list[DiscountItem] = []
         errors: list[str] = []
         strategy_failures: list[StrategyFailure] = []
-        seen_ids: set[str] = set()
+        seen_ids: set[tuple[str, ...]] = set()
         source_raw_count = 0
         pages_attempted = 0
         waf_blocker: dict[str, object] | None = None
+        last_status_code: int | None = None
+        last_bytes = 0
 
-        # Reuse TCP connections across multiple search queries
         session = requests.Session()
         try:
-            # 1차: __INITIAL_STATE__ 기반 추출 (HTTP 요청)
             for source_request in self._build_source_requests():
                 if self.MAX_REQUESTS is not None and pages_attempted >= self.MAX_REQUESTS:
                     break
+                if self.MAX_ITEMS is not None and len(all_items) >= self.MAX_ITEMS:
+                    break
+
                 query = str(source_request["query"])
-                page_num = source_request["page"]
+                page_num = int(source_request["page"])
                 url = str(source_request["url"])
-                category_hint = str(source_request["category_hint"])
-                pages_attempted += 1
+                category_hint = str(source_request.get("category_hint") or "")
+                category_path_hint = source_request.get("category_path")
+                if not isinstance(category_path_hint, list):
+                    category_path_hint = [category_hint] if category_hint else []
+                request_type = str(source_request.get("request_type") or "html_search")
+
                 try:
-                    headers = self._anti_detect.get_random_headers()
-                    headers.update({
-                        "Referer": f"{self.ZETTA_BASE}/",
-                        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                    })
-
-                    # Rate-limit requests with jitter; do not bypass WAF/access-control.
-                    delay = self._anti_detect.get_random_delay()
-                    await _asyncio.sleep(delay + random.uniform(0, 0.5))
-
-                    response = self._retry_request(url, headers=headers, session=session, timeout=20, allow_redirects=True)
-
-                    if response.status_code != 200:
-                        # AWS WAF 202 (awsWafCookieDomainList 시그니처) 는 challenge — 추가 요청 중단.
-                        # 의도: 동적 차단 시그니처 감지 시 같은 도메인에 즉시 또 던지지 않는다.
-                        is_aws_waf_challenge = (
-                            response.status_code == 202
-                            and "awsWafCookieDomainList" in (response.text or "")
-                        )
-                        suffix = " (AWS WAF challenge)" if is_aws_waf_challenge else ""
-                        message = f"검색 '{query}' p{page_num} HTTP {response.status_code}{suffix}"
-                        logger.warning(f"[롯데마트] {message}")
-                        errors.append(message)
-                        strategy_failures.append(StrategyFailure(
-                            strategy_name="requests",
-                            error_type=ErrorType.HTTP_ERROR,
-                            error_msg=message,
-                            status_code=response.status_code,
-                        ))
-                        if is_aws_waf_challenge:
-                            waf_blocker = self._waf_blocker_details(
-                                message,
-                                request_url=url,
-                                query=query,
-                                page=page_num,
-                                status_code=response.status_code,
-                                blocker="aws_waf_http_202",
-                            )
+                    pages_in_source = 0
+                    while True:
+                        if self.MAX_REQUESTS is not None and pages_attempted >= self.MAX_REQUESTS:
                             break
-                        continue
+                        if self.MAX_ITEMS is not None and len(all_items) >= self.MAX_ITEMS:
+                            break
+                        if len(seen_ids) >= self.UNIQUE_ITEM_CAP:
+                            logger.warning("[롯데마트] unique cap %d reached; stopping crawl", self.UNIQUE_ITEM_CAP)
+                            break
+                        page_cap = self.MAX_PAGES if self.MAX_PAGES is not None else self.MAX_PAGES_PER_CATEGORY
+                        if request_type == "product_pages" and pages_in_source >= page_cap:
+                            logger.info("[롯데마트] %s page cap %d reached", query, page_cap)
+                            break
+                        if pages_attempted > 0:
+                            await _asyncio.sleep(SLEEP_BETWEEN_LIVE_GETS)
+                        pages_attempted += 1
+                        pages_in_source += 1
 
-                    source_raw_count += self.count_raw_candidates(response.text)
-                    # __INITIAL_STATE__에서 상품 데이터 추출
-                    items = self._extract_from_initial_state(response.text)
+                        headers = self._live_headers(referer=f"{self.ZETTA_BASE}/promotions")
+                        if request_type == "product_pages":
+                            headers.update({"Accept": "application/json,text/plain,*/*", "Origin": self.ZETTA_BASE})
+                        response = self._retry_request(
+                            url,
+                            headers=headers,
+                            session=session,
+                            timeout=30,
+                            max_retries=1,
+                            allow_redirects=True,
+                        )
+                        last_status_code = response.status_code
+                        last_bytes = len(response.content)
 
-                    # __INITIAL_STATE__ 추출 실패 시 HTML/JSON 파싱 폴백
-                    if not items:
-                        items = await self.parse(response.text)
-                    if category_hint:
-                        for item in items:
-                            if not item.category:
-                                item.category = category_hint
-                            item.attributes.setdefault("category_hint", item.category or category_hint)
+                        if response.status_code != 200:
+                            is_waf = response.status_code in {202, 403, 429} and self._is_aws_waf_challenge(response.text)
+                            suffix = " (AWS WAF challenge)" if is_waf else ""
+                            message = f"{query} p{page_num} HTTP {response.status_code}{suffix}"
+                            logger.warning("[롯데마트] %s", message)
+                            errors.append(message)
+                            strategy_failures.append(StrategyFailure(
+                                strategy_name="requests",
+                                error_type=ErrorType.HTTP_ERROR,
+                                error_msg=message,
+                                status_code=response.status_code,
+                            ))
+                            if is_waf:
+                                waf_blocker = self._waf_blocker_details(
+                                    message,
+                                    request_url=url,
+                                    query=query,
+                                    page=page_num,
+                                    status_code=response.status_code,
+                                    blocker="aws_waf_http_202" if response.status_code == 202 else f"http_{response.status_code}",
+                                )
+                            break
 
-                    new_count = 0
-                    for item in items:
-                        key = source_dedup_key(item)
-                        if key not in seen_ids:
+                        if request_type == "product_pages":
+                            page_items, next_page_token, raw_candidates = self._extract_product_page_api_items(response.text)
+                            source_raw_count += raw_candidates
+                            if not page_items:
+                                source_raw_count += self.count_raw_candidates(response.text)
+                                page_items = self._extract_from_initial_state(response.text) or await self.parse(response.text)
+                                next_page_token = None
+                        else:
+                            source_raw_count += self.count_raw_candidates(response.text)
+                            page_items = self._extract_from_initial_state(response.text) or await self.parse(response.text)
+                            next_page_token = None
+                        page_items = [item for item in page_items if self._is_food_item(item)]
+                        if category_hint:
+                            for item in page_items:
+                                if request_type == "html_category":
+                                    item.category = category_hint
+                                elif not item.category:
+                                    item.category = category_hint
+                                item.attributes.setdefault("category_hint", item.category or category_hint)
+                                if category_path_hint:
+                                    item.attributes["mart_native_category_path"] = list(category_path_hint)
+                                    item.attributes["source_category_path"] = list(category_path_hint)
+
+                        new_count = 0
+                        duplicate_count = 0
+                        for item in page_items:
+                            key = self._item_unique_key(item)
+                            if key in seen_ids:
+                                duplicate_count += 1
+                                continue
                             seen_ids.add(key)
                             all_items.append(item)
                             new_count += 1
                             if self.MAX_ITEMS is not None and len(all_items) >= self.MAX_ITEMS:
                                 break
+                            if len(seen_ids) >= self.UNIQUE_ITEM_CAP:
+                                break
 
-                    logger.info(f"[롯데마트] 검색 '{query}' p{page_num}: {new_count}개 신규 ({len(items)}개 중)")
-                    if self.MAX_ITEMS is not None and len(all_items) >= self.MAX_ITEMS:
-                        logger.info(f"[롯데마트] bounded MAX_ITEMS={self.MAX_ITEMS} 도달, 조기 종료")
-                        break
-
-                except Exception as e:
-                    logger.warning(f"[롯데마트] 검색 '{query}' 실패: {e}")
-                    errors.append(f"검색 '{query}': {e}")
-                    continue
-
-            fallback_used = False
-            headful_escalated = False
-
-            # WAF/스크롤 폴백 정책 (plugin.yaml waf_strategy.escalation 와 일치):
-            #   HTTP requests → playwright_headless 스크롤 → playwright_headful 스크롤.
-            # 헤드풀 Playwright 는 p0-crawler-impl 에서 인정한 1급 워크밴치 경로이며
-            # 우회/회피가 아니다. WAF 202 가 떨어진다고 스크롤 자체를 묵살하면
-            # SSR 50건에 영구히 묶인다 — 그게 사용자 보고된 회귀의 원인.
-            # 진짜 silent-gap 케이스는 단 하나: source_raw_count==0 + items==0
-            # (parser_drift / empty source). 이때만 폴백을 차단한다.
-            scroll_skipped_reason: str | None = None
-            if source_raw_count == 0 and not all_items and not waf_blocker:
-                scroll_skipped_reason = "zero_source_raw_no_items"
-
-            if scroll_skipped_reason:
-                logger.info(f"[롯데마트] 스크롤/Playwright 폴백 생략 — {scroll_skipped_reason}")
-            elif waf_blocker or len(all_items) < 200:
-                if waf_blocker:
-                    logger.info("[롯데마트] WAF 202 감지 → playwright_headless 스크롤로 escalation")
-                else:
-                    logger.info("[롯데마트] HTTP 수집 200건 미달 → 프로모션 페이지 스크롤 전략 시도")
-                try:
-                    scroll_items = await self._fetch_promotions_scroll(target_count=260, max_scroll_steps=80)
-                    fallback_used = bool(scroll_items)
-                    for item in scroll_items:
-                        key = source_dedup_key(item)
-                        if key not in seen_ids:
-                            seen_ids.add(key)
-                            all_items.append(item)
-                    logger.info(f"[롯데마트] 스크롤 전략 후 총: {len(all_items)}개")
-                except Exception as e:
-                    logger.warning(f"[롯데마트] 스크롤 전략 실패: {e}")
-                    errors.append(f"ScrollStrategy: {e}")
-
-                # 헤드리스로도 240 미달 → headful 워크밴치 escalation.
-                # plugin.yaml waf_strategy.escalation: playwright_headless → playwright_headful.
-                # 헤드풀은 정식 경로지 우회가 아니다.
-                if len(all_items) < 240:
-                    logger.info(
-                        f"[롯데마트] 헤드리스 후 {len(all_items)}건 (<240) → playwright_headful escalation"
-                    )
-                    try:
-                        headful_items = await self._fetch_promotions_scroll(
-                            target_count=260, max_scroll_steps=80, headful=True,
+                        page_total = len(page_items)
+                        duplicate_ratio = (duplicate_count / page_total) if page_total else 0.0
+                        new_ratio = (new_count / page_total) if page_total else 0.0
+                        logger.info(
+                            "[롯데마트] %s p%s: %s개 신규/%s개 중복 (%s개 중)",
+                            query,
+                            page_num,
+                            new_count,
+                            duplicate_count,
+                            page_total,
                         )
-                        if headful_items:
-                            headful_escalated = True
-                            fallback_used = True
-                            for item in headful_items:
-                                key = source_dedup_key(item)
-                                if key not in seen_ids:
-                                    seen_ids.add(key)
-                                    all_items.append(item)
-                            logger.info(f"[롯데마트] headful escalation 후 총: {len(all_items)}개")
-                    except Exception as e:
-                        logger.warning(f"[롯데마트] headful escalation 실패: {e}")
-                        errors.append(f"HeadfulEscalation: {e}")
-
-            # 스크롤 전략도 부족하면 Playwright 검색 폴백 (silent-gap 케이스만 차단)
-            if scroll_skipped_reason:
-                pass
-            elif len(all_items) < 10:
-                logger.info("[롯데마트] 스크롤도 부족 → Playwright 검색 폴백 시도")
-                try:
-                    pw_items = await self._fetch_via_playwright()
-                    fallback_used = True
-                    for item in pw_items:
-                        key = source_dedup_key(item)
-                        if key not in seen_ids:
-                            seen_ids.add(key)
-                            all_items.append(item)
-                except Exception as e:
-                    logger.warning(f"[롯데마트] Playwright 폴백 실패: {e}")
-                    errors.append(f"Playwright: {e}")
+                        await self._publish_progress(
+                            stage="source_page_parsed",
+                            items_found=len(all_items),
+                            pages_attempted=pages_attempted,
+                            queries_attempted=len(self.SEARCH_QUERIES),
+                            source_raw_count=source_raw_count,
+                            strategy_used="requests",
+                        )
+                        if request_type != "product_pages" or not next_page_token or not page_items:
+                            break
+                        if duplicate_ratio > self.DUPLICATE_RATIO_STOP or new_ratio < self.NEW_ITEM_RATIO_STOP:
+                            logger.info(
+                                "[롯데마트] %s p%s stop: duplicate_ratio=%.2f new_ratio=%.2f",
+                                query,
+                                page_num,
+                                duplicate_ratio,
+                                new_ratio,
+                            )
+                            break
+                        page_num += 1
+                        url = self._product_page_api_url(page_token=next_page_token)
+                except Exception as exc:
+                    message = f"{query} p{page_num}: {type(exc).__name__}: {exc}"
+                    logger.warning("[롯데마트] %s", message)
+                    errors.append(message)
+                    continue
+                if waf_blocker:
+                    break
 
             valid_items = await self.validate(all_items)
             items_as_dict = [item.model_dump(mode="json") for item in valid_items]
-            strategy = "playwright_headful_scroll" if headful_escalated else ("playwright_scroll" if fallback_used else "requests")
+            for _d in items_as_dict:
+                _d["source"] = _d.get("source") or "lottemart"
             quality_details = summarize_discount_run(
                 items_as_dict,
                 raw_count=len(all_items),
                 source_raw_count=source_raw_count,
                 invalid_count=max(0, len(all_items) - len(valid_items)),
                 errors=errors,
-                strategy_used=strategy,
-                fallback_used=fallback_used,
+                strategy_used="requests",
+                fallback_used=False,
                 queries_attempted=len(self.SEARCH_QUERIES),
                 pages_attempted=pages_attempted,
+                live_enabled=True,
             )
-            # WAF 202 가 떴어도 headful escalation 으로 240+ 회수했으면 blocker 가 아니라
-            # escalation_path 정보로 격하. plugin.yaml waf_strategy.escalation 정상 작동 증거.
-            if waf_blocker and len(valid_items) >= 200:
-                quality_details.setdefault("waf_escalation", {
-                    "initial_signal": waf_blocker.get("blocker"),
-                    "resolved_via": "playwright_headful_scroll" if headful_escalated else "playwright_scroll",
-                    "recovered_items": len(valid_items),
-                })
-                waf_blocker = None  # 회복됨 — blocker 알림 부여 안 함.
+            quality_details.setdefault("fetch", {})
+            quality_details["fetch"].update({
+                "renderer": "requests",
+                "fallback_used": False,
+                "status_code": last_status_code,
+                "bytes": last_bytes,
+                "sleep_between_live_gets_sec": SLEEP_BETWEEN_LIVE_GETS,
+                "challenge_solving_attempted": False,
+                "auth_bypass_attempted": False,
+            })
+            quality_details["collection"] = {
+                "mode": "requests_legacy_public_no_db",
+                "live_network_enabled": True,
+                "auth_bypass_attempted": False,
+                "sleep_between_live_gets_sec": SLEEP_BETWEEN_LIVE_GETS,
+            }
             if waf_blocker:
                 self._annotate_waf_blocker(quality_details, waf_blocker, valid_count=len(valid_items))
             quality_details["source_map"] = self._source_map_manifest(quality_details, blocker=waf_blocker)
@@ -540,12 +506,10 @@ class LottemartCrawler(CrawlerContract):
             finished_at = datetime.now()
             duration = (finished_at - started_at).total_seconds()
             status = CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED
-            logger.info(f"[롯데마트] 크롤링 완료: {len(valid_items)}개, {duration:.2f}초")
-
             return CrawlResult(
                 status=status,
                 crawler_name=self.info.name,
-                strategy_used=strategy,
+                strategy_used="requests",
                 items_count=len(valid_items),
                 items=items_as_dict,
                 started_at=started_at,
@@ -556,71 +520,164 @@ class LottemartCrawler(CrawlerContract):
                 quality_score=quality_details["score"],
                 quality_details=quality_details,
             )
-
-        except Exception as e:
-            logger.warning(f"[롯데마트] HTTP 요청 실패, Playwright 시도: {e}")
-            try:
-                items = await self._fetch_via_playwright()
-                valid_items = await self.validate(items)
-                items_as_dict = [item.model_dump(mode="json") for item in valid_items]
-                finished_at = datetime.now()
-                duration = (finished_at - started_at).total_seconds()
-                if valid_items:
-                    items_as_dict = [item.model_dump(mode="json") for item in valid_items]
-                    quality_details = summarize_discount_run(
-                        items_as_dict,
-                        raw_count=len(items),
-                        invalid_count=max(0, len(items) - len(valid_items)),
-                        strategy_used="playwright",
-                        fallback_used=True,
-                    )
-                    return CrawlResult(
-                        status=CrawlStatus.SUCCESS,
-                        crawler_name=self.info.name,
-                        strategy_used="playwright",
-                        items_count=len(valid_items),
-                        items=items_as_dict,
-                        started_at=started_at,
-                        finished_at=finished_at,
-                        duration_seconds=duration,
-                        quality_score=quality_details["score"],
-                        quality_details=quality_details,
-                    )
-            except Exception as e2:
-                logger.error(f"[롯데마트] Playwright 폴백도 실패: {e2}")
-            return CrawlResult(
-                status=CrawlStatus.FAILED,
-                crawler_name=self.info.name,
-                error_msg=str(e),
-                started_at=started_at,
-                finished_at=datetime.now(),
-            )
         finally:
-            session.close()  # Release TCP connections
+            session.close()
 
-    def _build_source_requests(self) -> list[dict[str, str | int]]:
-        """Build bounded search/category pagination source requests."""
-        requests_to_make: list[dict[str, str | int]] = []
-        seen: set[tuple[str, int]] = set()
-        queries = [*self.SEARCH_QUERIES, *self.CATEGORY_QUERIES]
-        # Prefer breadth-first page-1 coverage across public search/category pages before
-        # deeper pagination, so bounded diagnostics do not spend early requests on likely
-        # duplicate page variants before discovering source blocking.
-        for page_num in range(1, self.MAX_PAGES + 1):
-            for query in queries:
-                category_hint = query if query in self.CATEGORY_QUERIES else ""
-                key = (query, page_num)
-                if key in seen:
+    def _is_food_item(self, item: DiscountItem) -> bool:
+        category = str(item.category or "").strip()
+        attrs = item.attributes or {}
+        category_path = attrs.get("mart_native_category_path") or attrs.get("source_category_path") or []
+        if isinstance(category_path, list) and category_path:
+            category = str(category_path[0] or category).strip()
+        if category in self.FOOD_ROOT_CATEGORY_NAMES:
+            return True
+        return any(category.startswith(name) for name in self.FOOD_ROOT_CATEGORY_NAMES)
+
+    def _product_page_api_params(self, *, page_token: str | None = None) -> dict[str, str | int | list[str]]:
+        params: dict[str, str | int | list[str]] = {
+            "maxProductsToDecorate": self.DEFAULT_PRODUCT_PAGE_SIZE,
+            "maxPageSize": self.DEFAULT_PRODUCT_PAGE_SIZE,
+            "tag": ["web", "category-item"],
+        }
+        if page_token:
+            params["pageToken"] = page_token
+        else:
+            params["includeAdditionalPageInfo"] = "true"
+        return params
+
+    def _product_page_api_url(self, *, page_token: str | None = None) -> str:
+        return f"{self.PRODUCT_PAGE_API}?{urlencode(self._product_page_api_params(page_token=page_token), doseq=True)}"
+
+    def _item_unique_key(self, item: DiscountItem) -> tuple[str, str]:
+        attrs = item.attributes or {}
+        for value in (
+            attrs.get("mart_native_code"),
+            attrs.get("source_record_key"),
+            item.detail_url,
+            attrs.get("source_url"),
+        ):
+            text = str(value or "").strip()
+            if text:
+                return ("id_or_url", text)
+        return ("name_store", f"{item.name}|{item.store}")
+
+    def _extract_product_page_api_items(self, raw_data: str) -> tuple[list[DiscountItem], str | None, int]:
+        try:
+            payload = json.loads(raw_data)
+        except json.JSONDecodeError:
+            return [], None, 0
+        if not isinstance(payload, dict):
+            return [], None, 0
+        products: list[dict] = []
+        for group in payload.get("productGroups") or []:
+            if not isinstance(group, dict):
+                continue
+            for key in ("decoratedProducts", "products"):
+                rows = group.get(key)
+                if isinstance(rows, list):
+                    products.extend(row for row in rows if isinstance(row, dict))
+        items = [item for product in products if (item := self._api_product_to_discount_item(product))]
+        metadata = payload.get("metadata") if isinstance(payload.get("metadata"), dict) else {}
+        next_page_token = metadata.get("nextPageToken") or payload.get("nextPageToken")
+        return items, str(next_page_token) if next_page_token else None, len(products)
+
+    def _build_source_requests(self) -> list[dict[str, str | int | list[str]]]:
+        """Build bounded real product/category URLs instead of repeated search pages."""
+        api_request: dict[str, str | int | list[str]] = {
+            "query": "롯데마트 행사상품 API",
+            "page": 1,
+            "category_hint": "",
+            "request_type": "product_pages",
+            "url": self._product_page_api_url(),
+        }
+        category_requests = self._build_category_requests_from_homepage()
+        if category_requests:
+            return [api_request, *category_requests]
+        return [api_request]
+
+    def _build_category_requests_from_homepage(self) -> list[dict[str, str | int | list[str]]]:
+        """Discover LotteMart Zetta category IDs from the homepage initial state."""
+        try:
+            response = self._retry_request(
+                f"{self.ZETTA_BASE}/",
+                headers=self._live_headers(referer=f"{self.ZETTA_BASE}/"),
+                timeout=20,
+                max_retries=1,
+                allow_redirects=True,
+            )
+        except Exception as exc:
+            logger.warning("[롯데마트] category discovery homepage fetch failed: %s", exc)
+            return []
+        if response.status_code != 200:
+            logger.warning("[롯데마트] category discovery homepage HTTP %s", response.status_code)
+            return []
+        return self._extract_category_requests(response.text)
+
+    def _extract_category_requests(self, html: str) -> list[dict[str, str | int | list[str]]]:
+        json_str = self._extract_initial_state_json(html)
+        if not json_str:
+            return []
+        try:
+            payload = json.loads(json_str)
+        except json.JSONDecodeError:
+            return []
+        categories_state = (
+            payload.get("data", {}).get("categories", {})
+            if isinstance(payload.get("data"), dict)
+            else {}
+        )
+        categories = categories_state.get("categories") if isinstance(categories_state, dict) else {}
+        root_ids = categories_state.get("root") if isinstance(categories_state, dict) else []
+        if not isinstance(categories, dict) or not isinstance(root_ids, list):
+            return []
+
+        requests_to_make: list[dict[str, str | int | list[str]]] = []
+        seen_ids: set[str] = set()
+
+        def add_category(category_id: str, path: list[str]) -> None:
+            if not category_id or category_id in seen_ids:
+                return
+            if len(requests_to_make) >= self.MAX_CATEGORY_URLS:
+                return
+            seen_ids.add(category_id)
+            requests_to_make.append(
+                {
+                    "query": " > ".join(path),
+                    "page": 1,
+                    "category_hint": path[-1] if path else "",
+                    "category_path": path,
+                    "request_type": "html_category",
+                    "url": f"{self.ZETTA_BASE}/categories/{category_id}",
+                }
+            )
+
+        food_roots: list[tuple[str, dict[str, Any], str]] = []
+        for root_id in root_ids:
+            root = categories.get(root_id)
+            if not isinstance(root, dict):
+                continue
+            root_name = str(root.get("name") or "").strip()
+            if root_name not in self.FOOD_ROOT_CATEGORY_NAMES:
+                continue
+            food_roots.append((str(root_id), root, root_name))
+
+        for root_id, _root, root_name in food_roots:
+            add_category(str(root_id), [root_name])
+
+        for _root_id, root, root_name in food_roots:
+            for child_id in root.get("children") or []:
+                child = categories.get(child_id)
+                if not isinstance(child, dict):
                     continue
-                seen.add(key)
-                requests_to_make.append(
-                    {
-                        "query": query,
-                        "page": page_num,
-                        "category_hint": category_hint,
-                        "url": f"{self.ZETTA_BASE}/search?query={quote(query)}&page={page_num}",
-                    }
-                )
+                child_name = str(child.get("name") or "").strip()
+                if child_name:
+                    add_category(str(child_id), [root_name, child_name])
+                if len(requests_to_make) >= self.MAX_CATEGORY_URLS:
+                    break
+            if len(requests_to_make) >= self.MAX_CATEGORY_URLS:
+                break
+
+        logger.info("[롯데마트] discovered %d food category URLs", len(requests_to_make))
         return requests_to_make
 
     def _source_map_manifest(self, quality_details: dict, blocker: dict[str, object] | None = None) -> dict[str, object]:
@@ -632,7 +689,7 @@ class LottemartCrawler(CrawlerContract):
             max_requests=self.MAX_REQUESTS,
             max_items=self.MAX_ITEMS,
             parser_contract="lottemart_initial_state_fixture.v1",
-            request_strategy="public_search_initial_state_then_ordinary_browser",
+            request_strategy="requests_initial_state_legacy",
             parser_inputs=["window.__INITIAL_STATE__", "embedded_json", "product_card_html"],
             quality=quality_details,
             blocker=dict(blocker) if blocker else None,
@@ -679,7 +736,7 @@ class LottemartCrawler(CrawlerContract):
         source_alert = (
             "source_blocked_aws_waf_202"
             if waf_blocker.get("blocker") == "aws_waf_http_202"
-            else "source_blocked_public_browser"
+            else "source_blocked_public_http"
         )
         for alert in (source_alert, "partial_lottemart_waf_blocker"):
             if alert not in alerts:
@@ -822,6 +879,110 @@ class LottemartCrawler(CrawlerContract):
                     return found
         return {}
 
+    def _extract_lottemart_ean13(self, product: dict | None = None, *, href: str = "") -> tuple[str, str]:
+        product = product or {}
+        for key in ("retailerProductId", "stdGoodsCd"):
+            ean13 = self._coerce_lottemart_ean13(product.get(key))
+            if ean13:
+                return ean13, key
+        href_candidates = [
+            href,
+            product.get("goodsUrl"),
+            product.get("detail_url"),
+            product.get("detailUrl"),
+            product.get("productUrl"),
+            product.get("url"),
+        ]
+        for candidate in href_candidates:
+            ean13 = self._extract_ean13_from_lottemart_url(candidate)
+            if ean13:
+                return ean13, "href"
+        return "", ""
+
+    @staticmethod
+    def _coerce_lottemart_ean13(value: Any) -> str:
+        text = str(value or "").strip()
+        if text.upper().startswith("OS"):
+            text = text[2:]
+        return text if re.fullmatch(r"\d{13}", text) else ""
+
+    @staticmethod
+    def _extract_ean13_from_lottemart_url(value: Any) -> str:
+        match = re.search(r"(?:^|/)OS(\d{13})(?:/|$|[?#])", str(value or ""))
+        return match.group(1) if match else ""
+
+    @staticmethod
+    def _extract_promo_label(*values: Any) -> str | None:
+        for value in values:
+            text = str(value or "")
+            match = PROMO_LABEL_RE.search(text)
+            if match:
+                return f"{match.group(1)}+{match.group(2)}"
+        return None
+
+    @staticmethod
+    def _clean_product_name(name: str) -> str:
+        text = str(name or "").strip()
+        # Remove only leading promo bracket labels. Nested ']' can appear in malformed source text,
+        # so look for the final closing bracket before the first product-space run.
+        if text.startswith("[") and "]" in text[:80]:
+            text = re.sub(r"^\[[^\n]{1,80}\]\s*", "", text).strip() or text
+        return text
+
+    def _lottemart_g1_attributes(
+        self,
+        *,
+        ean13: str,
+        ean_source_key: str,
+        detail_url: str,
+        image_url: str = "",
+        category: str = "",
+        category_path: list[str] | None = None,
+        period: str = "",
+        unit_metadata: dict[str, Any] | None = None,
+        name: str = "",
+        brand: str = "",
+        unit_text: str = "",
+        promo_label: str | None = None,
+        extra: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        unit_metadata = unit_metadata or {}
+        source_extra = {**(unit_metadata.get("attributes") or {}), **(extra or {})}
+        if brand:
+            source_extra["brand"] = brand
+        unit_price, unit_price_basis = parse_unit_price(unit_text or "")
+        if unit_price is not None:
+            source_extra["unit_price"] = int(unit_price) if float(unit_price).is_integer() else unit_price
+        if unit_price_basis:
+            source_extra["unit_price_basis"] = unit_price_basis
+        if promo_label:
+            source_extra["promo_label"] = promo_label
+        source_extra.update(
+            {
+                "source": "lottemart",
+                "mart_native_code": ean13,
+                "ean_source_key": ean_source_key,
+                "external_seller": False,
+                "canonical_url": detail_url,
+                "canon_hash": compute_canon_hash(
+                    brand or None,
+                    name,
+                    unit_metadata.get("package_quantity"),
+                    unit_metadata.get("package_unit") or None,
+                ),
+            }
+        )
+        return build_source_attributes(
+            "lottemart",
+            source_record_key=ean13,
+            detail_url=detail_url,
+            image_url=image_url,
+            category=category,
+            category_path=category_path,
+            period=period,
+            extra=source_extra,
+        )
+
     def _entity_to_discount_item(self, product: dict, product_id: str = "") -> Optional[DiscountItem]:
         """lottemartzetta productEntity → DiscountItem 변환.
 
@@ -839,7 +1000,7 @@ class LottemartCrawler(CrawlerContract):
             return None
 
         # 프로모션 접두사 제거: "[농할할인가 7,490원]" 같은 부분
-        clean_name = re.sub(r"^\[.*?\]\s*", "", name).strip()
+        clean_name = self._clean_product_name(name)
         if not clean_name or len(clean_name) < 2:
             clean_name = name
 
@@ -876,14 +1037,12 @@ class LottemartCrawler(CrawlerContract):
         event_name = "롯데마트 할인"
         if isinstance(offer, dict) and offer.get("description"):
             event_name = offer["description"]
+        promo_label = self._extract_promo_label(event_name, name, product.get("badges"), product.get("promotions"))
 
-        # 상세 URL
-        detail_url = self._absolute_url(
-            product.get("url") or product.get("productUrl") or product.get("detailUrl") or "",
-            self.ZETTA_BASE,
-        )
-        if not detail_url and product_id:
-            detail_url = f"{self.ZETTA_BASE}/products/{product_id}"
+        ean13, ean_source_key = self._extract_lottemart_ean13(product)
+        if not ean13:
+            return None
+        detail_url = normalize_lottemart_url(ean13)
 
         # 브랜드
         brand = product.get("brand", "")
@@ -893,20 +1052,20 @@ class LottemartCrawler(CrawlerContract):
             raw_unit=unit,
         )
         display_unit = unit_metadata.get("display_unit") or unit
-        attributes = unit_metadata.get("attributes") or {}
-        if brand:
-            attributes = {**attributes, "brand": brand}
-        source_record_key = normalize_source_key("lottemart", product_id, detail_url, clean_name)
         valid_from, valid_until, period = parse_period_fields(product)
-        attributes = build_source_attributes(
-            "lottemart",
-            source_record_key=source_record_key,
+        attributes = self._lottemart_g1_attributes(
+            ean13=ean13,
+            ean_source_key=ean_source_key,
             detail_url=detail_url,
             image_url=image_url,
             category=category,
             category_path=category_path,
             period=period,
-            extra=attributes,
+            unit_metadata=unit_metadata,
+            name=clean_name,
+            brand=brand,
+            unit_text=unit,
+            promo_label=promo_label,
         )
 
         return DiscountItem(
@@ -923,464 +1082,40 @@ class LottemartCrawler(CrawlerContract):
             attributes=attributes,
             category=category,
             event_name=event_name,
+            promo_label=promo_label,
+            promo_type="buy_x_get_y" if promo_label else None,
             valid_from=valid_from,
             valid_until=valid_until,
             image_url=image_url,
             detail_url=detail_url,
         )
 
-    async def _fetch_via_playwright(self) -> list[DiscountItem]:
-        """Playwright로 롯데마트 SPA(lottemartzetta.com) 검색 페이지에서 상품을 수집한다.
-
-        HTTP 요청으로 __INITIAL_STATE__ 추출이 실패할 경우의 폴백 전략.
-        브라우저에서 실제 렌더링 후 product-card-container 요소를 파싱한다.
-        """
-        items: list[DiscountItem] = []
-
-        try:
-            from engine.playwright_helper import PlaywrightHelper
-
-            async with PlaywrightHelper() as helper:
-                request_cap = self.PLAYWRIGHT_FALLBACK_QUERY_CAP
-                if self.MAX_REQUESTS is not None:
-                    request_cap = max(1, min(request_cap, self.MAX_REQUESTS))
-                for source_request in self._build_source_requests()[:request_cap]:
-                    query = str(source_request["query"])
-                    url = str(source_request["url"])
-                    try:
-                        html = await helper.get_rendered_html(
-                            url,
-                            wait_selector=".product-card-container",
-                            wait_timeout=20000,
-                            scroll_to_bottom=True,
-                        )
-                        # Playwright HTML에서도 __INITIAL_STATE__ 추출 시도
-                        state_items = self._extract_from_initial_state(html)
-                        if state_items:
-                            items.extend(state_items)
-                            logger.info(f"[롯데마트] Playwright '{query}': {len(state_items)}개 (state)")
-                        else:
-                            # HTML 파싱 폴백
-                            page_items = self._parse_spa_html(html, query)
-                            items.extend(page_items)
-                            logger.info(f"[롯데마트] Playwright '{query}': {len(page_items)}개 (html)")
-                        if self.MAX_ITEMS is not None and len(items) >= self.MAX_ITEMS:
-                            break
-                    except Exception as e:
-                        logger.debug(f"[롯데마트] Playwright 검색 '{query}' 실패: {e}")
-                        continue
-
-                logger.info(f"[롯데마트] Playwright 총: {len(items)}개 수집")
-
-        except ImportError:
-            logger.warning("[롯데마트] playwright 미설치 — pip install playwright && playwright install chromium")
-        except Exception as e:
-            logger.warning(f"[롯데마트] Playwright 크롤링 실패: {e}")
-
-        return items
-
-    async def _render_source_url_pages(
-        self,
-        source_url: str,
-        *,
-        max_pages: int,
-        max_requests: int,
-        timeout_seconds: int,
-    ) -> list[dict[str, object]]:
-        """Render public LotteMart pages with ordinary Playwright; no challenge solving."""
-        from engine.playwright_helper import PlaywrightHelper
-
-        pages: list[dict[str, object]] = []
-        async with PlaywrightHelper(
-            headless=True,
-            locale="ko-KR",
-            timezone="Asia/Seoul",
-            viewport={"width": 1366, "height": 900},
-        ) as helper:
-            next_url = source_url
-            for page_index in range(max_pages):
-                if not next_url or len(pages) >= max_requests:
-                    break
-                if page_index > 0:
-                    import asyncio as _asyncio
-                    await _asyncio.sleep(random.uniform(2.0, 5.0))
-                rendered = await helper.get_rendered_html_with_diagnostics(
-                    next_url,
-                    wait_selector=".product-card-container",
-                    wait_timeout=timeout_seconds * 1000,
-                    extra_wait_ms=1500,
-                    scroll_to_bottom=True,
-                )
-                pages.append(rendered)
-                if rendered.get("status_code") in {202, 401, 403, 429} or rendered.get("challenge_detected") or rendered.get("login_required"):
-                    break
-                break
-        return pages
-
-    def _parse_spa_html(self, html: str, query: str = "") -> list[DiscountItem]:
-        """lottemartzetta.com SPA에서 렌더링된 HTML의 상품 카드를 파싱한다."""
-        from bs4 import BeautifulSoup
-        soup = BeautifulSoup(html, "html.parser")
-        items: list[DiscountItem] = []
-
-        cards = soup.select(".product-card-container")
-        logger.info(f"[롯데마트] SPA 상품 카드: {len(cards)}개 (query={query})")
-
-        for card in cards:
-            try:
-                item = self._parse_spa_card(card)
-                if item:
-                    items.append(item)
-            except Exception as e:
-                logger.debug(f"[롯데마트] SPA 카드 파싱 오류: {e}")
-                continue
-
-        return items
-
-    def _parse_spa_card(self, card) -> Optional[DiscountItem]:
-        """lottemartzetta.com SPA 상품 카드 → DiscountItem.
-
-        lottemartzetta.com v2 DOM 구조 (실 캡처 기반):
-          - 상품명: data-test="fop-product-link" 내 span 텍스트
-                    또는 img[data-test="lazy-load-image"] alt 속성
-          - 현재가: data-test="fop-price" 텍스트 (예: "6,990원")
-          - 원가:   data-test="fop-original-price" 텍스트 (옵션)
-          - 이미지: img[data-test="lazy-load-image"] src
-          - UUID:   data-synthetics="product-id:<uuid>" → detail_url 구성
-        """
-        # --- 상품명 추출 (data-test 기반 선택자 우선) ---
-        name = ""
-        # 1순위: 이미지 alt 속성 (신뢰도 높음 — 서버에서 설정)
-        img_el = card.select_one('[data-test="lazy-load-image"]')
-        if img_el:
-            name = (img_el.get("alt") or "").strip()
-        # 2순위: 상품 링크 span 텍스트
-        if not name:
-            link_el = card.select_one('[data-test="fop-product-link"]')
-            if link_el:
-                name = link_el.get_text(strip=True)
-        # 3순위: 구형 클래스 기반 폴백 (이전 DOM 구조 호환)
-        if not name:
-            name_el = card.select_one("[class*='name'], [class*='title'], h3, h4, strong")
-            if name_el:
-                name = name_el.get_text(strip=True)
-        if not name or len(name) < 2:
-            return None
-
-        # 프로모션 접두사 제거: "[농할할인가 7,490원]" 같은 부분
-        clean_name = re.sub(r"^\[.*?\]\s*", "", name).strip() or name
-
-        # --- 가격 추출 (data-test 기반 선택자 우선) ---
-        sale_price_el = card.select_one('[data-test="fop-price"]')
-        original_price_el = card.select_one('[data-test="fop-original-price"]')
-
-        sale_price = None
-        original_price = None
-
-        if sale_price_el:
-            sale_price = self._extract_price(sale_price_el.get_text(strip=True))
-        if original_price_el:
-            original_price = self._extract_price(original_price_el.get_text(strip=True))
-
-        # 구형 DOM 구조 폴백: [class*='price'] 순회
-        if not sale_price:
-            prices: list[int] = []
-            for el in card.select("[class*='price']"):
-                text = re.sub(r'^가격', '', el.get_text(strip=True))
-                p = self._extract_price(text)
-                if p and p > 0:
-                    prices.append(p)
-            if prices:
-                prices_sorted = sorted(set(prices))
-                sale_price = prices_sorted[0]
-                if len(prices_sorted) > 1:
-                    original_price = prices_sorted[-1]
-
-        if not sale_price or sale_price <= 0:
-            return None
-
-        # original_price 는 현재가보다 커야 의미 있음
-        if original_price is not None and original_price <= sale_price:
-            original_price = None
-
-        # --- 상품 UUID → detail_url ---
-        detail_url = ""
-        uuid_attr = card.find(attrs={"data-synthetics": re.compile(r"^product-id:[a-f0-9-]{36}$")})
-        if uuid_attr:
-            product_uuid = uuid_attr["data-synthetics"].split(":", 1)[1]
-            detail_url = f"{self.ZETTA_BASE}/products/{product_uuid}"
-        # 폴백: href 기반 (상대 URL 보정)
-        if not detail_url:
-            link_el = card.select_one("a[href*='products']") or card.select_one("a[href]")
-            if link_el:
-                href = link_el.get("href", "")
-                detail_url = self._absolute_url(href, self.ZETTA_BASE)
-
-        # --- 이미지 URL ---
-        image_url = ""
-        if img_el:
-            image_url = img_el.get("src") or img_el.get("data-src") or ""
-        if not image_url:
-            img_any = card.select_one("img")
-            if img_any:
-                image_url = img_any.get("src") or img_any.get("data-src") or ""
-
-        # --- 할인율 / 행사명 ---
-        card_text = card.get_text(" ", strip=True)
-        discount_pct = None
-        event_name = "롯데마트 할인"
-
-        discount_match = re.search(r'(\d+)%\s*할인', card_text)
-        if discount_match:
-            discount_pct = float(discount_match.group(1))
-            ctx = re.search(r'([^,]{0,30}\d+%\s*할인[^,]{0,30})', card_text)
-            if ctx:
-                event_name = ctx.group(1).strip()
-
-        if discount_pct is None and original_price and original_price > sale_price:
-            discount_pct = round((1 - sale_price / original_price) * 100, 1)
-
-        # --- 단위 정보 ---
-        unit = ""
-        unit_match = re.search(
-            r'(\d+(?:\.\d+)?\s*(?:g|kg|ml|L|개|팩|봉|매|입)(?:\([^)]+\))?)',
-            card_text, re.IGNORECASE,
-        )
-        if unit_match:
-            unit = unit_match.group(1)
-        unit_metadata = normalize_unit_metadata(name=clean_name, sale_price=sale_price, raw_unit=unit)
-        display_unit = unit_metadata.get("display_unit") or unit
-
-        return DiscountItem(
-            name=clean_name,
-            store="롯데마트",
-            original_price=original_price,
-            sale_price=sale_price,
-            discount_percent=discount_pct,
-            unit=display_unit or "",
-            display_unit=display_unit or "",
-            package_quantity=unit_metadata.get("package_quantity"),
-            package_unit=unit_metadata.get("package_unit") or "",
-            price_per_100g=unit_metadata.get("price_per_100g"),
-            attributes=build_source_attributes(
-                "lottemart",
-                source_record_key=normalize_source_key("lottemart", detail_url, clean_name),
-                detail_url=detail_url,
-                image_url=image_url,
-                extra=unit_metadata.get("attributes") or {},
-            ),
-            image_url=image_url,
-            detail_url=detail_url,
-            event_name=event_name,
-        )
-
-    async def _fetch_promotions_scroll(
-        self,
-        *,
-        target_count: int = 220,
-        max_scroll_steps: int = 120,
-        headful: bool = False,
-    ) -> list[DiscountItem]:
-        """Playwright로 프로모션 페이지를 점진적 스크롤하며 200건 이상 상품을 수집한다.
-
-        lottemartzetta.com/promotions 는 SSR 으로 50건을 제공하고 나머지는
-        교차 관찰자(Intersection Observer)가 카드를 감지하면
-        XHR(PUT /api/webproductpagews/v6/products)로 24건씩 로드된다.
-
-        구현 전략:
-          1. 뷰포트 높이 단위(600px)로 점진적 스크롤 → 모든 카드가 뷰포트에 진입
-          2. XHR 응답(PUT /api/webproductpagews/v6/products) JSON을 직접 수집
-          3. JSON에서 DiscountItem 생성 → DOM 파싱 불필요 (스켈레톤 문제 해결)
-          4. 목표 건수 도달 또는 스크롤 단계 소진 시 종료
-
-        ``headful=True`` 는 WAF 202 escalation 경로(p0-crawler-impl 1급 워크밴치).
-        headless 가 challenge 에 막힐 때 실제 브라우저 윈도우로 동일 스크롤을 재실행한다.
-        운영자 정책: 페이지 이동(navigation) 시 ban 방지 ≥10초 간격 적용.
-        """
-        import asyncio as _asyncio
-        try:
-            from playwright.async_api import async_playwright
-        except ImportError:
-            logger.warning("[롯데마트] playwright 미설치 — pip install playwright && playwright install chromium")
-            return []
-
-        collected_products: list[dict] = []
-        seen_product_ids: set[str] = set()
-
-        url = f"{self.ZETTA_BASE}/promotions?source=header%20button"
-        mode = "headful" if headful else "headless"
-        logger.info(f"[롯데마트] 스크롤 수집 시작 ({mode} API 인터셉트): {url}")
-
-        try:
-            async with async_playwright() as pw:
-                browser = await pw.chromium.launch(
-                    headless=not headful,
-                    args=[
-                        "--no-sandbox",
-                        "--disable-dev-shm-usage",
-                        "--disable-blink-features=AutomationControlled",
-                        "--disable-infobars",
-                        "--window-size=1920,1080",
-                    ],
-                )
-                context = await browser.new_context(
-                    locale="ko-KR",
-                    timezone_id="Asia/Seoul",
-                    viewport={"width": 1920, "height": 1080},
-                    user_agent=(
-                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                        "AppleWebKit/537.36 (KHTML, like Gecko) "
-                        "Chrome/136.0.0.0 Safari/537.36"
-                    ),
-                    extra_http_headers={
-                        "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
-                        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-                        "sec-ch-ua": '"Chromium";v="136", "Google Chrome";v="136", "Not.A/Brand";v="99"',
-                        "sec-ch-ua-mobile": "?0",
-                        "sec-ch-ua-platform": '"Windows"',
-                        "Referer": "https://lottemartzetta.com/",
-                    },
-                )
-                page = await context.new_page()
-
-                # XHR 응답 인터셉트: PUT /api/webproductpagews/v6/products
-                async def on_response(response):
-                    if "webproductpagews/v6/products" in response.url and response.status == 200:
-                        try:
-                            data = await response.json()
-                            products = data.get("products", [])
-                            for prod in products:
-                                pid = prod.get("productId") or prod.get("id")
-                                if pid and pid not in seen_product_ids:
-                                    seen_product_ids.add(pid)
-                                    collected_products.append(prod)
-                            logger.info(
-                                f"[롯데마트] XHR 수신: {len(products)}건 → 누적 {len(collected_products)}건"
-                            )
-                        except Exception as ex:
-                            logger.debug(f"[롯데마트] XHR 파싱 실패: {ex}")
-
-                page.on("response", on_response)
-
-                try:
-                    await page.goto(url, wait_until="domcontentloaded", timeout=30000)
-                    # Wait for first product cards to appear
-                    try:
-                        await page.wait_for_selector(".product-card-container", timeout=15000)
-                    except Exception:
-                        pass
-                    await _asyncio.sleep(3.0)
-
-                    # SSR 초기 50건 수집 (fop-price 로드된 것만)
-                    initial_html = await page.content()
-                    initial_items = self._parse_spa_html(initial_html, query="promotions_initial")
-                    for item in initial_items:
-                        uuid_from_url = (item.detail_url or "").rsplit("/", 1)[-1]
-                        if uuid_from_url and uuid_from_url not in seen_product_ids:
-                            seen_product_ids.add(uuid_from_url)
-                    logger.info(f"[롯데마트] 초기 DOM 파싱: {len(initial_items)}건")
-
-                    # 점진적 스크롤 — 500px 씩 이동 (교차 관찰자가 각 카드를 감지하도록)
-                    scroll_pos = 0
-                    stall_count = 0
-                    prev_collected = len(collected_products)
-
-                    for step in range(max_scroll_steps):
-                        total_loaded = len(collected_products) + len(initial_items)
-                        if total_loaded >= target_count:
-                            break
-
-                        scroll_pos += 500
-                        await page.evaluate(f"window.scrollTo({{top: {scroll_pos}, behavior: 'smooth'}})")
-                        await _asyncio.sleep(2.0)
-
-                        # 스크롤이 페이지 끝에 도달했는지 확인
-                        page_height = await page.evaluate("document.body.scrollHeight")
-                        if scroll_pos >= page_height:
-                            # 페이지 끝 — 나머지 XHR 응답 대기
-                            await _asyncio.sleep(5.0)
-                            logger.info(f"[롯데마트] 페이지 끝 도달 (step={step}), XHR 대기 완료")
-                            break
-
-                        # 진행 상태 로그 + 스톨 감지 (5단계마다)
-                        if step % 5 == 0 and step > 0:
-                            new_collected = len(collected_products)
-                            logger.info(
-                                f"[롯데마트] 스크롤 step={step} pos={scroll_pos}px "
-                                f"XHR수집={new_collected}건 DOM={len(initial_items)}건"
-                            )
-                            if new_collected == prev_collected and step > 15:
-                                stall_count += 1
-                                if stall_count >= 4:
-                                    logger.info("[롯데마트] 5단계×4회 연속 미증가, 수집 완료로 판단")
-                                    break
-                            else:
-                                stall_count = 0
-                            prev_collected = new_collected
-
-                    final_total = len(collected_products) + len(initial_items)
-                    logger.info(
-                        f"[롯데마트] 스크롤 완료: XHR={len(collected_products)}건 + DOM={len(initial_items)}건 = {final_total}건"
-                    )
-
-                finally:
-                    await browser.close()
-
-        except Exception as e:
-            logger.warning(f"[롯데마트] 스크롤 수집 실패: {type(e).__name__}: {e}")
-            return []
-
-        # XHR JSON → DiscountItem 변환
-        items: list[DiscountItem] = []
-
-        # DOM 파싱 결과 먼저 추가
-        if "initial_items" in dir():
-            items.extend(initial_items)  # type: ignore[name-defined]
-
-        for prod in collected_products:
-            item = self._api_product_to_discount_item(prod)
-            if item:
-                items.append(item)
-
-        logger.info(f"[롯데마트] 최종 변환: {len(items)}개 DiscountItem")
-        return items
-
     def _api_product_to_discount_item(self, prod: dict) -> Optional[DiscountItem]:
-        """PUT /api/webproductpagews/v6/products 응답 상품 → DiscountItem."""
+        """LotteMart product API shaped JSON row → DiscountItem (no live API call)."""
         name = (prod.get("name") or "").strip()
         if not name or len(name) < 2:
             return None
-
-        clean_name = re.sub(r"^\[.*?\]\s*", "", name).strip() or name
-
-        price_obj = prod.get("price") or {}
-        sale_price_raw = price_obj.get("amount")
-        if not sale_price_raw:
+        clean_name = self._clean_product_name(name) or name
+        price_obj = prod.get("price") if isinstance(prod.get("price"), dict) else {}
+        sale_price = self._to_int(price_obj.get("amount") or prod.get("salePrice") or prod.get("price"))
+        if not sale_price or sale_price <= 0:
             return None
-        try:
-            sale_price = int(float(sale_price_raw))
-        except (ValueError, TypeError):
+        ean13, ean_source_key = self._extract_lottemart_ean13(prod)
+        if not ean13:
             return None
-        if sale_price <= 0:
-            return None
-
-        product_uuid = prod.get("productId") or prod.get("id") or ""
-        detail_url = f"{self.ZETTA_BASE}/products/{product_uuid}" if product_uuid else ""
-
-        image_obj = prod.get("image") or {}
-        image_url = image_obj.get("src") or ""
-
-        promotions = prod.get("promotions") or []
+        detail_url = normalize_lottemart_url(ean13)
+        image_obj = prod.get("image") if isinstance(prod.get("image"), dict) else {}
+        image_url = image_obj.get("src") or prod.get("imageUrl") or ""
+        promotions = prod.get("promotions") if isinstance(prod.get("promotions"), list) else []
         event_name = "롯데마트 할인"
-        if promotions:
+        if promotions and isinstance(promotions[0], dict):
             event_name = promotions[0].get("description") or event_name
-
+        promo_label = self._extract_promo_label(event_name, name, promotions)
         pack_size = (prod.get("packSizeDescription") or "").strip()
-        unit_metadata = normalize_unit_metadata(
-            name=clean_name, sale_price=sale_price, raw_unit=pack_size
-        )
+        unit_metadata = normalize_unit_metadata(name=clean_name, sale_price=sale_price, raw_unit=pack_size)
         display_unit = unit_metadata.get("display_unit") or pack_size
-
+        category_path = prod.get("categoryPath") if isinstance(prod.get("categoryPath"), list) else []
+        category = prod.get("categoryName") or prod.get("category") or (category_path[0] if category_path else "")
         return DiscountItem(
             name=clean_name,
             store="롯데마트",
@@ -1392,16 +1127,25 @@ class LottemartCrawler(CrawlerContract):
             package_quantity=unit_metadata.get("package_quantity"),
             package_unit=unit_metadata.get("package_unit") or "",
             price_per_100g=unit_metadata.get("price_per_100g"),
-            attributes=build_source_attributes(
-                "lottemart",
-                source_record_key=normalize_source_key("lottemart", detail_url, clean_name),
+            attributes=self._lottemart_g1_attributes(
+                ean13=ean13,
+                ean_source_key=ean_source_key,
                 detail_url=detail_url,
                 image_url=image_url,
-                extra=unit_metadata.get("attributes") or {},
+                category=category,
+                category_path=category_path,
+                unit_metadata=unit_metadata,
+                name=clean_name,
+                brand=prod.get("brand", ""),
+                unit_text=pack_size,
+                promo_label=promo_label,
             ),
+            category=category,
             image_url=image_url,
             detail_url=detail_url,
             event_name=event_name,
+            promo_label=promo_label,
+            promo_type="buy_x_get_y" if promo_label else None,
         )
 
     async def parse(self, raw_data: str) -> list[DiscountItem]:
@@ -1413,7 +1157,12 @@ class LottemartCrawler(CrawlerContract):
         if state_items:
             return state_items
 
-        # 2) JSON 데이터 블록 추출 시도
+        # 2) product-page API JSON 추출 시도
+        api_items, _next_page_token, _raw_count = self._extract_product_page_api_items(raw_data)
+        if api_items:
+            return api_items
+
+        # 3) JSON 데이터 블록 추출 시도
         json_items = self._extract_json_items(raw_data)
         if json_items:
             for product in json_items:
@@ -1422,7 +1171,7 @@ class LottemartCrawler(CrawlerContract):
                     items.append(item)
             return items
 
-        # 3) HTML 파싱 fallback
+        # 4) HTML 파싱 fallback
         try:
             from bs4 import BeautifulSoup
             soup = BeautifulSoup(raw_data, "html.parser")
@@ -1549,20 +1298,10 @@ class LottemartCrawler(CrawlerContract):
         )
         category_path = product.get("categoryPath") if isinstance(product.get("categoryPath"), list) else None
         category = product.get("categoryNm") or product.get("ctgNm") or (category_path[0] if category_path else "")
-        detail_url = product.get("goodsUrl") or product.get("detail_url") or product.get("detailUrl") or product.get("url") or ""
-        if detail_url and not detail_url.startswith("http"):
-            detail_url = self._absolute_url(detail_url, self.ZETTA_BASE)
-        source_record_key = normalize_source_key(
-            "lottemart",
-            product.get("goodsNo"),
-            product.get("itemId"),
-            product.get("productId"),
-            product.get("productNo"),
-            product.get("_source_product_id"),
-            product.get("id"),
-            detail_url,
-            name,
-        )
+        ean13, ean_source_key = self._extract_lottemart_ean13(product)
+        if not ean13:
+            return None
+        detail_url = normalize_lottemart_url(ean13)
         valid_from, valid_until, period = parse_period_fields(product)
         size = product.get("size") if isinstance(product.get("size"), dict) else {}
         raw_unit = product.get("unit") or size.get("value") or product.get("size") or product.get("capacity") or ""
@@ -1572,6 +1311,8 @@ class LottemartCrawler(CrawlerContract):
             raw_unit=raw_unit,
         )
         display_unit = unit_metadata.get("display_unit") or raw_unit
+        event_name = product.get("eventNm") or product.get("eventName") or "롯데마트 할인"
+        promo_label = self._extract_promo_label(event_name, name, product.get("badge"), product.get("promotion"), product.get("promotions"))
 
         return DiscountItem(
             name=name,
@@ -1584,18 +1325,23 @@ class LottemartCrawler(CrawlerContract):
             package_quantity=unit_metadata.get("package_quantity"),
             package_unit=unit_metadata.get("package_unit") or "",
             price_per_100g=unit_metadata.get("price_per_100g"),
-            attributes=build_source_attributes(
-                "lottemart",
-                source_record_key=source_record_key,
+            attributes=self._lottemart_g1_attributes(
+                ean13=ean13,
+                ean_source_key=ean_source_key,
                 detail_url=detail_url,
                 image_url=image_url,
                 category=category,
                 category_path=category_path,
                 period=period,
-                extra=unit_metadata.get("attributes") or {},
+                unit_metadata=unit_metadata,
+                name=name,
+                unit_text=str(raw_unit or ""),
+                promo_label=promo_label,
             ),
             category=category,
-            event_name=product.get("eventNm", "롯데마트 할인"),
+            event_name=event_name,
+            promo_label=promo_label,
+            promo_type="buy_x_get_y" if promo_label else None,
             valid_from=valid_from,
             valid_until=valid_until,
             image_url=image_url,
@@ -1653,13 +1399,21 @@ class LottemartCrawler(CrawlerContract):
         if img_el:
             image_url = img_el.get("src") or img_el.get("data-src", "")
 
-        link_el = card.select_one("a[href]")
-        detail_url = ""
-        if link_el:
-            href = link_el.get("href", "")
-            detail_url = href if href.startswith("http") else f"{self.BASE_URL}{href}"
+        link_el = card.select_one("a[href*='/products/OS']") or card.select_one("a[href*='products/OS']")
+        href = link_el.get("href", "") if link_el else ""
+        ean13, ean_source_key = self._extract_lottemart_ean13(href=href)
+        if not ean13:
+            return None
+        detail_url = normalize_lottemart_url(ean13)
+        card_text = card.get_text(" ", strip=True)
+        promo_label = self._extract_promo_label(card_text, name)
         unit_metadata = normalize_unit_metadata(name=name, sale_price=sale_price)
         display_unit = unit_metadata.get("display_unit")
+        category = card.get("data-category") or card.get("data-ctg-nm") or card.get("data-category-name") or ""
+        if not category:
+            category_el = card.select_one(".category, .breadcrumb, .location")
+            category = category_el.get_text(" > ", strip=True) if category_el else ""
+        category_path = [part.strip() for part in re.split(r"\s*>\s*", category) if part.strip()]
 
         return DiscountItem(
             name=name,
@@ -1672,13 +1426,21 @@ class LottemartCrawler(CrawlerContract):
             package_quantity=unit_metadata.get("package_quantity"),
             package_unit=unit_metadata.get("package_unit") or "",
             price_per_100g=unit_metadata.get("price_per_100g"),
-            attributes=build_source_attributes(
-                "lottemart",
-                source_record_key=normalize_source_key("lottemart", detail_url, name),
+            attributes=self._lottemart_g1_attributes(
+                ean13=ean13,
+                ean_source_key=ean_source_key,
                 detail_url=detail_url,
                 image_url=image_url,
-                extra=unit_metadata.get("attributes") or {},
+                category=category,
+                category_path=category_path,
+                unit_metadata=unit_metadata,
+                name=name,
+                unit_text=card_text,
+                promo_label=promo_label,
             ),
+            category=category,
+            promo_label=promo_label,
+            promo_type="buy_x_get_y" if promo_label else None,
             image_url=image_url,
             detail_url=detail_url,
             event_name="롯데마트 할인",
@@ -1735,6 +1497,81 @@ class LottemartCrawler(CrawlerContract):
             return int(value)
         except (ValueError, TypeError):
             return None
+
+    def save_products_to_db(self, items: list[DiscountItem] | list[dict], *, database_url: str | None = None, limit: int | None = None) -> dict[str, Any]:
+        """Insert crawled Lottemart products with db-admin Product model.
+
+        The transaction commits successful rows and rolls back rows that hit the
+        mart/mart_native_code unique constraint. It intentionally does not create
+        price history; this is the lightweight live-verification Product insert.
+        """
+        import sys
+        from sqlalchemy.exc import IntegrityError, OperationalError
+
+        db_backend = Path(__file__).resolve().parents[4].parent / "db-admin" / "backend"
+        if str(db_backend) not in sys.path:
+            sys.path.insert(0, str(db_backend))
+        from storage.db import DBStorage  # type: ignore
+        from storage.models import Product  # type: ignore
+
+        storage = DBStorage(database_url=database_url)
+        storage.init_db()
+        inserted = 0
+        skipped = 0
+        failed: list[str] = []
+        rows: list[dict[str, Any]] = []
+        selected = items[:limit] if limit is not None else items
+        with storage.SessionLocal() as session:
+            for raw in selected:
+                item = raw if isinstance(raw, dict) else raw.model_dump(mode="json")
+                attrs = item.get("attributes") if isinstance(item.get("attributes"), dict) else {}
+                mart_native_code = str(attrs.get("mart_native_code") or attrs.get("source_record_key") or "").strip()
+                if not mart_native_code:
+                    skipped += 1
+                    continue
+                product = Product(
+                    name=item.get("name") or "",
+                    unit=item.get("unit") or item.get("display_unit") or "개",
+                    image_url=item.get("image_url") or attrs.get("image_url"),
+                    attributes=attrs,
+                    source_type="mart_crawl",
+                    brand=attrs.get("brand"),
+                    name_core=item.get("name") or "",
+                    pack_qty=item.get("package_quantity"),
+                    pack_unit=item.get("package_unit") or None,
+                    display_name=item.get("name") or "",
+                    source_marts=["lottemart"],
+                    aliases=[mart_native_code],
+                    mart="lottemart",
+                    mart_native_code=mart_native_code,
+                    canon_hash=attrs.get("canon_hash"),
+                    external_seller=bool(attrs.get("external_seller", False)),
+                    unit_price_displayed=attrs.get("unit_price"),
+                    unit_price_basis_raw=attrs.get("unit_price_basis"),
+                    mart_native_category_path=" > ".join(attrs.get("category_path") or []) or attrs.get("category_hint"),
+                    canonical_url=attrs.get("canonical_url") or item.get("detail_url"),
+                )
+                try:
+                    session.add(product)
+                    session.commit()
+                    session.refresh(product)
+                    inserted += 1
+                    rows.append({
+                        "mart": product.mart,
+                        "mart_native_code": product.mart_native_code,
+                        "name": product.name,
+                        "price": item.get("sale_price"),
+                        "url": product.canonical_url,
+                    })
+                except IntegrityError:
+                    session.rollback()
+                    skipped += 1
+                except OperationalError as exc:
+                    session.rollback()
+                    failed.append(str(exc))
+                    break
+        storage.SessionLocal.remove()
+        return {"inserted": inserted, "skipped": skipped, "failed": failed, "rows": rows}
 
     async def validate(self, items: list[DiscountItem]) -> list[DiscountItem]:
         """유효한 할인 상품만 필터링."""

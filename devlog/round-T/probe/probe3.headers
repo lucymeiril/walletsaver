@@ -1,0 +1,17 @@
+HTTP/1.1 200 OK
+x-costco-cache: true
+Content-Type: text/html; charset=UTF-8
+x-envoy-upstream-service-time: 55
+Server: istio-envoy
+X-Akamai-Transformed: 0 - 0 -
+Cache-Control: max-age=3600
+Expires: Tue, 26 May 2026 18:43:50 GMT
+Date: Tue, 26 May 2026 17:43:50 GMT
+Transfer-Encoding:  chunked
+Connection: keep-alive
+Connection: Transfer-Encoding
+Content-Security-Policy: frame-ancestors 'self' https://*.costco.co.kr
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains ; preload
+Set-Cookie: _abck=A32EC7AC584C409F7C0139025BB473C0~-1~YAAQPrxBFxTiwTSeAQAAF75iZQ8ojBNx8IY1iS6EorjC0sfhvDGQwi9lQ4cc2oQTRE67xZSutfRgFcssFikSo3kWiOqWsNyu3jgmLpzOeNxHNQqImGkmaw6jWkLops6AuBMegGWJZO6NkFXMTSJ6oPiv6KSpqGmhCur7MCAfPdahCHzoDDMXYiVdZ/hhnl0ukqG5T4NtjC9MuEN54/QfgSGihdG0NaxIIsVEPlxgGWZdVndR/haN09vIx6VM1rJCqzl+rk4bSLYOiBmSDyn1bpBpNaihqqftMCCDorP4FcyQroGhz2K3GfmNKlQk5qqeLh2yUdasLZoh7aLMg6yjLLm6MTI9cvAFX8na0s8KzORytuT4+ATAf2P6AzSHqd9Ub5k1evNjsfGhBeSSXOy+CB88u2vWV/NQCmsvS1/PD8D0yJCrhoQYkleOPoDa9K3yITin0JjyqHoy/A==~-1~-1~-1~-1~-1; Domain=.costco.co.kr; Path=/; Expires=Wed, 26 May 2027 17:43:50 GMT; Max-Age=31536000; Secure
+Set-Cookie: bm_sz=89E230D3C3DC35CAA9066D0F50D618BF~YAAQPrxBFxXiwTSeAQAAF75iZR9zG8CnqMRZ6iyud4AIRmuU8CPd8dYCEFbSPDGZqTFo9myfgcmvlRvqJEDSXKkG39J2rdeRfVVTDy1S7IRQOW3jstdOIycbCqzO9XPKjdNYrO0ohfeSoYxJ+f9VDjfZK0tMAgfUyhEukEsMxaf2kdU6/x1brWj+TAil5yOj9Gu82W/59xHeiQ0hhRLPLPcOMadFeANc0aroeGgou4wiEMtSeUUFb4TtwBc3w2xeNFHcxEXtddKSq/1wlCM9QkxJRcVkweFbaGEQAUO8QF/rulMR6x/dfrX9lxeTCa5bFzRYTWwQ3ZJ/UfRetRsFEwDknZeOH8MLIr+eGWqQwIet/w==~3228993~3163185; Domain=.costco.co.kr; Path=/; Expires=Tue, 26 May 2026 21:43:50 GMT; Max-Age=14400
+

@@ -16,6 +16,7 @@ from services.category_mgmt import (
     get_category_product_count,
     move_category,
 )
+from services.unified_categories import get_unified_tree, list_mappings, upsert_mapping
 
 from api.security import MAX_CATEGORY_ID_LEN, MAX_NAME_LEN, MAX_ICON_LEN
 
@@ -52,6 +53,15 @@ class CategoryMove(BaseModel):
     new_parent_id: Optional[str] = Field(None, max_length=MAX_CATEGORY_ID_LEN)
 
 
+class MappingUpsert(BaseModel):
+    mart: str = Field(..., pattern="^(emart|homeplus|lottemart|costco)$")
+    mart_native_id: str = Field(..., min_length=1, max_length=100)
+    mart_native_path: Optional[str] = Field(None, max_length=500)
+    unified_category_id: str = Field(..., min_length=1, max_length=100)
+    confidence: float = Field(1.0, ge=0.0, le=1.0)
+    decided_by: Optional[str] = Field(None, max_length=100)
+
+
 @router.get("/")
 def list_categories(identity: dict = Depends(require_viewer)):
     session = get_session()
@@ -59,6 +69,50 @@ def list_categories(identity: dict = Depends(require_viewer)):
         return get_category_tree(session)
     finally:
         session.close()
+
+
+@router.get("/unified/tree")
+def unified_category_tree(identity: dict = Depends(require_viewer)):
+    session = get_session()
+    try:
+        return get_unified_tree(session)
+    finally:
+        session.close()
+
+
+@router.get("/mappings")
+def category_mappings(mart: Optional[str] = None, identity: dict = Depends(require_viewer)):
+    session = get_session()
+    try:
+        try:
+            return list_mappings(session, mart)
+        except ValueError as exc:
+            raise HTTPException(400, str(exc)) from exc
+    finally:
+        session.close()
+
+
+@router.post("/mappings")
+def save_category_mapping(body: MappingUpsert, identity: dict = Depends(require_moderator)):
+    decided_by = body.decided_by or identity.get("email") or str(identity.get("id") or "unknown")
+    with managed_session() as session:
+        try:
+            mapping, action = upsert_mapping(
+                session,
+                mart=body.mart,
+                mart_native_id=body.mart_native_id,
+                mart_native_path=body.mart_native_path,
+                unified_category_id=body.unified_category_id,
+                trust="human",
+                confidence=body.confidence,
+                decided_by=decided_by,
+            )
+        except ValueError as exc:
+            raise HTTPException(400, str(exc)) from exc
+        if action == "conflict":
+            raise HTTPException(409, "낮은 신뢰도 매핑은 기존 매핑을 덮어쓸 수 없습니다.")
+        session.flush()
+        return {"id": mapping.id, "action": action, "trust": mapping.trust}
 
 
 @router.get("/{category_id}")

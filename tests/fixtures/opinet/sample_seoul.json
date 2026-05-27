@@ -1,0 +1,55 @@
+{
+  "source": "opinet_fixture_json.v1",
+  "sido": "서울특별시",
+  "observed_at": "2026-05-26T00:00:00",
+  "stations": [
+    {
+      "station_code": "A0003461",
+      "brand": "알뜰(자영)",
+      "name": "강서알뜰주유소",
+      "address": "서울특별시 강서구 허준로 57",
+      "sido": "서울특별시",
+      "sigungu": "강서구",
+      "lat": 37.5506,
+      "lng": 126.8418,
+      "has_self_service": true,
+      "updated_at": "2026-05-26T00:00:00",
+      "prices": [
+        { "fuel_type": "gasoline", "price": 1598, "observed_at": "2026-05-26T00:00:00", "source": "opinet" },
+        { "fuel_type": "diesel", "price": 1448, "observed_at": "2026-05-26T00:00:00", "source": "opinet" }
+      ]
+    },
+    {
+      "station_code": "A0007890",
+      "brand": "현대오일뱅크",
+      "name": "마곡HD주유소",
+      "address": "서울특별시 강서구 마곡중앙로 10",
+      "sido": "서울특별시",
+      "sigungu": "강서구",
+      "lat": 37.5601,
+      "lng": 126.8321,
+      "has_self_service": false,
+      "updated_at": "2026-05-26T00:00:00",
+      "prices": [
+        { "fuel_type": "gasoline_regular", "price": "1,625", "observed_at": "2026-05-26T00:00:00", "source": "opinet" },
+        { "fuel_type": "premium", "price": 1840, "observed_at": "2026-05-26T00:00:00", "source": "opinet" },
+        { "fuel_type": "kerosene", "price": 1220, "observed_at": "2026-05-26T00:00:00", "source": "opinet" }
+      ]
+    },
+    {
+      "station_code": "A0009999",
+      "brand": "GS칼텍스",
+      "name": "화곡GS주유소",
+      "address": "서울특별시 강서구 화곡로 100",
+      "sido": "서울특별시",
+      "sigungu": "강서구",
+      "lat": null,
+      "lng": null,
+      "has_self_service": true,
+      "updated_at": "2026-05-26T00:00:00",
+      "prices": [
+        { "fuel_type": "lpg", "price": 995, "observed_at": "2026-05-26T00:00:00", "source": "opinet" }
+      ]
+    }
+  ]
+}

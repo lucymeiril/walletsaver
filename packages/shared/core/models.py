@@ -256,6 +256,7 @@ class DiscountItem(BaseModel):
     """
     name: str                                   # 상품명 (원본)
     normalized_name: str = ""                   # 표준화된 품목명 (양파, 삼겹살 등)
+    source: str = ""                            # 크롤러/마트 식별자 (emart, homeplus, lottemart, costco, cocodalin)
     store: str                                  # 매장명
     original_price: Optional[int] = None        # 정가 (원)
     sale_price: int                             # 할인가 (원)
@@ -265,9 +266,12 @@ class DiscountItem(BaseModel):
     package_quantity: Optional[float] = None    # 포장 수량(예: 300)
     package_unit: str = ""                      # 포장 단위(예: g)
     price_per_100g: Optional[float] = None      # 중량 상품의 100g당 가격
+    unit_price_display: str = ""                # 원본 단위 환산가 표시(예: "100g당 1,984원")
     attributes: dict[str, Any] = Field(default_factory=dict)  # 냉장/원산지/등급 등
     category: str = ""                          # 카테고리
     event_name: str = ""                        # 행사명 ("1+1", "반값", "주간특가")
+    promo_label: Optional[str] = None            # 원본 프로모션 배지 (예: "1+1")
+    promo_type: Optional[str] = None             # 프로모션 유형 (예: "buy_x_get_y")
     valid_from: Optional[datetime] = None       # 행사 시작일
     valid_until: Optional[datetime] = None      # 행사 종료일
     image_url: str = ""                         # 상품 이미지 URL

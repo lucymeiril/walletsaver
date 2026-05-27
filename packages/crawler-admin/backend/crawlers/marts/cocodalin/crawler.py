@@ -15,9 +15,10 @@ from __future__ import annotations
 import json
 import logging
 import random
+import re
 import time
 from datetime import datetime
-from typing import Optional
+from typing import Any, Optional
 
 import requests
 
@@ -26,12 +27,38 @@ from core.models import (
     CrawlerInfo, CrawlerGroup, CrawlResult, CrawlStatus,
     DiscountItem,
 )
+from crawlers.marts.source_utils import (
+    build_source_attributes,
+    compute_canon_hash,
+    inject_source_field,
+    normalize_source_key,
+)
 from engine.anti_detect import AntiDetect
 
 logger = logging.getLogger(__name__)
 
 # 12개 카테고리 전체 (2026-05-16 기준 총 392건)
 CATEGORY_IDS: tuple[int, ...] = (7, 9, 10, 11, 8, 12, 1, 2, 3, 4, 5, 6)
+_PACK_RE = re.compile(r"(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>kg|g|ml|L|l|개|봉|팩|입|매|정|캔)", re.IGNORECASE)
+
+
+def _clean_text(text: str) -> str:
+    return re.sub(r"\s+", " ", text or "").strip()
+
+
+def _normalize_name(name: str) -> str:
+    return _clean_text(re.sub(r"\[[^\]]+\]", "", name))
+
+
+def _extract_pack(name: str) -> tuple[float | None, str | None]:
+    matches = list(_PACK_RE.finditer(name or ""))
+    if not matches:
+        return None, None
+    match = matches[-1]
+    qty: float | int = float(match.group("qty"))
+    if float(qty).is_integer():
+        qty = int(qty)
+    return float(qty), match.group("unit")
 
 
 class CocodalinCrawler(CrawlerContract):
@@ -52,13 +79,15 @@ class CocodalinCrawler(CrawlerContract):
                        timeout: int = 15, max_retries: int = 3) -> requests.Response:
         """HTTP GET with exponential backoff for transient failures."""
         requester = session or requests
-        last_exc = None
+        last_exc: BaseException | None = None
+        last_resp: requests.Response | None = None
         for attempt in range(max_retries):
             try:
                 resp = requester.get(url, headers=headers, timeout=timeout)
+                last_resp = resp
                 if resp.status_code == 429:
                     wait = (2 ** attempt) + random.uniform(0.5, 1.5)
-                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
+                    logger.warning(f"[{self.info.name}] rate limited (429), retrying in {wait:.1f}s")
                     time.sleep(wait)
                     continue
                 return resp
@@ -72,13 +101,16 @@ class CocodalinCrawler(CrawlerContract):
                     time.sleep(wait)
                 else:
                     raise
-        raise last_exc  # type: ignore[misc]
+        if last_resp is not None:
+            logger.warning(f"[{self.info.name}] rate limited after {max_retries} retries; returning last 429 response")
+            return last_resp
+        raise last_exc or requests.HTTPError(f"[{self.info.name}] retry exhausted without response")
 
     @property
     def info(self) -> CrawlerInfo:
         return CrawlerInfo(
             name="코코달인",
-            version="2.1.0",
+            version="2.2.0",
             group=CrawlerGroup.MART,
             description="코스트코 할인 정보 수집 (코코달인 API: bestLikeProducts + 12 productList 카테고리)",
             target_url="https://www.cocodalin.com/",
@@ -128,16 +160,13 @@ class CocodalinCrawler(CrawlerContract):
         logger.info("[코코달인] API 크롤링 시작 (best + 12 카테고리)")
 
         try:
-            # 1) bestLikeProducts
             best_url = self.API_BASE + self.ENDPOINTS["best"]
             best_products = self._fetch_json(best_url)
             logger.info(f"[코코달인] bestLikeProducts: {len(best_products)}건")
 
-            # 2) 12 카테고리 productList
             cat_products = self._crawl_all_product_lists()
             logger.info(f"[코코달인] productList 합계: {len(cat_products)}건")
 
-            # 합치고 변환 + 중복 제거 (product_id 기준)
             all_products = best_products + cat_products
             seen_ids: set = set()
             items: list[DiscountItem] = []
@@ -167,6 +196,7 @@ class CocodalinCrawler(CrawlerContract):
                 started_at=started_at,
                 finished_at=finished_at,
                 duration_seconds=(finished_at - started_at).total_seconds(),
+                quality_details={"product_schema": "round_r_g1_product_columns", "total_count": len(valid_items)},
             )
 
         except Exception as e:
@@ -198,7 +228,7 @@ class CocodalinCrawler(CrawlerContract):
 
     def _product_to_discount_item(self, product: dict) -> Optional[DiscountItem]:
         """API 상품 JSON → DiscountItem 변환."""
-        name = product.get("product_name", "")
+        name = _clean_text(str(product.get("product_name") or ""))
         if not name or len(name) < 2:
             return None
 
@@ -214,25 +244,91 @@ class CocodalinCrawler(CrawlerContract):
 
         valid_from = self._parse_date(product.get("from_date"))
         valid_until = self._parse_date(product.get("to_date"))
+        period = self._period_text(valid_from, valid_until)
+        native_code = normalize_source_key("cocodalin", product.get("product_id"), name, sale_price)
+        normalized_name = _normalize_name(name)
+        pack_qty, pack_unit = _extract_pack(normalized_name)
+        promo_label = self._promo_label(product, normal_price, sale_price)
+        image_ref = str(product.get("product_image") or "")
+        detail_url = f"https://www.cocodalin.com/product.html?id={native_code}"
+        category = str(product.get("category_name") or "")
+        record: dict[str, Any] = {
+            "mart": "cocodalin",
+            "source": "cocodalin",
+            "mart_native_code": native_code,
+            "source_record_key": native_code,
+            "canon_hash": compute_canon_hash(None, normalized_name, pack_qty, pack_unit),
+            "external_seller": False,
+            "mart_native_category_id": str(product.get("category_id") or ""),
+            "mart_native_category_path": category,
+            "canonical_url": detail_url,
+            "price": int(normal_price or sale_price),
+            "sale_price": int(sale_price),
+            "name": name,
+            "raw_name": name,
+            "normalized_name": normalized_name,
+            "brand": None,
+            "pack_qty": pack_qty,
+            "pack_unit": pack_unit,
+            "image_url": image_ref,
+            "promo_label": promo_label,
+            "promo_type": "discount" if promo_label else None,
+            "period": period,
+            "discount_amount": self._to_int(product.get("discount")),
+        }
+        attrs = build_source_attributes(
+            "cocodalin",
+            source_record_key=native_code,
+            detail_url=detail_url,
+            image_url=image_ref,
+            category=category,
+            period=period,
+            extra=inject_source_field(record, "cocodalin"),
+        )
 
         return DiscountItem(
             name=name,
+            normalized_name=normalized_name,
             store="코스트코",
             original_price=normal_price,
             sale_price=sale_price,
             discount_percent=discount_pct,
-            category=product.get("category_name", ""),
-            event_name="코스트코 할인",
+            unit=f"{pack_qty:g}{pack_unit}" if pack_qty and pack_unit else "",
+            package_quantity=pack_qty,
+            package_unit=pack_unit or "",
+            attributes=attrs,
+            category=category,
+            event_name=promo_label or "코스트코 할인",
+            promo_label=promo_label,
+            promo_type="discount" if promo_label else None,
             valid_from=valid_from,
             valid_until=valid_until,
-            detail_url=f"https://www.cocodalin.com/product.html?id={product.get('product_id', '')}",
+            image_url=image_ref,
+            detail_url=detail_url,
         )
+
+    def _promo_label(self, product: dict, normal_price: Optional[int], sale_price: int) -> str | None:
+        for key in ("discount_condition", "promo_label", "promoLabel", "eventName", "eventNm", "badgeText"):
+            value = _clean_text(str(product.get(key) or ""))
+            if value:
+                return value
+        discount = self._to_int(product.get("discount"))
+        if discount and discount > 0:
+            return f"{discount:,}원 할인"
+        if normal_price and normal_price > sale_price:
+            return "할인"
+        return None
+
+    def _period_text(self, start: Optional[datetime], end: Optional[datetime]) -> str:
+        if start or end:
+            return f"{start.date().isoformat() if start else ''}~{end.date().isoformat() if end else ''}"
+        return ""
 
     def _to_int(self, value) -> Optional[int]:
         if value is None:
             return None
         try:
-            return int(value)
+            return int(str(value).replace(",", ""))
         except (ValueError, TypeError):
             return None
 
@@ -250,8 +346,7 @@ class CocodalinCrawler(CrawlerContract):
         valid = []
         seen = set()
         for item in items:
-            # detail_url 우선 (product_id 기반 유일성), 없으면 이름+가격
-            key = item.detail_url or f"{item.name}_{item.sale_price}"
+            key = (item.attributes or {}).get("source_record_key") or item.detail_url or f"{item.name}_{item.sale_price}"
             if key in seen:
                 continue
             seen.add(key)

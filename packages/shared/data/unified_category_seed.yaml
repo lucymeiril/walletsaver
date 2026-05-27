@@ -1,0 +1,963 @@
+schema: unified_category_seed.v1
+source: round-U live native category consolidation
+notes:
+- Native categories were collected live into devlog/round-U/category-native-*.json.
+- Ambiguous combined native fruit buckets such as 사과/배 are mapped to fruits, not to
+  apple or pear.
+- Unified depth is capped at 3 (root > middle > leaf).
+categories:
+- id: fruits
+  parent_id: null
+  slug: fruits
+  name_ko: 과일
+  level: 0
+  sort_order: 0
+- id: fruits.apple
+  parent_id: fruits
+  slug: apple
+  name_ko: 사과
+  level: 1
+  sort_order: 1
+- id: fruits.pear
+  parent_id: fruits
+  slug: pear
+  name_ko: 배
+  level: 1
+  sort_order: 2
+- id: fruits.citrus
+  parent_id: fruits
+  slug: citrus
+  name_ko: 감귤/만감류
+  level: 1
+  sort_order: 3
+- id: fruits.kiwi
+  parent_id: fruits
+  slug: kiwi
+  name_ko: 키위
+  level: 1
+  sort_order: 4
+- id: fruits.grape
+  parent_id: fruits
+  slug: grape
+  name_ko: 포도
+  level: 1
+  sort_order: 5
+- id: fruits.banana
+  parent_id: fruits
+  slug: banana
+  name_ko: 바나나
+  level: 1
+  sort_order: 6
+- id: fruits.tomato
+  parent_id: fruits
+  slug: tomato
+  name_ko: 토마토
+  level: 1
+  sort_order: 7
+- id: fruits.frozen
+  parent_id: fruits
+  slug: frozen
+  name_ko: 냉동/간편과일
+  level: 1
+  sort_order: 8
+- id: vegetables
+  parent_id: null
+  slug: vegetables
+  name_ko: 채소
+  level: 0
+  sort_order: 9
+- id: vegetables.tofu
+  parent_id: vegetables
+  slug: tofu
+  name_ko: 두부/콩나물
+  level: 1
+  sort_order: 10
+- id: vegetables.cabbage
+  parent_id: vegetables
+  slug: cabbage
+  name_ko: 양배추/배추
+  level: 1
+  sort_order: 11
+- id: vegetables.frozen
+  parent_id: vegetables
+  slug: frozen
+  name_ko: 냉동/간편채소
+  level: 1
+  sort_order: 12
+- id: rice_grains
+  parent_id: null
+  slug: rice_grains
+  name_ko: 쌀/잡곡
+  level: 0
+  sort_order: 13
+- id: rice_grains.rice
+  parent_id: rice_grains
+  slug: rice
+  name_ko: 쌀
+  level: 1
+  sort_order: 14
+- id: rice_grains.mixed_grains
+  parent_id: rice_grains
+  slug: mixed_grains
+  name_ko: 잡곡/현미
+  level: 1
+  sort_order: 15
+- id: meat_eggs
+  parent_id: null
+  slug: meat_eggs
+  name_ko: 정육/계란
+  level: 0
+  sort_order: 16
+- id: meat_eggs.eggs
+  parent_id: meat_eggs
+  slug: eggs
+  name_ko: 계란
+  level: 1
+  sort_order: 17
+- id: meat_eggs.beef
+  parent_id: meat_eggs
+  slug: beef
+  name_ko: 소고기
+  level: 1
+  sort_order: 18
+- id: meat_eggs.pork
+  parent_id: meat_eggs
+  slug: pork
+  name_ko: 돼지고기
+  level: 1
+  sort_order: 19
+- id: meat_eggs.chicken
+  parent_id: meat_eggs
+  slug: chicken
+  name_ko: 닭고기
+  level: 1
+  sort_order: 20
+- id: seafood
+  parent_id: null
+  slug: seafood
+  name_ko: 수산물/건해산
+  level: 0
+  sort_order: 21
+- id: seafood.fish
+  parent_id: seafood
+  slug: fish
+  name_ko: 생선
+  level: 1
+  sort_order: 22
+- id: seafood.frozen
+  parent_id: seafood
+  slug: frozen
+  name_ko: 간편/냉동수산물
+  level: 1
+  sort_order: 23
+- id: dairy
+  parent_id: null
+  slug: dairy
+  name_ko: 우유/유제품
+  level: 0
+  sort_order: 24
+- id: dairy.milk
+  parent_id: dairy
+  slug: milk
+  name_ko: 우유
+  level: 1
+  sort_order: 25
+- id: dairy.yogurt
+  parent_id: dairy
+  slug: yogurt
+  name_ko: 요거트/요구르트
+  level: 1
+  sort_order: 26
+- id: dairy.cheese
+  parent_id: dairy
+  slug: cheese
+  name_ko: 치즈
+  level: 1
+  sort_order: 27
+- id: processed_food
+  parent_id: null
+  slug: processed_food
+  name_ko: 가공식품/간편식
+  level: 0
+  sort_order: 28
+- id: processed_food.ramen
+  parent_id: processed_food
+  slug: ramen
+  name_ko: 라면
+  level: 1
+  sort_order: 29
+- id: processed_food.kimchi
+  parent_id: processed_food
+  slug: kimchi
+  name_ko: 김치/반찬
+  level: 1
+  sort_order: 30
+- id: processed_food.frozen_meal
+  parent_id: processed_food
+  slug: frozen_meal
+  name_ko: 냉동/간편식
+  level: 1
+  sort_order: 31
+- id: beverages
+  parent_id: null
+  slug: beverages
+  name_ko: 생수/음료
+  level: 0
+  sort_order: 32
+- id: beverages.water
+  parent_id: beverages
+  slug: water
+  name_ko: 생수/탄산수
+  level: 1
+  sort_order: 33
+- id: beverages.coffee_drinks
+  parent_id: beverages
+  slug: coffee_drinks
+  name_ko: 커피음료
+  level: 1
+  sort_order: 34
+- id: coffee_tea
+  parent_id: beverages
+  slug: coffee_tea
+  name_ko: 커피/차
+  level: 1
+  sort_order: 35
+- id: coffee_tea.coffee_mix
+  parent_id: coffee_tea
+  slug: coffee_mix
+  name_ko: 커피믹스
+  level: 2
+  sort_order: 36
+- id: coffee_tea.capsule_drip
+  parent_id: coffee_tea
+  slug: capsule_drip
+  name_ko: 드립백/캡슐커피
+  level: 2
+  sort_order: 37
+- id: living
+  parent_id: null
+  slug: living
+  name_ko: 생활/위생용품
+  level: 0
+  sort_order: 38
+- id: living.paper
+  parent_id: living
+  slug: paper
+  name_ko: 화장지/물티슈
+  level: 1
+  sort_order: 39
+- id: living.detergent
+  parent_id: living
+  slug: detergent
+  name_ko: 세탁/주방세제
+  level: 1
+  sort_order: 40
+- id: living.shampoo
+  parent_id: living
+  slug: shampoo
+  name_ko: 샴푸/헤어케어
+  level: 1
+  sort_order: 41
+- id: pet
+  parent_id: null
+  slug: pet
+  name_ko: 반려동물
+  level: 0
+  sort_order: 42
+- id: pet.dog_food
+  parent_id: pet
+  slug: dog_food
+  name_ko: 강아지 사료/간식
+  level: 1
+  sort_order: 43
+- id: pet.cat_food
+  parent_id: pet
+  slug: cat_food
+  name_ko: 고양이 사료/간식
+  level: 1
+  sort_order: 44
+- id: pet.litter
+  parent_id: pet
+  slug: litter
+  name_ko: 배변/모래용품
+  level: 1
+  sort_order: 45
+mappings:
+- mart: emart
+  mart_native_id: '6000213114'
+  mart_native_path: FOOD > 과일
+  unified_category_id: fruits
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: emart
+  mart_native_id: '6000213116'
+  mart_native_path: FOOD > 과일 > 사과/배 > 사과
+  unified_category_id: fruits.apple
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000213117'
+  mart_native_path: FOOD > 과일 > 사과/배 > 배
+  unified_category_id: fruits.pear
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000213119'
+  mart_native_path: FOOD > 과일 > 감귤/만감류 > 감귤
+  unified_category_id: fruits.citrus
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000213129'
+  mart_native_path: FOOD > 과일 > 딸기/키위/블루베리 > 키위
+  unified_category_id: fruits.kiwi
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000213132'
+  mart_native_path: FOOD > 과일 > 포도/복숭아 > 포도
+  unified_category_id: fruits.grape
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000213139'
+  mart_native_path: FOOD > 과일 > 바나나/파인애플 > 바나나
+  unified_category_id: fruits.banana
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000213126'
+  mart_native_path: FOOD > 과일 > 수박/멜론/참외/토마토 > 토마토
+  unified_category_id: fruits.tomato
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000213164'
+  mart_native_path: FOOD > 과일 > 냉동/간편과일 > 냉동과일
+  unified_category_id: fruits.frozen
+  trust: auto-aggregate
+  confidence: 0.9
+- mart: emart
+  mart_native_id: '6000213167'
+  mart_native_path: FOOD > 채소
+  unified_category_id: vegetables
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: emart
+  mart_native_id: '6000213169'
+  mart_native_path: FOOD > 채소 > 두부/콩나물/숙주나물 > 두부
+  unified_category_id: vegetables.tofu
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000213205'
+  mart_native_path: FOOD > 채소 > 양배추/양상추/브로콜리 > 양배추
+  unified_category_id: vegetables.cabbage
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: emart
+  mart_native_id: '6000215152'
+  mart_native_path: FOOD > 쌀/잡곡/견과
+  unified_category_id: rice_grains
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: emart
+  mart_native_id: '6000215196'
+  mart_native_path: FOOD > 정육/계란류 > 계란/알류 > 계란
+  unified_category_id: meat_eggs.eggs
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000215216'
+  mart_native_path: FOOD > 정육/계란류 > 국내산소고기
+  unified_category_id: meat_eggs.beef
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: emart
+  mart_native_id: '6000215210'
+  mart_native_path: FOOD > 정육/계란류 > 돼지고기
+  unified_category_id: meat_eggs.pork
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: emart
+  mart_native_id: '6000215233'
+  mart_native_path: FOOD > 정육/계란류 > 양념육/가공육 > 닭고기
+  unified_category_id: meat_eggs.chicken
+  trust: auto-aggregate
+  confidence: 0.9
+- mart: emart
+  mart_native_id: '6000213470'
+  mart_native_path: FOOD > 수산물/건해산 > 생선
+  unified_category_id: seafood.fish
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: emart
+  mart_native_id: '6000213535'
+  mart_native_path: FOOD > 우유/유제품 > 우유
+  unified_category_id: dairy.milk
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000213540'
+  mart_native_path: FOOD > 우유/유제품 > 요거트/요구르트
+  unified_category_id: dairy.yogurt
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000213544'
+  mart_native_path: FOOD > 우유/유제품 > 치즈
+  unified_category_id: dairy.cheese
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000213320'
+  mart_native_path: FOOD > 면류/통조림 > 라면
+  unified_category_id: processed_food.ramen
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000213300'
+  mart_native_path: FOOD > 김치/반찬/델리 > 김치
+  unified_category_id: processed_food.kimchi
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: emart
+  mart_native_id: '6000213425'
+  mart_native_path: FOOD > 생수/음료/주류 > 생수
+  unified_category_id: beverages.water
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000215262'
+  mart_native_path: FOOD > 커피/원두/차 > 커피음료
+  unified_category_id: beverages.coffee_drinks
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: emart
+  mart_native_id: '6000215246'
+  mart_native_path: FOOD > 커피/원두/차 > 커피믹스
+  unified_category_id: coffee_tea.coffee_mix
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000215254'
+  mart_native_path: FOOD > 커피/원두/차 > 드립백/캡슐/더치커피
+  unified_category_id: coffee_tea.capsule_drip
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: emart
+  mart_native_id: '6000213999'
+  mart_native_path: LIFE > 제지/위생/건강 > 화장지/물티슈 > 화장지
+  unified_category_id: living.paper
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: emart
+  mart_native_id: '6000214421'
+  mart_native_path: LIFE > 청소/생활용품 > 세탁세제
+  unified_category_id: living.detergent
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: emart
+  mart_native_id: '6000214661'
+  mart_native_path: LIFE > 헤어/바디/뷰티 > 헤어케어 > 샴푸
+  unified_category_id: living.shampoo
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000214034'
+  mart_native_path: LIFE > 반려동물 > 강아지사료/간식
+  unified_category_id: pet.dog_food
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000214051'
+  mart_native_path: LIFE > 반려동물 > 고양이사료/간식
+  unified_category_id: pet.cat_food
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: emart
+  mart_native_id: '6000214069'
+  mart_native_path: LIFE > 반려동물 > 모래/배변용품
+  unified_category_id: pet.litter
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: homeplus
+  mart_native_id: '200009'
+  mart_native_path: 과일 > 과일 > 사과/배
+  unified_category_id: fruits
+  trust: auto-aggregate
+  confidence: 0.8
+- mart: homeplus
+  mart_native_id: '200002'
+  mart_native_path: 과일 > 과일 > 감귤/만감류
+  unified_category_id: fruits.citrus
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: homeplus
+  mart_native_id: '200012'
+  mart_native_path: 과일 > 과일 > 키위/석류/아보카도
+  unified_category_id: fruits.kiwi
+  trust: auto-aggregate
+  confidence: 0.75
+- mart: homeplus
+  mart_native_id: '200014'
+  mart_native_path: 과일 > 과일 > 포도/자두/복숭아
+  unified_category_id: fruits.grape
+  trust: auto-aggregate
+  confidence: 0.75
+- mart: homeplus
+  mart_native_id: '200008'
+  mart_native_path: 과일 > 과일 > 바나나/파인애플
+  unified_category_id: fruits.banana
+  trust: auto-aggregate
+  confidence: 0.85
+- mart: homeplus
+  mart_native_id: '200013'
+  mart_native_path: 과일 > 과일 > 토마토
+  unified_category_id: fruits.tomato
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: homeplus
+  mart_native_id: '200005'
+  mart_native_path: 과일 > 과일 > 냉동/건조/간편과일
+  unified_category_id: fruits.frozen
+  trust: auto-aggregate
+  confidence: 0.9
+- mart: homeplus
+  mart_native_id: '200063'
+  mart_native_path: 두부/김치/반찬 > 두부/김치/반찬 > 두부/나물
+  unified_category_id: vegetables.tofu
+  trust: auto-aggregate
+  confidence: 0.9
+- mart: homeplus
+  mart_native_id: '100002'
+  mart_native_path: 쌀/잡곡 > 쌀/잡곡
+  unified_category_id: rice_grains
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: homeplus
+  mart_native_id: '200048'
+  mart_native_path: 정육/계란 > 정육/계란 > 계란/알류
+  unified_category_id: meat_eggs.eggs
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: homeplus
+  mart_native_id: '200050'
+  mart_native_path: 정육/계란 > 정육/계란 > 돼지고기
+  unified_category_id: meat_eggs.pork
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: homeplus
+  mart_native_id: '200044'
+  mart_native_path: 수산물/건어물 > 수산물/건어물 > 생선
+  unified_category_id: seafood.fish
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: homeplus
+  mart_native_id: '200041'
+  mart_native_path: 수산물/건어물 > 수산물/건어물 > 간편/냉동수산물
+  unified_category_id: seafood.frozen
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: homeplus
+  mart_native_id: '200059'
+  mart_native_path: 우유/유제품 > 우유/유제품 > 우유
+  unified_category_id: dairy.milk
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: homeplus
+  mart_native_id: '200058'
+  mart_native_path: 우유/유제품 > 우유/유제품 > 요거트/요구르트
+  unified_category_id: dairy.yogurt
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: homeplus
+  mart_native_id: '200060'
+  mart_native_path: 우유/유제품 > 우유/유제품 > 치즈/버터
+  unified_category_id: dairy.cheese
+  trust: auto-aggregate
+  confidence: 0.9
+- mart: homeplus
+  mart_native_id: '200091'
+  mart_native_path: 라면/즉석식품/통조림 > 라면/즉석식품/통조림 > 라면/수입면류
+  unified_category_id: processed_food.ramen
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: homeplus
+  mart_native_id: '200061'
+  mart_native_path: 두부/김치/반찬 > 두부/김치/반찬 > 김치
+  unified_category_id: processed_food.kimchi
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: homeplus
+  mart_native_id: '200100'
+  mart_native_path: 생수/음료 > 생수/음료/주류 > 생수/탄산수
+  unified_category_id: beverages.water
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: homeplus
+  mart_native_id: '200106'
+  mart_native_path: 커피/차 > 커피/차 > 커피음료
+  unified_category_id: beverages.coffee_drinks
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: homeplus
+  mart_native_id: '200114'
+  mart_native_path: 커피/차 > 커피/차 > 커피믹스
+  unified_category_id: coffee_tea.coffee_mix
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: homeplus
+  mart_native_id: '200110'
+  mart_native_path: 커피/차 > 커피/차 > 원두커피/캡슐커피
+  unified_category_id: coffee_tea.capsule_drip
+  trust: auto-aggregate
+  confidence: 0.85
+- mart: homeplus
+  mart_native_id: '200130'
+  mart_native_path: 제지/위생/뷰티 > 제지/위생/뷰티 > 화장지/키친타월/물티슈
+  unified_category_id: living.paper
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: homeplus
+  mart_native_id: '200132'
+  mart_native_path: 세탁/청소/욕실 > 세탁/청소 > 세탁세제/섬유유연제
+  unified_category_id: living.detergent
+  trust: auto-aggregate
+  confidence: 0.9
+- mart: homeplus
+  mart_native_id: '200135'
+  mart_native_path: 세탁/청소/욕실 > 세탁/청소 > 주방/청소용 세제
+  unified_category_id: living.detergent
+  trust: auto-aggregate
+  confidence: 0.9
+- mart: homeplus
+  mart_native_id: '200288'
+  mart_native_path: 반려동물 > 반려동물 > 강아지사료/간식
+  unified_category_id: pet.dog_food
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: homeplus
+  mart_native_id: '200294'
+  mart_native_path: 반려동물 > 반려동물 > 고양이사료/간식
+  unified_category_id: pet.cat_food
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: homeplus
+  mart_native_id: '200290'
+  mart_native_path: 반려동물 > 반려동물 > 모래/배변용품
+  unified_category_id: pet.litter
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: be9e0e02-bbf6-4ef3-bbf4-960ee518b796
+  mart_native_path: 과일
+  unified_category_id: fruits
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: 0e32f2b3-a2d0-4c40-9971-5d10b4e306a4
+  mart_native_path: 과일 > 사과ㆍ배
+  unified_category_id: fruits
+  trust: auto-aggregate
+  confidence: 0.8
+- mart: lottemart
+  mart_native_id: ac0c06a3-c67f-4298-bbf3-bf56b8558ded
+  mart_native_path: 과일 > 귤ㆍ한라봉ㆍ감귤류
+  unified_category_id: fruits.citrus
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: 7ad60eb1-0542-4a49-afdb-8680108580e9
+  mart_native_path: 과일 > 파인애플ㆍ키위
+  unified_category_id: fruits.kiwi
+  trust: auto-aggregate
+  confidence: 0.75
+- mart: lottemart
+  mart_native_id: 4c23f6b5-1cd4-40c1-b14a-5ac69793c2a7
+  mart_native_path: 과일 > 샤인머스캣ㆍ포도
+  unified_category_id: fruits.grape
+  trust: auto-aggregate
+  confidence: 0.85
+- mart: lottemart
+  mart_native_id: 82de8deb-b7e1-4911-8e55-2da972bbda35
+  mart_native_path: 과일 > 바나나ㆍ망고ㆍ아보카도
+  unified_category_id: fruits.banana
+  trust: auto-aggregate
+  confidence: 0.8
+- mart: lottemart
+  mart_native_id: ef0a5b28-af2b-4cd0-9aad-8b08976ef534
+  mart_native_path: 과일 > 토마토ㆍ방울토마토
+  unified_category_id: fruits.tomato
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: 1f9208b6-11b3-41ba-bb52-d0b608100093
+  mart_native_path: 과일 > 간편ㆍ냉동과일
+  unified_category_id: fruits.frozen
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: a244bcc1-5e64-4ed0-8340-a18293ffe4f6
+  mart_native_path: 채소
+  unified_category_id: vegetables
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: ce1efbdb-de81-40f4-b560-9905ecf90259
+  mart_native_path: 채소 > 두부ㆍ나또ㆍ콩나물ㆍ숙주나물
+  unified_category_id: vegetables.tofu
+  trust: auto-aggregate
+  confidence: 0.9
+- mart: lottemart
+  mart_native_id: 973c85c5-daff-41fd-b3d2-a1afe1dde732
+  mart_native_path: 쌀ㆍ잡곡ㆍ견과류
+  unified_category_id: rice_grains
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: b57d5cbd-5158-4445-b8b0-deb89ddc2079
+  mart_native_path: 쌀ㆍ잡곡ㆍ견과류 > 쌀ㆍ백미
+  unified_category_id: rice_grains.rice
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: 33b1bfc4-1ab6-4899-b4ea-63963b740d46
+  mart_native_path: 정육ㆍ계란
+  unified_category_id: meat_eggs
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: ebfde79f-80e3-403c-9b9e-05bae0ca36a2
+  mart_native_path: 정육ㆍ계란 > 계란ㆍ메추리알
+  unified_category_id: meat_eggs.eggs
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: cf47375d-f53b-4408-aaa2-cebd7b9d36a9
+  mart_native_path: 정육ㆍ계란 > 국내산소고기
+  unified_category_id: meat_eggs.beef
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: 38b08189-0029-4164-986c-8f47adb21dd2
+  mart_native_path: 정육ㆍ계란 > 국내산돼지고기
+  unified_category_id: meat_eggs.pork
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: 6fb185b5-7392-40de-b151-6125cf78de03
+  mart_native_path: 정육ㆍ계란 > 닭고기
+  unified_category_id: meat_eggs.chicken
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: lottemart
+  mart_native_id: 8b96ee42-b24e-4d9b-acff-84e0060a4e04
+  mart_native_path: 수산물ㆍ건해산물 > 생선
+  unified_category_id: seafood.fish
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: lottemart
+  mart_native_id: 086f20d2-7572-4279-bc9a-13c25cb5ca6a
+  mart_native_path: 우유ㆍ유제품
+  unified_category_id: dairy
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: 5bb44765-f54a-46cd-befe-e05f09f9e4b1
+  mart_native_path: 우유ㆍ유제품 > 우유
+  unified_category_id: dairy.milk
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: lottemart
+  mart_native_id: 2d8c7a8e-1bd5-42cc-96a0-1555c0d0dcaf
+  mart_native_path: 우유ㆍ유제품 > 요거트ㆍ요구르트
+  unified_category_id: dairy.yogurt
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: lottemart
+  mart_native_id: ccaa2de1-66cb-4396-890d-ae9ff0c3cfbf
+  mart_native_path: 우유ㆍ유제품 > 치즈
+  unified_category_id: dairy.cheese
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: lottemart
+  mart_native_id: 38c3f013-8359-4937-982b-bea1d93601ff
+  mart_native_path: 라면ㆍ통조림ㆍ즉석밥 > 라면
+  unified_category_id: processed_food.ramen
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: lottemart
+  mart_native_id: 19a96177-4aaf-4640-9e4c-526c6dff9d41
+  mart_native_path: 김치ㆍ반찬ㆍ젓갈 > 김치
+  unified_category_id: processed_food.kimchi
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: 03894bc3-1e74-4b7e-ac92-b63041738f2b
+  mart_native_path: 생수ㆍ음료 > 생수
+  unified_category_id: beverages.water
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: lottemart
+  mart_native_id: 2333f483-d66a-40b8-a1ff-eb92f3668020
+  mart_native_path: 생수ㆍ음료 > 커피음료
+  unified_category_id: beverages.coffee_drinks
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: 620c6062-25fe-46a5-b1b6-1fdb7b90e9bc
+  mart_native_path: 커피ㆍ원두 > 커피믹스ㆍ프림
+  unified_category_id: coffee_tea.coffee_mix
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: f356f0bd-0bb0-4ace-ad8b-f9020f239488
+  mart_native_path: 커피ㆍ원두 > 드립백ㆍ캡슐ㆍ더치커피
+  unified_category_id: coffee_tea.capsule_drip
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: 47e7048b-1200-4a13-8264-513ffa826519
+  mart_native_path: 제지ㆍ세제ㆍ생활용품 > 화장지ㆍ물티슈ㆍ키친타올
+  unified_category_id: living.paper
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: 80745023-5e79-4f4b-97f1-576494bbcada
+  mart_native_path: 제지ㆍ세제ㆍ생활용품 > 세탁세제ㆍ유연제
+  unified_category_id: living.detergent
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: lottemart
+  mart_native_id: 241dae34-6c9c-4355-ace7-061d979f4347
+  mart_native_path: 반려동물 > 강아지사료
+  unified_category_id: pet.dog_food
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: lottemart
+  mart_native_id: f2006f7a-679b-4b33-9fd7-d4e233acb94a
+  mart_native_path: 반려동물 > 고양이사료
+  unified_category_id: pet.cat_food
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: lottemart
+  mart_native_id: 51ca539e-46a0-42be-9fc2-32fc426bec2a
+  mart_native_path: 반려동물 > 고양이배변
+  unified_category_id: pet.litter
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: costco
+  mart_native_id: cos_10.1
+  mart_native_path: 식품 > 쌀/잡곡
+  unified_category_id: rice_grains
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: costco
+  mart_native_id: cos_10.1.1
+  mart_native_path: 식품 > 쌀/잡곡 > 쌀
+  unified_category_id: rice_grains.rice
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: costco
+  mart_native_id: cos_10.1.2
+  mart_native_path: 식품 > 쌀/잡곡 > 잡곡
+  unified_category_id: rice_grains.mixed_grains
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: costco
+  mart_native_id: cos_10.2
+  mart_native_path: 식품 > 커피/차
+  unified_category_id: coffee_tea
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: costco
+  mart_native_id: cos_10.2.2
+  mart_native_path: 식품 > 커피/차 > 인스턴트 커피
+  unified_category_id: coffee_tea.coffee_mix
+  trust: auto-aggregate
+  confidence: 0.8
+- mart: costco
+  mart_native_id: cos_10.2.3
+  mart_native_path: 식품 > 커피/차 > 캡슐 커피
+  unified_category_id: coffee_tea.capsule_drip
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: costco
+  mart_native_id: cos_10.2.6
+  mart_native_path: 식품 > 커피/차 > 생수/탄산수
+  unified_category_id: beverages.water
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: costco
+  mart_native_id: cos_10.3.5
+  mart_native_path: 식품 > 가공식품 > 라면/면류
+  unified_category_id: processed_food.ramen
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: costco
+  mart_native_id: cos_10.10.2
+  mart_native_path: 식품 > 신선식품 > 정육/계란
+  unified_category_id: meat_eggs
+  trust: auto-aggregate
+  confidence: 0.85
+- mart: costco
+  mart_native_id: cos_10.10.3
+  mart_native_path: 식품 > 신선식품 > 김치/반찬
+  unified_category_id: processed_food.kimchi
+  trust: auto-aggregate
+  confidence: 0.9
+- mart: costco
+  mart_native_id: cos_10.10.5
+  mart_native_path: 식품 > 신선식품 > 치즈/버터
+  unified_category_id: dairy.cheese
+  trust: auto-aggregate
+  confidence: 0.9
+- mart: costco
+  mart_native_id: cos_10.11.1
+  mart_native_path: 식품 > 음료 > 두유/우유
+  unified_category_id: dairy.milk
+  trust: auto-aggregate
+  confidence: 0.8
+- mart: costco
+  mart_native_id: cos_10.14
+  mart_native_path: 식품 > 냉동식품
+  unified_category_id: processed_food.frozen_meal
+  trust: auto-aggregate
+  confidence: 0.9
+- mart: costco
+  mart_native_id: cos_10.14.5
+  mart_native_path: 식품 > 냉동식품 > 냉동 과일/채소
+  unified_category_id: fruits.frozen
+  trust: auto-aggregate
+  confidence: 0.8
+- mart: costco
+  mart_native_id: cos_2.6
+  mart_native_path: 가구/침구/인테리어 > 화장지
+  unified_category_id: living.paper
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: costco
+  mart_native_id: cos_2.7
+  mart_native_path: 가구/침구/인테리어 > 세제/청소용품
+  unified_category_id: living.detergent
+  trust: auto-aggregate
+  confidence: 0.95
+- mart: costco
+  mart_native_id: cos_8.2.1
+  mart_native_path: 화장품/미용/제지 > 헤어케어 > 샴푸/컨디셔너
+  unified_category_id: living.shampoo
+  trust: auto-aggregate
+  confidence: 0.9
+- mart: costco
+  mart_native_id: cos_10.9.6
+  mart_native_path: 식품 > 반려동물용품 > 강아지 사료/간식
+  unified_category_id: pet.dog_food
+  trust: auto-aggregate
+  confidence: 1.0
+- mart: costco
+  mart_native_id: cos_10.9.2
+  mart_native_path: 식품 > 반려동물용품 > 고양이 사료/간식
+  unified_category_id: pet.cat_food
+  trust: auto-aggregate
+  confidence: 1.0

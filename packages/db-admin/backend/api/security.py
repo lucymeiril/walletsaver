@@ -75,13 +75,13 @@ def make_error(code: str, status_code: int = 400, detail_override: str | None = 
 
 # ── Input Constraints (constants) ──────────────────────────────────────
 
-MAX_BULK_IDS = 500
-MAX_INGESTION_ITEMS = 10_000
+MAX_BULK_IDS = 1_000
+MAX_INGESTION_ITEMS = 30_000
 MAX_INGESTION_ERRORS = 1_000
 MAX_BULK_PRICE_ITEMS = 5_000
 MAX_SYNONYM_COUNT = 20
 MAX_VALIDATE_ITEMS = 10_000
-MAX_REQUEST_BODY_BYTES = 10 * 1024 * 1024  # 10 MB
+MAX_REQUEST_BODY_BYTES = 100 * 1024 * 1024  # 100 MB
 
 # String length limits (aligned with DB column sizes)
 MAX_NAME_LEN = 255

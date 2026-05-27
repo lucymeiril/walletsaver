@@ -1,307 +1,272 @@
-"""
-알구몬 핫딜 크롤러.
+"""알구몬 핫딜 크롤러 스켈레톤.
 
-https://www.algumon.com/n/deal 에서 핫딜 게시글을 수집한다.
-알구몬은 Svelte SPA이지만 SSR 렌더링하므로 requests로 HTML 파싱 가능.
-
-데이터 구조 (2026-03 기준):
-  <div class="deal-card-content">
-    <div class="flex gap-0">
-      <div class="avatar">...</div>     ← 아바타 (링크 있음)
-      <div class="flex-1 min-w-0 ml-3">
-        <소스> | <커뮤니티>                ← 구매처/커뮤니티
-        <h3><a href="/l/d/...">제목</a></h3>
-        <p class="deal-price-text">가격</p>
-        <배송> | <시간> | <작성자>
-      </div>
-    </div>
-  </div>
-
-용도: 핫딜 참고 데이터 (baseline 오염 방지 — HotdealPost로 저장)
-의존: core/ 만
+라이브 HTML 구조는 Round R G5 메인 Playwright 정찰 뒤 확정한다.
+현재 구현은 fixture 전용 placeholder 마크업과 과거 오프라인 테스트 샘플만 파싱하며,
+네트워크 호출 없이 핫딜 전용 파이프라인 계약을 검증한다.
 """
 
 from __future__ import annotations
 
+import hashlib
+import json
 import logging
-import random
 import re
-import time
+from dataclasses import asdict, dataclass, field
 from datetime import datetime
+from pathlib import Path
 from typing import Optional
+from urllib.parse import parse_qsl, urlencode, urljoin, urlparse, urlunparse
 
-import requests
 from bs4 import BeautifulSoup
 
 from core.contracts.crawler import CrawlerContract
-from core.models import CrawlerInfo, CrawlerGroup, CrawlResult, CrawlStatus, HotdealPost
-from engine.anti_detect import AntiDetect
-from crawlers.hotdeals.common import HotdealCollectorMixin, apply_source_facts, dedupe_hotdeal_posts
+from core.models import CrawlerGroup, CrawlerInfo, CrawlResult, CrawlStatus, HotdealPost
+from crawlers.hotdeals.common import apply_source_facts, dedupe_hotdeal_posts
 
 logger = logging.getLogger(__name__)
 
+TRACKING_QUERY_KEYS = {"utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "fbclid", "gclid"}
 
-class AlgumonCrawler(HotdealCollectorMixin, CrawlerContract):
-    """알구몬 핫딜 크롤러 — 여러 커뮤니티의 핫딜 통합."""
+
+@dataclass(frozen=True)
+class HotdealRecord:
+    source_site: str
+    source_native_id: str
+    title: str
+    url: str
+    posted_at: Optional[datetime] = None
+    expires_at: Optional[datetime] = None
+    price: Optional[int] = None
+    original_price: Optional[int] = None
+    discount_rate: Optional[float] = None
+    shop_name: str = ""
+    category_raw: str = ""
+    tags: list[str] = field(default_factory=list)
+    is_active: bool = True
+    fetched_at: datetime = field(default_factory=datetime.now)
+    hash_dedup: str = ""
+
+    def to_hotdeal_post(self) -> HotdealPost:
+        item = HotdealPost(
+            title=self.title,
+            url=self.url,
+            source_community="알구몬",
+            price=self.price,
+            original_price=self.original_price,
+            price_evidence=str(self.price) if self.price is not None else "",
+            category=self.category_raw,
+            category_hints=[self.category_raw] if self.category_raw else [],
+            post_date=self.posted_at,
+            crawled_at=self.fetched_at,
+        )
+        return apply_source_facts(item, source_id=self.source_site, source_url=self.url)
+
+    def model_dump(self, mode: str = "python") -> dict:
+        data = asdict(self)
+        if mode == "json":
+            for key in ("posted_at", "expires_at", "fetched_at"):
+                if data[key] is not None:
+                    data[key] = data[key].isoformat()
+        return data
+
+
+class AlgumonCrawler(CrawlerContract):
+    """알구몬 핫딜 수집기 — 현재는 fixture fallback 전용."""
 
     BASE_URL = "https://www.algumon.com"
     SOURCE_ID = "algumon"
-    PAGE_ENCODING = "utf-8"
     DEAL_URL = "https://www.algumon.com/n/deal"
-    # 알구몬은 SPA(Svelte)이지만 SSR로 JSON-LD가 포함된다
-    # JSON-LD schema에서 데이터 추출이 더 안정적
-
-    def __init__(self, anti_detect: Optional[AntiDetect] = None):
-        self._anti_detect = anti_detect or AntiDetect(delay_min=0.5, delay_max=1.5)
+    FIXTURE_PATH = Path(__file__).resolve().parents[3] / "tests" / "fixtures" / "algumon" / "sample_list.html"
 
     @property
     def info(self) -> CrawlerInfo:
         return CrawlerInfo(
             name="알구몬",
-            version="2.0.0",
+            version="3.0.0-g5b",
             group=CrawlerGroup.HOTDEAL,
-            description="여러 커뮤니티의 핫딜 정보 통합 (뽐뿌, 어미새, 루리웹 등)",
+            description="알구몬 핫딜 목록 fixture 기반 수집 스켈레톤",
             target_url=self.DEAL_URL,
-            strategies=["requests"],
+            strategies=["fixture"],
         )
 
-    def _retry_request(self, url: str, *, headers: dict | None = None,
-                       session: requests.Session | None = None,
-                       timeout: int = 15, max_retries: int = 3) -> requests.Response:
-        """HTTP GET with exponential backoff for transient failures."""
-        requester = session or requests
-        last_exc = None
-        for attempt in range(max_retries):
-            try:
-                resp = requester.get(url, headers=headers, timeout=timeout)
-                if resp.status_code == 429:
-                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
-                    logger.warning(f"[{self.info.name}] Rate limited, retrying in {wait:.1f}s")
-                    time.sleep(wait)
-                    continue
-                return resp
-            except (requests.exceptions.ConnectionError,
-                    requests.exceptions.Timeout) as e:
-                last_exc = e
-                if attempt < max_retries - 1:
-                    wait = (2 ** attempt) + random.uniform(0.5, 1.5)
-                    logger.warning(f"[{self.info.name}] Request failed (attempt {attempt+1}/{max_retries}), "
-                                   f"retrying in {wait:.1f}s: {e}")
-                    time.sleep(wait)
-                else:
-                    raise
-        raise last_exc  # type: ignore[misc]
+    def crawl_list(self, html: str | None = None) -> list[HotdealRecord]:
+        """알구몬 목록 HTML을 HotdealRecord로 변환한다.
+
+        TODO(Round R G5): Playwright 정찰 결과로 실제 algumon.com selector를 교체한다.
+        """
+        raw_html = html if html is not None else self._load_fixture_html()
+        return self.parse_list_html(raw_html)
 
     async def crawl(self) -> CrawlResult:
-        """알구몬 핫딜 목록을 크롤링한다."""
+        """네트워크 호출 없이 fixture fallback 결과를 CrawlResult로 반환한다."""
         started_at = datetime.now()
-        logger.info(f"[알구몬] 크롤링 시작: {self.DEAL_URL}")
-
         try:
-            headers = self._anti_detect.get_random_headers()
-            response = self._retry_request(self.DEAL_URL, headers=headers, timeout=15)
-            response.encoding = "utf-8"
-
-            if response.status_code != 200:
-                logger.error(f"[알구몬] HTTP {response.status_code}")
-                return CrawlResult(
-                    status=CrawlStatus.FAILED,
-                    crawler_name=self.info.name,
-                    error_msg=f"HTTP {response.status_code}",
-                    started_at=started_at,
-                    finished_at=datetime.now(),
-                )
-
-            raw_data = response.text
-            items = await self.parse(raw_data)
-            valid_items = await self.validate(items)
-
-            items_as_dict = [item.model_dump(mode="json") for item in valid_items]
-
+            records = self.crawl_list()
+            posts = [record.to_hotdeal_post() for record in records]
+            posts = dedupe_hotdeal_posts(posts)
             finished_at = datetime.now()
-            logger.info(f"[알구몬] 크롤링 완료: {len(valid_items)}개, {(finished_at - started_at).total_seconds():.2f}초")
-
             return CrawlResult(
                 status=CrawlStatus.SUCCESS,
                 crawler_name=self.info.name,
-                strategy_used="requests",
-                items_count=len(valid_items),
-                items=items_as_dict,
+                strategy_used="fixture",
+                items_count=len(posts),
+                items=[item.model_dump(mode="json") for item in posts],
                 started_at=started_at,
                 finished_at=finished_at,
                 duration_seconds=(finished_at - started_at).total_seconds(),
+                quality_details={"fixture_fallback": True, "source_site": self.SOURCE_ID},
             )
-
-        except Exception as e:
-            logger.error(f"[알구몬] 크롤링 실패: {e}", exc_info=True)
+        except Exception as exc:
+            logger.error("[알구몬] fixture 크롤링 실패: %s", exc, exc_info=True)
             return CrawlResult(
                 status=CrawlStatus.FAILED,
                 crawler_name=self.info.name,
-                error_msg=str(e),
+                error_msg=str(exc),
                 started_at=started_at,
                 finished_at=datetime.now(),
             )
 
     async def parse(self, raw_data: str) -> list[HotdealPost]:
-        """HTML에서 핫딜 게시글을 파싱한다.
-
-        알구몬은 SPA이지만 SSR 렌더링으로 JSON-LD가 포함된다.
-        1차: JSON-LD schema에서 추출 (안정적)
-        2차: HTML DOM에서 추출 (폴백)
-        """
-        soup = BeautifulSoup(raw_data, "html.parser")
-        items: list[HotdealPost] = []
-
-        # 1차: JSON-LD에서 추출 시도
-        # JSON-LD는 최신 알구몬에서 제목/URL만 있고 가격이 빠지는 경우가 많다.
-        # 그래서 여기서 조기 반환하지 않고 DOM 카드까지 병합해 price/source 누락을 보강한다.
-        import json
-        for script in soup.select('script[type="application/ld+json"]'):
-            try:
-                data = json.loads(script.string)
-                if data.get("@type") == "CollectionPage" and "mainEntity" in data:
-                    item_list = data["mainEntity"].get("itemListElement", [])
-                    for entry in item_list:
-                        item_data = entry.get("item", {})
-                        title = item_data.get("name", "")
-                        url = item_data.get("url", "")
-                        if title and url:
-                            price = self._extract_price(title)
-                            items.append(apply_source_facts(HotdealPost(
-                                title=title,
-                                url=url,
-                                source_community="알구몬",
-                                price=price,
-                                price_evidence=title if price is not None else "",
-                            ), source_id=self.SOURCE_ID, source_url=url))
-            except (json.JSONDecodeError, KeyError):
-                continue
-
-        jsonld_by_key = {self._deal_key(item.url): item for item in items}
-
-        # 2차: HTML DOM 기반 파싱. JSON-LD 결과가 있어도 price 보강을 위해 항상 시도한다.
-        cards = soup.select(".deal-card-content")
-        logger.info(f"[알구몬] deal-card-content 카드: {len(cards)}개")
-
-        for card in cards:
-            try:
-                item = self._parse_card(card)
-                if item:
-                    existing = jsonld_by_key.get(self._deal_key(item.url))
-                    if existing:
-                        if existing.price is None and item.price is not None:
-                            existing.price = item.price
-                        if not existing.source_community and item.source_community:
-                            existing.source_community = item.source_community
-                    else:
-                        items.append(item)
-                        jsonld_by_key[self._deal_key(item.url)] = item
-            except Exception as e:
-                logger.debug(f"[알구몬] 카드 파싱 오류: {e}")
-                continue
-
-        if items:
-            price_count = sum(1 for item in items if item.price is not None)
-            logger.info(f"[알구몬] 총 {len(items)}개 추출, 가격 포함 {price_count}개")
-
-        del soup  # Free DOM tree memory
-        return items
-
-    def _deal_key(self, url: str) -> str:
-        """알구몬 JSON-LD(`/n/deal/123`)와 DOM redirect(`/l/d/123?...`) URL을 같은 딜로 묶는다."""
-        if not url:
-            return ""
-        match = re.search(r"/(?:n/deal|l/d)/(\d+)", url)
-        if match:
-            return match.group(1)
-        return url.split("?", 1)[0]
-
-    def _parse_card(self, card) -> Optional[HotdealPost]:
-        """개별 핫딜 카드를 파싱한다."""
-
-        # 1) 제목 + URL 추출
-        title_el = card.select_one("h3 a[href*='/l/d/']")
-        if not title_el:
-            # fallback: 카드 내 모든 a 태그에서 href 포함하는 것
-            title_el = card.select_one("a[href*='/l/d/']")
-
-        if not title_el:
-            return None
-
-        title = title_el.get_text(strip=True)
-        if not title or len(title) < 3:
-            return None
-
-        href = title_el.get("href", "")
-        url = href if href.startswith("http") else f"{self.BASE_URL}{href}"
-
-        # 2) 가격 추출 — deal-price-text 클래스 또는 가격 패턴
-        price = None
-        price_el = card.select_one(".deal-price-text, [class*='price']")
-        if price_el:
-            price_text = price_el.get_text(strip=True)
-            price = self._extract_price(price_text)
-
-        # fallback: 카드 전체 텍스트에서 가격 추출
-        if price is None:
-            card_text = card.get_text(" ", strip=True)
-            price = self._extract_price(card_text)
-
-        # 3) 소스 커뮤니티 추출
-        source = self._extract_source(card)
-        image_el = card.select_one("img[src], img[data-src]")
-        date_el = card.select_one("time, .time, .timestamp")
-
-        date_text = date_el.get("datetime") if date_el and date_el.name == "time" else (date_el.get_text(" ", strip=True) if date_el else None)
-
-        return apply_source_facts(HotdealPost(
-            title=title,
-            url=url,
-            source_community=source,
-            price=price,
-            price_evidence=price_text if price_el and price is not None else (card_text if price is not None else ""),
-            category=source,
-            category_hints=[source] if source else [],
-            image_url=f"{self.BASE_URL}{image_el.get('src') or image_el.get('data-src')}" if image_el and not (image_el.get("src") or image_el.get("data-src")).startswith("http") else ((image_el.get("src") or image_el.get("data-src")) if image_el else ""),
-            period=date_el.get_text(" ", strip=True) if date_el else "",
-        ), source_id=self.SOURCE_ID, source_url=url, post_date_text=date_text)
-
-    def _extract_price(self, text: str) -> Optional[int]:
-        """텍스트에서 최초 가격(원)을 추출한다."""
-        if not text:
-            return None
-
-        # "무료" 처리
-        if text.strip() == "무료":
-            return 0
-
-        # "15,470원", "50000원" 패턴
-        patterns = [
-            r"(\d{1,3}(?:,\d{3})+)\s*원",  # 1,000원 이상
-            r"(\d{3,})\s*원",                # 100원 이상
-        ]
-        for pattern in patterns:
-            match = re.search(pattern, text)
-            if match:
-                return int(match.group(1).replace(",", ""))
-        return None
-
-    def _extract_source(self, card) -> str:
-        """카드에서 소스 커뮤니티를 추출한다."""
-        # deal-card-content의 텍스트에서 첫 "|" 전후로 소스 추출
-        # 패턴: "G마켓 | 뽐뿌 | 제목" → 소스 = "뽐뿌"
-        known_communities = [
-            "뽐뿌", "어미새", "루리웹", "에펨코리아", "퀘이사존",
-            "클리앙", "딜바다", "쿨엔조이", "보배드림",
-        ]
-        card_text = card.get_text(" ", strip=True)
-
-        for community in known_communities:
-            if community in card_text:
-                return community
-
-        return ""
+        records = self.parse_list_html(raw_data)
+        return [record.to_hotdeal_post() for record in records]
 
     async def validate(self, items: list[HotdealPost]) -> list[HotdealPost]:
-        """유효한 핫딜만 필터링한다."""
         return dedupe_hotdeal_posts(items)
+
+    def parse_list_html(self, html: str) -> list[HotdealRecord]:
+        soup = BeautifulSoup(html, "html.parser")
+        records: list[HotdealRecord] = []
+
+        records.extend(self._parse_fixture_json(soup))
+        records.extend(self._parse_placeholder_cards(soup))
+        if not records:
+            records.extend(self._parse_legacy_offline_cards(soup))
+
+        deduped: dict[str, HotdealRecord] = {}
+        for record in records:
+            deduped.setdefault(record.hash_dedup, record)
+        return list(deduped.values())
+
+    def _parse_fixture_json(self, soup: BeautifulSoup) -> list[HotdealRecord]:
+        script = soup.select_one('script[type="application/json"][data-fixture="algumon-list"]')
+        if not script or not script.string:
+            return []
+        payload = json.loads(script.string)
+        return [self._record_from_mapping(item) for item in payload.get("items", [])]
+
+    def _parse_placeholder_cards(self, soup: BeautifulSoup) -> list[HotdealRecord]:
+        records: list[HotdealRecord] = []
+        for card in soup.select("[data-hotdeal-record]"):
+            records.append(self._record_from_mapping({
+                "source_native_id": card.get("data-native-id", ""),
+                "title": self._text(card, "[data-field='title']"),
+                "url": card.select_one("[data-field='title'][href], a[data-field='url'][href]").get("href", "") if card.select_one("[data-field='title'][href], a[data-field='url'][href]") else card.get("data-url", ""),
+                "posted_at": card.get("data-posted-at"),
+                "expires_at": card.get("data-expires-at"),
+                "price": self._text(card, "[data-field='price']"),
+                "original_price": self._text(card, "[data-field='original_price']"),
+                "discount_rate": self._text(card, "[data-field='discount_rate']"),
+                "shop_name": self._text(card, "[data-field='shop_name']"),
+                "category_raw": self._text(card, "[data-field='category_raw']"),
+                "tags": [tag.get_text(strip=True) for tag in card.select("[data-field='tags'] [data-tag]")],
+            }))
+        return records
+
+    def _parse_legacy_offline_cards(self, soup: BeautifulSoup) -> list[HotdealRecord]:
+        records: list[HotdealRecord] = []
+        for card in soup.select(".deal-card-content"):
+            link = card.select_one("a[href]")
+            if not link:
+                continue
+            price_text = self._text(card, ".deal-price-text, [class*='price']")
+            source_text = card.get_text(" ", strip=True)
+            records.append(self._record_from_mapping({
+                "source_native_id": self._extract_native_id(link.get("href", "")),
+                "title": link.get_text(strip=True),
+                "url": link.get("href", ""),
+                "price": price_text,
+                "shop_name": source_text.split("|")[0].strip() if "|" in source_text else "",
+                "category_raw": "legacy-offline",
+            }))
+        return records
+
+    def _record_from_mapping(self, data: dict) -> HotdealRecord:
+        url = self.normalize_url(str(data.get("url") or ""))
+        native_id = str(data.get("source_native_id") or self._extract_native_id(url))
+        title = str(data.get("title") or "").strip()
+        price = self._coerce_price(data.get("price"))
+        original_price = self._coerce_price(data.get("original_price"))
+        discount_rate = self._coerce_discount_rate(data.get("discount_rate"))
+        tags = data.get("tags") or []
+        if isinstance(tags, str):
+            tags = [part.strip() for part in tags.split(",") if part.strip()]
+        record_seed = f"{self.SOURCE_ID}|{native_id or url}"
+        return HotdealRecord(
+            source_site=self.SOURCE_ID,
+            source_native_id=native_id,
+            title=title,
+            url=url,
+            posted_at=self._parse_datetime(data.get("posted_at")),
+            expires_at=self._parse_datetime(data.get("expires_at")),
+            price=price,
+            original_price=original_price,
+            discount_rate=discount_rate,
+            shop_name=str(data.get("shop_name") or "").strip(),
+            category_raw=str(data.get("category_raw") or "").strip(),
+            tags=list(tags),
+            is_active=bool(data.get("is_active", True)),
+            hash_dedup=hashlib.sha256(record_seed.encode("utf-8")).hexdigest(),
+        )
+
+    def normalize_url(self, url: str) -> str:
+        absolute = urljoin(self.BASE_URL, (url or "").strip())
+        parsed = urlparse(absolute)
+        query = urlencode([(k, v) for k, v in parse_qsl(parsed.query, keep_blank_values=True) if k not in TRACKING_QUERY_KEYS])
+        return urlunparse((parsed.scheme.lower(), parsed.netloc.lower(), parsed.path.rstrip("/"), "", query, ""))
+
+    def _extract_native_id(self, url: str) -> str:
+        match = re.search(r"/(?:l/d|n/deal)/(\d+)", url or "")
+        return match.group(1) if match else ""
+
+    def _extract_price(self, text: str | None) -> Optional[int]:
+        return self._coerce_price(text)
+
+    def _coerce_price(self, value) -> Optional[int]:
+        if value is None:
+            return None
+        if isinstance(value, (int, float)):
+            return int(value)
+        text = str(value).strip()
+        if not text:
+            return None
+        if "무료" in text:
+            return 0
+        match = re.search(r"(\d{1,3}(?:,\d{3})+|\d{3,})\s*원?", text)
+        return int(match.group(1).replace(",", "")) if match else None
+
+    def _coerce_discount_rate(self, value) -> Optional[float]:
+        if value in (None, ""):
+            return None
+        if isinstance(value, (int, float)):
+            return float(value)
+        match = re.search(r"\d+(?:\.\d+)?", str(value))
+        return float(match.group(0)) if match else None
+
+    def _parse_datetime(self, value) -> Optional[datetime]:
+        if not value:
+            return None
+        text = str(value).replace("Z", "+00:00")
+        try:
+            return datetime.fromisoformat(text)
+        except ValueError:
+            return None
+
+    def _load_fixture_html(self) -> str:
+        return self.FIXTURE_PATH.read_text(encoding="utf-8")
+
+    def _text(self, node, selector: str) -> str:
+        found = node.select_one(selector)
+        return found.get_text(" ", strip=True) if found else ""
+
+
+__all__ = ["AlgumonCrawler", "HotdealRecord"]

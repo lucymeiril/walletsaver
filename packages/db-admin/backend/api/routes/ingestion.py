@@ -2,12 +2,14 @@
 
 import json
 import logging
+import time
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Callable, Optional, TypeVar
 
 from fastapi import APIRouter, HTTPException, Query, Request, Depends
 from pydantic import BaseModel, Field, field_validator
 from sqlalchemy import func, select
+from sqlalchemy.exc import OperationalError
 
 from services.base import get_session, managed_session
 from api.auth import (
@@ -19,6 +21,12 @@ from api.auth import (
 )
 from services.audit import log_action
 from services.normalized_mart3 import publish_mart3_rows
+from services.product_match_rules import (
+    apply_rule_to_product,
+    find_matching_rule,
+    is_missing_or_one_depth_category,
+    record_rule_hit,
+)
 from api.middleware.rate_limit import limiter, INGESTION_LIMIT
 from starlette.requests import Request as StarletteRequest
 from storage.models import (
@@ -47,6 +55,12 @@ router = APIRouter(prefix="/api/ingestions", tags=["ingestions"])
 
 
 logger = logging.getLogger(__name__)
+
+INGESTION_SERVER_CHUNK_SIZE = 1_000
+BULK_APPROVE_COMMIT_CHUNK_SIZE = 100
+SQLITE_LOCK_RETRY_ATTEMPTS = 5
+_SQLITE_LOCK_RETRY_BASE_DELAY = 0.25
+T = TypeVar("T")
 
 # --- Request 모델 ---
 
@@ -131,6 +145,32 @@ class CleanupRequest(BaseModel):
 
 
 # --- 품질 점수 계산 ---
+
+
+def _chunked(values: list[T], size: int) -> list[list[T]]:
+    return [values[idx:idx + size] for idx in range(0, len(values), size)]
+
+
+def _is_sqlite_locked(exc: Exception) -> bool:
+    current: BaseException | None = exc
+    while current is not None:
+        if "database is locked" in str(current).lower():
+            return True
+        current = current.__cause__ or current.__context__
+    return False
+
+
+def _with_sqlite_lock_retry(operation: Callable[[], T]) -> T:
+    for attempt in range(SQLITE_LOCK_RETRY_ATTEMPTS):
+        try:
+            return operation()
+        except OperationalError as exc:
+            if not _is_sqlite_locked(exc) or attempt == SQLITE_LOCK_RETRY_ATTEMPTS - 1:
+                raise
+            delay = _SQLITE_LOCK_RETRY_BASE_DELAY * (2 ** attempt)
+            logger.warning("SQLite lock detected; retrying in %.2fs (%d/%d)", delay, attempt + 1, SQLITE_LOCK_RETRY_ATTEMPTS)
+            time.sleep(delay)
+    return operation()
 
 
 def _calculate_quality(items: list[dict], schema_type: str) -> tuple[float, dict]:
@@ -237,41 +277,51 @@ def ingestion_stats(identity: dict = Depends(require_viewer)):
 
 @router.post("/bulk-approve")
 def bulk_approve(body: BulkApproveRequest, identity: dict = Depends(require_moderator)):
-    """선택된 여러 수집을 일괄 승인."""
+    """선택된 여러 수집을 일괄 승인. SQLite writer lock 완화를 위해 청크별로 커밋한다."""
     if not body.ids:
         raise HTTPException(400, "ids가 비어 있습니다")
-    with managed_session() as session:
-        results = []
-        for ingestion_id in body.ids:
-            row = session.get(PendingIngestion, ingestion_id)
-            if not row:
-                results.append({"id": ingestion_id, "status": "not_found"})
-                continue
-            if row.status != IngestionStatus.CRAWLER_APPROVED:
-                results.append({
-                    "id": ingestion_id,
-                    "status": "skipped",
-                    "reason": f"상태가 {row.status.value if hasattr(row.status, 'value') else row.status}",
-                })
-                continue
-            items = json.loads(row.items_json) if row.items_json else []
-            saved = _insert_items(session, items, row.schema_type)
-            row.db_reviewer_notes = body.notes or f"벌크 승인 (reviewer: {body.reviewer or 'system'})"
-            row.db_reviewed_at = datetime.utcnow()
-            if saved == len(items):
-                row.status = IngestionStatus.APPROVED
-                results.append({"id": ingestion_id, "status": "approved", "saved": saved})
-            else:
-                row.status = IngestionStatus.CRAWLER_APPROVED
-                reason = f"{len(items) - saved}개 항목이 필수 공개 메타데이터 누락/오류로 저장되지 않았습니다"
-                row.db_reviewer_notes = f"{row.db_reviewer_notes or ''}\n{reason}".strip()
-                results.append({"id": ingestion_id, "status": "pending", "saved": saved, "reason": reason})
-        approved_count = sum(1 for r in results if r["status"] == "approved")
-        return {
-            "approved": approved_count,
-            "total_requested": len(body.ids),
-            "results": results,
-        }
+
+    results = []
+    for id_chunk in _chunked(body.ids, BULK_APPROVE_COMMIT_CHUNK_SIZE):
+        def approve_chunk() -> list[dict]:
+            chunk_results = []
+            with managed_session() as session:
+                for ingestion_id in id_chunk:
+                    row = session.get(PendingIngestion, ingestion_id)
+                    if not row:
+                        chunk_results.append({"id": ingestion_id, "status": "not_found"})
+                        continue
+                    if row.status != IngestionStatus.CRAWLER_APPROVED:
+                        chunk_results.append({
+                            "id": ingestion_id,
+                            "status": "skipped",
+                            "reason": f"상태가 {row.status.value if hasattr(row.status, 'value') else row.status}",
+                        })
+                        continue
+                    items = json.loads(row.items_json) if row.items_json else []
+                    saved = _insert_items(session, items, row.schema_type)
+                    row.db_reviewer_notes = body.notes or f"벌크 승인 (reviewer: {body.reviewer or 'system'})"
+                    row.db_reviewed_at = datetime.utcnow()
+                    if saved == len(items):
+                        row.status = IngestionStatus.APPROVED
+                        chunk_results.append({"id": ingestion_id, "status": "approved", "saved": saved})
+                    else:
+                        row.status = IngestionStatus.CRAWLER_APPROVED
+                        reason = f"{len(items) - saved}개 항목이 필수 공개 메타데이터 누락/오류로 저장되지 않았습니다"
+                        row.db_reviewer_notes = f"{row.db_reviewer_notes or ''}\n{reason}".strip()
+                        chunk_results.append({"id": ingestion_id, "status": "pending", "saved": saved, "reason": reason})
+                session.flush()
+            return chunk_results
+
+        results.extend(_with_sqlite_lock_retry(approve_chunk))
+
+    approved_count = sum(1 for r in results if r["status"] == "approved")
+    return {
+        "approved": approved_count,
+        "total_requested": len(body.ids),
+        "chunks_committed": len(_chunked(body.ids, BULK_APPROVE_COMMIT_CHUNK_SIZE)),
+        "results": results,
+    }
 
 
 @router.post("/cleanup")
@@ -311,38 +361,61 @@ def cleanup_ingestions(body: CleanupRequest, identity: dict = Depends(require_ad
 @router.post("")
 @limiter.limit(INGESTION_LIMIT)
 def submit_ingestion(request: StarletteRequest, body: IngestionSubmit, identity: dict = Depends(get_current_identity)):
-    """크롤러가 데이터를 대기열에 제출."""
+    """크롤러가 데이터를 대기열에 제출. 서버도 1,000건 단위로 안전하게 분할 저장한다."""
     if identity["role"] not in ("service", "moderator", "admin"):
         raise HTTPException(403, "크롤러 서비스 또는 관리자 권한이 필요합니다.")
-    with managed_session() as session:
-        quality_score, quality_details = (
-            (body.quality_score, body.quality_details or {})
-            if body.quality_score is not None
-            else _calculate_quality(body.items, body.schema_type)
-        )
-        row = PendingIngestion(
-            crawler_name=body.crawler_name,
-            crawl_status=body.crawl_status,
-            strategy_used=body.strategy_used,
-            items_count=len(body.items),
-            items_json=json.dumps(body.items, ensure_ascii=False, default=str),
-            schema_type=body.schema_type,
-            quality_score=quality_score,
-            quality_details=quality_details,
-            errors_json=(
-                json.dumps(body.errors, ensure_ascii=False, default=str)
-                if body.errors
-                else None
-            ),
-            status=IngestionStatus.PENDING,
-            crawled_at=datetime.utcnow(),
-            duration_seconds=body.duration_seconds,
-            source_url=body.source_url,
-        )
-        session.add(row)
-        session.flush()
-        session.refresh(row)
-        return {"id": row.id, "status": "pending", "quality_score": quality_score}
+
+    item_chunks = _chunked(body.items, INGESTION_SERVER_CHUNK_SIZE) or [[]]
+    created_rows = []
+    for chunk_index, item_chunk in enumerate(item_chunks, start=1):
+        def insert_chunk() -> dict:
+            with managed_session() as session:
+                quality_score, quality_details = (
+                    (body.quality_score, body.quality_details or {})
+                    if body.quality_score is not None and len(item_chunks) == 1
+                    else _calculate_quality(item_chunk, body.schema_type)
+                )
+                strategy = body.strategy_used
+                if len(item_chunks) > 1:
+                    suffix = f"server_chunk={chunk_index}/{len(item_chunks)} size={len(item_chunk)}"
+                    strategy = f"{strategy}; {suffix}" if strategy else suffix
+                row = PendingIngestion(
+                    crawler_name=body.crawler_name,
+                    crawl_status=body.crawl_status,
+                    strategy_used=strategy,
+                    items_count=len(item_chunk),
+                    items_json=json.dumps(item_chunk, ensure_ascii=False, default=str),
+                    schema_type=body.schema_type,
+                    quality_score=quality_score,
+                    quality_details=quality_details,
+                    errors_json=(
+                        json.dumps(body.errors, ensure_ascii=False, default=str)
+                        if body.errors and chunk_index == 1
+                        else None
+                    ),
+                    status=IngestionStatus.PENDING,
+                    crawled_at=datetime.utcnow(),
+                    duration_seconds=body.duration_seconds,
+                    source_url=body.source_url,
+                )
+                session.add(row)
+                session.flush()
+                session.refresh(row)
+                return {"id": row.id, "items_count": row.items_count, "quality_score": quality_score}
+
+        created_rows.append(_with_sqlite_lock_retry(insert_chunk))
+
+    if len(created_rows) == 1:
+        row = created_rows[0]
+        return {"id": row["id"], "status": "pending", "quality_score": row["quality_score"]}
+    return {
+        "ids": [row["id"] for row in created_rows],
+        "status": "pending",
+        "chunks": len(created_rows),
+        "chunk_size": INGESTION_SERVER_CHUNK_SIZE,
+        "total_items": len(body.items),
+        "items_per_chunk": [row["items_count"] for row in created_rows],
+    }
 
 
 @router.get("")
@@ -1318,6 +1391,38 @@ def _resolve_source(item: dict) -> str:
     return normalize_source_key(raw, default="mart_discount")
 
 
+def _unit_price_display_value(item: dict) -> str | None:
+    raw_data = item.get("raw_data") if isinstance(item.get("raw_data"), dict) else {}
+    value = (
+        item.get("unit_price_display")
+        or item.get("unit_price_displayed")
+        or raw_data.get("unit_price_display")
+        or raw_data.get("unit_price_displayed")
+    )
+    return str(value).strip() if value not in (None, "") else None
+
+
+def _item_attributes_with_unit_display(item: dict) -> dict | None:
+    attrs = dict(item.get("attributes") if isinstance(item.get("attributes"), dict) else {})
+    unit_price_display = _unit_price_display_value(item)
+    if unit_price_display:
+        attrs["unit_price_display"] = unit_price_display
+    return attrs or None
+
+
+def _apply_product_match_rule_if_needed(session, item: dict, product_name: str, category_hint: str | None, product_id: int) -> None:
+    if not is_missing_or_one_depth_category(category_hint):
+        return
+    rule = find_matching_rule(session, product_name)
+    if not rule:
+        return
+    product = session.get(Product, product_id)
+    if not product:
+        return
+    apply_rule_to_product(rule, product)
+    record_rule_hit(rule)
+
+
 # 크롤러 소스 → source_type 매핑
 _SOURCE_TYPE_MAP = {
     "emart": "mart_crawl",
@@ -1342,6 +1447,8 @@ def _ensure_product(
     image_url: str | None = None,
     unit: str | None = None,
     attributes: dict | None = None,
+    promo_label: str | None = None,
+    promo_type: str | None = None,
 ) -> int:
     """Product 레코드가 없으면 자동 생성하고 id를 반환.
 
@@ -1365,6 +1472,10 @@ def _ensure_product(
             unit=unit,
             attributes=attributes,
         )
+        if promo_label:
+            product.promo_label = str(promo_label)
+        if promo_type:
+            product.promo_type = str(promo_type)
         return product.id
 
     # Determine source_type from crawler source
@@ -1378,6 +1489,10 @@ def _ensure_product(
         attributes=attributes or None,
     )
     session.add(new_product)
+    if promo_label:
+        new_product.promo_label = str(promo_label)
+    if promo_type:
+        new_product.promo_type = str(promo_type)
     session.flush()
     _apply_approved_product_metadata(
         session,
@@ -1538,15 +1653,19 @@ def _insert_items(session, items: list[dict], schema_type: str) -> int:
                         price = _coerce_positive_number(item.get("sale_price") or item.get("price"))
                         if price is None:
                             raise ValueError("BaselinePrice.price is missing or invalid")
+                        category_hint = item.get("category_id") or item.get("category")
                         pid = _ensure_product(
                             session,
                             product_name,
                             crawler_source=source,
-                            category_id=item.get("category_id") or item.get("category"),
+                            category_id=category_hint,
                             image_url=item.get("image_url"),
                             unit=item.get("display_unit") or item.get("unit"),
-                            attributes=item.get("attributes") if isinstance(item.get("attributes"), dict) else None,
+                            attributes=_item_attributes_with_unit_display(item),
+                            promo_label=item.get("promo_label"),
+                            promo_type=item.get("promo_type") or item.get("promotion_type"),
                         )
+                        _apply_product_match_rule_if_needed(session, item, product_name, category_hint, pid)
                         row = BaselinePrice(
                             product_id=pid,
                             price=price,
@@ -1567,15 +1686,19 @@ def _insert_items(session, items: list[dict], schema_type: str) -> int:
                         discount_rate = _coerce_nonnegative_number(
                             item.get("discount_percent") or item.get("discount_rate")
                         )
+                        category_hint = item.get("category_id") or item.get("category")
                         pid = _ensure_product(
                             session,
                             product_name,
                             crawler_source=source,
-                            category_id=item.get("category_id") or item.get("category"),
+                            category_id=category_hint,
                             image_url=item.get("image_url"),
                             unit=item.get("unit"),
-                            attributes=item.get("attributes") if isinstance(item.get("attributes"), dict) else None,
+                            attributes=_item_attributes_with_unit_display(item),
+                            promo_label=item.get("promo_label"),
+                            promo_type=item.get("promo_type") or item.get("promotion_type"),
                         )
+                        _apply_product_match_rule_if_needed(session, item, product_name, category_hint, pid)
                         row = DiscountHistory(
                             product_id=pid,
                             price=price,
@@ -1600,6 +1723,8 @@ def _insert_items(session, items: list[dict], schema_type: str) -> int:
                 session.flush()
             saved += 1
         except Exception as e:
+            if _is_sqlite_locked(e):
+                raise
             logger.warning(
                 "[_insert_items] 항목 %d 삽입 실패 (schema=%s): %s — %s",
                 idx, schema_type, type(e).__name__, str(e)[:200],
@@ -1769,7 +1894,10 @@ def _build_offer_raw_data(item: dict, product_name: str) -> dict:
         "discount_claim": claim_metadata,
         "published_item": preserved,
         "image_url": item.get("image_url") or raw_data.get("image_url", ""),
-        "event_name": item.get("event_name") or raw_data.get("event_name", ""),
+        "promo_label": item.get("promo_label") or raw_data.get("promo_label"),
+        "promo_type": item.get("promo_type") or raw_data.get("promo_type"),
+        "promotion_type": item.get("promotion_type") or item.get("promo_type") or raw_data.get("promotion_type") or raw_data.get("promo_type"),
+        "event_name": item.get("event_name") or item.get("promo_label") or raw_data.get("event_name", ""),
         "unit": item.get("unit") or raw_data.get("unit", ""),
         "display_unit": item.get("display_unit")
             or raw_data.get("display_unit")
@@ -1785,6 +1913,10 @@ def _build_offer_raw_data(item: dict, product_name: str) -> dict:
         "price_per_100g": item.get("price_per_100g")
             or raw_data.get("price_per_100g")
             or unit_metadata.get("price_per_100g"),
+        "unit_price_display": item.get("unit_price_display")
+            or item.get("unit_price_displayed")
+            or raw_data.get("unit_price_display")
+            or raw_data.get("unit_price_displayed"),
         "standard_unit": item.get("standard_unit") or raw_data.get("standard_unit"),
         "standard_unit_price": item.get("standard_unit_price") or raw_data.get("standard_unit_price"),
         "bundle_count": item.get("bundle_count") or raw_data.get("bundle_count") or 1,
@@ -1814,7 +1946,7 @@ def _build_normalized_discount_row(item: dict, product_name: str, source: str, p
         sale_price=price,
         raw_unit=item.get("unit") or raw_data.get("unit"),
     )
-    promotion_type = item.get("promotion_type") or raw_data.get("promotion_type") or "final_price"
+    promotion_type = item.get("promotion_type") or item.get("promo_type") or raw_data.get("promotion_type") or raw_data.get("promo_type") or "final_price"
     return {
         "raw_record_id": item.get("raw_record_id") or raw_data.get("raw_record_id"),
         "source": source,
@@ -1837,10 +1969,13 @@ def _build_normalized_discount_row(item: dict, product_name: str, source: str, p
         "discount_percent": item.get("discount_percent") if item.get("discount_percent") is not None else raw_data.get("discount_percent"),
         "price_state": item.get("price_state") or raw_data.get("price_state"),
         "promotion_type": promotion_type,
-        "event_name": item.get("event_name") or raw_data.get("event_name"),
+        "promo_label": item.get("promo_label") or raw_data.get("promo_label"),
+        "promo_type": item.get("promo_type") or raw_data.get("promo_type"),
+        "event_name": item.get("event_name") or item.get("promo_label") or raw_data.get("event_name"),
         "standard_unit": item.get("standard_unit") or raw_data.get("standard_unit"),
         "standard_unit_price": item.get("standard_unit_price") or raw_data.get("standard_unit_price"),
         "price_per_100g": item.get("price_per_100g") or raw_data.get("price_per_100g") or unit_metadata.get("price_per_100g"),
+        "unit_price_display": item.get("unit_price_display") or item.get("unit_price_displayed") or raw_data.get("unit_price_display") or raw_data.get("unit_price_displayed"),
         "bundle_count": item.get("bundle_count") or raw_data.get("bundle_count") or 1,
         "week_start": item.get("week_start") or raw_data.get("week_start") or item.get("valid_from"),
         "week_end": item.get("week_end") or raw_data.get("week_end") or item.get("valid_to"),

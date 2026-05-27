@@ -1,16 +1,16 @@
 name: algumon
 display_name: 알구몬
 category: hotdeal
-version: 2.0.0
-description: 통합 핫딜 정보 수집
+version: 3.0.0-g5b
+description: 알구몬 핫딜 목록 fixture 기반 수집 스켈레톤
 target:
-  url: https://www.algumon.com
+  url: https://www.algumon.com/n/deal
   difficulty: 1
-  strategy: requests
+  strategy: fixture
 schedule:
   cron: "*/30 * * * *"
   retry_count: 3
   retry_delay: 60
 output:
-  model: HotdealPost
-  required_fields: [title, url]
+  model: HotdealRecord
+  required_fields: [source_site, source_native_id, title, url, hash_dedup]

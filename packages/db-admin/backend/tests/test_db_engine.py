@@ -88,10 +88,10 @@ class TestWALMode:
             assert mode == "wal"
 
     def test_busy_timeout_set(self, setup_db):
-        """busy_timeout이 5000ms로 설정된다."""
+        """busy_timeout이 30000ms로 설정된다."""
         with get_engine().connect() as conn:
             timeout = conn.execute(text("PRAGMA busy_timeout")).scalar()
-            assert timeout == 5000
+            assert timeout == 30000
 
     def test_foreign_keys_enabled(self, setup_db):
         """foreign_keys가 활성화된다."""

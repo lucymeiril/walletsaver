@@ -193,6 +193,15 @@ export const api = {
     postJson(`${API_BASE}/products/bulk-delete`, { ids }, opts),
   bulkUpdateCategory: (ids, categoryId, opts) =>
     postJson(`${API_BASE}/products/bulk-category`, { ids, category_id: categoryId }, opts),
+  // Matching rules
+  getMatchingRules: (params = {}, opts) => {
+    const qs = new URLSearchParams(params).toString();
+    return get(`${API_BASE}/matching-rules${qs ? `?${qs}` : ''}`, opts);
+  },
+  getMatchingRuleStats: (opts) => get(`${API_BASE}/matching-rules/stats`, opts),
+  createMatchingRule: (data, opts) => postJson(`${API_BASE}/matching-rules`, data, opts),
+  updateMatchingRule: (id, data, opts) => putJson(`${API_BASE}/matching-rules/${id}`, data, opts),
+  deleteMatchingRule: (id, opts) => del(`${API_BASE}/matching-rules/${id}`, opts),
   // Categories
   getCategories: (opts) => get(`${API_BASE}/categories/`, opts),
   createCategory: (data, opts) => postJson(`${API_BASE}/categories/`, data, opts),
@@ -301,10 +310,16 @@ export const api = {
   // Community moderation
   getCommunityPosts: (params = {}, opts) =>
     get(`${API_BASE}/community/posts?${new URLSearchParams(params)}`, opts),
+  getCommunityPost: (id, opts) =>
+    get(`${API_BASE}/community/posts/${id}`, opts),
   deleteCommunityPost: (id, opts) =>
     del(`${API_BASE}/community/posts/${id}`, opts),
   restoreCommunityPost: (id, opts) =>
     postJson(`${API_BASE}/community/posts/${id}/restore`, {}, opts),
+  deleteCommunityComment: (id, opts) =>
+    del(`${API_BASE}/community/comments/${id}`, opts),
+  restoreCommunityComment: (id, opts) =>
+    postJson(`${API_BASE}/community/comments/${id}/restore`, {}, opts),
   // Import classified
   previewImport: (file, mode, { signal, onProgress } = {}) => {
     const fd = new FormData();

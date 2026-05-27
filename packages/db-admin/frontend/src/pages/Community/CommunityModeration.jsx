@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { MessageSquareWarning, RotateCcw, Search, Trash2 } from 'lucide-react';
+import { Eye, MessageSquareWarning, RotateCcw, Search, Trash2 } from 'lucide-react';
 import { api } from '../../api/client';
 import s from '../Products/Products.module.css';
 
@@ -15,6 +15,8 @@ export default function CommunityModeration() {
   const [note, setNote] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [detail, setDetail] = useState(null);
+  const [detailLoading, setDetailLoading] = useState(false);
 
   const fetchPosts = useCallback(async (nextPage = page) => {
     setLoading(true); setError('');
@@ -42,6 +44,22 @@ export default function CommunityModeration() {
   };
   const onRestore = async (id) => {
     await api.restoreCommunityPost(id);
+    fetchPosts(page);
+  };
+  const openDetail = async (id) => {
+    setDetailLoading(true); setError('');
+    try {
+      setDetail(await api.getCommunityPost(id));
+    } catch (err) {
+      setError(`게시글 상세 로드 실패: ${err.message}`);
+    } finally {
+      setDetailLoading(false);
+    }
+  };
+  const toggleCommentDeleted = async (comment) => {
+    if (comment.is_deleted) await api.restoreCommunityComment(comment.id);
+    else if (confirm('이 댓글을 삭제 처리하시겠습니까?')) await api.deleteCommunityComment(comment.id);
+    await openDetail(comment.post_id);
     fetchPosts(page);
   };
 
@@ -109,6 +127,7 @@ export default function CommunityModeration() {
                   <td><span className={`${s.dealStatus} ${post.is_deleted ? s.statusExpired : s.statusActive}`}>{post.is_deleted ? '삭제됨' : '활성'}</span></td>
                   <td>
                     <div className={s.actions}>
+                      <button className={s.iconBtn} onClick={() => openDetail(post.id)} title="내용/댓글 보기"><Eye size={14} /></button>
                       {post.is_deleted ? (
                         <button className={s.iconBtn} onClick={() => onRestore(post.id)} title="복구"><RotateCcw size={14} /></button>
                       ) : (
@@ -131,6 +150,42 @@ export default function CommunityModeration() {
           <button className={s.pageBtn} disabled={page >= meta.total_pages} onClick={() => { const p = page + 1; setPage(p); fetchPosts(p); }}>›</button>
         </div>
       </div>
+
+      {detail && (
+        <div className={s.overlay} onClick={() => setDetail(null)}>
+          <div className={s.modal} onClick={e => e.stopPropagation()}>
+            <div className={s.modalHeader}>
+              <div>
+                <h3>{detail.post?.title}</h3>
+                <p className={s.count}>작성자 {detail.post?.author || `#${detail.post?.author_id}`} · 댓글 {detail.comments?.length || 0}개</p>
+              </div>
+              <button className={s.iconBtn} onClick={() => setDetail(null)}>×</button>
+            </div>
+            <div className={s.detail}>
+              <pre className={s.preWrap}>{detail.post?.content}</pre>
+              <h4>댓글 관리</h4>
+              {detailLoading && <div className={s.loadingBar}>댓글 불러오는 중...</div>}
+              {(detail.comments || []).length === 0 ? (
+                <p className={s.count}>댓글이 없습니다.</p>
+              ) : (
+                <div className={s.commentList}>
+                  {detail.comments.map(comment => (
+                    <div key={comment.id} className={s.commentItem}>
+                      <div>
+                        <strong>{comment.author || `#${comment.author_id}`}</strong>
+                        <p className={comment.is_deleted ? s.deletedText : ''}>{comment.content}</p>
+                      </div>
+                      <button className={s.iconBtn} onClick={() => toggleCommentDeleted(comment)} title={comment.is_deleted ? '댓글 복구' : '댓글 삭제'}>
+                        {comment.is_deleted ? <RotateCcw size={14} /> : <Trash2 size={14} />}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

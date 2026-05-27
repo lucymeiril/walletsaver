@@ -2,7 +2,7 @@
 .SYNOPSIS
     지갑 지키미 — 전체 시스템 한 번에 시작
 .DESCRIPTION
-    웹사이트(8000/5173) + 크롤러 관리(8001/5174) + DB 관리(8002/5175) + AI 관리(8003/5176)
+    웹 프론트엔드(5173) + Public API(8000) + 크롤러 관리(8001/5174) + DB 관리(8002/5175) + AI 관리(8003/5176)
     총 8개 서버를 한 번에 시작하고 브라우저를 엽니다.
     Ctrl+C로 전부 종료됩니다.
 
@@ -60,8 +60,8 @@ Write-Host "  📦 npm: $($npmCmd.Source)" -ForegroundColor DarkGray
 Write-Host ""
 
 # === 경로 설정 ===
-$WebFrontend       = Join-Path $Root "packages\website\frontend"
-$WebBackend        = Join-Path $Root "packages\website\backend"
+$WebFrontend       = Join-Path $Root "packages\web-frontend"
+$WebBackend        = Join-Path $Root "packages\web-api\backend"
 $CrawlerFrontend   = Join-Path $Root "packages\crawler-admin\frontend"
 $CrawlerBackend    = Join-Path $Root "packages\crawler-admin\backend"
 $DbFrontend        = Join-Path $Root "packages\db-admin\frontend"
@@ -70,8 +70,16 @@ $AiFrontend        = Join-Path $Root "packages\ai-admin\frontend"
 $AiBackend         = Join-Path $Root "packages\ai-admin\backend"
 $SharedDir         = Join-Path $Root "packages\shared"
 
-# PYTHONPATH — shared 모듈 참조용
-$env:PYTHONPATH = "$SharedDir;$CrawlerBackend;$DbBackend;$AiBackend;$WebBackend"
+# PYTHONPATH — shared 모듈 및 각 백엔드 직접 실행용
+$env:PYTHONIOENCODING = "utf-8"
+$env:PYTHONUTF8 = "1"
+$env:PYTHONPATH = "$Root;$SharedDir;$CrawlerBackend;$DbBackend;$AiBackend;$WebBackend"
+if (-not $env:WALLETSAVIOR_CORS_ORIGINS) { $env:WALLETSAVIOR_CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173" }
+if (-not $env:DB_ADMIN_API_URL) { $env:DB_ADMIN_API_URL = "http://127.0.0.1:8002/api/prices/bulk" }
+if (-not $env:INGESTION_API_URL) { $env:INGESTION_API_URL = "http://127.0.0.1:8002/api/ingestions" }
+if (-not $env:WALLETSAVIOR_PUBLIC_DB) { $env:WALLETSAVIOR_PUBLIC_DB = Join-Path $Root "packages\db-admin\backend\walletguardian.db" }
+if (-not $env:REQUIRE_AUTH) { $env:REQUIRE_AUTH = "false" }
+if (-not $env:DATABASE_URL) { $env:DATABASE_URL = "sqlite:///" + (Join-Path $Root "packages\db-admin\backend\walletguardian.db").Replace("\", "/") }
 
 # === __pycache__ 정리 (좀비 워커 방지) ===
 Write-Host "[정리] __pycache__ 정리 중..." -ForegroundColor Yellow
@@ -81,7 +89,7 @@ Write-Host "         ✅ __pycache__ 정리 완료" -ForegroundColor Green
 
 # === 의존성 설치 ===
 Write-Host "[의존성] Python 패키지 확인..." -ForegroundColor Yellow
-& $PyExe -m pip install --quiet fastapi uvicorn httpx requests beautifulsoup4 lxml sqlalchemy pyyaml 2>$null | Out-Null
+& $PyExe -m pip install --quiet fastapi uvicorn pydantic httpx requests beautifulsoup4 lxml sqlalchemy pyyaml slowapi limits psutil python-dotenv python-multipart bcrypt 2>$null | Out-Null
 Write-Host "         ✅ Python 패키지 완료" -ForegroundColor Green
 
 $frontendDirs = @()
@@ -141,15 +149,15 @@ $processes = @()
 # 코드 수정 후에는 Ctrl+C → 재시작으로 대응.
 
 if ($Web) {
-    Write-Host "🚀 [웹] 백엔드 시작 (port 8000)..." -ForegroundColor Yellow
+    Write-Host "🚀 [웹] Public API 시작 (port 8000)..." -ForegroundColor Yellow
     $p = Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
-        -ArgumentList "-m uvicorn api.app:create_app --factory --port 8000 --host 127.0.0.1" `
+        -ArgumentList "-m uvicorn main:app --port 8000 --host 127.0.0.1" `
         -WorkingDirectory $WebBackend
     $processes += $p
 
     Write-Host "🚀 [웹] 프론트엔드 시작 (port 5173)..." -ForegroundColor Yellow
     $p = Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
-        -ArgumentList "vite --port 5173" `
+        -ArgumentList "vite --host 127.0.0.1 --port 5173 --strictPort" `
         -WorkingDirectory $WebFrontend
     $processes += $p
 }
@@ -163,7 +171,7 @@ if ($Admin) {
 
     Write-Host "🚀 [크롤러] 프론트엔드 시작 (port 5174)..." -ForegroundColor Yellow
     $p = Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
-        -ArgumentList "vite --port 5174" `
+        -ArgumentList "vite --host 127.0.0.1 --port 5174 --strictPort" `
         -WorkingDirectory $CrawlerFrontend
     $processes += $p
 
@@ -175,7 +183,7 @@ if ($Admin) {
 
     Write-Host "🚀 [DB관리] 프론트엔드 시작 (port 5175)..." -ForegroundColor Yellow
     $p = Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
-        -ArgumentList "vite --port 5175" `
+        -ArgumentList "vite --host 127.0.0.1 --port 5175 --strictPort" `
         -WorkingDirectory $DbFrontend
     $processes += $p
 
@@ -187,7 +195,7 @@ if ($Admin) {
 
     Write-Host "🚀 [AI관리] 프론트엔드 시작 (port 5176)..." -ForegroundColor Yellow
     $p = Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
-        -ArgumentList "vite --port 5176" `
+        -ArgumentList "vite --host 127.0.0.1 --port 5176 --strictPort" `
         -WorkingDirectory $AiFrontend
     $processes += $p
 }
@@ -197,7 +205,7 @@ Write-Host ""
 Write-Host "⏳ 서버 준비 대기 중..." -ForegroundColor Yellow
 
 $checks = @()
-if ($Web)   { $checks += @{ Name = "웹"; Url = "http://127.0.0.1:8000/api/health"; Ready = $false } }
+if ($Web)   { $checks += @{ Name = "웹 API"; Url = "http://127.0.0.1:8000/api/health"; Ready = $false } }
 if ($Admin) {
     $checks += @{ Name = "크롤러"; Url = "http://127.0.0.1:8001/health"; Ready = $false }
     $checks += @{ Name = "DB관리"; Url = "http://127.0.0.1:8002/health"; Ready = $false }
@@ -228,9 +236,9 @@ Write-Host ""
 
 if ($Web) {
     $stat = if ($checks[0].Ready) { "✅" } else { "⏳" }
-    Write-Host "  🌐 웹사이트" -ForegroundColor White
+    Write-Host "  🌐 웹" -ForegroundColor White
     Write-Host "     프론트엔드: http://localhost:5173" -ForegroundColor White
-    Write-Host "     백엔드 API: http://localhost:8000/docs  $stat" -ForegroundColor White
+    Write-Host "     Public API: http://localhost:8000/api/health  $stat" -ForegroundColor White
     Write-Host ""
 }
 if ($Admin) {

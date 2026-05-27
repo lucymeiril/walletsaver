@@ -2,9 +2,9 @@
 
 plugin_info = {
     "name": "알구몬",
-    "version": "1.0.0",
+    "version": "3.0.0-g5b",
     "group": "hotdeals",
-    "description": "여러 커뮤니티의 핫딜 정보 통합 (뽐뿌, 어미새, 루리웹 등)",
+    "description": "알구몬 핫딜 목록 fixture 기반 수집 스켈레톤",
     "target_url": "https://www.algumon.com/n/deal",
-    "strategies": ["requests"],
+    "strategies": ["fixture"],
 }

@@ -133,7 +133,6 @@ function subscribeCrawlerStatus(crawlerId, { onData, onError, onComplete }) {
   let currentSource = null;
   let closed = false;
   let retryTimer = null;
-  let lastEventId = null;
 
   function connect() {
     if (closed) return;
@@ -144,13 +143,10 @@ function subscribeCrawlerStatus(crawlerId, { onData, onError, onComplete }) {
 
     eventSource.onmessage = (event) => {
       retryCount = 0;   // Reset on successful message
-      if (event.lastEventId) {
-        lastEventId = event.lastEventId;
-      }
       try {
         const data = JSON.parse(event.data);
         onData?.(data);
-        if (data.status === 'success' || data.status === 'failed') {
+        if (['success', 'failed', 'partial_failure'].includes(data.status)) {
           cleanup();
           onComplete?.(data);
         }
@@ -198,7 +194,7 @@ export const api = {
   // 크롤러 목록
   getCrawlers: () => fetchWithTimeout(`${API_BASE}/crawlers`).then(r => r.json()),
   // 크롤러 실행
-  runCrawler: (id) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/run`, { method: 'POST' }).then(r => r.json()),
+  runCrawler: (id) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/run`, { method: 'POST', timeoutMs: 120000 }).then(r => r.json()),
   // 크롤러 상태 — ETag 기반 캐시로 변경 없으면 304 반환
   getCrawlerStatus: (id) => fetchWithETag(`${API_BASE}/crawlers/${id}/status`),
   // 크롤러 상태 SSE 구독
@@ -212,6 +208,7 @@ export const api = {
   // 크롤러 벌크 실행
   bulkRunCrawlers: (ids) => fetchWithTimeout(`${API_BASE}/crawlers/bulk-run`, {
     method: 'POST',
+    timeoutMs: 120000,
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ crawler_ids: ids }),
   }).then(r => r.json()),
