@@ -536,9 +536,10 @@ class HomeplusCrawler(CrawlerContract):
         store_type = self._normalize_store_type(str(product.get("storeType") or store_type))
         category = self._category_from_product(product)
         category_path = [value for value in (product.get("lcateNm"), product.get("mcateNm"), product.get("scateNm"), product.get("dcateNm")) if value]
-        detail_url = self._permanent_product_url(item_no, name) if item_no else self._normalize_legacy_detail_url(str(product.get("goodsUrl") or product.get("detail_url") or ""))
-        canonical_url = normalize_homeplus_url(item_no, store_type) if item_no else detail_url
-        image_url = self._absolute_url(str(product.get("imgUrl") or product.get("goodsImg") or product.get("imageUrl") or ""), self.MFRONT_URL)
+        legacy_detail_url = self._permanent_product_url(item_no, name) if item_no else self._normalize_legacy_detail_url(str(product.get("goodsUrl") or product.get("detail_url") or ""))
+        canonical_url = normalize_homeplus_url(item_no, store_type) if item_no else legacy_detail_url
+        detail_url = canonical_url or legacy_detail_url
+        image_url = self._image_url_from_product(product)
         raw_unit = product.get("unit") or product.get("goodsUnit") or product.get("capacity") or self._display_unit_from_api(product)
         unit_metadata = normalize_unit_metadata(name=name, sale_price=sale_price, raw_unit=raw_unit or "")
         display_unit = unit_metadata.get("display_unit") or raw_unit or ""
@@ -568,7 +569,8 @@ class HomeplusCrawler(CrawlerContract):
             "storeType": store_type,
             "mart_native_code": item_no,
             "canonical_url": canonical_url,
-            "permanent_url": detail_url,
+            "permanent_url": canonical_url,
+            "legacy_detail_url": legacy_detail_url,
             "mart_native_category_id": str(product.get("rcateCd") or product.get("categoryId") or ""),
             "mart_native_category_path": " > ".join(category_path),
             "external_seller": classify_external_seller_homeplus(" ".join(map(str, product.get("deliveryLabelList") or [])) + " " + str(product.get("itemShipMethodNm") or "")),
@@ -602,6 +604,26 @@ class HomeplusCrawler(CrawlerContract):
             detail_url=detail_url,
             promo_label=promo_label,
         )
+
+    def _image_url_from_product(self, product: dict) -> str:
+        for key in (
+            "imgUrl", "goodsImg", "imageUrl", "itemImg", "itemImgUrl", "itemImgPath",
+            "repImgUrl", "repImageUrl", "thumbnail", "thumbnailUrl", "thumImgUrl",
+        ):
+            value = str(product.get(key) or "").strip()
+            if value:
+                return self._absolute_url(value, self.MFRONT_URL)
+        images = product.get("images") or product.get("imageList") or product.get("imgList")
+        if isinstance(images, list):
+            for row in images:
+                if isinstance(row, str) and row.strip():
+                    return self._absolute_url(row.strip(), self.MFRONT_URL)
+                if isinstance(row, dict):
+                    for key in ("url", "imgUrl", "imageUrl", "src"):
+                        value = str(row.get(key) or "").strip()
+                        if value:
+                            return self._absolute_url(value, self.MFRONT_URL)
+        return ""
 
     def _extract_item_no_from_product(self, product: dict) -> str:
         for key in ("itemNo", "itemId"):

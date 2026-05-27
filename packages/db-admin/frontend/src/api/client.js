@@ -320,6 +320,10 @@ export const api = {
     del(`${API_BASE}/community/comments/${id}`, opts),
   restoreCommunityComment: (id, opts) =>
     postJson(`${API_BASE}/community/comments/${id}/restore`, {}, opts),
+  banCommunityUser: (id, opts) =>
+    postJson(`${API_BASE}/community/users/${id}/ban`, {}, opts),
+  unbanCommunityUser: (id, opts) =>
+    postJson(`${API_BASE}/community/users/${id}/unban`, {}, opts),
   // Import classified
   previewImport: (file, mode, { signal, onProgress } = {}) => {
     const fd = new FormData();

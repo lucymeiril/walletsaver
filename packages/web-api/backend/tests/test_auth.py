@@ -321,12 +321,12 @@ class TestOAuthRoutes:
         assert resp.status_code == 307
         assert "accounts.google.com" in resp.headers["location"]
 
-    def test_oauth_login_redirect_without_credentials_uses_demo_fallback(self, client, monkeypatch):
+    def test_oauth_login_redirect_without_credentials_returns_config_error(self, client, monkeypatch):
         monkeypatch.delenv("GOOGLE_CLIENT_ID", raising=False)
         monkeypatch.delenv("GOOGLE_CLIENT_SECRET", raising=False)
         resp = client.get("/api/auth/oauth/google")
-        assert resp.status_code == 307
-        assert "/auth/callback?demo=1&provider=google" in resp.headers["location"]
+        assert resp.status_code == 302
+        assert "/auth/callback?error=oauth_config&provider=google" in resp.headers["location"]
 
     def test_oauth_invalid_provider(self, client):
         resp = client.get("/api/auth/oauth/facebook")

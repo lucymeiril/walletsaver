@@ -1,11 +1,13 @@
 """OAuth 서비스 — Google, Kakao, Naver OAuth 2.0 처리"""
-import httpx
 import os
+import secrets
+import time
 from pathlib import Path
 from urllib.parse import urlencode
 from typing import Optional
 from dataclasses import dataclass
 
+import httpx
 from dotenv import load_dotenv
 
 
@@ -70,6 +72,33 @@ def _redirect_base() -> str:
     return os.getenv("OAUTH_REDIRECT_BASE", "http://localhost:8000")
 
 
+_oauth_states: dict[str, float] = {}
+_OAUTH_STATE_TTL = 600
+
+
+def _cleanup_expired_states() -> None:
+    now = time.time()
+    expired = [state for state, created_at in _oauth_states.items() if now - created_at > _OAUTH_STATE_TTL]
+    for state in expired:
+        _oauth_states.pop(state, None)
+
+
+def generate_oauth_state() -> str:
+    _cleanup_expired_states()
+    state = secrets.token_urlsafe(32)
+    _oauth_states[state] = time.time()
+    return state
+
+
+def validate_oauth_state(state: str | None) -> bool:
+    if not state:
+        return False
+    created_at = _oauth_states.pop(state, None)
+    if created_at is None:
+        return False
+    return time.time() - created_at <= _OAUTH_STATE_TTL
+
+
 def get_oauth_login_url(provider: str) -> str:
     """OAuth 로그인 URL 생성"""
     config = OAuthConfig.get(provider)
@@ -82,6 +111,7 @@ def get_oauth_login_url(provider: str) -> str:
         "redirect_uri": f"{_redirect_base()}/api/auth/oauth/{provider}/callback",
         "response_type": "code",
         "scope": config["scope"],
+        "state": generate_oauth_state(),
     }
     if provider == "google":
         params["access_type"] = "offline"

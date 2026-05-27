@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Eye, MessageSquareWarning, RotateCcw, Search, Trash2 } from 'lucide-react';
+import { Ban, Eye, MessageSquareWarning, RotateCcw, Search, Trash2 } from 'lucide-react';
 import { api } from '../../api/client';
 import s from '../Products/Products.module.css';
 
@@ -61,6 +61,12 @@ export default function CommunityModeration() {
     else if (confirm('이 댓글을 삭제 처리하시겠습니까?')) await api.deleteCommunityComment(comment.id);
     await openDetail(comment.post_id);
     fetchPosts(page);
+  };
+  const banUser = async (userId) => {
+    if (!userId || !confirm(`사용자 #${userId}의 글/댓글/투표 작성을 차단하시겠습니까?`)) return;
+    await api.banCommunityUser(userId);
+    fetchPosts(page);
+    if (detail) await openDetail(detail.post.id);
   };
 
   return (
@@ -128,6 +134,7 @@ export default function CommunityModeration() {
                   <td>
                     <div className={s.actions}>
                       <button className={s.iconBtn} onClick={() => openDetail(post.id)} title="내용/댓글 보기"><Eye size={14} /></button>
+                      <button className={s.iconBtn} onClick={() => banUser(post.author_id)} title="작성자 밴"><Ban size={14} /></button>
                       {post.is_deleted ? (
                         <button className={s.iconBtn} onClick={() => onRestore(post.id)} title="복구"><RotateCcw size={14} /></button>
                       ) : (
@@ -175,9 +182,12 @@ export default function CommunityModeration() {
                         <strong>{comment.author || `#${comment.author_id}`}</strong>
                         <p className={comment.is_deleted ? s.deletedText : ''}>{comment.content}</p>
                       </div>
-                      <button className={s.iconBtn} onClick={() => toggleCommentDeleted(comment)} title={comment.is_deleted ? '댓글 복구' : '댓글 삭제'}>
-                        {comment.is_deleted ? <RotateCcw size={14} /> : <Trash2 size={14} />}
-                      </button>
+                      <div className={s.actions}>
+                        <button className={s.iconBtn} onClick={() => banUser(comment.author_id)} title="댓글 작성자 밴"><Ban size={14} /></button>
+                        <button className={s.iconBtn} onClick={() => toggleCommentDeleted(comment)} title={comment.is_deleted ? '댓글 복구' : '댓글 삭제'}>
+                          {comment.is_deleted ? <RotateCcw size={14} /> : <Trash2 size={14} />}
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>

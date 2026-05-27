@@ -21,7 +21,7 @@ from datetime import datetime
 from fastapi import APIRouter, Request, HTTPException, Depends, Query
 from api.schemas.common import ApiResponse, PaginationMeta
 from api.schemas.community import PostCreate, PostUpdate, CommentCreate, VoteRequest
-from api.middleware.auth import require_auth, get_current_user
+from api.middleware.auth import require_auth, get_current_user, is_local_auth_user_blocked
 
 router = APIRouter()
 
@@ -212,6 +212,14 @@ def _ensure_user(session, user_id: int, email: str = "", nickname: str = ""):
         session.commit()
 
 
+def _raise_if_banned(session, user: dict) -> None:
+    if is_local_auth_user_blocked(user["id"]):
+        raise HTTPException(status_code=403, detail="정지되거나 삭제된 계정입니다")
+    db_user = session.get(UserModel, user["id"])
+    if db_user and (db_user.is_active is False or db_user.is_deleted):
+        raise HTTPException(status_code=403, detail="정지되거나 삭제된 계정입니다")
+
+
 @router.get("")
 async def list_posts(
     request: Request,
@@ -287,9 +295,12 @@ async def create_post(body: PostCreate, user: dict = Depends(get_current_user)):
     """게시글 작성 — 로그인 시 사용자 정보 사용, 비로그인 시 게스트로 작성."""
     if not user:
         user = {"id": 0, "email": "guest@wallet.local", "nickname": "게스트", "role": "guest"}
+    elif is_local_auth_user_blocked(user["id"]):
+        raise HTTPException(status_code=403, detail="정지되거나 삭제된 계정입니다")
     if _use_db and _SessionLocal:
         with _SessionLocal() as session:
             _ensure_user(session, user["id"], user.get("email", ""), user.get("nickname", ""))
+            _raise_if_banned(session, user)
             try:
                 pt = DBPostType(body.post_type.value)
             except ValueError:
@@ -359,6 +370,8 @@ async def get_post(post_id: int):
 @router.put("/{post_id}")
 async def update_post(post_id: int, body: PostUpdate, user: dict = Depends(require_auth)):
     """게시글 수정 (작성자만)."""
+    if is_local_auth_user_blocked(user["id"]):
+        raise HTTPException(status_code=403, detail="정지되거나 삭제된 계정입니다")
     if _use_db and _SessionLocal:
         with _SessionLocal() as session:
             post = session.get(PostModel, post_id)
@@ -366,6 +379,7 @@ async def update_post(post_id: int, body: PostUpdate, user: dict = Depends(requi
                 raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
             if post.author_id != user["id"]:
                 raise HTTPException(status_code=403, detail="수정 권한이 없습니다")
+            _raise_if_banned(session, user)
             if body.title is not None:
                 post.title = body.title
             if body.content is not None:
@@ -421,12 +435,15 @@ async def delete_post(post_id: int, user: dict = Depends(require_auth)):
 @router.post("/{post_id}/comments")
 async def create_comment(post_id: int, body: CommentCreate, user: dict = Depends(require_auth)):
     """댓글 작성."""
+    if is_local_auth_user_blocked(user["id"]):
+        raise HTTPException(status_code=403, detail="정지되거나 삭제된 계정입니다")
     if _use_db and _SessionLocal:
         with _SessionLocal() as session:
             post = session.get(PostModel, post_id)
             if not post or post.is_deleted:
                 raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
             _ensure_user(session, user["id"], user.get("email", ""), user.get("nickname", ""))
+            _raise_if_banned(session, user)
             comment = CommentModel(
                 post_id=post_id,
                 author_id=user["id"],
@@ -484,6 +501,8 @@ async def list_comments(post_id: int):
 @router.post("/{post_id}/vote")
 async def vote_post(post_id: int, body: VoteRequest, user: dict = Depends(require_auth)):
     """핫딜 투표 (hot/not)."""
+    if is_local_auth_user_blocked(user["id"]):
+        raise HTTPException(status_code=403, detail="정지되거나 삭제된 계정입니다")
     if body.vote_type not in ("hot", "not"):
         raise HTTPException(status_code=400, detail="vote_type은 'hot' 또는 'not'이어야 합니다")
 
@@ -493,6 +512,7 @@ async def vote_post(post_id: int, body: VoteRequest, user: dict = Depends(requir
             if not post or post.is_deleted:
                 raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
             _ensure_user(session, user["id"], user.get("email", ""), user.get("nickname", ""))
+            _raise_if_banned(session, user)
 
             existing = (
                 session.query(VoteModel)

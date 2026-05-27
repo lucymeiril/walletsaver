@@ -84,7 +84,21 @@ async def geocode(query: str = Query(..., description="위치명 또는 'lat,lng
                 loc = value
                 break
     if loc is None:
-        loc = {"name": raw, "lat": 37.4979, "lng": 127.0276}
+        loop = asyncio.get_event_loop()
+        places = await loop.run_in_executor(_executor, _search_via_playwright_sync, raw, 37.4979, 127.0276, 1)
+        if places:
+            first = places[0]
+            try:
+                loc = {
+                    "name": first.get("name") or raw,
+                    "lat": float(first.get("y") or first.get("lat")),
+                    "lng": float(first.get("x") or first.get("lng")),
+                    "source": "naver",
+                }
+            except (TypeError, ValueError):
+                loc = None
+    if loc is None:
+        loc = {"name": raw, "lat": 37.4979, "lng": 127.0276, "source": "fallback"}
     return ApiResponse(data=loc)
 
 
@@ -239,10 +253,16 @@ async def area_explore_stream(
     async def event_stream():
         per_category = max(1, min(8, max_items // max(1, len(names))))
         for name in names:
+            loop = asyncio.get_event_loop()
+            items = await loop.run_in_executor(_executor, _search_via_playwright_sync, name, lat, lng, per_category)
+            source = "naver" if items else "fallback"
+            if not items:
+                items = _fallback_places(name, lat, lng, per_category)
             payload = {
                 "name": name,
                 "location_name": location_name or "",
-                "items": _fallback_places(name, lat, lng, per_category),
+                "items": items,
+                "source": source,
             }
             yield f"data: {json.dumps(payload, ensure_ascii=False)}\n\n"
             await asyncio.sleep(0.05)

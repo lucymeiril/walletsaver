@@ -53,3 +53,14 @@ async def require_admin(
             detail="관리자 권한이 필요합니다",
         )
     return user
+
+
+def is_local_auth_user_blocked(user_id: int) -> bool:
+    try:
+        from api.routes import auth as auth_module
+        for user in auth_module._users_db.values():
+            if int(user.get("id", -1)) == int(user_id):
+                return bool(user.get("is_deleted") or user.get("is_active") is False)
+    except Exception:
+        return False
+    return False

@@ -11,24 +11,10 @@ export default function AuthCallback() {
 
   useEffect(() => {
     const error = params.get('error');
-    const demo = params.get('demo');
 
     if (error) {
-      addToast('소셜 로그인에 실패했습니다', 'error');
+      addToast(error === 'oauth_config' ? 'OAuth 설정을 확인해주세요' : '소셜 로그인에 실패했습니다', 'error');
       navigate('/', { replace: true });
-      return;
-    }
-
-    if (demo === '1') {
-      const provider = params.get('provider') || 'google';
-      authService.demoLogin(provider).then((profile) => {
-        login(profile);
-        addToast('OAuth 설정이 없어 데모 로그인으로 진행했습니다', 'info');
-        navigate('/', { replace: true });
-      }).catch(() => {
-        addToast('데모 로그인 처리에 실패했습니다', 'error');
-        navigate('/', { replace: true });
-      });
       return;
     }
 

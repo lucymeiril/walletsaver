@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import logging
+import random
 import re
 import time
 from datetime import datetime
@@ -43,7 +44,8 @@ from pipeline.quality import summarize_discount_run
 
 logger = logging.getLogger(__name__)
 
-SLEEP_BETWEEN_LIVE_GETS = 8.0
+SLEEP_BETWEEN_LIVE_GETS_MIN = 5.0
+SLEEP_BETWEEN_LIVE_GETS_MAX = 6.0
 PROMO_LABEL_RE = re.compile(r"(?<!\d)(\d+)\s*\+\s*(\d+)(?!\d)")
 
 
@@ -79,7 +81,18 @@ class LottemartCrawler(CrawlerContract):
     NEW_ITEM_RATIO_STOP = 0.05
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
-        self._anti_detect = anti_detect or AntiDetect(delay_min=SLEEP_BETWEEN_LIVE_GETS, delay_max=SLEEP_BETWEEN_LIVE_GETS)
+        self._anti_detect = anti_detect or AntiDetect(delay_min=SLEEP_BETWEEN_LIVE_GETS_MIN, delay_max=SLEEP_BETWEEN_LIVE_GETS_MAX)
+
+    def _request_delay(self) -> float:
+        delay_getter = getattr(self._anti_detect, "get_random_delay", None)
+        if callable(delay_getter):
+            try:
+                delay = float(delay_getter())
+                if delay > 0:
+                    return delay
+            except (TypeError, ValueError):
+                pass
+        return random.uniform(SLEEP_BETWEEN_LIVE_GETS_MIN, SLEEP_BETWEEN_LIVE_GETS_MAX)
 
     async def _publish_progress(self, **payload: Any) -> None:
         callback = getattr(self, "progress_callback", None)
@@ -270,7 +283,7 @@ class LottemartCrawler(CrawlerContract):
             "source_url": source_url,
             "auth_bypass_attempted": False,
             "max_requests": 1,
-            "sleep_between_live_gets_sec": SLEEP_BETWEEN_LIVE_GETS,
+            "sleep_between_live_gets_sec": f"{SLEEP_BETWEEN_LIVE_GETS_MIN}-{SLEEP_BETWEEN_LIVE_GETS_MAX}",
         }
         quality_details.setdefault("fetch", {})
         quality_details["fetch"].update({
@@ -348,7 +361,7 @@ class LottemartCrawler(CrawlerContract):
                             logger.info("[롯데마트] %s page cap %d reached", query, page_cap)
                             break
                         if pages_attempted > 0:
-                            await _asyncio.sleep(SLEEP_BETWEEN_LIVE_GETS)
+                            await _asyncio.sleep(self._request_delay())
                         pages_attempted += 1
                         pages_in_source += 1
 
@@ -489,7 +502,7 @@ class LottemartCrawler(CrawlerContract):
                 "fallback_used": False,
                 "status_code": last_status_code,
                 "bytes": last_bytes,
-                "sleep_between_live_gets_sec": SLEEP_BETWEEN_LIVE_GETS,
+                "sleep_between_live_gets_sec": f"{SLEEP_BETWEEN_LIVE_GETS_MIN}-{SLEEP_BETWEEN_LIVE_GETS_MAX}",
                 "challenge_solving_attempted": False,
                 "auth_bypass_attempted": False,
             })
@@ -497,7 +510,7 @@ class LottemartCrawler(CrawlerContract):
                 "mode": "requests_legacy_public_no_db",
                 "live_network_enabled": True,
                 "auth_bypass_attempted": False,
-                "sleep_between_live_gets_sec": SLEEP_BETWEEN_LIVE_GETS,
+                "sleep_between_live_gets_sec": f"{SLEEP_BETWEEN_LIVE_GETS_MIN}-{SLEEP_BETWEEN_LIVE_GETS_MAX}",
             }
             if waf_blocker:
                 self._annotate_waf_blocker(quality_details, waf_blocker, valid_count=len(valid_items))

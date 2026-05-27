@@ -1,7 +1,9 @@
 """DB 관리 API 팩토리"""
 import signal
+import sys
 import logging
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
@@ -17,6 +19,11 @@ from config import settings
 from api.middleware.security_headers import SecurityHeadersMiddleware
 from api.middleware.rate_limit import limiter, rate_limit_exceeded_handler, GLOBAL_LIMIT
 from api.security import MAX_REQUEST_BODY_BYTES
+
+_ROOT = Path(__file__).resolve().parents[4]
+_SHARED = _ROOT / "packages" / "shared"
+if str(_SHARED) not in sys.path:
+    sys.path.insert(0, str(_SHARED))
 
 _lifecycle_logger = logging.getLogger("lifecycle")
 
@@ -276,4 +283,3 @@ def create_app() -> FastAPI:
         return payload
 
     return app
-

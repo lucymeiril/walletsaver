@@ -52,6 +52,20 @@ def _comment_row(comment: Comment) -> dict:
     }
 
 
+def _set_user_active(user_id: int, active: bool) -> dict:
+    with managed_session() as session:
+        user = session.get(User, user_id)
+        if not user:
+            raise HTTPException(404, "User not found")
+        user.is_active = active
+        return {
+            "id": user.id,
+            "email": user.email,
+            "nickname": user.nickname,
+            "is_active": user.is_active,
+        }
+
+
 @router.get("/posts")
 def list_posts(
     status: str = Query("active", pattern="^(active|deleted|all|reported)$"),
@@ -175,3 +189,15 @@ def restore_comment(comment_id: int, request: Request, identity: dict = Depends(
             raise HTTPException(404, "Comment not found")
         comment.is_deleted = False
         return {"restored": True, "id": comment_id}
+
+
+@router.post("/users/{user_id}/ban")
+def ban_user(user_id: int, request: Request, identity: dict = Depends(require_moderator)):
+    """Ban a user from creating posts, comments, or votes."""
+    return {"banned": True, "user": _set_user_active(user_id, False)}
+
+
+@router.post("/users/{user_id}/unban")
+def unban_user(user_id: int, request: Request, identity: dict = Depends(require_moderator)):
+    """Restore a banned user's write access."""
+    return {"unbanned": True, "user": _set_user_active(user_id, True)}

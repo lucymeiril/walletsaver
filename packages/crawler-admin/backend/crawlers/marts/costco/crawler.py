@@ -102,6 +102,32 @@ def _clean_text(text: str) -> str:
     return re.sub(r"\s+", " ", text or "").strip()
 
 
+def _human_category_path(value: str | None) -> str:
+    parts = [_clean_text(part) for part in str(value or "").split(">")]
+    parts = [part for part in parts if part and not re.fullmatch(r"cos_\d+(?:\.\d+)*", part)]
+    return " > ".join(parts)
+
+
+def _breadcrumb_path_from_html(soup: BeautifulSoup) -> str:
+    selectors = (
+        ".breadcrumb.ng-star-inserted a, .breadcrumb.ng-star-inserted li, .breadcrumb.ng-star-inserted span",
+        "nav[aria-label*=breadcrumb] a, nav[aria-label*=breadcrumb] li, nav[aria-label*=breadcrumb] span",
+    )
+    for selector in selectors:
+        parts = []
+        for node in soup.select(selector):
+            text = _clean_text(node.get_text(" ", strip=True))
+            if text and text not in {"홈", "Home", "/"} and not re.fullmatch(r"cos_\d+(?:\.\d+)*", text):
+                parts.append(text)
+        deduped = []
+        for part in parts:
+            if part not in deduped:
+                deduped.append(part)
+        if deduped:
+            return " > ".join(deduped)
+    return ""
+
+
 def _category_parent(category_id: str) -> str:
     if "." not in category_id:
         return ""
@@ -229,6 +255,11 @@ def parse_costco_listing(
 ) -> list[CostcoCard]:
     """Extract product cards from Costco category/listing HTML by /p/<digits> hrefs."""
     soup = BeautifulSoup(html or "", "lxml")
+    breadcrumb_path = _breadcrumb_path_from_html(soup)
+    if breadcrumb_path:
+        category_path = breadcrumb_path
+    else:
+        category_path = _human_category_path(category_path)
     cards: list[CostcoCard] = []
     seen: set[str] = set()
     for anchor in soup.select('a[href*="/p/"]'):
@@ -334,7 +365,7 @@ def parse_costco_occ_response(data: dict) -> list[CostcoCard]:
             for row in (product.get("addToCartFromPLPCategories") or [])
             if isinstance(row, dict) and row.get("value") is True and str(row.get("key", "")).startswith("cos_")
         ]
-        category_path = " > ".join(category_keys)
+        category_path = _occ_category_path(product)
         promo_label = _extract_promo_label(str(product.get("promotionLabel") or product.get("summary") or ""), original_price, sale_price)
         cards.append(CostcoCard(
             name,
@@ -354,6 +385,34 @@ def parse_costco_occ_response(data: dict) -> list[CostcoCard]:
             promo_label=promo_label,
         ))
     return cards
+
+
+def _occ_category_path(product: dict) -> str:
+    for key in ("breadcrumbs", "breadcrumb", "categoryPath"):
+        value = product.get(key)
+        if isinstance(value, list):
+            names = []
+            for row in value:
+                if isinstance(row, dict):
+                    name = row.get("name") or row.get("label") or row.get("title")
+                else:
+                    name = row
+                text = _clean_text(str(name or ""))
+                if text and not re.fullmatch(r"cos_\d+(?:\.\d+)*", text):
+                    names.append(text)
+            if names:
+                return " > ".join(names)
+        elif isinstance(value, str):
+            cleaned = _human_category_path(value)
+            if cleaned:
+                return cleaned
+    for key in ("categoryName", "category", "baseCategoryName"):
+        value = product.get(key)
+        if isinstance(value, str):
+            cleaned = _human_category_path(value)
+            if cleaned:
+                return cleaned
+    return ""
 
 
 def _occ_pagination(data: dict) -> tuple[int, int]:
@@ -378,6 +437,7 @@ def _card_to_record(card: CostcoCard) -> dict[str, Any]:
         "unit_price_displayed": int(card.unit_price) if card.unit_price is not None else None,
         "unit_price_basis_raw": card.unit_price_basis,
         "unit_price_text": card.unit_price_text,
+        "unit_price_display": card.unit_price_text,
         "mart_native_category_id": card.mart_native_category_id,
         "mart_native_category_path": card.mart_native_category_path,
         "canonical_url": card.canonical_url or card.detail_url or "",
@@ -391,7 +451,8 @@ def _card_to_record(card: CostcoCard) -> dict[str, Any]:
         "pack_unit": pack_unit,
         "image_url": card.image_url or "",
         "promo_label": card.promo_label,
-        "promo_type": "discount" if card.promo_label else None,
+        "promo_type": "checkout_discount" if card.promo_label else None,
+        "raw_promo_type": "discount" if card.promo_label else None,
     }
     return inject_source_field(record, "costco")
 
@@ -419,6 +480,8 @@ def cards_to_discount_items(
                 "is_member_only": card.is_member_only,
                 "promo_label": record.get("promo_label"),
                 "promo_type": record.get("promo_type"),
+                "raw_promo_type": record.get("raw_promo_type"),
+                "unit_price_display": record.get("unit_price_display"),
             },
         )
         items.append(
@@ -429,9 +492,11 @@ def cards_to_discount_items(
                 original_price=record["price"] if record["price"] != record["sale_price"] else None,
                 sale_price=record["sale_price"],
                 unit=str(record.get("pack_qty") or "") + str(record.get("pack_unit") or "") if record.get("pack_qty") else "",
+                display_unit=str(record.get("pack_qty") or "") + str(record.get("pack_unit") or "") if record.get("pack_qty") else "",
                 package_quantity=record.get("pack_qty"),
                 package_unit=str(record.get("pack_unit") or ""),
                 price_per_100g=record["unit_price"] if str(record.get("unit_price_basis") or "").lower() == "100g" else None,
+                unit_price_display=record.get("unit_price_display") or "",
                 attributes=attrs,
                 category=record["mart_native_category_path"],
                 image_url=record["image_url"],
@@ -657,9 +722,10 @@ class CostcoCrawler(CrawlerContract):
                     for item in cards_to_discount_items(parse_costco_occ_response(data), source_url=OCC_SEARCH_URL):
                         attrs = item.attributes or {}
                         attrs.setdefault("mart_native_category_id", label)
-                        attrs.setdefault("mart_native_category_path", label)
-                        attrs.setdefault("category_hint", label)
-                        item.category = item.category or label
+                        if not attrs.get("mart_native_category_path"):
+                            attrs["mart_native_category_path"] = label
+                        attrs.setdefault("category_hint", item.category or attrs.get("mart_native_category_path") or label)
+                        item.category = item.category or attrs.get("mart_native_category_path") or label
                         item.attributes = attrs
                         key = source_dedup_key(item)
                         if key in seen:
@@ -740,6 +806,7 @@ class CostcoCrawler(CrawlerContract):
             "unit_price_displayed", "unit_price_basis_raw", "unit_price_text", "mart_native_category_id",
             "mart_native_category_path", "canonical_url", "price", "sale_price", "name", "raw_name", "normalized_name",
             "brand", "pack_qty", "pack_unit", "image_url", "source_record_key", _SEED_KEY, "promo_label", "promo_type",
+            "raw_promo_type", "unit_price_display",
         ]
         record = {key: attrs.get(key) for key in keys}
         record.update({
@@ -756,6 +823,7 @@ class CostcoCrawler(CrawlerContract):
         record["detail_url"] = record.get("canonical_url") or item.detail_url
         record["source_url"] = record["detail_url"]
         record["category"] = item.category or record.get("mart_native_category_path") or "costco"
+        record["unit_price_display"] = record.get("unit_price_display") or item.unit_price_display or record.get("unit_price_text")
         return record
 
     async def parse(self, raw_data: str, *, category_id: str = "", category_path: str = "") -> list[DiscountItem]:

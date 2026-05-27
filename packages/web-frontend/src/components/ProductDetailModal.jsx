@@ -74,6 +74,7 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
     hasDiscountMetadata,
     recordLabel,
     claimStatusLabel,
+    unitPriceDisplay,
   } = normalized;
   const productId = numericProductId;
   const standardUnitPrice = normalized.standardUnitPrice ?? priceTrust?.standard_unit_price ?? null;
@@ -197,9 +198,9 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
       }
     }
   }
-  const displayUnitPrice = standardUnitPrice
+  const displayUnitPrice = unitPriceDisplay || (standardUnitPrice
     ? `${fmt(Math.round(standardUnitPrice))}원/${standardUnit}`
-    : unitPrice;
+    : unitPrice);
   const decision = buildProductDecision(product, { priceCompare, priceHistory, priceTrust });
   const {
     historySummary,

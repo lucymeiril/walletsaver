@@ -9,7 +9,8 @@ from services.auth_service import (
     hash_password, verify_password, create_token_pair, decode_token
 )
 from services.oauth_service import (
-    get_oauth_login_url, exchange_code_for_token, get_user_info
+    get_oauth_login_url, exchange_code_for_token, get_user_info,
+    validate_oauth_state,
 )
 from fastapi.responses import JSONResponse, RedirectResponse
 
@@ -155,15 +156,17 @@ async def oauth_login(provider: str):
         url = get_oauth_login_url(provider)
         return RedirectResponse(url=url)
     except ValueError as e:
-        if "client_id" in str(e) or "client_secret" in str(e):
-            return RedirectResponse(url=f"{FRONTEND_URL}/auth/callback?demo=1&provider={provider}")
-        raise HTTPException(status_code=400, detail=str(e))
+        if "지원하지 않는 OAuth 공급자" in str(e):
+            raise HTTPException(status_code=400, detail=str(e))
+        return RedirectResponse(url=f"{FRONTEND_URL}/auth/callback?error=oauth_config&provider={provider}", status_code=302)
 
 
 @router.get("/oauth/{provider}/callback")
-async def oauth_callback(provider: str, code: str):
+async def oauth_callback(provider: str, code: str, state: str | None = None):
     """OAuth 콜백 처리"""
     global _next_id
+    if not validate_oauth_state(state):
+        return RedirectResponse(url=f"{FRONTEND_URL}/auth/callback?error=oauth_state", status_code=302)
     try:
         token_data = await exchange_code_for_token(provider, code)
         user_info = await get_user_info(provider, token_data["access_token"])

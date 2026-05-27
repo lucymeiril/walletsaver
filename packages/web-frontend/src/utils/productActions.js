@@ -141,6 +141,7 @@ export function normalizeProduct(product = {}) {
     keywords: toKeywords(firstDefined(product.keywords, product.keyword, product.tags, [])),
     sourceTitle,
     description: firstDefined(product.description, product.content, product.summary, ''),
+    unitPriceDisplay: firstDefined(product.unit_price_display, product.attributes?.unit_price_display, product.offer_raw_data?.unit_price_display, ''),
     standardUnitPrice: firstDefined(product.standard_unit_price, product.unit_price, null),
     standardUnit: firstDefined(product.standard_unit, '100g'),
     sourceType,
