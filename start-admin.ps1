@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
-    지갑 지키미 — 관리 도구 시작 (크롤러 관리 + DB 관리 + AI 관리)
+    지갑 지키미 — 관리 도구 시작 (크롤러 관리 + DB 관리)
 .DESCRIPTION
-    크롤러 관리(8001/5174), DB 관리(8002/5175), AI 관리(8003/5176) 서버를 시작합니다.
+    크롤러 관리(8001/5174), DB 관리(8002/5175) 서버를 시작합니다.
     서버 전용 내부 도구로 배포하지 않습니다.
 #>
 
@@ -34,19 +34,17 @@ $CrawlerBackendDir  = Join-Path $Root "packages\crawler-admin\backend"
 $CrawlerFrontendDir = Join-Path $Root "packages\crawler-admin\frontend"
 $DbBackendDir       = Join-Path $Root "packages\db-admin\backend"
 $DbFrontendDir      = Join-Path $Root "packages\db-admin\frontend"
-$AiBackendDir       = Join-Path $Root "packages\ai-admin\backend"
-$AiFrontendDir      = Join-Path $Root "packages\ai-admin\frontend"
 
 # --- PYTHONPATH 설정 (shared 모듈 참조용) ---
 $SharedDir = Join-Path $Root "packages\shared"
-$env:PYTHONPATH = "$SharedDir;$CrawlerBackendDir;$DbBackendDir;$AiBackendDir"
+$env:PYTHONPATH = "$SharedDir;$CrawlerBackendDir;$DbBackendDir"
 
 # --- 의존성 확인 ---
 Write-Host "[의존성] 백엔드 패키지 확인..." -ForegroundColor Yellow
 & $PyExe -m pip install --quiet fastapi uvicorn httpx requests beautifulsoup4 lxml sqlalchemy pyyaml 2>$null | Out-Null
 Write-Host "         ✅ 완료" -ForegroundColor Green
 
-foreach ($dir in @($CrawlerFrontendDir, $DbFrontendDir, $AiFrontendDir)) {
+foreach ($dir in @($CrawlerFrontendDir, $DbFrontendDir)) {
     $name = Split-Path (Split-Path $dir -Parent) -Leaf
     if (-not (Test-Path (Join-Path $dir "node_modules"))) {
         Write-Host "[의존성] $name 프론트엔드 설치 중..." -ForegroundColor Yellow
@@ -84,24 +82,11 @@ $dbFrontend = Start-Process -PassThru -NoNewWindow -FilePath "cmd.exe" `
     -ArgumentList "/c cd /d `"$DbFrontendDir`" && npm run dev" `
     -WorkingDirectory $DbFrontendDir
 
-# --- AI 관리 백엔드 (port 8003) ---
-Write-Host "🚀 AI 관리 백엔드 시작 (port 8003)..." -ForegroundColor Yellow
-$aiBackend = Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
-    -ArgumentList "-m uvicorn api.app:create_app --factory --reload --port 8003 --host 127.0.0.1" `
-    -WorkingDirectory $AiBackendDir
-
-# --- AI 관리 프론트엔드 (port 5176) ---
-Write-Host "🚀 AI 관리 프론트엔드 시작 (port 5176)..." -ForegroundColor Yellow
-$aiFrontend = Start-Process -PassThru -NoNewWindow -FilePath "cmd.exe" `
-    -ArgumentList "/c cd /d `"$AiFrontendDir`" && npm run dev -- --host 127.0.0.1 --port 5176" `
-    -WorkingDirectory $AiFrontendDir
-
 # --- 서버 준비 대기 ---
 Write-Host ""
 Write-Host "⏳ 서버 준비 대기 중..." -ForegroundColor Yellow
 $crawlerReady = $false
 $dbReady = $false
-$aiReady = $false
 for ($i = 0; $i -lt 20; $i++) {
     Start-Sleep -Seconds 1
     if (-not $crawlerReady) {
@@ -116,13 +101,7 @@ for ($i = 0; $i -lt 20; $i++) {
             if ($r.StatusCode -eq 200) { $dbReady = $true }
         } catch {}
     }
-    if (-not $aiReady) {
-        try {
-            $r = Invoke-WebRequest -Uri "http://127.0.0.1:8003/health" -UseBasicParsing -TimeoutSec 2 -ErrorAction SilentlyContinue
-            if ($r.StatusCode -eq 200) { $aiReady = $true }
-        } catch {}
-    }
-    if ($crawlerReady -and $dbReady -and $aiReady) { break }
+    if ($crawlerReady -and $dbReady) { break }
 }
 
 Write-Host ""
@@ -140,15 +119,10 @@ $dStat = if ($dbReady) { "✅ OK" } else { "⏳ 시작 중" }
 Write-Host "     프론트엔드: http://localhost:5175" -ForegroundColor White
 Write-Host "     백엔드 API: http://localhost:8002/docs  ($dStat)" -ForegroundColor White
 Write-Host ""
-$aStat = if ($aiReady) { "✅ OK" } else { "⏳ 시작 중" }
-Write-Host "  🤖 AI 관리:" -ForegroundColor White
-Write-Host "     프론트엔드: http://localhost:5176" -ForegroundColor White
-Write-Host "     백엔드 API: http://localhost:8003/docs  ($aStat)" -ForegroundColor White
-Write-Host ""
 Write-Host "  Ctrl+C를 누르면 모든 서버가 종료됩니다." -ForegroundColor DarkGray
 Write-Host ""
 
-$processes = @($crawlerBackend, $crawlerFrontend, $dbBackend, $dbFrontend, $aiBackend, $aiFrontend)
+$processes = @($crawlerBackend, $crawlerFrontend, $dbBackend, $dbFrontend)
 
 try {
     while ($true) {

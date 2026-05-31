@@ -18,7 +18,7 @@ from storage.models import Keyword, Product, UnifiedCategory
 BACKEND_ROOT = Path(__file__).resolve().parents[1]
 REPO_ROOT = BACKEND_ROOT.parents[2]
 CATEGORY_TREE_PATH = REPO_ROOT / "packages" / "shared" / "data" / "category_tree.yaml"
-PROMPT_PATH = REPO_ROOT / "packages" / "ai-admin" / "backend" / "prompts" / "external_classify_instructions_v1.md"
+PROMPT_PATH = BACKEND_ROOT / "prompts" / "external_classify_instructions_v1.md"
 
 
 @dataclass(frozen=True)

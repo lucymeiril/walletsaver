@@ -2,8 +2,8 @@
 .SYNOPSIS
     지갑 지키미 — 전체 시스템 한 번에 시작
 .DESCRIPTION
-    웹 프론트엔드(5173) + Public API(8000) + 크롤러 관리(8001/5174) + DB 관리(8002/5175) + AI 관리(8003/5176)
-    총 8개 서버를 한 번에 시작하고 브라우저를 엽니다.
+    웹 프론트엔드(5173) + Public API(8000) + 크롤러 관리(8001/5174) + DB 관리(8002/5175)
+    총 6개 서버를 한 번에 시작하고 브라우저를 엽니다.
     Ctrl+C로 전부 종료됩니다.
 
     사용법:
@@ -66,14 +66,12 @@ $CrawlerFrontend   = Join-Path $Root "packages\crawler-admin\frontend"
 $CrawlerBackend    = Join-Path $Root "packages\crawler-admin\backend"
 $DbFrontend        = Join-Path $Root "packages\db-admin\frontend"
 $DbBackend         = Join-Path $Root "packages\db-admin\backend"
-$AiFrontend        = Join-Path $Root "packages\ai-admin\frontend"
-$AiBackend         = Join-Path $Root "packages\ai-admin\backend"
 $SharedDir         = Join-Path $Root "packages\shared"
 
 # PYTHONPATH — shared 모듈 및 각 백엔드 직접 실행용
 $env:PYTHONIOENCODING = "utf-8"
 $env:PYTHONUTF8 = "1"
-$env:PYTHONPATH = "$Root;$SharedDir;$CrawlerBackend;$DbBackend;$AiBackend;$WebBackend"
+$env:PYTHONPATH = "$Root;$SharedDir;$CrawlerBackend;$DbBackend;$WebBackend"
 if (-not $env:WALLETSAVIOR_CORS_ORIGINS) { $env:WALLETSAVIOR_CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173" }
 if (-not $env:DB_ADMIN_API_URL) { $env:DB_ADMIN_API_URL = "http://127.0.0.1:8002/api/prices/bulk" }
 if (-not $env:INGESTION_API_URL) { $env:INGESTION_API_URL = "http://127.0.0.1:8002/api/ingestions" }
@@ -94,7 +92,7 @@ Write-Host "         ✅ Python 패키지 완료" -ForegroundColor Green
 
 $frontendDirs = @()
 if ($Web)   { $frontendDirs += $WebFrontend }
-if ($Admin) { $frontendDirs += $CrawlerFrontend; $frontendDirs += $DbFrontend; $frontendDirs += $AiFrontend }
+if ($Admin) { $frontendDirs += $CrawlerFrontend; $frontendDirs += $DbFrontend }
 
 foreach ($dir in $frontendDirs) {
     $name = (Split-Path (Split-Path $dir -Parent) -Leaf) + "/frontend"
@@ -114,7 +112,7 @@ Write-Host ""
 Write-Host "[정리] 기존 서버 프로세스 정리 중..." -ForegroundColor Yellow
 $portsToClean = @()
 if ($Web)   { $portsToClean += @(8000, 5173) }
-if ($Admin) { $portsToClean += @(8001, 5174, 8002, 5175, 8003, 5176) }
+if ($Admin) { $portsToClean += @(8001, 5174, 8002, 5175) }
 
 foreach ($port in $portsToClean) {
     $conns = Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue |
@@ -186,18 +184,6 @@ if ($Admin) {
         -ArgumentList "vite --host 127.0.0.1 --port 5175 --strictPort" `
         -WorkingDirectory $DbFrontend
     $processes += $p
-
-    Write-Host "🚀 [AI관리] 백엔드 시작 (port 8003)..." -ForegroundColor Yellow
-    $p = Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
-        -ArgumentList "-m uvicorn api.app:create_app --factory --port 8003 --host 127.0.0.1" `
-        -WorkingDirectory $AiBackend
-    $processes += $p
-
-    Write-Host "🚀 [AI관리] 프론트엔드 시작 (port 5176)..." -ForegroundColor Yellow
-    $p = Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
-        -ArgumentList "vite --host 127.0.0.1 --port 5176 --strictPort" `
-        -WorkingDirectory $AiFrontend
-    $processes += $p
 }
 
 # === 헬스체크 ===
@@ -209,7 +195,6 @@ if ($Web)   { $checks += @{ Name = "웹 API"; Url = "http://127.0.0.1:8000/api/h
 if ($Admin) {
     $checks += @{ Name = "크롤러"; Url = "http://127.0.0.1:8001/health"; Ready = $false }
     $checks += @{ Name = "DB관리"; Url = "http://127.0.0.1:8002/health"; Ready = $false }
-    $checks += @{ Name = "AI관리"; Url = "http://127.0.0.1:8003/health"; Ready = $false }
 }
 
 for ($i = 0; $i -lt 30; $i++) {
@@ -245,7 +230,6 @@ if ($Admin) {
     $idx = if ($Web) { 1 } else { 0 }
     $cStat = if ($checks[$idx].Ready) { "✅" } else { "⏳" }
     $dStat = if ($checks[$idx+1].Ready) { "✅" } else { "⏳" }
-    $aStat = if ($checks[$idx+2].Ready) { "✅" } else { "⏳" }
     Write-Host "  🕷️ 크롤러 관리" -ForegroundColor White
     Write-Host "     프론트엔드: http://localhost:5174" -ForegroundColor White
     Write-Host "     백엔드 API: http://localhost:8001/docs  $cStat" -ForegroundColor White
@@ -253,10 +237,6 @@ if ($Admin) {
     Write-Host "  🗄️ DB 관리" -ForegroundColor White
     Write-Host "     프론트엔드: http://localhost:5175" -ForegroundColor White
     Write-Host "     백엔드 API: http://localhost:8002/docs  $dStat" -ForegroundColor White
-    Write-Host ""
-    Write-Host "  🤖 AI 관리" -ForegroundColor White
-    Write-Host "     프론트엔드: http://localhost:5176" -ForegroundColor White
-    Write-Host "     백엔드 API: http://localhost:8003/docs  $aStat" -ForegroundColor White
     Write-Host ""
 }
 
