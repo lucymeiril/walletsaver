@@ -16,6 +16,7 @@ const IntegrityPage      = lazy(() => import('./pages/Integrity/IntegrityPage'))
 const CommunityModeration = lazy(() => import('./pages/Community/CommunityModeration'));
 const MaintenancePage     = lazy(() => import('./pages/Maintenance/MaintenancePage'));
 const ImportClassifiedPage = lazy(() => import('./pages/Import/ImportClassifiedPage'));
+const CatalogSyncPage      = lazy(() => import('./pages/CatalogSync/CatalogSyncPage'));
 
 function Loader() {
   return (
@@ -78,6 +79,7 @@ export default function App() {
             <Route path="/maintenance"    element={<PageBoundary><MaintenancePage /></PageBoundary>} />
             <Route path="/community"      element={<PageBoundary><CommunityModeration /></PageBoundary>} />
             <Route path="/import"         element={<PageBoundary><ImportClassifiedPage /></PageBoundary>} />
+            <Route path="/catalog-sync"   element={<PageBoundary><CatalogSyncPage /></PageBoundary>} />
           </Route>
         </Routes>
       </Suspense>

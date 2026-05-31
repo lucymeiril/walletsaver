@@ -188,6 +188,7 @@ def create_app() -> FastAPI:
     from api.routes.import_bundle import router as import_bundle_router
     from api.routes.external_ai import router as external_ai_router
     from api.routes.matching_rules import router as matching_rules_router
+    from api.routes.catalog_sync import router as catalog_sync_router
 
     # Payload size limit
     app.add_middleware(RequestSizeLimitMiddleware)
@@ -213,6 +214,7 @@ def create_app() -> FastAPI:
     app.include_router(import_bundle_router, prefix="/api")
     app.include_router(external_ai_router, prefix="/api")
     app.include_router(matching_rules_router, prefix="/api")
+    app.include_router(catalog_sync_router, prefix="/api")
     # ingestion 라우터는 이미 /api/ingestions 접두어가 있음
     app.include_router(ingestion_router)
 

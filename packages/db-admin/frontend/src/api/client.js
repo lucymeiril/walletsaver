@@ -361,4 +361,48 @@ export const api = {
   },
   getBundleFailureCsvUrl: (batchId) =>
     `${API_BASE}/import/bundle/${batchId}/failures.csv`,
+  // ── Catalog Sync (통합 카탈로그 동기화: export·import·재분류) ──
+  catalogSyncExport: (entities, scopes, opts) =>
+    postJson(`${API_BASE}/admin/catalog-sync/export`, { entities, scopes: scopes || null }, { ...opts, timeout: LONG_TIMEOUT }),
+  catalogSyncDownloadUrl: (name) =>
+    `${API_BASE}/admin/catalog-sync/export/download?name=${encodeURIComponent(name)}`,
+  catalogSyncValidate: (files, { mode = 'upsert', force = false, signal, onProgress } = {}) => {
+    const fd = new FormData();
+    files.forEach((f) => fd.append('files', f));
+    const qs = `?mode=${encodeURIComponent(mode)}&force=${force ? 'true' : 'false'}`;
+    return postFormData(`${API_BASE}/admin/catalog-sync/validate${qs}`, fd, { signal, onProgress });
+  },
+  catalogSyncApply: (files, { mode = 'upsert', force = false, signal, onProgress } = {}) => {
+    const fd = new FormData();
+    files.forEach((f) => fd.append('files', f));
+    const qs = `?mode=${encodeURIComponent(mode)}&force=${force ? 'true' : 'false'}`;
+    return postFormData(`${API_BASE}/admin/catalog-sync/apply${qs}`, fd, { signal, onProgress });
+  },
+  catalogSyncRecategorizePreview: (scope, force, opts) =>
+    postJson(`${API_BASE}/admin/catalog-sync/recategorize/preview`, { scope: scope || null, force: !!force }, { ...opts, timeout: LONG_TIMEOUT }),
+  catalogSyncRecategorizeApply: (scope, force, opts) =>
+    postJson(`${API_BASE}/admin/catalog-sync/recategorize/apply`, { scope: scope || null, force: !!force }, { ...opts, timeout: LONG_TIMEOUT }),
+  catalogSyncLogs: (limit = 50, opts) =>
+    get(`${API_BASE}/admin/catalog-sync/logs?limit=${limit}`, opts),
+  catalogSyncSnapshots: (opts) =>
+    get(`${API_BASE}/admin/catalog-sync/snapshots`, opts),
+  catalogSyncRestore: (filename, opts) =>
+    postJson(`${API_BASE}/admin/catalog-sync/restore`, { filename }, { ...opts, timeout: LONG_TIMEOUT }),
+  // 인증 헤더를 포함해 파일을 blob으로 받아 다운로드한다.
+  downloadAuthed: async (url, filename) => {
+    const token = getAccessToken();
+    const resp = await fetch(url, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+    if (!resp.ok) throw new Error(`다운로드 실패 (HTTP ${resp.status})`);
+    const blob = await resp.blob();
+    const objectUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = objectUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(objectUrl);
+  },
 };

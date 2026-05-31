@@ -1613,3 +1613,39 @@ class CategoryReviewQueue(Base):
         Index("ix_cat_review_proposed_id", "proposed_id"),
         UniqueConstraint("proposed_id", "source_file_hash", name="uq_cat_review_proposal"),
     )
+
+
+# ═══════════════════════════════════════════════
+# Catalog Sync: export/import/재분류 감사 로그
+# ═══════════════════════════════════════════════
+
+class CatalogSyncLog(Base):
+    """통합 카탈로그 동기화(export / import dry-run / apply / 재분류) 이력 로그.
+
+    operation 호출마다 한 행이 기록된다. apply는 snapshot_path에 사전 스냅샷 경로를 남긴다.
+    """
+    __tablename__ = "catalog_sync_log"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    operation: Mapped[str] = mapped_column(String(30), nullable=False)   # export|validate|apply|recategorize
+    entities: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)  # ["categories","match_rules","products"]
+    mode: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)  # upsert|append_only|patch|replace_all
+    scope: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    counts: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)   # 엔티티별 create/update/...
+    file_hash: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    snapshot_path: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    user: Mapped[str] = mapped_column(String(255), nullable=False, default="anonymous")
+    dry_run: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    force: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    ok: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    error_message: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    timestamp: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )
+
+    __table_args__ = (
+        Index("ix_catalog_sync_log_operation", "operation"),
+        Index("ix_catalog_sync_log_timestamp", "timestamp"),
+        Index("ix_catalog_sync_log_file_hash", "file_hash"),
+    )
