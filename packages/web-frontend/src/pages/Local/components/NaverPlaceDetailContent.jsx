@@ -1,5 +1,5 @@
 import { ExternalLink } from 'lucide-react';
-import { fmt } from '../../../data/mockData';
+import { fmt } from '../../../utils/helpers';
 import { parseMenuItems, getRepresentativePrice } from '../utils';
 import SafeImage from '../../../components/common/SafeImage';
 import s from '../LocalPage.module.css';

@@ -33,33 +33,7 @@ async def nearby_gas_stations(
     """주변 주유소 가격 정보."""
     storage = request.app.state.storage
     if storage is None:
-        from api.mock_responses import MOCK_GAS_STATIONS
-        stations = []
-        for s in MOCK_GAS_STATIONS:
-            dist = _haversine(lat, lng, s["lat"], s["lng"])
-            if dist <= radius:
-                stations.append({**s, "distance": round(dist)})
-
-        if sort == "price_asc":
-            def sort_key(s):
-                price = s.get(fuel_type)
-                return price if price is not None else float("inf")
-            stations.sort(key=sort_key)
-        elif sort == "distance":
-            stations.sort(key=lambda s: s["distance"])
-
-        return ApiResponse(data=stations)
+        return ApiResponse(data=[], message="주유소 가격 DB가 연결되지 않았습니다")
 
     data = storage.get_gas_prices(lat=lat, lng=lng, radius=radius, fuel_type=fuel_type, sort_by=sort)
-    if not data:
-        from api.mock_responses import MOCK_GAS_STATIONS
-        data = []
-        for s in MOCK_GAS_STATIONS:
-            dist = _haversine(lat, lng, s["lat"], s["lng"])
-            if dist <= radius:
-                data.append({**s, "distance": round(dist)})
-        if sort == "price_asc":
-            data.sort(key=lambda s: s.get(fuel_type) if s.get(fuel_type) is not None else float("inf"))
-        elif sort == "distance":
-            data.sort(key=lambda s: s["distance"])
     return ApiResponse(data=data)

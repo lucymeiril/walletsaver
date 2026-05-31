@@ -21,7 +21,7 @@ from sqlalchemy import create_engine, select, func, desc, event, or_
 from sqlalchemy.orm import Session, sessionmaker, scoped_session, joinedload
 
 from storage.models import (
-    Base, Product, BaselinePrice, DiscountHistory,
+    Base, Product, BaselinePrice, DiscountHistory, PriceHistory,
     HotdealPrice, GasStation, CrawlLog, Favorite, PriceAlert,
     CrawlStatus, Category, Keyword, PendingCategorization, CategoryCorrection,
     HotDealVote,
@@ -695,6 +695,37 @@ class DBStorage(StorageContract):
                     "crawled_at": item.crawled_at.isoformat() if item.crawled_at else "",
                     "url": metadata["source_url"],
                     **metadata,
+                })
+            weekly_rows = session.execute(
+                select(PriceHistory)
+                .where(
+                    PriceHistory.product_id == product_id,
+                    PriceHistory.observed_at >= since,
+                )
+                .order_by(PriceHistory.week_of, PriceHistory.observed_at)
+            ).scalars().all()
+            for item in weekly_rows:
+                history.append({
+                    "date": item.week_of.isoformat() if item.week_of else item.observed_at.strftime("%m-%d"),
+                    "price": round(item.sale_price or item.price),
+                    "source": item.mart,
+                    "record_kind": "weekly",
+                    "publication_kind": "weekly_price_history",
+                    "price_observation_only": False,
+                    "discount_claim_status": "observed",
+                    "claim_basis": "price_history",
+                    "claim_blockers": [],
+                    "has_discount_metadata": item.sale_price is not None and item.sale_price != item.price,
+                    "record_label": "주차별 가격",
+                    "claim_status_label": "주차별 관측가",
+                    "observation_type": "weekly",
+                    "unit_price": item.unit_price,
+                    "week_of": item.week_of.isoformat() if item.week_of else None,
+                    "recorded_at": item.observed_at.isoformat() if item.observed_at else "",
+                    "observed_at": item.observed_at.isoformat() if item.observed_at else "",
+                    "source_run_id": item.source_run_id,
+                    "source_url": "",
+                    "url": "",
                 })
             return sorted(
                 history,

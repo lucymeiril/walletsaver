@@ -17,6 +17,8 @@ from api.routes.ingestion import (
     _calculate_quality,
     _find_problem_items,
     _insert_items,
+    _retryable_lock_http_error,
+    _with_sqlite_lock_retry,
     ai_safe_final_approve,
     db_review,
     remove_ingestion_item,
@@ -24,6 +26,9 @@ from api.routes.ingestion import (
     rollback_published_ingestion_item,
     update_ingestion_item,
 )
+from fastapi import HTTPException
+from sqlalchemy.exc import OperationalError
+import api.routes.ingestion as ingestion_routes
 from services.catalog_seed import seed_catalog_taxonomy
 from storage.models import (
     Base,
@@ -38,6 +43,40 @@ from storage.models import (
     Product,
     ProductKeyword,
 )
+
+
+def test_sqlite_lock_retryable_error_payload_is_explicit():
+    exc = OperationalError("database is locked", None, None)
+    http_exc = _retryable_lock_http_error("bulk_approve_chunk", exc, {"ids": [1, 2]})
+
+    assert isinstance(http_exc, HTTPException)
+    assert http_exc.status_code == 503
+    assert http_exc.detail["retryable"] is True
+    assert http_exc.detail["operation"] == "bulk_approve_chunk"
+    assert http_exc.detail["context"]["ids"] == [1, 2]
+
+
+def test_sqlite_lock_retry_context_does_not_hide_final_lock(monkeypatch):
+    monkeypatch.setattr(ingestion_routes.time, "sleep", lambda _seconds: None)
+    attempts = 0
+
+    def always_locked():
+        nonlocal attempts
+        attempts += 1
+        raise OperationalError("database is locked", None, None)
+
+    try:
+        _with_sqlite_lock_retry(
+            always_locked,
+            operation_name="bulk_approve_chunk",
+            context={"ids": [1]},
+        )
+    except OperationalError:
+        pass
+    else:  # pragma: no cover
+        raise AssertionError("expected OperationalError")
+
+    assert attempts == 7
 
 
 def test_hotdeal_insert_keeps_valid_rows_when_one_price_is_missing():

@@ -115,6 +115,20 @@ function CategoryBreadcrumb({ categoryPath, categoryId, navigate }) {
 
 const SummaryCards = React.memo(function SummaryCards({ summary }) {
   if (!summary) return null;
+  if (summary.is_leaf === false) {
+    return (
+      <div className={s.summaryCards}>
+        <div className={`${s.summaryCard} ${s.summaryCount}`}>
+          <span className={s.summaryLabel}>하위 상품</span>
+          <span className={s.summaryValue}>{fmt(summary.product_count)}개</span>
+        </div>
+        <div className={`${s.summaryCard} ${s.summaryAvg}`}>
+          <span className={s.summaryLabel}>비교 기준</span>
+          <span className={s.summaryValue}>세부 카테고리 선택</span>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={s.summaryCards}>
       <div className={`${s.summaryCard} ${s.summaryAvg}`}>
@@ -420,6 +434,7 @@ export default function CategoryComparePage() {
           )}
 
           {/* Filters */}
+          {products.length > 0 && (
           <div className={s.filters}>
             <div className={s.filterGroup}>
               <span className={s.filterLabel}>보관:</span>
@@ -446,8 +461,10 @@ export default function CategoryComparePage() {
               ))}
             </div>
           </div>
+          )}
 
           {/* Sort & View toggle */}
+          {products.length > 0 && (
           <div className={s.sortBar}>
             <div className={s.sortGroup}>
               <span className={s.filterLabel}>정렬:</span>
@@ -476,9 +493,10 @@ export default function CategoryComparePage() {
               </button>
             </div>
           </div>
+          )}
 
           {/* Empty */}
-          {products.length === 0 && (
+          {products.length === 0 && subcategories.length === 0 && (
             <div className={s.emptyState}>
               <div className={s.emptyIcon}>📦</div>
               <div className={s.emptyText}>이 카테고리에 등록된 상품이 없습니다</div>

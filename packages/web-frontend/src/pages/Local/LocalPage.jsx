@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { MapPin, Search, RefreshCw, ChevronRight } from 'lucide-react';
-import { RECIPES, fmt, calcRecipeCost } from '../../data/mockData';
+import { fmt } from '../../utils/helpers';
 import Modal from '../../components/common/Modal';
 import EmptyState from '../../components/common/EmptyState';
 import useStore from '../../stores/appStore';
@@ -58,9 +58,6 @@ export default function LocalPage() {
   const [selectedGas, setSelectedGas] = useState(null);
   const [selectedRest, setSelectedRest] = useState(null);
   const [selectedNaverPlace, setSelectedNaverPlace] = useState(null);
-
-  const cookExample = RECIPES.find(r => r.name === '짜장면');
-  const cookCost = cookExample ? calcRecipeCost(cookExample) : null;
 
   const { addToast, setSavedLocation } = useStore();
   const searchInputRef = useRef(null);
@@ -424,6 +421,7 @@ export default function LocalPage() {
         is_self: petrol.is_self, is_24h: petrol.is_24h, has_car_wash: petrol.has_car_wash,
         premium_gasoline: petrol.premium_gasoline, naverUrl: item.url,
         image_url: item.image_url, tel: item.tel, distance: item.distance,
+        updated_at: petrol.updated_at || item.updated_at,
       });
     } else {
       setSelectedNaverPlace(item);
@@ -686,26 +684,6 @@ export default function LocalPage() {
                 </button>
               </div>
 
-              {/* Cook vs eat */}
-              {selectedCategoryName === '음식' && cookCost && phase === 'items' && (
-                <div className={s.cookBanner}>
-                  <div className={s.cookTitle}>🍳 외식 vs 직접 해먹기</div>
-                  <div className={s.cookCompare}>
-                    <div className={`${s.cookItem} ${s.cookEat}`}>
-                      <span className={s.cookLabel}>🍽️ 외식 평균</span>
-                      <span className={s.cookPrice}>{fmt(cookExample.eatingOut)}원</span>
-                    </div>
-                    <div className={`${s.cookItem} ${s.cookHome}`}>
-                      <span className={s.cookLabel}>🏠 직접 조리</span>
-                      <span className={s.cookPrice}>{fmt(cookCost.total)}원</span>
-                    </div>
-                  </div>
-                  <div className={s.cookSavings}>
-                    💰 직접 해먹으면 {fmt(cookCost.savings)}원 절약 ({cookCost.pct}%)
-                  </div>
-                </div>
-              )}
-
               {/* Results count */}
               <div className={s.resultCount}>
                 {sortedItems.length}건의 결과
@@ -761,6 +739,12 @@ export default function LocalPage() {
                               <div className={s.petrolLineSub}>
                                 <span className={s.petrolLabel}>LPG</span>
                                 <span>{fmt(petrol.lpg)}</span>
+                              </div>
+                            )}
+                            {petrol.updated_at && (
+                              <div className={s.petrolLineSub}>
+                                <span>갱신</span>
+                                <span>{String(petrol.updated_at).slice(0, 16)}</span>
                               </div>
                             )}
                           </div>

@@ -2,6 +2,7 @@
 
 import json
 import logging
+import os
 import time
 from datetime import datetime, timedelta
 from typing import Callable, Optional, TypeVar
@@ -57,8 +58,8 @@ router = APIRouter(prefix="/api/ingestions", tags=["ingestions"])
 logger = logging.getLogger(__name__)
 
 INGESTION_SERVER_CHUNK_SIZE = 1_000
-BULK_APPROVE_COMMIT_CHUNK_SIZE = 100
-SQLITE_LOCK_RETRY_ATTEMPTS = 5
+BULK_APPROVE_COMMIT_CHUNK_SIZE = 1
+SQLITE_LOCK_RETRY_ATTEMPTS = 7
 _SQLITE_LOCK_RETRY_BASE_DELAY = 0.25
 T = TypeVar("T")
 
@@ -160,7 +161,42 @@ def _is_sqlite_locked(exc: Exception) -> bool:
     return False
 
 
-def _with_sqlite_lock_retry(operation: Callable[[], T]) -> T:
+def _sqlite_lock_context(context: dict | None = None) -> dict:
+    payload = {
+        "pid": os.getpid(),
+        "bulk_approve_commit_chunk_size": BULK_APPROVE_COMMIT_CHUNK_SIZE,
+        "ingestion_server_chunk_size": INGESTION_SERVER_CHUNK_SIZE,
+    }
+    try:
+        from config import settings
+        payload["database_url"] = settings.DATABASE_URL
+    except Exception:
+        payload["database_url"] = "unknown"
+    if context:
+        payload.update(context)
+    return payload
+
+
+def _retryable_lock_http_error(operation_name: str, exc: Exception, context: dict | None = None) -> HTTPException:
+    return HTTPException(
+        503,
+        {
+            "error": "sqlite_database_locked",
+            "retryable": True,
+            "operation": operation_name,
+            "message": "SQLite writer is busy. Retry after the current write finishes.",
+            "context": _sqlite_lock_context(context),
+            "details": str(exc)[:300],
+        },
+    )
+
+
+def _with_sqlite_lock_retry(
+    operation: Callable[[], T],
+    *,
+    operation_name: str = "db_operation",
+    context: dict | None = None,
+) -> T:
     for attempt in range(SQLITE_LOCK_RETRY_ATTEMPTS):
         try:
             return operation()
@@ -168,7 +204,14 @@ def _with_sqlite_lock_retry(operation: Callable[[], T]) -> T:
             if not _is_sqlite_locked(exc) or attempt == SQLITE_LOCK_RETRY_ATTEMPTS - 1:
                 raise
             delay = _SQLITE_LOCK_RETRY_BASE_DELAY * (2 ** attempt)
-            logger.warning("SQLite lock detected; retrying in %.2fs (%d/%d)", delay, attempt + 1, SQLITE_LOCK_RETRY_ATTEMPTS)
+            logger.warning(
+                "SQLite lock detected during %s; retrying in %.2fs (%d/%d): %s",
+                operation_name,
+                delay,
+                attempt + 1,
+                SQLITE_LOCK_RETRY_ATTEMPTS,
+                _sqlite_lock_context(context),
+            )
             time.sleep(delay)
     return operation()
 
@@ -313,7 +356,30 @@ def bulk_approve(body: BulkApproveRequest, identity: dict = Depends(require_mode
                 session.flush()
             return chunk_results
 
-        results.extend(_with_sqlite_lock_retry(approve_chunk))
+        try:
+            results.extend(
+                _with_sqlite_lock_retry(
+                    approve_chunk,
+                    operation_name="bulk_approve_chunk",
+                    context={
+                        "ids": id_chunk,
+                        "chunk_size": len(id_chunk),
+                        "total_requested": len(body.ids),
+                    },
+                )
+            )
+        except OperationalError as exc:
+            if _is_sqlite_locked(exc):
+                raise _retryable_lock_http_error(
+                    "bulk_approve_chunk",
+                    exc,
+                    {
+                        "ids": id_chunk,
+                        "chunk_size": len(id_chunk),
+                        "total_requested": len(body.ids),
+                    },
+                )
+            raise
 
     approved_count = sum(1 for r in results if r["status"] == "approved")
     return {
@@ -403,7 +469,32 @@ def submit_ingestion(request: StarletteRequest, body: IngestionSubmit, identity:
                 session.refresh(row)
                 return {"id": row.id, "items_count": row.items_count, "quality_score": quality_score}
 
-        created_rows.append(_with_sqlite_lock_retry(insert_chunk))
+        try:
+            created_rows.append(
+                _with_sqlite_lock_retry(
+                    insert_chunk,
+                    operation_name="submit_ingestion_chunk",
+                    context={
+                        "crawler_name": body.crawler_name,
+                        "chunk_index": chunk_index,
+                        "chunks": len(item_chunks),
+                        "chunk_size": len(item_chunk),
+                    },
+                )
+            )
+        except OperationalError as exc:
+            if _is_sqlite_locked(exc):
+                raise _retryable_lock_http_error(
+                    "submit_ingestion_chunk",
+                    exc,
+                    {
+                        "crawler_name": body.crawler_name,
+                        "chunk_index": chunk_index,
+                        "chunks": len(item_chunks),
+                        "chunk_size": len(item_chunk),
+                    },
+                )
+            raise
 
     if len(created_rows) == 1:
         row = created_rows[0]
@@ -510,6 +601,23 @@ def crawler_review(ingestion_id: int, body: ReviewRequest, identity: dict = Depe
 @router.post("/{ingestion_id}/db-review")
 def db_review(ingestion_id: int, body: ReviewRequest, identity: dict = Depends(require_moderator)):
     """DB 관리자 최종 검토 — 승인 시 실제 DB 테이블에 삽입."""
+    try:
+        return _with_sqlite_lock_retry(
+            lambda: _db_review_once(ingestion_id, body),
+            operation_name="db_review",
+            context={"ingestion_id": ingestion_id, "action": body.action},
+        )
+    except OperationalError as exc:
+        if _is_sqlite_locked(exc):
+            raise _retryable_lock_http_error(
+                "db_review",
+                exc,
+                {"ingestion_id": ingestion_id, "action": body.action},
+            )
+        raise
+
+
+def _db_review_once(ingestion_id: int, body: ReviewRequest):
     with managed_session() as session:
         row = session.get(PendingIngestion, ingestion_id)
         if not row:
@@ -1413,10 +1521,12 @@ def _item_attributes_with_unit_display(item: dict) -> dict | None:
 def _apply_product_match_rule_if_needed(session, item: dict, product_name: str, category_hint: str | None, product_id: int) -> None:
     if not is_missing_or_one_depth_category(category_hint):
         return
-    rule = find_matching_rule(session, product_name)
+    with session.no_autoflush:
+        rule = find_matching_rule(session, product_name)
     if not rule:
         return
-    product = session.get(Product, product_id)
+    with session.no_autoflush:
+        product = session.get(Product, product_id)
     if not product:
         return
     apply_rule_to_product(rule, product)
@@ -1457,9 +1567,10 @@ def _ensure_product(
     """
     if not name:
         return 1
-    product = session.execute(
-        select(Product).where(Product.name == name)
-    ).scalar_one_or_none()
+    with session.no_autoflush:
+        product = session.execute(
+            select(Product).where(Product.name == name)
+        ).scalar_one_or_none()
     if product:
         source_type = _SOURCE_TYPE_MAP.get(crawler_source, "unknown") if crawler_source else "unknown"
         if source_type != "unknown" and product.source_type in (None, "", "unknown"):
@@ -1517,9 +1628,10 @@ def _ensure_product(
 
             # FK 제약 조건 위반 방지: 카테고리 존재 여부 확인
             if cat_id is not None:
-                cat_exists = session.execute(
-                    select(Category.id).where(Category.id == cat_id)
-                ).scalar_one_or_none()
+                with session.no_autoflush:
+                    cat_exists = session.execute(
+                        select(Category.id).where(Category.id == cat_id)
+                    ).scalar_one_or_none()
                 if cat_exists is None:
                     logger.warning(
                         "_ensure_product: category_id=%s does not exist for product '%s', skipping categorization",
@@ -1586,21 +1698,23 @@ def _apply_approved_product_metadata(
         product.attributes = {**(product.attributes or {}), **attributes}
     if not category_id:
         return
-    cat_exists = session.execute(
-        select(Category.id).where(Category.id == category_id)
-    ).scalar_one_or_none()
+    with session.no_autoflush:
+        cat_exists = session.execute(
+            select(Category.id).where(Category.id == category_id)
+        ).scalar_one_or_none()
     if cat_exists:
         product.category_id = category_id
         product.categorization_method = "manual"
         product.categorization_confidence = 1.0
         return
-    existing_pending = session.execute(
-        select(PendingCategorization).where(
-            PendingCategorization.product_id == product.id,
-            PendingCategorization.suggested_category_id == category_id,
-            PendingCategorization.status == "pending",
-        )
-    ).scalar_one_or_none()
+    with session.no_autoflush:
+        existing_pending = session.execute(
+            select(PendingCategorization).where(
+                PendingCategorization.product_id == product.id,
+                PendingCategorization.suggested_category_id == category_id,
+                PendingCategorization.status == "pending",
+            )
+        ).scalar_one_or_none()
     if existing_pending is None:
         session.add(
             PendingCategorization(

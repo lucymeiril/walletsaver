@@ -21,7 +21,9 @@ items capturable in recon. The entrypoints use this to get 200+ items autonomous
 from __future__ import annotations
 
 import inspect
+import json
 import pathlib
+import time
 
 import pytest
 
@@ -358,6 +360,55 @@ def test_waf_blocker_details_has_no_operator_intervention_message():
     assert "safe_next_action" not in details, (
         "운영자 개입 메시지(safe_next_action)가 아직 남아 있음"
     )
+
+
+def test_category_requests_reuse_cache_without_homepage_fetch(monkeypatch, tmp_path):
+    c = LottemartCrawler()
+    cache_path = tmp_path / "lottemart_category_requests.json"
+    cache_path.write_text(
+        json.dumps(
+            {
+                "created_at": time.time(),
+                "requests": [
+                    {
+                        "query": "정육ㆍ계란",
+                        "page": 1,
+                        "category_hint": "정육ㆍ계란",
+                        "category_path": ["정육ㆍ계란"],
+                        "request_type": "html_category",
+                        "url": "https://lottemartzetta.com/categories/meat",
+                    }
+                ],
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(c, "_category_cache_path", lambda: cache_path)
+    monkeypatch.setattr(c, "_retry_request", lambda *args, **kwargs: pytest.fail("homepage fetch should be skipped"))
+
+    requests = c._build_category_requests_from_homepage()
+
+    assert requests == [
+        {
+            "query": "정육ㆍ계란",
+            "page": 1,
+            "category_hint": "정육ㆍ계란",
+            "category_path": ["정육ㆍ계란"],
+            "request_type": "html_category",
+            "url": "https://lottemartzetta.com/categories/meat",
+        }
+    ]
+
+
+def test_repeated_category_fingerprint_detects_common_shell():
+    c = LottemartCrawler()
+    previous = {(str(i),) for i in range(50)}
+    repeated = {(str(i),) for i in range(45)} | {(f"new-{i}",) for i in range(5)}
+    distinct = {(f"other-{i}",) for i in range(50)}
+
+    assert c._is_repeated_category_fingerprint(repeated, [previous]) is True
+    assert c._is_repeated_category_fingerprint(distinct, [previous]) is False
 
 
 # ---------- XHR API 응답 shape 회귀 ----------

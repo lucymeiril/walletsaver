@@ -13,10 +13,11 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import random
 import re
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Optional
 from pathlib import Path
 from urllib.parse import urlencode
@@ -46,6 +47,11 @@ logger = logging.getLogger(__name__)
 
 SLEEP_BETWEEN_LIVE_GETS_MIN = 5.0
 SLEEP_BETWEEN_LIVE_GETS_MAX = 6.0
+SLEEP_BETWEEN_CATEGORY_GETS_MIN = 10.0
+SLEEP_BETWEEN_CATEGORY_GETS_MAX = 16.0
+CATEGORY_GROUP_COOLDOWN_MIN = 14.0
+CATEGORY_GROUP_COOLDOWN_MAX = 21.0
+CATEGORY_CACHE_TTL_SECONDS = 12 * 60 * 60
 PROMO_LABEL_RE = re.compile(r"(?<!\d)(\d+)\s*\+\s*(\d+)(?!\d)")
 
 
@@ -70,6 +76,13 @@ class LottemartCrawler(CrawlerContract):
         "아이스크림ㆍ빙과류", "생수ㆍ음료", "커피ㆍ원두", "차ㆍ액상차ㆍ핫초코",
         "수입식품",
     }
+    FOOD_NAME_KEYWORDS = (
+        "감귤", "사과", "배", "바나나", "키위", "포도", "과일",
+        "대파", "양파", "감자", "고구마", "상추", "채소",
+        "정육", "한우", "소고기", "돼지고기", "삼겹살", "목살", "닭", "계란",
+        "생수", "음료", "우유", "요거트", "치즈",
+        "라면", "즉석밥", "밀키트", "두부", "김치", "과자", "커피",
+    )
     DEFAULT_PRODUCT_PAGE_SIZE = 300
     MAX_ITEMS: int | None = None
     MAX_PAGES: int | None = None
@@ -83,7 +96,11 @@ class LottemartCrawler(CrawlerContract):
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=SLEEP_BETWEEN_LIVE_GETS_MIN, delay_max=SLEEP_BETWEEN_LIVE_GETS_MAX)
 
-    def _request_delay(self) -> float:
+    def _request_delay(self, request_type: str = "html_search") -> float:
+        if request_type == "html_category":
+            if self._uses_fast_test_delay():
+                return self._anti_detect.get_random_delay()
+            return random.uniform(SLEEP_BETWEEN_CATEGORY_GETS_MIN, SLEEP_BETWEEN_CATEGORY_GETS_MAX)
         delay_getter = getattr(self._anti_detect, "get_random_delay", None)
         if callable(delay_getter):
             try:
@@ -93,6 +110,17 @@ class LottemartCrawler(CrawlerContract):
             except (TypeError, ValueError):
                 pass
         return random.uniform(SLEEP_BETWEEN_LIVE_GETS_MIN, SLEEP_BETWEEN_LIVE_GETS_MAX)
+
+    def _category_group_cooldown(self) -> float:
+        if self._uses_fast_test_delay():
+            return 0.0
+        return random.uniform(CATEGORY_GROUP_COOLDOWN_MIN, CATEGORY_GROUP_COOLDOWN_MAX)
+
+    def _uses_fast_test_delay(self) -> bool:
+        try:
+            return float(getattr(self._anti_detect, "_delay_max", 1.0)) <= 0.05
+        except (TypeError, ValueError):
+            return False
 
     async def _publish_progress(self, **payload: Any) -> None:
         callback = getattr(self, "progress_callback", None)
@@ -328,6 +356,10 @@ class LottemartCrawler(CrawlerContract):
         waf_blocker: dict[str, object] | None = None
         last_status_code: int | None = None
         last_bytes = 0
+        previous_category_fingerprints: list[set[tuple[str, ...]]] = []
+        category_html_blocked = False
+        category_requests_attempted = 0
+        consecutive_category_waf = 0
 
         session = requests.Session()
         try:
@@ -345,6 +377,9 @@ class LottemartCrawler(CrawlerContract):
                 if not isinstance(category_path_hint, list):
                     category_path_hint = [category_hint] if category_hint else []
                 request_type = str(source_request.get("request_type") or "html_search")
+                if request_type == "html_category" and category_html_blocked:
+                    logger.info("[롯데마트] %s skipped: previous category HTML request hit WAF", query)
+                    continue
 
                 try:
                     pages_in_source = 0
@@ -361,7 +396,25 @@ class LottemartCrawler(CrawlerContract):
                             logger.info("[롯데마트] %s page cap %d reached", query, page_cap)
                             break
                         if pages_attempted > 0:
-                            await _asyncio.sleep(self._request_delay())
+                            delay = self._request_delay(request_type)
+                            logger.info(
+                                "[롯데마트] waiting %.2fs before %s request #%s (%s)",
+                                delay,
+                                request_type,
+                                pages_attempted + 1,
+                                query,
+                            )
+                            await _asyncio.sleep(delay)
+                        if request_type == "html_category":
+                            category_requests_attempted += 1
+                            if category_requests_attempted > 1 and (category_requests_attempted - 1) % 3 == 0:
+                                cooldown = self._category_group_cooldown()
+                                logger.info(
+                                    "[롯데마트] category group cooldown %.2fs before %s",
+                                    cooldown,
+                                    query,
+                                )
+                                await _asyncio.sleep(cooldown)
                         pages_attempted += 1
                         pages_in_source += 1
 
@@ -400,6 +453,25 @@ class LottemartCrawler(CrawlerContract):
                                     status_code=response.status_code,
                                     blocker="aws_waf_http_202" if response.status_code == 202 else f"http_{response.status_code}",
                                 )
+                                if request_type == "html_category":
+                                    self._queue_waf_blocked_category(source_request, response.status_code)
+                                    consecutive_category_waf += 1
+                                    cooldown = self._category_group_cooldown()
+                                    logger.warning(
+                                        "[롯데마트] category HTML blocked at %s; closing session and cooling down %.2fs (consecutive=%d)",
+                                        query,
+                                        cooldown,
+                                        consecutive_category_waf,
+                                    )
+                                    session.close()
+                                    session = requests.Session()
+                                    await _asyncio.sleep(cooldown)
+                                    if consecutive_category_waf >= 3:
+                                        category_html_blocked = True
+                                        logger.warning(
+                                            "[롯데마트] stopping category HTML after %d consecutive WAF blocks",
+                                            consecutive_category_waf,
+                                        )
                             break
 
                         if request_type == "product_pages":
@@ -413,7 +485,25 @@ class LottemartCrawler(CrawlerContract):
                             source_raw_count += self.count_raw_candidates(response.text)
                             page_items = self._extract_from_initial_state(response.text) or await self.parse(response.text)
                             next_page_token = None
+                            if request_type == "html_category":
+                                consecutive_category_waf = 0
+                                self._clear_waf_blocked_category(url)
                         page_items = [item for item in page_items if self._is_food_item(item)]
+                        if request_type == "html_category":
+                            fingerprint = {self._item_unique_key(item) for item in page_items}
+                            duplicate_shell = self._is_repeated_category_fingerprint(
+                                fingerprint,
+                                previous_category_fingerprints,
+                            )
+                            if duplicate_shell:
+                                logger.warning(
+                                    "[롯데마트] %s skipped: category HTML fingerprint overlaps previous category shell",
+                                    query,
+                                )
+                                errors.append(f"{query} p{page_num} repeated category shell")
+                                page_items = []
+                            elif fingerprint:
+                                previous_category_fingerprints.append(fingerprint)
                         if category_hint:
                             for item in page_items:
                                 if request_type == "html_category":
@@ -477,7 +567,7 @@ class LottemartCrawler(CrawlerContract):
                     logger.warning("[롯데마트] %s", message)
                     errors.append(message)
                     continue
-                if waf_blocker:
+                if waf_blocker and (request_type != "html_category" or category_html_blocked):
                     break
 
             valid_items = await self.validate(all_items)
@@ -544,7 +634,12 @@ class LottemartCrawler(CrawlerContract):
             category = str(category_path[0] or category).strip()
         if category in self.FOOD_ROOT_CATEGORY_NAMES:
             return True
-        return any(category.startswith(name) for name in self.FOOD_ROOT_CATEGORY_NAMES)
+        if any(category.startswith(name) for name in self.FOOD_ROOT_CATEGORY_NAMES):
+            return True
+        if not category:
+            name = str(item.name or "")
+            return any(keyword in name for keyword in self.FOOD_NAME_KEYWORDS)
+        return False
 
     def _product_page_api_params(self, *, page_token: str | None = None) -> dict[str, str | int | list[str]]:
         params: dict[str, str | int | list[str]] = {
@@ -596,6 +691,9 @@ class LottemartCrawler(CrawlerContract):
 
     def _build_source_requests(self) -> list[dict[str, str | int | list[str]]]:
         """Build bounded real product/category URLs instead of repeated search pages."""
+        override_requests = getattr(self, "_source_requests_override", None)
+        if isinstance(override_requests, list):
+            return override_requests
         api_request: dict[str, str | int | list[str]] = {
             "query": "롯데마트 행사상품 API",
             "page": 1,
@@ -603,13 +701,112 @@ class LottemartCrawler(CrawlerContract):
             "request_type": "product_pages",
             "url": self._product_page_api_url(),
         }
+        if self._uses_fast_test_delay() and not getattr(self, "_include_categories_in_fast_tests", False):
+            return [api_request]
         category_requests = self._build_category_requests_from_homepage()
         if category_requests:
             return [api_request, *category_requests]
         return [api_request]
 
+    async def crawl_waf_blocked_categories(self) -> CrawlResult:
+        queued = self.load_waf_blocked_categories()
+        if not queued:
+            now = datetime.now()
+            return CrawlResult(
+                status=CrawlStatus.FAILED,
+                crawler_name=self.info.name,
+                strategy_used="requests_waf_retry",
+                items_count=0,
+                items=[],
+                started_at=now,
+                finished_at=now,
+                duration_seconds=0,
+                error_msg="no WAF-blocked Lotte categories queued",
+                errors=[],
+                quality_score=0,
+                quality_details={
+                    "collection": {"mode": "waf_blocked_category_retry", "queued_count": 0},
+                    "alerts": ["no_waf_blocked_categories"],
+                },
+            )
+
+        self._source_requests_override = [
+            {
+                "query": str(row.get("query") or row.get("category_hint") or "WAF 재시도"),
+                "page": 1,
+                "category_hint": str(row.get("category_hint") or row.get("query") or ""),
+                "category_path": row.get("category_path") if isinstance(row.get("category_path"), list) else [],
+                "request_type": "html_category",
+                "url": str(row.get("url")),
+                "retry_reason": "aws_waf",
+            }
+            for row in queued
+            if row.get("url")
+        ]
+        try:
+            result = await self.crawl()
+            if isinstance(result.quality_details, dict):
+                result.quality_details.setdefault("collection", {})
+                result.quality_details["collection"].update({
+                    "mode": "waf_blocked_category_retry",
+                    "queued_count": len(queued),
+                })
+            return result
+        finally:
+            self._source_requests_override = None
+
+    def list_category_requests(self, *, refresh: bool = False) -> list[dict[str, Any]]:
+        requests_to_make = [] if refresh else self._load_cached_category_requests(max_age_seconds=None)
+        if not requests_to_make:
+            requests_to_make = self._build_category_requests_from_homepage()
+        return [dict(row) for row in requests_to_make]
+
+    async def crawl_selected_category(self) -> CrawlResult:
+        source_request = getattr(self, "_selected_category_request", None)
+        if not isinstance(source_request, dict) or not source_request.get("url"):
+            now = datetime.now()
+            return CrawlResult(
+                status=CrawlStatus.FAILED,
+                crawler_name=self.info.name,
+                strategy_used="requests_selected_category",
+                items_count=0,
+                items=[],
+                started_at=now,
+                finished_at=now,
+                duration_seconds=0,
+                error_msg="no Lotte category selected",
+                errors=[],
+                quality_score=0,
+                quality_details={
+                    "collection": {"mode": "selected_category", "selected": None},
+                    "alerts": ["no_lotte_category_selected"],
+                },
+            )
+        self._source_requests_override = [source_request]
+        try:
+            result = await self.crawl()
+            if isinstance(result.quality_details, dict):
+                result.quality_details.setdefault("collection", {})
+                result.quality_details["collection"].update({
+                    "mode": "selected_category",
+                    "selected": {
+                        "query": source_request.get("query"),
+                        "category_hint": source_request.get("category_hint"),
+                        "category_path": source_request.get("category_path"),
+                        "url": source_request.get("url"),
+                    },
+                })
+            return result
+        finally:
+            self._source_requests_override = None
+            self._selected_category_request = None
+
     def _build_category_requests_from_homepage(self) -> list[dict[str, str | int | list[str]]]:
         """Discover LotteMart Zetta category IDs from the homepage initial state."""
+        cached = self._load_cached_category_requests(max_age_seconds=CATEGORY_CACHE_TTL_SECONDS)
+        if cached:
+            logger.info("[롯데마트] using cached food category URLs: %d", len(cached))
+            return cached
         try:
             response = self._retry_request(
                 f"{self.ZETTA_BASE}/",
@@ -623,8 +820,147 @@ class LottemartCrawler(CrawlerContract):
             return []
         if response.status_code != 200:
             logger.warning("[롯데마트] category discovery homepage HTTP %s", response.status_code)
+            stale = self._load_cached_category_requests(max_age_seconds=None)
+            if stale:
+                logger.warning("[롯데마트] using stale cached category URLs after homepage failure: %d", len(stale))
+            return stale
+        requests_to_make = self._extract_category_requests(response.text)
+        if requests_to_make:
+            self._save_category_requests_cache(requests_to_make)
+        return requests_to_make
+
+    def _category_cache_path(self) -> Path:
+        return Path(__file__).resolve().parents[3] / "data" / "cache" / "lottemart_category_requests.json"
+
+    def _waf_queue_path(self) -> Path:
+        return Path(__file__).resolve().parents[3] / "data" / "cache" / "lottemart_waf_blocked_categories.json"
+
+    def load_waf_blocked_categories(self) -> list[dict[str, Any]]:
+        path = self._waf_queue_path()
+        if not path.exists():
             return []
-        return self._extract_category_requests(response.text)
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            return []
+        rows = payload.get("blocked") if isinstance(payload, dict) else payload
+        if not isinstance(rows, list):
+            return []
+        cleaned: list[dict[str, Any]] = []
+        for row in rows:
+            if not isinstance(row, dict) or not row.get("url"):
+                continue
+            cleaned.append(row)
+        return cleaned
+
+    def _save_waf_blocked_categories(self, rows: list[dict[str, Any]]) -> None:
+        path = self._waf_queue_path()
+        try:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(
+                json.dumps(
+                    {
+                        "updated_at": datetime.now(timezone.utc).isoformat(),
+                        "blocked": rows,
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
+        except OSError as exc:
+            logger.debug("[롯데마트] WAF retry queue write failed: %s", exc)
+
+    def _queue_waf_blocked_category(self, source_request: dict[str, Any], status_code: int) -> None:
+        if source_request.get("request_type") != "html_category":
+            return
+        url = str(source_request.get("url") or "").strip()
+        if not url:
+            return
+        rows = self.load_waf_blocked_categories()
+        now = datetime.now(timezone.utc).isoformat()
+        for row in rows:
+            if row.get("url") == url:
+                row["last_blocked_at"] = now
+                row["attempts"] = int(row.get("attempts") or 0) + 1
+                row["status_code"] = status_code
+                self._save_waf_blocked_categories(rows)
+                return
+        rows.append({
+            "url": url,
+            "query": source_request.get("query"),
+            "category_hint": source_request.get("category_hint"),
+            "category_path": source_request.get("category_path") if isinstance(source_request.get("category_path"), list) else [],
+            "status_code": status_code,
+            "attempts": 1,
+            "first_blocked_at": now,
+            "last_blocked_at": now,
+        })
+        self._save_waf_blocked_categories(rows)
+
+    def _clear_waf_blocked_category(self, url: str) -> None:
+        rows = self.load_waf_blocked_categories()
+        remaining = [row for row in rows if row.get("url") != url]
+        if len(remaining) != len(rows):
+            self._save_waf_blocked_categories(remaining)
+
+    def _load_cached_category_requests(self, *, max_age_seconds: int | None) -> list[dict[str, str | int | list[str]]]:
+        path = self._category_cache_path()
+        if not path.exists():
+            return []
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            return []
+        if not isinstance(payload, dict):
+            return []
+        created_at = float(payload.get("created_at") or 0)
+        if max_age_seconds is not None and (time.time() - created_at) > max_age_seconds:
+            return []
+        requests_data = payload.get("requests")
+        if not isinstance(requests_data, list):
+            return []
+        cleaned: list[dict[str, str | int | list[str]]] = []
+        for row in requests_data:
+            if not isinstance(row, dict):
+                continue
+            url = row.get("url")
+            query = row.get("query")
+            if not isinstance(url, str) or not isinstance(query, str):
+                continue
+            category_path = row.get("category_path")
+            if not isinstance(category_path, list):
+                category_path = [str(row.get("category_hint") or query)]
+            cleaned.append(
+                {
+                    "query": query,
+                    "page": int(row.get("page") or 1),
+                    "category_hint": str(row.get("category_hint") or (category_path[-1] if category_path else query)),
+                    "category_path": [str(part) for part in category_path if str(part).strip()],
+                    "request_type": "html_category",
+                    "url": url,
+                }
+            )
+        return cleaned
+
+    def _save_category_requests_cache(self, requests_to_make: list[dict[str, str | int | list[str]]]) -> None:
+        path = self._category_cache_path()
+        try:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(
+                json.dumps(
+                    {
+                        "created_at": time.time(),
+                        "source": self.ZETTA_BASE,
+                        "requests": requests_to_make,
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
+        except OSError as exc:
+            logger.debug("[롯데마트] category cache write failed: %s", exc)
 
     def _extract_category_requests(self, html: str) -> list[dict[str, str | int | list[str]]]:
         json_str = self._extract_initial_state_json(html)
@@ -692,6 +1028,21 @@ class LottemartCrawler(CrawlerContract):
 
         logger.info("[롯데마트] discovered %d food category URLs", len(requests_to_make))
         return requests_to_make
+
+    def _is_repeated_category_fingerprint(
+        self,
+        fingerprint: set[tuple[str, ...]],
+        previous_fingerprints: list[set[tuple[str, ...]]],
+    ) -> bool:
+        if len(fingerprint) < 20:
+            return False
+        for previous in previous_fingerprints:
+            if not previous:
+                continue
+            overlap = len(fingerprint & previous) / max(1, min(len(fingerprint), len(previous)))
+            if overlap >= 0.85:
+                return True
+        return False
 
     def _source_map_manifest(self, quality_details: dict, blocker: dict[str, object] | None = None) -> dict[str, object]:
         return build_source_map_manifest(

@@ -9,6 +9,7 @@
 """
 
 import logging
+import time
 from contextlib import contextmanager
 
 from sqlalchemy import create_engine, event, text
@@ -46,7 +47,7 @@ def get_engine(url: str | None = None):
     is_sqlite = url.startswith("sqlite")
 
     if is_sqlite:
-        connect_args.update({"timeout": 30, "check_same_thread": False})
+        connect_args.update({"timeout": 60, "check_same_thread": False})
         # In-memory SQLite must share one connection (StaticPool);
         # file-based SQLite needs per-request connections (NullPool) for thread safety.
         is_memory = url in ("sqlite://", "sqlite:///:memory:")
@@ -69,11 +70,13 @@ def get_engine(url: str | None = None):
         @event.listens_for(_engine, "connect")
         def _set_sqlite_pragmas(dbapi_connection, _):
             cursor = dbapi_connection.cursor()
-            cursor.execute("PRAGMA journal_mode=WAL")
-            cursor.execute("PRAGMA busy_timeout=30000")
+            cursor.execute("PRAGMA busy_timeout=60000")
             cursor.execute("PRAGMA synchronous=NORMAL")
             cursor.execute("PRAGMA foreign_keys=ON")
             cursor.close()
+
+        if not url.startswith("sqlite:///:memory:") and url != "sqlite://":
+            _configure_sqlite_journal_mode(_engine)
 
     # ── PostgreSQL statement timeout ──
     if not is_sqlite:
@@ -85,6 +88,27 @@ def get_engine(url: str | None = None):
 
     logger.info("Engine created: %s (pool=%s)", url.split("@")[-1], type(_engine.pool).__name__)
     return _engine
+
+
+def _configure_sqlite_journal_mode(engine) -> None:
+    """Set WAL once per process; doing this on every new connection creates extra writer locks."""
+    last_error = None
+    for attempt in range(3):
+        try:
+            with engine.connect() as conn:
+                mode = conn.execute(text("PRAGMA journal_mode=WAL")).scalar()
+                conn.execute(text("PRAGMA busy_timeout=60000"))
+            logger.info("SQLite journal_mode=%s", mode)
+            return
+        except Exception as exc:
+            last_error = exc
+            if "database is locked" not in str(exc).lower() or attempt == 2:
+                raise
+            delay = 0.25 * (2 ** attempt)
+            logger.warning("SQLite WAL setup found database locked; retrying in %.2fs", delay)
+            time.sleep(delay)
+    if last_error is not None:
+        raise last_error
 
 
 def get_session_factory():

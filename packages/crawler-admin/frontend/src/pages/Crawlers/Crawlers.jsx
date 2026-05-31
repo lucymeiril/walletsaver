@@ -147,6 +147,8 @@ export default function Crawlers() {
   const [collapsedGroups, setCollapsedGroups] = useState(new Set());
   const [bulkRunning, setBulkRunning] = useState(false);
   const [clockTick, setClockTick] = useState(() => Date.now());
+  const [lotteCategories, setLotteCategories] = useState([]);
+  const [lotteCategoryLoading, setLotteCategoryLoading] = useState(false);
   const pollRefs = useRef({});
 
   useEffect(() => {
@@ -346,6 +348,80 @@ export default function Crawlers() {
     }
   }, [setRunState, startPolling, clearRunState]);
 
+  const handleRetryWafBlocked = useCallback(async (crawler) => {
+    const id = crawler.id;
+    setRunState(id, { phase: 'starting', success: true, message: '🛡️ WAF 차단 카테고리 재시도 준비 중...' });
+    try {
+      const data = await api.retryWafBlocked(id);
+      if (data.status === 'running') {
+        setRunState(id, {
+          phase: 'running',
+          success: true,
+          startedAt: Date.now(),
+          message: `🛡️ WAF 차단 ${data.wafBlockedCount ?? 0}건 재시도 중...`,
+        });
+        startPolling(id);
+      } else {
+        setRunState(id, {
+          phase: 'done',
+          success: true,
+          message: data.message || '재시도할 WAF 차단 카테고리가 없습니다.',
+        });
+        clearRunState(id, 5000);
+      }
+    } catch (err) {
+      setRunState(id, { phase: 'done', success: false, message: `❌ WAF 재시도 실패: ${err?.message || '요청 실패'}` });
+      clearRunState(id, 5000);
+    }
+  }, [setRunState, startPolling, clearRunState]);
+
+  const handleLoadLotteCategories = useCallback(async (refresh = false) => {
+    setLotteCategoryLoading(true);
+    try {
+      const data = await api.getLotteCategories(refresh);
+      setLotteCategories(Array.isArray(data.categories) ? data.categories : []);
+    } catch (err) {
+      setRunState('lottemart', {
+        phase: 'done',
+        success: false,
+        message: `❌ 롯데 카테고리 목록 로드 실패: ${err?.message || '요청 실패'}`,
+      });
+      clearRunState('lottemart', 5000);
+    } finally {
+      setLotteCategoryLoading(false);
+    }
+  }, [setRunState, clearRunState]);
+
+  const handleRunLotteCategory = useCallback(async (category) => {
+    setRunState('lottemart', {
+      phase: 'starting',
+      success: true,
+      message: `🧭 롯데 카테고리 실행 준비 중: ${category.query || category.category_hint || category.url}`,
+    });
+    try {
+      const data = await api.runLotteCategory(category);
+      if (data.status === 'running') {
+        setRunState('lottemart', {
+          phase: 'running',
+          success: true,
+          startedAt: Date.now(),
+          message: data.message || `🧭 롯데 카테고리 실행 중: ${category.query || category.category_hint}`,
+        });
+        startPolling('lottemart');
+      } else {
+        setRunState('lottemart', {
+          phase: 'done',
+          success: false,
+          message: data.message || '롯데 카테고리 실행을 시작하지 못했습니다.',
+        });
+        clearRunState('lottemart', 5000);
+      }
+    } catch (err) {
+      setRunState('lottemart', { phase: 'done', success: false, message: `❌ 롯데 카테고리 실행 실패: ${err?.message || '요청 실패'}` });
+      clearRunState('lottemart', 5000);
+    }
+  }, [setRunState, startPolling, clearRunState]);
+
   const handleBulkRun = useCallback(async () => {
     if (checkedIds.size === 0) return;
     setBulkRunning(true);
@@ -467,6 +543,8 @@ export default function Crawlers() {
     const recent = crawler.recentRuns || [];
     const lastRun = recent.length > 0 ? recent[recent.length - 1] : null;
     const lastRunFailed = lastRun && (lastRun.status === 'failed' || lastRun.status === 'error');
+    const wafBlockedCount = Number(crawler.wafBlockedCount || 0);
+    const wafBlockedItems = Array.isArray(crawler.wafBlockedItems) ? crawler.wafBlockedItems : [];
     const elapsedSec = isRunning && rs?.startedAt ? Math.max(1, Math.floor((clockTick - rs.startedAt) / 1000)) : null;
     const counterSummary = rs?.summary || (isRunning ? buildCounterSummary({}, crawler) : null);
 
@@ -523,6 +601,55 @@ export default function Crawlers() {
           </div>
         )}
 
+        {crawler.id === 'lottemart' && (
+          <div className={styles.runResult} style={{ background: '#f8fafc', color: '#334155', borderColor: '#e2e8f0' }}>
+            <div className={styles.runStatusLine}>
+              <span>🛡️ WAF 보류 {wafBlockedCount.toLocaleString()}건</span>
+              {wafBlockedCount === 0 && <span className={styles.elapsedBadge}>현재 보류 없음</span>}
+            </div>
+            {wafBlockedItems.length > 0 && (
+              <div style={{ display: 'grid', gap: 4, marginTop: 6, fontSize: 12 }}>
+                {wafBlockedItems.slice(0, 3).map((item) => (
+                  <span key={item.url || item.query}>
+                    실패: {(Array.isArray(item.category_path) && item.category_path.length > 0)
+                      ? item.category_path.join(' > ')
+                      : (item.query || item.category_hint || item.url)}
+                    {item.status_code ? ` (HTTP ${item.status_code})` : ''}
+                  </span>
+                ))}
+              </div>
+            )}
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
+              <button
+                className={styles.actionBtn}
+                onClick={() => handleLoadLotteCategories(false)}
+                disabled={lotteCategoryLoading || isRunning}
+              >
+                {lotteCategoryLoading ? <Spinner /> : <ChevronDown size={14} />}
+                카테고리 목록
+              </button>
+              <button
+                className={styles.actionBtn}
+                onClick={() => handleLoadLotteCategories(true)}
+                disabled={lotteCategoryLoading || isRunning}
+              >
+                새로고침
+              </button>
+              {lotteCategories.slice(0, 8).map((category) => (
+                <button
+                  key={category.key || category.url}
+                  className={styles.actionBtn}
+                  title={category.url}
+                  onClick={() => handleRunLotteCategory(category)}
+                  disabled={isRunning}
+                >
+                  {category.category_hint || category.query}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className={styles.cardActions}>
           <button
             className={styles.actionBtn}
@@ -557,6 +684,20 @@ export default function Crawlers() {
             >
               <RotateCcw size={14} />
               실패 재시도
+            </button>
+          )}
+          {crawler.id === 'lottemart' && (
+            <button
+              className={styles.actionBtn}
+              title={wafBlockedCount > 0 ? 'WAF로 보류된 롯데마트 카테고리만 재시도' : '현재 WAF 보류 카테고리가 없습니다'}
+              aria-label={`${crawler.name} WAF 차단 카테고리 재시도`}
+              data-testid={`retry-waf-blocked-${crawler.id}`}
+              onClick={() => handleRetryWafBlocked(crawler)}
+              disabled={isRunning || wafBlockedCount === 0}
+              style={{ marginLeft: lastRunFailed ? 0 : 'auto', background: '#fffbeb', color: '#b45309', borderColor: '#fde68a' }}
+            >
+              <RotateCcw size={14} />
+              WAF 재시도 ({wafBlockedCount})
             </button>
           )}
         </div>

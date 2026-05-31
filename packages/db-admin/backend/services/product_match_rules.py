@@ -21,7 +21,7 @@ def normalize_title(value: str | None) -> str:
     text = str(value or "").casefold().strip()
     text = re.sub(r"[\[\](){},./_+\-]+", " ", text)
     text = re.sub(r"\s+", " ", text)
-    return text
+    return text.strip()
 
 
 def is_missing_or_one_depth_category(category_id: str | None) -> bool:

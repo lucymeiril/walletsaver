@@ -15,6 +15,7 @@ from fastapi import APIRouter, Request, HTTPException, Query
 from api.schemas.common import ApiResponse, PaginationMeta
 
 router = APIRouter()
+_PUBLIC_PRICE_EXCLUDED_ROOTS = {"living", "pet"}
 
 
 def _category_icon(name: str) -> str:
@@ -37,27 +38,61 @@ def _category_icon(name: str) -> str:
     return "🧺"
 
 
-def _fallback_categories() -> list[dict]:
-    return [
-        {"id": "agricultural", "name": "농산물", "icon": "🥬", "count": 0, "children": []},
-        {"id": "livestock", "name": "축산물", "icon": "🥩", "count": 0, "children": []},
-        {"id": "seafood", "name": "수산물", "icon": "🐟", "count": 0, "children": []},
-        {"id": "processed", "name": "가공식품", "icon": "🥫", "count": 0, "children": []},
-        {"id": "living", "name": "생활용품", "icon": "🧴", "count": 0, "children": []},
-    ]
-
-
 def _load_category_tree_from_storage(storage) -> list[dict]:
     session_factory = getattr(storage, "SessionLocal", None)
     if session_factory is None:
         return []
     try:
         from sqlalchemy import func
-        from storage.models import Category, Product
+        from storage.models import Category, Product, UnifiedCategory
     except Exception:
         return []
 
     with session_factory() as session:
+        unified_categories = session.query(UnifiedCategory).all()
+        if unified_categories:
+            product_counts = dict(
+                session.query(Product.unified_category_id, func.count(Product.id))
+                .filter(Product.is_active == True, Product.unified_category_id.isnot(None))
+                .group_by(Product.unified_category_id)
+                .all()
+            )
+            by_id = {
+                cat.id: {
+                    "id": cat.id,
+                    "name": cat.name_ko,
+                    "icon": _category_icon(cat.name_ko or ""),
+                    "parent_id": cat.parent_id,
+                    "count": int(product_counts.get(cat.id, 0) or 0),
+                    "children": [],
+                    "examples": [],
+                }
+                for cat in unified_categories
+            }
+            for cat in unified_categories:
+                if cat.parent_id in by_id and cat.id in by_id:
+                    by_id[cat.parent_id]["children"].append(by_id[cat.id])
+
+            for node in by_id.values():
+                node["children"].sort(key=lambda row: (-row["count"], row["name"]))
+
+            def total_count(node: dict) -> int:
+                node["count"] += sum(total_count(child) for child in node["children"])
+                return node["count"]
+
+            roots = [
+                node
+                for node in by_id.values()
+                if (not node.get("parent_id") or node.get("parent_id") not in by_id)
+                and node.get("id") not in _PUBLIC_PRICE_EXCLUDED_ROOTS
+            ]
+            for root in roots:
+                total_count(root)
+            roots.sort(key=lambda row: (-row["count"], row["name"]))
+            for node in by_id.values():
+                node.pop("parent_id", None)
+            return roots
+
         categories = session.query(Category).all()
         if not categories:
             return []
@@ -99,6 +134,135 @@ def _load_category_tree_from_storage(storage) -> list[dict]:
         return roots
 
 
+def _load_products_for_unified_category(storage, category_id: str, page: int, per_page: int) -> tuple[list[dict], int]:
+    session_factory = getattr(storage, "SessionLocal", None)
+    if session_factory is None:
+        return [], 0
+    try:
+        from sqlalchemy import desc, select
+        from storage.models import DiscountHistory, Product, UnifiedCategory
+    except Exception:
+        return [], 0
+
+    with session_factory() as session:
+        categories = session.query(UnifiedCategory).all()
+        by_parent: dict[str | None, list[str]] = {}
+        for cat in categories:
+            by_parent.setdefault(cat.parent_id, []).append(cat.id)
+        selected_ids: set[str] = set()
+
+        def collect(cat_id: str) -> None:
+            if cat_id in selected_ids:
+                return
+            selected_ids.add(cat_id)
+            for child_id in by_parent.get(cat_id, []):
+                collect(child_id)
+
+        collect(category_id)
+        if not selected_ids:
+            return [], 0
+
+        base = (
+            select(Product)
+            .where(Product.is_active == True, Product.unified_category_id.in_(selected_ids))
+            .order_by(Product.name)
+        )
+        total = session.execute(
+            select(Product.id).where(Product.is_active == True, Product.unified_category_id.in_(selected_ids))
+        ).all()
+        products = session.execute(base.offset((page - 1) * per_page).limit(per_page)).scalars().all()
+        rows = []
+        for product in products:
+            latest_discount = session.execute(
+                select(DiscountHistory)
+                .where(DiscountHistory.product_id == product.id)
+                .order_by(desc(DiscountHistory.crawled_at))
+                .limit(1)
+            ).scalar_one_or_none()
+            current = round(latest_discount.price) if latest_discount and latest_discount.price else 0
+            original = latest_discount.original_price if latest_discount else None
+            discount_pct = round((1 - current / original) * 100) if current and original and original > current else 0
+            attrs = product.attributes if isinstance(product.attributes, dict) else {}
+            category_name = product.unified_category.name_ko if product.unified_category else category_id
+            rows.append({
+                "id": product.id,
+                "name": product.name,
+                "source": latest_discount.source if latest_discount else product.source_type or "",
+                "brand": attrs.get("brand", ""),
+                "cat": category_name,
+                "price": current,
+                "cur": current,
+                "original_price": original or current,
+                "discount_pct": discount_pct,
+                "unit_price_display": (
+                    attrs.get("unit_price_display")
+                    or attrs.get("unit_price_text")
+                    or product.unit
+                    or ""
+                ),
+                "unit": product.unit or "",
+                "attributes": attrs,
+                "image_url": product.image_url or "",
+                "img": product.image_url or "",
+                "price_tier": "fair",
+            })
+        return rows, len(total)
+
+
+def _load_unified_category_children(storage, category_id: str) -> tuple[list[dict], int, str]:
+    session_factory = getattr(storage, "SessionLocal", None)
+    if session_factory is None:
+        return [], 0, category_id
+    try:
+        from sqlalchemy import func
+        from storage.models import Product, UnifiedCategory
+    except Exception:
+        return [], 0, category_id
+
+    with session_factory() as session:
+        categories = session.query(UnifiedCategory).all()
+        by_id = {cat.id: cat for cat in categories}
+        by_parent: dict[str | None, list[str]] = {}
+        for cat in categories:
+            by_parent.setdefault(cat.parent_id, []).append(cat.id)
+
+        def collect(cat_id: str) -> set[str]:
+            ids = {cat_id}
+            for child_id in by_parent.get(cat_id, []):
+                ids.update(collect(child_id))
+            return ids
+
+        def count_subtree(cat_id: str) -> int:
+            ids = collect(cat_id)
+            return int(
+                session.query(func.count(Product.id))
+                .filter(Product.is_active == True, Product.unified_category_id.in_(ids))
+                .scalar()
+                or 0
+            )
+
+        children = []
+        for child_id in by_parent.get(category_id, []):
+            child = by_id.get(child_id)
+            if not child:
+                continue
+            children.append({
+                "id": child.id,
+                "name": child.name_ko,
+                "count": count_subtree(child.id),
+            })
+        children.sort(key=lambda row: (-row["count"], row["name"]))
+
+        current = by_id.get(category_id)
+        path_names = []
+        cursor = current
+        while cursor is not None:
+            path_names.append(cursor.name_ko)
+            cursor = by_id.get(cursor.parent_id) if cursor.parent_id else None
+        category_path = " > ".join(reversed(path_names)) if path_names else category_id
+        return children, count_subtree(category_id), category_path
+
+
 @router.get("/search")
 async def search_products(
     request: Request,
@@ -110,40 +274,18 @@ async def search_products(
     """상품 검색 — 이름/카테고리에 검색어가 포함된 상품."""
     storage = request.app.state.storage
     if storage is None:
-        from api.mock_responses import MOCK_PRODUCTS
-        results = MOCK_PRODUCTS
-        if q:
-            q_lower = q.lower()
-            results = [p for p in results if q_lower in p["name"] or q_lower in p["cat"]]
-        if category:
-            results = [p for p in results if category in p.get("cat", "")]
-
-        total = len(results)
-        start = (page - 1) * per_page
-        paginated = results[start:start + per_page]
-
         return ApiResponse(
-            data=paginated,
+            data=[],
             meta=PaginationMeta(
                 page=page,
                 per_page=per_page,
-                total=total,
-                total_pages=math.ceil(total / per_page) if total > 0 else 0,
+                total=0,
+                total_pages=0,
             ),
         )
 
     data = storage.search_products(q, category=category, page=page, per_page=per_page)
     total = len(data)
-    if not data:
-        from api.mock_responses import MOCK_PRODUCTS
-        results = MOCK_PRODUCTS
-        if q:
-            q_lower = q.lower()
-            results = [p for p in results if q_lower in p["name"].lower() or q_lower in p.get("cat", "").lower()]
-        if category:
-            results = [p for p in results if category in p.get("cat", "")]
-        total = len(results)
-        data = results[(page - 1) * per_page:page * per_page]
     return ApiResponse(
         data=data,
         meta=PaginationMeta(
@@ -160,10 +302,10 @@ async def get_categories(request: Request):
     """상품 카테고리 목록."""
     storage = request.app.state.storage
     if storage is None:
-        return ApiResponse(data=_fallback_categories())
+        return ApiResponse(data=[])
 
     categories = _load_category_tree_from_storage(storage)
-    return ApiResponse(data=categories or _fallback_categories())
+    return ApiResponse(data=categories)
 
 
 @router.get("/popular")
@@ -174,14 +316,9 @@ async def get_popular_products(
     """인기/트렌딩 상품 목록."""
     storage = request.app.state.storage
     if storage is None:
-        from api.mock_responses import MOCK_PRODUCTS
-        results = sorted(MOCK_PRODUCTS, key=lambda p: p.get("cur", 0), reverse=True)
-        return ApiResponse(data=results[:per_page])
+        return ApiResponse(data=[])
 
     results = storage.search_products("")
-    if not results:
-        from api.mock_responses import MOCK_PRODUCTS
-        return ApiResponse(data=MOCK_PRODUCTS[:per_page])
     if isinstance(results, dict) and "items" in results:
         return ApiResponse(data=results["items"][:per_page])
     if isinstance(results, list):
@@ -199,22 +336,25 @@ async def compare_category_products(
 ):
     """카테고리별 가격 비교 — 구 웹 프론트 CategoryComparePage 호환 응답."""
     storage = request.app.state.storage
+    total_rows = 0
+    drilldown_subcategories = []
+    category_total_count = 0
+    category_path = category_id
     if storage is not None:
         try:
-            raw_products = storage.search_products("", category=category_id, page=page, per_page=per_page)
+            drilldown_subcategories, category_total_count, category_path = _load_unified_category_children(storage, category_id)
+            if drilldown_subcategories:
+                raw_products = []
+                total_rows = 0
+            else:
+                raw_products, total_rows = _load_products_for_unified_category(storage, category_id, page, per_page)
+            if not raw_products and not drilldown_subcategories:
+                raw_products = storage.search_products("", category=category_id, page=page, per_page=per_page)
+                total_rows = len(raw_products)
         except Exception:
             raw_products = []
     else:
         raw_products = []
-
-    if not raw_products:
-        from api.mock_responses import MOCK_PRODUCTS
-        raw_products = [
-            p for p in MOCK_PRODUCTS
-            if category_id.lower() in p.get("cat", "").lower()
-            or category_id.lower() in p.get("name", "").lower()
-            or category_id.replace(".", " ").lower() in p.get("cat", "").lower()
-        ] or MOCK_PRODUCTS[:per_page]
 
     products = []
     subcategory_counts = {}
@@ -255,8 +395,9 @@ async def compare_category_products(
     avg = round(sum(prices) / len(prices)) if prices else 0
     summary = {
         "category_id": category_id,
-        "category_path": raw_products[0].get("cat", category_id) if raw_products else category_id,
-        "product_count": len(products),
+        "category_path": raw_products[0].get("cat", category_path) if raw_products else category_path,
+        "product_count": category_total_count if drilldown_subcategories else len(products),
+        "is_leaf": not bool(drilldown_subcategories),
         "avg_price_per_100g": avg,
         "min_price_per_100g": min(prices) if prices else 0,
         "max_price_per_100g": max(prices) if prices else 0,
@@ -271,14 +412,14 @@ async def compare_category_products(
 
     return ApiResponse(data={
         "summary": summary,
-        "subcategories": sorted(subcategory_counts.values(), key=lambda row: (-row["count"], row["name"])),
+        "subcategories": drilldown_subcategories or sorted(subcategory_counts.values(), key=lambda row: (-row["count"], row["name"])),
         "products": products,
         "alternatives": [],
         "pagination": {
             "page": page,
             "per_page": per_page,
-            "total": len(products),
-            "total_pages": 1,
+            "total": total_rows or len(products),
+            "total_pages": math.ceil((total_rows or len(products)) / per_page) if (total_rows or len(products)) else 0,
         },
     })
 
@@ -288,16 +429,9 @@ async def get_product(request: Request, product_id: int):
     """단일 상품 상세."""
     storage = request.app.state.storage
     if storage is None:
-        from api.mock_responses import MOCK_PRODUCTS
-        product = next((p for p in MOCK_PRODUCTS if p["id"] == product_id), None)
-        if not product:
-            raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
-        return ApiResponse(data=product)
+        raise HTTPException(status_code=503, detail="상품 DB 연결이 없습니다")
 
     result = storage.get_product_detail(product_id)
-    if not result:
-        from api.mock_responses import MOCK_PRODUCTS
-        result = next((p for p in MOCK_PRODUCTS if p["id"] == product_id), None)
     if not result:
         raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
     return ApiResponse(data=result)
@@ -312,20 +446,12 @@ async def get_price_history(
     """가격 추이 — 차트 렌더링용."""
     storage = request.app.state.storage
     if storage is None:
-        from api.mock_responses import mock_price_history, MOCK_PRODUCTS
-        product = next((p for p in MOCK_PRODUCTS if p["id"] == product_id), None)
-        if not product:
-            raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
-        return ApiResponse(data=mock_price_history(product_id, days))
+        raise HTTPException(status_code=503, detail="상품 DB 연결이 없습니다")
 
     product = storage.get_product_detail(product_id)
     history = storage.get_price_history(product_id, days) if product else []
-    if not history:
-        from api.mock_responses import MOCK_PRODUCTS, mock_price_history
-        product = next((p for p in MOCK_PRODUCTS if p["id"] == product_id), None)
-        if not product:
-            raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
-        history = mock_price_history(product_id, days)
+    if not product:
+        raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
     return ApiResponse(data=history)
 
 
@@ -334,43 +460,12 @@ async def get_price_compare(request: Request, product_id: int):
     """출처별 가격 비교."""
     storage = request.app.state.storage
     if storage is None:
-        from api.mock_responses import MOCK_PRODUCTS
-        product = next((p for p in MOCK_PRODUCTS if p["id"] == product_id), None)
-        if not product:
-            raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
-
-        compare = []
-        for source, price in product.get("stores", {}).items():
-            orig = product["avg"]
-            disc = round((1 - price / orig) * 100, 1) if orig else None
-            compare.append({
-                "source": source,
-                "price": price,
-                "original_price": orig,
-                "discount_rate": disc,
-                "url": None,
-            })
-        compare.sort(key=lambda x: x["price"])
-        return ApiResponse(data=compare)
+        raise HTTPException(status_code=503, detail="상품 DB 연결이 없습니다")
 
     product = storage.get_product_detail(product_id)
     compare = storage.get_price_compare(product_id) if product else []
-    if not compare:
-        from api.mock_responses import MOCK_PRODUCTS
-        product = next((p for p in MOCK_PRODUCTS if p["id"] == product_id), None)
-        if not product:
-            raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
-        compare = [
-            {
-                "source": source,
-                "price": price,
-                "original_price": product.get("avg"),
-                "discount_rate": round((1 - price / product["avg"]) * 100, 1) if product.get("avg") else None,
-                "url": None,
-            }
-            for source, price in product.get("stores", {}).items()
-        ]
-        compare.sort(key=lambda row: row["price"])
+    if not product:
+        raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
     return ApiResponse(data=compare)
 
 
@@ -384,11 +479,8 @@ async def get_product_trust(request: Request, product_id: int):
         product = storage.get_product_detail(product_id)
         history = storage.get_price_history(product_id, 30)
     if not product:
-        from api.mock_responses import MOCK_PRODUCTS, mock_price_history
-        product = next((p for p in MOCK_PRODUCTS if p["id"] == product_id), None)
-        history = mock_price_history(product_id, 30) if product else []
-    if not product:
-        raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다")
+        detail = "상품 DB 연결이 없습니다" if storage is None else "상품을 찾을 수 없습니다"
+        raise HTTPException(status_code=503 if storage is None else 404, detail=detail)
     current = product.get("cur") or product.get("price") or 0
     prices = [row.get("price") for row in history if row.get("price")]
     avg = round(sum(prices) / len(prices)) if prices else product.get("avg") or current

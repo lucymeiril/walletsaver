@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, List, Optional
 
-from fastapi import APIRouter, Body, HTTPException, Request
+from fastapi import APIRouter, Body, HTTPException, Query, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 from pydantic import BaseModel, Field, field_validator
 
@@ -126,6 +126,16 @@ async def list_crawlers(request: Request):
     for c in crawlers:
         c["status"] = status_map.get(c["name"], "active")
         c["recentRuns"] = run_history.get(c["name"], [])
+        if c.get("name") == "lottemart":
+            try:
+                crawler = reg.get_crawler("lottemart")
+                loader = getattr(crawler, "load_waf_blocked_categories", None)
+                blocked = loader() if callable(loader) else []
+                c["wafBlockedCount"] = len(blocked)
+                c["wafBlockedItems"] = blocked[:10]
+            except Exception:
+                c["wafBlockedCount"] = 0
+                c["wafBlockedItems"] = []
 
     return {"crawlers": crawlers}
 
@@ -141,6 +151,12 @@ async def source_coverage(request: Request):
 class BoundedDiagnosticsRequest(BaseModel):
     crawler_ids: Optional[List[str]] = None
     fixtures: dict[str, str] = Field(default_factory=dict)
+
+
+class LotteCategoryRunRequest(BaseModel):
+    url: Optional[str] = Field(None, max_length=500)
+    query: Optional[str] = Field(None, max_length=200)
+    category_hint: Optional[str] = Field(None, max_length=200)
     health_baselines: dict[str, dict[str, Any]] = Field(default_factory=dict)
     live_enabled: bool = False
 
@@ -435,7 +451,137 @@ async def run_crawler(crawler_id: str, request: Request):
     }
 
 
-async def _run_and_store(crawler_id: str, pipeline: CrawlPipeline):
+def _lotte_category_payload(row: dict[str, Any]) -> dict[str, Any]:
+    url = str(row.get("url") or "")
+    return {
+        "key": hashlib.sha1(url.encode("utf-8")).hexdigest()[:12] if url else "",
+        "query": row.get("query"),
+        "category_hint": row.get("category_hint"),
+        "category_path": row.get("category_path") if isinstance(row.get("category_path"), list) else [],
+        "request_type": row.get("request_type"),
+        "url": url,
+    }
+
+
+@router.get("/lottemart/categories")
+@limiter.limit("30/minute")
+async def list_lottemart_categories(request: Request, refresh: bool = Query(False)):
+    """롯데마트 식품 카테고리별 수동 호출 후보를 반환한다."""
+    reg = _get_registry()
+    crawler = reg.get_crawler("lottemart")
+    lister = getattr(crawler, "list_category_requests", None)
+    if not callable(lister):
+        raise HTTPException(status_code=404, detail="Lotte category listing is unavailable")
+    rows = lister(refresh=refresh)
+    return {
+        "crawler_id": "lottemart",
+        "count": len(rows),
+        "categories": [_lotte_category_payload(row) for row in rows],
+    }
+
+
+@router.post("/lottemart/run-category")
+@limiter.limit("10/minute")
+async def run_lottemart_category(body: LotteCategoryRunRequest, request: Request):
+    """롯데마트 특정 카테고리 URL만 수동 실행한다."""
+    reg = _get_registry()
+    crawler = reg.get_crawler("lottemart")
+    lister = getattr(crawler, "list_category_requests", None)
+    if not callable(lister):
+        raise HTTPException(status_code=404, detail="Lotte category listing is unavailable")
+    categories = lister(refresh=False)
+    selected = None
+    for row in categories:
+        if body.url and row.get("url") == body.url:
+            selected = row
+            break
+        if body.query and row.get("query") == body.query:
+            selected = row
+            break
+        if body.category_hint and row.get("category_hint") == body.category_hint:
+            selected = row
+            break
+    if selected is None:
+        raise HTTPException(status_code=404, detail="요청한 롯데마트 카테고리를 찾을 수 없습니다")
+    if not await acquire_crawler_slot("lottemart"):
+        return {
+            "crawler_id": "lottemart",
+            "status": "running",
+            "message": "Crawler 'lottemart' is already running",
+            "category": _lotte_category_payload(selected),
+        }
+    crawler._selected_category_request = selected
+    _crawl_results["lottemart"] = {
+        "crawler_id": "lottemart",
+        "status": "running",
+        "started_at": datetime.now(timezone.utc).isoformat(),
+        "items_found": 0,
+        "items_valid": 0,
+        "items_saved": 0,
+        "errors": [],
+        "progress_stage": "selected_category_started",
+        "selectedCategory": _lotte_category_payload(selected),
+    }
+    pipeline = _get_pipeline()
+    asyncio.create_task(_run_and_store("lottemart", pipeline, crawl_method="crawl_selected_category"))
+    return {
+        "crawler_id": "lottemart",
+        "status": "running",
+        "message": f"롯데마트 카테고리 수동 실행 시작: {selected.get('query')}",
+        "category": _lotte_category_payload(selected),
+    }
+
+
+@router.post("/{crawler_id}/retry-waf-blocked")
+@limiter.limit("5/minute")
+async def retry_waf_blocked(crawler_id: str, request: Request):
+    """WAF로 막혀 따로 보관한 category URL만 재시도한다."""
+    if crawler_id != "lottemart":
+        raise HTTPException(status_code=404, detail="WAF blocked retry is only supported for lottemart")
+    reg = _get_registry()
+    try:
+        crawler = reg.get_crawler(crawler_id)
+    except KeyError:
+        raise HTTPException(status_code=404, detail=f"Crawler '{crawler_id}' not found")
+    loader = getattr(crawler, "load_waf_blocked_categories", None)
+    queued = loader() if callable(loader) else []
+    if not queued:
+        return {
+            "crawler_id": crawler_id,
+            "status": "idle",
+            "message": "재시도할 WAF 차단 카테고리가 없습니다.",
+            "wafBlockedCount": 0,
+        }
+    if not await acquire_crawler_slot(crawler_id):
+        return {
+            "crawler_id": crawler_id,
+            "status": "running",
+            "message": f"Crawler '{crawler_id}' is already running",
+            "wafBlockedCount": len(queued),
+        }
+
+    _crawl_results[crawler_id] = {
+        "crawler_id": crawler_id,
+        "status": "running",
+        "started_at": datetime.now(timezone.utc).isoformat(),
+        "items_found": 0,
+        "items_valid": 0,
+        "items_saved": 0,
+        "errors": [],
+        "progress_stage": "waf_retry_started",
+        "wafBlockedCount": len(queued),
+    }
+    pipeline = _get_pipeline()
+    asyncio.create_task(_run_and_store(crawler_id, pipeline, crawl_method="crawl_waf_blocked_categories"))
+    return {
+        "crawler_id": crawler_id,
+        "status": "running",
+        "message": f"{len(queued)}개 WAF 차단 카테고리 재시도 시작",
+        "wafBlockedCount": len(queued),
+    }
+
+
+async def _run_and_store(crawler_id: str, pipeline: CrawlPipeline, crawl_method: str = "crawl"):
     """백그라운드: 크롤러 실행 → 파이프라인 → DB Admin 대기열 제출 → 이력 기록."""
     async def publish_progress(payload: dict[str, Any]) -> None:
         current = _crawl_results.setdefault(crawler_id, {"crawler_id": crawler_id})
@@ -459,7 +605,7 @@ async def _run_and_store(crawler_id: str, pipeline: CrawlPipeline):
 
     try:
         async with get_semaphore():
-            result = await pipeline.run_crawler(crawler_id, progress_callback=publish_progress)
+            result = await pipeline.run_crawler(crawler_id, progress_callback=publish_progress, crawl_method=crawl_method)
 
         final_payload = {
             "crawler_id": crawler_id,

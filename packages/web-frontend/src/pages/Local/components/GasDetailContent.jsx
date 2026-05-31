@@ -1,4 +1,4 @@
-import { fmt } from '../../../data/mockData';
+import { fmt } from '../../../utils/helpers';
 import s from '../LocalPage.module.css';
 
 export default function GasDetailContent({ station, avgGas, avgGasoline, avgDiesel, onFocusMap }) {
@@ -11,9 +11,9 @@ export default function GasDetailContent({ station, avgGas, avgGasoline, avgDies
 
   const fuelRows = [
     { label: '휘발유', key: 'gasoline', avg: avgGasoline || avgGas },
-    { label: '고급 휘발유', key: 'premium_gasoline', avg: Math.round((avgGasoline || avgGas) * 1.15) },
-    { label: '경유', key: 'diesel', avg: avgDiesel || Math.round(avgGas * 0.9) },
-    { label: 'LPG', key: 'lpg', avg: Math.round((avgGasoline || avgGas) * 0.62) },
+    { label: '고급 휘발유', key: 'premium_gasoline', avg: 0 },
+    { label: '경유', key: 'diesel', avg: avgDiesel || 0 },
+    { label: 'LPG', key: 'lpg', avg: 0 },
   ];
 
   return (
@@ -31,6 +31,9 @@ export default function GasDetailContent({ station, avgGas, avgGasoline, avgDies
         </p>
       )}
       <p className={s.detailDist}>📏 현재 위치에서 ~{dist}km</p>
+      {station.updated_at && (
+        <p className={s.detailTel}>🕒 가격 갱신 {String(station.updated_at).slice(0, 16)}</p>
+      )}
 
       <div className={s.detailSection}>
         <h4>⛽ 유종별 가격</h4>

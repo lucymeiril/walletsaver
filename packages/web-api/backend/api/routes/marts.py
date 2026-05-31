@@ -21,28 +21,9 @@ async def list_marts(request: Request):
     """마트 목록."""
     storage = request.app.state.storage
     if storage is None:
-        from api.mock_responses import MOCK_MARTS, MOCK_MART_DATA
-        result = []
-        for mart in MOCK_MARTS:
-            data = MOCK_MART_DATA.get(mart["key"], {})
-            result.append({
-                **mart,
-                "deals_count": len(data.get("items", [])),
-                "period": data.get("period", ""),
-            })
-        return ApiResponse(data=result)
+        return ApiResponse(data=[])
 
     mart_data = storage.get_mart_deals()
-    if not mart_data:
-        from api.mock_responses import MOCK_MARTS, MOCK_MART_DATA
-        return ApiResponse(data=[
-            {
-                **mart,
-                "deals_count": len(MOCK_MART_DATA.get(mart["key"], {}).get("items", [])),
-                "period": MOCK_MART_DATA.get(mart["key"], {}).get("period", ""),
-            }
-            for mart in MOCK_MARTS
-        ])
     result = []
     for key, data in mart_data.items():
         result.append({
@@ -87,17 +68,9 @@ async def get_mart_promotions(request: Request, store: str):
     db_store = _STORE_ALIAS.get(store, store)
     storage = request.app.state.storage
     if storage is None:
-        from api.mock_responses import MOCK_MART_DATA
-        data = MOCK_MART_DATA.get(store)
-        if not data:
-            raise HTTPException(status_code=404, detail=f"마트 '{store}'를 찾을 수 없습니다")
-        return ApiResponse(data=data)
+        raise HTTPException(status_code=503, detail="마트 DB 연결이 없습니다")
 
     mart_data = storage.get_mart_deals(store=db_store)
     if db_store not in mart_data:
-        from api.mock_responses import MOCK_MART_DATA
-        data = MOCK_MART_DATA.get(store) or MOCK_MART_DATA.get(db_store)
-        if data:
-            return ApiResponse(data=data)
         raise HTTPException(status_code=404, detail=f"마트 '{store}'를 찾을 수 없습니다")
     return ApiResponse(data=mart_data[db_store])

@@ -903,6 +903,17 @@ class TestCrawlWithMock:
         crawler.CATEGORY_QUERIES = []
         crawler.MAX_PAGES = 1
         crawler.MAX_REQUESTS = 3
+        crawler._include_categories_in_fast_tests = True
+        crawler._build_category_requests_from_homepage = lambda: [
+            {
+                "query": "정육",
+                "page": 1,
+                "category_hint": "정육",
+                "category_path": ["정육"],
+                "request_type": "html_category",
+                "url": "https://lottemartzetta.com/categories/meat",
+            }
+        ]
         first_resp = MagicMock(status_code=200, text=MOCK_LOTTEMART_HTML)
         waf_resp = MagicMock(
             status_code=202,
@@ -919,6 +930,48 @@ class TestCrawlWithMock:
         assert result.quality_details["fetch"]["auth_bypass_attempted"] is False
         assert result.quality_details["fetch"]["renderer"] == "requests"
         assert result.items_count == 2
+
+    @pytest.mark.asyncio
+    async def test_lottemart_single_category_waf_does_not_drop_remaining_categories(self, tmp_path):
+        from engine.anti_detect import AntiDetect
+        crawler = LottemartCrawler(anti_detect=AntiDetect(delay_min=0.0, delay_max=0.01))
+        crawler.MAX_PAGES = 1
+        crawler.MAX_REQUESTS = 4
+        crawler._waf_queue_path = lambda: tmp_path / "lottemart_waf_queue.json"
+        crawler._include_categories_in_fast_tests = True
+        crawler._build_category_requests_from_homepage = lambda: [
+            {
+                "query": "과일",
+                "page": 1,
+                "category_hint": "과일",
+                "category_path": ["과일"],
+                "request_type": "html_category",
+                "url": "https://lottemartzetta.com/categories/fruit",
+            },
+            {
+                "query": "채소",
+                "page": 1,
+                "category_hint": "채소",
+                "category_path": ["채소"],
+                "request_type": "html_category",
+                "url": "https://lottemartzetta.com/categories/veg",
+            },
+        ]
+        ok_resp = MagicMock(status_code=200, text=MOCK_LOTTEMART_HTML)
+        waf_resp = MagicMock(
+            status_code=202,
+            text="<html><script>window.awsWafCookieDomainList=[];</script></html>",
+        )
+
+        with patch("crawlers.marts.lottemart.crawler.requests.Session.get", side_effect=[ok_resp, waf_resp, ok_resp]) as mock_get:
+            result = await crawler.crawl()
+
+        assert mock_get.call_count == 3
+        assert result.status == CrawlStatus.SUCCESS
+        assert result.errors[0].status_code == 202
+        assert result.quality_details["fetch"]["blocked"] is True
+        assert result.items_count == 2
+        assert crawler.load_waf_blocked_categories()[0]["query"] == "과일"
 
     @pytest.mark.asyncio
     async def test_lottemart_saved_source_input_replays_without_network(self):

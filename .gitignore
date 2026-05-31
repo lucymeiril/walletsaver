@@ -18,6 +18,8 @@ packages/crawler-admin/backend/tests/fixtures/live_probe/
 .env.*
 !**/.env.example
 *.db
+*.db-shm
+*.db-wal
 
 # OS
 .DS_Store
@@ -41,6 +43,7 @@ packages/ai-admin/backend/query_providers.py
 packages/ai-admin/backend/test_ingest.py
 packages/crawler-admin/backend/crawler_run_history.json
 packages/crawler-admin/backend/plugin_state.json
+packages/crawler-admin/backend/data/cache/
 
 crawl_results/
 packages/ai-admin/backend/ai_control.db

@@ -61,9 +61,18 @@ def _fallback_places(query: str, lat: float, lng: float, max_items: int) -> list
             "image_url": "",
             "rating": 0,
             "menu_info": "",
-            "petrol_info": {"gasoline": 1670 + idx * 7, "diesel": 1510 + idx * 5} if query == "주유소" else None,
+            "petrol_info": None,
         })
     return items
+
+
+def _parse_fuel_price(value) -> int | None:
+    if not value:
+        return None
+    try:
+        return int(str(value).replace(",", "").replace("원", "").strip())
+    except (TypeError, ValueError):
+        return None
 
 
 @router.get("/geocode")
@@ -190,6 +199,19 @@ def _search_via_playwright_sync(query: str, lat: float, lng: float, max_items: i
                 "rating": place.get("reviewCount", 0),
                 "menu_info": place.get("menuInfo", ""),
             }
+            petrol = place.get("petrolInfo")
+            if petrol and isinstance(petrol, dict):
+                item["petrol_info"] = {
+                    "gasoline": _parse_fuel_price(petrol.get("gasPrice")),
+                    "premium_gasoline": _parse_fuel_price(petrol.get("hGasPrice")),
+                    "diesel": _parse_fuel_price(petrol.get("dieselPrice")),
+                    "lpg": _parse_fuel_price(petrol.get("lpgPrice")),
+                    "is_self": bool(petrol.get("isSelf")),
+                    "is_24h": bool(petrol.get("is24Opened")),
+                    "has_car_wash": bool(petrol.get("hasCarWash")),
+                    "brand": (petrol.get("petrolCompany") or {}).get("name", "").strip(),
+                    "updated_at": petrol.get("updateDate") or petrol.get("updatedAt"),
+                }
             if item["name"]:
                 items.append(item)
 

@@ -128,6 +128,7 @@ class CrawlPipeline:
         self,
         crawler_name: str,
         progress_callback: ProgressCallback | None = None,
+        crawl_method: str = "crawl",
     ) -> PipelineResult:
         """단일 크롤러를 파이프라인 전체 흐름으로 실행."""
         start = time.monotonic()
@@ -166,7 +167,10 @@ class CrawlPipeline:
         for attempt in range(1, retry_count + 1):
             await self._emit_progress(progress_callback, stage="crawl_attempt", attempt=attempt, retry_count=retry_count)
             try:
-                crawl_result = await crawler.crawl()
+                method = getattr(crawler, crawl_method, None)
+                if not callable(method):
+                    raise AttributeError(f"{crawler_name} does not support {crawl_method}")
+                crawl_result = await method()
                 await self._emit_progress(
                     progress_callback,
                     stage="crawl_finished",

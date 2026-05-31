@@ -195,6 +195,14 @@ export const api = {
   getCrawlers: () => fetchWithTimeout(`${API_BASE}/crawlers`).then(r => r.json()),
   // 크롤러 실행
   runCrawler: (id) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/run`, { method: 'POST', timeoutMs: 120000 }).then(r => r.json()),
+  retryWafBlocked: (id) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/retry-waf-blocked`, { method: 'POST', timeoutMs: 120000 }).then(r => r.json()),
+  getLotteCategories: (refresh = false) => fetchWithTimeout(`${API_BASE}/crawlers/lottemart/categories?refresh=${refresh ? 'true' : 'false'}`, { timeoutMs: 120000 }).then(r => r.json()),
+  runLotteCategory: (category) => fetchWithTimeout(`${API_BASE}/crawlers/lottemart/run-category`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url: category.url, query: category.query, category_hint: category.category_hint }),
+    timeoutMs: 120000,
+  }).then(r => r.json()),
   // 크롤러 상태 — ETag 기반 캐시로 변경 없으면 304 반환
   getCrawlerStatus: (id) => fetchWithETag(`${API_BASE}/crawlers/${id}/status`),
   // 크롤러 상태 SSE 구독
