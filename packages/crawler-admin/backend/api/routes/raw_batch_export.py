@@ -118,12 +118,24 @@ def _extract_float(d: dict, keys: list[str]) -> Optional[float]:
 
 
 def _build_match_key_from_payload(payload: dict) -> tuple[Optional[str], Optional[str]]:
+    """Return the same canonical identity used by crawler runtime lookup.
+
+    Fresh crawler rows already carry a canonical ``match_key`` from
+    matching_enrichment; prefer that value so export cannot reinterpret a hit as
+    a miss. Legacy PendingIngestion rows fall back to rebuilding the key through
+    the shared SSOT. Missing brand is valid and becomes ``__no_brand__`` there.
+    """
+    existing_key = str(payload.get("match_key") or "").strip()
+    if existing_key:
+        return existing_key, None
+
     brand = _extract_str(payload, ["brand", "brandName", "brandNm", "brand_name"])
     name = _extract_str(
         payload,
         [
-            "name",
             "name_core",
+            "normalized_name",
+            "name",
             "nameCore",
             "productName",
             "itemName",
@@ -135,8 +147,6 @@ def _build_match_key_from_payload(payload: dict) -> tuple[Optional[str], Optiona
     pack_qty = _extract_float(payload, ["pack_qty", "packQty", "pack_quantity", "packQuantity"])
     pack_unit = _extract_str(payload, ["pack_unit", "packUnit", "unitName", "unit"])
 
-    if not brand:
-        return None, "no_brand"
     if not name:
         return None, "no_name"
     return build_match_key(brand, name, pack_qty, pack_unit), None
@@ -203,7 +213,6 @@ def export_raw_batch(
     body: RawBatchExportRequest,
     db_session: Session = Depends(get_db_admin_session),
 ) -> dict[str, Any]:
-    """선택한 PendingIngestion에서 외부 분류 번들을 만든다."""
     ingestion_ids = list(dict.fromkeys(body.ingestion_ids))
     formats = [fmt.lower() for fmt in body.format]
     invalid_formats = sorted(set(formats) - {"jsonl", "csv"})
