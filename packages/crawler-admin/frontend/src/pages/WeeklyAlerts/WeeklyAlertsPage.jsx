@@ -1,11 +1,9 @@
 /**
- * WeeklyAlertsPage.jsx
- * 주간 알림 — 사라진 SKU 목록 조회 및 해결 처리.
- * GET  /api/weekly/alerts?status=open|resolved|all&mart=...
- * POST /api/weekly/alerts/{id}/resolve
+ * Weekly alerts — disappeared SKU review and resolution.
  */
 import { useState, useEffect, useCallback } from 'react';
 import { AlertTriangle, CheckCircle2, RefreshCw, Filter } from 'lucide-react';
+import { getApiKey } from '../../stores/authStore';
 import styles from './WeeklyAlertsPage.module.css';
 
 const MART_OPTIONS = [
@@ -22,17 +20,24 @@ const STATUS_OPTIONS = [
   { value: 'all', label: '전체' },
 ];
 
+function authHeaders() {
+  const key = getApiKey();
+  return key ? { 'X-API-Key': key } : {};
+}
+
 function formatDate(iso) {
   if (!iso) return '—';
   try {
     const d = new Date(iso.endsWith('Z') || iso.includes('+') ? iso : iso + 'Z');
     return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-  } catch { return iso; }
+  } catch {
+    return iso;
+  }
 }
 
-function formatPrice(p) {
-  if (p == null) return '—';
-  return Number(p).toLocaleString('ko-KR') + '원';
+function formatPrice(price) {
+  if (price == null) return '—';
+  return Number(price).toLocaleString('ko-KR') + '원';
 }
 
 function StatusBadge({ status }) {
@@ -49,53 +54,64 @@ export default function WeeklyAlertsPage() {
   const [error, setError] = useState(null);
   const [status, setStatus] = useState('open');
   const [mart, setMart] = useState('');
-  const [resolving, setResolving] = useState(null); // alert id being resolved
+  const [resolving, setResolving] = useState(null);
 
-  const fetch_ = useCallback(async () => {
+  const fetchAlerts = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
       const params = new URLSearchParams({ status, limit: '200' });
       if (mart) params.set('mart', mart);
-      const res = await fetch(`/api/weekly/alerts?${params}`, { cache: 'no-store' });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body?.detail || `HTTP ${res.status}`);
+      const response = await fetch(`/api/weekly/alerts?${params}`, {
+        cache: 'no-store',
+        headers: authHeaders(),
+      });
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({}));
+        throw new Error(body?.detail || `HTTP ${response.status}`);
       }
-      const data = await res.json();
+      const data = await response.json();
       setAlerts(Array.isArray(data) ? data : data.items || []);
-    } catch (e) {
-      setError(e.message || String(e));
+    } catch (err) {
+      setError(err.message || String(err));
     } finally {
       setLoading(false);
     }
   }, [status, mart]);
 
-  useEffect(() => { fetch_(); }, [fetch_]);
+  useEffect(() => {
+    fetchAlerts();
+  }, [fetchAlerts]);
 
   const handleResolve = useCallback(async (id) => {
     if (!window.confirm('이 알림을 해결됨으로 표시하시겠습니까?')) return;
     setResolving(id);
     try {
-      const res = await fetch(`/api/weekly/alerts/${id}/resolve`, { method: 'POST', cache: 'no-store' });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body?.detail || `HTTP ${res.status}`);
+      const response = await fetch(`/api/weekly/alerts/${id}/resolve`, {
+        method: 'POST',
+        cache: 'no-store',
+        headers: authHeaders(),
+      });
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({}));
+        throw new Error(body?.detail || `HTTP ${response.status}`);
       }
-      // 목록에서 즉시 반영
-      setAlerts((prev) => prev.map((a) => a.id === id ? { ...a, status: 'resolved', resolved_at: new Date().toISOString() } : a));
-    } catch (e) {
-      alert(`해결 처리 실패: ${e.message}`);
+      setAlerts((prev) => prev.map((alert) => (
+        alert.id === id
+          ? { ...alert, status: 'resolved', resolved_at: new Date().toISOString() }
+          : alert
+      )));
+    } catch (err) {
+      window.alert(`해결 처리 실패: ${err.message}`);
     } finally {
       setResolving(null);
     }
   }, []);
 
-  const openCount = alerts.filter((a) => a.status === 'open').length;
+  const openCount = alerts.filter((alert) => alert.status === 'open').length;
 
   return (
     <div className={styles.page}>
-      {/* 헤더 */}
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>
@@ -109,7 +125,7 @@ export default function WeeklyAlertsPage() {
         </div>
         <button
           className={styles.refreshBtn}
-          onClick={fetch_}
+          onClick={fetchAlerts}
           disabled={loading}
           title="새로고침"
         >
@@ -118,39 +134,38 @@ export default function WeeklyAlertsPage() {
         </button>
       </div>
 
-      {/* 필터 바 */}
       <div className={styles.filterBar}>
         <Filter size={15} className={styles.filterIcon} />
         <span className={styles.filterLabel}>필터:</span>
         <div className={styles.filterGroup}>
-          {STATUS_OPTIONS.map((opt) => (
+          {STATUS_OPTIONS.map((option) => (
             <button
-              key={opt.value}
-              className={`${styles.filterBtn} ${status === opt.value ? styles.filterBtnActive : ''}`}
-              onClick={() => setStatus(opt.value)}
+              key={option.value}
+              className={`${styles.filterBtn} ${status === option.value ? styles.filterBtnActive : ''}`}
+              onClick={() => setStatus(option.value)}
             >
-              {opt.label}
+              {option.label}
             </button>
           ))}
         </div>
         <select
           className={styles.martSelect}
           value={mart}
-          onChange={(e) => setMart(e.target.value)}
+          onChange={(event) => setMart(event.target.value)}
         >
-          {MART_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          {MART_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>{option.label}</option>
           ))}
         </select>
       </div>
 
-      {/* 요약 배너 */}
       {!loading && status !== 'resolved' && openCount > 0 && (
         <div className={styles.summaryBanner}>
           <AlertTriangle size={16} />
           <span>미해결 알림 <strong>{openCount}건</strong>이 있습니다. 각 항목을 확인 후 해결 처리하세요.</span>
         </div>
       )}
+
       {!loading && alerts.length === 0 && !error && (
         <div className={styles.empty}>
           <CheckCircle2 size={28} />
@@ -165,7 +180,6 @@ export default function WeeklyAlertsPage() {
         </div>
       )}
 
-      {/* 알림 목록 */}
       {alerts.length > 0 && (
         <div className={styles.tableWrap}>
           <table className={styles.table}>
@@ -181,25 +195,25 @@ export default function WeeklyAlertsPage() {
               </tr>
             </thead>
             <tbody>
-              {alerts.map((a) => (
-                <tr key={a.id} className={a.status === 'resolved' ? styles.rowResolved : ''}>
-                  <td><span className={styles.martChip}>{a.mart}</span></td>
-                  <td className={styles.titleCell} title={a.last_seen_title}>{a.last_seen_title || '—'}</td>
-                  <td className={styles.priceCell}>{formatPrice(a.last_seen_price)}</td>
-                  <td className={styles.dateCell}>{formatDate(a.last_captured_at)}</td>
-                  <td className={styles.dateCell}>{formatDate(a.detected_at)}</td>
-                  <td><StatusBadge status={a.status} /></td>
+              {alerts.map((alert) => (
+                <tr key={alert.id} className={alert.status === 'resolved' ? styles.rowResolved : ''}>
+                  <td><span className={styles.martChip}>{alert.mart}</span></td>
+                  <td className={styles.titleCell} title={alert.last_seen_title}>{alert.last_seen_title || '—'}</td>
+                  <td className={styles.priceCell}>{formatPrice(alert.last_seen_price)}</td>
+                  <td className={styles.dateCell}>{formatDate(alert.last_captured_at)}</td>
+                  <td className={styles.dateCell}>{formatDate(alert.detected_at)}</td>
+                  <td><StatusBadge status={alert.status} /></td>
                   <td>
-                    {a.status === 'open' ? (
+                    {alert.status === 'open' ? (
                       <button
                         className={styles.resolveBtn}
-                        onClick={() => handleResolve(a.id)}
-                        disabled={resolving === a.id}
+                        onClick={() => handleResolve(alert.id)}
+                        disabled={resolving === alert.id}
                       >
-                        {resolving === a.id ? '처리 중…' : '해결'}
+                        {resolving === alert.id ? '처리 중…' : '해결'}
                       </button>
                     ) : (
-                      <span className={styles.resolvedAt}>{formatDate(a.resolved_at)}</span>
+                      <span className={styles.resolvedAt}>{formatDate(alert.resolved_at)}</span>
                     )}
                   </td>
                 </tr>
