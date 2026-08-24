@@ -37,12 +37,12 @@ dist/
 dist-ssr/
 build/
 backups/
-artifacts/
 packages/crawler-admin/backend/crawler_run_history.json
 packages/crawler-admin/backend/plugin_state.json
 packages/crawler-admin/backend/data/cache/
 
 crawl_results/
+artifacts/
 
 # Archived local-only material
 _archived/
@@ -63,7 +63,8 @@ service_key*.json
 copilot-session-*.md
 .copilot/
 
-# Manual live validation artifacts (operator-run only)
+# Generated/manual validation state
 .debug-artifacts/
+.walletsavior/
 .walletsavior-live-validation/
 .walletsavior-one-shot-db-build/
