@@ -93,7 +93,11 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
                     public_db_path,
                 )
 
-            storage = SplitStorage(main=main_storage, public=public_storage)
+            storage = SplitStorage(
+                main=main_storage,
+                public=public_storage,
+                public_db_path=public_db_path,
+            )
             logging.info("Main application storage connected: %s", main_db_path)
         except Exception as e:
             import logging
