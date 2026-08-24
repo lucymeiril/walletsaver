@@ -1,9 +1,9 @@
-"""Enrich crawler rows from the persistent MatchingEntry knowledge base.
+"""Enrich crawler rows from completed MatchingEntry knowledge.
 
-This is the runtime half of the external-classification workflow:
-- known rows reuse matching_entries without calling an AI service;
-- unknown rows stay unresolved so they can be exported for external review;
-- the db-admin database is read only from this module.
+A runtime hit is deliberately stricter than "matching_entries contains this
+key".  The entry must resolve to an active Product; otherwise the row stays a
+miss so it can return to the external-classification workflow and be repaired.
+The db-admin database is read only from this module.
 """
 from __future__ import annotations
 
@@ -64,8 +64,6 @@ def _match_key_for_row(row: dict[str, Any]) -> tuple[Optional[str], Optional[str
     if not name:
         return None, "no_name"
     if not brand:
-        # Persist the same sentinel into PendingIngestion. The raw-batch exporter
-        # can then classify this row normally instead of treating it as no_brand.
         row["brand"] = NO_BRAND_SENTINEL
         brand = NO_BRAND_SENTINEL
     return build_match_key(brand, name, pack_qty, pack_unit), None
@@ -153,8 +151,15 @@ def _load_products(session, canonical_ids: list[str]) -> dict[str, dict[str, Any
     return result
 
 
+def _mark_miss(item: dict[str, Any], reason: str) -> None:
+    item["matching_status"] = "miss"
+    item["matching_miss_reason"] = reason
+    item.pop("canonical_product_id", None)
+    item.pop("canonical_name", None)
+
+
 def enrich_items_with_matching_entries(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Annotate crawler rows with MatchingEntry hits without mutating db-admin."""
+    """Annotate rows only when a MatchingEntry resolves to an active Product."""
     if not items:
         return items
 
@@ -181,30 +186,33 @@ def enrich_items_with_matching_entries(items: list[dict[str, Any]]) -> list[dict
 
         for item, key, reason in keyed:
             if key is None:
-                item["matching_status"] = "miss"
-                item["matching_miss_reason"] = reason
+                _mark_miss(item, reason or "unkeyable")
                 continue
 
             item["match_key"] = key
             entry = entries.get(key)
             if entry is None:
-                item["matching_status"] = "miss"
-                item["matching_miss_reason"] = "key_not_found"
+                _mark_miss(item, "key_not_found")
                 continue
 
-            item["matching_status"] = "hit"
+            # Keep provenance for diagnosis, but do not expose partial semantic
+            # metadata as a hit until its Product soft-link is usable.
             item["matching_entry_id"] = entry["id"]
             item["matching_source"] = entry.get("source")
             item["matching_confidence"] = entry.get("confidence")
-            if entry.get("category_id"):
-                item["category_id"] = entry["category_id"]
-            if entry.get("keyword_ids") is not None:
-                item["matching_keyword_ids"] = entry["keyword_ids"]
 
             canonical_id = entry.get("canonical_product_id")
             product = products.get(str(canonical_id)) if canonical_id not in (None, "") else None
             if product is None:
+                _mark_miss(item, "canonical_product_unavailable")
                 continue
+
+            item["matching_status"] = "hit"
+            item.pop("matching_miss_reason", None)
+            if entry.get("category_id"):
+                item["category_id"] = entry["category_id"]
+            if entry.get("keyword_ids") is not None:
+                item["matching_keyword_ids"] = entry["keyword_ids"]
 
             original_name = _extract_str(
                 item,
@@ -231,6 +239,11 @@ def enrich_items_with_matching_entries(items: list[dict[str, Any]]) -> list[dict
                 item["unified_category_id"] = product["unified_category_id"]
     except Exception:
         logger.exception("matching enrichment failed; leaving crawler rows unresolved")
+        for item, key, reason in keyed:
+            if "matching_status" not in item:
+                if key is not None:
+                    item["match_key"] = key
+                _mark_miss(item, reason or "matching_lookup_unavailable")
     finally:
         session_iter.close()
 
