@@ -240,7 +240,8 @@ def _find_existing_submission(session, submission_key: str | None) -> PendingIng
         existing_id = session.execute(
             text(
                 "SELECT id FROM pending_ingestions "
-                "WHERE CASE WHEN json_valid(quality_details) "
+                "WHERE quality_details IS NOT NULL "
+                "AND CASE WHEN json_valid(quality_details) "
                 "THEN json_extract(quality_details, '$.ingestion_submission_key') "
                 "ELSE NULL END = :submission_key "
                 "LIMIT 1"
