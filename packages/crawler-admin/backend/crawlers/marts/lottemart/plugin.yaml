@@ -4,11 +4,10 @@ category: mart
 source_group: mart
 version: 1.2.0
 schema_version: 2
-description: 롯데마트 전단지 및 할인 행사 상품 정보 수집 (lottemartzetta.com requests legacy __INITIAL_STATE__). Round T live GET 검증.
+description: 롯데마트 전단지 및 할인 행사 상품 정보 수집 (lottemartzetta.com requests legacy __INITIAL_STATE__)
 live_ready: true
 parser_contract: lottemart_initial_state_fixture.v1
 
-# Round T legacy requests capability schema v2.
 capabilities:
   transport: [html]
   render: [none]
@@ -57,7 +56,7 @@ selectors:
   product_entities_jsonpath: "$.data.products.productEntities"
   spa_card: ".product-card-container, .product-item, .goods_item, .event_item, .item_box, .prod_wrap"
 
-# 구 (v1 호환) waf_strategy / rate_limit_seconds 필드명 — 일부 도구가 참조. v2 키 (위) 가 우선.
+# v1 호환 필드명. v2 키 (위) 가 우선.
 rate_limit_seconds: 3
 
 live_readiness:
@@ -69,31 +68,17 @@ live_readiness:
       max_requests: 3
       max_pages: 4
       timeout_seconds: 600
-    last_no_db_result:
-      artifact: .walletsavior-live-validation\lottemart-real-240\report.md
-      source_raw: 314
-      parsed_valid: 314
-      records: 314
-      blocker: null
-      strategy_used: requests
-      waf_escalation: null
-    prior_partial_result:
-      source_raw: 100
-      parsed_valid: 50
-      records: 50
-      blocker: aws_waf_http_202_after_partial_collection
-      note: 구 구현이 WAF 떨어지면 스크롤 폴백을 묵살하던 회귀. 현재는 자동 escalation 으로 해결.
   operator_approval:
     status: not_required
     rationale: |
-      Round T에서는 requests legacy 경로만 사용한다.
-      운영자 개입 게이트는 무의미하므로 제거.
+      현재 공개 requests 수집 경로는 운영자 개입 없이 동작한다.
+      저장된 HTML/JSON은 네트워크 없는 진단/보조 입력으로만 허용한다.
   safe_source_paths:
     public_http_context: first_class_requests
     saved_html_json_import: allowed_no_network_no_db
     prohibited: captcha_solving_credential_abuse
 
-notes: "Round T requests legacy 경로. 라이브 probe는 devlog/round-T/lottemart-probe.json 참조."
+notes: "requests 기반 __INITIAL_STATE__ 수집 경로. 저장된 HTML/JSON operator capture는 오프라인 보조 입력으로 허용."
 
 target:
   url: https://www.lottemart.com

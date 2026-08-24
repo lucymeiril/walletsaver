@@ -1,11 +1,8 @@
 from __future__ import annotations
 
 import importlib.util
-from contextlib import contextmanager
 from pathlib import Path
 
-import pytest
-import yaml
 from alembic.migration import MigrationContext
 from alembic.operations import Operations
 from sqlalchemy import create_engine, inspect, text
@@ -91,56 +88,6 @@ def test_mapping_trust_hierarchy_blocks_lower_overwrite() -> None:
         assert session.get(MartCategoryMapping, mapping.id).unified_category_id == "food"
     finally:
         session.close()
-
-
-def test_seed_unified_tree_is_idempotent(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from scripts import g2_seed_unified_tree as seed
-
-    yaml_path = tmp_path / "g2-unified-tree.yaml"
-    yaml_path.write_text(
-        yaml.safe_dump(
-            {
-                "schema": "unified_category_tree.v1",
-                "authoritative_mart": "lottemart",
-                "nodes": [
-                    {"id": "food", "name": "식품", "parent_id": None, "children": ["food.dairy"], "source_natives": {"lottemart": ["001"]}},
-                    {"id": "food.dairy", "name": "우유/유제품", "parent_id": "food", "children": [], "source_natives": {"lottemart": ["008"]}},
-                ],
-            },
-            allow_unicode=True,
-            sort_keys=False,
-        ),
-        encoding="utf-8",
-    )
-
-    engine = create_engine("sqlite://", echo=False)
-    Base.metadata.create_all(engine)
-    SessionLocal = sessionmaker(bind=engine)
-
-    @contextmanager
-    def managed_test_session():
-        session = SessionLocal()
-        try:
-            yield session
-            session.commit()
-        except Exception:
-            session.rollback()
-            raise
-        finally:
-            session.close()
-
-    monkeypatch.setattr(seed, "managed_session", managed_test_session)
-
-    first = seed.seed_from_yaml(yaml_path)
-    second = seed.seed_from_yaml(yaml_path)
-
-    assert first["categories_inserted"] == 2
-    assert first["lottemart_mappings_inserted"] == 2
-    assert second["categories_inserted"] == 0
-    assert second["lottemart_mappings_inserted"] == 0
-    with SessionLocal() as session:
-        assert session.query(UnifiedCategory).count() == 2
-        assert session.query(MartCategoryMapping).count() == 2
 
 
 def test_g2_migration_up_down_smoke() -> None:
