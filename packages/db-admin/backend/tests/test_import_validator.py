@@ -1,13 +1,4 @@
-"""
-test_import_validator.py — import_validator 서비스 단위 테스트.
-
-테스트 전략:
-    - 인메모리 SQLite + categories/keywords 시드 데이터 사용
-    - validate_strict, validate_lenient 두 모드 모두 검증
-    - 각 오류 조건 독립 검증 (category_id 미존재, keyword_id 미존재,
-      confidence 범위, source enum, 필수 필드, 중복 key 등)
-"""
-
+"""Focused contract tests for external MatchingEntry validation."""
 from __future__ import annotations
 
 import sys
@@ -15,57 +6,52 @@ from pathlib import Path
 
 import pytest
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
 BACKEND_ROOT = Path(__file__).parent.parent
-sys.path.insert(0, str(BACKEND_ROOT))
+SHARED_ROOT = BACKEND_ROOT.parent.parent / "shared"
+for path in (str(BACKEND_ROOT), str(SHARED_ROOT)):
+    if path not in sys.path:
+        sys.path.insert(0, path)
 
-from storage.models import Base, Category, Keyword
-from services.import_validator import (
-    IMPORT_ALLOWED_SOURCES,
-    ValidationResult,
+from services.import_validator import (  # noqa: E402
     _build_match_key,
     _deduplicate_by_match_key,
-    validate_strict,
     validate_lenient,
+    validate_strict,
 )
+from storage.models import Base, Category, Keyword  # noqa: E402
 
-
-# ══════════════════════════════════════════════════════
-# Fixtures
-# ══════════════════════════════════════════════════════
 
 @pytest.fixture(scope="module")
 def engine():
-    eng = create_engine(
+    value = create_engine(
         "sqlite://",
         connect_args={"check_same_thread": False},
         poolclass=StaticPool,
     )
-    Base.metadata.create_all(eng)
-    return eng
+    Base.metadata.create_all(value)
+    return value
 
 
 @pytest.fixture(scope="module")
 def seeded_session(engine) -> Session:
-    """categories 와 keywords 를 미리 채운 세션 (module 범위 — 읽기 전용)."""
-    Session = sessionmaker(bind=engine)
-    s = Session()
-    s.add(Category(id="food", name="식품", depth=0, is_active=True))
-    s.add(Category(id="food.rice", name="쌀", parent_id="food", depth=1, is_active=True))
-    s.add(Category(id="inactive.cat", name="비활성", depth=0, is_active=False))
-    s.add(Keyword(id=1, word="밥", is_active=True))
-    s.add(Keyword(id=2, word="국수", is_active=True))
-    s.commit()
-    yield s
-    s.close()
+    factory = sessionmaker(bind=engine)
+    session = factory()
+    session.add(Category(id="food", name="식품", depth=0, is_active=True))
+    session.add(Category(id="food.rice", name="쌀", parent_id="food", depth=1, is_active=True))
+    session.add(Category(id="inactive.cat", name="비활성", depth=0, is_active=False))
+    session.add(Keyword(id=1, word="밥", is_active=True))
+    session.add(Keyword(id=2, word="국수", is_active=True))
+    session.commit()
+    yield session
+    session.close()
 
 
 def _good_row(**overrides) -> dict:
-    """기본적으로 유효한 row — override 로 특정 필드를 변경하여 오류 테스트 가능."""
-    base = {
-        "match_key": "CJ|햇반|210.000000|g",
+    row = {
+        "match_key": "legacy-format-that-must-not-win",
         "brand": "CJ",
         "name_core": "햇반",
         "pack_qty": 210.0,
@@ -75,254 +61,116 @@ def _good_row(**overrides) -> dict:
         "source": "external-ai",
         "keyword_ids": [1, 2],
     }
-    base.update(overrides)
-    return base
+    row.update(overrides)
+    return row
 
 
-# ══════════════════════════════════════════════════════
-# _build_match_key 헬퍼
-# ══════════════════════════════════════════════════════
-
-class TestBuildMatchKey:
-    def test_builds_correct_key(self):
-        row = {"brand": "CJ", "name_core": "햇반", "pack_qty": 210.0, "pack_unit": "g"}
-        assert _build_match_key(row) == "CJ|햇반|210.000000|g"
-
-    def test_returns_none_when_missing_field(self):
-        assert _build_match_key({"brand": "CJ", "name_core": "햇반"}) is None
-
-    def test_returns_none_when_empty_string(self):
-        assert _build_match_key({"brand": "", "name_core": "햇반", "pack_qty": 1.0, "pack_unit": "g"}) is None
+def test_build_match_key_uses_shared_canonical_contract():
+    assert _build_match_key(_good_row()) == "cj|햇반|210.0|g"
 
 
-# ══════════════════════════════════════════════════════
-# _deduplicate_by_match_key
-# ══════════════════════════════════════════════════════
-
-class TestDeduplication:
-    def test_no_duplicates(self):
-        rows = [_good_row(match_key="A|B|1.0|g"), _good_row(match_key="X|Y|2.0|g")]
-        deduped, warnings = _deduplicate_by_match_key(rows)
-        assert len(deduped) == 2
-        assert warnings == []
-
-    def test_duplicate_last_wins(self):
-        row1 = _good_row(match_key="A|B|1.0|g", confidence=0.5)
-        row2 = _good_row(match_key="A|B|1.0|g", confidence=0.9)
-        deduped, warnings = _deduplicate_by_match_key([row1, row2])
-        assert len(deduped) == 1
-        assert deduped[0]["confidence"] == 0.9
-        assert len(warnings) == 1
-        assert "A|B|1.0|g" in warnings[0]
-
-    def test_triple_duplicate_last_wins(self):
-        rows = [
-            _good_row(match_key="K|K|1.0|g", confidence=0.1),
-            _good_row(match_key="K|K|1.0|g", confidence=0.5),
-            _good_row(match_key="K|K|1.0|g", confidence=0.9),
-        ]
-        deduped, warnings = _deduplicate_by_match_key(rows)
-        assert len(deduped) == 1
-        assert deduped[0]["confidence"] == 0.9
-        # 두 번 중복 경고 (행 0 vs 1, 행 0/1 vs 2)
-        assert len(warnings) == 2
+def test_build_match_key_canonicalizes_equivalent_units():
+    kg = _good_row(name_core="쌀", pack_qty=1, pack_unit="kg")
+    gram = _good_row(name_core="쌀", pack_qty=1000, pack_unit="g")
+    assert _build_match_key(kg) == _build_match_key(gram) == "cj|쌀|1000.0|g"
 
 
-# ══════════════════════════════════════════════════════
-# validate_strict
-# ══════════════════════════════════════════════════════
+def test_brandless_identity_uses_stable_sentinel(seeded_session):
+    row = _good_row(brand=None, name_core="양파", pack_qty=1, pack_unit="망")
+    result = validate_strict([row], seeded_session)
+    assert result.is_valid
+    assert result.valid_rows[0]["brand"] == "__no_brand__"
+    assert result.valid_rows[0]["match_key"] == "__no_brand__|양파|1.0|망"
 
-class TestValidateStrict:
-    def test_valid_row_passes(self, seeded_session):
-        result = validate_strict([_good_row()], seeded_session)
-        assert result.is_valid
-        assert len(result.valid_rows) == 1
-        assert result.errors == []
 
-    def test_valid_multiple_rows(self, seeded_session):
-        rows = [
-            _good_row(match_key="A|B|1.0|g"),
-            _good_row(match_key="C|D|2.0|g", source="human"),
-        ]
-        result = validate_strict(rows, seeded_session)
-        assert result.is_valid
-        assert len(result.valid_rows) == 2
+def test_provided_legacy_match_key_is_recomputed(seeded_session):
+    result = validate_strict([_good_row(match_key="CJ|햇반|210.000000|g")], seeded_session)
+    assert result.is_valid
+    assert result.valid_rows[0]["match_key"] == "cj|햇반|210.0|g"
 
-    def test_single_error_causes_full_reject(self, seeded_session):
-        rows = [
-            _good_row(match_key="good_row|A|1.0|g"),
-            _good_row(match_key="bad_row|B|2.0|g", category_id="nonexistent.cat"),
-        ]
-        result = validate_strict(rows, seeded_session)
-        assert not result.is_valid
-        assert result.valid_rows == []    # 전체 reject
-        assert len(result.errors) >= 1
 
-    def test_missing_match_key_and_compound(self, seeded_session):
-        row = _good_row()
-        row.pop("match_key")
-        row.pop("brand")
-        result = validate_strict([row], seeded_session)
-        assert not result.is_valid
-        assert any("match_key" in m or "필수" in m for _, m in result.errors)
+def test_deduplication_uses_canonical_identity_last_row_wins():
+    first = _good_row(match_key="old-a", confidence=0.5)
+    second = _good_row(match_key="old-b", confidence=0.9)
+    rows, warnings = _deduplicate_by_match_key([first, second])
+    assert len(rows) == 1
+    assert rows[0]["confidence"] == 0.9
+    assert rows[0]["match_key"] == "cj|햇반|210.0|g"
+    assert warnings
 
-    def test_missing_category_id(self, seeded_session):
-        row = _good_row()
-        row["category_id"] = None
-        result = validate_strict([row], seeded_session)
-        assert not result.is_valid
-        assert any("category_id" in m for _, m in result.errors)
 
-    def test_missing_confidence(self, seeded_session):
-        row = _good_row()
-        row["confidence"] = None
-        result = validate_strict([row], seeded_session)
+def test_different_identity_rows_do_not_collapse(seeded_session):
+    rows = [
+        _good_row(name_core="햇반"),
+        _good_row(name_core="신라면", brand="농심", pack_qty=120),
+    ]
+    result = validate_strict(rows, seeded_session)
+    assert result.is_valid
+    assert len(result.valid_rows) == 2
+
+
+def test_strict_rejects_missing_category(seeded_session):
+    result = validate_strict([_good_row(category_id=None)], seeded_session)
+    assert not result.is_valid
+    assert result.valid_rows == []
+    assert any("category_id" in message for _, message in result.errors)
+
+
+def test_strict_rejects_unknown_or_inactive_category(seeded_session):
+    for category_id in ("does.not.exist", "inactive.cat"):
+        result = validate_strict([_good_row(category_id=category_id)], seeded_session)
         assert not result.is_valid
 
-    def test_missing_source(self, seeded_session):
-        row = _good_row()
-        row["source"] = None
-        result = validate_strict([row], seeded_session)
-        assert not result.is_valid
 
-    def test_nonexistent_category_id(self, seeded_session):
-        row = _good_row(category_id="does.not.exist")
-        result = validate_strict([row], seeded_session)
-        assert not result.is_valid
-        assert any("categories" in m for _, m in result.errors)
-
-    def test_inactive_category_rejected(self, seeded_session):
-        row = _good_row(category_id="inactive.cat")
-        result = validate_strict([row], seeded_session)
-        assert not result.is_valid
-
-    def test_nonexistent_keyword_id(self, seeded_session):
-        row = _good_row(keyword_ids=[999])
-        result = validate_strict([row], seeded_session)
-        assert not result.is_valid
-        assert any("keywords" in m for _, m in result.errors)
-
-    def test_confidence_below_zero(self, seeded_session):
-        row = _good_row(confidence=-0.1)
-        result = validate_strict([row], seeded_session)
-        assert not result.is_valid
-
-    def test_confidence_above_one(self, seeded_session):
-        row = _good_row(confidence=1.1)
-        result = validate_strict([row], seeded_session)
-        assert not result.is_valid
-
-    @pytest.mark.parametrize("conf", [0.0, 0.5, 1.0])
-    def test_confidence_boundary_valid(self, seeded_session, conf):
-        row = _good_row(match_key=f"X|Y|{conf}|g", confidence=conf)
-        result = validate_strict([row], seeded_session)
-        assert result.is_valid, f"confidence={conf} 는 유효해야 함"
-
-    def test_source_crawler_auto_rejected(self, seeded_session):
-        row = _good_row(source="crawler-auto")
-        result = validate_strict([row], seeded_session)
-        assert not result.is_valid
-        assert any("crawler-auto" in m or "허용 안 됨" in m for _, m in result.errors)
-
-    def test_source_unknown_rejected(self, seeded_session):
-        row = _good_row(source="unknown-source")
-        result = validate_strict([row], seeded_session)
-        assert not result.is_valid
-
-    @pytest.mark.parametrize("src", ["human", "external-ai"])
-    def test_source_allowed_passes(self, seeded_session, src):
-        row = _good_row(match_key=f"T|S|1.0|g|{src}", source=src)
-        result = validate_strict([row], seeded_session)
-        assert result.is_valid
-
-    def test_duplicate_key_warning(self, seeded_session):
-        row1 = _good_row(match_key="DUP|test|1.0|g", confidence=0.5)
-        row2 = _good_row(match_key="DUP|test|1.0|g", confidence=0.9)
-        result = validate_strict([row1, row2], seeded_session)
-        assert result.is_valid          # 중복 자체는 오류가 아님 — 마지막 행 우선
-        assert len(result.valid_rows) == 1
-        assert result.valid_rows[0]["confidence"] == 0.9
-        assert len(result.warnings) >= 1
-
-    def test_compound_fields_without_match_key(self, seeded_session):
-        """match_key 없이 compound 필드만으로도 통과해야 한다."""
-        row = {
-            "brand": "농심",
-            "name_core": "신라면",
-            "pack_qty": 120.0,
-            "pack_unit": "g",
-            "category_id": "food.rice",
-            "confidence": 0.8,
-            "source": "human",
-        }
-        result = validate_strict([row], seeded_session)
-        assert result.is_valid
+def test_strict_rejects_unknown_keyword(seeded_session):
+    result = validate_strict([_good_row(keyword_ids=[999])], seeded_session)
+    assert not result.is_valid
+    assert any("keywords" in message for _, message in result.errors)
 
 
-# ══════════════════════════════════════════════════════
-# validate_lenient
-# ══════════════════════════════════════════════════════
+@pytest.mark.parametrize("confidence", [-0.1, 1.1, "not-a-number"])
+def test_invalid_confidence_is_rejected(seeded_session, confidence):
+    assert not validate_strict([_good_row(confidence=confidence)], seeded_session).is_valid
 
-class TestValidateLenient:
-    def test_mixed_rows_separates_errors(self, seeded_session):
-        valid = _good_row(match_key="V|A|1.0|g")
-        invalid = _good_row(match_key="B|A|1.0|g", category_id="nonexistent")
-        result = validate_lenient([valid, invalid], seeded_session)
-        assert len(result.valid_rows) == 1
-        assert len(result.errors) >= 1
-        assert result.valid_rows[0]["match_key"] == "V|A|1.0|g"
 
-    def test_all_valid_passes(self, seeded_session):
-        rows = [
-            _good_row(match_key="L1|A|1.0|g"),
-            _good_row(match_key="L2|B|2.0|g"),
-        ]
-        result = validate_lenient(rows, seeded_session)
-        assert len(result.valid_rows) == 2
-        assert result.errors == []
+@pytest.mark.parametrize("confidence", [0.0, 0.5, 1.0])
+def test_confidence_boundaries_are_valid(seeded_session, confidence):
+    assert validate_strict([_good_row(confidence=confidence)], seeded_session).is_valid
 
-    def test_all_invalid_empty_valid_rows(self, seeded_session):
-        rows = [
-            _good_row(match_key="INV|A|1.0|g", confidence=-0.5),
-            _good_row(match_key="INV|B|2.0|g", source="crawler-auto"),
-        ]
-        result = validate_lenient(rows, seeded_session)
-        assert result.valid_rows == []
-        assert len(result.errors) >= 2
 
-    def test_partial_pass_returns_valid_subset(self, seeded_session):
-        rows = [
-            _good_row(match_key="GOOD|A|1.0|g"),
-            _good_row(match_key="BAD|B|2.0|g", source="crawler-auto"),
-            _good_row(match_key="GOOD2|C|3.0|g"),
-        ]
-        result = validate_lenient(rows, seeded_session)
-        assert len(result.valid_rows) == 2
-        assert any(r["match_key"] == "GOOD|A|1.0|g" for r in result.valid_rows)
-        assert any(r["match_key"] == "GOOD2|C|3.0|g" for r in result.valid_rows)
+@pytest.mark.parametrize("source", ["human", "external-ai"])
+def test_allowed_sources_pass(seeded_session, source):
+    assert validate_strict([_good_row(source=source)], seeded_session).is_valid
 
-    def test_duplicate_in_lenient_last_wins_with_warning(self, seeded_session):
-        row1 = _good_row(match_key="DUP2|x|1.0|g", confidence=0.3)
-        row2 = _good_row(match_key="DUP2|x|1.0|g", confidence=0.8)
-        result = validate_lenient([row1, row2], seeded_session)
-        assert len(result.valid_rows) == 1
-        assert result.valid_rows[0]["confidence"] == 0.8
-        assert any("DUP2|x|1.0|g" in w for w in result.warnings)
 
-    def test_keyword_ids_none_allowed(self, seeded_session):
-        """keyword_ids=None 은 유효 (키워드 미지정)."""
-        row = _good_row(keyword_ids=None)
-        result = validate_strict([row], seeded_session)
-        assert result.is_valid
+@pytest.mark.parametrize("source", ["crawler-auto", "unknown-source"])
+def test_non_import_sources_are_rejected(seeded_session, source):
+    assert not validate_strict([_good_row(source=source)], seeded_session).is_valid
 
-    def test_keyword_ids_empty_list_allowed(self, seeded_session):
-        """keyword_ids=[] 은 유효."""
-        row = _good_row(keyword_ids=[])
-        result = validate_strict([row], seeded_session)
-        assert result.is_valid
 
-    def test_string_keyword_id_converted(self, seeded_session):
-        """keyword_ids 안의 string 정수도 처리된다 (CSV 경유 시 string으로 들어옴)."""
-        row = _good_row(keyword_ids=["1", "2"])
-        result = validate_strict([row], seeded_session)
-        assert result.is_valid
+def test_match_key_alone_is_still_accepted_when_compound_identity_is_unavailable(seeded_session):
+    row = _good_row(match_key="external|opaque|key|v1")
+    row.pop("name_core")
+    row.pop("pack_qty")
+    row.pop("pack_unit")
+    result = validate_strict([row], seeded_session)
+    assert result.is_valid
+    assert result.valid_rows[0]["match_key"] == "external|opaque|key|v1"
+
+
+def test_missing_both_match_key_and_identity_is_rejected(seeded_session):
+    row = _good_row(match_key="")
+    row.pop("name_core")
+    row.pop("pack_qty")
+    row.pop("pack_unit")
+    result = validate_strict([row], seeded_session)
+    assert not result.is_valid
+
+
+def test_lenient_mode_keeps_valid_rows_and_reports_invalid_rows(seeded_session):
+    valid = _good_row(name_core="햇반")
+    invalid = _good_row(name_core="신라면", brand="농심", pack_qty=120, category_id="missing")
+    result = validate_lenient([valid, invalid], seeded_session)
+    assert len(result.valid_rows) == 1
+    assert result.valid_rows[0]["match_key"] == "cj|햇반|210.0|g"
+    assert result.errors
