@@ -52,7 +52,7 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
 
             from storage.db import DBStorage
 
-            main_db_path = os.path.join(db_admin_path, "walletguardian.db")
+            main_db_path = os.path.abspath(os.path.join(db_admin_path, "walletguardian.db"))
             main_storage = DBStorage(f"sqlite:///{main_db_path}")
 
             # Restore web-api's services package before importing SplitStorage.
@@ -70,10 +70,19 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
             project_root = os.path.dirname(
                 os.path.dirname(os.path.dirname(db_admin_path))
             )
-            public_db_path = os.getenv(
-                "WALLETSAVIOR_PUBLIC_DB",
-                os.path.join(project_root, ".walletsavior", "public_snapshot.sqlite"),
+            safe_public_db_path = os.path.abspath(
+                os.path.join(project_root, ".walletsavior", "public_snapshot.sqlite")
             )
+            public_db_path = os.path.abspath(
+                os.getenv("WALLETSAVIOR_PUBLIC_DB", safe_public_db_path)
+            )
+            if os.path.normcase(public_db_path) == os.path.normcase(main_db_path):
+                logging.error(
+                    "Ignoring unsafe WALLETSAVIOR_PUBLIC_DB pointing at main DB: %s",
+                    public_db_path,
+                )
+                public_db_path = safe_public_db_path
+
             public_storage = None
             if os.path.isfile(public_db_path):
                 public_storage = PublicSnapshotStorage(public_db_path)
