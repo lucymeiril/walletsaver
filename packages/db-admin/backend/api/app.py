@@ -1,4 +1,5 @@
 """DB 관리 API 팩토리"""
+import asyncio
 import signal
 import sys
 import logging
@@ -83,7 +84,17 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         _lifecycle_logger.warning("Startup: admin seed failed — %s", e)
 
-    # 6. Log startup summary
+    # 6. Start the debounced public snapshot publisher. Public-data commits only
+    # mark the derived DB dirty; this task waits for a short quiet period and
+    # publishes once, so large imports do not rebuild the snapshot per row.
+    snapshot_stop = asyncio.Event()
+    from services.public_snapshot_publisher import run_public_snapshot_publisher
+    snapshot_task = asyncio.create_task(
+        run_public_snapshot_publisher(snapshot_stop),
+        name="public-snapshot-publisher",
+    )
+
+    # 7. Log startup summary
     _lifecycle_logger.info(
         "Startup complete — host=%s port=%s debug=%s",
         settings.API_HOST, settings.API_PORT, settings.DEBUG,
@@ -92,9 +103,18 @@ async def lifespan(app: FastAPI):
     yield
 
     # ── Shutdown ──
+    _lifecycle_logger.info("Shutdown: stopping public snapshot publisher")
+    snapshot_stop.set()
+    try:
+        await snapshot_task
+    except asyncio.CancelledError:
+        pass
+    except Exception as e:
+        _lifecycle_logger.error("Shutdown: public snapshot publisher failed — %s", e)
+
     _lifecycle_logger.info("Shutdown: closing database connections")
 
-    # 6. Dispose engine via reset_engine (closes all pooled connections + clears singleton)
+    # 8. Dispose engine via reset_engine (closes all pooled connections + clears singleton)
     try:
         from services.base import reset_engine
         reset_engine()
@@ -102,7 +122,7 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         _lifecycle_logger.error("Shutdown: engine disposal failed — %s", e)
 
-    # 7. Flush all log handlers
+    # 9. Flush all log handlers
     for handler in logging.root.handlers:
         try:
             handler.flush()
@@ -126,7 +146,7 @@ class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
                 content={
                     "error": {
                         "code": "PAYLOAD_TOO_LARGE",
-                        "message": f"\uc694\uccad \ubcf8\ubb38\uc740 {MAX_REQUEST_BODY_BYTES // (1024*1024)}MB\ub97c \ucd08\uacfc\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4.",
+                        "message": f"요청 본문은 {MAX_REQUEST_BODY_BYTES // (1024*1024)}MB를 초과할 수 없습니다.",
                         "request_id": "",
                     }
                 },
@@ -218,7 +238,6 @@ def create_app() -> FastAPI:
     # ingestion 라우터는 이미 /api/ingestions 접두어가 있음
     app.include_router(ingestion_router)
 
-
     @app.exception_handler(RequestValidationError)
     async def validation_exception_handler(request: Request, exc: RequestValidationError):
         request_id = uuid.uuid4().hex[:12]
@@ -231,7 +250,7 @@ def create_app() -> FastAPI:
             content={
                 "error": {
                     "code": "VALIDATION_ERROR",
-                    "message": "\uc785\ub825 \ub370\uc774\ud130\uac00 \uc62c\ubc14\ub974\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+                    "message": "입력 데이터가 올바르지 않습니다.",
                     "request_id": request_id,
                     "details": [
                         {
@@ -257,7 +276,7 @@ def create_app() -> FastAPI:
             content={
                 "error": {
                     "code": "INTERNAL_ERROR",
-                    "message": "\uc11c\ubc84 \ub0b4\ubd80 \uc624\ub958\uac00 \ubc1c\uc0dd\ud588\uc2b5\ub2c8\ub2e4.",
+                    "message": "서버 내부 오류가 발생했습니다.",
                     "request_id": request_id,
                 }
             },
