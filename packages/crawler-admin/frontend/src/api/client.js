@@ -3,7 +3,6 @@ import { getApiKey, logout as authLogout } from '../stores/authStore';
 const API_BASE = '/api';
 const FETCH_TIMEOUT_MS = 30000;
 
-// HTTP 상태 코드별 사용자 친화적 에러 메시지
 const HTTP_ERROR_MESSAGES = {
   400: '잘못된 요청입니다.',
   401: '인증이 필요합니다. 다시 로그인해 주세요.',
@@ -31,18 +30,12 @@ async function getResponseErrorMessage(resp) {
   return getHttpErrorMessage(resp.status);
 }
 
-// ─── 인증 헤더 주입 ───
 function injectAuth(headers = {}) {
   const key = getApiKey();
   if (!key) return headers;
   return { ...headers, 'X-API-Key': key };
 }
 
-/**
- * AbortController 기반 fetch — 타임아웃 및 컴포넌트 언마운트 시 정리 지원.
- * @param {string} url
- * @param {RequestInit & { timeoutMs?: number, signal?: AbortSignal }} options
- */
 async function fetchWithTimeout(url, options = {}) {
   const { timeoutMs = FETCH_TIMEOUT_MS, signal: externalSignal, ...fetchOptions } = options;
   fetchOptions.headers = injectAuth(fetchOptions.headers);
@@ -50,7 +43,6 @@ async function fetchWithTimeout(url, options = {}) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
-  // 외부 signal이 있으면 연결
   if (externalSignal) {
     if (externalSignal.aborted) {
       controller.abort();
@@ -80,12 +72,8 @@ async function fetchWithTimeout(url, options = {}) {
   }
 }
 
-// ETag 캐시: 상태 폴링 시 304 응답으로 불필요한 JSON 파싱 방지
 const _etagCache = new Map();
 
-/**
- * ETag 지원 fetch — 변경 없으면 캐시된 데이터 반환 (폴링 최적화).
- */
 async function fetchWithETag(url, options = {}) {
   const cached = _etagCache.get(url);
   const headers = injectAuth({ ...options.headers });
@@ -114,16 +102,6 @@ async function fetchWithETag(url, options = {}) {
   return data;
 }
 
-/**
- * SSE 연결 헬퍼 — 크롤러 실행 상태를 실시간 수신.
- *
- * SSE reconnection with exponential backoff (audit fix).
- * - On transient error: retry up to MAX_RETRIES times with backoff
- * - On successful message: reset retry counter
- * - On terminal status (success/failed): close cleanly
- *
- * @returns {{ close: () => void }} 연결 해제 핸들
- */
 function subscribeCrawlerStatus(crawlerId, { onData, onError, onComplete }) {
   const MAX_RETRIES = 5;
   const BASE_DELAY_MS = 1000;
@@ -142,7 +120,7 @@ function subscribeCrawlerStatus(crawlerId, { onData, onError, onComplete }) {
     currentSource = eventSource;
 
     eventSource.onmessage = (event) => {
-      retryCount = 0;   // Reset on successful message
+      retryCount = 0;
       try {
         const data = JSON.parse(event.data);
         onData?.(data);
@@ -191,9 +169,7 @@ function subscribeCrawlerStatus(crawlerId, { onData, onError, onComplete }) {
 }
 
 export const api = {
-  // 크롤러 목록
   getCrawlers: () => fetchWithTimeout(`${API_BASE}/crawlers`).then(r => r.json()),
-  // 크롤러 실행
   runCrawler: (id) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/run`, { method: 'POST', timeoutMs: 120000 }).then(r => r.json()),
   retryWafBlocked: (id) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/retry-waf-blocked`, { method: 'POST', timeoutMs: 120000 }).then(r => r.json()),
   getLotteCategories: (refresh = false) => fetchWithTimeout(`${API_BASE}/crawlers/lottemart/categories?refresh=${refresh ? 'true' : 'false'}`, { timeoutMs: 120000 }).then(r => r.json()),
@@ -203,37 +179,28 @@ export const api = {
     body: JSON.stringify({ url: category.url, query: category.query, category_hint: category.category_hint }),
     timeoutMs: 120000,
   }).then(r => r.json()),
-  // 크롤러 상태 — ETag 기반 캐시로 변경 없으면 304 반환
   getCrawlerStatus: (id) => fetchWithETag(`${API_BASE}/crawlers/${id}/status`),
-  // 크롤러 상태 SSE 구독
   subscribeCrawlerStatus,
-  // 크롤러 토글
   toggleCrawler: (id, status) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/toggle`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status }),
   }).then(r => r.json()),
-  // 크롤러 벌크 실행
   bulkRunCrawlers: (ids) => fetchWithTimeout(`${API_BASE}/crawlers/bulk-run`, {
     method: 'POST',
     timeoutMs: 120000,
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ crawler_ids: ids }),
   }).then(r => r.json()),
-  // 크롤러 설정
   getCrawlerSettings: (id) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/settings`).then(r => r.json()),
   updateCrawlerSettings: (id, data) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/settings`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   }).then(r => r.json()),
-  // 대시보드 통계
   getDashboardStats: (params = {}) => fetchWithTimeout(`${API_BASE}/dashboard/stats?${new URLSearchParams(params)}`).then(r => r.json()),
-  // 로그
   getLogs: (params) => fetchWithTimeout(`${API_BASE}/logs?${new URLSearchParams(params)}`).then(r => r.json()),
-  // 로그 CSV 내보내기
   exportLogsCsv: (params = {}) => fetchWithTimeout(`${API_BASE}/logs/export?${new URLSearchParams(params)}`).then(r => r.blob()),
-  // 스케줄
   getSchedules: () => fetchWithTimeout(`${API_BASE}/schedules`).then(r => r.json()),
   createSchedule: (data) => fetchWithTimeout(`${API_BASE}/schedules`, {
     method: 'POST',
@@ -254,7 +221,6 @@ export const api = {
   runScheduleNow: (name) => fetchWithTimeout(`${API_BASE}/schedules/${name}/run-now`, {
     method: 'POST',
   }).then(r => r.json()),
-  // 플러그인
   getPlugins: () => fetchWithTimeout(`${API_BASE}/plugins`).then(r => r.json()),
   togglePlugin: (id, status) => fetchWithTimeout(`${API_BASE}/plugins/${id}/status`, {
     method: 'PUT',
@@ -266,8 +232,7 @@ export const api = {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   }).then(r => r.json()),
-  // 대기열
-  getIngestions: (params) => fetchWithTimeout(`${API_BASE}/ingestions?${new URLSearchParams(params)}`).then(r => r.json()),
+  getIngestions: (params = {}) => fetchWithTimeout(`${API_BASE}/ingestions?${new URLSearchParams(params)}`).then(r => r.json()),
   getIngestion: (id) => fetchWithTimeout(`${API_BASE}/ingestions/${id}`).then(r => r.json()),
   reviewIngestion: (id, data) => fetchWithTimeout(`${API_BASE}/ingestions/${id}/crawler-review`, {
     method: 'POST',
@@ -293,16 +258,7 @@ export const api = {
   deleteIngestion: (id) => fetchWithTimeout(`${API_BASE}/ingestions/${id}`, {
     method: 'DELETE',
   }).then(r => r.json()),
-  forwardRawRecordsToAi: (data) => fetchWithTimeout(`${API_BASE}/ai-export/raw-records/label`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-    timeoutMs: 120000,
-  }).then(r => r.json()),
-  getAiProviders: (aiAdminBaseUrl) => fetchWithTimeout(
-    `${API_BASE}/ai-export/providers?${new URLSearchParams({ ai_admin_base_url: aiAdminBaseUrl })}`,
-  ).then(r => r.json()),
-  // 오케스트레이터 v1 API
+
   getOrchestratorPlugins: () => fetchWithTimeout(`${API_BASE}/v1/plugins`).then(r => r.json()),
   getOrchestratorSchedules: () => fetchWithTimeout(`${API_BASE}/v1/schedules`).then(r => r.json()),
   createOrchestratorSchedule: (data) => fetchWithTimeout(`${API_BASE}/v1/schedules`, {
@@ -334,7 +290,7 @@ export const api = {
         }
         return data;
       }),
-  // 외부 분류 export (crawler-admin 전용)
+
   getRecentExports: (limit = 20) =>
     fetchWithTimeout(`${API_BASE}/export/raw-batch/recent?limit=${limit}`).then(r => r.json()),
   triggerRawBatchExport: (payload) =>
