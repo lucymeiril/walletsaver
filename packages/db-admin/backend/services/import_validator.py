@@ -22,6 +22,8 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
+from core.match_key import build_match_key
+
 logger = logging.getLogger(__name__)
 
 # import 경로에서 허용되는 source 값. crawler-auto는 절대 불가.
@@ -30,9 +32,9 @@ IMPORT_ALLOWED_SOURCES: frozenset[str] = frozenset({"human", "external-ai"})
 _REQUIRED_COMPOUND_FIELDS = ("brand", "name_core", "pack_qty", "pack_unit")
 
 
-# ══════════════════════════════════════════════════════
+# ══════════════════════════════════════════════
 # ValidationResult
-# ══════════════════════════════════════════════════════
+# ══════════════════════════════════════════════
 
 @dataclass
 class ValidationResult:
@@ -46,22 +48,34 @@ class ValidationResult:
         return len(self.errors) == 0
 
 
-# ══════════════════════════════════════════════════════
+# ══════════════════════════════════════════════
 # 내부 헬퍼
-# ══════════════════════════════════════════════════════
+# ══════════════════════════════════════════════
 
 def _build_match_key(row: dict) -> str | None:
-    """compound 필드로 match_key 를 구성한다. 하나라도 None이면 None 반환."""
+    """compound 필드로 canonical match_key를 구성한다.
+
+    Runtime lookup/export와 반드시 같은 ``core.match_key.build_match_key``를 사용한다.
+    서로 다른 문자열 포맷을 허용하면 import는 성공해도 이후 crawl lookup이 영구 miss가 된다.
+    """
     brand = row.get("brand")
     name_core = row.get("name_core")
     pack_qty = row.get("pack_qty")
     pack_unit = row.get("pack_unit")
-    if all(x is not None and str(x).strip() != "" for x in (brand, name_core, pack_qty, pack_unit)):
-        try:
-            return f"{brand}|{name_core}|{float(pack_qty):.6f}|{pack_unit}"
-        except (TypeError, ValueError):
-            return None
-    return None
+    if not all(
+        value is not None and str(value).strip() != ""
+        for value in (brand, name_core, pack_qty, pack_unit)
+    ):
+        return None
+    try:
+        return build_match_key(
+            str(brand),
+            str(name_core),
+            float(pack_qty),
+            str(pack_unit),
+        )
+    except (TypeError, ValueError):
+        return None
 
 
 def _preload_valid_ids(session: Session) -> tuple[set[str], set[int]]:
@@ -184,9 +198,9 @@ def _deduplicate_by_match_key(rows: list[dict]) -> tuple[list[dict], list[str]]:
     return deduped, warnings
 
 
-# ══════════════════════════════════════════════════════
+# ══════════════════════════════════════════════
 # 공개 API
-# ══════════════════════════════════════════════════════
+# ══════════════════════════════════════════════
 
 def validate_strict(rows: list[dict], session: Session) -> ValidationResult:
     """엄격 모드 검증.
