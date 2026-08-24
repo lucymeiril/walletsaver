@@ -104,12 +104,11 @@ def create_app() -> FastAPI:
     from api.routes.ingestion import router as ingestion_router
     from api.routes.dashboard import router as dashboard_router
     from api.routes.plugins import router as plugins_router
-    from api.routes.ai_export import router as ai_export_router
     from api.routes.source_workbench import router as source_workbench_router
     from api.routes.operator_browser import router as operator_browser_router
     from api.routes.orchestrator import router as orchestrator_router
     from api.routes.weekly import router as weekly_router
-    # RD7: raw-batch export 파이프라인 (crawler-admin으로 이전)
+    # 외부 분류 export — 현재 db-admin PendingIngestion을 데이터 원본으로 사용
     from api.routes.raw_batch_export import router as raw_batch_export_router
 
     from fastapi import Depends
@@ -123,7 +122,6 @@ def create_app() -> FastAPI:
     app.include_router(ingestion_router, dependencies=_auth)
     app.include_router(dashboard_router, dependencies=_auth)
     app.include_router(plugins_router, dependencies=_auth)
-    app.include_router(ai_export_router, dependencies=_auth)
     app.include_router(source_workbench_router, dependencies=_auth)
     app.include_router(operator_browser_router, dependencies=_auth)
     app.include_router(orchestrator_router, dependencies=_auth)
