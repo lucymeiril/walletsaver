@@ -165,13 +165,15 @@ def _match_key(index: int) -> str:
 
 def _seed_context(session: Session) -> None:
     # 0,1: complete reusable hits. 2: matching knowledge without Product link.
-    # 3: link exists but Product is inactive. Only 0 and 1 may count as hits.
+    # 3: link exists but Product is inactive. 4: malformed soft-link. Only 0 and
+    # 1 may count as hits; every incomplete state must remain exportable.
     session.execute(text("INSERT INTO products (id, is_active) VALUES (101, 1), (102, 1), (103, 0)"))
     entries = [
         (_match_key(0), "101"),
         (_match_key(1), "102"),
         (_match_key(2), None),
         (_match_key(3), "103"),
+        (_match_key(4), "not-a-product-id"),
     ]
     for match_key, canonical_product_id in entries:
         session.execute(
@@ -200,7 +202,7 @@ def test_hit_lookup_requires_active_canonical_product(db_admin_db):
     from services.db_admin_readonly import bulk_lookup_hit_keys
 
     _seed_context(db_admin_db)
-    keys = [_match_key(index) for index in range(5)]
+    keys = [_match_key(index) for index in range(6)]
     assert bulk_lookup_hit_keys(db_admin_db, keys) == {_match_key(0), _match_key(1)}
 
 
@@ -233,6 +235,7 @@ def test_export_reads_pending_ingestion_and_excludes_only_completed_hits(
     exported_ids = {row["raw_record_id"] for row in rows}
     assert "ingestion:1:2" in exported_ids  # canonical_product_id missing
     assert "ingestion:1:3" in exported_ids  # linked Product inactive
+    assert "ingestion:1:4" in exported_ids  # malformed canonical_product_id
     assert "ingestion:1:0" not in exported_ids
     assert "ingestion:1:1" not in exported_ids
 
