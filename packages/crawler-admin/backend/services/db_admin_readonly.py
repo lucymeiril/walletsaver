@@ -137,34 +137,66 @@ def get_pending_ingestion_records(
 def bulk_lookup_hit_keys(session: Session, match_keys: list[str]) -> set[str]:
     """Return only keys that resolve through MatchingEntry to an active Product.
 
-    A MatchingEntry row by itself is incomplete knowledge.  Rows whose
-    ``canonical_product_id`` is missing, invalid, deleted, or inactive must stay
-    exportable so the external-classification workflow can repair them.  This
-    definition intentionally matches crawler runtime ``matching_status='hit'``.
+    A MatchingEntry row by itself is incomplete knowledge. Rows whose
+    ``canonical_product_id`` is missing, malformed, deleted, or inactive stay
+    exportable so the external-classification workflow can repair them.
+
+    Resolution is deliberately two-stage instead of joining on a casted Product
+    id. The first query uses the unique ``matching_entries.match_key`` index;
+    canonical ids are parsed safely in Python; the second query uses the Product
+    integer primary key. This keeps 10k-scale exports off full-table scans and is
+    the same semantic hit definition used by crawler runtime enrichment.
     """
     if not match_keys:
         return set()
 
-    hit_keys: set[str] = set()
     unique_keys = list(dict.fromkeys(match_keys))
-    for i in range(0, len(unique_keys), 900):
-        chunk = unique_keys[i : i + 900]
-        placeholders = ", ".join(f":k{j}" for j in range(len(chunk)))
-        params = {f"k{j}": key for j, key in enumerate(chunk)}
+    key_to_product_id: dict[str, int] = {}
+
+    for offset in range(0, len(unique_keys), 900):
+        chunk = unique_keys[offset : offset + 900]
+        placeholders = ", ".join(f":k{i}" for i in range(len(chunk)))
+        params = {f"k{i}": key for i, key in enumerate(chunk)}
         rows = session.execute(
             text(
-                "SELECT me.match_key "
-                "FROM matching_entries AS me "
-                "JOIN products AS p "
-                "  ON CAST(p.id AS TEXT) = me.canonical_product_id "
-                " AND p.is_active IS TRUE "
-                f"WHERE me.match_key IN ({placeholders})"
+                "SELECT match_key, canonical_product_id "
+                "FROM matching_entries "
+                f"WHERE match_key IN ({placeholders})"
             ),
             params,
         ).fetchall()
-        for row in rows:
-            hit_keys.add(row[0])
-    return hit_keys
+        for match_key, canonical_product_id in rows:
+            if canonical_product_id in (None, ""):
+                continue
+            try:
+                product_id = int(canonical_product_id)
+            except (TypeError, ValueError):
+                continue
+            key_to_product_id[str(match_key)] = product_id
+
+    if not key_to_product_id:
+        return set()
+
+    product_ids = list(dict.fromkeys(key_to_product_id.values()))
+    active_product_ids: set[int] = set()
+    for offset in range(0, len(product_ids), 900):
+        chunk = product_ids[offset : offset + 900]
+        placeholders = ", ".join(f":p{i}" for i in range(len(chunk)))
+        params = {f"p{i}": product_id for i, product_id in enumerate(chunk)}
+        rows = session.execute(
+            text(
+                "SELECT id FROM products "
+                f"WHERE id IN ({placeholders}) AND is_active IS TRUE"
+            ),
+            params,
+        ).fetchall()
+        active_product_ids.update(int(row[0]) for row in rows)
+
+    return {
+        match_key
+        for match_key, product_id in key_to_product_id.items()
+        if product_id in active_product_ids
+    }
 
 
 def get_all_matching_entries(session: Session) -> list[dict]:
