@@ -24,9 +24,9 @@ from sqlalchemy import (
     UniqueConstraint,
     create_engine,
     event,
+    text,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, scoped_session, sessionmaker
-from sqlalchemy.pool import NullPool
 
 
 _DEFAULT_DB = Path(__file__).resolve().parent.parent / "storage" / "board.sqlite"
@@ -147,7 +147,6 @@ def get_board_engine():
     _engine = create_engine(
         f"sqlite:///{path.as_posix()}",
         connect_args={"timeout": 30, "check_same_thread": False},
-        poolclass=NullPool,
         pool_pre_ping=True,
     )
 
@@ -156,9 +155,13 @@ def get_board_engine():
         cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA foreign_keys=ON")
         cursor.execute("PRAGMA busy_timeout=30000")
-        cursor.execute("PRAGMA journal_mode=WAL")
         cursor.execute("PRAGMA synchronous=NORMAL")
         cursor.close()
+
+    # WAL mode changes database state and can take a writer lock. Configure it
+    # once per process instead of on every pooled connection checkout.
+    with _engine.begin() as connection:
+        connection.execute(text("PRAGMA journal_mode=WAL"))
 
     Base.metadata.create_all(_engine)
     _SessionLocal = scoped_session(sessionmaker(bind=_engine))
