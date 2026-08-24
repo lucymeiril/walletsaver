@@ -1,16 +1,8 @@
 """
-FastAPI 앱 팩토리 — container.py가 의존성을 주입하여 앱을 생성한다.
+FastAPI 앱 팩토리 — 공개 읽기와 저빈도 쓰기 저장소를 분리한다.
 
-왜 팩토리 패턴인가:
-    테스트 시 mock storage를 주입할 수 있고,
-    main.py와 container.py가 각각 독립적으로 앱을 생성할 수 있다.
-어디서 쓰이는가:
-    container.py._init_api() → create_app(storage, engine, event_bus)
-    main.py "server" 명령 → uvicorn으로 이 앱을 서빙.
-
-라우터 구조:
-    api/routes/ 디렉토리에 도메인별 라우터 파일을 배치한다.
-    (routes/products.py, routes/hotdeals.py, routes/marts.py, routes/gas.py, routes/crawlers.py, routes/users.py)
+상품/카테고리/마트 가격/가격 이력은 public snapshot에서 읽고,
+사용자 기능·핫딜 등 아직 main DB가 필요한 경로는 main storage를 사용한다.
 """
 
 from fastapi import FastAPI
@@ -18,24 +10,18 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
-    """
-    팩토리 패턴 — container.py가 의존성 주입하여 앱 생성.
-
-    storage가 None이면 각 라우터가 mock 데이터를 반환하므로
-    DB 없이도 즉시 프론트엔드 개발이 가능하다.
-    """
+    """팩토리 패턴 — 테스트에서는 명시 storage를 그대로 주입할 수 있다."""
     app = FastAPI(
         title="지갑 지키미 API",
-        description="물가 비교 서비스 백엔드 — 정부 공공데이터 + 마트 할인 + 커뮤니티 핫딜",
+        description="물가 비교 서비스 백엔드",
         version="0.1.0",
     )
 
-    # CORS — 프론트엔드 개발 서버 허용
     app.add_middleware(
         CORSMiddleware,
         allow_origins=[
-            "http://localhost:5173",   # Vite dev server
-            "http://localhost:3000",   # CRA / Next.js dev
+            "http://localhost:5173",
+            "http://localhost:3000",
             "http://127.0.0.1:5173",
             "http://127.0.0.1:3000",
         ],
@@ -44,23 +30,32 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
         allow_headers=["*"],
     )
 
-    # storage가 없으면 db-admin의 DBStorage로 자동 연결 시도
+    # storage가 명시되지 않은 실제 실행에서는 public read snapshot과 main
+    # application DB를 분리한다. Snapshot이 아직 생성되지 않은 첫 실행만
+    # main storage를 read fallback으로 사용한다.
     if storage is None:
         try:
-            import sys, os, logging
+            import logging
+            import os
+            import sys
+
             web_api_path = os.path.dirname(os.path.dirname(__file__))
-            db_admin_path = os.path.normpath(os.path.join(
-                os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))),
-                "db-admin", "backend"
-            ))
+            db_admin_path = os.path.normpath(
+                os.path.join(
+                    os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))),
+                    "db-admin",
+                    "backend",
+                )
+            )
             if db_admin_path not in sys.path:
                 sys.path.insert(0, db_admin_path)
 
             from storage.db import DBStorage
 
-            db_path = os.path.join(db_admin_path, "walletguardian.db")
-            storage = DBStorage(f"sqlite:///{db_path}")
-            storage.init_db()
+            main_db_path = os.path.join(db_admin_path, "walletguardian.db")
+            main_storage = DBStorage(f"sqlite:///{main_db_path}")
+
+            # Restore web-api's services package before importing SplitStorage.
             if web_api_path in sys.path:
                 sys.path.remove(web_api_path)
             sys.path.insert(0, web_api_path)
@@ -69,18 +64,38 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
                     module_file = str(getattr(module, "__file__", "") or "")
                     if module_file.startswith(os.path.join(db_admin_path, "services")):
                         del sys.modules[module_name]
-            logging.info(f"✅ DB 연결 성공: {db_path}")
+
+            from services.split_storage import PublicSnapshotStorage, SplitStorage
+
+            project_root = os.path.dirname(
+                os.path.dirname(os.path.dirname(db_admin_path))
+            )
+            public_db_path = os.getenv(
+                "WALLETSAVIOR_PUBLIC_DB",
+                os.path.join(project_root, ".walletsavior", "public_snapshot.sqlite"),
+            )
+            public_storage = None
+            if os.path.isfile(public_db_path):
+                public_storage = PublicSnapshotStorage(public_db_path)
+                logging.info("Public snapshot read enabled: %s", public_db_path)
+            else:
+                logging.warning(
+                    "Public snapshot missing; product reads temporarily use main DB: %s",
+                    public_db_path,
+                )
+
+            storage = SplitStorage(main=main_storage, public=public_storage)
+            logging.info("Main application storage connected: %s", main_db_path)
         except Exception as e:
             import logging
-            logging.warning(f"DB 연결 실패, mock 데이터 사용: {e}")
+
+            logging.warning("DB 연결 실패, mock 데이터 사용: %s", e)
             storage = None
 
-    # 의존성을 app.state에 저장 — 라우터에서 request.app.state.storage로 접근
     app.state.storage = storage
     app.state.engine = engine
     app.state.event_bus = event_bus
 
-    # 라우터 등록 — 도메인별 분리
     from api.routes.products import router as products_router
     from api.routes.hotdeals import router as hotdeals_router
     from api.routes.marts import router as marts_router
@@ -109,27 +124,36 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
 
     @app.get("/api/health")
     def health():
-        """헬스체크 — 로드밸런서·모니터링용."""
-        return {"status": "ok", "version": "0.1.0"}
+        """헬스체크 + public snapshot 사용 여부."""
+        current_storage = app.state.storage
+        return {
+            "status": "ok",
+            "version": "0.1.0",
+            "public_snapshot": bool(
+                current_storage is not None
+                and getattr(current_storage, "public_enabled", False)
+            ),
+        }
 
     @app.get("/api/dashboard")
     def dashboard():
         """홈 화면 통합 데이터 — 구 웹 프론트가 기대하는 응답 shape."""
-        storage = app.state.storage
+        current_storage = app.state.storage
         hotdeals = []
         recent_products = []
         category_summary = []
-        if storage is not None:
+        if current_storage is not None:
             try:
-                hotdeals = storage.get_hotdeals(category="all", per_page=8)
+                hotdeals = current_storage.get_hotdeals(category="all", per_page=8)
             except Exception:
                 hotdeals = []
             try:
-                recent_products = storage.search_products("", per_page=8)
+                recent_products = current_storage.search_products("", per_page=8)
             except Exception:
                 recent_products = []
         if not hotdeals or not recent_products:
             from api.mock_responses import MOCK_HOTDEALS, MOCK_PRODUCTS
+
             hotdeals = hotdeals or MOCK_HOTDEALS[:8]
             recent_products = recent_products or MOCK_PRODUCTS[:8]
         category_counts = {}
