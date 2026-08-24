@@ -36,7 +36,8 @@ NAVER_CLIENT_SECRET: str = os.getenv("NAVER_CLIENT_SECRET", "")
 
 # --- Proxy ---
 PROXY_LIST: list[str] = [
-    p.strip() for p in os.getenv("PROXY_LIST", "").split(",") if p.strip()
+    p.strip()
+    for p in os.getenv("PROXY_LIST", "").split(",") if p.strip()
 ]
 
 # --- Crawler ---
@@ -63,7 +64,10 @@ SSE_MAX_DURATION: int = int(os.getenv("SSE_MAX_DURATION", "1800"))
 AUDIT_LOG_MAX_BYTES: int = int(os.getenv("AUDIT_LOG_MAX_BYTES", str(50 * 1024 * 1024)))
 AUDIT_LOG_BACKUP_COUNT: int = int(os.getenv("AUDIT_LOG_BACKUP_COUNT", "10"))
 
-# --- db-admin 읽기 전용 접근 (외부 분류 export 컨텍스트용) ---
+# --- db-admin working database ---
+# Raw export reads this DB; weekly diff reads price history and maintains its
+# disappeared-SKU alert table in the same DB. Normal crawler ingestion still
+# writes through the db-admin HTTP API rather than opening this DB directly.
 _DB_ADMIN_DB_DEFAULT = BASE_DIR.parent.parent / "db-admin" / "backend" / "walletguardian.db"
 DB_ADMIN_DATABASE_URL: str = os.getenv(
     "DB_ADMIN_DATABASE_URL",
