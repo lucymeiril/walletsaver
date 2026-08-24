@@ -206,6 +206,21 @@ def test_hit_lookup_requires_active_canonical_product(db_admin_db):
     assert bulk_lookup_hit_keys(db_admin_db, keys) == {_match_key(0), _match_key(1)}
 
 
+def test_match_status_lookup_distinguishes_incomplete_knowledge(db_admin_db):
+    from services.db_admin_readonly import bulk_lookup_match_statuses
+
+    _seed_context(db_admin_db)
+    keys = [_match_key(index) for index in range(6)]
+    statuses = bulk_lookup_match_statuses(db_admin_db, keys)
+
+    assert statuses[_match_key(0)] == "hit"
+    assert statuses[_match_key(1)] == "hit"
+    assert statuses[_match_key(2)] == "canonical_product_unavailable"
+    assert statuses[_match_key(3)] == "canonical_product_unavailable"
+    assert statuses[_match_key(4)] == "canonical_product_unavailable"
+    assert _match_key(5) not in statuses
+
+
 def test_export_reads_pending_ingestion_and_excludes_only_completed_hits(
     client,
     db_admin_db,
@@ -232,12 +247,66 @@ def test_export_reads_pending_ingestion_and_excludes_only_completed_hits(
     assert len(rows) == 8
     assert all(row["ingestion_id"] == 1 for row in rows)
     assert all(row["raw_record_id"].startswith("ingestion:1:") for row in rows)
-    exported_ids = {row["raw_record_id"] for row in rows}
-    assert "ingestion:1:2" in exported_ids  # canonical_product_id missing
-    assert "ingestion:1:3" in exported_ids  # linked Product inactive
-    assert "ingestion:1:4" in exported_ids  # malformed canonical_product_id
-    assert "ingestion:1:0" not in exported_ids
-    assert "ingestion:1:1" not in exported_ids
+    rows_by_id = {row["raw_record_id"]: row for row in rows}
+    assert rows_by_id["ingestion:1:2"]["miss_reason"] == "canonical_product_unavailable"
+    assert rows_by_id["ingestion:1:3"]["miss_reason"] == "canonical_product_unavailable"
+    assert rows_by_id["ingestion:1:4"]["miss_reason"] == "canonical_product_unavailable"
+    assert rows_by_id["ingestion:1:5"]["miss_reason"] == "key_not_found"
+    assert "ingestion:1:0" not in rows_by_id
+    assert "ingestion:1:1" not in rows_by_id
+
+
+def test_legacy_stored_match_key_is_rebuilt_from_current_ssot(client, db_admin_db):
+    item = _items(1)[0]
+    item["match_key"] = "legacy-format:stale-key"
+    # No matching_status: this is a pre-enrichment/legacy PendingIngestion row.
+    db_admin_db.execute(
+        text(
+            "INSERT INTO pending_ingestions "
+            "(id, crawler_name, items_json, schema_type, crawled_at) "
+            "VALUES (2, 'emart_crawler', :items, 'DiscountItem', '2026-05-10T00:00:00')"
+        ),
+        {"items": json.dumps([item], ensure_ascii=False)},
+    )
+    db_admin_db.execute(text("INSERT INTO products (id, is_active) VALUES (201, 1)"))
+    db_admin_db.execute(
+        text(
+            "INSERT INTO matching_entries (match_key, canonical_product_id, source) "
+            "VALUES (:key, '201', 'human')"
+        ),
+        {"key": _match_key(0)},
+    )
+    db_admin_db.commit()
+
+    response = client.post(
+        "/api/export/raw-batch",
+        json={"ingestion_ids": [2]},
+    )
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["total_rows"] == 1
+    assert body["hit_rows"] == 1
+    assert body["miss_rows"] == 0
+    assert body["exported_rows"] == 0
+
+
+def test_fresh_enriched_row_keeps_runtime_match_key():
+    from api.routes.raw_batch_export import _build_match_key_from_payload
+
+    key, reason = _build_match_key_from_payload(
+        {
+            "match_key": "runtime-key-must-win",
+            "matching_status": "hit",
+            # These fields may have been replaced by canonical Product metadata
+            # after runtime lookup and therefore must not trigger key rebuilding.
+            "brand": "canonical-brand",
+            "name_core": "canonical-name",
+            "pack_qty": 12,
+            "pack_unit": "ea",
+        }
+    )
+    assert key == "runtime-key-must-win"
+    assert reason is None
 
 
 def test_include_matched_exports_all_rows(client, db_admin_db):
