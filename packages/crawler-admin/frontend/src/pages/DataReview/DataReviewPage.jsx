@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import useAdminStore from '../../stores/adminStore';
 import { api } from '../../api/client';
-import { CheckCircle, XCircle, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, RefreshCw, Info, Trash2, Send, Edit3 } from 'lucide-react';
+import { CheckCircle, XCircle, MessageSquare, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, RefreshCw, Info, Trash2, Edit3 } from 'lucide-react';
 import styles from './DataReviewPage.module.css';
 
 const STATUS_MAP = {
@@ -214,11 +214,6 @@ export default function DataReviewPage() {
   const [errorStackExpanded, setErrorStackExpanded] = useState({});
   const [bulkRejectMode, setBulkRejectMode] = useState(false);
   const [bulkRejectReason, setBulkRejectReason] = useState('');
-  const [aiBaseUrl, setAiBaseUrl] = useState(() => localStorage.getItem('crawler-ai-base-url') || 'http://localhost:8003');
-  const [aiProviderId, setAiProviderId] = useState(() => localStorage.getItem('crawler-ai-provider-id') || '');
-  const [aiProviders, setAiProviders] = useState([]);
-  const [aiProviderLoading, setAiProviderLoading] = useState(false);
-  const [aiExportState, setAiExportState] = useState({});
   const [activeIssueFilters, setActiveIssueFilters] = useState({});
   const [editingRow, setEditingRow] = useState(null);
   const [rowActionLoading, setRowActionLoading] = useState(null);
@@ -235,12 +230,10 @@ export default function DataReviewPage() {
     setSelectedIds(new Set());
   }, [filter]);
 
-  // useMemo: 탭별 건수 계산을 ingestions 변경 시에만 수행
   const approvedCount = useMemo(() => ingestions.filter(i => i.status === 'approved').length, [ingestions]);
   const rejectedCount = useMemo(() => ingestions.filter(i => i.status === 'rejected').length, [ingestions]);
   const processedCount = approvedCount + rejectedCount;
 
-  // 탭별 건수 캐시 — 매 렌더마다 재계산 방지
   const tabCounts = useMemo(() => {
     const counts = {};
     for (const tab of FILTER_TABS) {
@@ -280,7 +273,6 @@ export default function DataReviewPage() {
     }
   };
 
-  // useMemo: 필터 변경 시에만 재계산
   const filtered = useMemo(() => {
     return filter === 'all'
       ? ingestions
@@ -368,76 +360,6 @@ export default function DataReviewPage() {
     await deleteIngestion(id);
     if (expandedId === id) setExpandedId(null);
   }, [deleteIngestion, expandedId]);
-
-  const loadAiProviders = useCallback(async (baseUrl = aiBaseUrl) => {
-    const normalized = baseUrl.trim().replace(/\/$/, '');
-    if (!normalized) return;
-    setAiProviderLoading(true);
-    try {
-      const data = await api.getAiProviders(normalized);
-      const providers = data.providers || [];
-      setAiProviders(providers);
-      if (!aiProviderId && providers[0]?.provider_id) {
-        setAiProviderId(providers[0].provider_id);
-        localStorage.setItem('crawler-ai-provider-id', providers[0].provider_id);
-      }
-    } catch (err) {
-      setAiExportState(prev => ({
-        ...prev,
-        providerLoad: { ok: false, message: err.message || 'AI provider 조회 실패' },
-      }));
-    } finally {
-      setAiProviderLoading(false);
-    }
-  }, [aiBaseUrl, aiProviderId]);
-
-  const handleAiBaseUrlChange = useCallback((value) => {
-    setAiBaseUrl(value);
-    localStorage.setItem('crawler-ai-base-url', value);
-  }, []);
-
-  const handleAiProviderChange = useCallback((value) => {
-    setAiProviderId(value);
-    localStorage.setItem('crawler-ai-provider-id', value);
-  }, []);
-
-  const handleSendToAi = useCallback(async (item, detail) => {
-    const records = detail?.items || item.items || item.data || [];
-    if (!records.length) {
-      setAiExportState(prev => ({ ...prev, [item.id]: { ok: false, message: '전송할 크롤링 데이터가 없습니다.' } }));
-      return;
-    }
-    if (!aiBaseUrl.trim() || !aiProviderId.trim()) {
-      setAiExportState(prev => ({ ...prev, [item.id]: { ok: false, message: 'AI-admin 주소와 provider를 먼저 선택하세요.' } }));
-      return;
-    }
-    setAiExportState(prev => ({ ...prev, [item.id]: { loading: true, message: 'AI-admin으로 전송 중...' } }));
-    try {
-      const result = await api.forwardRawRecordsToAi({
-        ai_admin_base_url: aiBaseUrl.trim(),
-        provider_id: aiProviderId.trim(),
-        source_name: item.crawler_name || item.crawlerName || item.crawler_id || 'crawler-admin',
-        crawler_name: item.crawler_name || item.crawlerName || item.crawler_id || 'crawler-admin',
-        schema_type: item.schema_type || item.schemaType || 'DiscountItem',
-        source_url: detail?.source_url || item.source_url || undefined,
-        items: records,
-      });
-      const responses = result.responses || [];
-      setAiExportState(prev => ({
-        ...prev,
-        [item.id]: {
-          ok: true,
-          message: `AI-admin 전송 완료: ${result.records_sent ?? records.length}건, batch ${result.batches_sent ?? responses.length}개`,
-          result,
-        },
-      }));
-    } catch (err) {
-      setAiExportState(prev => ({
-        ...prev,
-        [item.id]: { ok: false, message: err.message || 'AI-admin 전송 실패' },
-      }));
-    }
-  }, [aiBaseUrl, aiProviderId]);
 
   const getQualityColor = (score) => {
     if (score >= 90) return styles.qualityHigh;
@@ -662,7 +584,6 @@ export default function DataReviewPage() {
         </div>
       </div>
 
-      {/* Cleanup Modal */}
       {showCleanupModal && (
         <div className={styles.modalOverlay} onClick={() => setShowCleanupModal(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
@@ -745,7 +666,6 @@ export default function DataReviewPage() {
 
       {error && <div className={styles.errorBanner}>{error}</div>}
 
-      {/* Filter Tabs */}
       <div className={styles.tabs}>
         {FILTER_TABS.map((tab) => (
           <button
@@ -755,15 +675,12 @@ export default function DataReviewPage() {
           >
             {tab.label}
             {tab.key !== 'all' && (
-              <span className={styles.tabCount}>
-                {tabCounts[tab.key] || 0}
-              </span>
+              <span className={styles.tabCount}>{tabCounts[tab.key] || 0}</span>
             )}
           </button>
         ))}
       </div>
 
-      {/* Bulk Actions Bar */}
       {selectedIds.size > 0 && (
         <div className={styles.bulkBar}>
           <span className={styles.bulkInfo}>{selectedIds.size}개 선택됨</span>
@@ -790,7 +707,6 @@ export default function DataReviewPage() {
         </div>
       )}
 
-      {/* List */}
       {loading && ingestions.length === 0 ? (
         <div className={styles.empty}>데이터를 불러오는 중...</div>
       ) : filtered.length === 0 ? (
@@ -801,7 +717,6 @@ export default function DataReviewPage() {
         </div>
       ) : (
         <>
-          {/* Select All */}
           {pendingOnPage.length > 0 && (
             <div className={styles.selectAllBar}>
               <label className={styles.checkLabel}>
@@ -836,7 +751,6 @@ export default function DataReviewPage() {
 
               return (
                 <div key={item.id} className={styles.card}>
-                  {/* Card Header */}
                   <div className={styles.cardHeader}>
                     {item.status === 'pending' && (
                       <input
@@ -895,14 +809,10 @@ export default function DataReviewPage() {
                     </div>
                   </div>
 
-                  {/* Field Quality (on card, not expanded) */}
                   {item.field_quality && item.field_quality.fields && item.field_quality.fields.length > 0 && (
-                    <div className={styles.cardFieldQuality}>
-                      {renderFieldQuality(item)}
-                    </div>
+                    <div className={styles.cardFieldQuality}>{renderFieldQuality(item)}</div>
                   )}
 
-                  {/* Expanded Detail */}
                   {isExpanded && (
                     <div className={styles.detail}>
                       {detailLoading === item.id && (
@@ -918,7 +828,7 @@ export default function DataReviewPage() {
                           </button>
                         </div>
                       )}
-                      {/* 스키마 정보 — 전체 텍스트 표시 */}
+
                       {items.length > 0 && (
                         <div className={styles.section}>
                           <h4 className={styles.sectionTitle}>📋 스키마 정보</h4>
@@ -934,7 +844,6 @@ export default function DataReviewPage() {
                         </div>
                       )}
 
-                      {/* 데이터 전체 보기 — 모든 행·열, 잘림 해제, 하이라이트 */}
                       {items.length > 0 && (
                         <div className={styles.section}>
                           <div className={styles.tableHeaderRow}>
@@ -979,14 +888,12 @@ export default function DataReviewPage() {
                                 <thead>
                                   <tr>
                                     <th className={styles.rowNumTh}>#</th>
-                                    {allKeys.map((key) => (
-                                      <th key={key}>{key}</th>
-                                    ))}
-                                     {issueCounts.all > 0 && <th>문제</th>}
-                                     {canEditRows && <th>수정</th>}
-                                   </tr>
-                                 </thead>
-                                 <tbody>
+                                    {allKeys.map((key) => <th key={key}>{key}</th>)}
+                                    {issueCounts.all > 0 && <th>문제</th>}
+                                    {canEditRows && <th>수정</th>}
+                                  </tr>
+                                </thead>
+                                <tbody>
                                   {displayedRows.map(({ row, idx, issues }) => (
                                     <tr key={idx} className={issues.length > 0 ? styles.problemRow : ''}>
                                       <td className={styles.rowNum}>{idx + 1}</td>
@@ -995,33 +902,33 @@ export default function DataReviewPage() {
                                           {String(row[key] ?? '')}
                                         </td>
                                       ))}
-                                       {issueCounts.all > 0 && (
-                                         <td className={styles.issueCell}>
-                                           {issues.length > 0 ? issues.map(getIssueText).join(' / ') : '정상'}
-                                         </td>
-                                       )}
-                                       {canEditRows && (
-                                         <td className={styles.rowActionsCell}>
-                                           <button
-                                             className={styles.rowEditBtn}
-                                             onClick={() => openRowEditor(item.id, idx, row, allKeys, schemaType)}
-                                             disabled={!!rowActionLoading}
-                                             title="행 수정"
-                                           >
-                                             <Edit3 size={13} /> 수정
-                                           </button>
-                                           <button
-                                             className={styles.rowRemoveBtn}
-                                             onClick={() => removeRowFromBatch(item.id, idx)}
-                                             disabled={!!rowActionLoading}
-                                             title="배치에서 제외"
-                                           >
-                                             <Trash2 size={13} /> 제외
-                                           </button>
-                                         </td>
-                                       )}
-                                     </tr>
-                                   ))}
+                                      {issueCounts.all > 0 && (
+                                        <td className={styles.issueCell}>
+                                          {issues.length > 0 ? issues.map(getIssueText).join(' / ') : '정상'}
+                                        </td>
+                                      )}
+                                      {canEditRows && (
+                                        <td className={styles.rowActionsCell}>
+                                          <button
+                                            className={styles.rowEditBtn}
+                                            onClick={() => openRowEditor(item.id, idx, row, allKeys, schemaType)}
+                                            disabled={!!rowActionLoading}
+                                            title="행 수정"
+                                          >
+                                            <Edit3 size={13} /> 수정
+                                          </button>
+                                          <button
+                                            className={styles.rowRemoveBtn}
+                                            onClick={() => removeRowFromBatch(item.id, idx)}
+                                            disabled={!!rowActionLoading}
+                                            title="배치에서 제외"
+                                          >
+                                            <Trash2 size={13} /> 제외
+                                          </button>
+                                        </td>
+                                      )}
+                                    </tr>
+                                  ))}
                                 </tbody>
                               </table>
                             </div>
@@ -1029,15 +936,12 @@ export default function DataReviewPage() {
                         </div>
                       )}
 
-                      {/* 품질 분석 + breakdown */}
                       <div className={styles.section}>
                         <h4 className={styles.sectionTitle}>📊 품질 분석</h4>
                         <div className={styles.qualityGrid}>
                           <div className={styles.qualityItem}>
                             <span className={styles.qualityLabel}>전체 품질 점수</span>
-                            <span className={`${styles.qualityValue} ${getQualityColor(qualityScore)}`}>
-                              {qualityScore}점
-                            </span>
+                            <span className={`${styles.qualityValue} ${getQualityColor(qualityScore)}`}>{qualityScore}점</span>
                           </div>
                           {item.missingFields != null && (
                             <div className={styles.qualityItem}>
@@ -1062,71 +966,12 @@ export default function DataReviewPage() {
                           {qualityBreakdown.filter(b => !b.raw).map((b, i) => (
                             <div key={i} className={styles.qualityItem}>
                               <span className={styles.qualityLabel}>{b.label}</span>
-                              <span className={`${styles.qualityValue} ${getQualityColor(b.score)}`}>
-                                {b.score}점
-                              </span>
+                              <span className={`${styles.qualityValue} ${getQualityColor(b.score)}`}>{b.score}점</span>
                             </div>
                           ))}
                         </div>
                       </div>
 
-                      <div className={styles.section}>
-                        <h4 className={styles.sectionTitle}>🤖 AI 정제 파이프라인 전송</h4>
-                        <p className={styles.sectionDesc}>
-                          이 버튼은 현재 검토 중인 원본 크롤링 데이터를 AI-admin의 실제 ingest 형식으로 보냅니다.
-                          터미널 명령 없이 여기서 크롤러 → AI 검수 큐 연결을 시작합니다.
-                        </p>
-                        <div className={styles.aiExportPanel}>
-                          <label className={styles.aiExportField}>
-                            AI-admin 주소
-                            <input
-                              value={aiBaseUrl}
-                              onChange={(e) => handleAiBaseUrlChange(e.target.value)}
-                              placeholder="http://localhost:8003"
-                            />
-                          </label>
-                          <label className={styles.aiExportField}>
-                            Provider
-                            <select value={aiProviderId} onChange={(e) => handleAiProviderChange(e.target.value)}>
-                              <option value="">provider 선택</option>
-                              {aiProviders.map((provider) => (
-                                <option key={provider.provider_id} value={provider.provider_id}>
-                                  {provider.provider_id} · {provider.provider_kind} · {provider.default_model}
-                                </option>
-                              ))}
-                              {aiProviderId && !aiProviders.some((p) => p.provider_id === aiProviderId) && (
-                                <option value={aiProviderId}>{aiProviderId}</option>
-                              )}
-                            </select>
-                          </label>
-                          <button
-                            className={styles.secondaryActionBtn}
-                            onClick={() => loadAiProviders(aiBaseUrl)}
-                            disabled={aiProviderLoading}
-                          >
-                            <RefreshCw size={14} className={aiProviderLoading ? styles.spin : ''} />
-                            provider 불러오기
-                          </button>
-                          <button
-                            className={styles.aiSendBtn}
-                            onClick={() => handleSendToAi(item, detail)}
-                            disabled={aiExportState[item.id]?.loading || !items.length}
-                          >
-                            <Send size={14} />
-                            이 크롤링 결과를 AI 검수 큐로 보내기
-                          </button>
-                        </div>
-                        {aiExportState.providerLoad && !aiExportState.providerLoad.ok && (
-                          <div className={styles.aiExportMessageError}>{aiExportState.providerLoad.message}</div>
-                        )}
-                        {aiExportState[item.id] && (
-                          <div className={aiExportState[item.id].ok ? styles.aiExportMessageOk : styles.aiExportMessageError}>
-                            {aiExportState[item.id].message}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* 에러 정보 — 포매팅 + 스택 접기 */}
                       {item.error && (
                         <div className={styles.section}>
                           <h4 className={styles.sectionTitle}>⚠️ 에러 정보</h4>
@@ -1176,7 +1021,6 @@ export default function DataReviewPage() {
                         </div>
                       )}
 
-                      {/* 개별 삭제 버튼 (처리 완료 항목) */}
                       {item.status !== 'pending' && (
                         <div className={styles.actions}>
                           <button className={styles.rejectBtn} onClick={() => handleDeleteItem(item.id)} disabled={loading}>
@@ -1197,7 +1041,6 @@ export default function DataReviewPage() {
             })}
           </div>
 
-          {/* Pagination */}
           {renderPagination()}
         </>
       )}
