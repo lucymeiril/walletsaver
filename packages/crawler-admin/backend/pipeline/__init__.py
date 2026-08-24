@@ -1,20 +1,30 @@
 """Crawler pipeline package runtime contracts.
 
-Each validated crawler run gets one opaque ingestion run id. ``pipeline.py``
-then copies that quality summary into every 100-row PendingIngestion chunk and
-adds the chunk index. The db-admin receiver combines those two values into a
-stable submission key, so HTTP retries reuse the same logical chunk while a
-later crawler run gets a fresh identity.
+Two process-wide contracts are installed here before ``pipeline.pipeline`` is
+imported:
 
-This is installed here because importing ``pipeline.pipeline`` always executes
-the package initializer before it imports ``pipeline.quality``. Keeping the
-wrapper small avoids duplicating or replacing the large pipeline implementation.
+1. Each validated crawler run gets one opaque ingestion run id. ``pipeline.py``
+   copies that summary into every 100-row PendingIngestion chunk and adds the
+   chunk index. The db-admin receiver combines those values into a stable
+   submission key so HTTP retries reuse the same logical chunk while a later
+   crawler run gets a fresh identity.
+2. ``POST /api/ingestions`` is serialized and globally spaced. Crawlers may run
+   concurrently, but SQLite still has a single-writer bottleneck and the old
+   per-crawler sleep did not prevent independent crawlers from writing at the
+   same time.
+
+Keeping these wrappers here avoids duplicating or replacing the large pipeline
+implementation while making the runtime contracts explicit.
 """
 from __future__ import annotations
 
 import uuid
 
 from . import quality as _quality
+from .ingestion_write_gate import install_httpx_ingestion_write_gate
+
+
+install_httpx_ingestion_write_gate()
 
 
 if not getattr(_quality, "_ingestion_run_identity_installed", False):
