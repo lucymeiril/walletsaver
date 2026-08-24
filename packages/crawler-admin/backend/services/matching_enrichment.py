@@ -63,8 +63,11 @@ def _match_key_for_row(row: dict[str, Any]) -> tuple[Optional[str], Optional[str
 
     if not name:
         return None, "no_name"
-    # build_match_key uses a stable __no_brand__ sentinel. Brandless grocery
-    # items therefore remain reusable across marts instead of being permanent misses.
+    if not brand:
+        # Persist the same sentinel into PendingIngestion. The raw-batch exporter
+        # can then classify this row normally instead of treating it as no_brand.
+        row["brand"] = NO_BRAND_SENTINEL
+        brand = NO_BRAND_SENTINEL
     return build_match_key(brand, name, pack_qty, pack_unit), None
 
 
@@ -151,13 +154,7 @@ def _load_products(session, canonical_ids: list[str]) -> dict[str, dict[str, Any
 
 
 def enrich_items_with_matching_entries(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Annotate crawler rows with MatchingEntry hits without mutating db-admin.
-
-    On a hit, the canonical Product name/category metadata is preferred so the
-    existing ingestion publisher naturally reuses the product created by a
-    previous external classification import. Misses are explicitly marked and
-    otherwise left untouched for export/review.
-    """
+    """Annotate crawler rows with MatchingEntry hits without mutating db-admin."""
     if not items:
         return items
 
