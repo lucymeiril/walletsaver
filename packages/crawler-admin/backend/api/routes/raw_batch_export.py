@@ -1,24 +1,12 @@
-"""raw_batch_export.py — raw-batch 외부 분류 export 라우트.
+"""외부 분류용 raw export 라우트.
 
-원칙:
-    raw_crawl_records 중 matching_entries miss 항목만 export 대상이다.
-    컨텍스트 파일(matching_entries/categories/keywords 스냅샷)을 함께 동봉하여
-    외부 LLM이 기존 분류 패턴을 학습할 수 있게 한다.
+현재 데이터 원본은 db-admin의 ``pending_ingestions`` 하나뿐이다. 폐기된
+ai-admin control DB나 ``raw_crawl_records``를 읽지 않는다.
 
 엔드포인트:
-    POST  /api/export/raw-batch                   — miss 집합 추출 + 컨텍스트 파일 생성
-    GET   /api/export/raw-batch/recent            — 최근 N개 export 이력
-    GET   /api/export/raw-batch/{export_id}/download — zip 다운로드
-
-아티팩트 경로:
-    <project_root>/artifacts/exports/raw-batch/<export_id>/
-    ├── raw_products.jsonl
-    ├── raw_products.csv
-    ├── context/
-    │   ├── matching_entries.jsonl
-    │   ├── categories.yaml
-    │   └── keywords.yaml
-    └── manifest.json
+    POST  /api/export/raw-batch
+    GET   /api/export/raw-batch/recent
+    GET   /api/export/raw-batch/{export_id}/download
 """
 from __future__ import annotations
 
@@ -32,7 +20,7 @@ import uuid
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Iterator, List, Optional
+from typing import Any, Optional
 
 import yaml
 from fastapi import APIRouter, Depends, HTTPException
@@ -40,16 +28,15 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
-from services.ai_admin_readonly import get_ai_admin_session, get_records_by_batch_ids
 from services.db_admin_readonly import (
     bulk_lookup_hit_keys,
     get_all_categories,
     get_all_keywords,
     get_all_matching_entries,
     get_db_admin_session,
+    get_pending_ingestion_records,
 )
 
-# ── sys.path — shared/core 접근 ────────────────────────────────────────────────
 _BACKEND_DIR = Path(__file__).resolve().parents[2]
 _SHARED_DIR = _BACKEND_DIR.parent.parent / "shared"
 for _p in (str(_SHARED_DIR), str(_BACKEND_DIR)):
@@ -58,41 +45,36 @@ for _p in (str(_SHARED_DIR), str(_BACKEND_DIR)):
 
 from core.match_key import build_match_key  # noqa: E402
 
-# ── 아티팩트 기본 디렉토리 (테스트에서 monkeypatch로 교체 가능) ─────────────────
 _PROJECT_ROOT = _BACKEND_DIR.parent.parent.parent
 _EXPORT_BASE_DIR: Path = _PROJECT_ROOT / "artifacts" / "exports" / "raw-batch"
 
 router = APIRouter(prefix="/api/export/raw-batch", tags=["raw-batch-export"])
 
 
-# ── Pydantic 스키마 ────────────────────────────────────────────────────────────
-
 class RawBatchExportRequest(BaseModel):
-    raw_batch_ids: List[str] = Field(
-        default_factory=list,
-        description="export 대상 raw_crawl_batch ID 목록. 빈 리스트면 전체 대상.",
+    ingestion_ids: list[int] = Field(
+        min_length=1,
+        max_length=100,
+        description="db-admin pending_ingestions ID 목록. 최소 1개를 명시해야 한다.",
     )
     include_matched: bool = Field(
         default=False,
-        description="True이면 matching_entries hit된 항목도 포함. 기본은 miss만.",
+        description="True이면 matching_entries hit 항목도 함께 내보낸다.",
     )
-    format: List[str] = Field(
-        default=["jsonl", "csv"],
-        description="출력 포맷 목록. 'jsonl' | 'csv' 조합.",
+    format: list[str] = Field(
+        default_factory=lambda: ["jsonl", "csv"],
+        min_length=1,
+        max_length=2,
+        description="출력 포맷: jsonl, csv",
     )
 
-
-# ── 내부 헬퍼 ─────────────────────────────────────────────────────────────────
 
 def _generate_export_id() -> str:
-    """exp-YYYYMMDDHHMMSS-{8자리 hex} 형식 export_id 생성."""
     now = datetime.now(timezone.utc)
-    rand = uuid.uuid4().hex[:8]
-    return f"exp-{now.strftime('%Y%m%d%H%M%S')}-{rand}"
+    return f"exp-{now.strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:8]}"
 
 
 def _sha256_file(path: Path) -> str:
-    """파일의 SHA-256 hex digest 반환. 64KB 청크 읽기."""
     h = hashlib.sha256()
     with open(path, "rb") as f:
         for chunk in iter(lambda: f.read(65536), b""):
@@ -101,7 +83,6 @@ def _sha256_file(path: Path) -> str:
 
 
 def _find_previous_export_id(base_dir: Path) -> Optional[str]:
-    """base_dir에서 가장 최근 manifest.json의 export_id 반환."""
     if not base_dir.exists():
         return None
     manifests = sorted(
@@ -111,90 +92,105 @@ def _find_previous_export_id(base_dir: Path) -> Optional[str]:
     )
     for mf in manifests:
         try:
-            data = json.loads(mf.read_text(encoding="utf-8"))
-            return data.get("export_id")
+            return json.loads(mf.read_text(encoding="utf-8")).get("export_id")
         except Exception:
             continue
     return None
 
 
 def _extract_str(d: dict, keys: list[str]) -> Optional[str]:
-    for k in keys:
-        val = d.get(k)
-        if val is not None and str(val).strip():
-            return str(val).strip()
+    for key in keys:
+        value = d.get(key)
+        if value is not None and str(value).strip():
+            return str(value).strip()
     return None
 
 
 def _extract_float(d: dict, keys: list[str]) -> Optional[float]:
-    for k in keys:
-        val = d.get(k)
-        if val is not None:
+    for key in keys:
+        value = d.get(key)
+        if value is not None:
             try:
-                return float(val)
+                return float(value)
             except (TypeError, ValueError):
                 continue
     return None
 
 
-def _build_match_key_from_payload(
-    payload: dict,
-) -> tuple[Optional[str], Optional[str]]:
-    """raw_payload → match_key 생성.
-
-    반환: (match_key, None) — 성공
-          (None, miss_reason) — 실패. "no_brand" | "no_name"
-    """
+def _build_match_key_from_payload(payload: dict) -> tuple[Optional[str], Optional[str]]:
     brand = _extract_str(payload, ["brand", "brandName", "brandNm", "brand_name"])
     name = _extract_str(
         payload,
-        ["name", "name_core", "nameCore", "productName", "itemName", "prdtName", "goodsName"],
+        [
+            "name",
+            "name_core",
+            "nameCore",
+            "productName",
+            "itemName",
+            "prdtName",
+            "goodsName",
+            "title",
+        ],
     )
     pack_qty = _extract_float(payload, ["pack_qty", "packQty", "pack_quantity", "packQuantity"])
-    pack_unit = _extract_str(payload, ["pack_unit", "packUnit", "unitName"])
+    pack_unit = _extract_str(payload, ["pack_unit", "packUnit", "unitName", "unit"])
 
     if not brand:
         return None, "no_brand"
     if not name:
         return None, "no_name"
-
     return build_match_key(brand, name, pack_qty, pack_unit), None
 
 
-def _record_to_export_row(rec: dict, match_key: Optional[str], miss_reason: Optional[str]) -> dict:
-    """raw_crawl_record dict → export row dict."""
+def _record_to_export_row(
+    rec: dict,
+    match_key: Optional[str],
+    miss_reason: Optional[str],
+) -> dict:
     payload = rec.get("raw_payload") or {}
     return {
         "raw_record_id": rec.get("raw_record_id"),
+        "ingestion_id": rec.get("ingestion_id"),
         "batch_id": rec.get("batch_id"),
         "source_name": rec.get("source_name"),
         "raw_title": rec.get("raw_title"),
         "raw_price": rec.get("raw_price"),
         "crawled_at": rec.get("crawled_at"),
+        "schema_type": rec.get("schema_type"),
         "match_key": match_key,
         "miss_reason": miss_reason,
         "brand": _extract_str(payload, ["brand", "brandName", "brandNm", "brand_name"]),
         "name": _extract_str(
             payload,
-            ["name", "name_core", "nameCore", "productName", "itemName", "prdtName", "goodsName"],
+            ["name", "name_core", "nameCore", "productName", "itemName", "prdtName", "goodsName", "title"],
         ),
         "raw_payload": payload,
     }
 
 
-# ── CSV 한글 헤더 매핑 ─────────────────────────────────────────────────────────
-
 _CSV_FIELDS = [
-    "raw_record_id", "batch_id", "source_name", "raw_title",
-    "raw_price", "crawled_at", "match_key", "miss_reason", "brand", "name",
+    "raw_record_id",
+    "ingestion_id",
+    "batch_id",
+    "source_name",
+    "raw_title",
+    "raw_price",
+    "crawled_at",
+    "schema_type",
+    "match_key",
+    "miss_reason",
+    "brand",
+    "name",
 ]
 _CSV_KOREAN_HEADERS = {
     "raw_record_id": "레코드_ID",
+    "ingestion_id": "대기열_ID",
     "batch_id": "배치_ID",
     "source_name": "마트",
     "raw_title": "상품명",
     "raw_price": "가격",
     "crawled_at": "수집시각",
+    "schema_type": "스키마",
     "match_key": "매치키",
     "miss_reason": "미스_사유",
     "brand": "브랜드",
@@ -202,72 +198,69 @@ _CSV_KOREAN_HEADERS = {
 }
 
 
-# ── POST /api/export/raw-batch ────────────────────────────────────────────────
-
 @router.post("")
 def export_raw_batch(
     body: RawBatchExportRequest,
-    ai_session: Session = Depends(get_ai_admin_session),
     db_session: Session = Depends(get_db_admin_session),
 ) -> dict[str, Any]:
-    """raw_batch_ids 기준으로 miss 항목 + 컨텍스트 파일을 묶어 export.
+    """선택한 PendingIngestion에서 외부 분류 번들을 만든다."""
+    ingestion_ids = list(dict.fromkeys(body.ingestion_ids))
+    formats = [fmt.lower() for fmt in body.format]
+    invalid_formats = sorted(set(formats) - {"jsonl", "csv"})
+    if invalid_formats:
+        raise HTTPException(422, f"지원하지 않는 출력 형식: {invalid_formats}")
 
-    처리 흐름:
-        1. ai-admin control DB에서 raw_crawl_records 조회 (batch_ids 필터)
-        2. 각 레코드의 raw_payload → match_key 생성
-        3. db-admin matching_entries bulk lookup → hit / miss 분류
-        4. miss 항목(include_matched=True이면 hit 포함)을 JSONL + CSV 저장
-        5. context/: matching_entries.jsonl, categories.yaml, keywords.yaml 생성
-        6. manifest.json 저장
-    """
-    # ── 1. raw_crawl_records 조회 ─────────────────────────────────────────────
-    include_all = len(body.raw_batch_ids) == 0
-    records = get_records_by_batch_ids(ai_session, body.raw_batch_ids, include_all=include_all)
+    records = get_pending_ingestion_records(db_session, ingestion_ids)
+    found_ids = {int(rec["ingestion_id"]) for rec in records}
+    missing_ids = [value for value in ingestion_ids if value not in found_ids]
+    if missing_ids:
+        raise HTTPException(
+            404,
+            f"대기열 ID를 찾을 수 없거나 원본 items가 비어 있습니다: {missing_ids}",
+        )
 
-    # ── 2. match_key 생성 ─────────────────────────────────────────────────────
     keyed: list[tuple[dict, Optional[str], Optional[str]]] = []
     for rec in records:
         key, reason = _build_match_key_from_payload(rec.get("raw_payload") or {})
         keyed.append((rec, key, reason))
 
-    # ── 3. matching_entries bulk lookup → hit / miss 분류 ────────────────────
-    valid_keys = [k for _, k, _ in keyed if k is not None]
+    valid_keys = [key for _, key, _ in keyed if key is not None]
     hit_keys = bulk_lookup_hit_keys(db_session, valid_keys)
 
     hit_rows: list[dict] = []
     miss_rows: list[dict] = []
     for rec, key, reason in keyed:
         if key is not None and key in hit_keys:
-            row = _record_to_export_row(rec, key, None)
-            hit_rows.append(row)
+            hit_rows.append(_record_to_export_row(rec, key, None))
         else:
-            effective_reason = reason if key is None else "key_not_found"
-            row = _record_to_export_row(rec, key, effective_reason)
-            miss_rows.append(row)
+            miss_rows.append(
+                _record_to_export_row(
+                    rec,
+                    key,
+                    reason if key is None else "key_not_found",
+                )
+            )
 
     export_rows = miss_rows if not body.include_matched else (miss_rows + hit_rows)
 
-    # ── 4. 출력 디렉토리 생성 ─────────────────────────────────────────────────
-    export_id = _generate_export_id()
     base_dir: Path = globals().get("_EXPORT_BASE_DIR", _EXPORT_BASE_DIR)
+    previous_export_id = _find_previous_export_id(base_dir)
+    export_id = _generate_export_id()
     export_dir = base_dir / export_id
-    export_dir.mkdir(parents=True, exist_ok=True)
+    export_dir.mkdir(parents=True, exist_ok=False)
     context_dir = export_dir / "context"
-    context_dir.mkdir(exist_ok=True)
+    context_dir.mkdir()
 
     created_at = datetime.now(timezone.utc).isoformat()
     file_sha256s: dict[str, str] = {}
-    formats = [f.lower() for f in (body.format or ["jsonl", "csv"])]
 
-    # ── 4a. raw_products.jsonl ────────────────────────────────────────────────
     if "jsonl" in formats:
         jsonl_path = export_dir / "raw_products.jsonl"
         with open(jsonl_path, "w", encoding="utf-8") as fh:
             for row in export_rows:
-                fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+                fh.write(json.dumps(row, ensure_ascii=False, default=str) + "\n")
         file_sha256s["raw_products.jsonl"] = _sha256_file(jsonl_path)
 
-    # ── 4b. raw_products.csv ──────────────────────────────────────────────────
     if "csv" in formats:
         csv_path = export_dir / "raw_products.csv"
         with open(csv_path, "w", newline="", encoding="utf-8") as fh:
@@ -278,13 +271,9 @@ def export_raw_batch(
             )
             writer.writeheader()
             for row in export_rows:
-                korean_row = {_CSV_KOREAN_HEADERS[k]: row.get(k) for k in _CSV_FIELDS}
-                writer.writerow(korean_row)
+                writer.writerow({_CSV_KOREAN_HEADERS[key]: row.get(key) for key in _CSV_FIELDS})
         file_sha256s["raw_products.csv"] = _sha256_file(csv_path)
 
-    # ── 5. context 파일 생성 ──────────────────────────────────────────────────
-
-    # 5a. context/matching_entries.jsonl — 현재 matching_entries 전량
     me_path = context_dir / "matching_entries.jsonl"
     try:
         matching_entries = get_all_matching_entries(db_session)
@@ -295,69 +284,50 @@ def export_raw_batch(
             fh.write(json.dumps(entry, ensure_ascii=False, default=str) + "\n")
     file_sha256s["context/matching_entries.jsonl"] = _sha256_file(me_path)
 
-    # 5b. context/categories.yaml — categories 트리
     cat_path = context_dir / "categories.yaml"
     try:
         categories = get_all_categories(db_session)
     except Exception:
         categories = []
-    with open(cat_path, "w", encoding="utf-8") as fh:
-        yaml.dump(
-            {"categories": categories},
-            fh,
-            allow_unicode=True,
-            default_flow_style=False,
-            sort_keys=False,
-        )
+    cat_path.write_text(
+        yaml.safe_dump({"categories": categories}, allow_unicode=True, sort_keys=False),
+        encoding="utf-8",
+    )
     file_sha256s["context/categories.yaml"] = _sha256_file(cat_path)
 
-    # 5c. context/keywords.yaml — keywords 사전
     kw_path = context_dir / "keywords.yaml"
     try:
         keywords = get_all_keywords(db_session)
     except Exception:
         keywords = []
-    with open(kw_path, "w", encoding="utf-8") as fh:
-        yaml.dump(
-            {"keywords": keywords},
-            fh,
-            allow_unicode=True,
-            default_flow_style=False,
-            sort_keys=False,
-        )
+    kw_path.write_text(
+        yaml.safe_dump({"keywords": keywords}, allow_unicode=True, sort_keys=False),
+        encoding="utf-8",
+    )
     file_sha256s["context/keywords.yaml"] = _sha256_file(kw_path)
-
-    # ── 6. manifest.json ──────────────────────────────────────────────────────
-    previous_export_id = _find_previous_export_id(base_dir)
-    # 방금 만든 export_dir이 가장 최신이므로 자기 자신은 제외
-    # (mtime 기준이라 방금 만든 것이 가장 최신일 수 있으니 previous를 먼저 구했음)
 
     manifest: dict[str, Any] = {
         "export_id": export_id,
         "created_at": created_at,
-        "source_batches": body.raw_batch_ids,
+        "source": "db-admin.pending_ingestions",
+        "source_ingestions": ingestion_ids,
         "total_rows": len(records),
         "miss_rows": len(miss_rows),
         "hit_rows": len(hit_rows),
         "exported_rows": len(export_rows),
         "include_matched": body.include_matched,
         "file_sha256s": file_sha256s,
-        "schema_version": 1,
+        "schema_version": 2,
         "previous_export_id": previous_export_id,
     }
-
     manifest_path = export_dir / "manifest.json"
     manifest_path.write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
+        json.dumps(manifest, ensure_ascii=False, indent=2),
+        encoding="utf-8",
     )
 
     return {
-        "export_id": export_id,
-        "created_at": created_at,
-        "total_rows": len(records),
-        "miss_rows": len(miss_rows),
-        "hit_rows": len(hit_rows),
-        "exported_rows": len(export_rows),
+        **manifest,
         "export_dir": str(export_dir),
         "files": {
             "raw_products_jsonl": str(export_dir / "raw_products.jsonl") if "jsonl" in formats else None,
@@ -370,16 +340,8 @@ def export_raw_batch(
     }
 
 
-# ── GET /api/export/raw-batch/recent ─────────────────────────────────────────
-
 @router.get("/recent")
-def list_recent_exports(
-    limit: int = 20,
-) -> dict[str, Any]:
-    """최근 N개 export 이력 반환 (최신 우선).
-
-    manifest.json 파일을 스캔해 created_at 기준으로 정렬한다.
-    """
+def list_recent_exports(limit: int = 20) -> dict[str, Any]:
     if limit < 1:
         limit = 1
     if limit > 200:
@@ -392,29 +354,15 @@ def list_recent_exports(
     manifests: list[dict] = []
     for mf in base_dir.glob("*/manifest.json"):
         try:
-            data = json.loads(mf.read_text(encoding="utf-8"))
-            manifests.append(data)
+            manifests.append(json.loads(mf.read_text(encoding="utf-8")))
         except Exception:
             continue
-
-    # created_at ISO 문자열 기준 내림차순 (lexicographic = 시간 순서 동일)
     manifests.sort(key=lambda d: d.get("created_at", ""), reverse=True)
+    return {"exports": manifests[:limit], "total": len(manifests)}
 
-    return {
-        "exports": manifests[:limit],
-        "total": len(manifests),
-    }
-
-
-# ── GET /api/export/raw-batch/{export_id}/download ───────────────────────────
 
 @router.get("/{export_id}/download")
 def download_export(export_id: str) -> StreamingResponse:
-    """지정 export의 전체 파일을 ZIP으로 묶어 스트리밍 다운로드.
-
-    export_id는 exp-YYYYMMDDHHMMSS-{8hex} 형식.
-    """
-    # 경로 순회 공격 방어
     if not re.match(r"^exp-\d{14}-[0-9a-f]{8}$", export_id):
         raise HTTPException(
             status_code=422,
@@ -424,23 +372,16 @@ def download_export(export_id: str) -> StreamingResponse:
     base_dir: Path = globals().get("_EXPORT_BASE_DIR", _EXPORT_BASE_DIR)
     export_dir = base_dir / export_id
     if not export_dir.exists():
-        raise HTTPException(
-            status_code=404,
-            detail=f"export_id {export_id!r}를 찾을 수 없습니다.",
-        )
+        raise HTTPException(404, f"export_id {export_id!r}를 찾을 수 없습니다.")
 
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", compression=zipfile.ZIP_DEFLATED) as zf:
         for fpath in sorted(export_dir.rglob("*")):
             if fpath.is_file():
-                arcname = fpath.relative_to(export_dir).as_posix()
-                zf.write(fpath, arcname=arcname)
+                zf.write(fpath, arcname=fpath.relative_to(export_dir).as_posix())
     buf.seek(0)
-
     return StreamingResponse(
         buf,
         media_type="application/zip",
-        headers={
-            "Content-Disposition": f'attachment; filename="{export_id}.zip"'
-        },
+        headers={"Content-Disposition": f'attachment; filename="{export_id}.zip"'},
     )
