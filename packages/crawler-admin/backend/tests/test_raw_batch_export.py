@@ -49,6 +49,12 @@ CREATE TABLE matching_entries (
     notes TEXT
 )
 """
+_PRODUCTS_DDL = """
+CREATE TABLE products (
+    id INTEGER PRIMARY KEY,
+    is_active BOOLEAN NOT NULL DEFAULT 1
+)
+"""
 _CATEGORIES_DDL = """
 CREATE TABLE categories (
     id VARCHAR(100) PRIMARY KEY,
@@ -81,6 +87,7 @@ def db_admin_db(tmp_path):
     with engine.begin() as conn:
         conn.execute(text(_PENDING_DDL))
         conn.execute(text(_MATCHING_DDL))
+        conn.execute(text(_PRODUCTS_DDL))
         conn.execute(text(_CATEGORIES_DDL))
         conn.execute(text(_KEYWORDS_DDL))
     session = sessionmaker(bind=engine, expire_on_commit=False)()
@@ -157,10 +164,22 @@ def _match_key(index: int) -> str:
 
 
 def _seed_context(session: Session) -> None:
-    for index in range(3):
+    # 0,1: complete reusable hits. 2: matching knowledge without Product link.
+    # 3: link exists but Product is inactive. Only 0 and 1 may count as hits.
+    session.execute(text("INSERT INTO products (id, is_active) VALUES (101, 1), (102, 1), (103, 0)"))
+    entries = [
+        (_match_key(0), "101"),
+        (_match_key(1), "102"),
+        (_match_key(2), None),
+        (_match_key(3), "103"),
+    ]
+    for match_key, canonical_product_id in entries:
         session.execute(
-            text("INSERT INTO matching_entries (match_key, source) VALUES (:key, 'human')"),
-            {"key": _match_key(index)},
+            text(
+                "INSERT INTO matching_entries (match_key, canonical_product_id, source) "
+                "VALUES (:key, :product_id, 'human')"
+            ),
+            {"key": match_key, "product_id": canonical_product_id},
         )
     session.execute(
         text(
@@ -177,7 +196,15 @@ def _seed_context(session: Session) -> None:
     session.commit()
 
 
-def test_export_reads_pending_ingestion_and_excludes_matching_hits(
+def test_hit_lookup_requires_active_canonical_product(db_admin_db):
+    from services.db_admin_readonly import bulk_lookup_hit_keys
+
+    _seed_context(db_admin_db)
+    keys = [_match_key(index) for index in range(5)]
+    assert bulk_lookup_hit_keys(db_admin_db, keys) == {_match_key(0), _match_key(1)}
+
+
+def test_export_reads_pending_ingestion_and_excludes_only_completed_hits(
     client,
     db_admin_db,
     export_dir,
@@ -194,15 +221,20 @@ def test_export_reads_pending_ingestion_and_excludes_matching_hits(
     assert body["source"] == "db-admin.pending_ingestions"
     assert body["source_ingestions"] == [1]
     assert body["total_rows"] == 10
-    assert body["hit_rows"] == 3
-    assert body["miss_rows"] == 7
-    assert body["exported_rows"] == 7
+    assert body["hit_rows"] == 2
+    assert body["miss_rows"] == 8
+    assert body["exported_rows"] == 8
 
     jsonl_path = export_dir / body["export_id"] / "raw_products.jsonl"
     rows = [json.loads(line) for line in jsonl_path.read_text(encoding="utf-8").splitlines()]
-    assert len(rows) == 7
+    assert len(rows) == 8
     assert all(row["ingestion_id"] == 1 for row in rows)
     assert all(row["raw_record_id"].startswith("ingestion:1:") for row in rows)
+    exported_ids = {row["raw_record_id"] for row in rows}
+    assert "ingestion:1:2" in exported_ids  # canonical_product_id missing
+    assert "ingestion:1:3" in exported_ids  # linked Product inactive
+    assert "ingestion:1:0" not in exported_ids
+    assert "ingestion:1:1" not in exported_ids
 
 
 def test_include_matched_exports_all_rows(client, db_admin_db):
