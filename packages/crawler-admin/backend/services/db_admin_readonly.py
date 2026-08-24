@@ -135,19 +135,30 @@ def get_pending_ingestion_records(
 
 
 def bulk_lookup_hit_keys(session: Session, match_keys: list[str]) -> set[str]:
-    """match_key 목록 중 matching_entries에 존재하는(hit) 키 집합을 반환."""
+    """Return only keys that resolve through MatchingEntry to an active Product.
+
+    A MatchingEntry row by itself is incomplete knowledge.  Rows whose
+    ``canonical_product_id`` is missing, invalid, deleted, or inactive must stay
+    exportable so the external-classification workflow can repair them.  This
+    definition intentionally matches crawler runtime ``matching_status='hit'``.
+    """
     if not match_keys:
         return set()
 
     hit_keys: set[str] = set()
-    for i in range(0, len(match_keys), 900):
-        chunk = match_keys[i : i + 900]
+    unique_keys = list(dict.fromkeys(match_keys))
+    for i in range(0, len(unique_keys), 900):
+        chunk = unique_keys[i : i + 900]
         placeholders = ", ".join(f":k{j}" for j in range(len(chunk)))
-        params = {f"k{j}": k for j, k in enumerate(chunk)}
+        params = {f"k{j}": key for j, key in enumerate(chunk)}
         rows = session.execute(
             text(
-                "SELECT match_key FROM matching_entries "
-                f"WHERE match_key IN ({placeholders})"
+                "SELECT me.match_key "
+                "FROM matching_entries AS me "
+                "JOIN products AS p "
+                "  ON CAST(p.id AS TEXT) = me.canonical_product_id "
+                " AND p.is_active IS TRUE "
+                f"WHERE me.match_key IN ({placeholders})"
             ),
             params,
         ).fetchall()
