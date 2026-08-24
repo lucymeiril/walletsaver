@@ -8,6 +8,7 @@ while enforcing that split at the storage boundary.
 """
 from __future__ import annotations
 
+import threading
 from pathlib import Path
 from typing import Any
 
@@ -27,7 +28,8 @@ class PublicSnapshotStorage(DBStorage):
     """
 
     def __init__(self, db_path: str | Path) -> None:
-        path = Path(db_path).resolve().as_posix()
+        self.db_path = Path(db_path).resolve()
+        path = self.db_path.as_posix()
         database_url = f"sqlite:///file:{path}?mode=ro&uri=true"
         self.engine = create_engine(
             database_url,
@@ -49,7 +51,12 @@ class PublicSnapshotStorage(DBStorage):
 
 
 class SplitStorage:
-    """Delegate selected public reads to ``public`` and everything else to main."""
+    """Delegate selected public reads to ``public`` and everything else to main.
+
+    If the web process starts before the first snapshot exists, ``public`` may
+    initially be ``None``. The proxy lazily attaches as soon as the configured
+    file appears, so a first-run server restart is not required.
+    """
 
     PUBLIC_READ_METHODS = frozenset(
         {
@@ -62,23 +69,44 @@ class SplitStorage:
         }
     )
 
-    def __init__(self, *, main: Any, public: Any | None) -> None:
+    def __init__(
+        self,
+        *,
+        main: Any,
+        public: Any | None,
+        public_db_path: str | Path | None = None,
+    ) -> None:
         self.main = main
         self.public = public
+        self.public_db_path = Path(public_db_path).resolve() if public_db_path else None
+        self._public_lock = threading.Lock()
+
+    def _public_target(self):
+        if self.public is not None:
+            return self.public
+        path = self.public_db_path
+        if path is None or not path.is_file():
+            return None
+        with self._public_lock:
+            if self.public is None and path.is_file():
+                self.public = PublicSnapshotStorage(path)
+        return self.public
 
     @property
     def SessionLocal(self):
-        """Direct category/product ORM reads in products.py use the public DB."""
-        target = self.public or self.main
+        """Direct category/product ORM reads in products.py prefer the public DB."""
+        target = self._public_target() or self.main
         return getattr(target, "SessionLocal", None)
 
     @property
     def public_enabled(self) -> bool:
-        return self.public is not None
+        return self._public_target() is not None
 
     def __getattr__(self, name: str):
-        if name in self.PUBLIC_READ_METHODS and self.public is not None:
-            public_attr = getattr(self.public, name, None)
-            if public_attr is not None:
-                return public_attr
+        if name in self.PUBLIC_READ_METHODS:
+            public = self._public_target()
+            if public is not None:
+                public_attr = getattr(public, name, None)
+                if public_attr is not None:
+                    return public_attr
         return getattr(self.main, name)
