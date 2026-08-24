@@ -6,6 +6,7 @@ from datetime import datetime
 from typing import Any
 
 from pipeline.sanitizer import sanitize_record
+from services.matching_enrichment import enrich_items_with_matching_entries
 
 
 def to_discount_history(
@@ -77,36 +78,12 @@ def to_delivery_items(
     return records
 
 
-# 키워드 → 카테고리 매핑 (간소화)
-_CATEGORY_KEYWORDS: dict[str, str] = {
-    "삼겹살": "축산물 > 돼지고기 > 삼겹살",
-    "목살": "축산물 > 돼지고기 > 목살",
-    "갈비": "축산물 > 돼지고기 > 갈비",
-    "등심": "축산물 > 소고기 > 등심",
-    "안심": "축산물 > 소고기 > 안심",
-    "닭가슴살": "축산물 > 닭고기 > 가슴살",
-    "계란": "축산물 > 란류 > 계란",
-    "양파": "채소류 > 근채류 > 양파",
-    "감자": "채소류 > 근채류 > 감자",
-    "대파": "채소류 > 조미채소 > 대파",
-    "사과": "과일류 > 사과",
-    "바나나": "과일류 > 바나나",
-    "우유": "유제품 > 우유",
-    "라면": "가공식품 > 면류 > 라면",
-    "쌀": "곡류 > 쌀",
-    "고등어": "수산물 > 생선류 > 고등어",
-    "새우": "수산물 > 갑각류 > 새우",
-}
-
-
 def enrich_with_category(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """카테고리 자동 매핑. 상품명에 키워드가 포함되면 카테고리를 할당."""
-    for item in items:
-        if item.get("category"):
-            continue
-        name = item.get("name") or item.get("product_name") or item.get("title") or ""
-        for keyword, category in _CATEGORY_KEYWORDS.items():
-            if keyword in name:
-                item["category"] = category
-                break
-    return items
+    """Reuse persisted matching knowledge before rows enter PendingIngestion.
+
+    The old keyword heuristic produced categories that were unrelated to the
+    persistent matching table. Known products now reuse MatchingEntry data;
+    misses stay unresolved so the external classification workflow can handle
+    them instead of silently guessing a category.
+    """
+    return enrich_items_with_matching_entries(items)
