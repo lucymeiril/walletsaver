@@ -6,7 +6,6 @@ from datetime import datetime
 from typing import Any
 
 from pipeline.sanitizer import sanitize_record
-from services.matching_enrichment import enrich_items_with_matching_entries
 
 
 def to_discount_history(
@@ -79,11 +78,12 @@ def to_delivery_items(
 
 
 def enrich_with_category(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Reuse persisted matching knowledge before rows enter PendingIngestion.
+    """Compatibility hook that deliberately performs no category guessing.
 
-    The old keyword heuristic produced categories that were unrelated to the
-    persistent matching table. Known products now reuse MatchingEntry data;
-    misses stay unresolved so the external classification workflow can handle
-    them instead of silently guessing a category.
+    The former keyword classifier is retired. ``CrawlPipeline`` performs the
+    one authoritative MatchingEntry enrichment immediately after this hook, so
+    doing lookup work here would duplicate main-DB reads for every crawl.
+    Existing category fields are preserved untouched and unresolved rows remain
+    unresolved until the matching/external-classification flow handles them.
     """
-    return enrich_items_with_matching_entries(items)
+    return items
