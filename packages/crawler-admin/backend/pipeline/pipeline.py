@@ -27,6 +27,7 @@ from pipeline.transformer import (
     to_hotdeal_prices,
     enrich_with_category,
 )
+from services.matching_enrichment import enrich_items_with_matching_entries
 from audit import audit_log, AuditEventType
 from pipeline.db_admin_auth import get_db_admin_auth
 from pipeline.source_runs import SourceRunPipeline, SourceRunResult, SourceRunStore
@@ -35,12 +36,10 @@ logger = logging.getLogger(__name__)
 
 ProgressCallback = Callable[[dict[str, Any]], Any]
 
-# DB-Admin API endpoint (port 8002, configurable via env)
 DB_ADMIN_API_URL = os.getenv(
     "DB_ADMIN_API_URL", "http://localhost:8002/api/prices/bulk"
 )
 
-# 대기열(Pending Ingestion) 설정
 INGESTION_API_URL = os.getenv(
     "INGESTION_API_URL", "http://localhost:8002/api/ingestions"
 )
@@ -48,8 +47,6 @@ SKIP_REVIEW = os.getenv("SKIP_REVIEW", "").lower() == "true"
 
 
 class PipelineResult:
-    """단일 크롤러 파이프라인 실행 결과."""
-
     def __init__(
         self,
         crawler_name: str,
@@ -87,8 +84,6 @@ class PipelineResult:
 
 
 class CrawlPipeline:
-    """크롤→파싱→검증→변환→저장 전체 파이프라인."""
-
     def __init__(
         self,
         registry: CrawlerRegistry | None = None,
@@ -115,7 +110,6 @@ class CrawlPipeline:
         source_url: str | None = None,
         force_full: bool = False,
     ) -> SourceRunResult:
-        """Run crawler incrementally and write AI handoff artifacts without DB mutation."""
         return await self.source_runs.run_source_incremental(
             crawler_name,
             source_name=source_name,
@@ -130,7 +124,6 @@ class CrawlPipeline:
         progress_callback: ProgressCallback | None = None,
         crawl_method: str = "crawl",
     ) -> PipelineResult:
-        """단일 크롤러를 파이프라인 전체 흐름으로 실행."""
         start = time.monotonic()
         errors: list[str] = []
         await self._emit_progress(progress_callback, stage="started", items_found=0, items_valid=0, items_saved=0)
@@ -141,7 +134,6 @@ class CrawlPipeline:
             source="pipeline",
         ))
 
-        # 1. Crawl — 크롤러 인스턴스화 및 실행
         try:
             crawler = self.registry.get_crawler(crawler_name)
         except (KeyError, ImportError) as exc:
@@ -154,12 +146,9 @@ class CrawlPipeline:
             logger.debug("[Pipeline] %s crawler does not accept progress_callback", crawler_name)
 
         config = self.registry._registry.get(crawler_name, {}).get("config", {})
-        # schedule은 cron 문자열일 수 있으므로 dict인 경우만 .get() 사용
         schedule_conf = config.get("schedule", {})
         if isinstance(schedule_conf, dict):
-            retry_count = schedule_conf.get(
-                "retry_count", self.default_retry_count
-            )
+            retry_count = schedule_conf.get("retry_count", self.default_retry_count)
         else:
             retry_count = self.default_retry_count
 
@@ -182,9 +171,7 @@ class CrawlPipeline:
                 )
                 if crawl_result.status == CrawlStatus.SUCCESS:
                     break
-                errors.append(
-                    f"attempt {attempt}: status={crawl_result.status.value}"
-                )
+                errors.append(f"attempt {attempt}: status={crawl_result.status.value}")
             except Exception as exc:
                 errors.append(f"attempt {attempt}: {exc}")
                 await self._emit_progress(progress_callback, stage="crawl_error", attempt=attempt, errors=list(errors))
@@ -213,16 +200,12 @@ class CrawlPipeline:
             await self._emit_progress(progress_callback, stage="failed", items_found=0, errors=[*errors, "no items collected"])
             return self._fail(crawler_name, "no items collected", start, errors)
 
-        # 2. Parse — 이미 dict 리스트이므로 pass-through
         items = list(raw_items)
-
-        # Sanitize raw items before they enter the pipeline
         for item in items:
             for key, val in list(item.items()):
                 if isinstance(val, str) and len(val) > 5000:
                     item[key] = val[:5000]
 
-        # 3. Validate
         model_type = config.get("output", {}).get("model", "DiscountItem")
         price_field = (
             "price"
@@ -243,6 +226,13 @@ class CrawlPipeline:
         items = deduplicate(items, key_fields=dedup_fields)
         items = enrich_with_category(items)
 
+        # Reuse the persistent MatchingEntry knowledge base before either direct
+        # persistence or PendingIngestion submission. Hits receive canonical
+        # product/category metadata; misses stay unresolved for external review.
+        items = enrich_items_with_matching_entries(items)
+        matching_hits = sum(1 for item in items if item.get("matching_status") == "hit")
+        matching_misses = sum(1 for item in items if item.get("matching_status") == "miss")
+
         items_valid = len(items)
         await self._emit_progress(progress_callback, stage="validated", items_found=items_found, items_valid=items_valid, errors=list(errors))
         quality_details = summarize_discount_run(
@@ -256,15 +246,17 @@ class CrawlPipeline:
         quality_details = {
             **quality_details,
             "deduplicated_count": max(0, dedup_before - items_valid),
+            "matching": {
+                "hits": matching_hits,
+                "misses": matching_misses,
+            },
         }
 
-        # 4. Transform
         if model_type == "HotdealPost":
             records = to_hotdeal_prices(items, source="hotdeal")
         else:
             records = to_discount_history(items, source="mart_discount")
 
-        # 5. Store — 대기열 또는 직접 DB 저장
         await self._emit_progress(progress_callback, stage="storing", items_found=items_found, items_valid=items_valid, items_saved=0)
         if SKIP_REVIEW:
             items_saved = await self._store(records, errors)
@@ -291,7 +283,6 @@ class CrawlPipeline:
             errors=list(errors),
         )
 
-        # Determine status based on actual persistence outcome
         if items_saved == 0 and items_valid > 0:
             final_status = "partial_failure"
         elif 0 < items_saved < items_valid:
@@ -330,10 +321,7 @@ class CrawlPipeline:
         )
         return result
 
-    async def run_all(
-        self, category: Optional[str] = None
-    ) -> list[PipelineResult]:
-        """등록된 모든(또는 카테고리 필터) 크롤러 동시 실행."""
+    async def run_all(self, category: Optional[str] = None) -> list[PipelineResult]:
         crawlers = self.registry.list_crawlers()
         if category:
             crawlers = [c for c in crawlers if c["category"] == category]
@@ -341,7 +329,6 @@ class CrawlPipeline:
         return await self.run_batch(names)
 
     async def run_batch(self, crawler_names: list[str]) -> list[PipelineResult]:
-        """지정된 크롤러들을 동시 실행. 개별 실패가 다른 크롤러에 영향을 주지 않는다."""
         tasks = [self.run_crawler(name) for name in crawler_names]
         raw_results = await asyncio.gather(*tasks, return_exceptions=True)
         results: list[PipelineResult] = []
@@ -364,15 +351,12 @@ class CrawlPipeline:
         crawler_ids: list[str] | None = None,
         live_enabled: bool = False,
     ) -> dict[str, Any]:
-        """Run safe fixture diagnostics without live network crawling by default."""
         return await run_bounded_crawler_diagnostics(
             self.registry,
             fixture_by_source=fixture_by_source,
             crawler_ids=crawler_ids,
             live_enabled=live_enabled,
         )
-
-    # --- internal helpers ---
 
     async def _emit_progress(self, callback: ProgressCallback | None, **payload: Any) -> None:
         if callback is None:
@@ -385,10 +369,8 @@ class CrawlPipeline:
             logger.debug("[Pipeline] progress callback failed", exc_info=True)
 
     async def _store(
-        self, records: list[dict[str, Any]], errors: list[str],
-        *, _max_retries: int = 3,
+        self, records: list[dict[str, Any]], errors: list[str], *, _max_retries: int = 3,
     ) -> int:
-        """DB-Admin API 로 레코드 전송. 재시도 후 실패 시 DLQ에 기록."""
         import random
         from pipeline.dead_letter import write_dead_letter
 
@@ -401,20 +383,16 @@ class CrawlPipeline:
             try:
                 headers = await auth.get_headers()
                 async with httpx.AsyncClient(timeout=30) as client:
-                    resp = await client.post(
-                        self.db_api_url, json=records, headers=headers,
-                    )
+                    resp = await client.post(self.db_api_url, json=records, headers=headers)
                     if resp.status_code == 401:
                         headers = await auth.handle_401()
-                        resp = await client.post(
-                            self.db_api_url, json=records, headers=headers,
-                        )
+                        resp = await client.post(self.db_api_url, json=records, headers=headers)
                     resp.raise_for_status()
                     return len(records)
             except httpx.HTTPStatusError as exc:
                 last_exc = exc
                 if exc.response.status_code < 500:
-                    break  # client error — no retry
+                    break
                 if attempt < _max_retries:
                     await asyncio.sleep(2 ** attempt + random.random())
             except (httpx.ConnectError, httpx.TimeoutException) as exc:
@@ -422,7 +400,6 @@ class CrawlPipeline:
                 if attempt < _max_retries:
                     await asyncio.sleep(2 ** attempt + random.random())
 
-        # All retries exhausted — write to DLQ
         err_msg = str(last_exc) if last_exc else "unknown"
         errors.append(f"store: {err_msg}")
         logger.warning("[Pipeline] store failed after %d retries: %s", _max_retries, err_msg)
@@ -443,7 +420,6 @@ class CrawlPipeline:
         *,
         _max_retries: int = 3,
     ) -> int:
-        """대기열(Pending Ingestion)에 크롤 결과 제출. 재시도 후 실패 시 DLQ에 기록."""
         import random
         from pipeline.dead_letter import write_dead_letter
 
@@ -483,14 +459,10 @@ class CrawlPipeline:
                 try:
                     headers = await auth.get_headers()
                     async with httpx.AsyncClient(timeout=30) as client:
-                        resp = await client.post(
-                            INGESTION_API_URL, json=payload, headers=headers,
-                        )
+                        resp = await client.post(INGESTION_API_URL, json=payload, headers=headers)
                         if resp.status_code == 401:
                             headers = await auth.handle_401()
-                            resp = await client.post(
-                                INGESTION_API_URL, json=payload, headers=headers,
-                            )
+                            resp = await client.post(INGESTION_API_URL, json=payload, headers=headers)
                         resp.raise_for_status()
                         total_saved += len(chunk)
                         chunk_saved = True
@@ -524,8 +496,6 @@ class CrawlPipeline:
                     last_exc = exc
                     if attempt < _max_retries:
                         await asyncio.sleep(2 ** attempt + random.random())
-            else:
-                pass
 
             if not chunk_saved and last_exc is not None:
                 err_msg = str(last_exc)
