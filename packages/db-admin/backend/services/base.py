@@ -5,7 +5,6 @@
     create_engine()은 내부적으로 커넥션 풀을 생성한다.
     매 요청마다 새 엔진을 만들면 풀이 재사용되지 않아
     config.py의 DB_POOL_SIZE 등 설정이 무의미해진다.
-    모듈 수준에서 한 번만 생성하고 재사용한다.
 """
 
 import logging
@@ -17,8 +16,14 @@ from sqlalchemy.orm import sessionmaker, scoped_session, Session
 from sqlalchemy.pool import StaticPool, NullPool
 
 from storage.models import Base
+from services.public_snapshot_state import install_public_snapshot_tracking
 
 logger = logging.getLogger(__name__)
+
+# Public product/category/price writes mark the derived web snapshot stale.
+# The hook is process-wide and idempotent, so every session created below follows
+# the same freshness contract without route-specific rebuild calls.
+install_public_snapshot_tracking()
 
 # ── 모듈-레벨 싱글턴 ──
 _engine = None
