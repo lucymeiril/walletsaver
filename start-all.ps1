@@ -27,7 +27,6 @@ $ErrorActionPreference = "Continue"
 $Root = $PSScriptRoot
 if (-not $Root) { $Root = Get-Location }
 
-# 아무 플래그도 없으면 전부 시작
 if (-not $Web -and -not $Admin) { $Web = $true; $Admin = $true }
 
 Write-Host ""
@@ -36,7 +35,6 @@ Write-Host "  🛡️  지갑 지키미 — 전체 시스템 시작" -Foreground
 Write-Host "============================================" -ForegroundColor Cyan
 Write-Host ""
 
-# === Python 감지 ===
 $PyExe = $null
 foreach ($candidate in @("py", "python", "python3")) {
     try {
@@ -50,7 +48,6 @@ if (-not $PyExe) {
 }
 Write-Host "  🐍 Python: $PyExe ($( & $PyExe --version 2>&1 ))" -ForegroundColor DarkGray
 
-# === npm 감지 ===
 $npmCmd = Get-Command npm -ErrorAction SilentlyContinue
 if (-not $npmCmd) {
     Write-Host "❌ npm을 찾을 수 없습니다." -ForegroundColor Red
@@ -59,7 +56,6 @@ if (-not $npmCmd) {
 Write-Host "  📦 npm: $($npmCmd.Source)" -ForegroundColor DarkGray
 Write-Host ""
 
-# === 경로 설정 ===
 $WebFrontend       = Join-Path $Root "packages\web-frontend"
 $WebBackend        = Join-Path $Root "packages\web-api\backend"
 $CrawlerFrontend   = Join-Path $Root "packages\crawler-admin\frontend"
@@ -68,24 +64,27 @@ $DbFrontend        = Join-Path $Root "packages\db-admin\frontend"
 $DbBackend         = Join-Path $Root "packages\db-admin\backend"
 $SharedDir         = Join-Path $Root "packages\shared"
 
-# PYTHONPATH — shared 모듈 및 각 백엔드 직접 실행용
 $env:PYTHONIOENCODING = "utf-8"
 $env:PYTHONUTF8 = "1"
 $env:PYTHONPATH = "$Root;$SharedDir;$CrawlerBackend;$DbBackend;$WebBackend"
 if (-not $env:WALLETSAVIOR_CORS_ORIGINS) { $env:WALLETSAVIOR_CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173" }
 if (-not $env:DB_ADMIN_API_URL) { $env:DB_ADMIN_API_URL = "http://127.0.0.1:8002/api/prices/bulk" }
 if (-not $env:INGESTION_API_URL) { $env:INGESTION_API_URL = "http://127.0.0.1:8002/api/ingestions" }
-if (-not $env:WALLETSAVIOR_PUBLIC_DB) { $env:WALLETSAVIOR_PUBLIC_DB = Join-Path $Root "packages\db-admin\backend\walletguardian.db" }
+if (-not $env:WALLETSAVIOR_PUBLIC_DB) { $env:WALLETSAVIOR_PUBLIC_DB = Join-Path $Root ".walletsavior\public_snapshot.sqlite" }
+if (-not $env:WALLETSAVIOR_BOARD_DB) { $env:WALLETSAVIOR_BOARD_DB = Join-Path $Root "packages\web-api\backend\storage\board.sqlite" }
 if (-not $env:REQUIRE_AUTH) { $env:REQUIRE_AUTH = "false" }
 if (-not $env:DATABASE_URL) { $env:DATABASE_URL = "sqlite:///" + (Join-Path $Root "packages\db-admin\backend\walletguardian.db").Replace("\", "/") }
 
-# === __pycache__ 정리 (좀비 워커 방지) ===
+$publicDir = Split-Path $env:WALLETSAVIOR_PUBLIC_DB -Parent
+if ($publicDir -and -not (Test-Path $publicDir)) {
+    New-Item -ItemType Directory -Force -Path $publicDir | Out-Null
+}
+
 Write-Host "[정리] __pycache__ 정리 중..." -ForegroundColor Yellow
 Get-ChildItem -Path (Join-Path $Root "packages") -Recurse -Directory -Filter "__pycache__" -ErrorAction SilentlyContinue |
     ForEach-Object { Remove-Item $_.FullName -Recurse -Force -ErrorAction SilentlyContinue }
 Write-Host "         ✅ __pycache__ 정리 완료" -ForegroundColor Green
 
-# === 의존성 설치 ===
 Write-Host "[의존성] Python 패키지 확인..." -ForegroundColor Yellow
 & $PyExe -m pip install --quiet fastapi uvicorn pydantic httpx requests beautifulsoup4 lxml sqlalchemy pyyaml slowapi limits psutil python-dotenv python-multipart bcrypt 2>$null | Out-Null
 Write-Host "         ✅ Python 패키지 완료" -ForegroundColor Green
@@ -108,7 +107,6 @@ foreach ($dir in $frontendDirs) {
 }
 Write-Host ""
 
-# === 기존 서버 정리 (포트 충돌 방지) ===
 Write-Host "[정리] 기존 서버 프로세스 정리 중..." -ForegroundColor Yellow
 $portsToClean = @()
 if ($Web)   { $portsToClean += @(8000, 5173) }
@@ -120,13 +118,11 @@ foreach ($port in $portsToClean) {
     foreach ($c in $conns) {
         $targetPid = $c.OwningProcess
         if ($targetPid -le 4 -or $targetPid -eq $PID) { continue }
-        # 메인 프로세스 종료
         $proc = Get-Process -Id $targetPid -ErrorAction SilentlyContinue
         if ($proc) {
             Write-Host "         포트 $port → PID $targetPid ($($proc.ProcessName)) 종료" -ForegroundColor DarkGray
             Stop-Process -Id $targetPid -Force -ErrorAction SilentlyContinue
         }
-        # 좀비 자식 워커도 검색하여 종료
         $children = Get-CimInstance Win32_Process | Where-Object { $_.ParentProcessId -eq $targetPid }
         foreach ($child in $children) {
             Write-Host "         좀비 자식 PID $($child.ProcessId) 종료" -ForegroundColor DarkGray
@@ -138,13 +134,7 @@ Start-Sleep -Seconds 2
 Write-Host "         ✅ 정리 완료" -ForegroundColor Green
 Write-Host ""
 
-# === 서버 시작 ===
 $processes = @()
-
-# --reload 제거: WatchFiles가 cmd.exe와 결합 시 "Terminate batch job?" 프롬프트로
-# 모든 서버를 죽이고, 리로더 부모가 죽어도 워커 자식이 좀비로 남아
-# 구(旧) 코드를 계속 서비스하는 심각한 문제 방지.
-# 코드 수정 후에는 Ctrl+C → 재시작으로 대응.
 
 if ($Web) {
     Write-Host "🚀 [웹] Public API 시작 (port 8000)..." -ForegroundColor Yellow
@@ -186,7 +176,6 @@ if ($Admin) {
     $processes += $p
 }
 
-# === 헬스체크 ===
 Write-Host ""
 Write-Host "⏳ 서버 준비 대기 중..." -ForegroundColor Yellow
 
@@ -212,7 +201,6 @@ for ($i = 0; $i -lt 30; $i++) {
     if ($allReady) { break }
 }
 
-# === 결과 출력 ===
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Green
 Write-Host "  ✅ 시스템이 시작되었습니다!" -ForegroundColor Green
@@ -240,7 +228,6 @@ if ($Admin) {
     Write-Host ""
 }
 
-# 브라우저 열기 — 웹사이트 우선
 if ($Web) {
     Start-Process "http://localhost:5173"
 }
@@ -248,7 +235,6 @@ if ($Web) {
 Write-Host "  Ctrl+C를 누르면 모든 서버가 종료됩니다." -ForegroundColor DarkGray
 Write-Host ""
 
-# === 종료 대기 ===
 try {
     while ($true) {
         $allExited = $true
@@ -266,7 +252,6 @@ try {
     Write-Host "🛑 서버 종료 중..." -ForegroundColor Yellow
     foreach ($p in $processes) {
         if ($p -and -not $p.HasExited) {
-            # 자식 프로세스도 먼저 종료 (좀비 방지)
             $children = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
                         Where-Object { $_.ParentProcessId -eq $p.Id }
             foreach ($child in $children) {
