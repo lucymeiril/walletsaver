@@ -8,7 +8,44 @@ while enforcing that split at the storage boundary.
 """
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
+
+from sqlalchemy import create_engine, event
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.pool import NullPool
+from storage.db import DBStorage
+
+
+class PublicSnapshotStorage(DBStorage):
+    """DBStorage-compatible reader that can never write the public snapshot.
+
+    NullPool is deliberate: on Windows the db-admin process publishes snapshots
+    with ``os.replace``. Holding pooled SQLite file handles in the web process
+    can prevent that atomic replacement. Every request therefore releases its
+    connection fully when the SQLAlchemy Session closes.
+    """
+
+    def __init__(self, db_path: str | Path) -> None:
+        path = Path(db_path).resolve().as_posix()
+        database_url = f"sqlite:///file:{path}?mode=ro&uri=true"
+        self.engine = create_engine(
+            database_url,
+            echo=False,
+            connect_args={"timeout": 30, "check_same_thread": False},
+            poolclass=NullPool,
+            pool_pre_ping=True,
+        )
+
+        @event.listens_for(self.engine, "connect")
+        def _set_snapshot_pragmas(dbapi_connection, _):
+            cursor = dbapi_connection.cursor()
+            cursor.execute("PRAGMA query_only=ON")
+            cursor.execute("PRAGMA busy_timeout=30000")
+            cursor.close()
+
+        self._session_factory = sessionmaker(bind=self.engine)
+        self.SessionLocal = scoped_session(self._session_factory)
 
 
 class SplitStorage:
