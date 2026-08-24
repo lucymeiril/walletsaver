@@ -1,22 +1,13 @@
 """db_admin_readonly.py — db-admin DB 읽기 전용 접근 서비스.
 
-목적:
-    raw-batch export 시 컨텍스트 파일 생성에 필요한 데이터를 db-admin DB에서 읽는다.
-    - matching_entries: LLM이 기존 매칭 패턴 학습용
-    - categories: LLM 분류 참조용 트리
-    - keywords: 자동완성/검색 어휘 사전
-
-읽기 전용 원칙:
-    이 모듈은 db-admin DB에 절대 쓰지 않는다.
-    bulk_lookup_hit_keys() 도 hit_count/last_used_at 갱신을 하지 않는다.
-
-패키지 충돌 회피:
-    db-admin ORM 모델을 직접 import하지 않고 raw SQLAlchemy text 쿼리를 사용한다.
+외부 분류 export가 현재 db-admin 데이터만 읽도록 한다.
+이 모듈은 db-admin DB에 절대 쓰지 않는다.
 """
 from __future__ import annotations
 
+import json
 from threading import Lock
-from typing import Iterator, Optional
+from typing import Any, Iterator, Optional
 
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Engine
@@ -43,11 +34,7 @@ def _get_db_admin_engine() -> Engine:
 
 
 def reset_db_admin_engine(new_engine: Optional[Engine] = None) -> None:
-    """테스트에서 db-admin 엔진을 교체하거나 초기화할 때 사용.
-
-    new_engine=None이면 기존 엔진 dispose() 후 None으로 재설정.
-    new_engine이 지정되면 그 엔진으로 교체.
-    """
+    """테스트에서 db-admin 엔진을 교체하거나 초기화할 때 사용."""
     global _db_admin_engine
     with _DB_ADMIN_ENGINE_LOCK:
         if _db_admin_engine is not None and new_engine is None:
@@ -56,10 +43,7 @@ def reset_db_admin_engine(new_engine: Optional[Engine] = None) -> None:
 
 
 def get_db_admin_session() -> Iterator[Session]:
-    """FastAPI 의존성 — db-admin 읽기 전용 세션 주입.
-
-    테스트에서는 app.dependency_overrides[get_db_admin_session]으로 교체 가능.
-    """
+    """FastAPI 의존성 — db-admin 읽기 전용 세션 주입."""
     engine = _get_db_admin_engine()
     factory = sessionmaker(
         bind=engine,
@@ -74,40 +58,106 @@ def get_db_admin_session() -> Iterator[Session]:
         session.close()
 
 
-def bulk_lookup_hit_keys(session: Session, match_keys: list[str]) -> set[str]:
-    """match_key 목록 중 matching_entries에 존재하는(hit) 키 집합을 반환.
+def get_pending_ingestion_records(
+    session: Session,
+    ingestion_ids: list[int],
+) -> list[dict[str, Any]]:
+    """현재 PendingIngestion의 원본 items를 외부 분류용 raw record 형태로 펼친다.
 
-    읽기 전용 — hit_count, last_used_at을 갱신하지 않는다.
-    SQLite IN 절 제한(999개) 대응을 위해 900개씩 배치 처리한다.
+    archived ai-admin DB나 raw_crawl_records에 의존하지 않는다. ingestion ID는
+    db-admin이 실제로 저장한 대기열 ID이므로 fresh clone에서도 동일한 데이터 흐름을
+    사용할 수 있다.
     """
+    if not ingestion_ids:
+        return []
+
+    rows = []
+    for i in range(0, len(ingestion_ids), 900):
+        chunk = ingestion_ids[i : i + 900]
+        placeholders = ", ".join(f":i{j}" for j in range(len(chunk)))
+        params = {f"i{j}": value for j, value in enumerate(chunk)}
+        rows.extend(
+            session.execute(
+                text(
+                    "SELECT id, crawler_name, items_json, schema_type, crawled_at "
+                    "FROM pending_ingestions "
+                    f"WHERE id IN ({placeholders}) ORDER BY id"
+                ),
+                params,
+            ).fetchall()
+        )
+
+    records: list[dict[str, Any]] = []
+    for ingestion_id, crawler_name, items_json, schema_type, crawled_at in rows:
+        try:
+            items = json.loads(items_json) if isinstance(items_json, str) else (items_json or [])
+        except (TypeError, ValueError, json.JSONDecodeError):
+            items = []
+        if not isinstance(items, list):
+            continue
+
+        crawled_iso = crawled_at.isoformat() if hasattr(crawled_at, "isoformat") else str(crawled_at or "")
+        for index, payload in enumerate(items):
+            if not isinstance(payload, dict):
+                continue
+            source_name = (
+                payload.get("source")
+                or payload.get("mart")
+                or payload.get("source_name")
+                or crawler_name
+            )
+            raw_title = (
+                payload.get("raw_title")
+                or payload.get("title")
+                or payload.get("name")
+                or payload.get("productName")
+                or payload.get("itemName")
+            )
+            raw_price = (
+                payload.get("raw_price")
+                if payload.get("raw_price") is not None
+                else payload.get("sale_price", payload.get("price"))
+            )
+            records.append(
+                {
+                    "raw_record_id": f"ingestion:{ingestion_id}:{index}",
+                    "batch_id": f"ingestion-{ingestion_id}",
+                    "ingestion_id": ingestion_id,
+                    "source_name": str(source_name or crawler_name or "unknown"),
+                    "raw_title": raw_title,
+                    "raw_price": raw_price,
+                    "crawled_at": crawled_iso,
+                    "schema_type": schema_type,
+                    "raw_payload": payload,
+                }
+            )
+    return records
+
+
+def bulk_lookup_hit_keys(session: Session, match_keys: list[str]) -> set[str]:
+    """match_key 목록 중 matching_entries에 존재하는(hit) 키 집합을 반환."""
     if not match_keys:
         return set()
 
-    _BATCH = 900
     hit_keys: set[str] = set()
-
-    for i in range(0, len(match_keys), _BATCH):
-        chunk = match_keys[i : i + _BATCH]
+    for i in range(0, len(match_keys), 900):
+        chunk = match_keys[i : i + 900]
         placeholders = ", ".join(f":k{j}" for j in range(len(chunk)))
         params = {f"k{j}": k for j, k in enumerate(chunk)}
         rows = session.execute(
             text(
-                f"SELECT match_key FROM matching_entries "
+                "SELECT match_key FROM matching_entries "
                 f"WHERE match_key IN ({placeholders})"
             ),
             params,
         ).fetchall()
         for row in rows:
             hit_keys.add(row[0])
-
     return hit_keys
 
 
 def get_all_matching_entries(session: Session) -> list[dict]:
-    """matching_entries 전량 조회.
-
-    LLM이 기존 매칭 패턴을 학습할 수 있도록 context/matching_entries.jsonl 생성에 사용.
-    """
+    """matching_entries 전량 조회 — 외부 분류 컨텍스트용."""
     rows = session.execute(
         text(
             "SELECT id, match_key, brand, name_core, pack_qty, pack_unit, "
@@ -124,14 +174,11 @@ def get_all_matching_entries(session: Session) -> list[dict]:
     result = []
     for row in rows:
         d = dict(zip(columns, row))
-        # keyword_ids: JSON 문자열인 경우 파싱
         if isinstance(d.get("keyword_ids"), str):
-            import json
             try:
                 d["keyword_ids"] = json.loads(d["keyword_ids"])
             except Exception:
                 pass
-        # datetime 필드 → ISO 문자열
         for dt_col in ("created_at", "updated_at", "last_used_at"):
             v = d.get(dt_col)
             if v is not None and hasattr(v, "isoformat"):
@@ -143,10 +190,7 @@ def get_all_matching_entries(session: Session) -> list[dict]:
 
 
 def get_all_categories(session: Session) -> list[dict]:
-    """categories 전량 조회.
-
-    LLM이 분류 시 참조할 수 있도록 context/categories.yaml 생성에 사용.
-    """
+    """categories 전량 조회 — 외부 분류 컨텍스트용."""
     rows = session.execute(
         text(
             "SELECT id, name, parent_id, depth, sort_order, icon, is_active "
@@ -158,10 +202,7 @@ def get_all_categories(session: Session) -> list[dict]:
 
 
 def get_all_keywords(session: Session) -> list[dict]:
-    """keywords 전량 조회.
-
-    LLM이 자동완성/검색 어휘를 참조할 수 있도록 context/keywords.yaml 생성에 사용.
-    """
+    """keywords 전량 조회 — 외부 분류 컨텍스트용."""
     rows = session.execute(
         text(
             "SELECT id, word, synonyms, category_id, search_count, is_active "
@@ -173,7 +214,6 @@ def get_all_keywords(session: Session) -> list[dict]:
     for row in rows:
         d = dict(zip(columns, row))
         if isinstance(d.get("synonyms"), str):
-            import json
             try:
                 d["synonyms"] = json.loads(d["synonyms"])
             except Exception:
