@@ -70,15 +70,8 @@ $env:PYTHONPATH = "$Root;$SharedDir;$CrawlerBackend;$DbBackend;$WebBackend"
 if (-not $env:WALLETSAVIOR_CORS_ORIGINS) { $env:WALLETSAVIOR_CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173" }
 if (-not $env:DB_ADMIN_API_URL) { $env:DB_ADMIN_API_URL = "http://127.0.0.1:8002/api/prices/bulk" }
 if (-not $env:INGESTION_API_URL) { $env:INGESTION_API_URL = "http://127.0.0.1:8002/api/ingestions" }
-if (-not $env:WALLETSAVIOR_PUBLIC_DB) { $env:WALLETSAVIOR_PUBLIC_DB = Join-Path $Root ".walletsavior\public_snapshot.sqlite" }
-if (-not $env:WALLETSAVIOR_BOARD_DB) { $env:WALLETSAVIOR_BOARD_DB = Join-Path $Root "packages\web-api\backend\storage\board.sqlite" }
 if (-not $env:REQUIRE_AUTH) { $env:REQUIRE_AUTH = "false" }
 if (-not $env:DATABASE_URL) { $env:DATABASE_URL = "sqlite:///" + (Join-Path $Root "packages\db-admin\backend\walletguardian.db").Replace("\", "/") }
-
-$publicDir = Split-Path $env:WALLETSAVIOR_PUBLIC_DB -Parent
-if ($publicDir -and -not (Test-Path $publicDir)) {
-    New-Item -ItemType Directory -Force -Path $publicDir | Out-Null
-}
 
 Write-Host "[정리] __pycache__ 정리 중..." -ForegroundColor Yellow
 Get-ChildItem -Path (Join-Path $Root "packages") -Recurse -Directory -Filter "__pycache__" -ErrorAction SilentlyContinue |
