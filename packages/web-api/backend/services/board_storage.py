@@ -1,0 +1,182 @@
+"""Independent SQLite storage for the web community board.
+
+Community writes must never touch the product/catalog source DB. The existing
+``storage/board.sqlite`` file is retained, but current API tables use a
+``community_*`` prefix so they do not collide with the older UUID-based board
+schema that may still exist in that file.
+"""
+from __future__ import annotations
+
+import enum
+import os
+from datetime import datetime
+from pathlib import Path
+
+from sqlalchemy import (
+    Boolean,
+    DateTime,
+    Enum as SAEnum,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+    create_engine,
+    event,
+)
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, scoped_session, sessionmaker
+from sqlalchemy.pool import NullPool
+
+
+_DEFAULT_DB = Path(__file__).resolve().parent.parent / "storage" / "board.sqlite"
+
+
+class Base(DeclarativeBase):
+    pass
+
+
+class PostType(str, enum.Enum):
+    HOTDEAL = "hotdeal"
+    FREE = "free"
+    QNA = "qna"
+    TIP = "tip"
+
+
+class VoteType(str, enum.Enum):
+    HOT = "hot"
+    NOT = "not"
+
+
+class User(Base):
+    __tablename__ = "community_users"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    email: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
+    nickname: Mapped[str] = mapped_column(String(100), nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    is_deleted: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
+
+    posts: Mapped[list["Post"]] = relationship(back_populates="author")
+    comments: Mapped[list["Comment"]] = relationship(back_populates="author")
+
+
+class Post(Base):
+    __tablename__ = "community_posts"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    author_id: Mapped[int] = mapped_column(ForeignKey("community_users.id"), nullable=False, index=True)
+    post_type: Mapped[PostType] = mapped_column(
+        SAEnum(PostType, values_callable=lambda values: [item.value for item in values], name="community_post_type"),
+        nullable=False,
+        default=PostType.FREE,
+        index=True,
+    )
+    title: Mapped[str] = mapped_column(String(300), nullable=False)
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    custom_category: Mapped[str | None] = mapped_column(String(120), nullable=True, index=True)
+    category_id: Mapped[str | None] = mapped_column(String(120), nullable=True, index=True)
+    deal_price: Mapped[float | None] = mapped_column(Float, nullable=True)
+    original_price: Mapped[float | None] = mapped_column(Float, nullable=True)
+    deal_url: Mapped[str | None] = mapped_column(String(1000), nullable=True)
+    view_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    is_deleted: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow, index=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
+
+    author: Mapped[User] = relationship(back_populates="posts")
+    comments: Mapped[list["Comment"]] = relationship(
+        back_populates="post", cascade="all, delete-orphan"
+    )
+    votes: Mapped[list["Vote"]] = relationship(
+        back_populates="post", cascade="all, delete-orphan"
+    )
+
+
+class Comment(Base):
+    __tablename__ = "community_comments"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    post_id: Mapped[int] = mapped_column(ForeignKey("community_posts.id", ondelete="CASCADE"), nullable=False, index=True)
+    author_id: Mapped[int] = mapped_column(ForeignKey("community_users.id"), nullable=False, index=True)
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    parent_id: Mapped[int | None] = mapped_column(ForeignKey("community_comments.id"), nullable=True)
+    is_deleted: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow, index=True)
+
+    post: Mapped[Post] = relationship(back_populates="comments")
+    author: Mapped[User] = relationship(back_populates="comments")
+
+
+class Vote(Base):
+    __tablename__ = "community_votes"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    post_id: Mapped[int] = mapped_column(ForeignKey("community_posts.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("community_users.id"), nullable=False, index=True)
+    vote_type: Mapped[VoteType] = mapped_column(
+        SAEnum(VoteType, values_callable=lambda values: [item.value for item in values], name="community_vote_type"),
+        nullable=False,
+    )
+    created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
+
+    post: Mapped[Post] = relationship(back_populates="votes")
+
+    __table_args__ = (
+        UniqueConstraint("post_id", "user_id", name="uq_community_vote_post_user"),
+    )
+
+
+_engine = None
+_SessionLocal = None
+
+
+def get_board_db_path() -> Path:
+    configured = os.getenv("WALLETSAVIOR_BOARD_DB")
+    return Path(configured).resolve() if configured else _DEFAULT_DB.resolve()
+
+
+def get_board_engine():
+    global _engine, _SessionLocal
+    if _engine is not None:
+        return _engine
+
+    path = get_board_db_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    _engine = create_engine(
+        f"sqlite:///{path.as_posix()}",
+        connect_args={"timeout": 30, "check_same_thread": False},
+        poolclass=NullPool,
+        pool_pre_ping=True,
+    )
+
+    @event.listens_for(_engine, "connect")
+    def _set_pragmas(dbapi_connection, _):
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.execute("PRAGMA busy_timeout=30000")
+        cursor.execute("PRAGMA journal_mode=WAL")
+        cursor.execute("PRAGMA synchronous=NORMAL")
+        cursor.close()
+
+    Base.metadata.create_all(_engine)
+    _SessionLocal = scoped_session(sessionmaker(bind=_engine))
+    return _engine
+
+
+def get_board_session_factory():
+    global _SessionLocal
+    if _SessionLocal is None:
+        get_board_engine()
+    return _SessionLocal
+
+
+def reset_board_engine() -> None:
+    global _engine, _SessionLocal
+    if _SessionLocal is not None:
+        _SessionLocal.remove()
+    if _engine is not None:
+        _engine.dispose()
+    _engine = None
+    _SessionLocal = None
