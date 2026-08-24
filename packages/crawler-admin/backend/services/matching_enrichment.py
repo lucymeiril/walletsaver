@@ -13,7 +13,7 @@ from typing import Any, Optional
 
 from sqlalchemy import text
 
-from core.match_key import build_match_key
+from core.match_key import NO_BRAND_SENTINEL, build_match_key
 from services.db_admin_readonly import get_db_admin_session
 
 logger = logging.getLogger(__name__)
@@ -61,10 +61,10 @@ def _match_key_for_row(row: dict[str, Any]) -> tuple[Optional[str], Optional[str
     )
     pack_unit = _extract_str(row, ["pack_unit", "packUnit", "unitName", "unit"])
 
-    if not brand:
-        return None, "no_brand"
     if not name:
         return None, "no_name"
+    # build_match_key uses a stable __no_brand__ sentinel. Brandless grocery
+    # items therefore remain reusable across marts instead of being permanent misses.
     return build_match_key(brand, name, pack_qty, pack_unit), None
 
 
@@ -218,11 +218,9 @@ def enrich_items_with_matching_entries(items: list[dict[str, Any]]) -> list[dict
 
             item["canonical_product_id"] = product["id"]
             item["canonical_name"] = product.get("display_name") or product.get("name")
-            # Existing ingestion code deduplicates Product by name. Supplying the
-            # persisted canonical name makes it reuse the already classified row.
             if product.get("name"):
                 item["name"] = product["name"]
-            if product.get("brand"):
+            if product.get("brand") and product.get("brand") != NO_BRAND_SENTINEL:
                 item["brand"] = product["brand"]
             if product.get("name_core"):
                 item["name_core"] = product["name_core"]
@@ -235,8 +233,6 @@ def enrich_items_with_matching_entries(items: list[dict[str, Any]]) -> list[dict
             if product.get("unified_category_id"):
                 item["unified_category_id"] = product["unified_category_id"]
     except Exception:
-        # Matching enrichment must not make crawling unavailable if db-admin is
-        # temporarily unreachable. The unresolved rows remain reviewable/exportable.
         logger.exception("matching enrichment failed; leaving crawler rows unresolved")
     finally:
         session_iter.close()
