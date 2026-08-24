@@ -37,18 +37,13 @@ dist/
 dist-ssr/
 build/
 backups/
-packages/ai-admin/backend/backend_*.txt
-packages/ai-admin/backend/check_db.py
-packages/ai-admin/backend/query_providers.py
-packages/ai-admin/backend/test_ingest.py
 packages/crawler-admin/backend/crawler_run_history.json
 packages/crawler-admin/backend/plugin_state.json
 packages/crawler-admin/backend/data/cache/
 
 crawl_results/
-packages/ai-admin/backend/ai_control.db
 
-# Archived (unused files moved here for cleanup)
+# Archived local-only material
 _archived/
 _archive/
 
@@ -63,8 +58,9 @@ service_key*.json
 *service-key-override*
 *service_key_override*
 
-# Session files
+# Session / assistant runtime files
 copilot-session-*.md
+.copilot/
 
 # Manual live validation artifacts (operator-run only)
 .debug-artifacts/
