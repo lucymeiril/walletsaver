@@ -1,37 +1,29 @@
 """주간 diff API 라우트.
 
-엔드포인트:
-    GET  /api/weekly/diff?mart=emart&days=7      — WeeklyDiffReport JSON
-    GET  /api/weekly/alerts?status=open          — 사라진 SKU alert 목록
-    POST /api/weekly/alerts/{id}/resolve         — alert resolved_at 설정
+주간 비교는 db-admin의 실제 가격 이력(``discount_history`` + ``products``)을
+읽고, 사라진 SKU alert도 같은 working DB에 저장한다. 별도 weekly/raw DB는
+사용하지 않는다.
 """
-
 from __future__ import annotations
 
 import logging
-import os
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Query
-from sqlalchemy import create_engine, text, select
+from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session, sessionmaker
 
+from config import DB_ADMIN_DATABASE_URL
 from services.weekly_diff import (
     AlertDisappearedSkuModel,
     AlertSkuBase,
-    WeeklyDiffReport,
     compute_weekly_diff,
-    persist_alerts,
 )
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/weekly", tags=["weekly"])
-
-# ─────────────────────────────────────────────────────────────────────────────
-# DB 세션 팩토리 (lazy init)
-# ─────────────────────────────────────────────────────────────────────────────
 
 _engine = None
 _SessionLocal = None
@@ -40,17 +32,18 @@ _SessionLocal = None
 def _get_session() -> Session:
     global _engine, _SessionLocal
     if _engine is None:
-        db_url = os.getenv("WEEKLY_DIFF_DB_URL") or os.getenv("DATABASE_URL", "")
+        db_url = DB_ADMIN_DATABASE_URL
         if not db_url:
-            raise HTTPException(status_code=503, detail="DATABASE_URL not configured")
-        _engine = create_engine(db_url, connect_args={"check_same_thread": False} if "sqlite" in db_url else {})
+            raise HTTPException(status_code=503, detail="DB_ADMIN_DATABASE_URL not configured")
+        _engine = create_engine(
+            db_url,
+            connect_args={"check_same_thread": False} if "sqlite" in db_url else {},
+        )
+        # The table has a checked-in db-admin migration. create_all(checkfirst)
+        # keeps local SQLite environments usable when migrations were not run.
+        AlertSkuBase.metadata.create_all(_engine, checkfirst=True)
         _SessionLocal = sessionmaker(bind=_engine, autoflush=False, autocommit=False)
     return _SessionLocal()
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Routes
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 @router.get("/diff")
@@ -58,7 +51,9 @@ def get_weekly_diff(
     mart: str = Query(..., description="마트 식별자 (emart, homeplus, lottemart, costco)"),
     days: int = Query(7, ge=1, le=90, description="current window 기간(일)"),
 ):
-    """현재 window vs 이전 window 비교 결과 반환."""
+    """현재 window와 바로 이전 동일 길이 window를 비교한다."""
+    from services.weekly_diff import compute_weekly_diff
+
     until = datetime.now(timezone.utc).replace(tzinfo=None)
     since = until - timedelta(days=days)
 
@@ -80,6 +75,9 @@ def get_alerts(
     limit: int = Query(100, ge=1, le=1000),
 ):
     """사라진 SKU alert 목록 반환."""
+    if status not in {"open", "resolved", "all"}:
+        raise HTTPException(status_code=400, detail="status must be open, resolved, or all")
+
     session = _get_session()
     try:
         q = select(AlertDisappearedSkuModel)
@@ -87,7 +85,6 @@ def get_alerts(
             q = q.where(AlertDisappearedSkuModel.resolved_at.is_(None))
         elif status == "resolved":
             q = q.where(AlertDisappearedSkuModel.resolved_at.isnot(None))
-        # status == "all" → 필터 없음
 
         if mart:
             q = q.where(AlertDisappearedSkuModel.mart == mart)
@@ -95,6 +92,8 @@ def get_alerts(
         q = q.order_by(AlertDisappearedSkuModel.detected_at.desc()).limit(limit)
         rows = session.execute(q).scalars().all()
         return [_alert_to_dict(r) for r in rows]
+    except HTTPException:
+        raise
     except Exception as exc:
         logger.exception("[weekly/alerts] error")
         raise HTTPException(status_code=500, detail=str(exc)) from exc
@@ -124,11 +123,6 @@ def resolve_alert(alert_id: int):
         raise HTTPException(status_code=500, detail=str(exc)) from exc
     finally:
         session.close()
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# 유틸
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def _alert_to_dict(row: AlertDisappearedSkuModel) -> dict:
