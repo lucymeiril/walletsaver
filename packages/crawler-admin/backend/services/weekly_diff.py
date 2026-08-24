@@ -1,48 +1,31 @@
-"""weekly_diff.py — 주간 크롤 누적 비교 서비스.
+"""주간 마트 상품 변화 비교 서비스.
+
+현재 정본 경로인 db-admin ``discount_history`` + ``products``를 읽는다.
+폐기된 ai-admin ``raw_crawl_records`` 테이블에는 의존하지 않는다.
 
 공개 API:
     compute_weekly_diff(session, mart, since, until) -> WeeklyDiffReport
-        previous window vs current window 의 raw_crawl_records 비교 후 리포트 반환.
-
     persist_alerts(session, report) -> int
-        사라진 SKU를 alert_disappeared_skus 테이블에 삽입. 이미 open 상태인 alert는 중복 삽입하지 않음.
-        삽입된 신규 row 수를 반환한다.
-
-설계:
-    - raw_crawl_records 쿼리는 sqlalchemy.text() 기반 raw SQL 사용
-      (ai-admin 패키지 의존성 없이 동작)
-    - alert_disappeared_skus 는 로컬 ORM 모델(AlertSkuBase / AlertDisappearedSkuModel)로 관리
-    - 멱등 보장: 같은 mart+source_record_key 의 open alert(resolved_at IS NULL) 중복 삽입 방지
 """
-
 from __future__ import annotations
 
+import json
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Optional
 
-from sqlalchemy import Integer, String, Text, DateTime, Index, text, select, func
+from sqlalchemy import Integer, String, Text, DateTime, Index, text, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
 
 logger = logging.getLogger(__name__)
 
-# ─────────────────────────────────────────────────────────────────────────────
-# 로컬 ORM 모델 (weekly diff 전용 Base — db-admin Base와 독립적으로 사용 가능)
-# ─────────────────────────────────────────────────────────────────────────────
-
 
 class AlertSkuBase(DeclarativeBase):
-    """weekly_diff 전용 declarative base.
-
-    테스트에서는 이 base를 사용해 인메모리 SQLite에 테이블을 생성한다.
-    운영에서는 db-admin alembic 마이그레이션으로 별도 생성됨.
-    """
+    """weekly diff 전용 alert 테이블 metadata."""
 
 
 class AlertDisappearedSkuModel(AlertSkuBase):
-    """alert_disappeared_skus ORM 모델."""
-
     __tablename__ = "alert_disappeared_skus"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
@@ -61,31 +44,15 @@ class AlertDisappearedSkuModel(AlertSkuBase):
     )
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# 리포트 데이터 클래스
-# ─────────────────────────────────────────────────────────────────────────────
-
-
 @dataclass
 class WeeklyDiffReport:
-    """주간 diff 결과 리포트."""
-
     mart: str
-    previous_window: tuple[datetime, datetime]  # (since_prev, until_prev)
-    current_window: tuple[datetime, datetime]   # (since, until)
-
-    # source_record_key 기준 분류
+    previous_window: tuple[datetime, datetime]
+    current_window: tuple[datetime, datetime]
     disappeared: list[dict] = field(default_factory=list)
-    """이전 주에만 있던 SKU. 필드: source_record_key, last_seen_title, last_seen_price, last_captured_at"""
-
     new_skus: list[dict] = field(default_factory=list)
-    """이번 주에 처음 등장한 SKU. 필드: source_record_key, first_seen_title, first_seen_price, first_captured_at"""
-
     retained_count: int = 0
-    """양쪽 window 모두에 존재한 SKU 수."""
-
     price_changes: list[dict] = field(default_factory=list)
-    """가격이 변동된 SKU 목록. 필드: source_record_key, old_price, new_price, pct_change"""
 
     def to_dict(self) -> dict:
         return {
@@ -108,46 +75,83 @@ class WeeklyDiffReport:
         }
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# 핵심 서비스 함수
-# ─────────────────────────────────────────────────────────────────────────────
+def _json_dict(value) -> dict:
+    if isinstance(value, dict):
+        return value
+    if isinstance(value, str) and value.strip():
+        try:
+            parsed = json.loads(value)
+            return parsed if isinstance(parsed, dict) else {}
+        except (TypeError, ValueError, json.JSONDecodeError):
+            return {}
+    return {}
 
 
-def _query_window(session: Session, mart: str, since: datetime, until: datetime) -> dict[str, dict]:
-    """지정 기간에 크롤된 raw_crawl_records를 source_record_key → 레코드 dict 로 반환.
-
-    같은 source_record_key가 여러 개 있으면 가장 최근 crawled_at 기준으로 하나만 유지.
-    source_record_key가 NULL인 레코드는 제외.
-    """
-    sql = text(
-        """
-        SELECT
-            r.source_record_key,
-            r.raw_title,
-            r.raw_price,
-            r.crawled_at,
-            r.source_name
-        FROM raw_crawl_records r
-        WHERE r.source_name = :mart
-          AND r.source_record_key IS NOT NULL
-          AND r.crawled_at >= :since
-          AND r.crawled_at < :until
-        ORDER BY r.crawled_at DESC
-        """
+def _stable_source_key(
+    *,
+    raw_data: dict,
+    mart_native_code,
+    canon_hash,
+    product_id,
+) -> str:
+    observation = (
+        raw_data.get("price_observation")
+        if isinstance(raw_data.get("price_observation"), dict)
+        else {}
     )
-    rows = session.execute(sql, {"mart": mart, "since": since, "until": until}).fetchall()
+    key = (
+        raw_data.get("source_record_key")
+        or observation.get("source_record_key")
+        or mart_native_code
+        or canon_hash
+    )
+    if key not in (None, ""):
+        return str(key)
+    # Product id is stable across weeks once MatchingEntry reuse is working and
+    # is a safer fallback than dropping a row from weekly comparison entirely.
+    return f"product:{product_id}"
+
+
+def _query_window(
+    session: Session,
+    mart: str,
+    since: datetime,
+    until: datetime,
+) -> dict[str, dict]:
+    """Return the latest observation per stable source/product key in a window."""
+    rows = session.execute(
+        text(
+            "SELECT d.product_id, d.price, d.crawled_at, d.raw_data, "
+            "p.name, p.display_name, p.mart_native_code, p.canon_hash "
+            "FROM discount_history d "
+            "JOIN products p ON p.id = d.product_id "
+            "WHERE d.source = :mart "
+            "AND d.crawled_at >= :since AND d.crawled_at < :until "
+            "ORDER BY d.crawled_at DESC, d.id DESC"
+        ),
+        {"mart": mart, "since": since, "until": until},
+    ).fetchall()
 
     result: dict[str, dict] = {}
     for row in rows:
-        key = row[0]
-        if key not in result:
-            result[key] = {
-                "source_record_key": key,
-                "raw_title": row[1],
-                "raw_price": row[2],
-                "crawled_at": row[3],
-                "source_name": row[4],
-            }
+        product_id, price, crawled_at, raw_value, name, display_name, mart_native_code, canon_hash = row
+        raw_data = _json_dict(raw_value)
+        key = _stable_source_key(
+            raw_data=raw_data,
+            mart_native_code=mart_native_code,
+            canon_hash=canon_hash,
+            product_id=product_id,
+        )
+        if key in result:
+            continue
+        result[key] = {
+            "source_record_key": key,
+            "raw_title": display_name or name,
+            "raw_price": price,
+            "crawled_at": crawled_at,
+            "source_name": mart,
+            "product_id": product_id,
+        }
     return result
 
 
@@ -157,14 +161,6 @@ def compute_weekly_diff(
     since: datetime,
     until: datetime,
 ) -> WeeklyDiffReport:
-    """previous window vs current window 비교 후 WeeklyDiffReport 반환.
-
-    Args:
-        session:  SQLAlchemy Session. raw_crawl_records 테이블에 접근 가능해야 한다.
-        mart:     마트 식별자 (source_name 값과 동일). e.g. "emart"
-        since:    current window 시작 (inclusive).
-        until:    current window 종료 (exclusive). previous window = [since - duration, since).
-    """
     duration = until - since
     prev_since = since - duration
     prev_until = since
@@ -175,10 +171,8 @@ def compute_weekly_diff(
     prev_keys = set(prev_window)
     curr_keys = set(curr_window)
 
-    # 사라진 SKU
-    disappeared_keys = prev_keys - curr_keys
     disappeared = []
-    for key in sorted(disappeared_keys):
+    for key in sorted(prev_keys - curr_keys):
         rec = prev_window[key]
         disappeared.append(
             {
@@ -189,10 +183,8 @@ def compute_weekly_diff(
             }
         )
 
-    # 신규 SKU
-    new_keys = curr_keys - prev_keys
     new_skus = []
-    for key in sorted(new_keys):
+    for key in sorted(curr_keys - prev_keys):
         rec = curr_window[key]
         new_skus.append(
             {
@@ -203,9 +195,7 @@ def compute_weekly_diff(
             }
         )
 
-    # 유지 SKU & 가격 변동
     retained_keys = prev_keys & curr_keys
-    retained_count = len(retained_keys)
     price_changes = []
     for key in sorted(retained_keys):
         old_price = prev_window[key]["raw_price"]
@@ -227,79 +217,63 @@ def compute_weekly_diff(
         current_window=(since, until),
         disappeared=disappeared,
         new_skus=new_skus,
-        retained_count=retained_count,
+        retained_count=len(retained_keys),
         price_changes=price_changes,
     )
-
     logger.info(
         "[weekly_diff] mart=%s disappeared=%d new=%d retained=%d price_changed=%d",
         mart,
         len(disappeared),
         len(new_skus),
-        retained_count,
+        report.retained_count,
         len(price_changes),
     )
     return report
 
 
 def persist_alerts(session: Session, report: WeeklyDiffReport) -> int:
-    """사라진 SKU를 alert_disappeared_skus에 삽입. 멱등 보장.
-
-    이미 open 상태(resolved_at IS NULL)인 동일 mart+key alert는 중복 삽입하지 않는다.
-    Returns:
-        삽입된 신규 row 수.
-    """
+    """Persist disappeared SKU alerts; existing open alerts are idempotent."""
     if not report.disappeared:
         return 0
 
-    # 현재 open alert 키 목록 조회 (중복 방지용)
-    existing_open: set[str] = set()
-    rows = session.execute(
-        select(AlertDisappearedSkuModel.source_record_key).where(
-            AlertDisappearedSkuModel.mart == report.mart,
-            AlertDisappearedSkuModel.resolved_at.is_(None),
-        )
-    ).fetchall()
-    for row in rows:
-        existing_open.add(row[0])
+    existing_open = {
+        row[0]
+        for row in session.execute(
+            select(AlertDisappearedSkuModel.source_record_key).where(
+                AlertDisappearedSkuModel.mart == report.mart,
+                AlertDisappearedSkuModel.resolved_at.is_(None),
+            )
+        ).fetchall()
+    }
 
-    now = datetime.now(timezone.utc).replace(tzinfo=None)  # naive UTC
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
     inserted = 0
     for item in report.disappeared:
         key = item["source_record_key"]
         if key in existing_open:
-            logger.debug("[weekly_diff] skip duplicate open alert mart=%s key=%s", report.mart, key)
             continue
-
         captured_at = item.get("last_captured_at")
         if isinstance(captured_at, str):
             try:
                 captured_at = datetime.fromisoformat(captured_at)
             except ValueError:
                 captured_at = None
-
-        alert = AlertDisappearedSkuModel(
-            mart=report.mart,
-            source_record_key=key,
-            last_seen_title=item.get("last_seen_title"),
-            last_seen_price=item.get("last_seen_price"),
-            last_captured_at=captured_at,
-            detected_at=now,
-            resolved_at=None,
+        session.add(
+            AlertDisappearedSkuModel(
+                mart=report.mart,
+                source_record_key=key,
+                last_seen_title=item.get("last_seen_title"),
+                last_seen_price=item.get("last_seen_price"),
+                last_captured_at=captured_at,
+                detected_at=now,
+                resolved_at=None,
+            )
         )
-        session.add(alert)
         inserted += 1
 
     if inserted:
         session.flush()
-
-    logger.info("[weekly_diff] persist_alerts mart=%s inserted=%d", report.mart, inserted)
     return inserted
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# 유틸
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def _iso(dt) -> Optional[str]:
