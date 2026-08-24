@@ -29,7 +29,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from services.db_admin_readonly import (
-    bulk_lookup_hit_keys,
+    bulk_lookup_match_statuses,
     get_all_categories,
     get_all_keywords,
     get_all_matching_entries,
@@ -120,13 +120,20 @@ def _extract_float(d: dict, keys: list[str]) -> Optional[float]:
 def _build_match_key_from_payload(payload: dict) -> tuple[Optional[str], Optional[str]]:
     """Return the same canonical identity used by crawler runtime lookup.
 
-    Fresh crawler rows already carry a canonical ``match_key`` from
-    matching_enrichment; prefer that value so export cannot reinterpret a hit as
-    a miss. Legacy PendingIngestion rows fall back to rebuilding the key through
-    the shared SSOT. Missing brand is valid and becomes ``__no_brand__`` there.
+    Fresh crawler rows stamped by ``matching_enrichment`` keep their stored
+    ``match_key``. Runtime enrichment may replace display/name/pack fields with
+    canonical Product metadata after the key was computed, so rebuilding those
+    rows could incorrectly turn a real hit into a miss.
+
+    Legacy PendingIngestion rows usually have no ``matching_status``. When their
+    source identity fields are available, rebuild the key through the current
+    shared SSOT instead of trusting a stale historical key. If the legacy row no
+    longer carries enough identity to rebuild, fall back to its stored key.
+    Missing brand is valid and becomes ``__no_brand__`` inside ``build_match_key``.
     """
     existing_key = str(payload.get("match_key") or "").strip()
-    if existing_key:
+    matching_status = str(payload.get("matching_status") or "").strip().lower()
+    if existing_key and matching_status in {"hit", "miss"}:
         return existing_key, None
 
     brand = _extract_str(payload, ["brand", "brandName", "brandNm", "brand_name"])
@@ -147,9 +154,11 @@ def _build_match_key_from_payload(payload: dict) -> tuple[Optional[str], Optiona
     pack_qty = _extract_float(payload, ["pack_qty", "packQty", "pack_quantity", "packQuantity"])
     pack_unit = _extract_str(payload, ["pack_unit", "packUnit", "unitName", "unit"])
 
-    if not name:
-        return None, "no_name"
-    return build_match_key(brand, name, pack_qty, pack_unit), None
+    if name:
+        return build_match_key(brand, name, pack_qty, pack_unit), None
+    if existing_key:
+        return existing_key, None
+    return None, "no_name"
 
 
 def _record_to_export_row(
@@ -234,21 +243,20 @@ def export_raw_batch(
         keyed.append((rec, key, reason))
 
     valid_keys = [key for _, key, _ in keyed if key is not None]
-    hit_keys = bulk_lookup_hit_keys(db_session, valid_keys)
+    match_statuses = bulk_lookup_match_statuses(db_session, valid_keys)
 
     hit_rows: list[dict] = []
     miss_rows: list[dict] = []
     for rec, key, reason in keyed:
-        if key is not None and key in hit_keys:
+        if key is None:
+            miss_rows.append(_record_to_export_row(rec, key, reason or "unkeyable"))
+            continue
+
+        status = match_statuses.get(key, "key_not_found")
+        if status == "hit":
             hit_rows.append(_record_to_export_row(rec, key, None))
         else:
-            miss_rows.append(
-                _record_to_export_row(
-                    rec,
-                    key,
-                    reason if key is None else "key_not_found",
-                )
-            )
+            miss_rows.append(_record_to_export_row(rec, key, status))
 
     export_rows = miss_rows if not body.include_matched else (miss_rows + hit_rows)
 
