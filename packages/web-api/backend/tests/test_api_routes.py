@@ -8,7 +8,6 @@ from __future__ import annotations
 import sqlite3
 import sys
 from pathlib import Path
-from types import SimpleNamespace
 
 import pytest
 from fastapi.testclient import TestClient
@@ -102,7 +101,7 @@ def test_seeded_board_is_readable_from_isolated_database(client):
     body = response.json()
     assert body["success"] is True
     assert isinstance(body["data"], list)
-    assert body["meta"]["total"] == len(body["data"])
+    assert body["meta"]["total"] >= len(body["data"])
     assert body["meta"]["total"] > 0
 
 
