@@ -134,23 +134,23 @@ def get_pending_ingestion_records(
     return records
 
 
-def bulk_lookup_hit_keys(session: Session, match_keys: list[str]) -> set[str]:
-    """Return only keys that resolve through MatchingEntry to an active Product.
+def bulk_lookup_match_statuses(session: Session, match_keys: list[str]) -> dict[str, str]:
+    """Return MatchingEntry runtime status for keys that exist in the knowledge base.
 
-    A MatchingEntry row by itself is incomplete knowledge. Rows whose
-    ``canonical_product_id`` is missing, malformed, deleted, or inactive stay
-    exportable so the external-classification workflow can repair them.
+    Values intentionally mirror crawler runtime semantics:
+    - ``hit``: MatchingEntry resolves to an active Product;
+    - ``canonical_product_unavailable``: the MatchingEntry exists, but its
+      canonical Product link is missing, malformed, deleted, or inactive.
 
-    Resolution is deliberately two-stage instead of joining on a casted Product
-    id. The first query uses the unique ``matching_entries.match_key`` index;
-    canonical ids are parsed safely in Python; the second query uses the Product
-    integer primary key. This keeps 10k-scale exports off full-table scans and is
-    the same semantic hit definition used by crawler runtime enrichment.
+    Keys absent from the returned mapping are true ``key_not_found`` misses.
+    Resolution is deliberately two-stage so both match_key and Product PK indexes
+    remain usable at 10k-scale instead of joining through a casted Product id.
     """
     if not match_keys:
-        return set()
+        return {}
 
     unique_keys = list(dict.fromkeys(match_keys))
+    statuses: dict[str, str] = {}
     key_to_product_id: dict[str, int] = {}
 
     for offset in range(0, len(unique_keys), 900):
@@ -166,16 +166,18 @@ def bulk_lookup_hit_keys(session: Session, match_keys: list[str]) -> set[str]:
             params,
         ).fetchall()
         for match_key, canonical_product_id in rows:
+            key = str(match_key)
+            statuses[key] = "canonical_product_unavailable"
             if canonical_product_id in (None, ""):
                 continue
             try:
                 product_id = int(canonical_product_id)
             except (TypeError, ValueError):
                 continue
-            key_to_product_id[str(match_key)] = product_id
+            key_to_product_id[key] = product_id
 
     if not key_to_product_id:
-        return set()
+        return statuses
 
     product_ids = list(dict.fromkeys(key_to_product_id.values()))
     active_product_ids: set[int] = set()
@@ -192,10 +194,18 @@ def bulk_lookup_hit_keys(session: Session, match_keys: list[str]) -> set[str]:
         ).fetchall()
         active_product_ids.update(int(row[0]) for row in rows)
 
+    for match_key, product_id in key_to_product_id.items():
+        if product_id in active_product_ids:
+            statuses[match_key] = "hit"
+    return statuses
+
+
+def bulk_lookup_hit_keys(session: Session, match_keys: list[str]) -> set[str]:
+    """Compatibility helper returning only completed reusable matching keys."""
     return {
-        match_key
-        for match_key, product_id in key_to_product_id.items()
-        if product_id in active_product_ids
+        key
+        for key, status in bulk_lookup_match_statuses(session, match_keys).items()
+        if status == "hit"
     }
 
 
