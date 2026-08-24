@@ -26,9 +26,32 @@ DEFAULT_POLL_SECONDS = 1.0
 DEFAULT_SETTLE_SECONDS = 5.0
 
 
+def _sqlite_source_path() -> Path | None:
+    try:
+        from config import settings
+
+        url = settings.DATABASE_URL
+    except Exception:
+        url = os.getenv("DATABASE_URL", "")
+    if not url.startswith("sqlite:///"):
+        return None
+    return Path(url.removeprefix("sqlite:///")).resolve()
+
+
 def public_snapshot_path() -> Path:
     configured = os.getenv("WALLETSAVIOR_PUBLIC_DB")
-    return Path(configured) if configured else DEFAULT_PUBLIC_SNAPSHOT_PATH
+    candidate = Path(configured) if configured else DEFAULT_PUBLIC_SNAPSHOT_PATH
+    candidate = candidate.resolve()
+    source = _sqlite_source_path()
+    if source is not None and candidate == source:
+        safe_default = DEFAULT_PUBLIC_SNAPSHOT_PATH.resolve()
+        logger.error(
+            "Refusing to publish public snapshot over source DB %s; using %s",
+            source,
+            safe_default,
+        )
+        return safe_default
+    return candidate
 
 
 def _parse_utc(value: str | None) -> datetime | None:
