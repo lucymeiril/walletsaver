@@ -15,6 +15,13 @@ const HTTP_ERROR_MESSAGES = {
   503: '서비스를 일시적으로 사용할 수 없습니다.',
 };
 
+const CRAWLER_DISPLAY_NAMES = {
+  emart: '이마트',
+  homeplus: '홈플러스',
+  lottemart: '롯데마트',
+  costco: '코스트코',
+};
+
 function getHttpErrorMessage(status) {
   return HTTP_ERROR_MESSAGES[status] || `서버 오류가 발생했습니다 (HTTP ${status})`;
 }
@@ -63,9 +70,6 @@ async function fetchWithTimeout(url, options = {}) {
     if (err.name === 'AbortError') {
       throw new Error('요청 시간이 초과되었습니다. 네트워크 연결을 확인해 주세요.');
     }
-    if (err.message && !err.message.startsWith('서버')) {
-      throw err;
-    }
     throw err;
   } finally {
     clearTimeout(timeoutId);
@@ -77,28 +81,20 @@ const _etagCache = new Map();
 async function fetchWithETag(url, options = {}) {
   const cached = _etagCache.get(url);
   const headers = injectAuth({ ...options.headers });
-  if (cached?.etag) {
-    headers['If-None-Match'] = cached.etag;
-  }
+  if (cached?.etag) headers['If-None-Match'] = cached.etag;
 
   const resp = await fetch(url, { ...options, headers });
-
-  if (resp.status === 304 && cached?.data) {
-    return cached.data;
-  }
+  if (resp.status === 304 && cached?.data) return cached.data;
 
   if (resp.status === 401 || resp.status === 403) {
     authLogout();
     throw new Error(getHttpErrorMessage(resp.status));
   }
-
   if (!resp.ok) throw new Error(getHttpErrorMessage(resp.status));
 
   const data = await resp.json();
   const etag = resp.headers.get('etag');
-  if (etag) {
-    _etagCache.set(url, { etag, data });
-  }
+  if (etag) _etagCache.set(url, { etag, data });
   return data;
 }
 
@@ -136,7 +132,6 @@ function subscribeCrawlerStatus(crawlerId, { onData, onError, onComplete }) {
     eventSource.onerror = () => {
       eventSource.close();
       currentSource = null;
-
       if (closed) return;
 
       if (retryCount < MAX_RETRIES) {
@@ -166,6 +161,35 @@ function subscribeCrawlerStatus(crawlerId, { onData, onError, onComplete }) {
 
   connect();
   return { close: cleanup };
+}
+
+function toScheduleView(row) {
+  const pluginName = row.plugin_name || '';
+  const cron = row.cron_expr || '';
+  return {
+    id: row.id,
+    crawlerId: pluginName,
+    crawlerName: CRAWLER_DISPLAY_NAMES[pluginName] || pluginName,
+    cron,
+    description: '',
+    nextRun: null,
+    nextRuns: [],
+    enabled: Boolean(row.enabled),
+  };
+}
+
+async function fetchScheduleRows() {
+  const data = await fetchWithTimeout(`${API_BASE}/v1/schedules`).then(r => r.json());
+  return Array.isArray(data) ? data : data.schedules ?? [];
+}
+
+async function resolveSchedule(identifier) {
+  const rows = await fetchScheduleRows();
+  const row = rows.find(
+    (item) => item.id === identifier || item.plugin_name === identifier,
+  );
+  if (!row) throw new Error('스케줄을 찾을 수 없습니다.');
+  return row;
 }
 
 export const api = {
@@ -201,37 +225,53 @@ export const api = {
   getDashboardStats: (params = {}) => fetchWithTimeout(`${API_BASE}/dashboard/stats?${new URLSearchParams(params)}`).then(r => r.json()),
   getLogs: (params) => fetchWithTimeout(`${API_BASE}/logs?${new URLSearchParams(params)}`).then(r => r.json()),
   exportLogsCsv: (params = {}) => fetchWithTimeout(`${API_BASE}/logs/export?${new URLSearchParams(params)}`).then(r => r.blob()),
-  getSchedules: () => fetchWithTimeout(`${API_BASE}/schedules`).then(r => r.json()),
-  createSchedule: (data) => fetchWithTimeout(`${API_BASE}/schedules`, {
+
+  // Schedule page compatibility methods, backed only by the canonical /api/v1 control plane.
+  getSchedules: async () => {
+    const rows = await fetchScheduleRows();
+    return { schedules: rows.map(toScheduleView) };
+  },
+  createSchedule: async (data) => {
+    const row = await fetchWithTimeout(`${API_BASE}/v1/schedules`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        plugin_name: data.crawler_name,
+        cron_expr: data.cron,
+        enabled: true,
+      }),
+    }).then(r => r.json());
+    return toScheduleView(row);
+  },
+  updateSchedule: async (identifier, data) => {
+    const current = await resolveSchedule(identifier);
+    const row = await fetchWithTimeout(`${API_BASE}/v1/schedules/${current.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cron_expr: data.cron }),
+    }).then(r => r.json());
+    return toScheduleView(row);
+  },
+  deleteSchedule: async (identifier) => {
+    const current = await resolveSchedule(identifier);
+    return fetchWithTimeout(`${API_BASE}/v1/schedules/${current.id}`, { method: 'DELETE' }).then(r => r.json());
+  },
+  toggleSchedule: async (identifier, enabled) => {
+    const current = await resolveSchedule(identifier);
+    const row = await fetchWithTimeout(`${API_BASE}/v1/schedules/${current.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ enabled }),
+    }).then(r => r.json());
+    return toScheduleView(row);
+  },
+  runScheduleNow: (pluginName) => fetchWithTimeout(`${API_BASE}/v1/runs/trigger`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
+    body: JSON.stringify({ plugin_name: pluginName }),
+    timeoutMs: 120000,
   }).then(r => r.json()),
-  updateSchedule: (name, data) => fetchWithTimeout(`${API_BASE}/schedules/${name}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  }).then(r => r.json()),
-  deleteSchedule: (name) => fetchWithTimeout(`${API_BASE}/schedules/${name}`, { method: 'DELETE' }),
-  toggleSchedule: (name, enabled) => fetchWithTimeout(`${API_BASE}/schedules/${name}/toggle`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ enabled }),
-  }).then(r => r.json()),
-  runScheduleNow: (name) => fetchWithTimeout(`${API_BASE}/schedules/${name}/run-now`, {
-    method: 'POST',
-  }).then(r => r.json()),
-  getPlugins: () => fetchWithTimeout(`${API_BASE}/plugins`).then(r => r.json()),
-  togglePlugin: (id, status) => fetchWithTimeout(`${API_BASE}/plugins/${id}/status`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ status }),
-  }).then(r => r.json()),
-  updatePluginSettings: (id, data) => fetchWithTimeout(`${API_BASE}/plugins/${id}/settings`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  }).then(r => r.json()),
+
   getIngestions: (params = {}) => fetchWithTimeout(`${API_BASE}/ingestions?${new URLSearchParams(params)}`).then(r => r.json()),
   getIngestion: (id) => fetchWithTimeout(`${API_BASE}/ingestions/${id}`).then(r => r.json()),
   reviewIngestion: (id, data) => fetchWithTimeout(`${API_BASE}/ingestions/${id}/crawler-review`, {
