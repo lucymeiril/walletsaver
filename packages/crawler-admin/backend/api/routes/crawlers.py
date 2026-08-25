@@ -1,18 +1,16 @@
-"""Current crawler management routes for the ingestion-capable mart pipeline."""
+"""Current crawler management routes for the ingestion-capable crawler pipeline."""
 from __future__ import annotations
 
 import asyncio
 import hashlib
 import json
 import logging
-import os
-import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, List, Optional
 
 from fastapi import APIRouter, HTTPException, Query, Request
-from fastapi.responses import JSONResponse, Response, StreamingResponse
+from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel, Field, field_validator
 
 from api.app import limiter
@@ -34,12 +32,8 @@ _pipeline: CrawlPipeline | None = None
 _crawl_results: dict[str, dict[str, Any]] = {}
 
 _BACKEND_DIR = Path(__file__).resolve().parent.parent.parent
-_STATUS_FILE = _BACKEND_DIR / "crawler_status.json"
 _RUN_HISTORY_FILE = _BACKEND_DIR / "crawler_run_history.json"
-_SETTINGS_FILE = _BACKEND_DIR / "crawler_settings.json"
 MAX_RECENT_RUNS = 5
-_SSE_MAX_DURATION = int(os.getenv("SSE_MAX_DURATION", "1800"))
-_TERMINAL_STATUSES = {"success", "failed", "partial_failure"}
 
 
 def _read_json(path: Path, default):
@@ -62,14 +56,6 @@ def _write_json(path: Path, payload) -> None:
         logger.exception("[crawler-api] failed to persist runtime state: %s", path.name)
 
 
-def _load_status() -> dict[str, str]:
-    return _read_json(_STATUS_FILE, {})
-
-
-def _save_status(status: dict[str, str]) -> None:
-    _write_json(_STATUS_FILE, status)
-
-
 def _load_run_history() -> dict[str, list[dict]]:
     return _read_json(_RUN_HISTORY_FILE, {})
 
@@ -86,14 +72,6 @@ def _append_run_history(crawler_id: str, status: str, duration: float | None = N
     )
     history[crawler_id] = runs[-MAX_RECENT_RUNS:]
     _write_json(_RUN_HISTORY_FILE, history)
-
-
-def _load_settings() -> dict[str, dict]:
-    return _read_json(_SETTINGS_FILE, {})
-
-
-def _save_settings(settings: dict[str, dict]) -> None:
-    _write_json(_SETTINGS_FILE, settings)
 
 
 def _get_registry() -> CrawlerRegistry:
@@ -125,12 +103,14 @@ async def list_crawlers(request: Request):
     """Return only crawlers explicitly registered for the current product pipeline."""
     registry = _get_registry()
     rows = registry.list_crawlers()
-    status_map = _load_status()
     run_history = _load_run_history()
 
     for row in rows:
         crawler_id = row["name"]
-        row["status"] = status_map.get(crawler_id, "active")
+        # Runtime enable/disable toggles were retired because they never affected
+        # execution. A registered crawler is runnable; optional crawlers are
+        # controlled explicitly by WALLETSAVIOR_OPTIONAL_CRAWLERS.
+        row["status"] = "active"
         row["recentRuns"] = run_history.get(crawler_id, [])
         if crawler_id == "lottemart":
             try:
@@ -229,72 +209,6 @@ async def run_lottemart_category(body: LotteCategoryRunRequest, request: Request
         "message": f"롯데마트 카테고리 수동 실행 시작: {selected.get('query')}",
         "category": _lotte_category_payload(selected),
     }
-
-
-class CrawlerToggleRequest(BaseModel):
-    status: str
-
-
-@router.put("/{crawler_id}/toggle")
-async def toggle_crawler(crawler_id: str, body: CrawlerToggleRequest):
-    _require_crawler(crawler_id)
-    if body.status not in {"active", "inactive"}:
-        raise HTTPException(400, "status must be 'active' or 'inactive'")
-    status_map = _load_status()
-    status_map[crawler_id] = body.status
-    _save_status(status_map)
-    return {"crawler_id": crawler_id, "status": body.status}
-
-
-class CrawlerSettingsUpdate(BaseModel):
-    target_url: Optional[str] = None
-    delay: Optional[float] = None
-    max_items: Optional[int] = None
-
-
-@router.get("/{crawler_id}/settings")
-async def get_crawler_settings(crawler_id: str):
-    _require_crawler(crawler_id)
-    registry_info = _get_registry()._registry[crawler_id]
-    config = registry_info.get("config", {})
-    overrides = _load_settings().get(crawler_id, {})
-    return {
-        "crawler_id": crawler_id,
-        "target_url": overrides.get("target_url", ""),
-        "delay": overrides.get("delay", 1.0),
-        "max_items": overrides.get("max_items", 100),
-        "strategy": "current_crawler",
-        "difficulty": config.get("difficulty", 1),
-    }
-
-
-@router.put("/{crawler_id}/settings")
-async def update_crawler_settings(crawler_id: str, request: Request, body: CrawlerSettingsUpdate):
-    _require_crawler(crawler_id)
-    settings = _load_settings()
-    current = settings.get(crawler_id, {})
-
-    if body.target_url is not None:
-        from api.security.url_validator import validate_target_url
-        current["target_url"] = validate_target_url(body.target_url)
-    if body.delay is not None:
-        if not 0.1 <= body.delay <= 60.0:
-            raise HTTPException(422, "delay must be between 0.1 and 60.0 seconds")
-        current["delay"] = body.delay
-    if body.max_items is not None:
-        if not 1 <= body.max_items <= 10000:
-            raise HTTPException(422, "max_items must be between 1 and 10000")
-        current["max_items"] = body.max_items
-
-    settings[crawler_id] = current
-    _save_settings(settings)
-    audit_log(
-        AuditEventType.CRAWLER_SETTINGS_UPDATE,
-        request=request,
-        resource=crawler_id,
-        detail={"fields_changed": list(body.model_dump(exclude_unset=True).keys())},
-    )
-    return {"crawler_id": crawler_id, "settings": current}
 
 
 class BulkRunRequest(BaseModel):
@@ -443,44 +357,6 @@ async def get_crawler_status(crawler_id: str, request: Request):
     if if_none_match and if_none_match.strip('"') == etag:
         return Response(status_code=304)
     return JSONResponse(content=result, headers={"ETag": f'"{etag}"'})
-
-
-@router.get("/{crawler_id}/status/stream")
-async def stream_crawler_status(crawler_id: str, request: Request):
-    _require_crawler(crawler_id)
-
-    async def event_generator():
-        last_hash = None
-        stream_start = time.monotonic()
-        while True:
-            if await request.is_disconnected():
-                break
-            if time.monotonic() - stream_start > _SSE_MAX_DURATION:
-                yield 'data: {"status":"timeout","message":"Stream max duration reached"}\n\n'
-                break
-
-            result = _crawl_results.get(
-                crawler_id,
-                {"crawler_id": crawler_id, "status": "idle"},
-            )
-            current_json = json.dumps(result, sort_keys=True, default=str)
-            current_hash = hashlib.md5(current_json.encode()).hexdigest()
-            if current_hash != last_hash:
-                last_hash = current_hash
-                yield f"data: {current_json}\n\n"
-            if result.get("status") in _TERMINAL_STATUSES:
-                break
-            await asyncio.sleep(1)
-
-    return StreamingResponse(
-        event_generator(),
-        media_type="text/event-stream",
-        headers={
-            "Cache-Control": "no-cache",
-            "Connection": "keep-alive",
-            "X-Accel-Buffering": "no",
-        },
-    )
 
 
 async def _run_and_store(
