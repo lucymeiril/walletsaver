@@ -4,11 +4,8 @@
 모든 엔드포인트는 confirm 문자열을 요구해 사고를 방지한다.
 """
 
-import json
 import logging
 from datetime import datetime
-from pathlib import Path
-from typing import Any
 
 from pydantic import BaseModel, Field
 from fastapi import APIRouter, HTTPException, Depends
@@ -16,9 +13,7 @@ from starlette.requests import Request
 
 from services.base import get_session
 from api.auth import require_admin, require_moderator, require_backup_snapshot_reader
-from services.audit import log_action
-from api.security import make_error, MAX_SOURCE_LEN
-from services.auto_classify import auto_classify_products
+from api.security import MAX_SOURCE_LEN
 from services.backup import create_backup, list_backups
 from api.middleware.rate_limit import limiter, DESTRUCTIVE_LIMIT, ADMIN_LIMIT
 from config import settings
@@ -82,32 +77,6 @@ class ResetProductsRequest(BaseModel):
 
 class ResetAllRequest(BaseModel):
     confirm: str = Field(..., min_length=1, max_length=100)
-
-
-class AutoClassifyRunRequest(BaseModel):
-    products: list[dict[str, Any]] | None = None
-    jsonl_path: str | None = Field(None, max_length=500)
-    dry_run: bool = True
-
-
-@router.post("/auto-classify/run")
-def run_auto_classify(body: AutoClassifyRunRequest, identity: dict = Depends(require_moderator)):
-    rows = body.products
-    if rows is None and body.jsonl_path:
-        path = Path(body.jsonl_path)
-        if not path.exists() or not path.is_file():
-            raise HTTPException(status_code=400, detail="jsonl_path 파일을 찾을 수 없습니다.")
-        rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
-    if rows is None:
-        raise HTTPException(status_code=400, detail="products 또는 jsonl_path가 필요합니다.")
-
-    session = get_session()
-    try:
-        return auto_classify_products(session, rows, dry_run=body.dry_run).as_dict()
-    except ValueError as exc:
-        raise HTTPException(status_code=400, detail=str(exc)) from exc
-    finally:
-        session.close()
 
 
 @router.get("/data-summary")
@@ -257,9 +226,6 @@ def reset_products(request: Request, body: ResetProductsRequest, identity: dict 
 
     session = get_session()
     try:
-        from sqlalchemy import func
-
-        product_count = session.query(func.count(Product.id)).scalar() or 0
         ref_counts = _cleanup_product_refs(session)
         discount_del = session.query(DiscountHistory).delete(synchronize_session=False)
         baseline_del = session.query(BaselinePrice).delete(synchronize_session=False)
