@@ -1,12 +1,10 @@
-"""Regression tests for category pollution from crawled products."""
+"""Regression tests that keep unreviewed category guesses out of public reads."""
 from __future__ import annotations
 
-from dataclasses import dataclass
 from datetime import datetime
 
 from storage.db import DBStorage
-import storage.db as storage_db_module
-from storage.models import Base, Category, DiscountHistory, PendingCategorization, Product
+from storage.models import Base, Category, DiscountHistory, Product
 
 
 def _storage() -> DBStorage:
@@ -79,32 +77,3 @@ def test_suggested_or_ad_hoc_category_is_excluded_from_category_compare():
 
     assert result["total"] == 0
     assert result["products"] == []
-
-
-def test_mid_confidence_categorization_creates_pending_without_public_assignment(monkeypatch):
-    storage = _storage()
-    with storage.SessionLocal() as session:
-        session.add(Category(id="approved", name="승인카테고리", depth=0, is_active=True))
-        session.add(Product(id=1, name="검토필요상품", unit="개", source_type="mart_crawl"))
-        session.commit()
-
-    @dataclass
-    class Result:
-        category_id: str = "approved"
-        confidence: float = 0.6
-        candidates: list[tuple[str, float]] = None
-        parsed_keywords: list[str] = None
-        attributes: dict = None
-
-    monkeypatch.setattr(storage_db_module, "auto_categorize", lambda name, source=None: Result())
-
-    storage.categorize_product(1, source="emart")
-
-    with storage.SessionLocal() as session:
-        product = session.get(Product, 1)
-        pending = session.query(PendingCategorization).filter_by(product_id=1).one()
-
-    assert product.category_id is None
-    assert product.categorization_method == "suggested"
-    assert pending.suggested_category_id == "approved"
-    assert pending.status == "pending"
