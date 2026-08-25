@@ -5,7 +5,6 @@ import AdminLayout from './components/AdminLayout';
 import LoginPage from './pages/Login/LoginPage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Crawlers from './pages/Crawlers/Crawlers';
-import Plugins from './pages/Plugins/Plugins';
 import Logs from './pages/Logs/Logs';
 import Schedule from './pages/Schedule/Schedule';
 import DataReviewPage from './pages/DataReview/DataReviewPage';
@@ -22,7 +21,6 @@ function useAuth() {
 export default function App() {
   const authed = useAuth();
 
-  // 개발 환경 자동 로그인 시도
   useEffect(() => {
     if (!authed) {
       autoLoginDev();
@@ -45,14 +43,11 @@ export default function App() {
             <Route path="/" element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
             <Route path="/crawlers" element={<ErrorBoundary><Crawlers /></ErrorBoundary>} />
             <Route path="/data-review" element={<ErrorBoundary><DataReviewPage /></ErrorBoundary>} />
-            <Route path="/plugins" element={<ErrorBoundary><Plugins /></ErrorBoundary>} />
             <Route path="/logs" element={<ErrorBoundary><Logs /></ErrorBoundary>} />
             <Route path="/schedule" element={<ErrorBoundary><Schedule /></ErrorBoundary>} />
             <Route path="/runs" element={<ErrorBoundary><RunHistory /></ErrorBoundary>} />
             <Route path="/adhoc" element={<ErrorBoundary><AdHoc /></ErrorBoundary>} />
-            {/* 주간 알림 — 사라진 SKU 목록 (cr3 신설) */}
             <Route path="/weekly-alerts" element={<ErrorBoundary><WeeklyAlertsPage /></ErrorBoundary>} />
-            {/* 외부 분류 내보내기 — raw batch LLM 분류용 export (rd7 신설) */}
             <Route path="/external-export" element={<ErrorBoundary><ExternalExportPanel /></ErrorBoundary>} />
           </Route>
         </Routes>

@@ -90,7 +90,6 @@ def create_app() -> FastAPI:
     from api.routes.logs import router as logs_router
     from api.routes.ingestion import router as ingestion_router
     from api.routes.dashboard import router as dashboard_router
-    from api.routes.plugins import router as plugins_router
     from api.routes.operator_browser import router as operator_browser_router
     from api.routes.orchestrator import router as orchestrator_router
     from api.routes.weekly import router as weekly_router
@@ -106,7 +105,6 @@ def create_app() -> FastAPI:
     app.include_router(logs_router, dependencies=_auth)
     app.include_router(ingestion_router, dependencies=_auth)
     app.include_router(dashboard_router, dependencies=_auth)
-    app.include_router(plugins_router, dependencies=_auth)
     app.include_router(operator_browser_router, dependencies=_auth)
     app.include_router(orchestrator_router, dependencies=_auth)
     app.include_router(weekly_router, dependencies=_auth)
@@ -202,14 +200,6 @@ def create_app() -> FastAPI:
                 logger.info("[App] cleared %d running crawler slots", cleared)
         except Exception:
             logger.exception("[App] concurrency cleanup error")
-
-        try:
-            plugin_mgr = getattr(app.state, "plugin_manager", None)
-            if plugin_mgr:
-                await plugin_mgr.shutdown()
-                logger.info("[App] plugins shut down")
-        except Exception:
-            logger.exception("[App] plugin shutdown error")
 
         try:
             from engine.browser_watchdog import get_browser_watchdog
