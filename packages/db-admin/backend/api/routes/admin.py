@@ -6,7 +6,6 @@
 
 import json
 import logging
-import shutil
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -14,14 +13,12 @@ from typing import Any
 from pydantic import BaseModel, Field
 from fastapi import APIRouter, HTTPException, Depends
 from starlette.requests import Request
-from starlette.responses import FileResponse
 
 from services.base import get_session
 from api.auth import require_admin, require_moderator, require_backup_snapshot_reader
 from services.audit import log_action
 from api.security import make_error, MAX_SOURCE_LEN
 from services.auto_classify import auto_classify_products
-from services.external_ai_export import export_unclassified_bundle
 from services.backup import create_backup, list_backups
 from api.middleware.rate_limit import limiter, DESTRUCTIVE_LIMIT, ADMIN_LIMIT
 from config import settings
@@ -50,24 +47,21 @@ def _cleanup_product_refs(session, product_ids=None):
     counts: dict[str, int] = {}
 
     if product_ids is None:
-        # Non-nullable FK → delete all rows
         counts["price_alerts"] = session.query(PriceAlert).delete(
             synchronize_session=False)
         counts["pending_categorizations"] = session.query(
             PendingCategorization).delete(synchronize_session=False)
-        # Nullable FK → NULL out
         for Model in (Post, Favorite, CartItem, WishlistItem):
             session.query(Model).filter(
                 Model.product_id.isnot(None)
             ).update({"product_id": None}, synchronize_session=False)
     else:
-        # Selective cleanup for specific product IDs
         counts["price_alerts"] = session.query(PriceAlert).filter(
             PriceAlert.product_id.in_(product_ids)
         ).delete(synchronize_session=False)
         counts["pending_categorizations"] = session.query(
             PendingCategorization).filter(
-            PendingCategorization.product_id.in_(product_ids)
+                PendingCategorization.product_id.in_(product_ids)
         ).delete(synchronize_session=False)
         for Model in (Post, Favorite, CartItem, WishlistItem):
             session.query(Model).filter(
@@ -76,8 +70,6 @@ def _cleanup_product_refs(session, product_ids=None):
 
     return counts
 
-
-# ── Request 스키마 ──
 
 class ResetSourceRequest(BaseModel):
     source: str = Field(..., min_length=1, max_length=MAX_SOURCE_LEN)
@@ -97,8 +89,6 @@ class AutoClassifyRunRequest(BaseModel):
     jsonl_path: str | None = Field(None, max_length=500)
     dry_run: bool = True
 
-
-# ── POST /admin/auto-classify/run ──
 
 @router.post("/auto-classify/run")
 def run_auto_classify(body: AutoClassifyRunRequest, identity: dict = Depends(require_moderator)):
@@ -120,28 +110,6 @@ def run_auto_classify(body: AutoClassifyRunRequest, identity: dict = Depends(req
         session.close()
 
 
-# ── POST /admin/unmatched/export ──
-
-@router.post("/unmatched/export")
-def export_unmatched_bundle(identity: dict = Depends(require_admin)):
-    timestamp = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
-    export_root = Path("artifacts") / "unmatched-export"
-    out_dir = export_root / f"bundle-{timestamp}"
-    zip_base = export_root / f"bundle-{timestamp}"
-    export_root.mkdir(parents=True, exist_ok=True)
-
-    session = get_session()
-    try:
-        export_unclassified_bundle(out_dir, session=session)
-    finally:
-        session.close()
-
-    zip_path = Path(shutil.make_archive(str(zip_base), "zip", root_dir=out_dir))
-    return FileResponse(zip_path, media_type="application/zip", filename=zip_path.name)
-
-
-# ── GET /admin/data-summary ──
-
 @router.get("/data-summary")
 @limiter.limit(ADMIN_LIMIT)
 def data_summary(request: Request, identity: dict = Depends(require_moderator)):
@@ -150,7 +118,6 @@ def data_summary(request: Request, identity: dict = Depends(require_moderator)):
     try:
         from sqlalchemy import func, distinct
 
-        # 소스별 DiscountHistory 집계
         discount_rows = (
             session.query(
                 DiscountHistory.source,
@@ -160,8 +127,6 @@ def data_summary(request: Request, identity: dict = Depends(require_moderator)):
             .group_by(DiscountHistory.source)
             .all()
         )
-
-        # 소스별 BaselinePrice 집계
         baseline_rows = (
             session.query(
                 BaselinePrice.source,
@@ -171,8 +136,6 @@ def data_summary(request: Request, identity: dict = Depends(require_moderator)):
             .group_by(BaselinePrice.source)
             .all()
         )
-
-        # 소스별 HotdealPrice 집계
         hotdeal_rows = (
             session.query(
                 HotdealPrice.source,
@@ -183,7 +146,6 @@ def data_summary(request: Request, identity: dict = Depends(require_moderator)):
             .all()
         )
 
-        # 합산
         source_map: dict[str, dict] = {}
         for src, cnt, prod_cnt in discount_rows:
             entry = source_map.setdefault(src, {"source": src, "product_count": 0, "price_count": 0})
@@ -212,8 +174,6 @@ def data_summary(request: Request, identity: dict = Depends(require_moderator)):
         session.close()
 
 
-# ── POST /admin/reset-source ──
-
 @router.post("/reset-source")
 @limiter.limit(DESTRUCTIVE_LIMIT)
 def reset_source(request: Request, body: ResetSourceRequest, identity: dict = Depends(require_admin)):
@@ -227,32 +187,21 @@ def reset_source(request: Request, body: ResetSourceRequest, identity: dict = De
         logger.warning("Pre-reset backup created: %s", backup_path)
     except Exception as e:
         logger.error("Backup failed, aborting reset: %s", e)
-        raise HTTPException(
-            status_code=500,
-            detail="백업 실패로 리셋이 중단되었습니다.",
-        )
+        raise HTTPException(status_code=500, detail="백업 실패로 리셋이 중단되었습니다.")
 
     session = get_session()
     try:
         src = body.source
+        discount_del = session.query(DiscountHistory).filter(
+            DiscountHistory.source == src
+        ).delete(synchronize_session=False)
+        baseline_del = session.query(BaselinePrice).filter(
+            BaselinePrice.source == src
+        ).delete(synchronize_session=False)
+        hotdeal_del = session.query(HotdealPrice).filter(
+            HotdealPrice.source == src
+        ).delete(synchronize_session=False)
 
-        discount_del = (
-            session.query(DiscountHistory)
-            .filter(DiscountHistory.source == src)
-            .delete(synchronize_session=False)
-        )
-        baseline_del = (
-            session.query(BaselinePrice)
-            .filter(BaselinePrice.source == src)
-            .delete(synchronize_session=False)
-        )
-        hotdeal_del = (
-            session.query(HotdealPrice)
-            .filter(HotdealPrice.source == src)
-            .delete(synchronize_session=False)
-        )
-
-        # Orphan cleanup: products with zero remaining prices across ALL tables
         from sqlalchemy import exists
         orphan_ids = [r[0] for r in session.query(Product.id).filter(
             ~exists().where(BaselinePrice.product_id == Product.id),
@@ -268,13 +217,11 @@ def reset_source(request: Request, body: ResetSourceRequest, identity: dict = De
             ).delete(synchronize_session=False)
 
         session.commit()
-
         total_deleted = discount_del + baseline_del + hotdeal_del
         logger.warning(
             "[ADMIN] reset-source: source=%s discount=%d baseline=%d hotdeal=%d orphans=%d",
             src, discount_del, baseline_del, hotdeal_del, orphan_del,
         )
-
         return {
             "action": "reset-source",
             "source": src,
@@ -294,8 +241,6 @@ def reset_source(request: Request, body: ResetSourceRequest, identity: dict = De
         session.close()
 
 
-# ── POST /admin/reset-products ──
-
 @router.post("/reset-products")
 @limiter.limit(DESTRUCTIVE_LIMIT)
 def reset_products(request: Request, body: ResetProductsRequest, identity: dict = Depends(require_admin)):
@@ -308,39 +253,26 @@ def reset_products(request: Request, body: ResetProductsRequest, identity: dict 
         logger.warning("Pre-reset backup created: %s", backup_path)
     except Exception as e:
         logger.error("Backup failed, aborting reset: %s", e)
-        raise HTTPException(
-            status_code=500,
-            detail="백업 실패로 리셋이 중단되었습니다.",
-        )
+        raise HTTPException(status_code=500, detail="백업 실패로 리셋이 중단되었습니다.")
 
     session = get_session()
     try:
         from sqlalchemy import func
 
         product_count = session.query(func.count(Product.id)).scalar() or 0
-
-        # Step 1: Clean FK references to products
         ref_counts = _cleanup_product_refs(session)
-
-        # Step 2: Delete price tables
         discount_del = session.query(DiscountHistory).delete(synchronize_session=False)
         baseline_del = session.query(BaselinePrice).delete(synchronize_session=False)
         hotdeal_del = session.query(HotdealPrice).delete(synchronize_session=False)
-
-        # Step 3: Delete products (FK references already cleared)
         product_del = session.query(Product).delete(synchronize_session=False)
-
-        # Step 4: Delete remaining related data
         crawllog_del = session.query(CrawlLog).delete(synchronize_session=False)
         pending_del = session.query(PendingIngestion).delete(synchronize_session=False)
-
         session.commit()
 
         logger.warning(
             "[ADMIN] reset-products: products=%d prices=%d",
             product_del, discount_del + baseline_del + hotdeal_del,
         )
-
         return {
             "action": "reset-products",
             "deleted": {
@@ -364,8 +296,6 @@ def reset_products(request: Request, body: ResetProductsRequest, identity: dict 
         session.close()
 
 
-# ── POST /admin/reset-all ──
-
 @router.post("/reset-all")
 @limiter.limit(DESTRUCTIVE_LIMIT)
 def reset_all(request: Request, body: ResetAllRequest, identity: dict = Depends(require_admin)):
@@ -378,32 +308,20 @@ def reset_all(request: Request, body: ResetAllRequest, identity: dict = Depends(
         logger.warning("Pre-reset backup created: %s", backup_path)
     except Exception as e:
         logger.error("Backup failed, aborting reset: %s", e)
-        raise HTTPException(
-            status_code=500,
-            detail="백업 실패로 리셋이 중단되었습니다.",
-        )
+        raise HTTPException(status_code=500, detail="백업 실패로 리셋이 중단되었습니다.")
 
     session = get_session()
     try:
-        # Step 1: Clean FK references to products
         ref_counts = _cleanup_product_refs(session)
-
-        # Step 2: Delete price tables
         discount_del = session.query(DiscountHistory).delete(synchronize_session=False)
         baseline_del = session.query(BaselinePrice).delete(synchronize_session=False)
         hotdeal_del = session.query(HotdealPrice).delete(synchronize_session=False)
-
-        # Step 3: Delete products (FK references already cleared)
         product_del = session.query(Product).delete(synchronize_session=False)
-
-        # Step 4: Delete remaining product-related data
         crawllog_del = session.query(CrawlLog).delete(synchronize_session=False)
         pending_del = session.query(PendingIngestion).delete(synchronize_session=False)
         correction_del = session.query(CategoryCorrection).delete(synchronize_session=False)
 
-        # Step 5: Clean FK references to categories, then delete
         keyword_del = session.query(Keyword).delete(synchronize_session=False)
-        # NULL out category self-reference and remaining category FKs
         session.query(Category).filter(
             Category.parent_id.isnot(None)
         ).update({"parent_id": None}, synchronize_session=False)
@@ -414,12 +332,10 @@ def reset_all(request: Request, body: ResetAllRequest, identity: dict = Depends(
         category_del = session.query(Category).delete(synchronize_session=False)
 
         session.commit()
-
         logger.warning(
             "[ADMIN] reset-all: products=%d categories=%d keywords=%d",
             product_del, category_del, keyword_del,
         )
-
         return {
             "action": "reset-all",
             "deleted": {
@@ -443,8 +359,6 @@ def reset_all(request: Request, body: ResetAllRequest, identity: dict = Depends(
     finally:
         session.close()
 
-
-# ── Backup Management ──
 
 @router.post("/backup")
 @limiter.limit(ADMIN_LIMIT)
