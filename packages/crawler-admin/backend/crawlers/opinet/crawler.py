@@ -54,23 +54,25 @@ _BRAND_ALIASES = {
     "현대": "HD현대오일뱅크", "HDO": "HD현대오일뱅크",
     "S-OIL": "S-OIL", "S오일": "S-OIL", "SOL": "S-OIL",
     "알뜰": "알뜰", "알뜰주유소": "알뜰", "알뜰(자영)": "알뜰",
-    "자영알뜰": "알뜰", "RTO": "알뜰", "RTX": "알뜰",
+    "자영알뜰": "알뜰", "RTE": "알뜰", "RTO": "알뜰", "RTX": "알뜰",
     "E1": "E1", "E1G": "E1", "SK가스": "SK가스", "SKG": "SK가스",
     "농협": "농협", "NHO": "농협", "ETC": "기타",
 }
 
 _FUEL_ALIASES = {
     "gasoline": "gasoline", "gasoline_regular": "gasoline", "regular": "gasoline", "B027": "gasoline",
-    "premium": "premium", "gasoline_premium": "premium",
-    "diesel": "diesel", "B034": "diesel",
+    "premium": "premium", "gasoline_premium": "premium", "B034": "premium",
+    "diesel": "diesel", "D047": "diesel",
     "kerosene": "kerosene", "C004": "kerosene",
-    "lpg": "lpg", "K015": "lpg",
+    "lpg": "lpg", "K015": "lpg", "K105": "lpg",
 }
 
+# Product codes are endpoint-specific. These values follow OPINET lowTop10.do.
 _API_FUELS: tuple[tuple[str, str], ...] = (
     ("gasoline", "B027"),
-    ("diesel", "B034"),
-    ("lpg", "K015"),
+    ("premium", "B034"),
+    ("diesel", "D047"),
+    ("lpg", "K105"),
 )
 
 
@@ -194,6 +196,8 @@ def _record_from_api_row(raw: dict[str, Any], fuel_type: str, observed_at: datet
     if not station_code:
         station_code = f"{name}|{address}"
 
+    # lowTop10.do returns KATEC GIS_X/Y, not WGS84 latitude/longitude. Keep
+    # canonical lat/lng empty until an explicit coordinate conversion is added.
     return GasStationRecord(
         station_code=station_code,
         brand=normalize_brand(str(raw.get("POLL_DIV_CO") or raw.get("POLL_DIV_CD") or "").strip()),
@@ -201,8 +205,8 @@ def _record_from_api_row(raw: dict[str, Any], fuel_type: str, observed_at: datet
         address=address,
         sido=sido,
         sigungu=sigungu,
-        lat=_to_float(raw.get("GIS_Y_COOR") or raw.get("GIS_Y")),
-        lng=_to_float(raw.get("GIS_X_COOR") or raw.get("GIS_X")),
+        lat=None,
+        lng=None,
         has_self_service=str(raw.get("SELF_YN") or "N").upper() == "Y",
         updated_at=observed_at,
         prices=[GasStationPriceRecord(
@@ -284,7 +288,7 @@ class OpinetCrawler:
     name = "opinet"
     display_name = "오피넷 주유소"
     category = "fuel"
-    version = "2.0.0"
+    version = "2.0.1"
     BASE_URL = "https://www.opinet.co.kr"
     API_BASE = f"{BASE_URL}/api"
     SIDO_CODES = (
@@ -348,7 +352,7 @@ class OpinetCrawler:
             return None
         url = f"{self.API_BASE}/lowTop10.do"
         params = {
-            "code": self.api_key,
+            "certkey": self.api_key,
             "out": "json",
             "prodcd": product_code,
             "area": area_code,

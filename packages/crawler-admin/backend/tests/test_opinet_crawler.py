@@ -37,31 +37,32 @@ def test_crawl_region_filters_saved_fixture_without_network():
     assert {record.sido for record in records} == {"서울특별시"}
 
 
-def test_brand_and_fuel_normalization_includes_opinet_codes():
+def test_brand_and_fuel_normalization_includes_endpoint_codes():
     assert normalize_brand("현대오일뱅크") == "HD현대오일뱅크"
     assert normalize_brand("HDO") == "HD현대오일뱅크"
-    assert normalize_brand("RTO") == "알뜰"
+    assert normalize_brand("RTE") == "알뜰"
     assert normalize_brand("무인상표") == "기타"
     assert normalize_fuel_type("gasoline_regular") == "gasoline"
     assert normalize_fuel_type("B027") == "gasoline"
-    assert normalize_fuel_type("B034") == "diesel"
+    assert normalize_fuel_type("B034") == "premium"
+    assert normalize_fuel_type("D047") == "diesel"
+    assert normalize_fuel_type("K105") == "lpg"
     assert normalize_fuel_type("K015") == "lpg"
 
 
-def test_low_top10_payload_maps_to_canonical_station_record():
+def test_low_top10_payload_maps_to_canonical_station_without_fake_wgs84_coordinates():
     observed_at = datetime(2026, 8, 25, 9, 0, 0)
     payload = {
         "RESULT": {
             "OIL": [
                 {
                     "UNI_ID": "A001",
-                    "OS_NM": "테스트셀프주유소",
+                    "OS_NM": "테스트주유소",
                     "POLL_DIV_CD": "SKE",
                     "NEW_ADR": "서울특별시 강남구 테헤란로 1",
-                    "GIS_Y_COOR": "37.5001",
-                    "GIS_X_COOR": "127.0301",
+                    "GIS_Y_COOR": "544012.0",
+                    "GIS_X_COOR": "314871.8",
                     "PRICE": "1,615",
-                    "SELF_YN": "Y",
                 }
             ]
         }
@@ -75,9 +76,8 @@ def test_low_top10_payload_maps_to_canonical_station_record():
     assert record.brand == "SK"
     assert record.sido == "서울특별시"
     assert record.sigungu == "강남구"
-    assert record.lat == pytest.approx(37.5001)
-    assert record.lng == pytest.approx(127.0301)
-    assert record.has_self_service is True
+    assert record.lat is None
+    assert record.lng is None
     assert record.prices == [
         GasStationPriceRecord(
             fuel_type="gasoline",
@@ -97,8 +97,8 @@ def test_merge_station_records_combines_fuels_by_station_code():
         address="서울특별시 강남구 테헤란로 1",
         sido="서울특별시",
         sigungu="강남구",
-        lat=37.5,
-        lng=127.03,
+        lat=None,
+        lng=None,
         updated_at=at,
     )
     records = merge_station_records([
@@ -124,10 +124,48 @@ def test_live_crawl_is_explicitly_disabled_without_api_key():
     assert crawler.live_crawl() == []
 
 
-def test_live_crawl_uses_api_rows_and_merges_fuel_prices(monkeypatch):
+def test_low_top10_request_uses_official_certkey_parameter():
+    crawler = OpinetCrawler(FIXTURE, api_key="configured", max_retries=1)
+    captured = {}
+
+    class FakeResponse:
+        status_code = 200
+
+        @staticmethod
+        def json():
+            return {"RESULT": {"OIL": []}}
+
+    class FakeSession:
+        def get(self, url, *, params, timeout):
+            captured.update({"url": url, "params": params, "timeout": timeout})
+            return FakeResponse()
+
+    result = crawler._request_low_top10(
+        FakeSession(),
+        product_code="D047",
+        area_code="01",
+    )
+
+    assert result == {"RESULT": {"OIL": []}}
+    assert captured["url"].endswith("/api/lowTop10.do")
+    assert captured["params"] == {
+        "certkey": "configured",
+        "out": "json",
+        "prodcd": "D047",
+        "area": "01",
+        "cnt": "10",
+    }
+
+
+def test_live_crawl_uses_low_top10_product_codes_and_merges_fuels(monkeypatch):
     crawler = OpinetCrawler(FIXTURE, api_key="configured")
     calls: list[tuple[str, str]] = []
-    price_by_product = {"B027": "1600", "B034": "1490", "K015": "970"}
+    price_by_product = {
+        "B027": "1600",
+        "B034": "1890",
+        "D047": "1490",
+        "K105": "970",
+    }
 
     def fake_request(session, *, product_code: str, area_code: str):
         calls.append((product_code, area_code))
@@ -146,11 +184,17 @@ def test_live_crawl_uses_api_rows_and_merges_fuel_prices(monkeypatch):
     monkeypatch.setattr(crawler, "_request_low_top10", fake_request)
     records = crawler.live_crawl(sido_codes=["01"])
 
-    assert calls == [("B027", "01"), ("B034", "01"), ("K015", "01")]
+    assert calls == [
+        ("B027", "01"),
+        ("B034", "01"),
+        ("D047", "01"),
+        ("K105", "01"),
+    ]
     assert len(records) == 1
     assert records[0].brand == "GS"
     assert {p.fuel_type: p.price for p in records[0].prices} == {
         "gasoline": 1600,
+        "premium": 1890,
         "diesel": 1490,
         "lpg": 970,
     }
