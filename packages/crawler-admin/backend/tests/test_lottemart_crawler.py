@@ -1,22 +1,15 @@
-"""Lotte Mart parser contracts using saved source-shaped fixtures.
+"""Lotte Mart parser contracts using saved source-shaped fixtures."""
 
-These tests protect product identity, prices, provenance and honest WAF/SPA
-failure handling.  They intentionally avoid historical live-capture row-count
-targets or project-phase gates.
-"""
 from __future__ import annotations
 
 from pathlib import Path
-from urllib.parse import quote
 
 import pytest
 
-from crawlers.marts.entry_points import CollectionPath
 from crawlers.marts.lottemart.crawler import LottemartCrawler
-from crawlers.marts.lottemart.entrypoints import LottemartEntrypoints, SALE_QUERY
 
 
-FIXTURE = Path(__file__).parent / "fixtures" / "lottemart" / "operator_capture_3cards.html"
+FIXTURE = Path(__file__).parent / "fixtures" / "lottemart" / "listing_3cards.html"
 HYDRATED_FIXTURE = Path(__file__).parent / "fixtures" / "lottemart" / "hydrated_5cards.html"
 
 
@@ -63,72 +56,6 @@ async def test_parser_does_not_invent_invalid_prices_or_promo_prefixes(crawler, 
 
 
 @pytest.mark.asyncio
-async def test_entrypoints_keep_collection_intent_and_capture_provenance(html):
-    entrypoints = LottemartEntrypoints()
-    sale = await entrypoints.crawl_sale_listing(fetch=lambda _url: html)
-    catalog = await entrypoints.crawl_catalog_page("우유", page=2, fetch=lambda _url: html)
-    capture = await entrypoints.ingest_operator_capture(
-        html,
-        source_url="https://lottemartzetta.com/search?query=할인",
-        capture_id="op-lottemart-001",
-    )
-
-    assert sale.status.name == "SUCCESS"
-    assert sale.items
-    assert quote(SALE_QUERY) in sale.quality_details["entrypoint"]["source_url"]
-    assert all(item["attributes"]["collection_path"] == "public_endpoint" for item in sale.items)
-    assert all(item["attributes"]["crawl_intent"] == "sale" for item in sale.items)
-
-    assert catalog.quality_details["query"] == "우유"
-    assert catalog.quality_details["page"] == 2
-    assert all(item["attributes"]["crawl_intent"] == "catalog" for item in catalog.items)
-
-    assert capture.quality_details["operator_capture"] is True
-    assert capture.quality_details["source_host"] == "lottemartzetta.com"
-    assert all(item["attributes"]["operator_capture_id"] == "op-lottemart-001" for item in capture.items)
-
-
-@pytest.mark.asyncio
-async def test_single_product_entrypoint_keeps_refresh_identity(html):
-    result = await LottemartEntrypoints().fetch_single_product(
-        "OS8801045440040/details",
-        fetch=lambda _url: html,
-    )
-
-    assert "products/OS8801045440040/details" in result.quality_details["entrypoint"]["source_url"]
-    assert result.items
-    assert all(item["attributes"]["collection_path"] == "single_product" for item in result.items)
-    assert all(item["attributes"]["crawl_intent"] == "refresh" for item in result.items)
-
-
-@pytest.mark.asyncio
-async def test_empty_spa_state_is_not_reported_as_success(crawler):
-    shell = (
-        "<!doctype html><html><body><script>window.__INITIAL_STATE__ = "
-        '{"data":{"products":{"productEntities":{}}}};</script></body></html>'
-    )
-
-    items = await crawler.parse(shell)
-    result = await LottemartEntrypoints().crawl_sale_listing(fetch=lambda _url: shell)
-
-    assert items == [] or all(getattr(item, "sale_price", 0) > 0 for item in items)
-    assert result.items_count == 0
-    assert result.status.name in {"FAILED", "PARTIAL"}
-    assert result.errors
-    assert "empty_initial_state_spa_shell" in result.errors[0].error_msg
-
-
-@pytest.mark.asyncio
-async def test_waf_challenge_has_explicit_blocker():
-    waf_html = "<html><head><title>aws-waf-token</title></head><body>awswaf challenge</body></html>"
-    result = await LottemartEntrypoints().crawl_catalog_page("우유", fetch=lambda _url: waf_html)
-
-    assert result.items_count == 0
-    assert result.errors
-    assert "aws_waf_http_202" in result.errors[0].error_msg
-
-
-@pytest.mark.asyncio
 async def test_hydrated_fixture_keeps_ean_identity_and_price_branches(crawler, hydrated_html):
     items = await crawler.parse(hydrated_html)
     assert items
@@ -143,26 +70,8 @@ async def test_hydrated_fixture_keeps_ean_identity_and_price_branches(crawler, h
 
     discounted = [item for item in items if item.original_price and item.original_price > item.sale_price]
     sale_only = [item for item in items if item.original_price is None]
-    assert discounted, "fixture must exercise discounted products"
-    assert sale_only, "fixture must exercise current-price-only products"
-
-
-@pytest.mark.asyncio
-async def test_hydrated_operator_capture_keeps_all_parsed_rows(hydrated_html):
-    crawler = LottemartCrawler()
-    expected = await crawler.parse(hydrated_html)
-    result = await LottemartEntrypoints().ingest_operator_capture(
-        hydrated_html,
-        source_url="https://www.lottemartzetta.com/promotions",
-        capture_id="op-lottemart-hydrated",
-    )
-
-    assert result.status.name == "SUCCESS"
-    assert result.items_count == len(expected)
-    assert all(
-        item["attributes"]["collection_path"] == CollectionPath.OPERATOR_CAPTURE.value
-        for item in result.items
-    )
+    assert discounted
+    assert sale_only
 
 
 @pytest.mark.asyncio

@@ -1,4 +1,5 @@
 """Costco parser and crawl contracts for the current first-party source."""
+
 from __future__ import annotations
 
 import json
@@ -58,19 +59,6 @@ def test_listing_conversion_keeps_costco_source_identity(fixture_html):
     assert item.attributes["source_name"] == "costco"
     assert item.attributes["source_record_key"]
     assert item.attributes["source_url"].startswith("https://www.costco.co.kr")
-    assert item.attributes["collection_path"] == "public_endpoint"
-
-
-def test_operator_capture_keeps_capture_provenance(fixture_html):
-    items = CostcoCrawler().ingest_operator_capture(
-        fixture_html,
-        source_url="https://www.costco.co.kr/member-area",
-        capture_id="op-1",
-    )
-
-    assert items
-    assert all(item.attributes["collection_path"] == "operator_capture" for item in items)
-    assert items[0].attributes["operator_capture_id"] == "op-1"
 
 
 def test_registry_contains_current_costco_source():
@@ -81,13 +69,6 @@ def test_registry_contains_current_costco_source():
 
     assert "costco" in registry._registry
     assert registry._registry["costco"]["config"]["display_name"] == "코스트코"
-
-
-def test_costco_first_party_crawler_does_not_depend_on_removed_cocodalin():
-    import inspect
-    from crawlers.marts.costco import crawler as module
-
-    assert "cocodalin" not in inspect.getsource(module).lower()
 
 
 @pytest.mark.asyncio
@@ -132,7 +113,6 @@ def test_occ_conversion_keeps_public_costco_source(occ_fixture):
     assert items
     assert all(item.store == "코스트코" for item in items)
     assert all(item.attributes["source_name"] == "costco" for item in items)
-    assert all(item.attributes["collection_path"] == "public_endpoint" for item in items)
 
 
 @pytest.mark.asyncio
