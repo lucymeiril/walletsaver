@@ -78,9 +78,33 @@ Get-ChildItem -Path (Join-Path $Root "packages") -Recurse -Directory -Filter "__
     ForEach-Object { Remove-Item $_.FullName -Recurse -Force -ErrorAction SilentlyContinue }
 Write-Host "         ✅ __pycache__ 정리 완료" -ForegroundColor Green
 
-Write-Host "[의존성] Python 패키지 확인..." -ForegroundColor Yellow
-& $PyExe -m pip install --quiet fastapi uvicorn pydantic httpx requests beautifulsoup4 lxml sqlalchemy pyyaml slowapi limits psutil python-dotenv python-multipart bcrypt 2>$null | Out-Null
-Write-Host "         ✅ Python 패키지 완료" -ForegroundColor Green
+function Install-PythonRequirements {
+    param(
+        [string]$Name,
+        [string]$RequirementsPath
+    )
+
+    if (-not (Test-Path $RequirementsPath)) {
+        Write-Host "❌ $Name requirements.txt를 찾을 수 없습니다: $RequirementsPath" -ForegroundColor Red
+        exit 1
+    }
+
+    Write-Host "[의존성] $Name Python 패키지 설치/확인..." -ForegroundColor Yellow
+    & $PyExe -m pip install --quiet --disable-pip-version-check -r $RequirementsPath
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "❌ $Name Python 패키지 설치에 실패했습니다." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "         ✅ $Name 완료" -ForegroundColor Green
+}
+
+if ($Web) {
+    Install-PythonRequirements "웹 API" (Join-Path $WebBackend "requirements.txt")
+}
+if ($Admin) {
+    Install-PythonRequirements "크롤러 관리자" (Join-Path $Root "packages\crawler-admin\requirements.txt")
+    Install-PythonRequirements "DB 관리자" (Join-Path $DbBackend "requirements.txt")
+}
 
 $frontendDirs = @()
 if ($Web)   { $frontendDirs += $WebFrontend }
