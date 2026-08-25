@@ -2,7 +2,7 @@
 
 Each backend/package is executed in a separate pytest process to avoid module
 namespace collisions. Only services used by the current runtime belong in this
-gate; retired website-generation and legacy cross-service harnesses are excluded.
+gate; retired cross-service, UX-spec and website-generation harnesses are excluded.
 Frontend Vitest suites remain separate npm tasks and are not counted here.
 """
 from __future__ import annotations
@@ -23,8 +23,6 @@ TEST_SUITES = [
     ("crawler-admin", "packages/crawler-admin/backend", "tests/"),
     ("crawler-plugins", "packages/crawler-admin/backend", "plugins/tests/"),
     ("web-api", "packages/web-api/backend", "tests/"),
-    ("user-tests", ".", "packages/user-tests/"),
-    ("security-perf", ".", "packages/security-perf-tests/"),
 ]
 
 
