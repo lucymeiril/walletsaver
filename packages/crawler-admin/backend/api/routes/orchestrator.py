@@ -1,4 +1,4 @@
-"""오케스트레이터 API 라우트 — /api/v1/plugins, /api/v1/schedules, /api/v1/runs."""
+"""Canonical crawler orchestrator API — plugins, schedules and run history."""
 from __future__ import annotations
 
 import asyncio
@@ -13,7 +13,6 @@ from pydantic import BaseModel
 from services import crawl_orchestrator as orch
 
 logger = logging.getLogger(__name__)
-
 router = APIRouter(prefix="/api/v1", tags=["orchestrator"])
 
 
@@ -45,6 +44,13 @@ class AdHocBody(BaseModel):
     requested_by: str = "admin"
 
 
+_PLUGIN_MODULES = (
+    ("emart", "crawlers.marts.emart.plugin"),
+    ("homeplus", "crawlers.marts.homeplus.plugin"),
+    ("lottemart", "crawlers.marts.lottemart.plugin"),
+    ("costco", "crawlers.marts.costco.plugin"),
+    ("opinet", "crawlers.opinet.plugin"),
+)
 _PLUGIN_INIT_DONE = False
 
 
@@ -53,12 +59,12 @@ def _ensure_plugins_registered() -> None:
     if _PLUGIN_INIT_DONE:
         return
     _PLUGIN_INIT_DONE = True
-    for mod in ("emart", "homeplus", "lottemart", "costco"):
+    for name, module_path in _PLUGIN_MODULES:
         try:
-            module = __import__(f"crawlers.marts.{mod}.plugin", fromlist=["register"])
+            module = __import__(module_path, fromlist=["register"])
             module.register()
         except Exception as exc:  # pragma: no cover
-            logger.warning("[orchestrator] plugin %s register failed: %s", mod, exc)
+            logger.warning("[orchestrator] plugin %s register failed: %s", name, exc)
 
 
 def _require_registered_plugin(plugin_name: str):
@@ -67,6 +73,16 @@ def _require_registered_plugin(plugin_name: str):
     if plugin is None:
         raise HTTPException(status_code=404, detail=f"플러그인을 찾을 수 없습니다: {plugin_name}")
     return plugin
+
+
+def _supports_targeted_search(plugin, query: str = "") -> bool:
+    support_fn = getattr(plugin, "supports_targeted_search", None)
+    if not callable(support_fn):
+        return False
+    try:
+        return bool(support_fn(query))
+    except Exception:
+        return False
 
 
 def _validate_schedule_values(
@@ -87,8 +103,6 @@ def _validate_schedule_values(
     if interval_hours is not None and interval_hours <= 0:
         raise HTTPException(status_code=400, detail="interval_hours는 0보다 커야 합니다.")
 
-
-# ── Schedule execution loop ──────────────────────────────────────
 
 _SCHEDULE_POLL_SECONDS = max(
     30,
@@ -115,9 +129,7 @@ async def _schedule_loop() -> None:
 
 def schedule_loop_enabled() -> bool:
     return os.getenv("WALLETSAVIOR_DISABLE_SCHEDULE_LOOP", "").lower() not in {
-        "1",
-        "true",
-        "yes",
+        "1", "true", "yes",
     }
 
 
@@ -156,24 +168,23 @@ async def list_plugins():
     _ensure_plugins_registered()
     registry = orch.get_registry()
     store = orch.get_run_store()
-    out = []
-    for plugin in registry.list_all():
-        last = store.last_run_for_plugin(plugin.name)
-        out.append({
-            "name": plugin.name,
-            "mart_kind": getattr(plugin, "mart_kind", plugin.name),
-            "display_name": getattr(plugin, "display_name", plugin.name),
-            # The current four mart adapters always run their full CrawlPipeline.
-            "supports_targeted_search": False,
-            "last_run": last,
-        })
-    return {"plugins": out}
+    return {
+        "plugins": [
+            {
+                "name": plugin.name,
+                "mart_kind": getattr(plugin, "mart_kind", plugin.name),
+                "display_name": getattr(plugin, "display_name", plugin.name),
+                "supports_targeted_search": _supports_targeted_search(plugin),
+                "last_run": store.last_run_for_plugin(plugin.name),
+            }
+            for plugin in registry.list_all()
+        ]
+    }
 
 
 @router.get("/schedules")
 async def list_schedules(plugin_name: Optional[str] = None):
-    store = orch.get_run_store()
-    return {"schedules": store.list_schedules(plugin_name=plugin_name)}
+    return {"schedules": orch.get_run_store().list_schedules(plugin_name=plugin_name)}
 
 
 @router.post("/schedules", status_code=201)
@@ -184,14 +195,14 @@ async def create_schedule(body: ScheduleCreate):
         interval_hours=body.interval_hours,
     )
     store = orch.get_run_store()
-    sid = store.create_schedule(
+    schedule_id = store.create_schedule(
         plugin_name=body.plugin_name,
         cron_expr=body.cron_expr,
         interval_hours=body.interval_hours,
         target_categories=body.target_categories,
         enabled=body.enabled,
     )
-    return store.get_schedule(sid)
+    return store.get_schedule(schedule_id)
 
 
 @router.patch("/schedules/{schedule_id}")
@@ -213,8 +224,7 @@ async def update_schedule(schedule_id: str, body: ScheduleUpdate):
 @router.delete("/schedules/{schedule_id}")
 async def delete_schedule(schedule_id: str):
     store = orch.get_run_store()
-    ok = store.delete_schedule(schedule_id)
-    if not ok:
+    if not store.delete_schedule(schedule_id):
         raise HTTPException(status_code=404, detail="스케줄을 찾을 수 없습니다.")
     return {"deleted": True, "id": schedule_id}
 
@@ -230,14 +240,13 @@ async def trigger_run_endpoint(body: TriggerRunBody):
         )
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
-    run = orch.get_run_store().get_run(run_id)
-    return {"run_id": run_id, "run": run}
+    return {"run_id": run_id, "run": orch.get_run_store().get_run(run_id)}
 
 
 @router.post("/runs/ad-hoc", status_code=202)
 async def run_ad_hoc_endpoint(body: AdHocBody):
     plugin = _require_registered_plugin(body.plugin_name)
-    if body.search_query and not plugin.supports_targeted_search(body.search_query):
+    if body.search_query and not _supports_targeted_search(plugin, body.search_query):
         raise HTTPException(
             status_code=400,
             detail=f"{body.plugin_name} 크롤러는 현재 개별 검색 실행을 지원하지 않습니다.",
@@ -251,8 +260,7 @@ async def run_ad_hoc_endpoint(body: AdHocBody):
         )
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
-    req = orch.get_run_store().get_request(request_id)
-    return {"request_id": request_id, "request": req}
+    return {"request_id": request_id, "request": orch.get_run_store().get_request(request_id)}
 
 
 @router.get("/runs")
@@ -262,14 +270,17 @@ async def list_runs(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=200),
 ):
-    store = orch.get_run_store()
-    return store.list_runs(plugin_name=plugin, status=status, page=page, page_size=page_size)
+    return orch.get_run_store().list_runs(
+        plugin_name=plugin,
+        status=status,
+        page=page,
+        page_size=page_size,
+    )
 
 
 @router.get("/runs/{run_id}/logs")
 async def run_logs(run_id: str):
-    store = orch.get_run_store()
-    run = store.get_run(run_id)
+    run = orch.get_run_store().get_run(run_id)
     if run is None:
         raise HTTPException(status_code=404, detail="run을 찾을 수 없습니다.")
     return {
