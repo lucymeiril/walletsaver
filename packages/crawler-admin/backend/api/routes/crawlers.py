@@ -1,4 +1,5 @@
-"""크롤러 관리 라우트."""
+"""Current crawler management routes for the ingestion-capable mart pipeline."""
+from __future__ import annotations
 
 import asyncio
 import hashlib
@@ -10,25 +11,22 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, List, Optional
 
-from fastapi import APIRouter, Body, HTTPException, Query, Request
+from fastapi import APIRouter, HTTPException, Query, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 from pydantic import BaseModel, Field, field_validator
 
 from api.app import limiter
-from audit import audit_log, AuditEventType
+from audit import AuditEventType, audit_log
 from concurrency import (
-    acquire_crawler_slot,
-    release_crawler_slot,
-    get_semaphore,
     MAX_CONCURRENT_CRAWLS,
+    acquire_crawler_slot,
+    get_semaphore,
+    release_crawler_slot,
 )
 from crawlers.registry.registry import CrawlerRegistry
-from crawlers.source_coverage import build_source_coverage
-from pipeline.diagnostics import build_bounded_live_diagnostics_plan, run_bounded_crawler_diagnostics
 from pipeline.pipeline import CrawlPipeline
 
 logger = logging.getLogger(__name__)
-
 router = APIRouter(prefix="/api/crawlers", tags=["crawlers"])
 
 _registry: CrawlerRegistry | None = None
@@ -38,64 +36,64 @@ _crawl_results: dict[str, dict[str, Any]] = {}
 _BACKEND_DIR = Path(__file__).resolve().parent.parent.parent
 _STATUS_FILE = _BACKEND_DIR / "crawler_status.json"
 _RUN_HISTORY_FILE = _BACKEND_DIR / "crawler_run_history.json"
-
+_SETTINGS_FILE = _BACKEND_DIR / "crawler_settings.json"
 MAX_RECENT_RUNS = 5
-
 _SSE_MAX_DURATION = int(os.getenv("SSE_MAX_DURATION", "1800"))
 _TERMINAL_STATUSES = {"success", "failed", "partial_failure"}
 
 
+def _read_json(path: Path, default):
+    if not path.exists():
+        return default
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        logger.warning("[crawler-api] ignored invalid runtime state file: %s", path.name)
+        return default
+
+
+def _write_json(path: Path, payload) -> None:
+    try:
+        path.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+    except Exception:
+        logger.exception("[crawler-api] failed to persist runtime state: %s", path.name)
+
+
 def _load_status() -> dict[str, str]:
-    """크롤러 활성/비활성 상태를 파일에서 로드."""
-    if _STATUS_FILE.exists():
-        try:
-            with open(_STATUS_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            pass
-    return {}
+    return _read_json(_STATUS_FILE, {})
 
 
 def _save_status(status: dict[str, str]) -> None:
-    """크롤러 상태를 파일에 저장."""
-    try:
-        with open(_STATUS_FILE, "w", encoding="utf-8") as f:
-            json.dump(status, f, ensure_ascii=False, indent=2)
-    except Exception as e:
-        logger.error(f"크롤러 상태 저장 실패: {e}")
+    _write_json(_STATUS_FILE, status)
 
 
 def _load_run_history() -> dict[str, list[dict]]:
-    """크롤러 실행 이력을 파일에서 로드."""
-    if _RUN_HISTORY_FILE.exists():
-        try:
-            with open(_RUN_HISTORY_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            pass
-    return {}
-
-
-def _save_run_history(history: dict[str, list[dict]]) -> None:
-    """크롤러 실행 이력을 파일에 저장."""
-    try:
-        with open(_RUN_HISTORY_FILE, "w", encoding="utf-8") as f:
-            json.dump(history, f, ensure_ascii=False, indent=2)
-    except Exception as e:
-        logger.error(f"크롤러 실행 이력 저장 실패: {e}")
+    return _read_json(_RUN_HISTORY_FILE, {})
 
 
 def _append_run_history(crawler_id: str, status: str, duration: float | None = None) -> None:
-    """크롤러 실행 결과를 이력에 추가 (최근 5회 유지)."""
     history = _load_run_history()
     runs = history.get(crawler_id, [])
-    runs.append({
-        "status": status,
-        "duration": duration,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-    })
+    runs.append(
+        {
+            "status": status,
+            "duration": duration,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
+    )
     history[crawler_id] = runs[-MAX_RECENT_RUNS:]
-    _save_run_history(history)
+    _write_json(_RUN_HISTORY_FILE, history)
+
+
+def _load_settings() -> dict[str, dict]:
+    return _read_json(_SETTINGS_FILE, {})
+
+
+def _save_settings(settings: dict[str, dict]) -> None:
+    _write_json(_SETTINGS_FILE, settings)
 
 
 def _get_registry() -> CrawlerRegistry:
@@ -114,341 +112,43 @@ def _get_pipeline() -> CrawlPipeline:
     return _pipeline
 
 
+def _require_crawler(crawler_id: str):
+    try:
+        return _get_registry().get_crawler(crawler_id)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=f"Crawler '{crawler_id}' not found") from exc
+
+
 @router.get("")
 @limiter.limit("60/minute")
 async def list_crawlers(request: Request):
-    """등록된 크롤러 목록 (활성/비활성 상태 + 최근 실행 이력 포함)."""
-    reg = _get_registry()
-    crawlers = reg.list_crawlers()
+    """Return only crawlers explicitly registered for the current product pipeline."""
+    registry = _get_registry()
+    rows = registry.list_crawlers()
     status_map = _load_status()
     run_history = _load_run_history()
 
-    for c in crawlers:
-        c["status"] = status_map.get(c["name"], "active")
-        c["recentRuns"] = run_history.get(c["name"], [])
-        if c.get("name") == "lottemart":
+    for row in rows:
+        crawler_id = row["name"]
+        row["status"] = status_map.get(crawler_id, "active")
+        row["recentRuns"] = run_history.get(crawler_id, [])
+        if crawler_id == "lottemart":
             try:
-                crawler = reg.get_crawler("lottemart")
+                crawler = registry.get_crawler(crawler_id)
                 loader = getattr(crawler, "load_waf_blocked_categories", None)
                 blocked = loader() if callable(loader) else []
-                c["wafBlockedCount"] = len(blocked)
-                c["wafBlockedItems"] = blocked[:10]
             except Exception:
-                c["wafBlockedCount"] = 0
-                c["wafBlockedItems"] = []
+                blocked = []
+            row["wafBlockedCount"] = len(blocked)
+            row["wafBlockedItems"] = blocked[:10]
 
-    return {"crawlers": crawlers}
-
-
-@router.get("/coverage")
-@limiter.limit("60/minute")
-async def source_coverage(request: Request):
-    """Required source coverage for one-shot DB build readiness."""
-    reg = _get_registry()
-    return build_source_coverage(reg._registry)
-
-
-class BoundedDiagnosticsRequest(BaseModel):
-    crawler_ids: Optional[List[str]] = None
-    fixtures: dict[str, str] = Field(default_factory=dict)
+    return {"crawlers": rows}
 
 
 class LotteCategoryRunRequest(BaseModel):
     url: Optional[str] = Field(None, max_length=500)
     query: Optional[str] = Field(None, max_length=200)
     category_hint: Optional[str] = Field(None, max_length=200)
-    health_baselines: dict[str, dict[str, Any]] = Field(default_factory=dict)
-    live_enabled: bool = False
-
-
-class BoundedLiveDiagnosticsPlanRequest(BaseModel):
-    fixture_snapshots: dict[str, Any] = Field(default_factory=dict)
-    health_baselines: dict[str, dict[str, Any]] = Field(default_factory=dict)
-    allow_live: bool = False
-    run_limits: dict[str, int] = Field(default_factory=dict)
-
-
-@router.get("/diagnostics")
-@limiter.limit("30/minute")
-async def bounded_diagnostics(request: Request):
-    """Safe diagnostics contract; live crawling is disabled and no network calls are made."""
-    reg = _get_registry()
-    return await run_bounded_crawler_diagnostics(reg)
-
-
-@router.post("/diagnostics")
-@limiter.limit("10/minute")
-async def bounded_diagnostics_with_fixtures(request: Request, body: BoundedDiagnosticsRequest = Body(...)):
-    """Run bounded fixture diagnostics for selected registered crawlers."""
-    reg = _get_registry()
-    return await run_bounded_crawler_diagnostics(
-        reg,
-        fixture_by_source=body.fixtures,
-        crawler_ids=body.crawler_ids,
-        health_baseline_by_source=body.health_baselines,
-        live_enabled=body.live_enabled,
-    )
-
-
-@router.get("/diagnostics/plan")
-@limiter.limit("30/minute")
-async def bounded_live_diagnostics_plan(request: Request):
-    """Plan bounded source-by-source live diagnostics without running live network."""
-    reg = _get_registry()
-    return build_bounded_live_diagnostics_plan(reg)
-
-
-@router.post("/diagnostics/plan")
-@limiter.limit("10/minute")
-async def bounded_live_diagnostics_plan_with_artifacts(
-    request: Request,
-    body: BoundedLiveDiagnosticsPlanRequest = Body(...),
-):
-    """Build a bounded live diagnostics plan from supplied fixture snapshot metadata."""
-    reg = _get_registry()
-    return build_bounded_live_diagnostics_plan(
-        reg,
-        health_baseline_by_source=body.health_baselines,
-        fixture_snapshots=body.fixture_snapshots,
-        allow_live=body.allow_live,
-        run_limits=body.run_limits,
-    )
-
-
-@router.get("/{crawler_id}/status")
-@limiter.limit("60/minute")
-async def get_crawler_status(crawler_id: str, request: Request):
-    """크롤러 상태 조회 — ETag 기반 304 지원으로 폴링 시 불필요한 데이터 전송 방지."""
-    reg = _get_registry()
-    try:
-        reg.get_crawler(crawler_id)
-    except KeyError:
-        raise HTTPException(status_code=404, detail=f"Crawler '{crawler_id}' not found")
-
-    result = _crawl_results.get(crawler_id)
-    if not result:
-        result = {
-            "crawler_id": crawler_id,
-            "status": "idle",
-            "last_run": None,
-        }
-
-    # ETag: 상태 해시로 변경 없으면 304 반환 — 폴링 시 대역폭 절약
-    etag = hashlib.md5(json.dumps(result, sort_keys=True, default=str).encode()).hexdigest()
-    if_none_match = request.headers.get("if-none-match")
-    if if_none_match and if_none_match.strip('"') == etag:
-        return Response(status_code=304)
-
-    return JSONResponse(content=result, headers={"ETag": f'"{etag}"'})
-
-
-class CrawlerToggleRequest(BaseModel):
-    status: str  # "active" or "inactive"
-
-
-@router.put("/{crawler_id}/toggle")
-async def toggle_crawler(crawler_id: str, body: CrawlerToggleRequest):
-    """크롤러 활성/비활성 토글 — 상태를 파일에 저장."""
-    if body.status not in ("active", "inactive"):
-        raise HTTPException(400, "status must be 'active' or 'inactive'")
-
-    status_map = _load_status()
-    status_map[crawler_id] = body.status
-    _save_status(status_map)
-
-    return {"crawler_id": crawler_id, "status": body.status}
-
-
-class CrawlerSettingsUpdate(BaseModel):
-    target_url: Optional[str] = None
-    delay: Optional[float] = None
-    max_items: Optional[int] = None
-
-
-_SETTINGS_FILE = _BACKEND_DIR / "crawler_settings.json"
-
-
-def _load_settings() -> dict[str, dict]:
-    if _SETTINGS_FILE.exists():
-        try:
-            with open(_SETTINGS_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            pass
-    return {}
-
-
-def _save_settings(settings: dict[str, dict]) -> None:
-    try:
-        with open(_SETTINGS_FILE, "w", encoding="utf-8") as f:
-            json.dump(settings, f, ensure_ascii=False, indent=2)
-    except Exception as e:
-        logger.error(f"크롤러 설정 저장 실패: {e}")
-
-
-@router.get("/{crawler_id}/settings")
-async def get_crawler_settings(crawler_id: str):
-    """크롤러 설정 조회."""
-    reg = _get_registry()
-    info = reg._registry.get(crawler_id)
-    if not info:
-        raise HTTPException(404, f"Crawler '{crawler_id}' not found")
-
-    config = info.get("config", {})
-    target = config.get("target", {})
-    if isinstance(target, str):
-        target = {"url": target}
-
-    overrides = _load_settings().get(crawler_id, {})
-
-    return {
-        "crawler_id": crawler_id,
-        "target_url": overrides.get("target_url", target.get("url", "")),
-        "delay": overrides.get("delay", 1.0),
-        "max_items": overrides.get("max_items", 100),
-        "strategy": target.get("strategy", "requests"),
-        "difficulty": target.get("difficulty", 1),
-    }
-
-
-@router.put("/{crawler_id}/settings")
-async def update_crawler_settings(crawler_id: str, request: Request, body: CrawlerSettingsUpdate):
-    """크롤러 설정 업데이트 — 파일에 저장."""
-    settings = _load_settings()
-    current = settings.get(crawler_id, {})
-
-    if body.target_url is not None:
-        from api.security.url_validator import validate_target_url
-        validated_url = validate_target_url(body.target_url)
-        current["target_url"] = validated_url
-    if body.delay is not None:
-        if not (0.1 <= body.delay <= 60.0):
-            raise HTTPException(422, "delay must be between 0.1 and 60.0 seconds")
-        current["delay"] = body.delay
-    if body.max_items is not None:
-        if not (1 <= body.max_items <= 10000):
-            raise HTTPException(422, "max_items must be between 1 and 10000")
-        current["max_items"] = body.max_items
-
-    settings[crawler_id] = current
-    _save_settings(settings)
-
-    audit_log(
-        AuditEventType.CRAWLER_SETTINGS_UPDATE,
-        request=request,
-        resource=crawler_id,
-        detail={"fields_changed": list(body.model_dump(exclude_unset=True).keys())},
-    )
-
-    return {"crawler_id": crawler_id, "settings": current}
-
-
-class BulkRunRequest(BaseModel):
-    crawler_ids: List[str]
-
-    @field_validator("crawler_ids")
-    @classmethod
-    def cap_size(cls, v):
-        if len(v) > MAX_CONCURRENT_CRAWLS:
-            raise ValueError(
-                f"Maximum {MAX_CONCURRENT_CRAWLS} crawlers per bulk-run request"
-            )
-        return v
-
-
-@router.post("/bulk-run")
-async def bulk_run_crawlers(request: Request, body: BulkRunRequest):
-    """여러 크롤러 순차 실행, 결과 배열 반환."""
-    reg = _get_registry()
-    pipeline = _get_pipeline()
-    results: list[dict[str, Any]] = []
-
-    audit_log(
-        AuditEventType.CRAWLER_BULK_RUN,
-        request=request,
-        detail={"crawler_ids": body.crawler_ids},
-    )
-
-    for cid in body.crawler_ids:
-        try:
-            reg.get_crawler(cid)
-        except KeyError:
-            results.append({
-                "crawler_id": cid,
-                "status": "failed",
-                "error": f"Crawler '{cid}' not found",
-            })
-            continue
-
-        if not await acquire_crawler_slot(cid):
-            results.append({
-                "crawler_id": cid,
-                "status": "skipped",
-                "message": f"Crawler '{cid}' is already running",
-            })
-            continue
-
-        _crawl_results[cid] = {
-            "crawler_id": cid,
-            "status": "running",
-            "started_at": datetime.now(timezone.utc).isoformat(),
-            "items_found": 0,
-            "items_valid": 0,
-            "items_saved": 0,
-            "errors": [],
-        }
-
-        asyncio.create_task(_run_and_store(cid, pipeline))
-        results.append({
-            "crawler_id": cid,
-            "status": "running",
-            "message": f"Crawler '{cid}' started",
-        })
-
-    return {"results": results}
-
-
-@router.post("/{crawler_id}/run")
-@limiter.limit("5/minute")
-async def run_crawler(crawler_id: str, request: Request):
-    """크롤러 즉시 실행 — 백그라운드에서 파이프라인 실행 후 DB Admin 대기열에 제출."""
-    reg = _get_registry()
-    try:
-        reg.get_crawler(crawler_id)
-    except KeyError:
-        raise HTTPException(status_code=404, detail=f"Crawler '{crawler_id}' not found")
-
-    if not await acquire_crawler_slot(crawler_id):
-        return {
-            "crawler_id": crawler_id,
-            "status": "running",
-            "message": f"Crawler '{crawler_id}' is already running",
-        }
-
-    _crawl_results[crawler_id] = {
-        "crawler_id": crawler_id,
-        "status": "running",
-        "started_at": datetime.now(timezone.utc).isoformat(),
-        "items_found": 0,
-        "items_valid": 0,
-        "items_saved": 0,
-        "errors": [],
-    }
-
-    audit_log(
-        AuditEventType.CRAWLER_RUN,
-        request=request,
-        resource=crawler_id,
-    )
-
-    pipeline = _get_pipeline()
-    asyncio.create_task(_run_and_store(crawler_id, pipeline))
-
-    return {
-        "crawler_id": crawler_id,
-        "status": "running",
-        "message": f"Crawler '{crawler_id}' started",
-    }
 
 
 def _lotte_category_payload(row: dict[str, Any]) -> dict[str, Any]:
@@ -466,9 +166,7 @@ def _lotte_category_payload(row: dict[str, Any]) -> dict[str, Any]:
 @router.get("/lottemart/categories")
 @limiter.limit("30/minute")
 async def list_lottemart_categories(request: Request, refresh: bool = Query(False)):
-    """롯데마트 식품 카테고리별 수동 호출 후보를 반환한다."""
-    reg = _get_registry()
-    crawler = reg.get_crawler("lottemart")
+    crawler = _require_crawler("lottemart")
     lister = getattr(crawler, "list_category_requests", None)
     if not callable(lister):
         raise HTTPException(status_code=404, detail="Lotte category listing is unavailable")
@@ -483,15 +181,13 @@ async def list_lottemart_categories(request: Request, refresh: bool = Query(Fals
 @router.post("/lottemart/run-category")
 @limiter.limit("10/minute")
 async def run_lottemart_category(body: LotteCategoryRunRequest, request: Request):
-    """롯데마트 특정 카테고리 URL만 수동 실행한다."""
-    reg = _get_registry()
-    crawler = reg.get_crawler("lottemart")
+    crawler = _require_crawler("lottemart")
     lister = getattr(crawler, "list_category_requests", None)
     if not callable(lister):
         raise HTTPException(status_code=404, detail="Lotte category listing is unavailable")
-    categories = lister(refresh=False)
+
     selected = None
-    for row in categories:
+    for row in lister(refresh=False):
         if body.url and row.get("url") == body.url:
             selected = row
             break
@@ -503,6 +199,7 @@ async def run_lottemart_category(body: LotteCategoryRunRequest, request: Request
             break
     if selected is None:
         raise HTTPException(status_code=404, detail="요청한 롯데마트 카테고리를 찾을 수 없습니다")
+
     if not await acquire_crawler_slot("lottemart"):
         return {
             "crawler_id": "lottemart",
@@ -510,6 +207,7 @@ async def run_lottemart_category(body: LotteCategoryRunRequest, request: Request
             "message": "Crawler 'lottemart' is already running",
             "category": _lotte_category_payload(selected),
         }
+
     crawler._selected_category_request = selected
     _crawl_results["lottemart"] = {
         "crawler_id": "lottemart",
@@ -522,8 +220,9 @@ async def run_lottemart_category(body: LotteCategoryRunRequest, request: Request
         "progress_stage": "selected_category_started",
         "selectedCategory": _lotte_category_payload(selected),
     }
-    pipeline = _get_pipeline()
-    asyncio.create_task(_run_and_store("lottemart", pipeline, crawl_method="crawl_selected_category"))
+    asyncio.create_task(
+        _run_and_store("lottemart", _get_pipeline(), crawl_method="crawl_selected_category")
+    )
     return {
         "crawler_id": "lottemart",
         "status": "running",
@@ -532,17 +231,164 @@ async def run_lottemart_category(body: LotteCategoryRunRequest, request: Request
     }
 
 
+class CrawlerToggleRequest(BaseModel):
+    status: str
+
+
+@router.put("/{crawler_id}/toggle")
+async def toggle_crawler(crawler_id: str, body: CrawlerToggleRequest):
+    _require_crawler(crawler_id)
+    if body.status not in {"active", "inactive"}:
+        raise HTTPException(400, "status must be 'active' or 'inactive'")
+    status_map = _load_status()
+    status_map[crawler_id] = body.status
+    _save_status(status_map)
+    return {"crawler_id": crawler_id, "status": body.status}
+
+
+class CrawlerSettingsUpdate(BaseModel):
+    target_url: Optional[str] = None
+    delay: Optional[float] = None
+    max_items: Optional[int] = None
+
+
+@router.get("/{crawler_id}/settings")
+async def get_crawler_settings(crawler_id: str):
+    _require_crawler(crawler_id)
+    registry_info = _get_registry()._registry[crawler_id]
+    config = registry_info.get("config", {})
+    overrides = _load_settings().get(crawler_id, {})
+    return {
+        "crawler_id": crawler_id,
+        "target_url": overrides.get("target_url", ""),
+        "delay": overrides.get("delay", 1.0),
+        "max_items": overrides.get("max_items", 100),
+        "strategy": "current_crawler",
+        "difficulty": config.get("difficulty", 1),
+    }
+
+
+@router.put("/{crawler_id}/settings")
+async def update_crawler_settings(crawler_id: str, request: Request, body: CrawlerSettingsUpdate):
+    _require_crawler(crawler_id)
+    settings = _load_settings()
+    current = settings.get(crawler_id, {})
+
+    if body.target_url is not None:
+        from api.security.url_validator import validate_target_url
+        current["target_url"] = validate_target_url(body.target_url)
+    if body.delay is not None:
+        if not 0.1 <= body.delay <= 60.0:
+            raise HTTPException(422, "delay must be between 0.1 and 60.0 seconds")
+        current["delay"] = body.delay
+    if body.max_items is not None:
+        if not 1 <= body.max_items <= 10000:
+            raise HTTPException(422, "max_items must be between 1 and 10000")
+        current["max_items"] = body.max_items
+
+    settings[crawler_id] = current
+    _save_settings(settings)
+    audit_log(
+        AuditEventType.CRAWLER_SETTINGS_UPDATE,
+        request=request,
+        resource=crawler_id,
+        detail={"fields_changed": list(body.model_dump(exclude_unset=True).keys())},
+    )
+    return {"crawler_id": crawler_id, "settings": current}
+
+
+class BulkRunRequest(BaseModel):
+    crawler_ids: List[str]
+
+    @field_validator("crawler_ids")
+    @classmethod
+    def cap_size(cls, values):
+        if len(values) > MAX_CONCURRENT_CRAWLS:
+            raise ValueError(f"Maximum {MAX_CONCURRENT_CRAWLS} crawlers per bulk-run request")
+        return values
+
+
+@router.post("/bulk-run")
+async def bulk_run_crawlers(request: Request, body: BulkRunRequest):
+    results: list[dict[str, Any]] = []
+    audit_log(
+        AuditEventType.CRAWLER_BULK_RUN,
+        request=request,
+        detail={"crawler_ids": body.crawler_ids},
+    )
+
+    for crawler_id in body.crawler_ids:
+        try:
+            _require_crawler(crawler_id)
+        except HTTPException:
+            results.append(
+                {
+                    "crawler_id": crawler_id,
+                    "status": "failed",
+                    "error": f"Crawler '{crawler_id}' not found",
+                }
+            )
+            continue
+        if not await acquire_crawler_slot(crawler_id):
+            results.append(
+                {
+                    "crawler_id": crawler_id,
+                    "status": "skipped",
+                    "message": f"Crawler '{crawler_id}' is already running",
+                }
+            )
+            continue
+
+        _crawl_results[crawler_id] = {
+            "crawler_id": crawler_id,
+            "status": "running",
+            "started_at": datetime.now(timezone.utc).isoformat(),
+            "items_found": 0,
+            "items_valid": 0,
+            "items_saved": 0,
+            "errors": [],
+        }
+        asyncio.create_task(_run_and_store(crawler_id, _get_pipeline()))
+        results.append({"crawler_id": crawler_id, "status": "running"})
+
+    return {"results": results}
+
+
+@router.post("/{crawler_id}/run")
+@limiter.limit("5/minute")
+async def run_crawler(crawler_id: str, request: Request):
+    _require_crawler(crawler_id)
+    if not await acquire_crawler_slot(crawler_id):
+        return {
+            "crawler_id": crawler_id,
+            "status": "running",
+            "message": f"Crawler '{crawler_id}' is already running",
+        }
+
+    _crawl_results[crawler_id] = {
+        "crawler_id": crawler_id,
+        "status": "running",
+        "started_at": datetime.now(timezone.utc).isoformat(),
+        "items_found": 0,
+        "items_valid": 0,
+        "items_saved": 0,
+        "errors": [],
+    }
+    audit_log(AuditEventType.CRAWLER_RUN, request=request, resource=crawler_id)
+    asyncio.create_task(_run_and_store(crawler_id, _get_pipeline()))
+    return {
+        "crawler_id": crawler_id,
+        "status": "running",
+        "message": f"Crawler '{crawler_id}' started",
+    }
+
+
 @router.post("/{crawler_id}/retry-waf-blocked")
 @limiter.limit("5/minute")
 async def retry_waf_blocked(crawler_id: str, request: Request):
-    """WAF로 막혀 따로 보관한 category URL만 재시도한다."""
     if crawler_id != "lottemart":
         raise HTTPException(status_code=404, detail="WAF blocked retry is only supported for lottemart")
-    reg = _get_registry()
-    try:
-        crawler = reg.get_crawler(crawler_id)
-    except KeyError:
-        raise HTTPException(status_code=404, detail=f"Crawler '{crawler_id}' not found")
+    crawler = _require_crawler(crawler_id)
     loader = getattr(crawler, "load_waf_blocked_categories", None)
     queued = loader() if callable(loader) else []
     if not queued:
@@ -571,8 +417,9 @@ async def retry_waf_blocked(crawler_id: str, request: Request):
         "progress_stage": "waf_retry_started",
         "wafBlockedCount": len(queued),
     }
-    pipeline = _get_pipeline()
-    asyncio.create_task(_run_and_store(crawler_id, pipeline, crawl_method="crawl_waf_blocked_categories"))
+    asyncio.create_task(
+        _run_and_store(crawler_id, _get_pipeline(), crawl_method="crawl_waf_blocked_categories")
+    )
     return {
         "crawler_id": crawler_id,
         "status": "running",
@@ -581,23 +428,90 @@ async def retry_waf_blocked(crawler_id: str, request: Request):
     }
 
 
-async def _run_and_store(crawler_id: str, pipeline: CrawlPipeline, crawl_method: str = "crawl"):
-    """백그라운드: 크롤러 실행 → 파이프라인 → DB Admin 대기열 제출 → 이력 기록."""
+@router.get("/{crawler_id}/status")
+@limiter.limit("60/minute")
+async def get_crawler_status(crawler_id: str, request: Request):
+    _require_crawler(crawler_id)
+    result = _crawl_results.get(
+        crawler_id,
+        {"crawler_id": crawler_id, "status": "idle", "last_run": None},
+    )
+    etag = hashlib.md5(
+        json.dumps(result, sort_keys=True, default=str).encode()
+    ).hexdigest()
+    if_none_match = request.headers.get("if-none-match")
+    if if_none_match and if_none_match.strip('"') == etag:
+        return Response(status_code=304)
+    return JSONResponse(content=result, headers={"ETag": f'"{etag}"'})
+
+
+@router.get("/{crawler_id}/status/stream")
+async def stream_crawler_status(crawler_id: str, request: Request):
+    _require_crawler(crawler_id)
+
+    async def event_generator():
+        last_hash = None
+        stream_start = time.monotonic()
+        while True:
+            if await request.is_disconnected():
+                break
+            if time.monotonic() - stream_start > _SSE_MAX_DURATION:
+                yield 'data: {"status":"timeout","message":"Stream max duration reached"}\n\n'
+                break
+
+            result = _crawl_results.get(
+                crawler_id,
+                {"crawler_id": crawler_id, "status": "idle"},
+            )
+            current_json = json.dumps(result, sort_keys=True, default=str)
+            current_hash = hashlib.md5(current_json.encode()).hexdigest()
+            if current_hash != last_hash:
+                last_hash = current_hash
+                yield f"data: {current_json}\n\n"
+            if result.get("status") in _TERMINAL_STATUSES:
+                break
+            await asyncio.sleep(1)
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+        },
+    )
+
+
+async def _run_and_store(
+    crawler_id: str,
+    pipeline: CrawlPipeline,
+    crawl_method: str = "crawl",
+):
     async def publish_progress(payload: dict[str, Any]) -> None:
         current = _crawl_results.setdefault(crawler_id, {"crawler_id": crawler_id})
         quality = payload.get("quality_details") if isinstance(payload.get("quality_details"), dict) else {}
-        current.update({
-            "crawler_id": crawler_id,
-            "status": "running",
-            "progress_stage": payload.get("stage", current.get("progress_stage", "running")),
-            "items_found": payload.get("items_found", current.get("items_found", 0)),
-            "items_valid": payload.get("items_valid", current.get("items_valid", 0)),
-            "items_saved": payload.get("items_saved", current.get("items_saved", 0)),
-            "errors": payload.get("errors", current.get("errors", [])),
-        })
+        current.update(
+            {
+                "crawler_id": crawler_id,
+                "status": "running",
+                "progress_stage": payload.get("stage", current.get("progress_stage", "running")),
+                "items_found": payload.get("items_found", current.get("items_found", 0)),
+                "items_valid": payload.get("items_valid", current.get("items_valid", 0)),
+                "items_saved": payload.get("items_saved", current.get("items_saved", 0)),
+                "errors": payload.get("errors", current.get("errors", [])),
+            }
+        )
         if payload.get("strategy_used"):
             current["strategy_used"] = payload["strategy_used"]
-        for key in ("pages_attempted", "queries_attempted", "source_raw_count", "items_count", "deduplicated_count", "invalid_count"):
+        for key in (
+            "pages_attempted",
+            "queries_attempted",
+            "source_raw_count",
+            "items_count",
+            "deduplicated_count",
+            "invalid_count",
+        ):
             if key in payload:
                 current[key] = payload[key]
             elif key in quality:
@@ -605,7 +519,11 @@ async def _run_and_store(crawler_id: str, pipeline: CrawlPipeline, crawl_method:
 
     try:
         async with get_semaphore():
-            result = await pipeline.run_crawler(crawler_id, progress_callback=publish_progress, crawl_method=crawl_method)
+            result = await pipeline.run_crawler(
+                crawler_id,
+                progress_callback=publish_progress,
+                crawl_method=crawl_method,
+            )
 
         final_payload = {
             "crawler_id": crawler_id,
@@ -620,16 +538,8 @@ async def _run_and_store(crawler_id: str, pipeline: CrawlPipeline, crawl_method:
             "quality_details": result.quality_details,
             "finished_at": datetime.now(timezone.utc).isoformat(),
         }
-        if isinstance(result.quality_details, dict):
-            for key in ("pages_attempted", "queries_attempted", "source_raw_count", "items_count", "deduplicated_count", "invalid_count"):
-                if key in result.quality_details:
-                    final_payload[key] = result.quality_details[key]
         _crawl_results[crawler_id] = final_payload
         _append_run_history(crawler_id, result.status, result.duration)
-        logger.info(
-            f"Crawler '{crawler_id}' completed: {result.status} "
-            f"(found={result.items_found}, saved={result.items_saved})"
-        )
         audit_log(
             AuditEventType.CRAWL_COMPLETED,
             resource=crawler_id,
@@ -639,8 +549,8 @@ async def _run_and_store(crawler_id: str, pipeline: CrawlPipeline, crawl_method:
                 "duration": result.duration,
             },
         )
-    except Exception as e:
-        logger.error(f"Crawler '{crawler_id}' failed: {e}", exc_info=True)
+    except Exception:
+        logger.exception("Crawler '%s' failed", crawler_id)
         _crawl_results[crawler_id] = {
             "crawler_id": crawler_id,
             "status": "failed",
@@ -656,52 +566,3 @@ async def _run_and_store(crawler_id: str, pipeline: CrawlPipeline, crawl_method:
         )
     finally:
         await release_crawler_slot(crawler_id)
-
-
-@router.get("/{crawler_id}/status/stream")
-async def stream_crawler_status(crawler_id: str, request: Request):
-    """SSE 스트림: 크롤러 실행 상태를 실시간 push — 폴링 대비 지연·트래픽 대폭 감소."""
-    reg = _get_registry()
-    try:
-        reg.get_crawler(crawler_id)
-    except KeyError:
-        raise HTTPException(status_code=404, detail=f"Crawler '{crawler_id}' not found")
-
-    async def event_generator():
-        last_hash = None
-        stream_start = time.monotonic()
-        while True:
-            if await request.is_disconnected():
-                break
-            if time.monotonic() - stream_start > _SSE_MAX_DURATION:
-                yield f'data: {{"status":"timeout","message":"Stream max duration reached"}}\n\n'
-                break
-
-            result = _crawl_results.get(crawler_id, {
-                "crawler_id": crawler_id,
-                "status": "idle",
-            })
-
-            current_json = json.dumps(result, sort_keys=True, default=str)
-            current_hash = hashlib.md5(current_json.encode()).hexdigest()
-
-            # 상태 변경 시에만 이벤트 전송
-            if current_hash != last_hash:
-                last_hash = current_hash
-                yield f"data: {current_json}\n\n"
-
-            # 완료 상태면 스트림 종료
-            if result.get("status") in _TERMINAL_STATUSES:
-                break
-
-            await asyncio.sleep(1)
-
-    return StreamingResponse(
-        event_generator(),
-        media_type="text/event-stream",
-        headers={
-            "Cache-Control": "no-cache",
-            "Connection": "keep-alive",
-            "X-Accel-Buffering": "no",
-        },
-    )
