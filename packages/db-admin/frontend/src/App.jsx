@@ -5,18 +5,17 @@ import ErrorBoundary from './components/ErrorBoundary';
 import LoginPage from './pages/Login/LoginPage';
 import { isAuthenticated, subscribe, autoLoginDev } from './stores/authStore';
 
-const Dashboard          = lazy(() => import('./pages/Dashboard/Dashboard'));
-const Products           = lazy(() => import('./pages/Products/Products'));
-const Prices             = lazy(() => import('./pages/Prices/Prices'));
-const ClassificationPage = lazy(() => import('./pages/Classification/ClassificationPage'));
-const MatchingTablePage  = lazy(() => import('./pages/MatchingTable/MatchingTablePage'));
-const Analytics          = lazy(() => import('./pages/Analytics/Analytics'));
-const InboxPage          = lazy(() => import('./pages/Inbox/InboxPage'));
-const IntegrityPage      = lazy(() => import('./pages/Integrity/IntegrityPage'));
+const Dashboard           = lazy(() => import('./pages/Dashboard/Dashboard'));
+const Products            = lazy(() => import('./pages/Products/Products'));
+const Prices              = lazy(() => import('./pages/Prices/Prices'));
+const ClassificationPage  = lazy(() => import('./pages/Classification/ClassificationPage'));
+const MatchingTablePage   = lazy(() => import('./pages/MatchingTable/MatchingTablePage'));
+const Analytics           = lazy(() => import('./pages/Analytics/Analytics'));
+const InboxPage           = lazy(() => import('./pages/Inbox/InboxPage'));
+const IntegrityPage       = lazy(() => import('./pages/Integrity/IntegrityPage'));
 const CommunityModeration = lazy(() => import('./pages/Community/CommunityModeration'));
 const MaintenancePage     = lazy(() => import('./pages/Maintenance/MaintenancePage'));
 const ImportClassifiedPage = lazy(() => import('./pages/Import/ImportClassifiedPage'));
-const CatalogSyncPage      = lazy(() => import('./pages/CatalogSync/CatalogSyncPage'));
 
 function Loader() {
   return (
@@ -46,7 +45,6 @@ function useAuth() {
 export default function App() {
   const authed = useAuth();
 
-  // 개발 환경 자동 로그인 시도
   useEffect(() => {
     if (!authed) {
       autoLoginDev();
@@ -79,7 +77,6 @@ export default function App() {
             <Route path="/maintenance"    element={<PageBoundary><MaintenancePage /></PageBoundary>} />
             <Route path="/community"      element={<PageBoundary><CommunityModeration /></PageBoundary>} />
             <Route path="/import"         element={<PageBoundary><ImportClassifiedPage /></PageBoundary>} />
-            <Route path="/catalog-sync"   element={<PageBoundary><CatalogSyncPage /></PageBoundary>} />
           </Route>
         </Routes>
       </Suspense>
