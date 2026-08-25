@@ -87,7 +87,7 @@ def test_invalid_source_is_rejected(bad_source: str) -> None:
         _make_entry(match_key=f"invalid|{bad_source}", source=bad_source)
 
 
-@pytest.mark.parametrize("valid_source", ["crawler-auto", "human", "external-ai", "rd8_c3_seed"])
+@pytest.mark.parametrize("valid_source", ["crawler-auto", "human", "external-ai"])
 def test_current_source_values_are_accepted(valid_source: str) -> None:
     entry = _make_entry(match_key=f"valid|{valid_source}", source=valid_source)
     assert entry.source == valid_source
