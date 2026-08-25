@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
-import useAdminStore from '../../stores/adminStore';
+import { useEffect, useState } from 'react';
+import { Clock, Edit3, Play, Plus, Trash2, X } from 'lucide-react';
+
 import { api } from '../../api/client';
-import { Play, Edit3, Trash2, Plus, X, Clock } from 'lucide-react';
+import useAdminStore from '../../stores/adminStore';
 import styles from './Schedule.module.css';
 
 const CRON_PRESETS = {
@@ -33,17 +34,20 @@ function parseCronField(field, min, max) {
   for (const part of field.split(',')) {
     const trimmed = part.trim();
     if (trimmed === '*') {
-      for (let i = min; i <= max; i++) values.add(i);
+      for (let i = min; i <= max; i += 1) values.add(i);
     } else if (trimmed.includes('/')) {
       const [range, step] = trimmed.split('/');
-      const stepNum = parseInt(step);
-      const start = range === '*' ? min : parseInt(range);
+      const stepNum = Number.parseInt(step, 10);
+      const start = range === '*' ? min : Number.parseInt(range, 10);
+      if (!Number.isFinite(stepNum) || stepNum <= 0 || !Number.isFinite(start)) continue;
       for (let i = start; i <= max; i += stepNum) values.add(i);
     } else if (trimmed.includes('-')) {
       const [a, b] = trimmed.split('-').map(Number);
-      for (let i = a; i <= b; i++) values.add(i);
+      if (!Number.isFinite(a) || !Number.isFinite(b)) continue;
+      for (let i = a; i <= b; i += 1) values.add(i);
     } else {
-      values.add(parseInt(trimmed));
+      const parsed = Number.parseInt(trimmed, 10);
+      if (Number.isFinite(parsed)) values.add(parsed);
     }
   }
   return values;
@@ -59,42 +63,38 @@ function getNextCronRuns(cronExpr, count = 3) {
     const domSet = parseCronField(parts[2], 1, 31);
     const monthSet = parseCronField(parts[3], 1, 12);
     const dowSet = parseCronField(parts[4], 0, 6);
-
     const domSpecified = parts[2] !== '*';
     const dowSpecified = parts[4] !== '*';
-    const hourArr = [...hourSet].sort((a, b) => a - b);
-    const minuteArr = [...minuteSet].sort((a, b) => a - b);
-
+    const hours = [...hourSet].sort((a, b) => a - b);
+    const minutes = [...minuteSet].sort((a, b) => a - b);
     const results = [];
     const now = new Date();
-    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const day = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-    for (let dayIdx = 0; dayIdx < 400 && results.length < count; dayIdx++) {
-      const monthMatch = monthSet.has(d.getMonth() + 1);
-      let dayMatch;
-      if (domSpecified && dowSpecified) {
-        dayMatch = domSet.has(d.getDate()) || dowSet.has(d.getDay());
-      } else {
-        dayMatch = domSet.has(d.getDate()) && dowSet.has(d.getDay());
-      }
+    for (let dayIndex = 0; dayIndex < 400 && results.length < count; dayIndex += 1) {
+      const monthMatch = monthSet.has(day.getMonth() + 1);
+      const dayMatch = domSpecified && dowSpecified
+        ? domSet.has(day.getDate()) || dowSet.has(day.getDay())
+        : domSet.has(day.getDate()) && dowSet.has(day.getDay());
 
       if (monthMatch && dayMatch) {
-        for (const h of hourArr) {
-          if (results.length >= count) break;
-          for (const m of minuteArr) {
+        for (const hour of hours) {
+          for (const minute of minutes) {
             if (results.length >= count) break;
             const candidate = new Date(
-              d.getFullYear(), d.getMonth(), d.getDate(), h, m
+              day.getFullYear(),
+              day.getMonth(),
+              day.getDate(),
+              hour,
+              minute,
             );
-            if (candidate > now) {
-              results.push(candidate);
-            }
+            if (candidate > now) results.push(candidate);
           }
+          if (results.length >= count) break;
         }
       }
-      d.setDate(d.getDate() + 1);
+      day.setDate(day.getDate() + 1);
     }
-
     return results;
   } catch {
     return [];
@@ -105,29 +105,23 @@ function isValidCron(expr) {
   if (!expr || typeof expr !== 'string') return false;
   const parts = expr.trim().split(/\s+/);
   if (parts.length !== 5) return false;
-  const patterns = [
-    /^(\*|(\d+)([-/]\d+)?(,(\d+)([-/]\d+)?)*)$/,
-    /^(\*|(\d+)([-/]\d+)?(,(\d+)([-/]\d+)?)*)$/,
-    /^(\*|(\d+)([-/]\d+)?(,(\d+)([-/]\d+)?)*)$/,
-    /^(\*|(\d+)([-/]\d+)?(,(\d+)([-/]\d+)?)*)$/,
-    /^(\*|(\d+)([-/]\d+)?(,(\d+)([-/]\d+)?)*)$/,
-  ];
-  return parts.every((p, i) => patterns[i].test(p));
+  const pattern = /^(\*|(\d+)([-/]\d+)?(,(\d+)([-/]\d+)?)*)$/;
+  return parts.every((part) => pattern.test(part));
 }
 
 export default function Schedule() {
-  const schedules = useAdminStore((s) => s.schedules);
-  const crawlers = useAdminStore((s) => s.crawlers);
-  const toggleSchedule = useAdminStore((s) => s.toggleSchedule);
-  const updateScheduleCron = useAdminStore((s) => s.updateScheduleCron);
-  const fetchSchedules = useAdminStore((s) => s.fetchSchedules);
-  const fetchCrawlers = useAdminStore((s) => s.fetchCrawlers);
-  const updateScheduleApi = useAdminStore((s) => s.updateScheduleApi);
-  const createSchedule = useAdminStore((s) => s.createSchedule);
-  const deleteScheduleApi = useAdminStore((s) => s.deleteScheduleApi);
-  const loading = useAdminStore((s) => s.schedulesLoading);
-  const error = useAdminStore((s) => s.schedulesError);
+  const schedules = useAdminStore((state) => state.schedules);
+  const toggleSchedule = useAdminStore((state) => state.toggleSchedule);
+  const updateScheduleCron = useAdminStore((state) => state.updateScheduleCron);
+  const fetchSchedules = useAdminStore((state) => state.fetchSchedules);
+  const updateScheduleApi = useAdminStore((state) => state.updateScheduleApi);
+  const createSchedule = useAdminStore((state) => state.createSchedule);
+  const deleteScheduleApi = useAdminStore((state) => state.deleteScheduleApi);
+  const loading = useAdminStore((state) => state.schedulesLoading);
+  const error = useAdminStore((state) => state.schedulesError);
 
+  const [plugins, setPlugins] = useState([]);
+  const [pluginError, setPluginError] = useState('');
   const [editing, setEditing] = useState(null);
   const [editCron, setEditCron] = useState('');
   const [adding, setAdding] = useState(false);
@@ -139,14 +133,22 @@ export default function Schedule() {
 
   useEffect(() => {
     fetchSchedules();
-    fetchCrawlers();
-  }, [fetchSchedules, fetchCrawlers]);
+    api.getOrchestratorPlugins()
+      .then((data) => {
+        setPlugins(Array.isArray(data) ? data : data.plugins ?? []);
+        setPluginError('');
+      })
+      .catch(() => {
+        setPlugins([]);
+        setPluginError('실행 가능한 크롤러 목록을 불러올 수 없습니다.');
+      });
+  }, [fetchSchedules]);
 
   const formatDateTime = (iso) => {
     if (!iso) return '-';
-    const d = new Date(iso);
-    if (isNaN(d.getTime())) return '-';
-    return d.toLocaleString('ko-KR', {
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return '-';
+    return date.toLocaleString('ko-KR', {
       month: 'numeric',
       day: 'numeric',
       hour: '2-digit',
@@ -157,68 +159,58 @@ export default function Schedule() {
   const handleEdit = (schedule) => {
     setEditing(schedule);
     setEditCron(schedule.cron);
+    setCronError('');
   };
 
-  const handleSave = () => {
-    if (editing) {
-      if (!isValidCron(editCron)) {
-        setCronError('올바른 Cron 표현식을 입력하세요 (예: 0 9 * * *)');
-        return;
-      }
-      setCronError('');
-      updateScheduleCron(editing.id, editCron, cronToHuman(editCron));
-      updateScheduleApi(editing.crawlerId || editing.crawlerName, {
-        cron: editCron,
-        description: cronToHuman(editCron),
-      });
-      setEditing(null);
+  const handleSave = async () => {
+    if (!editing) return;
+    if (!isValidCron(editCron)) {
+      setCronError('올바른 Cron 표현식을 입력하세요 (예: 0 9 * * *)');
+      return;
     }
+    setCronError('');
+    updateScheduleCron(editing.id, editCron, cronToHuman(editCron));
+    const result = await updateScheduleApi(editing.id, {
+      cron: editCron,
+      description: cronToHuman(editCron),
+    });
+    if (result) setEditing(null);
   };
 
   const handleRunNow = async (schedule) => {
-    const name = schedule.crawlerId || schedule.crawlerName;
     setRunningId(schedule.id);
     try {
-      await api.runScheduleNow(name);
-    } catch {
-      // 실행 요청 실패 시 무시 (UI 피드백은 runningId 상태로 대체)
+      await api.runScheduleNow(schedule.crawlerId);
+      await fetchSchedules();
     } finally {
-      setTimeout(() => setRunningId(null), 2000);
+      setRunningId(null);
     }
   };
 
-  const handleDeleteClick = (schedule) => {
-    setDeleting(schedule);
+  const confirmDelete = async () => {
+    if (!deleting) return;
+    await deleteScheduleApi(deleting.id);
+    setDeleting(null);
   };
 
-  const confirmDelete = () => {
-    if (deleting) {
-      deleteScheduleApi(deleting.crawlerId || deleting.crawlerName);
-      setDeleting(null);
+  const handleAdd = async () => {
+    if (!addCrawler || !addCron) return;
+    if (!isValidCron(addCron)) {
+      setCronError('올바른 Cron 표현식을 입력하세요 (예: 0 9 * * *)');
+      return;
     }
+    setCronError('');
+    const result = await createSchedule({ crawler_name: addCrawler, cron: addCron });
+    if (!result) return;
+    setAdding(false);
+    setAddCrawler('');
+    setAddCron('0 7 * * *');
   };
 
-  const handleAdd = () => {
-    if (addCrawler && addCron) {
-      if (!isValidCron(addCron)) {
-        setCronError('올바른 Cron 표현식을 입력하세요 (예: 0 9 * * *)');
-        return;
-      }
-      setCronError('');
-      createSchedule({ crawler_name: addCrawler, cron: addCron });
-      setAdding(false);
-      setAddCrawler('');
-      setAddCron('0 7 * * *');
-    }
-  };
-
-  const scheduledCrawlerNames = new Set(
-    schedules.map((s) => s.crawlerId || s.crawlerName)
+  const scheduledPluginNames = new Set(schedules.map((schedule) => schedule.crawlerId));
+  const availablePlugins = plugins.filter(
+    (plugin) => !scheduledPluginNames.has(plugin.name),
   );
-  const availableCrawlers = crawlers.filter(
-    (c) => !scheduledCrawlerNames.has(c.id)
-  );
-
   const editNextRuns = getNextCronRuns(editCron);
   const addNextRuns = getNextCronRuns(addCron);
 
@@ -232,13 +224,16 @@ export default function Schedule() {
         </button>
       </div>
 
-      {error && (
+      {(error || pluginError) && (
         <div style={{
-          padding: '12px 16px', borderRadius: '8px', marginBottom: '16px',
-          background: 'rgba(248,113,113,0.15)', color: 'var(--red)',
+          padding: '12px 16px',
+          borderRadius: '8px',
+          marginBottom: '16px',
+          background: 'rgba(248,113,113,0.15)',
+          color: 'var(--red)',
           fontSize: 'var(--fs-sm)',
         }}>
-          {error}
+          {error || pluginError}
         </div>
       )}
 
@@ -249,12 +244,9 @@ export default function Schedule() {
       ) : schedules.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text3)' }}>
           등록된 스케줄이 없습니다.{' '}
-          <button
-            className={styles.inlineAddBtn}
-            onClick={() => setAdding(true)}
-          >
+          <button className={styles.inlineAddBtn} onClick={() => setAdding(true)}>
             스케줄을 추가
-          </button>
+          </button>{' '}
           하세요.
         </div>
       ) : (
@@ -271,16 +263,11 @@ export default function Schedule() {
             </thead>
             <tbody>
               {schedules.map((schedule) => {
-                const nextRuns = schedule.nextRuns || [];
+                const nextRuns = getNextCronRuns(schedule.cron);
                 return (
-                  <tr
-                    key={schedule.id}
-                    className={!schedule.enabled ? styles.disabledRow : ''}
-                  >
+                  <tr key={schedule.id} className={!schedule.enabled ? styles.disabledRow : ''}>
                     <td>
-                      <span className={styles.crawlerName}>
-                        {schedule.crawlerName}
-                      </span>
+                      <span className={styles.crawlerName}>{schedule.crawlerName}</span>
                     </td>
                     <td>
                       <code className={styles.cronCode}>{schedule.cron}</code>
@@ -291,14 +278,14 @@ export default function Schedule() {
                     <td>
                       <div className={styles.nextRunCell}>
                         <span className={styles.nextRun}>
-                          {formatDateTime(schedule.nextRun)}
+                          {formatDateTime(nextRuns[0]?.toISOString())}
                         </span>
                         {nextRuns.length > 1 && (
                           <div className={styles.nextRunsList}>
-                            {nextRuns.slice(1).map((run, i) => (
-                              <span key={i} className={styles.nextRunItem}>
+                            {nextRuns.slice(1).map((run, index) => (
+                              <span key={index} className={styles.nextRunItem}>
                                 <Clock size={10} />
-                                {formatDateTime(run)}
+                                {formatDateTime(run.toISOString())}
                               </span>
                             ))}
                           </div>
@@ -307,26 +294,19 @@ export default function Schedule() {
                     </td>
                     <td>
                       <button
-                        className={
-                          schedule.enabled ? styles.toggleOn : styles.toggle
-                        }
+                        className={schedule.enabled ? styles.toggleOn : styles.toggle}
                         onClick={() => toggleSchedule(schedule.id)}
                         aria-label={schedule.enabled ? '비활성화' : '활성화'}
                       />
                     </td>
                     <td>
                       <div className={styles.actionsCell}>
-                        <button
-                          className={styles.actionBtn}
-                          onClick={() => handleEdit(schedule)}
-                        >
+                        <button className={styles.actionBtn} onClick={() => handleEdit(schedule)}>
                           <Edit3 size={14} />
                           편집
                         </button>
                         <button
-                          className={`${styles.actionBtn} ${
-                            runningId === schedule.id ? styles.runningBtn : ''
-                          }`}
+                          className={`${styles.actionBtn} ${runningId === schedule.id ? styles.runningBtn : ''}`}
                           onClick={() => handleRunNow(schedule)}
                           disabled={runningId === schedule.id}
                         >
@@ -335,7 +315,7 @@ export default function Schedule() {
                         </button>
                         <button
                           className={`${styles.actionBtn} ${styles.deleteBtn}`}
-                          onClick={() => handleDeleteClick(schedule)}
+                          onClick={() => setDeleting(schedule)}
                         >
                           <Trash2 size={14} />
                         </button>
@@ -349,23 +329,15 @@ export default function Schedule() {
         </div>
       )}
 
-      {/* Edit Modal */}
       {editing && (
         <div
           className={styles.editOverlay}
-          onClick={(e) =>
-            e.target === e.currentTarget && setEditing(null)
-          }
+          onClick={(event) => event.target === event.currentTarget && setEditing(null)}
         >
           <div className={styles.editModal}>
             <div className={styles.modalHeader}>
-              <h3 className={styles.editTitle}>
-                스케줄 편집 — {editing.crawlerName}
-              </h3>
-              <button
-                className={styles.closeBtn}
-                onClick={() => setEditing(null)}
-              >
+              <h3 className={styles.editTitle}>스케줄 편집 — {editing.crawlerName}</h3>
+              <button className={styles.closeBtn} onClick={() => setEditing(null)}>
                 <X size={18} />
               </button>
             </div>
@@ -376,9 +348,7 @@ export default function Schedule() {
                 {Object.entries(CRON_PRESETS).map(([cron, label]) => (
                   <button
                     key={cron}
-                    className={`${styles.presetChip} ${
-                      editCron === cron ? styles.presetActive : ''
-                    }`}
+                    className={`${styles.presetChip} ${editCron === cron ? styles.presetActive : ''}`}
                     onClick={() => setEditCron(cron)}
                   >
                     {label}
@@ -388,19 +358,15 @@ export default function Schedule() {
             </div>
 
             <div className={styles.editField}>
-              <label className={styles.editLabel}>
-                Cron 표현식 (직접 입력)
-              </label>
+              <label className={styles.editLabel}>Cron 표현식 (직접 입력)</label>
               <input
                 className={styles.editInput}
                 type="text"
                 value={editCron}
-                onChange={(e) => setEditCron(e.target.value)}
-                placeholder="* * * * *"
+                onChange={(event) => setEditCron(event.target.value)}
+                placeholder="0 9 * * *"
               />
-              <div className={styles.editPreview}>
-                미리보기: {cronToHuman(editCron)}
-              </div>
+              <div className={styles.editPreview}>미리보기: {cronToHuman(editCron)}</div>
               {cronError && (
                 <div style={{ color: 'var(--red, #ef4444)', fontSize: '0.8rem', marginTop: '4px' }}>
                   {cronError}
@@ -411,17 +377,10 @@ export default function Schedule() {
             {editNextRuns.length > 0 && (
               <div className={styles.nextRunsPreview}>
                 <label className={styles.editLabel}>다음 실행 예정</label>
-                {editNextRuns.map((d, i) => (
-                  <div key={i} className={styles.previewRunItem}>
+                {editNextRuns.map((date, index) => (
+                  <div key={index} className={styles.previewRunItem}>
                     <Clock size={12} />
-                    {d.toLocaleString('ko-KR', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      weekday: 'short',
-                    })}
+                    {date.toLocaleString('ko-KR')}
                   </div>
                 ))}
               </div>
@@ -430,54 +389,47 @@ export default function Schedule() {
             <div className={styles.editActions}>
               <button
                 className={styles.cancelBtn}
-                onClick={() => { setEditing(null); setCronError(''); }}
+                onClick={() => {
+                  setEditing(null);
+                  setCronError('');
+                }}
               >
                 취소
               </button>
-              <button className={styles.saveBtn} onClick={handleSave}>
-                저장
-              </button>
+              <button className={styles.saveBtn} onClick={handleSave}>저장</button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Add Schedule Modal */}
       {adding && (
         <div
           className={styles.editOverlay}
-          onClick={(e) =>
-            e.target === e.currentTarget && setAdding(false)
-          }
+          onClick={(event) => event.target === event.currentTarget && setAdding(false)}
         >
           <div className={styles.editModal}>
             <div className={styles.modalHeader}>
               <h3 className={styles.editTitle}>스케줄 추가</h3>
-              <button
-                className={styles.closeBtn}
-                onClick={() => setAdding(false)}
-              >
+              <button className={styles.closeBtn} onClick={() => setAdding(false)}>
                 <X size={18} />
               </button>
             </div>
 
             <div className={styles.editField}>
-              <label className={styles.editLabel}>크롤러 선택</label>
+              <label className={styles.editLabel}>실행 대상 선택</label>
               <select
                 className={styles.editSelect}
                 value={addCrawler}
-                onChange={(e) => setAddCrawler(e.target.value)}
+                onChange={(event) => setAddCrawler(event.target.value)}
               >
-                <option value="">크롤러를 선택하세요</option>
-                {availableCrawlers.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
+                <option value="">실행 대상을 선택하세요</option>
+                {availablePlugins.map((plugin) => (
+                  <option key={plugin.name} value={plugin.name}>
+                    {plugin.display_name || plugin.name}
                   </option>
                 ))}
-                {availableCrawlers.length === 0 && crawlers.length > 0 && (
-                  <option disabled>
-                    모든 크롤러에 스케줄이 설정되어 있습니다
-                  </option>
+                {availablePlugins.length === 0 && plugins.length > 0 && (
+                  <option disabled>모든 실행 대상에 스케줄이 설정되어 있습니다</option>
                 )}
               </select>
             </div>
@@ -488,9 +440,7 @@ export default function Schedule() {
                 {Object.entries(CRON_PRESETS).map(([cron, label]) => (
                   <button
                     key={cron}
-                    className={`${styles.presetChip} ${
-                      addCron === cron ? styles.presetActive : ''
-                    }`}
+                    className={`${styles.presetChip} ${addCron === cron ? styles.presetActive : ''}`}
                     onClick={() => setAddCron(cron)}
                   >
                     {label}
@@ -500,19 +450,15 @@ export default function Schedule() {
             </div>
 
             <div className={styles.editField}>
-              <label className={styles.editLabel}>
-                Cron 표현식 (직접 입력)
-              </label>
+              <label className={styles.editLabel}>Cron 표현식 (직접 입력)</label>
               <input
                 className={styles.editInput}
                 type="text"
                 value={addCron}
-                onChange={(e) => setAddCron(e.target.value)}
-                placeholder="* * * * *"
+                onChange={(event) => setAddCron(event.target.value)}
+                placeholder="0 7 * * *"
               />
-              <div className={styles.editPreview}>
-                미리보기: {cronToHuman(addCron)}
-              </div>
+              <div className={styles.editPreview}>미리보기: {cronToHuman(addCron)}</div>
               {cronError && (
                 <div style={{ color: 'var(--red, #ef4444)', fontSize: '0.8rem', marginTop: '4px' }}>
                   {cronError}
@@ -523,17 +469,10 @@ export default function Schedule() {
             {addNextRuns.length > 0 && (
               <div className={styles.nextRunsPreview}>
                 <label className={styles.editLabel}>다음 실행 예정</label>
-                {addNextRuns.map((d, i) => (
-                  <div key={i} className={styles.previewRunItem}>
+                {addNextRuns.map((date, index) => (
+                  <div key={index} className={styles.previewRunItem}>
                     <Clock size={12} />
-                    {d.toLocaleString('ko-KR', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      weekday: 'short',
-                    })}
+                    {date.toLocaleString('ko-KR')}
                   </div>
                 ))}
               </div>
@@ -542,7 +481,10 @@ export default function Schedule() {
             <div className={styles.editActions}>
               <button
                 className={styles.cancelBtn}
-                onClick={() => { setAdding(false); setCronError(''); }}
+                onClick={() => {
+                  setAdding(false);
+                  setCronError('');
+                }}
               >
                 취소
               </button>
@@ -558,27 +500,20 @@ export default function Schedule() {
         </div>
       )}
 
-      {/* Delete Confirmation Dialog */}
       {deleting && (
         <div
           className={styles.editOverlay}
-          onClick={(e) =>
-            e.target === e.currentTarget && setDeleting(null)
-          }
+          onClick={(event) => event.target === event.currentTarget && setDeleting(null)}
         >
           <div className={styles.confirmModal}>
             <h3 className={styles.editTitle}>스케줄 삭제</h3>
             <p className={styles.confirmText}>
-              <strong>{deleting.crawlerName}</strong> 스케줄을 정말
-              삭제하시겠습니까?
+              <strong>{deleting.crawlerName}</strong> 스케줄을 정말 삭제하시겠습니까?
               <br />
               이 작업은 되돌릴 수 없습니다.
             </p>
             <div className={styles.editActions}>
-              <button
-                className={styles.cancelBtn}
-                onClick={() => setDeleting(null)}
-              >
+              <button className={styles.cancelBtn} onClick={() => setDeleting(null)}>
                 취소
               </button>
               <button className={styles.dangerBtn} onClick={confirmDelete}>
