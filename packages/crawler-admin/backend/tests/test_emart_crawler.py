@@ -1,18 +1,8 @@
-"""Emart crawler — TDD regression against the slim live-capture fixture.
+"""Emart parser contracts using a representative saved first-party fixture.
 
-Fixture provenance
-------------------
-``tests/fixtures/emart/sale_listing_5cards.html`` and ``.json`` were
-extracted from the real live capture
-``tests/fixtures/live_probe/emart_search.html`` (1.4 MB, search?query=행사,
-captured 2026-05-16 from https://emart.ssg.com — Next.js SSR with a real
-``__NEXT_DATA__`` payload). The slim file keeps only 5 ``dataList`` items
-plus the original JSON wrapping so that ``EmartCrawler.parse`` (which
-walks ``props.pageProps.dehydratedState.queries[*].state.data.areaList``)
-recognises it byte-for-byte the same way it recognises a live response.
-
-The five products are real SSG items (itemId 1000641687348 등) so any
-selector / contract change against the live site breaks this regression.
+These tests protect current parser, price, identity, provenance and entrypoint
+behaviour. They intentionally avoid historical crawl-volume targets, dated live
+probe milestones, or project-phase gates.
 """
 
 from __future__ import annotations
