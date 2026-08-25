@@ -1,111 +1,33 @@
-"""스케줄 관리 라우트 — JSON 파일 기반 영구 저장."""
+"""Schedule compatibility API backed by the current crawl orchestrator.
 
+The frontend still calls ``/api/schedules``.  This router preserves that small
+HTTP contract while storing schedules and run history only in ``orchestrator.db``.
+The abandoned ``schedules.json`` + ``CrawlScheduler`` control plane is gone.
+"""
 from __future__ import annotations
 
 import asyncio
-import json
 import logging
-from datetime import datetime, timedelta, timezone
-from pathlib import Path
-from typing import Optional
-
-from fastapi import APIRouter, HTTPException, Request
-from pydantic import BaseModel
+import os
+from datetime import datetime, timezone
 
 from apscheduler.triggers.cron import CronTrigger
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 
-from api.app import limiter
-from audit import audit_log, AuditEventType
-from scheduler.scheduler import CrawlScheduler
+from services import crawl_orchestrator as orch
 
 logger = logging.getLogger(__name__)
-
 router = APIRouter(prefix="/api/schedules", tags=["schedules"])
 
-_scheduler: CrawlScheduler | None = None
-_SCHEDULES_FILE = Path(__file__).resolve().parent.parent.parent / "schedules.json"
-
-
-def _load_saved_schedules() -> list[dict]:
-    """저장된 스케줄을 파일에서 로드."""
-    if _SCHEDULES_FILE.exists():
-        try:
-            with open(_SCHEDULES_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            pass
-    return []
-
-
-def _save_schedules(schedules: list[dict]) -> None:
-    """스케줄을 파일에 저장."""
-    try:
-        with open(_SCHEDULES_FILE, "w", encoding="utf-8") as f:
-            json.dump(schedules, f, ensure_ascii=False, indent=2)
-    except Exception as e:
-        logger.error(f"스케줄 저장 실패: {e}")
-
-
-def _sync_to_file(sched: CrawlScheduler) -> None:
-    """현재 APScheduler 상태를 파일에 동기화."""
-    jobs = sched.list_jobs()
-    saved = _load_saved_schedules()
-    # 기존 저장 데이터에서 enabled 상태 유지
-    enabled_map = {s["crawler_name"]: s.get("enabled", True) for s in saved}
-    cron_map = {s["crawler_name"]: s.get("cron", "") for s in saved}
-
-    result = []
-    for job in jobs:
-        crawler_name = job.get("name", "").replace("crawl:", "")
-        if not crawler_name:
-            crawler_name = job.get("job_id", "").replace("crawl_", "")
-        result.append({
-            "crawler_name": crawler_name,
-            "job_id": job.get("job_id", ""),
-            "cron": cron_map.get(crawler_name, str(job.get("trigger", ""))),
-            "next_run": job.get("next_run"),
-            "enabled": enabled_map.get(crawler_name, True),
-        })
-
-    # 비활성 스케줄도 유지 (APScheduler에는 없지만 파일에 저장)
-    active_names = {r["crawler_name"] for r in result}
-    for s in saved:
-        if s["crawler_name"] not in active_names and not s.get("enabled", True):
-            result.append(s)
-
-    _save_schedules(result)
-
-
-def _get_scheduler() -> CrawlScheduler:
-    global _scheduler
-    if _scheduler is None:
-        _scheduler = CrawlScheduler()
-        # 시작 시 저장된 스케줄 복원
-        saved = _load_saved_schedules()
-        for s in saved:
-            if s.get("enabled", True) and s.get("cron"):
-                try:
-                    _scheduler.add_job(s["crawler_name"], s["cron"])
-                except Exception as e:
-                    logger.warning(f"스케줄 복원 실패 {s['crawler_name']}: {e}")
-    return _scheduler
-
-
-def _compute_next_runs(cron_expr: str, count: int = 3) -> list[str]:
-    """cron 표현식에서 다음 N회 실행 시간 계산."""
-    try:
-        trigger = CronTrigger.from_crontab(cron_expr)
-        runs: list[str] = []
-        current = datetime.now(timezone.utc)
-        for _ in range(count):
-            next_time = trigger.get_next_fire_time(None, current)
-            if next_time is None:
-                break
-            runs.append(next_time.isoformat())
-            current = next_time + timedelta(seconds=1)
-        return runs
-    except Exception:
-        return []
+_DISPLAY_NAMES = {
+    "emart": "이마트",
+    "homeplus": "홈플러스",
+    "lottemart": "롯데마트",
+    "costco": "코스트코",
+}
+_SCHEDULE_POLL_SECONDS = max(30, int(os.getenv("WALLETSAVIOR_SCHEDULE_POLL_SECONDS", "60")))
+_schedule_task: asyncio.Task | None = None
 
 
 class ScheduleCreate(BaseModel):
@@ -115,228 +37,176 @@ class ScheduleCreate(BaseModel):
 
 class ScheduleUpdate(BaseModel):
     cron: str
-    description: Optional[str] = None
+    description: str | None = None
 
 
 class ScheduleToggle(BaseModel):
     enabled: bool
 
 
+def _ensure_current_plugins_registered() -> None:
+    """Register the four current mart adapters idempotently."""
+    for mod_name in ("emart", "homeplus", "lottemart", "costco"):
+        try:
+            module = __import__(f"crawlers.marts.{mod_name}.plugin", fromlist=["register"])
+            module.register()
+        except Exception as exc:
+            logger.warning("[schedule] plugin %s registration failed: %s", mod_name, exc)
+
+
+def _resolve_schedule(identifier: str) -> dict | None:
+    """Resolve a new schedule id, with crawler-name fallback for old UI calls."""
+    store = orch.get_run_store()
+    found = store.get_schedule(identifier)
+    if found is not None:
+        return found
+    matches = store.list_schedules(plugin_name=identifier)
+    return matches[0] if matches else None
+
+
+def _next_runs(cron_expr: str, count: int = 3) -> list[str]:
+    if not cron_expr:
+        return []
+    try:
+        trigger = CronTrigger.from_crontab(cron_expr, timezone=timezone.utc)
+    except Exception:
+        return []
+
+    runs: list[str] = []
+    cursor = datetime.now(timezone.utc)
+    previous = None
+    for _ in range(count):
+        next_time = trigger.get_next_fire_time(previous, cursor)
+        if next_time is None:
+            break
+        runs.append(next_time.isoformat())
+        previous = next_time
+        cursor = next_time
+    return runs
+
+
+def _legacy_view(schedule: dict) -> dict:
+    cron = schedule.get("cron_expr") or ""
+    next_runs = _next_runs(cron)
+    plugin_name = schedule.get("plugin_name") or ""
+    return {
+        "id": schedule["id"],
+        "crawlerId": plugin_name,
+        "crawlerName": _DISPLAY_NAMES.get(plugin_name, plugin_name),
+        "cron": cron,
+        "description": "",
+        "nextRun": next_runs[0] if next_runs else None,
+        "nextRuns": next_runs,
+        "enabled": bool(schedule.get("enabled")),
+    }
+
+
+async def _run_due_once() -> list[dict]:
+    """Run currently due orchestrator schedules without blocking FastAPI's loop."""
+    _ensure_current_plugins_registered()
+    return await asyncio.to_thread(orch.run_due_schedules)
+
+
+async def _schedule_loop() -> None:
+    while True:
+        try:
+            await _run_due_once()
+        except asyncio.CancelledError:
+            raise
+        except Exception:
+            logger.exception("[schedule] orchestrator schedule tick failed")
+        await asyncio.sleep(_SCHEDULE_POLL_SECONDS)
+
+
+@router.on_event("startup")
+async def _start_schedule_loop() -> None:
+    global _schedule_task
+    if os.getenv("WALLETSAVIOR_DISABLE_SCHEDULE_LOOP", "").lower() in {"1", "true", "yes"}:
+        return
+    if _schedule_task is None or _schedule_task.done():
+        _schedule_task = asyncio.create_task(_schedule_loop())
+
+
+@router.on_event("shutdown")
+async def _stop_schedule_loop() -> None:
+    global _schedule_task
+    if _schedule_task is None:
+        return
+    _schedule_task.cancel()
+    try:
+        await _schedule_task
+    except asyncio.CancelledError:
+        pass
+    _schedule_task = None
+
+
 @router.get("")
 async def list_schedules():
-    """현재 스케줄 목록 (파일 저장 데이터 + APScheduler 상태 병합)."""
-    sched = _get_scheduler()
-    jobs = sched.list_jobs()
-    saved = _load_saved_schedules()
-
-    # APScheduler 작업 → dict
-    job_map = {}
-    for job in jobs:
-        crawler_name = job.get("name", "").replace("crawl:", "")
-        if not crawler_name:
-            crawler_name = job.get("job_id", "").replace("crawl_", "")
-        job_map[crawler_name] = job
-
-    # 저장된 스케줄 기반으로 병합
-    saved_map = {s["crawler_name"]: s for s in saved}
-
-    result = []
-    # 저장 파일의 스케줄 순회
-    seen = set()
-    for s in saved:
-        name = s["crawler_name"]
-        seen.add(name)
-        job = job_map.get(name)
-        cron_expr = s.get("cron", "")
-        result.append({
-            "id": s.get("job_id", f"crawl_{name}"),
-            "crawlerId": name,
-            "crawlerName": s.get("display_name", name),
-            "cron": cron_expr,
-            "description": s.get("description", ""),
-            "nextRun": job["next_run"] if job else s.get("next_run"),
-            "nextRuns": _compute_next_runs(cron_expr) if cron_expr else [],
-            "enabled": s.get("enabled", True),
-        })
-
-    # APScheduler에만 있는 작업 추가
-    for name, job in job_map.items():
-        if name not in seen:
-            job_cron = str(job.get("trigger", ""))
-            result.append({
-                "id": job.get("job_id", f"crawl_{name}"),
-                "crawlerId": name,
-                "crawlerName": name,
-                "cron": job_cron,
-                "description": "",
-                "nextRun": job.get("next_run"),
-                "nextRuns": _compute_next_runs(job_cron) if job_cron else [],
-                "enabled": True,
-            })
-
-    return {"schedules": result}
+    return {"schedules": [_legacy_view(row) for row in orch.get_run_store().list_schedules()]}
 
 
 @router.post("")
-async def create_schedule(request: Request, body: ScheduleCreate):
-    """스케줄 추가 + 파일 저장."""
-    sched = _get_scheduler()
-    try:
-        result = sched.add_job(body.crawler_name, body.cron)
-    except Exception as exc:
-        logger.warning("스케줄 생성 실패 %s: %s", body.crawler_name, exc)
-        raise HTTPException(status_code=400, detail="스케줄 생성에 실패했습니다. 입력값을 확인하세요.")
-
-    # 파일에 저장
-    saved = _load_saved_schedules()
-    saved = [s for s in saved if s["crawler_name"] != body.crawler_name]
-    saved.append({
-        "crawler_name": body.crawler_name,
-        "job_id": result.get("job_id", f"crawl_{body.crawler_name}"),
-        "cron": body.cron,
-        "enabled": True,
-    })
-    _save_schedules(saved)
-
-    audit_log(
-        AuditEventType.SCHEDULE_CREATE,
-        request=request,
-        resource=body.crawler_name,
-        detail={"cron": body.cron},
+async def create_schedule(body: ScheduleCreate):
+    if not _next_runs(body.cron, count=1):
+        raise HTTPException(status_code=400, detail="올바른 cron 표현식이 필요합니다")
+    schedule_id = orch.get_run_store().create_schedule(
+        plugin_name=body.crawler_name,
+        cron_expr=body.cron,
+        enabled=True,
     )
-
-    return result
-
-
-@router.put("/{crawler_name}")
-async def update_schedule(crawler_name: str, request: Request, body: ScheduleUpdate):
-    """스케줄 변경 + 파일 저장."""
-    sched = _get_scheduler()
-    try:
-        result = sched.update_job(crawler_name, body.cron)
-    except Exception as exc:
-        logger.warning("스케줄 변경 실패 %s: %s", crawler_name, exc)
-        raise HTTPException(status_code=400, detail="스케줄 변경에 실패했습니다. 입력값을 확인하세요.")
-
-    # 파일 업데이트
-    saved = _load_saved_schedules()
-    updated = False
-    for s in saved:
-        if s["crawler_name"] == crawler_name:
-            s["cron"] = body.cron
-            if body.description:
-                s["description"] = body.description
-            updated = True
-            break
-    if not updated:
-        saved.append({
-            "crawler_name": crawler_name,
-            "job_id": f"crawl_{crawler_name}",
-            "cron": body.cron,
-            "description": body.description or "",
-            "enabled": True,
-        })
-    _save_schedules(saved)
-
-    return result
+    return _legacy_view(orch.get_run_store().get_schedule(schedule_id))
 
 
-@router.delete("/{crawler_name}")
-async def delete_schedule(crawler_name: str, request: Request):
-    """스케줄 삭제 + 파일에서 제거."""
-    sched = _get_scheduler()
-    removed = sched.remove_job(crawler_name)
-    if not removed:
+@router.put("/{identifier}")
+async def update_schedule(identifier: str, body: ScheduleUpdate):
+    if not _next_runs(body.cron, count=1):
+        raise HTTPException(status_code=400, detail="올바른 cron 표현식이 필요합니다")
+    schedule = _resolve_schedule(identifier)
+    if schedule is None:
         raise HTTPException(status_code=404, detail="Schedule not found")
-
-    # 파일에서 제거
-    saved = _load_saved_schedules()
-    saved = [s for s in saved if s["crawler_name"] != crawler_name]
-    _save_schedules(saved)
-
-    audit_log(
-        AuditEventType.SCHEDULE_DELETE,
-        request=request,
-        resource=crawler_name,
-    )
-
-    return {"status": "removed", "crawler_name": crawler_name}
+    updated = orch.get_run_store().update_schedule(schedule["id"], cron_expr=body.cron)
+    return _legacy_view(updated)
 
 
-@router.put("/{crawler_name}/toggle")
-async def toggle_schedule(crawler_name: str, request: Request, body: ScheduleToggle):
-    """스케줄 활성/비활성 토글 — 파일에 저장하고 APScheduler에 반영."""
-    sched = _get_scheduler()
-    saved = _load_saved_schedules()
-
-    target = None
-    for s in saved:
-        if s["crawler_name"] == crawler_name:
-            target = s
-            break
-
-    if body.enabled:
-        # 활성화: APScheduler에 작업 추가
-        cron = target["cron"] if target else None
-        if not cron:
-            raise HTTPException(400, "cron 표현식을 찾을 수 없습니다")
-        try:
-            sched.add_job(crawler_name, cron)
-        except Exception as e:
-            logger.warning("스케줄 활성화 실패 %s: %s", crawler_name, e)
-            raise HTTPException(400, "스케줄 활성화에 실패했습니다.")
-    else:
-        # 비활성화: APScheduler에서 제거
-        sched.remove_job(crawler_name)
-
-    if target:
-        target["enabled"] = body.enabled
-    else:
-        saved.append({
-            "crawler_name": crawler_name,
-            "job_id": f"crawl_{crawler_name}",
-            "cron": "",
-            "enabled": body.enabled,
-        })
-    _save_schedules(saved)
-
-    audit_log(
-        AuditEventType.SCHEDULE_TOGGLE,
-        request=request,
-        resource=crawler_name,
-        detail={"enabled": body.enabled},
-    )
-
-    return {"crawler_name": crawler_name, "enabled": body.enabled}
+@router.delete("/{identifier}")
+async def delete_schedule(identifier: str):
+    schedule = _resolve_schedule(identifier)
+    if schedule is None:
+        raise HTTPException(status_code=404, detail="Schedule not found")
+    orch.get_run_store().delete_schedule(schedule["id"])
+    return {"status": "removed", "id": schedule["id"], "crawler_name": schedule["plugin_name"]}
 
 
-@router.post("/{crawler_name}/run-now")
-async def run_schedule_now(crawler_name: str):
-    """스케줄된 크롤러를 즉시 실행."""
-    sched = _get_scheduler()
+@router.put("/{identifier}/toggle")
+async def toggle_schedule(identifier: str, body: ScheduleToggle):
+    schedule = _resolve_schedule(identifier)
+    if schedule is None:
+        raise HTTPException(status_code=404, detail="Schedule not found")
+    updated = orch.get_run_store().update_schedule(schedule["id"], enabled=body.enabled)
+    return _legacy_view(updated)
 
-    saved = _load_saved_schedules()
-    exists = any(s["crawler_name"] == crawler_name for s in saved)
-    if not exists:
-        jobs = sched.list_jobs()
-        exists = any(
-            j.get("name", "").replace("crawl:", "") == crawler_name
-            or j.get("job_id", "").replace("crawl_", "") == crawler_name
-            for j in jobs
-        )
-    if not exists:
-        raise HTTPException(
-            status_code=404,
-            detail=f"스케줄 '{crawler_name}'을(를) 찾을 수 없습니다",
-        )
 
+async def _trigger_schedule(schedule: dict) -> None:
+    _ensure_current_plugins_registered()
     try:
-        asyncio.create_task(sched.run_now(crawler_name))
-        return {
-            "status": "started",
-            "crawler_name": crawler_name,
-            "message": f"'{crawler_name}' 즉시 실행 시작",
-        }
-    except Exception as exc:
-        logger.error("즉시 실행 실패 %s: %s", crawler_name, exc, exc_info=True)
-        raise HTTPException(status_code=500, detail="즉시 실행에 실패했습니다.")
+        await asyncio.to_thread(
+            orch.trigger_run,
+            plugin_name=schedule["plugin_name"],
+            triggered_by="manual",
+            schedule_id=schedule["id"],
+        )
+    except Exception:
+        logger.exception("[schedule] manual run failed for %s", schedule["plugin_name"])
+
+
+@router.post("/{identifier}/run-now")
+async def run_schedule_now(identifier: str):
+    schedule = _resolve_schedule(identifier)
+    if schedule is None:
+        raise HTTPException(status_code=404, detail="Schedule not found")
+    asyncio.create_task(_trigger_schedule(schedule))
+    return {
+        "status": "started",
+        "schedule_id": schedule["id"],
+        "crawler_name": schedule["plugin_name"],
+    }
