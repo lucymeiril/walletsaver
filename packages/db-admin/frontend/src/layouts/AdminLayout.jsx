@@ -1,7 +1,8 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import {
   LayoutDashboard, Package, DollarSign,
-  FolderTree, BarChart3, Menu, X, Database, Inbox, LogOut, ShieldCheck, MessageSquareWarning, Wrench, Upload, Table2, RefreshCw,
+  FolderTree, BarChart3, Menu, X, Database, Inbox, LogOut,
+  ShieldCheck, MessageSquareWarning, Wrench, Upload, Table2,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { logout } from '../stores/authStore';
@@ -19,7 +20,6 @@ const NAV = [
   { to: '/maintenance',    label: 'DB 유지보수', icon: Wrench },
   { to: '/community',      label: '커뮤니티',   icon: MessageSquareWarning },
   { to: '/import',         label: '분류 Import', icon: Upload },
-  { to: '/catalog-sync',   label: '카탈로그 동기화', icon: RefreshCw },
 ];
 
 export default function AdminLayout() {
@@ -34,10 +34,8 @@ export default function AdminLayout() {
 
   return (
     <div className={s.wrap}>
-      {/* Mobile overlay */}
       {mobileOpen && <div className={s.overlay} onClick={() => setMobileOpen(false)} />}
 
-      {/* Sidebar */}
       <aside className={`${s.sidebar} ${collapsed ? s.collapsed : ''} ${mobileOpen ? s.mobileOpen : ''}`}>
         <div className={s.brand}>
           <Database size={24} className={s.brandIcon} />
@@ -71,7 +69,6 @@ export default function AdminLayout() {
         </button>
       </aside>
 
-      {/* Main */}
       <div className={`${s.main} ${collapsed ? s.mainExpanded : ''}`}>
         <header className={s.topbar}>
           <button className={s.mobileMenuBtn} onClick={() => setMobileOpen(true)}>
