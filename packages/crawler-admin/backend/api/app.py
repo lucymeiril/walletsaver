@@ -86,7 +86,6 @@ def create_app() -> FastAPI:
     app.include_router(error_router)
 
     from api.routes.crawlers import router as crawlers_router
-    from api.routes.schedules import router as schedules_router
     from api.routes.logs import router as logs_router
     from api.routes.ingestion import router as ingestion_router
     from api.routes.dashboard import router as dashboard_router
@@ -101,7 +100,6 @@ def create_app() -> FastAPI:
     auth_dependencies = [Depends(verify_api_key)]
 
     app.include_router(crawlers_router, dependencies=auth_dependencies)
-    app.include_router(schedules_router, dependencies=auth_dependencies)
     app.include_router(logs_router, dependencies=auth_dependencies)
     app.include_router(ingestion_router, dependencies=auth_dependencies)
     app.include_router(dashboard_router, dependencies=auth_dependencies)
@@ -127,22 +125,20 @@ def create_app() -> FastAPI:
         result = {"status": "ok", "service": "crawler-admin"}
 
         try:
-            from api.routes import schedules as schedule_routes
+            from api.routes import orchestrator as orchestrator_routes
             from services.crawl_orchestrator import get_run_store
 
             store = get_run_store()
             active_schedules = store.list_schedules(enabled_only=True)
             recent_runs = store.list_runs(page=1, page_size=1).get("items", [])
-            task = getattr(schedule_routes, "_schedule_task", None)
-            schedule_loop_enabled = os.getenv(
-                "WALLETSAVIOR_DISABLE_SCHEDULE_LOOP", ""
-            ).lower() not in {"1", "true", "yes"}
-            result["scheduler_running"] = bool(
-                schedule_loop_enabled and task is not None and not task.done()
-            )
+            result["scheduler_running"] = orchestrator_routes.schedule_loop_running()
             result["scheduled_jobs"] = len(active_schedules)
             result["last_crawl"] = recent_runs[0] if recent_runs else None
-            if schedule_loop_enabled and active_schedules and not result["scheduler_running"]:
+            if (
+                orchestrator_routes.schedule_loop_enabled()
+                and active_schedules
+                and not result["scheduler_running"]
+            ):
                 result["status"] = "degraded"
         except Exception:
             logger.exception("[health] orchestrator schedule status unavailable")

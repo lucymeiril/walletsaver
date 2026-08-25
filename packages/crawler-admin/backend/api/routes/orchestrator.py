@@ -1,11 +1,13 @@
 """오케스트레이터 API 라우트 — /api/v1/plugins, /api/v1/schedules, /api/v1/runs."""
 from __future__ import annotations
 
+import asyncio
 import logging
+import os
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Query
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from services import crawl_orchestrator as orch
 
@@ -44,7 +46,7 @@ class AdHocBody(BaseModel):
     requested_by: str = "admin"
 
 
-# ── 플러그인 자동 등록 (idempotent) ─────────────────────────────
+# ── Current mart adapters ────────────────────────────────────────
 
 _PLUGIN_INIT_DONE = False
 
@@ -62,6 +64,70 @@ def _ensure_plugins_registered() -> None:
             logger.warning("[orchestrator] plugin %s register failed: %s", mod, exc)
 
 
+# ── Schedule execution loop ──────────────────────────────────────
+
+_SCHEDULE_POLL_SECONDS = max(
+    30,
+    int(os.getenv("WALLETSAVIOR_SCHEDULE_POLL_SECONDS", "60")),
+)
+_schedule_task: asyncio.Task | None = None
+
+
+async def _run_due_once() -> list[dict]:
+    """Run currently due schedules without blocking FastAPI's event loop."""
+    _ensure_plugins_registered()
+    return await asyncio.to_thread(orch.run_due_schedules)
+
+
+async def _schedule_loop() -> None:
+    while True:
+        try:
+            await _run_due_once()
+        except asyncio.CancelledError:
+            raise
+        except Exception:
+            logger.exception("[orchestrator] schedule tick failed")
+        await asyncio.sleep(_SCHEDULE_POLL_SECONDS)
+
+
+def schedule_loop_enabled() -> bool:
+    return os.getenv("WALLETSAVIOR_DISABLE_SCHEDULE_LOOP", "").lower() not in {
+        "1",
+        "true",
+        "yes",
+    }
+
+
+def schedule_loop_running() -> bool:
+    return bool(
+        schedule_loop_enabled()
+        and _schedule_task is not None
+        and not _schedule_task.done()
+    )
+
+
+@router.on_event("startup")
+async def _start_schedule_loop() -> None:
+    global _schedule_task
+    if not schedule_loop_enabled():
+        return
+    if _schedule_task is None or _schedule_task.done():
+        _schedule_task = asyncio.create_task(_schedule_loop())
+
+
+@router.on_event("shutdown")
+async def _stop_schedule_loop() -> None:
+    global _schedule_task
+    if _schedule_task is None:
+        return
+    _schedule_task.cancel()
+    try:
+        await _schedule_task
+    except asyncio.CancelledError:
+        pass
+    _schedule_task = None
+
+
 # ── Plugins ───
 
 @router.get("/plugins")
@@ -76,7 +142,7 @@ async def list_plugins():
             "name": p.name,
             "mart_kind": getattr(p, "mart_kind", p.name),
             "display_name": getattr(p, "display_name", p.name),
-            "supports_targeted_search": True,
+            "supports_targeted_search": bool(getattr(p, "supports_targeted_search", False)),
             "last_run": last,
         })
     return {"plugins": out}
@@ -198,13 +264,14 @@ async def retry_run_endpoint(run_id: str):
 
 @router.post("/runs/retry-last-failed/{plugin_name}", status_code=202)
 async def retry_last_failed_endpoint(plugin_name: str):
-    """플러그인(=크롤러)의 마지막 실패 run을 1-click 재시도.
-
-    Crawlers 페이지의 카드 우하단 퀵버튼에서 호출. 마지막 실행이 실패가 아닐 경우 404.
-    실패 run을 찾으면 기존 retry_run 경로를 그대로 재사용해 멱등성/감사 기록 동작 유지.
-    """
+    """Retry the most recent failed run for one current crawler."""
     _ensure_plugins_registered()
-    page = orch.get_run_store().list_runs(plugin_name=plugin_name, status="failed", page=1, page_size=1)
+    page = orch.get_run_store().list_runs(
+        plugin_name=plugin_name,
+        status="failed",
+        page=1,
+        page_size=1,
+    )
     items = page.get("items", [])
     if not items:
         raise HTTPException(status_code=404, detail=f"{plugin_name}의 최근 실패 run을 찾을 수 없습니다.")
@@ -215,4 +282,8 @@ async def retry_last_failed_endpoint(plugin_name: str):
         new_run_id = orch.retry_run(failed_run_id)
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc))
-    return {"run_id": new_run_id, "retried_from": failed_run_id, "plugin_name": plugin_name}
+    return {
+        "run_id": new_run_id,
+        "retried_from": failed_run_id,
+        "plugin_name": plugin_name,
+    }
