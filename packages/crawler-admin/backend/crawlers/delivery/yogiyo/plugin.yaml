@@ -1,8 +1,0 @@
-name: yogiyo
-display_name: 요기요
-category: delivery
-module: crawlers.delivery.yogiyo.crawler
-class_name: YogiyoCrawler
-schedule: "0 */6 * * *"
-difficulty: hard
-notes: "위치 기반 API, 인증 필요"

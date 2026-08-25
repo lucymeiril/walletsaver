@@ -1,8 +1,0 @@
-name: coupangeats
-display_name: 쿠팡이츠
-category: delivery
-module: crawlers.delivery.coupangeats.crawler
-class_name: CoupangEatsCrawler
-schedule: "0 */6 * * *"
-difficulty: hard
-notes: "주소 설정 필요, JS 챌린지 — Selenium/Playwright 필요"

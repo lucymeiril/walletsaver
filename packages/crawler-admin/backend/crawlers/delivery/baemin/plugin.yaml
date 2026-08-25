@@ -1,8 +1,0 @@
-name: baemin
-display_name: 배달의민족
-category: delivery
-module: crawlers.delivery.baemin.crawler
-class_name: BaeminCrawler
-schedule: "0 */6 * * *"
-difficulty: hard
-notes: "앱 API 인증 필요 — 웹 공개 정보 제한적"
