@@ -98,71 +98,6 @@ async function fetchWithETag(url, options = {}) {
   return data;
 }
 
-function subscribeCrawlerStatus(crawlerId, { onData, onError, onComplete }) {
-  const MAX_RETRIES = 5;
-  const BASE_DELAY_MS = 1000;
-  const MAX_DELAY_MS = 10000;
-
-  let retryCount = 0;
-  let currentSource = null;
-  let closed = false;
-  let retryTimer = null;
-
-  function connect() {
-    if (closed) return;
-
-    const url = `${API_BASE}/crawlers/${crawlerId}/status/stream`;
-    const eventSource = new EventSource(url);
-    currentSource = eventSource;
-
-    eventSource.onmessage = (event) => {
-      retryCount = 0;
-      try {
-        const data = JSON.parse(event.data);
-        onData?.(data);
-        if (['success', 'failed', 'partial_failure'].includes(data.status)) {
-          cleanup();
-          onComplete?.(data);
-        }
-      } catch (e) {
-        onError?.(e);
-      }
-    };
-
-    eventSource.onerror = () => {
-      eventSource.close();
-      currentSource = null;
-      if (closed) return;
-
-      if (retryCount < MAX_RETRIES) {
-        retryCount++;
-        const delay = Math.min(
-          BASE_DELAY_MS * Math.pow(2, retryCount - 1) + Math.random() * 500,
-          MAX_DELAY_MS,
-        );
-        retryTimer = setTimeout(connect, delay);
-      } else {
-        onError?.(new Error('SSE connection failed after ' + MAX_RETRIES + ' retries'));
-      }
-    };
-  }
-
-  function cleanup() {
-    closed = true;
-    if (retryTimer) {
-      clearTimeout(retryTimer);
-      retryTimer = null;
-    }
-    if (currentSource) {
-      currentSource.close();
-      currentSource = null;
-    }
-  }
-
-  connect();
-  return { close: cleanup };
-}
-
 function toScheduleView(row) {
   const pluginName = row.plugin_name || '';
   const cron = row.cron_expr || '';
@@ -204,23 +139,11 @@ export const api = {
     timeoutMs: 120000,
   }).then(r => r.json()),
   getCrawlerStatus: (id) => fetchWithETag(`${API_BASE}/crawlers/${id}/status`),
-  subscribeCrawlerStatus,
-  toggleCrawler: (id, status) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/toggle`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ status }),
-  }).then(r => r.json()),
   bulkRunCrawlers: (ids) => fetchWithTimeout(`${API_BASE}/crawlers/bulk-run`, {
     method: 'POST',
     timeoutMs: 120000,
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ crawler_ids: ids }),
-  }).then(r => r.json()),
-  getCrawlerSettings: (id) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/settings`).then(r => r.json()),
-  updateCrawlerSettings: (id, data) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/settings`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
   }).then(r => r.json()),
   getDashboardStats: (params = {}) => fetchWithTimeout(`${API_BASE}/dashboard/stats?${new URLSearchParams(params)}`).then(r => r.json()),
   getLogs: (params) => fetchWithTimeout(`${API_BASE}/logs?${new URLSearchParams(params)}`).then(r => r.json()),
@@ -318,18 +241,6 @@ export const api = {
   getRuns: (params = {}) => fetchWithTimeout(`${API_BASE}/v1/runs?${new URLSearchParams(params)}`).then(r => r.json()),
   getRunLogs: (runId) => fetchWithTimeout(`${API_BASE}/v1/runs/${runId}/logs`).then(r => r.json()),
   retryRun: (runId) => fetchWithTimeout(`${API_BASE}/v1/runs/${runId}/retry`, { method: 'POST' }).then(r => r.json()),
-  retryLastFailed: (pluginName) =>
-    fetchWithTimeout(`${API_BASE}/v1/runs/retry-last-failed/${encodeURIComponent(pluginName)}`, { method: 'POST' })
-      .then(async (r) => {
-        const text = await r.text();
-        const data = text ? JSON.parse(text) : {};
-        if (!r.ok) {
-          const err = new Error(data.detail || `재시도 실패 (status=${r.status})`);
-          err.status = r.status;
-          throw err;
-        }
-        return data;
-      }),
 
   getRecentExports: (limit = 20) =>
     fetchWithTimeout(`${API_BASE}/export/raw-batch/recent?limit=${limit}`).then(r => r.json()),
