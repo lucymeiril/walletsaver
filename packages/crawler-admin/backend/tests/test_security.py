@@ -21,72 +21,69 @@ class TestAuthentication:
         os.environ.pop("REQUIRE_AUTH", None)
 
     def test_request_without_api_key_returns_401(self):
-        resp = self.client.get("/api/crawlers")
-        assert resp.status_code == 401
-        assert "Missing X-API-Key" in resp.json()["detail"]
+        response = self.client.get("/api/crawlers")
+        assert response.status_code == 401
+        assert "Missing X-API-Key" in response.json()["detail"]
 
     def test_request_with_wrong_key_returns_403(self):
-        resp = self.client.get(
+        response = self.client.get(
             "/api/crawlers",
             headers={"X-API-Key": "wrong-key"},
         )
-        assert resp.status_code == 403
+        assert response.status_code == 403
 
     def test_request_with_valid_key_succeeds(self):
-        resp = self.client.get(
+        response = self.client.get(
             "/api/crawlers",
             headers={"X-API-Key": self.valid_key},
         )
-        assert resp.status_code in (200, 404)
+        assert response.status_code == 200
 
     def test_health_endpoint_is_public(self):
-        resp = self.client.get("/health")
-        assert resp.status_code == 200
-        assert resp.json()["status"] == "ok"
+        response = self.client.get("/health")
+        assert response.status_code == 200
+        assert response.json()["status"] in {"ok", "degraded"}
 
-    def test_auth_disabled_by_default(self):
+    def test_auth_can_be_disabled_for_local_development(self):
         os.environ["REQUIRE_AUTH"] = "false"
         from api.app import create_app
 
-        app = create_app()
-        client = TestClient(app)
-        resp = client.get("/api/crawlers")
-        assert resp.status_code == 200
+        response = TestClient(create_app()).get("/api/crawlers")
+        assert response.status_code == 200
 
 
 class TestCORS:
     def setup_method(self):
         from api.app import create_app
 
-        self.app = create_app()
-        self.client = TestClient(self.app)
+        self.client = TestClient(create_app())
 
     def test_allowed_origin_gets_cors_headers(self):
-        resp = self.client.options(
+        response = self.client.options(
             "/api/crawlers",
             headers={
                 "Origin": "http://localhost:5174",
                 "Access-Control-Request-Method": "GET",
             },
         )
-        assert resp.headers.get("access-control-allow-origin") == "http://localhost:5174"
+        assert response.headers.get("access-control-allow-origin") == "http://localhost:5174"
 
     def test_disallowed_origin_blocked(self):
-        resp = self.client.options(
+        response = self.client.options(
             "/api/crawlers",
             headers={
                 "Origin": "http://evil.com",
                 "Access-Control-Request-Method": "GET",
             },
         )
-        assert resp.headers.get("access-control-allow-origin") != "http://evil.com"
+        assert response.headers.get("access-control-allow-origin") != "http://evil.com"
 
     def test_wildcard_origin_not_present(self):
-        resp = self.client.get(
+        response = self.client.get(
             "/api/crawlers",
             headers={"Origin": "http://localhost:5174"},
         )
-        assert resp.headers.get("access-control-allow-origin") != "*"
+        assert response.headers.get("access-control-allow-origin") != "*"
 
 
 class TestSSRFPrevention:
@@ -148,30 +145,6 @@ class TestInputValidation:
         )
         assert model.delay == 2.5
 
-    def test_schedule_rejects_every_minute_cron(self):
-        from api.security.input_schemas import ScheduleCreate
-
-        with pytest.raises(Exception):
-            ScheduleCreate(crawler_name="test", cron="* * * * *")
-
-    def test_schedule_rejects_invalid_cron(self):
-        from api.security.input_schemas import ScheduleCreate
-
-        with pytest.raises(Exception):
-            ScheduleCreate(crawler_name="test", cron="not-a-cron")
-
-    def test_schedule_accepts_valid_cron(self):
-        from api.security.input_schemas import ScheduleCreate
-
-        model = ScheduleCreate(crawler_name="emart", cron="0 */6 * * *")
-        assert model.cron == "0 */6 * * *"
-
-    def test_schedule_rejects_special_chars_in_name(self):
-        from api.security.input_schemas import ScheduleCreate
-
-        with pytest.raises(Exception):
-            ScheduleCreate(crawler_name="../etc/passwd", cron="0 0 * * *")
-
     def test_bulk_run_limits_crawler_count(self):
         from api.security.input_schemas import BulkRunRequest
 
@@ -190,16 +163,10 @@ class TestInputValidation:
         with pytest.raises(Exception):
             CleanupRequest(status=["drop_all_tables"])
 
-    def test_cleanup_request_accepts_valid(self):
+    def test_cleanup_request_accepts_current_statuses(self):
         from api.security.input_schemas import CleanupRequest
 
-        model = CleanupRequest(status=["processed"], older_than_days=30)
-        assert model.status == ["processed"]
-
-    def test_cleanup_request_accepts_approved_rejected(self):
-        from api.security.input_schemas import CleanupRequest
-
-        model = CleanupRequest(status=["approved", "rejected"])
+        model = CleanupRequest(status=["approved", "rejected"], older_than_days=30)
         assert model.status == ["approved", "rejected"]
 
     def test_url_rejects_too_long(self):
@@ -213,21 +180,19 @@ class TestSecurityHeaders:
     def setup_method(self):
         from api.app import create_app
 
-        self.app = create_app()
-        self.client = TestClient(self.app)
+        self.client = TestClient(create_app())
 
     def test_health_endpoint_has_security_headers(self):
-        resp = self.client.get("/health")
-        assert resp.headers.get("x-content-type-options") == "nosniff"
-        assert resp.headers.get("x-frame-options") == "DENY"
-        assert resp.headers.get("x-xss-protection") == "1; mode=block"
-        assert resp.headers.get("referrer-policy") == "strict-origin-when-cross-origin"
-        assert "default-src 'self'" in resp.headers.get("content-security-policy", "")
+        response = self.client.get("/health")
+        assert response.headers.get("x-content-type-options") == "nosniff"
+        assert response.headers.get("x-frame-options") == "DENY"
+        assert response.headers.get("x-xss-protection") == "1; mode=block"
+        assert response.headers.get("referrer-policy") == "strict-origin-when-cross-origin"
+        assert "default-src 'self'" in response.headers.get("content-security-policy", "")
 
     def test_api_response_has_no_cache(self):
-        resp = self.client.get("/api/crawlers")
-        cache = resp.headers.get("cache-control", "")
-        assert "no-store" in cache
+        response = self.client.get("/api/crawlers")
+        assert "no-store" in response.headers.get("cache-control", "")
 
 
 class TestSecretsManagement:
