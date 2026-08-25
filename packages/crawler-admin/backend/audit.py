@@ -48,9 +48,6 @@ class AuditEventType:
     CRAWL_FAILED = "crawler.failed"
     DATA_SUBMISSION = "data.submission"
     DATA_INGESTION = "data.ingestion"
-    OPERATOR_BROWSER_SESSION_OPEN = "operator_browser.session_open"
-    OPERATOR_BROWSER_SESSION_ACTION = "operator_browser.session_action"
-    OPERATOR_BROWSER_SESSION_CLOSE = "operator_browser.session_close"
 
 
 def audit_log(
