@@ -76,19 +76,6 @@ const useAdminStore = create((set, get) => ({
     }
   },
 
-  toggleCrawlerStatus: async (id) => {
-    const { crawlers } = get();
-    const crawler = crawlers.find((c) => c.id === id);
-    if (!crawler) return;
-    const newStatus = crawler.status === 'active' ? 'inactive' : 'active';
-    set({ crawlers: crawlers.map((c) => c.id === id ? { ...c, status: newStatus } : c) });
-    try {
-      await api.toggleCrawler(id, newStatus);
-    } catch (err) {
-      set({ crawlers, crawlersError: toUserMessage(err, '상태 변경에 실패했습니다.') });
-    }
-  },
-
   getFilteredCrawlers: () => {
     const { crawlers, crawlerFilter } = get();
     return crawlerFilter === 'all' ? crawlers : crawlers.filter((c) => c.category === crawlerFilter);
