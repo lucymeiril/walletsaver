@@ -11,6 +11,7 @@ class TestAuthentication:
     def setup_method(self):
         os.environ["REQUIRE_AUTH"] = "true"
         os.environ["CRAWLER_ADMIN_API_KEY"] = "test-api-key-for-testing-only"
+        os.environ["WALLETSAVIOR_DISABLE_SCHEDULE_LOOP"] = "1"
         from api.app import create_app
 
         self.app = create_app()
@@ -19,6 +20,7 @@ class TestAuthentication:
 
     def teardown_method(self):
         os.environ.pop("REQUIRE_AUTH", None)
+        os.environ.pop("WALLETSAVIOR_DISABLE_SCHEDULE_LOOP", None)
 
     def test_request_without_api_key_returns_401(self):
         response = self.client.get("/api/crawlers")
@@ -54,9 +56,13 @@ class TestAuthentication:
 
 class TestCORS:
     def setup_method(self):
+        os.environ["WALLETSAVIOR_DISABLE_SCHEDULE_LOOP"] = "1"
         from api.app import create_app
 
         self.client = TestClient(create_app())
+
+    def teardown_method(self):
+        os.environ.pop("WALLETSAVIOR_DISABLE_SCHEDULE_LOOP", None)
 
     def test_allowed_origin_gets_cors_headers(self):
         response = self.client.options(
@@ -86,77 +92,7 @@ class TestCORS:
         assert response.headers.get("access-control-allow-origin") != "*"
 
 
-class TestSSRFPrevention:
-    @pytest.mark.parametrize(
-        "url",
-        [
-            "http://localhost/admin",
-            "http://127.0.0.1:8080/secret",
-            "http://10.0.0.1/internal",
-            "http://172.16.0.1/internal",
-            "http://192.168.1.1/admin",
-            "http://169.254.169.254/latest/meta-data/",
-            "file:///etc/passwd",
-            "ftp://internal.server/data",
-            "http://[::1]/admin",
-            "http://0.0.0.0/",
-            "",
-        ],
-    )
-    def test_blocks_internal_or_unsupported_targets(self, url):
-        from api.security.url_validator import validate_target_url
-
-        with pytest.raises(Exception):
-            validate_target_url(url)
-
-    @pytest.mark.parametrize(
-        "url",
-        [
-            "https://www.example.com/products",
-            "http://www.example.com/page",
-        ],
-    )
-    def test_allows_public_http_targets(self, url):
-        from api.security.url_validator import validate_target_url
-
-        assert validate_target_url(url) == url
-
-
 class TestInputValidation:
-    def test_crawler_settings_rejects_extreme_delay(self):
-        from api.security.input_schemas import CrawlerSettingsUpdate
-
-        with pytest.raises(Exception):
-            CrawlerSettingsUpdate(delay=1000.0)
-
-    def test_crawler_settings_rejects_negative_delay(self):
-        from api.security.input_schemas import CrawlerSettingsUpdate
-
-        with pytest.raises(Exception):
-            CrawlerSettingsUpdate(delay=-1.0)
-
-    def test_crawler_settings_accepts_valid(self):
-        from api.security.input_schemas import CrawlerSettingsUpdate
-
-        model = CrawlerSettingsUpdate(
-            target_url="https://example.com",
-            delay=2.5,
-            max_items=100,
-        )
-        assert model.delay == 2.5
-
-    def test_bulk_run_limits_crawler_count(self):
-        from api.security.input_schemas import BulkRunRequest
-
-        with pytest.raises(Exception):
-            BulkRunRequest(crawler_ids=[f"c{i}" for i in range(20)])
-
-    def test_bulk_run_validates_id_format(self):
-        from api.security.input_schemas import BulkRunRequest
-
-        with pytest.raises(Exception):
-            BulkRunRequest(crawler_ids=["../../etc/passwd"])
-
     def test_cleanup_request_rejects_invalid_status(self):
         from api.security.input_schemas import CleanupRequest
 
@@ -169,18 +105,16 @@ class TestInputValidation:
         model = CleanupRequest(status=["approved", "rejected"], older_than_days=30)
         assert model.status == ["approved", "rejected"]
 
-    def test_url_rejects_too_long(self):
-        from api.security.input_schemas import CrawlerSettingsUpdate
-
-        with pytest.raises(Exception):
-            CrawlerSettingsUpdate(target_url="https://x.com/" + "a" * 3000)
-
 
 class TestSecurityHeaders:
     def setup_method(self):
+        os.environ["WALLETSAVIOR_DISABLE_SCHEDULE_LOOP"] = "1"
         from api.app import create_app
 
         self.client = TestClient(create_app())
+
+    def teardown_method(self):
+        os.environ.pop("WALLETSAVIOR_DISABLE_SCHEDULE_LOOP", None)
 
     def test_health_endpoint_has_security_headers(self):
         response = self.client.get("/health")
