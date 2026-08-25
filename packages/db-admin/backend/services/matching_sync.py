@@ -1,25 +1,13 @@
-"""MatchingEntry synchronization facade with the current trust ladder.
+"""Public MatchingEntry synchronization module.
 
-The implementation lives in :mod:`services.matching_sync_core`.  Older RD8 seed
-rows are still valid database knowledge and must round-trip through backup/sync.
-Keep sync conflict ordering aligned with matching-key migration:
-
-    human > external-ai > rd8_c3_seed > crawler-auto
+The implementation lives in :mod:`services.matching_sync_core`.  This facade
+keeps the historical import path stable without altering the current trust
+policy defined by the core module.
 """
 from __future__ import annotations
 
 import sys
 
 from . import matching_sync_core as _core
-
-_core._SOURCE_TRUST.clear()
-_core._SOURCE_TRUST.update(
-    {
-        "crawler-auto": 0,
-        "rd8_c3_seed": 1,
-        "external-ai": 2,
-        "human": 3,
-    }
-)
 
 sys.modules[__name__] = _core
