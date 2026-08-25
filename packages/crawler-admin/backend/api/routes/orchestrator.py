@@ -11,6 +11,7 @@ from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 
 from services import crawl_orchestrator as orch
+from services import orchestrator_dispatch as dispatch
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1", tags=["orchestrator"])
@@ -113,7 +114,7 @@ _schedule_task: asyncio.Task | None = None
 
 async def _run_due_once() -> list[dict]:
     _ensure_plugins_registered()
-    return await asyncio.to_thread(orch.run_due_schedules)
+    return await asyncio.to_thread(dispatch.dispatch_due_schedules)
 
 
 async def _schedule_loop() -> None:
@@ -233,7 +234,7 @@ async def delete_schedule(schedule_id: str):
 async def trigger_run_endpoint(body: TriggerRunBody):
     _require_registered_plugin(body.plugin_name)
     try:
-        run_id = orch.trigger_run(
+        run_id = dispatch.dispatch_run(
             plugin_name=body.plugin_name,
             target_categories=body.target_categories,
             triggered_by="manual",
@@ -252,7 +253,7 @@ async def run_ad_hoc_endpoint(body: AdHocBody):
             detail=f"{body.plugin_name} 크롤러는 현재 개별 검색 실행을 지원하지 않습니다.",
         )
     try:
-        request_id = orch.run_ad_hoc(
+        request_id = dispatch.dispatch_ad_hoc(
             plugin_name=body.plugin_name,
             search_query=body.search_query,
             canonical_id=body.canonical_id,
@@ -299,7 +300,7 @@ async def run_logs(run_id: str):
 async def retry_run_endpoint(run_id: str):
     _ensure_plugins_registered()
     try:
-        new_run_id = orch.retry_run(run_id)
+        new_run_id = dispatch.dispatch_retry(run_id)
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     return {"run_id": new_run_id, "retried_from": run_id}
@@ -321,7 +322,7 @@ async def retry_last_failed_endpoint(plugin_name: str):
     if not failed_run_id:
         raise HTTPException(status_code=500, detail="실패 run의 ID를 확인할 수 없습니다.")
     try:
-        new_run_id = orch.retry_run(failed_run_id)
+        new_run_id = dispatch.dispatch_retry(failed_run_id)
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     return {
