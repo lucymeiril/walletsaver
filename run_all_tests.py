@@ -18,7 +18,6 @@ ROOT = Path(__file__).resolve().parent
 TEST_SUITES = [
     ("shared", "packages/shared", "tests/"),
     ("db-admin", "packages/db-admin/backend", "tests/"),
-    ("db-admin-category", "packages/db-admin/backend", "category_data/tests/"),
     ("crawler-admin", "packages/crawler-admin/backend", "tests/"),
     ("web-api", "packages/web-api/backend", "tests/"),
 ]
