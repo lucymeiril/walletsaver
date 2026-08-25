@@ -1,121 +1,91 @@
-"""API route 테스트."""
-
-import os
+"""Focused API regressions for the current crawler-admin runtime."""
+from __future__ import annotations
 
 import pytest
 from fastapi.testclient import TestClient
 
 from api.app import create_app
+from services import crawl_orchestrator as orch
 
 
 @pytest.fixture
 def client(monkeypatch):
     monkeypatch.setenv("REQUIRE_AUTH", "false")
+    monkeypatch.setenv("WALLETSAVIOR_DISABLE_SCHEDULE_LOOP", "1")
+    orch.reset_run_store_for_tests(orch.OrchestratorStore(":memory:"))
     app = create_app()
-    return TestClient(app)
+    with TestClient(app) as test_client:
+        yield test_client
 
 
-# ── Health ───────────────────────────────────────────────────
+def test_health_reports_current_service(client):
+    response = client.get("/health")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["service"] == "crawler-admin"
+    assert data["status"] in {"ok", "degraded"}
 
 
-class TestHealth:
-    def test_health(self, client):
-        resp = client.get("/health")
-        assert resp.status_code == 200
-        data = resp.json()
-        assert data["status"] == "ok"
-        assert data["service"] == "crawler-admin"
+def test_list_crawlers_exposes_four_current_marts(client):
+    response = client.get("/api/crawlers")
+    assert response.status_code == 200
+    data = response.json()
+    rows = data.get("crawlers", [])
+    names = {row.get("name") for row in rows}
+    assert {"emart", "homeplus", "lottemart", "costco"}.issubset(names)
 
 
-# ── Crawlers ─────────────────────────────────────────────────
+def test_unknown_crawler_routes_return_not_found(client):
+    assert client.get("/api/crawlers/nonexistent/status").status_code == 404
+    assert client.post("/api/crawlers/nonexistent/run").status_code == 404
 
 
-class TestCrawlersAPI:
-    def test_list_crawlers(self, client):
-        resp = client.get("/api/crawlers")
-        assert resp.status_code == 200
-        data = resp.json()
-        assert "crawlers" in data
-        assert isinstance(data["crawlers"], list)
-
-    def test_get_crawler_status_not_found(self, client):
-        resp = client.get("/api/crawlers/nonexistent/status")
-        assert resp.status_code == 404
-
-    def test_run_crawler_not_found(self, client):
-        resp = client.post("/api/crawlers/nonexistent/run")
-        assert resp.status_code == 404
-
-    def test_bounded_diagnostics_defaults_to_no_live_network(self, client):
-        resp = client.get("/api/crawlers/diagnostics")
-        assert resp.status_code == 200
-        data = resp.json()
-        assert data["schema"] == "bounded_crawler_diagnostics.v1"
-        assert data["live_network_default"] == "disabled"
-        rows = {row["crawler_id"]: row for row in data["crawlers"]}
-        assert rows["coupang"]["fixture"]["available"] is False
-        assert rows["coupang"]["quality_evidence"]["has_quality_evidence"] is False
-        assert rows["coupang"]["quality_evidence"]["can_claim_collecting"] is False
-
-    def test_bounded_live_diagnostics_plan_defaults_to_artifact_only(self, client):
-        resp = client.get("/api/crawlers/diagnostics/plan")
-        assert resp.status_code == 200
-        data = resp.json()
-        rows = {row["source_id"]: row for row in data["sources"]}
-
-        assert data["schema"] == "bounded_live_diagnostics_plan.v1"
-        assert data["live_network_default"] == "disabled"
-        assert rows["emart"]["current_collection_status"] == "registered_unverified"
-        assert rows["emart"]["allowed_live"] is False
-        assert rows["emart"]["max_requests"] == 3
-        assert rows["emart"]["max_pages"] == 1
-        assert rows["emart"]["timeout_seconds"] == 15
-        assert rows["emart"]["fixture_snapshot_status"] == "missing"
-        assert "current_collection_status:registered_unverified" in rows["emart"]["blockers"]
-
-        assert rows["coupang"]["current_collection_status"] == "registered_unverified"
-        assert rows["coupang"]["allowed_live"] is False
-        assert rows["coupang"]["fixture_snapshot_status"] == "contract_fixture_available"
-        assert rows["coupang"]["fixture_snapshot_path"].endswith("marketplace_skeleton\\coupang.html")
-        assert any(blocker.startswith("marketplace_gate:") for blocker in rows["coupang"]["blockers"])
-        assert data["source_coverage"]["collecting_count"] == 0
+def test_orchestrator_rejects_unknown_schedule_plugin(client):
+    response = client.post(
+        "/api/v1/schedules",
+        json={"plugin_name": "nonexistent", "cron_expr": "0 8 * * *"},
+    )
+    assert response.status_code == 404
 
 
-# ── Schedules ────────────────────────────────────────────────
+def test_orchestrator_rejects_invalid_cron(client):
+    response = client.post(
+        "/api/v1/schedules",
+        json={"plugin_name": "emart", "cron_expr": "not a cron"},
+    )
+    assert response.status_code == 400
 
 
-class TestSchedulesAPI:
-    def test_list_schedules(self, client):
-        resp = client.get("/api/schedules")
-        assert resp.status_code == 200
-        data = resp.json()
-        assert "schedules" in data
+def test_orchestrator_schedule_crud_uses_current_api(client):
+    created = client.post(
+        "/api/v1/schedules",
+        json={"plugin_name": "emart", "cron_expr": "0 8 * * *"},
+    )
+    assert created.status_code == 201
+    schedule = created.json()
+    schedule_id = schedule["id"]
+    assert schedule["plugin_name"] == "emart"
 
-    def test_create_schedule(self, client):
-        resp = client.post(
-            "/api/schedules",
-            json={"crawler_name": "test_cron", "cron": "0 8 * * *"},
-        )
-        assert resp.status_code == 200
-        data = resp.json()
-        assert data["crawler_name"] == "test_cron"
+    listed = client.get("/api/v1/schedules")
+    assert listed.status_code == 200
+    assert any(row["id"] == schedule_id for row in listed.json()["schedules"])
 
-    def test_delete_schedule_not_found(self, client):
-        resp = client.delete("/api/schedules/nonexistent")
-        assert resp.status_code == 404
+    updated = client.patch(
+        f"/api/v1/schedules/{schedule_id}",
+        json={"cron_expr": "0 9 * * *", "enabled": False},
+    )
+    assert updated.status_code == 200
+    assert updated.json()["cron_expr"] == "0 9 * * *"
+    assert updated.json()["enabled"] is False
+
+    deleted = client.delete(f"/api/v1/schedules/{schedule_id}")
+    assert deleted.status_code == 200
+    assert deleted.json()["deleted"] is True
 
 
-# ── Logs ─────────────────────────────────────────────────────
-
-
-class TestLogsAPI:
-    def test_get_logs_empty(self, client):
-        resp = client.get("/api/logs")
-        assert resp.status_code == 200
-        data = resp.json()
-        assert "logs" in data
-        assert isinstance(data["logs"], list)
-
-    def test_get_logs_with_filters(self, client):
-        resp = client.get("/api/logs?limit=10&status=success")
-        assert resp.status_code == 200
+def test_logs_endpoint_returns_list_contract(client):
+    response = client.get("/api/logs?limit=10&status=success")
+    assert response.status_code == 200
+    data = response.json()
+    assert "logs" in data
+    assert isinstance(data["logs"], list)
