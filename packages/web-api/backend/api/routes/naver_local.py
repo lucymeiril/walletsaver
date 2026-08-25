@@ -1,29 +1,24 @@
-"""
-네이버 플레이스 실시간 검색 API — 위치 기반 가게/식당/주유소 정보.
+"""Naver Place search helpers for the Local page.
 
-Playwright sync API를 스레드 풀에서 실행하여 네이버 지도의 봇 감지를 우회한다.
-Windows asyncio ProactorEventLoop에서는 Playwright async API가 작동하지 않으므로,
-sync API + ThreadPoolExecutor 조합으로 해결한다.
-네이버는 headless 브라우저를 감지하여 API 응답을 차단하므로,
---disable-blink-features=AutomationControlled 등 stealth 설정이 필수다.
-
-엔드포인트:
-    GET /api/local/naver-search — 네이버 지도 기반 주변 가게 검색
+The user-facing iframe/search UX stays available even when structured Naver
+search is unavailable.  API failures return empty results explicitly; this
+module never fabricates stores, coordinates, ratings, or fuel prices.
 """
+from __future__ import annotations
 
 import asyncio
 import json
 import logging
 from concurrent.futures import ThreadPoolExecutor
+
 from fastapi import APIRouter, Query
 from fastapi.responses import StreamingResponse
+
 from api.schemas.common import ApiResponse
 
 logger = logging.getLogger(__name__)
-
 router = APIRouter()
 
-# Playwright는 브라우저 인스턴스 생성 비용이 크므로 스레드 풀을 재사용
 _executor = ThreadPoolExecutor(max_workers=2)
 
 KNOWN_LOCATIONS = {
@@ -33,37 +28,6 @@ KNOWN_LOCATIONS = {
     "서울역": {"name": "서울역", "lat": 37.554678, "lng": 126.970606},
     "분당": {"name": "분당", "lat": 37.3826, "lng": 127.1189},
 }
-
-
-def _fallback_places(query: str, lat: float, lng: float, max_items: int) -> list[dict]:
-    base_names = {
-        "음식": ["역전김밥", "동네국밥", "착한분식", "우리한식"],
-        "카페": ["로컬커피", "브런치카페", "역앞카페"],
-        "주유소": ["알뜰주유소", "셀프주유소", "GS칼텍스"],
-        "마트": ["동네마트", "식자재마트", "슈퍼마켓"],
-        "편의점": ["CU", "GS25", "세븐일레븐"],
-    }
-    names = base_names.get(query, [f"{query} 추천점", f"{query} 가까운점", f"{query} 인기점"])
-    items = []
-    for idx, name in enumerate(names[:max_items], start=1):
-        items.append({
-            "id": f"fallback-{query}-{idx}",
-            "name": name,
-            "category": query,
-            "address": "실시간 지도 연동 대기 중",
-            "tel": "",
-            "x": str(lng + idx * 0.001),
-            "y": str(lat + idx * 0.001),
-            "lat": lat + idx * 0.001,
-            "lng": lng + idx * 0.001,
-            "distance": f"{idx * 180}m",
-            "url": f"https://map.naver.com/p/search/{query}",
-            "image_url": "",
-            "rating": 0,
-            "menu_info": "",
-            "petrol_info": None,
-        })
-    return items
 
 
 def _parse_fuel_price(value) -> int | None:
@@ -77,7 +41,7 @@ def _parse_fuel_price(value) -> int | None:
 
 @router.get("/geocode")
 async def geocode(query: str = Query(..., description="위치명 또는 'lat,lng' 좌표")):
-    """위치명 → 좌표. 발표용 핵심 지역은 로컬 fallback으로 즉시 응답한다."""
+    """Resolve a coordinate pair, known location, or a real Naver search result."""
     raw = query.strip()
     if "," in raw:
         try:
@@ -86,15 +50,24 @@ async def geocode(query: str = Query(..., description="위치명 또는 'lat,lng
             return ApiResponse(data={"name": "현재 위치", "lat": lat, "lng": lng})
         except ValueError:
             pass
+
     loc = KNOWN_LOCATIONS.get(raw)
     if loc is None:
         for key, value in KNOWN_LOCATIONS.items():
             if key in raw or raw in key:
                 loc = value
                 break
+
     if loc is None:
-        loop = asyncio.get_event_loop()
-        places = await loop.run_in_executor(_executor, _search_via_playwright_sync, raw, 37.4979, 127.0276, 1)
+        loop = asyncio.get_running_loop()
+        places = await loop.run_in_executor(
+            _executor,
+            _search_via_playwright_sync,
+            raw,
+            37.4979,
+            127.0276,
+            1,
+        )
         if places:
             first = places[0]
             try:
@@ -106,29 +79,23 @@ async def geocode(query: str = Query(..., description="위치명 또는 'lat,lng
                 }
             except (TypeError, ValueError):
                 loc = None
+
     if loc is None:
-        loc = {"name": raw, "lat": 37.4979, "lng": 127.0276, "source": "fallback"}
+        return ApiResponse(
+            success=False,
+            data=None,
+            error="위치를 찾을 수 없습니다. 네이버 지도 검색을 직접 이용해 주세요.",
+        )
     return ApiResponse(data=loc)
 
 
 def _search_via_playwright_sync(query: str, lat: float, lng: float, max_items: int) -> list[dict]:
-    """Playwright sync API로 네이버 지도를 검색하고 API 응답을 인터셉트한다.
-
-    네이버 지도는 headless 브라우저와 httpx 직접 호출을 모두 감지하여 차단하므로,
-    Playwright stealth 설정으로 봇 감지를 우회한 뒤 내부 allSearch API 응답을
-    인터셉트하여 구조화된 장소 데이터를 추출한다.
-
-    주요 stealth 기법:
-    - --disable-blink-features=AutomationControlled: 자동화 플래그 제거
-    - navigator.webdriver = undefined: WebDriver 속성 숨김
-    - 실제 Chrome User-Agent, viewport, locale, timezone 설정
-    """
+    """Search Naver Map in a browser and extract its structured place response."""
     from playwright.sync_api import sync_playwright
 
-    api_data = {}
+    api_data: dict = {}
 
     def handle_response(response):
-        """네이버 지도 내부 allSearch API 응답을 캡처한다."""
         if "allSearch" in response.url and response.status == 200:
             try:
                 body = response.json()
@@ -137,10 +104,10 @@ def _search_via_playwright_sync(query: str, lat: float, lng: float, max_items: i
             except Exception:
                 pass
 
-    items = []
+    items: list[dict] = []
     try:
-        with sync_playwright() as pw:
-            browser = pw.chromium.launch(
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch(
                 headless=True,
                 args=["--disable-blink-features=AutomationControlled"],
             )
@@ -157,65 +124,72 @@ def _search_via_playwright_sync(query: str, lat: float, lng: float, max_items: i
                 permissions=["geolocation"],
             )
             page = context.new_page()
-            # navigator.webdriver 속성을 숨겨 봇 감지 우회
             page.add_init_script(
                 "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
             )
             page.on("response", handle_response)
-
-            url = f"https://map.naver.com/p/search/{query}"
-            page.goto(url, timeout=20000)
-            # 네이버 지도의 JS가 API를 호출하고 결과를 렌더링할 시간 확보
+            page.goto(f"https://map.naver.com/p/search/{query}", timeout=20000)
             page.wait_for_timeout(5000)
             browser.close()
     except Exception as exc:
-        logger.warning(f"[네이버 검색] Playwright 크롤링 실패: {exc}")
-        return items
+        logger.warning("[네이버 검색] structured search failed: %s", exc)
+        return []
 
-    # 인터셉트된 API 응답에서 장소 목록 추출
-    if "response" in api_data:
-        data = api_data["response"]
-        result = data.get("result") or {}
-        place_data = result.get("place") or {}
-        place_list = place_data.get("list") or []
+    data = api_data.get("response") or {}
+    result = data.get("result") or {}
+    place_data = result.get("place") or {}
+    place_list = place_data.get("list") or []
 
-        for place in place_list[:max_items]:
-            cat = place.get("category", "")
-            if isinstance(cat, list):
-                cat = cat[0] if cat else ""
-            item = {
-                "name": place.get("name", ""),
-                "category": cat,
-                "address": place.get("roadAddress") or place.get("address", ""),
-                "tel": place.get("tel", ""),
-                "x": place.get("x", ""),
-                "y": place.get("y", ""),
-                "distance": place.get("distance", ""),
-                "url": (
-                    f"https://map.naver.com/p/entry/place/{place.get('id', '')}"
-                    if place.get("id") else ""
-                ),
-                "image_url": place.get("thumUrl") or place.get("imageUrl", ""),
-                "rating": place.get("reviewCount", 0),
-                "menu_info": place.get("menuInfo", ""),
+    for place in place_list[:max_items]:
+        category = place.get("category", "")
+        if isinstance(category, list):
+            category = category[0] if category else ""
+        item = {
+            "name": place.get("name", ""),
+            "category": category,
+            "address": place.get("roadAddress") or place.get("address", ""),
+            "tel": place.get("tel", ""),
+            "x": place.get("x", ""),
+            "y": place.get("y", ""),
+            "distance": place.get("distance", ""),
+            "url": (
+                f"https://map.naver.com/p/entry/place/{place.get('id', '')}"
+                if place.get("id")
+                else ""
+            ),
+            "image_url": place.get("thumUrl") or place.get("imageUrl", ""),
+            "rating": place.get("reviewCount", 0),
+            "menu_info": place.get("menuInfo", ""),
+        }
+        petrol = place.get("petrolInfo")
+        if petrol and isinstance(petrol, dict):
+            item["petrol_info"] = {
+                "gasoline": _parse_fuel_price(petrol.get("gasPrice")),
+                "premium_gasoline": _parse_fuel_price(petrol.get("hGasPrice")),
+                "diesel": _parse_fuel_price(petrol.get("dieselPrice")),
+                "lpg": _parse_fuel_price(petrol.get("lpgPrice")),
+                "is_self": bool(petrol.get("isSelf")),
+                "is_24h": bool(petrol.get("is24Opened")),
+                "has_car_wash": bool(petrol.get("hasCarWash")),
+                "brand": (petrol.get("petrolCompany") or {}).get("name", "").strip(),
+                "updated_at": petrol.get("updateDate") or petrol.get("updatedAt"),
             }
-            petrol = place.get("petrolInfo")
-            if petrol and isinstance(petrol, dict):
-                item["petrol_info"] = {
-                    "gasoline": _parse_fuel_price(petrol.get("gasPrice")),
-                    "premium_gasoline": _parse_fuel_price(petrol.get("hGasPrice")),
-                    "diesel": _parse_fuel_price(petrol.get("dieselPrice")),
-                    "lpg": _parse_fuel_price(petrol.get("lpgPrice")),
-                    "is_self": bool(petrol.get("isSelf")),
-                    "is_24h": bool(petrol.get("is24Opened")),
-                    "has_car_wash": bool(petrol.get("hasCarWash")),
-                    "brand": (petrol.get("petrolCompany") or {}).get("name", "").strip(),
-                    "updated_at": petrol.get("updateDate") or petrol.get("updatedAt"),
-                }
-            if item["name"]:
-                items.append(item)
+        if item["name"]:
+            items.append(item)
 
     return items
+
+
+async def _search(query: str, lat: float, lng: float, max_items: int) -> list[dict]:
+    loop = asyncio.get_running_loop()
+    return await loop.run_in_executor(
+        _executor,
+        _search_via_playwright_sync,
+        query,
+        lat,
+        lng,
+        max_items,
+    )
 
 
 @router.get("/naver-search")
@@ -225,31 +199,15 @@ async def naver_place_search(
     lng: float = Query(127.0276, description="경도"),
     max_items: int = Query(20, ge=1, le=50, description="최대 결과 수"),
 ):
-    """네이버 플레이스 실시간 검색.
-
-    Playwright sync API를 별도 스레드에서 실행하여 네이버 지도 검색 결과를 가져온다.
-    Windows asyncio 호환 문제를 스레드 풀 실행으로 해결하고,
-    네이버의 봇 감지는 stealth 브라우저 설정으로 우회한다.
-    """
-    loop = asyncio.get_event_loop()
     try:
-        items = await loop.run_in_executor(
-            _executor,
-            _search_via_playwright_sync,
-            query, lat, lng, max_items,
-        )
-        source = "playwright"
-    except Exception as e:
-        logger.error(f"[네이버 검색] 검색 실패: {e}")
+        items = await _search(query, lat, lng, max_items)
+        source = "naver" if items else "unavailable"
+    except Exception as exc:
+        logger.error("[네이버 검색] search failed: %s", exc)
         items = []
-        source = "error"
-
-    if not items:
-        items = _fallback_places(query, lat, lng, max_items)
-        source = "fallback"
+        source = "unavailable"
 
     return ApiResponse(
-        success=True,
         data={
             "items": items,
             "count": len(items),
@@ -269,22 +227,22 @@ async def area_explore_stream(
     lng: float = Query(127.0276),
     max_items: int = Query(30, ge=1, le=100),
 ):
-    """동네물가 카테고리 탐색 SSE. 실시간 검색 실패 시에도 UI가 멈추지 않도록 fallback을 흘린다."""
-    names = [c.strip() for c in categories.split(",") if c.strip()]
+    """Stream real category searches; unavailable categories contain no fake rows."""
+    names = [category.strip() for category in categories.split(",") if category.strip()]
 
     async def event_stream():
         per_category = max(1, min(8, max_items // max(1, len(names))))
         for name in names:
-            loop = asyncio.get_event_loop()
-            items = await loop.run_in_executor(_executor, _search_via_playwright_sync, name, lat, lng, per_category)
-            source = "naver" if items else "fallback"
-            if not items:
-                items = _fallback_places(name, lat, lng, per_category)
+            try:
+                items = await _search(name, lat, lng, per_category)
+            except Exception as exc:
+                logger.warning("[네이버 검색] category %s failed: %s", name, exc)
+                items = []
             payload = {
                 "name": name,
                 "location_name": location_name or "",
                 "items": items,
-                "source": source,
+                "source": "naver" if items else "unavailable",
             }
             yield f"data: {json.dumps(payload, ensure_ascii=False)}\n\n"
             await asyncio.sleep(0.05)
@@ -301,9 +259,15 @@ async def subcategory_search(
     lng: float = Query(127.0276),
     max_items: int = Query(30, ge=1, le=100),
 ):
-    """동네물가 하위 카테고리 검색."""
+    try:
+        items = await _search(subcategory, lat, lng, min(max_items, 30))
+    except Exception as exc:
+        logger.warning("[네이버 검색] subcategory %s failed: %s", subcategory, exc)
+        items = []
+
     return ApiResponse(data={
-        "items": _fallback_places(subcategory, lat, lng, min(max_items, 12)),
+        "items": items,
         "location": location,
         "subcategory": subcategory,
+        "source": "naver" if items else "unavailable",
     })
