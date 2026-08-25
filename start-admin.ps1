@@ -39,10 +39,29 @@ $DbFrontendDir      = Join-Path $Root "packages\db-admin\frontend"
 $SharedDir = Join-Path $Root "packages\shared"
 $env:PYTHONPATH = "$SharedDir;$CrawlerBackendDir;$DbBackendDir"
 
+function Install-PythonRequirements {
+    param(
+        [string]$Name,
+        [string]$RequirementsPath
+    )
+
+    if (-not (Test-Path $RequirementsPath)) {
+        Write-Host "❌ $Name requirements.txt를 찾을 수 없습니다: $RequirementsPath" -ForegroundColor Red
+        exit 1
+    }
+
+    Write-Host "[의존성] $Name Python 패키지 설치/확인..." -ForegroundColor Yellow
+    & $PyExe -m pip install --quiet --disable-pip-version-check -r $RequirementsPath
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "❌ $Name Python 패키지 설치에 실패했습니다." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "         ✅ $Name 완료" -ForegroundColor Green
+}
+
 # --- 의존성 확인 ---
-Write-Host "[의존성] 백엔드 패키지 확인..." -ForegroundColor Yellow
-& $PyExe -m pip install --quiet fastapi uvicorn httpx requests beautifulsoup4 lxml sqlalchemy pyyaml 2>$null | Out-Null
-Write-Host "         ✅ 완료" -ForegroundColor Green
+Install-PythonRequirements "크롤러 관리자" (Join-Path $Root "packages\crawler-admin\requirements.txt")
+Install-PythonRequirements "DB 관리자" (Join-Path $DbBackendDir "requirements.txt")
 
 foreach ($dir in @($CrawlerFrontendDir, $DbFrontendDir)) {
     $name = Split-Path (Split-Path $dir -Parent) -Leaf
