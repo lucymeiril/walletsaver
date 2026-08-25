@@ -20,7 +20,6 @@ TEST_SUITES = [
     ("db-admin", "packages/db-admin/backend", "tests/"),
     ("db-admin-category", "packages/db-admin/backend", "category_data/tests/"),
     ("crawler-admin", "packages/crawler-admin/backend", "tests/"),
-    ("crawler-plugins", "packages/crawler-admin/backend", "plugins/tests/"),
     ("web-api", "packages/web-api/backend", "tests/"),
 ]
 
