@@ -89,7 +89,6 @@ def create_app() -> FastAPI:
     from api.routes.logs import router as logs_router
     from api.routes.ingestion import router as ingestion_router
     from api.routes.dashboard import router as dashboard_router
-    from api.routes.operator_browser import router as operator_browser_router
     from api.routes.orchestrator import router as orchestrator_router
     from api.routes.weekly import router as weekly_router
     from api.routes.raw_batch_export import router as raw_batch_export_router
@@ -103,7 +102,6 @@ def create_app() -> FastAPI:
     app.include_router(logs_router, dependencies=auth_dependencies)
     app.include_router(ingestion_router, dependencies=auth_dependencies)
     app.include_router(dashboard_router, dependencies=auth_dependencies)
-    app.include_router(operator_browser_router, dependencies=auth_dependencies)
     app.include_router(orchestrator_router, dependencies=auth_dependencies)
     app.include_router(weekly_router, dependencies=auth_dependencies)
     app.include_router(raw_batch_export_router, dependencies=auth_dependencies)
