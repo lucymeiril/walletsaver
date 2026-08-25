@@ -279,6 +279,14 @@ async def list_runs(
     )
 
 
+@router.get("/runs/{run_id}")
+async def get_run(run_id: str):
+    run = orch.get_run_store().get_run(run_id)
+    if run is None:
+        raise HTTPException(status_code=404, detail="run을 찾을 수 없습니다.")
+    return run
+
+
 @router.get("/runs/{run_id}/logs")
 async def run_logs(run_id: str):
     run = orch.get_run_store().get_run(run_id)
@@ -304,29 +312,3 @@ async def retry_run_endpoint(run_id: str):
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     return {"run_id": new_run_id, "retried_from": run_id}
-
-
-@router.post("/runs/retry-last-failed/{plugin_name}", status_code=202)
-async def retry_last_failed_endpoint(plugin_name: str):
-    _require_registered_plugin(plugin_name)
-    page = orch.get_run_store().list_runs(
-        plugin_name=plugin_name,
-        status="failed",
-        page=1,
-        page_size=1,
-    )
-    items = page.get("items", [])
-    if not items:
-        raise HTTPException(status_code=404, detail=f"{plugin_name}의 최근 실패 run을 찾을 수 없습니다.")
-    failed_run_id = items[0].get("run_id") or items[0].get("id")
-    if not failed_run_id:
-        raise HTTPException(status_code=500, detail="실패 run의 ID를 확인할 수 없습니다.")
-    try:
-        new_run_id = dispatch.dispatch_retry(failed_run_id)
-    except ValueError as exc:
-        raise HTTPException(status_code=404, detail=str(exc)) from exc
-    return {
-        "run_id": new_run_id,
-        "retried_from": failed_run_id,
-        "plugin_name": plugin_name,
-    }
