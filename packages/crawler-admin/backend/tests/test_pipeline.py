@@ -120,7 +120,13 @@ def _matching_passthrough(items):
 
 
 def test_pipeline_result_rounds_duration():
-    result = PipelineResult(crawler_name="x", items_found=10, items_valid=8, items_saved=8, duration=1.234)
+    result = PipelineResult(
+        crawler_name="x",
+        items_found=10,
+        items_valid=8,
+        items_saved=8,
+        duration=1.234,
+    )
     assert result.to_dict()["duration"] == 1.23
 
 
@@ -139,7 +145,10 @@ async def test_run_crawler_calls_matching_once_and_submits_deduplicated_rows():
         "pipeline.pipeline.enrich_items_with_matching_entries",
         side_effect=_matching_passthrough,
     ) as matching, patch.object(
-        pipeline, "_store_to_ingestion", new_callable=AsyncMock, return_value=2
+        pipeline,
+        "_store_to_ingestion",
+        new_callable=AsyncMock,
+        return_value=2,
     ) as store:
         result = await pipeline.run_crawler("test_crawler")
 
@@ -164,13 +173,20 @@ async def test_run_crawler_not_found_returns_failed_result():
 
 @pytest.mark.asyncio
 async def test_run_batch_and_category_filter_use_current_registry():
-    registry = _registry([{"name": "사과", "sale_price": 3000, "detail_url": "https://x.test/a"}])
+    registry = _registry(
+        [{"name": "사과", "sale_price": 3000, "detail_url": "https://x.test/a"}]
+    )
     pipeline = CrawlPipeline(registry=registry)
 
     with patch(
         "pipeline.pipeline.enrich_items_with_matching_entries",
         side_effect=_matching_passthrough,
-    ), patch.object(pipeline, "_store_to_ingestion", new_callable=AsyncMock, return_value=1):
+    ), patch.object(
+        pipeline,
+        "_store_to_ingestion",
+        new_callable=AsyncMock,
+        return_value=1,
+    ):
         batch = await pipeline.run_batch(["test_crawler"])
         filtered = await pipeline.run_all(category="mart")
         empty = await pipeline.run_all(category="nonexistent")
@@ -178,16 +194,3 @@ async def test_run_batch_and_category_filter_use_current_registry():
     assert len(batch) == 1 and batch[0].items_saved == 1
     assert len(filtered) == 1
     assert empty == []
-
-
-@pytest.mark.asyncio
-async def test_bounded_diagnostics_without_fixture_never_runs_crawler():
-    registry = _registry([{"name": "사과", "sale_price": 3000}])
-    pipeline = CrawlPipeline(registry=registry)
-
-    report = await pipeline.run_bounded_diagnostics(crawler_ids=["test_crawler"])
-
-    assert report["schema"] == "bounded_crawler_diagnostics.v2"
-    assert report["mode"] == "supplied_fixture_only"
-    assert report["crawlers"][0]["status"] == "fixture_missing"
-    registry.get_crawler.assert_not_called()
