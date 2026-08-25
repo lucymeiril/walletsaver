@@ -1,25 +1,25 @@
-"""DB 관리 API 팩토리"""
+"""DB 관리 API 팩토리."""
 import asyncio
+import logging
 import signal
 import sys
-import logging
+import uuid
 from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
-from starlette.middleware.base import BaseHTTPMiddleware
-import uuid
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.responses import JSONResponse
 from slowapi.errors import RateLimitExceeded
 from sqlalchemy import text
+from starlette.middleware.base import BaseHTTPMiddleware
 
-from config import settings
+from api.middleware.rate_limit import GLOBAL_LIMIT, limiter, rate_limit_exceeded_handler
 from api.middleware.security_headers import SecurityHeadersMiddleware
-from api.middleware.rate_limit import limiter, rate_limit_exceeded_handler, GLOBAL_LIMIT
 from api.security import MAX_REQUEST_BODY_BYTES
+from config import settings
 
 _ROOT = Path(__file__).resolve().parents[4]
 _SHARED = _ROOT / "packages" / "shared"
@@ -27,102 +27,93 @@ if str(_SHARED) not in sys.path:
     sys.path.insert(0, str(_SHARED))
 
 _lifecycle_logger = logging.getLogger("lifecycle")
+_api_logger = logging.getLogger("api")
 
 
 def _signal_handler(signum, frame):
-    """Handle SIGTERM/SIGINT for graceful shutdown."""
     sig_name = signal.Signals(signum).name
     _lifecycle_logger.info("Received %s — initiating graceful shutdown", sig_name)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # ── Startup ──
+    if not settings.DEBUG and "changeme" in settings.DATABASE_URL:
+        raise RuntimeError(
+            "SECURITY: Default database password detected. "
+            "Set a strong DATABASE_URL for production."
+        )
 
-    # 1. Security check
-    if not settings.DEBUG:
-        if "changeme" in settings.DATABASE_URL:
-            raise RuntimeError(
-                "SECURITY: Default database password detected. "
-                "Set a strong DATABASE_URL for production."
-            )
-
-    # 2. Register signal handlers
     for sig in (signal.SIGTERM, signal.SIGINT):
         try:
             signal.signal(sig, _signal_handler)
         except (OSError, ValueError):
             pass
 
-    # 3. Verify DB connectivity (fail-fast)
     from services.base import get_engine
+
     engine = get_engine()
     try:
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
         _lifecycle_logger.info("Startup: database connection verified")
-    except Exception as e:
-        _lifecycle_logger.critical("Startup: database unreachable — %s", e)
+    except Exception as exc:
+        _lifecycle_logger.critical("Startup: database unreachable — %s", exc)
         raise
 
-    # 4. Seed reviewed catalog taxonomy without inserting sample product/price rows
     try:
         from services.catalog_seed import ensure_catalog_taxonomy_seeded
+
         result = ensure_catalog_taxonomy_seeded(engine)
         _lifecycle_logger.info(
             "Startup: catalog taxonomy seed complete — categories=%s keywords=%s",
             result.get("categories", 0),
             result.get("keywords", 0),
         )
-    except Exception as e:
-        _lifecycle_logger.warning("Startup: catalog taxonomy seed failed — %s", e)
+    except Exception as exc:
+        _lifecycle_logger.warning("Startup: catalog taxonomy seed failed — %s", exc)
 
-    # 5. Seed default admin account if none exists
     try:
         from services.seed import seed_default_admin
-        seed_default_admin()
-    except Exception as e:
-        _lifecycle_logger.warning("Startup: admin seed failed — %s", e)
 
-    # 6. Start the debounced public snapshot publisher. Public-data commits only
-    # mark the derived DB dirty; this task waits for a short quiet period and
-    # publishes once, so large imports do not rebuild the snapshot per row.
+        seed_default_admin()
+    except Exception as exc:
+        _lifecycle_logger.warning("Startup: admin seed failed — %s", exc)
+
     snapshot_stop = asyncio.Event()
     from services.public_snapshot_publisher import run_public_snapshot_publisher
+
     snapshot_task = asyncio.create_task(
         run_public_snapshot_publisher(snapshot_stop),
         name="public-snapshot-publisher",
     )
 
-    # 7. Log startup summary
     _lifecycle_logger.info(
         "Startup complete — host=%s port=%s debug=%s",
-        settings.API_HOST, settings.API_PORT, settings.DEBUG,
+        settings.API_HOST,
+        settings.API_PORT,
+        settings.DEBUG,
     )
 
     yield
 
-    # ── Shutdown ──
     _lifecycle_logger.info("Shutdown: stopping public snapshot publisher")
     snapshot_stop.set()
     try:
         await snapshot_task
     except asyncio.CancelledError:
         pass
-    except Exception as e:
-        _lifecycle_logger.error("Shutdown: public snapshot publisher failed — %s", e)
+    except Exception as exc:
+        _lifecycle_logger.error("Shutdown: public snapshot publisher failed — %s", exc)
 
     _lifecycle_logger.info("Shutdown: closing database connections")
-
-    # 8. Dispose engine via reset_engine (closes all pooled connections + clears singleton)
     try:
         from services.base import reset_engine
+
         reset_engine()
         _lifecycle_logger.info("Shutdown: engine disposed successfully")
-    except Exception as e:
-        _lifecycle_logger.error("Shutdown: engine disposal failed — %s", e)
+    except Exception as exc:
+        _lifecycle_logger.error("Shutdown: engine disposal failed — %s", exc)
 
-    # 9. Flush all log handlers
     for handler in logging.root.handlers:
         try:
             handler.flush()
@@ -130,9 +121,6 @@ async def lifespan(app: FastAPI):
             pass
 
     _lifecycle_logger.info("Shutdown: complete")
-
-
-_api_logger = logging.getLogger("api")
 
 
 class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
@@ -146,7 +134,7 @@ class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
                 content={
                     "error": {
                         "code": "PAYLOAD_TOO_LARGE",
-                        "message": f"요청 본문은 {MAX_REQUEST_BODY_BYTES // (1024*1024)}MB를 초과할 수 없습니다.",
+                        "message": f"요청 본문은 {MAX_REQUEST_BODY_BYTES // (1024 * 1024)}MB를 초과할 수 없습니다.",
                         "request_id": "",
                     }
                 },
@@ -165,20 +153,14 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
-    # ── Rate Limiting ──
     app.state.limiter = limiter
     app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
 
-    # ── Security Headers (CSP, X-Frame-Options, etc.) ──
     app.add_middleware(
         SecurityHeadersMiddleware,
         enable_hsts=not settings.DEBUG,
     )
-
-    # ── Response Compression ──
     app.add_middleware(GZipMiddleware, minimum_size=500)
-
-    # ── CORS — restricted origins ──
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.CORS_ALLOWED_ORIGINS,
@@ -187,8 +169,8 @@ def create_app() -> FastAPI:
         allow_headers=["Content-Type", "Authorization", "X-API-Key"],
     )
 
-    # ── Error Logging (outermost — catches everything) ──
     from error_middleware import ErrorLoggingMiddleware
+
     app.add_middleware(ErrorLoggingMiddleware, server_name="db-admin")
 
     from api.routes.products import router as products_router
@@ -205,18 +187,13 @@ def create_app() -> FastAPI:
     from api.routes.normalized_catalog import router as normalized_catalog_router
     from api.routes.maintenance import router as maintenance_router
     from api.routes.matching_import import router as matching_import_router
-    from api.routes.import_bundle import router as import_bundle_router
     from api.routes.matching_rules import router as matching_rules_router
-    from api.routes.catalog_sync import router as catalog_sync_router
 
-    # Payload size limit
     app.add_middleware(RequestSizeLimitMiddleware)
 
-    # ── Error Log API ──
     from error_api import router as error_router
-    app.include_router(error_router)
 
-    # /api 접두어 — 프론트엔드 client.js가 /api/products 등으로 호출
+    app.include_router(error_router)
     app.include_router(products_router, prefix="/api")
     app.include_router(prices_router, prefix="/api")
     app.include_router(categories_router, prefix="/api")
@@ -230,10 +207,8 @@ def create_app() -> FastAPI:
     app.include_router(normalized_catalog_router, prefix="/api")
     app.include_router(maintenance_router, prefix="/api")
     app.include_router(matching_import_router, prefix="/api")
-    app.include_router(import_bundle_router, prefix="/api")
     app.include_router(matching_rules_router, prefix="/api")
-    app.include_router(catalog_sync_router, prefix="/api")
-    # ingestion 라우터는 이미 /api/ingestions 접두어가 있음
+    # ingestion router already owns the /api/ingestions prefix.
     app.include_router(ingestion_router)
 
     @app.exception_handler(RequestValidationError)
@@ -241,7 +216,10 @@ def create_app() -> FastAPI:
         request_id = uuid.uuid4().hex[:12]
         _api_logger.warning(
             "Validation error [%s] %s %s: %s",
-            request_id, request.method, request.url.path, exc.errors(),
+            request_id,
+            request.method,
+            request.url.path,
+            exc.errors(),
         )
         return JSONResponse(
             status_code=422,
@@ -252,10 +230,10 @@ def create_app() -> FastAPI:
                     "request_id": request_id,
                     "details": [
                         {
-                            "field": ".".join(str(loc) for loc in e["loc"]),
-                            "message": e["msg"],
+                            "field": ".".join(str(loc) for loc in error["loc"]),
+                            "message": error["msg"],
                         }
-                        for e in exc.errors()
+                        for error in exc.errors()
                     ],
                 }
             },
@@ -266,7 +244,10 @@ def create_app() -> FastAPI:
         request_id = uuid.uuid4().hex[:12]
         _api_logger.error(
             "Unhandled error [%s] %s %s: %s",
-            request_id, request.method, request.url.path, exc,
+            request_id,
+            request.method,
+            request.url.path,
+            exc,
             exc_info=True,
         )
         return JSONResponse(
@@ -283,16 +264,14 @@ def create_app() -> FastAPI:
     @app.get("/health")
     @limiter.limit(GLOBAL_LIMIT)
     async def health(request: Request):
-        from api.health import run_health_check
-        from services.base import get_session
         import os
 
-        # Resolve DB file path for disk check
+        from api.health import run_health_check
+        from services.base import get_session
+
         db_url = settings.DATABASE_URL
         if db_url.startswith("sqlite"):
-            db_path = os.path.dirname(db_url.replace("sqlite:///", ""))
-            if not db_path:
-                db_path = "."
+            db_path = os.path.dirname(db_url.replace("sqlite:///", "")) or "."
         else:
             db_path = "."
 
