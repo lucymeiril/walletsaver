@@ -1,15 +1,14 @@
-"""
-환경 변수 기반 전역 설정 — .env 파일 하나로 배포 환경별 설정을 전환한다.
+"""Crawler-admin environment configuration.
 
-crawler-admin 패키지용 설정 모듈.
-원본: proj/config.py
+Only settings used by the current crawler-admin runtime belong here. Historical
+plugin, delivery, and broad government-API settings were intentionally removed
+so configuration files do not advertise retired features.
 """
 
 import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# .env 로드
 BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env")
 
@@ -24,23 +23,14 @@ if not DATABASE_URL:
         stacklevel=2,
     )
 
-# --- 공공데이터 API Keys ---
-KAMIS_API_KEY: str = os.getenv("KAMIS_API_KEY", "")
-KAMIS_API_ID: str = os.getenv("KAMIS_API_ID", "")
+# --- Current external data source ---
 OPINET_API_KEY: str = os.getenv("OPINET_API_KEY", "")
-KOSIS_API_KEY: str = os.getenv("KOSIS_API_KEY", "")
 
-# --- Naver API ---
-NAVER_CLIENT_ID: str = os.getenv("NAVER_CLIENT_ID", "")
-NAVER_CLIENT_SECRET: str = os.getenv("NAVER_CLIENT_SECRET", "")
-
-# --- Proxy ---
+# --- Proxy / crawler behaviour ---
 PROXY_LIST: list[str] = [
     p.strip()
     for p in os.getenv("PROXY_LIST", "").split(",") if p.strip()
 ]
-
-# --- Crawler ---
 CRAWL_DELAY_MIN: float = float(os.getenv("CRAWL_DELAY_MIN", "1.0"))
 CRAWL_DELAY_MAX: float = float(os.getenv("CRAWL_DELAY_MAX", "5.0"))
 MAX_RETRIES: int = int(os.getenv("MAX_RETRIES", "3"))
