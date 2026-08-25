@@ -1,14 +1,14 @@
-"""Shared smoke contracts for the three primary mart crawlers.
+"""Shared smoke contracts for the four current mart crawlers.
 
-Detailed parser and source-specific regressions live in the focused Emart,
-Homeplus, and Lottemart test modules.  This file intentionally avoids copying
-large HTML fixtures, source-readiness plans, or live/network diagnostic policy.
+Detailed parser and source-specific regressions live in focused test modules.
+This file protects only the shared runtime contract and basic validation.
 """
 from __future__ import annotations
 
 import pytest
 
 from core.models import CrawlerGroup, DiscountItem
+from crawlers.marts.costco.crawler import CostcoCrawler
 from crawlers.marts.emart.crawler import EmartCrawler
 from crawlers.marts.homeplus.crawler import HomeplusCrawler
 from crawlers.marts.lottemart.crawler import LottemartCrawler
@@ -18,11 +18,12 @@ MARTS = [
     (EmartCrawler, "이마트"),
     (HomeplusCrawler, "홈플러스"),
     (LottemartCrawler, "롯데마트"),
+    (CostcoCrawler, "코스트코"),
 ]
 
 
 @pytest.mark.parametrize("crawler_cls,display_name", MARTS)
-def test_primary_mart_crawlers_expose_shared_contract(crawler_cls, display_name):
+def test_current_mart_crawlers_expose_shared_contract(crawler_cls, display_name):
     crawler = crawler_cls()
     assert crawler.info.name == display_name
     assert crawler.info.group == CrawlerGroup.MART
@@ -34,7 +35,7 @@ def test_primary_mart_crawlers_expose_shared_contract(crawler_cls, display_name)
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("crawler_cls,display_name", MARTS)
-async def test_primary_mart_validation_keeps_valid_rows(crawler_cls, display_name):
+async def test_current_mart_validation_keeps_valid_rows(crawler_cls, display_name):
     crawler = crawler_cls()
     row = DiscountItem(
         name="테스트 상품 1kg",
@@ -50,7 +51,7 @@ async def test_primary_mart_validation_keeps_valid_rows(crawler_cls, display_nam
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("crawler_cls,display_name", MARTS)
-async def test_primary_mart_validation_rejects_non_positive_price(crawler_cls, display_name):
+async def test_current_mart_validation_rejects_non_positive_price(crawler_cls, display_name):
     crawler = crawler_cls()
     rows = [
         DiscountItem(name="정상 상품", store=display_name, sale_price=1000),
