@@ -22,8 +22,6 @@ from services.auth_service import create_token_pair
 class FakeStorage:
     """Minimal injected app storage; community routes do not use it."""
 
-    public_enabled = False
-
 
 @pytest.fixture(autouse=True)
 def isolated_board(tmp_path, monkeypatch):
@@ -65,7 +63,6 @@ def test_health_uses_injected_storage_without_repository_db(client):
     assert response.json() == {
         "status": "ok",
         "version": "0.1.0",
-        "public_snapshot": False,
     }
 
 
@@ -88,8 +85,7 @@ def test_community_database_is_physically_separate(isolated_board, client):
         "community_comments",
         "community_votes",
     }.issubset(tables)
-    # Product/catalog tables belong to the main DB or public snapshot, never the
-    # board file.
+    # Product/catalog tables belong to the main product DB, never the board file.
     assert "products" not in tables
     assert "matching_entries" not in tables
     assert "pending_ingestions" not in tables
