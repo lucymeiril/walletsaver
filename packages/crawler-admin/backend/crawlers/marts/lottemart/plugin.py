@@ -32,7 +32,7 @@ class LottemartPlugin:
         return "롯데마트"
 
     def supports_targeted_search(self, query: str) -> bool:
-        return True
+        return False
 
     async def crawl(self, targets: list[str] | None = None) -> RawBatch:
         if os.getenv("WALLETSAVIOR_FIXTURE_ONLY") == "1":

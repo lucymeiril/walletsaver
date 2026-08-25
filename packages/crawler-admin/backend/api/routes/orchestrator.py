@@ -6,6 +6,7 @@ import logging
 import os
 from typing import Optional
 
+from apscheduler.triggers.cron import CronTrigger
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 
@@ -15,8 +16,6 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1", tags=["orchestrator"])
 
-
-# ── Pydantic 모델 ───────────────────────────────────────────────
 
 class ScheduleCreate(BaseModel):
     plugin_name: str
@@ -46,8 +45,6 @@ class AdHocBody(BaseModel):
     requested_by: str = "admin"
 
 
-# ── Current mart adapters ────────────────────────────────────────
-
 _PLUGIN_INIT_DONE = False
 
 
@@ -64,6 +61,33 @@ def _ensure_plugins_registered() -> None:
             logger.warning("[orchestrator] plugin %s register failed: %s", mod, exc)
 
 
+def _require_registered_plugin(plugin_name: str):
+    _ensure_plugins_registered()
+    plugin = orch.get_registry().get(plugin_name)
+    if plugin is None:
+        raise HTTPException(status_code=404, detail=f"플러그인을 찾을 수 없습니다: {plugin_name}")
+    return plugin
+
+
+def _validate_schedule_values(
+    *,
+    cron_expr: Optional[str],
+    interval_hours: Optional[float],
+    allow_empty: bool = False,
+) -> None:
+    if cron_expr is None and interval_hours is None:
+        if allow_empty:
+            return
+        raise HTTPException(status_code=400, detail="cron_expr 또는 interval_hours 중 하나는 필수입니다.")
+    if cron_expr is not None:
+        try:
+            CronTrigger.from_crontab(cron_expr)
+        except Exception as exc:
+            raise HTTPException(status_code=400, detail="올바른 cron 표현식이 필요합니다.") from exc
+    if interval_hours is not None and interval_hours <= 0:
+        raise HTTPException(status_code=400, detail="interval_hours는 0보다 커야 합니다.")
+
+
 # ── Schedule execution loop ──────────────────────────────────────
 
 _SCHEDULE_POLL_SECONDS = max(
@@ -74,7 +98,6 @@ _schedule_task: asyncio.Task | None = None
 
 
 async def _run_due_once() -> list[dict]:
-    """Run currently due schedules without blocking FastAPI's event loop."""
     _ensure_plugins_registered()
     return await asyncio.to_thread(orch.run_due_schedules)
 
@@ -128,27 +151,24 @@ async def _stop_schedule_loop() -> None:
     _schedule_task = None
 
 
-# ── Plugins ───
-
 @router.get("/plugins")
 async def list_plugins():
     _ensure_plugins_registered()
     registry = orch.get_registry()
     store = orch.get_run_store()
     out = []
-    for p in registry.list_all():
-        last = store.last_run_for_plugin(p.name)
+    for plugin in registry.list_all():
+        last = store.last_run_for_plugin(plugin.name)
         out.append({
-            "name": p.name,
-            "mart_kind": getattr(p, "mart_kind", p.name),
-            "display_name": getattr(p, "display_name", p.name),
-            "supports_targeted_search": bool(getattr(p, "supports_targeted_search", False)),
+            "name": plugin.name,
+            "mart_kind": getattr(plugin, "mart_kind", plugin.name),
+            "display_name": getattr(plugin, "display_name", plugin.name),
+            # The current four mart adapters always run their full CrawlPipeline.
+            "supports_targeted_search": False,
             "last_run": last,
         })
     return {"plugins": out}
 
-
-# ── Schedules ───
 
 @router.get("/schedules")
 async def list_schedules(plugin_name: Optional[str] = None):
@@ -158,8 +178,11 @@ async def list_schedules(plugin_name: Optional[str] = None):
 
 @router.post("/schedules", status_code=201)
 async def create_schedule(body: ScheduleCreate):
-    if body.cron_expr is None and body.interval_hours is None:
-        raise HTTPException(status_code=400, detail="cron_expr 또는 interval_hours 중 하나는 필수입니다.")
+    _require_registered_plugin(body.plugin_name)
+    _validate_schedule_values(
+        cron_expr=body.cron_expr,
+        interval_hours=body.interval_hours,
+    )
     store = orch.get_run_store()
     sid = store.create_schedule(
         plugin_name=body.plugin_name,
@@ -176,9 +199,15 @@ async def update_schedule(schedule_id: str, body: ScheduleUpdate):
     store = orch.get_run_store()
     if store.get_schedule(schedule_id) is None:
         raise HTTPException(status_code=404, detail="스케줄을 찾을 수 없습니다.")
+    if body.plugin_name is not None:
+        _require_registered_plugin(body.plugin_name)
+    _validate_schedule_values(
+        cron_expr=body.cron_expr,
+        interval_hours=body.interval_hours,
+        allow_empty=True,
+    )
     fields = {k: v for k, v in body.model_dump().items() if v is not None}
-    updated = store.update_schedule(schedule_id, **fields)
-    return updated
+    return store.update_schedule(schedule_id, **fields)
 
 
 @router.delete("/schedules/{schedule_id}")
@@ -190,11 +219,9 @@ async def delete_schedule(schedule_id: str):
     return {"deleted": True, "id": schedule_id}
 
 
-# ── Runs ───
-
 @router.post("/runs/trigger", status_code=202)
 async def trigger_run_endpoint(body: TriggerRunBody):
-    _ensure_plugins_registered()
+    _require_registered_plugin(body.plugin_name)
     try:
         run_id = orch.trigger_run(
             plugin_name=body.plugin_name,
@@ -202,14 +229,19 @@ async def trigger_run_endpoint(body: TriggerRunBody):
             triggered_by="manual",
         )
     except ValueError as exc:
-        raise HTTPException(status_code=404, detail=str(exc))
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
     run = orch.get_run_store().get_run(run_id)
     return {"run_id": run_id, "run": run}
 
 
 @router.post("/runs/ad-hoc", status_code=202)
 async def run_ad_hoc_endpoint(body: AdHocBody):
-    _ensure_plugins_registered()
+    plugin = _require_registered_plugin(body.plugin_name)
+    if body.search_query and not plugin.supports_targeted_search(body.search_query):
+        raise HTTPException(
+            status_code=400,
+            detail=f"{body.plugin_name} 크롤러는 현재 개별 검색 실행을 지원하지 않습니다.",
+        )
     try:
         request_id = orch.run_ad_hoc(
             plugin_name=body.plugin_name,
@@ -218,7 +250,7 @@ async def run_ad_hoc_endpoint(body: AdHocBody):
             requested_by=body.requested_by,
         )
     except ValueError as exc:
-        raise HTTPException(status_code=404, detail=str(exc))
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
     req = orch.get_run_store().get_request(request_id)
     return {"request_id": request_id, "request": req}
 
@@ -258,14 +290,13 @@ async def retry_run_endpoint(run_id: str):
     try:
         new_run_id = orch.retry_run(run_id)
     except ValueError as exc:
-        raise HTTPException(status_code=404, detail=str(exc))
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
     return {"run_id": new_run_id, "retried_from": run_id}
 
 
 @router.post("/runs/retry-last-failed/{plugin_name}", status_code=202)
 async def retry_last_failed_endpoint(plugin_name: str):
-    """Retry the most recent failed run for one current crawler."""
-    _ensure_plugins_registered()
+    _require_registered_plugin(plugin_name)
     page = orch.get_run_store().list_runs(
         plugin_name=plugin_name,
         status="failed",
@@ -281,7 +312,7 @@ async def retry_last_failed_endpoint(plugin_name: str):
     try:
         new_run_id = orch.retry_run(failed_run_id)
     except ValueError as exc:
-        raise HTTPException(status_code=404, detail=str(exc))
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
     return {
         "run_id": new_run_id,
         "retried_from": failed_run_id,
