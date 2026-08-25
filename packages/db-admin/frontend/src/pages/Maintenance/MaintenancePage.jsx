@@ -3,15 +3,13 @@ import { Wrench, Trash2, Play, AlertTriangle, RefreshCw, CheckCircle2 } from 'lu
 import { api } from '../../api/client';
 
 const SCOPE_OPTIONS = [
-  { value: 'raw',       label: 'raw (수집 원본 · PendingIngestion / CrawlLog)' },
-  { value: 'canonical', label: 'canonical (정규화 도메인 · CanonicalProduct / PriceObservation 등)' },
-  { value: 'mappings',  label: 'mappings (카테고리/키워드 매핑 · Keyword / ProductKeyword 등)' },
-  { value: 'all',       label: 'all (모든 도메인 · 카테고리 마스터는 보존)' },
+  { value: 'raw',      label: 'raw (수집 원본 · PendingIngestion / CrawlLog)' },
+  { value: 'mappings', label: 'mappings (카테고리/키워드 매핑 · Keyword / ProductKeyword 등)' },
+  { value: 'all',      label: 'all (현재 working DB 도메인 · 카테고리 마스터는 보존)' },
 ];
 
 const SCOPE_CONFIRM = {
   raw: 'PURGE RAW',
-  canonical: 'PURGE CANONICAL',
   mappings: 'PURGE MAPPINGS',
   all: 'PURGE ALL',
 };
@@ -54,7 +52,7 @@ function PurgeCard() {
   return (
     <section style={{ border: '1px solid #e2e8f0', borderRadius: 8, padding: 16, marginBottom: 16 }}>
       <h3 style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '0 0 12px' }}>
-        <Trash2 size={18} /> DB 비우기 (E2E 1단계)
+        <Trash2 size={18} /> DB 비우기
       </h3>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <label>
@@ -78,7 +76,7 @@ function PurgeCard() {
             type="text"
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            placeholder="예: E2E 1단계 - DB 비우기"
+            placeholder="예: 테스트 데이터 정리"
             maxLength={500}
             style={{ width: '100%', padding: 8, marginTop: 4 }}
             disabled={busy}
@@ -288,7 +286,7 @@ export default function MaintenancePage() {
         <Wrench size={22} /> DB 유지보수
       </h2>
       <p style={{ color: '#64748b' }}>
-        사용자 풀 E2E 절차의 1단계 진입점. 모든 변경은 AuditLog 에 자동 기록됩니다.
+        현재 working DB를 관리합니다. 모든 변경은 AuditLog 에 자동 기록됩니다.
       </p>
       <PurgeCard />
       <MigrateCard />

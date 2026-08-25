@@ -1,7 +1,7 @@
 """DB 유지보수 API 회귀 테스트.
 
 테스트 대상:
-  - POST /api/admin/maintenance/purge (scope=raw|canonical|mappings|all)
+  - POST /api/admin/maintenance/purge (scope=raw|mappings|all)
   - POST /api/admin/maintenance/migrate
   - GET  /api/admin/maintenance/integrity
 
@@ -18,7 +18,7 @@ os.environ.setdefault("RATE_LIMIT_DESTRUCTIVE", "1000/minute")
 os.environ.setdefault("RATE_LIMIT_ADMIN", "1000/minute")
 os.environ.setdefault("RATE_LIMIT_GLOBAL", "10000/minute")
 
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import pytest
 from fastapi.testclient import TestClient
@@ -56,23 +56,22 @@ def factories(monkeypatch):
     Session = sessionmaker(bind=engine)
 
     s = Session()
-    # 카테고리/상품
     s.add(Category(id="food", name="식품", depth=0, is_active=True))
     s.add(Product(id=1, name="우유", category_id="food", unit="L", source_type="emart", is_active=True))
-    s.add(Product(id=2, name="우유", category_id="food", unit="L", source_type="emart", is_active=True))  # duplicate
-    s.add(Product(id=3, name="", category_id=None, unit="개", source_type="emart", is_active=True))  # null name+cat
-    # 가격
+    s.add(Product(id=2, name="우유", category_id="food", unit="L", source_type="emart", is_active=True))
+    s.add(Product(id=3, name="", category_id=None, unit="개", source_type="emart", is_active=True))
+
     now = datetime.utcnow()
     s.add(BaselinePrice(product_id=1, price=1500, source="emart", unit="L", recorded_at=now))
-    s.add(BaselinePrice(product_id=999, price=1500, source="emart", unit="L", recorded_at=now))  # orphan
+    s.add(BaselinePrice(product_id=999, price=1500, source="emart", unit="L", recorded_at=now))
     s.add(DiscountHistory(product_id=1, price=1200, source="emart", crawled_at=now))
     s.add(HotdealPrice(product_id=1, price=1100, source="algumon", title="t", crawled_at=now))
-    # 매핑
+
     s.add(Keyword(id=1, word="우유", category_id="food"))
     s.add(ProductKeyword(product_id=1, keyword_id=1))
     s.add(CategoryCorrection(product_name_pattern="우유", wrong_category_id="food", correct_category_id="food"))
     s.add(PendingCategorization(product_id=1, suggested_category_id="food", confidence=0.5))
-    # raw
+
     s.add(PendingIngestion(crawler_name="emart", crawl_status="success", items_count=0, items_json="[]", schema_type="X", status=IngestionStatus.PENDING))
     s.add(CrawlLog(crawler_name="emart", status=CrawlStatus.SUCCESS, started_at=now, finished_at=now, items_found=10, items_saved=10))
     s.commit()
@@ -83,11 +82,9 @@ def factories(monkeypatch):
 
     import services.base as base_module
     import api.routes.maintenance as maint
-    import services.audit as audit_module
 
     monkeypatch.setattr(base_module, "get_session", get_test_session)
     monkeypatch.setattr(maint, "get_session", get_test_session)
-    # log_action 은 session 인자를 받으므로 그대로 사용
 
     return Session
 
@@ -100,8 +97,6 @@ def client(factories):
     return TestClient(create_app())
 
 
-# ── purge ──────────────────────────────────────────────────────────────────
-
 def test_purge_requires_confirm(client):
     r = client.post("/api/admin/maintenance/purge", json={"scope": "raw", "confirm": False})
     assert r.status_code == 400
@@ -109,6 +104,11 @@ def test_purge_requires_confirm(client):
 
 def test_purge_rejects_unknown_scope(client):
     r = client.post("/api/admin/maintenance/purge", json={"scope": "unknown", "confirm": True})
+    assert r.status_code == 400
+
+
+def test_purge_rejects_retired_canonical_scope(client):
+    r = client.post("/api/admin/maintenance/purge", json={"scope": "canonical", "confirm": True})
     assert r.status_code == 400
 
 
@@ -123,7 +123,6 @@ def test_purge_raw_only(client, factories):
 
     s = Session()
     try:
-        # raw 만 삭제, 나머지는 보존
         assert s.query(PendingIngestion).count() == 0
         assert s.query(CrawlLog).count() == 0
         assert s.query(Product).count() == 3
@@ -145,18 +144,10 @@ def test_purge_mappings_only(client, factories):
         assert s.query(ProductKeyword).count() == 0
         assert s.query(CategoryCorrection).count() == 0
         assert s.query(PendingCategorization).count() == 0
-        # products / raw 보존
         assert s.query(Product).count() == 3
         assert s.query(PendingIngestion).count() == 1
     finally:
         s.close()
-
-
-def test_purge_canonical_handles_missing_tables(client):
-    # canonical_models 테이블이 안 만들어진 in-memory DB 라도 500 으로 죽지 않고 0으로 보고
-    r = client.post("/api/admin/maintenance/purge", json={"scope": "canonical", "confirm": True})
-    assert r.status_code == 200
-    assert r.json()["scope"] == "canonical"
 
 
 def test_purge_all_wipes_everything_except_categories(client, factories):
@@ -172,7 +163,6 @@ def test_purge_all_wipes_everything_except_categories(client, factories):
         assert s.query(Keyword).count() == 0
         assert s.query(PendingIngestion).count() == 0
         assert s.query(CrawlLog).count() == 0
-        # Category 본체는 보존
         assert s.query(Category).count() == 1
     finally:
         s.close()
@@ -182,7 +172,7 @@ def test_purge_persists_audit_log_to_db(client, factories):
     Session = factories
     r = client.post(
         "/api/admin/maintenance/purge",
-        json={"scope": "raw", "confirm": True, "note": "E2E 1단계"},
+        json={"scope": "raw", "confirm": True, "note": "테스트 데이터 정리"},
     )
     assert r.status_code == 200
     s = Session()
@@ -194,12 +184,10 @@ def test_purge_persists_audit_log_to_db(client, factories):
         assert row.entity_id == "raw"
         assert row.new_value is not None
         assert "counts" in row.new_value
-        assert row.new_value.get("note") == "E2E 1단계"
+        assert row.new_value.get("note") == "테스트 데이터 정리"
     finally:
         s.close()
 
-
-# ── integrity ──────────────────────────────────────────────────────────────
 
 def test_integrity_reports_null_duplicate_orphan(client):
     r = client.get("/api/admin/maintenance/integrity")
@@ -212,10 +200,7 @@ def test_integrity_reports_null_duplicate_orphan(client):
     assert data["issue_total"] >= 4
 
 
-# ── migrate ────────────────────────────────────────────────────────────────
-
 def test_migrate_invokes_alembic_and_audits(client, factories, monkeypatch):
-    """alembic 호출은 subprocess 로 격리되어 모킹한다."""
     import api.routes.maintenance as maint
 
     class FakeCompleted:

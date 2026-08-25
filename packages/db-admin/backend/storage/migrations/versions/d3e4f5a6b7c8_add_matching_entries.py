@@ -1,7 +1,7 @@
 """add_matching_entries
 
 Revision ID: d3e4f5a6b7c8
-Revises: c1a2b3d4e5f6
+Revises: 8018226a8e9e
 Create Date: 2026-07-01 00:00:00.000000
 
 매칭 테이블 신설 — 새 크롤 파이프라인 지원.
@@ -21,7 +21,7 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = "d3e4f5a6b7c8"
-down_revision: Union[str, Sequence[str], None] = "c1a2b3d4e5f6"
+down_revision: Union[str, Sequence[str], None] = "8018226a8e9e"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -41,7 +41,8 @@ def upgrade() -> None:
         sa.Column("pack_qty", sa.Float, nullable=True),
         sa.Column("pack_unit", sa.String(50), nullable=True),
 
-        # canonical_product_id: soft reference (FK 미적용 — CanonicalBase 분리)
+        # 현재 products.id의 십진 문자열 soft reference.
+        # 기존 VARCHAR 스키마 호환을 위해 문자열 컬럼을 유지하며 FK는 적용하지 않는다.
         sa.Column("canonical_product_id", sa.String(40), nullable=True),
 
         # category_id: categories.id FK (String — categories PK가 문자열)
@@ -77,7 +78,7 @@ def upgrade() -> None:
             "confidence >= 0.0 AND confidence <= 1.0",
             name="ck_matching_confidence_range",
         ),
-        # CHECK: source enum 허용값 — 절대 제거 금지
+        # CHECK: source enum 허용값 — 후속 migration에서 허용값이 확장될 수 있음
         sa.CheckConstraint(
             "source IN ('crawler-auto', 'human', 'external-ai')",
             name="ck_matching_source_enum",

@@ -1,9 +1,7 @@
-"""DB 유지보수 (maintenance) API
-
-사용자 풀 E2E 절차의 1단계 "DB 비우기" 진입점이다.
+"""DB 유지보수 (maintenance) API.
 
 기능:
-  1. POST /admin/maintenance/purge — scope(raw|canonical|mappings|all) 단위 즉시 삭제
+  1. POST /admin/maintenance/purge — scope(raw|mappings|all) 단위 즉시 삭제
   2. POST /admin/maintenance/migrate — Alembic upgrade head 실행
   3. GET  /admin/maintenance/integrity — null/duplicate/orphan FK 빠른 검사
 
@@ -43,67 +41,22 @@ from storage.models import (
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/admin/maintenance", tags=["admin", "maintenance"])
 
-VALID_SCOPES = ("raw", "canonical", "mappings", "all")
-
-
-# ── Request schemas ────────────────────────────────────────────────────────
+VALID_SCOPES = ("raw", "mappings", "all")
 
 
 class PurgeRequest(BaseModel):
-    scope: str = Field(..., description="raw | canonical | mappings | all")
+    scope: str = Field(..., description="raw | mappings | all")
     confirm: bool = Field(False, description="모달에서 사용자가 확인한 플래그")
     note: Optional[str] = Field(default=None, max_length=500)
 
 
-# ── Helpers ────────────────────────────────────────────────────────────────
-
-
 def _purge_raw(session) -> dict[str, int]:
-    """원시 수집 데이터(PendingIngestion, CrawlLog) 삭제."""
+    """원시 수집/실행 기록(PendingIngestion, CrawlLog) 삭제."""
     counts: dict[str, int] = {}
     counts["pending_ingestions"] = session.query(PendingIngestion).delete(
         synchronize_session=False
     )
     counts["crawl_logs"] = session.query(CrawlLog).delete(synchronize_session=False)
-    return counts
-
-
-def _purge_canonical(session) -> dict[str, int]:
-    """캐노니컬 도메인 모델 삭제 (canonical_models).
-
-    canonical_models.py 는 별도 Base를 사용한다. 같은 DB(walletguardian.db)에 들어가지만
-    metadata가 분리되어 있어 모델을 동적 import 한다. 테이블이 아직 생성되지 않은
-    환경(예: 테스트의 legacy-only)에서는 OperationalError 가 날 수 있으므로 catch 한다.
-    """
-    counts: dict[str, int] = {}
-    try:
-        from storage.canonical_models import (
-            CanonicalProduct,
-            CategoryNode,
-            MartSkuAlias,
-            PriceObservation,
-            ProductReviewQueue,
-        )
-    except Exception as e:  # pragma: no cover — import 자체가 실패하는 환경
-        logger.warning("canonical models 미가용: %s", e)
-        return counts
-
-    for label, Model in (
-        ("price_observations", PriceObservation),
-        ("product_review_queue", ProductReviewQueue),
-        ("mart_sku_aliases", MartSkuAlias),
-        ("canonical_products", CanonicalProduct),
-        ("category_nodes", CategoryNode),
-    ):
-        # SAVEPOINT 로 isolated 실패 처리 — 외부 트랜잭션은 영향 받지 않는다
-        nested = session.begin_nested()
-        try:
-            counts[label] = session.query(Model).delete(synchronize_session=False)
-            nested.commit()
-        except Exception as e:
-            nested.rollback()
-            logger.warning("canonical purge skip (%s): %s", label, e)
-            counts[label] = 0
     return counts
 
 
@@ -124,7 +77,7 @@ def _purge_mappings(session) -> dict[str, int]:
 
 
 def _purge_all(session) -> dict[str, int]:
-    """모든 도메인 데이터 (Products + 가격 + raw + mappings + canonical) 삭제."""
+    """현재 working DB의 도메인 데이터 삭제 (Category 마스터는 보존)."""
     counts: dict[str, int] = {}
 
     counts.update({f"raw.{k}": v for k, v in _purge_raw(session).items()})
@@ -140,20 +93,14 @@ def _purge_all(session) -> dict[str, int]:
         synchronize_session=False
     )
     counts["products"] = session.query(Product).delete(synchronize_session=False)
-
-    counts.update({f"canonical.{k}": v for k, v in _purge_canonical(session).items()})
     return counts
 
 
 _PURGE_DISPATCH = {
     "raw": _purge_raw,
-    "canonical": _purge_canonical,
     "mappings": _purge_mappings,
     "all": _purge_all,
 }
-
-
-# ── Routes ─────────────────────────────────────────────────────────────────
 
 
 @router.post("/purge")
@@ -292,7 +239,6 @@ def integrity(
     """이상 데이터 빠른 검토 — null / duplicate / orphan FK 요약."""
     session = get_session()
     try:
-        # null 검사
         null_products_category = session.query(func.count(Product.id)).filter(
             Product.category_id.is_(None)
         ).scalar() or 0
@@ -300,7 +246,6 @@ def integrity(
             (Product.name.is_(None)) | (Product.name == "")
         ).scalar() or 0
 
-        # duplicate 검사 — 같은 (name, source_type) 으로 중복 상품
         dup_rows = (
             session.query(
                 Product.name,
@@ -318,7 +263,6 @@ def integrity(
             for r in dup_rows[:10]
         ]
 
-        # orphan FK 검사 — 가격이 가리키는 product 없음
         orphan_counts: dict[str, int] = {}
         for label, Model in (
             ("baseline_prices", BaselinePrice),

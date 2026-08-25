@@ -10,8 +10,6 @@ from alembic import context
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from storage.models import Base
-# p1-db-orm-wire: canonical_models.py 의 CanonicalBase도 함께 import
-from storage.canonical_models import CanonicalBase
 from storage.opinet_models import OpinetBase
 
 config = context.config
@@ -31,17 +29,12 @@ else:
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# p1-db-orm-wire: legacy + canonical metadata 를 모두 autogenerate 대상으로 설정.
-# MetaData.tables 딕셔너리를 합산하여 단일 target_metadata 구성.
+# 현재 db-admin 스키마와 별도 Opinet 스키마를 autogenerate 대상으로 합친다.
 import sqlalchemy as _sa
 _combined_meta = _sa.MetaData()
 
 for table in Base.metadata.tables.values():
     table.to_metadata(_combined_meta)
-
-for table in CanonicalBase.metadata.tables.values():
-    if table.name not in _combined_meta.tables:
-        table.to_metadata(_combined_meta)
 
 for table in OpinetBase.metadata.tables.values():
     if table.name not in _combined_meta.tables:
