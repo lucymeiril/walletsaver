@@ -44,14 +44,14 @@ def create_app() -> FastAPI:
     from api.security.headers import SecurityHeadersMiddleware
     app.add_middleware(SecurityHeadersMiddleware)
 
-    ALLOWED_ORIGINS = [
-        o.strip()
-        for o in os.getenv("CORS_ORIGINS", "http://localhost:5174").split(",")
-        if o.strip()
+    allowed_origins = [
+        origin.strip()
+        for origin in os.getenv("CORS_ORIGINS", "http://localhost:5174").split(",")
+        if origin.strip()
     ]
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=ALLOWED_ORIGINS,
+        allow_origins=allowed_origins,
         allow_credentials=False,
         allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         allow_headers=["Content-Type", "Authorization", "X-API-Key"],
@@ -98,17 +98,17 @@ def create_app() -> FastAPI:
     from fastapi import Depends
     from api.security.auth import verify_api_key
 
-    _auth = [Depends(verify_api_key)]
+    auth_dependencies = [Depends(verify_api_key)]
 
-    app.include_router(crawlers_router, dependencies=_auth)
-    app.include_router(schedules_router, dependencies=_auth)
-    app.include_router(logs_router, dependencies=_auth)
-    app.include_router(ingestion_router, dependencies=_auth)
-    app.include_router(dashboard_router, dependencies=_auth)
-    app.include_router(operator_browser_router, dependencies=_auth)
-    app.include_router(orchestrator_router, dependencies=_auth)
-    app.include_router(weekly_router, dependencies=_auth)
-    app.include_router(raw_batch_export_router, dependencies=_auth)
+    app.include_router(crawlers_router, dependencies=auth_dependencies)
+    app.include_router(schedules_router, dependencies=auth_dependencies)
+    app.include_router(logs_router, dependencies=auth_dependencies)
+    app.include_router(ingestion_router, dependencies=auth_dependencies)
+    app.include_router(dashboard_router, dependencies=auth_dependencies)
+    app.include_router(operator_browser_router, dependencies=auth_dependencies)
+    app.include_router(orchestrator_router, dependencies=auth_dependencies)
+    app.include_router(weekly_router, dependencies=auth_dependencies)
+    app.include_router(raw_batch_export_router, dependencies=auth_dependencies)
 
     @app.on_event("startup")
     async def _register_plugins():
@@ -121,24 +121,34 @@ def create_app() -> FastAPI:
 
     @app.get("/health")
     async def health():
-        import time as _time
         import os as _os
+        import time as _time
 
         result = {"status": "ok", "service": "crawler-admin"}
 
         try:
-            scheduler = getattr(app.state, "scheduler", None)
-            if scheduler:
-                result["scheduler_running"] = scheduler.is_running
-                result["scheduled_jobs"] = scheduler.get_pending_job_count()
-                history = scheduler.tracker.get_history(limit=1)
-                result["last_crawl"] = history[0] if history else None
-            else:
-                result["scheduler_running"] = False
-                result["scheduled_jobs"] = 0
-                result["last_crawl"] = None
+            from api.routes import schedules as schedule_routes
+            from services.crawl_orchestrator import get_run_store
+
+            store = get_run_store()
+            active_schedules = store.list_schedules(enabled_only=True)
+            recent_runs = store.list_runs(page=1, page_size=1).get("items", [])
+            task = getattr(schedule_routes, "_schedule_task", None)
+            schedule_loop_enabled = os.getenv(
+                "WALLETSAVIOR_DISABLE_SCHEDULE_LOOP", ""
+            ).lower() not in {"1", "true", "yes"}
+            result["scheduler_running"] = bool(
+                schedule_loop_enabled and task is not None and not task.done()
+            )
+            result["scheduled_jobs"] = len(active_schedules)
+            result["last_crawl"] = recent_runs[0] if recent_runs else None
+            if schedule_loop_enabled and active_schedules and not result["scheduler_running"]:
+                result["status"] = "degraded"
         except Exception:
+            logger.exception("[health] orchestrator schedule status unavailable")
             result["scheduler_running"] = False
+            result["scheduled_jobs"] = 0
+            result["last_crawl"] = None
 
         try:
             from concurrency import active_count
@@ -165,9 +175,6 @@ def create_app() -> FastAPI:
         except AttributeError:
             result["uptime_seconds"] = None
 
-        if result.get("scheduler_running") is False and result.get("scheduled_jobs", 0) > 0:
-            result["status"] = "degraded"
-
         return result
 
     @app.on_event("startup")
@@ -184,14 +191,6 @@ def create_app() -> FastAPI:
         import logging as _logging
 
         logger.info("[App] shutdown sequence started")
-
-        try:
-            scheduler = getattr(app.state, "scheduler", None)
-            if scheduler and scheduler.is_running:
-                scheduler.stop(wait=True)
-                logger.info("[App] scheduler stopped")
-        except Exception:
-            logger.exception("[App] scheduler shutdown error")
 
         try:
             from concurrency import clear_running_crawlers
