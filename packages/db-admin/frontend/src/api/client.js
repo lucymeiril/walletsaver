@@ -2,11 +2,9 @@ import { getAccessToken, logout as authLogout } from '../stores/authStore';
 
 const API_BASE = '/api';
 
-// ─── Timeout defaults (ms) ───
 const DEFAULT_TIMEOUT = 15000;
-const LONG_TIMEOUT    = 45000;
+const LONG_TIMEOUT = 45000;
 
-// ─── 인증 헤더 주입 ───
 function injectAuth(options = {}) {
   const token = getAccessToken();
   if (!token) return options;
@@ -19,13 +17,14 @@ function injectAuth(options = {}) {
   };
 }
 
-// ─── 401 응답 시 토큰 갱신 시도, 실패하면 로그아웃 ───
 async function handleUnauthorized(resp, url, options, timeoutMs, fetcher) {
   if (resp.status !== 401) return resp;
 
-  // 토큰 갱신 시도
   const refreshToken = sessionStorage.getItem('db_admin_refresh_token');
-  if (!refreshToken) { authLogout(); throw new Error('인증이 만료되었습니다.'); }
+  if (!refreshToken) {
+    authLogout();
+    throw new Error('인증이 만료되었습니다.');
+  }
 
   const refreshResp = await fetch(`${API_BASE}/auth/refresh`, {
     method: 'POST',
@@ -33,17 +32,20 @@ async function handleUnauthorized(resp, url, options, timeoutMs, fetcher) {
     body: JSON.stringify({ refresh_token: refreshToken }),
   });
 
-  if (!refreshResp.ok) { authLogout(); throw new Error('인증이 만료되었습니다.'); }
+  if (!refreshResp.ok) {
+    authLogout();
+    throw new Error('인증이 만료되었습니다.');
+  }
 
   const data = await refreshResp.json();
   sessionStorage.setItem('db_admin_access_token', data.access_token);
-  if (data.refresh_token) sessionStorage.setItem('db_admin_refresh_token', data.refresh_token);
+  if (data.refresh_token) {
+    sessionStorage.setItem('db_admin_refresh_token', data.refresh_token);
+  }
 
-  // 갱신된 토큰으로 재시도
   return fetcher(url, injectAuth(options), timeoutMs);
 }
 
-// ─── Core: fetch with AbortController timeout ───
 function fetchWithTimeout(url, options = {}, timeoutMs = DEFAULT_TIMEOUT) {
   const authedOptions = injectAuth(options);
   const controller = new AbortController();
@@ -55,7 +57,7 @@ function fetchWithTimeout(url, options = {}, timeoutMs = DEFAULT_TIMEOUT) {
 
   const timer = setTimeout(
     () => controller.abort(new DOMException('요청 시간이 초과되었습니다 (15초)', 'TimeoutError')),
-    timeoutMs
+    timeoutMs,
   );
 
   const rawFetch = (u, o, t) => {
@@ -69,7 +71,6 @@ function fetchWithTimeout(url, options = {}, timeoutMs = DEFAULT_TIMEOUT) {
     .then(resp => handleUnauthorized(resp, url, options, timeoutMs, rawFetch));
 }
 
-// ─── Retry with exponential backoff (network errors + 5xx only) ───
 async function fetchWithRetry(url, options = {}, {
   timeout = DEFAULT_TIMEOUT,
   maxRetries = 3,
@@ -82,40 +83,37 @@ async function fetchWithRetry(url, options = {}, {
       return await fetchWithTimeout(url, { ...options, signal }, timeout);
     } catch (err) {
       lastError = err;
-
       if (err.name === 'AbortError') throw err;
 
       const isRetryable =
-        !err.status ||
-        err.status >= 500 ||
-        err.status === 408 ||
-        err.status === 429;
-
+        !err.status || err.status >= 500 || err.status === 408 || err.status === 429;
       if (!isRetryable || attempt === maxRetries) throw err;
 
       const delay = Math.min(1000 * Math.pow(2, attempt), 4000);
-      await new Promise(r => setTimeout(r, delay));
+      await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
 
   throw lastError;
 }
 
-// ─── Response parser ───
-const json = async (r) => {
-  if (!r.ok) {
+const json = async (response) => {
+  if (!response.ok) {
     let data;
-    try { data = await r.json(); } catch { data = {}; }
-    const msg = data.detail || data.message || data.error?.message || `HTTP ${r.status}`;
-    const err = new Error(msg);
-    err.status = r.status;
-    throw err;
+    try {
+      data = await response.json();
+    } catch {
+      data = {};
+    }
+    const message = data.detail || data.message || data.error?.message || `HTTP ${response.status}`;
+    const error = new Error(message);
+    error.status = response.status;
+    throw error;
   }
-  const text = await r.text();
+  const text = await response.text();
   return text ? JSON.parse(text) : {};
 };
 
-// ─── Method helpers (accept signal + timeout) ───
 const get = (url, { signal, timeout, maxRetries = 3 } = {}) =>
   fetchWithRetry(url, { signal }, { timeout, maxRetries, signal }).then(json);
 
@@ -138,7 +136,6 @@ const putJson = (url, data, { signal, timeout } = {}) =>
 const del = (url, { signal, timeout } = {}) =>
   fetchWithTimeout(url, { method: 'DELETE', signal }, timeout).then(json);
 
-// ─── FormData POST (파일 업로드용, Content-Type을 수동 설정하지 않아 브라우저가 boundary 포함) ───
 function postFormData(url, formData, { signal, onProgress } = {}) {
   return new Promise((resolve, reject) => {
     const token = getAccessToken();
@@ -148,32 +145,42 @@ function postFormData(url, formData, { signal, onProgress } = {}) {
     if (signal) signal.addEventListener('abort', () => xhr.abort());
 
     if (onProgress && xhr.upload) {
-      xhr.upload.onprogress = (e) => {
-        if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) {
+          onProgress(Math.round((event.loaded / event.total) * 100));
+        }
       };
     }
 
     xhr.onload = () => {
-      if (xhr.status === 401) { authLogout(); reject(Object.assign(new Error('인증이 만료되었습니다.'), { status: 401 })); return; }
+      if (xhr.status === 401) {
+        authLogout();
+        reject(Object.assign(new Error('인증이 만료되었습니다.'), { status: 401 }));
+        return;
+      }
       let data;
-      try { data = JSON.parse(xhr.responseText); } catch { data = {}; }
+      try {
+        data = JSON.parse(xhr.responseText);
+      } catch {
+        data = {};
+      }
       if (xhr.status >= 200 && xhr.status < 300) {
         resolve(data);
       } else {
-        const msg = data.detail || data.message || `HTTP ${xhr.status}`;
-        reject(Object.assign(new Error(msg), { status: xhr.status, data }));
+        const message = data.detail || data.message || `HTTP ${xhr.status}`;
+        reject(Object.assign(new Error(message), { status: xhr.status, data }));
       }
     };
     xhr.onerror = () => reject(new Error('네트워크 오류가 발생했습니다.'));
-    xhr.onabort = () => reject(Object.assign(new DOMException('요청이 취소되었습니다.', 'AbortError'), { name: 'AbortError' }));
+    xhr.onabort = () => reject(Object.assign(
+      new DOMException('요청이 취소되었습니다.', 'AbortError'),
+      { name: 'AbortError' },
+    ));
     xhr.send(formData);
   });
 }
 
-// 모든 URL에 trailing slash를 사용 — FastAPI의 router.get("/") 패턴과 일치시켜
-// 307 리다이렉트로 인한 POST body 손실을 방지한다.
 export const api = {
-  // Products
   getProducts: (params, opts) => {
     const qs = params ? `?${new URLSearchParams(params)}` : '';
     return get(`${API_BASE}/products/${qs}`, opts);
@@ -182,18 +189,16 @@ export const api = {
   getProductStats: (opts) => get(`${API_BASE}/products/stats`, opts),
   getProductHistory: (id, days = 30, opts) =>
     get(`${API_BASE}/products/${id}/history?days=${days}`, opts),
-  getProductComparison: (id, opts) =>
-    get(`${API_BASE}/products/${id}/comparison`, opts),
+  getProductComparison: (id, opts) => get(`${API_BASE}/products/${id}/comparison`, opts),
   getProductSimilar: (id, limit = 10, opts) =>
     get(`${API_BASE}/products/${id}/similar?limit=${limit}`, opts),
   createProduct: (data, opts) => postJson(`${API_BASE}/products/`, data, opts),
   updateProduct: (id, data, opts) => putJson(`${API_BASE}/products/${id}`, data, opts),
   deleteProduct: (id, opts) => del(`${API_BASE}/products/${id}`, opts),
-  bulkDeleteProducts: (ids, opts) =>
-    postJson(`${API_BASE}/products/bulk-delete`, { ids }, opts),
+  bulkDeleteProducts: (ids, opts) => postJson(`${API_BASE}/products/bulk-delete`, { ids }, opts),
   bulkUpdateCategory: (ids, categoryId, opts) =>
     postJson(`${API_BASE}/products/bulk-category`, { ids, category_id: categoryId }, opts),
-  // Matching rules
+
   getMatchingRules: (params = {}, opts) => {
     const qs = new URLSearchParams(params).toString();
     return get(`${API_BASE}/matching-rules${qs ? `?${qs}` : ''}`, opts);
@@ -202,32 +207,29 @@ export const api = {
   createMatchingRule: (data, opts) => postJson(`${API_BASE}/matching-rules`, data, opts),
   updateMatchingRule: (id, data, opts) => putJson(`${API_BASE}/matching-rules/${id}`, data, opts),
   deleteMatchingRule: (id, opts) => del(`${API_BASE}/matching-rules/${id}`, opts),
-  // Categories
+
   getCategories: (opts) => get(`${API_BASE}/categories/`, opts),
   createCategory: (data, opts) => postJson(`${API_BASE}/categories/`, data, opts),
   updateCategory: (id, data, opts) => putJson(`${API_BASE}/categories/${id}`, data, opts),
   deleteCategory: (id, opts) => del(`${API_BASE}/categories/${id}`, opts),
   moveCategory: (id, newParentId, opts) =>
     putJson(`${API_BASE}/categories/${id}/move`, { new_parent_id: newParentId }, opts),
-  getCategoryProducts: (id, opts) =>
-    get(`${API_BASE}/categories/${id}/products`, opts),
-  getCategoryProductCount: (id, opts) =>
-    get(`${API_BASE}/categories/${id}/product-count`, opts),
-  // Keywords
+  getCategoryProducts: (id, opts) => get(`${API_BASE}/categories/${id}/products`, opts),
+  getCategoryProductCount: (id, opts) => get(`${API_BASE}/categories/${id}/product-count`, opts),
+
   getKeywords: (params, opts) => {
     const qs = params ? `?${new URLSearchParams(params)}` : '';
     return get(`${API_BASE}/keywords/${qs}`, opts);
   },
   getKeywordStats: (opts) => get(`${API_BASE}/keywords/stats`, opts),
-  searchKeywords: (q, opts) =>
-    get(`${API_BASE}/keywords/search?q=${q}`, opts),
+  searchKeywords: (q, opts) => get(`${API_BASE}/keywords/search?q=${q}`, opts),
   getPopularKeywords: (opts) => get(`${API_BASE}/keywords/popular`, opts),
   createKeyword: (data, opts) => postJson(`${API_BASE}/keywords/`, data, opts),
   updateKeyword: (id, data, opts) => putJson(`${API_BASE}/keywords/${id}`, data, opts),
   deleteKeyword: (id, opts) => del(`${API_BASE}/keywords/${id}`, opts),
   bulkDeleteKeywords: (ids, opts) =>
     postJson(`${API_BASE}/keywords/bulk-delete`, ids ? { ids } : {}, opts),
-  // Analytics — use LONG_TIMEOUT
+
   getQualityReport: (opts) =>
     get(`${API_BASE}/analytics/quality-report`, { ...opts, timeout: LONG_TIMEOUT }),
   getSummary: (opts) =>
@@ -252,40 +254,41 @@ export const api = {
     get(`${API_BASE}/analytics/data-quality-summary`, { ...opts, timeout: LONG_TIMEOUT }),
   outlierAction: (id, action, newPrice, opts) =>
     postJson(`${API_BASE}/analytics/outliers/${id}/action`, { action, new_price: newPrice }, opts),
-  getSourceTypes: (opts) =>
-    get(`${API_BASE}/analytics/source-types`, opts),
-  // Dashboard
+  getSourceTypes: (opts) => get(`${API_BASE}/analytics/source-types`, opts),
+
   getDashboardStats: (opts) => get(`${API_BASE}/dashboard/stats`, opts),
-  // Prices
+
   getPriceStats: (opts) => get(`${API_BASE}/prices/stats`, opts),
   getProductPrices: (id, days = 90, opts) =>
     get(`${API_BASE}/prices/product/${id}?days=${days}`, opts),
   getTierConfig: (opts) => get(`${API_BASE}/prices/tier-config`, opts),
   saveTierConfig: (tiers, opts) => postJson(`${API_BASE}/prices/tier-config`, { tiers }, opts),
-  getGlobalOutliers: (limit = 20, opts) =>
-    get(`${API_BASE}/prices/outliers?limit=${limit}`, opts),
+  getGlobalOutliers: (limit = 20, opts) => get(`${API_BASE}/prices/outliers?limit=${limit}`, opts),
   getPriceHistory: (params = {}, opts) => {
     const qs = new URLSearchParams(params).toString();
     return get(`${API_BASE}/prices/history?${qs}`, opts);
   },
-  whitelistOutlier: (id, opts) =>
-    postJson(`${API_BASE}/prices/outliers/${id}/whitelist`, {}, opts),
+  whitelistOutlier: (id, opts) => postJson(`${API_BASE}/prices/outliers/${id}/whitelist`, {}, opts),
   getTierPreview: (params = {}, opts) => {
     const qs = new URLSearchParams(params).toString();
     return get(`${API_BASE}/prices/tier-preview?${qs}`, { ...opts, timeout: LONG_TIMEOUT });
   },
   getOutlierDistribution: (productId, days = 90, opts) =>
     get(`${API_BASE}/prices/outliers/${productId}/distribution?days=${days}`, opts),
-  // Ingestions (pending queue) — ingestion router는 "" 패턴이라 trailing slash 불필요
+
   getIngestions: (params, opts) =>
     get(`${API_BASE}/ingestions?${new URLSearchParams(params)}`, opts),
   getIngestion: (id, opts) => get(`${API_BASE}/ingestions/${id}`, opts),
   reviewIngestion: (id, data, opts) =>
     postJson(`${API_BASE}/ingestions/${id}/db-review`, data, opts),
   bulkApproveIngestions: (ids, reviewer, notes, opts) =>
-    postJson(`${API_BASE}/ingestions/bulk-approve`, { ids, reviewer, notes }, { ...opts, timeout: LONG_TIMEOUT }),
+    postJson(
+      `${API_BASE}/ingestions/bulk-approve`,
+      { ids, reviewer, notes },
+      { ...opts, timeout: LONG_TIMEOUT },
+    ),
   getIngestionStats: (opts) => get(`${API_BASE}/ingestions/stats`, opts),
-  // Admin
+
   getDataSummary: (opts) => get(`${API_BASE}/admin/data-summary`, opts),
   resetSource: (source, confirm, opts) =>
     postJson(`${API_BASE}/admin/reset-source`, { source, confirm }, { ...opts, timeout: LONG_TIMEOUT }),
@@ -293,116 +296,69 @@ export const api = {
     postJson(`${API_BASE}/admin/reset-products`, { confirm }, { ...opts, timeout: LONG_TIMEOUT }),
   resetAll: (confirm, opts) =>
     postJson(`${API_BASE}/admin/reset-all`, { confirm }, { ...opts, timeout: LONG_TIMEOUT }),
-  // Integrity dashboard
+
   getIntegritySummary: (opts) =>
     get(`${API_BASE}/admin/integrity/summary`, { ...opts, timeout: LONG_TIMEOUT }),
   recheckIntegrity: (check, opts) =>
     postJson(`${API_BASE}/admin/integrity/recheck`, check ? { check } : {}, { ...opts, timeout: LONG_TIMEOUT }),
   repairIntegrity: (check, confirm, opts) =>
     postJson(`${API_BASE}/admin/integrity/repair`, { check, confirm }, { ...opts, timeout: LONG_TIMEOUT }),
-  // Maintenance — DB 비우기 / 마이그레이션 / 이상 데이터 검토
+
   maintenancePurge: (scope, note, opts) =>
-    postJson(`${API_BASE}/admin/maintenance/purge`, { scope, confirm: true, note: note || null }, { ...opts, timeout: LONG_TIMEOUT }),
+    postJson(
+      `${API_BASE}/admin/maintenance/purge`,
+      { scope, confirm: true, note: note || null },
+      { ...opts, timeout: LONG_TIMEOUT },
+    ),
   maintenanceMigrate: (revision, opts) =>
-    postJson(`${API_BASE}/admin/maintenance/migrate`, { revision: revision || 'head' }, { ...opts, timeout: LONG_TIMEOUT }),
+    postJson(
+      `${API_BASE}/admin/maintenance/migrate`,
+      { revision: revision || 'head' },
+      { ...opts, timeout: LONG_TIMEOUT },
+    ),
   maintenanceIntegrity: (opts) =>
     get(`${API_BASE}/admin/maintenance/integrity`, { ...opts, timeout: LONG_TIMEOUT }),
-  // Community moderation
+
   getCommunityPosts: (params = {}, opts) =>
     get(`${API_BASE}/community/posts?${new URLSearchParams(params)}`, opts),
-  getCommunityPost: (id, opts) =>
-    get(`${API_BASE}/community/posts/${id}`, opts),
-  deleteCommunityPost: (id, opts) =>
-    del(`${API_BASE}/community/posts/${id}`, opts),
-  restoreCommunityPost: (id, opts) =>
-    postJson(`${API_BASE}/community/posts/${id}/restore`, {}, opts),
-  deleteCommunityComment: (id, opts) =>
-    del(`${API_BASE}/community/comments/${id}`, opts),
-  restoreCommunityComment: (id, opts) =>
-    postJson(`${API_BASE}/community/comments/${id}/restore`, {}, opts),
-  banCommunityUser: (id, opts) =>
-    postJson(`${API_BASE}/community/users/${id}/ban`, {}, opts),
-  unbanCommunityUser: (id, opts) =>
-    postJson(`${API_BASE}/community/users/${id}/unban`, {}, opts),
-  // Import classified
+  getCommunityPost: (id, opts) => get(`${API_BASE}/community/posts/${id}`, opts),
+  deleteCommunityPost: (id, opts) => del(`${API_BASE}/community/posts/${id}`, opts),
+  restoreCommunityPost: (id, opts) => postJson(`${API_BASE}/community/posts/${id}/restore`, {}, opts),
+  deleteCommunityComment: (id, opts) => del(`${API_BASE}/community/comments/${id}`, opts),
+  restoreCommunityComment: (id, opts) => postJson(`${API_BASE}/community/comments/${id}/restore`, {}, opts),
+  banCommunityUser: (id, opts) => postJson(`${API_BASE}/community/users/${id}/ban`, {}, opts),
+  unbanCommunityUser: (id, opts) => postJson(`${API_BASE}/community/users/${id}/unban`, {}, opts),
+
   previewImport: (file, mode, { signal, onProgress } = {}) => {
-    const fd = new FormData();
-    fd.append('file', file);
-    fd.append('mode', mode);
-    return postFormData(`${API_BASE}/import/classified/preview`, fd, { signal, onProgress });
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('mode', mode);
+    return postFormData(`${API_BASE}/import/classified/preview`, formData, { signal, onProgress });
   },
   confirmImport: (file, mode, traceId, { signal, onProgress } = {}) => {
-    const fd = new FormData();
-    fd.append('file', file);
-    fd.append('mode', mode);
-    if (traceId) fd.append('trace_id', traceId);
-    return postFormData(`${API_BASE}/import/classified/confirm`, fd, { signal, onProgress });
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('mode', mode);
+    if (traceId) formData.append('trace_id', traceId);
+    return postFormData(`${API_BASE}/import/classified/confirm`, formData, { signal, onProgress });
   },
   getImportFailureCsvUrl: (traceId) =>
     `${API_BASE}/import/classified/failure-csv/${traceId}`,
-  // Bundle import (RD7) — 3-file import
-  previewBundleImport: (matchingFile, taxonomyFile, productsFile, { mode = 'lenient', batchId, signal, onProgress } = {}) => {
-    const fd = new FormData();
-    if (matchingFile) fd.append('matching_file', matchingFile);
-    if (taxonomyFile) fd.append('taxonomy_file', taxonomyFile);
-    if (productsFile) fd.append('products_file', productsFile);
-    fd.append('mode', mode);
-    if (batchId) fd.append('batch_id', batchId);
-    return postFormData(`${API_BASE}/import/bundle/preview`, fd, { signal, onProgress });
-  },
-  confirmBundleImport: (matchingFile, taxonomyFile, productsFile, { mode = 'lenient', batchId, signal, onProgress } = {}) => {
-    const fd = new FormData();
-    if (matchingFile) fd.append('matching_file', matchingFile);
-    if (taxonomyFile) fd.append('taxonomy_file', taxonomyFile);
-    if (productsFile) fd.append('products_file', productsFile);
-    fd.append('mode', mode);
-    if (batchId) fd.append('batch_id', batchId);
-    return postFormData(`${API_BASE}/import/bundle/confirm`, fd, { signal, onProgress });
-  },
-  getBundleFailureCsvUrl: (batchId) =>
-    `${API_BASE}/import/bundle/${batchId}/failures.csv`,
-  // ── Catalog Sync (통합 카탈로그 동기화: export·import·재분류) ──
-  catalogSyncExport: (entities, scopes, opts) =>
-    postJson(`${API_BASE}/admin/catalog-sync/export`, { entities, scopes: scopes || null }, { ...opts, timeout: LONG_TIMEOUT }),
-  catalogSyncDownloadUrl: (name) =>
-    `${API_BASE}/admin/catalog-sync/export/download?name=${encodeURIComponent(name)}`,
-  catalogSyncValidate: (files, { mode = 'upsert', force = false, signal, onProgress } = {}) => {
-    const fd = new FormData();
-    files.forEach((f) => fd.append('files', f));
-    const qs = `?mode=${encodeURIComponent(mode)}&force=${force ? 'true' : 'false'}`;
-    return postFormData(`${API_BASE}/admin/catalog-sync/validate${qs}`, fd, { signal, onProgress });
-  },
-  catalogSyncApply: (files, { mode = 'upsert', force = false, signal, onProgress } = {}) => {
-    const fd = new FormData();
-    files.forEach((f) => fd.append('files', f));
-    const qs = `?mode=${encodeURIComponent(mode)}&force=${force ? 'true' : 'false'}`;
-    return postFormData(`${API_BASE}/admin/catalog-sync/apply${qs}`, fd, { signal, onProgress });
-  },
-  catalogSyncRecategorizePreview: (scope, force, opts) =>
-    postJson(`${API_BASE}/admin/catalog-sync/recategorize/preview`, { scope: scope || null, force: !!force }, { ...opts, timeout: LONG_TIMEOUT }),
-  catalogSyncRecategorizeApply: (scope, force, opts) =>
-    postJson(`${API_BASE}/admin/catalog-sync/recategorize/apply`, { scope: scope || null, force: !!force }, { ...opts, timeout: LONG_TIMEOUT }),
-  catalogSyncLogs: (limit = 50, opts) =>
-    get(`${API_BASE}/admin/catalog-sync/logs?limit=${limit}`, opts),
-  catalogSyncSnapshots: (opts) =>
-    get(`${API_BASE}/admin/catalog-sync/snapshots`, opts),
-  catalogSyncRestore: (filename, opts) =>
-    postJson(`${API_BASE}/admin/catalog-sync/restore`, { filename }, { ...opts, timeout: LONG_TIMEOUT }),
-  // 인증 헤더를 포함해 파일을 blob으로 받아 다운로드한다.
+
   downloadAuthed: async (url, filename) => {
     const token = getAccessToken();
-    const resp = await fetch(url, {
+    const response = await fetch(url, {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
-    if (!resp.ok) throw new Error(`다운로드 실패 (HTTP ${resp.status})`);
-    const blob = await resp.blob();
+    if (!response.ok) throw new Error(`다운로드 실패 (HTTP ${response.status})`);
+    const blob = await response.blob();
     const objectUrl = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = objectUrl;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    const link = document.createElement('a');
+    link.href = objectUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
     URL.revokeObjectURL(objectUrl);
   },
 };
