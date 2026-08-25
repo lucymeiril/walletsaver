@@ -1,9 +1,6 @@
 import { create } from 'zustand';
 import { api } from '../api/client';
 
-/**
- * API 에러를 사용자 친화적 메시지로 변환 — 원시 서버 에러 노출 방지.
- */
 function toUserMessage(err, fallback) {
   if (!err) return fallback;
   const status = err.status || err.statusCode;
@@ -15,7 +12,6 @@ function toUserMessage(err, fallback) {
 }
 
 const useAdminStore = create((set, get) => ({
-  // 도메인별 로딩/에러 — 다른 도메인 상태 변경 시 불필요한 리렌더 방지
   crawlersLoading: false,
   crawlersError: null,
   logsLoading: false,
@@ -24,21 +20,20 @@ const useAdminStore = create((set, get) => ({
   schedulesError: null,
   dashboardLoading: false,
   dashboardError: null,
-  pluginsLoading: false,
-  pluginsError: null,
   ingestionsLoading: false,
   ingestionsError: null,
 
   clearError: () => set({
-    crawlersError: null, logsError: null, schedulesError: null,
-    dashboardError: null, pluginsError: null, ingestionsError: null,
+    crawlersError: null,
+    logsError: null,
+    schedulesError: null,
+    dashboardError: null,
+    ingestionsError: null,
   }),
 
-  // Crawlers
   crawlers: [],
   selectedCrawler: null,
   crawlerFilter: 'all',
-
   setCrawlerFilter: (filter) => set({ crawlerFilter: filter }),
   setSelectedCrawler: (crawler) => set({ selectedCrawler: crawler }),
 
@@ -47,20 +42,21 @@ const useAdminStore = create((set, get) => ({
     try {
       const data = await api.getCrawlers();
       const list = Array.isArray(data) ? data : data.crawlers ?? data.data ?? [];
-      const mapped = list.map((c) => ({
-        id: c.name,
-        name: c.display_name || c.name,
-        category: c.category || 'etc',
-        difficulty: c.difficulty ?? '중',
-        status: c.status || 'active',
-        lastCrawl: c.lastCrawl || c.last_run || '',
-        successRate: c.successRate ?? c.success_rate ?? 0,
-        totalRuns: c.totalRuns ?? c.total_runs ?? 0,
-        description: c.description || '',
-        schedule: c.schedule || '',
-        recentRuns: c.recentRuns ?? c.recent_runs ?? [],
-      }));
-      set({ crawlers: mapped });
+      set({
+        crawlers: list.map((c) => ({
+          id: c.name,
+          name: c.display_name || c.name,
+          category: c.category || 'etc',
+          difficulty: c.difficulty ?? '중',
+          status: c.status || 'active',
+          lastCrawl: c.lastCrawl || c.last_run || '',
+          successRate: c.successRate ?? c.success_rate ?? 0,
+          totalRuns: c.totalRuns ?? c.total_runs ?? 0,
+          description: c.description || '',
+          schedule: c.schedule || '',
+          recentRuns: c.recentRuns ?? c.recent_runs ?? [],
+        })),
+      });
     } catch (err) {
       set({ crawlersError: toUserMessage(err, '크롤러 목록을 불러올 수 없습니다.') });
     } finally {
@@ -71,8 +67,7 @@ const useAdminStore = create((set, get) => ({
   runCrawler: async (id) => {
     set({ crawlersLoading: true, crawlersError: null });
     try {
-      const result = await api.runCrawler(id);
-      return result;
+      return await api.runCrawler(id);
     } catch (err) {
       set({ crawlersError: toUserMessage(err, '크롤러 실행에 실패했습니다.') });
       return null;
@@ -85,39 +80,22 @@ const useAdminStore = create((set, get) => ({
     const { crawlers } = get();
     const crawler = crawlers.find((c) => c.id === id);
     if (!crawler) return;
-
     const newStatus = crawler.status === 'active' ? 'inactive' : 'active';
-    // 낙관적 업데이트
-    set({
-      crawlers: crawlers.map((c) =>
-        c.id === id ? { ...c, status: newStatus } : c
-      ),
-    });
+    set({ crawlers: crawlers.map((c) => c.id === id ? { ...c, status: newStatus } : c) });
     try {
       await api.toggleCrawler(id, newStatus);
     } catch (err) {
-      // 롤백
-      set({
-        crawlers: crawlers,
-        crawlersError: toUserMessage(err, '상태 변경에 실패했습니다.'),
-      });
+      set({ crawlers, crawlersError: toUserMessage(err, '상태 변경에 실패했습니다.') });
     }
   },
 
   getFilteredCrawlers: () => {
     const { crawlers, crawlerFilter } = get();
-    if (crawlerFilter === 'all') return crawlers;
-    return crawlers.filter((c) => c.category === crawlerFilter);
+    return crawlerFilter === 'all' ? crawlers : crawlers.filter((c) => c.category === crawlerFilter);
   },
 
-  // Logs
   logs: [],
-  logFilters: {
-    crawlerName: '',
-    status: 'all',
-    dateFrom: '',
-    dateTo: '',
-  },
+  logFilters: { crawlerName: '', status: 'all', dateFrom: '', dateTo: '' },
   logPage: 1,
   logsPerPage: 8,
 
@@ -125,8 +103,7 @@ const useAdminStore = create((set, get) => ({
     set({ logsLoading: true, logsError: null });
     try {
       const data = await api.getLogs(params);
-      const list = Array.isArray(data) ? data : data.logs ?? data.data ?? [];
-      set({ logs: list });
+      set({ logs: Array.isArray(data) ? data : data.logs ?? data.data ?? [] });
     } catch (err) {
       set({ logsError: toUserMessage(err, '로그를 불러올 수 없습니다.') });
     } finally {
@@ -148,51 +125,43 @@ const useAdminStore = create((set, get) => ({
     }
   },
 
-  setLogFilters: (filters) =>
-    set((state) => ({
-      logFilters: { ...state.logFilters, ...filters },
-      logPage: 1,
-    })),
-
+  setLogFilters: (filters) => set((state) => ({
+    logFilters: { ...state.logFilters, ...filters },
+    logPage: 1,
+  })),
   setLogPage: (page) => set({ logPage: page }),
 
   getFilteredLogs: () => {
     const { logs, logFilters } = get();
     return logs.filter((log) => {
       const name = log.crawlerName || log.job_id || '';
-      if (logFilters.crawlerName && !name.includes(logFilters.crawlerName))
-        return false;
-      if (logFilters.status !== 'all' && log.status !== logFilters.status)
-        return false;
-      // 날짜 범위 필터
+      if (logFilters.crawlerName && !name.includes(logFilters.crawlerName)) return false;
+      if (logFilters.status !== 'all' && log.status !== logFilters.status) return false;
       const started = log.startTime || log.started_at;
-      if (started && (logFilters.dateFrom || logFilters.dateTo)) {
-        const ts = new Date(started);
-        if (isNaN(ts.getTime())) return false;
-        if (logFilters.dateFrom) {
-          const from = new Date(logFilters.dateFrom);
-          from.setHours(0, 0, 0, 0);
-          if (ts < from) return false;
-        }
-        if (logFilters.dateTo) {
-          const to = new Date(logFilters.dateTo);
-          to.setHours(23, 59, 59, 999);
-          if (ts > to) return false;
-        }
+      if (!started || (!logFilters.dateFrom && !logFilters.dateTo)) return true;
+      const ts = new Date(started);
+      if (isNaN(ts.getTime())) return false;
+      if (logFilters.dateFrom) {
+        const from = new Date(logFilters.dateFrom);
+        from.setHours(0, 0, 0, 0);
+        if (ts < from) return false;
+      }
+      if (logFilters.dateTo) {
+        const to = new Date(logFilters.dateTo);
+        to.setHours(23, 59, 59, 999);
+        if (ts > to) return false;
       }
       return true;
     });
   },
 
-  // Schedules
   schedules: [],
 
   fetchSchedules: async () => {
     set({ schedulesLoading: true, schedulesError: null });
     try {
       const data = await api.getSchedules();
-      const list = Array.isArray(data) ? data : data.schedules ?? data.data ?? [];
-      set({ schedules: list });
+      set({ schedules: Array.isArray(data) ? data : data.schedules ?? data.data ?? [] });
     } catch (err) {
       set({ schedulesError: toUserMessage(err, '스케줄을 불러올 수 없습니다.') });
     } finally {
@@ -211,9 +180,9 @@ const useAdminStore = create((set, get) => ({
     }
   },
 
-  updateScheduleApi: async (name, data) => {
+  updateScheduleApi: async (identifier, data) => {
     try {
-      const result = await api.updateSchedule(name, data);
+      const result = await api.updateSchedule(identifier, data);
       await get().fetchSchedules();
       return result;
     } catch (err) {
@@ -222,9 +191,9 @@ const useAdminStore = create((set, get) => ({
     }
   },
 
-  deleteScheduleApi: async (name) => {
+  deleteScheduleApi: async (identifier) => {
     try {
-      await api.deleteSchedule(name);
+      await api.deleteSchedule(identifier);
       await get().fetchSchedules();
     } catch (err) {
       set({ schedulesError: toUserMessage(err, '스케줄 삭제에 실패했습니다.') });
@@ -235,36 +204,19 @@ const useAdminStore = create((set, get) => ({
     const { schedules } = get();
     const schedule = schedules.find((s) => s.id === id);
     if (!schedule) return;
-
     const newEnabled = !schedule.enabled;
-    const crawlerName = schedule.crawlerId || schedule.crawlerName;
-
-    // 낙관적 업데이트
-    set({
-      schedules: schedules.map((s) =>
-        s.id === id ? { ...s, enabled: newEnabled } : s
-      ),
-    });
-
+    set({ schedules: schedules.map((s) => s.id === id ? { ...s, enabled: newEnabled } : s) });
     try {
-      await api.toggleSchedule(crawlerName, newEnabled);
+      await api.toggleSchedule(id, newEnabled);
     } catch (err) {
-      // 롤백
-      set({
-        schedules: schedules,
-        schedulesError: toUserMessage(err, '스케줄 토글에 실패했습니다.'),
-      });
+      set({ schedules, schedulesError: toUserMessage(err, '스케줄 토글에 실패했습니다.') });
     }
   },
 
-  updateScheduleCron: (id, cron, description) =>
-    set((state) => ({
-      schedules: state.schedules.map((s) =>
-        s.id === id ? { ...s, cron, description } : s
-      ),
-    })),
+  updateScheduleCron: (id, cron, description) => set((state) => ({
+    schedules: state.schedules.map((s) => s.id === id ? { ...s, cron, description } : s),
+  })),
 
-  // Ingestions (데이터 검토)
   ingestions: [],
   selectedIngestion: null,
   ingestionFilter: 'all',
@@ -273,8 +225,7 @@ const useAdminStore = create((set, get) => ({
     set({ ingestionsLoading: true, ingestionsError: null });
     try {
       const data = await api.getIngestions(params);
-      const list = Array.isArray(data) ? data : data.items ?? data.ingestions ?? data.data ?? [];
-      set({ ingestions: list });
+      set({ ingestions: Array.isArray(data) ? data : data.items ?? data.ingestions ?? data.data ?? [] });
     } catch (err) {
       set({ ingestions: [], ingestionsError: toUserMessage(err, '데이터 검토 목록을 불러올 수 없습니다.') });
     } finally {
@@ -340,60 +291,6 @@ const useAdminStore = create((set, get) => ({
 
   setIngestionFilter: (filter) => set({ ingestionFilter: filter }),
 
-  // Plugins
-  plugins: [],
-
-  fetchPlugins: async () => {
-    set({ pluginsLoading: true, pluginsError: null });
-    try {
-      const data = await api.getPlugins();
-      const list = Array.isArray(data) ? data : data.plugins ?? data.data ?? [];
-      set({ plugins: list });
-    } catch (err) {
-      set({ pluginsError: toUserMessage(err, '플러그인 목록을 불러올 수 없습니다.') });
-    } finally {
-      set({ pluginsLoading: false });
-    }
-  },
-
-  togglePlugin: async (id) => {
-    const { plugins } = get();
-    const plugin = plugins.find((p) => p.id === id);
-    if (!plugin) return;
-
-    const newStatus = plugin.status === 'active' ? 'inactive' : 'active';
-    // 낙관적 업데이트
-    set({
-      plugins: plugins.map((p) =>
-        p.id === id ? { ...p, status: newStatus } : p
-      ),
-    });
-
-    try {
-      await api.togglePlugin(id, newStatus);
-    } catch (err) {
-      // 롤백
-      set({
-        plugins: plugins,
-        pluginsError: toUserMessage(err, '플러그인 토글에 실패했습니다.'),
-      });
-    }
-  },
-
-  updatePluginSettings: async (id, settings) => {
-    set({ pluginsLoading: true, pluginsError: null });
-    try {
-      await api.updatePluginSettings(id, settings);
-      // 설정 변경 후 목록 새로고침
-      await get().fetchPlugins();
-    } catch (err) {
-      set({ pluginsError: toUserMessage(err, '설정 저장에 실패했습니다.') });
-    } finally {
-      set({ pluginsLoading: false });
-    }
-  },
-
-  // Dashboard
   dashboardStats: {
     totalCrawlers: 0,
     activeCrawlers: 0,
@@ -407,7 +304,6 @@ const useAdminStore = create((set, get) => ({
   },
   errorTrendDays: 7,
   lastRefreshed: null,
-
   setErrorTrendDays: (days) => set({ errorTrendDays: days }),
 
   fetchDashboard: async (days) => {
