@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections import Counter
 from typing import Any
+from uuid import uuid4
 
 CRITICAL_FIELD_THRESHOLDS: dict[str, float] = {
     "name": 1.0,
@@ -85,6 +86,7 @@ def summarize_discount_run(
     fixture_available: bool | None = None,
 ) -> dict[str, Any]:
     """Build a normalized mart-discount quality summary before DB review."""
+    ingestion_run_id = uuid4().hex
     total = len(items)
     parsed_total = raw_count if raw_count is not None else total + invalid_count
     source_total = source_raw_count if source_raw_count is not None else parsed_total
@@ -312,6 +314,7 @@ def summarize_discount_run(
 
     return {
         "schema": "crawler_run_summary.v1",
+        "ingestion_run_id": ingestion_run_id,
         "score": score,
         "item_counts": {
             "raw": parsed_total,
