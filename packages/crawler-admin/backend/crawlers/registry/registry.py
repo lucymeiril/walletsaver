@@ -6,10 +6,10 @@ sources, etc.) look like live product features merely because their folders had
 not been deleted yet.
 
 Current core crawlers are registered in code. Optional crawlers are opt-in via
-``WALLETSAVIOR_OPTIONAL_CRAWLERS`` (comma-separated names). OPINET is deliberately
-not exposed through this registry yet because its current implementation is
-fixture-only and has no live ``crawl()`` contract; its production code is kept
-for the planned fuel-price feature without pretending it is runnable today.
+``WALLETSAVIOR_OPTIONAL_CRAWLERS`` (comma-separated names). OPINET deliberately
+stays outside this DiscountItem/HotdealPost registry: its current live client
+emits the dedicated ``GasStationRecord`` model for the fuel-price feature rather
+than pretending fuel rows belong in the product ingestion pipeline.
 """
 from __future__ import annotations
 
