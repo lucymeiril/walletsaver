@@ -285,6 +285,27 @@ for ($i = 0; $i -lt 30; $i++) {
     if ($allReady) { break }
 }
 
+$failedChecks = @($checks | Where-Object { -not $_.Ready })
+if ($failedChecks.Count -gt 0) {
+    Write-Host ""
+    Write-Host "❌ 일부 백엔드 서버가 준비되지 못했습니다." -ForegroundColor Red
+    foreach ($failed in $failedChecks) {
+        Write-Host "   - $($failed.Name): $($failed.Url)" -ForegroundColor Red
+    }
+    Write-Host "   성공한 것처럼 계속 두지 않고 시작한 프로세스를 정리합니다." -ForegroundColor Red
+    foreach ($p in $processes) {
+        if ($p -and -not $p.HasExited) {
+            $children = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
+                        Where-Object { $_.ParentProcessId -eq $p.Id }
+            foreach ($child in $children) {
+                Stop-Process -Id $child.ProcessId -Force -ErrorAction SilentlyContinue
+            }
+            Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue
+        }
+    }
+    exit 1
+}
+
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Green
 Write-Host "  ✅ 시스템이 시작되었습니다!" -ForegroundColor Green
@@ -292,23 +313,19 @@ Write-Host "============================================" -ForegroundColor Green
 Write-Host ""
 
 if ($Web) {
-    $stat = if ($checks[0].Ready) { "✅" } else { "⏳" }
     Write-Host "  🌐 웹" -ForegroundColor White
     Write-Host "     프론트엔드: http://localhost:5173" -ForegroundColor White
-    Write-Host "     Public API: http://localhost:8000/api/health  $stat" -ForegroundColor White
+    Write-Host "     Public API: http://localhost:8000/api/health  ✅" -ForegroundColor White
     Write-Host ""
 }
 if ($Admin) {
-    $idx = if ($Web) { 1 } else { 0 }
-    $cStat = if ($checks[$idx].Ready) { "✅" } else { "⏳" }
-    $dStat = if ($checks[$idx+1].Ready) { "✅" } else { "⏳" }
     Write-Host "  🕷️ 크롤러 관리" -ForegroundColor White
     Write-Host "     프론트엔드: http://localhost:5174" -ForegroundColor White
-    Write-Host "     백엔드 API: http://localhost:8001/docs  $cStat" -ForegroundColor White
+    Write-Host "     백엔드 API: http://localhost:8001/docs  ✅" -ForegroundColor White
     Write-Host ""
     Write-Host "  🗄️ DB 관리" -ForegroundColor White
     Write-Host "     프론트엔드: http://localhost:5175" -ForegroundColor White
-    Write-Host "     백엔드 API: http://localhost:8002/docs  $dStat" -ForegroundColor White
+    Write-Host "     백엔드 API: http://localhost:8002/docs  ✅" -ForegroundColor White
     Write-Host ""
 }
 
