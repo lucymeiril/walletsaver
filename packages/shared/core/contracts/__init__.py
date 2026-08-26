@@ -3,7 +3,7 @@
 from .crawler import CrawlerContract
 from .engine import EngineContract, StrategyContract
 from .scheduler import SchedulerContract
-from .storage import FileStorageContract, StorageContract
+from .storage import StorageContract
 
 __all__ = [
     "CrawlerContract",
@@ -11,5 +11,4 @@ __all__ = [
     "StrategyContract",
     "SchedulerContract",
     "StorageContract",
-    "FileStorageContract",
 ]

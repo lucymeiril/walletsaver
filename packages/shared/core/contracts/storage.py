@@ -1,13 +1,13 @@
 """
 저장소 계약 (StorageContract).
 
-DB, 파일시스템 등 데이터 저장 인터페이스.
+DB 등 수집 데이터 저장 인터페이스.
 크롤러, 엔진은 이 계약만 의존한다.
 """
 
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Any, Optional
+from typing import Optional
 
 
 class StorageContract(ABC):
@@ -72,33 +72,4 @@ class StorageContract(ABC):
         limit: int = 100,
     ) -> list[dict]:
         """수집된 데이터 조회."""
-        ...
-
-
-class FileStorageContract(ABC):
-    """파일 저장소 (이미지 등)가 구현해야 하는 계약."""
-
-    @abstractmethod
-    async def save_image(
-        self,
-        image_data: bytes,
-        filename: str,
-        content_type: str = "image/jpeg",
-    ) -> dict:
-        """
-        이미지를 저장하고 메타데이터를 반환한다.
-
-        Returns:
-            {"file_path": str, "thumbnail_path": str, "file_size": int, "mime_type": str}
-        """
-        ...
-
-    @abstractmethod
-    async def delete_image(self, file_path: str) -> bool:
-        """이미지 삭제."""
-        ...
-
-    @abstractmethod
-    async def get_image_url(self, file_path: str) -> str:
-        """이미지 접근 URL 반환."""
         ...
