@@ -31,11 +31,8 @@ def isolated_board(tmp_path, monkeypatch):
     from services import board_storage
 
     board_storage.reset_board_engine()
-    # community may already have been imported by another test module during
-    # collection. Seed the newly configured temporary database explicitly.
-    import api.routes.community as community
-
-    community._seed_if_empty()
+    # The current board runtime creates only schema. Tests create their own data.
+    board_storage.get_board_engine()
     yield board_path
     board_storage.reset_board_engine()
 
@@ -93,14 +90,13 @@ def test_community_database_is_physically_separate(isolated_board, client):
     assert "pending_ingestions" not in tables
 
 
-def test_seeded_board_is_readable_from_isolated_database(client):
+def test_empty_board_is_readable_from_isolated_database(client):
     response = client.get("/api/posts")
     assert response.status_code == 200
     body = response.json()
     assert body["success"] is True
-    assert isinstance(body["data"], list)
-    assert body["meta"]["total"] >= len(body["data"])
-    assert body["meta"]["total"] > 0
+    assert body["data"] == []
+    assert body["meta"]["total"] == 0
 
 
 def test_authenticated_community_crud_comment_and_vote_flow(client):
@@ -190,7 +186,7 @@ def test_other_user_cannot_modify_or_delete_post(client):
 
 
 def test_comment_and_vote_require_authentication(client):
-    post_id = client.get("/api/posts").json()["data"][0]["id"]
+    post_id = 1
     assert client.post(
         f"/api/posts/{post_id}/comments",
         json={"content": "anonymous"},

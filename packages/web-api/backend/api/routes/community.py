@@ -1,8 +1,8 @@
 """Community API backed only by the isolated board SQLite database.
 
-Authentication identity comes from walletguardian.db. community_users contains a
-minimal mirror with the same numeric id so board foreign keys remain isolated
-without inventing a second account authority.
+Authentication identity comes from the server-owned accounts.sqlite database.
+community_users contains a minimal mirror with the same numeric id so board
+foreign keys remain isolated without inventing a second account authority.
 """
 from __future__ import annotations
 
@@ -39,16 +39,15 @@ def _session_factory():
 
 
 def _ensure_user(session, user: dict) -> UserModel:
-    """Mirror a main-DB user into board.sqlite without ever reusing an old owner id."""
+    """Mirror an accounts.sqlite user into board.sqlite without reusing another owner id."""
     user_id = int(user["id"])
     email = (user.get("email") or "").strip().lower()
     nickname = (user.get("nickname") or "").strip() or f"user{user_id}"
 
     existing = session.get(UserModel, user_id)
     if existing is not None:
-        # Legacy in-memory auth could recycle numeric ids. Never overwrite a
-        # board owner with a different e-mail because that would transfer old
-        # posts to a new account.
+        # Never overwrite a board owner with a different e-mail. If account ids
+        # ever diverge, explicit migration is safer than transferring old posts.
         if email and existing.email.strip().lower() != email:
             raise HTTPException(
                 status_code=409,

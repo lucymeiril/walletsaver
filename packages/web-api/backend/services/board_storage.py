@@ -1,8 +1,9 @@
 """Independent SQLite storage for the public community board.
 
-The authoritative public account lives in walletguardian.db.users. This database
-is deliberately isolated from product/catalog writes; community_users is only a
-minimal identity mirror using the same numeric user id for board foreign keys.
+The authoritative public account lives in web-api's server-owned accounts.sqlite.
+This database is deliberately isolated from product/catalog writes;
+community_users is only a minimal identity mirror using the same numeric user id
+for board foreign keys.
 """
 from __future__ import annotations
 
