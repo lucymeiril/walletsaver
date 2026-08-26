@@ -74,6 +74,20 @@ if (-not $env:REQUIRE_AUTH) { $env:REQUIRE_AUTH = "false" }
 if (-not $env:DATABASE_URL) { $env:DATABASE_URL = "sqlite:///" + (Join-Path $DbBackend "walletguardian.db").Replace("\", "/") }
 if (-not $env:DB_ADMIN_DATABASE_URL) { $env:DB_ADMIN_DATABASE_URL = $env:DATABASE_URL }
 
+# 로컬 실행에서 알려진 기본 JWT 키를 사용하지 않는다.
+# 배포 환경에서 JWT_SECRET_KEY를 지정하면 그 값을 그대로 사용한다.
+if ($Web -and -not $env:JWT_SECRET_KEY) {
+    $jwtBytes = New-Object byte[] 48
+    $jwtRng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+    try {
+        $jwtRng.GetBytes($jwtBytes)
+        $env:JWT_SECRET_KEY = [Convert]::ToBase64String($jwtBytes)
+    } finally {
+        $jwtRng.Dispose()
+    }
+    Write-Host "  🔐 로컬용 임시 JWT 서명키를 생성했습니다. (재시작 시 로그인 세션 초기화)" -ForegroundColor DarkGray
+}
+
 Write-Host "[정리] __pycache__ 정리 중..." -ForegroundColor Yellow
 Get-ChildItem -Path (Join-Path $Root "packages") -Recurse -Directory -Filter "__pycache__" -ErrorAction SilentlyContinue |
     ForEach-Object { Remove-Item $_.FullName -Recurse -Force -ErrorAction SilentlyContinue }
@@ -142,12 +156,20 @@ if ($Web) {
 }
 if ($Admin) {
     Install-PythonRequirements "크롤러 관리자" (Join-Path $Root "packages\crawler-admin\requirements.txt")
-    Install-PythonRequirements "DB 관리자" (Join-Path $DbBackend "requirements.txt")
 }
-
-Ensure-PlaywrightChromium
-Upgrade-DatabaseSchema
-Initialize-CommunitySchema
+# 웹 API도 db-admin의 DBStorage/모델과 Alembic을 직접 사용하므로 두 모드 모두 필요하다.
+if ($Web -or $Admin) {
+    Install-PythonRequirements "DB 관리자" (Join-Path $DbBackend "requirements.txt")
+    Upgrade-DatabaseSchema
+}
+# Playwright는 크롤러 관리 기능을 실행할 때만 필요하다.
+if ($Admin) {
+    Ensure-PlaywrightChromium
+}
+# 커뮤니티 SQLite는 공개 웹 서비스에만 속한다.
+if ($Web) {
+    Initialize-CommunitySchema
+}
 
 $frontendDirs = @()
 if ($Web)   { $frontendDirs += $WebFrontend }
