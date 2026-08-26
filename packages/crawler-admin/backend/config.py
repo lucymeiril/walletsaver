@@ -16,16 +16,6 @@ BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env")
 
 
-# --- Database ---
-DATABASE_URL: str = os.getenv("DATABASE_URL", "")
-if not DATABASE_URL:
-    import warnings
-    warnings.warn(
-        "DATABASE_URL not set — database features will be unavailable",
-        RuntimeWarning,
-        stacklevel=2,
-    )
-
 # --- Current external data source ---
 OPINET_API_KEY: str = os.getenv("OPINET_API_KEY", "")
 
