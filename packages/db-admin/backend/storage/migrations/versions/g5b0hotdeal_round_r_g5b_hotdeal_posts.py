@@ -1,10 +1,8 @@
-"""Round R G5-b: hotdeal source tables placeholder.
+"""Round R G5-b: external hotdeal source tables.
 
 Revision ID: g5b0hotdeal
-Revises: TODO after Round R G2 mapping head reconciliation
+Revises: c4d5e6f7a8b9
 Create Date: 2026-05-26 00:00:00.000000
-
-메인 브랜치에서 G2-mapping 완료 후 Alembic chain을 reconcile한다.
 """
 from typing import Sequence, Union
 
@@ -13,7 +11,6 @@ import sqlalchemy as sa
 
 
 revision: str = "g5b0hotdeal"
-# TODO(Round R main reconcile): set to the post-G2 mapping head when c3d4e5f6a7b8 is merged.
 down_revision: Union[str, Sequence[str], None] = "c4d5e6f7a8b9"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
