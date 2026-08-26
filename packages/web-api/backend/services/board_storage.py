@@ -58,9 +58,14 @@ class User(Base):
     role: Mapped[str] = mapped_column(String(32), nullable=False, default="user")
     oauth_provider: Mapped[str | None] = mapped_column(String(32), nullable=True)
     oauth_id: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    bio: Mapped[str | None] = mapped_column(Text, nullable=True)
+    profile_image_url: Mapped[str | None] = mapped_column(String(1000), nullable=True)
+    preferences_json: Mapped[str | None] = mapped_column(Text, nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     is_deleted: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
 
     posts: Mapped[list["Post"]] = relationship(back_populates="author")
     comments: Mapped[list["Comment"]] = relationship(back_populates="author")
@@ -153,6 +158,11 @@ def _ensure_auth_columns(engine) -> None:
             "role": "role VARCHAR(32) NOT NULL DEFAULT 'user'",
             "oauth_provider": "oauth_provider VARCHAR(32)",
             "oauth_id": "oauth_id VARCHAR(255)",
+            "bio": "bio TEXT",
+            "profile_image_url": "profile_image_url VARCHAR(1000)",
+            "preferences_json": "preferences_json TEXT",
+            "updated_at": "updated_at DATETIME",
+            "deleted_at": "deleted_at DATETIME",
         }
         for name, definition in additions.items():
             if name not in columns:
