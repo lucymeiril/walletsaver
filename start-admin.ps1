@@ -17,7 +17,6 @@ Write-Host "  🔧 지갑 지키미 — 관리 도구 시작" -ForegroundColor M
 Write-Host "============================================" -ForegroundColor Magenta
 Write-Host ""
 
-# --- Python 실행 파일 감지 ---
 $PyExe = $null
 foreach ($candidate in @("py", "python", "python3")) {
     try {
@@ -43,7 +42,6 @@ $DbBackendDir       = Join-Path $Root "packages\db-admin\backend"
 $DbFrontendDir      = Join-Path $Root "packages\db-admin\frontend"
 $SharedDir          = Join-Path $Root "packages\shared"
 
-# --- 전체 실행 스크립트와 동일한 로컬 런타임 계약 ---
 $env:PYTHONIOENCODING = "utf-8"
 $env:PYTHONUTF8 = "1"
 $env:PYTHONPATH = "$Root;$SharedDir;$CrawlerBackendDir;$DbBackendDir"
@@ -75,30 +73,51 @@ function Install-PythonRequirements {
     Write-Host "         ✅ $Name 완료" -ForegroundColor Green
 }
 
-# --- 의존성 확인 ---
+function Ensure-PlaywrightChromium {
+    Write-Host "[의존성] Playwright Chromium 설치/확인..." -ForegroundColor Yellow
+    & $PyExe -m playwright install chromium
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "❌ Playwright Chromium 설치에 실패했습니다." -ForegroundColor Red
+        Write-Host "   브라우저 기반 크롤러가 동작하지 않으므로 시작을 중단합니다." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "         ✅ Playwright Chromium 완료" -ForegroundColor Green
+}
+
+function Upgrade-DatabaseSchema {
+    Write-Host "[DB] Alembic 마이그레이션 적용 중..." -ForegroundColor Yellow
+    Push-Location $DbBackendDir
+    & $PyExe -m alembic upgrade head
+    $migrationExit = $LASTEXITCODE
+    Pop-Location
+    if ($migrationExit -ne 0) {
+        Write-Host "❌ DB 마이그레이션에 실패했습니다. 서버를 띄우지 않습니다." -ForegroundColor Red
+        Write-Host "   기존 DB를 보존한 채 Alembic 오류를 먼저 확인하세요." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "     ✅ DB 스키마 최신 상태" -ForegroundColor Green
+}
+
 Install-PythonRequirements "크롤러 관리자" (Join-Path $Root "packages\crawler-admin\requirements.txt")
 Install-PythonRequirements "DB 관리자" (Join-Path $DbBackendDir "requirements.txt")
+Ensure-PlaywrightChromium
+Upgrade-DatabaseSchema
 
 foreach ($dir in @($CrawlerFrontendDir, $DbFrontendDir)) {
     $name = Split-Path (Split-Path $dir -Parent) -Leaf
-    if (-not (Test-Path (Join-Path $dir "node_modules"))) {
-        Write-Host "[의존성] $name 프론트엔드 설치 중..." -ForegroundColor Yellow
-        Push-Location $dir
-        & cmd.exe /c "npm install --silent" 2>&1 | Out-Null
-        $npmExit = $LASTEXITCODE
-        Pop-Location
-        if ($npmExit -ne 0) {
-            Write-Host "❌ $name npm install에 실패했습니다." -ForegroundColor Red
-            exit 1
-        }
-        Write-Host "         ✅ npm install 완료" -ForegroundColor Green
-    } else {
-        Write-Host "[의존성] $name 프론트엔드 ✅" -ForegroundColor Green
+    Write-Host "[의존성] $name 프론트엔드 npm 동기화 중..." -ForegroundColor Yellow
+    Push-Location $dir
+    & cmd.exe /c "npm install --silent" 2>&1 | Out-Null
+    $npmExit = $LASTEXITCODE
+    Pop-Location
+    if ($npmExit -ne 0) {
+        Write-Host "❌ $name npm install에 실패했습니다." -ForegroundColor Red
+        exit 1
     }
+    Write-Host "         ✅ npm install 완료" -ForegroundColor Green
 }
 Write-Host ""
 
-# --- 이전 실행 잔존 프로세스 정리 ---
 Write-Host "[정리] 기존 관리 서버 프로세스 정리 중..." -ForegroundColor Yellow
 foreach ($port in @(8001, 5174, 8002, 5175)) {
     $conns = Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue |
@@ -118,31 +137,26 @@ Start-Sleep -Seconds 1
 Write-Host "         ✅ 정리 완료" -ForegroundColor Green
 Write-Host ""
 
-# --- 크롤러 관리 백엔드 (port 8001) ---
 Write-Host "🚀 크롤러 관리 백엔드 시작 (port 8001)..." -ForegroundColor Yellow
 $crawlerBackend = Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
     -ArgumentList "-m uvicorn api.app:create_app --factory --port 8001 --host 127.0.0.1" `
     -WorkingDirectory $CrawlerBackendDir
 
-# --- 크롤러 관리 프론트엔드 (port 5174) ---
 Write-Host "🚀 크롤러 관리 프론트엔드 시작 (port 5174)..." -ForegroundColor Yellow
 $crawlerFrontend = Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
     -ArgumentList "vite --host 127.0.0.1 --port 5174 --strictPort" `
     -WorkingDirectory $CrawlerFrontendDir
 
-# --- DB 관리 백엔드 (port 8002) ---
 Write-Host "🚀 DB 관리 백엔드 시작 (port 8002)..." -ForegroundColor Yellow
 $dbBackend = Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
     -ArgumentList "-m uvicorn api.app:create_app --factory --port 8002 --host 127.0.0.1" `
     -WorkingDirectory $DbBackendDir
 
-# --- DB 관리 프론트엔드 (port 5175) ---
 Write-Host "🚀 DB 관리 프론트엔드 시작 (port 5175)..." -ForegroundColor Yellow
 $dbFrontend = Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
     -ArgumentList "vite --host 127.0.0.1 --port 5175 --strictPort" `
     -WorkingDirectory $DbFrontendDir
 
-# --- 서버 준비 대기 ---
 Write-Host ""
 Write-Host "⏳ 서버 준비 대기 중..." -ForegroundColor Yellow
 $crawlerReady = $false
