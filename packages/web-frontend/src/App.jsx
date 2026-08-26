@@ -6,13 +6,12 @@ import BottomNav from './components/layout/BottomNav';
 import ToastContainer from './components/common/ToastContainer';
 import LoginModal from './components/modals/LoginModal';
 import useStore from './stores/appStore';
-import useCartStore from './stores/cartStore';
 import { authService } from './services/authService';
+import { syncAccountData } from './services/accountSync';
 import ShoppingListPanel from './components/common/ShoppingListPanel';
 import ModalManager from './components/modals/ModalManager';
 import ErrorBoundary from './components/common/ErrorBoundary';
 
-// Lazy-load 페이지 (코드 스플리팅 — 초기 로드 최소화)
 const HomePage      = lazy(() => import('./pages/Home/HomePage'));
 const PricePage     = lazy(() => import('./pages/Price/PricePage'));
 const CategoryComparePage = lazy(() => import('./pages/Price/CategoryComparePage'));
@@ -49,31 +48,32 @@ function Guarded({ children, name }) {
 export default function App() {
   const theme = useStore((s) => s.theme);
   const login = useStore((s) => s.login);
-  const mergeOnLogin = useCartStore((s) => s.mergeOnLogin);
+  const logout = useStore((s) => s.logout);
+  const addToast = useStore((s) => s.addToast);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  // 앱 부팅 시 세션 복원: 로그인 이력이 있을 때만 조용히 확인해 첫 화면의 401 잡음을 막는다.
+  // localStorage 값만으로 로그인시키지 않는다. 서버의 httpOnly 쿠키를 /me로 확인한 뒤 복원한다.
   useEffect(() => {
-    const demoProfile = localStorage.getItem('walletsavior-demo-profile');
-    if (demoProfile) {
-      try {
-        login(JSON.parse(demoProfile));
-        return;
-      } catch {
-        localStorage.removeItem('walletsavior-demo-profile');
-      }
+    if (!authService.hasSessionMarker()) {
+      authService.clearLocalSession();
+      return;
     }
-    if (localStorage.getItem('walletsavior-auth-session') !== '1') return;
+
     authService.getProfile({ silent: true })
-      .then((profile) => {
+      .then(async (profile) => {
         login({ ...profile });
-        mergeOnLogin();
+        authService.markSessionVerified();
+        const failures = await syncAccountData();
+        if (failures.length > 0) {
+          addToast(`${failures.join(', ')} 동기화에 실패했습니다.`, 'warning');
+        }
       })
       .catch(() => {
-        localStorage.removeItem('walletsavior-auth-session');
+        authService.clearLocalSession();
+        logout();
       });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
