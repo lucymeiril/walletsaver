@@ -1,5 +1,5 @@
 /**
- * 장바구니 스토어 — localStorage (비로그인) + API (로그인) 이중 모드
+ * 장바구니 스토어 — 비로그인은 localStorage, 로그인은 메인 DB를 진실 소스로 사용.
  */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -9,7 +9,6 @@ import { asNumericId, normalizeProduct } from '../utils/productActions';
 
 const CART_API = '/api/cart';
 
-/** 백엔드 → 프론트 필드 정규화 */
 function normalizeCartItem(item) {
   const product = normalizeProduct(item);
   const isBackendCartItem = item.cart_id || item.item_name !== undefined || item.item_price !== undefined || item.added_at;
@@ -44,14 +43,12 @@ function toCartApiPayload(item) {
     item_name: item.name,
     item_price: item.price,
     item_image_url: item.image,
-    local_id: item.id,
     store_name: item.store_name,
     source_url: item.source_url,
     original_price: item.original_price,
     discount_rate: item.discount_rate,
     category: item.category,
     quantity: item.quantity || 1,
-    unit: item.unit,
   };
 }
 
@@ -75,14 +72,10 @@ const useCartStore = create(
       loading: false,
       synced: false,
 
-      /** 로그인 상태 확인 (appStore runtime state) */
-      _getAuth: () => {
-        return !!useStore.getState().isLoggedIn;
-      },
+      _getAuth: () => !!useStore.getState().isLoggedIn,
 
-      /** API에서 장바구니 로드 */
       fetchCart: async () => {
-        if (!get()._getAuth()) return;
+        if (!get()._getAuth()) return [];
         set({ loading: true });
         try {
           const res = await api.get(CART_API);
@@ -90,124 +83,135 @@ const useCartStore = create(
           const rawItems = json.data || json.items || json || [];
           const items = Array.isArray(rawItems) ? rawItems.map(normalizeCartItem) : [];
           set({ items, synced: true, loading: false });
-        } catch {
-          set({ loading: false });
+          return items;
+        } catch (error) {
+          set({ loading: false, synced: false });
+          throw error;
         }
       },
 
-      /** 아이템 추가 */
+      mergeOnLogin: async () => {
+        if (!get()._getAuth()) return [];
+        const localItems = get().items;
+        if (localItems.length > 0) {
+          await api.post(`${CART_API}/merge`, {
+            items: localItems
+              .filter((item) => (item.price || item.item_price || 0) >= 0)
+              .map((item) => toCartApiPayload(normalizeCartItem(item))),
+          });
+        }
+        return get().fetchCart();
+      },
+
+      _ensureSynced: async () => {
+        if (get()._getAuth() && !get().synced) {
+          await get().mergeOnLogin();
+        }
+      },
+
       addItem: async (item) => {
         const normalized = normalizeCartItem(item);
-
         const isLoggedIn = get()._getAuth();
-        const normalizedKey = itemKey(normalized);
-        const existing = get().items.find((i) => itemKey(i) === normalizedKey);
 
-        if (existing) {
-          const updated = get().items.map((i) =>
-            itemKey(i) === normalizedKey
-              ? { ...i, quantity: i.quantity + normalized.quantity }
-              : i
-          );
-          set({ items: updated });
-          if (isLoggedIn && existing.cart_id) {
-            try {
-              await api.put(`${CART_API}/${existing.cart_id}`, { quantity: existing.quantity + normalized.quantity });
-            } catch { /* silently fail */ }
+        if (!isLoggedIn) {
+          const key = itemKey(normalized);
+          const existing = get().items.find((row) => itemKey(row) === key);
+          if (existing) {
+            const nextQuantity = existing.quantity + normalized.quantity;
+            set({
+              items: get().items.map((row) =>
+                itemKey(row) === key ? { ...row, quantity: nextQuantity } : row
+              ),
+            });
+          } else {
+            set({ items: [...get().items, normalized] });
           }
-        } else {
-          set({ items: [...get().items, normalized] });
-          if (isLoggedIn && normalized.price > 0) {
-            try {
-              const res = await api.post(CART_API, toCartApiPayload(normalized));
-              const json = await res.json();
-              const data = json.data || json;
-              if (data.id || data.cart_id) {
-                set({
-                  items: get().items.map((i) =>
-                    itemKey(i) === normalizedKey
-                      ? { ...i, cart_id: data.id || data.cart_id }
-                      : i
-                  ),
-                });
-              }
-            } catch { /* silently fail */ }
-          }
+          return normalized;
         }
-        return normalized;
+
+        await get()._ensureSynced();
+        const key = itemKey(normalized);
+        const existing = get().items.find((row) => itemKey(row) === key);
+
+        if (existing?.cart_id) {
+          const nextQuantity = existing.quantity + normalized.quantity;
+          await api.put(`${CART_API}/${existing.cart_id}`, { quantity: nextQuantity });
+          const updated = { ...existing, quantity: nextQuantity };
+          set({
+            items: get().items.map((row) =>
+              row.cart_id === existing.cart_id ? updated : row
+            ),
+          });
+          return updated;
+        }
+
+        const res = await api.post(CART_API, toCartApiPayload(normalized));
+        const json = await res.json();
+        const saved = normalizeCartItem(json.data || json);
+        set({ items: [...get().items.filter((row) => itemKey(row) !== key), saved] });
+        return saved;
       },
 
-      /** 수량 변경 */
       updateQuantity: async (itemId, quantity) => {
         if (quantity < 1) return get().removeItem(itemId);
         const isLoggedIn = get()._getAuth();
+        if (isLoggedIn) await get()._ensureSynced();
+
         const item = get().items.find(
-          (i) => i.id === itemId || i.cart_id === itemId || i.product_id === itemId
+          (row) => row.id === itemId || row.cart_id === itemId || row.product_id === itemId
         );
+        if (!item) return false;
+
+        if (isLoggedIn) {
+          if (!item.cart_id) throw new Error('장바구니 항목이 서버와 동기화되지 않았습니다.');
+          await api.put(`${CART_API}/${item.cart_id}`, { quantity });
+        }
+
         set({
-          items: get().items.map((i) =>
-            (i.id === itemId || i.cart_id === itemId || i.product_id === itemId)
-              ? { ...i, quantity }
-              : i
+          items: get().items.map((row) =>
+            (row.id === itemId || row.cart_id === itemId || row.product_id === itemId)
+              ? { ...row, quantity }
+              : row
           ),
         });
-        if (isLoggedIn && item?.cart_id) {
-          try {
-            await api.put(`${CART_API}/${item.cart_id}`, { quantity });
-          } catch { /* silently fail */ }
-        }
+        return true;
       },
 
-      /** 아이템 삭제 */
       removeItem: async (itemId) => {
         const isLoggedIn = get()._getAuth();
+        if (isLoggedIn) await get()._ensureSynced();
+
         const item = get().items.find(
-          (i) => i.id === itemId || i.cart_id === itemId || i.product_id === itemId
+          (row) => row.id === itemId || row.cart_id === itemId || row.product_id === itemId
         );
+        if (!item) return false;
+
+        if (isLoggedIn) {
+          if (!item.cart_id) throw new Error('장바구니 항목이 서버와 동기화되지 않았습니다.');
+          await api.delete(`${CART_API}/${item.cart_id}`);
+        }
+
         set({
           items: get().items.filter(
-            (i) => i.id !== itemId && i.cart_id !== itemId && i.product_id !== itemId
+            (row) => row.id !== itemId && row.cart_id !== itemId && row.product_id !== itemId
           ),
         });
-        if (isLoggedIn && item?.cart_id) {
-          try {
-            await api.delete(`${CART_API}/${item.cart_id}`);
-          } catch { /* silently fail */ }
-        }
+        return true;
       },
 
-      /** 전체 비우기 */
       clearCart: async () => {
-        const isLoggedIn = get()._getAuth();
-        set({ items: [] });
-        if (isLoggedIn) {
-          try {
-            await api.delete(CART_API);
-          } catch { /* silently fail */ }
+        if (get()._getAuth()) {
+          await get()._ensureSynced();
+          await api.delete(CART_API);
         }
+        set({ items: [], synced: get()._getAuth() });
+        return true;
       },
 
-      /** 로그인 시 localStorage → DB 병합 */
-      mergeOnLogin: async () => {
-        const localItems = get().items;
-        if (localItems.length > 0) {
-          try {
-            await api.post(`${CART_API}/merge`, {
-              items: localItems
-                .filter((item) => (item.price || item.item_price || 0) > 0)
-                .map((item) => toCartApiPayload(normalizeCartItem(item))),
-            });
-          } catch { /* silently fail */ }
-        }
-        await get().fetchCart();
-      },
-
-      /** 로그아웃 시 로컬 장바구니 초기화 */
       onLogout: () => {
         set({ items: [], synced: false });
       },
 
-      /** 합계 계산 */
       get totalPrice() {
         return get().items.reduce((sum, i) => sum + (i.price || 0) * (i.quantity || 1), 0);
       },
@@ -225,7 +229,10 @@ const useCartStore = create(
     }),
     {
       name: 'wallet-savior-cart',
-      partialize: (state) => ({ items: state.items.map(normalizeCartItem) }),
+      // 로그인 계정의 장바구니는 DB가 원본이다. localStorage에는 게스트 장바구니만 남긴다.
+      partialize: (state) => ({
+        items: useStore.getState().isLoggedIn ? [] : state.items.map(normalizeCartItem),
+      }),
       merge: (persistedState, currentState) => ({
         ...currentState,
         ...(persistedState || {}),
