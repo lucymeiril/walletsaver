@@ -53,7 +53,23 @@ export function normalizeProduct(product = {}) {
       || product.current_price !== undefined
       || product.cart_id !== undefined
     );
-  const rawId = firstDefined(explicitProductId, looksLikeSavedListItem ? undefined : product.id);
+  const looksLikeHotdeal = Boolean(
+    product.hotdeal_id !== undefined
+    || product.type === 'hotdeal'
+    || product.source_type === 'hotdeal'
+    || (
+      product.title !== undefined
+      && (
+        product.votes_hot !== undefined
+        || product.votes_not !== undefined
+        || product.time !== undefined
+        || product.comments !== undefined
+      )
+    )
+  );
+  const inferredProductId = (!looksLikeSavedListItem && !looksLikeHotdeal) ? product.id : undefined;
+  const rawId = firstDefined(explicitProductId, inferredProductId);
+  const sourceIdentityId = firstDefined(product.hotdeal_id, product.id, rawId);
   const numericProductId = asNumericId(rawId);
   const name = firstDefined(
     product.name,
@@ -93,7 +109,7 @@ export function normalizeProduct(product = {}) {
     '',
   );
   const category = firstDefined(product.category_path, product.category, product.category_name, product.category_id, '');
-  const sourceType = firstDefined(product.type, product.source_type, product.sourceType, product.martKey ? 'mart' : '');
+  const sourceType = firstDefined(product.type, product.source_type, product.sourceType, looksLikeHotdeal ? 'hotdeal' : (product.martKey ? 'mart' : ''));
   const sourceUrl = firstDefined(product.source_url, product.detail_url, product.detailUrl, product.link, product.url, '');
   const image = firstDefined(product.img, product.image_url, product.image, product.item_image_url, product.thumbnail, '');
   const sourceTitle = firstDefined(product.source_title, product.offer_title, product.title, '');
@@ -102,7 +118,7 @@ export function normalizeProduct(product = {}) {
     stableSource,
     sourceUrl,
     sourceTitle,
-    rawId && !numericProductId ? rawId : '',
+    !numericProductId ? sourceIdentityId : '',
     name,
     storeName,
     storeKey,
