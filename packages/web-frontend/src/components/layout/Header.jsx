@@ -1,6 +1,6 @@
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback, useMemo, useRef, memo } from 'react';
-import { Wallet, Bell, User, X, Search, Sun, Moon, LogOut, Heart, BellRing, ChevronDown, ShoppingCart } from 'lucide-react';
+import { Wallet, Bell, User, X, Search, Sun, Moon, LogOut, Heart, BellRing, ChevronDown } from 'lucide-react';
 import useStore from '../../stores/appStore';
 import useCartStore from '../../stores/cartStore';
 import { authService } from '../../services/authService';
@@ -55,7 +55,6 @@ const Header = memo(function Header() {
 
   const openLogin = useCallback(() => openLoginModal(), [openLoginModal]);
 
-  // Close profile dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (profileRef.current && !profileRef.current.contains(e.target)) {
@@ -66,12 +65,29 @@ const Header = memo(function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [profileOpen]);
 
-  const handleLogout = useCallback(async () => {
-    try { await authService.logout(); } catch { /* ignore */ }
+  const performLogout = useCallback(async () => {
+    let serverConfirmed = true;
+    try {
+      await authService.logout();
+    } catch {
+      serverConfirmed = false;
+      // httpOnly 쿠키 삭제는 확인 못 했지만, 이 브라우저의 자동 세션 복원은 막는다.
+      authService.clearLocalSession();
+    }
     logout();
-    addToast('로그아웃 되었습니다', 'info');
-    setProfileOpen(false);
+    addToast(
+      serverConfirmed
+        ? '로그아웃 되었습니다'
+        : '화면에서는 로그아웃했지만 서버 세션 종료를 확인하지 못했습니다.',
+      serverConfirmed ? 'info' : 'warning',
+    );
+    return serverConfirmed;
   }, [logout, addToast]);
+
+  const handleLogout = useCallback(async () => {
+    await performLogout();
+    setProfileOpen(false);
+  }, [performLogout]);
 
   const unreadCount = useMemo(
     () => notifications?.filter(n => !n.read).length || 0,
@@ -90,11 +106,9 @@ const Header = memo(function Header() {
   const closeMobile = useCallback(() => setMobileOpen(false), []);
 
   const handleDrawerLogout = useCallback(async () => {
-    try { await authService.logout(); } catch { /* ignore */ }
-    logout();
-    addToast('로그아웃 되었습니다', 'info');
+    await performLogout();
     setMobileOpen(false);
-  }, [logout, addToast]);
+  }, [performLogout]);
   const handleDrawerLogin = useCallback(() => { openLoginModal(); setMobileOpen(false); }, [openLoginModal]);
 
   return (
@@ -120,15 +134,10 @@ const Header = memo(function Header() {
           </nav>
 
           <div className={s.right}>
-            <button
-              className={s.iconBtn}
-              onClick={toggleSearch}
-              aria-label="검색"
-            >
+            <button className={s.iconBtn} onClick={toggleSearch} aria-label="검색">
               <Search size={20} />
             </button>
 
-            {/* 핫딜러 모드 ON/OFF — 상세 가격 정보 레이어 전환 */}
             <button
               className={`${s.iconBtn} ${hotdealerMode ? s.iconBtnActive : ''}`}
               onClick={toggleHotdealerMode}
@@ -217,7 +226,6 @@ const Header = memo(function Header() {
         )}
       </header>
 
-      {/* Mobile drawer */}
       <div
         className={`${s.overlay} ${mobileOpen ? s.overlayOpen : ''}`}
         onClick={closeMobile}
