@@ -36,7 +36,6 @@ if (-not $npmCmd) {
     exit 1
 }
 
-$WebBackendDir      = Join-Path $Root "packages\web-api\backend"
 $CrawlerBackendDir  = Join-Path $Root "packages\crawler-admin\backend"
 $CrawlerFrontendDir = Join-Path $Root "packages\crawler-admin\frontend"
 $DbBackendDir       = Join-Path $Root "packages\db-admin\backend"
@@ -45,7 +44,7 @@ $SharedDir          = Join-Path $Root "packages\shared"
 
 $env:PYTHONIOENCODING = "utf-8"
 $env:PYTHONUTF8 = "1"
-$env:PYTHONPATH = "$Root;$SharedDir;$WebBackendDir;$CrawlerBackendDir;$DbBackendDir"
+$env:PYTHONPATH = "$Root;$SharedDir;$CrawlerBackendDir;$DbBackendDir"
 if (-not $env:REQUIRE_AUTH) { $env:REQUIRE_AUTH = "false" }
 if (-not $env:DB_ADMIN_API_URL) { $env:DB_ADMIN_API_URL = "http://127.0.0.1:8002/api/prices/bulk" }
 if (-not $env:INGESTION_API_URL) { $env:INGESTION_API_URL = "http://127.0.0.1:8002/api/ingestions" }
@@ -99,24 +98,10 @@ function Upgrade-DatabaseSchema {
     Write-Host "     ✅ DB 스키마 최신 상태" -ForegroundColor Green
 }
 
-function Initialize-CommunitySchema {
-    Write-Host "[DB] 커뮤니티/회원 DB 스키마 확인 중..." -ForegroundColor Yellow
-    Push-Location $WebBackendDir
-    & $PyExe -c "from services.board_storage import get_board_engine; get_board_engine()"
-    $boardExit = $LASTEXITCODE
-    Pop-Location
-    if ($boardExit -ne 0) {
-        Write-Host "❌ 커뮤니티/회원 DB 초기화에 실패했습니다." -ForegroundColor Red
-        exit 1
-    }
-    Write-Host "     ✅ 커뮤니티/회원 DB 준비 완료" -ForegroundColor Green
-}
-
 Install-PythonRequirements "크롤러 관리자" (Join-Path $Root "packages\crawler-admin\requirements.txt")
 Install-PythonRequirements "DB 관리자" (Join-Path $DbBackendDir "requirements.txt")
 Ensure-PlaywrightChromium
 Upgrade-DatabaseSchema
-Initialize-CommunitySchema
 
 foreach ($dir in @($CrawlerFrontendDir, $DbFrontendDir)) {
     $name = Split-Path (Split-Path $dir -Parent) -Leaf
@@ -172,6 +157,8 @@ $dbFrontend = Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
     -ArgumentList "vite --host 127.0.0.1 --port 5175 --strictPort" `
     -WorkingDirectory $DbFrontendDir
 
+$processes = @($crawlerBackend, $crawlerFrontend, $dbBackend, $dbFrontend)
+
 Write-Host ""
 Write-Host "⏳ 서버 준비 대기 중..." -ForegroundColor Yellow
 $crawlerReady = $false
@@ -193,25 +180,35 @@ for ($i = 0; $i -lt 20; $i++) {
     if ($crawlerReady -and $dbReady) { break }
 }
 
+if (-not $crawlerReady -or -not $dbReady) {
+    Write-Host ""
+    Write-Host "❌ 관리 서버 준비에 실패했습니다." -ForegroundColor Red
+    if (-not $crawlerReady) { Write-Host "   - 크롤러 백엔드(8001) health check 실패" -ForegroundColor Red }
+    if (-not $dbReady) { Write-Host "   - DB관리 백엔드(8002) health check 실패" -ForegroundColor Red }
+    Write-Host "   성공한 것처럼 계속 두지 않고 시작한 프로세스를 정리합니다." -ForegroundColor Red
+    foreach ($p in $processes) {
+        if ($p -and -not $p.HasExited) {
+            Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue
+        }
+    }
+    exit 1
+}
+
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Green
 Write-Host "  ✅ 관리 도구가 시작되었습니다!" -ForegroundColor Green
 Write-Host "============================================" -ForegroundColor Green
 Write-Host ""
 Write-Host "  🕷️ 크롤러 관리:" -ForegroundColor White
-$cStat = if ($crawlerReady) { "✅ OK" } else { "⏳ 시작 중" }
 Write-Host "     프론트엔드: http://localhost:5174" -ForegroundColor White
-Write-Host "     백엔드 API: http://localhost:8001/docs  ($cStat)" -ForegroundColor White
+Write-Host "     백엔드 API: http://localhost:8001/docs  (✅ OK)" -ForegroundColor White
 Write-Host ""
 Write-Host "  🗄️ DB 관리:" -ForegroundColor White
-$dStat = if ($dbReady) { "✅ OK" } else { "⏳ 시작 중" }
 Write-Host "     프론트엔드: http://localhost:5175" -ForegroundColor White
-Write-Host "     백엔드 API: http://localhost:8002/docs  ($dStat)" -ForegroundColor White
+Write-Host "     백엔드 API: http://localhost:8002/docs  (✅ OK)" -ForegroundColor White
 Write-Host ""
 Write-Host "  Ctrl+C를 누르면 모든 서버가 종료됩니다." -ForegroundColor DarkGray
 Write-Host ""
-
-$processes = @($crawlerBackend, $crawlerFrontend, $dbBackend, $dbFrontend)
 
 try {
     while ($true) {
