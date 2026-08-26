@@ -42,12 +42,20 @@ SSE_MAX_DURATION: int = int(os.getenv("SSE_MAX_DURATION", "1800"))
 AUDIT_LOG_MAX_BYTES: int = int(os.getenv("AUDIT_LOG_MAX_BYTES", str(50 * 1024 * 1024)))
 AUDIT_LOG_BACKUP_COUNT: int = int(os.getenv("AUDIT_LOG_BACKUP_COUNT", "10"))
 
-# --- db-admin working database ---
-# Raw export reads this DB; weekly diff reads price history and maintains its
-# disappeared-SKU alert table in the same DB. Normal crawler ingestion still
-# writes through the db-admin HTTP API rather than opening this DB directly.
+# --- db-admin working database (read-only from crawler-admin) ---
+# Raw export and weekly diff read current db-admin data from here. Normal crawler
+# ingestion writes through the db-admin HTTP API rather than opening this DB.
 _DB_ADMIN_DB_DEFAULT = BASE_DIR.parent.parent / "db-admin" / "backend" / "walletguardian.db"
 DB_ADMIN_DATABASE_URL: str = os.getenv(
     "DB_ADMIN_DATABASE_URL",
     f"sqlite:///{_DB_ADMIN_DB_DEFAULT.as_posix()}",
 )
+
+# --- crawler-owned weekly state ---
+# Disappeared-SKU alerts are crawler UI/runtime state, not db-admin source data.
+# Keep them in a separate SQLite file so weekly alert writes never touch the
+# db-admin working database.
+_WEEKLY_STATE_DB_DEFAULT = BASE_DIR / "state" / "weekly_state.db"
+WEEKLY_STATE_DB_PATH: Path = Path(
+    os.getenv("WALLETSAVIOR_WEEKLY_STATE_DB", str(_WEEKLY_STATE_DB_DEFAULT))
+).expanduser().resolve()

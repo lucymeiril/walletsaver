@@ -5,6 +5,11 @@ Revises: d3e4f5a6b7c8
 Create Date: 2026-07-15 00:00:00.000000
 
 주간 diff 결과로 사라진 SKU를 기록하는 alert 테이블.
+
+Historical note (2026-08): 이 migration은 Alembic revision chain 보존용이다.
+현재 runtime은 이 테이블을 읽거나 쓰지 않으며, weekly alert 상태는
+crawler-admin 전용 state/weekly_state.db가 소유한다. 기존 로컬 DB의
+과거 alert 데이터를 파괴하지 않기 위해 이 migration 자체는 유지한다.
 매주 크롤링 갱신 시 이전 window에 있다가 당주 window에서 빠진 source_record_key를 삽입하고,
 운영자가 확인·처리하면 resolved_at을 설정한다.
 

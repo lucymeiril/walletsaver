@@ -967,33 +967,6 @@ class NormalizedOfferWeekLink(Base):
 
 
 # ═══════════════════════════════════════════════
-# 주간 diff — 사라진 SKU alert
-# ═══════════════════════════════════════════════
-
-class AlertDisappearedSku(Base):
-    """사라진 SKU alert — 매주 diff 실행 시 이전 주에 있다가 당주 크롤에서 빠진 SKU 기록."""
-    __tablename__ = "alert_disappeared_skus"
-
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    mart: Mapped[str] = mapped_column(String(120), nullable=False)
-    source_record_key: Mapped[str] = mapped_column(String(255), nullable=False)
-    last_seen_title: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    last_seen_price: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
-    last_captured_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
-    detected_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
-    resolved_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
-
-    __table_args__ = (
-        # 동일 mart+key 조합이 open 상태로 중복 삽입되지 않도록 partial unique
-        # (SQLite UniqueConstraint는 resolved_at IS NULL 필터를 지원하지 않으므로
-        #  애플리케이션 레벨에서 중복을 방지하고 인덱스만 생성)
-        Index("ix_alert_sku_mart_key", "mart", "source_record_key"),
-        Index("ix_alert_sku_detected", "detected_at"),
-        Index("ix_alert_sku_resolved", "resolved_at"),
-    )
-
-
-# ═══════════════════════════════════════════════
 # 대기열 (Pending Ingestion)
 # ═══════════════════════════════════════════════
 

@@ -1,10 +1,12 @@
 """주간 마트 상품 변화 비교 서비스.
 
-현재 정본 경로인 db-admin ``discount_history`` + ``products``를 읽는다.
+현재 정본 경로인 db-admin ``discount_history`` + ``products``는 읽기 전용 입력이다.
+사라진 SKU alert는 crawler-admin 소유의 별도 SQLite 상태 DB에 저장한다.
 폐기된 내부 ``raw_crawl_records`` 테이블에는 의존하지 않는다.
 
 공개 API:
     compute_weekly_diff(session, mart, since, until) -> WeeklyDiffReport
+    create_weekly_alert_engine(db_path) -> Engine
     persist_alerts(session, report) -> int
 """
 from __future__ import annotations
@@ -13,16 +15,18 @@ import json
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Optional
 
-from sqlalchemy import Integer, String, Text, DateTime, Index, text, select
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
+from sqlalchemy import DateTime, Index, Integer, String, Text, create_engine, select, text
+from sqlalchemy.engine import Engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 
 logger = logging.getLogger(__name__)
 
 
 class AlertSkuBase(DeclarativeBase):
-    """weekly diff 전용 alert 테이블 metadata."""
+    """crawler-admin weekly alert 상태 DB metadata."""
 
 
 class AlertDisappearedSkuModel(AlertSkuBase):
@@ -42,6 +46,19 @@ class AlertDisappearedSkuModel(AlertSkuBase):
         Index("ix_alert_sku_detected", "detected_at"),
         Index("ix_alert_sku_resolved", "resolved_at"),
     )
+
+
+def create_weekly_alert_engine(db_path: str | Path) -> Engine:
+    """Create the crawler-owned SQLite engine used only for weekly alert state."""
+    path = Path(db_path).expanduser().resolve()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    engine = create_engine(
+        f"sqlite:///{path.as_posix()}",
+        connect_args={"timeout": 30, "check_same_thread": False},
+        pool_pre_ping=True,
+    )
+    AlertSkuBase.metadata.create_all(engine, checkfirst=True)
+    return engine
 
 
 @dataclass
@@ -232,7 +249,7 @@ def compute_weekly_diff(
 
 
 def persist_alerts(session: Session, report: WeeklyDiffReport) -> int:
-    """Persist disappeared SKU alerts; existing open alerts are idempotent."""
+    """Persist disappeared SKU alerts in crawler-owned state; open alerts are idempotent."""
     if not report.disappeared:
         return 0
 

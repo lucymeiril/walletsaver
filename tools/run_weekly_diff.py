@@ -7,9 +7,10 @@
     py -3 tools/run_weekly_diff.py --mart emart,homeplus --days 14
 
 DB 계약:
-    crawler-admin ``config.DB_ADMIN_DATABASE_URL``의 db-admin working DB를 사용한다.
-    주간 비교 입력은 ``discount_history`` + ``products``이고, 사라진 SKU alert도
-    같은 DB의 ``alert_disappeared_skus``에 적재한다.
+    crawler-admin ``config.DB_ADMIN_DATABASE_URL``의 db-admin working DB는
+    ``discount_history`` + ``products`` 비교 입력으로만 읽는다.
+    사라진 SKU alert는 crawler-owned ``config.WEEKLY_STATE_DB_PATH`` SQLite에
+    따로 적재한다.
 """
 from __future__ import annotations
 
@@ -39,7 +40,7 @@ logger = logging.getLogger("run_weekly_diff")
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from services.weekly_diff import AlertSkuBase, compute_weekly_diff, persist_alerts
+from services.weekly_diff import compute_weekly_diff, create_weekly_alert_engine, persist_alerts
 
 ALL_MARTS = ["emart", "homeplus", "lottemart", "costco"]
 
@@ -65,12 +66,16 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _build_session_factory(db_url: str):
+def _build_history_session_factory(db_url: str):
     engine = create_engine(
         db_url,
         connect_args={"check_same_thread": False} if "sqlite" in db_url else {},
     )
-    AlertSkuBase.metadata.create_all(engine, checkfirst=True)
+    return sessionmaker(bind=engine, autoflush=False, autocommit=False), engine
+
+
+def _build_alert_session_factory(db_path: Path):
+    engine = create_weekly_alert_engine(db_path)
     return sessionmaker(bind=engine, autoflush=False, autocommit=False), engine
 
 
@@ -93,7 +98,8 @@ def main() -> None:
 
     until = datetime.now(timezone.utc).replace(tzinfo=None)
     since = until - timedelta(days=args.days)
-    SessionFactory, engine = _build_session_factory(db_url)
+    HistorySessionFactory, history_engine = _build_history_session_factory(db_url)
+    AlertSessionFactory, alert_engine = _build_alert_session_factory(config.WEEKLY_STATE_DB_PATH)
 
     total_disappeared = 0
     total_new = 0
@@ -101,9 +107,14 @@ def main() -> None:
 
     for mart in marts:
         logger.info("▶ mart=%s window=[%s, %s)", mart, since.isoformat(), until.isoformat())
-        session = SessionFactory()
+        history_session = HistorySessionFactory()
         try:
-            report = compute_weekly_diff(session, mart=mart, since=since, until=until)
+            report = compute_weekly_diff(
+                history_session,
+                mart=mart,
+                since=since,
+                until=until,
+            )
             logger.info(
                 "  사라짐=%d 신규=%d 유지=%d 가격변동=%d",
                 len(report.disappeared),
@@ -113,20 +124,28 @@ def main() -> None:
             )
             total_disappeared += len(report.disappeared)
             total_new += len(report.new_skus)
-
-            if not args.dry_run:
-                inserted = persist_alerts(session, report)
-                session.commit()
-                total_alerts_inserted += inserted
-                if inserted:
-                    logger.info("  alert 적재: %d건", inserted)
-            else:
-                logger.info("  [dry-run] alert 적재 생략")
         except Exception:
-            session.rollback()
             logger.exception("  ✗ mart=%s diff 실패", mart)
+            continue
         finally:
-            session.close()
+            history_session.close()
+
+        if args.dry_run:
+            logger.info("  [dry-run] alert 적재 생략")
+            continue
+
+        alert_session = AlertSessionFactory()
+        try:
+            inserted = persist_alerts(alert_session, report)
+            alert_session.commit()
+            total_alerts_inserted += inserted
+            if inserted:
+                logger.info("  alert 적재: %d건", inserted)
+        except Exception:
+            alert_session.rollback()
+            logger.exception("  ✗ mart=%s alert 적재 실패", mart)
+        finally:
+            alert_session.close()
 
     logger.info(
         "완료 — 사라짐 누계=%d 신규 누계=%d alert 삽입=%d",
@@ -134,7 +153,8 @@ def main() -> None:
         total_new,
         total_alerts_inserted,
     )
-    engine.dispose()
+    history_engine.dispose()
+    alert_engine.dispose()
 
 
 if __name__ == "__main__":
