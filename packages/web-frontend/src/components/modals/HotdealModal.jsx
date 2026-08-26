@@ -10,8 +10,10 @@ import s from './HotdealModal.module.css';
 export default function HotdealModal({ data, onClose }) {
   const isLoggedIn = useStore((st) => st.isLoggedIn);
   const favorites = useStore((st) => st.favorites);
+  const favoriteItems = useStore((st) => st.favoriteItems);
   const addFavorite = useStore((st) => st.addFavorite);
   const removeFavorite = useStore((st) => st.removeFavorite);
+  const setFavoriteRemoteId = useStore((st) => st.setFavoriteRemoteId);
   const addToast = useStore((st) => st.addToast);
   const addCartItem = useCartStore((st) => st.addItem);
 
@@ -28,28 +30,66 @@ export default function HotdealModal({ data, onClose }) {
   const views = data.views ?? data.view_count ?? 0;
   const postedAt = data.posted_at || data.created_at || '';
 
-  const productId = normalizeProduct(data).favoriteId;
+  const normalized = normalizeProduct(data);
+  const productId = normalized.favoriteId;
   const isFav = favorites.includes(productId);
 
-  const handleToggleWishlist = () => {
+  const resolveRemoteWishlistId = async () => {
+    const cached = favoriteItems?.[productId]?.remote_id;
+    if (cached) return cached;
+
+    const result = await api.getJson('/api/wishlist');
+    const rows = result?.data || result?.items || result || [];
+    const match = (Array.isArray(rows) ? rows : []).find((row) => {
+      if (normalized.numericProductId && row.product_id) {
+        return Number(row.product_id) === Number(normalized.numericProductId);
+      }
+      return (
+        (row.item_name || '') === normalized.name
+        && (row.store_name || '') === normalized.storeName
+      );
+    });
+    if (!match?.id) return null;
+    setFavoriteRemoteId(productId, match.id);
+    return match.id;
+  };
+
+  const handleToggleWishlist = async () => {
     if (!isLoggedIn) {
       addToast('로그인이 필요합니다', 'warning');
       return;
     }
-    if (isFav) {
-      removeFavorite(productId);
-      addToast('찜 목록에서 제거했어요', 'info');
-    } else {
-      addFavorite(productId);
-      api.post('/api/wishlist', buildWishlistPayload(data)).catch(() => {});
+
+    try {
+      if (isFav) {
+        const remoteId = await resolveRemoteWishlistId();
+        if (!remoteId) throw new Error('서버 찜 항목을 찾을 수 없습니다.');
+        await api.delete(`/api/wishlist/${remoteId}`);
+        removeFavorite(productId);
+        addToast('찜 목록에서 제거했어요', 'info');
+        return;
+      }
+
+      const payload = buildWishlistPayload(data);
+      const res = await api.post('/api/wishlist', payload);
+      const json = await res.json();
+      const saved = json?.data || json;
+      addFavorite(productId, payload);
+      if (saved?.id) setFavoriteRemoteId(productId, saved.id);
       addToast(`${title} 찜했어요 ❤️`, 'success');
+    } catch {
+      addToast(isFav ? '찜 해제에 실패했습니다.' : '찜 추가에 실패했습니다.', 'error');
     }
   };
 
-  const handleAddToCart = () => {
-    addCartItem(buildCartPayload(data));
-    addToast(`${title}을(를) 장바구니에 추가했어요`, 'success');
-    onClose();
+  const handleAddToCart = async () => {
+    try {
+      await addCartItem(buildCartPayload(data));
+      addToast(`${title}을(를) 장바구니에 추가했어요`, 'success');
+      onClose();
+    } catch {
+      addToast('장바구니 저장에 실패했습니다. 다시 시도해주세요.', 'error');
+    }
   };
 
   const sourceLabel =
