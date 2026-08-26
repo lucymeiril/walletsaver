@@ -5,8 +5,15 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 import os
 
-# 설정
-SECRET_KEY = os.getenv("JWT_SECRET_KEY", "dev-secret-key-change-in-production")
+# JWT 서명키는 반드시 런타임에서 주입한다.
+# 알려진 개발 기본값을 두면 환경변수 설정을 깜빡한 서버의 토큰을 누구나 위조할 수 있다.
+SECRET_KEY = os.getenv("JWT_SECRET_KEY", "").strip()
+if not SECRET_KEY:
+    raise RuntimeError(
+        "JWT_SECRET_KEY is required. Use start-all.ps1 for local development "
+        "or set a persistent secret in the deployment environment."
+    )
+
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 7
