@@ -7,8 +7,9 @@ service.
 
 import os
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 
 def _cors_origins() -> list[str]:
@@ -89,7 +90,7 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
             logging.info("DB 연결 성공: %s", db_label)
         except Exception as exc:
             import logging
-            logging.warning("DB 연결 실패; storage 없이 시작합니다: %s", exc)
+            logging.error("DB 연결 실패; storage를 사용할 수 없습니다: %s", exc)
             storage = None
 
     app.state.storage = storage
@@ -122,23 +123,29 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
 
     @app.get("/api/health")
     def health():
-        return {"status": "ok", "version": "0.1.0"}
+        if app.state.storage is None:
+            return JSONResponse(
+                status_code=503,
+                content={
+                    "status": "degraded",
+                    "version": "0.1.0",
+                    "storage": "unavailable",
+                },
+            )
+        return {"status": "ok", "version": "0.1.0", "storage": "ok"}
 
     @app.get("/api/dashboard")
     def dashboard():
-        """Home-screen aggregate from available storage; no fabricated rows."""
+        """Home-screen aggregate. Storage failures are surfaced instead of faked as empty data."""
         current_storage = app.state.storage
-        hotdeals = []
-        recent_products = []
-        if current_storage is not None:
-            try:
-                hotdeals = current_storage.get_hotdeals(category="all", per_page=8)
-            except Exception:
-                hotdeals = []
-            try:
-                recent_products = current_storage.search_products("", per_page=8)
-            except Exception:
-                recent_products = []
+        if current_storage is None:
+            raise HTTPException(status_code=503, detail="대시보드 저장소를 사용할 수 없습니다")
+
+        try:
+            hotdeals = current_storage.get_hotdeals(category="all", per_page=8)
+            recent_products = current_storage.search_products("", per_page=8)
+        except Exception as exc:
+            raise HTTPException(status_code=503, detail="대시보드 데이터를 불러올 수 없습니다") from exc
 
         category_counts = {}
         for product in recent_products:
