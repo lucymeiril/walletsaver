@@ -1,7 +1,6 @@
 """DB 관리 API 팩토리."""
 import asyncio
 import logging
-import signal
 import sys
 import uuid
 from contextlib import asynccontextmanager
@@ -30,11 +29,6 @@ _lifecycle_logger = logging.getLogger("lifecycle")
 _api_logger = logging.getLogger("api")
 
 
-def _signal_handler(signum, frame):
-    sig_name = signal.Signals(signum).name
-    _lifecycle_logger.info("Received %s — initiating graceful shutdown", sig_name)
-
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     if not settings.DEBUG and "changeme" in settings.DATABASE_URL:
@@ -43,21 +37,21 @@ async def lifespan(app: FastAPI):
             "Set a strong DATABASE_URL for production."
         )
 
-    for sig in (signal.SIGTERM, signal.SIGINT):
-        try:
-            signal.signal(sig, _signal_handler)
-        except (OSError, ValueError):
-            pass
-
     from services.base import get_engine
+    from storage.models import Base
 
     engine = get_engine()
     try:
+        # A clean local checkout does not ship walletguardian.db. Create the
+        # current SQLAlchemy schema before seeds and route traffic touch it.
+        # Existing databases still require explicit migrations for column
+        # changes; create_all() only fills in missing tables.
+        Base.metadata.create_all(bind=engine)
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
-        _lifecycle_logger.info("Startup: database connection verified")
+        _lifecycle_logger.info("Startup: database schema/connection verified")
     except Exception as exc:
-        _lifecycle_logger.critical("Startup: database unreachable — %s", exc)
+        _lifecycle_logger.critical("Startup: database initialization failed — %s", exc)
         raise
 
     try:
