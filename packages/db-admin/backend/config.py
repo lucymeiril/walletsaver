@@ -49,14 +49,38 @@ def load_local_env_files(paths: tuple[Path, ...] = LOCAL_ENV_PATHS) -> None:
                 os.environ[key] = value
 
 
+def _resolve_local_sqlite_url(url: str) -> str:
+    """Resolve relative SQLite paths from this backend, not the caller's CWD.
+
+    ``sqlite:///walletguardian.db`` is otherwise interpreted relative to the
+    directory from which Python was launched. Keeping the resolution here makes
+    a copied ``.env`` behave the same after cloning the repository anywhere.
+    Absolute SQLite paths, in-memory databases, URI-style paths and non-SQLite
+    URLs are left unchanged.
+    """
+    prefix = "sqlite:///"
+    if not url.startswith(prefix):
+        return url
+
+    raw_path = url[len(prefix) :]
+    if not raw_path or raw_path == ":memory:" or raw_path.startswith("file:"):
+        return url
+
+    path = Path(raw_path).expanduser()
+    if not path.is_absolute():
+        path = (BASE_DIR / path).resolve()
+    return f"sqlite:///{path.as_posix()}"
+
+
 load_local_env_files()
 
 # 기본: 로컬 SQLite (walletguardian.db)
 # 운영: DATABASE_URL 환경변수로 PostgreSQL 지정
-_default_db = f"sqlite:///{BASE_DIR / 'walletguardian.db'}"
+_default_db = f"sqlite:///{(BASE_DIR / 'walletguardian.db').as_posix()}"
+
 
 class Settings:
-    DATABASE_URL: str = os.getenv("DATABASE_URL", _default_db)
+    DATABASE_URL: str = _resolve_local_sqlite_url(os.getenv("DATABASE_URL", _default_db))
     REDIS_URL: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
     DEBUG: bool = os.getenv("DEBUG", "false").lower() == "true"
     API_HOST: str = os.getenv("DB_ADMIN_HOST", "127.0.0.1")
@@ -122,5 +146,6 @@ class Settings:
         if local_admin_key:
             local_admin_role = os.getenv("DB_ADMIN_API_KEY_ROLE", "admin").strip() or "admin"
             self.SERVICE_API_KEYS.setdefault(local_admin_key, local_admin_role)
+
 
 settings = Settings()
