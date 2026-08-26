@@ -12,7 +12,6 @@ export default function CommunityModeration() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [meta, setMeta] = useState({ total: 0, total_pages: 1 });
-  const [note, setNote] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [detail, setDetail] = useState(null);
@@ -26,7 +25,6 @@ export default function CommunityModeration() {
       });
       setPosts(data.items || []);
       setMeta({ total: data.total || 0, total_pages: data.total_pages || 1 });
-      setNote(data.note || '');
     } catch (err) {
       setError(`커뮤니티 게시글 로드 실패: ${err.message}`);
     } finally {
@@ -80,7 +78,7 @@ export default function CommunityModeration() {
 
       <div className={s.sourceTabs}>
         {[
-          ['active', '활성'], ['reported', '신고됨'], ['deleted', '삭제됨'], ['all', '전체'],
+          ['active', '활성'], ['deleted', '삭제됨'], ['all', '전체'],
         ].map(([key, label]) => (
           <button key={key} className={`${s.sourceTab} ${status === key ? s.sourceTabActive : ''}`} onClick={() => setStatus(key)}>
             {label}
@@ -101,7 +99,6 @@ export default function CommunityModeration() {
         </select>
       </div>
 
-      {note && <div className={s.loadingBar}>{note}</div>}
       {error && <div className={s.errorState}><MessageSquareWarning size={20} /><span>{error}</span></div>}
       {loading && <div className={s.loadingBar}>불러오는 중...</div>}
 
