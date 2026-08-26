@@ -2,6 +2,8 @@
 import os
 
 from fastapi import APIRouter, HTTPException, Request, status
+from fastapi.responses import JSONResponse, RedirectResponse
+
 from api.schemas.auth import (
     UserRegister, UserLogin, TokenResponse, TokenRefresh, UserProfile
 )
@@ -13,7 +15,6 @@ from services.oauth_service import (
     get_oauth_login_url, exchange_code_for_token, get_user_info,
     validate_oauth_state,
 )
-from fastapi.responses import JSONResponse, RedirectResponse
 
 router = APIRouter(prefix="/api/auth", tags=["인증"])
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
@@ -64,6 +65,16 @@ def _active_user_by_id(user_id: int) -> User | None:
             return None
         session.expunge(user)
         return user
+
+
+def _active_user_from_payload(payload: dict | None, token_type: str) -> User | None:
+    if not payload or payload.get("type") != token_type:
+        return None
+    try:
+        user_id = int(payload["sub"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    return _active_user_by_id(user_id)
 
 
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
@@ -124,13 +135,9 @@ async def refresh(request: Request, data: TokenRefresh | None = None):
     refresh_token = data.refresh_token if data else request.cookies.get("refresh_token")
     if not refresh_token:
         raise HTTPException(status_code=401, detail="유효하지 않은 리프레시 토큰입니다")
-    payload = decode_token(refresh_token)
-    if not payload or payload.get("type") != "refresh":
-        raise HTTPException(status_code=401, detail="유효하지 않은 리프레시 토큰입니다")
-
-    user = _active_user_by_id(int(payload["sub"]))
+    user = _active_user_from_payload(decode_token(refresh_token), "refresh")
     if user is None:
-        raise HTTPException(status_code=401, detail="유효하지 않은 사용자입니다")
+        raise HTTPException(status_code=401, detail="유효하지 않은 리프레시 토큰입니다")
 
     tokens = create_token_pair(user.id, user.email, user.role or "user")
     response = JSONResponse(content=TokenResponse(**tokens).model_dump())
@@ -147,7 +154,7 @@ async def logout():
 
 @router.post("/demo-login")
 async def demo_login(provider: str = "google"):
-    """로컬 검증용 데모 계정도 DB에 저장해 ID 재사용을 막는다."""
+    """명시적으로 호출할 때만 쓰는 로컬 데모 계정."""
     email = f"demo-{provider}@walletsavior.local"
     factory = get_board_session_factory()
     with factory() as session:
@@ -177,48 +184,82 @@ async def demo_login(provider: str = "google"):
 
 @router.get("/oauth/{provider}")
 async def oauth_login(provider: str):
-    """OAuth 로그인 URL로 리다이렉트"""
+    """OAuth 로그인 URL로 리다이렉트."""
     try:
         url = get_oauth_login_url(provider)
         return RedirectResponse(url=url)
-    except ValueError as e:
-        if "지원하지 않는 OAuth 공급자" in str(e):
-            raise HTTPException(status_code=400, detail=str(e))
-        return RedirectResponse(url=f"{FRONTEND_URL}/auth/callback?error=oauth_config&provider={provider}", status_code=302)
+    except ValueError as exc:
+        if "지원하지 않는 OAuth 공급자" in str(exc):
+            raise HTTPException(status_code=400, detail=str(exc))
+        return RedirectResponse(
+            url=f"{FRONTEND_URL}/auth/callback?error=oauth_config&provider={provider}",
+            status_code=302,
+        )
 
 
 @router.get("/oauth/{provider}/callback")
 async def oauth_callback(provider: str, code: str, state: str | None = None):
-    """OAuth 콜백 처리 — 계정을 DB에 생성하거나 갱신한다."""
+    """OAuth 콜백 처리 — 공급자 ID를 우선 키로 사용해 계정을 영구 저장한다."""
     if not validate_oauth_state(state):
         return RedirectResponse(url=f"{FRONTEND_URL}/auth/callback?error=oauth_state", status_code=302)
     try:
         token_data = await exchange_code_for_token(provider, code)
         user_info = await get_user_info(provider, token_data["access_token"])
-        email = user_info.email.strip().lower()
+        provider_id = str(user_info.provider_user_id)
+        real_email = (user_info.email or "").strip().lower()
+        # Some Kakao/Naver users do not grant e-mail. Keep a stable internal
+        # identifier rather than inserting an empty/duplicate e-mail value.
+        stored_email = real_email or f"{provider}-{provider_id}@oauth.walletsavior.local"
 
         factory = get_board_session_factory()
         with factory() as session:
-            user = session.query(User).filter(User.email == email).first()
+            user = (
+                session.query(User)
+                .filter(User.oauth_provider == provider, User.oauth_id == provider_id)
+                .first()
+            )
+            if user is None and real_email:
+                user = session.query(User).filter(User.email == real_email).first()
+
             if not user:
+                base_nickname = (user_info.nickname or "").strip() or f"{provider}_{provider_id}"
+                nickname = base_nickname
+                suffix = 2
+                while session.query(User).filter(
+                    User.nickname == nickname,
+                    User.is_deleted.is_(False),
+                ).first():
+                    nickname = f"{base_nickname}_{suffix}"
+                    suffix += 1
                 user = User(
-                    email=email,
-                    nickname=user_info.nickname or email.split("@")[0],
+                    email=stored_email,
+                    nickname=nickname,
                     hashed_password=None,
                     role="user",
                     oauth_provider=provider,
-                    oauth_id=user_info.provider_user_id,
+                    oauth_id=provider_id,
+                    profile_image_url=user_info.profile_image,
                     is_active=True,
                     is_deleted=False,
                 )
                 session.add(user)
             else:
                 if user.is_deleted or user.is_active is False:
-                    return RedirectResponse(url=f"{FRONTEND_URL}/auth/callback?error=account_disabled", status_code=302)
+                    return RedirectResponse(
+                        url=f"{FRONTEND_URL}/auth/callback?error=account_disabled",
+                        status_code=302,
+                    )
                 user.oauth_provider = provider
-                user.oauth_id = user_info.provider_user_id
-                if user_info.nickname:
-                    user.nickname = user_info.nickname
+                user.oauth_id = provider_id
+                if real_email and user.email.endswith("@oauth.walletsavior.local"):
+                    email_owner = session.query(User).filter(
+                        User.email == real_email,
+                        User.id != user.id,
+                    ).first()
+                    if email_owner is None:
+                        user.email = real_email
+                if user_info.profile_image:
+                    user.profile_image_url = user_info.profile_image
             session.commit()
             session.refresh(user)
             tokens = create_token_pair(user.id, user.email, user.role or "user")
@@ -237,11 +278,7 @@ async def get_me(request: Request):
     auth_header = request.headers.get("authorization", "")
     if not token and auth_header.lower().startswith("bearer "):
         token = auth_header.split(" ", 1)[1]
-    payload = decode_token(token) if token else None
-    if not payload or payload.get("type") != "access":
-        raise HTTPException(status_code=401, detail="로그인이 필요합니다")
-
-    user = _active_user_by_id(int(payload["sub"]))
+    user = _active_user_from_payload(decode_token(token) if token else None, "access")
     if user is None:
         raise HTTPException(status_code=401, detail="로그인이 필요합니다")
     return _profile_from_user(user)
