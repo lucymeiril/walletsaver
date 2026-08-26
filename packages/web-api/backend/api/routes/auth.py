@@ -1,4 +1,4 @@
-"""Authentication API backed by the main walletguardian users table."""
+"""Authentication API backed by web-api's server-owned accounts SQLite."""
 import os
 
 from fastapi import APIRouter, HTTPException, Request, status
@@ -80,7 +80,7 @@ def _user_from_token(request: Request, token: str | None, token_type: str) -> di
 
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
 async def register(request: Request, data: UserRegister):
-    """회원가입 — 메인 users 테이블에 실제 계정을 생성한다."""
+    """회원가입 — accounts.sqlite users 테이블에 실제 계정을 생성한다."""
     store = _store(request)
     try:
         user = store.create_password_user(
@@ -120,7 +120,7 @@ async def login(request: Request, data: UserLogin):
 
 @router.post("/refresh", response_model=TokenResponse)
 async def refresh(request: Request, data: TokenRefresh | None = None):
-    """토큰 갱신 — 토큰의 user id를 메인 DB에서 다시 확인한다."""
+    """토큰 갱신 — 토큰의 user id를 accounts.sqlite에서 다시 확인한다."""
     refresh_token = data.refresh_token if data else request.cookies.get("refresh_token")
     user = _user_from_token(request, refresh_token, "refresh")
     if user is None:
@@ -175,7 +175,7 @@ async def oauth_login(provider: str):
 
 @router.get("/oauth/{provider}/callback")
 async def oauth_callback(request: Request, provider: str, code: str, state: str | None = None):
-    """OAuth 콜백 — OAuthAccount와 메인 User를 연결한다."""
+    """OAuth 콜백 — OAuth 계정과 accounts.sqlite 사용자를 연결한다."""
     if not validate_oauth_state(state):
         return RedirectResponse(url=f"{FRONTEND_URL}/auth/callback?error=oauth_state", status_code=302)
     try:
@@ -205,7 +205,7 @@ async def oauth_callback(request: Request, provider: str, code: str, state: str 
 
 @router.get("/me", response_model=UserProfile)
 async def get_me(request: Request):
-    """현재 사용자 정보 — JWT id를 메인 users 테이블에서 재검증한다."""
+    """현재 사용자 정보 — JWT id를 accounts.sqlite users 테이블에서 재검증한다."""
     token = request.cookies.get("access_token")
     auth_header = request.headers.get("authorization", "")
     if not token and auth_header.lower().startswith("bearer "):

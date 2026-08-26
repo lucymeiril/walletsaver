@@ -63,6 +63,8 @@ def test_health_uses_injected_storage_without_repository_db(client):
     assert response.json() == {
         "status": "ok",
         "version": "0.1.0",
+        "catalog": "injected",
+        "accounts": "ok",
     }
 
 
@@ -85,7 +87,7 @@ def test_community_database_is_physically_separate(isolated_board, client):
         "community_comments",
         "community_votes",
     }.issubset(tables)
-    # Product/catalog tables belong to the main product DB, never the board file.
+    # Product/catalog tables belong to the replaceable catalog snapshot, never the board file.
     assert "products" not in tables
     assert "matching_entries" not in tables
     assert "pending_ingestions" not in tables

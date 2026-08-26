@@ -155,24 +155,26 @@ class TestSchemaValidation:
         assert cb.state == "random_state"
 
 
-# ── API 라우트 통합 테스트 ───────────────────────────────────────
+# ── API 라우트 통합 테스트 ────────────────────────────────────────
 
 class TestAuthRoutes:
-    @pytest.fixture(autouse=True)
-    def reset_db(self):
-        """각 테스트 전에 인메모리 DB 초기화"""
-        import api.routes.auth as auth_module
-        auth_module._users_db.clear()
-        auth_module._next_id = 1
-        yield
+    @pytest.fixture
+    def account_db(self, tmp_path):
+        """각 테스트는 실제 스키마의 임시 accounts.sqlite를 사용한다."""
+        from services.account_database import AccountDatabase
+
+        db = AccountDatabase(tmp_path / "accounts.sqlite")
+        yield db
+        db.close()
 
     @pytest.fixture
-    def client(self):
+    def client(self, account_db):
         from fastapi import FastAPI
         from fastapi.testclient import TestClient
         from api.routes.auth import router
 
         app = FastAPI()
+        app.state.storage = account_db
         app.include_router(router)
         return TestClient(app)
 
