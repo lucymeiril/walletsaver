@@ -6,8 +6,11 @@
 """
 
 import math
-from fastapi import APIRouter, Request, Query, HTTPException
+from fastapi import APIRouter, Depends, Request, Query, HTTPException
+
+from api.middleware.auth import require_auth
 from api.schemas.common import ApiResponse, PaginationMeta
+from services.hotdeal_report_storage import HotdealReportStore
 
 router = APIRouter()
 
@@ -81,26 +84,60 @@ async def get_hotdeal(request: Request, hotdeal_id: int):
 
 
 @router.post("/{hotdeal_id}/vote")
-async def vote_hotdeal(request: Request, hotdeal_id: int):
-    """핫딜 투표 (hot/not)."""
+async def vote_hotdeal(
+    request: Request,
+    hotdeal_id: int,
+    user: dict = Depends(require_auth),
+):
+    """로그인 사용자별 핫딜 투표 (hot/not)."""
     body = await request.json()
     vote_type = body.get("vote_type", "hot")
     if vote_type not in ("hot", "not"):
         raise HTTPException(status_code=422, detail="vote_type은 'hot' 또는 'not'이어야 합니다")
 
     storage = _require_storage(request)
-    result = storage.vote_hotdeal(hotdeal_id, vote_type)
+    try:
+        result = storage.vote_hotdeal(
+            hotdeal_id,
+            vote_type,
+            identity_key=f"user:{int(user['id'])}",
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail="핫딜을 찾을 수 없습니다") from exc
     return ApiResponse(data=result)
 
 
 @router.post("/{hotdeal_id}/report")
-async def report_hotdeal(request: Request, hotdeal_id: int):
-    """핫딜 신고 — 실제 저장 성공 뒤에만 성공 응답."""
+async def report_hotdeal(
+    request: Request,
+    hotdeal_id: int,
+    user: dict = Depends(require_auth),
+):
+    """로그인 사용자의 신고를 실제 DB에 저장한다."""
     body = await request.json()
-    reason = body.get("reason", "").strip()
+    reason = str(body.get("reason", "")).strip()
     if not reason:
         raise HTTPException(status_code=422, detail="신고 사유를 입력하세요")
+    if len(reason) > 1000:
+        raise HTTPException(status_code=422, detail="신고 사유는 1000자 이내여야 합니다")
 
     storage = _require_storage(request)
-    storage.report_hotdeal(hotdeal_id, reason)
-    return ApiResponse(data={"success": True, "message": "신고가 접수되었습니다"})
+    try:
+        result = HotdealReportStore(storage).report(
+            hotdeal_id=hotdeal_id,
+            user_id=int(user["id"]),
+            reason=reason,
+        )
+    except RuntimeError as exc:
+        raise HTTPException(status_code=503, detail="신고 저장소를 사용할 수 없습니다") from exc
+
+    if result is None:
+        raise HTTPException(status_code=404, detail="핫딜을 찾을 수 없습니다")
+    return ApiResponse(
+        data={
+            "success": True,
+            "message": "신고가 접수되었습니다",
+            "report_id": result["id"],
+            "status": result["status"],
+        }
+    )
