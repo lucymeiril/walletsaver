@@ -17,7 +17,7 @@ def _remote_error(exc: Exception) -> HTTPException:
 
 @router.get("/posts")
 def list_posts(
-    status: str = Query("active", pattern="^(active|deleted|all|reported)$"),
+    status: str = Query("active", pattern="^(active|deleted|all)$"),
     post_type: str | None = Query(None),
     search: str | None = Query(None),
     page: int = Query(1, ge=1),
