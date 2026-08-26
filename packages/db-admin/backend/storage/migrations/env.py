@@ -1,4 +1,4 @@
-"""Alembic env.py — WalletSavior 마이그레이션 설정."""
+"""Alembic env.py — WalletSavior 메인 DB 마이그레이션 설정."""
 import os
 import sys
 from logging.config import fileConfig
@@ -10,7 +10,6 @@ from alembic import context
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from storage.models import Base
-from storage.opinet_models import OpinetBase
 
 config = context.config
 
@@ -29,18 +28,8 @@ else:
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# 현재 db-admin 스키마와 별도 Opinet 스키마를 autogenerate 대상으로 합친다.
-import sqlalchemy as _sa
-_combined_meta = _sa.MetaData()
-
-for table in Base.metadata.tables.values():
-    table.to_metadata(_combined_meta)
-
-for table in OpinetBase.metadata.tables.values():
-    if table.name not in _combined_meta.tables:
-        table.to_metadata(_combined_meta)
-
-target_metadata = _combined_meta
+# OPINET은 별도 SQLite 저장소로 분리됐다. 메인 DB Alembic은 메인 Base만 관리한다.
+target_metadata = Base.metadata
 
 
 def run_migrations_offline() -> None:
