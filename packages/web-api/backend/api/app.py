@@ -51,7 +51,8 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
         allow_headers=["*"],
     )
 
-    # storage가 없으면 db-admin의 DBStorage로 자동 연결 시도
+    # TODO(remove-db-admin-coupling): this compatibility bootstrap is replaced
+    # by web-api-owned read/account stores in the next cleanup step.
     if storage is None:
         try:
             import logging
@@ -108,6 +109,7 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     from api.routes.naver_local import router as naver_local_router
     from api.routes.profile import router as profile_router
     from api.routes.account_features import router as account_features_router
+    from api.routes.admin_remote import router as admin_remote_router
 
     app.include_router(products_router, prefix="/api/products", tags=["Products"])
     app.include_router(hotdeals_router, prefix="/api/hotdeals", tags=["Hotdeals"])
@@ -120,6 +122,7 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     app.include_router(naver_local_router, prefix="/api/local", tags=["Local / Naver"])
     app.include_router(profile_router)
     app.include_router(account_features_router)
+    app.include_router(admin_remote_router)
 
     @app.get("/api/health")
     def health():

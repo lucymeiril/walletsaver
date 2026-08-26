@@ -4,12 +4,18 @@ The source DB remains the source of truth. Public-data writes only mark the
 snapshot dirty; this background loop waits until writes have been quiet for a
 short settle window, then rebuilds the snapshot once. Large imports therefore
 coalesce into one publication instead of rebuilding on every commit.
+
+If WALLETSAVIOR_REMOTE_ADMIN_TOKEN is configured, the local catalog snapshot is
+also deployed to web-api after a successful build. The upload is independent
+from snapshot generation so a temporary network failure never dirties or
+rebuilds the local source data.
 """
 from __future__ import annotations
 
 import asyncio
 import logging
 import os
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -24,6 +30,7 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_POLL_SECONDS = 1.0
 DEFAULT_SETTLE_SECONDS = 5.0
+REMOTE_RETRY_SECONDS = 30.0
 
 
 def _sqlite_source_path() -> Path | None:
@@ -84,20 +91,44 @@ def _ready_to_publish(state: dict, target: Path, settle_seconds: float) -> bool:
     return quiet_for >= settle_seconds
 
 
+def _remote_publish_enabled() -> bool:
+    return bool(os.getenv("WALLETSAVIOR_REMOTE_ADMIN_TOKEN", "").strip())
+
+
+def _snapshot_revision(path: Path) -> int | None:
+    if not path.exists():
+        return None
+    import sqlite3
+
+    try:
+        connection = sqlite3.connect(f"file:{path.as_posix()}?mode=ro", uri=True, timeout=5)
+        try:
+            row = connection.execute(
+                "SELECT revision FROM snapshot_meta WHERE id=1"
+            ).fetchone()
+            return int(row[0]) if row else None
+        finally:
+            connection.close()
+    except Exception:
+        return None
+
+
+def _upload_catalog_snapshot(path: Path) -> dict:
+    from services.remote_web_admin import upload_snapshot
+
+    return upload_snapshot("catalog", path)
+
+
 async def run_public_snapshot_publisher(
     stop_event: asyncio.Event,
     *,
     poll_seconds: float = DEFAULT_POLL_SECONDS,
     settle_seconds: float = DEFAULT_SETTLE_SECONDS,
 ) -> None:
-    """Publish dirty snapshots until ``stop_event`` is set.
-
-    Snapshot building is synchronous SQLite/file IO, so it runs in a worker
-    thread and never blocks the FastAPI event loop. If source data changes while
-    a build is in progress, public_snapshot_v2 leaves the state dirty and the
-    loop publishes again after the next quiet period.
-    """
+    """Publish dirty snapshots and optionally deploy them to web-api."""
     target = public_snapshot_path()
+    uploaded_revision: int | None = None
+    next_remote_attempt = 0.0
     logger.info("Public snapshot publisher started: %s", target)
 
     while not stop_event.is_set():
@@ -114,7 +145,32 @@ async def run_public_snapshot_publisher(
         except asyncio.CancelledError:
             raise
         except Exception:
-            logger.exception("Public snapshot publish failed; will retry")
+            logger.exception("Public snapshot build failed; will retry")
+
+        if (
+            _remote_publish_enabled()
+            and target.exists()
+            and time.monotonic() >= next_remote_attempt
+        ):
+            local_revision = await asyncio.to_thread(_snapshot_revision, target)
+            if local_revision is not None and local_revision != uploaded_revision:
+                try:
+                    deploy_result = await asyncio.to_thread(_upload_catalog_snapshot, target)
+                    uploaded_revision = local_revision
+                    next_remote_attempt = 0.0
+                    logger.info(
+                        "Public snapshot deployed to web-api: revision=%s bytes=%s",
+                        local_revision,
+                        deploy_result.get("bytes"),
+                    )
+                except asyncio.CancelledError:
+                    raise
+                except Exception:
+                    next_remote_attempt = time.monotonic() + REMOTE_RETRY_SECONDS
+                    logger.exception(
+                        "Public snapshot deploy failed; retrying in %.0fs",
+                        REMOTE_RETRY_SECONDS,
+                    )
 
         try:
             await asyncio.wait_for(stop_event.wait(), timeout=poll_seconds)
