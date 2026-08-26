@@ -1,8 +1,11 @@
 r"""Seed unified category tree and mart native category mappings.
 
-Usage:
-    set DATABASE_URL=sqlite:///E:/pdf/capston01/packages/db-admin/backend/walletguardian.db
+Usage from the repository root:
     py -3 scripts\seed_unified_categories.py
+
+The default database is packages/db-admin/backend/walletguardian.db. A custom
+DATABASE_URL may be supplied when needed; relative SQLite paths are resolved by
+the db-admin backend rather than against the terminal's current directory.
 """
 from __future__ import annotations
 
