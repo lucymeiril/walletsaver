@@ -7,6 +7,7 @@
 
 import math
 from fastapi import APIRouter, Depends, Request, Query, HTTPException
+from sqlalchemy import bindparam, text
 
 from api.middleware.auth import require_auth
 from api.schemas.common import ApiResponse, PaginationMeta
@@ -22,6 +23,33 @@ def _require_storage(request: Request):
     return storage
 
 
+def _attach_product_ids(storage, rows):
+    """Attach the real products.id instead of letting clients confuse hotdeal.id with product.id."""
+    is_single = isinstance(rows, dict)
+    items = [rows] if is_single else list(rows or [])
+    ids = [int(item["id"]) for item in items if item.get("id") is not None]
+    session_factory = getattr(storage, "SessionLocal", None)
+    if not ids or session_factory is None:
+        return rows
+
+    stmt = text(
+        "SELECT id, product_id FROM hotdeal_prices WHERE id IN :ids"
+    ).bindparams(bindparam("ids", expanding=True))
+    with session_factory() as session:
+        mapping = {
+            int(row.id): (int(row.product_id) if row.product_id is not None else None)
+            for row in session.execute(stmt, {"ids": ids})
+        }
+
+    enriched = []
+    for item in items:
+        copy = dict(item)
+        copy["product_id"] = mapping.get(int(copy["id"])) if copy.get("id") is not None else None
+        copy["hotdeal_id"] = copy.get("id")
+        enriched.append(copy)
+    return enriched[0] if is_single else enriched
+
+
 @router.get("")
 async def list_hotdeals(
     request: Request,
@@ -34,6 +62,7 @@ async def list_hotdeals(
     """핫딜 목록."""
     storage = _require_storage(request)
     data = storage.get_hotdeals(category=category, source=source, sort=sort, page=page, per_page=per_page)
+    data = _attach_product_ids(storage, data)
     total = len(data)
     return ApiResponse(
         data=data,
@@ -80,7 +109,7 @@ async def get_hotdeal(request: Request, hotdeal_id: int):
     result = storage.get_hotdeal_detail(hotdeal_id)
     if not result:
         raise HTTPException(status_code=404, detail="핫딜을 찾을 수 없습니다")
-    return ApiResponse(data=result)
+    return ApiResponse(data=_attach_product_ids(storage, result))
 
 
 @router.post("/{hotdeal_id}/vote")
