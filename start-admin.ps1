@@ -36,6 +36,7 @@ if (-not $npmCmd) {
     exit 1
 }
 
+$WebBackendDir      = Join-Path $Root "packages\web-api\backend"
 $CrawlerBackendDir  = Join-Path $Root "packages\crawler-admin\backend"
 $CrawlerFrontendDir = Join-Path $Root "packages\crawler-admin\frontend"
 $DbBackendDir       = Join-Path $Root "packages\db-admin\backend"
@@ -44,7 +45,7 @@ $SharedDir          = Join-Path $Root "packages\shared"
 
 $env:PYTHONIOENCODING = "utf-8"
 $env:PYTHONUTF8 = "1"
-$env:PYTHONPATH = "$Root;$SharedDir;$CrawlerBackendDir;$DbBackendDir"
+$env:PYTHONPATH = "$Root;$SharedDir;$WebBackendDir;$CrawlerBackendDir;$DbBackendDir"
 if (-not $env:REQUIRE_AUTH) { $env:REQUIRE_AUTH = "false" }
 if (-not $env:DB_ADMIN_API_URL) { $env:DB_ADMIN_API_URL = "http://127.0.0.1:8002/api/prices/bulk" }
 if (-not $env:INGESTION_API_URL) { $env:INGESTION_API_URL = "http://127.0.0.1:8002/api/ingestions" }
@@ -98,10 +99,24 @@ function Upgrade-DatabaseSchema {
     Write-Host "     ✅ DB 스키마 최신 상태" -ForegroundColor Green
 }
 
+function Initialize-CommunitySchema {
+    Write-Host "[DB] 커뮤니티/회원 DB 스키마 확인 중..." -ForegroundColor Yellow
+    Push-Location $WebBackendDir
+    & $PyExe -c "from services.board_storage import get_board_engine; get_board_engine()"
+    $boardExit = $LASTEXITCODE
+    Pop-Location
+    if ($boardExit -ne 0) {
+        Write-Host "❌ 커뮤니티/회원 DB 초기화에 실패했습니다." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "     ✅ 커뮤니티/회원 DB 준비 완료" -ForegroundColor Green
+}
+
 Install-PythonRequirements "크롤러 관리자" (Join-Path $Root "packages\crawler-admin\requirements.txt")
 Install-PythonRequirements "DB 관리자" (Join-Path $DbBackendDir "requirements.txt")
 Ensure-PlaywrightChromium
 Upgrade-DatabaseSchema
+Initialize-CommunitySchema
 
 foreach ($dir in @($CrawlerFrontendDir, $DbFrontendDir)) {
     $name = Split-Path (Split-Path $dir -Parent) -Leaf
