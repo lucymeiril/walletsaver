@@ -1,7 +1,7 @@
 /**
  * 외부 분류 내보내기.
  *
- * 폐기된 ai-admin batch ID나 orchestrator run_id를 사용하지 않는다.
+ * 폐기된 내부 분류 batch ID나 orchestrator run_id를 사용하지 않는다.
  * db-admin PendingIngestion ID를 선택해 현재 저장된 원본 items를 내보낸다.
  */
 import { useState, useEffect, useCallback, useRef } from 'react';

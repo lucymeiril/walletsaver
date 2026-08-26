@@ -3,7 +3,7 @@
 # 형식: "old_id": "tree_node_id"
 #
 # 커버 범위:
-#   A. ai-admin/seed_taxonomy.py dot-notation IDs
+#   A. retired classifier taxonomy dot-notation IDs
 #   B. classifier.py 결정론적 IDs
 #   C. db-admin/category_data/categories.py dot-notation IDs
 #   D. 정수 IDs (구 DB 시딩)
@@ -16,7 +16,7 @@
 
 mappings:
   # ─────────────────────────────────────────────────────────────
-  # A + B. ai-admin seed_taxonomy.py / classifier.py 도트 표기 IDs
+  # A + B. retired classifier taxonomy 도트 표기 IDs
   # ─────────────────────────────────────────────────────────────
 
   # 밀키트 / 델리

@@ -1,7 +1,7 @@
 """주간 마트 상품 변화 비교 서비스.
 
 현재 정본 경로인 db-admin ``discount_history`` + ``products``를 읽는다.
-폐기된 ai-admin ``raw_crawl_records`` 테이블에는 의존하지 않는다.
+폐기된 내부 ``raw_crawl_records`` 테이블에는 의존하지 않는다.
 
 공개 API:
     compute_weekly_diff(session, mart, since, until) -> WeeklyDiffReport

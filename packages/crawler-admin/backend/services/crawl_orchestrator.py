@@ -658,7 +658,7 @@ async def _execute_plugin_async(
     """플러그인을 실행하고 로컬 run 결과만 기록한다.
 
     외부 분류는 별도의 명시적 export/import 흐름에서 수행한다. 오케스트레이터는
-    폐기된 live ai-admin 서버나 provider를 자동 호출하지 않는다.
+    폐기된 내부 분류 서버나 provider를 자동 호출하지 않는다.
     """
     store.append_log(run_id, f"플러그인 {plugin.name} 실행 시작")
     try:

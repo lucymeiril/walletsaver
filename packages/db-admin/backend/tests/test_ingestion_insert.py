@@ -1,6 +1,6 @@
 """Focused ingestion persistence contracts for the current DB-admin runtime.
 
-This suite deliberately avoids the retired internal AI-admin publish workflow.
+This suite deliberately avoids the retired internal publish workflow.
 External classification import/matching behavior is covered separately by the
 matching import tests.
 """

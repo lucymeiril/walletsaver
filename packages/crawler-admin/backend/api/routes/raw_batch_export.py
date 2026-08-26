@@ -1,7 +1,7 @@
 """외부 분류용 raw export 라우트.
 
 현재 데이터 원본은 db-admin의 ``pending_ingestions`` 하나뿐이다. 폐기된
-ai-admin control DB나 ``raw_crawl_records``를 읽지 않는다.
+폐기된 내부 control DB나 ``raw_crawl_records``를 읽지 않는다.
 
 엔드포인트:
     POST  /api/export/raw-batch

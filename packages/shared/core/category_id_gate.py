@@ -1,7 +1,7 @@
 """카테고리 ID 검증 게이트 — category_tree.yaml 기반.
 
 역할:
-    모든 진입점(AI publish / crawler ingest / db-admin)에서 category_id를 검증한다.
+    카테고리 마이그레이션/검증 진입점에서 category_id를 검증한다.
     - category_tree.yaml에 있는 ID → 통과 (is_valid=True)
     - legacy_id_migration.yaml에 있는 ID → 마이그 후 통과 (was_migrated=True)
     - 그 외 → escalation 큐 전달 (is_valid=False, escalated=True)

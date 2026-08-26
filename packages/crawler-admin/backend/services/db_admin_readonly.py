@@ -64,7 +64,7 @@ def get_pending_ingestion_records(
 ) -> list[dict[str, Any]]:
     """현재 PendingIngestion의 원본 items를 외부 분류용 raw record 형태로 펼친다.
 
-    archived ai-admin DB나 raw_crawl_records에 의존하지 않는다. ingestion ID는
+    archived control DB나 raw_crawl_records에 의존하지 않는다. ingestion ID는
     db-admin이 실제로 저장한 대기열 ID이므로 fresh clone에서도 동일한 데이터 흐름을
     사용할 수 있다.
     """

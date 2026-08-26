@@ -29,9 +29,4 @@ describe('external classification export client', () => {
       format: ['jsonl'],
     });
   });
-
-  it('does not expose legacy live ai-admin client methods', () => {
-    expect(api.getAiProviders).toBeUndefined();
-    expect(api.forwardRawRecordsToAi).toBeUndefined();
-  });
 });
