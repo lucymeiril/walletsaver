@@ -1,6 +1,7 @@
 import importlib.util
 import os
 import sys
+from pathlib import Path
 
 DB_ADMIN_KEY_ALIAS = "DB_ADMIN_" + "API_KEY"
 SERVICE_KEYS_ALIAS = "SERVICE_" + "API_KEYS"
@@ -62,3 +63,13 @@ def test_absent_local_admin_key_does_not_create_admin_api_key(tmp_path, monkeypa
     settings = config.Settings()
 
     assert settings.SERVICE_API_KEYS == {}
+
+
+def test_relative_sqlite_url_is_resolved_from_backend_not_cwd(tmp_path, monkeypatch):
+    monkeypatch.setenv("DATABASE_URL", "sqlite:///relative-test.db")
+    monkeypatch.chdir(tmp_path)
+
+    config = _load_config_from_repo()
+
+    expected = (Path(config.BASE_DIR) / "relative-test.db").resolve()
+    assert config.settings.DATABASE_URL == f"sqlite:///{expected.as_posix()}"
