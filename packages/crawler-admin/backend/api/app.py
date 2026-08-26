@@ -108,12 +108,25 @@ def create_app() -> FastAPI:
 
     @app.on_event("startup")
     async def _register_plugins():
-        for mod_name in ("emart", "homeplus", "lottemart", "costco"):
+        failures = []
+        plugin_modules = (
+            ("emart", "crawlers.marts.emart.plugin"),
+            ("homeplus", "crawlers.marts.homeplus.plugin"),
+            ("lottemart", "crawlers.marts.lottemart.plugin"),
+            ("costco", "crawlers.marts.costco.plugin"),
+            ("opinet", "crawlers.opinet.plugin"),
+        )
+        for name, module_path in plugin_modules:
             try:
-                mod = __import__(f"crawlers.marts.{mod_name}.plugin", fromlist=["register"])
+                mod = __import__(module_path, fromlist=["register"])
                 mod.register()
             except Exception as exc:
-                logger.warning("[App] plugin %s registration failed: %s", mod_name, exc)
+                logger.exception("[App] plugin %s registration failed", name)
+                failures.append(f"{name}: {exc}")
+        if failures:
+            raise RuntimeError(
+                "Required crawler plugin registration failed: " + "; ".join(failures)
+            )
 
     @app.get("/health")
     async def health():
@@ -138,11 +151,15 @@ def create_app() -> FastAPI:
                 and not result["scheduler_running"]
             ):
                 result["status"] = "degraded"
-        except Exception:
-            logger.exception("[health] orchestrator schedule status unavailable")
+                result["reason"] = "scheduler_not_running"
+        except Exception as exc:
+            logger.exception("[health] orchestrator run store unavailable")
+            result["status"] = "degraded"
+            result["reason"] = "orchestrator_store_unavailable"
             result["scheduler_running"] = False
             result["scheduled_jobs"] = 0
             result["last_crawl"] = None
+            result["store_error"] = type(exc).__name__
 
         try:
             from concurrency import active_count
@@ -169,6 +186,8 @@ def create_app() -> FastAPI:
         except AttributeError:
             result["uptime_seconds"] = None
 
+        if result["status"] != "ok":
+            return JSONResponse(status_code=503, content=result)
         return result
 
     @app.on_event("startup")
