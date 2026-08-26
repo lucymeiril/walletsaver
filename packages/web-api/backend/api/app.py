@@ -1,15 +1,19 @@
 """Public web API application factory.
 
-The API serves the current product, mart, gas, hotdeal, community, search and
-Naver-local user features. Crawler control belongs to crawler-admin, not this
-service.
+Runtime storage is owned by web-api. Replaceable catalog/external-hotdeal
+snapshots are read separately from server-owned account, interaction and
+community SQLite databases. No db-admin source code is required on the server.
 """
+from __future__ import annotations
 
+import logging
 import os
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+
+logger = logging.getLogger(__name__)
 
 
 def _cors_origins() -> list[str]:
@@ -20,23 +24,8 @@ def _cors_origins() -> list[str]:
     return [origin.strip() for origin in configured.split(",") if origin.strip()]
 
 
-def _enable_sqlite_foreign_keys(storage) -> None:
-    """Make SQLite enforce the ForeignKey declarations used by account features."""
-    storage_engine = getattr(storage, "engine", None)
-    if storage_engine is None or getattr(storage_engine.dialect, "name", "") != "sqlite":
-        return
-
-    from sqlalchemy import event
-
-    @event.listens_for(storage_engine, "connect")
-    def _set_foreign_keys(dbapi_connection, _):
-        cursor = dbapi_connection.cursor()
-        cursor.execute("PRAGMA foreign_keys=ON")
-        cursor.close()
-
-
 def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
-    """Create the web API with optionally injected storage for tests/runtime."""
+    """Create web-api, using web-api-owned storage unless tests inject one."""
     app = FastAPI(
         title="지갑 지키미 API",
         description="물가 비교 서비스 백엔드",
@@ -51,50 +40,25 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
         allow_headers=["*"],
     )
 
-    # TODO(remove-db-admin-coupling): this compatibility bootstrap is replaced
-    # by web-api-owned read/account stores in the next cleanup step.
+    owns_storage = storage is None
     if storage is None:
         try:
-            import logging
-            import sys
+            from services.runtime_storage import RuntimeStorage
 
-            web_api_path = os.path.dirname(os.path.dirname(__file__))
-            db_admin_path = os.path.normpath(os.path.join(
-                os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))),
-                "db-admin", "backend",
-            ))
-            if db_admin_path not in sys.path:
-                sys.path.insert(0, db_admin_path)
-
-            from storage.db import DBStorage
-
-            configured_db = os.getenv("DATABASE_URL", "").strip()
-            if configured_db:
-                db_url = configured_db
-                db_label = configured_db
-            else:
-                db_path = os.path.join(db_admin_path, "walletguardian.db")
-                db_url = f"sqlite:///{db_path}"
-                db_label = db_path
-
-            storage = DBStorage(db_url)
-            _enable_sqlite_foreign_keys(storage)
+            storage = RuntimeStorage()
             storage.init_db()
-            if web_api_path in sys.path:
-                sys.path.remove(web_api_path)
-            sys.path.insert(0, web_api_path)
-            for module_name, module in list(sys.modules.items()):
-                if module_name == "services" or module_name.startswith("services."):
-                    module_file = str(getattr(module, "__file__", "") or "")
-                    if module_file.startswith(os.path.join(db_admin_path, "services")):
-                        del sys.modules[module_name]
-            logging.info("DB 연결 성공: %s", db_label)
-        except Exception as exc:
-            import logging
-            logging.error("DB 연결 실패; storage를 사용할 수 없습니다: %s", exc)
+            logger.info(
+                "web-api storage initialized: catalog=%s accounts=%s interactions=%s",
+                getattr(getattr(storage, "catalog", None), "path", None),
+                getattr(getattr(storage, "accounts", None), "path", None),
+                getattr(getattr(storage, "interactions", None), "path", None),
+            )
+        except Exception:
+            logger.exception("web-api storage initialization failed")
             storage = None
 
     app.state.storage = storage
+    app.state.account_storage = getattr(storage, "accounts", storage) if storage is not None else None
     app.state.engine = engine
     app.state.event_bus = event_bus
 
@@ -126,24 +90,47 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
 
     @app.get("/api/health")
     def health():
-        if app.state.storage is None:
+        current_storage = app.state.storage
+        if current_storage is None:
             return JSONResponse(
                 status_code=503,
                 content={
                     "status": "degraded",
                     "version": "0.1.0",
-                    "storage": "unavailable",
+                    "catalog": "unavailable",
+                    "accounts": "unavailable",
                 },
             )
-        return {"status": "ok", "version": "0.1.0", "storage": "ok"}
+
+        catalog_health = None
+        checker = getattr(current_storage, "catalog_health", None)
+        if checker is not None:
+            try:
+                catalog_health = checker()
+            except Exception as exc:
+                return JSONResponse(
+                    status_code=503,
+                    content={
+                        "status": "degraded",
+                        "version": "0.1.0",
+                        "catalog": "unavailable",
+                        "accounts": "ok",
+                        "detail": str(exc),
+                    },
+                )
+
+        return {
+            "status": "ok",
+            "version": "0.1.0",
+            "catalog": catalog_health or "injected",
+            "accounts": "ok",
+        }
 
     @app.get("/api/dashboard")
     def dashboard():
-        """Home-screen aggregate. Storage failures are surfaced instead of faked as empty data."""
         current_storage = app.state.storage
         if current_storage is None:
             raise HTTPException(status_code=503, detail="대시보드 저장소를 사용할 수 없습니다")
-
         try:
             hotdeals = current_storage.get_hotdeals(category="all", per_page=8)
             recent_products = current_storage.search_products("", per_page=8)
@@ -170,5 +157,13 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
             "error": None,
             "meta": None,
         }
+
+    if owns_storage:
+        @app.on_event("shutdown")
+        def _close_runtime_storage():
+            current_storage = app.state.storage
+            closer = getattr(current_storage, "close", None)
+            if closer is not None:
+                closer()
 
     return app

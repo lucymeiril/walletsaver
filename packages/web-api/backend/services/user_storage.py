@@ -1,15 +1,12 @@
-"""Persistent public-account access through the main WalletSavior database.
-
-The public API already receives a DBStorage instance backed by walletguardian.db.
-This adapter intentionally reuses that session factory and the existing db-admin
-SQLAlchemy models instead of creating another user schema. Community content is
-stored separately in board.sqlite; its community_users rows are only mirrors of
-these authoritative user ids.
-"""
+"""Persistent public accounts stored only in web-api's accounts.sqlite."""
 from __future__ import annotations
 
-from dataclasses import dataclass
+import json
+from datetime import datetime
 from typing import Any
+
+from sqlalchemy import text
+from sqlalchemy.exc import IntegrityError
 
 
 class PublicUserStoreError(RuntimeError):
@@ -19,230 +16,185 @@ class PublicUserStoreError(RuntimeError):
 _UNSET = object()
 
 
-@dataclass
 class PublicUserStore:
-    db_storage: Any
-
-    def __post_init__(self) -> None:
-        if self.db_storage is None or not hasattr(self.db_storage, "SessionLocal"):
+    def __init__(self, db_storage: Any):
+        if db_storage is None or not hasattr(db_storage, "SessionLocal"):
             raise PublicUserStoreError("public user database is unavailable")
-        self.SessionLocal = self.db_storage.SessionLocal
+        self.SessionLocal = db_storage.SessionLocal
 
     @staticmethod
-    def _models():
-        # web-api loads db-admin's storage.db before route imports. Keep this
-        # import lazy so direct module imports fail cleanly instead of creating
-        # a second, mismatched model registry.
-        from storage.models import OAuthAccount, OAuthProvider, User, UserRole
-
-        return User, UserRole, OAuthAccount, OAuthProvider
-
-    @staticmethod
-    def _role_value(role: Any) -> str:
-        return getattr(role, "value", role) or "user"
+    def _role(value) -> str:
+        raw = str(getattr(value, "value", value) or "user").lower()
+        return raw.rsplit(".", 1)[-1]
 
     @classmethod
-    def _serialize(cls, user: Any, *, include_password: bool = False) -> dict:
+    def _serialize(cls, row, *, include_password: bool = False) -> dict:
+        data = dict(row)
+        preferences = data.get("preferences")
+        if isinstance(preferences, str) and preferences:
+            try:
+                preferences = json.loads(preferences)
+            except Exception:
+                preferences = None
         payload = {
-            "id": int(user.id),
-            "email": user.email,
-            "nickname": user.nickname,
-            "role": cls._role_value(user.role),
-            "profile_image_url": user.profile_image,
-            "bio": user.bio,
-            "preferences": user.preferences if isinstance(user.preferences, dict) else None,
-            "is_active": bool(user.is_active),
-            "is_deleted": bool(user.is_deleted),
-            "created_at": user.created_at.isoformat() if user.created_at else "",
-            "updated_at": user.updated_at.isoformat() if user.updated_at else None,
-            "deleted_at": user.deleted_at.isoformat() if user.deleted_at else None,
+            "id": int(data["id"]),
+            "email": data["email"],
+            "nickname": data["nickname"],
+            "role": cls._role(data.get("role")),
+            "profile_image_url": data.get("profile_image"),
+            "bio": data.get("bio"),
+            "preferences": preferences if isinstance(preferences, dict) else None,
+            "is_active": bool(data.get("is_active")),
+            "is_deleted": bool(data.get("is_deleted")),
+            "created_at": str(data.get("created_at") or ""),
+            "updated_at": str(data.get("updated_at") or "") or None,
+            "deleted_at": str(data.get("deleted_at") or "") or None,
         }
         if include_password:
-            payload["hashed_password"] = user.hashed_password
+            payload["hashed_password"] = data.get("hashed_password")
         return payload
 
-    def get_by_id(self, user_id: int, *, include_password: bool = False) -> dict | None:
-        User, _, _, _ = self._models()
+    def _get(self, clause: str, params: dict, include_password: bool = False):
         with self.SessionLocal() as session:
-            user = session.get(User, int(user_id))
-            return self._serialize(user, include_password=include_password) if user else None
+            row = session.execute(
+                text(f"SELECT * FROM users WHERE {clause} LIMIT 1"), params
+            ).mappings().first()
+        return self._serialize(row, include_password=include_password) if row else None
 
-    def get_by_email(self, email: str, *, include_password: bool = False) -> dict | None:
-        User, _, _, _ = self._models()
-        normalized = email.strip().lower()
-        with self.SessionLocal() as session:
-            user = session.query(User).filter(User.email == normalized).first()
-            return self._serialize(user, include_password=include_password) if user else None
+    def get_by_id(self, user_id: int, *, include_password: bool = False):
+        return self._get("id=:value", {"value": int(user_id)}, include_password)
+
+    def get_by_email(self, email: str, *, include_password: bool = False):
+        return self._get(
+            "lower(email)=:value",
+            {"value": email.strip().lower()},
+            include_password,
+        )
 
     def create_password_user(self, *, email: str, nickname: str, hashed_password: str) -> dict:
-        User, UserRole, _, _ = self._models()
-        normalized = email.strip().lower()
+        email = email.strip().lower()
         nickname = nickname.strip()
+        now = datetime.utcnow().isoformat()
         with self.SessionLocal() as session:
-            if session.query(User).filter(User.email == normalized).first():
+            if session.execute(text("SELECT 1 FROM users WHERE email=:v"), {"v": email}).first():
                 raise PublicUserStoreError("email_exists")
-            if session.query(User).filter(User.nickname == nickname).first():
+            if session.execute(text("SELECT 1 FROM users WHERE nickname=:v"), {"v": nickname}).first():
                 raise PublicUserStoreError("nickname_exists")
-            user = User(
-                email=normalized,
-                nickname=nickname,
-                hashed_password=hashed_password,
-                role=UserRole.USER,
-                is_active=True,
-                is_deleted=False,
-            )
-            session.add(user)
+            session.execute(text(
+                "INSERT INTO users "
+                "(email,nickname,hashed_password,role,is_active,is_deleted,created_at,updated_at) "
+                "VALUES (:email,:nickname,:password,'user',1,0,:now,:now)"
+            ), {"email": email, "nickname": nickname, "password": hashed_password, "now": now})
             session.commit()
-            session.refresh(user)
-            return self._serialize(user)
+            user_id = int(session.execute(
+                text("SELECT id FROM users WHERE email=:email"), {"email": email}
+            ).scalar_one())
+        return self.get_by_id(user_id)
 
     def ensure_demo_user(self, *, email: str, nickname: str) -> dict:
-        User, UserRole, _, _ = self._models()
-        normalized = email.strip().lower()
+        existing = self.get_by_email(email)
+        if existing:
+            return existing
+        candidate = nickname.strip()
         with self.SessionLocal() as session:
-            user = session.query(User).filter(User.email == normalized).first()
-            if user is None:
-                candidate = nickname.strip()
-                suffix = 2
-                while session.query(User).filter(User.nickname == candidate).first():
-                    candidate = f"{nickname}_{suffix}"
-                    suffix += 1
-                user = User(
-                    email=normalized,
-                    nickname=candidate,
-                    hashed_password=None,
-                    role=UserRole.USER,
-                    is_active=True,
-                    is_deleted=False,
-                )
-                session.add(user)
-                session.commit()
-                session.refresh(user)
-            return self._serialize(user)
+            suffix = 2
+            while session.execute(text("SELECT 1 FROM users WHERE nickname=:v"), {"v": candidate}).first():
+                candidate = f"{nickname}_{suffix}"
+                suffix += 1
+        return self.create_password_user(email=email, nickname=candidate, hashed_password=None)
 
     def update_profile(
-        self,
-        user_id: int,
-        *,
-        nickname: Any = _UNSET,
-        bio: Any = _UNSET,
-        profile_image_url: Any = _UNSET,
-        preferences: Any = _UNSET,
-    ) -> dict | None:
-        from datetime import datetime
-
-        User, _, _, _ = self._models()
-        with self.SessionLocal() as session:
-            user = session.get(User, int(user_id))
-            if user is None:
-                return None
-            if nickname is not _UNSET:
-                normalized_nickname = str(nickname).strip()
-                duplicate = session.query(User).filter(
-                    User.nickname == normalized_nickname,
-                    User.id != user.id,
+        self, user_id: int, *, nickname=_UNSET, bio=_UNSET,
+        profile_image_url=_UNSET, preferences=_UNSET,
+    ):
+        updates, params = [], {"id": int(user_id), "updated_at": datetime.utcnow().isoformat()}
+        if nickname is not _UNSET:
+            value = str(nickname).strip()
+            with self.SessionLocal() as session:
+                duplicate = session.execute(
+                    text("SELECT 1 FROM users WHERE nickname=:v AND id<>:id"),
+                    {"v": value, "id": int(user_id)},
                 ).first()
-                if duplicate:
-                    raise PublicUserStoreError("nickname_exists")
-                user.nickname = normalized_nickname
-            if bio is not _UNSET:
-                user.bio = bio
-            if profile_image_url is not _UNSET:
-                user.profile_image = profile_image_url
-            if preferences is not _UNSET:
-                user.preferences = preferences
-            user.updated_at = datetime.utcnow()
-            session.commit()
-            session.refresh(user)
-            return self._serialize(user)
-
-    def soft_delete(self, user_id: int) -> dict | None:
-        from datetime import datetime
-
-        User, _, _, _ = self._models()
+            if duplicate:
+                raise PublicUserStoreError("nickname_exists")
+            updates.append("nickname=:nickname"); params["nickname"] = value
+        if bio is not _UNSET:
+            updates.append("bio=:bio"); params["bio"] = bio
+        if profile_image_url is not _UNSET:
+            updates.append("profile_image=:profile_image"); params["profile_image"] = profile_image_url
+        if preferences is not _UNSET:
+            updates.append("preferences=:preferences")
+            params["preferences"] = json.dumps(preferences, ensure_ascii=False) if preferences is not None else None
+        if not updates:
+            return self.get_by_id(user_id)
+        updates.append("updated_at=:updated_at")
         with self.SessionLocal() as session:
-            user = session.get(User, int(user_id))
-            if user is None:
-                return None
-            now = datetime.utcnow()
-            user.is_active = False
-            user.is_deleted = True
-            user.deleted_at = now
-            user.updated_at = now
+            result = session.execute(
+                text(f"UPDATE users SET {', '.join(updates)} WHERE id=:id"), params
+            )
             session.commit()
-            session.refresh(user)
-            return self._serialize(user)
+            if not result.rowcount:
+                return None
+        return self.get_by_id(user_id)
+
+    def soft_delete(self, user_id: int):
+        now = datetime.utcnow().isoformat()
+        with self.SessionLocal() as session:
+            result = session.execute(text(
+                "UPDATE users SET is_active=0,is_deleted=1,deleted_at=:now,updated_at=:now WHERE id=:id"
+            ), {"now": now, "id": int(user_id)})
+            session.commit()
+            if not result.rowcount:
+                return None
+        return self.get_by_id(user_id)
 
     def upsert_oauth_user(
-        self,
-        *,
-        provider: str,
-        provider_user_id: str,
-        email: str | None,
-        nickname: str | None,
-        profile_image_url: str | None,
+        self, *, provider: str, provider_user_id: str, email: str | None,
+        nickname: str | None, profile_image_url: str | None,
     ) -> dict:
-        User, UserRole, OAuthAccount, OAuthProvider = self._models()
-        try:
-            provider_enum = OAuthProvider(provider)
-        except ValueError as exc:
-            raise PublicUserStoreError("unsupported_provider") from exc
-
+        provider = provider.lower()
+        if provider not in {"google", "kakao", "naver"}:
+            raise PublicUserStoreError("unsupported_provider")
         provider_user_id = str(provider_user_id)
         real_email = (email or "").strip().lower()
         stored_email = real_email or f"{provider}-{provider_user_id}@oauth.walletsavior.local"
+        now = datetime.utcnow().isoformat()
 
         with self.SessionLocal() as session:
-            account = session.query(OAuthAccount).filter(
-                OAuthAccount.provider == provider_enum,
-                OAuthAccount.provider_user_id == provider_user_id,
-            ).first()
-            user = account.user if account else None
-
-            if user is None and real_email:
-                user = session.query(User).filter(User.email == real_email).first()
-            if user is None and not real_email:
-                user = session.query(User).filter(User.email == stored_email).first()
-
-            if user is None:
-                base_nickname = (nickname or "").strip() or f"{provider}_{provider_user_id}"
-                candidate = base_nickname
-                suffix = 2
-                while session.query(User).filter(User.nickname == candidate).first():
-                    candidate = f"{base_nickname}_{suffix}"
-                    suffix += 1
-                user = User(
-                    email=stored_email,
-                    nickname=candidate,
-                    hashed_password=None,
-                    role=UserRole.USER,
-                    profile_image=profile_image_url,
-                    is_active=True,
-                    is_deleted=False,
-                )
-                session.add(user)
-                session.flush()
-
-            if account is None:
-                account = OAuthAccount(
-                    user_id=user.id,
-                    provider=provider_enum,
-                    provider_user_id=provider_user_id,
-                    access_token=None,
-                    refresh_token=None,
-                )
-                session.add(account)
-
-            if real_email and user.email.endswith("@oauth.walletsavior.local"):
-                email_owner = session.query(User).filter(
-                    User.email == real_email,
-                    User.id != user.id,
+            account = session.execute(text(
+                "SELECT user_id FROM oauth_accounts WHERE provider=:p AND provider_user_id=:pid"
+            ), {"p": provider, "pid": provider_user_id}).mappings().first()
+            user_id = int(account["user_id"]) if account else None
+            if user_id is None:
+                row = session.execute(
+                    text("SELECT id FROM users WHERE email=:email"), {"email": stored_email}
                 ).first()
-                if email_owner is None:
-                    user.email = real_email
+                user_id = int(row.id) if row else None
+            if user_id is None:
+                base = (nickname or "").strip() or f"{provider}_{provider_user_id}"
+                candidate, suffix = base, 2
+                while session.execute(text("SELECT 1 FROM users WHERE nickname=:v"), {"v": candidate}).first():
+                    candidate = f"{base}_{suffix}"; suffix += 1
+                session.execute(text(
+                    "INSERT INTO users "
+                    "(email,nickname,role,profile_image,is_active,is_deleted,created_at,updated_at) "
+                    "VALUES (:email,:nickname,'user',:image,1,0,:now,:now)"
+                ), {"email": stored_email, "nickname": candidate, "image": profile_image_url, "now": now})
+                user_id = int(session.execute(
+                    text("SELECT id FROM users WHERE email=:email"), {"email": stored_email}
+                ).scalar_one())
+            if not account:
+                try:
+                    session.execute(text(
+                        "INSERT INTO oauth_accounts "
+                        "(user_id,provider,provider_user_id,created_at) VALUES (:uid,:p,:pid,:now)"
+                    ), {"uid": user_id, "p": provider, "pid": provider_user_id, "now": now})
+                except IntegrityError:
+                    session.rollback()
             if profile_image_url:
-                user.profile_image = profile_image_url
-
+                session.execute(
+                    text("UPDATE users SET profile_image=:image,updated_at=:now WHERE id=:id"),
+                    {"image": profile_image_url, "now": now, "id": user_id},
+                )
             session.commit()
-            session.refresh(user)
-            return self._serialize(user)
+        return self.get_by_id(user_id)

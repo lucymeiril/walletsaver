@@ -1,13 +1,13 @@
-"""
-핫딜 API — 프론트엔드 '핫딜' 탭의 실제 데이터 소스.
+"""External hotdeal API.
 
-저장소 장애나 빈 결과를 mock 데이터로 덮지 않는다. 저장소가 없으면 503,
-데이터가 없으면 빈 목록/404를 그대로 반환한다.
+External hotdeals are crawled locally and uploaded as a replaceable snapshot.
+User-created hotdeal posts remain part of the separate community board.
 """
+from __future__ import annotations
 
 import math
-from fastapi import APIRouter, Depends, Request, Query, HTTPException
-from sqlalchemy import bindparam, text
+
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 
 from api.middleware.auth import require_auth
 from api.schemas.common import ApiResponse, PaginationMeta
@@ -23,62 +23,36 @@ def _require_storage(request: Request):
     return storage
 
 
-def _attach_product_ids(storage, rows):
-    """Attach the real products.id instead of letting clients confuse hotdeal.id with product.id."""
-    is_single = isinstance(rows, dict)
-    items = [rows] if is_single else list(rows or [])
-    ids = [int(item["id"]) for item in items if item.get("id") is not None]
-    session_factory = getattr(storage, "SessionLocal", None)
-    if not ids or session_factory is None:
-        return rows
-
-    stmt = text(
-        "SELECT id, product_id FROM hotdeal_prices WHERE id IN :ids"
-    ).bindparams(bindparam("ids", expanding=True))
-    with session_factory() as session:
-        mapping = {
-            int(row.id): (int(row.product_id) if row.product_id is not None else None)
-            for row in session.execute(stmt, {"ids": ids})
-        }
-
-    enriched = []
-    for item in items:
-        copy = dict(item)
-        copy["product_id"] = mapping.get(int(copy["id"])) if copy.get("id") is not None else None
-        copy["hotdeal_id"] = copy.get("id")
-        enriched.append(copy)
-    return enriched[0] if is_single else enriched
-
-
 @router.get("")
 async def list_hotdeals(
     request: Request,
-    category: str = Query("all", description="카테고리 (food, electronics, fashion, living, all)"),
-    source: str = Query(None, description="출처 필터"),
-    sort: str = Query("recent", description="정렬 (recent, popular, discount, price_asc)"),
+    category: str = Query("all"),
+    source: str | None = Query(None),
+    sort: str = Query("recent"),
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
 ):
-    """핫딜 목록."""
-    storage = _require_storage(request)
-    data = storage.get_hotdeals(category=category, source=source, sort=sort, page=page, per_page=per_page)
-    data = _attach_product_ids(storage, data)
-    total = len(data)
+    data = _require_storage(request).get_hotdeals(
+        category=category,
+        source=source,
+        sort=sort,
+        page=page,
+        per_page=per_page,
+    )
     return ApiResponse(
         data=data,
         meta=PaginationMeta(
             page=page,
             per_page=per_page,
-            total=total,
-            total_pages=math.ceil(total / per_page) if total else 0,
+            total=len(data),
+            total_pages=math.ceil(len(data) / per_page) if data else 0,
         ),
     )
 
 
 @router.get("/categories")
-async def get_hotdeal_categories(request: Request):
-    """핫딜 카테고리 목록."""
-    categories = [
+async def get_hotdeal_categories():
+    return ApiResponse(data=[
         {"key": "food", "label": "식품"},
         {"key": "electronics", "label": "전자제품"},
         {"key": "fashion", "label": "패션"},
@@ -86,30 +60,30 @@ async def get_hotdeal_categories(request: Request):
         {"key": "beauty", "label": "뷰티"},
         {"key": "travel", "label": "여행"},
         {"key": "etc", "label": "기타"},
-    ]
-    return ApiResponse(data=categories)
+    ])
 
 
 @router.get("/sources")
 async def get_hotdeal_sources(request: Request):
-    """현재 저장된 핫딜에서 실제 출처 목록을 계산한다."""
     storage = _require_storage(request)
-    sources: set[str] = set()
-    for deal in storage.get_hotdeals(category="all", per_page=100):
-        source = deal.get("source")
-        if source:
-            sources.add(source)
-    return ApiResponse(data=[{"key": source, "label": source} for source in sorted(sources)])
+    source_store = getattr(storage, "external_hotdeals", None)
+    if source_store is not None and hasattr(source_store, "sources"):
+        sources = source_store.sources()
+    else:
+        sources = sorted({
+            str(row.get("source"))
+            for row in storage.get_hotdeals(category="all", per_page=100)
+            if row.get("source")
+        })
+    return ApiResponse(data=[{"key": source, "label": source} for source in sources])
 
 
 @router.get("/{hotdeal_id}")
 async def get_hotdeal(request: Request, hotdeal_id: int):
-    """핫딜 상세."""
-    storage = _require_storage(request)
-    result = storage.get_hotdeal_detail(hotdeal_id)
-    if not result:
+    result = _require_storage(request).get_hotdeal_detail(hotdeal_id)
+    if result is None:
         raise HTTPException(status_code=404, detail="핫딜을 찾을 수 없습니다")
-    return ApiResponse(data=_attach_product_ids(storage, result))
+    return ApiResponse(data=result)
 
 
 @router.post("/{hotdeal_id}/vote")
@@ -118,15 +92,12 @@ async def vote_hotdeal(
     hotdeal_id: int,
     user: dict = Depends(require_auth),
 ):
-    """로그인 사용자별 핫딜 투표 (hot/not)."""
     body = await request.json()
     vote_type = body.get("vote_type", "hot")
     if vote_type not in ("hot", "not"):
         raise HTTPException(status_code=422, detail="vote_type은 'hot' 또는 'not'이어야 합니다")
-
-    storage = _require_storage(request)
     try:
-        result = storage.vote_hotdeal(
+        result = _require_storage(request).vote_hotdeal(
             hotdeal_id,
             vote_type,
             identity_key=f"user:{int(user['id'])}",
@@ -142,7 +113,6 @@ async def report_hotdeal(
     hotdeal_id: int,
     user: dict = Depends(require_auth),
 ):
-    """로그인 사용자의 신고를 실제 DB에 저장한다."""
     body = await request.json()
     reason = str(body.get("reason", "")).strip()
     if not reason:
@@ -159,14 +129,11 @@ async def report_hotdeal(
         )
     except RuntimeError as exc:
         raise HTTPException(status_code=503, detail="신고 저장소를 사용할 수 없습니다") from exc
-
     if result is None:
         raise HTTPException(status_code=404, detail="핫딜을 찾을 수 없습니다")
-    return ApiResponse(
-        data={
-            "success": True,
-            "message": "신고가 접수되었습니다",
-            "report_id": result["id"],
-            "status": result["status"],
-        }
-    )
+    return ApiResponse(data={
+        "success": True,
+        "message": "신고가 접수되었습니다",
+        "report_id": result["id"],
+        "status": result["status"],
+    })
