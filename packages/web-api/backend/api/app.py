@@ -1,12 +1,22 @@
 """Public web API application factory.
 
 The API serves the current product, mart, gas, hotdeal, community, search and
-Naver-local user features.  Crawler control belongs to crawler-admin, not this
+Naver-local user features. Crawler control belongs to crawler-admin, not this
 service.
 """
 
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+
+def _cors_origins() -> list[str]:
+    configured = os.getenv(
+        "WALLETSAVIOR_CORS_ORIGINS",
+        "http://localhost:5173,http://127.0.0.1:5173",
+    )
+    return [origin.strip() for origin in configured.split(",") if origin.strip()]
 
 
 def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
@@ -19,12 +29,7 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
 
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=[
-            "http://localhost:5173",
-            "http://localhost:3000",
-            "http://127.0.0.1:5173",
-            "http://127.0.0.1:3000",
-        ],
+        allow_origins=_cors_origins(),
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -34,7 +39,6 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     if storage is None:
         try:
             import logging
-            import os
             import sys
 
             web_api_path = os.path.dirname(os.path.dirname(__file__))
@@ -47,8 +51,16 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
 
             from storage.db import DBStorage
 
-            db_path = os.path.join(db_admin_path, "walletguardian.db")
-            storage = DBStorage(f"sqlite:///{db_path}")
+            configured_db = os.getenv("DATABASE_URL", "").strip()
+            if configured_db:
+                db_url = configured_db
+                db_label = configured_db
+            else:
+                db_path = os.path.join(db_admin_path, "walletguardian.db")
+                db_url = f"sqlite:///{db_path}"
+                db_label = db_path
+
+            storage = DBStorage(db_url)
             storage.init_db()
             if web_api_path in sys.path:
                 sys.path.remove(web_api_path)
@@ -58,7 +70,7 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
                     module_file = str(getattr(module, "__file__", "") or "")
                     if module_file.startswith(os.path.join(db_admin_path, "services")):
                         del sys.modules[module_name]
-            logging.info("DB 연결 성공: %s", db_path)
+            logging.info("DB 연결 성공: %s", db_label)
         except Exception as exc:
             import logging
             logging.warning("DB 연결 실패; storage 없이 시작합니다: %s", exc)
@@ -82,15 +94,11 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     app.include_router(products_router, prefix="/api/products", tags=["Products"])
     app.include_router(hotdeals_router, prefix="/api/hotdeals", tags=["Hotdeals"])
     app.include_router(marts_router, prefix="/api/marts", tags=["Marts"])
-    # Gas comparison is a current product feature; keep this route even while
-    # the Opinet crawler implementation is being consolidated separately.
     app.include_router(gas_router, prefix="/api/gas", tags=["Gas Stations"])
     app.include_router(users_router, prefix="/api/users", tags=["Users"])
     app.include_router(auth_router)
     app.include_router(community_router, prefix="/api/posts", tags=["Community"])
     app.include_router(search_router, prefix="/api/search", tags=["Search"])
-    # /api/local powers the current Naver Place search/iframe UX.  It is not the
-    # abandoned crawler-admin Naver Place crawler.
     app.include_router(naver_local_router, prefix="/api/local", tags=["Local / Naver"])
     app.include_router(profile_router)
 
