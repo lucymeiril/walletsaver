@@ -1,12 +1,13 @@
 """프로필 API — 메인 users 테이블의 회원정보 조회/수정/삭제."""
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, field_validator
 
 from api.middleware.auth import require_auth
-from api.schemas.common import ApiResponse
+from api.schemas.common import ApiResponse, PaginationMeta
+from services.account_feature_storage import AccountFeatureStore, AccountFeatureStoreError
 from services.user_storage import PublicUserStore, PublicUserStoreError
 
 router = APIRouter(prefix="/api/profile", tags=["프로필"])
@@ -104,6 +105,25 @@ async def delete_profile(request: Request, identity: dict = Depends(require_auth
 
 
 @router.get("/activity")
-async def get_activity(identity: dict = Depends(require_auth)):
-    """활동 이력 저장/조회 계약이 아직 연결되지 않았음을 명시한다."""
-    raise HTTPException(status_code=501, detail="사용자 활동 이력 조회는 아직 구현되지 않았습니다")
+async def get_activity(
+    request: Request,
+    identity: dict = Depends(require_auth),
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=1, le=100),
+):
+    try:
+        store = AccountFeatureStore(request.app.state.storage)
+        data, total = store.list_activity(int(identity["id"]), page, per_page)
+    except AccountFeatureStoreError as exc:
+        raise HTTPException(status_code=503, detail="활동 이력 저장소를 사용할 수 없습니다") from exc
+
+    total_pages = (total + per_page - 1) // per_page if total else 0
+    return ApiResponse(
+        data=data,
+        meta=PaginationMeta(
+            page=page,
+            per_page=per_page,
+            total=total,
+            total_pages=total_pages,
+        ),
+    )
