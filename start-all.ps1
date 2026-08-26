@@ -1,21 +1,14 @@
 <#
 .SYNOPSIS
-    지갑 지키미 — 전체 시스템 한 번에 시작
+    지갑 지키미 — 로컬 웹/관리 도구 시작
 .DESCRIPTION
-    웹 프론트엔드(5173) + Public API(8000) + 크롤러 관리(8001/5174) + DB 관리(8002/5175)
-    총 6개 서버를 한 번에 시작하고 브라우저를 엽니다.
-    Ctrl+C로 전부 종료됩니다.
+    -Web   : web-api(8000) + web-frontend(5173)만 실행
+    -Admin : crawler-admin(8001/5174) + db-admin(8002/5175)만 실행
+    옵션이 없으면 둘 다 실행합니다.
 
-    사용법:
-      .\start-all.ps1          # 전체 시작
-      .\start-all.ps1 -Web     # 웹사이트만
-      .\start-all.ps1 -Admin   # 관리 도구만
-
-    주의: --reload를 사용하지 않습니다.
-    WatchFiles + cmd.exe 조합에서 파일 변경 시 "Terminate batch job?" 프롬프트가
-    모든 서버를 죽이는 버그가 있으며, 리로더 프로세스가 죽어도 워커가 좀비로 남아
-    구(旧) 코드를 계속 서비스하는 심각한 문제가 있습니다.
-    코드를 수정한 경우 이 스크립트를 재시작하세요.
+    web-api는 db-admin 소스나 walletguardian.db를 직접 사용하지 않습니다.
+    교체 가능한 공개 snapshot과 서버 소유 SQLite(accounts/board/interactions)를
+    분리한 실제 배포 구조를 로컬에서도 그대로 사용합니다.
 #>
 
 param(
@@ -26,12 +19,11 @@ param(
 $ErrorActionPreference = "Continue"
 $Root = $PSScriptRoot
 if (-not $Root) { $Root = Get-Location }
-
 if (-not $Web -and -not $Admin) { $Web = $true; $Admin = $true }
 
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Cyan
-Write-Host "  🛡️  지갑 지키미 — 전체 시스템 시작" -ForegroundColor Cyan
+Write-Host "  🛡️  지갑 지키미 — 로컬 시스템 시작" -ForegroundColor Cyan
 Write-Host "============================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -46,36 +38,86 @@ if (-not $PyExe) {
     Write-Host "❌ Python을 찾을 수 없습니다." -ForegroundColor Red
     exit 1
 }
-Write-Host "  🐍 Python: $PyExe ($( & $PyExe --version 2>&1 ))" -ForegroundColor DarkGray
 
 $npmCmd = Get-Command npm -ErrorAction SilentlyContinue
 if (-not $npmCmd) {
     Write-Host "❌ npm을 찾을 수 없습니다." -ForegroundColor Red
     exit 1
 }
-Write-Host "  📦 npm: $($npmCmd.Source)" -ForegroundColor DarkGray
-Write-Host ""
 
-$WebFrontend       = Join-Path $Root "packages\web-frontend"
-$WebBackend        = Join-Path $Root "packages\web-api\backend"
-$CrawlerFrontend   = Join-Path $Root "packages\crawler-admin\frontend"
-$CrawlerBackend    = Join-Path $Root "packages\crawler-admin\backend"
-$DbFrontend        = Join-Path $Root "packages\db-admin\frontend"
-$DbBackend         = Join-Path $Root "packages\db-admin\backend"
-$SharedDir         = Join-Path $Root "packages\shared"
+$WebFrontend     = Join-Path $Root "packages\web-frontend"
+$WebBackend      = Join-Path $Root "packages\web-api\backend"
+$CrawlerFrontend = Join-Path $Root "packages\crawler-admin\frontend"
+$CrawlerBackend  = Join-Path $Root "packages\crawler-admin\backend"
+$DbFrontend      = Join-Path $Root "packages\db-admin\frontend"
+$DbBackend       = Join-Path $Root "packages\db-admin\backend"
+$SharedDir       = Join-Path $Root "packages\shared"
+$DataDir         = Join-Path $Root ".walletsavior"
+New-Item -ItemType Directory -Force -Path $DataDir | Out-Null
 
 $env:PYTHONIOENCODING = "utf-8"
 $env:PYTHONUTF8 = "1"
-$env:PYTHONPATH = "$Root;$SharedDir;$CrawlerBackend;$DbBackend;$WebBackend"
-if (-not $env:WALLETSAVIOR_CORS_ORIGINS) { $env:WALLETSAVIOR_CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173" }
-if (-not $env:DB_ADMIN_API_URL) { $env:DB_ADMIN_API_URL = "http://127.0.0.1:8002/api/prices/bulk" }
-if (-not $env:INGESTION_API_URL) { $env:INGESTION_API_URL = "http://127.0.0.1:8002/api/ingestions" }
-if (-not $env:REQUIRE_AUTH) { $env:REQUIRE_AUTH = "false" }
-if (-not $env:DATABASE_URL) { $env:DATABASE_URL = "sqlite:///" + (Join-Path $DbBackend "walletguardian.db").Replace("\", "/") }
-if (-not $env:DB_ADMIN_DATABASE_URL) { $env:DB_ADMIN_DATABASE_URL = $env:DATABASE_URL }
 
-# 로컬 실행에서 알려진 기본 JWT 키를 사용하지 않는다.
-# 배포 환경에서 JWT_SECRET_KEY를 지정하면 그 값을 그대로 사용한다.
+$pythonPaths = @($Root, $SharedDir)
+if ($Web) { $pythonPaths += $WebBackend }
+if ($Admin) { $pythonPaths += @($CrawlerBackend, $DbBackend) }
+$env:PYTHONPATH = ($pythonPaths -join ";")
+
+if ($Web) {
+    if (-not $env:WALLETSAVIOR_CORS_ORIGINS) {
+        $env:WALLETSAVIOR_CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173"
+    }
+    if (-not $env:WALLETSAVIOR_PUBLIC_DB) {
+        $env:WALLETSAVIOR_PUBLIC_DB = Join-Path $DataDir "public_snapshot.sqlite"
+    }
+    if (-not $env:WALLETSAVIOR_EXTERNAL_HOTDEAL_DB) {
+        $env:WALLETSAVIOR_EXTERNAL_HOTDEAL_DB = Join-Path $DataDir "external_hotdeals.sqlite"
+    }
+}
+
+if ($Admin) {
+    if (-not $env:DB_ADMIN_API_URL) {
+        $env:DB_ADMIN_API_URL = "http://127.0.0.1:8002/api/prices/bulk"
+    }
+    if (-not $env:INGESTION_API_URL) {
+        $env:INGESTION_API_URL = "http://127.0.0.1:8002/api/ingestions"
+    }
+    if (-not $env:REQUIRE_AUTH) { $env:REQUIRE_AUTH = "false" }
+    if (-not $env:DATABASE_URL) {
+        $dbPath = (Join-Path $DbBackend "walletguardian.db").Replace("\", "/")
+        $env:DATABASE_URL = "sqlite:///$dbPath"
+    }
+    if (-not $env:DB_ADMIN_DATABASE_URL) {
+        $env:DB_ADMIN_DATABASE_URL = $env:DATABASE_URL
+    }
+    if (-not $env:WALLETSAVIOR_PUBLIC_DB) {
+        $env:WALLETSAVIOR_PUBLIC_DB = Join-Path $DataDir "public_snapshot.sqlite"
+    }
+    if (-not $env:WALLETSAVIOR_EXTERNAL_HOTDEAL_DB) {
+        $env:WALLETSAVIOR_EXTERNAL_HOTDEAL_DB = Join-Path $DataDir "external_hotdeals.sqlite"
+    }
+}
+
+# 로컬에서 web+admin을 함께 켤 때 db-admin의 커뮤니티 관리 요청은
+# loopback web-api를 통해 전달합니다. 공개 서버용 토큰은 환경변수로 따로 설정하세요.
+if ($Web -and $Admin) {
+    if (-not $env:WALLETSAVIOR_REMOTE_ADMIN_URL) {
+        $env:WALLETSAVIOR_REMOTE_ADMIN_URL = "http://127.0.0.1:8000"
+    }
+    if (-not $env:WALLETSAVIOR_REMOTE_ADMIN_TOKEN) {
+        $env:WALLETSAVIOR_REMOTE_ADMIN_TOKEN = "walletsavior-local-loopback-admin"
+    }
+    if (
+        -not $env:WALLETSAVIOR_REMOTE_SNAPSHOT_UPLOAD -and
+        $env:WALLETSAVIOR_REMOTE_ADMIN_URL -match "^https?://(127\.0\.0\.1|localhost)(:\d+)?/?$"
+    ) {
+        # 같은 로컬 파일을 web-api와 db-admin이 공유하므로 자기 자신에게 다시
+        # HTTP 업로드하지 않습니다. 실제 원격 URL을 설정하면 기본값(true)으로 업로드됩니다.
+        $env:WALLETSAVIOR_REMOTE_SNAPSHOT_UPLOAD = "false"
+    }
+}
+
+# 로컬 실행용 임시 JWT 키. 배포에서는 JWT_SECRET_KEY를 명시적으로 지정합니다.
 if ($Web -and -not $env:JWT_SECRET_KEY) {
     $jwtBytes = New-Object byte[] 48
     $jwtRng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
@@ -85,32 +127,57 @@ if ($Web -and -not $env:JWT_SECRET_KEY) {
     } finally {
         $jwtRng.Dispose()
     }
-    Write-Host "  🔐 로컬용 임시 JWT 서명키를 생성했습니다. (재시작 시 로그인 세션 초기화)" -ForegroundColor DarkGray
+    Write-Host "  🔐 로컬용 임시 JWT 키를 생성했습니다." -ForegroundColor DarkGray
 }
+
+Write-Host "  🐍 Python: $PyExe ($( & $PyExe --version 2>&1 ))" -ForegroundColor DarkGray
+Write-Host "  📦 npm: $($npmCmd.Source)" -ForegroundColor DarkGray
+Write-Host ""
 
 Write-Host "[정리] __pycache__ 정리 중..." -ForegroundColor Yellow
 Get-ChildItem -Path (Join-Path $Root "packages") -Recurse -Directory -Filter "__pycache__" -ErrorAction SilentlyContinue |
     ForEach-Object { Remove-Item $_.FullName -Recurse -Force -ErrorAction SilentlyContinue }
-Write-Host "         ✅ __pycache__ 정리 완료" -ForegroundColor Green
+Write-Host "         ✅ 완료" -ForegroundColor Green
 
 function Install-PythonRequirements {
-    param(
-        [string]$Name,
-        [string]$RequirementsPath
-    )
-
+    param([string]$Name, [string]$RequirementsPath)
     if (-not (Test-Path $RequirementsPath)) {
         Write-Host "❌ $Name requirements.txt를 찾을 수 없습니다: $RequirementsPath" -ForegroundColor Red
         exit 1
     }
-
     Write-Host "[의존성] $Name Python 패키지 설치/확인..." -ForegroundColor Yellow
     & $PyExe -m pip install --quiet --disable-pip-version-check -r $RequirementsPath
     if ($LASTEXITCODE -ne 0) {
         Write-Host "❌ $Name Python 패키지 설치에 실패했습니다." -ForegroundColor Red
         exit 1
     }
-    Write-Host "         ✅ $Name 완료" -ForegroundColor Green
+    Write-Host "         ✅ $Name" -ForegroundColor Green
+}
+
+function Upgrade-DbAdminSchema {
+    Write-Host "[DB] DB Admin Alembic 마이그레이션 적용 중..." -ForegroundColor Yellow
+    Push-Location $DbBackend
+    & $PyExe -m alembic upgrade head
+    $exitCode = $LASTEXITCODE
+    Pop-Location
+    if ($exitCode -ne 0) {
+        Write-Host "❌ DB Admin 마이그레이션에 실패했습니다." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "     ✅ DB Admin 스키마 최신 상태" -ForegroundColor Green
+}
+
+function Initialize-WebStorage {
+    Write-Host "[DB] Web API 서버 소유 SQLite 초기화 중..." -ForegroundColor Yellow
+    Push-Location $WebBackend
+    & $PyExe -c "from services.runtime_storage import RuntimeStorage; from services.board_storage import get_board_engine; s=RuntimeStorage(); s.init_db(); get_board_engine(); s.close()"
+    $exitCode = $LASTEXITCODE
+    Pop-Location
+    if ($exitCode -ne 0) {
+        Write-Host "❌ accounts/interactions/board DB 초기화에 실패했습니다." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "     ✅ accounts / interactions / board 준비 완료" -ForegroundColor Green
 }
 
 function Ensure-PlaywrightChromium {
@@ -118,62 +185,26 @@ function Ensure-PlaywrightChromium {
     & $PyExe -m playwright install chromium
     if ($LASTEXITCODE -ne 0) {
         Write-Host "❌ Playwright Chromium 설치에 실패했습니다." -ForegroundColor Red
-        Write-Host "   지역 검색/브라우저 크롤링이 동작하지 않으므로 시작을 중단합니다." -ForegroundColor Red
         exit 1
     }
-    Write-Host "         ✅ Playwright Chromium 완료" -ForegroundColor Green
-}
-
-function Upgrade-DatabaseSchema {
-    Write-Host "[DB] Alembic 마이그레이션 적용 중..." -ForegroundColor Yellow
-    Push-Location $DbBackend
-    & $PyExe -m alembic upgrade head
-    $migrationExit = $LASTEXITCODE
-    Pop-Location
-    if ($migrationExit -ne 0) {
-        Write-Host "❌ DB 마이그레이션에 실패했습니다. 서버를 띄우지 않습니다." -ForegroundColor Red
-        Write-Host "   기존 DB를 보존한 채 Alembic 오류를 먼저 확인하세요." -ForegroundColor Red
-        exit 1
-    }
-    Write-Host "     ✅ DB 스키마 최신 상태" -ForegroundColor Green
-}
-
-function Initialize-CommunitySchema {
-    Write-Host "[DB] 커뮤니티/회원 DB 스키마 확인 중..." -ForegroundColor Yellow
-    Push-Location $WebBackend
-    & $PyExe -c "from services.board_storage import get_board_engine; get_board_engine()"
-    $boardExit = $LASTEXITCODE
-    Pop-Location
-    if ($boardExit -ne 0) {
-        Write-Host "❌ 커뮤니티/회원 DB 초기화에 실패했습니다." -ForegroundColor Red
-        exit 1
-    }
-    Write-Host "     ✅ 커뮤니티/회원 DB 준비 완료" -ForegroundColor Green
+    Write-Host "         ✅ Playwright Chromium" -ForegroundColor Green
 }
 
 if ($Web) {
     Install-PythonRequirements "웹 API" (Join-Path $WebBackend "requirements.txt")
+    Initialize-WebStorage
 }
+
 if ($Admin) {
     Install-PythonRequirements "크롤러 관리자" (Join-Path $Root "packages\crawler-admin\requirements.txt")
-}
-# 웹 API도 db-admin의 DBStorage/모델과 Alembic을 직접 사용하므로 두 모드 모두 필요하다.
-if ($Web -or $Admin) {
     Install-PythonRequirements "DB 관리자" (Join-Path $DbBackend "requirements.txt")
-    Upgrade-DatabaseSchema
-}
-# Playwright는 크롤러 관리 기능을 실행할 때만 필요하다.
-if ($Admin) {
+    Upgrade-DbAdminSchema
     Ensure-PlaywrightChromium
-}
-# 커뮤니티 SQLite는 공개 웹 서비스에만 속한다.
-if ($Web) {
-    Initialize-CommunitySchema
 }
 
 $frontendDirs = @()
-if ($Web)   { $frontendDirs += $WebFrontend }
-if ($Admin) { $frontendDirs += $CrawlerFrontend; $frontendDirs += $DbFrontend }
+if ($Web) { $frontendDirs += $WebFrontend }
+if ($Admin) { $frontendDirs += @($CrawlerFrontend, $DbFrontend) }
 
 foreach ($dir in $frontendDirs) {
     $name = (Split-Path (Split-Path $dir -Parent) -Leaf) + "/frontend"
@@ -186,85 +217,70 @@ foreach ($dir in $frontendDirs) {
         Write-Host "❌ $name npm install에 실패했습니다." -ForegroundColor Red
         exit 1
     }
-    Write-Host "         ✅ $name 완료" -ForegroundColor Green
+    Write-Host "         ✅ $name" -ForegroundColor Green
 }
-Write-Host ""
 
+Write-Host ""
 Write-Host "[정리] 기존 서버 프로세스 정리 중..." -ForegroundColor Yellow
 $portsToClean = @()
-if ($Web)   { $portsToClean += @(8000, 5173) }
+if ($Web) { $portsToClean += @(8000, 5173) }
 if ($Admin) { $portsToClean += @(8001, 5174, 8002, 5175) }
 
 foreach ($port in $portsToClean) {
     $conns = Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue |
-             Where-Object { $_.LocalPort -eq $port }
+        Where-Object { $_.LocalPort -eq $port }
     foreach ($c in $conns) {
         $targetPid = $c.OwningProcess
         if ($targetPid -le 4 -or $targetPid -eq $PID) { continue }
-        $children = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
-                    Where-Object { $_.ParentProcessId -eq $targetPid }
-        foreach ($child in $children) {
-            Write-Host "         자식 PID $($child.ProcessId) 종료" -ForegroundColor DarkGray
-            Stop-Process -Id $child.ProcessId -Force -ErrorAction SilentlyContinue
-        }
-        $proc = Get-Process -Id $targetPid -ErrorAction SilentlyContinue
-        if ($proc) {
-            Write-Host "         포트 $port → PID $targetPid ($($proc.ProcessName)) 종료" -ForegroundColor DarkGray
-            Stop-Process -Id $targetPid -Force -ErrorAction SilentlyContinue
-        }
+        Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
+            Where-Object { $_.ParentProcessId -eq $targetPid } |
+            ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+        Stop-Process -Id $targetPid -Force -ErrorAction SilentlyContinue
     }
 }
 Start-Sleep -Seconds 2
 Write-Host "         ✅ 정리 완료" -ForegroundColor Green
-Write-Host ""
 
 $processes = @()
 
 if ($Web) {
-    Write-Host "🚀 [웹] Public API 시작 (port 8000)..." -ForegroundColor Yellow
-    $p = Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
+    Write-Host "🚀 [웹] Public API 시작 (8000)..." -ForegroundColor Yellow
+    $processes += Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
         -ArgumentList "-m uvicorn main:app --port 8000 --host 127.0.0.1" `
         -WorkingDirectory $WebBackend
-    $processes += $p
 
-    Write-Host "🚀 [웹] 프론트엔드 시작 (port 5173)..." -ForegroundColor Yellow
-    $p = Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
+    Write-Host "🚀 [웹] 프론트엔드 시작 (5173)..." -ForegroundColor Yellow
+    $processes += Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
         -ArgumentList "vite --host 127.0.0.1 --port 5173 --strictPort" `
         -WorkingDirectory $WebFrontend
-    $processes += $p
 }
 
 if ($Admin) {
-    Write-Host "🚀 [크롤러] 백엔드 시작 (port 8001)..." -ForegroundColor Yellow
-    $p = Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
+    Write-Host "🚀 [크롤러] 백엔드 시작 (8001)..." -ForegroundColor Yellow
+    $processes += Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
         -ArgumentList "-m uvicorn api.app:create_app --factory --port 8001 --host 127.0.0.1" `
         -WorkingDirectory $CrawlerBackend
-    $processes += $p
 
-    Write-Host "🚀 [크롤러] 프론트엔드 시작 (port 5174)..." -ForegroundColor Yellow
-    $p = Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
+    Write-Host "🚀 [크롤러] 프론트엔드 시작 (5174)..." -ForegroundColor Yellow
+    $processes += Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
         -ArgumentList "vite --host 127.0.0.1 --port 5174 --strictPort" `
         -WorkingDirectory $CrawlerFrontend
-    $processes += $p
 
-    Write-Host "🚀 [DB관리] 백엔드 시작 (port 8002)..." -ForegroundColor Yellow
-    $p = Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
+    Write-Host "🚀 [DB관리] 백엔드 시작 (8002)..." -ForegroundColor Yellow
+    $processes += Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
         -ArgumentList "-m uvicorn api.app:create_app --factory --port 8002 --host 127.0.0.1" `
         -WorkingDirectory $DbBackend
-    $processes += $p
 
-    Write-Host "🚀 [DB관리] 프론트엔드 시작 (port 5175)..." -ForegroundColor Yellow
-    $p = Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
+    Write-Host "🚀 [DB관리] 프론트엔드 시작 (5175)..." -ForegroundColor Yellow
+    $processes += Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
         -ArgumentList "vite --host 127.0.0.1 --port 5175 --strictPort" `
         -WorkingDirectory $DbFrontend
-    $processes += $p
 }
 
 Write-Host ""
-Write-Host "⏳ 서버 준비 대기 중..." -ForegroundColor Yellow
-
+Write-Host "⏳ 백엔드 준비 확인 중..." -ForegroundColor Yellow
 $checks = @()
-if ($Web)   { $checks += @{ Name = "웹 API"; Url = "http://127.0.0.1:8000/api/health"; Ready = $false } }
+if ($Web) { $checks += @{ Name = "웹 API"; Url = "http://127.0.0.1:8000/api/health"; Ready = $false } }
 if ($Admin) {
     $checks += @{ Name = "크롤러"; Url = "http://127.0.0.1:8001/health"; Ready = $false }
     $checks += @{ Name = "DB관리"; Url = "http://127.0.0.1:8002/health"; Ready = $false }
@@ -287,79 +303,47 @@ for ($i = 0; $i -lt 30; $i++) {
 
 $failedChecks = @($checks | Where-Object { -not $_.Ready })
 if ($failedChecks.Count -gt 0) {
-    Write-Host ""
-    Write-Host "❌ 일부 백엔드 서버가 준비되지 못했습니다." -ForegroundColor Red
+    Write-Host "❌ 일부 백엔드가 준비되지 못했습니다." -ForegroundColor Red
     foreach ($failed in $failedChecks) {
         Write-Host "   - $($failed.Name): $($failed.Url)" -ForegroundColor Red
     }
-    Write-Host "   성공한 것처럼 계속 두지 않고 시작한 프로세스를 정리합니다." -ForegroundColor Red
     foreach ($p in $processes) {
-        if ($p -and -not $p.HasExited) {
-            $children = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
-                        Where-Object { $_.ParentProcessId -eq $p.Id }
-            foreach ($child in $children) {
-                Stop-Process -Id $child.ProcessId -Force -ErrorAction SilentlyContinue
-            }
-            Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue
-        }
+        if ($p -and -not $p.HasExited) { Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue }
     }
     exit 1
 }
 
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Green
-Write-Host "  ✅ 시스템이 시작되었습니다!" -ForegroundColor Green
+Write-Host "  ✅ 시스템이 시작되었습니다" -ForegroundColor Green
 Write-Host "============================================" -ForegroundColor Green
-Write-Host ""
-
 if ($Web) {
-    Write-Host "  🌐 웹" -ForegroundColor White
-    Write-Host "     프론트엔드: http://localhost:5173" -ForegroundColor White
-    Write-Host "     Public API: http://localhost:8000/api/health  ✅" -ForegroundColor White
-    Write-Host ""
+    Write-Host "  🌐 Web: http://localhost:5173  (API 8000)" -ForegroundColor White
 }
 if ($Admin) {
-    Write-Host "  🕷️ 크롤러 관리" -ForegroundColor White
-    Write-Host "     프론트엔드: http://localhost:5174" -ForegroundColor White
-    Write-Host "     백엔드 API: http://localhost:8001/docs  ✅" -ForegroundColor White
-    Write-Host ""
-    Write-Host "  🗄️ DB 관리" -ForegroundColor White
-    Write-Host "     프론트엔드: http://localhost:5175" -ForegroundColor White
-    Write-Host "     백엔드 API: http://localhost:8002/docs  ✅" -ForegroundColor White
-    Write-Host ""
+    Write-Host "  🕷️ Crawler Admin: http://localhost:5174  (API 8001)" -ForegroundColor White
+    Write-Host "  🗄️ DB Admin:      http://localhost:5175  (API 8002)" -ForegroundColor White
 }
-
-if ($Web) {
-    Start-Process "http://localhost:5173"
-}
-
-Write-Host "  Ctrl+C를 누르면 모든 서버가 종료됩니다." -ForegroundColor DarkGray
+Write-Host "  Ctrl+C로 종료합니다." -ForegroundColor DarkGray
 Write-Host ""
+
+if ($Web) { Start-Process "http://localhost:5173" }
 
 try {
     while ($true) {
-        $allExited = $true
-        foreach ($p in $processes) {
-            if (-not $p.HasExited) { $allExited = $false; break }
-        }
-        if ($allExited) {
-            Write-Host "모든 서버가 종료되었습니다." -ForegroundColor Yellow
-            break
-        }
+        $running = @($processes | Where-Object { $_ -and -not $_.HasExited })
+        if ($running.Count -eq 0) { break }
         Start-Sleep -Seconds 2
     }
 } finally {
-    Write-Host ""
     Write-Host "🛑 서버 종료 중..." -ForegroundColor Yellow
     foreach ($p in $processes) {
         if ($p -and -not $p.HasExited) {
-            $children = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
-                        Where-Object { $_.ParentProcessId -eq $p.Id }
-            foreach ($child in $children) {
-                Stop-Process -Id $child.ProcessId -Force -ErrorAction SilentlyContinue
-            }
+            Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
+                Where-Object { $_.ParentProcessId -eq $p.Id } |
+                ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
             Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue
         }
     }
-    Write-Host "✅ 모든 서버가 종료되었습니다." -ForegroundColor Green
+    Write-Host "✅ 종료 완료" -ForegroundColor Green
 }
