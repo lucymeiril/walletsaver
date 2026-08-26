@@ -141,7 +141,12 @@ async def logout():
 
 @router.post("/demo-login")
 async def demo_login(request: Request, provider: str = "google"):
-    """명시적으로 호출할 때만 쓰는 로컬 데모 계정."""
+    """로컬 발표용 기능. 명시적으로 ENABLE_DEMO_LOGIN=true인 환경에서만 허용한다."""
+    if os.getenv("ENABLE_DEMO_LOGIN", "false").strip().lower() not in {"1", "true", "yes"}:
+        raise HTTPException(status_code=404, detail="찾을 수 없습니다")
+    if provider not in {"google", "kakao", "naver"}:
+        raise HTTPException(status_code=400, detail="지원하지 않는 데모 공급자입니다")
+
     user = _store(request).ensure_demo_user(
         email=f"demo-{provider}@walletsavior.local",
         nickname="발표용 데모 사용자",
