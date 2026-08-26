@@ -8,7 +8,7 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import desc, func
 
-from api.middleware.auth import get_current_user, is_local_auth_user_blocked, require_auth
+from api.middleware.auth import is_local_auth_user_blocked, require_auth
 from api.schemas.common import ApiResponse, PaginationMeta
 from api.schemas.community import CommentCreate, PostCreate, PostUpdate, VoteRequest
 from services.board_storage import (
@@ -33,34 +33,35 @@ def _session_factory():
         raise HTTPException(status_code=503, detail="게시판 저장소를 사용할 수 없습니다") from exc
 
 
-def _ensure_user(session, user_id: int, email: str = "", nickname: str = "") -> UserModel:
-    existing = session.get(UserModel, int(user_id))
-    if existing is not None:
-        if email and existing.email.endswith("@temp.local"):
-            existing.email = email
-        if nickname:
-            existing.nickname = nickname
-        return existing
+def _ensure_user(session, user: dict) -> UserModel:
+    """Resolve the authenticated persistent user; never invent a placeholder owner."""
+    existing = session.get(UserModel, int(user["id"]))
+    if existing is None:
+        raise HTTPException(status_code=401, detail="유효하지 않은 사용자입니다")
+    if existing.is_deleted or existing.is_active is False:
+        raise HTTPException(status_code=403, detail="정지되거나 삭제된 계정입니다")
 
-    safe_email = email or f"user{int(user_id)}@temp.local"
-    safe_nickname = nickname or (safe_email.split("@")[0] if safe_email else f"user{user_id}")
-    new_user = UserModel(
-        id=int(user_id),
-        email=safe_email,
-        nickname=safe_nickname,
-        is_active=True,
-        is_deleted=False,
-    )
-    session.add(new_user)
-    session.flush()
-    return new_user
+    changed = False
+    email = user.get("email", "").strip()
+    nickname = user.get("nickname", "").strip()
+    if email and existing.email != email:
+        existing.email = email
+        changed = True
+    if nickname and existing.nickname != nickname:
+        existing.nickname = nickname
+        changed = True
+    if changed:
+        session.flush()
+    return existing
 
 
 def _raise_if_banned(session, user: dict) -> None:
     if is_local_auth_user_blocked(user["id"]):
         raise HTTPException(status_code=403, detail="정지되거나 삭제된 계정입니다")
     board_user = session.get(UserModel, int(user["id"]))
-    if board_user and (board_user.is_active is False or board_user.is_deleted):
+    if not board_user:
+        raise HTTPException(status_code=401, detail="유효하지 않은 사용자입니다")
+    if board_user.is_active is False or board_user.is_deleted:
         raise HTTPException(status_code=403, detail="정지되거나 삭제된 계정입니다")
 
 
@@ -99,77 +100,6 @@ def _comment_to_dict(comment: CommentModel) -> dict:
         "parent_id": comment.parent_id,
         "created_at": comment.created_at.isoformat() if comment.created_at else "",
     }
-
-
-def _seed_if_empty() -> None:
-    """Preserve the current development experience without touching main DB."""
-    factory = _session_factory()
-    with factory() as session:
-        if session.query(PostModel).count() > 0:
-            return
-        try:
-            from api.mock_responses import MOCK_COMMENTS, MOCK_POSTS
-        except Exception:
-            return
-
-        for post_data in MOCK_POSTS:
-            author_id = int(post_data.get("author_id", 0))
-            _ensure_user(
-                session,
-                author_id,
-                f"seed-{author_id}@board.local",
-                post_data.get("author_nickname") or f"user{author_id}",
-            )
-        for comments in MOCK_COMMENTS.values():
-            for comment_data in comments:
-                author_id = int(comment_data.get("author_id", 0))
-                _ensure_user(
-                    session,
-                    author_id,
-                    f"seed-{author_id}@board.local",
-                    comment_data.get("author_nickname") or f"user{author_id}",
-                )
-        session.flush()
-
-        for post_data in MOCK_POSTS:
-            try:
-                post_type = DBPostType(post_data.get("post_type", "free"))
-            except ValueError:
-                post_type = DBPostType.FREE
-            post = PostModel(
-                id=int(post_data["id"]),
-                author_id=int(post_data.get("author_id", 0)),
-                post_type=post_type,
-                title=post_data.get("title", ""),
-                content=post_data.get("content", ""),
-                custom_category=post_data.get("category"),
-                deal_price=post_data.get("price"),
-                original_price=post_data.get("original_price"),
-                deal_url=post_data.get("url"),
-                view_count=int(post_data.get("views", 0) or 0),
-            )
-            session.add(post)
-        session.flush()
-
-        for raw_post_id, comments in MOCK_COMMENTS.items():
-            post_id = int(raw_post_id)
-            for comment_data in comments:
-                session.add(
-                    CommentModel(
-                        id=int(comment_data["id"]),
-                        post_id=post_id,
-                        author_id=int(comment_data.get("author_id", 0)),
-                        content=comment_data.get("content", ""),
-                        parent_id=comment_data.get("parent_id"),
-                    )
-                )
-        session.commit()
-
-
-try:
-    _seed_if_empty()
-except Exception:
-    logger.exception("Community board seed failed")
 
 
 @router.get("")
@@ -223,20 +153,10 @@ async def list_posts(
 
 
 @router.post("")
-async def create_post(body: PostCreate, user: dict | None = Depends(get_current_user)):
-    if not user:
-        user = {"id": 0, "email": "guest@wallet.local", "nickname": "게스트", "role": "guest"}
-    elif is_local_auth_user_blocked(user["id"]):
-        raise HTTPException(status_code=403, detail="정지되거나 삭제된 계정입니다")
-
+async def create_post(body: PostCreate, user: dict = Depends(require_auth)):
     factory = _session_factory()
     with factory() as session:
-        _ensure_user(
-            session,
-            user["id"],
-            user.get("email", ""),
-            user.get("nickname", ""),
-        )
+        _ensure_user(session, user)
         _raise_if_banned(session, user)
         try:
             post_type = DBPostType(body.post_type.value)
@@ -316,7 +236,7 @@ async def create_comment(post_id: int, body: CommentCreate, user: dict = Depends
         post = session.get(PostModel, post_id)
         if not post or post.is_deleted:
             raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
-        _ensure_user(session, user["id"], user.get("email", ""), user.get("nickname", ""))
+        _ensure_user(session, user)
         _raise_if_banned(session, user)
         if body.parent_id is not None:
             parent = session.get(CommentModel, body.parent_id)
@@ -360,7 +280,7 @@ async def vote_post(post_id: int, body: VoteRequest, user: dict = Depends(requir
         post = session.get(PostModel, post_id)
         if not post or post.is_deleted:
             raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
-        _ensure_user(session, user["id"], user.get("email", ""), user.get("nickname", ""))
+        _ensure_user(session, user)
         _raise_if_banned(session, user)
 
         existing = (
