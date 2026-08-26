@@ -71,7 +71,8 @@ if (-not $env:WALLETSAVIOR_CORS_ORIGINS) { $env:WALLETSAVIOR_CORS_ORIGINS = "htt
 if (-not $env:DB_ADMIN_API_URL) { $env:DB_ADMIN_API_URL = "http://127.0.0.1:8002/api/prices/bulk" }
 if (-not $env:INGESTION_API_URL) { $env:INGESTION_API_URL = "http://127.0.0.1:8002/api/ingestions" }
 if (-not $env:REQUIRE_AUTH) { $env:REQUIRE_AUTH = "false" }
-if (-not $env:DATABASE_URL) { $env:DATABASE_URL = "sqlite:///" + (Join-Path $Root "packages\db-admin\backend\walletguardian.db").Replace("\", "/") }
+if (-not $env:DATABASE_URL) { $env:DATABASE_URL = "sqlite:///" + (Join-Path $DbBackend "walletguardian.db").Replace("\", "/") }
+if (-not $env:DB_ADMIN_DATABASE_URL) { $env:DB_ADMIN_DATABASE_URL = $env:DATABASE_URL }
 
 Write-Host "[정리] __pycache__ 정리 중..." -ForegroundColor Yellow
 Get-ChildItem -Path (Join-Path $Root "packages") -Recurse -Directory -Filter "__pycache__" -ErrorAction SilentlyContinue |
@@ -98,6 +99,31 @@ function Install-PythonRequirements {
     Write-Host "         ✅ $Name 완료" -ForegroundColor Green
 }
 
+function Ensure-PlaywrightChromium {
+    Write-Host "[의존성] Playwright Chromium 설치/확인..." -ForegroundColor Yellow
+    & $PyExe -m playwright install chromium
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "❌ Playwright Chromium 설치에 실패했습니다." -ForegroundColor Red
+        Write-Host "   지역 검색/브라우저 크롤링이 동작하지 않으므로 시작을 중단합니다." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "         ✅ Playwright Chromium 완료" -ForegroundColor Green
+}
+
+function Upgrade-DatabaseSchema {
+    Write-Host "[DB] Alembic 마이그레이션 적용 중..." -ForegroundColor Yellow
+    Push-Location $DbBackend
+    & $PyExe -m alembic upgrade head
+    $migrationExit = $LASTEXITCODE
+    Pop-Location
+    if ($migrationExit -ne 0) {
+        Write-Host "❌ DB 마이그레이션에 실패했습니다. 서버를 띄우지 않습니다." -ForegroundColor Red
+        Write-Host "   기존 DB를 보존한 채 Alembic 오류를 먼저 확인하세요." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "     ✅ DB 스키마 최신 상태" -ForegroundColor Green
+}
+
 if ($Web) {
     Install-PythonRequirements "웹 API" (Join-Path $WebBackend "requirements.txt")
 }
@@ -106,21 +132,27 @@ if ($Admin) {
     Install-PythonRequirements "DB 관리자" (Join-Path $DbBackend "requirements.txt")
 }
 
+# 웹 지역 검색과 관리자 크롤러가 모두 Playwright Chromium을 사용한다.
+Ensure-PlaywrightChromium
+# 웹과 관리 API가 같은 working DB를 사용하므로 어느 모드든 먼저 스키마를 올린다.
+Upgrade-DatabaseSchema
+
 $frontendDirs = @()
 if ($Web)   { $frontendDirs += $WebFrontend }
 if ($Admin) { $frontendDirs += $CrawlerFrontend; $frontendDirs += $DbFrontend }
 
 foreach ($dir in $frontendDirs) {
     $name = (Split-Path (Split-Path $dir -Parent) -Leaf) + "/frontend"
-    if (-not (Test-Path (Join-Path $dir "node_modules"))) {
-        Write-Host "[의존성] $name npm install..." -ForegroundColor Yellow
-        Push-Location $dir
-        & npm install --silent 2>&1 | Out-Null
-        Pop-Location
-        Write-Host "         ✅ $name 완료" -ForegroundColor Green
-    } else {
-        Write-Host "[의존성] $name ✅" -ForegroundColor Green
+    Write-Host "[의존성] $name npm install/동기화..." -ForegroundColor Yellow
+    Push-Location $dir
+    & npm install --silent 2>&1 | Out-Null
+    $npmExit = $LASTEXITCODE
+    Pop-Location
+    if ($npmExit -ne 0) {
+        Write-Host "❌ $name npm install에 실패했습니다." -ForegroundColor Red
+        exit 1
     }
+    Write-Host "         ✅ $name 완료" -ForegroundColor Green
 }
 Write-Host ""
 
@@ -135,15 +167,16 @@ foreach ($port in $portsToClean) {
     foreach ($c in $conns) {
         $targetPid = $c.OwningProcess
         if ($targetPid -le 4 -or $targetPid -eq $PID) { continue }
+        $children = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
+                    Where-Object { $_.ParentProcessId -eq $targetPid }
+        foreach ($child in $children) {
+            Write-Host "         자식 PID $($child.ProcessId) 종료" -ForegroundColor DarkGray
+            Stop-Process -Id $child.ProcessId -Force -ErrorAction SilentlyContinue
+        }
         $proc = Get-Process -Id $targetPid -ErrorAction SilentlyContinue
         if ($proc) {
             Write-Host "         포트 $port → PID $targetPid ($($proc.ProcessName)) 종료" -ForegroundColor DarkGray
             Stop-Process -Id $targetPid -Force -ErrorAction SilentlyContinue
-        }
-        $children = Get-CimInstance Win32_Process | Where-Object { $_.ParentProcessId -eq $targetPid }
-        foreach ($child in $children) {
-            Write-Host "         좀비 자식 PID $($child.ProcessId) 종료" -ForegroundColor DarkGray
-            Stop-Process -Id $child.ProcessId -Force -ErrorAction SilentlyContinue
         }
     }
 }
