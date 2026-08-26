@@ -71,6 +71,21 @@ function fetchWithTimeout(url, options = {}, timeoutMs = DEFAULT_TIMEOUT) {
     .then(resp => handleUnauthorized(resp, url, options, timeoutMs, rawFetch));
 }
 
+function isRetryableStatus(status) {
+  return status >= 500 || status === 408 || status === 429;
+}
+
+function retryDelayMs(response, attempt) {
+  const retryAfter = response?.headers?.get('Retry-After');
+  if (retryAfter) {
+    const seconds = Number(retryAfter);
+    if (Number.isFinite(seconds) && seconds >= 0) {
+      return Math.min(seconds * 1000, 10000);
+    }
+  }
+  return Math.min(1000 * Math.pow(2, attempt), 4000);
+}
+
 async function fetchWithRetry(url, options = {}, {
   timeout = DEFAULT_TIMEOUT,
   maxRetries = 3,
@@ -80,10 +95,15 @@ async function fetchWithRetry(url, options = {}, {
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      return await fetchWithTimeout(url, { ...options, signal }, timeout);
+      const response = await fetchWithTimeout(url, { ...options, signal }, timeout);
+      if (!isRetryableStatus(response.status) || attempt === maxRetries) {
+        return response;
+      }
+
+      await new Promise(resolve => setTimeout(resolve, retryDelayMs(response, attempt)));
     } catch (err) {
       lastError = err;
-      if (err.name === 'AbortError') throw err;
+      if (err.name === 'AbortError' && signal?.aborted) throw err;
 
       const isRetryable =
         !err.status || err.status >= 500 || err.status === 408 || err.status === 429;
@@ -94,7 +114,7 @@ async function fetchWithRetry(url, options = {}, {
     }
   }
 
-  throw lastError;
+  throw lastError || new Error('요청 재시도에 실패했습니다.');
 }
 
 const json = async (response) => {
