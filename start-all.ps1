@@ -124,6 +124,19 @@ function Upgrade-DatabaseSchema {
     Write-Host "     ✅ DB 스키마 최신 상태" -ForegroundColor Green
 }
 
+function Initialize-CommunitySchema {
+    Write-Host "[DB] 커뮤니티/회원 DB 스키마 확인 중..." -ForegroundColor Yellow
+    Push-Location $WebBackend
+    & $PyExe -c "from services.board_storage import get_board_engine; get_board_engine()"
+    $boardExit = $LASTEXITCODE
+    Pop-Location
+    if ($boardExit -ne 0) {
+        Write-Host "❌ 커뮤니티/회원 DB 초기화에 실패했습니다." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "     ✅ 커뮤니티/회원 DB 준비 완료" -ForegroundColor Green
+}
+
 if ($Web) {
     Install-PythonRequirements "웹 API" (Join-Path $WebBackend "requirements.txt")
 }
@@ -132,10 +145,9 @@ if ($Admin) {
     Install-PythonRequirements "DB 관리자" (Join-Path $DbBackend "requirements.txt")
 }
 
-# 웹 지역 검색과 관리자 크롤러가 모두 Playwright Chromium을 사용한다.
 Ensure-PlaywrightChromium
-# 웹과 관리 API가 같은 working DB를 사용하므로 어느 모드든 먼저 스키마를 올린다.
 Upgrade-DatabaseSchema
+Initialize-CommunitySchema
 
 $frontendDirs = @()
 if ($Web)   { $frontendDirs += $WebFrontend }
