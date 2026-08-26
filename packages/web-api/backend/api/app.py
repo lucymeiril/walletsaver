@@ -19,6 +19,21 @@ def _cors_origins() -> list[str]:
     return [origin.strip() for origin in configured.split(",") if origin.strip()]
 
 
+def _enable_sqlite_foreign_keys(storage) -> None:
+    """Make SQLite enforce the ForeignKey declarations used by account features."""
+    storage_engine = getattr(storage, "engine", None)
+    if storage_engine is None or getattr(storage_engine.dialect, "name", "") != "sqlite":
+        return
+
+    from sqlalchemy import event
+
+    @event.listens_for(storage_engine, "connect")
+    def _set_foreign_keys(dbapi_connection, _):
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.close()
+
+
 def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     """Create the web API with optionally injected storage for tests/runtime."""
     app = FastAPI(
@@ -61,6 +76,7 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
                 db_label = db_path
 
             storage = DBStorage(db_url)
+            _enable_sqlite_foreign_keys(storage)
             storage.init_db()
             if web_api_path in sys.path:
                 sys.path.remove(web_api_path)
@@ -90,6 +106,7 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     from api.routes.search import router as search_router
     from api.routes.naver_local import router as naver_local_router
     from api.routes.profile import router as profile_router
+    from api.routes.account_features import router as account_features_router
 
     app.include_router(products_router, prefix="/api/products", tags=["Products"])
     app.include_router(hotdeals_router, prefix="/api/hotdeals", tags=["Hotdeals"])
@@ -101,6 +118,7 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     app.include_router(search_router, prefix="/api/search", tags=["Search"])
     app.include_router(naver_local_router, prefix="/api/local", tags=["Local / Naver"])
     app.include_router(profile_router)
+    app.include_router(account_features_router)
 
     @app.get("/api/health")
     def health():
