@@ -28,7 +28,17 @@ const useStore = create(
       isLoggedIn: false,
       user: null,
       login: (user) => set({ isLoggedIn: true, user }),
-      logout: () => set({ isLoggedIn: false, user: null }),
+      logout: () => {
+        try { useCartStore.getState().onLogout(); } catch { /* store 초기화 중이면 무시 */ }
+        set({
+          isLoggedIn: false,
+          user: null,
+          favorites: [],
+          favoriteItems: {},
+          shoppingList: [],
+          priceAlerts: [],
+        });
+      },
 
       // 로그인 모달
       isLoginModalOpen: false,
@@ -52,7 +62,7 @@ const useStore = create(
         toasts: state.toasts.filter(t => t.id !== id)
       })),
 
-      // 관심 품목 (Favorites/Watchlist)
+      // 관심 품목 (로그인 계정의 DB 위시리스트를 화면 상태로 반영)
       favorites: [],
       favoriteItems: {},
       addFavorite: (productOrId, details = {}) => set((state) => {
@@ -94,6 +104,21 @@ const useStore = create(
           },
         },
       })),
+      hydrateFavorites: (items = []) => set(() => {
+        const favorites = [];
+        const favoriteItems = {};
+        for (const item of Array.isArray(items) ? items : []) {
+          const normalized = normalizeProduct(item);
+          const id = normalized.favoriteId;
+          if (!favorites.includes(id)) favorites.push(id);
+          favoriteItems[id] = {
+            ...item,
+            local_id: id,
+            remote_id: item.id,
+          };
+        }
+        return { favorites, favoriteItems };
+      }),
       isFavorite: (productId) => (get().favorites || []).includes(productId),
 
       // 최근 검색
@@ -106,18 +131,20 @@ const useStore = create(
       }),
       clearRecentSearches: () => set({ recentSearches: [] }),
 
-      // 장보기 리스트 (Shopping List) — cartStore와 동기화
+      // 장보기 리스트 (legacy UI mirror; 실제 장바구니 원본은 cartStore/DB)
       shoppingList: [],
-      addToShoppingList: (item, quantityArg) => {
+      addToShoppingList: async (item, quantityArg) => {
         const cartItem = (item && typeof item === 'object')
           ? item
           : { productId: item, id: item, name: String(item || '상품'), quantity: quantityArg || 1 };
-        // cartStore에도 동기화 (ShoppingListPanel이 cartStore를 읽음)
         try {
-          useCartStore.getState().addItem(buildCartPayload(cartItem));
-        } catch { /* cartStore 미초기화 시 무시 */ }
+          await useCartStore.getState().addItem(buildCartPayload(cartItem));
+        } catch {
+          get().addToast('장바구니 저장에 실패했습니다. 다시 시도해주세요.', 'error');
+          return false;
+        }
 
-        return set((state) => {
+        set((state) => {
           const normalized = normalizeProduct(cartItem);
           const id = normalized.favoriteId;
           const existing = state.shoppingList.find(i => (i.productId ?? i.id ?? i.name) === id);
@@ -137,13 +164,14 @@ const useStore = create(
             ],
           };
         });
+        return true;
       },
       removeFromShoppingList: (productId) => set((state) => ({
         shoppingList: state.shoppingList.filter(item => item.productId !== productId)
       })),
       clearShoppingList: () => set({ shoppingList: [] }),
 
-      // 가격 알림 설정
+      // 가격 알림 설정 (계정별 상태이므로 로그아웃 시 초기화)
       priceAlerts: [],
       addPriceAlert: (productId, targetPrice) => set((state) => ({
         priceAlerts: [
@@ -166,7 +194,7 @@ const useStore = create(
       // 위치 상태
       location: { lat: null, lng: null },
       setLocation: (lat, lng) => set({ location: { lat, lng } }),
-      savedLocation: null, // { lat, lng, locationName } — persisted across refresh
+      savedLocation: null,
       setSavedLocation: (loc) => set({ savedLocation: loc }),
       nearbyGasStations: [],
       setNearbyGasStations: (stations) => set({ nearbyGasStations: stations }),
@@ -179,7 +207,7 @@ const useStore = create(
         theme: state.theme === 'light' ? 'dark' : 'light',
       })),
 
-      // 핫딜러 모드 — ON 시 상세 가격 정보·할인율 레이어 추가 노출
+      // 핫딜러 모드
       hotdealerMode: false,
       toggleHotdealerMode: () => set((state) => ({ hotdealerMode: !state.hotdealerMode })),
 
@@ -198,14 +226,11 @@ const useStore = create(
     }),
     {
       name: 'wallet-savior-store',
+      // 계정 소유 데이터는 브라우저 공용 localStorage에 보존하지 않는다.
       partialize: (state) => ({
         theme: state.theme,
         hotdealerMode: state.hotdealerMode,
-        favorites: state.favorites,
-        favoriteItems: state.favoriteItems,
         recentSearches: state.recentSearches,
-        shoppingList: state.shoppingList,
-        priceAlerts: state.priceAlerts,
         filterPreferences: state.filterPreferences,
         savedLocation: state.savedLocation,
       }),
