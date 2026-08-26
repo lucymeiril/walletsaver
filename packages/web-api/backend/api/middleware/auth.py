@@ -1,4 +1,4 @@
-"""Authentication middleware backed by the authoritative main users table."""
+"""Authentication middleware backed by web-api's server-owned accounts SQLite."""
 from typing import Optional
 
 from fastapi import Depends, HTTPException, Request, status

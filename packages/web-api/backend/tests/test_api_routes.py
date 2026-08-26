@@ -1,7 +1,7 @@
 """Focused route regressions for the current web API runtime.
 
 The public API must be testable without opening the repository's real catalog DB.
-Community tests use a temporary, physically separate board SQLite file.
+Community tests use temporary, physically separate account and board SQLite files.
 """
 from __future__ import annotations
 
@@ -17,10 +17,7 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 from services.auth_service import create_token_pair
-
-
-class FakeStorage:
-    """Minimal injected app storage; community routes do not use it."""
+from services.user_storage import PublicUserStore
 
 
 @pytest.fixture(autouse=True)
@@ -38,10 +35,19 @@ def isolated_board(tmp_path, monkeypatch):
 
 
 @pytest.fixture()
-def app():
+def account_db(tmp_path):
+    from services.account_database import AccountDatabase
+
+    db = AccountDatabase(tmp_path / "accounts.sqlite")
+    yield db
+    db.close()
+
+
+@pytest.fixture()
+def app(account_db):
     from api.app import create_app
 
-    return create_app(storage=FakeStorage())
+    return create_app(storage=account_db)
 
 
 @pytest.fixture()
@@ -49,9 +55,16 @@ def client(app):
     return TestClient(app)
 
 
-def _headers(user_id: int, role: str = "user") -> dict[str, str]:
-    tokens = create_token_pair(user_id, f"user{user_id}@example.com", role)
-    return {"Authorization": f"Bearer {tokens['access_token']}"}
+def _identity(account_db, email: str, nickname: str) -> tuple[dict, dict[str, str]]:
+    """Create a real persistent test account and its access-token header."""
+    user = PublicUserStore(account_db).create_password_user(
+        email=email,
+        nickname=nickname,
+        hashed_password="test-only-unused-password-hash",
+    )
+    tokens = create_token_pair(user["id"], user["email"], user["role"])
+    headers = {"Authorization": f"Bearer {tokens['access_token']}"}
+    return user, headers
 
 
 def test_health_uses_injected_storage_without_repository_db(client):
@@ -99,8 +112,8 @@ def test_empty_board_is_readable_from_isolated_database(client):
     assert body["meta"]["total"] == 0
 
 
-def test_authenticated_community_crud_comment_and_vote_flow(client):
-    headers = _headers(5001)
+def test_authenticated_community_crud_comment_and_vote_flow(client, account_db):
+    user, headers = _identity(account_db, "community@example.com", "커뮤니티유저")
 
     created = client.post(
         "/api/posts",
@@ -115,7 +128,7 @@ def test_authenticated_community_crud_comment_and_vote_flow(client):
     assert created.status_code == 200, created.text
     post = created.json()["data"]
     post_id = post["id"]
-    assert post["author_id"] == 5001
+    assert post["author_id"] == user["id"]
 
     first_get = client.get(f"/api/posts/{post_id}")
     second_get = client.get(f"/api/posts/{post_id}")
@@ -136,7 +149,7 @@ def test_authenticated_community_crud_comment_and_vote_flow(client):
         headers=headers,
     )
     assert comment.status_code == 200
-    assert comment.json()["data"]["author_id"] == 5001
+    assert comment.json()["data"]["author_id"] == user["id"]
 
     voted = client.post(
         f"/api/posts/{post_id}/vote",
@@ -162,9 +175,9 @@ def test_authenticated_community_crud_comment_and_vote_flow(client):
     assert client.get(f"/api/posts/{post_id}").status_code == 404
 
 
-def test_other_user_cannot_modify_or_delete_post(client):
-    owner_headers = _headers(6001)
-    other_headers = _headers(6002)
+def test_other_user_cannot_modify_or_delete_post(client, account_db):
+    _, owner_headers = _identity(account_db, "owner@example.com", "글쓴이")
+    _, other_headers = _identity(account_db, "other@example.com", "다른유저")
 
     created = client.post(
         "/api/posts",
