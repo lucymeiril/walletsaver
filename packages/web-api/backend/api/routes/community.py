@@ -1,4 +1,9 @@
-"""Community API backed only by the isolated board SQLite database."""
+"""Community API backed only by the isolated board SQLite database.
+
+Authentication identity comes from walletguardian.db. community_users contains a
+minimal mirror with the same numeric id so board foreign keys remain isolated
+without inventing a second account authority.
+"""
 from __future__ import annotations
 
 import logging
@@ -8,7 +13,7 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import desc, func
 
-from api.middleware.auth import is_local_auth_user_blocked, require_auth
+from api.middleware.auth import require_auth
 from api.schemas.common import ApiResponse, PaginationMeta
 from api.schemas.community import CommentCreate, PostCreate, PostUpdate, VoteRequest
 from services.board_storage import (
@@ -34,35 +39,54 @@ def _session_factory():
 
 
 def _ensure_user(session, user: dict) -> UserModel:
-    """Resolve the authenticated persistent user; never invent a placeholder owner."""
-    existing = session.get(UserModel, int(user["id"]))
-    if existing is None:
-        raise HTTPException(status_code=401, detail="유효하지 않은 사용자입니다")
-    if existing.is_deleted or existing.is_active is False:
-        raise HTTPException(status_code=403, detail="정지되거나 삭제된 계정입니다")
+    """Mirror a main-DB user into board.sqlite without ever reusing an old owner id."""
+    user_id = int(user["id"])
+    email = (user.get("email") or "").strip().lower()
+    nickname = (user.get("nickname") or "").strip() or f"user{user_id}"
 
-    changed = False
-    email = user.get("email", "").strip()
-    nickname = user.get("nickname", "").strip()
-    if email and existing.email != email:
-        existing.email = email
-        changed = True
-    if nickname and existing.nickname != nickname:
-        existing.nickname = nickname
-        changed = True
-    if changed:
-        session.flush()
-    return existing
+    existing = session.get(UserModel, user_id)
+    if existing is not None:
+        # Legacy in-memory auth could recycle numeric ids. Never overwrite a
+        # board owner with a different e-mail because that would transfer old
+        # posts to a new account.
+        if email and existing.email.strip().lower() != email:
+            raise HTTPException(
+                status_code=409,
+                detail="기존 게시판 사용자 ID와 현재 계정이 충돌합니다. 게시판 데이터 마이그레이션이 필요합니다.",
+            )
+        if existing.is_deleted or existing.is_active is False:
+            raise HTTPException(status_code=403, detail="커뮤니티 이용이 제한된 계정입니다")
+        if nickname and existing.nickname != nickname:
+            existing.nickname = nickname
+            session.flush()
+        return existing
+
+    if email:
+        same_email = session.query(UserModel).filter(UserModel.email == email).first()
+        if same_email is not None and same_email.id != user_id:
+            raise HTTPException(
+                status_code=409,
+                detail="기존 게시판 계정과 현재 회원 ID가 일치하지 않습니다. 게시판 데이터 마이그레이션이 필요합니다.",
+            )
+
+    mirror = UserModel(
+        id=user_id,
+        email=email or f"user-{user_id}@mirror.walletsavior.local",
+        nickname=nickname,
+        is_active=True,
+        is_deleted=False,
+    )
+    session.add(mirror)
+    session.flush()
+    return mirror
 
 
 def _raise_if_banned(session, user: dict) -> None:
-    if is_local_auth_user_blocked(user["id"]):
-        raise HTTPException(status_code=403, detail="정지되거나 삭제된 계정입니다")
     board_user = session.get(UserModel, int(user["id"]))
-    if not board_user:
-        raise HTTPException(status_code=401, detail="유효하지 않은 사용자입니다")
+    if board_user is None:
+        raise HTTPException(status_code=401, detail="게시판 사용자 정보가 없습니다")
     if board_user.is_active is False or board_user.is_deleted:
-        raise HTTPException(status_code=403, detail="정지되거나 삭제된 계정입니다")
+        raise HTTPException(status_code=403, detail="커뮤니티 이용이 제한된 계정입니다")
 
 
 def _post_to_dict(post: PostModel) -> dict:
@@ -133,9 +157,8 @@ async def list_posts(
                 .group_by(CommentModel.post_id)
                 .subquery()
             )
-            query = (
-                query.outerjoin(counts, counts.c.post_id == PostModel.id)
-                .order_by(desc(func.coalesce(counts.c.comment_count, 0)), desc(PostModel.created_at))
+            query = query.outerjoin(counts, counts.c.post_id == PostModel.id).order_by(
+                desc(func.coalesce(counts.c.comment_count, 0)), desc(PostModel.created_at)
             )
         else:
             query = query.order_by(desc(PostModel.created_at))
@@ -200,6 +223,7 @@ async def update_post(post_id: int, body: PostUpdate, user: dict = Depends(requi
             raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
         if post.author_id != int(user["id"]):
             raise HTTPException(status_code=403, detail="수정 권한이 없습니다")
+        _ensure_user(session, user)
         _raise_if_banned(session, user)
         if body.title is not None:
             post.title = body.title
@@ -222,6 +246,7 @@ async def delete_post(post_id: int, user: dict = Depends(require_auth)):
             raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
         if post.author_id != int(user["id"]) and user.get("role") not in ("admin", "moderator"):
             raise HTTPException(status_code=403, detail="삭제 권한이 없습니다")
+        _ensure_user(session, user)
         _raise_if_banned(session, user)
         post.is_deleted = True
         post.updated_at = datetime.utcnow()
@@ -282,15 +307,12 @@ async def vote_post(post_id: int, body: VoteRequest, user: dict = Depends(requir
             raise HTTPException(status_code=404, detail="게시글을 찾을 수 없습니다")
         _ensure_user(session, user)
         _raise_if_banned(session, user)
-
-        existing = (
-            session.query(VoteModel)
-            .filter(VoteModel.post_id == post_id, VoteModel.user_id == int(user["id"]))
-            .first()
-        )
+        existing = session.query(VoteModel).filter(
+            VoteModel.post_id == post_id,
+            VoteModel.user_id == int(user["id"]),
+        ).first()
         new_vote = DBVoteType.HOT if body.vote_type == "hot" else DBVoteType.NOT
         user_vote = body.vote_type
-
         if existing and existing.vote_type == new_vote:
             session.delete(existing)
             user_vote = None
@@ -301,14 +323,12 @@ async def vote_post(post_id: int, body: VoteRequest, user: dict = Depends(requir
         session.commit()
         session.refresh(post)
         data = _post_to_dict(post)
-        return ApiResponse(
-            data={
-                "post_id": post_id,
-                "hot_votes": data["hot_votes"],
-                "not_votes": data["not_votes"],
-                "user_vote": user_vote,
-            }
-        )
+        return ApiResponse(data={
+            "post_id": post_id,
+            "hot_votes": data["hot_votes"],
+            "not_votes": data["not_votes"],
+            "user_vote": user_vote,
+        })
 
 
 @router.get("/{post_id}/suggested-tier")
@@ -334,14 +354,11 @@ async def suggested_tier(post_id: int):
     else:
         tier = "unknown"
 
-    return ApiResponse(
-        data={
-            "post_id": post_id,
-            "suggested_tier": tier,
-            "price": price,
-            "original_price": original,
-            "discount_rate": round((1 - price / original) * 100, 1)
-            if price and original and original > 0
-            else None,
-        }
-    )
+    return ApiResponse(data={
+        "post_id": post_id,
+        "suggested_tier": tier,
+        "price": price,
+        "original_price": original,
+        "discount_rate": round((1 - price / original) * 100, 1)
+        if price and original and original > 0 else None,
+    })
