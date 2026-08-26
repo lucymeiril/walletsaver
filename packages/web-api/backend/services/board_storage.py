@@ -1,9 +1,9 @@
-"""Independent SQLite storage for the web community board.
+"""Independent SQLite storage for web users and the community board.
 
-Community writes must never touch the product/catalog source DB. The existing
-``storage/board.sqlite`` file is retained, but current API tables use a
-``community_*`` prefix so they do not collide with the older UUID-based board
-schema that may still exist in that file.
+Community writes must never touch the product/catalog source DB. Public account
+identity lives in the same ``community_users`` table as post ownership so a
+server restart can never recycle an in-memory user id onto somebody else's
+persistent posts.
 """
 from __future__ import annotations
 
@@ -51,9 +51,13 @@ class VoteType(str, enum.Enum):
 class User(Base):
     __tablename__ = "community_users"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     email: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
     nickname: Mapped[str] = mapped_column(String(100), nullable=False)
+    hashed_password: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    role: Mapped[str] = mapped_column(String(32), nullable=False, default="user")
+    oauth_provider: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    oauth_id: Mapped[str | None] = mapped_column(String(255), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     is_deleted: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
@@ -137,6 +141,24 @@ def get_board_db_path() -> Path:
     return Path(configured).resolve() if configured else _DEFAULT_DB.resolve()
 
 
+def _ensure_auth_columns(engine) -> None:
+    """Upgrade older local community_users tables without discarding board data."""
+    with engine.begin() as connection:
+        columns = {
+            row[1]
+            for row in connection.execute(text("PRAGMA table_info(community_users)"))
+        }
+        additions = {
+            "hashed_password": "hashed_password VARCHAR(255)",
+            "role": "role VARCHAR(32) NOT NULL DEFAULT 'user'",
+            "oauth_provider": "oauth_provider VARCHAR(32)",
+            "oauth_id": "oauth_id VARCHAR(255)",
+        }
+        for name, definition in additions.items():
+            if name not in columns:
+                connection.execute(text(f"ALTER TABLE community_users ADD COLUMN {definition}"))
+
+
 def get_board_engine():
     global _engine, _SessionLocal
     if _engine is not None:
@@ -158,13 +180,12 @@ def get_board_engine():
         cursor.execute("PRAGMA synchronous=NORMAL")
         cursor.close()
 
-    # WAL mode changes database state and can take a writer lock. Configure it
-    # once per process instead of on every pooled connection checkout.
     with _engine.begin() as connection:
         connection.execute(text("PRAGMA journal_mode=WAL"))
 
     Base.metadata.create_all(_engine)
-    _SessionLocal = scoped_session(sessionmaker(bind=_engine))
+    _ensure_auth_columns(_engine)
+    _SessionLocal = scoped_session(sessionmaker(bind=_engine, expire_on_commit=False))
     return _engine
 
 
