@@ -23,11 +23,18 @@ const TREND_ICONS = {
 
 export default function WishlistPage() {
   const navigate = useNavigate();
-  const { isLoggedIn, favorites, favoriteItems, removeFavorite, setFavoriteRemoteId, addToast } = useStore();
+  const {
+    isLoggedIn,
+    favoriteItems,
+    removeFavorite,
+    hydrateFavorites,
+    addToast,
+  } = useStore();
   const addCartItem = useCartStore((st) => st.addItem);
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [editingTarget, setEditingTarget] = useState(null);
   const [targetInput, setTargetInput] = useState('');
@@ -43,6 +50,7 @@ export default function WishlistPage() {
 
   const fetchWishlist = useCallback(async () => {
     setLoading(true);
+    setLoadError(false);
     try {
       const data = await api.getJson('/api/wishlist');
       const rawItems = data.data || data.items || data || [];
@@ -53,45 +61,29 @@ export default function WishlistPage() {
         price_at_add: item.price_at_add || item.item_price || 0,
         current_price: item.current_price || item.item_price || 0,
       })) : [];
-      wishItems.forEach((item) => {
-        const match = Object.entries(favoriteItems || {}).find(([, fav]) =>
-          fav.remote_id === item.id || (
-            fav.item_name === item.product_name && (fav.store_name || '') === (item.store_name || '')
-          )
-        );
-        if (match) setFavoriteRemoteId(match[0], item.id);
-      });
+      hydrateFavorites(wishItems);
       setItems(wishItems);
     } catch {
-      setItems(
-        favorites.map((id) => {
-          const item = favoriteItems?.[id] || {};
-          return {
-            ...item,
-            id,
-            local_id: id,
-            product_name: item.item_name || item.product_name || item.name || `상품 ${id}`,
-            image: item.item_image_url || item.image || '',
-            store_name: item.store_name || '',
-            category: item.category || '',
-            price_at_add: item.price_at_add || item.item_price || item.current_price || 0,
-            current_price: item.current_price || item.price_at_add || item.item_price || 0,
-          };
-        })
-      );
+      hydrateFavorites([]);
+      setItems([]);
+      setLoadError(true);
+      addToast('찜 목록을 DB에서 불러오지 못했습니다.', 'error');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  }, [favorites, favoriteItems, setFavoriteRemoteId]);
+  }, [hydrateFavorites, addToast]);
 
   const handleRemove = async (item) => {
     const itemId = item.id;
-    const pid = item.local_id || item.product_id || item.id;
-    removeFavorite(pid);
-    setItems((prev) => prev.filter((i) => i.id !== itemId));
     try {
       await api.delete(`/api/wishlist/${itemId}`);
-    } catch { /* ignore */ }
-    addToast('찜 목록에서 제거했어요', 'info');
+      const match = Object.entries(favoriteItems || {}).find(([, fav]) => fav.remote_id === itemId);
+      if (match) removeFavorite(match[0]);
+      setItems((prev) => prev.filter((row) => row.id !== itemId));
+      addToast('찜 목록에서 제거했어요', 'info');
+    } catch {
+      addToast('찜 삭제에 실패했습니다. 다시 시도해주세요.', 'error');
+    }
   };
 
   const handleSetTarget = async (item) => {
@@ -101,28 +93,34 @@ export default function WishlistPage() {
       return;
     }
     const itemId = item.id;
-    setItems((prev) =>
-      prev.map((i) =>
-        i.id === itemId ? { ...i, target_price: price } : i
-      )
-    );
-    setEditingTarget(null);
     try {
       await api.put(`/api/wishlist/${itemId}`, { target_price: price, notify_on_drop: true });
+      setItems((prev) =>
+        prev.map((row) =>
+          row.id === itemId ? { ...row, target_price: price, notify_on_drop: true } : row
+        )
+      );
+      setEditingTarget(null);
       addToast('목표가를 설정했어요 🎯', 'success');
-    } catch { /* ignore */ }
+    } catch {
+      addToast('목표가 저장에 실패했습니다. 다시 시도해주세요.', 'error');
+    }
   };
 
-  const handleAddToCart = (item) => {
-    addCartItem({
-      product_id: item.product_id || item.id,
-      name: item.product_name || item.item_name || item.name,
-      price: item.current_price || item.item_price || item.price_at_add,
-      store_name: item.store_name || '',
-      image: item.image || item.item_image_url || '',
-      category: item.category || '',
-    });
-    addToast(`${item.product_name || item.item_name || item.name} 장바구니에 추가했어요`, 'success');
+  const handleAddToCart = async (item) => {
+    try {
+      await addCartItem({
+        ...(item.product_id ? { product_id: item.product_id } : {}),
+        name: item.product_name || item.item_name || item.name,
+        price: item.current_price || item.item_price || item.price_at_add || 0,
+        store_name: item.store_name || '',
+        image: item.image || item.item_image_url || '',
+        category: item.category || '',
+      });
+      addToast(`${item.product_name || item.item_name || item.name} 장바구니에 추가했어요`, 'success');
+    } catch {
+      addToast('장바구니 저장에 실패했습니다. 다시 시도해주세요.', 'error');
+    }
   };
 
   const getTrend = (item) => {
@@ -153,6 +151,15 @@ export default function WishlistPage() {
 
         {loading ? (
           <div className={s.loadingState}>로딩 중...</div>
+        ) : loadError ? (
+          <div className={s.emptyState}>
+            <AlertCircle size={48} />
+            <h2 className={s.emptyTitle}>찜 목록을 불러오지 못했어요</h2>
+            <p className={s.emptyDesc}>로컬 가짜 목록으로 대신 보여주지 않고 DB 연결을 다시 확인합니다.</p>
+            <button className={s.emptyAction} onClick={fetchWishlist}>
+              다시 불러오기
+            </button>
+          </div>
         ) : items.length === 0 ? (
           <div className={s.emptyState}>
             <Heart size={48} />
