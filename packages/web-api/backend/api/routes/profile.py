@@ -1,16 +1,13 @@
-"""프로필 API — 웹 프론트의 회원정보 조회/수정/삭제 경로."""
-
-import json
-from datetime import datetime
+"""프로필 API — 메인 users 테이블의 회원정보 조회/수정/삭제."""
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, field_validator
 
 from api.middleware.auth import require_auth
-from api.schemas.common import ApiResponse, PaginationMeta
-from services.board_storage import User, get_board_session_factory
+from api.schemas.common import ApiResponse
+from services.user_storage import PublicUserStore, PublicUserStoreError
 
 router = APIRouter(prefix="/api/profile", tags=["프로필"])
 
@@ -36,112 +33,77 @@ class ProfileUpdate(BaseModel):
         return value
 
 
-def _preferences(user: User):
-    if not user.preferences_json:
-        return None
+def _store(request: Request) -> PublicUserStore:
     try:
-        value = json.loads(user.preferences_json)
-        return value if isinstance(value, dict) else None
-    except (TypeError, json.JSONDecodeError):
-        return None
+        return PublicUserStore(request.app.state.storage)
+    except PublicUserStoreError as exc:
+        raise HTTPException(status_code=503, detail="회원 데이터 저장소를 사용할 수 없습니다") from exc
 
 
-def _profile_payload(user: User) -> dict:
+def _profile_payload(user: dict) -> dict:
     return {
-        "id": user.id,
-        "email": user.email,
-        "nickname": user.nickname or user.email.split("@")[0],
-        "bio": user.bio,
-        "profile_image_url": user.profile_image_url,
-        "preferences": _preferences(user),
-        "role": user.role or "user",
-        "created_at": user.created_at.isoformat() if user.created_at else "",
-        "updated_at": user.updated_at.isoformat() if user.updated_at else None,
+        "id": user["id"],
+        "email": user["email"],
+        "nickname": user["nickname"],
+        "bio": user.get("bio"),
+        "profile_image_url": user.get("profile_image_url"),
+        "preferences": user.get("preferences"),
+        "role": user.get("role") or "user",
+        "created_at": user.get("created_at") or "",
+        "updated_at": user.get("updated_at"),
     }
 
 
-def _current_profile_user(session, identity: dict) -> User:
-    user = session.get(User, int(identity["id"]))
-    if not user or user.is_deleted:
-        raise HTTPException(status_code=404, detail="사용자를 찾을 수 없습니다")
-    if user.is_active is False:
-        raise HTTPException(status_code=403, detail="정지된 계정입니다")
-    return user
-
-
 @router.get("")
-async def get_profile(identity: dict = Depends(require_auth)):
-    factory = get_board_session_factory()
-    with factory() as session:
-        return ApiResponse(data=_profile_payload(_current_profile_user(session, identity)))
+async def get_profile(request: Request, identity: dict = Depends(require_auth)):
+    user = _store(request).get_by_id(identity["id"])
+    if not user or user.get("is_deleted"):
+        raise HTTPException(status_code=404, detail="사용자를 찾을 수 없습니다")
+    return ApiResponse(data=_profile_payload(user))
 
 
 @router.put("")
-async def update_profile(body: ProfileUpdate, identity: dict = Depends(require_auth)):
-    factory = get_board_session_factory()
-    with factory() as session:
-        user = _current_profile_user(session, identity)
+async def update_profile(request: Request, body: ProfileUpdate, identity: dict = Depends(require_auth)):
+    kwargs = {}
+    fields = body.model_fields_set
+    if "nickname" in fields:
+        if body.nickname is None:
+            raise HTTPException(status_code=422, detail="닉네임은 비울 수 없습니다")
+        kwargs["nickname"] = body.nickname
+    if "bio" in fields:
+        kwargs["bio"] = body.bio
+    if "profile_image_url" in fields:
+        kwargs["profile_image_url"] = body.profile_image_url
+    if "preferences" in fields:
+        kwargs["preferences"] = body.preferences
 
-        if body.nickname is not None:
-            nickname = body.nickname.strip()
-            if nickname != user.nickname:
-                duplicate = (
-                    session.query(User)
-                    .filter(
-                        User.nickname == nickname,
-                        User.id != user.id,
-                        User.is_deleted.is_(False),
-                    )
-                    .first()
-                )
-                if duplicate:
-                    raise HTTPException(status_code=409, detail="이미 사용 중인 닉네임입니다")
-                user.nickname = nickname
-        if body.bio is not None:
-            user.bio = body.bio
-        if body.profile_image_url is not None:
-            user.profile_image_url = body.profile_image_url
-        if body.preferences is not None:
-            user.preferences_json = json.dumps(body.preferences, ensure_ascii=False)
-
-        user.updated_at = datetime.utcnow()
-        session.commit()
-        session.refresh(user)
-        return ApiResponse(data=_profile_payload(user))
+    try:
+        user = _store(request).update_profile(identity["id"], **kwargs)
+    except PublicUserStoreError as exc:
+        if str(exc) == "nickname_exists":
+            raise HTTPException(status_code=409, detail="이미 사용 중인 닉네임입니다") from exc
+        raise
+    if not user:
+        raise HTTPException(status_code=404, detail="사용자를 찾을 수 없습니다")
+    return ApiResponse(data=_profile_payload(user))
 
 
 @router.delete("")
-async def delete_profile(identity: dict = Depends(require_auth)):
-    factory = get_board_session_factory()
-    with factory() as session:
-        user = _current_profile_user(session, identity)
-        deleted_at = datetime.utcnow()
-        user.is_deleted = True
-        user.is_active = False
-        user.deleted_at = deleted_at
-        user.updated_at = deleted_at
-        session.commit()
+async def delete_profile(request: Request, identity: dict = Depends(require_auth)):
+    user = _store(request).soft_delete(identity["id"])
+    if not user:
+        raise HTTPException(status_code=404, detail="사용자를 찾을 수 없습니다")
 
-    response = JSONResponse(
-        content=ApiResponse(
-            data={"message": "계정이 삭제되었습니다", "deleted_at": deleted_at.isoformat()}
-        ).model_dump()
-    )
+    response = JSONResponse(content=ApiResponse(data={
+        "message": "계정이 삭제되었습니다",
+        "deleted_at": user.get("deleted_at"),
+    }).model_dump())
     response.delete_cookie(key="access_token", path="/")
     response.delete_cookie(key="refresh_token", path="/api/auth")
     return response
 
 
 @router.get("/activity")
-async def get_activity(
-    identity: dict = Depends(require_auth),
-    page: int = 1,
-    per_page: int = 20,
-):
-    factory = get_board_session_factory()
-    with factory() as session:
-        _current_profile_user(session, identity)
-    return ApiResponse(
-        data=[],
-        meta=PaginationMeta(page=page, per_page=per_page, total=0, total_pages=0),
-    )
+async def get_activity(identity: dict = Depends(require_auth)):
+    """활동 이력 저장/조회 계약이 아직 연결되지 않았음을 명시한다."""
+    raise HTTPException(status_code=501, detail="사용자 활동 이력 조회는 아직 구현되지 않았습니다")
