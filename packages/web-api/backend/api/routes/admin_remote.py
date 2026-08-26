@@ -122,7 +122,7 @@ def _comment_dict(comment: CommentModel) -> dict:
 
 @router.get("/community/posts", dependencies=[Depends(require_remote_admin)])
 def list_community_posts(
-    status: str = Query("active", pattern="^(active|deleted|all|reported)$"),
+    status: str = Query("active", pattern="^(active|deleted|all)$"),
     post_type: str | None = Query(None),
     search: str | None = Query(None),
     page: int = Query(1, ge=1),
@@ -135,15 +135,6 @@ def list_community_posts(
             query = query.filter(PostModel.is_deleted.is_(False))
         elif status == "deleted":
             query = query.filter(PostModel.is_deleted.is_(True))
-        elif status == "reported":
-            return {
-                "items": [],
-                "total": 0,
-                "page": page,
-                "per_page": per_page,
-                "total_pages": 1,
-                "note": "게시판 신고 테이블은 아직 구현되지 않았습니다.",
-            }
 
         if post_type:
             query = query.filter(PostModel.post_type == post_type)
