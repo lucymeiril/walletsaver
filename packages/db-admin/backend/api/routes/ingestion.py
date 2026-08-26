@@ -10,9 +10,6 @@ file:
    chunk index becomes a submission key stored in the existing ``quality_details``
    JSON. A unique expression index protects that key without adding a schema
    column or depending on the repository's fragmented Alembic graph;
-3. the retired internal AI-admin one-shot publish route is not part of the
-   current DB-admin API. External AI classification uses the separate matching
-   import endpoints and is unaffected by this removal.
 
 At the end of import this module aliases itself to ``ingestion_core`` so existing
 imports and monkeypatches keep targeting the same module globals as before.
@@ -28,26 +25,6 @@ from sqlalchemy.exc import IntegrityError, OperationalError
 
 from . import ingestion_core as _core
 from storage.models import PendingIngestion, Product
-
-
-# ---------------------------------------------------------------------------
-# Retired internal AI-admin route
-# ---------------------------------------------------------------------------
-
-_RETIRED_AI_ADMIN_PATH = "/api/ingestions/{ingestion_id}/ai-safe-final-approve"
-_core.router.routes[:] = [
-    route
-    for route in _core.router.routes
-    if getattr(route, "path", None) != _RETIRED_AI_ADMIN_PATH
-]
-for _retired_name in (
-    "ai_safe_final_approve",
-    "_ai_safe_final_approve_blockers",
-    "_is_ai_admin_ingestion",
-    "require_ai_publisher",
-):
-    if hasattr(_core, _retired_name):
-        delattr(_core, _retired_name)
 
 
 # ---------------------------------------------------------------------------

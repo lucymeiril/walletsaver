@@ -153,8 +153,3 @@ require_admin = _require_min_role("admin")
 # Ordinary moderator/admin operation. Kept under the existing dependency name
 # so route code does not need a compatibility-only commit.
 require_backup_snapshot_reader = require_moderator
-
-# Temporary import compatibility only: ingestion_core still imports this name,
-# while ingestion.py removes the retired ai-safe route before the router is used.
-# No ai_publisher/one_shot_publisher role exists anymore.
-require_ai_publisher = require_moderator

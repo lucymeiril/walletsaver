@@ -17,7 +17,6 @@ from api.auth import (
     require_viewer,
     require_moderator,
     require_admin,
-    require_ai_publisher,
     get_current_identity,
 )
 from services.audit import log_action
@@ -677,118 +676,6 @@ def _db_review_once(ingestion_id: int, body: ReviewRequest):
             raise HTTPException(400, f"잘못된 액션: {body.action}")
 
 
-@router.post("/{ingestion_id}/ai-safe-final-approve")
-def ai_safe_final_approve(
-    ingestion_id: int,
-    body: ReviewRequest,
-    request: Request = None,
-    identity: dict = Depends(require_ai_publisher),
-):
-    """AI-admin safe-enough rows: one operator action to publish with audit evidence."""
-    with managed_session() as session:
-        row = session.get(PendingIngestion, ingestion_id)
-        if not row:
-            raise HTTPException(404, "대기열 항목을 찾을 수 없습니다")
-        if row.status != IngestionStatus.PENDING:
-            raise HTTPException(400, "AI 안전 최종 승인은 pending 상태에서만 가능합니다")
-        if body.action != "approve":
-            raise HTTPException(400, "AI 안전 최종 승인 경로는 approve 액션만 지원합니다")
-
-        items = json.loads(row.items_json) if row.items_json else []
-        blockers = _ai_safe_final_approve_blockers(row, items)
-        if blockers:
-            reason = "AI 안전 최종 승인 차단: " + "; ".join(blockers[:5])
-            _append_db_review_note(row, "ai-safe final approve blocked", body.notes or reason)
-            log_action(
-                session,
-                action="ingestion_ai_safe_final_blocked",
-                entity_type="pending_ingestion",
-                entity_id=row.id,
-                old_value={"status": "pending"},
-                new_value={"status": "pending", "blockers": blockers},
-                request=request,
-                user_id=str(identity.get("email") or identity.get("id")),
-                metadata={"notes": body.notes, "one_final_action": True},
-            )
-            session.flush()
-            return {"id": row.id, "status": "pending", "blocked": True, "blockers": blockers}
-
-        reviewed_at = datetime.utcnow()
-        saved = _insert_items(session, items, row.schema_type)
-        if saved != len(items):
-            reason = f"{len(items) - saved}개 항목이 필수 공개 메타데이터 누락/오류로 저장되지 않았습니다"
-            _append_db_review_note(row, "ai-safe final approve blocked", body.notes or reason)
-            raise HTTPException(400, {"reason": reason, "saved": saved, "failed": len(items) - saved})
-
-        public_verification_items = []
-        for item_index, item in enumerate(items):
-            target = _find_published_row_for_item(session, item, row.schema_type)
-            if target is None:
-                public_verification_items.append(
-                    {"item_index": item_index, "verified": False}
-                )
-                continue
-            table_name, published_row = target
-            public_verification_items.append(
-                {
-                    "item_index": item_index,
-                    "verified": True,
-                    "published_row": _published_row_snapshot(table_name, published_row),
-                }
-            )
-        public_verification = {
-            "verified": len(public_verification_items) == saved
-            and all(item["verified"] for item in public_verification_items),
-            "verified_count": sum(1 for item in public_verification_items if item["verified"]),
-            "expected_count": saved,
-            "items": public_verification_items,
-        }
-        if not public_verification["verified"]:
-            reason = "AI 안전 최종 승인 후 공개 DB 행 검증에 실패했습니다"
-            _append_db_review_note(row, "ai-safe final approve blocked", reason)
-            raise HTTPException(500, {"reason": reason, "public_db_verification": public_verification})
-
-        row.status = IngestionStatus.APPROVED
-        row.crawler_reviewed_at = reviewed_at
-        row.db_reviewed_at = reviewed_at
-        row.crawler_reviewer_notes = (
-            f"{row.crawler_reviewer_notes}\nAI safe-enough one-final-action path"
-            if row.crawler_reviewer_notes
-            else "AI safe-enough one-final-action path"
-        )
-        _append_db_review_note(row, "ai-safe final approve", body.notes)
-        log_action(
-            session,
-            action="ingestion_ai_safe_final_approve",
-            entity_type="pending_ingestion",
-            entity_id=row.id,
-            old_value={"status": "pending", "items": items},
-            new_value={
-                "status": "approved",
-                "saved": saved,
-                "public_db_verification": public_verification,
-                "raw_evidence_retained": True,
-                "rollback_supported": True,
-                "re_review_supported": True,
-                "operator_next_action": "If a published row is wrong, call rollback or re-review on /api/ingestions/{id}/published-items/{item_index}.",
-            },
-            request=request,
-            user_id=str(identity.get("email") or identity.get("id")),
-            metadata={"notes": body.notes, "one_final_action": True},
-        )
-        session.flush()
-        return {
-            "id": row.id,
-            "status": "approved",
-            "saved": saved,
-            "public_db_verification": public_verification,
-            "raw_evidence_retained": True,
-            "rollback_supported": True,
-            "re_review_supported": True,
-            "operator_next_action": "If a published row is wrong, call rollback or re-review on /api/ingestions/{id}/published-items/{item_index}.",
-        }
-
-
 @router.put("/{ingestion_id}/items/{item_index}")
 def update_ingestion_item(
     ingestion_id: int,
@@ -1034,37 +921,6 @@ def _persist_items_and_quality(row, items: list[dict]) -> None:
     row.items_count = len(items)
     row.quality_score, row.quality_details = _calculate_quality(items, row.schema_type or "DiscountItem")
     row.approved_items_json = None
-
-
-def _ai_safe_final_approve_blockers(row, items: list[dict]) -> list[str]:
-    blockers: list[str] = []
-    if not _is_ai_admin_ingestion(row, items):
-        blockers.append("ingestion is not from AI-admin/AI review")
-    if not items:
-        blockers.append("items are empty")
-        return blockers
-    schema_type = row.schema_type or "DiscountItem"
-    if schema_type != "DiscountItem":
-        blockers.append(f"schema_type {schema_type} is not eligible for AI safe final approval")
-        return blockers
-    for idx, item in enumerate(items):
-        try:
-            _validate_discount_item_for_publish(item)
-        except ValueError as exc:
-            blockers.append(f"item {idx + 1}: {exc}")
-        if not _is_ai_review_publish(item):
-            blockers.append(f"item {idx + 1}: missing AI review audit/provenance")
-    return blockers
-
-
-def _is_ai_admin_ingestion(row, items: list[dict]) -> bool:
-    crawler_name = (row.crawler_name or "").lower()
-    strategy = (row.strategy_used or "").lower()
-    return (
-        crawler_name.startswith("ai-admin")
-        or "ai_review" in strategy
-        or bool(items and all(_is_ai_review_publish(item) for item in items))
-    )
 
 
 def _append_review_note(row, action: str, notes: Optional[str]) -> None:
