@@ -3,6 +3,9 @@
 Only settings used by the current crawler-admin runtime belong here. Historical
 plugin, delivery, and broad government-API settings were intentionally removed
 so configuration files do not advertise retired features.
+
+Current crawlers persist remote ``image_url`` values with crawl records; there
+is no local image-file download/resize/cache pipeline in the current runtime.
 """
 
 import os
@@ -35,11 +38,6 @@ CRAWL_DELAY_MIN: float = float(os.getenv("CRAWL_DELAY_MIN", "1.0"))
 CRAWL_DELAY_MAX: float = float(os.getenv("CRAWL_DELAY_MAX", "5.0"))
 MAX_RETRIES: int = int(os.getenv("MAX_RETRIES", "3"))
 REQUEST_TIMEOUT: int = int(os.getenv("REQUEST_TIMEOUT", "30"))
-
-# --- Image Storage ---
-IMAGE_STORAGE_PATH: str = os.getenv("IMAGE_STORAGE_PATH", str(BASE_DIR / "storage" / "images"))
-IMAGE_MAX_SIZE: int = int(os.getenv("IMAGE_MAX_SIZE", "1920"))
-THUMBNAIL_SIZE: int = int(os.getenv("THUMBNAIL_SIZE", "300"))
 
 # --- API Server ---
 API_HOST: str = os.getenv("API_HOST", "127.0.0.1")
