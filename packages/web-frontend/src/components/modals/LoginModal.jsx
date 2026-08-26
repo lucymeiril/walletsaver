@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import useStore from '../../stores/appStore';
 import { authService } from '../../services/authService';
+import { syncAccountData } from '../../services/accountSync';
 import Modal from '../common/Modal';
 import s from './LoginModal.module.css';
 
@@ -10,7 +11,7 @@ const GOOGLE_ICON = (
     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
     <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
     <path d="M5.84 14.09a7.18 7.18 0 010-4.18V7.07H2.18A11.97 11.97 0 001 12c0 1.94.46 3.77 1.18 5.42l3.66-2.84z" fill="#FBBC05"/>
-    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 0 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
   </svg>
 );
 
@@ -52,14 +53,22 @@ export default function LoginModal() {
   const pwMismatch = signupConfirm.length > 0 && signupPassword !== signupConfirm;
 
   const completeLogin = async () => {
+    let profile;
     try {
-      const profile = await authService.getProfile();
-      login({ ...profile });
-    } catch {
-      // Fallback: user is authenticated but profile fetch failed
-      login({ email: 'unknown' });
+      profile = await authService.getProfile();
+    } catch (error) {
+      try { await authService.logout(); } catch { authService.clearLocalSession(); }
+      throw new Error('로그인 확인에 실패했습니다. 다시 시도해주세요.', { cause: error });
     }
+
+    login({ ...profile });
+    authService.markSessionVerified();
+    const syncFailures = await syncAccountData();
+
     addToast('로그인 되었습니다! 🎉', 'success');
+    if (syncFailures.length > 0) {
+      addToast(`${syncFailures.join(', ')} 동기화에 실패했습니다. 다시 열면 재시도합니다.`, 'warning');
+    }
     closeLoginModal();
   };
 
@@ -69,10 +78,10 @@ export default function LoginModal() {
     if (!isValidEmail(loginEmail)) { setLoginError('올바른 이메일 형식을 입력해주세요'); return; }
     setLoginLoading(true);
     try {
-      const data = await authService.login(loginEmail, loginPassword);
-      await completeLogin(data);
+      await authService.login(loginEmail, loginPassword);
+      await completeLogin();
     } catch (err) {
-      setLoginError(err.data?.detail || '이메일 또는 비밀번호가 올바르지 않습니다');
+      setLoginError(err.data?.detail || err.message || '이메일 또는 비밀번호가 올바르지 않습니다');
     } finally {
       setLoginLoading(false);
     }
@@ -87,10 +96,10 @@ export default function LoginModal() {
     if (signupPassword !== signupConfirm) { setSignupError('비밀번호가 일치하지 않습니다'); return; }
     setSignupLoading(true);
     try {
-      const data = await authService.register({ email: signupEmail, nickname: signupNickname, password: signupPassword });
-      await completeLogin(data);
+      await authService.register({ email: signupEmail, nickname: signupNickname, password: signupPassword });
+      await completeLogin();
     } catch (err) {
-      const detail = err.data?.detail || '';
+      const detail = err.data?.detail || err.message || '';
       if (typeof detail === 'string' && (detail.includes('email') || detail.includes('이메일'))) {
         setSignupError('이미 사용 중인 이메일입니다');
       } else if (typeof detail === 'string' && (detail.includes('nickname') || detail.includes('닉네임'))) {
@@ -104,8 +113,6 @@ export default function LoginModal() {
   };
 
   const handleOAuth = (provider) => {
-    // OAuth는 Vite 프록시를 거치지 않고 백엔드로 직접 리다이렉트
-    // (프록시가 302를 소비하면 Google로 리다이렉트되지 않음)
     const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
     window.location.href = `${backendUrl}/api/auth/oauth/${provider}`;
   };
