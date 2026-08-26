@@ -212,16 +212,6 @@ def create_app() -> FastAPI:
 
         logger.info("[App] shutdown complete")
 
-    import signal
-
-    def _handle_signal(signum, frame):
-        sig_name = signal.Signals(signum).name
-        logger.info("[App] received %s, initiating graceful shutdown", sig_name)
-        raise SystemExit(0)
-
-    try:
-        signal.signal(signal.SIGTERM, _handle_signal)
-    except (OSError, ValueError):
-        pass
-
+    # Uvicorn owns SIGINT/SIGTERM. Overriding its handlers here can bypass
+    # FastAPI shutdown events and leave browser/crawler resources behind.
     return app
