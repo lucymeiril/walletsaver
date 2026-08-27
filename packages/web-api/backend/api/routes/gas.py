@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 from typing import Literal
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, HTTPException, Query
 
 from api.schemas.common import ApiResponse
 
@@ -13,7 +13,7 @@ _SHARED = Path(__file__).resolve().parents[4] / "shared"
 if str(_SHARED) not in sys.path:
     sys.path.insert(0, str(_SHARED))
 
-from core.fuel_store import FuelStore
+from core.fuel_store import FuelStore, FuelStoreUnavailable
 
 router = APIRouter()
 
@@ -34,6 +34,10 @@ async def nearby_gas_stations(
 ):
     """Return current OPINET prices, optionally filtered by region or distance.
 
+    The deployed web-api is a read-only consumer of the crawler-owned OPINET
+    snapshot. A missing/corrupt snapshot is therefore a deployment error (503),
+    not an empty-but-healthy fuel database created on the server.
+
     OPINET lowTop10 coordinates are not WGS84. Rows without trustworthy WGS84
     coordinates remain usable for price/region comparison, but are excluded
     when the caller explicitly asks for a radius around a latitude/longitude.
@@ -43,16 +47,24 @@ async def nearby_gas_stations(
     if radius is not None and (lat is None or lng is None):
         return ApiResponse(data=[], message="반경 조회에는 lat와 lng가 필요합니다")
 
-    data = FuelStore().current_prices(
-        fuel_type=fuel_type,
-        lat=lat,
-        lng=lng,
-        radius_m=radius,
-        sido=sido,
-        sigungu=sigungu,
-        sort_by=sort,
-        limit=limit,
-    )
+    try:
+        store = FuelStore(readonly=True)
+        data = store.current_prices(
+            fuel_type=fuel_type,
+            lat=lat,
+            lng=lng,
+            radius_m=radius,
+            sido=sido,
+            sigungu=sigungu,
+            sort_by=sort,
+            limit=limit,
+        )
+    except FuelStoreUnavailable as exc:
+        raise HTTPException(
+            status_code=503,
+            detail="오피넷 snapshot을 사용할 수 없습니다",
+        ) from exc
+
     message = None
     if not data:
         message = "저장된 오피넷 가격 정보가 없습니다"
