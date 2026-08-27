@@ -54,6 +54,10 @@ class UserProfile(BaseModel):
     nickname: str
     role: str
     created_at: str
+    bio: Optional[str] = None
+    profile_image_url: Optional[str] = None
+    preferences: Optional[dict] = None
+    updated_at: Optional[str] = None
 
     class Config:
         from_attributes = True
