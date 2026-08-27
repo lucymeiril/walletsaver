@@ -39,11 +39,12 @@ async def nearby_gas_stations(
     snapshot. A missing/corrupt snapshot is therefore a deployment error (503),
     not an empty-but-healthy fuel database created on the server.
 
-    OPINET lowTop10 coordinates are not WGS84. Rows without trustworthy WGS84
-    coordinates remain usable for price/region comparison, but are excluded
-    whenever the caller supplies a latitude/longitude. Because this endpoint is
-    named ``nearby``, coordinates without an explicit radius use a conservative
-    10 km default instead of accidentally returning nationwide low-price rows.
+    Live crawler rows convert OPINET's KATEC GIS coordinates to WGS84 before
+    they are written to the shared fuel snapshot. Legacy rows that still lack
+    trustworthy WGS84 coordinates remain usable for price/region comparison,
+    but are excluded whenever the caller supplies latitude/longitude. Because
+    this endpoint is named ``nearby``, coordinates without an explicit radius
+    use a conservative 10 km default instead of returning nationwide rows.
     """
     if (lat is None) != (lng is None):
         return ApiResponse(data=[], message="거리 조회에는 lat와 lng가 모두 필요합니다")
