@@ -45,6 +45,16 @@ def _relative_time(value) -> str:
         return str(value)
 
 
+def _like_contains(value: str) -> str:
+    escaped = (
+        str(value)
+        .replace("\\", "\\\\")
+        .replace("%", "\\%")
+        .replace("_", "\\_")
+    )
+    return f"%{escaped}%"
+
+
 class ExternalHotdealStore:
     def __init__(self, path: str | Path | None = None):
         configured = str(path or os.getenv("WALLETSAVIOR_EXTERNAL_HOTDEAL_DB", "")).strip()
@@ -104,7 +114,11 @@ class ExternalHotdealStore:
         }
 
     @staticmethod
-    def _filters(category: str | None, source: str | None) -> tuple[list[str], list[object]]:
+    def _filters(
+        category: str | None,
+        source: str | None,
+        query: str | None = None,
+    ) -> tuple[list[str], list[object]]:
         clauses = ["is_active=1"]
         params: list[object] = []
         if source:
@@ -113,6 +127,16 @@ class ExternalHotdealStore:
         if category and category != "all":
             clauses.append("COALESCE(category_raw, '') LIKE ?")
             params.append(f"%{category}%")
+        query_text = str(query or "").strip()
+        if query_text:
+            pattern = _like_contains(query_text)
+            clauses.append(
+                "(LOWER(COALESCE(title, '')) LIKE LOWER(?) ESCAPE '\\' "
+                "OR LOWER(COALESCE(shop_name, '')) LIKE LOWER(?) ESCAPE '\\' "
+                "OR LOWER(COALESCE(source_site, '')) LIKE LOWER(?) ESCAPE '\\' "
+                "OR LOWER(COALESCE(category_raw, '')) LIKE LOWER(?) ESCAPE '\\')"
+            )
+            params.extend([pattern, pattern, pattern, pattern])
         return clauses, params
 
     def count_hotdeals(
@@ -120,10 +144,11 @@ class ExternalHotdealStore:
         *,
         category: str | None = None,
         source: str | None = None,
+        query: str | None = None,
     ) -> int:
         if not self.available():
             return 0
-        clauses, params = self._filters(category, source)
+        clauses, params = self._filters(category, source, query)
         with self.connection() as connection:
             row = connection.execute(
                 "SELECT COUNT(*) FROM hotdeal_posts WHERE " + " AND ".join(clauses),
@@ -136,6 +161,7 @@ class ExternalHotdealStore:
         *,
         category: str | None = None,
         source: str | None = None,
+        query: str | None = None,
         sort: str = "recent",
         page: int = 1,
         per_page: int = 20,
@@ -143,7 +169,7 @@ class ExternalHotdealStore:
         if not self.available():
             return []
 
-        clauses, params = self._filters(category, source)
+        clauses, params = self._filters(category, source, query)
 
         order = "COALESCE(posted_at, fetched_at) DESC, id DESC"
         if sort in {"price_asc", "priceAsc"}:
