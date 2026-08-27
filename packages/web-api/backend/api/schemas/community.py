@@ -1,7 +1,8 @@
 """커뮤니티 관련 스키마"""
-from pydantic import BaseModel
-from typing import Optional
 from enum import Enum
+from typing import Optional
+
+from pydantic import BaseModel, field_validator
 
 
 class PostType(str, Enum):
@@ -16,15 +17,28 @@ class PostCreate(BaseModel):
     content: str
     post_type: PostType = PostType.FREE
     category: Optional[str] = None
+    tags: Optional[list[str]] = None
     price: Optional[float] = None
     original_price: Optional[float] = None
     url: Optional[str] = None
+    images: Optional[list[str]] = None
+
+    @field_validator("images")
+    @classmethod
+    def reject_unpersisted_images(cls, value):
+        if value:
+            raise ValueError("커뮤니티 이미지 첨부 저장은 아직 지원되지 않습니다")
+        return value
 
 
 class PostUpdate(BaseModel):
     title: Optional[str] = None
     content: Optional[str] = None
     category: Optional[str] = None
+    tags: Optional[list[str]] = None
+    price: Optional[float] = None
+    original_price: Optional[float] = None
+    url: Optional[str] = None
 
 
 class CommentCreate(BaseModel):
@@ -42,6 +56,7 @@ class PostResponse(BaseModel):
     content: str
     post_type: str
     category: Optional[str] = None
+    tags: list[str] = []
     author_id: int
     author_nickname: str
     views: int = 0
@@ -51,6 +66,7 @@ class PostResponse(BaseModel):
     price: Optional[float] = None
     original_price: Optional[float] = None
     url: Optional[str] = None
+    images: list[str] = []
     created_at: str
     updated_at: str
 
