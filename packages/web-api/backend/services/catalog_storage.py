@@ -125,6 +125,26 @@ class PublicCatalogStore:
         ).fetchone()
         return dict(row) if row else {}
 
+    def _latest_active_discount(self, connection, product_id: int) -> dict:
+        if not self._table(connection, "discount_history"):
+            return {}
+        today = datetime.utcnow().date().isoformat()
+        row = connection.execute(
+            "SELECT * FROM discount_history WHERE product_id=? "
+            "AND (valid_to IS NULL OR date(valid_to) IS NULL OR date(valid_to) >= date(?)) "
+            "ORDER BY crawled_at DESC, id DESC LIMIT 1",
+            (product_id, today),
+        ).fetchone()
+        return dict(row) if row else {}
+
+    @staticmethod
+    def _is_newer_or_equal(left: dict, left_stamp: str, right: dict, right_stamp: str) -> bool:
+        if not left:
+            return False
+        if not right:
+            return True
+        return str(left.get(left_stamp) or "") >= str(right.get(right_stamp) or "")
+
     def _observations(self, connection, product_id: int) -> list[tuple[float, str, str]]:
         rows: list[tuple[float, str, str]] = []
         if self._table(connection, "baseline_prices"):
@@ -145,26 +165,42 @@ class PublicCatalogStore:
 
     def _stores(self, connection, product_id: int) -> dict[str, float]:
         stores: dict[str, float] = {}
+        candidates: list[tuple[str, float, str, int, int]] = []
         if self._table(connection, "discount_history"):
+            today = datetime.utcnow().date().isoformat()
             for row in connection.execute(
-                "SELECT source, price FROM discount_history WHERE product_id=? "
-                "ORDER BY crawled_at DESC, id DESC",
-                (product_id,),
+                "SELECT source, price, crawled_at, id FROM discount_history "
+                "WHERE product_id=? "
+                "AND (valid_to IS NULL OR date(valid_to) IS NULL OR date(valid_to) >= date(?))",
+                (product_id, today),
             ):
-                source = str(row["source"] or "")
-                source = "lotte" if source == "lottemart" else source
-                if source and source not in stores and row["price"] is not None:
-                    stores[source] = float(row["price"])
+                if row["price"] is not None:
+                    candidates.append((
+                        str(row["source"] or ""),
+                        float(row["price"]),
+                        str(row["crawled_at"] or ""),
+                        1,
+                        int(row["id"]),
+                    ))
         if self._table(connection, "baseline_prices"):
             for row in connection.execute(
-                "SELECT source, price FROM baseline_prices WHERE product_id=? "
-                "ORDER BY recorded_at DESC, id DESC",
+                "SELECT source, price, recorded_at, id FROM baseline_prices WHERE product_id=?",
                 (product_id,),
             ):
-                source = str(row["source"] or "")
-                source = "lotte" if source == "lottemart" else source
-                if source and source not in stores and row["price"] is not None:
-                    stores[source] = float(row["price"])
+                if row["price"] is not None:
+                    candidates.append((
+                        str(row["source"] or ""),
+                        float(row["price"]),
+                        str(row["recorded_at"] or ""),
+                        0,
+                        int(row["id"]),
+                    ))
+
+        candidates.sort(key=lambda item: (item[2], item[3], item[4]), reverse=True)
+        for source, price, _observed_at, _kind, _row_id in candidates:
+            source = "lotte" if source == "lottemart" else source
+            if source and source not in stores:
+                stores[source] = price
         return stores
 
     def _product(self, connection, row) -> dict:
@@ -172,12 +208,19 @@ class PublicCatalogStore:
         product_id = int(product["id"])
         category_id, category_name, icon = self._category(connection, product)
         latest_discount = self._latest(connection, "discount_history", product_id, "crawled_at")
+        active_discount = self._latest_active_discount(connection, product_id)
         latest_baseline = self._latest(connection, "baseline_prices", product_id, "recorded_at")
         observations = self._observations(connection, product_id)
         values = [value for value, _, _ in observations]
-        current_value = latest_discount.get("price")
-        if current_value is None:
-            current_value = latest_baseline.get("price")
+
+        use_discount = self._is_newer_or_equal(
+            active_discount,
+            "crawled_at",
+            latest_baseline,
+            "recorded_at",
+        )
+        current_row = active_discount if use_discount else latest_baseline
+        current_value = current_row.get("price") if current_row else None
         current = round(float(current_value)) if current_value is not None else 0
         avg = round(sum(values) / len(values)) if values else current
         low = round(min(values)) if values else current
@@ -185,10 +228,11 @@ class PublicCatalogStore:
         ratio = current / avg if current and avg else 1
         tier = "ultra" if ratio <= .70 else "great" if ratio <= .85 else "good" if ratio <= 1.05 else "wait"
 
-        raw = _json(latest_discount.get("raw_data"), {}) if latest_discount else {}
+        latest_discount_raw = _json(latest_discount.get("raw_data"), {}) if latest_discount else {}
+        current_discount_raw = _json(active_discount.get("raw_data"), {}) if use_discount else {}
         attrs = _json(product.get("attributes"), {})
-        image = product.get("image_url") or raw.get("image_url") or ""
-        original = latest_discount.get("original_price")
+        image = product.get("image_url") or latest_discount_raw.get("image_url") or ""
+        original = active_discount.get("original_price") if use_discount else None
         discount_pct = (
             round((1 - current / float(original)) * 100)
             if current and original and float(original) > current else 0
@@ -213,12 +257,12 @@ class PublicCatalogStore:
             "img": image, "image_url": image,
             "brand": product.get("brand") or attrs.get("brand") or "",
             "attributes": attrs,
-            "source": latest_discount.get("source") if latest_discount else None,
-            "source_url": latest_discount.get("source_url") or raw.get("source_url") or "",
-            "source_title": raw.get("source_title") or raw.get("product_name") or "",
+            "source": current_row.get("source") if current_row else None,
+            "source_url": active_discount.get("source_url") or current_discount_raw.get("source_url") or "" if use_discount else "",
+            "source_title": current_discount_raw.get("source_title") or current_discount_raw.get("product_name") or "" if use_discount else "",
             "original_price": original,
             "discount_pct": discount_pct,
-            "discount_rate": latest_discount.get("discount_rate") if latest_discount else None,
+            "discount_rate": active_discount.get("discount_rate") if use_discount else None,
             "stores": stores,
             "stats": {
                 "dataDays": len(days), "records": len(values),
