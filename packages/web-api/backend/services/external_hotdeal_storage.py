@@ -12,6 +12,7 @@ from typing import Iterator
 
 _BACKEND_ROOT = Path(__file__).resolve().parents[1]
 _DEFAULT_DB = _BACKEND_ROOT / "storage" / "external_hotdeals.sqlite"
+_REQUIRED_SNAPSHOT_TABLES = {"hotdeal_posts", "snapshot_meta"}
 
 # category_raw is intentionally preserved from the crawler.  The public API,
 # however, exposes stable category keys to the frontend.  Keep that translation
@@ -95,6 +96,75 @@ class ExternalHotdealStore:
             yield connection
         finally:
             connection.close()
+
+    def health(self) -> dict:
+        """Return non-fatal diagnostics for the optional external-hotdeal snapshot."""
+        if not self.available():
+            return {
+                "ok": False,
+                "available": False,
+                "path": str(self.path),
+                "reason": "snapshot_not_found",
+            }
+
+        try:
+            with self.connection() as connection:
+                quick_check = connection.execute("PRAGMA quick_check").fetchone()
+                if not quick_check or quick_check[0] != "ok":
+                    return {
+                        "ok": False,
+                        "available": True,
+                        "path": str(self.path),
+                        "reason": "quick_check_failed",
+                        "detail": str(quick_check[0] if quick_check else "no result"),
+                    }
+
+                tables = {
+                    str(row[0])
+                    for row in connection.execute(
+                        "SELECT name FROM sqlite_master WHERE type='table'"
+                    ).fetchall()
+                }
+                missing = sorted(_REQUIRED_SNAPSHOT_TABLES - tables)
+                if missing:
+                    return {
+                        "ok": False,
+                        "available": True,
+                        "path": str(self.path),
+                        "reason": "missing_tables",
+                        "missing_tables": missing,
+                    }
+
+                meta = connection.execute(
+                    "SELECT revision, built_at FROM snapshot_meta WHERE id=1"
+                ).fetchone()
+                if not meta:
+                    return {
+                        "ok": False,
+                        "available": True,
+                        "path": str(self.path),
+                        "reason": "metadata_missing",
+                    }
+
+                row_count = int(
+                    connection.execute("SELECT COUNT(*) FROM hotdeal_posts").fetchone()[0]
+                )
+                return {
+                    "ok": True,
+                    "available": True,
+                    "path": str(self.path),
+                    "revision": meta["revision"],
+                    "built_at": meta["built_at"],
+                    "row_count": row_count,
+                }
+        except (OSError, sqlite3.Error) as exc:
+            return {
+                "ok": False,
+                "available": True,
+                "path": str(self.path),
+                "reason": "snapshot_unreadable",
+                "detail": str(exc),
+            }
 
     @staticmethod
     def _serialize(row: sqlite3.Row | dict) -> dict:
