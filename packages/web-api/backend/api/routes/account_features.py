@@ -1,11 +1,11 @@
 """Authenticated account features backed by the main users database."""
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 
 from api.middleware.auth import require_auth
-from api.schemas.common import ApiResponse
+from api.schemas.common import ApiResponse, PaginationMeta
 from services.account_feature_storage import AccountFeatureStore, AccountFeatureStoreError
 
 router = APIRouter(tags=["Account features"])
@@ -123,8 +123,29 @@ async def merge_cart(request: Request, body: CartMergeBody, user: dict = Depends
 
 
 @router.get("/api/wishlist")
-async def get_wishlist(request: Request, user: dict = Depends(require_auth)):
-    return ApiResponse(data=_store(request).list_wishlist(int(user["id"])))
+async def get_wishlist(
+    request: Request,
+    user: dict = Depends(require_auth),
+    page: int = Query(1, ge=1),
+    per_page: int | None = Query(None, ge=1, le=1000),
+):
+    data = _store(request).list_wishlist(int(user["id"]))
+    if per_page is None:
+        return ApiResponse(data=data)
+
+    total = len(data)
+    start = (page - 1) * per_page
+    page_data = data[start:start + per_page]
+    total_pages = (total + per_page - 1) // per_page if total else 0
+    return ApiResponse(
+        data=page_data,
+        meta=PaginationMeta(
+            page=page,
+            per_page=per_page,
+            total=total,
+            total_pages=total_pages,
+        ),
+    )
 
 
 @router.post("/api/wishlist")
