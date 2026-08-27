@@ -16,6 +16,7 @@ if str(_SHARED) not in sys.path:
 from core.fuel_store import FuelStore, FuelStoreUnavailable
 
 router = APIRouter()
+_DEFAULT_NEARBY_RADIUS_M = 10_000
 
 
 @router.get("/nearby")
@@ -40,12 +41,18 @@ async def nearby_gas_stations(
 
     OPINET lowTop10 coordinates are not WGS84. Rows without trustworthy WGS84
     coordinates remain usable for price/region comparison, but are excluded
-    when the caller explicitly asks for a radius around a latitude/longitude.
+    whenever the caller supplies a latitude/longitude. Because this endpoint is
+    named ``nearby``, coordinates without an explicit radius use a conservative
+    10 km default instead of accidentally returning nationwide low-price rows.
     """
     if (lat is None) != (lng is None):
         return ApiResponse(data=[], message="거리 조회에는 lat와 lng가 모두 필요합니다")
     if radius is not None and (lat is None or lng is None):
         return ApiResponse(data=[], message="반경 조회에는 lat와 lng가 필요합니다")
+
+    effective_radius = radius
+    if lat is not None and lng is not None and effective_radius is None:
+        effective_radius = _DEFAULT_NEARBY_RADIUS_M
 
     try:
         store = FuelStore(readonly=True)
@@ -53,7 +60,7 @@ async def nearby_gas_stations(
             fuel_type=fuel_type,
             lat=lat,
             lng=lng,
-            radius_m=radius,
+            radius_m=effective_radius,
             sido=sido,
             sigungu=sigungu,
             sort_by=sort,
@@ -67,5 +74,8 @@ async def nearby_gas_stations(
 
     message = None
     if not data:
-        message = "저장된 오피넷 가격 정보가 없습니다"
+        if lat is not None and lng is not None:
+            message = "현재 반경에서 위치가 확인된 오피넷 가격 정보가 없습니다"
+        else:
+            message = "저장된 오피넷 가격 정보가 없습니다"
     return ApiResponse(data=data, message=message)
