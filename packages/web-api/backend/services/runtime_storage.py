@@ -12,6 +12,17 @@ from services.external_hotdeal_storage import ExternalHotdealStore
 from services.interaction_storage import InteractionDatabase
 
 
+def _like_contains(value: str) -> str:
+    """Build a literal contains-pattern for SQLite LIKE with backslash escaping."""
+    escaped = (
+        str(value)
+        .replace("\\", "\\\\")
+        .replace("%", "\\%")
+        .replace("_", "\\_")
+    )
+    return f"%{escaped}%"
+
+
 class RuntimeStorage:
     """Compatibility facade over physically separated web-owned databases."""
 
@@ -31,10 +42,71 @@ class RuntimeStorage:
         return self.catalog.health()
 
     def get_products(self) -> list[dict]:
-        return self.catalog.search_products("", page=1, per_page=self.catalog.MAX_RESULT_LIMIT)
+        return self.search_products("", page=1, per_page=self.catalog.MAX_RESULT_LIMIT)
+
+    def search_products_page(
+        self,
+        query: str,
+        category: str | None = None,
+        page: int = 1,
+        per_page: int = 20,
+    ) -> tuple[list[dict], int]:
+        """Search before pagination so rows beyond the old 1000-item cap remain reachable."""
+        page = max(1, int(page or 1))
+        per_page = max(1, min(int(per_page or 20), self.catalog.MAX_RESULT_LIMIT))
+        clauses = ["p.is_active=1"]
+        params: list[object] = []
+
+        query_text = str(query or "").strip()
+        if query_text:
+            clauses.append(
+                "LOWER(COALESCE(NULLIF(p.display_name, ''), p.name, '')) "
+                "LIKE LOWER(?) ESCAPE '\\'"
+            )
+            params.append(_like_contains(query_text))
+
+        category_text = str(category or "").strip()
+        with self.catalog.connection() as connection:
+            if category_text:
+                pattern = _like_contains(category_text)
+                category_clauses = [
+                    "LOWER(COALESCE(p.unified_category_id, '')) LIKE LOWER(?) ESCAPE '\\'",
+                    "LOWER(COALESCE(p.category_id, '')) LIKE LOWER(?) ESCAPE '\\'",
+                ]
+                category_params: list[object] = [pattern, pattern]
+                if self.catalog._table(connection, "unified_categories"):
+                    category_clauses.append(
+                        "EXISTS (SELECT 1 FROM unified_categories uc "
+                        "WHERE uc.id=p.unified_category_id "
+                        "AND LOWER(COALESCE(uc.name_ko, '')) LIKE LOWER(?) ESCAPE '\\')"
+                    )
+                    category_params.append(pattern)
+                if self.catalog._table(connection, "categories"):
+                    category_clauses.append(
+                        "EXISTS (SELECT 1 FROM categories c "
+                        "WHERE c.id=p.category_id "
+                        "AND LOWER(COALESCE(c.name, '')) LIKE LOWER(?) ESCAPE '\\')"
+                    )
+                    category_params.append(pattern)
+                clauses.append("(" + " OR ".join(category_clauses) + ")")
+                params.extend(category_params)
+
+            where_sql = " AND ".join(clauses)
+            total = int(connection.execute(
+                f"SELECT COUNT(*) FROM products p WHERE {where_sql}",
+                tuple(params),
+            ).fetchone()[0])
+            rows = connection.execute(
+                f"SELECT p.* FROM products p WHERE {where_sql} "
+                "ORDER BY COALESCE(NULLIF(p.display_name, ''), p.name, '') COLLATE NOCASE, p.id "
+                "LIMIT ? OFFSET ?",
+                (*params, per_page, (page - 1) * per_page),
+            ).fetchall()
+            return [self.catalog._product(connection, row) for row in rows], total
 
     def search_products(self, *args, **kwargs):
-        return self.catalog.search_products(*args, **kwargs)
+        rows, _total = self.search_products_page(*args, **kwargs)
+        return rows
 
     def get_product_detail(self, product_id: int):
         return self.catalog.get_product_detail(product_id)
