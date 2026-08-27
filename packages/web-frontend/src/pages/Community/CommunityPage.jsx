@@ -108,6 +108,7 @@ export default function CommunityPage() {
   const [fetchError, setFetchError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const postsControllerRef = useRef(null);
+  const locationOpenedPostRef = useRef(null);
 
   const refreshPosts = useCallback(() => {
     postsControllerRef.current?.abort();
@@ -128,6 +129,26 @@ export default function CommunityPage() {
       });
   }, [board]);
 
+  const openPost = useCallback(async (post) => {
+    if (!post?.id) {
+      setDetail(post || null);
+      return;
+    }
+    try {
+      const response = await fetch(`/api/posts/${post.id}`);
+      if (!response.ok) throw new Error(`post detail fetch failed: ${response.status}`);
+      const result = await response.json();
+      const detailedPost = mapApiPost(result.data || result);
+      setDetail(detailedPost);
+      setPosts((current) => current.map((item) =>
+        item.id === post.id ? { ...item, ...detailedPost } : item
+      ));
+    } catch (error) {
+      console.error(error);
+      setDetail(post);
+    }
+  }, []);
+
   useEffect(() => {
     refreshPosts();
     return () => postsControllerRef.current?.abort();
@@ -135,12 +156,15 @@ export default function CommunityPage() {
 
   useEffect(() => {
     const openPostId = location.state?.openPostId;
-    if (openPostId && posts.length > 0) {
+    if (openPostId && posts.length > 0 && locationOpenedPostRef.current !== openPostId) {
       const post = posts.find((item) => item.id === openPostId);
-      if (post) setDetail(post);
+      if (post) {
+        locationOpenedPostRef.current = openPostId;
+        void openPost(post);
+      }
       window.history.replaceState({}, '');
     }
-  }, [location.state, posts]);
+  }, [location.state, posts, openPost]);
 
   useEffect(() => {
     setSortBy(board === 'hotdeal' ? 'popular' : 'latest');
@@ -547,7 +571,7 @@ export default function CommunityPage() {
               key={`pin-${post.id}`}
               className={`${s.post} ${s.hotdealPost} ${s.pinnedPost}`}
               style={{ borderLeftColor: 'var(--orange, #f59e0b)' }}
-              onClick={() => setDetail(post)}
+              onClick={() => void openPost(post)}
             >
               <div className={s.hotdealVoteCol}>
                 <span className={s.hotdealVoteHot}>🔥 {post.hotVotes || 0}</span>
@@ -599,7 +623,7 @@ export default function CommunityPage() {
               key={post.id}
               className={`${s.post} ${s.hotdealPost}`}
               style={{ borderLeftColor: getVerifyBorderColor(post.verified) }}
-              onClick={() => setDetail(post)}
+              onClick={() => void openPost(post)}
             >
               <div className={s.hotdealVoteCol}>
                 <span className={s.hotdealVoteHot}>🔥 {post.hotVotes || 0}</span>
@@ -620,7 +644,7 @@ export default function CommunityPage() {
           ))
         ) : (
           paginatedPosts.map((post) => (
-            <div key={post.id} className={`${s.post} ${s.freePost}`} onClick={() => setDetail(post)}>
+            <div key={post.id} className={`${s.post} ${s.freePost}`} onClick={() => void openPost(post)}>
               <div className={s.postBody}>
                 <div className={s.postTitle}>
                   {post.tag && <span className={`${s.tagLabel} ${s[`tag_${post.tag}`] || ''}`}>#{post.tag}</span>}
