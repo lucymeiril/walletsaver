@@ -464,6 +464,7 @@ class CrawlPipeline:
         _max_retries: int = 3,
     ) -> int:
         import random
+        import uuid
         from pipeline.dead_letter import write_dead_letter
 
         if not items:
@@ -472,6 +473,9 @@ class CrawlPipeline:
         chunk_size = 100
         total_saved = 0
         auth = get_db_admin_auth()
+        ingestion_run_id = str(
+            (quality_details or {}).get("ingestion_run_id") or uuid.uuid4().hex
+        )
 
         for offset in range(0, len(items), chunk_size):
             chunk = items[offset : offset + chunk_size]
@@ -487,6 +491,7 @@ class CrawlPipeline:
                 "quality_score": quality_score,
                 "quality_details": {
                     **(quality_details or {}),
+                    "ingestion_run_id": ingestion_run_id,
                     "ingestion_chunk": {
                         "index": chunk_index,
                         "offset": offset,
