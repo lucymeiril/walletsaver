@@ -58,6 +58,25 @@ function safeDiscount(val) {
   return isNaN(n) ? 0 : n;
 }
 
+function formatPeriodDate(value) {
+  if (!value) return '';
+  const text = String(value).trim();
+  const iso = text.match(/^\d{4}-(\d{2})-(\d{2})/);
+  if (iso) return `${Number(iso[1])}/${Number(iso[2])}`;
+  const parsed = new Date(text);
+  if (Number.isNaN(parsed.getTime())) return '';
+  return `${parsed.getMonth() + 1}/${parsed.getDate()}`;
+}
+
+function formatItemPeriod(item) {
+  const start = formatPeriodDate(item?.validFrom);
+  const end = formatPeriodDate(item?.validTo);
+  if (start && end) return `${start} ~ ${end}`;
+  if (start) return `${start} ~`;
+  if (end) return `~ ${end}`;
+  return '';
+}
+
 function normalizeItem(d) {
   if (!d) return null;
   const priceObservationOnly = Boolean(d.price_observation_only);
@@ -76,6 +95,8 @@ function normalizeItem(d) {
     unit: d.display_unit ?? d.unit ?? d.spec ?? '',
     store: d.store ?? d.branch ?? '',
     crawledAt: d.crawled_at ?? d.updated_at ?? '',
+    validFrom: d.valid_from ?? d.validFrom ?? '',
+    validTo: d.valid_to ?? d.valid_until ?? d.validTo ?? '',
     recordKind: d.record_kind ?? 'price_observation',
     publicationKind: d.publication_kind ?? 'price_observation',
     priceObservationOnly,
@@ -225,7 +246,12 @@ export default function MartPage() {
     const match = martItems.find(item => (item.id || item.name) === urlProduct || item.name === decodeURIComponent(urlProduct));
     if (match) {
       const mInfo = MARTS.find(m => m.key === activeMart);
-      setSaleDetail({ ...match, martKey: activeMart, martName: mInfo?.name, period: '' });
+      setSaleDetail({
+        ...match,
+        martKey: activeMart,
+        martName: mInfo?.name,
+        period: formatItemPeriod(match) || '기간 미제공 · 최근 가격 관측',
+      });
     }
   }, [urlProduct, loading, martItems, activeMart]);
 
@@ -286,11 +312,11 @@ export default function MartPage() {
   const commonProducts = useMemo(() => findCommonProducts(martDeals), [martDeals]);
 
   const martPeriod = useMemo(() => {
-    const now = new Date();
-    const startOfWeek = new Date(now); startOfWeek.setDate(now.getDate() - now.getDay());
-    const endOfWeek = new Date(startOfWeek); endOfWeek.setDate(startOfWeek.getDate() + 6);
-    return `${startOfWeek.getMonth()+1}/${startOfWeek.getDate()} ~ ${endOfWeek.getMonth()+1}/${endOfWeek.getDate()}`;
-  }, []);
+    const periods = Array.from(new Set(martItems.map(formatItemPeriod).filter(Boolean)));
+    if (periods.length === 0) return '행사 기간 미제공 · 최근 가격 관측';
+    if (periods.length === 1) return periods[0];
+    return `상품별 기간 상이 (${periods.length}개 기간)`;
+  }, [martItems]);
 
   const toggleWishlist = useCallback((product) => {
     const normalized = normalizeProduct(product);
@@ -427,7 +453,7 @@ export default function MartPage() {
       {loading && <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem 0' }}><Spinner /></div>}
 
       <div className={s.info}>
-        <span>행사 기간: {martPeriod}</span>
+        <span>기간 정보: {martPeriod}</span>
         <span>총 {martItems.length}개 상품</span>
         {martMeta[activeMart]?.lastCrawledAt && (
           <span className={s.crawlBadge} title="크롤링된 실제 데이터">
@@ -592,7 +618,7 @@ export default function MartPage() {
             <div className={s.flyerLinkCard}>
               <div className={s.flyerLinkIcon}>📰</div>
               <h3 className={s.flyerLinkTitle}>{currentFlyer.name || '전단지'}</h3>
-              <p className={s.flyerLinkDesc}>{currentFlyer.description || '이번 주 전단지를 확인하세요'}</p>
+              <p className={s.flyerLinkDesc}>{currentFlyer.description || '최신 전단지를 확인하세요'}</p>
               {currentFlyer.display_period && (
                 <p className={s.flyerLinkPeriod}>📅 {currentFlyer.display_period}</p>
               )}
@@ -601,7 +627,7 @@ export default function MartPage() {
                   전단지 보러가기 <ExternalLink size={16} />
                 </a>
               ) : (
-                <p className={s.emptyHint}>이번 주 전단지가 아직 등록되지 않았습니다</p>
+                <p className={s.emptyHint}>전단지가 아직 등록되지 않았습니다</p>
               )}
               <p className={s.flyerLinkNote}>
                 {currentFlyer.name || MARTS.find(m => m.key === flyerMart)?.name} 공식 사이트에서 최신 전단지를 확인하세요
@@ -612,7 +638,7 @@ export default function MartPage() {
           {!flyerLoading && !flyerError && !currentFlyer && (
             <div className={s.emptyState}>
               <div className={s.emptyIcon}>📭</div>
-              <p className={s.emptyTitle}>이번 주 전단지가 아직 등록되지 않았습니다</p>
+              <p className={s.emptyTitle}>전단지가 아직 등록되지 않았습니다</p>
               <p className={s.emptyDesc}>
                 데이터가 업데이트되면 자동으로 표시됩니다.
                 {formatLastUpdate(martMeta[flyerMart]?.lastCrawledAt) && (
@@ -727,7 +753,7 @@ export default function MartPage() {
             {filteredItems.length === 0 && !loading && (
               <div className={s.emptyState} style={{ gridColumn: '1 / -1' }}>
                 <div className={s.emptyIcon}>📭</div>
-                <p className={s.emptyTitle}>이번 주 세일 상품이 아직 등록되지 않았습니다</p>
+                <p className={s.emptyTitle}>가격/행사 상품이 아직 등록되지 않았습니다</p>
                 <p className={s.emptyDesc}>
                   크롤러에서 수집 → 관리자 승인 후 표시됩니다.
                   {formatLastUpdate(martMeta[activeMart]?.lastCrawledAt) && (
@@ -757,6 +783,7 @@ export default function MartPage() {
               const diff = matched ? item.sale - matched.avg : null;
               const onlineUrl = getOnlineMallUrl(activeMart, item.name);
               const common = commonProducts.find(cp => cp.name === normalizeProductName(item.name));
+              const itemPeriod = formatItemPeriod(item);
               const comparableOffers = common
                 ? Object.entries(common.marts).map(([key, offer]) => ({
                   ...offer,
@@ -765,7 +792,7 @@ export default function MartPage() {
                   price: offer.sale || offer.price,
                   original_price: offer.orig,
                   source_type: 'mart',
-                  period: martPeriod,
+                  period: formatItemPeriod(offer) || '기간 미제공 · 최근 가격 관측',
                   price_observation_only: offer.priceObservationOnly,
                   has_discount_metadata: offer.hasDiscountMetadata,
                   record_label: offer.recordLabel,
@@ -776,7 +803,7 @@ export default function MartPage() {
                 ...item,
                 martKey: activeMart,
                 martName: martInfo?.name,
-                period: martPeriod,
+                period: itemPeriod || '기간 미제공 · 최근 가격 관측',
                 comparable_offers: comparableOffers,
                   price_history_summary: matched ? { average_price: matched.avg, count: 1 } : null,
                   price_observation_only: item.priceObservationOnly,
@@ -845,7 +872,7 @@ export default function MartPage() {
                        </button>
                      </div>
                    </div>
-                  <div className={s.validity}>~ {martPeriod.split('~')[1]?.trim() || martPeriod}</div>
+                  <div className={s.validity}>{itemPeriod || '기간 정보 없음'}</div>
                 </div>
               );
             })}
@@ -901,7 +928,12 @@ export default function MartPage() {
                               onClick={() => {
                                 if (item) {
                                   const mInfo = MARTS.find(m => m.key === key);
-                                  setSaleDetail({ ...item, martKey: key, martName: mInfo?.name || item.mart, period: martPeriod });
+                                  setSaleDetail({
+                                    ...item,
+                                    martKey: key,
+                                    martName: mInfo?.name || item.mart,
+                                    period: formatItemPeriod(item) || '기간 미제공 · 최근 가격 관측',
+                                  });
                                 }
                               }}
                             >
