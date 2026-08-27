@@ -15,6 +15,7 @@ import useStore from '../../stores/appStore';
 import s from './HotdealPage.module.css';
 
 const PAGE_SIZE = 8;
+const API_PAGE_SIZE = 100;
 
 function normalizeDeal(deal) {
   return {
@@ -22,6 +23,39 @@ function normalizeDeal(deal) {
     hotVotes: deal.hotVotes ?? deal.votes_hot ?? 0,
     coldVotes: deal.coldVotes ?? deal.votes_not ?? 0,
   };
+}
+
+function hotdealParams(filter, page = 1) {
+  const params = new URLSearchParams({
+    page: String(page),
+    per_page: String(API_PAGE_SIZE),
+    sort: 'recent',
+  });
+  if (filter !== 'all') params.set('category', filter);
+  return params;
+}
+
+async function fetchHotdealPage(filter, page, signal) {
+  const response = await fetch(`/api/hotdeals?${hotdealParams(filter, page)}`, { signal });
+  if (!response.ok) throw new Error(`hotdeal fetch failed: ${response.status}`);
+  const result = await response.json();
+  return {
+    deals: (result.data || []).map(normalizeDeal),
+    meta: result.meta || {},
+  };
+}
+
+async function fetchAllHotdeals(filter, signal) {
+  const all = [];
+  let page = 1;
+  let totalPages = 1;
+  do {
+    const result = await fetchHotdealPage(filter, page, signal);
+    all.push(...result.deals);
+    totalPages = Math.max(1, Number(result.meta.total_pages || 1));
+    page += 1;
+  } while (page <= totalPages);
+  return all;
 }
 
 function voteTypeForApi(type) {
@@ -88,21 +122,29 @@ export default function HotdealPage() {
     setLoading(true);
     setVisibleCount(PAGE_SIZE);
     const controller = new AbortController();
-    const params = new URLSearchParams({ per_page: '50' });
-    if (filter !== 'all') params.set('category', filter);
-    if (sort) params.set('sort', sort);
 
-    fetch(`/api/hotdeals?${params}`, { signal: controller.signal }).then(r => r.json())
-      .then(res => setAllDeals((res.data || []).map(normalizeDeal)))
+    fetchAllHotdeals(filter, controller.signal)
+      .then(setAllDeals)
       .catch(err => {
         if (err.name === 'AbortError') return;
         console.error(err);
         addToast('핫딜 데이터를 불러오는데 실패했습니다', 'error');
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
 
     return () => controller.abort();
-  }, [filter, sort, addToast]);
+  }, [filter, addToast]);
+
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [sort, source]);
+
+  useEffect(() => {
+    lastDealIdsRef.current = null;
+    setNewDealCount(0);
+  }, [filter]);
 
   useEffect(() => {
     const openDealId = location.state?.openDealId;
@@ -124,24 +166,27 @@ export default function HotdealPage() {
     lastDealIdsRef.current = currentIds;
   }, [allDeals]);
 
-  // 60초마다 새 핫딜 폴링
+  // 60초마다 최신 페이지를 확인하고, 기존 전체 목록을 유지한 채 새/갱신 항목만 병합한다.
   useEffect(() => {
     let currentController = null;
     const interval = setInterval(() => {
       if (currentController) currentController.abort();
       currentController = new AbortController();
-      const params = new URLSearchParams({ per_page: '50' });
-      if (filter !== 'all') params.set('category', filter);
-      if (sort) params.set('sort', sort);
-      fetch(`/api/hotdeals?${params}`, { signal: currentController.signal }).then(r => r.json())
-        .then(res => { if (res.data?.length) setAllDeals(res.data.map(normalizeDeal)); })
+      fetchHotdealPage(filter, 1, currentController.signal)
+        .then(({ deals }) => {
+          if (!deals.length) return;
+          setAllDeals(current => {
+            const freshIds = new Set(deals.map(deal => deal.id));
+            return [...deals, ...current.filter(deal => !freshIds.has(deal.id))];
+          });
+        })
         .catch(() => {});
     }, 60000);
     return () => {
       clearInterval(interval);
       if (currentController) currentController.abort();
     };
-  }, [filter, sort]);
+  }, [filter]);
 
   const allItems = useMemo(() => {
     let items = [...allDeals];
@@ -151,7 +196,11 @@ export default function HotdealPage() {
       const rb = b.price && b.origPrice ? b.price / b.origPrice : 1;
       return ra - rb;
     });
-    if (sort === 'popular') items.sort((a, b) => b.views - a.views);
+    if (sort === 'popular') items.sort((a, b) => {
+      const scoreA = (a.hotVotes || 0) - (a.coldVotes || 0);
+      const scoreB = (b.hotVotes || 0) - (b.coldVotes || 0);
+      return scoreB - scoreA || (b.views || 0) - (a.views || 0);
+    });
     if (sort === 'priceAsc') items.sort((a, b) => (a.price || Infinity) - (b.price || Infinity));
     return items;
   }, [allDeals, source, sort]);
@@ -417,10 +466,15 @@ const HotdealDetailModal = React.memo(function HotdealDetailModal({ item, votes,
 
   const deleteComment = async (commentId) => {
     try {
-      const res = await fetch(`/api/hotdeals/${item.id}/comments/${commentId}`, { method: 'DELETE' });
-      if (res.ok) {
-        setComments(prev => prev.filter(c => c.id !== commentId));
+      const res = await fetch(`/api/hotdeals/${item.id}/comments/${commentId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+      if (!res.ok) {
+        addToast('댓글 삭제에 실패했습니다', 'error');
+        return;
       }
+      setComments(prev => prev.filter(c => c.id !== commentId));
     } catch {
       addToast('댓글 삭제에 실패했습니다', 'error');
     }
