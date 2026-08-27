@@ -11,6 +11,17 @@ from pathlib import Path
 
 _BACKEND_ROOT = Path(__file__).resolve().parents[1]
 _DEFAULT_DB = _BACKEND_ROOT / "storage" / "public_snapshot.sqlite"
+_PUBLIC_SNAPSHOT_TABLES = {
+    "categories",
+    "unified_categories",
+    "products",
+    "keywords",
+    "product_keywords",
+    "baseline_prices",
+    "discount_history",
+    "price_history",
+    "snapshot_meta",
+}
 
 
 class CatalogUnavailable(RuntimeError):
@@ -58,18 +69,32 @@ class PublicCatalogStore:
     def health(self) -> dict:
         with self.connection() as connection:
             result = connection.execute("PRAGMA quick_check").fetchone()
-            revision = built_at = None
-            if self._table(connection, "snapshot_meta"):
-                row = connection.execute(
-                    "SELECT revision, built_at FROM snapshot_meta WHERE id=1"
-                ).fetchone()
-                if row:
-                    revision, built_at = row
+            if not result or result[0] != "ok":
+                raise CatalogUnavailable(f"catalog snapshot quick_check failed: {result}")
+
+            tables = {
+                str(row[0])
+                for row in connection.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table'"
+                ).fetchall()
+            }
+            missing = sorted(_PUBLIC_SNAPSHOT_TABLES - tables)
+            if missing:
+                raise CatalogUnavailable(
+                    "catalog snapshot is missing required tables: " + ", ".join(missing)
+                )
+
+            meta = connection.execute(
+                "SELECT revision, built_at FROM snapshot_meta WHERE id=1"
+            ).fetchone()
+            if not meta:
+                raise CatalogUnavailable("catalog snapshot metadata row is missing")
+
             return {
-                "ok": bool(result and result[0] == "ok"),
+                "ok": True,
                 "path": str(self.path),
-                "revision": revision,
-                "built_at": built_at,
+                "revision": meta["revision"],
+                "built_at": meta["built_at"],
             }
 
     def _category(self, connection, product: dict) -> tuple[str, str, str]:
