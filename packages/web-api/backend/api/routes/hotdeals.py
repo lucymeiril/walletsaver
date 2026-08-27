@@ -6,10 +6,11 @@ User-created hotdeal posts remain part of the separate community board.
 from __future__ import annotations
 
 import math
+from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 
-from api.middleware.auth import require_auth
+from api.middleware.auth import get_current_user, require_auth
 from api.schemas.common import ApiResponse, PaginationMeta
 from services.hotdeal_report_storage import HotdealReportStore
 
@@ -21,6 +22,35 @@ def _require_storage(request: Request):
     if storage is None:
         raise HTTPException(status_code=503, detail="핫딜 저장소를 사용할 수 없습니다")
     return storage
+
+
+def _interaction_store(storage):
+    interaction_store = getattr(storage, "interactions", None)
+    if interaction_store is None:
+        raise HTTPException(status_code=503, detail="핫딜 상호작용 저장소를 사용할 수 없습니다")
+    return interaction_store
+
+
+def _comment_time(value: str | None) -> str:
+    if not value:
+        return ""
+    try:
+        return datetime.fromisoformat(str(value).replace("Z", "+00:00")).strftime("%m.%d %H:%M")
+    except ValueError:
+        return str(value)
+
+
+def _comment_payload(row: dict, current_user_id: int | None = None) -> dict:
+    own = current_user_id is not None and int(row["user_id"]) == int(current_user_id)
+    return {
+        "id": int(row["id"]),
+        "hotdeal_id": int(row["hotdeal_id"]),
+        "author": "나" if own else row.get("author") or "사용자",
+        "text": row.get("content") or "",
+        "time": _comment_time(row.get("created_at")),
+        "created_at": row.get("created_at") or "",
+        "is_mine": own,
+    }
 
 
 @router.get("")
@@ -40,6 +70,10 @@ async def list_hotdeals(
         page=page,
         per_page=per_page,
     )
+    interaction_store = _interaction_store(storage)
+    for item in data:
+        item["comments"] = interaction_store.comment_count(int(item["id"]))
+
     source_store = getattr(storage, "external_hotdeals", None)
     if source_store is not None and hasattr(source_store, "count_hotdeals"):
         total = source_store.count_hotdeals(category=category, source=source)
@@ -81,17 +115,78 @@ async def get_hotdeal_sources(request: Request):
             for row in storage.get_hotdeals(category="all", per_page=100)
             if row.get("source")
         })
-    # The current web frontend treats this endpoint as a string list and keeps
-    # "전체" as the sentinel for no source filter.
     return ApiResponse(data=["전체", *sources])
 
 
 @router.get("/{hotdeal_id}")
 async def get_hotdeal(request: Request, hotdeal_id: int):
-    result = _require_storage(request).get_hotdeal_detail(hotdeal_id)
+    storage = _require_storage(request)
+    result = storage.get_hotdeal_detail(hotdeal_id)
     if result is None:
         raise HTTPException(status_code=404, detail="핫딜을 찾을 수 없습니다")
+    result["comments"] = _interaction_store(storage).comment_count(hotdeal_id)
     return ApiResponse(data=result)
+
+
+@router.get("/{hotdeal_id}/comments")
+async def list_hotdeal_comments(
+    request: Request,
+    hotdeal_id: int,
+    user: dict | None = Depends(get_current_user),
+):
+    storage = _require_storage(request)
+    if storage.get_hotdeal_detail(hotdeal_id) is None:
+        raise HTTPException(status_code=404, detail="핫딜을 찾을 수 없습니다")
+    rows = _interaction_store(storage).list_comments(hotdeal_id)
+    user_id = int(user["id"]) if user else None
+    return ApiResponse(data=[_comment_payload(row, user_id) for row in rows])
+
+
+@router.post("/{hotdeal_id}/comments")
+async def add_hotdeal_comment(
+    request: Request,
+    hotdeal_id: int,
+    user: dict = Depends(require_auth),
+):
+    body = await request.json()
+    content = str(body.get("content", "")).strip()
+    if not content:
+        raise HTTPException(status_code=422, detail="댓글 내용을 입력하세요")
+    if len(content) > 1000:
+        raise HTTPException(status_code=422, detail="댓글은 1000자 이내여야 합니다")
+
+    storage = _require_storage(request)
+    if storage.get_hotdeal_detail(hotdeal_id) is None:
+        raise HTTPException(status_code=404, detail="핫딜을 찾을 수 없습니다")
+    row = _interaction_store(storage).add_comment(
+        hotdeal_id,
+        int(user["id"]),
+        str(user.get("nickname") or user.get("email") or "사용자"),
+        content,
+    )
+    return ApiResponse(data=_comment_payload(row, int(user["id"])))
+
+
+@router.delete("/{hotdeal_id}/comments/{comment_id}")
+async def delete_hotdeal_comment(
+    request: Request,
+    hotdeal_id: int,
+    comment_id: int,
+    user: dict = Depends(require_auth),
+):
+    storage = _require_storage(request)
+    if storage.get_hotdeal_detail(hotdeal_id) is None:
+        raise HTTPException(status_code=404, detail="핫딜을 찾을 수 없습니다")
+    result = _interaction_store(storage).delete_comment(
+        hotdeal_id,
+        comment_id,
+        int(user["id"]),
+    )
+    if result == "not_found":
+        raise HTTPException(status_code=404, detail="댓글을 찾을 수 없습니다")
+    if result == "forbidden":
+        raise HTTPException(status_code=403, detail="본인 댓글만 삭제할 수 있습니다")
+    return ApiResponse(data={"deleted": True, "id": comment_id})
 
 
 @router.post("/{hotdeal_id}/vote")
@@ -111,8 +206,8 @@ async def vote_hotdeal(
         if vote_type == "cancel":
             if storage.get_hotdeal_detail(hotdeal_id) is None:
                 raise ValueError("hotdeal not found")
-            interaction_store = getattr(storage, "interactions", None)
-            if interaction_store is None or not hasattr(interaction_store, "clear_vote"):
+            interaction_store = _interaction_store(storage)
+            if not hasattr(interaction_store, "clear_vote"):
                 raise HTTPException(status_code=503, detail="투표 저장소를 사용할 수 없습니다")
             result = interaction_store.clear_vote(hotdeal_id, identity_key)
         else:
