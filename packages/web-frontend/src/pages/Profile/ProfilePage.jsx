@@ -146,10 +146,10 @@ export default function ProfilePage() {
     try {
       await api.delete('/api/profile');
       logout();
-      addToast('계정이 삭제되었습니다', 'info');
+      addToast('계정 탈퇴가 처리되었습니다', 'info');
       navigate('/');
     } catch (err) {
-      addToast(err.message || '계정 삭제에 실패했습니다', 'error');
+      addToast(err.message || '계정 탈퇴 처리에 실패했습니다', 'error');
     }
   };
 
@@ -386,17 +386,17 @@ export default function ProfilePage() {
             </div>
 
             <div className={s.dangerZone}>
-              <h3 className={s.dangerTitle}>⚠️ 계정 삭제</h3>
+              <h3 className={s.dangerTitle}>⚠️ 계정 탈퇴</h3>
               <p className={s.dangerDesc}>
-                계정을 삭제하면 모든 데이터가 영구적으로 삭제됩니다.
-                이 작업은 되돌릴 수 없습니다.
+                탈퇴 처리 후 계정은 비활성화되어 다시 로그인할 수 없습니다.
+                게시글 등 서비스 기록은 운영상 보존될 수 있습니다.
               </p>
               {!showDeleteConfirm ? (
                 <button
                   className={s.deleteBtn}
                   onClick={() => setShowDeleteConfirm(true)}
                 >
-                  <Trash2 size={16} /> 계정 삭제
+                  <Trash2 size={16} /> 계정 탈퇴
                 </button>
               ) : (
                 <div className={s.deleteConfirm}>
@@ -415,7 +415,7 @@ export default function ProfilePage() {
                       onClick={handleDeleteAccount}
                       disabled={deleteInput !== '탈퇴합니다'}
                     >
-                      영구 삭제
+                      탈퇴 처리
                     </button>
                     <button
                       className={s.confirmCancelBtn}
