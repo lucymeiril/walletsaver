@@ -15,6 +15,16 @@ from services.board_storage import Post as PostModel, get_board_session_factory
 router = APIRouter()
 
 
+def _like_contains(value: str) -> str:
+    escaped = (
+        str(value)
+        .replace("\\", "\\\\")
+        .replace("%", "\\%")
+        .replace("_", "\\_")
+    )
+    return f"%{escaped}%"
+
+
 def _relevance(title: str, query: str) -> int:
     title_fold = str(title or "").casefold().strip()
     query_fold = str(query or "").casefold().strip()
@@ -29,20 +39,54 @@ def _relevance(title: str, query: str) -> int:
     return 3
 
 
-def _product_results(storage, query: str, limit: int) -> tuple[list[dict], int]:
-    if storage is None or limit <= 0:
+def _product_observed_times(storage, product_ids: list[int]) -> dict[int, str]:
+    catalog = getattr(storage, "catalog", None)
+    if catalog is None or not hasattr(catalog, "connection") or not product_ids:
+        return {}
+
+    marks = ",".join("?" for _ in product_ids)
+    with catalog.connection() as connection:
+        parts: list[str] = []
+        if catalog._table(connection, "discount_history"):
+            parts.append(
+                "COALESCE((SELECT MAX(d.crawled_at) FROM discount_history d "
+                "WHERE d.product_id=p.id), '')"
+            )
+        if catalog._table(connection, "baseline_prices"):
+            parts.append(
+                "COALESCE((SELECT MAX(b.recorded_at) FROM baseline_prices b "
+                "WHERE b.product_id=p.id), '')"
+            )
+        if len(parts) >= 2:
+            observed_sql = "MAX(" + ", ".join(parts) + ")"
+        elif parts:
+            observed_sql = parts[0]
+        else:
+            observed_sql = "''"
+
+        rows = connection.execute(
+            f"SELECT p.id, {observed_sql} AS observed_at "
+            f"FROM products p WHERE p.id IN ({marks})",
+            tuple(product_ids),
+        ).fetchall()
+    return {int(row["id"]): str(row["observed_at"] or "") for row in rows}
+
+
+def _product_results(storage, query: str, limit: int | None) -> tuple[list[dict], int]:
+    if storage is None or (limit is not None and limit <= 0):
         return [], 0
 
     search_page = getattr(storage, "search_products_page", None)
     if not callable(search_page):
-        rows = storage.search_products(query, page=1, per_page=limit)
+        fallback_limit = max(1, int(limit or 1000))
+        rows = storage.search_products(query, page=1, per_page=fallback_limit)
         total = len(rows)
     else:
         rows = []
         total = 0
-        chunk = min(1000, max(1, limit))
+        chunk = 1000 if limit is None else min(1000, max(1, int(limit)))
         source_page = 1
-        while len(rows) < limit:
+        while True:
             batch, total = search_page(
                 query,
                 page=source_page,
@@ -51,9 +95,16 @@ def _product_results(storage, query: str, limit: int) -> tuple[list[dict], int]:
             rows.extend(batch)
             if not batch or len(rows) >= total:
                 break
+            if limit is not None and len(rows) >= limit:
+                break
             source_page += 1
-        rows = rows[:limit]
+        if limit is not None:
+            rows = rows[:limit]
 
+    observed = _product_observed_times(
+        storage,
+        [int(product["id"]) for product in rows if product.get("id") is not None],
+    )
     results = []
     for product in rows:
         unit = str(product.get("unit") or "").strip()
@@ -61,22 +112,25 @@ def _product_results(storage, query: str, limit: int) -> tuple[list[dict], int]:
         description = f"현재가 {current}원"
         if unit:
             description = f"{unit} / {description}"
+        product_id = int(product["id"])
         results.append({
             "type": "product",
-            "id": product["id"],
+            "id": product_id,
             "title": product["name"],
             "description": description,
             "price": current,
             "image": product.get("img"),
             "_relevance": _relevance(product.get("name", ""), query),
-            "_recent": str(product.get("observed_at") or ""),
+            "_recent": observed.get(product_id, ""),
+            # There is no product popularity metric yet. Keep the value honest
+            # instead of inventing one from price or alphabetical order.
             "_popularity": 0,
         })
     return results, int(total)
 
 
-def _hotdeal_results(storage, query: str, limit: int) -> tuple[list[dict], int]:
-    if storage is None or limit <= 0:
+def _hotdeal_results(storage, query: str, limit: int | None) -> tuple[list[dict], int]:
+    if storage is None or (limit is not None and limit <= 0):
         return [], 0
     source_store = getattr(storage, "external_hotdeals", None)
     if source_store is None or not hasattr(source_store, "count_hotdeals"):
@@ -84,9 +138,9 @@ def _hotdeal_results(storage, query: str, limit: int) -> tuple[list[dict], int]:
 
     total = int(source_store.count_hotdeals(query=query))
     rows = []
-    chunk = min(100, max(1, limit))
+    chunk = 100 if limit is None else min(100, max(1, int(limit)))
     source_page = 1
-    while len(rows) < limit:
+    while True:
         batch = source_store.list_hotdeals(
             query=query,
             sort="recent",
@@ -96,8 +150,11 @@ def _hotdeal_results(storage, query: str, limit: int) -> tuple[list[dict], int]:
         rows.extend(batch)
         if not batch or len(rows) >= total:
             break
+        if limit is not None and len(rows) >= limit:
+            break
         source_page += 1
-    rows = rows[:limit]
+    if limit is not None:
+        rows = rows[:limit]
 
     interaction_store = getattr(storage, "interactions", None)
     results = []
@@ -119,19 +176,25 @@ def _hotdeal_results(storage, query: str, limit: int) -> tuple[list[dict], int]:
     return results, total
 
 
-def _post_results(query_text: str, limit: int) -> tuple[list[dict], int]:
-    if limit <= 0:
+def _post_results(query_text: str, limit: int | None) -> tuple[list[dict], int]:
+    if limit is not None and limit <= 0:
         return [], 0
     factory = get_board_session_factory()
     with factory() as session:
         query = session.query(PostModel).filter(PostModel.is_deleted.is_(False))
         if query_text:
-            pattern = f"%{query_text}%"
+            pattern = _like_contains(query_text)
             query = query.filter(
-                or_(PostModel.title.ilike(pattern), PostModel.content.ilike(pattern))
+                or_(
+                    PostModel.title.ilike(pattern, escape="\\"),
+                    PostModel.content.ilike(pattern, escape="\\"),
+                )
             )
         total = int(query.count())
-        posts = query.order_by(PostModel.created_at.desc()).limit(limit).all()
+        query = query.order_by(PostModel.created_at.desc(), PostModel.id.desc())
+        if limit is not None:
+            query = query.limit(limit)
+        posts = query.all()
         results = [{
             "type": "post",
             "id": post.id,
@@ -154,21 +217,22 @@ def _public_result(item: dict) -> dict:
 async def search(
     request: Request,
     q: str = Query("", description="검색어"),
-    type: str = Query(None, description="결과 유형 (product, hotdeal, post, mart)"),
+    type: str = Query(None, description="결과 유형 (product, hotdeal, post)"),
     sort: str = Query("relevant", description="정렬 (relevant, recent, popular)"),
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
 ):
     """통합 검색."""
     storage = request.app.state.storage
-    if type not in {None, "product", "hotdeal", "post", "mart"}:
+    if type not in {None, "product", "hotdeal", "post"}:
         raise HTTPException(status_code=422, detail="지원하지 않는 검색 결과 유형입니다")
     if sort not in {"relevant", "recent", "popular"}:
         raise HTTPException(status_code=422, detail="지원하지 않는 검색 정렬입니다")
 
-    # Each source contributes enough rows to cover the requested global page.
-    # This avoids the previous fixed product=20/hotdeal=50/post=200 visibility caps.
-    fetch_limit = page * per_page
+    # Relevance/popularity cannot be correct if each source is truncated in a
+    # different order first. For those sorts collect all matching candidates;
+    # recent can safely take only enough recent candidates from each source.
+    fetch_limit: int | None = page * per_page if sort == "recent" else None
     results: list[dict] = []
     total = 0
 
@@ -186,9 +250,6 @@ async def search(
         post_rows, post_total = _post_results(q, fetch_limit)
         results.extend(post_rows)
         total += post_total
-
-    # "mart" (동네) 검색은 아직 별도 검색 인덱스/위치 계약이 없다.
-    # 가짜 결과를 만들지 않고 빈 결과를 유지한다.
 
     if sort == "popular":
         results.sort(
