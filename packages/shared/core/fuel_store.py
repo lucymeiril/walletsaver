@@ -1,6 +1,6 @@
 """Dedicated SQLite storage for OPINET station and fuel-price snapshots.
 
-This database is intentionally separate from the mart/catalog database.  Both
+This database is intentionally separate from the mart/catalog database. Both
 crawler-admin and web-api use this module so station identity, price history and
 query semantics cannot drift between services.
 """
@@ -14,15 +14,24 @@ from pathlib import Path
 from typing import Any, Iterable
 
 
+class FuelStoreUnavailable(RuntimeError):
+    """Raised when a requested OPINET database cannot be opened safely."""
+
+
 def _default_db_path() -> Path:
     repo_root = Path(__file__).resolve().parents[3]
     return repo_root / "data" / "opinet.db"
 
 
-def resolve_opinet_db_path(path: str | Path | None = None) -> Path:
+def resolve_opinet_db_path(
+    path: str | Path | None = None,
+    *,
+    create_parent: bool = True,
+) -> Path:
     raw = path or os.getenv("OPINET_DB_PATH") or _default_db_path()
     resolved = Path(raw).expanduser().resolve()
-    resolved.parent.mkdir(parents=True, exist_ok=True)
+    if create_parent:
+        resolved.parent.mkdir(parents=True, exist_ok=True)
     return resolved
 
 
@@ -54,18 +63,79 @@ def _haversine_m(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
 
 
 class FuelStore:
-    """Small shared store for OPINET snapshots and current-price queries."""
+    """Small shared store for OPINET snapshots and current-price queries.
 
-    def __init__(self, db_path: str | Path | None = None) -> None:
-        self.db_path = resolve_opinet_db_path(db_path)
-        self._ensure_schema()
+    crawler-admin uses the default writable mode. Deployed readers should pass
+    ``readonly=True`` so a missing deployment file is reported instead of being
+    silently replaced by a brand-new empty SQLite database.
+    """
+
+    def __init__(
+        self,
+        db_path: str | Path | None = None,
+        *,
+        readonly: bool = False,
+    ) -> None:
+        self.readonly = bool(readonly)
+        self.db_path = resolve_opinet_db_path(
+            db_path,
+            create_parent=not self.readonly,
+        )
+        if self.readonly:
+            if not self.db_path.is_file():
+                raise FuelStoreUnavailable(f"OPINET database not found: {self.db_path}")
+            self._validate_readable()
+        else:
+            self._ensure_schema()
 
     def _connect(self) -> sqlite3.Connection:
-        conn = sqlite3.connect(self.db_path, timeout=30)
-        conn.row_factory = sqlite3.Row
-        conn.execute("PRAGMA journal_mode=WAL")
-        conn.execute("PRAGMA busy_timeout=30000")
-        return conn
+        try:
+            if self.readonly:
+                conn = sqlite3.connect(
+                    f"file:{self.db_path.as_posix()}?mode=ro",
+                    uri=True,
+                    timeout=30,
+                )
+                conn.row_factory = sqlite3.Row
+                conn.execute("PRAGMA query_only=ON")
+                conn.execute("PRAGMA busy_timeout=30000")
+                return conn
+
+            conn = sqlite3.connect(self.db_path, timeout=30)
+            conn.row_factory = sqlite3.Row
+            conn.execute("PRAGMA journal_mode=WAL")
+            conn.execute("PRAGMA busy_timeout=30000")
+            conn.execute("PRAGMA foreign_keys=ON")
+            return conn
+        except (OSError, sqlite3.Error) as exc:
+            raise FuelStoreUnavailable(
+                f"OPINET database cannot be opened: {self.db_path}"
+            ) from exc
+
+    def _validate_readable(self) -> None:
+        try:
+            with self._connect() as conn:
+                result = conn.execute("PRAGMA quick_check").fetchone()
+                tables = {
+                    row[0]
+                    for row in conn.execute(
+                        "SELECT name FROM sqlite_master WHERE type='table'"
+                    ).fetchall()
+                }
+        except (OSError, sqlite3.Error, FuelStoreUnavailable) as exc:
+            if isinstance(exc, FuelStoreUnavailable):
+                raise
+            raise FuelStoreUnavailable(
+                f"OPINET database validation failed: {self.db_path}"
+            ) from exc
+
+        if not result or result[0] != "ok":
+            raise FuelStoreUnavailable(f"OPINET database quick_check failed: {result}")
+        missing = {"fuel_stations", "fuel_prices"} - tables
+        if missing:
+            raise FuelStoreUnavailable(
+                f"OPINET database is missing required tables: {', '.join(sorted(missing))}"
+            )
 
     def _ensure_schema(self) -> None:
         with self._connect() as conn:
@@ -106,7 +176,34 @@ class FuelStore:
                 """
             )
 
+    def export_snapshot(self, destination: str | Path) -> Path:
+        """Write one consistent SQLite snapshot, including committed WAL data."""
+        destination_path = Path(destination).expanduser().resolve()
+        destination_path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = destination_path.with_suffix(destination_path.suffix + ".tmp")
+        temporary.unlink(missing_ok=True)
+        try:
+            with self._connect() as source:
+                target = sqlite3.connect(temporary, timeout=30)
+                try:
+                    source.backup(target)
+                    target.commit()
+                    result = target.execute("PRAGMA quick_check").fetchone()
+                    if not result or result[0] != "ok":
+                        raise FuelStoreUnavailable(
+                            f"exported OPINET snapshot failed quick_check: {result}"
+                        )
+                finally:
+                    target.close()
+            os.replace(temporary, destination_path)
+            return destination_path
+        finally:
+            temporary.unlink(missing_ok=True)
+
     def save_snapshot(self, records: Iterable[Any]) -> dict[str, int]:
+        if self.readonly:
+            raise FuelStoreUnavailable("read-only OPINET store cannot save snapshots")
+
         station_count = 0
         price_count = 0
         with self._connect() as conn:
@@ -270,4 +367,4 @@ class FuelStore:
         return result[:limit]
 
 
-__all__ = ["FuelStore", "resolve_opinet_db_path"]
+__all__ = ["FuelStore", "FuelStoreUnavailable", "resolve_opinet_db_path"]
