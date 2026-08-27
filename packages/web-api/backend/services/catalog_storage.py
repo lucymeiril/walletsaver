@@ -131,9 +131,10 @@ class PublicCatalogStore:
         today = datetime.utcnow().date().isoformat()
         row = connection.execute(
             "SELECT * FROM discount_history WHERE product_id=? "
+            "AND (valid_from IS NULL OR date(valid_from) IS NULL OR date(valid_from) <= date(?)) "
             "AND (valid_to IS NULL OR date(valid_to) IS NULL OR date(valid_to) >= date(?)) "
             "ORDER BY crawled_at DESC, id DESC LIMIT 1",
-            (product_id, today),
+            (product_id, today, today),
         ).fetchone()
         return dict(row) if row else {}
 
@@ -171,8 +172,9 @@ class PublicCatalogStore:
             for row in connection.execute(
                 "SELECT source, price, crawled_at, id FROM discount_history "
                 "WHERE product_id=? "
+                "AND (valid_from IS NULL OR date(valid_from) IS NULL OR date(valid_from) <= date(?)) "
                 "AND (valid_to IS NULL OR date(valid_to) IS NULL OR date(valid_to) >= date(?))",
-                (product_id, today),
+                (product_id, today, today),
             ):
                 if row["price"] is not None:
                     candidates.append((
@@ -488,9 +490,11 @@ class PublicCatalogStore:
                 "AND (newer.crawled_at > d.crawled_at "
                 "OR (newer.crawled_at = d.crawled_at AND newer.id > d.id))"
                 ") "
+                "AND (d.valid_from IS NULL OR date(d.valid_from) IS NULL OR date(d.valid_from) <= date(?)) "
                 "AND (d.valid_to IS NULL OR date(d.valid_to) IS NULL OR date(d.valid_to) >= date(?)) "
             )
-            params: list[object] = [datetime.utcnow().date().isoformat()]
+            today = datetime.utcnow().date().isoformat()
+            params: list[object] = [today, today]
             if store:
                 sql += "AND d.source=? "
                 params.append(store)
