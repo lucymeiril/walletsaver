@@ -145,6 +145,7 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
                     "version": "0.1.0",
                     "catalog": "unavailable",
                     "accounts": "unavailable",
+                    "external_hotdeals": "unavailable",
                 },
             )
 
@@ -161,15 +162,38 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
                         "version": "0.1.0",
                         "catalog": "unavailable",
                         "accounts": "ok",
+                        "external_hotdeals": "unknown",
                         "detail": str(exc),
                     },
                 )
 
+        external_hotdeal_health: dict | str = "injected"
+        external_store = getattr(current_storage, "external_hotdeals", None)
+        external_checker = getattr(external_store, "health", None)
+        if callable(external_checker):
+            try:
+                external_hotdeal_health = external_checker()
+            except Exception as exc:
+                logger.exception("external hotdeal health check failed")
+                external_hotdeal_health = {
+                    "ok": False,
+                    "available": False,
+                    "reason": "health_check_failed",
+                    "detail": str(exc),
+                }
+
+        optional_degraded = (
+            isinstance(external_hotdeal_health, dict)
+            and not bool(external_hotdeal_health.get("ok"))
+        )
         return {
-            "status": "ok",
+            "status": "degraded" if optional_degraded else "ok",
             "version": "0.1.0",
             "catalog": catalog_health or "injected",
             "accounts": "ok",
+            # External hotdeals are an optional read replica. Report problems
+            # without failing readiness for the catalog/account web service.
+            "external_hotdeals": external_hotdeal_health,
         }
 
     @app.get("/api/dashboard")
