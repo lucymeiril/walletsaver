@@ -78,7 +78,7 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
   } = normalized;
   const productId = numericProductId;
   const standardUnitPrice = normalized.standardUnitPrice ?? priceTrust?.standard_unit_price ?? null;
-  const standardUnit = normalized.standardUnit ?? priceTrust?.standard_unit ?? '100g';
+  const standardUnit = normalized.standardUnit ?? priceTrust?.standard_unit ?? null;
 
   // Determine mode: if explicitly set use that, otherwise auto-detect
   const mode = modeProp || (productId && !product.martKey && !product.source && product.type !== 'hotdeal' ? 'product' : 'preview');
@@ -123,37 +123,59 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
     fetchExtra();
   }, [productId, mode]);
 
-  const handleAddToCart = useCallback(() => {
-    addItem(buildCartPayload(product));
-    trackCartAdd(productId || favoriteId, name);
-    addToast(`${name} 장바구니에 추가했어요 🛒`, 'success');
+  const handleAddToCart = useCallback(async () => {
+    try {
+      await addItem(buildCartPayload(product));
+      trackCartAdd(productId || favoriteId, name);
+      addToast(`${name} 장바구니에 추가했어요 🛒`, 'success');
+    } catch {
+      addToast('장바구니 저장에 실패했습니다. 다시 시도해주세요.', 'error');
+    }
   }, [product, productId, favoriteId, name, addItem, trackCartAdd, addToast]);
 
-  const handleToggleWishlist = useCallback(() => {
+  const handleToggleWishlist = useCallback(async () => {
     if (!isLoggedIn) {
       addToast('로그인이 필요합니다', 'warning');
       return;
     }
+
     if (isFav) {
-      const remoteId = favoriteItems?.[favoriteId]?.remote_id;
-      removeFavorite(favoriteId);
-      if (remoteId) {
-        api.delete(`/api/wishlist/${remoteId}`).catch(() => {});
-      }
-      addToast('찜 목록에서 제거했어요', 'info');
-    } else {
-      const payload = buildWishlistPayload(product);
-      addFavorite(favoriteId, payload);
-      trackWishlistAdd(productId || favoriteId, name);
-      api.post('/api/wishlist', payload).then(async (res) => {
-        const json = res?.json ? await res.json().catch(() => null) : null;
-        const remoteId = json?.data?.id || json?.id;
-        if (remoteId) setFavoriteRemoteId(favoriteId, remoteId);
-      }).catch(() => {
+      try {
+        let remoteId = favoriteItems?.[favoriteId]?.remote_id;
+        if (!remoteId) {
+          const result = await api.getJson('/api/wishlist');
+          const items = result?.data || result?.items || result || [];
+          const saved = Array.isArray(items)
+            ? items.find((item) => normalizeProduct(item).favoriteId === favoriteId)
+            : null;
+          remoteId = saved?.id || null;
+        }
+        if (!remoteId) {
+          throw new Error('wishlist item is not synchronized');
+        }
+        await api.delete(`/api/wishlist/${remoteId}`);
         removeFavorite(favoriteId);
-        addToast('찜 추가에 실패했어요. 잠시 후 다시 시도해주세요.', 'error');
-      });
+        addToast('찜 목록에서 제거했어요', 'info');
+      } catch {
+        addToast('찜 삭제에 실패했어요. 목록을 다시 불러온 뒤 시도해주세요.', 'error');
+      }
+      return;
+    }
+
+    try {
+      const payload = buildWishlistPayload(product);
+      const res = await api.post('/api/wishlist', payload);
+      const json = await res.json();
+      const remoteId = json?.data?.id || json?.id;
+      if (!remoteId) {
+        throw new Error('wishlist id missing from server response');
+      }
+      addFavorite(favoriteId, payload);
+      setFavoriteRemoteId(favoriteId, remoteId);
+      trackWishlistAdd(productId || favoriteId, name);
       addToast(`${name} 찜했어요 ❤️`, 'success');
+    } catch {
+      addToast('찜 추가에 실패했어요. 잠시 후 다시 시도해주세요.', 'error');
     }
   }, [isLoggedIn, isFav, product, productId, favoriteId, name, favoriteItems, addFavorite, removeFavorite, setFavoriteRemoteId, addToast, trackWishlistAdd]);
 
@@ -198,7 +220,7 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
       }
     }
   }
-  const displayUnitPrice = unitPriceDisplay || (standardUnitPrice
+  const displayUnitPrice = unitPriceDisplay || (standardUnitPrice && standardUnit
     ? `${fmt(Math.round(standardUnitPrice))}원/${standardUnit}`
     : unitPrice);
   const decision = buildProductDecision(product, { priceCompare, priceHistory, priceTrust });
