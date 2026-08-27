@@ -213,6 +213,8 @@ class CrawlPipeline:
             for key, value in list(item.items()):
                 if isinstance(value, str) and len(value) > 5000:
                     item[key] = value[:5000]
+            if item.get("valid_to") in (None, "") and item.get("valid_until") not in (None, ""):
+                item["valid_to"] = item["valid_until"]
 
         output_conf = config.get("output", {})
         model_type = output_conf.get("model", "DiscountItem")
