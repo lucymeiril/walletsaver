@@ -193,6 +193,9 @@ function Ensure-PlaywrightChromium {
 if ($Web) {
     Install-PythonRequirements "웹 API" (Join-Path $WebBackend "requirements.txt")
     Initialize-WebStorage
+    if (-not $Admin) {
+        Ensure-PlaywrightChromium
+    }
 }
 
 if ($Admin) {
