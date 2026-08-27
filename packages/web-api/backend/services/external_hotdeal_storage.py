@@ -103,6 +103,34 @@ class ExternalHotdealStore:
             "fetched_at": str(data.get("fetched_at") or ""),
         }
 
+    @staticmethod
+    def _filters(category: str | None, source: str | None) -> tuple[list[str], list[object]]:
+        clauses = ["is_active=1"]
+        params: list[object] = []
+        if source:
+            clauses.append("source_site=?")
+            params.append(source)
+        if category and category != "all":
+            clauses.append("COALESCE(category_raw, '') LIKE ?")
+            params.append(f"%{category}%")
+        return clauses, params
+
+    def count_hotdeals(
+        self,
+        *,
+        category: str | None = None,
+        source: str | None = None,
+    ) -> int:
+        if not self.available():
+            return 0
+        clauses, params = self._filters(category, source)
+        with self.connection() as connection:
+            row = connection.execute(
+                "SELECT COUNT(*) FROM hotdeal_posts WHERE " + " AND ".join(clauses),
+                params,
+            ).fetchone()
+        return int(row[0]) if row else 0
+
     def list_hotdeals(
         self,
         *,
@@ -115,22 +143,17 @@ class ExternalHotdealStore:
         if not self.available():
             return []
 
-        clauses = ["is_active=1"]
-        params: list[object] = []
-        if source:
-            clauses.append("source_site=?")
-            params.append(source)
-        if category and category != "all":
-            clauses.append("COALESCE(category_raw, '') LIKE ?")
-            params.append(f"%{category}%")
+        clauses, params = self._filters(category, source)
 
         order = "COALESCE(posted_at, fetched_at) DESC, id DESC"
-        if sort == "price_asc":
+        if sort in {"price_asc", "priceAsc"}:
             order = "price IS NULL, price ASC, COALESCE(posted_at, fetched_at) DESC"
         elif sort == "discount":
             order = "discount_rate IS NULL, discount_rate DESC, COALESCE(posted_at, fetched_at) DESC"
 
-        params.extend([max(1, min(per_page, 100)), max(0, (page - 1) * per_page)])
+        per_page = max(1, min(int(per_page or 20), 100))
+        page = max(1, int(page or 1))
+        params.extend([per_page, (page - 1) * per_page])
         sql = (
             "SELECT * FROM hotdeal_posts WHERE "
             + " AND ".join(clauses)
