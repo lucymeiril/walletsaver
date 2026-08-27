@@ -1,7 +1,7 @@
 """Server-side management endpoints used by the local DB Admin.
 
 These endpoints deliberately live in web-api because only web-api is deployed.
-The local db-admin sends authenticated commands; it never opens server SQLite
+Local admin tools send authenticated commands; they never open server SQLite
 files directly.
 """
 from __future__ import annotations
@@ -27,6 +27,8 @@ router = APIRouter(prefix="/api/admin/remote", tags=["Remote Admin"])
 _BACKEND_ROOT = Path(__file__).resolve().parents[2]
 _DEFAULT_CATALOG_DB = _BACKEND_ROOT / "storage" / "public_snapshot.sqlite"
 _DEFAULT_EXTERNAL_HOTDEAL_DB = _BACKEND_ROOT / "storage" / "external_hotdeals.sqlite"
+# Keep the default aligned with shared.core.fuel_store: <repo>/data/opinet.db.
+_DEFAULT_OPINET_DB = Path(__file__).resolve().parents[5] / "data" / "opinet.db"
 
 _SNAPSHOT_CONFIG = {
     "catalog": (
@@ -38,6 +40,11 @@ _SNAPSHOT_CONFIG = {
         "WALLETSAVIOR_EXTERNAL_HOTDEAL_DB",
         _DEFAULT_EXTERNAL_HOTDEAL_DB,
         {"hotdeal_posts"},
+    ),
+    "opinet": (
+        "OPINET_DB_PATH",
+        _DEFAULT_OPINET_DB,
+        {"fuel_stations", "fuel_prices"},
     ),
 }
 
