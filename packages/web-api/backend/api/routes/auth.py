@@ -37,6 +37,10 @@ def _profile(user: dict) -> UserProfile:
         nickname=user["nickname"],
         role=user.get("role") or "user",
         created_at=user.get("created_at") or "",
+        bio=user.get("bio"),
+        profile_image_url=user.get("profile_image_url"),
+        preferences=user.get("preferences"),
+        updated_at=user.get("updated_at"),
     )
 
 
