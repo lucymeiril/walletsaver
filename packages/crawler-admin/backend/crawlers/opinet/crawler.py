@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 import requests
+from pyproj import CRS, Transformer
 
 logger = logging.getLogger(__name__)
 
@@ -66,6 +67,16 @@ _FUEL_ALIASES = {
     "kerosene": "kerosene", "C004": "kerosene",
     "lpg": "lpg", "K015": "lpg", "K105": "lpg",
 }
+
+# OPINET documents GIS_X_COOR/GIS_Y_COOR as KATEC.  KOTI-KATEC has no EPSG
+# code, so keep the projection definition explicit and convert once at crawl
+# time.  The shared/web layers then store/query ordinary WGS84 lat/lng only.
+_KATEC_CRS = CRS.from_proj4(
+    "+proj=tmerc +lat_0=38 +lon_0=128 +k=0.9999 "
+    "+x_0=400000 +y_0=600000 +ellps=bessel +units=m +no_defs "
+    "+towgs84=-115.80,474.99,674.11,1.16,-2.31,-1.63,6.43"
+)
+_KATEC_TO_WGS84 = Transformer.from_crs(_KATEC_CRS, "EPSG:4326", always_xy=True)
 
 # Product codes are endpoint-specific. These values follow OPINET lowTop10.do.
 _API_FUELS: tuple[tuple[str, str], ...] = (
@@ -125,6 +136,34 @@ def _to_float(value: Any) -> float | None:
         return float(value)
     except (TypeError, ValueError):
         return None
+
+
+def katec_to_wgs84(x_value: Any, y_value: Any) -> tuple[float | None, float | None]:
+    """Convert an OPINET KATEC X/Y pair to canonical WGS84 (lat, lng)."""
+    x = _to_float(x_value)
+    y = _to_float(y_value)
+    if x is None or y is None:
+        return None, None
+
+    try:
+        lng, lat = _KATEC_TO_WGS84.transform(x, y)
+    except Exception as exc:
+        logger.warning("[OpinetCrawler] KATEC conversion failed x=%s y=%s: %s", x, y, exc)
+        return None, None
+
+    # OPINET is a South-Korea fuel service. Reject corrupt/projection-mismatched
+    # coordinates instead of allowing a bad point to poison nearby-distance UI.
+    if not (32.0 <= lat <= 40.5 and 123.0 <= lng <= 133.5):
+        logger.warning(
+            "[OpinetCrawler] converted coordinate outside Korea bounds x=%s y=%s lat=%s lng=%s",
+            x,
+            y,
+            lat,
+            lng,
+        )
+        return None, None
+
+    return round(lat, 7), round(lng, 7)
 
 
 def normalize_brand(value: str | None) -> str:
@@ -195,9 +234,8 @@ def _record_from_api_row(raw: dict[str, Any], fuel_type: str, observed_at: datet
     station_code = str(raw.get("UNI_ID") or raw.get("UNITID") or "").strip()
     if not station_code:
         station_code = f"{name}|{address}"
+    lat, lng = katec_to_wgs84(raw.get("GIS_X_COOR"), raw.get("GIS_Y_COOR"))
 
-    # lowTop10.do returns KATEC GIS_X/Y, not WGS84 latitude/longitude. Keep
-    # canonical lat/lng empty until an explicit coordinate conversion is added.
     return GasStationRecord(
         station_code=station_code,
         brand=normalize_brand(str(raw.get("POLL_DIV_CO") or raw.get("POLL_DIV_CD") or "").strip()),
@@ -205,8 +243,8 @@ def _record_from_api_row(raw: dict[str, Any], fuel_type: str, observed_at: datet
         address=address,
         sido=sido,
         sigungu=sigungu,
-        lat=None,
-        lng=None,
+        lat=lat,
+        lng=lng,
         has_self_service=str(raw.get("SELF_YN") or "N").upper() == "Y",
         updated_at=observed_at,
         prices=[GasStationPriceRecord(
@@ -437,6 +475,7 @@ __all__ = [
     "GasStationRecord",
     "OpinetCrawler",
     "Crawler",
+    "katec_to_wgs84",
     "normalize_brand",
     "normalize_fuel_type",
     "parse_api_payload",
