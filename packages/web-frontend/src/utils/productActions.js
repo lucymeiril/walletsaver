@@ -159,7 +159,7 @@ export function normalizeProduct(product = {}) {
     description: firstDefined(product.description, product.content, product.summary, ''),
     unitPriceDisplay: firstDefined(product.unit_price_display, product.attributes?.unit_price_display, product.offer_raw_data?.unit_price_display, ''),
     standardUnitPrice: firstDefined(product.standard_unit_price, product.unit_price, null),
-    standardUnit: firstDefined(product.standard_unit, '100g'),
+    standardUnit: firstDefined(product.standard_unit, null),
     sourceType,
     priceHistory: firstDefined(product.price_history, product.priceHistory, product.history, []),
     comparableOffers: firstDefined(product.comparable_offers, product.comparableOffers, product.offers, product.other_sources, []),
