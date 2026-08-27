@@ -127,6 +127,7 @@ class PublicCatalogStore:
                 (product_id,),
             ):
                 source = str(row["source"] or "")
+                source = "lotte" if source == "lottemart" else source
                 if source and source not in stores and row["price"] is not None:
                     stores[source] = float(row["price"])
         if self._table(connection, "baseline_prices"):
@@ -136,6 +137,7 @@ class PublicCatalogStore:
                 (product_id,),
             ):
                 source = str(row["source"] or "")
+                source = "lotte" if source == "lottemart" else source
                 if source and source not in stores and row["price"] is not None:
                     stores[source] = float(row["price"])
         return stores
@@ -409,29 +411,48 @@ class PublicCatalogStore:
         with self.connection() as connection:
             sql = (
                 "SELECT d.*, p.name AS product_name, p.unit AS product_unit "
-                "FROM discount_history d LEFT JOIN products p ON p.id=d.product_id "
+                "FROM discount_history d "
+                "JOIN products p ON p.id=d.product_id AND p.is_active=1 "
+                "WHERE NOT EXISTS ("
+                "SELECT 1 FROM discount_history newer "
+                "WHERE newer.product_id=d.product_id AND newer.source=d.source "
+                "AND (newer.crawled_at > d.crawled_at "
+                "OR (newer.crawled_at = d.crawled_at AND newer.id > d.id))"
+                ") "
+                "AND (d.valid_to IS NULL OR date(d.valid_to) IS NULL OR date(d.valid_to) >= date(?)) "
             )
-            params: list[object] = []
+            params: list[object] = [datetime.utcnow().date().isoformat()]
             if store:
-                sql += "WHERE d.source=? "
+                sql += "AND d.source=? "
                 params.append(store)
-            sql += "ORDER BY d.crawled_at DESC LIMIT ?"
+            sql += "ORDER BY d.crawled_at DESC, d.id DESC LIMIT ?"
             params.append(limit)
             grouped: dict[str, list] = {}
             latest: dict[str, str] = {}
             for row in connection.execute(sql, params):
                 raw = _json(row["raw_data"], {})
+                published = raw.get("published_item") if isinstance(raw.get("published_item"), dict) else {}
                 source = str(row["source"] or "")
+                price_observation_only = bool(raw.get("price_observation_only", False))
                 grouped.setdefault(source, []).append({
-                    "name": row["product_name"] or raw.get("product_name") or "",
+                    "name": row["product_name"] or published.get("name") or raw.get("product_name") or "",
                     "orig": row["original_price"], "sale": row["price"],
                     "disc": round(row["discount_rate"] or 0),
-                    "source_url": row["source_url"] or "",
-                    "image_url": raw.get("image_url") or "",
-                    "event_name": raw.get("event_name") or "",
-                    "unit": raw.get("unit") or row["product_unit"] or "",
-                    "display_unit": raw.get("display_unit") or raw.get("unit") or row["product_unit"] or "",
-                    "category": raw.get("category") or "",
+                    "source_url": row["source_url"] or published.get("detail_url") or raw.get("source_url") or "",
+                    "image_url": raw.get("image_url") or published.get("image_url") or "",
+                    "event_name": published.get("event_name") or raw.get("event_name") or "",
+                    "unit": published.get("unit") or raw.get("unit") or row["product_unit"] or "",
+                    "display_unit": published.get("display_unit") or raw.get("display_unit") or published.get("unit") or raw.get("unit") or row["product_unit"] or "",
+                    "category": published.get("category") or raw.get("category") or "",
+                    "valid_from": row["valid_from"] or published.get("valid_from") or raw.get("valid_from") or "",
+                    "valid_to": row["valid_to"] or published.get("valid_to") or published.get("valid_until") or raw.get("valid_to") or raw.get("valid_until") or "",
+                    "publication_kind": raw.get("publication_kind") or "",
+                    "price_observation_only": price_observation_only,
+                    "discount_claim_status": raw.get("discount_claim_status") or "",
+                    "claim_basis": raw.get("claim_basis") or "",
+                    "has_discount_metadata": bool(raw.get("has_discount_metadata", False)),
+                    "record_label": raw.get("record_label") or ("관측 가격" if price_observation_only else ""),
+                    "claim_status_label": raw.get("claim_status_label") or "",
                     "crawled_at": row["crawled_at"] or "",
                 })
                 latest.setdefault(source, row["crawled_at"] or "")
