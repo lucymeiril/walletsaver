@@ -53,6 +53,66 @@ def _comment_payload(row: dict, current_user_id: int | None = None) -> dict:
     }
 
 
+def _popular_hotdeal_page(
+    storage,
+    *,
+    category: str,
+    source: str | None,
+    page: int,
+    per_page: int,
+) -> tuple[list[dict], int]:
+    """Sort by votes across the full filtered feed before applying pagination.
+
+    External hotdeal rows and user votes intentionally live in separate SQLite
+    files, so a DB-level JOIN is not available. The previous implementation
+    paged the recent feed first and only then sorted that one page by votes,
+    which made older popular deals unreachable from page 1.
+    """
+    source_store = getattr(storage, "external_hotdeals", None)
+    if source_store is None or not hasattr(source_store, "count_hotdeals"):
+        rows = storage.get_hotdeals(
+            category=category,
+            source=source,
+            sort="recent",
+            page=page,
+            per_page=per_page,
+        )
+        rows.sort(
+            key=lambda item: (
+                int(item.get("votes_hot") or 0) - int(item.get("votes_not") or 0),
+                str(item.get("posted_at") or item.get("fetched_at") or ""),
+            ),
+            reverse=True,
+        )
+        return rows, len(rows)
+
+    total = int(source_store.count_hotdeals(category=category, source=source))
+    rows: list[dict] = []
+    source_page = 1
+    while len(rows) < total:
+        batch = storage.get_hotdeals(
+            category=category,
+            source=source,
+            sort="recent",
+            page=source_page,
+            per_page=100,
+        )
+        if not batch:
+            break
+        rows.extend(batch)
+        source_page += 1
+
+    rows.sort(
+        key=lambda item: (
+            int(item.get("votes_hot") or 0) - int(item.get("votes_not") or 0),
+            str(item.get("posted_at") or item.get("fetched_at") or ""),
+        ),
+        reverse=True,
+    )
+    start = (page - 1) * per_page
+    return rows[start:start + per_page], total
+
+
 @router.get("")
 async def list_hotdeals(
     request: Request,
@@ -63,22 +123,33 @@ async def list_hotdeals(
     per_page: int = Query(20, ge=1, le=100),
 ):
     storage = _require_storage(request)
-    data = storage.get_hotdeals(
-        category=category,
-        source=source,
-        sort=sort,
-        page=page,
-        per_page=per_page,
-    )
+    source_store = getattr(storage, "external_hotdeals", None)
+
+    if sort in {"popular", "votes"}:
+        data, total = _popular_hotdeal_page(
+            storage,
+            category=category,
+            source=source,
+            page=page,
+            per_page=per_page,
+        )
+    else:
+        data = storage.get_hotdeals(
+            category=category,
+            source=source,
+            sort=sort,
+            page=page,
+            per_page=per_page,
+        )
+        if source_store is not None and hasattr(source_store, "count_hotdeals"):
+            total = source_store.count_hotdeals(category=category, source=source)
+        else:
+            total = len(data)
+
     interaction_store = _interaction_store(storage)
     for item in data:
         item["comments"] = interaction_store.comment_count(int(item["id"]))
 
-    source_store = getattr(storage, "external_hotdeals", None)
-    if source_store is not None and hasattr(source_store, "count_hotdeals"):
-        total = source_store.count_hotdeals(category=category, source=source)
-    else:
-        total = len(data)
     return ApiResponse(
         data=data,
         meta=PaginationMeta(
