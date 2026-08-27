@@ -41,6 +41,47 @@ function getErrorMessage(status) {
   return ERROR_MESSAGES.unknown;
 }
 
+async function fetchWithControls(url, fetchOptions, timeout, externalSignal) {
+  const controller = new AbortController();
+  let timedOut = false;
+  const timeoutId = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, timeout);
+  const abortFromExternal = () => controller.abort();
+
+  if (externalSignal) {
+    if (externalSignal.aborted) {
+      controller.abort();
+    } else {
+      externalSignal.addEventListener('abort', abortFromExternal, { once: true });
+    }
+  }
+
+  try {
+    return await fetch(url, {
+      ...fetchOptions,
+      signal: controller.signal,
+    });
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      // Component/navigation cancellation is intentional. Keep it as AbortError
+      // so callers can quietly ignore it instead of showing a timeout message.
+      if (externalSignal?.aborted) throw err;
+      if (timedOut) {
+        throw new ApiError(ERROR_MESSAGES.timeout, 0, 'timeout');
+      }
+    }
+    if (err instanceof ApiError) throw err;
+    throw new ApiError(ERROR_MESSAGES.network, 0, 'network');
+  } finally {
+    clearTimeout(timeoutId);
+    if (externalSignal) {
+      externalSignal.removeEventListener('abort', abortFromExternal);
+    }
+  }
+}
+
 // In-flight request deduplication for GET requests
 const _inflight = new Map();
 
@@ -89,49 +130,34 @@ class ApiClient {
       'Content-Type': 'application/json',
       ...fetchOptions.headers,
     };
-    // Auth is handled by httpOnly cookies (credentials: 'include')
+    const requestOptions = {
+      ...fetchOptions,
+      headers,
+      credentials: 'include',
+    };
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
-
-    // Link external signal (e.g. from component abort controller)
-    if (externalSignal) {
-      if (externalSignal.aborted) {
-        clearTimeout(timeoutId);
-        controller.abort();
-      } else {
-        externalSignal.addEventListener('abort', () => controller.abort(), { once: true });
-      }
-    }
-
-    let response;
-    try {
-      response = await fetch(`${this.baseUrl}${path}`, {
-        ...fetchOptions,
-        headers,
-        signal: controller.signal,
-        credentials: 'include',
-      });
-    } catch (err) {
-      clearTimeout(timeoutId);
-      if (err.name === 'AbortError') {
-        if (externalSignal?.aborted) throw err;
-        throw new ApiError(ERROR_MESSAGES.timeout, 0, 'timeout');
-      }
-      throw new ApiError(ERROR_MESSAGES.network, 0, 'network');
-    } finally {
-      clearTimeout(timeoutId);
-    }
+    let response = await fetchWithControls(
+      `${this.baseUrl}${path}`,
+      requestOptions,
+      timeout,
+      externalSignal,
+    );
 
     if (response.status === 401) {
-      const refreshed = await this.refreshToken();
+      const refreshed = await this.refreshToken({ timeout, signal: externalSignal });
       if (refreshed) {
-        try {
-          response = await fetch(`${this.baseUrl}${path}`, { ...fetchOptions, headers, credentials: 'include' });
-        } catch {
-          throw new ApiError(ERROR_MESSAGES.network, 0, 'network');
-        }
-      } else {
+        // The retry must obey the same timeout/cancellation contract as the
+        // original request. Otherwise a page can unmount while this retry keeps
+        // running indefinitely in the background.
+        response = await fetchWithControls(
+          `${this.baseUrl}${path}`,
+          requestOptions,
+          timeout,
+          externalSignal,
+        );
+      }
+
+      if (!refreshed || response.status === 401) {
         const store = useStore.getState();
         store.logout();
         // 자동 모달 노출은 사용자 명시 액션에서만. silent 옵션이면 모달을 띄우지 않는다.
@@ -160,9 +186,18 @@ class ApiClient {
     const query = params ? '?' + new URLSearchParams(params).toString() : '';
     const fullPath = `${path}${query}`;
     const method = options.method || 'GET';
-    const dedupKey = `${method}:${fullPath}`;
+    const timeout = options.timeout ?? DEFAULT_TIMEOUT;
+    const hasCustomHeaders = Boolean(options.headers && Object.keys(options.headers).length);
 
-    // Dedup identical in-flight GET requests
+    // A request with its own AbortSignal belongs to one caller. Sharing it with
+    // another component would let one component's cleanup cancel both callers.
+    if (options.signal || hasCustomHeaders) {
+      return this.request(fullPath, options);
+    }
+
+    const dedupKey = `${method}:${fullPath}:timeout=${timeout}:silent=${Boolean(options.silent)}`;
+
+    // Dedup only requests that have equivalent cancellation/error behaviour.
     if (!_inflight.has(dedupKey)) {
       const promise = this.request(fullPath, options)
         .finally(() => _inflight.delete(dedupKey));
@@ -213,16 +248,18 @@ class ApiClient {
     return res.json();
   }
 
-  async refreshToken() {
-    try {
-      const response = await fetch(`${this.baseUrl}/api/auth/refresh`, {
+  async refreshToken(options = {}) {
+    const { timeout = DEFAULT_TIMEOUT, signal } = options;
+    const response = await fetchWithControls(
+      `${this.baseUrl}/api/auth/refresh`,
+      {
         method: 'POST',
         credentials: 'include',
-      });
-      return response.ok;
-    } catch {
-      return false;
-    }
+      },
+      timeout,
+      signal,
+    );
+    return response.ok;
   }
 }
 
