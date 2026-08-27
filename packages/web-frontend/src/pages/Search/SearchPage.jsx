@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, Zap, Users, MapPin } from 'lucide-react';
+import { Search, ShoppingBag, Zap, Users } from 'lucide-react';
 import { searchService } from '../../services/searchService';
 import useStore from '../../stores/appStore';
 import useModalStore from '../../stores/modalStore';
@@ -17,14 +17,12 @@ const TABS = [
   { id: 'product', label: '상품' },
   { id: 'hotdeal', label: '핫딜' },
   { id: 'post',    label: '커뮤니티' },
-  { id: 'mart',    label: '동네' },
 ];
 
 const TYPE_META = {
   product: { icon: ShoppingBag, badge: '상품',    color: 'var(--accent)' },
   hotdeal: { icon: Zap,         badge: '핫딜',    color: 'var(--red, #ef4444)' },
   post:    { icon: Users,       badge: '커뮤니티', color: 'var(--green, #22c55e)' },
-  mart:    { icon: MapPin,      badge: '동네',    color: 'var(--orange, #f59e0b)' },
 };
 
 const SORT_OPTIONS = [
@@ -46,7 +44,7 @@ export default function SearchPage() {
   const [meta, setMeta] = useState(null);
 
   const addRecentSearch = useStore((st) => st.addRecentSearch);
-  const { openMartModal, openProductModal } = useModalStore();
+  const { openProductModal } = useModalStore();
 
   const fetchResults = useCallback(async () => {
     if (!query) return;
@@ -77,24 +75,26 @@ export default function SearchPage() {
     const params = new URLSearchParams(searchParams);
     if (tabId === 'all') params.delete('type');
     else params.set('type', tabId);
+    params.delete('page');
     setSearchParams(params);
   };
 
   const handleSortChange = (e) => {
     const params = new URLSearchParams(searchParams);
     params.set('sort', e.target.value);
+    params.delete('page');
     setSearchParams(params);
   };
 
   const handleSearchSubmit = (q) => {
     const params = new URLSearchParams(searchParams);
     params.set('q', q);
+    params.delete('page');
     setSearchParams(params);
   };
 
   const handleItemClick = (item) => {
     if (item.type === 'product') openProductModal(item);
-    else if (item.type === 'mart') openMartModal(item);
     else if (item.type === 'hotdeal') navigate('/hotdeal', { state: { openDealId: item.id } });
     else if (item.type === 'post') navigate('/community', { state: { openPostId: item.id } });
   };
@@ -165,19 +165,19 @@ export default function SearchPage() {
             {!loading && !error && displayResults.length > 0 && (
               <div className={s.resultList}>
                 {displayResults.map((item, i) => {
-                  const meta = TYPE_META[item.type] || TYPE_META.product;
-                  const Icon = meta.icon;
+                  const itemMeta = TYPE_META[item.type] || TYPE_META.product;
+                  const Icon = itemMeta.icon;
                   return (
                     <Card key={`${item.type}-${item.id}-${i}`} variant="interactive" onClick={() => handleItemClick(item)}>
                       <div className={s.resultItem}>
                         {item.image && (
-                          <img src={item.image} alt={item.name || '검색 결과'} className={s.thumb} loading="lazy" onError={(e) => { e.target.style.display = 'none'; }} />
+                          <img src={item.image} alt={item.title || '검색 결과'} className={s.thumb} loading="lazy" onError={(e) => { e.target.style.display = 'none'; }} />
                         )}
                         <div className={s.resultBody}>
                           <div className={s.resultTop}>
-                            <span className={s.typeBadge} style={{ background: meta.color }}>
+                            <span className={s.typeBadge} style={{ background: itemMeta.color }}>
                               <Icon size={12} />
-                              {meta.badge}
+                              {itemMeta.badge}
                             </span>
                             <h3 className={s.resultTitle}>{item.title}</h3>
                           </div>
@@ -233,7 +233,7 @@ export default function SearchPage() {
           <EmptyState
             icon={Search}
             title="검색어를 입력하세요"
-            description="상품, 핫딜, 커뮤니티 글, 동네 마트 정보를 통합 검색할 수 있습니다."
+            description="상품, 핫딜, 커뮤니티 글을 통합 검색할 수 있습니다."
           />
         )}
       </div>
