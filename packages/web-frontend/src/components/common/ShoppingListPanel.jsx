@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
-import { X, Plus, Minus as MinusIcon, Trash2, ShoppingCart, Zap, Package } from 'lucide-react';
+import { X, Plus, Minus as MinusIcon, Trash2, Zap, Package } from 'lucide-react';
 import useStore from '../../stores/appStore';
 import useCartStore from '../../stores/cartStore';
 import useModalStore from '../../stores/modalStore';
@@ -48,20 +48,32 @@ export default function ShoppingListPanel() {
   }, 0);
   const totalCount = items.reduce((sum, i) => sum + (i.quantity || 1), 0);
 
-  const handleClear = () => {
-    clearCart();
-    addToast('장바구니를 비웠습니다', 'info');
+  const handleClear = async () => {
+    try {
+      await clearCart();
+      addToast('장바구니를 비웠습니다', 'info');
+    } catch (err) {
+      addToast(err?.message || '장바구니 비우기에 실패했습니다', 'error');
+    }
   };
 
-  const handleRemove = (item) => {
+  const handleRemove = async (item) => {
     const id = item.cart_id || item.id || item.product_id;
-    removeItem(id);
+    try {
+      await removeItem(id);
+    } catch (err) {
+      addToast(err?.message || '장바구니 항목 삭제에 실패했습니다', 'error');
+    }
   };
 
-  const handleQuantity = (item, delta) => {
+  const handleQuantity = async (item, delta) => {
     const id = item.cart_id || item.id || item.product_id;
     const newQty = (item.quantity || 1) + delta;
-    updateQuantity(id, newQty);
+    try {
+      await updateQuantity(id, newQty);
+    } catch (err) {
+      addToast(err?.message || '수량 변경에 실패했습니다', 'error');
+    }
   };
 
   const handleItemClick = (item) => {
