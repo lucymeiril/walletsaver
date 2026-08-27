@@ -487,6 +487,8 @@ class PublicCatalogStore:
                 "WHERE NOT EXISTS ("
                 "SELECT 1 FROM discount_history newer "
                 "WHERE newer.product_id=d.product_id AND newer.source=d.source "
+                "AND (newer.valid_from IS NULL OR date(newer.valid_from) IS NULL OR date(newer.valid_from) <= date(?)) "
+                "AND (newer.valid_to IS NULL OR date(newer.valid_to) IS NULL OR date(newer.valid_to) >= date(?)) "
                 "AND (newer.crawled_at > d.crawled_at "
                 "OR (newer.crawled_at = d.crawled_at AND newer.id > d.id))"
                 ") "
@@ -494,7 +496,7 @@ class PublicCatalogStore:
                 "AND (d.valid_to IS NULL OR date(d.valid_to) IS NULL OR date(d.valid_to) >= date(?)) "
             )
             today = datetime.utcnow().date().isoformat()
-            params: list[object] = [today, today]
+            params: list[object] = [today, today, today, today]
             if store:
                 sql += "AND d.source=? "
                 params.append(store)
