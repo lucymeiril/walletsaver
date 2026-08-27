@@ -32,20 +32,26 @@ async def list_hotdeals(
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
 ):
-    data = _require_storage(request).get_hotdeals(
+    storage = _require_storage(request)
+    data = storage.get_hotdeals(
         category=category,
         source=source,
         sort=sort,
         page=page,
         per_page=per_page,
     )
+    source_store = getattr(storage, "external_hotdeals", None)
+    if source_store is not None and hasattr(source_store, "count_hotdeals"):
+        total = source_store.count_hotdeals(category=category, source=source)
+    else:
+        total = len(data)
     return ApiResponse(
         data=data,
         meta=PaginationMeta(
             page=page,
             per_page=per_page,
-            total=len(data),
-            total_pages=math.ceil(len(data) / per_page) if data else 0,
+            total=total,
+            total_pages=math.ceil(total / per_page) if total else 0,
         ),
     )
 
@@ -75,7 +81,9 @@ async def get_hotdeal_sources(request: Request):
             for row in storage.get_hotdeals(category="all", per_page=100)
             if row.get("source")
         })
-    return ApiResponse(data=[{"key": source, "label": source} for source in sources])
+    # The current web frontend treats this endpoint as a string list and keeps
+    # "전체" as the sentinel for no source filter.
+    return ApiResponse(data=["전체", *sources])
 
 
 @router.get("/{hotdeal_id}")
@@ -94,14 +102,25 @@ async def vote_hotdeal(
 ):
     body = await request.json()
     vote_type = body.get("vote_type", "hot")
-    if vote_type not in ("hot", "not"):
-        raise HTTPException(status_code=422, detail="vote_type은 'hot' 또는 'not'이어야 합니다")
+    if vote_type not in ("hot", "not", "cancel"):
+        raise HTTPException(status_code=422, detail="vote_type은 'hot', 'not', 'cancel' 중 하나여야 합니다")
+
+    storage = _require_storage(request)
+    identity_key = f"user:{int(user['id'])}"
     try:
-        result = _require_storage(request).vote_hotdeal(
-            hotdeal_id,
-            vote_type,
-            identity_key=f"user:{int(user['id'])}",
-        )
+        if vote_type == "cancel":
+            if storage.get_hotdeal_detail(hotdeal_id) is None:
+                raise ValueError("hotdeal not found")
+            interaction_store = getattr(storage, "interactions", None)
+            if interaction_store is None or not hasattr(interaction_store, "clear_vote"):
+                raise HTTPException(status_code=503, detail="투표 저장소를 사용할 수 없습니다")
+            result = interaction_store.clear_vote(hotdeal_id, identity_key)
+        else:
+            result = storage.vote_hotdeal(
+                hotdeal_id,
+                vote_type,
+                identity_key=identity_key,
+            )
     except ValueError as exc:
         raise HTTPException(status_code=404, detail="핫딜을 찾을 수 없습니다") from exc
     return ApiResponse(data=result)
