@@ -154,14 +154,14 @@ def _public_result(item: dict) -> dict:
 async def search(
     request: Request,
     q: str = Query("", description="검색어"),
-    type: str = Query(None, description="결과 유형 (product, hotdeal, post)"),
+    type: str = Query(None, description="결과 유형 (product, hotdeal, post, mart)"),
     sort: str = Query("relevant", description="정렬 (relevant, recent, popular)"),
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
 ):
     """통합 검색."""
     storage = request.app.state.storage
-    if type not in {None, "product", "hotdeal", "post"}:
+    if type not in {None, "product", "hotdeal", "post", "mart"}:
         raise HTTPException(status_code=422, detail="지원하지 않는 검색 결과 유형입니다")
     if sort not in {"relevant", "recent", "popular"}:
         raise HTTPException(status_code=422, detail="지원하지 않는 검색 정렬입니다")
@@ -186,6 +186,9 @@ async def search(
         post_rows, post_total = _post_results(q, fetch_limit)
         results.extend(post_rows)
         total += post_total
+
+    # "mart" (동네) 검색은 아직 별도 검색 인덱스/위치 계약이 없다.
+    # 가짜 결과를 만들지 않고 빈 결과를 유지한다.
 
     if sort == "popular":
         results.sort(
