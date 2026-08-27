@@ -146,7 +146,7 @@ class ApiClient {
       let data = null;
       try { data = await response.json(); } catch { /* ignore */ }
       throw new ApiError(
-        data?.message || getErrorMessage(response.status),
+        data?.detail || data?.message || getErrorMessage(response.status),
         response.status,
         response.status >= 500 ? 'server' : 'client',
         data,
