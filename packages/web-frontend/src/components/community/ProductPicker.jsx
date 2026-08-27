@@ -9,8 +9,8 @@ export default function ProductPicker({ selected, onChange }) {
   const [loading, setLoading] = useState(false);
   const wrapRef = useRef(null);
   const timerRef = useRef(null);
+  const controllerRef = useRef(null);
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handler = (e) => {
       if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false);
@@ -19,34 +19,50 @@ export default function ProductPicker({ selected, onChange }) {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const search = useCallback((q) => {
-    if (!q.trim()) { setResults([]); setOpen(false); return; }
+  useEffect(() => () => {
+    clearTimeout(timerRef.current);
+    controllerRef.current?.abort();
+  }, []);
+
+  const search = useCallback(async (value) => {
+    const q = value.trim();
+    if (!q) {
+      controllerRef.current?.abort();
+      setResults([]);
+      setOpen(false);
+      setLoading(false);
+      return;
+    }
+
+    controllerRef.current?.abort();
+    const controller = new AbortController();
+    controllerRef.current = controller;
     setLoading(true);
-    fetch(`/api/search/autocomplete?q=${encodeURIComponent(q)}`)
-      .then((r) => r.json())
-      .then((res) => {
-        const data = Array.isArray(res) ? res : res?.data?.products || res?.data || [];
-        setResults(data.slice(0, 5));
+
+    try {
+      const response = await fetch(
+        `/api/products/search?q=${encodeURIComponent(q)}&per_page=5`,
+        { signal: controller.signal },
+      );
+      if (!response.ok) throw new Error(`product search failed: ${response.status}`);
+      const json = await response.json();
+      setResults(Array.isArray(json.data) ? json.data.slice(0, 5) : []);
+      setOpen(true);
+    } catch (error) {
+      if (error.name !== 'AbortError') {
+        setResults([]);
         setOpen(true);
-      })
-      .catch(() => {
-        // Fallback: try products search
-        fetch(`/api/products/search?q=${encodeURIComponent(q)}&per_page=5`)
-          .then((r) => r.json())
-          .then((res) => {
-            setResults(res.data || []);
-            setOpen(true);
-          })
-          .catch(() => setResults([]));
-      })
-      .finally(() => setLoading(false));
+      }
+    } finally {
+      if (!controller.signal.aborted) setLoading(false);
+    }
   }, []);
 
   const handleInputChange = (e) => {
-    const val = e.target.value;
-    setQuery(val);
+    const value = e.target.value;
+    setQuery(value);
     clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => search(val), 300);
+    timerRef.current = setTimeout(() => search(value), 300);
   };
 
   const handleSelect = (product) => {
@@ -81,7 +97,7 @@ export default function ProductPicker({ selected, onChange }) {
               <div key={p.id} className={s.item} onClick={() => handleSelect(p)}>
                 <div>
                   <div className={s.itemName}>{p.name}</div>
-                  <div className={s.itemMeta}>{p.category || ''}</div>
+                  <div className={s.itemMeta}>{p.cat || p.category || ''}</div>
                 </div>
                 {p.avg != null && <span className={s.itemPrice}>평균 {fmt(p.avg)}원</span>}
               </div>
