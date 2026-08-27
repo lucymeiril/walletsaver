@@ -93,6 +93,20 @@ class InteractionDatabase:
         counts = {row["vote_type"]: int(row["count"]) for row in rows}
         return counts.get("hot", 0), counts.get("not", 0)
 
+    def clear_vote(self, hotdeal_id: int, identity_key: str) -> dict:
+        """Remove the caller's vote without needing the previous vote type."""
+        with self.SessionLocal() as session:
+            session.execute(
+                text(
+                    "DELETE FROM external_hotdeal_votes "
+                    "WHERE hotdeal_id=:hotdeal_id AND identity_key=:identity_key"
+                ),
+                {"hotdeal_id": hotdeal_id, "identity_key": identity_key},
+            )
+            session.commit()
+        hot, not_ = self.vote_counts(hotdeal_id)
+        return {"votes_hot": hot, "votes_not": not_, "user_vote": None}
+
     def toggle_vote(self, hotdeal_id: int, vote_type: str, identity_key: str) -> dict:
         now = datetime.utcnow().isoformat()
         with self.SessionLocal() as session:
