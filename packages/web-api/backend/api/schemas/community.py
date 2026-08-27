@@ -2,7 +2,7 @@
 from enum import Enum
 from typing import Optional
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, Field
 
 
 class PostType(str, Enum):
@@ -22,13 +22,6 @@ class PostCreate(BaseModel):
     original_price: Optional[float] = None
     url: Optional[str] = None
     images: Optional[list[str]] = None
-
-    @field_validator("images")
-    @classmethod
-    def reject_unpersisted_images(cls, value):
-        if value:
-            raise ValueError("커뮤니티 이미지 첨부 저장은 아직 지원되지 않습니다")
-        return value
 
 
 class PostUpdate(BaseModel):
@@ -56,7 +49,7 @@ class PostResponse(BaseModel):
     content: str
     post_type: str
     category: Optional[str] = None
-    tags: list[str] = []
+    tags: list[str] = Field(default_factory=list)
     author_id: int
     author_nickname: str
     views: int = 0
@@ -66,7 +59,7 @@ class PostResponse(BaseModel):
     price: Optional[float] = None
     original_price: Optional[float] = None
     url: Optional[str] = None
-    images: list[str] = []
+    images: list[str] = Field(default_factory=list)
     created_at: str
     updated_at: str
 
