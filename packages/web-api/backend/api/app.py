@@ -24,6 +24,52 @@ def _cors_origins() -> list[str]:
     return [origin.strip() for origin in configured.split(",") if origin.strip()]
 
 
+def _recent_dashboard_products(storage, limit: int = 8) -> list[dict]:
+    """Return products ordered by their latest public price observation.
+
+    Product search is intentionally alphabetical, so using it for a dashboard
+    section called "recent" silently produced the first names in the catalog.
+    Read the snapshot directly here and rank by the latest discount/baseline
+    observation instead.
+    """
+    catalog = getattr(storage, "catalog", None)
+    if catalog is None or not hasattr(catalog, "connection"):
+        return []
+
+    with catalog.connection() as connection:
+        timestamp_parts: list[str] = []
+        if catalog._table(connection, "discount_history"):
+            timestamp_parts.append(
+                "COALESCE((SELECT MAX(d.crawled_at) FROM discount_history d "
+                "WHERE d.product_id=p.id), '')"
+            )
+        if catalog._table(connection, "baseline_prices"):
+            timestamp_parts.append(
+                "COALESCE((SELECT MAX(b.recorded_at) FROM baseline_prices b "
+                "WHERE b.product_id=p.id), '')"
+            )
+
+        if len(timestamp_parts) >= 2:
+            observed_sql = "MAX(" + ", ".join(timestamp_parts) + ")"
+        elif timestamp_parts:
+            observed_sql = timestamp_parts[0]
+        else:
+            observed_sql = "''"
+
+        rows = connection.execute(
+            "SELECT p.*, " + observed_sql + " AS _dashboard_observed_at "
+            "FROM products p WHERE p.is_active=1 "
+            "ORDER BY _dashboard_observed_at DESC, p.id DESC LIMIT ?",
+            (max(1, int(limit)),),
+        ).fetchall()
+        products = []
+        for row in rows:
+            item = catalog._product(connection, row)
+            item["observed_at"] = row["_dashboard_observed_at"] or ""
+            products.append(item)
+        return products
+
+
 def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
     """Create web-api, using web-api-owned storage unless tests inject one."""
     app = FastAPI(
@@ -133,18 +179,18 @@ def create_app(storage=None, engine=None, event_bus=None) -> FastAPI:
             raise HTTPException(status_code=503, detail="대시보드 저장소를 사용할 수 없습니다")
         try:
             hotdeals = current_storage.get_hotdeals(category="all", per_page=8)
-            recent_products = current_storage.search_products("", per_page=8)
+            recent_products = _recent_dashboard_products(current_storage, limit=8)
+            category_tree = current_storage.get_category_tree()
         except Exception as exc:
             raise HTTPException(status_code=503, detail="대시보드 데이터를 불러올 수 없습니다") from exc
 
-        category_counts = {}
-        for product in recent_products:
-            cat = product.get("cat") or product.get("category") or "기타"
-            top = str(cat).split(" > ")[0] if cat else "기타"
-            category_counts[top] = category_counts.get(top, 0) + 1
         category_summary = [
-            {"category": name, "name": name, "count": count}
-            for name, count in sorted(category_counts.items(), key=lambda item: item[0])
+            {
+                "category": node.get("name") or "기타",
+                "name": node.get("name") or "기타",
+                "count": int(node.get("count") or 0),
+            }
+            for node in category_tree
         ]
         return {
             "success": True,
