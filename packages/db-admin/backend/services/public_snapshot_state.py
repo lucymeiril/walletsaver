@@ -130,6 +130,26 @@ def mark_public_snapshot_clean(connection, *, snapshot_revision: int) -> None:
     )
 
 
+def _bulk_query_affects_public(query) -> bool:
+    """Return whether a legacy Query.update/delete targets a public model.
+
+    SQLAlchemy bulk Query operations bypass Session.new/dirty/deleted, so the
+    normal flush hooks below cannot see them. ``column_descriptions`` gives us
+    the mapped entity for the current db-admin bulk routes. If SQLAlchemy cannot
+    expose an entity, fail safe by marking the snapshot dirty rather than
+    risking a stale server snapshot.
+    """
+    descriptions = getattr(query, "column_descriptions", None) or ()
+    entities = {
+        description.get("entity")
+        for description in descriptions
+        if isinstance(description, dict) and description.get("entity") is not None
+    }
+    if not entities:
+        return True
+    return any(entity in _TRACKED_MODELS for entity in entities)
+
+
 def install_public_snapshot_tracking() -> None:
     """Install process-wide SQLAlchemy Session hooks exactly once."""
     global _INSTALLED
@@ -151,6 +171,24 @@ def install_public_snapshot_tracking() -> None:
             return
         mark_public_snapshot_dirty(session.connection())
         session.info[_MARKED] = True
+
+    @event.listens_for(Session, "after_bulk_update")
+    def _after_bulk_update(update_context) -> None:
+        session = update_context.session
+        if session.info.get(_MARKED):
+            return
+        if _bulk_query_affects_public(update_context.query):
+            mark_public_snapshot_dirty(session.connection())
+            session.info[_MARKED] = True
+
+    @event.listens_for(Session, "after_bulk_delete")
+    def _after_bulk_delete(delete_context) -> None:
+        session = delete_context.session
+        if session.info.get(_MARKED):
+            return
+        if _bulk_query_affects_public(delete_context.query):
+            mark_public_snapshot_dirty(session.connection())
+            session.info[_MARKED] = True
 
     def _clear(session: Session) -> None:
         session.info.pop(_PENDING, None)
