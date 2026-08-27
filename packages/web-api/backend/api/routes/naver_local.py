@@ -1,7 +1,7 @@
 """Naver Place search helpers for the Local page.
 
 The user-facing iframe/search UX stays available even when structured Naver
-search is unavailable.  API failures return empty results explicitly; this
+search is unavailable. API failures return empty results explicitly; this
 module never fabricates stores, coordinates, ratings, or fuel prices.
 """
 from __future__ import annotations
@@ -9,6 +9,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import math
 from concurrent.futures import ThreadPoolExecutor
 
 from fastapi import APIRouter, Query
@@ -39,6 +40,25 @@ def _parse_fuel_price(value) -> int | None:
         return None
 
 
+def _parse_positive_number(value) -> float | None:
+    if value in (None, "") or isinstance(value, bool):
+        return None
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return None
+    return number if math.isfinite(number) and number >= 0 else None
+
+
+def _parse_nonnegative_int(value) -> int:
+    number = _parse_positive_number(value)
+    return int(number) if number is not None else 0
+
+
+def _valid_coordinates(lat: float, lng: float) -> bool:
+    return -90 <= lat <= 90 and -180 <= lng <= 180
+
+
 @router.get("/geocode")
 async def geocode(query: str = Query(..., description="위치명 또는 'lat,lng' 좌표")):
     """Resolve a coordinate pair, known location, or a real Naver search result."""
@@ -47,7 +67,8 @@ async def geocode(query: str = Query(..., description="위치명 또는 'lat,lng
         try:
             lat_s, lng_s = [part.strip() for part in raw.split(",", 1)]
             lat, lng = float(lat_s), float(lng_s)
-            return ApiResponse(data={"name": "현재 위치", "lat": lat, "lng": lng})
+            if _valid_coordinates(lat, lng):
+                return ApiResponse(data={"name": "현재 위치", "lat": lat, "lng": lng})
         except ValueError:
             pass
 
@@ -71,12 +92,15 @@ async def geocode(query: str = Query(..., description="위치명 또는 'lat,lng
         if places:
             first = places[0]
             try:
-                loc = {
-                    "name": first.get("name") or raw,
-                    "lat": float(first.get("y") or first.get("lat")),
-                    "lng": float(first.get("x") or first.get("lng")),
-                    "source": "naver",
-                }
+                lat = float(first.get("y") or first.get("lat"))
+                lng = float(first.get("x") or first.get("lng"))
+                if _valid_coordinates(lat, lng):
+                    loc = {
+                        "name": first.get("name") or raw,
+                        "lat": lat,
+                        "lng": lng,
+                        "source": "naver",
+                    }
             except (TypeError, ValueError):
                 loc = None
 
@@ -144,6 +168,20 @@ def _search_via_playwright_sync(query: str, lat: float, lng: float, max_items: i
         category = place.get("category", "")
         if isinstance(category, list):
             category = category[0] if category else ""
+
+        # reviewCount is a count, not a star rating. Only expose rating when a
+        # real score field is present in the structured response.
+        rating = None
+        for candidate in (
+            place.get("visitorReviewScore"),
+            place.get("rating"),
+            place.get("score"),
+        ):
+            parsed = _parse_positive_number(candidate)
+            if parsed is not None and 0 <= parsed <= 5:
+                rating = parsed
+                break
+
         item = {
             "name": place.get("name", ""),
             "category": category,
@@ -158,7 +196,8 @@ def _search_via_playwright_sync(query: str, lat: float, lng: float, max_items: i
                 else ""
             ),
             "image_url": place.get("thumUrl") or place.get("imageUrl", ""),
-            "rating": place.get("reviewCount", 0),
+            "rating": rating,
+            "review_count": _parse_nonnegative_int(place.get("reviewCount")),
             "menu_info": place.get("menuInfo", ""),
         }
         petrol = place.get("petrolInfo")
@@ -195,8 +234,8 @@ async def _search(query: str, lat: float, lng: float, max_items: int) -> list[di
 @router.get("/naver-search")
 async def naver_place_search(
     query: str = Query("맛집", description="검색어 (예: 주유소, 한식, 카페)"),
-    lat: float = Query(37.4979, description="위도"),
-    lng: float = Query(127.0276, description="경도"),
+    lat: float = Query(37.4979, ge=-90, le=90, description="위도"),
+    lng: float = Query(127.0276, ge=-180, le=180, description="경도"),
     max_items: int = Query(20, ge=1, le=50, description="최대 결과 수"),
 ):
     try:
@@ -223,8 +262,8 @@ async def naver_place_search(
 async def area_explore_stream(
     categories: str = Query("음식,카페,주유소,마트,편의점"),
     location_name: str | None = Query(None),
-    lat: float = Query(37.4979),
-    lng: float = Query(127.0276),
+    lat: float = Query(37.4979, ge=-90, le=90),
+    lng: float = Query(127.0276, ge=-180, le=180),
     max_items: int = Query(30, ge=1, le=100),
 ):
     """Stream real category searches; unavailable categories contain no fake rows."""
@@ -255,8 +294,8 @@ async def area_explore_stream(
 async def subcategory_search(
     location: str = Query(""),
     subcategory: str = Query(...),
-    lat: float = Query(37.4979),
-    lng: float = Query(127.0276),
+    lat: float = Query(37.4979, ge=-90, le=90),
+    lng: float = Query(127.0276, ge=-180, le=180),
     max_items: int = Query(30, ge=1, le=100),
 ):
     try:
