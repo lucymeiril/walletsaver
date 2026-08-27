@@ -19,35 +19,45 @@ const SORT_OPTIONS = [
   { value: 'recent',     label: '최신' },
 ];
 
-const STORAGE_OPTIONS = [
-  { value: null, label: '전체' },
-  { value: '냉장', label: '냉장' },
-  { value: '냉동', label: '냉동' },
-];
+function comparisonValue(product, summary) {
+  const basis = summary?.comparison_basis;
+  if (
+    basis
+    && product.normalized?.basis === basis
+    && product.normalized?.unit_price != null
+  ) {
+    return product.normalized.unit_price;
+  }
+  return product.price?.current || 0;
+}
 
-const ORIGIN_OPTIONS = [
-  { value: null, label: '전체' },
-  { value: '국산', label: '국산' },
-  { value: '수입', label: '수입' },
-];
+function displayPrice(product) {
+  const unitPrice = product.normalized?.unit_price;
+  const basis = product.normalized?.basis;
+  if (unitPrice != null && basis) {
+    return { value: unitPrice, suffix: `/${basis}`, normalized: true };
+  }
+  return { value: product.price?.current || 0, suffix: '', normalized: false };
+}
 
 function getRank(product, summary) {
-  if (product.price_rank) return product.price_rank;
-  const price = product.normalized?.per_100g ?? product.price?.current;
+  const price = comparisonValue(product, summary);
   if (!price || !summary) return 'fair';
   if (summary.ultra_threshold && price <= summary.ultra_threshold) return 'ultra';
   if (summary.hotdeal_threshold && price <= summary.hotdeal_threshold) return 'hotdeal';
-  if (summary.avg_price_per_100g && price <= summary.avg_price_per_100g) return 'fair';
+  if (summary.avg_comparison_price && price <= summary.avg_comparison_price) return 'fair';
   return 'expensive';
 }
 
 function getPercentile(product, summary) {
   if (product.percentile != null) return product.percentile;
-  const price = product.normalized?.per_100g ?? product.price?.current;
-  if (!price || !summary?.min_price_per_100g || !summary?.max_price_per_100g) return 50;
-  const range = summary.max_price_per_100g - summary.min_price_per_100g;
+  const price = comparisonValue(product, summary);
+  const minimum = summary?.min_comparison_price;
+  const maximum = summary?.max_comparison_price;
+  if (!price || minimum == null || maximum == null) return 50;
+  const range = maximum - minimum;
   if (range <= 0) return 50;
-  return Math.round(((price - summary.min_price_per_100g) / range) * 100);
+  return Math.round(((price - minimum) / range) * 100);
 }
 
 /* ── Sub-components ── */
@@ -129,19 +139,22 @@ const SummaryCards = React.memo(function SummaryCards({ summary }) {
       </div>
     );
   }
+
+  const basis = summary.comparison_basis;
+  const suffix = basis ? `/${basis}` : '';
   return (
     <div className={s.summaryCards}>
       <div className={`${s.summaryCard} ${s.summaryAvg}`}>
-        <span className={s.summaryLabel}>평균가</span>
-        <span className={s.summaryValue}>₩{fmt(summary.avg_price_per_100g)}/100g</span>
+        <span className={s.summaryLabel}>{basis ? '평균 단위가' : '평균 판매가'}</span>
+        <span className={s.summaryValue}>₩{fmt(summary.avg_comparison_price)}{suffix}</span>
       </div>
       <div className={`${s.summaryCard} ${s.summaryMin}`}>
-        <span className={s.summaryLabel}>최저가</span>
-        <span className={s.summaryValue}>₩{fmt(summary.min_price_per_100g)}</span>
+        <span className={s.summaryLabel}>{basis ? '최저 단위가' : '최저 판매가'}</span>
+        <span className={s.summaryValue}>₩{fmt(summary.min_comparison_price)}{suffix}</span>
       </div>
       <div className={`${s.summaryCard} ${s.summaryHotdeal}`}>
         <span className={s.summaryLabel}>핫딜기준</span>
-        <span className={s.summaryValue}>₩{fmt(summary.hotdeal_threshold)}</span>
+        <span className={s.summaryValue}>₩{fmt(summary.hotdeal_threshold)}{suffix}</span>
       </div>
       <div className={`${s.summaryCard} ${s.summaryCount}`}>
         <span className={s.summaryLabel}>상품수</span>
@@ -154,7 +167,8 @@ const SummaryCards = React.memo(function SummaryCards({ summary }) {
 const ProductCard = React.memo(function ProductCard({ product, summary, rank, percentile, onClick }) {
   const cfg = RANK_CONFIG[rank] || RANK_CONFIG.fair;
   const isBest = percentile <= 10 || rank === 'ultra';
-  const price100g = product.normalized?.per_100g ?? product.price?.current;
+  const shown = displayPrice(product);
+  const current = product.price?.current;
   const original = product.price?.original;
   const discountPct = product.price?.discount_pct;
   const tags = [
@@ -180,8 +194,13 @@ const ProductCard = React.memo(function ProductCard({ product, summary, rank, pe
       </div>
 
       <div className={s.cardPriceRow}>
-        <span className={s.cardPrice}>₩{fmt(price100g)}/100g</span>
-        {original && <span className={s.cardOriginal}>원가 ₩{fmt(original)}</span>}
+        <span className={s.cardPrice}>₩{fmt(shown.value)}{shown.suffix}</span>
+        {shown.normalized && current > 0 && (
+          <span className={s.cardOriginal}>판매가 ₩{fmt(current)}</span>
+        )}
+        {original && original !== current && (
+          <span className={s.cardOriginal}>원가 ₩{fmt(original)}</span>
+        )}
         {discountPct != null && discountPct > 0 && (
           <span className={s.cardDiscount}>-{discountPct}%</span>
         )}
@@ -189,7 +208,7 @@ const ProductCard = React.memo(function ProductCard({ product, summary, rank, pe
 
       {tags.length > 0 && (
         <div className={s.cardTags}>
-          {tags.map((t, i) => (
+          {tags.map((t) => (
             <span key={t} className={s.cardTag}>{t}</span>
           ))}
         </div>
@@ -207,8 +226,8 @@ const ProductTable = React.memo(function ProductTable({ products, summary, onRow
         <tr>
           <th>등급</th>
           <th>상품명</th>
-          <th>100g당</th>
-          <th>원가</th>
+          <th>비교가</th>
+          <th>판매가</th>
           <th>할인</th>
           <th>보관</th>
           <th>원산지</th>
@@ -219,7 +238,7 @@ const ProductTable = React.memo(function ProductTable({ products, summary, onRow
         {products.map((p) => {
           const rank = getRank(p, summary);
           const cfg = RANK_CONFIG[rank] || RANK_CONFIG.fair;
-          const price100g = p.normalized?.per_100g ?? p.price?.current;
+          const shown = displayPrice(p);
           return (
             <tr key={p.id} onClick={() => onRowClick(p)} style={{ cursor: 'pointer' }}>
               <td>
@@ -228,8 +247,8 @@ const ProductTable = React.memo(function ProductTable({ products, summary, onRow
                 </span>
               </td>
               <td>{p.name}</td>
-              <td className={s.tablePrice}>₩{fmt(price100g)}</td>
-              <td>{p.price?.original ? `₩${fmt(p.price.original)}` : '-'}</td>
+              <td className={s.tablePrice}>₩{fmt(shown.value)}{shown.suffix}</td>
+              <td>{p.price?.current ? `₩${fmt(p.price.current)}` : '-'}</td>
               <td className={s.tableDiscount}>
                 {p.price?.discount_pct > 0 ? `-${p.price.discount_pct}%` : '-'}
               </td>
@@ -251,10 +270,12 @@ const AlternativesSection = React.memo(function AlternativesSection({ alternativ
     <div className={s.alternatives}>
       <div className={s.alternativesTitle}>💡 대안 카테고리</div>
       {alternatives.map((alt, i) => {
-        const diff = currentAvg && alt.avg_per_100g
-          ? Math.round(((alt.avg_per_100g - currentAvg) / currentAvg) * 100)
+        const alternativeAvg = alt.avg_comparison_price ?? alt.avg_unit_price ?? alt.avg_per_100g;
+        const diff = currentAvg && alternativeAvg
+          ? Math.round(((alternativeAvg - currentAvg) / currentAvg) * 100)
           : alt.saving_pct != null ? -alt.saving_pct : null;
         const cheaper = diff != null && diff < 0;
+        const basis = alt.comparison_basis || '';
 
         return (
           <div
@@ -264,7 +285,7 @@ const AlternativesSection = React.memo(function AlternativesSection({ alternativ
           >
             <span className={s.altIcon}>💡</span>
             <span>
-              {alt.name || alt.category_id}은(는) 평균 ₩{fmt(alt.avg_per_100g || alt.avg_100g)}/100g
+              {alt.name || alt.category_id}은(는) 평균 ₩{fmt(alternativeAvg)}{basis ? `/${basis}` : ''}
             </span>
             {diff != null && (
               <span className={cheaper ? s.altSaving : s.altExpensive}>
@@ -281,7 +302,6 @@ const AlternativesSection = React.memo(function AlternativesSection({ alternativ
 /* ── Main Component ── */
 
 export default function CategoryComparePage() {
-  // ALL hooks at the top, unconditionally
   const { categoryId } = useParams();
   const navigate = useNavigate();
 
@@ -292,13 +312,6 @@ export default function CategoryComparePage() {
   const [pagination, setPagination] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const [filters, setFilters] = useState({
-    storage: null,
-    origin: null,
-    usage: null,
-    source: null,
-  });
   const [sort, setSort] = useState('price_asc');
   const [viewMode, setViewMode] = useState('card');
   const [page, setPage] = useState(1);
@@ -310,10 +323,6 @@ export default function CategoryComparePage() {
     try {
       const data = await searchService.categoryCompare(categoryId, {
         sort,
-        storage: filters.storage,
-        origin: filters.origin,
-        usage: filters.usage,
-        source: filters.source,
         page,
         perPage: 20,
       });
@@ -334,7 +343,7 @@ export default function CategoryComparePage() {
     } finally {
       setLoading(false);
     }
-  }, [categoryId, sort, filters, page]);
+  }, [categoryId, sort, page]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -342,10 +351,9 @@ export default function CategoryComparePage() {
     return () => controller.abort();
   }, [fetchData]);
 
-  // Reset page when filters or sort change
   useEffect(() => {
     setPage(1);
-  }, [sort, filters]);
+  }, [sort]);
 
   const enrichedProducts = useMemo(() => {
     return products.map((p) => ({
@@ -355,18 +363,12 @@ export default function CategoryComparePage() {
     }));
   }, [products, summary]);
 
-  const handleFilterChange = useCallback((key, value) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
-  }, []);
-
   const handleProductClick = useCallback(
     (product) => {
       if (product.id) navigate(`/price/${product.id}`);
     },
     [navigate],
   );
-
-  // ── Render ──
 
   if (!categoryId) {
     return (
@@ -381,14 +383,12 @@ export default function CategoryComparePage() {
 
   return (
     <div className={s.page}>
-      {/* Breadcrumb */}
       <CategoryBreadcrumb
         categoryPath={summary?.category_path}
         categoryId={categoryId}
         navigate={navigate}
       />
 
-      {/* Loading */}
       {loading && (
         <div className={s.loadingWrap}>
           <Spinner />
@@ -396,24 +396,20 @@ export default function CategoryComparePage() {
         </div>
       )}
 
-      {/* Error (graceful degradation) */}
       {!loading && error && (
         <div className={s.errorState}>
           <div className={s.errorIcon}>⚠️</div>
           <div className={s.errorText}>데이터를 불러오는 데 실패했습니다</div>
-          <button className={s.retryBtn} onClick={fetchData}>
+          <button className={s.retryBtn} onClick={() => fetchData()}>
             다시 시도
           </button>
         </div>
       )}
 
-      {/* Data loaded */}
       {!loading && !error && (
         <>
-          {/* Summary */}
           <SummaryCards summary={summary} />
 
-          {/* Filters */}
           {subcategories.length > 0 && (
             <section className={s.subcategorySection}>
               <h3>세부 카테고리</h3>
@@ -433,69 +429,37 @@ export default function CategoryComparePage() {
             </section>
           )}
 
-          {/* Filters */}
           {products.length > 0 && (
-          <div className={s.filters}>
-            <div className={s.filterGroup}>
-              <span className={s.filterLabel}>보관:</span>
-              {STORAGE_OPTIONS.map((opt) => (
+            <div className={s.sortBar}>
+              <div className={s.sortGroup}>
+                <span className={s.filterLabel}>정렬:</span>
+                {SORT_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.value}
+                    className={`${s.sortBtn} ${sort === opt.value ? s.sortBtnActive : ''}`}
+                    onClick={() => setSort(opt.value)}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+              <div className={s.viewToggle}>
                 <button
-                  key={opt.label}
-                  className={`${s.filterBtn} ${filters.storage === opt.value ? s.filterBtnActive : ''}`}
-                  onClick={() => handleFilterChange('storage', opt.value)}
+                  className={`${s.viewBtn} ${viewMode === 'card' ? s.viewBtnActive : ''}`}
+                  onClick={() => setViewMode('card')}
                 >
-                  {opt.label}
+                  카드
                 </button>
-              ))}
-            </div>
-            <div className={s.filterGroup}>
-              <span className={s.filterLabel}>원산지:</span>
-              {ORIGIN_OPTIONS.map((opt) => (
                 <button
-                  key={opt.label}
-                  className={`${s.filterBtn} ${filters.origin === opt.value ? s.filterBtnActive : ''}`}
-                  onClick={() => handleFilterChange('origin', opt.value)}
+                  className={`${s.viewBtn} ${viewMode === 'table' ? s.viewBtnActive : ''}`}
+                  onClick={() => setViewMode('table')}
                 >
-                  {opt.label}
+                  테이블
                 </button>
-              ))}
+              </div>
             </div>
-          </div>
           )}
 
-          {/* Sort & View toggle */}
-          {products.length > 0 && (
-          <div className={s.sortBar}>
-            <div className={s.sortGroup}>
-              <span className={s.filterLabel}>정렬:</span>
-              {SORT_OPTIONS.map((opt) => (
-                <button
-                  key={opt.value}
-                  className={`${s.sortBtn} ${sort === opt.value ? s.sortBtnActive : ''}`}
-                  onClick={() => setSort(opt.value)}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-            <div className={s.viewToggle}>
-              <button
-                className={`${s.viewBtn} ${viewMode === 'card' ? s.viewBtnActive : ''}`}
-                onClick={() => setViewMode('card')}
-              >
-                카드
-              </button>
-              <button
-                className={`${s.viewBtn} ${viewMode === 'table' ? s.viewBtnActive : ''}`}
-                onClick={() => setViewMode('table')}
-              >
-                테이블
-              </button>
-            </div>
-          </div>
-          )}
-
-          {/* Empty */}
           {products.length === 0 && subcategories.length === 0 && (
             <div className={s.emptyState}>
               <div className={s.emptyIcon}>📦</div>
@@ -504,7 +468,6 @@ export default function CategoryComparePage() {
             </div>
           )}
 
-          {/* Product List — Card View */}
           {products.length > 0 && viewMode === 'card' && (
             <div className={s.productList}>
               {enrichedProducts.map((p) => (
@@ -520,7 +483,6 @@ export default function CategoryComparePage() {
             </div>
           )}
 
-          {/* Product List — Table View */}
           {products.length > 0 && viewMode === 'table' && (
             <ProductTable
               products={enrichedProducts}
@@ -529,7 +491,6 @@ export default function CategoryComparePage() {
             />
           )}
 
-          {/* Pagination */}
           {pagination && pagination.total_pages > 1 && (
             <div className={s.pagination}>
               <button
@@ -552,11 +513,10 @@ export default function CategoryComparePage() {
             </div>
           )}
 
-          {/* Alternatives */}
           <AlternativesSection
             alternatives={alternatives}
             navigate={navigate}
-            currentAvg={summary?.avg_price_per_100g}
+            currentAvg={summary?.avg_comparison_price}
           />
         </>
       )}
