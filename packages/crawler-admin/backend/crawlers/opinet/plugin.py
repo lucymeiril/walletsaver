@@ -1,11 +1,18 @@
 """OPINET orchestrator adapter backed by the dedicated fuel SQLite store."""
 from __future__ import annotations
 
+import asyncio
 import sys
+import tempfile
 from pathlib import Path
 
 from crawlers.opinet.crawler import OpinetCrawler
 from services.crawl_orchestrator import RawBatch, get_registry
+from services.remote_snapshot_upload import (
+    RemoteSnapshotUploadError,
+    remote_publish_configured,
+    upload_snapshot,
+)
 
 _BACKEND = Path(__file__).resolve().parents[2]
 _SHARED = _BACKEND.parent.parent / "shared"
@@ -54,7 +61,26 @@ class OpinetPlugin:
                 partial=False,
             )
 
-        saved = FuelStore().save_snapshot(records)
+        store = FuelStore()
+        saved = store.save_snapshot(records)
+        errors: list[str] = []
+        partial = False
+
+        # Publishing is optional. Keeping it here means OPINET remains
+        # crawler-owned and does not acquire a db-admin dependency.
+        if remote_publish_configured():
+            try:
+                with tempfile.TemporaryDirectory(prefix="walletsavior-opinet-") as tmpdir:
+                    snapshot_path = Path(tmpdir) / "opinet.db"
+                    await asyncio.to_thread(store.export_snapshot, snapshot_path)
+                    await asyncio.to_thread(upload_snapshot, "opinet", snapshot_path)
+            except RemoteSnapshotUploadError as exc:
+                errors.append(f"OPINET remote snapshot publish failed: {exc}")
+                partial = True
+            except Exception as exc:
+                errors.append(f"OPINET snapshot export/publish failed: {exc}")
+                partial = True
+
         preview = [
             {
                 "station_code": record.station_code,
@@ -71,8 +97,8 @@ class OpinetPlugin:
             items=preview,
             items_found=len(records),
             items_saved=saved["stations"],
-            errors=[],
-            partial=False,
+            errors=errors,
+            partial=partial,
         )
 
 
