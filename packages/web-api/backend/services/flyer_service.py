@@ -3,10 +3,12 @@
 
 각 마트의 공식 전단지 페이지 URL과, 가능한 경우 전단지 이미지를 스크래핑하여 반환한다.
 스크래핑이 실패하면 웹 URL만 반환하고, 프론트엔드가 링크로 안내한다.
+
+중요: 공식 소스에서 실제 유효기간을 읽지 못한 경우 기간을 추정하지 않는다.
+마트마다 행사 주기가 다르기 때문에 임의의 주간 범위를 실제 행사기간처럼 보여주면 안 된다.
 """
 
 import logging
-import asyncio
 from datetime import datetime, timedelta
 from typing import Optional
 from urllib.parse import urljoin
@@ -19,46 +21,27 @@ MART_FLYER_SOURCES = {
         "name": "이마트",
         "color": "#FFD700",
         "web_url": "https://emart.ssg.com/event/leaflet.ssg",
-        "description": "이마트 디지털 전단지 — 주간 할인 행사",
+        "description": "이마트 디지털 전단지",
     },
     "homeplus": {
         "name": "홈플러스",
         "color": "#FF6B35",
         "web_url": "https://www.homeplus.co.kr/app/event/leaflet.do",
-        "description": "홈플러스 디지털 전단지 — 주간 행사",
+        "description": "홈플러스 디지털 전단지",
     },
     "lotte": {
         "name": "롯데마트",
         "color": "#E4002B",
         "web_url": "https://www.lotteon.com/p/display/shop/seltDpShop/25348",
-        "description": "롯데마트 전단지 — 이번 주 행사",
+        "description": "롯데마트 전단지",
     },
     "costco": {
         "name": "코스트코",
         "color": "#E31837",
         "web_url": "https://www.costco.co.kr/c/coupon-book/884",
-        "description": "코스트코 쿠폰북 — 월간 할인",
+        "description": "코스트코 쿠폰북",
     },
 }
-
-
-def _current_flyer_period() -> dict:
-    """이번 주 전단지 기간을 계산 (목~수 패턴)."""
-    now = datetime.now()
-    weekday = now.weekday()  # 0=Mon
-    # 전단지는 보통 목요일 시작, 수요일 종료
-    days_since_thu = (weekday - 3) % 7
-    start = now - timedelta(days=days_since_thu)
-    end = start + timedelta(days=6)
-    return {
-        "valid_from": start.strftime("%Y-%m-%d"),
-        "valid_until": end.strftime("%Y-%m-%d"),
-        "display_period": f"{start.month}/{start.day}({_weekday_kr(start)}) ~ {end.month}/{end.day}({_weekday_kr(end)})",
-    }
-
-
-def _weekday_kr(dt: datetime) -> str:
-    return ["월", "화", "수", "목", "금", "토", "일"][dt.weekday()]
 
 
 async def _try_scrape_emart_flyer() -> list[dict]:
@@ -89,7 +72,6 @@ async def _try_scrape_emart_flyer() -> list[dict]:
             if images:
                 return images
 
-            # Try SSG event/leaflet API patterns
             resp2 = await client.get(
                 "https://emart.ssg.com/disp/leaflet.ssg",
                 headers=headers,
@@ -113,8 +95,6 @@ def _extract_flyer_images_from_html(html: str, base_url: str) -> list[dict]:
     import re
 
     images = []
-    # SSG/Emart leaflet images are typically large JPGs in the page
-    # Pattern 1: img tags with leaflet/flyer-related src
     img_pattern = re.compile(
         r'<img[^>]+src=["\']([^"\']+(?:leaflet|flyer|event|전단)[^"\']*\.(?:jpg|jpeg|png|webp))["\']',
         re.IGNORECASE,
@@ -125,7 +105,6 @@ def _extract_flyer_images_from_html(html: str, base_url: str) -> list[dict]:
             url = urljoin(base_url, url)
         images.append({"image_url": url, "page_number": len(images) + 1})
 
-    # Pattern 2: Background images in style attributes
     bg_pattern = re.compile(
         r'url\(["\']?([^"\')\s]+(?:leaflet|flyer|event)[^"\')\s]*\.(?:jpg|jpeg|png|webp))["\']?\)',
         re.IGNORECASE,
@@ -136,7 +115,6 @@ def _extract_flyer_images_from_html(html: str, base_url: str) -> list[dict]:
             url = urljoin(base_url, url)
         images.append({"image_url": url, "page_number": len(images) + 1})
 
-    # Pattern 3: Large images (likely flyer pages) from CDN
     cdn_pattern = re.compile(
         r'["\']?(https?://[^"\'>\s]+ssgcdn\.com[^"\'>\s]*\.(?:jpg|jpeg|png|webp))["\']?',
         re.IGNORECASE,
@@ -170,10 +148,8 @@ async def get_flyer_data(store: str) -> Optional[dict]:
     if cached and datetime.now() - cached["fetched_at"] < _CACHE_TTL:
         return cached["data"]
 
-    period = _current_flyer_period()
     flyer_images = []
 
-    # Emart: try scraping
     if store == "emart":
         flyer_images = await _try_scrape_emart_flyer()
 
@@ -183,9 +159,11 @@ async def get_flyer_data(store: str) -> Optional[dict]:
         "color": source["color"],
         "web_url": source["web_url"],
         "description": source["description"],
-        "valid_from": period["valid_from"],
-        "valid_until": period["valid_until"],
-        "display_period": period["display_period"],
+        # Do not invent a validity period. These fields stay empty until a
+        # source-specific parser can read an official period from the source.
+        "valid_from": "",
+        "valid_until": "",
+        "display_period": "",
         "flyer_pages": flyer_images,
         "has_images": len(flyer_images) > 0,
     }
