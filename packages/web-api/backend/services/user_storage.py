@@ -80,12 +80,20 @@ class PublicUserStore:
                 raise PublicUserStoreError("email_exists")
             if session.execute(text("SELECT 1 FROM users WHERE nickname=:v"), {"v": nickname}).first():
                 raise PublicUserStoreError("nickname_exists")
-            session.execute(text(
-                "INSERT INTO users "
-                "(email,nickname,hashed_password,role,is_active,is_deleted,created_at,updated_at) "
-                "VALUES (:email,:nickname,:password,'user',1,0,:now,:now)"
-            ), {"email": email, "nickname": nickname, "password": hashed_password, "now": now})
-            session.commit()
+            try:
+                session.execute(text(
+                    "INSERT INTO users "
+                    "(email,nickname,hashed_password,role,is_active,is_deleted,created_at,updated_at) "
+                    "VALUES (:email,:nickname,:password,'user',1,0,:now,:now)"
+                ), {"email": email, "nickname": nickname, "password": hashed_password, "now": now})
+                session.commit()
+            except IntegrityError as exc:
+                session.rollback()
+                if session.execute(text("SELECT 1 FROM users WHERE email=:v"), {"v": email}).first():
+                    raise PublicUserStoreError("email_exists") from exc
+                if session.execute(text("SELECT 1 FROM users WHERE nickname=:v"), {"v": nickname}).first():
+                    raise PublicUserStoreError("nickname_exists") from exc
+                raise PublicUserStoreError("account_create_conflict") from exc
             user_id = int(session.execute(
                 text("SELECT id FROM users WHERE email=:email"), {"email": email}
             ).scalar_one())
@@ -189,8 +197,17 @@ class PublicUserStore:
                         "INSERT INTO oauth_accounts "
                         "(user_id,provider,provider_user_id,created_at) VALUES (:uid,:p,:pid,:now)"
                     ), {"uid": user_id, "p": provider, "pid": provider_user_id, "now": now})
-                except IntegrityError:
+                except IntegrityError as exc:
+                    # A concurrent OAuth callback may have linked this provider id first.
+                    # rollback() also removes a user we created earlier in this transaction,
+                    # so always re-read the winning link instead of keeping the stale user_id.
                     session.rollback()
+                    winner = session.execute(text(
+                        "SELECT user_id FROM oauth_accounts WHERE provider=:p AND provider_user_id=:pid"
+                    ), {"p": provider, "pid": provider_user_id}).mappings().first()
+                    if winner is None:
+                        raise PublicUserStoreError("oauth_link_conflict") from exc
+                    user_id = int(winner["user_id"])
             if profile_image_url:
                 session.execute(
                     text("UPDATE users SET profile_image=:image,updated_at=:now WHERE id=:id"),
