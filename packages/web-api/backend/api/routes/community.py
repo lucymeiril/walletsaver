@@ -93,12 +93,15 @@ def _post_to_dict(post: PostModel) -> dict:
     not_ = sum(1 for vote in post.votes if vote.vote_type == DBVoteType.NOT)
     comments_count = sum(1 for comment in post.comments if not comment.is_deleted)
     author_nickname = post.author.nickname if post.author else f"user{post.author_id}"
+    is_free = post.post_type == DBPostType.FREE
     return {
         "id": post.id,
         "title": post.title,
         "content": post.content,
         "post_type": post.post_type.value if post.post_type else "free",
         "category": post.custom_category or (post.category_id or ""),
+        "tags": [post.custom_category] if is_free and post.custom_category else [],
+        "images": [],
         "author_id": post.author_id,
         "author_nickname": author_nickname,
         "views": post.view_count,
@@ -176,6 +179,9 @@ async def list_posts(
 
 @router.post("")
 async def create_post(body: PostCreate, user: dict = Depends(require_auth)):
+    if body.images:
+        raise HTTPException(status_code=422, detail="커뮤니티 이미지 첨부 저장은 아직 지원되지 않습니다")
+
     factory = _session_factory()
     with factory() as session:
         _ensure_user(session, user)
@@ -184,12 +190,17 @@ async def create_post(body: PostCreate, user: dict = Depends(require_auth)):
             post_type = DBPostType(body.post_type.value)
         except ValueError:
             post_type = DBPostType.FREE
+
+        custom_category = body.category
+        if post_type == DBPostType.FREE and body.tags:
+            custom_category = next((str(tag).strip() for tag in body.tags if str(tag).strip()), None)
+
         post = PostModel(
             author_id=int(user["id"]),
             post_type=post_type,
             title=body.title,
             content=body.content,
-            custom_category=body.category,
+            custom_category=custom_category,
             deal_price=body.price,
             original_price=body.original_price,
             deal_url=body.url,
@@ -224,12 +235,25 @@ async def update_post(post_id: int, body: PostUpdate, user: dict = Depends(requi
             raise HTTPException(status_code=403, detail="수정 권한이 없습니다")
         _ensure_user(session, user)
         _raise_if_banned(session, user)
-        if body.title is not None:
+
+        fields = body.model_fields_set
+        if "title" in fields and body.title is not None:
             post.title = body.title
-        if body.content is not None:
+        if "content" in fields and body.content is not None:
             post.content = body.content
-        if body.category is not None:
+        if "category" in fields:
             post.custom_category = body.category
+        if "tags" in fields and post.post_type == DBPostType.FREE:
+            post.custom_category = next(
+                (str(tag).strip() for tag in (body.tags or []) if str(tag).strip()),
+                None,
+            )
+        if "price" in fields:
+            post.deal_price = body.price
+        if "original_price" in fields:
+            post.original_price = body.original_price
+        if "url" in fields:
+            post.deal_url = body.url
         post.updated_at = datetime.utcnow()
         session.commit()
         session.refresh(post)
