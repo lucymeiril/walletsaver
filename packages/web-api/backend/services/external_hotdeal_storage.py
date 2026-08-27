@@ -13,6 +13,19 @@ from typing import Iterator
 _BACKEND_ROOT = Path(__file__).resolve().parents[1]
 _DEFAULT_DB = _BACKEND_ROOT / "storage" / "external_hotdeals.sqlite"
 
+# category_raw is intentionally preserved from the crawler.  The public API,
+# however, exposes stable category keys to the frontend.  Keep that translation
+# here instead of teaching crawler/db-admin about web UI category names.
+_CATEGORY_ALIASES: dict[str, tuple[str, ...]] = {
+    "food": ("food", "식품"),
+    "electronics": ("electronics", "전자제품", "전자", "가전", "디지털"),
+    "living": ("living", "생활", "리빙"),
+    "fashion": ("fashion", "패션"),
+    "beauty": ("beauty", "뷰티"),
+    "travel": ("travel", "여행"),
+    "etc": ("etc", "기타"),
+}
+
 
 def _json_list(value) -> list:
     if value is None:
@@ -125,8 +138,14 @@ class ExternalHotdealStore:
             clauses.append("source_site=?")
             params.append(source)
         if category and category != "all":
-            clauses.append("COALESCE(category_raw, '') LIKE ?")
-            params.append(f"%{category}%")
+            category_text = str(category).strip()
+            aliases = _CATEGORY_ALIASES.get(category_text.lower(), (category_text,))
+            category_clauses = [
+                "LOWER(COALESCE(category_raw, '')) LIKE LOWER(?) ESCAPE '\\'"
+                for _ in aliases
+            ]
+            clauses.append("(" + " OR ".join(category_clauses) + ")")
+            params.extend(_like_contains(alias) for alias in aliases)
         query_text = str(query or "").strip()
         if query_text:
             pattern = _like_contains(query_text)
