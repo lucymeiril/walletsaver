@@ -32,10 +32,18 @@ async def search_products(
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
 ):
+    storage = _storage(request)
     try:
-        data = _storage(request).search_products(
-            q, category=category, page=page, per_page=per_page
-        )
+        search_page = getattr(storage, "search_products_page", None)
+        if callable(search_page):
+            data, total = search_page(
+                q, category=category, page=page, per_page=per_page
+            )
+        else:
+            data = storage.search_products(
+                q, category=category, page=page, per_page=per_page
+            )
+            total = len(data)
     except Exception as exc:
         raise _catalog_error(exc) from exc
     return ApiResponse(
@@ -43,8 +51,8 @@ async def search_products(
         meta=PaginationMeta(
             page=page,
             per_page=per_page,
-            total=len(data),
-            total_pages=math.ceil(len(data) / per_page) if data else 0,
+            total=total,
+            total_pages=math.ceil(total / per_page) if total else 0,
         ),
     )
 
@@ -88,10 +96,16 @@ async def compare_category_products(
                 category_id, page=page, per_page=per_page
             )
             if not raw_products:
-                raw_products = storage.search_products(
-                    "", category=category_id, page=page, per_page=per_page
-                )
-                total_rows = len(raw_products)
+                search_page = getattr(storage, "search_products_page", None)
+                if callable(search_page):
+                    raw_products, total_rows = search_page(
+                        "", category=category_id, page=page, per_page=per_page
+                    )
+                else:
+                    raw_products = storage.search_products(
+                        "", category=category_id, page=page, per_page=per_page
+                    )
+                    total_rows = len(raw_products)
     except Exception as exc:
         raise _catalog_error(exc) from exc
 
@@ -139,7 +153,7 @@ async def compare_category_products(
             raw_products[0].get("cat", category_path)
             if raw_products else category_path
         ),
-        "product_count": category_total_count if children else len(products),
+        "product_count": category_total_count if children else total_rows,
         "is_leaf": not bool(children),
         "avg_price_per_100g": avg,
         "min_price_per_100g": min(prices) if prices else 0,
