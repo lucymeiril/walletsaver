@@ -103,6 +103,8 @@ class EmartCrawler(CrawlerContract):
     MAX_PAGES = 1
     CATEGORY_DELAY_MIN_SECONDS = 8.0
     CATEGORY_DELAY_MAX_SECONDS = 12.0
+    CATEGORY_BROWSER_CHANNEL = "chrome"
+    CATEGORY_BROWSER_HEADLESS = False
     MAX_REQUESTS: int | None = None
     MAX_CONSECUTIVE_FORBIDDEN = 3
 
@@ -370,7 +372,11 @@ class EmartCrawler(CrawlerContract):
                 request_budget=remaining_budget,
             )
             category_pages_attempted = int(category_diagnostics.get("pages_attempted") or 0)
-            pages_attempted += category_pages_attempted
+            category_requests_attempted = int(
+                category_diagnostics.get("requests_attempted")
+                or category_pages_attempted
+            )
+            pages_attempted += category_requests_attempted
             source_raw_count += sum(
                 int(row.get("raw_count") or 0)
                 for row in category_diagnostics.get("requests", [])
@@ -555,10 +561,13 @@ class EmartCrawler(CrawlerContract):
         """
         diagnostics = {
             "strategy": "playwright_category",
+            "requests_attempted": 0,
             "pages_attempted": 0,
             "categories_succeeded": 0,
             "blocked": False,
             "stop_reason": None,
+            "browser_channel": self.CATEGORY_BROWSER_CHANNEL,
+            "headless": self.CATEGORY_BROWSER_HEADLESS,
             "requests": [],
         }
         source_requests = self._build_category_source_requests()
@@ -574,7 +583,14 @@ class EmartCrawler(CrawlerContract):
             return [], diagnostics
 
         try:
-            async with PlaywrightHelper(headless=True) as helper:
+            # SSG currently serves the public category HTML to an ordinary
+            # visible stable Chrome session, while automated headless Chromium
+            # receives 403. This uses no saved profile, injected cookies,
+            # webdriver hiding, challenge solving, or stealth plugin.
+            async with PlaywrightHelper(
+                headless=self.CATEGORY_BROWSER_HEADLESS,
+                browser_channel=self.CATEGORY_BROWSER_CHANNEL,
+            ) as helper:
                 return await self._crawl_category_requests_in_context(
                     helper.context,
                     source_requests,
@@ -608,6 +624,7 @@ class EmartCrawler(CrawlerContract):
                 category_id = str(source_request["category_id"])
                 category_name = str(source_request["category_hint"])
                 url = str(source_request["url"])
+                diagnostics["requests_attempted"] += 1
                 diagnostics["pages_attempted"] += 1
                 row = {
                     "category_id": category_id,

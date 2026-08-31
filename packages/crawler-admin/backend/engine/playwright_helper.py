@@ -43,12 +43,14 @@ class PlaywrightHelper:
         viewport: dict | None = None,
         user_agent: str | None = None,
         persistent_user_data_dir: str | Path | None = None,
+        browser_channel: str | None = None,
     ):
         self._headless = headless
         self._locale = locale
         self._timezone = timezone
         self._viewport = viewport or {"width": 1920, "height": 1080}
         self._user_agent = user_agent
+        self._browser_channel = browser_channel
         env_profile = os.getenv("CRAWLER_BROWSER_PROFILE_DIR")
         self._persistent_user_data_dir = Path(persistent_user_data_dir or env_profile) if (persistent_user_data_dir or env_profile) else None
         self._playwright = None
@@ -68,23 +70,31 @@ class PlaywrightHelper:
 
         if self._persistent_user_data_dir:
             self._persistent_user_data_dir.mkdir(parents=True, exist_ok=True)
-            self._context = await self._playwright.chromium.launch_persistent_context(
-                str(self._persistent_user_data_dir),
-                headless=self._headless,
-                args=[
+            launch_options = {
+                "headless": self._headless,
+                "args": [
                     "--no-sandbox",
                     "--disable-dev-shm-usage",
                 ],
                 **ctx_options,
+            }
+            if self._browser_channel:
+                launch_options["channel"] = self._browser_channel
+            self._context = await self._playwright.chromium.launch_persistent_context(
+                str(self._persistent_user_data_dir),
+                **launch_options,
             )
         else:
-            self._browser = await self._playwright.chromium.launch(
-                headless=self._headless,
-                args=[
+            launch_options = {
+                "headless": self._headless,
+                "args": [
                     "--no-sandbox",
                     "--disable-dev-shm-usage",
                 ],
-            )
+            }
+            if self._browser_channel:
+                launch_options["channel"] = self._browser_channel
+            self._browser = await self._playwright.chromium.launch(**launch_options)
             self._context = await self._browser.new_context(**ctx_options)
 
         return self

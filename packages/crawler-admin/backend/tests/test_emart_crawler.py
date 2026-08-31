@@ -240,6 +240,40 @@ def test_category_requests_use_real_unique_disp_ctg_ids(crawler):
 
 
 @pytest.mark.asyncio
+async def test_category_fetch_uses_visible_stable_chrome(crawler, monkeypatch):
+    launch_options = {}
+    context = object()
+
+    class FakeHelper:
+        def __init__(self, **kwargs):
+            launch_options.update(kwargs)
+            self.context = context
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, exc_type, exc_value, traceback):
+            return None
+
+    monkeypatch.setattr(
+        "engine.playwright_helper.PlaywrightHelper",
+        FakeHelper,
+    )
+    crawler._crawl_category_requests_in_context = AsyncMock(
+        return_value=([], {"pages_attempted": 0, "requests": []})
+    )
+
+    await crawler._fetch_category_pages_via_browser(request_budget=1)
+
+    assert launch_options == {
+        "headless": False,
+        "browser_channel": "chrome",
+    }
+    source_requests = crawler._crawl_category_requests_in_context.await_args.args[1]
+    assert len(source_requests) == 1
+
+
+@pytest.mark.asyncio
 async def test_parse_modern_category_cards_and_reject_external_marketplace(crawler):
     assert CATEGORY_FIXTURE_HTML.exists()
     html = CATEGORY_FIXTURE_HTML.read_text(encoding="utf-8")
@@ -294,6 +328,7 @@ async def test_category_browser_stops_entire_run_on_first_403(crawler):
     requests = crawler._build_category_source_requests()[:3]
     diagnostics = {
         "strategy": "playwright_category",
+        "requests_attempted": 0,
         "pages_attempted": 0,
         "categories_succeeded": 0,
         "blocked": False,
@@ -312,6 +347,7 @@ async def test_category_browser_stops_entire_run_on_first_403(crawler):
     assert result["blocked"] is True
     assert result["stop_reason"].startswith("HTTP 403")
     assert result["pages_attempted"] == 2
+    assert result["requests_attempted"] == 2
 
 
 @pytest.mark.asyncio
