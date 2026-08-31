@@ -13,6 +13,12 @@ from crawlers.marts.emart.crawler import EmartCrawler
 
 FIXTURE_HTML = pathlib.Path(__file__).parent / "fixtures" / "emart" / "sale_listing_5cards.html"
 FIXTURE_JSON = pathlib.Path(__file__).parent / "fixtures" / "emart" / "sale_listing_5cards.json"
+CATEGORY_FIXTURE_HTML = (
+    pathlib.Path(__file__).parent
+    / "fixtures"
+    / "emart"
+    / "category_listing_modern_2cards.html"
+)
 
 
 @pytest.fixture
@@ -174,6 +180,7 @@ async def test_crawl_stops_after_consecutive_403_responses():
     anti_detect = MagicMock()
     anti_detect.get_random_delay.return_value = 0
     crawler = EmartCrawler(anti_detect=anti_detect)
+    crawler.MAX_REQUESTS = crawler.MAX_CONSECUTIVE_FORBIDDEN
     crawler._build_source_requests = MagicMock(
         return_value=[
             {
@@ -218,3 +225,163 @@ async def test_live_emart_probe_promotional_or_blocked_handled_safely():
         assert result.status.name in {"FAILED", "PARTIAL"}
         # CAPTCHA/WAF 우회 시도가 없었음을 검증
         assert result.quality_details.get("fetch", {}).get("auth_bypass_attempted", False) is False
+
+
+def test_category_requests_use_real_unique_disp_ctg_ids(crawler):
+    promotional = crawler._build_source_requests()
+    category_requests = crawler._build_category_source_requests()
+
+    assert len(promotional) == len(crawler.PROMOTIONAL_URLS)
+    assert len(category_requests) == len(crawler.CATEGORY_IDS)
+    assert len({row["category_id"] for row in category_requests}) == len(category_requests)
+    assert all("dispCtgId=" in row["url"] for row in category_requests)
+    assert all("page=1" not in row["url"] for row in category_requests)
+    assert any(row["category_hint"] == "우유/유제품" for row in category_requests)
+
+
+@pytest.mark.asyncio
+async def test_parse_modern_category_cards_and_reject_external_marketplace(crawler):
+    assert CATEGORY_FIXTURE_HTML.exists()
+    html = CATEGORY_FIXTURE_HTML.read_text(encoding="utf-8")
+
+    parsed = await crawler.parse(html)
+    assert len(parsed) == 2
+    assert parsed[0].name == "후룻컵 알로코코 198g"
+    assert parsed[0].sale_price == 2680
+    assert parsed[0].attributes["external_seller"] is False
+    assert parsed[0].attributes["shipping_type_code"] == "10"
+    assert parsed[0].attributes["unit_price_display"] == "100g 당 1,354원"
+    assert parsed[1].name == "국내산 꿀수박 6~7kg 내외"
+    assert parsed[1].original_price == 28900
+    assert parsed[1].attributes["external_seller"] is True
+    assert [item.name for item in await crawler.validate(parsed)] == ["후룻컵 알로코코 198g"]
+    assert crawler._extract_category_path(html, "fallback") == "과일 > 냉동/간편과일 > 간편과일"
+
+
+@pytest.mark.asyncio
+async def test_category_browser_stops_entire_run_on_first_403(crawler):
+    class FakeResponse:
+        def __init__(self, status):
+            self.status = status
+
+    class FakePage:
+        def __init__(self):
+            self.goto_calls = []
+
+        async def goto(self, url, **kwargs):
+            self.goto_calls.append(url)
+            return FakeResponse([200, 403, 200][len(self.goto_calls) - 1])
+
+        async def wait_for_selector(self, *args, **kwargs):
+            return None
+
+        async def content(self):
+            return "<html><head><title>과일 - 이마트몰</title></head><body></body></html>"
+
+        async def close(self):
+            return None
+
+    class FakeContext:
+        def __init__(self):
+            self.page = FakePage()
+
+        async def new_page(self):
+            return self.page
+
+    context = FakeContext()
+    crawler.CATEGORY_DELAY_MIN_SECONDS = 0
+    crawler.CATEGORY_DELAY_MAX_SECONDS = 0
+    requests = crawler._build_category_source_requests()[:3]
+    diagnostics = {
+        "strategy": "playwright_category",
+        "pages_attempted": 0,
+        "categories_succeeded": 0,
+        "blocked": False,
+        "stop_reason": None,
+        "requests": [],
+    }
+
+    items, result = await crawler._crawl_category_requests_in_context(
+        context,
+        requests,
+        diagnostics,
+    )
+
+    assert items == []
+    assert len(context.page.goto_calls) == 2
+    assert result["blocked"] is True
+    assert result["stop_reason"].startswith("HTTP 403")
+    assert result["pages_attempted"] == 2
+
+
+@pytest.mark.asyncio
+async def test_crawl_is_partial_when_promotions_exist_but_category_phase_is_blocked(
+    crawler,
+    html,
+):
+    response = MagicMock(status_code=200, text=html, encoding="utf-8")
+    crawler._warmup_session = MagicMock()
+    crawler._retry_request = MagicMock(return_value=response)
+    crawler._anti_detect.get_random_delay = MagicMock(return_value=0)
+    crawler._build_source_requests = MagicMock(
+        return_value=[{
+            "query": "오반장",
+            "page": 1,
+            "url": "https://example.test/promotion",
+            "category_hint": "이마트 오반장",
+        }]
+    )
+    crawler._fetch_category_pages_via_browser = AsyncMock(return_value=([], {
+        "strategy": "playwright_category",
+        "pages_attempted": 1,
+        "categories_succeeded": 0,
+        "blocked": True,
+        "stop_reason": "HTTP 403 at 과일",
+        "requests": [{"raw_count": 0}],
+    }))
+
+    result = await crawler.crawl()
+
+    assert result.items_count == 5
+    assert result.status.name == "PARTIAL"
+    assert "카테고리 수집 중단" in (result.error_msg or "")
+    assert any(error.strategy_name == "playwright_category" for error in result.errors)
+
+
+@pytest.mark.asyncio
+async def test_external_category_sellers_are_reported_as_out_of_scope_not_invalid(crawler):
+    direct = crawler._next_data_to_discount_item({
+        "itemId": "direct-1",
+        "itemName": "이마트 직접 상품",
+        "finalPrice": "2,980",
+        "siteNo": "6001",
+        "salestrNo": "2037",
+        "shppTypeCd": "10",
+        "_category_browser_card": True,
+    })
+    external = crawler._next_data_to_discount_item({
+        "itemId": "external-1",
+        "itemName": "외부 판매 상품",
+        "finalPrice": "9,900",
+        "siteNo": "6001",
+        "salestrNo": "6005",
+        "shppTypeCd": "20",
+        "_category_browser_card": True,
+    })
+    crawler._warmup_session = MagicMock()
+    crawler._build_source_requests = MagicMock(return_value=[])
+    crawler._fetch_category_pages_via_browser = AsyncMock(return_value=([direct, external], {
+        "strategy": "playwright_category",
+        "pages_attempted": 1,
+        "categories_succeeded": 1,
+        "blocked": False,
+        "stop_reason": None,
+        "requests": [{"raw_count": 2, "external_seller_count": 1}],
+    }))
+
+    result = await crawler.crawl()
+
+    assert result.status.name == "SUCCESS"
+    assert result.items_count == 1
+    assert result.quality_details["item_counts"]["invalid_or_dropped"] == 0
+    assert result.quality_details["filters"]["out_of_scope_external_seller_count"] == 1

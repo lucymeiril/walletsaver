@@ -63,12 +63,46 @@ class EmartCrawler(CrawlerContract):
         ("베스트", "https://emart.ssg.com/best/main.ssg", "이마트 베스트"),
         ("랭킹", "https://m.ssg.com/page/ranking.ssg", "SSG 공개 랭킹"),
     )
-    # 다양한 검색어로 더 많은 할인 상품 수집
-    SEARCH_QUERIES = ["과일", "채소", "정육", "수산", "유제품", "생수", "간편식"]
-    CATEGORY_QUERIES = ["과일", "채소", "정육", "수산", "유제품", "생수", "간편식"]
-    CATEGORY_IDS = {q: q for q in CATEGORY_QUERIES}
-    # 페이지네이션: 각 검색어당 최대 페이지 수 (페이지당 ~40개)
-    MAX_PAGES = 3
+    # 이마트몰 공개 LNB의 실제 상위 카테고리 ID. 검색어를 카테고리로
+    # 가장하지 않고 dispCtgId 페이지를 일반 브라우저로 순회한다.
+    CATEGORY_IDS = {
+        "6000213114": "과일",
+        "6000213167": "채소",
+        "6000215152": "쌀/잡곡/견과",
+        "6000215194": "정육/계란류",
+        "6000213469": "수산물/건해산",
+        "6000213534": "우유/유제품",
+        "6000213247": "밀키트/간편식",
+        "6000213299": "김치/반찬/델리",
+        "6000213424": "생수/음료/주류",
+        "6000215245": "커피/원두/차",
+        "6000213319": "면류/통조림",
+        "6000215286": "양념/오일",
+        "6000213362": "과자/간식",
+        "6000213412": "베이커리/잼",
+        "6000213046": "건강식품",
+        "6000228036": "친환경/유기농",
+        "6000213997": "제지/위생/건강",
+        "6000214658": "헤어/바디/뷰티",
+        "6000214420": "청소/생활용품",
+        "6000214278": "가구/인테리어",
+        "6000214128": "주방용품",
+        "6000214233": "생활잡화/공구",
+        "6000214033": "반려동물",
+        "6000213839": "유아동/완구",
+        "6000214475": "패션/언더웨어",
+        "6000213779": "잡화/명품",
+        "6000214823": "스포츠/여행/자동차",
+        "6000214719": "디지털/가전/렌탈",
+        "6000215033": "문구/취미/도서",
+    }
+    SEARCH_QUERIES: list[str] = []
+    CATEGORY_QUERIES = list(CATEGORY_IDS.values())
+    # 상위 카테고리 한 페이지에 최대 80~100개가 노출된다. 기본은 각
+    # 카테고리 첫 페이지만 수집해 수천 건 범위를 확보하면서 부하를 제한한다.
+    MAX_PAGES = 1
+    CATEGORY_DELAY_MIN_SECONDS = 8.0
+    CATEGORY_DELAY_MAX_SECONDS = 12.0
     MAX_REQUESTS: int | None = None
     MAX_CONSECUTIVE_FORBIDDEN = 3
 
@@ -145,7 +179,7 @@ class EmartCrawler(CrawlerContract):
             group=CrawlerGroup.MART,
             description="이마트 할인 상품 정보 수집 (SSG __NEXT_DATA__ 기반)",
             target_url=self.BASE_URL,
-            strategies=["requests"],
+            strategies=["requests", "playwright_category"],
         )
 
     async def crawl_incremental(
@@ -208,11 +242,11 @@ class EmartCrawler(CrawlerContract):
     async def crawl(self) -> CrawlResult:
         """이마트 할인 상품을 크롤링한다.
 
-        페이지네이션 및 공개 엔드포인트 전략:
-          1) 공개 특가/베스트 페이지(오반장, 베스트)를 우선 수집하여 외부 셀러 배제 및 고품질 상품 확보.
-          2) 각 검색어(SEARCH_QUERIES)에 대해 MAX_PAGES 페이지까지 순회하며 __NEXT_DATA__에서 상품을 추출.
-          3) 중복은 source_dedup_key와 validate()에서 제거.
-          4) 사이트 부하를 줄이기 위해 AntiDetect 딜레이를 적용.
+        공개 페이지 수집 전략:
+          1) 소수의 공개 특가/베스트 페이지를 requests로 먼저 확인한다.
+          2) 실제 이마트몰 상위 카테고리를 한 브라우저 컨텍스트에서 순차 순회한다.
+          3) 첫 403/429/challenge에서 카테고리 순회를 즉시 중단한다.
+          4) 중복은 source_dedup_key와 validate()에서 제거한다.
         """
         started_at = datetime.now()
         logger.info("[이마트] 크롤링 시작")
@@ -222,9 +256,11 @@ class EmartCrawler(CrawlerContract):
         errors: list[str] = []
         strategy_failures: list[StrategyFailure] = []
         source_raw_count = 0
+        out_of_scope_external_seller_count = 0
         pages_attempted = 0
         consecutive_forbidden = 0
         blocked_by_waf = False
+        category_diagnostics: dict = {}
         import asyncio as _asyncio
 
         try:
@@ -287,6 +323,9 @@ class EmartCrawler(CrawlerContract):
                     items = await self.parse(response.text)
                     new_count = 0
                     for item in items:
+                        if bool((item.attributes or {}).get("external_seller")):
+                            out_of_scope_external_seller_count += 1
+                            continue
                         if category_hint:
                             if not item.category:
                                 item.category = category_hint
@@ -324,6 +363,45 @@ class EmartCrawler(CrawlerContract):
                     ))
                     continue
 
+            remaining_budget = None
+            if self.MAX_REQUESTS is not None:
+                remaining_budget = max(0, int(self.MAX_REQUESTS) - pages_attempted)
+            category_items, category_diagnostics = await self._fetch_category_pages_via_browser(
+                request_budget=remaining_budget,
+            )
+            category_pages_attempted = int(category_diagnostics.get("pages_attempted") or 0)
+            pages_attempted += category_pages_attempted
+            source_raw_count += sum(
+                int(row.get("raw_count") or 0)
+                for row in category_diagnostics.get("requests", [])
+            )
+            for item in category_items:
+                if bool((item.attributes or {}).get("external_seller")):
+                    out_of_scope_external_seller_count += 1
+                    continue
+                key = source_dedup_key(item)
+                if key in seen_ids:
+                    continue
+                seen_ids.add(key)
+                all_items.append(item)
+            if category_diagnostics.get("blocked"):
+                blocked_by_waf = True
+            if category_diagnostics.get("stop_reason"):
+                category_stop_message = (
+                    f"카테고리 수집 중단: {category_diagnostics['stop_reason']}"
+                )
+                errors.append(category_stop_message)
+                category_error_type = (
+                    ErrorType.IP_BANNED
+                    if category_diagnostics.get("blocked")
+                    else ErrorType.UNKNOWN
+                )
+                strategy_failures.append(StrategyFailure(
+                    strategy_name="playwright_category",
+                    error_type=category_error_type,
+                    error_msg=category_stop_message,
+                ))
+
             valid_items = await self.validate(all_items)
             items_as_dict = [item.model_dump(mode="json") for item in valid_items]
             for _d in items_as_dict:
@@ -334,8 +412,8 @@ class EmartCrawler(CrawlerContract):
                 source_raw_count=source_raw_count,
                 invalid_count=max(0, len(all_items) - len(valid_items)),
                 errors=errors,
-                strategy_used="requests",
-                queries_attempted=len(self.SEARCH_QUERIES) + len(self.PROMOTIONAL_URLS),
+                strategy_used="requests+playwright_category",
+                queries_attempted=len(self.PROMOTIONAL_URLS) + category_pages_attempted,
                 pages_attempted=pages_attempted,
                 live_enabled=True,
                 fixture_available=False,
@@ -343,6 +421,10 @@ class EmartCrawler(CrawlerContract):
             if blocked_by_waf:
                 quality_details["fetch"]["blocked"] = True
                 quality_details["fetch"]["auth_bypass_attempted"] = False
+            quality_details["category_browser"] = category_diagnostics
+            quality_details["filters"] = {
+                "out_of_scope_external_seller_count": out_of_scope_external_seller_count,
+            }
 
             quality_details["source_map"] = build_source_map_manifest(
                 "emart",
@@ -351,14 +433,19 @@ class EmartCrawler(CrawlerContract):
                 max_pages=self.MAX_PAGES,
                 max_requests=self.MAX_REQUESTS,
                 parser_contract="emart_next_data_fixture.v1",
-                request_strategy="public_search_next_data",
-                parser_inputs=["__NEXT_DATA__", "embedded_json", "product_card_html"],
+                request_strategy="public_promotions+ordinary_browser_categories",
+                parser_inputs=["__NEXT_DATA__", "embedded_json", "mnemitem_grid_item_html"],
                 quality=quality_details,
             )
 
             finished_at = datetime.now()
             duration = (finished_at - started_at).total_seconds()
-            status = CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED
+            if not valid_items:
+                status = CrawlStatus.FAILED
+            elif category_diagnostics.get("stop_reason"):
+                status = CrawlStatus.PARTIAL
+            else:
+                status = CrawlStatus.SUCCESS
             if not valid_items:
                 diagnostic = quality_details.get("zero_result_diagnostic") or {}
                 stage = diagnostic.get("stage")
@@ -382,14 +469,18 @@ class EmartCrawler(CrawlerContract):
             return CrawlResult(
                 status=status,
                 crawler_name=self.info.name,
-                strategy_used="requests",
+                strategy_used="requests+playwright_category",
                 items_count=len(valid_items),
                 items=items_as_dict,
                 started_at=started_at,
                 finished_at=finished_at,
                 duration_seconds=duration,
                 errors=strategy_failures,
-                error_msg="; ".join(errors) if errors and not valid_items else None,
+                error_msg=(
+                    "; ".join(errors)
+                    if errors and status != CrawlStatus.SUCCESS
+                    else None
+                ),
                 quality_score=quality_details["score"],
                 quality_details=quality_details,
             )
@@ -412,51 +503,229 @@ class EmartCrawler(CrawlerContract):
     def _category_url(self, category_or_query: str, page: int = 1) -> str:
         value = str(category_or_query or "").strip()
         if value.isdigit():
-            return f"{self.BASE_URL}/disp/category.ssg?dispCtgId={value}&page={int(page)}"
+            url = f"{self.BASE_URL}/disp/category.ssg?dispCtgId={value}"
+            # The public first-page URL does not carry a page parameter.  Keep
+            # that canonical form instead of manufacturing ``page=1``.
+            return url if int(page) <= 1 else f"{url}&page={int(page)}"
         return f"{self.SEARCH_URL}?target=all&query={quote(value)}&page={int(page)}&shpp=ssgem"
 
     def _build_source_requests(self) -> list[dict[str, str | int]]:
-        """Build bounded category + pagination source collection requests.
+        """Build the small requests-based promotional preflight.
 
-        우선순위:
-          1) 공개 특가/베스트 페이지(오반장, 베스트)를 먼저 요청하여 외부 셀러 배제 및 할인 상품 수집
-          2) 검색 키워드 기반 요청(주간배송/새벽배송) 순차 탐색
+        SSG 검색 HTML은 requests에서 반복적으로 403을 반환하므로 더 이상
+        검색어/배송필터 격자를 두드리지 않는다. 실제 카테고리 순회는 한 개의
+        ordinary Playwright context를 쓰는 _fetch_category_pages_via_browser가
+        담당한다.
         """
         requests_to_make: list[dict[str, str | int]] = []
-        seen: set[str] = set()
-
-        # 1. Public promotional endpoints
         for label, url, hint in self.PROMOTIONAL_URLS:
-            if url not in seen:
-                seen.add(url)
-                requests_to_make.append({
-                    "query": label,
-                    "page": 1,
-                    "shpp": "promotional",
-                    "category_hint": hint,
-                    "url": url,
-                })
-
-        # 2. Search query endpoints
-        shpp_variants = ("ssgem", "smon")
-        for query in [*self.SEARCH_QUERIES, *self.CATEGORY_QUERIES]:
-            category_hint = query if query in self.CATEGORY_QUERIES else ""
-            for shpp in shpp_variants:
-                for page_num in range(1, self.MAX_PAGES + 1):
-                    url = f"{self.SEARCH_URL}?target=all&query={quote(query)}&page={page_num}&shpp={shpp}"
-                    if url in seen:
-                        continue
-                    seen.add(url)
-                    requests_to_make.append(
-                        {
-                            "query": query,
-                            "page": page_num,
-                            "shpp": shpp,
-                            "category_hint": category_hint,
-                            "url": url,
-                        }
-                    )
+            requests_to_make.append({
+                "query": label,
+                "page": 1,
+                "shpp": "promotional",
+                "category_hint": hint,
+                "url": url,
+            })
         return requests_to_make
+
+    def _build_category_source_requests(self) -> list[dict[str, str | int]]:
+        requests_to_make: list[dict[str, str | int]] = []
+        for category_id, category_name in self.CATEGORY_IDS.items():
+            for page_num in range(1, max(1, int(self.MAX_PAGES)) + 1):
+                requests_to_make.append({
+                    "query": category_name,
+                    "page": page_num,
+                    "category_id": category_id,
+                    "category_hint": category_name,
+                    "url": self._category_url(category_id, page_num),
+                })
+        return requests_to_make
+
+    async def _fetch_category_pages_via_browser(
+        self,
+        *,
+        request_budget: int | None = None,
+    ) -> tuple[list[DiscountItem], dict]:
+        """Collect real dispCtgId pages with one ordinary browser context.
+
+        This is not a WAF bypass.  No webdriver hiding, stealth plugin, cookie
+        injection, or challenge solving is used.  The first 403/429/CAPTCHA
+        stops the entire category phase so a blocked run cannot hammer the
+        site while pretending to make progress.
+        """
+        diagnostics = {
+            "strategy": "playwright_category",
+            "pages_attempted": 0,
+            "categories_succeeded": 0,
+            "blocked": False,
+            "stop_reason": None,
+            "requests": [],
+        }
+        source_requests = self._build_category_source_requests()
+        if request_budget is not None:
+            source_requests = source_requests[:max(0, int(request_budget))]
+        if not source_requests:
+            return [], diagnostics
+
+        try:
+            from engine.playwright_helper import PlaywrightHelper
+        except ImportError as exc:
+            diagnostics["stop_reason"] = f"playwright unavailable: {exc}"
+            return [], diagnostics
+
+        try:
+            async with PlaywrightHelper(headless=True) as helper:
+                return await self._crawl_category_requests_in_context(
+                    helper.context,
+                    source_requests,
+                    diagnostics,
+                )
+        except Exception as exc:
+            diagnostics["stop_reason"] = str(exc)
+            logger.warning("[이마트] 카테고리 브라우저 시작 실패: %s", exc)
+            return [], diagnostics
+
+    async def _crawl_category_requests_in_context(
+        self,
+        context,
+        source_requests: list[dict[str, str | int]],
+        diagnostics: dict,
+    ) -> tuple[list[DiscountItem], dict]:
+        import asyncio
+
+        collected: list[DiscountItem] = []
+        page = await context.new_page()
+        try:
+            for index, source_request in enumerate(source_requests):
+                if index:
+                    delay = random.uniform(
+                        float(self.CATEGORY_DELAY_MIN_SECONDS),
+                        float(self.CATEGORY_DELAY_MAX_SECONDS),
+                    )
+                    if delay > 0:
+                        await asyncio.sleep(delay)
+
+                category_id = str(source_request["category_id"])
+                category_name = str(source_request["category_hint"])
+                url = str(source_request["url"])
+                diagnostics["pages_attempted"] += 1
+                row = {
+                    "category_id": category_id,
+                    "category": category_name,
+                    "page": int(source_request["page"]),
+                    "url": url,
+                    "status_code": None,
+                    "raw_count": 0,
+                    "parsed_count": 0,
+                    "external_seller_count": 0,
+                    "error": None,
+                }
+                diagnostics["requests"].append(row)
+
+                try:
+                    response = await page.goto(
+                        url,
+                        wait_until="domcontentloaded",
+                        timeout=25_000,
+                    )
+                    status_code = response.status if response else None
+                    row["status_code"] = status_code
+                    if status_code in {403, 429}:
+                        diagnostics["blocked"] = True
+                        diagnostics["stop_reason"] = f"HTTP {status_code} at {category_name}"
+                        row["error"] = diagnostics["stop_reason"]
+                        break
+                    if status_code != 200:
+                        row["error"] = f"HTTP {status_code}"
+                        continue
+
+                    try:
+                        await page.wait_for_selector(
+                            "li.mnemitem_grid_item",
+                            timeout=7_000,
+                        )
+                    except Exception:
+                        # Empty categories are valid; page HTML still carries
+                        # the title/category path and any server message.
+                        pass
+
+                    html = await page.content()
+                    challenge_marker = self._category_challenge_marker(html)
+                    if challenge_marker:
+                        diagnostics["blocked"] = True
+                        diagnostics["stop_reason"] = challenge_marker
+                        row["error"] = challenge_marker
+                        break
+
+                    row["raw_count"] = self._count_category_cards(html)
+                    category_path = self._extract_category_path(html, category_name)
+                    parsed = await self.parse(html)
+                    row["external_seller_count"] = sum(
+                        1
+                        for item in parsed
+                        if bool((item.attributes or {}).get("external_seller"))
+                    )
+                    for item in parsed:
+                        item.category = category_path
+                        attributes = dict(item.attributes or {})
+                        attributes.update({
+                            "mart_native_category_id": category_id,
+                            "mart_native_category_path": category_path,
+                            "category_hint": category_path,
+                            "collection_surface": "category",
+                        })
+                        item.attributes = attributes
+                    row["parsed_count"] = len(parsed)
+                    collected.extend(parsed)
+                    diagnostics["categories_succeeded"] += 1
+                except Exception as exc:
+                    row["error"] = str(exc)
+                    logger.warning(
+                        "[이마트] 카테고리 '%s' 수집 실패: %s",
+                        category_name,
+                        exc,
+                    )
+        finally:
+            await page.close()
+        return collected, diagnostics
+
+    @staticmethod
+    def _category_challenge_marker(html: str) -> str | None:
+        lower = (html or "")[:100_000].lower()
+        for marker in (
+            "captcha",
+            "recaptcha",
+            "awswaf",
+            "aws-waf",
+            "접근이 제한되었습니다",
+            "로봇이 아닙니다",
+            "access denied",
+        ):
+            if marker in lower:
+                return f"challenge detected: {marker}"
+        return None
+
+    @staticmethod
+    def _count_category_cards(html: str) -> int:
+        try:
+            from bs4 import BeautifulSoup
+            return len(BeautifulSoup(html, "html.parser").select("li.mnemitem_grid_item"))
+        except Exception:
+            return 0
+
+    @staticmethod
+    def _extract_category_path(html: str, fallback: str) -> str:
+        try:
+            from bs4 import BeautifulSoup
+            soup = BeautifulSoup(html, "html.parser")
+            title = soup.title.get_text(" ", strip=True) if soup.title else ""
+            title = re.sub(r"\s*-\s*이마트몰\s*$", "", title).strip()
+            parts = [part.strip() for part in title.split("|") if part.strip()]
+            if parts:
+                return " > ".join(reversed(parts))
+        except Exception:
+            pass
+        return fallback
 
     async def parse(self, raw_data: str) -> list[DiscountItem]:
         """SSG __NEXT_DATA__ JSON에서 상품을 추출한다."""
@@ -504,7 +773,9 @@ class EmartCrawler(CrawlerContract):
         try:
             from bs4 import BeautifulSoup
             soup = BeautifulSoup(raw_data, "html.parser")
-            count = len(soup.select(".cunit_prod, .csct_deal, .mndtl_item, .item_box"))
+            count = len(soup.select(
+                "li.mnemitem_grid_item, .cunit_prod, .csct_deal, .mndtl_item, .item_box"
+            ))
             del soup
             return count
         except Exception:
@@ -747,8 +1018,27 @@ class EmartCrawler(CrawlerContract):
 
         mart_native_code = str(product.get("itemId") or "")
         site_no = str(product.get("siteNo") or "")
+        salestr_no = str(product.get("salestrNo") or "")
+        shipping_type = str(product.get("shppTypeCd") or "")
+        shipping_labels = [
+            str(label).strip()
+            for label in (product.get("_shipping_labels") or [])
+            if str(label).strip()
+        ]
         emart_site_codes = {"6001", "7009", "7018", "1000", "2300"}
-        external_seller = bool(site_no) and site_no not in emart_site_codes
+        if product.get("_category_browser_card"):
+            label_text = " ".join(shipping_labels)
+            first_party_category_card = (
+                site_no == "7009"
+                or (site_no == "6001" and shipping_type == "10")
+                or (
+                    site_no in {"6001", "7009"}
+                    and any(token in label_text for token in ("주간배송", "쓱배송", "새벽배송"))
+                )
+            )
+            external_seller = not first_party_category_card
+        else:
+            external_seller = bool(site_no) and site_no not in emart_site_codes
 
         unit_price_text = price_info.get("unitPriceDescription") or ""
 
@@ -757,6 +1047,9 @@ class EmartCrawler(CrawlerContract):
             "mart": "이마트",
             "mart_native_code": mart_native_code,
             "site_no": site_no,
+            "salestr_no": salestr_no,
+            "shipping_type_code": shipping_type,
+            "shipping_labels": shipping_labels,
             "external_seller": external_seller,
             "mart_native_category_path": source_category_path,
             "collection_surface": product.get("_category_hint") or "",
@@ -901,7 +1194,7 @@ class EmartCrawler(CrawlerContract):
         """HTML에서 상품 정보를 파싱한다 (fallback)."""
         items: list[DiscountItem] = []
         product_cards = soup.select(
-            ".cunit_prod, .csct_deal, .mndtl_item, .item_box"
+            "li.mnemitem_grid_item, .cunit_prod, .csct_deal, .mndtl_item, .item_box"
         )
         logger.info(f"[이마트] HTML 상품 카드: {len(product_cards)}개")
 
@@ -917,8 +1210,62 @@ class EmartCrawler(CrawlerContract):
 
     def _parse_product_card(self, card) -> Optional[DiscountItem]:
         """개별 상품 카드 HTML → DiscountItem."""
+        cart_data_el = card.select_one(".disp_cart_data")
+        if cart_data_el:
+            try:
+                cart_data = json.loads(cart_data_el.get_text(strip=True))
+            except (TypeError, json.JSONDecodeError):
+                cart_data = None
+            if isinstance(cart_data, dict):
+                img_el = card.select_one("img.mnemitem_thmb_img, img")
+                original_price = self._extract_price_from_element(
+                    card,
+                    (
+                        ".mnemitem_price_row.ty_oldpr .ssg_price, "
+                        ".old_price .ssg_price, .origin_price, .normal_price, del"
+                    ),
+                )
+                unit_price_el = card.select_one(".unit_price, [class*='unit_price']")
+                shipping_labels = [
+                    label.get_text(" ", strip=True)
+                    for label in card.select(
+                        ".mnemitem_taglist_delivery, .cm_ship_tx, .mnemitem_tag_delivery"
+                    )
+                    if label.get_text(" ", strip=True)
+                ]
+                product = {
+                    "itemId": cart_data.get("itemId"),
+                    "itemName": cart_data.get("itemNm"),
+                    "finalPrice": cart_data.get("displayPrc"),
+                    "originalPrice": original_price,
+                    "brandName": cart_data.get("brandNm") or "",
+                    "itemUrl": cart_data.get("itemLnkd") or "",
+                    "itemImgUrl": (
+                        (img_el.get("src") or img_el.get("data-src") or "")
+                        if img_el else ""
+                    ),
+                    "siteNo": cart_data.get("siteNo"),
+                    "salestrNo": cart_data.get("salestrNo"),
+                    "shppTypeCd": cart_data.get("shppTypeCd"),
+                    "shppTypeDtlCd": cart_data.get("shppTypeDtlCd"),
+                    "priceInfo": {
+                        "unitPriceDescription": (
+                            unit_price_el.get_text(" ", strip=True)
+                            if unit_price_el else ""
+                        ),
+                    },
+                    "_category_browser_card": True,
+                    "_shipping_labels": shipping_labels,
+                }
+                item = self._next_data_to_discount_item(product)
+                if item:
+                    return item
+
         name_el = card.select_one(
-            ".cunit_info .cunit_md, .title, .item_name, .prod_name, a[href*='item']"
+            (
+                ".mnemitem_goods_tit, .cunit_info .cunit_md, .title, "
+                ".item_name, .prod_name, a[href*='item']"
+            )
         )
         if not name_el:
             return None
@@ -927,7 +1274,11 @@ class EmartCrawler(CrawlerContract):
             return None
 
         sale_price = self._extract_price_from_element(
-            card, ".new_price .ssg_price, .sale_price, .price .num, .opt_price"
+            card,
+            (
+                ".new_price .ssg_price, .mnemitem_price_row.ty_newpr .ssg_price, "
+                ".sale_price, .price .num, .opt_price"
+            ),
         )
         original_price = self._extract_price_from_element(
             card, ".old_price .ssg_price, .origin_price, .normal_price"

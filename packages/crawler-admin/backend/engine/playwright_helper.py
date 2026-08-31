@@ -106,6 +106,13 @@ class PlaywrightHelper:
             except Exception:
                 pass
 
+    @property
+    def context(self):
+        """Return the active browser context while inside ``async with``."""
+        if self._context is None:
+            raise RuntimeError("PlaywrightHelper context is not active")
+        return self._context
+
     async def get_rendered_html(
         self,
         url: str,
