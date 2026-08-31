@@ -89,3 +89,23 @@ def test_logs_endpoint_returns_list_contract(client):
     data = response.json()
     assert "logs" in data
     assert isinstance(data["logs"], list)
+
+
+def test_logs_endpoint_reads_canonical_orchestrator_runs(client):
+    store = orch.get_run_store()
+    run_id = store.create_run("emart", triggered_by="manual")
+    store.update_run_status(
+        run_id,
+        status="success",
+        items_found=4,
+        items_saved=3,
+    )
+
+    response = client.get("/api/logs?job_id=emart&status=success")
+
+    assert response.status_code == 200
+    [entry] = response.json()["logs"]
+    assert entry["job_id"] == "emart"
+    assert entry["run_id"] == run_id
+    assert entry["result"]["items_found"] == 4
+    assert entry["result"]["items_saved"] == 3

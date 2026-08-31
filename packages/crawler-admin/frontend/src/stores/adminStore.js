@@ -55,6 +55,8 @@ const useAdminStore = create((set, get) => ({
           description: c.description || '',
           schedule: c.schedule || '',
           recentRuns: c.recentRuns ?? c.recent_runs ?? [],
+          wafBlockedCount: c.wafBlockedCount ?? c.waf_blocked_count ?? 0,
+          wafBlockedItems: c.wafBlockedItems ?? c.waf_blocked_items ?? [],
         })),
       });
     } catch (err) {

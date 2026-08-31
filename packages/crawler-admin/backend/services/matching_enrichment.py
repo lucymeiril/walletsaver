@@ -14,7 +14,7 @@ from typing import Any, Optional
 from sqlalchemy import text
 
 from core.match_key import NO_BRAND_SENTINEL, build_match_key
-from services.db_admin_readonly import get_db_admin_session
+from services.db_admin_readonly import _table_columns, get_db_admin_session
 
 logger = logging.getLogger(__name__)
 
@@ -74,6 +74,13 @@ def _load_matching_entries(session, keys: list[str]) -> dict[str, dict[str, Any]
         return {}
 
     result: dict[str, dict[str, Any]] = {}
+    normalized_columns = _table_columns(session, "matching_entries")
+    extra_columns = [
+        column
+        for column in ("public_product_id", "public_variant_id")
+        if column in normalized_columns
+    ]
+    extra_select = (", " + ", ".join(extra_columns)) if extra_columns else ""
     unique_keys = list(dict.fromkeys(keys))
     for offset in range(0, len(unique_keys), 900):
         chunk = unique_keys[offset : offset + 900]
@@ -82,7 +89,7 @@ def _load_matching_entries(session, keys: list[str]) -> dict[str, dict[str, Any]
         rows = session.execute(
             text(
                 "SELECT id, match_key, canonical_product_id, category_id, keyword_ids, "
-                "confidence, source, brand, name_core, pack_qty, pack_unit "
+                f"confidence, source, brand, name_core, pack_qty, pack_unit{extra_select} "
                 "FROM matching_entries "
                 f"WHERE match_key IN ({placeholders})"
             ),
@@ -95,7 +102,7 @@ def _load_matching_entries(session, keys: list[str]) -> dict[str, dict[str, Any]
                     keyword_ids = json.loads(keyword_ids)
                 except (TypeError, ValueError, json.JSONDecodeError):
                     keyword_ids = None
-            result[row[1]] = {
+            entry = {
                 "id": row[0],
                 "match_key": row[1],
                 "canonical_product_id": row[2],
@@ -108,6 +115,9 @@ def _load_matching_entries(session, keys: list[str]) -> dict[str, dict[str, Any]
                 "pack_qty": row[9],
                 "pack_unit": row[10],
             }
+            for index, column in enumerate(extra_columns, start=11):
+                entry[column] = row[index]
+            result[row[1]] = entry
     return result
 
 
@@ -151,11 +161,47 @@ def _load_products(session, canonical_ids: list[str]) -> dict[str, dict[str, Any
     return result
 
 
+def _load_normalized_products(session, public_ids: list[str]) -> dict[str, dict[str, Any]]:
+    if not public_ids or not _table_columns(session, "normalized_canonical_products"):
+        return {}
+    result: dict[str, dict[str, Any]] = {}
+    for offset in range(0, len(set(public_ids)), 900):
+        chunk = list(dict.fromkeys(public_ids))[offset : offset + 900]
+        placeholders = ", ".join(f":p{i}" for i in range(len(chunk)))
+        params = {f"p{i}": value for i, value in enumerate(chunk)}
+        rows = session.execute(text(
+            "SELECT public_product_id, canonical_name, brand, unified_category_id "
+            "FROM normalized_canonical_products "
+            f"WHERE public_product_id IN ({placeholders}) AND is_active=1"
+        ), params).mappings().all()
+        result.update({str(row["public_product_id"]): dict(row) for row in rows})
+    return result
+
+
+def _load_normalized_variants(session, variant_ids: list[str]) -> set[str]:
+    if not variant_ids or not _table_columns(session, "normalized_product_variants"):
+        return set()
+    result: set[str] = set()
+    unique_ids = list(dict.fromkeys(variant_ids))
+    for offset in range(0, len(unique_ids), 900):
+        chunk = unique_ids[offset : offset + 900]
+        placeholders = ", ".join(f":v{i}" for i in range(len(chunk)))
+        params = {f"v{i}": value for i, value in enumerate(chunk)}
+        rows = session.execute(text(
+            "SELECT public_variant_id FROM normalized_product_variants "
+            f"WHERE public_variant_id IN ({placeholders}) AND is_active=1"
+        ), params).fetchall()
+        result.update(str(row[0]) for row in rows)
+    return result
+
+
 def _mark_miss(item: dict[str, Any], reason: str) -> None:
     item["matching_status"] = "miss"
     item["matching_miss_reason"] = reason
     item.pop("canonical_product_id", None)
     item.pop("canonical_name", None)
+    item.pop("public_product_id", None)
+    item.pop("public_variant_id", None)
 
 
 def enrich_items_with_matching_entries(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -183,6 +229,14 @@ def enrich_items_with_matching_entries(items: list[dict[str, Any]]) -> list[dict
                 if entry.get("canonical_product_id") not in (None, "")
             ],
         )
+        normalized_products = _load_normalized_products(
+            session,
+            [str(entry["public_product_id"]) for entry in entries.values() if entry.get("public_product_id")],
+        )
+        normalized_variants = _load_normalized_variants(
+            session,
+            [str(entry["public_variant_id"]) for entry in entries.values() if entry.get("public_variant_id")],
+        )
 
         for item, key, reason in keyed:
             if key is None:
@@ -200,6 +254,41 @@ def enrich_items_with_matching_entries(items: list[dict[str, Any]]) -> list[dict
             item["matching_entry_id"] = entry["id"]
             item["matching_source"] = entry.get("source")
             item["matching_confidence"] = entry.get("confidence")
+
+            try:
+                confidence = float(entry.get("confidence") or 0)
+            except (TypeError, ValueError):
+                confidence = 0
+            if confidence < 0.80:
+                _mark_miss(item, "low_confidence")
+                continue
+
+            public_product_id = entry.get("public_product_id")
+            if public_product_id:
+                normalized_product = normalized_products.get(str(public_product_id))
+                public_variant_id = entry.get("public_variant_id")
+                if normalized_product is None or (
+                    public_variant_id and str(public_variant_id) not in normalized_variants
+                ):
+                    _mark_miss(item, "normalized_product_unavailable")
+                    continue
+                original_name = _extract_str(
+                    item,
+                    ["source_title", "name", "productName", "itemName", "title"],
+                )
+                if original_name:
+                    item.setdefault("source_title", original_name)
+                item["matching_status"] = "hit"
+                item.pop("matching_miss_reason", None)
+                item["public_product_id"] = str(public_product_id)
+                if public_variant_id:
+                    item["public_variant_id"] = str(public_variant_id)
+                item["canonical_name"] = normalized_product.get("canonical_name")
+                if normalized_product.get("brand"):
+                    item["brand"] = normalized_product["brand"]
+                if normalized_product.get("unified_category_id"):
+                    item["unified_category_id"] = normalized_product["unified_category_id"]
+                continue
 
             canonical_id = entry.get("canonical_product_id")
             product = products.get(str(canonical_id)) if canonical_id not in (None, "") else None

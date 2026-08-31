@@ -26,6 +26,7 @@ from crawlers.marts.source_utils import (
     source_dedup_key,
 )
 from engine.anti_detect import AntiDetect
+from pipeline.quality import summarize_discount_run
 
 logger = logging.getLogger(__name__)
 
@@ -629,6 +630,15 @@ class CostcoCrawler(CrawlerContract):
                 occ_result = await self._crawl_occ_live(started)
             if occ_result is not None and occ_result.items_count > 0:
                 return occ_result
+            if (
+                occ_result is not None
+                and self.MAX_REQUESTS is not None
+                and int((occ_result.quality_details or {}).get("public_endpoints_attempted") or 0)
+                >= self.MAX_REQUESTS
+            ):
+                # A bounded run must not silently exceed its cap by starting a
+                # second HTML strategy after the OCC budget is exhausted.
+                return occ_result
             homepage_html = self._mock_html_map.get(HOME_URL, "") if self._mock_html_map is not None else await self._fetch_html(HOME_URL, wait_selector='a[href^="/c/cos_"]')
             categories = self._food_categories(leaf_costco_categories(parse_costco_category_tree(homepage_html)))
             if not categories:
@@ -701,10 +711,14 @@ class CostcoCrawler(CrawlerContract):
                 sources.append((keyword, {"fields": "FULL", "query": keyword, "pageSize": 48, "lang": "ko", "curr": "KRW"}))
 
             for label, base_params in sources:
+                if self.MAX_REQUESTS is not None and pages >= self.MAX_REQUESTS:
+                    break
                 before = len(items)
                 page = 0
                 total_pages = 1
                 while page < min(total_pages, OCC_MAX_PAGES):
+                    if self.MAX_REQUESTS is not None and pages >= self.MAX_REQUESTS:
+                        break
                     params = dict(base_params)
                     params["currentPage"] = page
                     try:
@@ -770,6 +784,34 @@ class CostcoCrawler(CrawlerContract):
     def _build_result(self, started_at: datetime, items: list[DiscountItem], failures: list[StrategyFailure], pages: int, breakdown: dict[str, int], strategy: str) -> CrawlResult:
         finished = datetime.now()
         records = [self._discount_item_to_product_record(item) for item in items]
+        quality = summarize_discount_run(
+            records,
+            raw_count=len(items),
+            source_raw_count=len(items),
+            invalid_count=0,
+            errors=[failure.error_msg for failure in failures],
+            strategy_used=strategy,
+            queries_attempted=len(breakdown),
+            pages_attempted=pages,
+            live_enabled=strategy in {"occ_live", "category_html"},
+            fixture_available=strategy == "occ_mock",
+        )
+        quality.update({
+            "source_map": build_source_map_manifest(
+                "costco",
+                category_queries=list(breakdown.keys()) or [code for _, code in CATEGORY_CODES],
+                max_pages=self.MAX_PAGES_PER_CATEGORY,
+                max_requests=self.MAX_REQUESTS,
+                max_items=self.MAX_ITEMS,
+                parser_contract="costco_storefront_li_product_list_item.v1.g1",
+                request_strategy="homepage_category_tree_then_listing_html",
+                parser_inputs=['a[href^="/c/cos_"]', 'a[href*="/p/"]', "unit_price_text"],
+            ),
+            "product_schema": "round_r_g1_product_columns",
+            "public_endpoints_attempted": pages,
+            "category_breakdown": breakdown,
+            "total_count": len(records),
+        })
         return CrawlResult(
             status=CrawlStatus.SUCCESS if records else (CrawlStatus.PARTIAL if failures else CrawlStatus.FAILED),
             crawler_name=self.info.name,
@@ -781,22 +823,8 @@ class CostcoCrawler(CrawlerContract):
             duration_seconds=(finished - started_at).total_seconds(),
             errors=failures,
             error_msg="; ".join(f.error_msg for f in failures) if failures and not records else None,
-            quality_details={
-                "source_map": build_source_map_manifest(
-                    "costco",
-                    category_queries=list(breakdown.keys()) or [code for _, code in CATEGORY_CODES],
-                    max_pages=self.MAX_PAGES_PER_CATEGORY,
-                    max_requests=self.MAX_REQUESTS,
-                    max_items=self.MAX_ITEMS,
-                    parser_contract="costco_storefront_li_product_list_item.v1.g1",
-                    request_strategy="homepage_category_tree_then_listing_html",
-                    parser_inputs=['a[href^="/c/cos_"]', 'a[href*="/p/"]', "unit_price_text"],
-                ),
-                "product_schema": "round_r_g1_product_columns",
-                "public_endpoints_attempted": pages,
-                "category_breakdown": breakdown,
-                "total_count": len(records),
-            },
+            quality_score=quality["score"],
+            quality_details=quality,
         )
 
     def _discount_item_to_product_record(self, item: DiscountItem) -> dict[str, Any]:

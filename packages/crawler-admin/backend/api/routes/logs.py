@@ -10,26 +10,12 @@ from typing import Optional
 from fastapi import APIRouter, Query
 from fastapi.responses import StreamingResponse
 
-from scheduler.job_tracker import JobTracker
+from services.run_history import get_history
 
 router = APIRouter(prefix="/api/logs", tags=["logs"])
 
-_tracker: JobTracker | None = None
 # 최대 페이지 크기 제한 — 대량 조회 시 서버 부하 방지
 _MAX_PAGE_SIZE = 200
-
-
-def _get_tracker() -> JobTracker:
-    global _tracker
-    if _tracker is None:
-        _tracker = JobTracker()
-    return _tracker
-
-
-def set_tracker(tracker: JobTracker) -> None:
-    """외부에서 공유 JobTracker를 주입할 때 사용."""
-    global _tracker
-    _tracker = tracker
 
 
 def _filter_by_date(
@@ -81,10 +67,7 @@ async def get_logs(
     """작업 실행 이력 조회 — 서버 사이드 페이지네이션으로 응답 크기 최적화."""
     # 페이지 크기 상한 적용
     limit = min(limit, _MAX_PAGE_SIZE)
-    tracker = _get_tracker()
-    history = tracker.get_history(job_id=job_id, limit=limit * page)
-    if status:
-        history = [h for h in history if h["status"] == status]
+    history = get_history(job_id=job_id, status=status, limit=limit * page)
     history = _filter_by_date(history, date_from, date_to)
 
     total = len(history)
@@ -111,10 +94,7 @@ async def export_logs_csv(
     date_to: Optional[str] = Query(None, description="종료일 (YYYY-MM-DD)"),
 ):
     """로그를 CSV로 스트리밍 내보내기 — 대량 데이터 시 메모리 효율적."""
-    tracker = _get_tracker()
-    history = tracker.get_history(job_id=job_id, limit=limit)
-    if status:
-        history = [h for h in history if h["status"] == status]
+    history = get_history(job_id=job_id, status=status, limit=limit)
     history = _filter_by_date(history, date_from, date_to)
 
     columns = [

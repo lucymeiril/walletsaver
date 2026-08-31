@@ -39,14 +39,19 @@ class OpinetPlugin:
         return False
 
     async def crawl(self, targets: list[str] | None = None) -> RawBatch:
-        crawler = OpinetCrawler()
-        if not crawler.live_ready:
+        manual_public_fallback = "public-fallback" in (targets or [])
+        crawler = OpinetCrawler(
+            public_fallback_enabled=True if manual_public_fallback else None
+        )
+        if not crawler.collection_ready:
             return RawBatch(
                 plugin_name=self.name,
                 items=[],
                 items_found=0,
                 items_saved=0,
-                errors=["OPINET_API_KEY is not configured"],
+                errors=[
+                    "OPINET_API_KEY is not configured. For a manual one-request public-page run, use target 'public-fallback' or set OPINET_PUBLIC_FALLBACK_ENABLED=true."
+                ],
                 partial=False,
             )
 

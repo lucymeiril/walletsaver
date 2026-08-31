@@ -9,12 +9,23 @@ import json
 from threading import Lock
 from typing import Any, Iterator, Optional
 
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
 
 _DB_ADMIN_ENGINE_LOCK = Lock()
 _db_admin_engine: Optional[Engine] = None
+
+
+def _table_columns(session: Session, table_name: str) -> set[str]:
+    """Return columns for an explicitly named catalog table."""
+    try:
+        return {
+            str(column["name"])
+            for column in inspect(session.get_bind()).get_columns(table_name)
+        }
+    except Exception:
+        return set()
 
 
 def _get_db_admin_engine() -> Engine:
@@ -152,22 +163,43 @@ def bulk_lookup_match_statuses(session: Session, match_keys: list[str]) -> dict[
     unique_keys = list(dict.fromkeys(match_keys))
     statuses: dict[str, str] = {}
     key_to_product_id: dict[str, int] = {}
+    key_to_public_product_id: dict[str, str] = {}
+    key_to_public_variant_id: dict[str, str] = {}
+    matching_columns = _table_columns(session, "matching_entries")
+    normalized_matching = "public_product_id" in matching_columns
 
     for offset in range(0, len(unique_keys), 900):
         chunk = unique_keys[offset : offset + 900]
         placeholders = ", ".join(f":k{i}" for i in range(len(chunk)))
         params = {f"k{i}": key for i, key in enumerate(chunk)}
+        selected = "match_key, canonical_product_id, confidence"
+        if normalized_matching:
+            selected += ", public_product_id, public_variant_id"
         rows = session.execute(
             text(
-                "SELECT match_key, canonical_product_id "
+                f"SELECT {selected} "
                 "FROM matching_entries "
                 f"WHERE match_key IN ({placeholders})"
             ),
             params,
         ).fetchall()
-        for match_key, canonical_product_id in rows:
+        for row in rows:
+            match_key, canonical_product_id, confidence = row[0], row[1], row[2]
             key = str(match_key)
             statuses[key] = "canonical_product_unavailable"
+            try:
+                if float(confidence if confidence is not None else 0) < 0.80:
+                    statuses[key] = "low_confidence"
+                    continue
+            except (TypeError, ValueError):
+                statuses[key] = "low_confidence"
+                continue
+            if normalized_matching and row[3] not in (None, ""):
+                key_to_public_product_id[key] = str(row[3])
+                if row[4] not in (None, ""):
+                    key_to_public_variant_id[key] = str(row[4])
+                statuses[key] = "normalized_product_unavailable"
+                continue
             if canonical_product_id in (None, ""):
                 continue
             try:
@@ -175,6 +207,36 @@ def bulk_lookup_match_statuses(session: Session, match_keys: list[str]) -> dict[
             except (TypeError, ValueError):
                 continue
             key_to_product_id[key] = product_id
+
+    if key_to_public_product_id:
+        public_ids = list(dict.fromkeys(key_to_public_product_id.values()))
+        active_public_ids: set[str] = set()
+        for offset in range(0, len(public_ids), 900):
+            chunk = public_ids[offset : offset + 900]
+            placeholders = ", ".join(f":n{i}" for i in range(len(chunk)))
+            params = {f"n{i}": value for i, value in enumerate(chunk)}
+            rows = session.execute(text(
+                "SELECT public_product_id FROM normalized_canonical_products "
+                f"WHERE public_product_id IN ({placeholders}) AND is_active IS TRUE"
+            ), params).fetchall()
+            active_public_ids.update(str(row[0]) for row in rows)
+
+        active_variant_ids: set[str] = set()
+        variant_ids = list(dict.fromkeys(key_to_public_variant_id.values()))
+        for offset in range(0, len(variant_ids), 900):
+            chunk = variant_ids[offset : offset + 900]
+            placeholders = ", ".join(f":v{i}" for i in range(len(chunk)))
+            params = {f"v{i}": value for i, value in enumerate(chunk)}
+            rows = session.execute(text(
+                "SELECT public_variant_id FROM normalized_product_variants "
+                f"WHERE public_variant_id IN ({placeholders}) AND is_active IS TRUE"
+            ), params).fetchall()
+            active_variant_ids.update(str(row[0]) for row in rows)
+
+        for key, public_id in key_to_public_product_id.items():
+            variant_id = key_to_public_variant_id.get(key)
+            if public_id in active_public_ids and (not variant_id or variant_id in active_variant_ids):
+                statuses[key] = "hit"
 
     if not key_to_product_id:
         return statuses
@@ -211,11 +273,17 @@ def bulk_lookup_hit_keys(session: Session, match_keys: list[str]) -> set[str]:
 
 def get_all_matching_entries(session: Session) -> list[dict]:
     """matching_entries 전량 조회 — 외부 분류 컨텍스트용."""
+    extra_columns = []
+    available = _table_columns(session, "matching_entries")
+    for column in ("public_product_id", "public_variant_id"):
+        if column in available:
+            extra_columns.append(column)
+    extra_select = (", " + ", ".join(extra_columns)) if extra_columns else ""
     rows = session.execute(
         text(
             "SELECT id, match_key, brand, name_core, pack_qty, pack_unit, "
             "canonical_product_id, category_id, keyword_ids, confidence, source, "
-            "created_at, updated_at, last_used_at, hit_count, notes "
+            f"created_at, updated_at, last_used_at, hit_count, notes{extra_select} "
             "FROM matching_entries ORDER BY id"
         )
     ).fetchall()
@@ -223,7 +291,7 @@ def get_all_matching_entries(session: Session) -> list[dict]:
         "id", "match_key", "brand", "name_core", "pack_qty", "pack_unit",
         "canonical_product_id", "category_id", "keyword_ids", "confidence",
         "source", "created_at", "updated_at", "last_used_at", "hit_count", "notes",
-    ]
+    ] + extra_columns
     result = []
     for row in rows:
         d = dict(zip(columns, row))
@@ -272,4 +340,35 @@ def get_all_keywords(session: Session) -> list[dict]:
             except Exception:
                 pass
         result.append(d)
+    return result
+
+
+def get_normalized_catalog_context(session: Session) -> dict[str, list[dict[str, Any]]]:
+    """Read the normalized SSOT context used by external classification."""
+    table_names = (
+        "unified_categories",
+        "normalized_canonical_products",
+        "normalized_product_variants",
+        "normalized_source_listings",
+        "mart_category_mappings",
+    )
+    result: dict[str, list[dict[str, Any]]] = {}
+    for table_name in table_names:
+        if not _table_columns(session, table_name):
+            result[table_name] = []
+            continue
+        rows = session.execute(text(f"SELECT * FROM {table_name}")).mappings().all()
+        payload = []
+        for row in rows:
+            item = dict(row)
+            for key, value in list(item.items()):
+                if hasattr(value, "isoformat"):
+                    item[key] = value.isoformat()
+                elif isinstance(value, str) and key in {"aliases", "keywords", "attributes"}:
+                    try:
+                        item[key] = json.loads(value)
+                    except (TypeError, ValueError, json.JSONDecodeError):
+                        pass
+            payload.append(item)
+        result[table_name] = payload
     return result

@@ -140,3 +140,30 @@ async def test_crawl_with_no_source_rows_is_not_reported_as_success():
 
     assert result.status.name in {"PARTIAL", "FAILED"}
     assert result.items_count == 0
+
+
+@pytest.mark.asyncio
+async def test_live_occ_request_budget_prevents_unbounded_fallback(monkeypatch):
+    calls = []
+
+    class Response:
+        status_code = 200
+
+        @staticmethod
+        def json():
+            return {"products": [], "pagination": {"currentPage": 0, "totalPages": 1}}
+
+    def fake_get(_session, url, **kwargs):
+        calls.append((url, kwargs.get("params")))
+        return Response()
+
+    monkeypatch.setattr("requests.Session.get", fake_get)
+    crawler = CostcoCrawler()
+    crawler.MAX_REQUESTS = 2
+
+    result = await crawler.crawl()
+
+    assert len(calls) == 2
+    assert result.items_count == 0
+    assert result.quality_details["public_endpoints_attempted"] == 2
+    assert result.quality_details["fetch"]["pages_attempted"] == 2

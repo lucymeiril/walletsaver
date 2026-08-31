@@ -10,7 +10,7 @@ from typing import Any
 
 from fastapi import APIRouter, Query
 
-from scheduler.job_tracker import JobTracker
+from services.run_history import get_history
 
 logger = logging.getLogger(__name__)
 
@@ -20,8 +20,6 @@ router = APIRouter(prefix="/api/dashboard", tags=["dashboard"])
 _stats_cache: dict[str, Any] = {}
 _cache_ts: float = 0
 _CACHE_TTL = 60  # seconds
-
-_tracker: JobTracker | None = None
 
 CATEGORY_MAP: dict[str, str] = {
     "emart": "mart", "homeplus": "mart", "lottemart": "mart",
@@ -38,19 +36,6 @@ CATEGORY_LABELS: dict[str, str] = {
     "shopping": "쇼핑",
     "gas": "주유소",
 }
-
-
-def _get_tracker() -> JobTracker:
-    global _tracker
-    if _tracker is None:
-        _tracker = JobTracker()
-    return _tracker
-
-
-def set_tracker(tracker: JobTracker) -> None:
-    """외부에서 공유 JobTracker를 주입할 때 사용."""
-    global _tracker
-    _tracker = tracker
 
 
 def _parse_dt(value: str) -> datetime | None:
@@ -84,8 +69,7 @@ async def get_dashboard_stats(days: int = Query(7, ge=1, le=90)):
     if cache_key in _stats_cache and (now_ts - _cache_ts) < _CACHE_TTL:
         return _stats_cache[cache_key]
 
-    tracker = _get_tracker()
-    history = tracker.get_history(limit=500)
+    history = get_history(limit=500)
     now = datetime.now(timezone.utc)
     today = now.date()
 

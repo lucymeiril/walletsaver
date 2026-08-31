@@ -342,4 +342,3 @@ def summarize_discount_run(
         "next_actions": next_actions,
         "zero_result_diagnostic": zero_result_diagnostic,
     }
-

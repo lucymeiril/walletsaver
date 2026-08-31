@@ -20,7 +20,6 @@ const STATUS_MAP = {
 };
 
 const POLL_INTERVAL_MS = 2000;
-const MAX_POLLS = 120;
 const MART_LABELS = {
   emart: '이마트',
   homeplus: '홈플러스',
@@ -168,10 +167,8 @@ export default function Crawlers() {
   const startPolling = useCallback((id) => {
     if (pollRefs.current[id]) clearTimeout(pollRefs.current[id]);
     const startedAt = Date.now();
-    let pollCount = 0;
 
     const poll = async () => {
-      pollCount += 1;
       try {
         const data = await api.getCrawlerStatus(id);
         if (SUCCESS_STATUSES.has(data.status)) {
@@ -214,17 +211,6 @@ export default function Crawlers() {
           startedAt,
           message: '⚠️ 상태 확인 연결이 불안정합니다. 다시 확인 중...',
         });
-      }
-
-      if (pollCount >= MAX_POLLS) {
-        delete pollRefs.current[id];
-        setRunState(id, {
-          phase: 'done',
-          success: false,
-          message: '⏱ 상태 확인 시간이 초과되었습니다. 실행 히스토리를 확인해 주세요.',
-        });
-        clearRunState(id, 6000);
-        return;
       }
 
       pollRefs.current[id] = setTimeout(poll, POLL_INTERVAL_MS);

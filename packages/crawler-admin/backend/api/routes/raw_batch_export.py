@@ -34,6 +34,7 @@ from services.db_admin_readonly import (
     get_all_keywords,
     get_all_matching_entries,
     get_db_admin_session,
+    get_normalized_catalog_context,
     get_pending_ingestion_records,
 )
 
@@ -167,6 +168,7 @@ def _record_to_export_row(
     miss_reason: Optional[str],
 ) -> dict:
     payload = rec.get("raw_payload") or {}
+    attributes = payload.get("attributes") if isinstance(payload.get("attributes"), dict) else {}
     return {
         "raw_record_id": rec.get("raw_record_id"),
         "ingestion_id": rec.get("ingestion_id"),
@@ -176,6 +178,31 @@ def _record_to_export_row(
         "raw_price": rec.get("raw_price"),
         "crawled_at": rec.get("crawled_at"),
         "schema_type": rec.get("schema_type"),
+        "ingestion_run_id": (
+            payload.get("ingestion_run_id")
+            or attributes.get("ingestion_run_id")
+            or rec.get("batch_id")
+        ),
+        "source_product_id": (
+            payload.get("source_product_id")
+            or payload.get("source_record_key")
+            or payload.get("mart_native_code")
+            or attributes.get("source_record_key")
+            or attributes.get("mart_native_code")
+        ),
+        "sale_price": payload.get("sale_price", payload.get("price")),
+        "normal_price": payload.get("original_price"),
+        "detail_url": payload.get("detail_url") or payload.get("source_url") or attributes.get("source_url"),
+        "image_url": payload.get("image_url") or attributes.get("image_url"),
+        "source_category_path": (
+            payload.get("source_category_path")
+            or payload.get("mart_native_category_path")
+            or attributes.get("mart_native_category_path")
+            or attributes.get("category_path")
+            or payload.get("category")
+        ),
+        "quantity_text": payload.get("display_unit") or payload.get("unit") or payload.get("package_info"),
+        "promotion_text": payload.get("promotion_text") or payload.get("promo_label") or payload.get("event_name"),
         "match_key": match_key,
         "miss_reason": miss_reason,
         "brand": _extract_str(payload, ["brand", "brandName", "brandNm", "brand_name"]),
@@ -196,6 +223,15 @@ _CSV_FIELDS = [
     "raw_price",
     "crawled_at",
     "schema_type",
+    "ingestion_run_id",
+    "source_product_id",
+    "sale_price",
+    "normal_price",
+    "detail_url",
+    "image_url",
+    "source_category_path",
+    "quantity_text",
+    "promotion_text",
     "match_key",
     "miss_reason",
     "brand",
@@ -210,6 +246,15 @@ _CSV_KOREAN_HEADERS = {
     "raw_price": "가격",
     "crawled_at": "수집시각",
     "schema_type": "스키마",
+    "ingestion_run_id": "수집_실행_ID",
+    "source_product_id": "원본_상품_ID",
+    "sale_price": "판매가",
+    "normal_price": "정상가",
+    "detail_url": "상세_URL",
+    "image_url": "이미지_URL",
+    "source_category_path": "원본_카테고리_경로",
+    "quantity_text": "묶음_용량",
+    "promotion_text": "프로모션_문구",
     "match_key": "매치키",
     "miss_reason": "미스_사유",
     "brand": "브랜드",
@@ -323,6 +368,26 @@ def export_raw_batch(
     )
     file_sha256s["context/keywords.yaml"] = _sha256_file(kw_path)
 
+    try:
+        normalized_context = get_normalized_catalog_context(db_session)
+    except Exception:
+        normalized_context = {}
+    normalized_files: dict[str, str] = {}
+    for table_name, rows in normalized_context.items():
+        context_path = context_dir / f"{table_name}.jsonl"
+        with open(context_path, "w", encoding="utf-8") as fh:
+            for row in rows:
+                fh.write(json.dumps(row, ensure_ascii=False, default=str) + "\n")
+        relative_name = f"context/{table_name}.jsonl"
+        file_sha256s[relative_name] = _sha256_file(context_path)
+        normalized_files[table_name] = str(context_path)
+
+    run_ids = sorted({
+        str(row.get("ingestion_run_id"))
+        for row in export_rows
+        if row.get("ingestion_run_id")
+    })
+
     manifest: dict[str, Any] = {
         "export_id": export_id,
         "created_at": created_at,
@@ -334,7 +399,8 @@ def export_raw_batch(
         "exported_rows": len(export_rows),
         "include_matched": body.include_matched,
         "file_sha256s": file_sha256s,
-        "schema_version": 2,
+        "schema_version": "walletsaver-raw-batch-v3",
+        "ingestion_run_ids": run_ids,
         "previous_export_id": previous_export_id,
     }
     manifest_path = export_dir / "manifest.json"
@@ -352,6 +418,7 @@ def export_raw_batch(
             "context_matching_entries": str(me_path),
             "context_categories": str(cat_path),
             "context_keywords": str(kw_path),
+            "normalized_context": normalized_files,
             "manifest": str(manifest_path),
         },
     }

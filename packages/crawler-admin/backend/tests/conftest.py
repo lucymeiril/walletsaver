@@ -10,7 +10,16 @@ CI/로컬에서 기본 실행 시 hang을 유발할 수 있으므로
     py -m pytest tests/ --run-live     # live 테스트 포함
 """
 
+import os
+
 import pytest
+
+
+# Raw-export routes use the same authenticated DB-admin client as production.
+# Tests replace the database session itself, but the client must still be
+# constructible; keeping this explicit classifies missing credentials as an
+# environment fixture issue rather than weakening the production guard.
+os.environ.setdefault("CRAWLER_ADMIN_API_KEY", "walletsavior-dev-crawler-key-2025")
 
 
 def pytest_addoption(parser):

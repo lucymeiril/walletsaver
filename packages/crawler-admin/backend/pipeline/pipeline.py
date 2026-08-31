@@ -30,6 +30,7 @@ from services.matching_enrichment import enrich_items_with_matching_entries
 
 logger = logging.getLogger(__name__)
 ProgressCallback = Callable[[dict[str, Any]], Any]
+NON_RETRYABLE_CRAWL_HTTP_STATUSES = frozenset({400, 401, 403, 404})
 
 DB_ADMIN_API_URL = os.getenv(
     "DB_ADMIN_API_URL",
@@ -165,6 +166,24 @@ class CrawlPipeline:
                 if crawl_result.status == CrawlStatus.SUCCESS:
                     break
                 errors.append(f"attempt {attempt}: status={crawl_result.status.value}")
+                non_retryable_statuses = sorted(
+                    {
+                        failure.status_code
+                        for failure in crawl_result.errors
+                        if failure.status_code in NON_RETRYABLE_CRAWL_HTTP_STATUSES
+                    }
+                )
+                if non_retryable_statuses:
+                    errors.append(
+                        "not retrying non-retryable HTTP status: "
+                        + ", ".join(str(status) for status in non_retryable_statuses)
+                    )
+                    logger.warning(
+                        "[Pipeline] %s: stopping crawl retries after HTTP %s",
+                        crawler_name,
+                        ", ".join(str(status) for status in non_retryable_statuses),
+                    )
+                    break
             except Exception as exc:
                 errors.append(f"attempt {attempt}: {exc}")
                 await self._emit_progress(

@@ -10,6 +10,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import os
 import random
 import sys
 import time
@@ -36,7 +37,7 @@ except ImportError:  # pragma: no cover - standalone fixture tooling
 
 try:
     from core.fuel_canonicalize import canonicalize_opinet
-    from .parser import parse_opinet_low_price_html
+    from .parser import parse_opinet_low_price_html, parse_opinet_public_region_html
 
     _HTML_FIXTURE_IMPORTS_OK = True
 except ImportError as exc:  # pragma: no cover - retained saved-HTML compatibility
@@ -329,6 +330,7 @@ class OpinetCrawler:
     version = "2.0.1"
     BASE_URL = "https://www.opinet.co.kr"
     API_BASE = f"{BASE_URL}/api"
+    PUBLIC_REGION_URL = f"{BASE_URL}/searRgOsSelect.do"
     SIDO_CODES = (
         "01", "02", "03", "04", "05", "06", "07", "08", "09",
         "10", "11", "14", "15", "16", "17", "18", "19",
@@ -341,15 +343,27 @@ class OpinetCrawler:
         api_key: str | None = None,
         request_timeout: int = 15,
         max_retries: int = 3,
+        public_fallback_enabled: bool | None = None,
+        public_cache_path: Path | str | None = None,
+        public_cache_ttl_seconds: int = 21_600,
     ) -> None:
         self.fixture_path = Path(fixture_path) if fixture_path else _find_default_fixture()
         self.api_key = OPINET_API_KEY if api_key is None else api_key
         self.request_timeout = request_timeout
         self.max_retries = max_retries
+        if public_fallback_enabled is None:
+            public_fallback_enabled = os.getenv("OPINET_PUBLIC_FALLBACK_ENABLED", "").strip().lower() in {"1", "true", "yes", "on"}
+        self.public_fallback_enabled = bool(public_fallback_enabled)
+        self.public_cache_path = Path(public_cache_path) if public_cache_path else (_CRAWLER_BACKEND / "data" / "cache" / "opinet_public_region.html")
+        self.public_cache_ttl_seconds = max(300, int(public_cache_ttl_seconds))
 
     @property
     def live_ready(self) -> bool:
         return bool(str(self.api_key or "").strip())
+
+    @property
+    def collection_ready(self) -> bool:
+        return self.live_ready or self.public_fallback_enabled
 
     def parse_fixture(self, fixture_path: Path | str | None = None) -> list[GasStationRecord]:
         path = Path(fixture_path) if fixture_path else self.fixture_path
@@ -434,6 +448,8 @@ class OpinetCrawler:
     ) -> list[GasStationRecord]:
         """Fetch real ``lowTop10`` rows when an API key is configured."""
         if not self.live_ready:
+            if self.public_fallback_enabled:
+                return self.public_page_crawl()
             logger.info("[OpinetCrawler] OPINET_API_KEY is not configured; live crawl skipped")
             return []
 
@@ -453,6 +469,85 @@ class OpinetCrawler:
                     if payload is not None:
                         rows.extend(parse_api_payload(payload, fuel_type=fuel_type))
         return merge_station_records(rows)
+
+    def public_page_crawl(self) -> list[GasStationRecord]:
+        """One-request, cached fallback for explicit keyless manual runs."""
+        if not self.public_fallback_enabled:
+            return []
+
+        html = ""
+        cache_path = self.public_cache_path
+        try:
+            cache_age = time.time() - cache_path.stat().st_mtime
+            if cache_age <= self.public_cache_ttl_seconds:
+                html = cache_path.read_text(encoding="utf-8")
+        except (FileNotFoundError, OSError, UnicodeError):
+            html = ""
+
+        if not html:
+            time.sleep(1.0)
+            try:
+                response = requests.get(
+                    self.PUBLIC_REGION_URL,
+                    headers={
+                        "User-Agent": "WalletSaverCapstone/1.0 (educational; low-frequency public-page fallback)",
+                        "Accept": "text/html,application/xhtml+xml",
+                        "Accept-Language": "ko-KR,ko;q=0.9",
+                    },
+                    timeout=self.request_timeout,
+                )
+            except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as exc:
+                logger.warning("[OpinetCrawler] public fallback request failed: %s", exc)
+                return []
+            if response.status_code != 200:
+                logger.warning("[OpinetCrawler] public fallback HTTP %s", response.status_code)
+                return []
+            html = response.text
+            try:
+                cache_path.parent.mkdir(parents=True, exist_ok=True)
+                cache_path.write_text(html, encoding="utf-8")
+            except OSError as exc:
+                logger.warning("[OpinetCrawler] public fallback cache write failed: %s", exc)
+
+        rows = parse_opinet_public_region_html(html, source_url=self.PUBLIC_REGION_URL)
+        records: list[GasStationRecord] = []
+        now = datetime.utcnow()
+        for row in rows:
+            name = str(row.get("name") or "").strip()
+            address = str(row.get("address") or "").strip()
+            if not name or not address:
+                continue
+            prices: list[GasStationPriceRecord] = []
+            for fuel_type, price_key, time_key in (
+                ("gasoline", "gasoline_regular", "gasoline_updated_at"),
+                ("diesel", "diesel", "diesel_updated_at"),
+            ):
+                price = _parse_price(row.get(price_key))
+                if price is not None:
+                    prices.append(GasStationPriceRecord(
+                        fuel_type=fuel_type,
+                        price=price,
+                        observed_at=_parse_dt(row.get(time_key) or now),
+                        source="opinet-public-page",
+                    ))
+            if not prices:
+                continue
+            sido, sigungu = _split_region(address)
+            lat, lng = katec_to_wgs84(row.get("katec_x"), row.get("katec_y"))
+            records.append(GasStationRecord(
+                station_code=str(row.get("opinet_id") or f"{name}|{address}"),
+                brand=normalize_brand(str(row.get("brand") or "")),
+                name=name,
+                address=address,
+                sido=sido,
+                sigungu=sigungu,
+                lat=lat,
+                lng=lng,
+                has_self_service=bool(row.get("self_service")),
+                updated_at=max(price.observed_at for price in prices),
+                prices=prices,
+            ))
+        return merge_station_records(records)
 
     async def crawl(
         self,

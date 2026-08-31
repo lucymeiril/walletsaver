@@ -55,6 +55,14 @@ class EmartCrawler(CrawlerContract):
     BASE_URL = "https://emart.ssg.com"
     # SSG 검색 페이지 — __NEXT_DATA__에 상품 JSON이 포함됨
     SEARCH_URL = "https://emart.ssg.com/search.ssg"
+    OBANJANG_URL = "https://emart.ssg.com/page/pc/obanjang.ssg"
+    BEST_URL = "https://emart.ssg.com/best/main.ssg"
+    RANKING_URL = "https://m.ssg.com/page/ranking.ssg"
+    PROMOTIONAL_URLS = (
+        ("오반장", "https://emart.ssg.com/page/pc/obanjang.ssg", "오반장 당일특가"),
+        ("베스트", "https://emart.ssg.com/best/main.ssg", "이마트 베스트"),
+        ("랭킹", "https://m.ssg.com/page/ranking.ssg", "SSG 공개 랭킹"),
+    )
     # 다양한 검색어로 더 많은 할인 상품 수집
     SEARCH_QUERIES = ["과일", "채소", "정육", "수산", "유제품", "생수", "간편식"]
     CATEGORY_QUERIES = ["과일", "채소", "정육", "수산", "유제품", "생수", "간편식"]
@@ -62,6 +70,7 @@ class EmartCrawler(CrawlerContract):
     # 페이지네이션: 각 검색어당 최대 페이지 수 (페이지당 ~40개)
     MAX_PAGES = 3
     MAX_REQUESTS: int | None = None
+    MAX_CONSECUTIVE_FORBIDDEN = 3
 
     def __init__(self, anti_detect: Optional[AntiDetect] = None):
         self._anti_detect = anti_detect or AntiDetect(delay_min=2.5, delay_max=5.0)
@@ -139,13 +148,71 @@ class EmartCrawler(CrawlerContract):
             strategies=["requests"],
         )
 
+    async def crawl_incremental(
+        self,
+        *,
+        since: str | None = None,
+        source_input: str | None = None,
+        source_url: str | None = None,
+    ) -> CrawlResult:
+        if source_input is not None:
+            return await self._crawl_saved_source_input(source_input, source_url=source_url)
+        return await self.crawl()
+
+    async def _crawl_saved_source_input(self, source_input: str, *, source_url: str | None = None) -> CrawlResult:
+        started_at = datetime.now()
+        source_raw_count = self._count_raw_candidates(source_input)
+        parsed = await self.parse(source_input)
+        valid_items = await self.validate(parsed)
+        items_as_dict = [item.model_dump(mode="json") for item in valid_items]
+        for _d in items_as_dict:
+            _d["source"] = _d.get("source") or "emart"
+        quality_details = summarize_discount_run(
+            items_as_dict,
+            raw_count=len(parsed),
+            source_raw_count=source_raw_count,
+            invalid_count=max(0, len(parsed) - len(valid_items)),
+            strategy_used="saved_source_input",
+            fallback_used=False,
+            queries_attempted=0,
+            pages_attempted=0,
+            live_enabled=False,
+            fixture_available=True,
+        )
+        quality_details["source_map"] = build_source_map_manifest(
+            "emart",
+            search_queries=self.SEARCH_QUERIES,
+            category_queries=self.CATEGORY_QUERIES,
+            max_pages=self.MAX_PAGES,
+            max_requests=self.MAX_REQUESTS,
+            parser_contract="emart_next_data_fixture.v1",
+            request_strategy="saved_source_input",
+            parser_inputs=["__NEXT_DATA__", "embedded_json", "product_card_html"],
+            quality=quality_details,
+        )
+        finished_at = datetime.now()
+        return CrawlResult(
+            status=CrawlStatus.SUCCESS if valid_items else CrawlStatus.FAILED,
+            crawler_name=self.info.name,
+            strategy_used="saved_source_input",
+            items_count=len(valid_items),
+            items=items_as_dict,
+            started_at=started_at,
+            finished_at=finished_at,
+            duration_seconds=(finished_at - started_at).total_seconds(),
+            error_msg=None if valid_items else "saved source input produced zero valid Emart items",
+            quality_score=quality_details["score"],
+            quality_details=quality_details,
+        )
+
     async def crawl(self) -> CrawlResult:
         """이마트 할인 상품을 크롤링한다.
 
-        페이지네이션 전략:
-          각 검색어(SEARCH_QUERIES)에 대해 MAX_PAGES 페이지까지 순회하며
-          __NEXT_DATA__에서 상품을 추출한다. 중복은 validate()에서 제거한다.
-          사이트 부하를 줄이기 위해 각 요청 사이에 AntiDetect 딜레이를 적용한다.
+        페이지네이션 및 공개 엔드포인트 전략:
+          1) 공개 특가/베스트 페이지(오반장, 베스트)를 우선 수집하여 외부 셀러 배제 및 고품질 상품 확보.
+          2) 각 검색어(SEARCH_QUERIES)에 대해 MAX_PAGES 페이지까지 순회하며 __NEXT_DATA__에서 상품을 추출.
+          3) 중복은 source_dedup_key와 validate()에서 제거.
+          4) 사이트 부하를 줄이기 위해 AntiDetect 딜레이를 적용.
         """
         started_at = datetime.now()
         logger.info("[이마트] 크롤링 시작")
@@ -156,6 +223,8 @@ class EmartCrawler(CrawlerContract):
         strategy_failures: list[StrategyFailure] = []
         source_raw_count = 0
         pages_attempted = 0
+        consecutive_forbidden = 0
+        blocked_by_waf = False
         import asyncio as _asyncio
 
         try:
@@ -176,13 +245,14 @@ class EmartCrawler(CrawlerContract):
 
                     # Anti-detection: randomized delay between pages with jitter
                     delay = self._anti_detect.get_random_delay()
-                    await _asyncio.sleep(delay + random.uniform(0, 0.5))
+                    if delay > 0:
+                        await _asyncio.sleep(delay + random.uniform(0, 0.5))
 
                     response = self._retry_request(url, headers=headers, timeout=20)
                     response.encoding = "utf-8"
 
                     if response.status_code != 200:
-                        message = f"검색 '{query}' p{page_num} HTTP {response.status_code}"
+                        message = f"요청 '{query}' p{page_num} HTTP {response.status_code}"
                         logger.warning(f"[이마트] {message}")
                         errors.append(message)
                         strategy_failures.append(StrategyFailure(
@@ -191,7 +261,26 @@ class EmartCrawler(CrawlerContract):
                             error_msg=message,
                             status_code=response.status_code,
                         ))
+                        if response.status_code == 403:
+                            consecutive_forbidden += 1
+                            if consecutive_forbidden >= self.MAX_CONSECUTIVE_FORBIDDEN:
+                                stop_message = (
+                                    f"HTTP 403이 {consecutive_forbidden}회 연속 발생해 "
+                                    "현재 실행을 중단합니다."
+                                )
+                                logger.warning("[이마트] %s", stop_message)
+                                errors.append(stop_message)
+                                blocked_by_waf = True
+                                if self._session is not None:
+                                    self._session.close()
+                                self._session = None
+                                self._session_warmed = False
+                                break
+                        else:
+                            consecutive_forbidden = 0
                         continue
+
+                    consecutive_forbidden = 0
 
                     raw_candidates = self._count_raw_candidates(response.text)
                     source_raw_count += raw_candidates
@@ -209,7 +298,7 @@ class EmartCrawler(CrawlerContract):
                         all_items.append(item)
                         new_count += 1
                     logger.info(
-                        f"[이마트] 검색 '{query}' p{page_num}: 원천 후보 {raw_candidates}개, "
+                        f"[이마트] 요청 '{query}' p{page_num}: 원천 후보 {raw_candidates}개, "
                         f"{new_count}개 신규 ({len(items)}개 중)"
                     )
 
@@ -218,7 +307,7 @@ class EmartCrawler(CrawlerContract):
                         continue
 
                 except Exception as e:
-                    message = f"검색 '{query}' p{page_num}: {e}"
+                    message = f"요청 '{query}' p{page_num}: {e}"
                     logger.warning(f"[이마트] {message}")
                     errors.append(message)
                     error_type = (
@@ -246,9 +335,15 @@ class EmartCrawler(CrawlerContract):
                 invalid_count=max(0, len(all_items) - len(valid_items)),
                 errors=errors,
                 strategy_used="requests",
-                queries_attempted=len(self.SEARCH_QUERIES),
+                queries_attempted=len(self.SEARCH_QUERIES) + len(self.PROMOTIONAL_URLS),
                 pages_attempted=pages_attempted,
+                live_enabled=True,
+                fixture_available=False,
             )
+            if blocked_by_waf:
+                quality_details["fetch"]["blocked"] = True
+                quality_details["fetch"]["auth_bypass_attempted"] = False
+
             quality_details["source_map"] = build_source_map_manifest(
                 "emart",
                 search_queries=self.SEARCH_QUERIES,
@@ -323,28 +418,42 @@ class EmartCrawler(CrawlerContract):
     def _build_source_requests(self) -> list[dict[str, str | int]]:
         """Build bounded category + pagination source collection requests.
 
-        사용자 명시: 이마트 검색에서 `shpp=ssgem`(주간배송)·`shpp=smon`(새벽배송)
-        두 자사 필터를 적용해 같은 쿼리를 두 번씩 돌려 외부 셀러를 사실상 배제한다.
-        라이브 probe로 두 필터 모두 200 + __NEXT_DATA__ 정상 응답을 확인했다 (none=132 / ssgem=96 / smon=116).
+        우선순위:
+          1) 공개 특가/베스트 페이지(오반장, 베스트)를 먼저 요청하여 외부 셀러 배제 및 할인 상품 수집
+          2) 검색 키워드 기반 요청(주간배송/새벽배송) 순차 탐색
         """
         requests_to_make: list[dict[str, str | int]] = []
-        seen: set[tuple[str, int, str]] = set()
+        seen: set[str] = set()
+
+        # 1. Public promotional endpoints
+        for label, url, hint in self.PROMOTIONAL_URLS:
+            if url not in seen:
+                seen.add(url)
+                requests_to_make.append({
+                    "query": label,
+                    "page": 1,
+                    "shpp": "promotional",
+                    "category_hint": hint,
+                    "url": url,
+                })
+
+        # 2. Search query endpoints
         shpp_variants = ("ssgem", "smon")
         for query in [*self.SEARCH_QUERIES, *self.CATEGORY_QUERIES]:
             category_hint = query if query in self.CATEGORY_QUERIES else ""
             for shpp in shpp_variants:
                 for page_num in range(1, self.MAX_PAGES + 1):
-                    key = (query, page_num, shpp)
-                    if key in seen:
+                    url = f"{self.SEARCH_URL}?target=all&query={quote(query)}&page={page_num}&shpp={shpp}"
+                    if url in seen:
                         continue
-                    seen.add(key)
+                    seen.add(url)
                     requests_to_make.append(
                         {
                             "query": query,
                             "page": page_num,
                             "shpp": shpp,
                             "category_hint": category_hint,
-                            "url": f"{self.SEARCH_URL}?target=all&query={quote(query)}&page={page_num}&shpp={shpp}",
+                            "url": url,
                         }
                     )
         return requests_to_make
@@ -463,20 +572,22 @@ class EmartCrawler(CrawlerContract):
                 node.get("categoryName")
                 or node.get("dispCtgName")
                 or node.get("ctgNm")
+                or node.get("themeNm")
                 or node.get("title")
                 or node.get("name")
                 or category_hint
             )
-            data_list = node.get("dataList")
-            if isinstance(data_list, list) and data_list and isinstance(data_list[0], dict):
-                if "itemId" in data_list[0] and "itemName" in data_list[0]:
-                    for product in data_list:
-                        enriched = dict(product)
-                        if local_category and not (
-                            enriched.get("categoryName") or enriched.get("dispCtgName") or enriched.get("ctgNm")
-                        ):
-                            enriched["_category_hint"] = local_category
-                        products.append(enriched)
+            for list_key in ("dataList", "itemList", "themeItemList", "products", "items", "prodList"):
+                item_candidates = node.get(list_key)
+                if isinstance(item_candidates, list) and item_candidates and isinstance(item_candidates[0], dict):
+                    if "itemId" in item_candidates[0] and ("itemName" in item_candidates[0] or "itemNm" in item_candidates[0]):
+                        for product in item_candidates:
+                            enriched = dict(product)
+                            if local_category and not (
+                                enriched.get("categoryName") or enriched.get("dispCtgName") or enriched.get("ctgNm")
+                            ):
+                                enriched["_category_hint"] = local_category
+                            products.append(enriched)
             for value in node.values():
                 products.extend(self._collect_product_lists(value, category_hint=local_category))
         elif isinstance(node, list):
@@ -526,62 +637,91 @@ class EmartCrawler(CrawlerContract):
           priceInfo.strikeOutPrice, priceInfo.discountRate,
           brandName, itemImgUrl, itemUrl, siteName
         """
-        name = product.get("itemName", "")
+        name = product.get("itemName") or product.get("itemNm") or product.get("name", "")
         if not name or len(name) < 2:
             return None
 
-        # 가격 추출 — finalPrice (쉼표 포함 문자열) 또는 priceInfo
-        sale_price = self._parse_price_str(product.get("finalPrice"))
+        # 가격 추출 — finalPrice (쉼표 포함 문자열) 또는 priceInfo / sellprc / salePrice / etc
+        price_info = product.get("priceInfo") or {}
+        if not isinstance(price_info, dict):
+            price_info = {}
 
-        # priceInfo에서도 시도
-        if not sale_price:
-            price_info = product.get("priceInfo", {})
-            if price_info:
-                sale_price = self._parse_price_str(price_info.get("primaryPrice"))
+        sale_price = (
+            self._parse_price_str(product.get("finalPrice"))
+            or self._parse_price_str(price_info.get("rawPrimaryPrice"))
+            or self._parse_price_str(price_info.get("primaryPrice"))
+            or self._parse_price_str(product.get("sellprc"))
+            or self._parse_price_str(product.get("salePrice"))
+            or self._parse_price_str(product.get("sellUnitPrice"))
+            or self._parse_price_str(product.get("price"))
+            or self._parse_price_str((product.get("reactingDetail", {}).get("mkt_info", {}) or {}).get("lwst_sellprc"))
+        )
 
         if not sale_price or sale_price <= 0:
             return None
 
         # 원가
-        original_price = self._parse_price_str(
-            product.get("strikeOutPrice") or product.get("originalPrice")
+        original_price = (
+            self._parse_price_str(product.get("strikeOutPrice"))
+            or self._parse_price_str(product.get("originalPrice"))
+            or self._parse_price_str(price_info.get("strikeOutPrice"))
+            or self._parse_price_str(product.get("norprc"))
+            or self._parse_price_str(product.get("originPrice"))
         )
-        if not original_price:
-            price_info = product.get("priceInfo", {})
-            if price_info:
-                original_price = self._parse_price_str(price_info.get("strikeOutPrice"))
+        if not original_price and price_info.get("additionalPrice"):
+            add_price_str = str(price_info.get("additionalPrice"))
+            if "최고판매가" in add_price_str or "정상가" in add_price_str:
+                original_price = self._parse_price_str(add_price_str)
 
         # 할인율
         discount_pct = None
         if original_price and original_price > sale_price:
             discount_pct = round((1 - sale_price / original_price) * 100, 1)
         else:
-            # priceInfo.discountRate 에서 추출 (예: "2%")
-            rate_str = product.get("priceInfo", {}).get("discountRate", "")
-            if rate_str:
-                rate_match = re.search(r"(\d+)", str(rate_str))
+            rate_val = product.get("discountRate") or price_info.get("discountRate") or ""
+            if rate_val:
+                rate_match = re.search(r"(\d+(?:\.\d+)?)", str(rate_val))
                 if rate_match:
                     discount_pct = float(rate_match.group(1))
 
-        image_url = self._absolute_url(
-            product.get("itemImgUrl") or product.get("imageUrl") or product.get("imgUrl") or "",
-            self.BASE_URL,
+        reacting_detail = product.get("reactingDetail")
+        if not isinstance(reacting_detail, dict):
+            reacting_detail = {}
+        market_info = reacting_detail.get("mkt_info")
+        if not isinstance(market_info, dict):
+            market_info = {}
+
+        raw_img = (
+            product.get("itemImgUrl")
+            or product.get("imageUrl")
+            or product.get("imgUrl")
+            or market_info.get("item_img_url")
+            or ""
         )
-        detail_url = self._absolute_url(
-            product.get("itemUrl") or product.get("detailUrl") or product.get("linkUrl") or "",
-            self.BASE_URL,
+        image_url = self._absolute_url(raw_img, self.BASE_URL)
+
+        raw_detail = (
+            product.get("itemUrl")
+            or product.get("detailUrl")
+            or product.get("itemDetailLink")
+            or product.get("linkUrl")
+            or ""
         )
+        if not raw_detail and product.get("itemId"):
+            raw_detail = f"{self.BASE_URL}/item/itemView.ssg?itemId={product.get('itemId')}&siteNo={product.get('siteNo') or '6001'}"
+        detail_url = self._absolute_url(raw_detail, self.BASE_URL)
+
         brand = product.get("brandName", "")
         site = product.get("siteName", "이마트")
-        category = (
+        source_category_path = (
             product.get("categoryName")
             or product.get("dispCtgName")
             or product.get("ctgNm")
             or product.get("largeCategoryName")
-            or product.get("_category_hint")
             or ""
         )
-        raw_unit = product.get("sellUnitCapacity", "")
+        category = source_category_path or product.get("_category_hint") or ""
+        raw_unit = product.get("sellUnitCapacity") or price_info.get("unitPriceDescription") or ""
         unit_metadata = normalize_unit_metadata(
             name=name,
             sale_price=sale_price,
@@ -593,7 +733,6 @@ class EmartCrawler(CrawlerContract):
         if brand:
             attributes = {**attributes, "collection": brand}
 
-        # R 머지: promo_label, mart, mart_native_code, external_seller, unit_price_display
         promo_label = ""
         bogo_match = re.search(r"(\d+\s*\+\s*\d+)", name)
         if bogo_match:
@@ -608,13 +747,10 @@ class EmartCrawler(CrawlerContract):
 
         mart_native_code = str(product.get("itemId") or "")
         site_no = str(product.get("siteNo") or "")
-        # 이마트 자사: siteNo 6001(이마트몰) / 7009(SSG-새벽배송, 자사) 등. 외부 셀러는 별도 siteNo.
-        # 화이트리스트 의심 기준 — 자사 가능성 높은 코드들. external_seller=False 가 디폴트,
-        # 명확히 외부 셀러 마커가 있으면 True.
-        emart_site_codes = {"6001", "7009", "1000", "2300"}  # 추정 — 후속 분석으로 조정
+        emart_site_codes = {"6001", "7009", "7018", "1000", "2300"}
         external_seller = bool(site_no) and site_no not in emart_site_codes
 
-        unit_price_text = (product.get("priceInfo") or {}).get("unitPriceDescription") or ""
+        unit_price_text = price_info.get("unitPriceDescription") or ""
 
         attributes = {
             **attributes,
@@ -622,6 +758,8 @@ class EmartCrawler(CrawlerContract):
             "mart_native_code": mart_native_code,
             "site_no": site_no,
             "external_seller": external_seller,
+            "mart_native_category_path": source_category_path,
+            "collection_surface": product.get("_category_hint") or "",
             "promo_label": promo_label,
             "unit_price_display": unit_price_text,
         }
@@ -901,6 +1039,8 @@ class EmartCrawler(CrawlerContract):
             if item.sale_price <= 0:
                 continue
             if len(item.name) < 2:
+                continue
+            if bool((item.attributes or {}).get("external_seller")):
                 continue
 
             valid.append(item)

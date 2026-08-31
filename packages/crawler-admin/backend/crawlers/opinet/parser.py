@@ -148,3 +148,61 @@ def parse_opinet_low_price_html(
         )
 
     return results
+
+
+def parse_opinet_public_region_html(
+    html: str,
+    source_url: str = "https://www.opinet.co.kr/searRgOsSelect.do",
+) -> list[dict]:
+    """Parse the current public regional-search result table.
+
+    This parser reads only the server-rendered ``#os_price1`` gasoline/diesel
+    table. It does not execute scripts, solve challenges, or call private
+    endpoints. Station metadata embedded in the public ``fn_osPop`` link is
+    used for address, OPINET id, brand and KATEC coordinates.
+    """
+    _require_bs4()
+    soup = BeautifulSoup(html, "html.parser")
+    table = soup.select_one("#os_price1")
+    if table is None:
+        return []
+
+    results: list[dict] = []
+    for tr in table.select("tr"):
+        cells = tr.find_all("td", recursive=False)
+        if len(cells) < 3 or "rlist" not in (cells[0].get("class") or []):
+            continue
+        link = cells[0].find("a")
+        if link is None:
+            continue
+        arguments = re.findall(r"'((?:\\'|[^'])*)'", link.get("href", ""))
+        name = (cells[0].get("title") or link.get_text(" ", strip=True)).strip()
+        if not name:
+            continue
+
+        def argument(index: int) -> str:
+            return arguments[index].strip() if index < len(arguments) else ""
+
+        brand_image = cells[0].find("img")
+        brand = argument(23) or (brand_image.get("alt", "").strip() if brand_image else "")
+        address = argument(25)
+        station_code = argument(31)
+        regular = _text(cells[1]) or argument(2)
+        diesel = _text(cells[2]) or argument(3)
+        results.append({
+            "name": name,
+            "brand": brand,
+            "address": address,
+            "self_service": cells[0].select_one(".ico_self") is not None,
+            "gasoline_regular": regular,
+            "gasoline_premium": None,
+            "diesel": diesel,
+            "lpg": None,
+            "opinet_id": station_code or None,
+            "katec_x": argument(11) or None,
+            "katec_y": argument(12) or None,
+            "gasoline_updated_at": argument(7) or None,
+            "diesel_updated_at": argument(8) or None,
+            "source_url": source_url,
+        })
+    return results

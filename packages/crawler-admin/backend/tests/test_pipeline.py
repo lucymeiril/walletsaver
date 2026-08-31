@@ -5,7 +5,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from core.models import CrawlResult, CrawlStatus
+from core.models import CrawlResult, CrawlStatus, ErrorType, StrategyFailure
 from pipeline.pipeline import CrawlPipeline, PipelineResult
 from pipeline.transformer import enrich_with_category, to_discount_history, to_hotdeal_prices
 from pipeline.validator import deduplicate, normalize_prices, validate_items, validate_price_range
@@ -169,6 +169,42 @@ async def test_run_crawler_not_found_returns_failed_result():
     registry.get_crawler.side_effect = KeyError("not found")
     result = await CrawlPipeline(registry=registry).run_crawler("missing")
     assert result.status == "failed"
+
+
+@pytest.mark.asyncio
+async def test_run_crawler_does_not_retry_forbidden_response():
+    crawler = MagicMock()
+    crawler.crawl = AsyncMock(
+        return_value=CrawlResult(
+            status=CrawlStatus.FAILED,
+            crawler_name="test_crawler",
+            errors=[
+                StrategyFailure(
+                    strategy_name="requests",
+                    error_type=ErrorType.HTTP_ERROR,
+                    error_msg="HTTP 403",
+                    status_code=403,
+                )
+            ],
+            error_msg="blocked",
+        )
+    )
+    registry = MagicMock()
+    registry._registry = {
+        "test_crawler": {
+            "config": {
+                "schedule": {"retry_count": 3},
+                "output": {"model": "DiscountItem"},
+            }
+        }
+    }
+    registry.get_crawler.return_value = crawler
+
+    result = await CrawlPipeline(registry=registry).run_crawler("test_crawler")
+
+    assert result.status == "failed"
+    assert crawler.crawl.await_count == 1
+    assert any("not retrying" in error for error in result.errors)
 
 
 @pytest.mark.asyncio

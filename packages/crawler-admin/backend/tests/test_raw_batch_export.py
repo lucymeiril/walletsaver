@@ -241,6 +241,8 @@ def test_export_reads_pending_ingestion_and_excludes_only_completed_hits(
     assert body["hit_rows"] == 2
     assert body["miss_rows"] == 8
     assert body["exported_rows"] == 8
+    assert body["schema_version"] == "walletsaver-raw-batch-v3"
+    assert body["ingestion_run_ids"] == ["ingestion-1"]
 
     jsonl_path = export_dir / body["export_id"] / "raw_products.jsonl"
     rows = [json.loads(line) for line in jsonl_path.read_text(encoding="utf-8").splitlines()]
@@ -372,6 +374,54 @@ def test_recent_and_download_endpoints(client, db_admin_db):
     assert "manifest.json" in names
     assert "raw_products.jsonl" in names
     assert "context/matching_entries.jsonl" in names
+
+
+def test_export_includes_normalized_ssot_context_and_uses_normalized_hit(
+    client, db_admin_db, export_dir
+):
+    _seed_ingestion(db_admin_db, count=1)
+    db_admin_db.execute(text("ALTER TABLE matching_entries ADD COLUMN public_product_id TEXT"))
+    db_admin_db.execute(text("ALTER TABLE matching_entries ADD COLUMN public_variant_id TEXT"))
+    db_admin_db.execute(text(
+        "CREATE TABLE unified_categories (id TEXT PRIMARY KEY, parent_id TEXT, name_ko TEXT, level INTEGER)"
+    ))
+    db_admin_db.execute(text(
+        "CREATE TABLE normalized_canonical_products (public_product_id TEXT PRIMARY KEY, unified_category_id TEXT, canonical_name TEXT, aliases JSON, keywords JSON, attributes JSON, is_active BOOLEAN)"
+    ))
+    db_admin_db.execute(text(
+        "CREATE TABLE normalized_product_variants (public_variant_id TEXT PRIMARY KEY, public_product_id TEXT, variant_name TEXT, attributes JSON, is_active BOOLEAN)"
+    ))
+    db_admin_db.execute(text(
+        "CREATE TABLE normalized_source_listings (public_source_listing_id TEXT PRIMARY KEY, public_variant_id TEXT, source_name TEXT)"
+    ))
+    db_admin_db.execute(text(
+        "CREATE TABLE mart_category_mappings (id INTEGER PRIMARY KEY, mart TEXT, mart_native_id TEXT, unified_category_id TEXT)"
+    ))
+    db_admin_db.execute(text(
+        "INSERT INTO unified_categories VALUES ('food.dairy.milk.choco', NULL, '초코우유', 3)"
+    ))
+    db_admin_db.execute(text(
+        "INSERT INTO normalized_canonical_products VALUES ('prod-1', 'food.dairy.milk.choco', '상품명0', '[]', '[]', '{}', 1)"
+    ))
+    db_admin_db.execute(text(
+        "INSERT INTO normalized_product_variants VALUES ('var-1', 'prod-1', '상품명0 1g', '{}', 1)"
+    ))
+    db_admin_db.execute(text(
+        "INSERT INTO matching_entries (match_key, public_product_id, public_variant_id, confidence, source) "
+        "VALUES (:key, 'prod-1', 'var-1', 0.95, 'human')"
+    ), {"key": _match_key(0)})
+    db_admin_db.commit()
+
+    body = client.post(
+        "/api/export/raw-batch",
+        json={"ingestion_ids": [1], "include_matched": True},
+    ).json()
+
+    assert body["hit_rows"] == 1
+    context = body["files"]["normalized_context"]
+    assert set(context) >= {"unified_categories", "normalized_canonical_products", "normalized_product_variants"}
+    exported = Path(context["normalized_canonical_products"]).read_text(encoding="utf-8")
+    assert '"public_product_id": "prod-1"' in exported
 
 
 def test_invalid_export_id_is_rejected(client):
