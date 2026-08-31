@@ -28,8 +28,8 @@ def html() -> str:
 
 
 @pytest.fixture
-def crawler() -> EmartCrawler:
-    return EmartCrawler()
+def crawler(tmp_path) -> EmartCrawler:
+    return EmartCrawler(category_cursor_path=tmp_path / "emart_category_cursor.json")
 
 
 @pytest.mark.asyncio
@@ -239,6 +239,17 @@ def test_category_requests_use_real_unique_disp_ctg_ids(crawler):
     assert any(row["category_hint"] == "우유/유제품" for row in category_requests)
 
 
+def test_category_cursor_persists_next_unfinished_category(crawler):
+    category_ids = list(crawler.CATEGORY_IDS)
+    assert crawler._build_category_source_requests()[0]["category_id"] == category_ids[0]
+
+    crawler._advance_category_cursor(category_ids[0])
+
+    assert crawler._build_category_source_requests()[0]["category_id"] == category_ids[1]
+    restored = EmartCrawler(category_cursor_path=crawler._category_cursor_path)
+    assert restored._build_category_source_requests()[0]["category_id"] == category_ids[1]
+
+
 @pytest.mark.asyncio
 async def test_category_fetch_uses_visible_stable_chrome(crawler, monkeypatch):
     launch_options = {}
@@ -348,6 +359,62 @@ async def test_category_browser_stops_entire_run_on_first_403(crawler):
     assert result["stop_reason"].startswith("HTTP 403")
     assert result["pages_attempted"] == 2
     assert result["requests_attempted"] == 2
+    assert (
+        result.get("next_category_id", requests[0]["category_id"])
+        == requests[0]["category_id"]
+    )
+
+
+@pytest.mark.asyncio
+async def test_successful_category_advances_persistent_cursor(crawler):
+    category_html = CATEGORY_FIXTURE_HTML.read_text(encoding="utf-8")
+
+    class FakeResponse:
+        status = 200
+
+    class FakePage:
+        async def goto(self, url, **kwargs):
+            return FakeResponse()
+
+        async def wait_for_selector(self, *args, **kwargs):
+            return None
+
+        async def content(self):
+            return category_html
+
+        async def close(self):
+            return None
+
+    class FakeContext:
+        async def new_page(self):
+            return FakePage()
+
+    first_request = crawler._build_category_source_requests()[:1]
+    first_category_id = first_request[0]["category_id"]
+    expected_next_id = list(crawler.CATEGORY_IDS)[1]
+    diagnostics = {
+        "strategy": "playwright_category",
+        "requests_attempted": 0,
+        "pages_attempted": 0,
+        "categories_succeeded": 0,
+        "blocked": False,
+        "stop_reason": None,
+        "start_category_id": first_category_id,
+        "next_category_id": first_category_id,
+        "requests": [],
+    }
+
+    items, result = await crawler._crawl_category_requests_in_context(
+        FakeContext(),
+        first_request,
+        diagnostics,
+    )
+
+    assert len(items) == 2
+    assert result["categories_succeeded"] == 1
+    assert result["next_category_id"] == expected_next_id
+    restored = EmartCrawler(category_cursor_path=crawler._category_cursor_path)
+    assert restored._build_category_source_requests()[0]["category_id"] == expected_next_id
 
 
 @pytest.mark.asyncio

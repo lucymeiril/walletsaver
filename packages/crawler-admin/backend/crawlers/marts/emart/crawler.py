@@ -17,6 +17,7 @@ import random
 import re
 import time
 from datetime import datetime
+from pathlib import Path
 from typing import Optional
 from urllib.parse import quote
 
@@ -105,13 +106,67 @@ class EmartCrawler(CrawlerContract):
     CATEGORY_DELAY_MAX_SECONDS = 12.0
     CATEGORY_BROWSER_CHANNEL = "chrome"
     CATEGORY_BROWSER_HEADLESS = False
+    CATEGORY_CURSOR_SCHEMA_VERSION = 1
     MAX_REQUESTS: int | None = None
     MAX_CONSECUTIVE_FORBIDDEN = 3
 
-    def __init__(self, anti_detect: Optional[AntiDetect] = None):
+    def __init__(
+        self,
+        anti_detect: Optional[AntiDetect] = None,
+        category_cursor_path: str | Path | None = None,
+    ):
         self._anti_detect = anti_detect or AntiDetect(delay_min=2.5, delay_max=5.0)
         self._session: Optional[requests.Session] = None
         self._session_warmed = False
+        self._category_cursor_path = (
+            Path(category_cursor_path)
+            if category_cursor_path
+            else Path(__file__).resolve().parents[3]
+            / "data"
+            / "cache"
+            / "emart_category_cursor.json"
+        )
+        self._next_category_id = self._load_category_cursor()
+
+    def _load_category_cursor(self) -> str:
+        first_category_id = next(iter(self.CATEGORY_IDS))
+        try:
+            payload = json.loads(self._category_cursor_path.read_text(encoding="utf-8"))
+            if payload.get("schema_version") != self.CATEGORY_CURSOR_SCHEMA_VERSION:
+                return first_category_id
+            category_id = str(payload.get("next_category_id") or "")
+            return category_id if category_id in self.CATEGORY_IDS else first_category_id
+        except FileNotFoundError:
+            return first_category_id
+        except Exception as exc:
+            logger.warning("[이마트] 카테고리 커서 읽기 실패, 처음부터 시작: %s", exc)
+            return first_category_id
+
+    def _save_category_cursor(self, next_category_id: str) -> None:
+        payload = {
+            "schema_version": self.CATEGORY_CURSOR_SCHEMA_VERSION,
+            "next_category_id": next_category_id,
+            "updated_at": datetime.now().astimezone().isoformat(),
+        }
+        try:
+            self._category_cursor_path.parent.mkdir(parents=True, exist_ok=True)
+            temporary_path = self._category_cursor_path.with_suffix(".json.tmp")
+            temporary_path.write_text(
+                json.dumps(payload, ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
+            temporary_path.replace(self._category_cursor_path)
+        except Exception as exc:
+            logger.warning("[이마트] 카테고리 커서 저장 실패: %s", exc)
+
+    def _advance_category_cursor(self, completed_category_id: str) -> None:
+        category_ids = list(self.CATEGORY_IDS)
+        try:
+            current_index = category_ids.index(completed_category_id)
+        except ValueError:
+            return
+        self._next_category_id = category_ids[(current_index + 1) % len(category_ids)]
+        self._save_category_cursor(self._next_category_id)
 
     def _get_session(self) -> requests.Session:
         if self._session is None:
@@ -536,7 +591,14 @@ class EmartCrawler(CrawlerContract):
 
     def _build_category_source_requests(self) -> list[dict[str, str | int]]:
         requests_to_make: list[dict[str, str | int]] = []
-        for category_id, category_name in self.CATEGORY_IDS.items():
+        category_ids = list(self.CATEGORY_IDS)
+        try:
+            start_index = category_ids.index(self._next_category_id)
+        except ValueError:
+            start_index = 0
+        ordered_ids = category_ids[start_index:] + category_ids[:start_index]
+        for category_id in ordered_ids:
+            category_name = self.CATEGORY_IDS[category_id]
             for page_num in range(1, max(1, int(self.MAX_PAGES)) + 1):
                 requests_to_make.append({
                     "query": category_name,
@@ -568,6 +630,8 @@ class EmartCrawler(CrawlerContract):
             "stop_reason": None,
             "browser_channel": self.CATEGORY_BROWSER_CHANNEL,
             "headless": self.CATEGORY_BROWSER_HEADLESS,
+            "start_category_id": self._next_category_id,
+            "next_category_id": self._next_category_id,
             "requests": [],
         }
         source_requests = self._build_category_source_requests()
@@ -693,8 +757,14 @@ class EmartCrawler(CrawlerContract):
                         })
                         item.attributes = attributes
                     row["parsed_count"] = len(parsed)
+                    if row["raw_count"] <= 0 or not parsed:
+                        row["error"] = "0 product cards"
+                        continue
                     collected.extend(parsed)
                     diagnostics["categories_succeeded"] += 1
+                    if int(source_request["page"]) >= max(1, int(self.MAX_PAGES)):
+                        self._advance_category_cursor(category_id)
+                        diagnostics["next_category_id"] = self._next_category_id
                 except Exception as exc:
                     row["error"] = str(exc)
                     logger.warning(
