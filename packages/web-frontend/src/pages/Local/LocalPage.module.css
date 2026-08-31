@@ -1,5 +1,5 @@
 /* ============================================================
-   LocalPage — Category Tree Navigation, external map link
+   LocalPage — Category Tree Navigation, explicit browser search
    ============================================================ */
 
 .hdr { max-width: var(--max-w); margin: 0 auto; padding: 28px 20px 20px; }
@@ -34,21 +34,61 @@
   color: var(--text3);
 }
 .mapPlaceholder p { margin-top: 12px; font-size: .9rem; }
-.mapPlaceholder strong { margin-top: 14px; color: var(--text); font-size: 1.05rem; }
-.openMapBtn {
-  display: inline-flex;
+.mapPlaceholder > strong { margin-top: 12px; color: var(--text); font-size: 1.1rem; }
+.mapStatusGrid {
+  width: min(100%, 520px);
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.mapStatusGrid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--glass);
+}
+.mapStatusGrid span { color: var(--text3); font-size: .7rem; }
+.mapStatusGrid strong { color: var(--text); font-size: .9rem; }
+.mapCategorySummary {
+  width: min(100%, 520px);
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.mapCategorySummary button {
+  display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 18px;
-  padding: 11px 18px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: #fff;
-  font-size: .88rem;
-  font-weight: var(--fw-semi);
-  text-decoration: none;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
 }
-.openMapBtn:hover { transform: translateY(-1px); }
+.mapCategorySummary button:hover { border-color: var(--accent); }
+.mapCategorySummary small { color: var(--text3); }
+.mapExternalLink {
+  margin-top: 18px;
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: .78rem;
+}
+.mapExternalLink:hover { border-color: var(--accent); background: rgba(56,189,248,.06); }
+.mapConsentHint {
+  margin-top: 10px;
+  color: var(--text3);
+  font-size: .72rem;
+}
 .mapResetBtn {
   position: absolute;
   top: 8px;
@@ -162,6 +202,22 @@
   color: var(--text);
 }
 .radiusInput::placeholder { color: var(--text3); font-size: .7rem; }
+
+.browserSearchOptIn {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: .78rem;
+  cursor: pointer;
+}
+.browserSearchOptIn input { margin-top: 2px; accent-color: var(--accent); }
+.browserSearchOptIn span { display: flex; flex-direction: column; gap: 2px; }
+.browserSearchOptIn small { color: var(--text3); font-size: .7rem; line-height: 1.35; }
 
 /* ============================================================
    Direct Search Row
@@ -880,6 +936,8 @@
 @media(max-width:768px) {
   .layout { grid-template-columns: 1fr; }
   .map { min-height: 250px; }
+  .mapStatusGrid { grid-template-columns: repeat(2, 1fr); }
+  .mapCategorySummary { grid-template-columns: repeat(2, 1fr); }
   .hdr { padding: 20px 12px 14px; }
   .layout { padding: 0 12px 100px; }
   .categoryGrid { grid-template-columns: repeat(2, 1fr); }

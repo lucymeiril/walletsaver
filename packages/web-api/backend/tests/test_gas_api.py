@@ -115,8 +115,17 @@ def test_local_area_explore_uses_opinet_snapshot_for_gas_category(tmp_path, monk
 def test_local_area_explore_finishes_without_browser_search_opt_in(
     tmp_path, monkeypatch
 ):
-    monkeypatch.delenv("NAVER_PLACE_BROWSER_SEARCH_ENABLED", raising=False)
     monkeypatch.setenv("OPINET_DB_PATH", str(tmp_path / "missing-opinet.db"))
+
+    from api.routes import naver_local
+
+    browser_calls = []
+
+    def fail_if_called(*args, **kwargs):
+        browser_calls.append((args, kwargs))
+        raise AssertionError("browser search must require request-level opt-in")
+
+    monkeypatch.setattr(naver_local, "_search_via_playwright_sync", fail_if_called)
 
     from api.app import create_app
 
@@ -134,3 +143,96 @@ def test_local_area_explore_finishes_without_browser_search_opt_in(
     ]
     assert events[-1] == {"done": True}
     assert [event["source"] for event in events[:-1]] == ["unavailable", "unavailable"]
+    assert browser_calls == []
+
+
+def test_local_area_explore_runs_browser_search_after_explicit_opt_in(
+    tmp_path, monkeypatch
+):
+    monkeypatch.setenv("OPINET_DB_PATH", str(tmp_path / "missing-opinet.db"))
+
+    from api.routes import naver_local
+
+    def fake_browser_search(query, lat, lng, max_items):
+        return [{
+            "name": f"{query} 테스트 결과",
+            "category": query,
+            "address": "서울특별시 테스트로 1",
+            "url": "https://map.naver.com/p/entry/place/1",
+        }]
+
+    monkeypatch.setattr(
+        naver_local,
+        "_search_via_playwright_sync",
+        fake_browser_search,
+    )
+
+    from api.app import create_app
+
+    client = TestClient(create_app(storage=object()))
+    response = client.get(
+        "/api/local/area-explore-stream",
+        params={
+            "categories": "음식",
+            "lat": 37.5,
+            "lng": 127.0,
+            "browser_search": "true",
+        },
+    )
+
+    assert response.status_code == 200
+    first_event = next(
+        json.loads(line.removeprefix("data: "))
+        for line in response.text.splitlines()
+        if line.startswith("data: ") and "done" not in line
+    )
+    assert first_event["source"] == "naver"
+    assert first_event["items"][0]["name"] == "음식 테스트 결과"
+
+
+def test_unknown_geocode_does_not_start_browser_without_opt_in(monkeypatch):
+    from api.routes import naver_local
+
+    browser_calls = []
+
+    def fail_if_called(*args, **kwargs):
+        browser_calls.append((args, kwargs))
+        raise AssertionError("geocode browser search must require opt-in")
+
+    monkeypatch.setattr(naver_local, "_search_via_playwright_sync", fail_if_called)
+
+    from api.app import create_app
+
+    response = TestClient(create_app(storage=object())).get(
+        "/api/local/geocode",
+        params={"query": "등록되지 않은 위치"},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["success"] is False
+    assert browser_calls == []
+
+
+def test_unknown_geocode_runs_browser_after_explicit_opt_in(monkeypatch):
+    from api.routes import naver_local
+
+    monkeypatch.setattr(
+        naver_local,
+        "_search_via_playwright_sync",
+        lambda *args: [{"name": "테스트역", "x": "127.1", "y": "37.4"}],
+    )
+
+    from api.app import create_app
+
+    response = TestClient(create_app(storage=object())).get(
+        "/api/local/geocode",
+        params={"query": "테스트역", "browser_search": "true"},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["data"] == {
+        "name": "테스트역",
+        "lat": 37.4,
+        "lng": 127.1,
+        "source": "naver",
+    }

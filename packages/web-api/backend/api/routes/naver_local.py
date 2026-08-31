@@ -1,8 +1,8 @@
 """Naver Place search helpers for the Local page.
 
-The user-facing iframe/search UX stays available even when structured Naver
-search is unavailable. API failures return empty results explicitly; this
-module never fabricates stores, coordinates, ratings, or fuel prices.
+Browser-backed place and geocode requests run only after request-level user
+opt-in. API failures return empty results explicitly; this module never
+fabricates stores, coordinates, ratings, or fuel prices.
 """
 from __future__ import annotations
 
@@ -10,7 +10,6 @@ import asyncio
 import json
 import logging
 import math
-import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -112,7 +111,13 @@ def _opinet_nearby_items(lat: float, lng: float, max_items: int) -> list[dict]:
 
 
 @router.get("/geocode")
-async def geocode(query: str = Query(..., description="위치명 또는 'lat,lng' 좌표")):
+async def geocode(
+    query: str = Query(..., description="위치명 또는 'lat,lng' 좌표"),
+    browser_search: bool = Query(
+        False,
+        description="사용자가 명시적으로 동의한 경우에만 네이버 공개 페이지 좌표 검색 실행",
+    ),
+):
     """Resolve a coordinate pair, known location, or a real Naver search result."""
     raw = query.strip()
     if "," in raw:
@@ -131,7 +136,7 @@ async def geocode(query: str = Query(..., description="위치명 또는 'lat,lng
                 loc = value
                 break
 
-    if loc is None:
+    if loc is None and browser_search:
         loop = asyncio.get_running_loop()
         places = await loop.run_in_executor(
             _executor,
@@ -160,7 +165,7 @@ async def geocode(query: str = Query(..., description="위치명 또는 'lat,lng
         return ApiResponse(
             success=False,
             data=None,
-            error="위치를 찾을 수 없습니다. 네이버 지도 검색을 직접 이용해 주세요.",
+            error="위치를 찾을 수 없습니다. 브라우저 검색을 켜거나 좌표를 직접 입력해 주세요.",
         )
     return ApiResponse(data=loc)
 
@@ -271,14 +276,21 @@ def _search_via_playwright_sync(query: str, lat: float, lng: float, max_items: i
     return items
 
 
-async def _search(query: str, lat: float, lng: float, max_items: int) -> list[dict]:
-    enabled = os.getenv(
-        "NAVER_PLACE_BROWSER_SEARCH_ENABLED", "false"
-    ).strip().lower() in {"1", "true", "yes", "on"}
-    if not enabled:
-        # The public website remains useful through its external-map links.
-        # Browser scraping is an explicit, local-only fallback because it is
-        # slower and less stable than a configured API/data snapshot.
+async def _search(
+    query: str,
+    lat: float,
+    lng: float,
+    max_items: int,
+    *,
+    browser_search: bool = False,
+) -> list[dict]:
+    """Run the slow browser-backed search only after a request-level opt-in.
+
+    The choice belongs to the person using the Local page, not to a hidden
+    deployment environment variable.  Callers that do not explicitly pass
+    ``browser_search=true`` get no Naver browser traffic.
+    """
+    if not browser_search:
         return []
     loop = asyncio.get_running_loop()
     return await loop.run_in_executor(
@@ -297,9 +309,19 @@ async def naver_place_search(
     lat: float = Query(37.4979, ge=-90, le=90, description="위도"),
     lng: float = Query(127.0276, ge=-180, le=180, description="경도"),
     max_items: int = Query(20, ge=1, le=50, description="최대 결과 수"),
+    browser_search: bool = Query(
+        False,
+        description="사용자가 명시적으로 동의한 경우에만 네이버 공개 페이지 브라우저 검색 실행",
+    ),
 ):
     try:
-        items = await _search(query, lat, lng, max_items)
+        items = await _search(
+            query,
+            lat,
+            lng,
+            max_items,
+            browser_search=browser_search,
+        )
         source = "naver" if items else "unavailable"
     except Exception as exc:
         logger.error("[네이버 검색] search failed: %s", exc)
@@ -325,6 +347,10 @@ async def area_explore_stream(
     lat: float = Query(37.4979, ge=-90, le=90),
     lng: float = Query(127.0276, ge=-180, le=180),
     max_items: int = Query(30, ge=1, le=100),
+    browser_search: bool = Query(
+        False,
+        description="사용자가 명시적으로 동의한 경우에만 네이버 공개 페이지 브라우저 검색 실행",
+    ),
 ):
     """Stream real category searches; unavailable categories contain no fake rows."""
     names = [category.strip() for category in categories.split(",") if category.strip()]
@@ -339,7 +365,13 @@ async def area_explore_stream(
                     )
                     source = "opinet" if items else "unavailable"
                 else:
-                    items = await _search(name, lat, lng, per_category)
+                    items = await _search(
+                        name,
+                        lat,
+                        lng,
+                        per_category,
+                        browser_search=browser_search,
+                    )
                     source = "naver" if items else "unavailable"
             except Exception as exc:
                 logger.warning("[네이버 검색] category %s failed: %s", name, exc)
@@ -365,9 +397,19 @@ async def subcategory_search(
     lat: float = Query(37.4979, ge=-90, le=90),
     lng: float = Query(127.0276, ge=-180, le=180),
     max_items: int = Query(30, ge=1, le=100),
+    browser_search: bool = Query(
+        False,
+        description="사용자가 명시적으로 동의한 경우에만 네이버 공개 페이지 브라우저 검색 실행",
+    ),
 ):
     try:
-        items = await _search(subcategory, lat, lng, min(max_items, 30))
+        items = await _search(
+            subcategory,
+            lat,
+            lng,
+            min(max_items, 30),
+            browser_search=browser_search,
+        )
     except Exception as exc:
         logger.warning("[네이버 검색] subcategory %s failed: %s", subcategory, exc)
         items = []

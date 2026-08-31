@@ -38,6 +38,7 @@ export default function LocalPage() {
   const [radius, setRadius] = useState(3000);
   const [loading, setLoading] = useState(false);
   const [gpsStatus, setGpsStatus] = useState('idle'); // idle | requesting | success | denied
+  const [browserSearchEnabled, setBrowserSearchEnabled] = useState(false);
 
   const [exploreData, setExploreData] = useState(null);
   const [selectedCategoryName, setSelectedCategoryName] = useState('');
@@ -88,23 +89,30 @@ export default function LocalPage() {
 
   /* ── API calls ── */
   const geocodeLocation = useCallback(async (query) => {
-    const res = await fetch(`/api/local/geocode?query=${encodeURIComponent(query)}`);
+    const res = await fetch(
+      `/api/local/geocode?query=${encodeURIComponent(query)}&browser_search=${browserSearchEnabled}`
+    );
     const data = await res.json();
     if (data.success && data.data) return data.data;
     throw new Error(data.message || '위치를 찾을 수 없습니다');
-  }, []);
+  }, [browserSearchEnabled]);
 
   const naverSearch = useCallback(async (query) => {
     const res = await fetch(
-      `/api/local/naver-search?query=${encodeURIComponent(query)}&lat=${lat}&lng=${lng}&max_items=20`
+      `/api/local/naver-search?query=${encodeURIComponent(query)}&lat=${lat}&lng=${lng}&max_items=20&browser_search=${browserSearchEnabled}`
     );
     const data = await res.json();
     if (data.success && data.data?.items) return data.data.items;
     return [];
-  }, [lat, lng]);
+  }, [lat, lng, browserSearchEnabled]);
 
   /* ── Handlers ── */
-  const runAreaExplore = useCallback(async (locName, latVal, lngVal) => {
+  const runAreaExplore = useCallback(async (
+    locName,
+    latVal,
+    lngVal,
+    browserSearchOverride = browserSearchEnabled,
+  ) => {
     if (streamAbortRef.current) streamAbortRef.current.abort();
     const controller = new AbortController();
     streamAbortRef.current = controller;
@@ -118,6 +126,7 @@ export default function LocalPage() {
     if (locName) params.set('location_name', locName);
     if (latVal != null) params.set('lat', String(latVal));
     if (lngVal != null) params.set('lng', String(lngVal));
+    params.set('browser_search', String(browserSearchOverride));
     const url = `/api/local/area-explore-stream?${params}`;
 
     try {
@@ -171,7 +180,16 @@ export default function LocalPage() {
       setExploreData({ categories: [] });
       setStreamingCats(new Set());
     }
-  }, [addToast]);
+  }, [addToast, browserSearchEnabled]);
+
+  const handleBrowserSearchToggle = useCallback(async (event) => {
+    const enabled = event.target.checked;
+    setBrowserSearchEnabled(enabled);
+
+    if (locationName) {
+      await runAreaExplore(locationName, lat, lng, enabled);
+    }
+  }, [locationName, lat, lng, runAreaExplore]);
 
   const handleLocationSearch = useCallback(async (locQuery) => {
     if (!locQuery.trim()) return;
@@ -254,12 +272,13 @@ export default function LocalPage() {
       location, subcategory,
       ...(latVal && { lat: latVal }),
       ...(lngVal && { lng: lngVal }),
-      max_items: 30
+      max_items: 30,
+      browser_search: String(browserSearchEnabled),
     });
     const res = await fetch(`/api/local/subcategory-search?${params}`);
     const data = await res.json();
     return data.data?.items || data.items || [];
-  }, []);
+  }, [browserSearchEnabled]);
 
   const handleCategoryClick = (cat) => {
     setSelectedCategoryName(cat.name);
@@ -462,11 +481,6 @@ export default function LocalPage() {
     if (!exploreData?.categories) return [];
     return exploreData.categories.filter(cat => (cat.count || cat.items?.length || 0) > 0);
   }, [exploreData]);
-  const structuredSearchUnavailable = useMemo(() => {
-    const categories = exploreData?.categories || [];
-    return categories.length > 0 && categories.every(cat => cat.source === 'unavailable');
-  }, [exploreData]);
-
   /* ── Render ── */
   return (
     <div>
@@ -476,31 +490,70 @@ export default function LocalPage() {
       </div>
 
       <div className={s.layout}>
-        {/* map.naver.com은 X-Frame-Options: deny이므로 iframe 대신 외부 지도로 연결한다. */}
+        {/* 지도 임베딩 없이도 동작하는 지역 탐색 요약 */}
         <div className={s.map}>
-          {currentMapUrl ? (
-            <div className={s.mapPlaceholder}>
-              <MapPin size={56} />
-              <strong>{locationName || '선택한 위치'}</strong>
-              <p>네이버 지도는 보안 정책상 페이지 안에 표시할 수 없습니다.</p>
+          <div className={s.mapPlaceholder}>
+            <MapPin size={48} />
+            <strong>{mapFocusUrl ? '선택한 장소' : (locationName || '탐색 위치를 정해주세요')}</strong>
+            <p>
+              {locationName
+                ? '주변 검색 결과는 이 화면에서 바로 확인할 수 있습니다.'
+                : '위치를 입력하거나 브라우저 위치 권한을 사용해 시작하세요.'}
+            </p>
+
+            {locationName && (
+              <div className={s.mapStatusGrid}>
+                <div>
+                  <span>탐색 반경</span>
+                  <strong>{radius / 1000}km</strong>
+                </div>
+                <div>
+                  <span>장소 검색</span>
+                  <strong>{browserSearchEnabled ? '사용 중' : '사용 안 함'}</strong>
+                </div>
+                <div>
+                  <span>카테고리</span>
+                  <strong>{visibleCategories.length}개</strong>
+                </div>
+                <div>
+                  <span>현재 결과</span>
+                  <strong>{sortedItems.length}건</strong>
+                </div>
+              </div>
+            )}
+
+            {visibleCategories.length > 0 && (
+              <div className={s.mapCategorySummary} aria-label="주변 카테고리 결과 요약">
+                {visibleCategories.slice(0, 6).map(category => (
+                  <button key={category.name} onClick={() => handleCategoryClick(category)}>
+                    <span>{CATEGORY_ICONS[category.name] || '📌'}</span>
+                    {category.name}
+                    <small>{category.count || category.items?.length || 0}건</small>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {locationName && currentMapUrl && (
               <a
-                className={s.openMapBtn}
+                className={s.mapExternalLink}
                 href={currentMapUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                네이버 지도에서 열기
+                선택한 위치를 네이버 지도에서 확인
               </a>
-            </div>
-          ) : (
-            <div className={s.mapPlaceholder}>
-              <MapPin size={48} />
-              <p>위치를 입력하면 지도가 표시됩니다</p>
-            </div>
-          )}
+            )}
+
+            {locationName && !browserSearchEnabled && (
+              <small className={s.mapConsentHint}>
+                장소 목록이 필요하면 오른쪽의 브라우저 검색을 직접 켜주세요.
+              </small>
+            )}
+          </div>
           {mapFocusUrl && (
             <button className={s.mapResetBtn} onClick={handleMapReset}>
-              ↩️ 기본 지도로 돌아가기
+              ↩️ 위치 요약으로 돌아가기
             </button>
           )}
         </div>
@@ -551,6 +604,18 @@ export default function LocalPage() {
               ))}
             </div>
           </div>
+
+          <label className={s.browserSearchOptIn}>
+            <input
+              type="checkbox"
+              checked={browserSearchEnabled}
+              onChange={handleBrowserSearchToggle}
+            />
+            <span>
+              네이버 공개 페이지 브라우저 검색 사용
+              <small>체크한 검색에만 실행되며 결과가 늦게 표시될 수 있습니다.</small>
+            </span>
+          </label>
 
           {/* Direct search */}
           {locationName && (
@@ -628,9 +693,9 @@ export default function LocalPage() {
               ))}
               {visibleCategories.length === 0 && streamingCats.size === 0 && (
                 <div className={s.emptyMsg}>
-                  {structuredSearchUnavailable
-                    ? '구조화된 주변 검색을 사용할 수 없습니다. 위의 네이버 지도 링크에서 직접 확인해 주세요.'
-                    : '카테고리 결과가 없습니다. 직접 검색해 보세요.'}
+                  {browserSearchEnabled
+                    ? '브라우저 검색 결과가 없습니다. 검색어를 바꿔 다시 시도해 주세요.'
+                    : '네이버 장소 결과가 필요하면 위의 브라우저 검색 사용을 명시적으로 체크해 주세요.'}
                 </div>
               )}
             </div>
