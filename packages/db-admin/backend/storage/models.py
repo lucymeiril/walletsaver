@@ -799,6 +799,11 @@ class NormalizedCanonicalProduct(Base):
     __tablename__ = "normalized_canonical_products"
 
     public_product_id: Mapped[str] = mapped_column(String(120), primary_key=True)
+    # UnifiedCategory is the capstone catalog SSOT. ``category_id`` remains
+    # temporarily for older admin projections and must not drive new imports.
+    unified_category_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("unified_categories.id"), nullable=True, index=True
+    )
     category_id: Mapped[Optional[str]] = mapped_column(ForeignKey("categories.id"), nullable=True)
     canonical_name: Mapped[str] = mapped_column(String(255), nullable=False)
     brand: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
@@ -812,6 +817,7 @@ class NormalizedCanonicalProduct(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     category: Mapped[Optional["Category"]] = relationship("Category")
+    unified_category: Mapped[Optional["UnifiedCategory"]] = relationship("UnifiedCategory")
     variants: Mapped[list["NormalizedProductVariant"]] = relationship(
         back_populates="product", cascade="all, delete-orphan", lazy="selectin",
     )
@@ -1380,6 +1386,15 @@ class MatchingEntry(Base):
     # 같은 metadata가 아니므로 DDL FK로 강화하려면 별도 마이그레이션 필요.
     # null 허용: 외부 AI 분류 완료 전에는 canonical_id가 미정임.
     canonical_product_id: Mapped[Optional[str]] = mapped_column(String(40), nullable=True)
+
+    # Normalized product/variant targets used by the capstone catalog.  They
+    # are nullable while an unresolved row is waiting for external review.
+    public_product_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("normalized_canonical_products.public_product_id"), nullable=True
+    )
+    public_variant_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("normalized_product_variants.public_variant_id"), nullable=True
+    )
 
     # category_id: categories.id FK
     # 주의: Category.id는 String(100) (예: "meat.pork.belly") — INT가 아님

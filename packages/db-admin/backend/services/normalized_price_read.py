@@ -41,7 +41,7 @@ def get_normalized_price_comparison(
         .limit(limit)
     )
     if category_id:
-        stmt = stmt.where(NormalizedCanonicalProduct.category_id == category_id)
+        stmt = stmt.where(NormalizedCanonicalProduct.unified_category_id == category_id)
     if public_product_id:
         stmt = stmt.where(NormalizedCanonicalProduct.public_product_id == public_product_id)
     if not include_inactive:
@@ -64,6 +64,7 @@ def get_normalized_price_comparison(
             {
                 "public_product_id": product.public_product_id,
                 "category_id": product.category_id,
+                "unified_category_id": product.unified_category_id,
                 "canonical_name": product.canonical_name,
                 "brand": product.brand,
                 "aliases": product.aliases or [],

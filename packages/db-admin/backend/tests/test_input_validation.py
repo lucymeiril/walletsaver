@@ -31,8 +31,9 @@ class TestProductValidation:
 
     def test_bulk_delete_too_many_ids(self):
         from api.routes.products import BulkDeleteRequest
+        from api.security import MAX_BULK_IDS
         with pytest.raises(ValidationError):
-            BulkDeleteRequest(ids=list(range(501)))
+            BulkDeleteRequest(ids=list(range(MAX_BULK_IDS + 1)))
 
     def test_bulk_delete_empty_ids(self):
         from api.routes.products import BulkDeleteRequest
@@ -75,17 +76,19 @@ class TestKeywordValidation:
 
     def test_bulk_delete_limit(self):
         from api.routes.keywords import BulkDeleteRequest
+        from api.security import MAX_BULK_IDS
         with pytest.raises(ValidationError):
-            BulkDeleteRequest(ids=list(range(501)))
+            BulkDeleteRequest(ids=list(range(MAX_BULK_IDS + 1)))
 
 
 class TestIngestionValidation:
     def test_too_many_items(self):
         from api.routes.ingestion import IngestionSubmit
+        from api.security import MAX_INGESTION_ITEMS
         with pytest.raises(ValidationError):
             IngestionSubmit(
                 crawler_name="test",
-                items=[{"name": "x"}] * 10_001,
+                items=[{"name": "x"}] * (MAX_INGESTION_ITEMS + 1),
             )
 
     def test_invalid_schema_type(self):

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+import unicodedata
 
 _MARKER_WORDS = (
     "행사상품",
@@ -36,6 +37,22 @@ _STANDALONE_MARKER_RE = re.compile(
     re.IGNORECASE,
 )
 _SPACE_RE = re.compile(r"\s+")
+
+
+def normalize_match_text(value: str) -> str:
+    """Normalize source titles for exact, case-insensitive matching."""
+    normalized = unicodedata.normalize("NFKC", value).strip().lower()
+    return _SPACE_RE.sub(" ", normalized)
+
+
+def normalize_package_signature(value: str) -> str:
+    """Normalize a package signature while preserving variant distinctions."""
+    normalized = unicodedata.normalize("NFKC", value).strip().lower()
+    normalized = re.sub(r"[^\w.-]+", "-", normalized, flags=re.UNICODE)
+    normalized = re.sub(r"-{2,}", "-", normalized).strip("-_.")
+    if not normalized:
+        raise ValueError("package signature must contain at least one searchable token")
+    return normalized
 
 
 def normalize_name_core(name: str | None, *, fold_case: bool = False) -> str:

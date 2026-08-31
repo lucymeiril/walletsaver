@@ -14,8 +14,6 @@ file:
 At the end of import this module aliases itself to ``ingestion_core`` so existing
 imports and monkeypatches keep targeting the same module globals as before.
 """
-from __future__ import annotations
-
 import sys
 from contextvars import ContextVar
 from threading import Lock

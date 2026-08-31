@@ -11,8 +11,8 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from core.contracts.control_plane import normalize_match_text, normalize_package_signature
 from core.promotion_semantics import PriceState, PromotionPriceFacts, PromotionType
+from services.name_normalize import normalize_match_text, normalize_package_signature
 from storage.models import (
     Category,
     NormalizedCanonicalProduct,
@@ -21,6 +21,7 @@ from storage.models import (
     NormalizedProductVariant,
     NormalizedSourceListing,
     NormalizedWeekBucket,
+    UnifiedCategory,
 )
 
 
@@ -34,11 +35,17 @@ def publish_mart3_rows(
 
     placements: list[dict[str, Any]] = []
     for row in rows:
-        category_id = row.get("category_id") or "mart3.uncategorized"
-        if not str(category_id).startswith("ai."):
-            _ensure_category(session, category_id, row.get("category_name") or category_id)
+        unified_category_id = row.get("unified_category_id") or row.get("category_id")
+        category_id = _reviewed_legacy_category_id(session, row.get("category_id"))
+        unified_category_id = _reviewed_unified_category_id(session, unified_category_id)
 
-        product = _upsert_product(session, row, category_id, projection_version)
+        product = _upsert_product(
+            session,
+            row,
+            category_id,
+            unified_category_id,
+            projection_version,
+        )
         package_signature = _row_package_signature(row)
         listing, variant, match_result = _resolve_or_create_listing(
             session,
@@ -83,27 +90,35 @@ def publish_mart3_rows(
     return placements
 
 
-def _ensure_category(session: Session, category_id: str, name: str) -> None:
-    if session.get(Category, category_id) is None:
-        session.add(Category(id=category_id, name=name, depth=0, is_active=True))
+def _reviewed_legacy_category_id(session: Session, category_id: Any) -> str | None:
+    """Never manufacture a category from a crawler-provided identifier."""
+    value = str(category_id or "").strip()
+    return value if value and session.get(Category, value) is not None else None
+
+
+def _reviewed_unified_category_id(session: Session, category_id: Any) -> str | None:
+    value = str(category_id or "").strip()
+    return value if value and session.get(UnifiedCategory, value) is not None else None
 
 
 def _upsert_product(
     session: Session,
     row: dict[str, Any],
-    category_id: str,
+    category_id: str | None,
+    unified_category_id: str | None,
     projection_version: str,
 ) -> NormalizedCanonicalProduct:
     canonical_name = row.get("canonical_name") or row.get("name") or row.get("source_title")
     public_product_id = row.get("public_product_id") or _stable_id(
         "prod",
-        category_id,
+        unified_category_id or category_id or "unclassified",
         canonical_name,
         row.get("brand") or "",
     )
     product = session.get(NormalizedCanonicalProduct, public_product_id)
     data = {
         "category_id": category_id,
+        "unified_category_id": unified_category_id,
         "canonical_name": canonical_name,
         "brand": row.get("brand"),
         "aliases": _list(row.get("aliases")),

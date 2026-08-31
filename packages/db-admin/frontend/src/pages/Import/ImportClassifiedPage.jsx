@@ -294,7 +294,7 @@ export default function ImportClassifiedPage() {
             </Collapsible>
           )}
 
-          <div data-testid="conflict-box">
+          <div>
             <ImportConflictList count={preview.diff?.conflicts ?? 0} mode={mode} />
           </div>
 

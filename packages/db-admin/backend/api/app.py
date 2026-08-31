@@ -1,6 +1,7 @@
 """DB 관리 API 팩토리."""
 import asyncio
 import logging
+import os
 import sys
 import uuid
 from contextlib import asynccontextmanager
@@ -74,12 +75,21 @@ async def lifespan(app: FastAPI):
         _lifecycle_logger.warning("Startup: admin seed failed — %s", exc)
 
     snapshot_stop = asyncio.Event()
-    from services.public_snapshot_publisher import run_public_snapshot_publisher
+    snapshot_task = None
+    auto_publisher = os.getenv(
+        "WALLETSAVIOR_AUTO_SNAPSHOT_PUBLISHER", "false"
+    ).strip().lower() in {"1", "true", "yes", "on"}
+    if auto_publisher:
+        from services.public_snapshot_publisher import run_public_snapshot_publisher
 
-    snapshot_task = asyncio.create_task(
-        run_public_snapshot_publisher(snapshot_stop),
-        name="public-snapshot-publisher",
-    )
+        snapshot_task = asyncio.create_task(
+            run_public_snapshot_publisher(snapshot_stop),
+            name="public-snapshot-publisher",
+        )
+    else:
+        _lifecycle_logger.info(
+            "Automatic snapshot publisher disabled; moderator approval is required"
+        )
 
     _lifecycle_logger.info(
         "Startup complete — host=%s port=%s debug=%s",
@@ -90,14 +100,15 @@ async def lifespan(app: FastAPI):
 
     yield
 
-    _lifecycle_logger.info("Shutdown: stopping public snapshot publisher")
-    snapshot_stop.set()
-    try:
-        await snapshot_task
-    except asyncio.CancelledError:
-        pass
-    except Exception as exc:
-        _lifecycle_logger.error("Shutdown: public snapshot publisher failed — %s", exc)
+    if snapshot_task is not None:
+        _lifecycle_logger.info("Shutdown: stopping public snapshot publisher")
+        snapshot_stop.set()
+        try:
+            await snapshot_task
+        except asyncio.CancelledError:
+            pass
+        except Exception as exc:
+            _lifecycle_logger.error("Shutdown: public snapshot publisher failed — %s", exc)
 
     _lifecycle_logger.info("Shutdown: closing database connections")
     try:
@@ -182,6 +193,7 @@ def create_app() -> FastAPI:
     from api.routes.maintenance import router as maintenance_router
     from api.routes.matching_import import router as matching_import_router
     from api.routes.matching_rules import router as matching_rules_router
+    from api.routes.catalog_bundles import router as catalog_bundles_router
 
     app.add_middleware(RequestSizeLimitMiddleware)
 
@@ -202,6 +214,7 @@ def create_app() -> FastAPI:
     app.include_router(maintenance_router, prefix="/api")
     app.include_router(matching_import_router, prefix="/api")
     app.include_router(matching_rules_router, prefix="/api")
+    app.include_router(catalog_bundles_router, prefix="/api")
     # ingestion router already owns the /api/ingestions prefix.
     app.include_router(ingestion_router)
 

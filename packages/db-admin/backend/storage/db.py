@@ -402,7 +402,7 @@ class DBStorage(StorageContract):
                 "name": p.name,
                 "icon": cat.icon if cat else "",
                 "cat": cat.name if cat else "",
-                "category_id": cat.id if cat else (p.category_id or ""),
+                "category_id": cat.id if cat else "",
                 "unit": p.unit,
                 "avg": avg,
                 "cur": cur,
@@ -802,7 +802,7 @@ class DBStorage(StorageContract):
                     "name": p.name,
                     "icon": cat.icon if cat else "",
                     "cat": cat.name if cat else "",
-                    "category_id": cat.id if cat else (p.category_id or ""),
+                    "category_id": cat.id if cat else "",
                     "unit": p.unit,
                     "avg": avg,
                     "cur": current_price,
@@ -1736,7 +1736,11 @@ class DBStorage(StorageContract):
             enriched = []
             for p in products_raw:
                 product_cat = self._public_category(p)
-                public_category_id = product_cat.id if product_cat else (p.category_id or "")
+                # Suggested/unknown categories remain review-only and must not
+                # leak into public category aggregation.
+                if product_cat is None:
+                    continue
+                public_category_id = product_cat.id
                 attrs = p.attributes or {}
 
                 # Filter by storage
