@@ -1,5 +1,4 @@
 """Current crawler management routes for the ingestion-capable crawler pipeline."""
-from __future__ import annotations
 
 import asyncio
 import hashlib
@@ -131,6 +130,10 @@ class LotteCategoryRunRequest(BaseModel):
     category_hint: Optional[str] = Field(None, max_length=200)
 
 
+class EmartCategoryRunRequest(BaseModel):
+    category_id: str = Field(..., min_length=1, max_length=40)
+
+
 def _lotte_category_payload(row: dict[str, Any]) -> dict[str, Any]:
     url = str(row.get("url") or "")
     return {
@@ -140,6 +143,84 @@ def _lotte_category_payload(row: dict[str, Any]) -> dict[str, Any]:
         "category_path": row.get("category_path") if isinstance(row.get("category_path"), list) else [],
         "request_type": row.get("request_type"),
         "url": url,
+    }
+
+
+def _emart_category_payload(row: dict[str, Any]) -> dict[str, Any]:
+    category_id = str(row.get("category_id") or "")
+    return {
+        "key": category_id,
+        "category_id": category_id,
+        "query": row.get("query"),
+        "category_hint": row.get("category_hint"),
+        "page": int(row.get("page") or 1),
+        "url": str(row.get("url") or ""),
+    }
+
+
+@router.get("/emart/categories")
+@limiter.limit("30/minute")
+async def list_emart_categories(request: Request):
+    crawler = _require_crawler("emart")
+    lister = getattr(crawler, "list_category_requests", None)
+    if not callable(lister):
+        raise HTTPException(status_code=404, detail="Emart category listing is unavailable")
+    rows = lister(refresh=False)
+    return {
+        "crawler_id": "emart",
+        "count": len(rows),
+        "categories": [_emart_category_payload(row) for row in rows],
+    }
+
+
+@router.post("/emart/run-category")
+@limiter.limit("10/minute")
+async def run_emart_category(body: EmartCategoryRunRequest, request: Request):
+    crawler = _require_crawler("emart")
+    lister = getattr(crawler, "list_category_requests", None)
+    if not callable(lister):
+        raise HTTPException(status_code=404, detail="Emart category listing is unavailable")
+
+    selected = next(
+        (
+            row
+            for row in lister(refresh=False)
+            if str(row.get("category_id") or "") == body.category_id
+            and int(row.get("page") or 1) == 1
+        ),
+        None,
+    )
+    if selected is None:
+        raise HTTPException(status_code=404, detail="요청한 이마트 카테고리를 찾을 수 없습니다")
+
+    if not await acquire_crawler_slot("emart"):
+        return {
+            "crawler_id": "emart",
+            "status": "running",
+            "message": "Crawler 'emart' is already running",
+            "category": _emart_category_payload(selected),
+        }
+
+    crawler._selected_category_request = selected
+    _crawl_results["emart"] = {
+        "crawler_id": "emart",
+        "status": "running",
+        "started_at": datetime.now(timezone.utc).isoformat(),
+        "items_found": 0,
+        "items_valid": 0,
+        "items_saved": 0,
+        "errors": [],
+        "progress_stage": "selected_category_started",
+        "selectedCategory": _emart_category_payload(selected),
+    }
+    asyncio.create_task(
+        _run_and_store("emart", _get_pipeline(), crawl_method="crawl_selected_category")
+    )
+    return {
+        "crawler_id": "emart",
+        "status": "running",
+        "message": f"이마트 카테고리 수동 실행 시작: {selected.get('category_hint')}",
+        "category": _emart_category_payload(selected),
     }
 
 

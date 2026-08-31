@@ -129,6 +129,9 @@ export default function Crawlers() {
   const [collapsedGroups, setCollapsedGroups] = useState(new Set());
   const [bulkRunning, setBulkRunning] = useState(false);
   const [clockTick, setClockTick] = useState(() => Date.now());
+  const [emartCategories, setEmartCategories] = useState([]);
+  const [selectedEmartCategoryId, setSelectedEmartCategoryId] = useState('');
+  const [emartCategoryLoading, setEmartCategoryLoading] = useState(false);
   const [lotteCategories, setLotteCategories] = useState([]);
   const [lotteCategoryLoading, setLotteCategoryLoading] = useState(false);
   const pollRefs = useRef({});
@@ -290,6 +293,67 @@ export default function Crawlers() {
       setLotteCategoryLoading(false);
     }
   }, [clearRunState, setRunState]);
+
+  const handleLoadEmartCategories = useCallback(async () => {
+    setEmartCategoryLoading(true);
+    try {
+      const data = await api.getEmartCategories();
+      const categories = Array.isArray(data.categories) ? data.categories : [];
+      setEmartCategories(categories);
+      setSelectedEmartCategoryId((current) => (
+        categories.some((category) => category.category_id === current)
+          ? current
+          : (categories[0]?.category_id || '')
+      ));
+    } catch (err) {
+      setRunState('emart', {
+        phase: 'done',
+        success: false,
+        message: `❌ 이마트 카테고리 목록 로드 실패: ${err?.message || '요청 실패'}`,
+      });
+      clearRunState('emart', 5000);
+    } finally {
+      setEmartCategoryLoading(false);
+    }
+  }, [clearRunState, setRunState]);
+
+  const handleRunEmartCategory = useCallback(async () => {
+    const category = emartCategories.find(
+      (item) => item.category_id === selectedEmartCategoryId,
+    );
+    if (!category) return;
+    setRunState('emart', {
+      phase: 'starting',
+      success: true,
+      message: `🧭 이마트 카테고리 실행 준비 중: ${category.category_hint || category.query}`,
+    });
+    try {
+      const data = await api.runEmartCategory(category);
+      if (data.status !== 'running') {
+        setRunState('emart', {
+          phase: 'done',
+          success: false,
+          message: data.message || '이마트 카테고리 실행을 시작하지 못했습니다.',
+        });
+        clearRunState('emart', 5000);
+        return;
+      }
+      setRunState('emart', {
+        phase: 'running',
+        success: true,
+        startedAt: Date.now(),
+        message: data.message || '🧭 이마트 카테고리 실행 중...',
+      });
+      startPolling('emart');
+    } catch (err) {
+      setRunState('emart', {
+        phase: 'done',
+        success: false,
+        message: `❌ 이마트 카테고리 실행 실패: ${err?.message || '요청 실패'}`,
+      });
+      clearRunState('emart', 5000);
+    }
+  }, [clearRunState, emartCategories, selectedEmartCategoryId, setRunState, startPolling]);
 
   const handleRunLotteCategory = useCallback(async (category) => {
     setRunState('lottemart', {
@@ -471,6 +535,49 @@ export default function Crawlers() {
               {elapsedSec != null && <span className={styles.elapsedBadge}>{elapsedSec}초 경과</span>}
             </div>
             <CounterChips summary={runState.summary} />
+          </div>
+        )}
+
+        {crawler.id === 'emart' && (
+          <div className={styles.runResult} style={{ background: '#f8fafc', color: '#334155', borderColor: '#e2e8f0' }}>
+            <div className={styles.runStatusLine}>
+              <span>🧭 등록 카테고리 {emartCategories.length.toLocaleString()}개</span>
+              <span className={styles.elapsedBadge}>한 번에 하나씩 저빈도 실행</span>
+            </div>
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
+              <button
+                className={styles.actionBtn}
+                onClick={handleLoadEmartCategories}
+                disabled={emartCategoryLoading || isRunning}
+              >
+                {emartCategoryLoading ? <Spinner /> : <ChevronDown size={14} />}
+                카테고리 목록
+              </button>
+              {emartCategories.length > 0 && (
+                <>
+                  <select
+                    aria-label="이마트 카테고리 선택"
+                    value={selectedEmartCategoryId}
+                    onChange={(event) => setSelectedEmartCategoryId(event.target.value)}
+                    disabled={isRunning}
+                  >
+                    {emartCategories.map((category) => (
+                      <option key={category.category_id} value={category.category_id}>
+                        {category.category_hint || category.query || category.category_id}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    className={styles.actionBtn}
+                    onClick={handleRunEmartCategory}
+                    disabled={isRunning || !selectedEmartCategoryId}
+                  >
+                    <Play size={14} />
+                    선택 카테고리 실행
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         )}
 

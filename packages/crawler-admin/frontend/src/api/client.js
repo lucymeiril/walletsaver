@@ -131,6 +131,13 @@ export const api = {
   getCrawlers: () => fetchWithTimeout(`${API_BASE}/crawlers`).then(r => r.json()),
   runCrawler: (id) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/run`, { method: 'POST', timeoutMs: 120000 }).then(r => r.json()),
   retryWafBlocked: (id) => fetchWithTimeout(`${API_BASE}/crawlers/${id}/retry-waf-blocked`, { method: 'POST', timeoutMs: 120000 }).then(r => r.json()),
+  getEmartCategories: () => fetchWithTimeout(`${API_BASE}/crawlers/emart/categories`, { timeoutMs: 120000 }).then(r => r.json()),
+  runEmartCategory: (category) => fetchWithTimeout(`${API_BASE}/crawlers/emart/run-category`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ category_id: category.category_id }),
+    timeoutMs: 120000,
+  }).then(r => r.json()),
   getLotteCategories: (refresh = false) => fetchWithTimeout(`${API_BASE}/crawlers/lottemart/categories?refresh=${refresh ? 'true' : 'false'}`, { timeoutMs: 120000 }).then(r => r.json()),
   runLotteCategory: (category) => fetchWithTimeout(`${API_BASE}/crawlers/lottemart/run-category`, {
     method: 'POST',

@@ -578,6 +578,9 @@ class EmartCrawler(CrawlerContract):
         ordinary Playwright context를 쓰는 _fetch_category_pages_via_browser가
         담당한다.
         """
+        override_requests = getattr(self, "_promotional_source_requests_override", None)
+        if isinstance(override_requests, list):
+            return [dict(row) for row in override_requests]
         requests_to_make: list[dict[str, str | int]] = []
         for label, url, hint in self.PROMOTIONAL_URLS:
             requests_to_make.append({
@@ -590,6 +593,9 @@ class EmartCrawler(CrawlerContract):
         return requests_to_make
 
     def _build_category_source_requests(self) -> list[dict[str, str | int]]:
+        override_requests = getattr(self, "_category_source_requests_override", None)
+        if isinstance(override_requests, list):
+            return [dict(row) for row in override_requests]
         requests_to_make: list[dict[str, str | int]] = []
         category_ids = list(self.CATEGORY_IDS)
         try:
@@ -608,6 +614,53 @@ class EmartCrawler(CrawlerContract):
                     "url": self._category_url(category_id, page_num),
                 })
         return requests_to_make
+
+    def list_category_requests(self, *, refresh: bool = False) -> list[dict[str, str | int]]:
+        del refresh
+        return [dict(row) for row in self._build_category_source_requests()]
+
+    async def crawl_selected_category(self) -> CrawlResult:
+        source_request = getattr(self, "_selected_category_request", None)
+        if not isinstance(source_request, dict) or not source_request.get("category_id"):
+            now = datetime.now()
+            return CrawlResult(
+                status=CrawlStatus.FAILED,
+                crawler_name=self.info.name,
+                strategy_used="playwright_selected_category",
+                items_count=0,
+                items=[],
+                started_at=now,
+                finished_at=now,
+                duration_seconds=0,
+                error_msg="no Emart category selected",
+                errors=[],
+                quality_score=0,
+                quality_details={
+                    "collection": {"mode": "selected_category", "selected": None},
+                    "alerts": ["no_emart_category_selected"],
+                },
+            )
+
+        self._promotional_source_requests_override = []
+        self._category_source_requests_override = [dict(source_request)]
+        try:
+            result = await self.crawl()
+            if isinstance(result.quality_details, dict):
+                result.quality_details.setdefault("collection", {})
+                result.quality_details["collection"].update({
+                    "mode": "selected_category",
+                    "selected": {
+                        "category_id": source_request.get("category_id"),
+                        "query": source_request.get("query"),
+                        "category_hint": source_request.get("category_hint"),
+                        "url": source_request.get("url"),
+                    },
+                })
+            return result
+        finally:
+            self._promotional_source_requests_override = None
+            self._category_source_requests_override = None
+            self._selected_category_request = None
 
     async def _fetch_category_pages_via_browser(
         self,

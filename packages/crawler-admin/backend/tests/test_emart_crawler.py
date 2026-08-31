@@ -418,6 +418,53 @@ async def test_successful_category_advances_persistent_cursor(crawler):
 
 
 @pytest.mark.asyncio
+async def test_selected_category_run_skips_promotions_and_records_context(crawler):
+    selected = crawler._build_category_source_requests()[0]
+    direct_item = crawler._next_data_to_discount_item({
+        "itemId": "selected-1",
+        "itemName": "선택 카테고리 상품",
+        "finalPrice": "2,980",
+        "siteNo": "6001",
+    })
+    assert direct_item is not None
+    crawler._selected_category_request = selected
+
+    async def fake_fetch(*, request_budget=None):
+        assert crawler._build_source_requests() == []
+        assert crawler._build_category_source_requests() == [selected]
+        return [direct_item], {
+            "strategy": "playwright_category",
+            "requests_attempted": 1,
+            "pages_attempted": 1,
+            "categories_succeeded": 1,
+            "blocked": False,
+            "stop_reason": None,
+            "requests": [{"raw_count": 1}],
+        }
+
+    crawler._fetch_category_pages_via_browser = AsyncMock(side_effect=fake_fetch)
+
+    result = await crawler.crawl_selected_category()
+
+    assert result.status.name == "SUCCESS"
+    assert result.items_count == 1
+    assert result.quality_details["collection"]["mode"] == "selected_category"
+    assert result.quality_details["collection"]["selected"]["category_id"] == selected["category_id"]
+    assert crawler._selected_category_request is None
+    assert crawler._promotional_source_requests_override is None
+    assert crawler._category_source_requests_override is None
+
+
+@pytest.mark.asyncio
+async def test_selected_category_run_requires_an_allowlisted_selection(crawler):
+    result = await crawler.crawl_selected_category()
+
+    assert result.status.name == "FAILED"
+    assert result.items_count == 0
+    assert result.quality_details["alerts"] == ["no_emart_category_selected"]
+
+
+@pytest.mark.asyncio
 async def test_crawl_is_partial_when_promotions_exist_but_category_phase_is_blocked(
     crawler,
     html,
