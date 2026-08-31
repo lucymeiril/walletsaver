@@ -20,7 +20,7 @@ current normalized category/product contract before removal.
 
 Current green baseline after the audit:
 
-- Python: crawler-admin 200 passed / 1 live skipped, db-admin 261 passed,
-  shared 153 passed, web-api 57 passed (671 passed total).
-- Frontend: public web 114, crawler admin 16, DB admin 16 (146 passed total).
+- Python: crawler-admin 207 passed / 1 live skipped, db-admin 261 passed,
+  shared 153 passed, web-api 60 passed (681 passed total).
+- Frontend: public web 115, crawler admin 16, DB admin 16 (147 passed total).
 - All three production frontend builds complete successfully.
