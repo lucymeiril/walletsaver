@@ -7,6 +7,7 @@ import {
   User, Mail, Calendar, Edit3, Save, X, LogOut, Trash2,
   Eye, Search, ThumbsUp, ShoppingCart, Heart, Clock,
   ChevronLeft, ChevronRight, AlertTriangle, ArrowRight,
+  BellRing,
 } from 'lucide-react';
 import useStore from '../../stores/appStore';
 import { authService } from '../../services/authService';
@@ -18,6 +19,7 @@ const TABS = [
   { key: 'info', label: '내 정보', icon: User },
   { key: 'activity', label: '활동 내역', icon: Clock },
   { key: 'wishlist', label: '찜 목록', icon: Heart },
+  { key: 'alerts', label: '가격 알림', icon: BellRing },
   { key: 'account', label: '계정 관리', icon: AlertTriangle },
 ];
 
@@ -32,7 +34,9 @@ const ACTIVITY_ICONS = {
 export default function ProfilePage() {
   const navigate = useNavigate();
   const { isLoggedIn, user, login, logout, addToast } = useStore();
-  const [activeTab, setActiveTab] = useState('info');
+  const [activeTab, setActiveTab] = useState(() => (
+    new URLSearchParams(window.location.search).get('tab') === 'alerts' ? 'alerts' : 'info'
+  ));
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({ nickname: '', bio: '', profile_image_url: '' });
   const [saving, setSaving] = useState(false);
@@ -44,6 +48,8 @@ export default function ProfilePage() {
   const [deleteInput, setDeleteInput] = useState('');
   const [wishlistItems, setWishlistItems] = useState([]);
   const [wishlistLoading, setWishlistLoading] = useState(false);
+  const [alerts, setAlerts] = useState([]);
+  const [alertsLoading, setAlertsLoading] = useState(false);
 
   // Redirect if not logged in
   useEffect(() => {
@@ -105,6 +111,33 @@ export default function ProfilePage() {
     fetchWishlist();
     return () => { cancelled = true; };
   }, [activeTab, isLoggedIn]);
+
+  const fetchAlerts = useCallback(async () => {
+    setAlertsLoading(true);
+    try {
+      const response = await api.getJson('/api/users/me/alerts', null, { silent: true });
+      const rows = response?.data || response || [];
+      setAlerts(Array.isArray(rows) ? rows : []);
+    } catch {
+      setAlerts([]);
+    } finally {
+      setAlertsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (activeTab === 'alerts' && isLoggedIn) fetchAlerts();
+  }, [activeTab, isLoggedIn, fetchAlerts]);
+
+  const removeAlert = async (alertId) => {
+    try {
+      await api.delete(`/api/users/me/alerts/${alertId}`);
+      setAlerts((rows) => rows.filter((row) => row.id !== alertId));
+      addToast('가격 알림을 해제했습니다', 'info');
+    } catch (error) {
+      addToast(error?.message || '가격 알림 해제에 실패했습니다', 'error');
+    }
+  };
 
   const handleSave = async () => {
     if (form.nickname.length < 2 || form.nickname.length > 20) {
@@ -369,6 +402,39 @@ export default function ProfilePage() {
                 <button className={s.wishlistMore} onClick={() => navigate('/wishlist')}>
                   전체 찜 목록 보기 <ArrowRight size={14} />
                 </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Price alerts tab */}
+        {activeTab === 'alerts' && (
+          <div className={s.tabContent}>
+            <h2 className={s.sectionTitle}>가격 알림</h2>
+            <p className={s.accountDesc}>외부 발송 없이 현재 가격의 목표 도달 여부를 여기에서 확인합니다.</p>
+            {alertsLoading ? (
+              <div className={s.loadingState}>로딩 중...</div>
+            ) : alerts.length === 0 ? (
+              <div className={s.emptyState}>
+                <BellRing size={40} />
+                <p>설정한 가격 알림이 없어요</p>
+              </div>
+            ) : (
+              <div className={s.alertList}>
+                {alerts.map((alert) => (
+                  <div key={alert.id} className={s.alertItem}>
+                    <div className={s.alertInfo}>
+                      <strong>{alert.product_name || alert.product?.name || `상품 ${alert.product_id}`}</strong>
+                      <span>목표 {fmt(alert.target_price)}원 · 현재 {alert.current_price != null ? `${fmt(alert.current_price)}원` : '가격 없음'}</span>
+                    </div>
+                    <span className={alert.is_triggered ? s.alertReached : s.alertWaiting}>
+                      {alert.is_triggered ? '목표 도달' : '대기 중'}
+                    </span>
+                    <button type="button" className={s.alertRemove} onClick={() => removeAlert(alert.id)}>
+                      해제
+                    </button>
+                  </div>
+                ))}
               </div>
             )}
           </div>

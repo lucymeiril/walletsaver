@@ -37,6 +37,30 @@ def _recent_dashboard_products(storage, limit: int = 8) -> list[dict]:
         return []
 
     with catalog.connection() as connection:
+        if (
+            catalog._table(connection, "normalized_canonical_products")
+            and connection.execute(
+                "SELECT 1 FROM normalized_canonical_products WHERE is_active=1 LIMIT 1"
+            ).fetchone() is not None
+        ):
+            rows = connection.execute(
+                "SELECT p.*, COALESCE((SELECT MAX(e.crawled_at) "
+                "FROM normalized_product_variants v "
+                "JOIN normalized_source_listings l ON l.public_variant_id=v.public_variant_id "
+                "JOIN normalized_offer_events e ON e.public_source_listing_id=l.public_source_listing_id "
+                "WHERE v.public_product_id=p.public_product_id AND v.is_active=1 "
+                "AND l.is_active=1 AND e.offer_state='active'), '') AS _dashboard_observed_at "
+                "FROM normalized_canonical_products p WHERE p.is_active=1 "
+                "ORDER BY _dashboard_observed_at DESC, p.public_product_id DESC LIMIT ?",
+                (max(1, int(limit)),),
+            ).fetchall()
+            products = []
+            for row in rows:
+                item = catalog._normalized_product(connection, row, include_all=False)
+                item["observed_at"] = row["_dashboard_observed_at"] or ""
+                products.append(item)
+            return products
+
         timestamp_parts: list[str] = []
         if catalog._table(connection, "discount_history"):
             timestamp_parts.append(

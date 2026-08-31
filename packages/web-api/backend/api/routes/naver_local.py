@@ -10,12 +10,22 @@ import asyncio
 import json
 import logging
 import math
+import os
+import sys
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
+from urllib.parse import quote
 
 from fastapi import APIRouter, Query
 from fastapi.responses import StreamingResponse
 
 from api.schemas.common import ApiResponse
+
+_SHARED = Path(__file__).resolve().parents[4] / "shared"
+if str(_SHARED) not in sys.path:
+    sys.path.insert(0, str(_SHARED))
+
+from core.fuel_store import FuelStore, FuelStoreUnavailable
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -57,6 +67,48 @@ def _parse_nonnegative_int(value) -> int:
 
 def _valid_coordinates(lat: float, lng: float) -> bool:
     return -90 <= lat <= 90 and -180 <= lng <= 180
+
+
+def _opinet_nearby_items(lat: float, lng: float, max_items: int) -> list[dict]:
+    """Adapt the crawler-owned OPINET snapshot to the Local-page item shape."""
+    try:
+        rows = FuelStore(readonly=True).current_prices(
+            fuel_type="gasoline",
+            lat=lat,
+            lng=lng,
+            radius_m=10_000,
+            sort_by="distance",
+            limit=max_items,
+        )
+    except FuelStoreUnavailable:
+        return []
+    return [
+        {
+            "id": row["station_code"],
+            "name": row["name"],
+            "category": "주유소",
+            "address": row["address"],
+            "x": row.get("lng"),
+            "y": row.get("lat"),
+            "distance": row.get("distance"),
+            "url": f"https://map.naver.com/p/search/{quote(row['name'])}",
+            "rating": None,
+            "review_count": 0,
+            "petrol_info": {
+                "gasoline": row.get("gasoline"),
+                "premium_gasoline": row.get("premium"),
+                "diesel": row.get("diesel"),
+                "lpg": row.get("lpg"),
+                "is_self": bool(row.get("self_service")),
+                "is_24h": False,
+                "has_car_wash": False,
+                "brand": row.get("brand") or "",
+                "updated_at": row.get("updated_at"),
+                "source": row.get("source") or "opinet",
+            },
+        }
+        for row in rows
+    ]
 
 
 @router.get("/geocode")
@@ -220,6 +272,14 @@ def _search_via_playwright_sync(query: str, lat: float, lng: float, max_items: i
 
 
 async def _search(query: str, lat: float, lng: float, max_items: int) -> list[dict]:
+    enabled = os.getenv(
+        "NAVER_PLACE_BROWSER_SEARCH_ENABLED", "false"
+    ).strip().lower() in {"1", "true", "yes", "on"}
+    if not enabled:
+        # The public website remains useful through its external-map links.
+        # Browser scraping is an explicit, local-only fallback because it is
+        # slower and less stable than a configured API/data snapshot.
+        return []
     loop = asyncio.get_running_loop()
     return await loop.run_in_executor(
         _executor,
@@ -273,15 +333,23 @@ async def area_explore_stream(
         per_category = max(1, min(8, max_items // max(1, len(names))))
         for name in names:
             try:
-                items = await _search(name, lat, lng, per_category)
+                if name == "주유소":
+                    items = await asyncio.to_thread(
+                        _opinet_nearby_items, lat, lng, per_category
+                    )
+                    source = "opinet" if items else "unavailable"
+                else:
+                    items = await _search(name, lat, lng, per_category)
+                    source = "naver" if items else "unavailable"
             except Exception as exc:
                 logger.warning("[네이버 검색] category %s failed: %s", name, exc)
                 items = []
+                source = "unavailable"
             payload = {
                 "name": name,
                 "location_name": location_name or "",
                 "items": items,
-                "source": "naver" if items else "unavailable",
+                "source": source,
             }
             yield f"data: {json.dumps(payload, ensure_ascii=False)}\n\n"
             await asyncio.sleep(0.05)

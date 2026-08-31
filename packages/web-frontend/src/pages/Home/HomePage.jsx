@@ -154,15 +154,23 @@ export default function HomePage() {
   // 2) API 병렬 최적화 — /api/dashboard 통합 + 나머지 개별 요청
   const fetchAllData = useCallback((loc, signal) => {
     const gasQuery = loc ? `lat=${loc.lat}&lng=${loc.lng}&sort=price_asc` : 'sort=price_asc';
+    const readJson = async (url) => {
+      const response = await fetch(url, { signal });
+      const body = await response.json().catch(() => null);
+      if (!response.ok) {
+        throw new Error(body?.detail || body?.message || `HTTP ${response.status}`);
+      }
+      return body;
+    };
 
     setSectionLoading({ products: true, hotdeals: true, community: true, gas: true, trending: true, fashion: true });
     setSectionError({ products: false, hotdeals: false, community: false, gas: false, trending: false, fashion: false });
 
     Promise.allSettled([
-      fetch('/api/dashboard', { signal }).then(r => r.json()),
-      fetch('/api/posts?post_type=hotdeal&per_page=5', { signal }).then(r => r.json()),
-      fetch(`/api/gas/nearby?${gasQuery}`, { signal }).then(r => r.json()),
-      fetch('/api/hotdeals?category=fashion&per_page=6', { signal }).then(r => r.json()),
+      readJson('/api/dashboard'),
+      readJson('/api/posts?post_type=hotdeal&per_page=5'),
+      readJson(`/api/gas/nearby?${gasQuery}`),
+      readJson('/api/hotdeals?category=fashion&per_page=6'),
     ]).then(([dashRes, postRes, gasRes, fashionRes]) => {
       // 대시보드 통합 응답 (hotdeals + category_summary + recent_products + trending_keywords)
       if (dashRes.status === 'fulfilled' && dashRes.value?.data) {
@@ -197,6 +205,7 @@ export default function HomePage() {
       if (gasRes.status === 'fulfilled') {
         setGasStations(gasRes.value.data || []);
       } else {
+        setGasStations([]);
         setSectionError(prev => ({ ...prev, gas: true }));
       }
       setSectionLoading(prev => ({ ...prev, gas: false }));

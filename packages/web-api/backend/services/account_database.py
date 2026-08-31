@@ -92,7 +92,7 @@ class AccountDatabase:
             CREATE TABLE IF NOT EXISTS price_alerts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-                product_id INTEGER NOT NULL,
+                product_id TEXT NOT NULL,
                 target_price REAL NOT NULL,
                 is_active INTEGER NOT NULL DEFAULT 1,
                 created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,

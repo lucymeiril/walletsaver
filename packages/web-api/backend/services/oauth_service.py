@@ -1,4 +1,5 @@
 """OAuth 서비스 — Google, Kakao, Naver OAuth 2.0 처리"""
+import json
 import os
 import secrets
 import time
@@ -57,9 +58,15 @@ class OAuthConfig:
         template = cls._PROVIDERS.get(provider)
         if not template:
             raise ValueError(f"지원하지 않는 OAuth 공급자: {provider}")
+        client_id = os.getenv(template["client_id_env"], "").strip()
+        client_secret = os.getenv(template["client_secret_env"], "").strip()
+        if provider == "google" and (not client_id or not client_secret):
+            file_client_id, file_client_secret = _google_credentials_from_file()
+            client_id = client_id or file_client_id
+            client_secret = client_secret or file_client_secret
         return {
-            "client_id": os.getenv(template["client_id_env"], "").strip(),
-            "client_secret": os.getenv(template["client_secret_env"], "").strip(),
+            "client_id": client_id,
+            "client_secret": client_secret,
             "auth_url": template["auth_url"],
             "token_url": template["token_url"],
             "userinfo_url": template["userinfo_url"],
@@ -67,9 +74,33 @@ class OAuthConfig:
         }
 
 
+def _google_credentials_from_file() -> tuple[str, str]:
+    """Load a downloaded Google OAuth JSON without copying its secret to .env."""
+    configured_path = os.getenv("GOOGLE_CLIENT_SECRET_FILE", "").strip()
+    if not configured_path:
+        return "", ""
+    path = Path(configured_path).expanduser()
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8-sig"))
+        config = payload.get("web") or payload.get("installed") or {}
+        return (
+            str(config.get("client_id") or "").strip(),
+            str(config.get("client_secret") or "").strip(),
+        )
+    except (OSError, ValueError, TypeError):
+        return "", ""
+
+
 def _redirect_base() -> str:
     load_dotenv(Path(__file__).resolve().parent.parent / ".env")
-    return os.getenv("OAUTH_REDIRECT_BASE", "http://localhost:8000")
+    return os.getenv("OAUTH_REDIRECT_BASE", "http://localhost:8000").strip().rstrip("/")
+
+
+def get_oauth_redirect_uri(provider: str) -> str:
+    """Return the one callback URI used by both authorization and token exchange."""
+    if provider not in OAuthConfig._PROVIDERS:
+        raise ValueError(f"지원하지 않는 OAuth 공급자: {provider}")
+    return f"{_redirect_base()}/api/auth/oauth/{provider}/callback"
 
 
 _oauth_states: dict[str, float] = {}
@@ -108,7 +139,7 @@ def get_oauth_login_url(provider: str) -> str:
         raise ValueError(f"{provider} OAuth client_secret이 설정되지 않았습니다")
     params = {
         "client_id": config["client_id"],
-        "redirect_uri": f"{_redirect_base()}/api/auth/oauth/{provider}/callback",
+        "redirect_uri": get_oauth_redirect_uri(provider),
         "response_type": "code",
         "scope": config["scope"],
         "state": generate_oauth_state(),
@@ -131,7 +162,7 @@ async def exchange_code_for_token(provider: str, code: str) -> dict:
                 "client_id": config["client_id"],
                 "client_secret": config["client_secret"],
                 "code": code,
-                "redirect_uri": f"{_redirect_base()}/api/auth/oauth/{provider}/callback",
+                "redirect_uri": get_oauth_redirect_uri(provider),
             },
         )
         response.raise_for_status()

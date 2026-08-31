@@ -15,8 +15,21 @@ from services.oauth_service import (
 from services.user_storage import PublicUserStore, PublicUserStoreError
 
 router = APIRouter(prefix="/api/auth", tags=["인증"])
-FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
 _COOKIE_SECURE = os.getenv("COOKIE_SECURE", "false").lower() == "true"
+
+
+def _frontend_url() -> str:
+    return os.getenv("FRONTEND_URL", "http://localhost:5173").strip().rstrip("/")
+
+
+def _oauth_result_url(error: str | None = None, provider: str | None = None) -> str:
+    url = f"{_frontend_url()}/auth/callback"
+    if not error:
+        return url
+    query = f"error={error}"
+    if provider:
+        query += f"&provider={provider}"
+    return f"{url}?{query}"
 
 
 def _store(request: Request) -> PublicUserStore:
@@ -172,16 +185,24 @@ async def oauth_login(provider: str):
         if "지원하지 않는 OAuth 공급자" in str(exc):
             raise HTTPException(status_code=400, detail=str(exc)) from exc
         return RedirectResponse(
-            url=f"{FRONTEND_URL}/auth/callback?error=oauth_config&provider={provider}",
+            url=_oauth_result_url("oauth_config", provider),
             status_code=302,
         )
 
 
 @router.get("/oauth/{provider}/callback")
-async def oauth_callback(request: Request, provider: str, code: str, state: str | None = None):
+async def oauth_callback(
+    request: Request,
+    provider: str,
+    code: str | None = None,
+    state: str | None = None,
+    error: str | None = None,
+):
     """OAuth 콜백 — OAuth 계정과 accounts.sqlite 사용자를 연결한다."""
+    if error or not code:
+        return RedirectResponse(url=_oauth_result_url("oauth_denied", provider), status_code=302)
     if not validate_oauth_state(state):
-        return RedirectResponse(url=f"{FRONTEND_URL}/auth/callback?error=oauth_state", status_code=302)
+        return RedirectResponse(url=_oauth_result_url("oauth_state", provider), status_code=302)
     try:
         token_data = await exchange_code_for_token(provider, code)
         info = await get_user_info(provider, token_data["access_token"])
@@ -194,17 +215,17 @@ async def oauth_callback(request: Request, provider: str, code: str, state: str 
         )
         if not _is_active(user):
             return RedirectResponse(
-                url=f"{FRONTEND_URL}/auth/callback?error=account_disabled",
+                url=_oauth_result_url("account_disabled", provider),
                 status_code=302,
             )
         tokens = create_token_pair(user["id"], user["email"], user["role"])
-        response = RedirectResponse(url=f"{FRONTEND_URL}/auth/callback", status_code=302)
+        response = RedirectResponse(url=_oauth_result_url(), status_code=302)
         _set_auth_cookies(response, tokens)
         return response
     except PublicUserStoreError:
-        return RedirectResponse(url=f"{FRONTEND_URL}/auth/callback?error=oauth_failed", status_code=302)
+        return RedirectResponse(url=_oauth_result_url("oauth_failed", provider), status_code=302)
     except Exception:
-        return RedirectResponse(url=f"{FRONTEND_URL}/auth/callback?error=oauth_failed", status_code=302)
+        return RedirectResponse(url=_oauth_result_url("oauth_failed", provider), status_code=302)
 
 
 @router.get("/me", response_model=UserProfile)

@@ -9,6 +9,7 @@ from __future__ import annotations
 import hmac
 import os
 import sqlite3
+import time
 from pathlib import Path
 from typing import Iterable
 
@@ -34,7 +35,11 @@ _SNAPSHOT_CONFIG = {
     "catalog": (
         "WALLETSAVIOR_PUBLIC_DB",
         _DEFAULT_CATALOG_DB,
-        {"products", "categories", "unified_categories", "snapshot_meta"},
+        {
+            "products", "categories", "unified_categories", "snapshot_meta",
+            "normalized_canonical_products", "normalized_product_variants",
+            "normalized_source_listings", "normalized_offer_events",
+        },
     ),
     "external-hotdeals": (
         "WALLETSAVIOR_EXTERNAL_HOTDEAL_DB",
@@ -322,6 +327,44 @@ def _validate_sqlite(path: Path, required_tables: Iterable[str]) -> dict:
             missing = set(required_tables) - tables
             if missing:
                 raise ValueError(f"required tables missing: {', '.join(sorted(missing))}")
+            if {
+                "unified_categories", "normalized_canonical_products"
+            }.issubset(tables):
+                category_rows = connection.execute(
+                    "SELECT id, parent_id FROM unified_categories"
+                ).fetchall()
+                parents = {
+                    str(row[0]): (str(row[1]) if row[1] is not None else None)
+                    for row in category_rows
+                }
+                for category_id in parents:
+                    seen: set[str] = set()
+                    cursor: str | None = category_id
+                    depth = 0
+                    while cursor is not None:
+                        if cursor not in parents:
+                            raise ValueError(f"category parent not found: {cursor}")
+                        if cursor in seen:
+                            raise ValueError(f"category cycle detected: {category_id}")
+                        seen.add(cursor)
+                        depth += 1
+                        if depth > 4:
+                            raise ValueError(
+                                f"category depth exceeds four levels: {category_id}"
+                            )
+                        cursor = parents[cursor]
+                bad_products = int(connection.execute(
+                    "SELECT COUNT(*) FROM normalized_canonical_products p "
+                    "WHERE p.is_active=1 AND (p.unified_category_id IS NULL OR NOT EXISTS ("
+                    "SELECT 1 FROM unified_categories current "
+                    "WHERE current.id=p.unified_category_id) OR EXISTS ("
+                    "SELECT 1 FROM unified_categories child "
+                    "WHERE child.parent_id=p.unified_category_id))"
+                ).fetchone()[0])
+                if bad_products:
+                    raise ValueError(
+                        f"active products without a leaf category: {bad_products}"
+                    )
             meta = {}
             if "snapshot_meta" in tables:
                 row = connection.execute(
@@ -334,6 +377,34 @@ def _validate_sqlite(path: Path, required_tables: Iterable[str]) -> dict:
             connection.close()
     except Exception as exc:
         raise HTTPException(status_code=422, detail=f"snapshot 검증 실패: {exc}") from exc
+
+
+def _replace_with_retry(source: Path, target: Path, *, timeout: float = 5.0) -> None:
+    deadline = time.monotonic() + timeout
+    while True:
+        try:
+            os.replace(source, target)
+            return
+        except PermissionError:
+            if time.monotonic() >= deadline:
+                raise
+            time.sleep(0.05)
+
+
+def _install_uploaded_snapshot(uploading: Path, target: Path) -> Path | None:
+    previous = target.with_suffix(target.suffix + ".previous")
+    had_target = target.exists()
+    if previous.exists():
+        previous.unlink()
+    if had_target:
+        _replace_with_retry(target, previous)
+    try:
+        _replace_with_retry(uploading, target)
+    except Exception:
+        if had_target and previous.exists():
+            _replace_with_retry(previous, target)
+        raise
+    return previous if had_target else None
 
 
 @router.put("/snapshots/{kind}", dependencies=[Depends(require_remote_admin)])
@@ -360,14 +431,49 @@ async def upload_snapshot(request: Request, kind: str):
             raise HTTPException(status_code=400, detail="빈 snapshot 파일은 업로드할 수 없습니다")
 
         validation = _validate_sqlite(uploading, required_tables)
-        os.replace(uploading, target)
+        previous = _install_uploaded_snapshot(uploading, target)
         return {
             "ok": True,
             "kind": kind,
             "path": str(target),
             "bytes": written,
             "validation": validation,
+            "previous_path": str(previous) if previous else None,
         }
     finally:
         if uploading.exists():
             uploading.unlink(missing_ok=True)
+
+
+@router.get("/snapshots/{kind}", dependencies=[Depends(require_remote_admin)])
+def snapshot_status(kind: str):
+    target, required_tables = _snapshot_target(kind)
+    previous = target.with_suffix(target.suffix + ".previous")
+    return {
+        "kind": kind,
+        "current": _validate_sqlite(target, required_tables) if target.is_file() else None,
+        "rollback": _validate_sqlite(previous, required_tables) if previous.is_file() else None,
+    }
+
+
+@router.post("/snapshots/{kind}/rollback", dependencies=[Depends(require_remote_admin)])
+def rollback_snapshot(kind: str):
+    target, required_tables = _snapshot_target(kind)
+    previous = target.with_suffix(target.suffix + ".previous")
+    if not previous.is_file():
+        raise HTTPException(status_code=409, detail="되돌릴 snapshot이 없습니다")
+    validation = _validate_sqlite(previous, required_tables)
+    displaced = target.with_suffix(target.suffix + ".rollback")
+    if displaced.exists():
+        displaced.unlink()
+    if target.exists():
+        _replace_with_retry(target, displaced)
+    try:
+        _replace_with_retry(previous, target)
+        if displaced.exists():
+            _replace_with_retry(displaced, previous)
+    except Exception:
+        if displaced.exists() and not target.exists():
+            _replace_with_retry(displaced, target)
+        raise
+    return {"ok": True, "kind": kind, "validation": validation}

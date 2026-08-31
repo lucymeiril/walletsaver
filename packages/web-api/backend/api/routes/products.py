@@ -217,21 +217,43 @@ async def compare_category_products(
     except Exception as exc:
         raise _catalog_error(exc) from exc
 
-    metadata = _comparison_metadata(
-        storage,
-        [int(row["id"]) for row in raw_products if row.get("id") is not None],
-    )
+    normalized_rows = any(row.get("public_product_id") for row in raw_products)
+    legacy_ids: list[int] = []
+    if not normalized_rows:
+        for row in raw_products:
+            try:
+                legacy_ids.append(int(row["id"]))
+            except (KeyError, TypeError, ValueError):
+                continue
+    metadata = _comparison_metadata(storage, legacy_ids)
 
     products = []
     for row in raw_products:
-        current = row.get("cur") or row.get("price") or 0
-        original = row.get("original_price") or row.get("avg") or current
+        best_offer = row.get("best_offer") or {}
+        current = (
+            best_offer.get("comparable_price")
+            or best_offer.get("total_price")
+            or row.get("cur")
+            or row.get("price")
+            or 0
+        )
+        original = best_offer.get("original_price") or row.get("original_price") or row.get("avg") or current
         discount_pct = row.get("discount_pct")
         if discount_pct is None and current and original and original > current:
             discount_pct = round((1 - current / original) * 100)
 
-        meta = metadata.get(int(row.get("id") or 0), {})
-        unit_price, basis = _normalized_unit_price(float(current or 0), meta)
+        meta = {}
+        if not normalized_rows:
+            try:
+                meta = metadata.get(int(row.get("id") or 0), {})
+            except (TypeError, ValueError):
+                meta = {}
+        if best_offer.get("per_100g") is not None:
+            unit_price, basis = best_offer["per_100g"], "100g"
+        elif best_offer.get("per_100ml") is not None:
+            unit_price, basis = best_offer["per_100ml"], "100ml"
+        else:
+            unit_price, basis = _normalized_unit_price(float(current or 0), meta)
         products.append({
             "id": row.get("id"),
             "name": row.get("name", ""),
@@ -257,11 +279,19 @@ async def compare_category_products(
             },
             "attributes": row.get("attributes") or {},
             "image_url": row.get("img") or row.get("image_url") or "",
+            "promotion": {
+                "condition": best_offer.get("promotion_condition"),
+                "minimum_quantity": best_offer.get("minimum_quantity"),
+                "membership_required": best_offer.get("membership_required"),
+                "coupon_required": best_offer.get("coupon_required"),
+                "total_spend": best_offer.get("total_price"),
+            } if best_offer else None,
+            "classification_warning": bool(row.get("classification_warning")),
             # The catalog's historical price tier is not the same thing as a
             # cross-product comparison rank, so let the client derive this from
             # the comparison summary instead of mixing the two concepts.
             "price_rank": None,
-            "observed_at": meta.get("observed_at") or "",
+            "observed_at": best_offer.get("crawled_at") or meta.get("observed_at") or "",
         })
 
     bases = {
@@ -360,8 +390,17 @@ async def compare_category_products(
     })
 
 
+def _normalized_events(product: dict) -> list[dict]:
+    events = []
+    for variant in product.get("variants") or []:
+        for listing in variant.get("listings") or []:
+            for offer in listing.get("offers") or []:
+                events.append({**offer, "source": listing.get("source"), "source_url": listing.get("url"), "variant_id": variant.get("id"), "variant_name": variant.get("name")})
+    return events
+
+
 @router.get("/{product_id}")
-async def get_product(request: Request, product_id: int):
+async def get_product(request: Request, product_id: str):
     try:
         result = _storage(request).get_product_detail(product_id)
     except Exception as exc:
@@ -374,13 +413,28 @@ async def get_product(request: Request, product_id: int):
 @router.get("/{product_id}/price-history")
 async def get_price_history(
     request: Request,
-    product_id: int,
+    product_id: str,
     days: int = Query(30, ge=7, le=365),
 ):
     storage = _storage(request)
     try:
         product = storage.get_product_detail(product_id)
-        history = storage.get_price_history(product_id, days) if product else []
+        if product and product.get("public_product_id"):
+            history = [
+                {
+                    "date": event.get("crawled_at"),
+                    "observed_at": event.get("crawled_at"),
+                    "price": event.get("total_price"),
+                    "comparable_price": event.get("comparable_price"),
+                    "source": event.get("source"),
+                    "source_url": event.get("source_url"),
+                    "variant_id": event.get("variant_id"),
+                    "promotion_condition": event.get("promotion_condition"),
+                }
+                for event in _normalized_events(product)
+            ]
+        else:
+            history = storage.get_price_history(int(product_id), days) if product else []
     except Exception as exc:
         raise _catalog_error(exc) from exc
     if product is None:
@@ -389,11 +443,17 @@ async def get_price_history(
 
 
 @router.get("/{product_id}/price-compare")
-async def get_price_compare(request: Request, product_id: int):
+async def get_price_compare(request: Request, product_id: str):
     storage = _storage(request)
     try:
         product = storage.get_product_detail(product_id)
-        compare = storage.get_price_compare(product_id) if product else []
+        if product and product.get("public_product_id"):
+            compare = sorted(
+                [event for event in _normalized_events(product) if event.get("comparable_price") is not None],
+                key=lambda event: (event["comparable_price"], event.get("source") or ""),
+            )
+        else:
+            compare = storage.get_price_compare(int(product_id)) if product else []
     except Exception as exc:
         raise _catalog_error(exc) from exc
     if product is None:
@@ -402,11 +462,17 @@ async def get_price_compare(request: Request, product_id: int):
 
 
 @router.get("/{product_id}/trust")
-async def get_product_trust(request: Request, product_id: int):
+async def get_product_trust(request: Request, product_id: str):
     storage = _storage(request)
     try:
         product = storage.get_product_detail(product_id)
-        history = storage.get_price_history(product_id, 30) if product else []
+        if product and product.get("public_product_id"):
+            history = [
+                {"price": event.get("comparable_price") or event.get("total_price")}
+                for event in _normalized_events(product)
+            ]
+        else:
+            history = storage.get_price_history(int(product_id), 30) if product else []
     except Exception as exc:
         raise _catalog_error(exc) from exc
     if product is None:

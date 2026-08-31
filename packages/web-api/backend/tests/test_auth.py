@@ -1,6 +1,7 @@
 """인증 시스템 종합 테스트"""
-import sys
+import json
 import os
+import sys
 import pytest
 from datetime import timedelta
 from unittest.mock import patch
@@ -17,7 +18,7 @@ from services.auth_service import (
     create_token_pair,
     ACCESS_TOKEN_EXPIRE_MINUTES,
 )
-from services.oauth_service import get_oauth_login_url, OAuthConfig
+from services.oauth_service import get_oauth_login_url, get_oauth_redirect_uri, OAuthConfig
 
 
 # ── 비밀번호 해싱 테스트 ──────────────────────────────────────────
@@ -273,9 +274,29 @@ class TestOAuthURLGeneration:
     def test_google_login_url(self, monkeypatch):
         monkeypatch.setenv("GOOGLE_CLIENT_ID", "google-client")
         monkeypatch.setenv("GOOGLE_CLIENT_SECRET", "google-secret")
+        monkeypatch.setenv("OAUTH_REDIRECT_BASE", "http://localhost:8000/")
         url = get_oauth_login_url("google")
         assert "accounts.google.com" in url
         assert "response_type=code" in url
+        assert "redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fapi%2Fauth%2Foauth%2Fgoogle%2Fcallback" in url
+        assert get_oauth_redirect_uri("google") == "http://localhost:8000/api/auth/oauth/google/callback"
+
+    def test_google_credentials_can_load_from_downloaded_json(self, tmp_path, monkeypatch):
+        credential_file = tmp_path / "google-client.json"
+        credential_file.write_text(json.dumps({
+            "web": {
+                "client_id": "file-client",
+                "client_secret": "file-secret",
+            },
+        }), encoding="utf-8")
+        monkeypatch.delenv("GOOGLE_CLIENT_ID", raising=False)
+        monkeypatch.delenv("GOOGLE_CLIENT_SECRET", raising=False)
+        monkeypatch.setenv("GOOGLE_CLIENT_SECRET_FILE", str(credential_file))
+
+        config = OAuthConfig.get("google")
+
+        assert config["client_id"] == "file-client"
+        assert config["client_secret"] == "file-secret"
 
     def test_kakao_login_url(self, monkeypatch):
         monkeypatch.setenv("KAKAO_CLIENT_ID", "kakao-client")
@@ -326,6 +347,8 @@ class TestOAuthRoutes:
     def test_oauth_login_redirect_without_credentials_returns_config_error(self, client, monkeypatch):
         monkeypatch.delenv("GOOGLE_CLIENT_ID", raising=False)
         monkeypatch.delenv("GOOGLE_CLIENT_SECRET", raising=False)
+        monkeypatch.delenv("GOOGLE_CLIENT_SECRET_FILE", raising=False)
+        monkeypatch.setenv("GOOGLE_CLIENT_SECRET_FILE", "")
         resp = client.get("/api/auth/oauth/google")
         assert resp.status_code == 302
         assert "/auth/callback?error=oauth_config&provider=google" in resp.headers["location"]
@@ -333,3 +356,11 @@ class TestOAuthRoutes:
     def test_oauth_invalid_provider(self, client):
         resp = client.get("/api/auth/oauth/facebook")
         assert resp.status_code == 400
+
+    def test_oauth_denial_redirects_to_frontend_instead_of_422(self, client, monkeypatch):
+        monkeypatch.setenv("FRONTEND_URL", "http://localhost:5173/")
+        resp = client.get("/api/auth/oauth/google/callback", params={"error": "access_denied"})
+        assert resp.status_code == 302
+        assert resp.headers["location"] == (
+            "http://localhost:5173/auth/callback?error=oauth_denied&provider=google"
+        )

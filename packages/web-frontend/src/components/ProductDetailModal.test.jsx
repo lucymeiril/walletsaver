@@ -8,7 +8,14 @@ import useCartStore from '../stores/cartStore';
 vi.mock('../services/api', () => ({
   api: {
     getJson: vi.fn(),
-    post: vi.fn(() => Promise.resolve()),
+    get: vi.fn(() => Promise.resolve({ json: () => Promise.resolve({ data: [] }) })),
+    post: vi.fn((path, payload) => Promise.resolve({
+      json: () => Promise.resolve(path === '/api/cart'
+        ? { data: { ...payload, id: 9, cart_id: 9 } }
+        : { data: { ...payload, id: 7 } }),
+    })),
+    put: vi.fn(() => Promise.resolve({ json: () => Promise.resolve({}) })),
+    delete: vi.fn(() => Promise.resolve({ json: () => Promise.resolve({}) })),
   },
 }));
 
@@ -41,7 +48,7 @@ describe('ProductDetailModal public catalog rendering', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
     useStore.setState({ isLoggedIn: true, favorites: [], toasts: [], _toastSeq: 0 });
-    useCartStore.setState({ items: [] });
+    useCartStore.setState({ items: [], synced: false });
     api.getJson.mockImplementation((path) => {
       if (path.endsWith('/price-compare')) {
         return Promise.resolve({
@@ -138,11 +145,13 @@ describe('ProductDetailModal public catalog rendering', () => {
     expect(api.post.mock.calls.at(-1)[1]).not.toHaveProperty('product_id');
 
     fireEvent.click(screen.getByText('장바구니 담기'));
-    expect(useCartStore.getState().items[0]).toEqual(expect.objectContaining({
-      name: '행사 사과',
-      price: 9900,
-      store_name: '이마트',
-    }));
+    await waitFor(() => {
+      expect(useCartStore.getState().items[0]).toEqual(expect.objectContaining({
+        name: '행사 사과',
+        price: 9900,
+        store_name: '이마트',
+      }));
+    });
   });
 
   it('renders rich decision support for real-shaped hotdeal preview data', () => {

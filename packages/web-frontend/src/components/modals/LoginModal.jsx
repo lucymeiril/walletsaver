@@ -113,7 +113,9 @@ export default function LoginModal() {
   };
 
   const handleOAuth = (provider) => {
-    const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    // 로컬에서는 Vite의 same-origin /api 프록시를 사용한다. 백엔드 포트를
+    // 직접 가리키면 localhost/127.0.0.1이 섞여 OAuth 쿠키가 사라질 수 있다.
+    const backendUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
     window.location.href = `${backendUrl}/api/auth/oauth/${provider}`;
   };
 

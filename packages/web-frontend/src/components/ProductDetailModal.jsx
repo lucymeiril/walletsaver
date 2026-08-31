@@ -8,7 +8,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import {
-  X, ShoppingCart, Heart, Share2, ExternalLink, ChevronRight,
+  X, ShoppingCart, Heart, Share2, ExternalLink, ChevronRight, BellRing,
 } from 'lucide-react';
 import { api } from '../services/api';
 import useStore from '../stores/appStore';
@@ -39,6 +39,7 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
   const addFavorite = useStore((st) => st.addFavorite);
   const removeFavorite = useStore((st) => st.removeFavorite);
   const setFavoriteRemoteId = useStore((st) => st.setFavoriteRemoteId);
+  const addPriceAlert = useStore((st) => st.addPriceAlert);
   const addItem = useCartStore((st) => st.addItem);
   const { trackView, trackCartAdd, trackWishlistAdd } = useActivityTracker();
 
@@ -46,6 +47,9 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
   const [priceHistory, setPriceHistory] = useState([]);
   const [priceTrust, setPriceTrust] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showAlertForm, setShowAlertForm] = useState(false);
+  const [alertTarget, setAlertTarget] = useState('');
+  const [savingAlert, setSavingAlert] = useState(false);
 
   if (!product) return null;
 
@@ -69,6 +73,7 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
     sourceTitle,
     description,
     numericProductId,
+    catalogProductId,
     favoriteId,
     priceObservationOnly,
     hasDiscountMetadata,
@@ -76,7 +81,7 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
     claimStatusLabel,
     unitPriceDisplay,
   } = normalized;
-  const productId = numericProductId;
+  const productId = catalogProductId || numericProductId;
   const standardUnitPrice = normalized.standardUnitPrice ?? priceTrust?.standard_unit_price ?? null;
   const standardUnit = normalized.standardUnit ?? priceTrust?.standard_unit ?? null;
 
@@ -102,9 +107,9 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
     const fetchExtra = async () => {
       try {
         const [compRes, histRes, trustRes] = await Promise.allSettled([
-          api.getJson(`/api/products/${productId}/price-compare`).catch(() => null),
-          api.getJson(`/api/products/${productId}/price-history`).catch(() => null),
-          api.getJson(`/api/products/${productId}/trust`).catch(() => null),
+          api.getJson(`/api/products/${encodeURIComponent(productId)}/price-compare`).catch(() => null),
+          api.getJson(`/api/products/${encodeURIComponent(productId)}/price-history`).catch(() => null),
+          api.getJson(`/api/products/${encodeURIComponent(productId)}/trust`).catch(() => null),
         ]);
         if (compRes.status === 'fulfilled' && compRes.value) {
           const compData = compRes.value.data || compRes.value;
@@ -181,15 +186,50 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
 
   const handleShare = useCallback(async () => {
     const text = `${name} - ${fmt(price)}원 ${storeName ? `(${storeName})` : ''}`;
+    const url = sourceUrl || window.location.href;
     if (navigator.share) {
       try {
-        await navigator.share({ title: name, text, url: sourceUrl || window.location.href });
+        await navigator.share({ title: name, text, url });
       } catch { /* cancelled */ }
     } else {
-      await navigator.clipboard.writeText(text);
-      addToast('클립보드에 복사했어요 📋', 'success');
+      try {
+        await navigator.clipboard?.writeText(`${text}\n${url}`);
+        addToast('상품 링크를 복사했어요 📋', 'success');
+      } catch {
+        addToast('이 브라우저에서는 링크 복사를 사용할 수 없습니다', 'warning');
+      }
     }
   }, [name, price, storeName, sourceUrl, addToast]);
+
+  const handleSaveAlert = useCallback(async () => {
+    if (!isLoggedIn) {
+      addToast('가격 알림을 설정하려면 로그인이 필요합니다', 'warning');
+      return;
+    }
+    if (!productId) {
+      addToast('공개 카탈로그 상품만 가격 알림을 설정할 수 있습니다', 'warning');
+      return;
+    }
+    const target = Number(alertTarget);
+    if (!Number.isInteger(target) || target <= 0) {
+      addToast('목표 가격을 1원 이상의 정수로 입력해주세요', 'warning');
+      return;
+    }
+    setSavingAlert(true);
+    try {
+      await api.postJson('/api/users/me/alerts', {
+        product_id: productId,
+        target_price: target,
+      });
+      addPriceAlert(productId, target);
+      setShowAlertForm(false);
+      addToast(`${fmt(target)}원 이하 가격 알림을 저장했습니다`, 'success');
+    } catch (error) {
+      addToast(error?.message || '가격 알림 저장에 실패했습니다', 'error');
+    } finally {
+      setSavingAlert(false);
+    }
+  }, [isLoggedIn, productId, alertTarget, addPriceAlert, addToast]);
 
   const handleKeyDown = useCallback((e) => {
     if (e.key === 'Escape') onClose();
@@ -281,6 +321,9 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
             </div>
 
             {brand && <div className={s.brand}>{brand}</div>}
+            {product.classification_warning && (
+              <div className={s.classificationWarning}>분류 확인 필요</div>
+            )}
 
             <div className={s.priceBlock}>
               <div className={s.priceMain}>
@@ -444,6 +487,23 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
         </div>
 
         {/* Action buttons */}
+        {showAlertForm && (
+          <div className={s.alertForm}>
+            <label htmlFor="product-alert-target">목표 가격</label>
+            <input
+              id="product-alert-target"
+              type="number"
+              min="1"
+              step="1"
+              value={alertTarget}
+              onChange={(event) => setAlertTarget(event.target.value)}
+              placeholder={price > 0 ? String(Math.round(price)) : '예: 5000'}
+            />
+            <button type="button" onClick={handleSaveAlert} disabled={savingAlert}>
+              {savingAlert ? '저장 중' : '저장'}
+            </button>
+          </div>
+        )}
         <div className={s.actions}>
           <button className={s.actionPrimary} onClick={handleAddToCart}>
             <ShoppingCart size={18} />
@@ -458,6 +518,16 @@ export default function ProductDetailModal({ product, onClose, mode: modeProp })
           </button>
           <button className={s.actionIcon} onClick={handleShare} aria-label="공유">
             <Share2 size={18} />
+          </button>
+          <button
+            className={s.actionIcon}
+            onClick={() => {
+              setAlertTarget((current) => current || (price > 0 ? String(Math.round(price)) : ''));
+              setShowAlertForm((current) => !current);
+            }}
+            aria-label="가격 알림 설정"
+          >
+            <BellRing size={18} />
           </button>
         </div>
       </div>

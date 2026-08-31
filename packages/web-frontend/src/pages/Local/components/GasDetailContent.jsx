@@ -7,7 +7,7 @@ export default function GasDetailContent({ station, avgGas, avgGasoline, avgDies
     ? (parseFloat(station.distance) > 100
         ? (parseFloat(station.distance) / 1000).toFixed(1)
         : parseFloat(station.distance).toFixed(1))
-    : (station.idx != null ? (0.5 + station.idx * 0.3).toFixed(1) : '?');
+    : null;
 
   const fuelRows = [
     { label: '휘발유', key: 'gasoline', avg: avgGasoline || avgGas },
@@ -30,7 +30,7 @@ export default function GasDetailContent({ station, avgGas, avgGasoline, avgDies
           📞 <a href={`tel:${station.tel}`} className={s.telLink}>{station.tel}</a>
         </p>
       )}
-      <p className={s.detailDist}>📏 현재 위치에서 ~{dist}km</p>
+      {dist != null && <p className={s.detailDist}>📏 현재 위치에서 약 {dist}km</p>}
       {station.updated_at && (
         <p className={s.detailTel}>🕒 가격 갱신 {String(station.updated_at).slice(0, 16)}</p>
       )}
@@ -71,7 +71,7 @@ export default function GasDetailContent({ station, avgGas, avgGasoline, avgDies
           </div>
           <div className={s.infoItem}>
             <span className={s.infoLabel}>운영 시간</span>
-            <span className={s.infoValue}>{station.is_24h ? '24시간' : '06:00 ~ 23:00'}</span>
+            <span className={s.infoValue}>{station.is_24h ? '24시간' : '운영 시간 미확인'}</span>
           </div>
           {station.has_car_wash && (
             <div className={s.infoItem}>
@@ -87,6 +87,15 @@ export default function GasDetailContent({ station, avgGas, avgGasoline, avgDies
           )}
         </div>
       </div>
+
+      <p className={s.detailTel}>
+        {String(station.source || '').startsWith('opinet') ? (
+          <>출처: <a href="https://www.opinet.co.kr/searRgOsSelect.do" target="_blank" rel="noopener noreferrer" className={s.telLink}>오피넷 공개 가격정보</a></>
+        ) : (
+          <>출처: {station.source || '외부 지도 검색 결과'}</>
+        )}
+        {' '}· 특정 시점 관측값으로 실제 판매가와 다를 수 있습니다.
+      </p>
 
       <div className={s.btnGroup}>
         <button className={s.mapFocusBtn} onClick={() => onFocusMap(station.name)}>

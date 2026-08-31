@@ -481,6 +481,13 @@ export default function PricePage() {
             </button>
           ))}
         </div>
+        {categoryGroups.length === 0 && !listLoading && !listError && (
+          <EmptyState
+            icon={Search}
+            title="승인된 물가 데이터가 아직 없습니다"
+            description="수집·분류·관리자 승인 후 카테고리와 상품 가격이 표시됩니다."
+          />
+        )}
       </div>
     );
   }

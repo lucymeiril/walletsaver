@@ -75,7 +75,50 @@ def test_health_uses_injected_storage_without_repository_db(client):
         "version": "0.1.0",
         "catalog": "injected",
         "accounts": "ok",
+        "external_hotdeals": "injected",
     }
+
+
+def _opinet_snapshot(path: Path, marker: str) -> bytes:
+    with sqlite3.connect(path) as connection:
+        connection.executescript(
+            "CREATE TABLE fuel_stations (id TEXT PRIMARY KEY, name TEXT);"
+            "CREATE TABLE fuel_prices (station_id TEXT, fuel_type TEXT, price REAL);"
+            "CREATE TABLE marker (value TEXT);"
+        )
+        connection.execute("INSERT INTO marker VALUES (?)", (marker,))
+        connection.commit()
+    return path.read_bytes()
+
+
+def test_remote_snapshot_upload_is_authenticated_and_rollbackable(
+    client, tmp_path, monkeypatch
+):
+    target = tmp_path / "deployed-opinet.sqlite"
+    monkeypatch.setenv("OPINET_DB_PATH", str(target))
+    monkeypatch.setenv("WALLETSAVIOR_REMOTE_ADMIN_TOKEN", "snapshot-test-token")
+    headers = {
+        "X-WalletSavior-Admin-Token": "snapshot-test-token",
+        "Content-Type": "application/octet-stream",
+    }
+
+    first = _opinet_snapshot(tmp_path / "first.sqlite", "first")
+    assert client.put(
+        "/api/admin/remote/snapshots/opinet", content=first, headers=headers
+    ).status_code == 200
+    second = _opinet_snapshot(tmp_path / "second.sqlite", "second")
+    assert client.put(
+        "/api/admin/remote/snapshots/opinet", content=second, headers=headers
+    ).status_code == 200
+
+    denied = client.post("/api/admin/remote/snapshots/opinet/rollback")
+    assert denied.status_code == 401
+    rolled_back = client.post(
+        "/api/admin/remote/snapshots/opinet/rollback", headers=headers
+    )
+    assert rolled_back.status_code == 200
+    with sqlite3.connect(target) as connection:
+        assert connection.execute("SELECT value FROM marker").fetchone()[0] == "first"
 
 
 def test_community_database_is_physically_separate(isolated_board, client):

@@ -501,3 +501,28 @@
   border-color: var(--accent);
   background: var(--glass);
 }
+
+.alertList { display: flex; flex-direction: column; gap: var(--space-sm); }
+.alertItem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+.alertInfo { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.alertInfo strong { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.alertInfo span { color: var(--text3); font-size: var(--fs-sm); }
+.alertReached, .alertWaiting { padding: 4px 8px; border-radius: 999px; font-size: var(--fs-xs); white-space: nowrap; }
+.alertReached { color: #166534; background: #dcfce7; }
+.alertWaiting { color: var(--text2); background: var(--glass2); }
+.alertRemove { border: 1px solid var(--border); border-radius: var(--radius-sm); background: transparent; color: var(--text2); padding: 7px 10px; cursor: pointer; }
+.alertRemove:hover { border-color: #ef4444; color: #ef4444; }
+
+@media (max-width: 600px) {
+  .alertItem { grid-template-columns: 1fr auto; }
+  .alertRemove { grid-column: 1 / -1; }
+}

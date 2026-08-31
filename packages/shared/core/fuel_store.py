@@ -303,7 +303,7 @@ class FuelStore:
                 SELECT
                     s.station_code, s.brand, s.name, s.address, s.sido, s.sigungu,
                     s.lat, s.lng, s.has_self_service, s.updated_at,
-                    p.fuel_type, p.price, p.observed_at
+                    p.fuel_type, p.price, p.observed_at, p.source
                 FROM fuel_stations s
                 LEFT JOIN latest l ON l.station_code = s.station_code
                 LEFT JOIN fuel_prices p
@@ -339,15 +339,18 @@ class FuelStore:
                     "diesel": None,
                     "kerosene": None,
                     "lpg": None,
+                    "price_sources": {},
                 },
             )
             if row["fuel_type"]:
                 item[row["fuel_type"]] = row["price"]
+                item["price_sources"][row["fuel_type"]] = row["source"]
 
         result: list[dict] = []
         for item in stations.values():
             if item.get(fuel_type) is None:
                 continue
+            item["source"] = item["price_sources"].get(fuel_type) or "opinet"
             if lat is not None and lng is not None:
                 if item["lat"] is None or item["lng"] is None:
                     if radius_m is not None:

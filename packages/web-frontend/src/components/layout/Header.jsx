@@ -160,7 +160,7 @@ const Header = memo(function Header() {
               {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
             </button>
 
-            <button className={s.iconBtn} aria-label="알림">
+            <button className={s.iconBtn} aria-label="알림" onClick={() => navigate('/profile?tab=alerts')}>
               <Bell size={20} />
               {unreadCount > 0 && <span className={s.badge}>{unreadCount > 9 ? '9+' : unreadCount}</span>}
             </button>
@@ -184,7 +184,7 @@ const Header = memo(function Header() {
                     <button className={s.profileItem} onClick={() => { setProfileOpen(false); navigate('/wishlist'); }}>
                       <Heart size={16} /> 찜 목록
                     </button>
-                    <button className={s.profileItem} onClick={() => { setProfileOpen(false); navigate('/'); addToast('가격 알림 페이지 준비 중입니다', 'info'); }}>
+                    <button className={s.profileItem} onClick={() => { setProfileOpen(false); navigate('/profile?tab=alerts'); }}>
                       <BellRing size={16} /> 가격 알림
                     </button>
                     <div className={s.profileDivider} />

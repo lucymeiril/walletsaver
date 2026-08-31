@@ -44,7 +44,7 @@ function slugPart(value, fallback = 'item') {
 }
 
 export function normalizeProduct(product = {}) {
-  const explicitProductId = firstDefined(product.product_id, product.productId);
+  const explicitProductId = firstDefined(product.public_product_id, product.product_id, product.productId);
   const looksLikeSavedListItem = explicitProductId == null
     && (
       product.item_name !== undefined
@@ -71,6 +71,7 @@ export function normalizeProduct(product = {}) {
   const rawId = firstDefined(explicitProductId, inferredProductId);
   const sourceIdentityId = firstDefined(product.hotdeal_id, product.id, rawId);
   const numericProductId = asNumericId(rawId);
+  const catalogProductId = rawId != null && String(rawId).trim() ? String(rawId) : null;
   const name = firstDefined(
     product.name,
     product.canonical_name,
@@ -130,8 +131,9 @@ export function normalizeProduct(product = {}) {
     raw: product,
     rawId,
     numericProductId,
-    stableId: numericProductId ? `product:${numericProductId}` : stableExternalId,
-    favoriteId: numericProductId ? `product:${numericProductId}` : stableExternalId,
+    catalogProductId,
+    stableId: catalogProductId ? `product:${catalogProductId}` : stableExternalId,
+    favoriteId: catalogProductId ? `product:${catalogProductId}` : stableExternalId,
     name,
     price,
     originalPrice: hasDiscountMetadata ? originalPrice : 0,

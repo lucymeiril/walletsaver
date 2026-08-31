@@ -61,8 +61,6 @@ export default function LocalPage() {
 
   const { addToast, setSavedLocation } = useStore();
   const searchInputRef = useRef(null);
-  const iframeRef = useRef(null);
-  const iframeLoadCount = useRef(0);
   const streamAbortRef = useRef(null);
 
   // Cleanup stream on unmount
@@ -187,7 +185,6 @@ export default function LocalPage() {
       setLocationName(geo.name || locQuery);
       setSavedLocation({ lat: geo.lat, lng: geo.lng, locationName: geo.name || locQuery });
       setIframeUrl(`https://map.naver.com/p/search/${encodeURIComponent(locQuery)}`);
-      iframeLoadCount.current = 0;
       addToast(`📍 ${geo.name || locQuery} 위치 설정 완료`, 'success');
       await runAreaExplore(geo.name || locQuery, geo.lat, geo.lng);
     } catch (err) {
@@ -422,6 +419,7 @@ export default function LocalPage() {
         premium_gasoline: petrol.premium_gasoline, naverUrl: item.url,
         image_url: item.image_url, tel: item.tel, distance: item.distance,
         updated_at: petrol.updated_at || item.updated_at,
+        source: petrol.source || item.source,
       });
     } else {
       setSelectedNaverPlace(item);
@@ -434,13 +432,6 @@ export default function LocalPage() {
       setIframeUrl(`https://map.naver.com/p/search/${encodeURIComponent(locationName)}`);
     }
   }, [locationName]);
-
-  const handleIframeLoad = useCallback(() => {
-    iframeLoadCount.current += 1;
-    if (iframeLoadCount.current > 2 && locationName) {
-      addToast('💡 지도에서 검색하셨나요? 왼쪽 검색창에 입력하면 결과를 함께 보여드립니다!', 'info');
-    }
-  }, [locationName, addToast]);
 
   /* ── Sort options ── */
   const sortOptions = useMemo(() => {
@@ -471,6 +462,10 @@ export default function LocalPage() {
     if (!exploreData?.categories) return [];
     return exploreData.categories.filter(cat => (cat.count || cat.items?.length || 0) > 0);
   }, [exploreData]);
+  const structuredSearchUnavailable = useMemo(() => {
+    const categories = exploreData?.categories || [];
+    return categories.length > 0 && categories.every(cat => cat.source === 'unavailable');
+  }, [exploreData]);
 
   /* ── Render ── */
   return (
@@ -481,27 +476,28 @@ export default function LocalPage() {
       </div>
 
       <div className={s.layout}>
-        {/* 네이버 지도 iframe */}
+        {/* map.naver.com은 X-Frame-Options: deny이므로 iframe 대신 외부 지도로 연결한다. */}
         <div className={s.map}>
           {currentMapUrl ? (
-            <iframe
-              ref={iframeRef}
-              src={currentMapUrl}
-              className={s.naverIframe}
-              title="네이버 지도"
-              allow="geolocation"
-              loading="lazy"
-              onLoad={handleIframeLoad}
-            />
+            <div className={s.mapPlaceholder}>
+              <MapPin size={56} />
+              <strong>{locationName || '선택한 위치'}</strong>
+              <p>네이버 지도는 보안 정책상 페이지 안에 표시할 수 없습니다.</p>
+              <a
+                className={s.openMapBtn}
+                href={currentMapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                네이버 지도에서 열기
+              </a>
+            </div>
           ) : (
             <div className={s.mapPlaceholder}>
               <MapPin size={48} />
               <p>위치를 입력하면 지도가 표시됩니다</p>
             </div>
           )}
-          <div className={s.mapOverlay}>
-            <span className={s.mapTag}>🗺️ 네이버 지도</span>
-          </div>
           {mapFocusUrl && (
             <button className={s.mapResetBtn} onClick={handleMapReset}>
               ↩️ 기본 지도로 돌아가기
@@ -632,7 +628,9 @@ export default function LocalPage() {
               ))}
               {visibleCategories.length === 0 && streamingCats.size === 0 && (
                 <div className={s.emptyMsg}>
-                  카테고리 결과가 없습니다. 직접 검색해 보세요.
+                  {structuredSearchUnavailable
+                    ? '구조화된 주변 검색을 사용할 수 없습니다. 위의 네이버 지도 링크에서 직접 확인해 주세요.'
+                    : '카테고리 결과가 없습니다. 직접 검색해 보세요.'}
                 </div>
               )}
             </div>

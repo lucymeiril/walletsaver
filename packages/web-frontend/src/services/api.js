@@ -90,7 +90,7 @@ const _cache = new Map();
 const DEFAULT_CACHE_TTL = 30_000; // 30 seconds
 
 // Auth-related paths that should never be cached
-const NO_CACHE_PREFIXES = ['/api/auth/', '/api/profile', '/api/cart', '/api/wishlist', '/api/activity'];
+const NO_CACHE_PREFIXES = ['/api/auth/', '/api/profile', '/api/cart', '/api/wishlist', '/api/activity', '/api/users/'];
 
 function getCached(key) {
   const entry = _cache.get(key);

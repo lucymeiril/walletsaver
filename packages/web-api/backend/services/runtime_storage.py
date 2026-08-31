@@ -52,6 +52,10 @@ class RuntimeStorage:
         per_page: int = 20,
     ) -> tuple[list[dict], int]:
         """Search before pagination so rows beyond the old 1000-item cap remain reachable."""
+        if self.catalog.has_normalized_catalog():
+            return self.catalog.search_normalized_products_page(
+                query, category=category, page=page, per_page=per_page
+            )
         page = max(1, int(page or 1))
         per_page = max(1, min(int(per_page or 20), self.catalog.MAX_RESULT_LIMIT))
         clauses = ["p.is_active=1"]
@@ -108,8 +112,10 @@ class RuntimeStorage:
         rows, _total = self.search_products_page(*args, **kwargs)
         return rows
 
-    def get_product_detail(self, product_id: int):
-        return self.catalog.get_product_detail(product_id)
+    def get_product_detail(self, product_id):
+        if self.catalog.has_normalized_catalog():
+            return self.catalog.get_normalized_product_detail(str(product_id))
+        return self.catalog.get_product_detail(int(product_id))
 
     def get_price_history(self, product_id: int, days: int = 30):
         return self.catalog.get_price_history(product_id, days)
@@ -250,7 +256,7 @@ class RuntimeStorage:
             session.commit()
         return {"status": "removed" if result.rowcount else "not_found"}
 
-    def add_price_alert(self, user_id: str | int, product_id: int, target_price: int) -> dict:
+    def add_price_alert(self, user_id: str | int, product_id: str | int, target_price: int) -> dict:
         uid = int(user_id)
         if not self.catalog.product_exists(product_id):
             raise ValueError("product not found")
@@ -314,16 +320,34 @@ class RuntimeStorage:
             ).mappings().all()
         result = []
         for row in rows:
-            product = self.catalog.get_product_detail(int(row["product_id"]))
+            catalog_id = str(row["product_id"])
+            product = (
+                self.catalog.get_normalized_product_detail(catalog_id)
+                if self.catalog.has_normalized_catalog()
+                else self.catalog.get_product_detail(int(catalog_id))
+            )
+            current_price = (product or {}).get("cur") or (product or {}).get("price") or 0
             result.append({
                 "id": int(row["id"]),
-                "product_id": int(row["product_id"]),
+                "product_id": catalog_id,
                 "product_name": product.get("name", "") if product else "",
                 "target_price": row["target_price"],
+                "current_price": current_price,
+                "is_triggered": bool(current_price and current_price <= row["target_price"]),
                 "is_active": bool(row["is_active"]),
                 "created_at": row["created_at"],
             })
         return result
+
+    def remove_price_alert(self, user_id: str | int, alert_id: int) -> dict:
+        uid = int(user_id)
+        with self.SessionLocal() as session:
+            result = session.execute(
+                text("UPDATE price_alerts SET is_active=0 WHERE id=:id AND user_id=:user_id"),
+                {"id": int(alert_id), "user_id": uid},
+            )
+            session.commit()
+        return {"status": "removed" if result.rowcount else "not_found"}
 
     def close(self) -> None:
         self.accounts.close()

@@ -2,7 +2,7 @@
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Request
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from api.middleware.auth import require_auth
 from api.schemas.common import ApiResponse
@@ -20,8 +20,8 @@ class FavoriteRequest(BaseModel):
 
 
 class AlertRequest(BaseModel):
-    product_id: int
-    target_price: int
+    product_id: str | int
+    target_price: int = Field(gt=0)
 
 
 def _require_storage(request: Request):
@@ -104,6 +104,16 @@ async def get_alerts(request: Request, user: dict = Depends(require_auth)):
 @router.post("/me/alerts")
 async def create_alert(request: Request, body: AlertRequest, user: dict = Depends(require_auth)):
     """가격 알림 설정."""
-    return ApiResponse(data=_require_storage(request).add_price_alert(
-        user["id"], body.product_id, body.target_price
-    ))
+    try:
+        result = _require_storage(request).add_price_alert(
+            user["id"], body.product_id, body.target_price
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail="상품을 찾을 수 없습니다") from exc
+    return ApiResponse(data=result)
+
+
+@router.delete("/me/alerts/{alert_id}")
+async def delete_alert(request: Request, alert_id: int, user: dict = Depends(require_auth)):
+    """가격 알림 해제."""
+    return ApiResponse(data=_require_storage(request).remove_price_alert(user["id"], alert_id))

@@ -45,6 +45,52 @@
   text-overflow: ellipsis;
   margin: 0;
 }
+.classificationWarning {
+  display: inline-flex;
+  width: fit-content;
+  margin: 6px 0;
+  padding: 4px 9px;
+  border-radius: 999px;
+  color: #92400e;
+  background: #fef3c7;
+  font-size: .76rem;
+  font-weight: 700;
+}
+
+.alertForm {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.alertForm label {
+  color: var(--text2);
+  font-size: var(--fs-sm);
+}
+
+.alertForm input {
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--glass2);
+  color: var(--text);
+}
+
+.alertForm button {
+  padding: 8px 12px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.alertForm button:disabled { opacity: 0.6; cursor: wait; }
 
 .closeBtn {
   display: flex;
