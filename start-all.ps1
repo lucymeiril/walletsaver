@@ -4,6 +4,7 @@
 .DESCRIPTION
     -Web   : web-api(8000) + web-frontend(5173)만 실행
     -Admin : crawler-admin(8001/5174) + db-admin(8002/5175)만 실행
+    -ForcePorts : 필요한 포트를 점유한 기존 프로세스를 명시적으로 종료
     옵션이 없으면 둘 다 실행합니다.
 
     web-api는 db-admin 소스나 walletguardian.db를 직접 사용하지 않습니다.
@@ -13,7 +14,8 @@
 
 param(
     [switch]$Web,
-    [switch]$Admin
+    [switch]$Admin,
+    [switch]$ForcePorts
 )
 
 $ErrorActionPreference = "Continue"
@@ -39,7 +41,7 @@ if (-not $PyExe) {
     exit 1
 }
 
-$npmCmd = Get-Command npm -ErrorAction SilentlyContinue
+$npmCmd = Get-Command npm.cmd -ErrorAction SilentlyContinue
 if (-not $npmCmd) {
     Write-Host "❌ npm을 찾을 수 없습니다." -ForegroundColor Red
     exit 1
@@ -54,6 +56,13 @@ $DbBackend       = Join-Path $Root "packages\db-admin\backend"
 $SharedDir       = Join-Path $Root "packages\shared"
 $DataDir         = Join-Path $Root ".walletsavior"
 New-Item -ItemType Directory -Force -Path $DataDir | Out-Null
+
+# crawler-admin과 web-api가 반드시 같은 로컬 OPINET snapshot을 보게 합니다.
+# 아직 크롤링하지 않은 새 환경에서도 빈 스키마를 준비해 /api/gas/nearby가
+# "snapshot 없음" 503 대신 정상적인 빈 결과를 반환하도록 합니다.
+if (-not $env:OPINET_DB_PATH) {
+    $env:OPINET_DB_PATH = Join-Path $DataDir "opinet.db"
+}
 
 $env:PYTHONIOENCODING = "utf-8"
 $env:PYTHONUTF8 = "1"
@@ -73,6 +82,15 @@ if ($Web) {
     if (-not $env:WALLETSAVIOR_EXTERNAL_HOTDEAL_DB) {
         $env:WALLETSAVIOR_EXTERNAL_HOTDEAL_DB = Join-Path $DataDir "external_hotdeals.sqlite"
     }
+    if (-not $env:WALLETSAVIOR_ACCOUNT_DB) {
+        $env:WALLETSAVIOR_ACCOUNT_DB = Join-Path $DataDir "accounts.sqlite"
+    }
+    if (-not $env:WALLETSAVIOR_INTERACTION_DB) {
+        $env:WALLETSAVIOR_INTERACTION_DB = Join-Path $DataDir "interactions.sqlite"
+    }
+    if (-not $env:WALLETSAVIOR_BOARD_DB) {
+        $env:WALLETSAVIOR_BOARD_DB = Join-Path $DataDir "board.sqlite"
+    }
 }
 
 if ($Admin) {
@@ -84,7 +102,7 @@ if ($Admin) {
     }
     if (-not $env:REQUIRE_AUTH) { $env:REQUIRE_AUTH = "false" }
     if (-not $env:DATABASE_URL) {
-        $dbPath = (Join-Path $DbBackend "walletguardian.db").Replace("\", "/")
+        $dbPath = (Join-Path $DataDir "admin.sqlite").Replace("\", "/")
         $env:DATABASE_URL = "sqlite:///$dbPath"
     }
     if (-not $env:DB_ADMIN_DATABASE_URL) {
@@ -170,14 +188,19 @@ function Upgrade-DbAdminSchema {
 function Initialize-WebStorage {
     Write-Host "[DB] Web API 서버 소유 SQLite 초기화 중..." -ForegroundColor Yellow
     Push-Location $WebBackend
-    & $PyExe -c "from services.runtime_storage import RuntimeStorage; from services.board_storage import get_board_engine; s=RuntimeStorage(); s.init_db(); get_board_engine(); s.close()"
+    & $PyExe -c "from services.runtime_storage import RuntimeStorage; from services.board_storage import get_board_engine; from core.fuel_store import FuelStore; s=RuntimeStorage(); s.init_db(); get_board_engine(); FuelStore(); s.close()"
     $exitCode = $LASTEXITCODE
     Pop-Location
     if ($exitCode -ne 0) {
         Write-Host "❌ accounts/interactions/board DB 초기화에 실패했습니다." -ForegroundColor Red
         exit 1
     }
-    Write-Host "     ✅ accounts / interactions / board 준비 완료" -ForegroundColor Green
+    Write-Host "     ✅ accounts / interactions / board / OPINET 준비 완료" -ForegroundColor Green
+}
+
+# 공개 catalog는 관리자 승인 API를 호출할 때만 생성/교체합니다.
+if (-not $env:WALLETSAVIOR_AUTO_SNAPSHOT_PUBLISHER) {
+    $env:WALLETSAVIOR_AUTO_SNAPSHOT_PUBLISHER = "false"
 }
 
 function Ensure-PlaywrightChromium {
@@ -210,72 +233,98 @@ if ($Web) { $frontendDirs += $WebFrontend }
 if ($Admin) { $frontendDirs += @($CrawlerFrontend, $DbFrontend) }
 
 foreach ($dir in $frontendDirs) {
-    $name = (Split-Path (Split-Path $dir -Parent) -Leaf) + "/frontend"
+    $name = if ($dir -eq $WebFrontend) {
+        "web-frontend"
+    } else {
+        (Split-Path (Split-Path $dir -Parent) -Leaf) + "/frontend"
+    }
     Write-Host "[의존성] $name npm install/동기화..." -ForegroundColor Yellow
     Push-Location $dir
-    & npm install --silent 2>&1 | Out-Null
+    $npmOutput = & npm.cmd install
     $npmExit = $LASTEXITCODE
     Pop-Location
     if ($npmExit -ne 0) {
+        $npmOutput | ForEach-Object { Write-Host $_ -ForegroundColor Red }
         Write-Host "❌ $name npm install에 실패했습니다." -ForegroundColor Red
         exit 1
     }
-    Write-Host "         ✅ $name" -ForegroundColor Green
+    Write-Host "         ✅ $name 설치" -ForegroundColor Green
+
+    Write-Host "[검증] $name 프로덕션 빌드..." -ForegroundColor Yellow
+    Push-Location $dir
+    $buildOutput = & npm.cmd run build
+    $buildExit = $LASTEXITCODE
+    Pop-Location
+    if ($buildExit -ne 0) {
+        $buildOutput | ForEach-Object { Write-Host $_ -ForegroundColor Red }
+        Write-Host "❌ $name 프론트엔드 빌드에 실패했습니다." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "       ✅ $name 빌드" -ForegroundColor Green
 }
 
 Write-Host ""
-Write-Host "[정리] 기존 서버 프로세스 정리 중..." -ForegroundColor Yellow
+Write-Host "[확인] 서버 포트 점유 상태 확인 중..." -ForegroundColor Yellow
 $portsToClean = @()
 if ($Web) { $portsToClean += @(8000, 5173) }
 if ($Admin) { $portsToClean += @(8001, 5174, 8002, 5175) }
 
-foreach ($port in $portsToClean) {
-    $conns = Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue |
-        Where-Object { $_.LocalPort -eq $port }
-    foreach ($c in $conns) {
-        $targetPid = $c.OwningProcess
-        if ($targetPid -le 4 -or $targetPid -eq $PID) { continue }
+$occupied = @(
+    Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue |
+        Where-Object { $portsToClean -contains $_.LocalPort -and $_.OwningProcess -gt 4 -and $_.OwningProcess -ne $PID } |
+        Sort-Object LocalPort, OwningProcess -Unique
+)
+if ($occupied.Count -gt 0 -and -not $ForcePorts) {
+    Write-Host "❌ 필요한 포트가 이미 사용 중입니다. 기존 서비스를 직접 종료하거나 -ForcePorts를 명시하세요." -ForegroundColor Red
+    foreach ($c in $occupied) {
+        $proc = Get-Process -Id $c.OwningProcess -ErrorAction SilentlyContinue
+        Write-Host "   - $($c.LocalPort): PID $($c.OwningProcess) $($proc.ProcessName)" -ForegroundColor Red
+    }
+    exit 1
+}
+if ($ForcePorts) {
+    foreach ($targetPid in @($occupied.OwningProcess | Sort-Object -Unique)) {
         Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
             Where-Object { $_.ParentProcessId -eq $targetPid } |
             ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
         Stop-Process -Id $targetPid -Force -ErrorAction SilentlyContinue
     }
+    if ($occupied.Count -gt 0) { Start-Sleep -Seconds 2 }
 }
-Start-Sleep -Seconds 2
-Write-Host "         ✅ 정리 완료" -ForegroundColor Green
+Write-Host "         ✅ 사용 가능" -ForegroundColor Green
 
 $processes = @()
 
 if ($Web) {
     Write-Host "🚀 [웹] Public API 시작 (8000)..." -ForegroundColor Yellow
-    $processes += Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
+    $processes += Start-Process -PassThru -WindowStyle Hidden -FilePath $PyExe `
         -ArgumentList "-m uvicorn main:app --port 8000 --host 127.0.0.1" `
         -WorkingDirectory $WebBackend
 
     Write-Host "🚀 [웹] 프론트엔드 시작 (5173)..." -ForegroundColor Yellow
-    $processes += Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
+    $processes += Start-Process -PassThru -WindowStyle Hidden -FilePath "npx.cmd" `
         -ArgumentList "vite --host 127.0.0.1 --port 5173 --strictPort" `
         -WorkingDirectory $WebFrontend
 }
 
 if ($Admin) {
     Write-Host "🚀 [크롤러] 백엔드 시작 (8001)..." -ForegroundColor Yellow
-    $processes += Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
+    $processes += Start-Process -PassThru -WindowStyle Hidden -FilePath $PyExe `
         -ArgumentList "-m uvicorn api.app:create_app --factory --port 8001 --host 127.0.0.1" `
         -WorkingDirectory $CrawlerBackend
 
     Write-Host "🚀 [크롤러] 프론트엔드 시작 (5174)..." -ForegroundColor Yellow
-    $processes += Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
+    $processes += Start-Process -PassThru -WindowStyle Hidden -FilePath "npx.cmd" `
         -ArgumentList "vite --host 127.0.0.1 --port 5174 --strictPort" `
         -WorkingDirectory $CrawlerFrontend
 
     Write-Host "🚀 [DB관리] 백엔드 시작 (8002)..." -ForegroundColor Yellow
-    $processes += Start-Process -PassThru -NoNewWindow -FilePath $PyExe `
+    $processes += Start-Process -PassThru -WindowStyle Hidden -FilePath $PyExe `
         -ArgumentList "-m uvicorn api.app:create_app --factory --port 8002 --host 127.0.0.1" `
         -WorkingDirectory $DbBackend
 
     Write-Host "🚀 [DB관리] 프론트엔드 시작 (5175)..." -ForegroundColor Yellow
-    $processes += Start-Process -PassThru -NoNewWindow -FilePath "npx.cmd" `
+    $processes += Start-Process -PassThru -WindowStyle Hidden -FilePath "npx.cmd" `
         -ArgumentList "vite --host 127.0.0.1 --port 5175 --strictPort" `
         -WorkingDirectory $DbFrontend
 }
@@ -283,7 +332,7 @@ if ($Admin) {
 Write-Host ""
 Write-Host "⏳ 백엔드 준비 확인 중..." -ForegroundColor Yellow
 $checks = @()
-if ($Web) { $checks += @{ Name = "웹 API"; Url = "http://127.0.0.1:8000/api/health"; Ready = $false } }
+if ($Web) { $checks += @{ Name = "웹 API"; Url = "http://127.0.0.1:8000/openapi.json"; Ready = $false } }
 if ($Admin) {
     $checks += @{ Name = "크롤러"; Url = "http://127.0.0.1:8001/health"; Ready = $false }
     $checks += @{ Name = "DB관리"; Url = "http://127.0.0.1:8002/health"; Ready = $false }

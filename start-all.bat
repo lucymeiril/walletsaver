@@ -1,6 +1,16 @@
 @echo off
 setlocal
-REM WalletSavior — 전체 시스템 한 번에 시작 (cmd 사용자용)
 cd /d "%~dp0"
+
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0start-all.ps1" %*
-endlocal
+set "EXIT_CODE=%ERRORLEVEL%"
+
+if not "%EXIT_CODE%"=="0" (
+    echo.
+    echo ============================================
+    echo start-all.ps1 failed. Exit code: %EXIT_CODE%
+    echo ============================================
+    pause
+)
+
+endlocal & exit /b %EXIT_CODE%

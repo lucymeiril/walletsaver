@@ -17,9 +17,13 @@ packages/crawler-admin/backend/tests/fixtures/live_probe/
 .env.production
 .env.*
 !**/.env.example
+!.env.docker.example
 *.db
 *.db-shm
 *.db-wal
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
 
 # OS
 .DS_Store
@@ -44,6 +48,8 @@ packages/crawler-admin/backend/data/cache/
 
 crawl_results/
 artifacts/
+export-*/
+import-ready-*/
 
 # Archived local-only material
 _archived/
@@ -69,3 +75,4 @@ copilot-session-*.md
 .walletsavior/
 .walletsavior-live-validation/
 .walletsavior-one-shot-db-build/
+.antigravity-work/

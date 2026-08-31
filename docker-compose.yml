@@ -1,0 +1,52 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: packages/web-api/backend/Dockerfile
+    environment:
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY is required}
+      WALLETSAVIOR_CORS_ORIGINS: ${WALLETSAVIOR_CORS_ORIGINS:-http://localhost:8080}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8080}
+      OAUTH_REDIRECT_BASE: ${OAUTH_REDIRECT_BASE:-http://localhost:8080}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      WALLETSAVIOR_REMOTE_ADMIN_TOKEN: ${WALLETSAVIOR_REMOTE_ADMIN_TOKEN:?WALLETSAVIOR_REMOTE_ADMIN_TOKEN is required}
+      WALLETSAVIOR_SNAPSHOT_MAX_BYTES: ${WALLETSAVIOR_SNAPSHOT_MAX_BYTES:-536870912}
+      NAVER_PLACE_BROWSER_SEARCH_ENABLED: ${NAVER_PLACE_BROWSER_SEARCH_ENABLED:-false}
+      WALLETSAVIOR_PUBLIC_DB: /data/public_snapshot.sqlite
+      WALLETSAVIOR_EXTERNAL_HOTDEAL_DB: /data/external_hotdeals.sqlite
+      OPINET_DB_PATH: /data/opinet.sqlite
+      WALLETSAVIOR_ACCOUNT_DB: /data/accounts.sqlite
+      WALLETSAVIOR_INTERACTION_DB: /data/interactions.sqlite
+      WALLETSAVIOR_BOARD_DB: /data/board.sqlite
+    volumes:
+      - walletsaver-data:/data
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/openapi.json', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  web:
+    build:
+      context: packages/web-frontend
+      dockerfile: Dockerfile
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "${WALLETSAVER_WEB_PORT:-8080}:80"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  walletsaver-data:
