@@ -31,10 +31,23 @@ current normalized category/product contract before removal.
 - Initial catalog regression fixtures cover leaf-only topology, row accounting,
   idempotent imports, ambiguous package/brand/promotion review, and preservation
   of original source payloads. Generated fixtures never become public data.
+- Matching import API's old fixture depended on host authentication settings.
+  Environment/fixture defect: keep the moderator-only production contract, use
+  the isolated service DB and explicit test credentials, and cover 401/403 plus
+  no database access for unauthorized requests. Settings are read per request;
+  a single client's key rotation test rules out stale TestClient auth caching.
+- Normalized matching export omitted product/variant IDs. Actual regression:
+  preserve both IDs in YAML/JSONL/CSV; missing columns in older files mean keep
+  existing values, whereas explicit null is still a clear under the trust policy.
 
-Current green baseline after the audit:
+Earlier green baseline after the initial audit (not the latest test count):
 
 - Python: crawler-admin 213 passed / 1 live skipped, db-admin 261 passed,
   shared 153 passed, web-api 60 passed (687 passed total).
 - Frontend: public web 115, crawler admin 17, DB admin 16 (148 passed total).
 - All three production frontend builds complete successfully.
+
+Latest 2026-09-03 DB-admin suite: 516 passed. Crawler-admin frontend: 18 passed
+and production build successful. Do not sum focused subsets with full suites.
+See `RESUME_CHECKPOINT.md` for the current real-data rehearsal and follow-up
+verification, which are separate from unit-test and fixture counts.

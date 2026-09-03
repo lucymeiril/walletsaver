@@ -58,7 +58,8 @@ _SOURCE_TRUST: dict[str, int] = {
 # 내보내기/불러오기 대상 필드 (id 제외 — 자동 생성 PK이므로 파일에 포함하지 않음)
 _EXPORT_FIELDS: list[str] = [
     "match_key", "brand", "name_core", "pack_qty", "pack_unit",
-    "canonical_product_id", "category_id", "keyword_ids",
+    "canonical_product_id", "public_product_id", "public_variant_id",
+    "category_id", "keyword_ids",
     "confidence", "source",
     "created_at", "updated_at", "last_used_at",
     "hit_count", "notes",
@@ -175,9 +176,10 @@ def _has_changes(existing: dict, incoming: dict) -> bool:
 
     match_key는 키이므로 비교 제외.
     datetime 필드는 timezone-aware로 정규화 후 비교.
+    생략 필드는 기존 값을 유지하며, 명시적인 None만 초기화로 비교한다.
     """
     for f in _EXPORT_FIELDS:
-        if f == "match_key":
+        if f == "match_key" or f not in incoming:
             continue
         ex_val = existing.get(f)
         in_val = incoming.get(f)
@@ -357,7 +359,12 @@ def _load_csv(path: Path) -> list[dict]:
         for row in reader:
             d: dict = {}
             for f_name in _EXPORT_FIELDS:
-                raw = row.get(f_name, "")
+                # An older CSV may have no normalized-target columns. Missing
+                # columns mean "leave unchanged", not an explicit NULL update.
+                # A present but empty cell still intentionally clears a field.
+                if f_name not in row:
+                    continue
+                raw = row[f_name]
                 if raw == "" or raw is None:
                     d[f_name] = None
                     continue

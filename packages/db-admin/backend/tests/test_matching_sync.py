@@ -19,6 +19,7 @@
 
 from __future__ import annotations
 
+import csv
 import json
 import sys
 from datetime import datetime, timedelta, timezone
@@ -26,20 +27,24 @@ from pathlib import Path
 
 import pytest
 import yaml
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, sessionmaker
 
 # backend/ 루트를 sys.path에 추가
 BACKEND_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(BACKEND_ROOT))
 
-from storage.models import Base, MatchingEntry
+from storage.models import Base, MatchingEntry, NormalizedCanonicalProduct, NormalizedProductVariant
 from services.matching_sync import (
     ImportDiff,
+    _entry_to_dict,
+    _has_changes,
     export_to_csv,
     export_to_jsonl,
     export_to_yaml,
     import_from_file,
+    import_from_rows,
 )
 
 
@@ -643,3 +648,165 @@ def test_csv_null_keyword_ids(session: Session, tmp_path: Path) -> None:
     export_to_csv(session, out)
     diff = import_from_file(session, out, dry_run=False)
     assert diff.unchanged == 1
+
+
+@pytest.fixture
+def normalized_session():
+    """Real v2 targets with enforced foreign keys, isolated from every other test."""
+    eng = create_engine("sqlite:///:memory:")
+
+    @event.listens_for(eng, "connect")
+    def enable_foreign_keys(connection, _):
+        connection.execute("PRAGMA foreign_keys=ON")
+
+    Base.metadata.create_all(eng)
+    try:
+        with Session(eng) as session:
+            for suffix in ("one", "two"):
+                session.add(NormalizedCanonicalProduct(
+                    public_product_id=f"public-{suffix}", canonical_name=f"검증 상품 {suffix}",
+                ))
+            session.flush()
+            for suffix in ("one", "two"):
+                session.add(NormalizedProductVariant(
+                    public_variant_id=f"variant-{suffix}", public_product_id=f"public-{suffix}",
+                    variant_name="210g", package_quantity=210, package_unit="g", bundle_count=1,
+                ))
+            session.flush()
+            assert session.connection().exec_driver_sql("PRAGMA foreign_keys").scalar() == 1
+            yield session
+            session.rollback()
+    finally:
+        eng.dispose()
+
+
+SYNC_FORMATS = [("yaml", export_to_yaml), ("jsonl", export_to_jsonl), ("csv", export_to_csv)]
+
+
+def _write_sync_record(path: Path, record: dict) -> None:
+    if path.suffix == ".yaml":
+        path.write_text(yaml.safe_dump([record], allow_unicode=True), encoding="utf-8")
+    elif path.suffix == ".jsonl":
+        path.write_text(json.dumps(record, ensure_ascii=False) + "\n", encoding="utf-8")
+    else:
+        with path.open("w", encoding="utf-8", newline="") as stream:
+            writer = csv.DictWriter(stream, fieldnames=list(record))
+            writer.writeheader()
+            writer.writerow({
+                key: json.dumps(value) if key == "keyword_ids" and value is not None else value
+                for key, value in record.items()
+            })
+
+
+@pytest.mark.parametrize("extension,exporter", SYNC_FORMATS)
+def test_normalized_ids_roundtrip_with_real_fk_targets(normalized_session, tmp_path, extension, exporter):
+    session = normalized_session
+    entry = _make_entry(session, public_product_id="public-one", public_variant_id="variant-one")
+    path = tmp_path / f"normalized.{extension}"
+    assert exporter(session, path).count == 1
+    content = path.read_text(encoding="utf-8")
+    assert "public_product_id" in content and "public-one" in content
+    assert "public_variant_id" in content and "variant-one" in content
+
+    # Import into an empty matching table; a no-op same-DB import would hide
+    # fields silently discarded by either the exporter or constructor.
+    session.delete(entry)
+    session.flush()
+    dry = import_from_file(session, path, dry_run=True)
+    assert dry.to_add[0]["public_product_id"] == "public-one"
+    assert dry.to_add[0]["public_variant_id"] == "variant-one"
+    assert session.query(MatchingEntry).count() == 0
+
+    assert len(import_from_file(session, path, dry_run=False).to_add) == 1
+    restored = session.query(MatchingEntry).one()
+    assert (restored.public_product_id, restored.public_variant_id) == ("public-one", "variant-one")
+    assert restored.canonical_product_id is None
+    assert import_from_file(session, path, dry_run=False).unchanged == 1
+    assert session.connection().exec_driver_sql("PRAGMA foreign_key_check").fetchall() == []
+
+
+@pytest.mark.parametrize("extension,_exporter", SYNC_FORMATS)
+def test_normalized_target_change_is_detected_and_applied(normalized_session, tmp_path, extension, _exporter):
+    session = normalized_session
+    entry = _make_entry(session, public_product_id="public-one", public_variant_id="variant-one", updated_at=_utc(-3600))
+    existing = _entry_to_dict(entry)
+    incoming = {**existing, "public_product_id": "public-two", "public_variant_id": "variant-two"}
+    assert _has_changes(existing, incoming)  # targets alone are a real change
+    incoming["updated_at"] = _utcnow().isoformat()
+    path = tmp_path / f"update.{extension}"
+    _write_sync_record(path, incoming)
+
+    assert len(import_from_file(session, path, dry_run=True).to_update) == 1
+    session.refresh(entry)
+    assert (entry.public_product_id, entry.public_variant_id) == ("public-one", "variant-one")
+    assert len(import_from_file(session, path, dry_run=False).to_update) == 1
+    session.refresh(entry)
+    assert (entry.public_product_id, entry.public_variant_id) == ("public-two", "variant-two")
+
+
+@pytest.mark.parametrize("extension,_exporter", SYNC_FORMATS)
+def test_legacy_file_missing_normalized_columns_preserves_existing_targets(normalized_session, tmp_path, extension, _exporter):
+    session = normalized_session
+    entry = _make_entry(session, public_product_id="public-one", public_variant_id="variant-one", updated_at=_utc(-3600))
+    existing = _entry_to_dict(entry)
+    incoming = {key: value for key, value in existing.items() if key not in {"public_product_id", "public_variant_id"}}
+    assert not _has_changes(existing, incoming)  # omission is not a clear
+    incoming.update(updated_at=_utcnow().isoformat(), notes="Legacy-file metadata update")
+    path = tmp_path / f"legacy.{extension}"
+    _write_sync_record(path, incoming)
+
+    assert len(import_from_file(session, path, dry_run=False).to_update) == 1
+    session.refresh(entry)
+    assert (entry.public_product_id, entry.public_variant_id) == ("public-one", "variant-one")
+    assert entry.notes == "Legacy-file metadata update"
+
+
+@pytest.mark.parametrize("extension,_exporter", SYNC_FORMATS)
+@pytest.mark.parametrize("incoming_source", ["crawler-auto", "external-ai"])
+def test_human_normalized_targets_cannot_be_overwritten_by_lower_trust(normalized_session, tmp_path, extension, _exporter, incoming_source):
+    session = normalized_session
+    entry = _make_entry(session, source="human", public_product_id="public-one", public_variant_id="variant-one", updated_at=_utc(-3600))
+    incoming = {**_entry_to_dict(entry), "source": incoming_source, "updated_at": _utcnow().isoformat(),
+                "public_product_id": "public-two", "public_variant_id": "variant-two"}
+    path = tmp_path / f"lower-trust.{extension}"
+    _write_sync_record(path, incoming)
+
+    diff = import_from_file(session, path, dry_run=False)
+    assert len(diff.conflicts) == 1 and not diff.to_update
+    session.refresh(entry)
+    assert (entry.public_product_id, entry.public_variant_id) == ("public-one", "variant-one")
+    assert entry.source == "human"
+
+
+@pytest.mark.parametrize("extension,_exporter", SYNC_FORMATS)
+def test_explicit_null_targets_still_clear_under_existing_trust_policy(normalized_session, tmp_path, extension, _exporter):
+    session = normalized_session
+    entry = _make_entry(session, public_product_id="public-one", public_variant_id="variant-one", updated_at=_utc(-3600))
+    incoming = {**_entry_to_dict(entry), "updated_at": _utcnow().isoformat(),
+                "public_product_id": None, "public_variant_id": None}
+    path = tmp_path / f"clear.{extension}"
+    _write_sync_record(path, incoming)
+
+    assert len(import_from_file(session, path, dry_run=False).to_update) == 1
+    session.refresh(entry)
+    assert entry.public_product_id is None and entry.public_variant_id is None
+
+
+def test_import_rows_preserves_normalized_targets(normalized_session):
+    record = _make_incoming("v2-row-import", "external-ai", public_product_id="public-one", public_variant_id="variant-one")
+    diff = import_from_rows(normalized_session, [record], dry_run=False)
+    assert len(diff.to_add) == 1
+    entry = normalized_session.query(MatchingEntry).one()
+    assert (entry.public_product_id, entry.public_variant_id) == ("public-one", "variant-one")
+
+
+@pytest.mark.parametrize("field", ["public_product_id", "public_variant_id"])
+def test_normalized_target_fk_is_checked_during_dry_run(normalized_session, tmp_path, field):
+    record = _make_incoming("invalid-v2-reference", "external-ai", public_product_id="public-one", public_variant_id="variant-one")
+    record[field] = "does-not-exist"
+    path = tmp_path / "invalid-reference.jsonl"
+    _write_sync_record(path, record)
+
+    with pytest.raises(IntegrityError, match="FOREIGN KEY"):
+        import_from_file(normalized_session, path, dry_run=True)
+    assert normalized_session.query(MatchingEntry).count() == 0

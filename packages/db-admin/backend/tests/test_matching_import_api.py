@@ -5,15 +5,12 @@ import csv
 import io
 import json
 import sys
-from contextlib import contextmanager
 from pathlib import Path
 
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import StaticPool
 
 BACKEND_ROOT = Path(__file__).parent.parent
 SHARED_ROOT = BACKEND_ROOT.parent.parent / "shared"
@@ -22,7 +19,12 @@ for path in (str(BACKEND_ROOT), str(SHARED_ROOT)):
         sys.path.insert(0, path)
 
 from core.match_key import build_match_key
-from storage.models import Base, Category, Keyword, MatchingEntry
+from storage.models import Category, Keyword, MatchingEntry
+
+
+MODERATOR_KEY = "test-only-matching-moderator-key"
+VIEWER_KEY = "test-only-matching-viewer-key"
+SERVICE_KEY = "test-only-matching-service-key"
 
 
 def _row(
@@ -66,14 +68,10 @@ def _csv(rows: list[dict]) -> bytes:
 
 
 @pytest.fixture()
-def db_fixture(monkeypatch):
-    engine = create_engine(
-        "sqlite://",
-        connect_args={"check_same_thread": False},
-        poolclass=StaticPool,
-    )
-    Base.metadata.create_all(engine)
-    Session = sessionmaker(bind=engine)
+def db_fixture(isolated_service_database, monkeypatch):
+    # Reuse the shared temporary DB fixture, including its real service engine
+    # reset and FK settings. Route session helpers must never reach a local DB.
+    Session = sessionmaker(bind=isolated_service_database)
 
     with Session() as session:
         session.add_all(
@@ -85,42 +83,48 @@ def db_fixture(monkeypatch):
         )
         session.commit()
 
-    def get_test_session():
-        return Session()
-
-    @contextmanager
-    def managed_test_session():
-        session = Session()
-        try:
-            yield session
-            session.commit()
-        except Exception:
-            session.rollback()
-            raise
-        finally:
-            session.close()
-
     import api.routes.matching_import as routes
 
-    monkeypatch.setattr(routes, "get_session", get_test_session)
-    monkeypatch.setattr(routes, "managed_session", managed_test_session)
     monkeypatch.setattr(routes, "_confirmed_traces", {})
     monkeypatch.setattr(routes, "_failure_rows_store", {})
 
     yield Session
-    engine.dispose()
 
 
 @pytest.fixture()
-def client(db_fixture):
+def api_app(db_fixture, monkeypatch):
+    from api import auth
+    from config import settings
     from api.routes.matching_import import router
 
+    # Pin the real authentication contract instead of depending on the host's
+    # environment or bypassing FastAPI dependencies. The route requires at
+    # least moderator; an ordinary crawler service key is insufficient.
+    assert auth.settings is settings
+    monkeypatch.setattr(settings, "REQUIRE_AUTH", True)
+    monkeypatch.setattr(settings, "SERVICE_API_KEYS", {
+        MODERATOR_KEY: "moderator", VIEWER_KEY: "viewer", SERVICE_KEY: "service",
+    })
     app = FastAPI()
     app.include_router(router, prefix="/api")
-    return TestClient(app)
+    return app
 
 
-def test_jsonl_preview_recomputes_legacy_key(client):
+@pytest.fixture()
+def client(api_app):
+    with TestClient(api_app, headers={"X-API-Key": MODERATOR_KEY}) as test_client:
+        yield test_client
+
+
+@pytest.fixture()
+def unauthenticated_client(api_app):
+    # A separate client avoids accidentally retaining a default API-key header
+    # when an individual request supplies headers={}.
+    with TestClient(api_app) as test_client:
+        yield test_client
+
+
+def test_jsonl_preview_recomputes_legacy_key(client, db_fixture):
     row = _row(match_key="CJ|햇반|210.000000|g")
     response = client.post(
         "/api/import/classified/preview",
@@ -133,6 +137,8 @@ def test_jsonl_preview_recomputes_legacy_key(client):
     assert body["valid_rows"] == 1
     assert body["diff"]["added"] == 1
     assert body["diff"]["preview_rows"][0]["match_key"] == build_match_key("CJ", "햇반", 210, "g")
+    with db_fixture() as session:
+        assert session.query(MatchingEntry).count() == 0  # preview is still read-only
 
 
 def test_csv_preview_keeps_distinct_compound_identities(client):
@@ -240,3 +246,75 @@ def test_missing_file_and_empty_file_are_rejected(client):
         data={"mode": "strict"},
     )
     assert response.status_code == 422
+
+
+@pytest.mark.parametrize("endpoint", ["preview", "confirm"])
+@pytest.mark.parametrize("headers,expected_status", [
+    ({}, 401),
+    ({"X-API-Key": "invalid-test-key"}, 401),
+    ({"Authorization": "Bearer invalid-test-token"}, 401),
+    ({"X-API-Key": VIEWER_KEY}, 403),
+    ({"X-API-Key": SERVICE_KEY}, 403),
+])
+def test_import_requires_valid_moderator_identity_before_database_access(
+    unauthenticated_client, db_fixture, monkeypatch, endpoint, headers, expected_status,
+):
+    import api.routes.matching_import as routes
+
+    def forbidden_session_access(*args, **kwargs):
+        pytest.fail("Unauthorized import reached a database session")
+
+    monkeypatch.setattr(routes, "get_session", forbidden_session_access)
+    monkeypatch.setattr(routes, "managed_session", forbidden_session_access)
+    response = unauthenticated_client.post(
+        f"/api/import/classified/{endpoint}",
+        headers=headers,
+        files={"file": ("matching.jsonl", _jsonl([_row()]), "application/octet-stream")},
+        data={"mode": "strict", "trace_id": "unauthorized-import"},
+    )
+
+    assert response.status_code == expected_status, response.text
+    if not headers:
+        assert response.headers["www-authenticate"] == "Bearer"
+    with db_fixture() as session:
+        assert session.query(MatchingEntry).count() == 0
+    assert routes._confirmed_traces == {}
+    assert routes._failure_rows_store == {}
+
+
+def test_auth_configuration_is_read_per_request_not_cached_by_test_client(
+    unauthenticated_client, monkeypatch, db_fixture,
+):
+    from config import settings
+
+    def preview(key):
+        return unauthenticated_client.post(
+            "/api/import/classified/preview",
+            headers={"X-API-Key": key},
+            files={"file": ("matching.jsonl", _jsonl([_row()]), "application/octet-stream")},
+            data={"mode": "strict"},
+        )
+
+    assert preview(MODERATOR_KEY).status_code == 200
+    rotated_key = "test-only-rotated-moderator-key"
+    monkeypatch.setattr(settings, "SERVICE_API_KEYS", {rotated_key: "moderator"})
+    assert preview(MODERATOR_KEY).status_code == 401
+    assert preview(rotated_key).status_code == 200
+    with db_fixture() as session:
+        assert session.query(MatchingEntry).count() == 0
+
+
+def test_route_session_helpers_use_the_isolated_service_database(
+    api_app, isolated_service_database, tmp_path,
+):
+    from config import settings
+    import api.routes.matching_import as routes
+
+    expected = (tmp_path / "api-test.sqlite").resolve()
+    assert Path(isolated_service_database.url.database).resolve() == expected
+    assert settings.DATABASE_URL == f"sqlite:///{expected.as_posix()}"
+    with routes.get_session() as session:
+        assert session.bind is isolated_service_database
+        assert session.connection().exec_driver_sql("PRAGMA foreign_keys").scalar() == 1
+    with routes.managed_session() as session:
+        assert session.bind is isolated_service_database
