@@ -18,6 +18,20 @@ instruction to restore retired architecture.
 Any deleted legacy test must be replaced by a behavior-level test for the
 current normalized category/product contract before removal.
 
+2026-09-03 additions:
+
+- Auth API fixtures used the configured developer SQLite DB and failed after
+  the keyword schema changed. Classified as an environment/fixture defect:
+  isolate API tests in temporary SQLite databases; do not weaken the schema.
+- `/auth/me` with a token for nonexistent user 999 previously had a conditional
+  assertion that silently passed on 404. Replace it with a real-user 200 test
+  and a separate missing-user 404 test, matching the existing route contract.
+- Same offer imported from a later ingestion overwrote prior raw evidence.
+  Actual regression: union observation provenance and test repeat imports.
+- Initial catalog regression fixtures cover leaf-only topology, row accounting,
+  idempotent imports, ambiguous package/brand/promotion review, and preservation
+  of original source payloads. Generated fixtures never become public data.
+
 Current green baseline after the audit:
 
 - Python: crawler-admin 213 passed / 1 live skipped, db-admin 261 passed,

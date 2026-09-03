@@ -9,6 +9,7 @@ from sqlalchemy.orm import sessionmaker
 from services.catalog_bundle import SCHEMA_VERSION, apply_bundle, parse_bundle, validate_bundle
 from storage.models import (
     Base,
+    Keyword,
     MatchingEntry,
     NormalizedCanonicalProduct,
     NormalizedOfferEvent,
@@ -33,6 +34,11 @@ def _bundle():
             {"id": "food.dairy.milk", "parent_id": "food.dairy", "name_ko": "우유"},
             {"id": "food.dairy.milk.chocolate", "parent_id": "food.dairy.milk", "name_ko": "초코우유"},
         ],
+        "keywords": [{
+            "word": "초코우유",
+            "synonyms": ["초콜릿우유", "chocolate milk"],
+            "unified_category_id": "food.dairy.milk.chocolate",
+        }],
         "products": [{
             "public_product_id": "prod-chocoemong",
             "unified_category_id": "food.dairy.milk.chocolate",
@@ -93,6 +99,35 @@ def _bundle():
     }
 
 
+def test_reimport_same_offer_from_new_ingestion_preserves_both_raw_observations():
+    session = _session()
+    bundle = _bundle()
+    offer = bundle["offers"][0]
+    for ingestion in (10, 11):
+        raw_id = f"ingestion:{ingestion}:0"
+        offer["raw_record_id"] = raw_id
+        offer["raw_evidence"] = {"observations": [{"raw_record_id": raw_id, "raw_payload": {"price": 19900}}]}
+        offer["audit_provenance"] = {"raw_record_ids": [raw_id], "source_ingestion_ids": [ingestion], "observation_count": 1}
+        apply_bundle(session, bundle, f"hash-{ingestion}", user="tester")
+        session.commit()
+    stored = session.get(NormalizedOfferEvent, offer["public_offer_event_id"])
+    assert session.query(NormalizedOfferEvent).count() == 1
+    assert stored.raw_record_id == "ingestion:10:0"
+    assert stored.audit_provenance["source_ingestion_ids"] == [10, 11]
+    assert stored.audit_provenance["observation_count"] == 2
+    assert len(stored.raw_evidence["observations"]) == 2
+
+
+def test_manifest_rejects_dropped_original_observation():
+    session = _session()
+    bundle = _bundle()
+    bundle["source_manifest"] = {"source_ingestions": [{"id": 1, "items_count": 1}], "observation_count": 1}
+    bundle["observation_accounting"] = []
+    validation = validate_bundle(session, bundle, "hash")
+    assert not validation.ok
+    assert any("원본 행" in error for error in validation.errors)
+
+
 def test_catalog_bundle_apply_is_atomic_shape_and_idempotent():
     session = _session()
     bundle = _bundle()
@@ -107,6 +142,7 @@ def test_catalog_bundle_apply_is_atomic_shape_and_idempotent():
     assert first["idempotent"] is False
     assert second["idempotent"] is True
     assert session.query(UnifiedCategory).count() == 4
+    assert session.query(Keyword).count() == 1
     assert session.query(NormalizedCanonicalProduct).count() == 1
     assert session.query(NormalizedProductVariant).count() == 1
     assert session.query(NormalizedOfferEvent).count() == 1
@@ -114,6 +150,10 @@ def test_catalog_bundle_apply_is_atomic_shape_and_idempotent():
     rule = session.execute(select(MatchingEntry)).scalar_one()
     assert rule.public_product_id == "prod-chocoemong"
     assert rule.public_variant_id == "var-chocoemong-120ml-24"
+    keyword = session.execute(select(Keyword)).scalar_one()
+    assert keyword.unified_category_id == "food.dairy.milk.chocolate"
+    assert keyword.category_id is None
+    assert keyword.synonyms == ["초콜릿우유", "chocolate milk"]
 
 
 def test_category_cycle_and_fifth_level_are_rejected():
@@ -150,7 +190,51 @@ def test_json_parser_populates_optional_entities():
     content = json.dumps({"schema_version": SCHEMA_VERSION, "run_id": "x"}).encode()
     bundle, digest = parse_bundle(content)
     assert digest == hashlib.sha256(content).hexdigest()
+    assert bundle["keywords"] == []
     assert bundle["products"] == []
+
+
+def test_keyword_definitions_require_unified_category_and_clean_unique_terms():
+    session = _session()
+
+    missing_category = _bundle()
+    missing_category["keywords"][0]["unified_category_id"] = "missing"
+    result = validate_bundle(session, missing_category, "missing-category")
+    assert any("없는 통합 카테고리" in error for error in result.errors)
+
+    duplicate_synonym = _bundle()
+    duplicate_synonym["keywords"][0]["synonyms"] = ["초코우유"]
+    result = validate_bundle(session, duplicate_synonym, "duplicate-synonym")
+    assert any("중복 synonym" in error for error in result.errors)
+
+    duplicate_word = _bundle()
+    duplicate_word["keywords"].append({**duplicate_word["keywords"][0]})
+    result = validate_bundle(session, duplicate_word, "duplicate-word")
+    assert any("중복 word" in error for error in result.errors)
+
+
+def test_keyword_definition_upsert_preserves_search_count():
+    session = _session()
+    keyword = Keyword(
+        word="초코우유",
+        synonyms=["old"],
+        category_id=None,
+        search_count=17,
+        is_active=False,
+    )
+    session.add(keyword)
+    session.commit()
+
+    bundle = _bundle()
+    digest = hashlib.sha256(json.dumps(bundle, sort_keys=True).encode()).hexdigest()
+    apply_bundle(session, bundle, digest, user="tester")
+    session.commit()
+
+    session.refresh(keyword)
+    assert keyword.search_count == 17
+    assert keyword.is_active is True
+    assert keyword.synonyms == ["초콜릿우유", "chocolate milk"]
+    assert keyword.unified_category_id == "food.dairy.milk.chocolate"
 
 
 def test_imported_category_level_is_derived_from_parent_tree():
@@ -169,3 +253,55 @@ def test_imported_category_level_is_derived_from_parent_tree():
     }
     assert levels["food"] == 0
     assert levels["food.dairy.milk.chocolate"] == 3
+
+
+def test_old_bundle_without_optional_keywords_still_validates_directly():
+    bundle = _bundle()
+    del bundle["keywords"]
+    assert validate_bundle(_session(), bundle, "old").ok
+
+
+def test_duplicate_listing_keys_and_equivalent_variant_specs_are_rejected():
+    bundle = _bundle()
+    bundle["source_listings"].append({
+        **bundle["source_listings"][0], "public_source_listing_id": "duplicate-listing",
+    })
+    bundle["variants"].append({
+        **bundle["variants"][0], "public_variant_id": "duplicate-variant",
+        "package_quantity": 0.12, "package_unit": "L",
+    })
+    errors = validate_bundle(_session(), bundle, "duplicates").errors
+    assert any("중복 마트 원본 ID" in error for error in errors)
+    assert any("중복 variant" in error for error in errors)
+
+
+def test_match_key_collision_and_wrong_variant_parent_are_rejected():
+    bundle = _bundle()
+    bundle["products"].append({**bundle["products"][0], "public_product_id": "other-product"})
+    bundle["match_rules"].append({**bundle["match_rules"][0], "public_product_id": "other-product"})
+    errors = validate_bundle(_session(), bundle, "wrong-target").errors
+    assert any("중복 match_key" in error for error in errors)
+    assert any("상품군에 속하지" in error for error in errors)
+
+
+def test_malformed_package_and_entity_shapes_return_validation_errors():
+    bundle = _bundle()
+    bundle["variants"][0]["bundle_count"] = "not-a-number"
+    assert not validate_bundle(_session(), bundle, "bad-count").ok
+    bundle["products"] = [None]
+    assert not validate_bundle(_session(), bundle, "bad-shape").ok
+
+
+def test_unparsed_variant_unit_is_not_imported_as_public_variant():
+    bundle = _bundle()
+    bundle["variants"][0]["package_unit"] = "mystery"
+    assert not validate_bundle(_session(), bundle, "unknown-unit").ok
+
+
+def test_offer_timestamp_is_normalized_to_utc_on_import():
+    session = _session()
+    bundle = _bundle()
+    bundle["offers"][0]["crawled_at"] = "2026-09-03T09:00:00+09:00"
+    apply_bundle(session, bundle, "timezone", user="tester")
+    offer = session.execute(select(NormalizedOfferEvent)).scalar_one()
+    assert offer.crawled_at.isoformat() == "2026-09-03T00:00:00"

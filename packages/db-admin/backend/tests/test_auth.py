@@ -29,11 +29,11 @@ from config import Settings
 
 
 @pytest.fixture
-def app_no_auth():
+def app_no_auth(isolated_service_database, monkeypatch):
     """App with REQUIRE_AUTH=false (default) — auth is optional."""
     from config import settings
-    settings.REQUIRE_AUTH = False
-    settings.SERVICE_API_KEYS = {}
+    monkeypatch.setattr(settings, "REQUIRE_AUTH", False)
+    monkeypatch.setattr(settings, "SERVICE_API_KEYS", {})
 
     from api.app import create_app
     return create_app()
@@ -45,22 +45,14 @@ def client_no_auth(app_no_auth):
 
 
 @pytest.fixture
-def app_with_auth():
+def app_with_auth(isolated_service_database, monkeypatch):
     """App with REQUIRE_AUTH=true — auth is enforced."""
     from config import settings
-    original_require = settings.REQUIRE_AUTH
-    original_keys = settings.SERVICE_API_KEYS
-
-    settings.REQUIRE_AUTH = True
-    settings.SERVICE_API_KEYS = {"test-service-key-123": "service"}
+    monkeypatch.setattr(settings, "REQUIRE_AUTH", True)
+    monkeypatch.setattr(settings, "SERVICE_API_KEYS", {"test-service-key-123": "service"})
 
     from api.app import create_app
-    app = create_app()
-
-    yield app
-
-    settings.REQUIRE_AUTH = original_require
-    settings.SERVICE_API_KEYS = original_keys
+    return create_app()
 
 
 @pytest.fixture
@@ -284,7 +276,7 @@ class TestRBAC:
             json={"word": "test_auth_keyword_unique_xyz"},
             headers={"Authorization": f"Bearer {moderator_token}"},
         )
-        assert r.status_code in (201, 409)
+        assert r.status_code == 201
 
     def test_viewer_cannot_create_keyword(self, client_with_auth, viewer_token):
         r = client_with_auth.post(
@@ -327,16 +319,27 @@ class TestAuthRoutes:
 
     def test_auth_me_with_token(self, client_no_auth, admin_token):
         """Test /auth/me returns identity when given a valid JWT."""
+        from services.base import get_session
+        from storage.models import User, UserRole
+
+        with get_session() as session:
+            session.add(User(id=999, email="test_admin@test.com", nickname="test_admin", role=UserRole.ADMIN))
+            session.commit()
         r = client_no_auth.get(
             "/api/auth/me",
             headers={"Authorization": f"Bearer {admin_token}"},
         )
-        # Module caching may cause 404 in later test runs.
-        # The route works — verified by test_auth_me_anonymous.
-        if r.status_code == 200:
-            data = r.json()
-            assert data["role"] == "admin"
-            assert data["email"] == "test_admin@test.com"
+        assert r.status_code == 200
+        data = r.json()
+        assert data["role"] == "admin"
+        assert data["email"] == "test_admin@test.com"
+
+    def test_auth_me_missing_user_returns_404(self, client_no_auth, admin_token):
+        """A signed token does not fabricate a profile for a deleted user."""
+        r = client_no_auth.get(
+            "/api/auth/me", headers={"Authorization": f"Bearer {admin_token}"},
+        )
+        assert r.status_code == 404
 
     def test_login_nonexistent_user(self, client_no_auth):
         r = client_no_auth.post(

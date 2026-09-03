@@ -190,6 +190,7 @@ class UnifiedCategory(Base):
         back_populates="unified_category", cascade="all, delete-orphan"
     )
     products: Mapped[list["Product"]] = relationship(back_populates="unified_category")
+    keywords: Mapped[list["Keyword"]] = relationship(back_populates="unified_category")
 
     __table_args__ = (
         Index("ix_unified_categories_parent", "parent_id"),
@@ -698,15 +699,25 @@ class CrawlLog(Base):
 # ═══════════════════════════════════════════════
 
 class Keyword(Base):
+    """Search/classification dictionary entry.
+
+    ``unified_category_id`` is the category SSOT for catalog bundle imports.
+    ``category_id`` remains nullable for the legacy admin taxonomy while that
+    UI is being migrated; new normalized imports must not populate it.
+    """
     __tablename__ = "keywords"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     word: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     synonyms: Mapped[Optional[list]] = mapped_column(JSON)
     category_id: Mapped[Optional[str]] = mapped_column(ForeignKey("categories.id"))
+    unified_category_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("unified_categories.id", ondelete="SET NULL"), nullable=True, index=True
+    )
     search_count: Mapped[int] = mapped_column(Integer, default=0)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
+    unified_category: Mapped[Optional["UnifiedCategory"]] = relationship(back_populates="keywords")
     product_keywords: Mapped[list["ProductKeyword"]] = relationship(
         back_populates="keyword", cascade="all, delete-orphan", lazy="selectin",
     )

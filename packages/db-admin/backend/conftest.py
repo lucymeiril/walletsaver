@@ -6,6 +6,7 @@ db-admin/backend/ 모듈을 올바르게 import 할 수 있도록 sys.path를 �
 
 import sys
 from pathlib import Path
+import pytest
 
 # backend/ 디렉터리 자체를 sys.path에 추가 (storage, services 등 import 가능)
 backend_dir = Path(__file__).resolve().parent
@@ -32,3 +33,22 @@ if "config" in sys.modules:
     if hasattr(cached_config, "__file__") and cached_config.__file__:
         if str(backend_dir) not in cached_config.__file__:
             del sys.modules["config"]
+
+
+@pytest.fixture
+def isolated_service_database(tmp_path, monkeypatch):
+    """API tests must never read/write a developer's configured catalog DB."""
+    from config import settings
+    from services import base
+    from storage.models import Base
+
+    database_url = f"sqlite:///{(tmp_path / 'api-test.sqlite').as_posix()}"
+    monkeypatch.setenv("DATABASE_URL", database_url)
+    monkeypatch.setattr(settings, "DATABASE_URL", database_url)
+    base.reset_engine()
+    engine = base.get_engine(database_url)
+    Base.metadata.create_all(engine)
+    try:
+        yield engine
+    finally:
+        base.reset_engine()

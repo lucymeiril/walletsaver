@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import io
 import json
+import math
 import zipfile
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -13,8 +14,10 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from core.promotion_semantics import PriceState, PromotionPriceFacts, PromotionType
+from core.match_key import normalize_pack_identity
 from storage.models import (
     CatalogSyncLog,
+    Keyword,
     MartCategoryMapping,
     MatchingEntry,
     NormalizedCanonicalProduct,
@@ -29,6 +32,7 @@ from storage.models import (
 SCHEMA_VERSION = "walletsaver-catalog-v2"
 ENTITY_KEYS = (
     "categories",
+    "keywords",
     "products",
     "variants",
     "source_listings",
@@ -41,6 +45,12 @@ ENTITY_KEYS = (
 )
 MAX_CATEGORY_LEVEL = 3  # root level 0 => four levels total
 LOW_CONFIDENCE = 0.80
+PACKAGE_UNITS = {
+    "g", "kg", "mg", "ml", "l", "cc", "그램", "킬로그램", "리터", "밀리리터", "미리리터",
+    "ea", "개", "개입", "봉지", "인분", "세트", "마리", "회분", "구", "입", "팩", "봉", "병",
+    "캔", "손", "매", "롤", "포", "장", "족", "통", "인", "p", "t", "모", "두", "알", "미",
+    "포기", "단", "망", "박스", "쌍", "켤레",
+}
 
 
 @dataclass
@@ -126,6 +136,12 @@ def _read_entity_file(archive: zipfile.ZipFile, member: str) -> list[dict[str, A
 def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) -> BundleValidation:
     errors: list[str] = []
     warnings: list[str] = []
+    bundle = {**{key: [] for key in ENTITY_KEYS}, **bundle}
+    for key in ENTITY_KEYS:
+        if not isinstance(bundle[key], list) or any(not isinstance(row, dict) for row in bundle[key]):
+            errors.append(f"bundle.{key}는 object 배열이어야 합니다")
+    if errors:
+        return BundleValidation(False, file_hash, {}, errors=errors)
     counts = {key: len(bundle.get(key, [])) for key in ENTITY_KEYS}
     if bundle.get("schema_version") != SCHEMA_VERSION:
         errors.append(f"schema_version은 {SCHEMA_VERSION!r}이어야 합니다")
@@ -145,6 +161,37 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
             errors.append(f"categories[{category_id}].name_ko가 필요합니다")
         if levels.get(category_id, MAX_CATEGORY_LEVEL + 1) > MAX_CATEGORY_LEVEL:
             errors.append(f"카테고리 {category_id!r}가 루트 포함 4단계를 초과합니다")
+
+    keyword_words: set[str] = set()
+    for index, row in enumerate(bundle["keywords"]):
+        word = _text(row.get("word"))
+        category_id = _text(row.get("unified_category_id"))
+        if not word:
+            errors.append(f"keywords[{index}].word가 필요합니다")
+        elif len(word) > 100:
+            errors.append(f"keywords[{index}].word는 100자를 초과할 수 없습니다")
+        elif word in keyword_words:
+            errors.append(f"keywords[{index}] 중복 word {word!r}")
+        keyword_words.add(word)
+        if category_id not in parent_map:
+            errors.append(f"keywords[{index}]가 없는 통합 카테고리 {category_id!r}를 참조합니다")
+        synonyms = row.get("synonyms", [])
+        if not isinstance(synonyms, list):
+            errors.append(f"keywords[{index}].synonyms는 배열이어야 합니다")
+            continue
+        synonym_words: set[str] = set()
+        for synonym_index, synonym in enumerate(synonyms):
+            if not isinstance(synonym, str):
+                errors.append(f"keywords[{index}].synonyms[{synonym_index}]는 문자열이어야 합니다")
+                continue
+            value = _text(synonym)
+            if not value:
+                errors.append(f"keywords[{index}].synonyms[{synonym_index}]가 비어 있습니다")
+            elif len(value) > 100:
+                errors.append(f"keywords[{index}].synonyms[{synonym_index}]는 100자를 초과할 수 없습니다")
+            elif value == word or value in synonym_words:
+                errors.append(f"keywords[{index}]에 중복 synonym {value!r}가 있습니다")
+            synonym_words.add(value)
 
     child_ids = {parent for parent in parent_map.values() if parent}
     products = _unique_rows(bundle["products"], "public_product_id", "products", errors)
@@ -177,13 +224,44 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
             errors.append(f"products[{product_id}].canonical_name이 필요합니다")
 
     all_product_ids = existing_product_ids | set(products)
+    variant_products = dict(session.execute(select(
+        NormalizedProductVariant.public_variant_id,
+        NormalizedProductVariant.public_product_id,
+    )).all())
+    variant_signatures: dict[tuple, str] = {}
     for variant_id, row in variants.items():
-        if _text(row.get("public_product_id")) not in all_product_ids:
+        product_id = _text(row.get("public_product_id"))
+        variant_products[variant_id] = product_id
+        if product_id not in all_product_ids:
             errors.append(f"variants[{variant_id}]의 product 참조가 없습니다")
-        if int(row.get("bundle_count") or 1) < 1:
-            errors.append(f"variants[{variant_id}].bundle_count는 1 이상이어야 합니다")
+        try:
+            count = row.get("bundle_count", 1)
+            if isinstance(count, bool) or float(count) != int(count) or int(count) < 1:
+                raise ValueError
+            count = int(count)
+        except (TypeError, ValueError, OverflowError):
+            errors.append(f"variants[{variant_id}].bundle_count는 1 이상의 정수여야 합니다")
+            continue
+        quantity, unit = row.get("package_quantity"), _text(row.get("package_unit"))
+        if quantity is None or unit.casefold() not in PACKAGE_UNITS:
+            errors.append(f"variants[{variant_id}]의 수량/단위 미해석은 검수 대기열에 남겨야 합니다")
+            continue
+        if quantity is not None:
+            try:
+                if isinstance(quantity, bool) or not math.isfinite(float(quantity)) or float(quantity) <= 0 or not unit:
+                    raise ValueError
+                quantity, unit = normalize_pack_identity(float(quantity), unit)
+            except (TypeError, ValueError, OverflowError):
+                errors.append(f"variants[{variant_id}]의 포장 수량/단위가 올바르지 않습니다")
+                continue
+            signature = (product_id, quantity, unit, count)
+            previous = variant_signatures.get(signature)
+            if previous:
+                errors.append(f"variants[{variant_id}]는 {previous!r}와 같은 상품군/규격의 중복 variant입니다")
+            variant_signatures[signature] = variant_id
 
     all_variant_ids = existing_variant_ids | set(variants)
+    source_keys: dict[tuple[str, str], str] = {}
     for listing_id, row in listings.items():
         if _text(row.get("public_variant_id")) not in all_variant_ids:
             errors.append(f"source_listings[{listing_id}]의 variant 참조가 없습니다")
@@ -191,6 +269,12 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
             errors.append(f"source_listings[{listing_id}].source_name은 4개 마트 중 하나여야 합니다")
         if not _text(row.get("source_title")):
             errors.append(f"source_listings[{listing_id}].source_title이 필요합니다")
+        source_key = _text(row.get("source_record_key"))
+        if source_key:
+            key = (_text(row.get("source_name")), source_key)
+            if key in source_keys:
+                errors.append(f"source_listings[{listing_id}] 중복 마트 원본 ID {key!r}")
+            source_keys[key] = listing_id
 
     all_listing_ids = existing_listing_ids | set(listings)
     ambiguous_promotions = 0
@@ -241,25 +325,38 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
         mapping_seen.add(key)
         if key[0] not in {"emart", "homeplus", "lottemart", "costco"}:
             errors.append(f"mart_category_mappings[{index}].mart가 올바르지 않습니다")
-        if _text(row.get("unified_category_id")) not in parent_map:
+        mapped_category = _text(row.get("unified_category_id"))
+        if mapped_category not in parent_map:
             errors.append(f"mart_category_mappings[{index}]의 통합 카테고리가 없습니다")
+        elif mapped_category in child_ids:
+            errors.append(f"mart_category_mappings[{index}]은 통합 리프 카테고리에 매핑해야 합니다")
+        if row.get("trust", "external-ai") not in {"human", "external-ai", "auto-aggregate"}:
+            errors.append(f"mart_category_mappings[{index}].trust가 올바르지 않습니다")
         _confidence(row.get("confidence", 1.0), f"mart_category_mappings[{index}]", errors)
 
     all_product_ids |= set(products)
     all_variant_ids |= set(variants)
+    match_keys: set[str] = set()
     for index, row in enumerate(bundle["match_rules"]):
-        if not _text(row.get("match_key")):
+        match_key = _text(row.get("match_key"))
+        if not match_key:
             errors.append(f"match_rules[{index}].match_key가 필요합니다")
+        elif match_key in match_keys:
+            errors.append(f"match_rules[{index}] 중복 match_key {match_key!r}")
+        match_keys.add(match_key)
         if _text(row.get("public_product_id")) not in all_product_ids:
             errors.append(f"match_rules[{index}]의 normalized product 참조가 없습니다")
         variant_id = _optional_text(row.get("public_variant_id"))
         if variant_id and variant_id not in all_variant_ids:
             errors.append(f"match_rules[{index}]의 normalized variant 참조가 없습니다")
+        elif variant_id and variant_products.get(variant_id) != _text(row.get("public_product_id")):
+            errors.append(f"match_rules[{index}]의 variant가 지정한 상품군에 속하지 않습니다")
         confidence = _confidence(row.get("confidence", 1.0), f"match_rules[{index}]", errors)
         if confidence < LOW_CONFIDENCE:
             errors.append(f"match_rules[{index}]는 confidence 0.80 미만이라 자동 hit 규칙으로 적용할 수 없습니다")
 
     unresolved = len(bundle["unresolved"])
+    _validate_observation_accounting(bundle, errors)
     if unresolved:
         warnings.append(f"미분류 {unresolved}건은 공개 카탈로그에 적용되지 않습니다")
     return BundleValidation(
@@ -277,6 +374,7 @@ def validate_bundle(session: Session, bundle: dict[str, Any], file_hash: str) ->
 
 
 def apply_bundle(session: Session, bundle: dict[str, Any], file_hash: str, *, user: str) -> dict[str, Any]:
+    bundle = {**{key: [] for key in ENTITY_KEYS}, **bundle}
     validation = validate_bundle(session, bundle, file_hash)
     if not validation.ok:
         raise ValueError("catalog bundle validation failed: " + "; ".join(validation.errors[:10]))
@@ -311,6 +409,20 @@ def apply_bundle(session: Session, bundle: dict[str, Any], file_hash: str, *, us
         obj.sort_order = int(row.get("sort_order") or 0)
         obj.source_origin = _optional_text(row.get("source_origin")) or "external-ai"
         applied["categories"] += 1
+    session.flush()
+
+    for row in bundle["keywords"]:
+        word = _text(row.get("word"))
+        obj = session.execute(select(Keyword).where(Keyword.word == word)).scalar_one_or_none()
+        if obj is None:
+            obj = Keyword(word=word, search_count=0)
+            session.add(obj)
+        # Search count is mutable usage data and is deliberately not imported
+        # from the static catalog definition bundle.
+        obj.synonyms = [_text(value) for value in row.get("synonyms", [])]
+        obj.unified_category_id = _text(row.get("unified_category_id"))
+        obj.is_active = bool(row.get("is_active", True))
+        applied["keywords"] += 1
     session.flush()
 
     for row in bundle["products"]:
@@ -369,9 +481,16 @@ def apply_bundle(session: Session, bundle: dict[str, Any], file_hash: str, *, us
         obj.price = facts.current_price
         obj.original_price = facts.original_price
         obj.discount_rate = facts.discount_rate
-        for key in ("event_name", "standard_unit_price", "price_per_100g", "raw_record_id", "raw_evidence", "audit_provenance", "offer_state"):
+        for key in ("event_name", "standard_unit_price", "price_per_100g", "offer_state"):
             if key in row:
                 setattr(obj, key, row[key])
+        # Repeated sightings may have the same offer identity but a different
+        # ingestion id. Upsert must accumulate evidence, never erase it.
+        obj.raw_evidence, obj.audit_provenance = _merge_offer_evidence(
+            obj.raw_evidence or {}, obj.audit_provenance or {},
+            row.get("raw_evidence") or {}, row.get("audit_provenance") or {},
+        )
+        obj.raw_record_id = obj.raw_record_id or row.get("raw_record_id")
         obj.valid_from = _datetime(row.get("valid_from"))
         obj.valid_to = _datetime(row.get("valid_to"))
         obj.crawled_at = _datetime(row.get("crawled_at")) or datetime.now(timezone.utc).replace(tzinfo=None)
@@ -444,6 +563,63 @@ def apply_bundle(session: Session, bundle: dict[str, Any], file_hash: str, *, us
     return {**validation.as_dict(), "applied": applied, "idempotent": False}
 
 
+def _merge_offer_evidence(old: dict, old_audit: dict, new: dict, new_audit: dict) -> tuple[dict, dict]:
+    evidence = {**old, **new}
+    audit = {**old_audit, **new_audit}
+    if "observations" in old or "observations" in new:
+        observations = {}
+        for row in [*old.get("observations", []), *new.get("observations", [])]:
+            key = row.get("raw_record_id")
+            if not key:
+                raise ValueError("Offer observation is missing raw_record_id")
+            if key in observations and observations[key] != row:
+                raise ValueError(f"Conflicting raw evidence for {key}")
+            observations[key] = row
+        evidence["observations"] = [observations[key] for key in sorted(observations)]
+        audit["observation_count"] = len(observations)
+    for field in ("raw_record_ids", "source_ingestion_ids"):
+        if field in old_audit or field in new_audit:
+            audit[field] = sorted(set(old_audit.get(field, [])) | set(new_audit.get(field, [])))
+    return evidence, audit
+
+
+def _validate_observation_accounting(bundle: dict, errors: list[str]) -> None:
+    """Initial rebuild manifests account for every original ingestion row."""
+    manifest = bundle.get("source_manifest")
+    if manifest is None:
+        return  # Older catalog-v2 bundles have no raw-row manifest.
+    try:
+        expected = set()
+        for ingestion in manifest["source_ingestions"]:
+            count = ingestion["items_count"]
+            if isinstance(count, bool) or not isinstance(count, int) or count < 0:
+                raise ValueError("invalid items_count")
+            expected.update(f"ingestion:{int(ingestion['id'])}:{index}" for index in range(count))
+        if len(expected) != manifest["observation_count"]:
+            raise ValueError("manifest observation_count mismatch")
+        seen = set()
+        unresolved = {row["raw_record_id"] for row in bundle["unresolved"]}
+        offers = {row["public_offer_event_id"]: row for row in bundle["offers"]}
+        for row in bundle["observation_accounting"]:
+            raw_id = row["raw_record_id"]
+            if raw_id in seen:
+                raise ValueError(f"duplicate accounting: {raw_id}")
+            seen.add(raw_id)
+            if row["status"] == "unresolved":
+                if raw_id not in unresolved:
+                    raise ValueError(f"unresolved evidence missing: {raw_id}")
+            elif row["status"] == "included":
+                offer = offers[row["public_offer_event_id"]]
+                if not any(item.get("raw_record_id") == raw_id for item in offer.get("raw_evidence", {}).get("observations", [])):
+                    raise ValueError(f"included raw evidence missing: {raw_id}")
+            else:
+                raise ValueError(f"unknown accounting status: {row['status']}")
+        if seen != expected:
+            raise ValueError(f"missing={len(expected - seen)}, unexpected={len(seen - expected)}")
+    except (KeyError, TypeError, ValueError) as exc:
+        errors.append(f"원본 행 누락/회계 오류: {exc}")
+
+
 def _upsert(session: Session, model, primary_key: str):
     obj = session.get(model, primary_key)
     if obj is None:
@@ -514,6 +690,6 @@ def _datetime(value: Any) -> datetime | None:
     if value in (None, ""):
         return None
     if isinstance(value, datetime):
-        return value.replace(tzinfo=None) if value.tzinfo else value
+        return value.astimezone(timezone.utc).replace(tzinfo=None) if value.tzinfo else value
     parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
-    return parsed.replace(tzinfo=None) if parsed.tzinfo else parsed
+    return parsed.astimezone(timezone.utc).replace(tzinfo=None) if parsed.tzinfo else parsed

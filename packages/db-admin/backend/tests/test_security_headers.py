@@ -5,6 +5,8 @@ import importlib
 import pytest
 from fastapi.testclient import TestClient
 
+pytestmark = pytest.mark.usefixtures("isolated_service_database")
+
 
 def _reload_and_create_app():
     """Flush cached config/app modules and create a fresh app."""
