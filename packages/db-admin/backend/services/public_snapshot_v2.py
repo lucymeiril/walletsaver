@@ -100,7 +100,19 @@ def _copy_table(
     source_table,
     target_table,
 ) -> int:
-    result = source.execute(select(source_table))
+    statement = select(source_table)
+    if source_table.name == NormalizedOfferEvent.__tablename__:
+        # Pending review is an internal staging state, not public history.
+        # Preserve every other state (and inactive products) unchanged.
+        statement = statement.where(source_table.c.offer_state != "pending_review")
+    elif source_table.name == NormalizedOfferWeekLink.__tablename__:
+        pending_offer_ids = select(NormalizedOfferEvent.public_offer_event_id).where(
+            NormalizedOfferEvent.offer_state == "pending_review"
+        )
+        statement = statement.where(
+            source_table.c.public_offer_event_id.not_in(pending_offer_ids)
+        )
+    result = source.execute(statement)
     total = 0
     while True:
         rows = result.fetchmany(_COPY_CHUNK_SIZE)
@@ -181,6 +193,15 @@ def validate_public_snapshot(path: Path | str) -> dict:
         missing = sorted(required - tables)
         if missing:
             raise ValueError("required tables missing: " + ", ".join(missing))
+
+        pending_offers = int(connection.execute(
+            "SELECT COUNT(*) FROM normalized_offer_events "
+            "WHERE offer_state='pending_review'"
+        ).fetchone()[0])
+        if pending_offers:
+            raise ValueError(
+                f"pending_review offers are not publishable: {pending_offers}"
+            )
 
         meta = connection.execute(
             "SELECT revision, built_at FROM snapshot_meta WHERE id=1"

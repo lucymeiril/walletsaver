@@ -327,6 +327,15 @@ def _validate_sqlite(path: Path, required_tables: Iterable[str]) -> dict:
             missing = set(required_tables) - tables
             if missing:
                 raise ValueError(f"required tables missing: {', '.join(sorted(missing))}")
+            if "normalized_offer_events" in tables:
+                pending_offers = int(connection.execute(
+                    "SELECT COUNT(*) FROM normalized_offer_events "
+                    "WHERE offer_state='pending_review'"
+                ).fetchone()[0])
+                if pending_offers:
+                    raise ValueError(
+                        f"pending_review offers are not publishable: {pending_offers}"
+                    )
             if {
                 "unified_categories", "normalized_canonical_products"
             }.issubset(tables):
