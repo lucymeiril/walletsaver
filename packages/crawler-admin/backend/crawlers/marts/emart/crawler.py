@@ -11,12 +11,14 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import random
 import re
+import threading
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 from urllib.parse import quote
@@ -41,6 +43,10 @@ from engine.anti_detect import AntiDetect
 from pipeline.quality import summarize_discount_run
 
 logger = logging.getLogger(__name__)
+
+
+class _CategoryRequestStateError(RuntimeError):
+    """Raised when the durable category-request throttle cannot be saved."""
 
 
 class EmartCrawler(CrawlerContract):
@@ -102,13 +108,19 @@ class EmartCrawler(CrawlerContract):
     # 상위 카테고리 한 페이지에 최대 80~100개가 노출된다. 기본은 각
     # 카테고리 첫 페이지만 수집해 수천 건 범위를 확보하면서 부하를 제한한다.
     MAX_PAGES = 1
-    CATEGORY_DELAY_MIN_SECONDS = 8.0
-    CATEGORY_DELAY_MAX_SECONDS = 12.0
+    # SSG starts blocking category browsing when categories are requested close
+    # together.  This is a durable, fixed minimum (rather than per-process
+    # jitter) so a selected-category run or an app restart cannot reset it.
+    CATEGORY_REQUEST_MIN_INTERVAL_SECONDS = 360.0
     CATEGORY_BROWSER_CHANNEL = "chrome"
     CATEGORY_BROWSER_HEADLESS = False
     CATEGORY_CURSOR_SCHEMA_VERSION = 1
     MAX_REQUESTS: int | None = None
     MAX_CONSECUTIVE_FORBIDDEN = 3
+    # The orchestrator can run crawler instances on different event loops and
+    # threads.  Protect only synchronous state transactions; never hold this
+    # process-wide lock during an async wait or a network request.
+    _category_request_lock = threading.RLock()
 
     def __init__(
         self,
@@ -126,6 +138,7 @@ class EmartCrawler(CrawlerContract):
             / "cache"
             / "emart_category_cursor.json"
         )
+        self._last_category_request_at: float | None = None
         self._next_category_id = self._load_category_cursor()
 
     def _load_category_cursor(self) -> str:
@@ -134,6 +147,9 @@ class EmartCrawler(CrawlerContract):
             payload = json.loads(self._category_cursor_path.read_text(encoding="utf-8"))
             if payload.get("schema_version") != self.CATEGORY_CURSOR_SCHEMA_VERSION:
                 return first_category_id
+            self._last_category_request_at = self._parse_category_request_at(
+                payload.get("last_category_request_at")
+            )
             category_id = str(payload.get("next_category_id") or "")
             return category_id if category_id in self.CATEGORY_IDS else first_category_id
         except FileNotFoundError:
@@ -142,22 +158,118 @@ class EmartCrawler(CrawlerContract):
             logger.warning("[이마트] 카테고리 커서 읽기 실패, 처음부터 시작: %s", exc)
             return first_category_id
 
-    def _save_category_cursor(self, next_category_id: str) -> None:
-        payload = {
-            "schema_version": self.CATEGORY_CURSOR_SCHEMA_VERSION,
-            "next_category_id": next_category_id,
-            "updated_at": datetime.now().astimezone().isoformat(),
-        }
+    @staticmethod
+    def _parse_category_request_at(value: object) -> float | None:
+        if value in (None, ""):
+            return None
+        if not isinstance(value, str):
+            raise ValueError("last_category_request_at must be an ISO-8601 string")
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            raise ValueError("last_category_request_at must include a timezone")
+        return parsed.timestamp()
+
+    def _read_persisted_category_state(self) -> tuple[str | None, float | None]:
+        """Read durable progress/timing, including writes by another instance."""
         try:
-            self._category_cursor_path.parent.mkdir(parents=True, exist_ok=True)
-            temporary_path = self._category_cursor_path.with_suffix(".json.tmp")
-            temporary_path.write_text(
-                json.dumps(payload, ensure_ascii=False, indent=2),
-                encoding="utf-8",
+            payload = json.loads(self._category_cursor_path.read_text(encoding="utf-8"))
+            if payload.get("schema_version") != self.CATEGORY_CURSOR_SCHEMA_VERSION:
+                raise ValueError("unsupported category cursor schema version")
+            category_id = str(payload.get("next_category_id") or "")
+            return (
+                category_id if category_id in self.CATEGORY_IDS else None,
+                self._parse_category_request_at(payload.get("last_category_request_at")),
             )
-            temporary_path.replace(self._category_cursor_path)
+        except FileNotFoundError:
+            return None, None
+        except Exception as exc:
+            raise _CategoryRequestStateError(
+                f"카테고리 요청 제한 상태를 읽을 수 없습니다: {exc}"
+            ) from exc
+
+    def _save_category_cursor(
+        self, next_category_id: str | None = None, *, required: bool = False,
+    ) -> None:
+        try:
+            with self._category_request_lock:
+                # A slow response may advance its cursor after another crawler
+                # has already reserved a later request.  Never roll that newer
+                # durable timestamp back with this instance's stale value.
+                persisted_category_id = self._refresh_category_request_at()
+                payload = {
+                    "schema_version": self.CATEGORY_CURSOR_SCHEMA_VERSION,
+                    # A timestamp-only reservation must not roll back progress
+                    # completed by another instance while this one was idle.
+                    "next_category_id": (
+                        next_category_id or persisted_category_id or self._next_category_id
+                    ),
+                    "updated_at": datetime.now().astimezone().isoformat(),
+                }
+                if self._last_category_request_at is not None:
+                    payload["last_category_request_at"] = datetime.fromtimestamp(
+                        self._last_category_request_at,
+                        tz=timezone.utc,
+                    ).isoformat()
+                self._category_cursor_path.parent.mkdir(parents=True, exist_ok=True)
+                temporary_path = self._category_cursor_path.with_suffix(".json.tmp")
+                temporary_path.write_text(
+                    json.dumps(payload, ensure_ascii=False, indent=2),
+                    encoding="utf-8",
+                )
+                temporary_path.replace(self._category_cursor_path)
         except Exception as exc:
             logger.warning("[이마트] 카테고리 커서 저장 실패: %s", exc)
+            if required:
+                raise _CategoryRequestStateError(
+                    f"카테고리 요청 제한 상태를 저장할 수 없습니다: {exc}"
+                ) from exc
+
+    def _refresh_category_request_at(self) -> str | None:
+        """Merge timing and return progress under the short state lock."""
+        category_id, persisted_at = self._read_persisted_category_state()
+        if persisted_at is not None:
+            self._last_category_request_at = max(
+                persisted_at,
+                self._last_category_request_at
+                if self._last_category_request_at is not None
+                else persisted_at,
+            )
+        return category_id
+
+    async def _wait_for_category_request_slot(self) -> float:
+        """Wait out and durably record the shared category request interval.
+
+        The timestamp is written before the network request.  That makes a
+        failed request, 403/429 response, manual selected-category run, and app
+        restart all share the same cooldown.  A missing timestamp represents a
+        genuinely first request and therefore does not sleep.
+        """
+        interval = max(0.0, float(self.CATEGORY_REQUEST_MIN_INTERVAL_SECONDS))
+        total_wait_seconds = 0.0
+        while True:
+            with self._category_request_lock:
+                # Re-read after every sleep: another loop/instance may have
+                # claimed the slot while this caller was waiting.
+                self._refresh_category_request_at()
+                wait_seconds = (
+                    max(0.0, interval - (time.time() - self._last_category_request_at))
+                    if self._last_category_request_at is not None
+                    else 0.0
+                )
+                if wait_seconds <= 0:
+                    previous_at = self._last_category_request_at
+                    self._last_category_request_at = time.time()
+                    try:
+                        # Persist before page.goto(). If this fails, do not
+                        # make a request a restart could not account for.
+                        self._save_category_cursor(required=True)
+                    except Exception:
+                        self._last_category_request_at = previous_at
+                        raise
+                    return total_wait_seconds
+            logger.info("[이마트] 다음 카테고리 요청까지 %.1f초 대기", wait_seconds)
+            await asyncio.sleep(wait_seconds)
+            total_wait_seconds += wait_seconds
 
     def _advance_category_cursor(self, completed_category_id: str) -> None:
         category_ids = list(self.CATEGORY_IDS)
@@ -724,25 +836,13 @@ class EmartCrawler(CrawlerContract):
         source_requests: list[dict[str, str | int]],
         diagnostics: dict,
     ) -> tuple[list[DiscountItem], dict]:
-        import asyncio
-
         collected: list[DiscountItem] = []
         page = await context.new_page()
         try:
-            for index, source_request in enumerate(source_requests):
-                if index:
-                    delay = random.uniform(
-                        float(self.CATEGORY_DELAY_MIN_SECONDS),
-                        float(self.CATEGORY_DELAY_MAX_SECONDS),
-                    )
-                    if delay > 0:
-                        await asyncio.sleep(delay)
-
+            for source_request in source_requests:
                 category_id = str(source_request["category_id"])
                 category_name = str(source_request["category_hint"])
                 url = str(source_request["url"])
-                diagnostics["requests_attempted"] += 1
-                diagnostics["pages_attempted"] += 1
                 row = {
                     "category_id": category_id,
                     "category": category_name,
@@ -752,11 +852,17 @@ class EmartCrawler(CrawlerContract):
                     "raw_count": 0,
                     "parsed_count": 0,
                     "external_seller_count": 0,
+                    "rate_limit_wait_seconds": 0.0,
                     "error": None,
                 }
                 diagnostics["requests"].append(row)
 
                 try:
+                    row["rate_limit_wait_seconds"] = (
+                        await self._wait_for_category_request_slot()
+                    )
+                    diagnostics["requests_attempted"] += 1
+                    diagnostics["pages_attempted"] += 1
                     response = await page.goto(
                         url,
                         wait_until="domcontentloaded",
@@ -825,6 +931,9 @@ class EmartCrawler(CrawlerContract):
                         category_name,
                         exc,
                     )
+                    if isinstance(exc, _CategoryRequestStateError):
+                        diagnostics["stop_reason"] = str(exc)
+                        break
         finally:
             await page.close()
         return collected, diagnostics

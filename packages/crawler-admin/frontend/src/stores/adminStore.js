@@ -1,6 +1,40 @@
 import { create } from 'zustand';
 import { api } from '../api/client';
 
+const INGESTION_PAGE_SIZE = 500;
+
+function getIngestionItems(data) {
+  return Array.isArray(data) ? data : data.items ?? data.ingestions ?? data.data ?? [];
+}
+
+async function getAllIngestions(params = {}) {
+  const hasExplicitPage = ['limit', 'offset', 'page', 'per_page'].some((key) => params[key] != null);
+  if (hasExplicitPage) {
+    return getIngestionItems(await api.getIngestions(params));
+  }
+
+  const items = [];
+  let offset = 0;
+
+  while (true) {
+    const data = await api.getIngestions({
+      ...params,
+      limit: INGESTION_PAGE_SIZE,
+      offset,
+    });
+    const pageItems = getIngestionItems(data);
+    items.push(...pageItems);
+    offset += pageItems.length;
+
+    const total = Number(data?.total);
+    const reachedKnownTotal = Number.isFinite(total) && offset >= total;
+    const reachedUnknownTotal = !Number.isFinite(total) && pageItems.length < INGESTION_PAGE_SIZE;
+    if (pageItems.length === 0 || reachedKnownTotal || reachedUnknownTotal) break;
+  }
+
+  return items;
+}
+
 function toUserMessage(err, fallback) {
   if (!err) return fallback;
   const status = err.status || err.statusCode;
@@ -213,8 +247,8 @@ const useAdminStore = create((set, get) => ({
   fetchIngestions: async (params = {}) => {
     set({ ingestionsLoading: true, ingestionsError: null });
     try {
-      const data = await api.getIngestions(params);
-      set({ ingestions: Array.isArray(data) ? data : data.items ?? data.ingestions ?? data.data ?? [] });
+      const ingestions = await getAllIngestions(params);
+      set({ ingestions });
     } catch (err) {
       set({ ingestions: [], ingestionsError: toUserMessage(err, '데이터 검토 목록을 불러올 수 없습니다.') });
     } finally {

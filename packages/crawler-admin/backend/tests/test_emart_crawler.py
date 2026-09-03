@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
 import pathlib
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -30,6 +31,29 @@ def html() -> str:
 @pytest.fixture
 def crawler(tmp_path) -> EmartCrawler:
     return EmartCrawler(category_cursor_path=tmp_path / "emart_category_cursor.json")
+
+
+@pytest.fixture
+def category_context():
+    page = MagicMock(
+        goto=AsyncMock(return_value=MagicMock(status=200)),
+        wait_for_selector=AsyncMock(),
+        content=AsyncMock(return_value="<html><body></body></html>"),
+        close=AsyncMock(),
+    )
+    return MagicMock(page=page, new_page=AsyncMock(return_value=page))
+
+
+def _category_diagnostics():
+    return {
+        "strategy": "playwright_category",
+        "requests_attempted": 0,
+        "pages_attempted": 0,
+        "categories_succeeded": 0,
+        "blocked": False,
+        "stop_reason": None,
+        "requests": [],
+    }
 
 
 @pytest.mark.asyncio
@@ -251,6 +275,370 @@ def test_category_cursor_persists_next_unfinished_category(crawler):
 
 
 @pytest.mark.asyncio
+async def test_category_requests_are_spaced_360_seconds_and_saved_before_navigation(
+    crawler,
+    monkeypatch,
+):
+    clock = [1_000.0]
+    sleeps = []
+
+    monkeypatch.setattr(
+        "crawlers.marts.emart.crawler.time.time",
+        lambda: clock[0],
+    )
+
+    async def fake_sleep(seconds):
+        sleeps.append(seconds)
+        clock[0] += seconds
+
+    monkeypatch.setattr(asyncio, "sleep", fake_sleep)
+
+    class FakeResponse:
+        status = 200
+
+    class FakePage:
+        def __init__(self):
+            self.goto_times = []
+
+        async def goto(self, url, **kwargs):
+            del url, kwargs
+            state = json.loads(crawler._category_cursor_path.read_text(encoding="utf-8"))
+            persisted_at = crawler._parse_category_request_at(
+                state["last_category_request_at"]
+            )
+            assert persisted_at == pytest.approx(clock[0])
+            self.goto_times.append(clock[0])
+            return FakeResponse()
+
+        async def wait_for_selector(self, *args, **kwargs):
+            del args, kwargs
+            return None
+
+        async def content(self):
+            return "<html><body></body></html>"
+
+        async def close(self):
+            return None
+
+    class FakeContext:
+        def __init__(self):
+            self.page = FakePage()
+
+        async def new_page(self):
+            return self.page
+
+    context = FakeContext()
+    requests = crawler._build_category_source_requests()[:2]
+    diagnostics = {
+        "strategy": "playwright_category",
+        "requests_attempted": 0,
+        "pages_attempted": 0,
+        "categories_succeeded": 0,
+        "blocked": False,
+        "stop_reason": None,
+        "requests": [],
+    }
+
+    await crawler._crawl_category_requests_in_context(context, requests, diagnostics)
+
+    assert context.page.goto_times == [1_000.0, 1_360.0]
+    assert sleeps == [pytest.approx(360.0)]
+    assert diagnostics["requests"][0]["rate_limit_wait_seconds"] == 0
+    assert diagnostics["requests"][1]["rate_limit_wait_seconds"] == pytest.approx(360)
+
+
+@pytest.mark.asyncio
+async def test_category_request_cooldown_survives_restart_and_waits_only_remaining(
+    crawler,
+    monkeypatch,
+):
+    clock = [10_000.0]
+    sleeps = []
+    monkeypatch.setattr(
+        "crawlers.marts.emart.crawler.time.time",
+        lambda: clock[0],
+    )
+
+    async def fake_sleep(seconds):
+        sleeps.append(seconds)
+        clock[0] += seconds
+
+    monkeypatch.setattr(asyncio, "sleep", fake_sleep)
+
+    first_wait = await crawler._wait_for_category_request_slot()
+    assert first_wait == 0
+    assert sleeps == []
+
+    clock[0] += 75
+    restored = EmartCrawler(category_cursor_path=crawler._category_cursor_path)
+    restart_wait = await restored._wait_for_category_request_slot()
+
+    assert restart_wait == pytest.approx(285)
+    assert sleeps == [pytest.approx(285)]
+    payload = json.loads(crawler._category_cursor_path.read_text(encoding="utf-8"))
+    assert restored._parse_category_request_at(
+        payload["last_category_request_at"]
+    ) == pytest.approx(10_360)
+
+
+def test_category_request_slots_share_state_across_instances_and_event_loops(
+    crawler, monkeypatch,
+):
+    clock = [1_000.0]
+    saved_times = []
+    real_sleep = asyncio.sleep
+    monkeypatch.setattr("crawlers.marts.emart.crawler.time.time", lambda: clock[0])
+
+    async def fake_sleep(seconds):
+        clock[0] += seconds
+        # Force competing callers to contend, including in a later loop.
+        await real_sleep(0)
+
+    monkeypatch.setattr(asyncio, "sleep", fake_sleep)
+    original_save = EmartCrawler._save_category_cursor
+
+    def record_save(instance, category_id=None, *, required=False):
+        original_save(instance, category_id, required=required)
+        if required:
+            saved_times.append(instance._last_category_request_at)
+
+    monkeypatch.setattr(EmartCrawler, "_save_category_cursor", record_save)
+    peer = EmartCrawler(category_cursor_path=crawler._category_cursor_path)
+
+    async def reserve_slots():
+        await asyncio.gather(
+            crawler._wait_for_category_request_slot(),
+            peer._wait_for_category_request_slot(),
+            crawler._wait_for_category_request_slot(),
+        )
+
+    asyncio.run(reserve_slots())
+    asyncio.run(reserve_slots())
+
+    assert len(saved_times) == 6
+    assert saved_times[0] == 1_000
+    assert all(later - earlier >= 360 for earlier, later in zip(saved_times, saved_times[1:]))
+
+
+@pytest.mark.asyncio
+async def test_late_cursor_advance_preserves_newer_request_timestamp(crawler, monkeypatch):
+    clock = [1_000.0]
+    monkeypatch.setattr("crawlers.marts.emart.crawler.time.time", lambda: clock[0])
+    await crawler._wait_for_category_request_slot()
+    peer = EmartCrawler(category_cursor_path=crawler._category_cursor_path)
+    clock[0] += 360
+    await peer._wait_for_category_request_slot()
+
+    crawler._advance_category_cursor(next(iter(crawler.CATEGORY_IDS)))
+
+    restored = EmartCrawler(category_cursor_path=crawler._category_cursor_path)
+    assert restored._last_category_request_at == pytest.approx(1_360)
+
+
+@pytest.mark.asyncio
+async def test_timestamp_reservation_preserves_another_instances_cursor(crawler, monkeypatch):
+    clock = [1_000.0]
+    monkeypatch.setattr("crawlers.marts.emart.crawler.time.time", lambda: clock[0])
+    peer = EmartCrawler(category_cursor_path=crawler._category_cursor_path)
+    await crawler._wait_for_category_request_slot()
+    crawler._advance_category_cursor(next(iter(crawler.CATEGORY_IDS)))
+    expected_next_id = crawler._next_category_id
+
+    clock[0] += 360
+    await peer._wait_for_category_request_slot()
+
+    restored = EmartCrawler(category_cursor_path=crawler._category_cursor_path)
+    assert restored._next_category_id == expected_next_id
+    assert restored._last_category_request_at == pytest.approx(1_360)
+
+
+@pytest.mark.parametrize("failure", [403, 429, "challenge", "network", "cancelled"])
+@pytest.mark.asyncio
+async def test_failed_category_navigation_keeps_restart_cooldown(
+    crawler, category_context, monkeypatch, failure,
+):
+    clock = [1_000.0]
+    monkeypatch.setattr("crawlers.marts.emart.crawler.time.time", lambda: clock[0])
+    if isinstance(failure, int):
+        category_context.page.goto.return_value.status = failure
+    elif failure == "challenge":
+        category_context.page.content.return_value = "<html>access denied</html>"
+    else:
+        category_context.page.goto.side_effect = (
+            asyncio.CancelledError() if failure == "cancelled" else RuntimeError("network failed")
+        )
+
+    first_category_id = crawler._next_category_id
+    operation = crawler._crawl_category_requests_in_context(
+        category_context,
+        crawler._build_category_source_requests()[:1],
+        _category_diagnostics(),
+    )
+    if failure == "cancelled":
+        with pytest.raises(asyncio.CancelledError):
+            await operation
+    else:
+        await operation
+    category_context.page.close.assert_awaited_once()
+
+    clock[0] += 75
+    restored = EmartCrawler(category_cursor_path=crawler._category_cursor_path)
+    assert restored._next_category_id == first_category_id
+    sleeps = []
+
+    async def fake_sleep(seconds):
+        sleeps.append(seconds)
+        clock[0] += seconds
+
+    monkeypatch.setattr(asyncio, "sleep", fake_sleep)
+    assert await restored._wait_for_category_request_slot() == pytest.approx(285)
+    assert sleeps == [pytest.approx(285)]
+
+
+@pytest.mark.asyncio
+async def test_cancelled_cooldown_does_not_claim_slot_or_navigate(
+    crawler, category_context, monkeypatch,
+):
+    monkeypatch.setattr("crawlers.marts.emart.crawler.time.time", lambda: 1_000.0)
+    await crawler._wait_for_category_request_slot()
+    initial_state = crawler._category_cursor_path.read_text(encoding="utf-8")
+    sleep = AsyncMock(side_effect=asyncio.CancelledError())
+    monkeypatch.setattr(asyncio, "sleep", sleep)
+    diagnostics = _category_diagnostics()
+
+    with pytest.raises(asyncio.CancelledError):
+        await crawler._crawl_category_requests_in_context(
+            category_context, crawler._build_category_source_requests()[:1], diagnostics,
+        )
+
+    assert crawler._category_cursor_path.read_text(encoding="utf-8") == initial_state
+    assert diagnostics["requests_attempted"] == 0
+    category_context.page.goto.assert_not_awaited()
+    category_context.page.close.assert_awaited_once()
+
+
+@pytest.mark.parametrize("state", [
+    "{invalid json",
+    '{"schema_version": 999, "last_category_request_at": "2026-09-03T00:00:00Z"}',
+    '{"schema_version": 1, "last_category_request_at": "2026-09-03T00:00:00"}',
+])
+@pytest.mark.asyncio
+async def test_invalid_throttle_state_fails_closed(crawler, category_context, state):
+    crawler._category_cursor_path.write_text(state, encoding="utf-8")
+
+    _, diagnostics = await crawler._crawl_category_requests_in_context(
+        category_context, crawler._build_category_source_requests()[:2],
+        _category_diagnostics(),
+    )
+
+    category_context.page.goto.assert_not_awaited()
+    assert "읽을 수 없습니다" in diagnostics["stop_reason"]
+    assert diagnostics["requests_attempted"] == 0
+    assert len(diagnostics["requests"]) == 1
+    assert crawler._category_cursor_path.read_text(encoding="utf-8") == state
+
+
+@pytest.mark.parametrize("mode", ["full", "selected"])
+@pytest.mark.asyncio
+async def test_full_and_selected_runs_use_the_persistent_category_cooldown(
+    crawler, category_context, monkeypatch, mode,
+):
+    clock = [1_000.0]
+    sleeps = []
+    monkeypatch.setattr("crawlers.marts.emart.crawler.time.time", lambda: clock[0])
+
+    async def fake_sleep(seconds):
+        sleeps.append(seconds)
+        clock[0] += seconds
+
+    monkeypatch.setattr(asyncio, "sleep", fake_sleep)
+    category_context.page.content.return_value = CATEGORY_FIXTURE_HTML.read_text(encoding="utf-8")
+
+    class FakeHelper:
+        def __init__(self, **kwargs):
+            self.context = category_context
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, exc_type, exc_value, traceback):
+            return None
+
+    monkeypatch.setattr("engine.playwright_helper.PlaywrightHelper", FakeHelper)
+
+    async def run(instance):
+        instance._warmup_session = MagicMock()
+        instance.MAX_REQUESTS = 1
+        if mode == "selected":
+            instance._selected_category_request = instance._build_category_source_requests()[0]
+            return await instance.crawl_selected_category()
+        instance._build_source_requests = MagicMock(return_value=[])
+        return await instance.crawl()
+
+    first_result = await run(crawler)
+    clock[0] += 75
+    restored = EmartCrawler(category_cursor_path=crawler._category_cursor_path)
+    second_result = await run(restored)
+
+    assert first_result.status.name == second_result.status.name == "SUCCESS"
+    assert category_context.page.goto.await_count == 2
+    assert sleeps == [pytest.approx(285)]
+    assert second_result.quality_details["category_browser"]["requests"][0][
+        "rate_limit_wait_seconds"
+    ] == pytest.approx(285)
+
+
+@pytest.mark.asyncio
+async def test_category_request_is_aborted_when_throttle_state_cannot_be_saved(crawler):
+    class FakePage:
+        def __init__(self):
+            self.goto_calls = []
+
+        async def goto(self, url, **kwargs):
+            self.goto_calls.append((url, kwargs))
+            return MagicMock(status=200)
+
+        async def close(self):
+            return None
+
+    class FakeContext:
+        def __init__(self):
+            self.page = FakePage()
+
+        async def new_page(self):
+            return self.page
+
+    context = FakeContext()
+    diagnostics = {
+        "strategy": "playwright_category",
+        "requests_attempted": 0,
+        "pages_attempted": 0,
+        "categories_succeeded": 0,
+        "blocked": False,
+        "stop_reason": None,
+        "requests": [],
+    }
+
+    with patch.object(
+        pathlib.Path,
+        "replace",
+        side_effect=PermissionError("read-only state directory"),
+    ):
+        _, result = await crawler._crawl_category_requests_in_context(
+            context,
+            crawler._build_category_source_requests()[:2],
+            diagnostics,
+        )
+
+    assert context.page.goto_calls == []
+    assert "저장할 수 없습니다" in result["stop_reason"]
+    assert len(result["requests"]) == 1
+    assert result["requests_attempted"] == 0
+    assert result["pages_attempted"] == 0
+    assert crawler._last_category_request_at is None
+
+
+@pytest.mark.asyncio
 async def test_category_fetch_uses_visible_stable_chrome(crawler, monkeypatch):
     launch_options = {}
     context = object()
@@ -303,8 +691,12 @@ async def test_parse_modern_category_cards_and_reject_external_marketplace(crawl
     assert crawler._extract_category_path(html, "fallback") == "과일 > 냉동/간편과일 > 간편과일"
 
 
+@pytest.mark.parametrize("blocked_status", [403, 429])
 @pytest.mark.asyncio
-async def test_category_browser_stops_entire_run_on_first_403(crawler):
+async def test_category_browser_stops_entire_run_on_first_block_response(
+    crawler,
+    blocked_status,
+):
     class FakeResponse:
         def __init__(self, status):
             self.status = status
@@ -315,7 +707,7 @@ async def test_category_browser_stops_entire_run_on_first_403(crawler):
 
         async def goto(self, url, **kwargs):
             self.goto_calls.append(url)
-            return FakeResponse([200, 403, 200][len(self.goto_calls) - 1])
+            return FakeResponse([200, blocked_status, 200][len(self.goto_calls) - 1])
 
         async def wait_for_selector(self, *args, **kwargs):
             return None
@@ -334,8 +726,7 @@ async def test_category_browser_stops_entire_run_on_first_403(crawler):
             return self.page
 
     context = FakeContext()
-    crawler.CATEGORY_DELAY_MIN_SECONDS = 0
-    crawler.CATEGORY_DELAY_MAX_SECONDS = 0
+    crawler.CATEGORY_REQUEST_MIN_INTERVAL_SECONDS = 0
     requests = crawler._build_category_source_requests()[:3]
     diagnostics = {
         "strategy": "playwright_category",
@@ -356,7 +747,7 @@ async def test_category_browser_stops_entire_run_on_first_403(crawler):
     assert items == []
     assert len(context.page.goto_calls) == 2
     assert result["blocked"] is True
-    assert result["stop_reason"].startswith("HTTP 403")
+    assert result["stop_reason"].startswith(f"HTTP {blocked_status}")
     assert result["pages_attempted"] == 2
     assert result["requests_attempted"] == 2
     assert (
@@ -443,6 +834,7 @@ async def test_selected_category_run_skips_promotions_and_records_context(crawle
         }
 
     crawler._fetch_category_pages_via_browser = AsyncMock(side_effect=fake_fetch)
+    crawler._warmup_session = MagicMock()
 
     result = await crawler.crawl_selected_category()
 
