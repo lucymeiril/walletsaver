@@ -49,6 +49,8 @@ UNIT_ALIASES = {
     "ea": (1, "개"), "개": (1, "개"),
 }
 COUNT_UNITS = {"개입", "봉지", "인분", "세트", "마리", "회분", "구", "입", "팩", "봉", "병", "캔", "손", "매", "롤", "포", "장", "족", "통", "인", "p", "t", "모", "두", "알", "미", "포기", "단", "망", "박스", "쌍", "켤레"}
+_COUNT_UNIT_PATTERN = "(?:" + "|".join(re.escape(unit) for unit in sorted(COUNT_UNITS | {"개", "ea"}, key=len, reverse=True)) + ")"
+_COUNT_RANGE_RE = re.compile(rf"(?<![\d.])\d+(?:\.\d+)?\s*(?:{_COUNT_UNIT_PATTERN})?\s*[~～〜–—-]\s*\d+(?:\.\d+)?\s*{_COUNT_UNIT_PATTERN}", re.I)
 GENERIC_EVENTS = {"이마트 할인", "홈플러스 할인", "롯데마트 할인", "코스트코 가격", "코스트코 할인", "행사상품", "알뜰상품", ""}
 PROMOTION_TYPES = {"final_price", "was_now_price", "checkout_discount", "buy_x_get_y", "bundle_price"}
 PROMOTION_REVIEW_ISSUES = {"promotion_unresolved", "promotion_conditions_unresolved"}
@@ -154,6 +156,17 @@ def _package(payload: Mapping[str, Any], attrs: Mapping[str, Any], title: str) -
     explicit_counts = {int(parsed["bundle_count"]) for parsed in parsed_candidates if parsed.get("bundle_count")}
     if len(explicit_counts) > 1:
         issues.append("bundle_count_conflict")
+    # A count interval does not establish a fixed sold quantity. A separately
+    # explicit weight/volume remains usable (e.g. 1.5kg with 5~6 tomatoes).
+    if canonical_unit not in {"g", "ml"} and any(_COUNT_RANGE_RE.search(text) for text in (title, display_unit)):
+        issues.append("count_range_unresolved")
+    if any(re.search(r"(?<![A-Za-z0-9])[x×*]\s*\d+", text, re.I) and not (parse_package_quantity(text) or {}).get("bundle_count") for text in (title, display_unit)):
+        # The convenience parser cannot resolve (5개입) x 5 / 160매 x 12롤.
+        # Neither a crawler default of one nor another numeric field proves
+        # that an otherwise unparsed multiplication has been interpreted.
+        issues.append("bundle_multiplier_unresolved")
+    if "+" in title and len(re.findall(rf"(?<![A-Za-z0-9])\d+\s*{_COUNT_UNIT_PATTERN}(?![A-Za-z])", title, re.I)) > 1:
+        issues.append("mixed_package_unresolved")
     parsed = next((parsed for parsed in parsed_candidates if parsed.get("bundle_count")), parsed_candidates[0] if parsed_candidates else None)
     # The DiscountItem schema previously dropped bundle_count, but display_unit
     # retained it. Recover only an explicit multiplication confirmed by the

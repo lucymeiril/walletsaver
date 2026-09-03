@@ -29,7 +29,6 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from services.db_admin_readonly import (
-    bulk_lookup_match_statuses,
     get_all_categories,
     get_all_keywords,
     get_all_matching_entries,
@@ -37,6 +36,7 @@ from services.db_admin_readonly import (
     get_normalized_catalog_context,
     get_pending_ingestion_records,
 )
+from services.matching_enrichment import lookup_row_match_statuses
 
 _BACKEND_DIR = Path(__file__).resolve().parents[2]
 _SHARED_DIR = _BACKEND_DIR.parent.parent / "shared"
@@ -287,8 +287,12 @@ def export_raw_batch(
         key, reason = _build_match_key_from_payload(rec.get("raw_payload") or {})
         keyed.append((rec, key, reason))
 
-    valid_keys = [key for _, key, _ in keyed if key is not None]
-    match_statuses = bulk_lookup_match_statuses(db_session, valid_keys)
+    # Two rows may share a stored key while one has a changed name/specification.
+    # Revalidate the original payload per row; a key-only hit cannot hide it from
+    # the review export, even if an older crawler stamped matching_status='hit'.
+    match_statuses = iter(lookup_row_match_statuses(db_session, [
+        (rec.get("raw_payload") or {}, key) for rec, key, _ in keyed if key is not None
+    ]))
 
     hit_rows: list[dict] = []
     miss_rows: list[dict] = []
@@ -297,7 +301,7 @@ def export_raw_batch(
             miss_rows.append(_record_to_export_row(rec, key, reason or "unkeyable"))
             continue
 
-        status = match_statuses.get(key, "key_not_found")
+        status = next(match_statuses)
         if status == "hit":
             hit_rows.append(_record_to_export_row(rec, key, None))
         else:

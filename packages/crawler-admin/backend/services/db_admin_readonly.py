@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import json
+import math
 from threading import Lock
 from typing import Any, Iterator, Optional
 
@@ -148,8 +149,10 @@ def get_pending_ingestion_records(
 def bulk_lookup_match_statuses(session: Session, match_keys: list[str]) -> dict[str, str]:
     """Return MatchingEntry runtime status for keys that exist in the knowledge base.
 
-    Values intentionally mirror crawler runtime semantics:
-    - ``hit``: MatchingEntry resolves to an active Product;
+    Key-only lookup can establish reference integrity, not source specification:
+    - ``hit``: a legacy MatchingEntry resolves to an active Product;
+    - ``normalized_source_verification_required``: active normalized product and
+      variant references agree; callers must still validate each raw row;
     - ``canonical_product_unavailable``: the MatchingEntry exists, but its
       canonical Product link is missing, malformed, deleted, or inactive.
 
@@ -188,7 +191,8 @@ def bulk_lookup_match_statuses(session: Session, match_keys: list[str]) -> dict[
             key = str(match_key)
             statuses[key] = "canonical_product_unavailable"
             try:
-                if float(confidence if confidence is not None else 0) < 0.80:
+                numeric_confidence = float(confidence if confidence is not None else 0)
+                if not math.isfinite(numeric_confidence) or numeric_confidence < 0.80:
                     statuses[key] = "low_confidence"
                     continue
             except (TypeError, ValueError):
@@ -221,22 +225,31 @@ def bulk_lookup_match_statuses(session: Session, match_keys: list[str]) -> dict[
             ), params).fetchall()
             active_public_ids.update(str(row[0]) for row in rows)
 
-        active_variant_ids: set[str] = set()
+        active_variants: dict[str, str] = {}
         variant_ids = list(dict.fromkeys(key_to_public_variant_id.values()))
+        variant_columns = _table_columns(session, "normalized_product_variants")
+        if not {"public_variant_id", "public_product_id", "is_active"} <= variant_columns:
+            variant_ids = []
         for offset in range(0, len(variant_ids), 900):
             chunk = variant_ids[offset : offset + 900]
             placeholders = ", ".join(f":v{i}" for i in range(len(chunk)))
             params = {f"v{i}": value for i, value in enumerate(chunk)}
             rows = session.execute(text(
-                "SELECT public_variant_id FROM normalized_product_variants "
+                "SELECT public_variant_id, public_product_id FROM normalized_product_variants "
                 f"WHERE public_variant_id IN ({placeholders}) AND is_active IS TRUE"
             ), params).fetchall()
-            active_variant_ids.update(str(row[0]) for row in rows)
+            active_variants.update({str(row[0]): str(row[1]) for row in rows})
 
         for key, public_id in key_to_public_product_id.items():
             variant_id = key_to_public_variant_id.get(key)
-            if public_id in active_public_ids and (not variant_id or variant_id in active_variant_ids):
-                statuses[key] = "hit"
+            if public_id not in active_public_ids:
+                continue
+            if not variant_id or variant_id not in active_variants:
+                statuses[key] = "normalized_variant_unavailable"
+            elif active_variants[variant_id] != public_id:
+                statuses[key] = "normalized_variant_product_conflict"
+            else:
+                statuses[key] = "normalized_source_verification_required"
 
     if not key_to_product_id:
         return statuses

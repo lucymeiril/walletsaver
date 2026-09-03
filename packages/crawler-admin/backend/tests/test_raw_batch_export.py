@@ -376,10 +376,7 @@ def test_recent_and_download_endpoints(client, db_admin_db):
     assert "context/matching_entries.jsonl" in names
 
 
-def test_export_includes_normalized_ssot_context_and_uses_normalized_hit(
-    client, db_admin_db, export_dir
-):
-    _seed_ingestion(db_admin_db, count=1)
+def _seed_normalized_context(db_admin_db):
     db_admin_db.execute(text("ALTER TABLE matching_entries ADD COLUMN public_product_id TEXT"))
     db_admin_db.execute(text("ALTER TABLE matching_entries ADD COLUMN public_variant_id TEXT"))
     db_admin_db.execute(text(
@@ -389,7 +386,7 @@ def test_export_includes_normalized_ssot_context_and_uses_normalized_hit(
         "CREATE TABLE normalized_canonical_products (public_product_id TEXT PRIMARY KEY, unified_category_id TEXT, canonical_name TEXT, aliases JSON, keywords JSON, attributes JSON, is_active BOOLEAN)"
     ))
     db_admin_db.execute(text(
-        "CREATE TABLE normalized_product_variants (public_variant_id TEXT PRIMARY KEY, public_product_id TEXT, variant_name TEXT, attributes JSON, is_active BOOLEAN)"
+        "CREATE TABLE normalized_product_variants (public_variant_id TEXT PRIMARY KEY, public_product_id TEXT, variant_name TEXT, attributes JSON, package_quantity REAL, package_unit TEXT, bundle_count INTEGER, is_active BOOLEAN)"
     ))
     db_admin_db.execute(text(
         "CREATE TABLE normalized_source_listings (public_source_listing_id TEXT PRIMARY KEY, public_variant_id TEXT, source_name TEXT)"
@@ -404,7 +401,7 @@ def test_export_includes_normalized_ssot_context_and_uses_normalized_hit(
         "INSERT INTO normalized_canonical_products VALUES ('prod-1', 'food.dairy.milk.choco', '상품명0', '[]', '[]', '{}', 1)"
     ))
     db_admin_db.execute(text(
-        "INSERT INTO normalized_product_variants VALUES ('var-1', 'prod-1', '상품명0 1g', '{}', 1)"
+        "INSERT INTO normalized_product_variants VALUES ('var-1', 'prod-1', '상품명0 1g', '{}', 1, 'g', 1, 1)"
     ))
     db_admin_db.execute(text(
         "INSERT INTO matching_entries (match_key, public_product_id, public_variant_id, confidence, source) "
@@ -412,6 +409,12 @@ def test_export_includes_normalized_ssot_context_and_uses_normalized_hit(
     ), {"key": _match_key(0)})
     db_admin_db.commit()
 
+
+def test_export_includes_normalized_ssot_context_and_uses_normalized_hit(
+    client, db_admin_db, export_dir
+):
+    _seed_ingestion(db_admin_db, count=1)
+    _seed_normalized_context(db_admin_db)
     body = client.post(
         "/api/export/raw-batch",
         json={"ingestion_ids": [1], "include_matched": True},
@@ -422,6 +425,48 @@ def test_export_includes_normalized_ssot_context_and_uses_normalized_hit(
     assert set(context) >= {"unified_categories", "normalized_canonical_products", "normalized_product_variants"}
     exported = Path(context["normalized_canonical_products"]).read_text(encoding="utf-8")
     assert '"public_product_id": "prod-1"' in exported
+
+
+@pytest.mark.parametrize(("changes", "reason"), [
+    ({"package_quantity": 2, "package_unit": "g"}, "normalized_variant_conflict"),
+    ({"name": "이름변경상품", "normalized_name": "상품명0"}, "normalized_source_name_conflict"),
+    ({"pack_qty": None}, "normalized_unit_unresolved"),
+])
+def test_export_does_not_hide_changed_rows_behind_a_shared_cached_hit(
+    client, db_admin_db, changes, reason,
+):
+    _seed_ingestion(db_admin_db, count=1)
+    _seed_normalized_context(db_admin_db)
+    original = _items(1)[0]
+    changed = {**original, **changes, "match_key": _match_key(0), "matching_status": "hit"}
+    db_admin_db.execute(text("UPDATE pending_ingestions SET items_json=:rows WHERE id=1"), {
+        "rows": json.dumps([original, changed], ensure_ascii=False),
+    })
+    db_admin_db.commit()
+
+    response = client.post("/api/export/raw-batch", json={"ingestion_ids": [1]})
+    assert response.status_code == 200
+    body = response.json()
+    assert body["hit_rows"] == 1
+    assert body["miss_rows"] == 1
+    rows = [json.loads(line) for line in Path(body["files"]["raw_products_jsonl"]).read_text(encoding="utf-8").splitlines()]
+    assert len(rows) == 1
+    assert rows[0]["miss_reason"] == reason
+    assert rows[0]["raw_payload"] == changed
+
+
+def test_export_rejects_active_variant_with_another_product_parent(client, db_admin_db):
+    _seed_ingestion(db_admin_db, count=1)
+    _seed_normalized_context(db_admin_db)
+    db_admin_db.execute(text("UPDATE normalized_product_variants SET public_product_id='another-product'"))
+    db_admin_db.commit()
+    response = client.post("/api/export/raw-batch", json={"ingestion_ids": [1]})
+    assert response.status_code == 200
+    body = response.json()
+    assert body["hit_rows"] == 0
+    assert body["miss_rows"] == 1
+    rows = [json.loads(line) for line in Path(body["files"]["raw_products_jsonl"]).read_text(encoding="utf-8").splitlines()]
+    assert rows[0]["miss_reason"] == "normalized_variant_product_conflict"
 
 
 def test_invalid_export_id_is_rejected(client):

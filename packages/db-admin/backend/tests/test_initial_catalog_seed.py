@@ -94,6 +94,48 @@ def test_display_and_title_multiplier_conflict_is_held():
     assert "bundle_count_conflict" in bundle["unresolved"][0]["reasons"]
 
 
+@pytest.mark.parametrize(("title", "quantity", "unit", "reason"), [
+    ("찹쌀 김부각 세트(5개입) x 5", 5, "ea", "bundle_multiplier_unresolved"),
+    ("네일메드코세정제콤보(용기3개+세정용분말250포)", 3, "ea", "mixed_package_unresolved"),
+    ("커클랜드 시그니춰 종이타월 160매 x 12롤", 160, "매", "bundle_multiplier_unresolved"),
+])
+def test_unparsed_multipliers_and_mixed_count_packages_are_not_staged(title, quantity, unit, reason):
+    raw = item(name=title, package_quantity=None, package_unit=None, pack_qty=quantity, pack_unit=unit, display_unit="", unit="")
+    bundle = build([ingestion(1, [raw])])
+    assert reason in bundle["unresolved"][0]["reasons"]
+    assert bundle["offers"] == []
+    assert bundle["match_rules"] == []
+
+
+@pytest.mark.parametrize("count", [1, 2, 5])
+def test_numeric_bundle_count_does_not_override_unparsed_parenthesized_multiplication(count):
+    raw = item(name="김부각 세트(5개입) x 5", package_quantity=5, package_unit="ea", bundle_count=count, display_unit="5개", unit="5개")
+    bundle = build([ingestion(1, [raw])])
+    assert "bundle_multiplier_unresolved" in bundle["unresolved"][0]["reasons"]
+    assert bundle["offers"] == []
+
+
+@pytest.mark.parametrize(("title", "quantity", "unit"), [
+    ("맑은청 찰토마토 7~10입/팩", 10, "입"),
+    ("토마토 7입~10입/팩", 10, "입"),
+    ("홍로사과 4-8입(봉)", 1, "봉"),
+])
+def test_count_interval_is_not_a_fixed_quantity(title, quantity, unit):
+    raw = item(name=title, package_quantity=quantity, package_unit=unit, display_unit=f"{quantity}{unit}", unit=f"{quantity}{unit}")
+    bundle = build([ingestion(1, [raw])])
+    assert "count_range_unresolved" in bundle["unresolved"][0]["reasons"]
+    assert bundle["offers"] == []
+
+
+def test_fixed_mass_with_variable_piece_count_remains_mass_based():
+    raw = item(name="토마토 1.5kg(5~6입)", package_quantity=1.5, package_unit="kg", display_unit="1.5kg", unit="1.5kg")
+    bundle = build([ingestion(1, [raw])])
+    assert not bundle["unresolved"]
+    assert bundle["variants"][0]["package_quantity"] == 1500
+    assert bundle["variants"][0]["package_unit"] == "g"
+    assert bundle["variants"][0]["bundle_count"] == 1
+
+
 def test_legacy_comma_quantity_misparse_and_mixed_refill_are_held():
     for raw in [
         item(name="샴푸 1,050ml", package_quantity=50, display_unit="50ml"),
