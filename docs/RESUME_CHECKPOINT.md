@@ -9,6 +9,8 @@
 - `a247fee`: 원본 행 accounting/offer 근거 보존, 키워드 UnifiedCategory FK, 테스트 DB 격리.
 - `19b0aed`: 초기 카탈로그 seed/계층 분류/검토 workspace/CLI와 회귀 테스트.
 - `eb1c5be`: 매칭 ID의 3개 형식 동기화 및 인증 테스트 계약 격리.
+- `75f4bd0`: 원본 listing/이름/규격 재검증, export miss 보존, 복합포장·수량구간 검수.
+- `62e8e2e`: 스냅샷의 검토 대기 offer/주간 링크 제외 및 로컬·원격 검증기 거부.
 - 위 커밋은 로컬 보존 상태다. 공개 원격 `lucymeiril/walletsaver`에 대한 push는 권한 검사에서 보류됐고 사용자에게 확인을 요청했다. 답변 전 재시도하거나 다른 도구로 우회하지 않는다.
 - 실제 원본: `.walletsavior/admin.sqlite`. 이 작업에서 운영 DB 마이그레이션·분류 적재·수집 승인·공개 snapshot 승인은 하지 않았다.
 - 기존 백업: `.walletsavior/backups/pre-initial-catalog-20260903-044952/admin.sqlite` (17,711,104 bytes).
@@ -20,7 +22,7 @@
 ## 완료한 코드와 검증
 
 - 이마트: 요청 전 시각 기록, 재시작/동시 인스턴스/별도 이벤트 루프에서 360초 제한 유지. 403/429/취소/네트워크 실패도 동일 제한. 단일 프로세스의 스레드 간 잠금이며 분산 프로세스 잠금은 아니다. 라이브 수집은 하지 않았다.
-- 매칭 수정 전 크롤러 백엔드 기준: 231 passed, 1 live deselected. 크롤러 프런트: 18 tests passed, production build 성공(기존 chunk size 경고). 최신 백엔드 결과는 아래 최종 점검란을 따른다.
+- 크롤러 프런트: 18 tests passed, production build 성공(기존 chunk size 경고). 최신 백엔드 전체 결과는 아래 검증 기록을 따른다.
 - 데이터 검토: API 500개 단위로 모든 배치를 가져온다. 501개 fixture에서 마지막 51페이지 접근 확인.
 - 키워드 통합 카테고리 FK와 `capstone_keyword_ssot_v1` 마이그레이션 추가. 실제 운영 DB의 **별도 복사본**에서 upgrade → downgrade → upgrade, 전체 테이블 건수·원본 해시 보존, integrity/FK 검증 통과.
 - 인증 테스트는 실제 사용자를 임시 DB에 생성한 `/me` 200과 없는 사용자 404를 별개 검증한다. 이전 조건부/vacuous assertion을 제거했다.
@@ -35,24 +37,26 @@
 
 ## 생성된 로컬 증거 (모두 Git 제외)
 
-- 최신 `.debug-artifacts/initial-catalog-20260903-pass3/`: `source-ingestions.json`, `catalog-bundle.json`, `classification-decisions.json`, `reviewed-decisions.json`, `product-group-candidates.json`, `review.html`, `staging.sqlite`, `summary.json`.
-- pass3: 상품군 2,213 / variant 2,213 / listing 2,225 / offer 3,533 / 매칭 규칙 2,164. 카테고리 233(부모 포함), 키워드 166, 원본 경로 매핑 227. 9,196관측 중 3,533개 stage, 5,663개 보류이며 전량 accounting/evidence가 일치한다. stage는 공개 승인이라는 뜻이 아니다.
-- stage의 2,828개 관측은 가격 비교 가능 형태이고, 705개는 조건 확인 전 pending_review다. 627개 상품군은 비교 가능한 active offer가 없어 비활성이다. pending offer에 단위가격이 없고 내부 카테고리 귀속/잘못된 variant 부모/레거시 상품·카테고리 적재가 0임을 별도 read-only SQL로 확인했다.
-- 동일 bundle 두 번 적재 후 모든 테이블 건수 불변, FK 0, integrity ok. `.debug-artifacts/verify_initial_stage.py`는 pass3 독립 SQL/evidence 검사 스크립트다.
-- pass1/pass2는 이전 증거로 보존했고 더 이상 최신 분류 결과가 아니다. 기존 출력 폴더는 덮어쓰지 않는다.
+- 최신 `.debug-artifacts/initial-catalog-20260903-pass4/`: `source-ingestions.json`, `catalog-bundle.json`, `classification-decisions.json`, `reviewed-decisions.json`, `product-group-candidates.json`, `review.html`, `staging.sqlite`, `summary.json`, `public-snapshot-rehearsal.sqlite`.
+- pass4: 상품군 2,236 / variant 2,236 / listing 2,248 / offer 3,552 / 매칭 규칙 2,185. 카테고리 233(부모 포함), 키워드 166, 원본 경로 매핑 222. 9,196관측 중 3,552개 stage, 5,644개 보류이며 전량 accounting/evidence가 일치한다. stage는 공개 승인이라는 뜻이 아니다.
+- stage의 2,854개 관측은 가격 비교 가능 형태이고, 698개는 조건 확인 전 pending_review다. 620개 상품군은 비교 가능한 active offer가 없어 비활성이다. pending offer에 단위가격이 없고 내부 카테고리 귀속/잘못된 variant 부모/레거시 상품·카테고리 적재가 0임을 별도 read-only SQL로 확인했다.
+- 원본 mart별 stage 관측: Costco 119 / Emart 165 / Homeplus 2,708 / Lotte 560. 미분류·규격 불확실 관측도 삭제하지 않고 보류 목록에 포함했다. 매칭 키 충돌 29그룹은 자동 규칙 생성에서 제외했다.
+- 동일 bundle 두 번 적재 후 모든 테이블 건수 불변, FK 0, integrity ok. `.debug-artifacts/verify_initial_stage.py initial-catalog-20260903-pass4`가 독립 SQL/evidence 검사다. `--snapshot`은 기존 파일을 덮어쓰지 않고 검증용 파일만 만든다.
+- `public-snapshot-rehearsal.sqlite`는 운영 게시본이 아니다. root 독립 검증: 보류 698→0, 비교 가능한 2,854 offer 유지, 비활성 상품군 620 유지, FK 0, stage DB 파일 해시 불변.
+- pass1/pass2/pass3는 이전 증거로 보존했고 더 이상 최신 분류 결과가 아니다. 기존 출력 폴더는 덮어쓰지 않는다.
 - `.debug-artifacts/initial-taxonomy-review.json`: 리프별 전체 상품명/원본 경로, 보류 목록. 첫 제안 2,279 listing의 이름을 리프별로 검토했다. 이후 오염 방지 규칙 적용 결과 taxonomy-only 2,139 listing / 159 leaves. 모든 미분류 상품을 수동 분류한 것은 아니다.
 - `.debug-artifacts/lotte-promotion-audit.json`: 829개 관측의 57개 문구 분석. 78개 일반표시가 후보, 나머지 751개 조건 확인 전 추가 혜택가 계산 금지. 숫자 파싱 성공과 혜택가 확정을 혼동하지 않는다.
-- `.debug-artifacts/reviewed-product-group-proposals.json`: 가공식품 13군 / 26 listing / 39 원본 관측 제안. 그중 12군/24 listing을 독립 검토해 `.debug-artifacts/reviewed-initial-decisions-20260903.json`에 기록하고 pass3에만 반영했다. 제목·규격을 확인한 명시적 병합이며 운영 승인과 다르다. 고기엔참소스는 적합 리프/출처 검토가 더 필요해 보류했다.
+- `.debug-artifacts/reviewed-product-group-proposals.json`: 가공식품 13군 / 26 listing / 39 원본 관측 제안. 그중 12군/24 listing을 독립 검토해 `.debug-artifacts/reviewed-initial-decisions-20260903.json`에 기록하고 pass3/pass4에 반영했다. 제목·규격을 확인한 명시적 병합이며 운영 승인과 다르다. 고기엔참소스는 적합 리프/출처 검토가 더 필요해 보류했다.
 - 12군 검토 문서 SHA-256: `be289d0c6beca0e6411dd62e8e431d1de4a5ab3db764f9ac17bb2d8caa2ed939`. 전체 119개 cross-mart 자동 후보가 모두 병합된 것은 아니며 명시 검토 12군만 병합했다.
 - 후속 과일/채소/두부 조사: `.debug-artifacts/produce-taxonomy-review.json`은 267 listing/273관측 전량을 보존한다. root가 그중 토마토14/사과7/두부8/순두부2/냉동과일16의 실제 원본과 전체 경로를 재대조했다. 원본 상품군 병합이나 규격 추정 없이 리프만 개별 결정했다.
-- 누적 71 listing 검토 문서: `.debug-artifacts/reviewed-initial-decisions-20260903-produce.json`, SHA-256 `36f42528b04ae4ed7c7c771b9cfd8302781a0e382a81567850d439f1eb36d8f1`. 기존 24 listing/12군 결정을 포함한다. **pass3에는 아직 후속 47개가 들어 있지 않다.** 단위 경계 수정 후 이 문서로 pass4를 생성한다.
+- 누적 71 listing 검토 문서: `.debug-artifacts/reviewed-initial-decisions-20260903-produce.json`, SHA-256 `36f42528b04ae4ed7c7c771b9cfd8302781a0e382a81567850d439f1eb36d8f1`. 기존 24 listing/12군 결정을 포함한다. 단위 경계 수정 후 이 문서로 pass4를 생성했다. 리프 분류가 정해져도 규격 검증을 통과하지 못하면 offer는 생성하지 않는다.
 - `.debug-artifacts/keyword-migration-rehearsal-20260903.json` 및 `.sqlite`: 운영 DB 복사본 마이그레이션/롤백 검증 증거.
 
 ## 다음 시작점
 
-1. 최신 전체 테스트 결과와 `git status`를 확인한다. 크롤러 runtime/export의 원본 이름·규격·source listing 검증 수정은 전체 테스트/실제 4사 행 검증을 마무리해야 한다.
-2. 현재 pass3가 최신이다. 분류 코드/검토 문서 변경 후에는 새 출력 폴더에 workspace를 재생성한다. 12군 명시 검토를 유지하려면 아래 `--review-decisions`를 반드시 사용한다.
-3. 과일/채소/두부 등 다음 좁은 원본 범위를 전량 검토하고 분류를 보강한다. 5,663개 미해결 관측 대부분은 아직 카테고리 검토 전이다. 119개 후보의 상품군 병합도 후속 검토 대상이다.
+1. 최신 전체 테스트 결과와 `git status`를 확인한다. 아래 완료한 단위/스냅샷 수정을 다시 시작하지 않는다.
+2. 현재 pass4가 최신이다. 분류 코드/검토 문서 변경 후에는 새 출력 폴더에 workspace를 재생성한다. 12군 병합과 후속 47개 리프 결정을 유지하려면 아래 `--review-decisions`를 반드시 사용한다.
+3. 다음 좁은 원본 범위를 전량 검토하고 분류를 보강한다. 5,644개 보류 중 5,559개는 리프 assignment가 아직 없다. 과일/채소 조사에서 남긴 신선 아보카도·망고·대파·배추·건채소/건버섯 등이 다음 후보이며, 혼합상품은 별도 판단한다. 119개 cross-mart 후보의 나머지 상품군 병합도 검토 대상이다.
 4. 이마트/코스트코의 대부분은 넓은 원본 카테고리와 부족한 제목 근거로 미분류다. 누락을 감추기 위해 `기타`/부모 노드에 밀어넣지 말고 실제 상품 검토로 보완한다.
 5. 코스트코 1,338개에는 상품별 시각이 없다. ingestion UTC 수신시각을 쓰되 `timestamp_source=ingestion_received_at`, `observed_time_precision=batch`로 표시한다. 실제 개별 수집시각처럼 표현하지 않는다.
 6. 불명확한 프로모션은 가격 원문을 보존하되 공개 가격 비교/단위가격/주간 최저가 계산과 분리한다. 규격 미해석·명칭 변경·브랜드 충돌은 여전히 검수 대기다.
@@ -61,20 +65,22 @@
 재생성 명령 (저장소 루트, 출력 폴더는 새 이름):
 
 ```powershell
-& 'C:\Users\user\AppData\Local\Programs\Python\Python313\python.exe' tools/prepare_initial_catalog.py --out .debug-artifacts/initial-catalog-NEXT --run-id initial-catalog-NEXT --review-decisions .debug-artifacts/reviewed-initial-decisions-20260903.json
+& 'C:\Users\user\AppData\Local\Programs\Python\Python313\python.exe' tools/prepare_initial_catalog.py --out .debug-artifacts/initial-catalog-NEXT --run-id initial-catalog-NEXT --review-decisions .debug-artifacts/reviewed-initial-decisions-20260903-produce.json
 ```
 
 이 환경의 `py` launcher가 실패했으므로 검증된 Python313 경로를 사용했다. JSON/HTML/SQLite 및 크롤링 산출물은 Git에 넣지 않는다.
 
 ## 최신 검증 기록
 
-- DB 관리자 전체: **516 passed**, 460 existing datetime deprecation warnings, 38.22s.
-- 분류/seed/workspace/sync 집중 검증: **252 passed**. 위 전체 테스트와 중복이므로 합산하지 않는다.
-- 최초 runtime/export 수정 후 크롤러 전체: **259 passed**, 1 live deselected, 30.96s. 아래 추가 수정 전 결과다.
+- DB 관리자 전체: **529 passed**, 460 existing datetime deprecation warnings, 45.27s.
+- 크롤러 전체: **274 passed**, 1 live deselected, 28.50s.
+- 공개 API 전체: **67 passed**, 25 existing deprecation warnings, 11.09s. 실행에 비운영 `JWT_SECRET_KEY`를 지정했다.
+- 집중 테스트는 전체 테스트와 중복이므로 합산하지 않는다. 프런트/공유 패키지는 이번 후속 매칭·스냅샷 수정에서 변경하지 않았다.
 
-## 현재 진행 중인 작은 수정 (완료로 오인하지 말 것)
+## 이번 재개에서 마무리한 경계 수정
 
-- 실제 4사 각 원본의 builder → import → runtime/export hit 및 신규 source listing miss 확인. `T` 티백 개수를 ton으로 취급하는 runtime 단위 처리, `ea`/`개입` 동치, 복합포장/수량구간 검수 보강이 후속 수정 중이다.
+- 실제 4사 각 원본의 builder → import → runtime/export hit 및 이름 변경·규격 변경·신규 source listing miss 확인. `T` 티백 개수를 ton으로 취급하던 runtime 단위 처리, `ea`/`개입` 동치 14건, 복합포장/수량구간 검수 보강을 완료했다. 초기 단위 검사를 통과한 실제 8,304관측에서 builder/runtime 판정 차이는 0건이다.
 - `7~10입`을 10입으로 확정하지 않는다. 총중량 `1.5kg(5~6입)`은 중량 기준을 유지한다. 김부각 `(5개입)×5`, 종이타월 `160매×12롤`, 용기+분말 혼합패키지의 단일 수량 추정도 금지한다.
 - 공개 API는 이미 pending 가격을 제외한다. 양반 김밥김 비교에서 이마트 3984원만 표시되고 롯데 pending 2990원은 제외, pending-only 상품은 detail/compare/history/trust 모두 404를 실제 router에서 확인했다.
-- 다만 기존 snapshot serializer는 pending offer 705개와 관련 주간 링크까지 파일로 복사하고 양쪽 validator가 통과시켰다. pending_review offer와 그 링크만 제외하고 로컬/원격 validator 거부를 추가하는 중이다. inactive 상품이나 과거 상태를 일괄 삭제하지 않는다. 운영 snapshot은 생성/교체하지 않았다.
+- 기존 snapshot serializer가 pending offer와 주간 링크를 복사하던 문제를 수정했다. pending_review offer와 그 링크만 제외하며 로컬/원격 validator도 섞인 파일을 거부한다. inactive 상품이나 다른 과거 상태는 그대로 보존한다. 운영 snapshot은 생성/교체하지 않았다.
+- 남은 호환 경계: shared `build_match_key(...,14,"T")` 직접 compound 입력은 여전히 ton으로 해석한다. 이번 실제 T 원본 20행에는 `pack_qty/pack_unit`이 없고 `||14t` 등 저장 키를 사용해 이 변환이 일어나지 않았다. shared 매칭 키 호환 정책은 이번에 변경하지 않았으며 후속 compound 입력 계약 정리가 필요하다.

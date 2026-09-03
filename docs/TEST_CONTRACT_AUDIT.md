@@ -47,7 +47,23 @@ Earlier green baseline after the initial audit (not the latest test count):
 - Frontend: public web 115, crawler admin 17, DB admin 16 (148 passed total).
 - All three production frontend builds complete successfully.
 
-Latest 2026-09-03 DB-admin suite: 516 passed. Crawler-admin frontend: 18 passed
-and production build successful. Do not sum focused subsets with full suites.
+Latest 2026-09-03 suites: DB-admin 529 passed, crawler-admin 274 passed / 1 live
+deselected, web-api 67 passed. Crawler-admin frontend: 18 passed and production
+build successful. Do not sum focused subsets with full suites.
 See `RESUME_CHECKPOINT.md` for the current real-data rehearsal and follow-up
 verification, which are separate from unit-test and fixture counts.
+
+Later 2026-09-03 actual regressions (not obsolete test contracts):
+
+- Normalized runtime/export trusted a matching key even for a changed original
+  title, new listing or conflicting package. Require the original source
+  listing/title plus an active variant belonging to the exact target product;
+  preserve semantic misses in exports instead of reclassifying by key alone.
+- Count ranges and unparsed mixed/multiplied packages were treated as fixed
+  quantities. Stage them for review without offers/rules; explicit fixed mass
+  with variable piece count remains mass-based. Retail T-count handling and
+  ea/개입 equivalence are covered at the runtime package boundary.
+- Public readers already excluded pending-review prices, but the snapshot file
+  copied them. Exclude only those offers and their week links, and reject mixed
+  snapshots at both local and remote validation boundaries. Preserve inactive
+  products and non-pending historical states; keep the existing rollback test.
