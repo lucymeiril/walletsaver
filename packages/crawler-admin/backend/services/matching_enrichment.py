@@ -305,6 +305,10 @@ def _source_package(row: dict[str, Any]) -> tuple[tuple[float, str, int] | None,
     if identity[1] not in {"g", "ml"} and any(_COUNT_RANGE_RE.search(text_value) for text_value in texts):
         return None, "normalized_unit_unresolved"
     for text_value in texts:
+        # Keep the initial catalog's review boundary on recollection too:
+        # the convenience parser only reads the first factor of ×3×2.
+        if len(re.findall(r"[x×*]\s*\d+", text_value, re.I)) > 1:
+            return None, "normalized_variant_conflict"
         if re.search(r"(?<![A-Za-z0-9])[x×*]\s*\d+", text_value, re.I) and not (parse_package_quantity(text_value) or {}).get("bundle_count"):
             return None, "normalized_variant_conflict"
         if "+" in text_value and len(re.findall(rf"(?<![A-Za-z0-9])\d+\s*{_COUNT_UNIT_PATTERN}(?![A-Za-z])", text_value, re.I)) > 1:

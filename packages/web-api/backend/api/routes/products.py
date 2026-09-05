@@ -390,11 +390,13 @@ async def compare_category_products(
     })
 
 
-def _normalized_events(product: dict) -> list[dict]:
+def _normalized_events(product: dict, *, latest_only: bool = False) -> list[dict]:
     events = []
     for variant in product.get("variants") or []:
         for listing in variant.get("listings") or []:
-            for offer in listing.get("offers") or []:
+            offers = listing.get("offers") or []
+            # Catalog storage orders each listing's observations newest first.
+            for offer in (offers[:1] if latest_only else offers):
                 events.append({**offer, "source": listing.get("source"), "source_url": listing.get("url"), "variant_id": variant.get("id"), "variant_name": variant.get("name")})
     return events
 
@@ -449,7 +451,7 @@ async def get_price_compare(request: Request, product_id: str):
         product = storage.get_product_detail(product_id)
         if product and product.get("public_product_id"):
             compare = sorted(
-                [event for event in _normalized_events(product) if event.get("comparable_price") is not None],
+                [event for event in _normalized_events(product, latest_only=True) if event.get("comparable_price") is not None],
                 key=lambda event: (event["comparable_price"], event.get("source") or ""),
             )
         else:

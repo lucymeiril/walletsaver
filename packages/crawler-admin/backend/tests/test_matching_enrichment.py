@@ -313,6 +313,32 @@ def test_runtime_numeric_bundle_count_cannot_resolve_unparsed_multiplication(cou
     assert reason == "normalized_variant_conflict"
 
 
+@pytest.mark.parametrize("count", [None, 1, 3, 6])
+@pytest.mark.parametrize("expression", ["400g x 3 x 2", "400g×3×2"])
+def test_runtime_and_export_reject_a_partially_parsed_multiplier_chain(tmp_path, count, expression):
+    engine = _engine(tmp_path)
+    row = _source_row(name=f"다진마늘 {expression}", normalized_name=f"다진마늘 {expression}",
+                      unit=expression, display_unit=expression, package_quantity=400,
+                      package_unit="g", bundle_count=count)
+    # Reproduce an old/externally supplied rule that incorrectly retained ×3.
+    key = _seed_source_scoped_match(engine, row, quantity=400, unit="g", count=3)
+    reset_db_admin_engine(engine)
+    try:
+        result = enrich_items_with_matching_entries([deepcopy(row)])[0]
+        assert result["matching_status"] == "miss"
+        assert result["matching_miss_reason"] == "normalized_variant_conflict"
+        with Session(engine) as session:
+            assert lookup_row_match_statuses(session, [(row, key)]) == ["normalized_variant_conflict"]
+    finally:
+        reset_db_admin_engine()
+
+
+def test_runtime_preserves_single_explicit_multiplier():
+    package, reason = _source_package({"name": "다진마늘 400g×3", "package_quantity": 400, "package_unit": "g"})
+    assert package == (400, "g", 3)
+    assert reason is None
+
+
 def test_low_confidence_matching_entry_remains_a_miss(tmp_path):
     from core.match_key import build_match_key
 

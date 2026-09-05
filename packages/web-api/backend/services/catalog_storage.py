@@ -197,7 +197,10 @@ class PublicCatalogStore:
                 for event_row in events:
                     event = self._normalized_offer(dict(event_row), variant)
                     events_payload.append(event)
-                    if event["comparable_price"] is not None:
+                    # Historical lows belong in history, not today's card.
+                    # The newest event may itself be non-comparable; do not
+                    # fall back to a prior price in that case.
+                    if len(events_payload) == 1 and event["comparable_price"] is not None:
                         comparable_offers.append({**event, "source": listing["source_name"], "source_url": listing.get("source_url"), "variant_id": variant["public_variant_id"]})
                 listings_payload.append({
                     "id": listing["public_source_listing_id"],
@@ -220,6 +223,14 @@ class PublicCatalogStore:
             })
         comparable_offers.sort(key=lambda row: (row["comparable_price"], row.get("source") or ""))
         best = comparable_offers[0] if comparable_offers else {}
+        best_variant = next((variant for variant in variants_payload if variant["id"] == best.get("variant_id")), None)
+        best_unit = ""
+        if best_variant is not None:
+            best_unit = best_variant.get("display_unit") or ""
+            if not best_unit and best_variant.get("package_quantity") and best_variant.get("package_unit"):
+                best_unit = f"{best_variant['package_quantity']:g}{best_variant['package_unit']}"
+                if best_variant["bundle_count"] > 1:
+                    best_unit += f"×{best_variant['bundle_count']}"
         warning = bool(attributes.get("classification_warning"))
         return {
             "id": product["public_product_id"],
@@ -234,7 +245,7 @@ class PublicCatalogStore:
             "price": best.get("comparable_price") or 0,
             "source": best.get("source") or "",
             "source_url": best.get("source_url") or "",
-            "unit": (variants_payload[0].get("display_unit") if variants_payload else None) or "",
+            "unit": best_unit,
             "classification_warning": warning,
             "classification_label": "분류 확인 필요" if warning else None,
             "attributes": attributes,
