@@ -1,6 +1,6 @@
-# 재개 체크포인트 — 2026-09-03
+# 재개 체크포인트 — 2026-09-05
 
-할당량 중단 후 2026-09-03 재개한 작업 기록이다. 다음 작업은 이 문서와 `git status`를 함께 확인한다. 아래 초기 카탈로그는 **별도 검증 DB의 초안이며 운영 승인본이 아니다**.
+할당량 중단 후 재개한 작업 기록이다. 최신은 pass7이며 상세 근거는 `CLASSIFICATION_BATCH_20260905.md`를 우선한다. 다음 작업은 이 문서와 `git status`를 함께 확인한다. 아래 초기 카탈로그는 **별도 검증 DB의 초안이며 운영 승인본이 아니다**. pass4 등 과거 수치는 이력으로 보존한다.
 
 ## 보존 상태
 
@@ -54,11 +54,11 @@
 
 ## 다음 시작점
 
-2026-09-05 최신은 **pass6/누적 144개 결정/30개 수동 병합군 검증 완료**다. 최신 결과와 명령 입력은 `docs/CLASSIFICATION_BATCH_20260905.md`를 우선한다. 아래 pass4 건수는 이전 기록이다. 조사·제안 파일을 승인본으로 취급하지 않는다.
+2026-09-05 최신은 **pass7/누적 199개 결정/30개 수동 병합군 검증 완료**다. 상품군 2,283 / variant 2,287 / listing 2,318 / offer 3,627, 보류 5,569관측이다. 최신 결과와 명령 입력은 `docs/CLASSIFICATION_BATCH_20260905.md`를 우선한다. 위 pass4 건수는 이전 기록이다. 조사·제안 파일을 승인본으로 취급하지 않는다.
 
 1. 최신 전체 테스트 결과와 `git status`를 확인한다. 아래 완료한 단위/스냅샷 수정을 다시 시작하지 않는다.
-2. 현재 pass4가 최신이다. 분류 코드/검토 문서 변경 후에는 새 출력 폴더에 workspace를 재생성한다. 12군 병합과 후속 47개 리프 결정을 유지하려면 아래 `--review-decisions`를 반드시 사용한다.
-3. 다음 좁은 원본 범위를 전량 검토하고 분류를 보강한다. 5,644개 보류 중 5,559개는 리프 assignment가 아직 없다. 과일/채소 조사에서 남긴 신선 아보카도·망고·대파·배추·건채소/건버섯 등이 다음 후보이며, 혼합상품은 별도 판단한다. 119개 cross-mart 후보의 나머지 상품군 병합도 검토 대상이다.
+2. 현재 pass7이 최신이다. 분류 코드/검토 문서 변경 후에는 새 출력 폴더에 workspace를 재생성한다. 누적 199개 결정을 유지하려면 아래 `--review-decisions`를 반드시 사용한다.
+3. 다음 좁은 원본 범위를 전량 검토하고 분류를 보강한다. 5,569개 보류 중 5,461개는 리프 assignment가 아직 없다. 신선식품 batch2/batch4의 완료 항목을 중복 작업하지 않는다. 119개 cross-mart 후보의 나머지 상품군 병합과 아직 검토하지 않은 식품군이 다음 대상이다.
 4. 이마트/코스트코의 대부분은 넓은 원본 카테고리와 부족한 제목 근거로 미분류다. 누락을 감추기 위해 `기타`/부모 노드에 밀어넣지 말고 실제 상품 검토로 보완한다.
 5. 코스트코 1,338개에는 상품별 시각이 없다. ingestion UTC 수신시각을 쓰되 `timestamp_source=ingestion_received_at`, `observed_time_precision=batch`로 표시한다. 실제 개별 수집시각처럼 표현하지 않는다.
 6. 불명확한 프로모션은 가격 원문을 보존하되 공개 가격 비교/단위가격/주간 최저가 계산과 분리한다. 규격 미해석·명칭 변경·브랜드 충돌은 여전히 검수 대기다.
@@ -67,16 +67,16 @@
 재생성 명령 (저장소 루트, 출력 폴더는 새 이름):
 
 ```powershell
-& 'C:\Users\user\AppData\Local\Programs\Python\Python313\python.exe' tools/prepare_initial_catalog.py --out .debug-artifacts/initial-catalog-NEXT --run-id initial-catalog-NEXT --review-decisions .debug-artifacts/reviewed-initial-decisions-20260903-produce.json
+& 'C:\Users\user\AppData\Local\Programs\Python\Python313\python.exe' tools/prepare_initial_catalog.py --out .debug-artifacts/initial-catalog-NEXT --run-id initial-catalog-NEXT --review-decisions .debug-artifacts/reviewed-initial-decisions-20260905-batch4.json
 ```
 
 이 환경의 `py` launcher가 실패했으므로 검증된 Python313 경로를 사용했다. JSON/HTML/SQLite 및 크롤링 산출물은 Git에 넣지 않는다.
 
 ## 최신 검증 기록
 
-- DB 관리자 전체: **529 passed**, 460 existing datetime deprecation warnings, 45.27s.
-- 크롤러 전체: **274 passed**, 1 live deselected, 28.50s.
-- 공개 API 전체: **67 passed**, 25 existing deprecation warnings, 11.09s. 실행에 비운영 `JWT_SECRET_KEY`를 지정했다.
+- DB 관리자 전체: **574 passed**, 460 existing warnings, 47.13s (2026-09-03, 이후 코드 불변).
+- 크롤러 전체: **283 passed**, 1 live deselected, 32.86s (2026-09-05).
+- 공개 API 전체: **71 passed**, 25 existing warnings, 12.43s (2026-09-05). 실행에 비운영 `JWT_SECRET_KEY`를 지정했다.
 - 집중 테스트는 전체 테스트와 중복이므로 합산하지 않는다. 프런트/공유 패키지는 이번 후속 매칭·스냅샷 수정에서 변경하지 않았다.
 
 ## 이번 재개에서 마무리한 경계 수정

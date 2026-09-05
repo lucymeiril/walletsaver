@@ -37,3 +37,30 @@
 - 회귀 테스트 완료: 공개 API **71 passed**, crawler **283 passed / 1 live deselected**. 기존 deprecation 경고만 남는다. 앞선 DB 관리자 574 passed는 이번에 변경되지 않은 코드의 직전 결과다.
 - pass6 bundle SHA-256: `51957070bc6df8c8d51f302dde98cfa261cdd6f7836a57f0ab560edf306e07a7`.
 - active 2,878관측의 실제 의미: final_price 1,968 / was_now_price 266 / buy_x_get_y 629 / checkout_discount 15. 현재 API 비교 가능 형태는 앞의 2,234관측이며, listing별 최신 선택 이후 노출 수는 더 적다. 조건부 가격을 지원했다고 과장하지 않는다.
+
+## batch4 신선식품 개별 결정 저장
+
+- 이마트/코스트코 신선식품 55 listing/55관측의 전체 제목·원본 경로·URL·포장·규격 이슈를 개별 대조했다. 기존 리프만 사용하며 자동 분류 규칙이나 상품군 병합은 추가하지 않는다.
+- 바나나·블루베리·포도·배·복숭아·자두·멜론/참외, 감자·고구마·양파·마늘·당근·오이·고추·버섯·잎채소·숙주 및 컷파인애플이다. 혼합선물/중량 범위/비식품과 구분했다.
+- 코스트코 허니듀 `695883`, 양파 `655046`, 당근 `679688`, 할라페뇨 `681925`, 양송이 `683909`는 리프만 결정한다. 중량/개수/묶음 충돌을 임의 보정하지 않고 규격 보류한다.
+- 누적 문서 `.debug-artifacts/reviewed-initial-decisions-20260905-batch4.json`: 199 listing, 기존 30군 유지. SHA-256 `b815722e2183318562370e073cb7db016986c05d4445218f28ff54a2bf74ca47`.
+- 근거 `.debug-artifacts/produce-review-20260905-batch4-evidence.json`, 작성 스크립트 `.debug-artifacts/review_produce_batch4.py`. 모두 Git 제외 로컬 자료다.
+- pass7 생성/검증 대상 `.debug-artifacts/initial-catalog-20260905-pass7/`. 이 아래 완료 기록이 없으면 최신 검증본은 pass6이며, batch4를 운영 승인본으로 사용하지 않는다.
+
+## pass7 검증 완료 — 최신 재개 지점
+
+- 55개 리프 결정 중 50 listing/50관측 추가, 명시한 규격 충돌 5개는 보류. 이전 144개 결정과 모든 포함 관측은 유지했다. 실제 DB에서 새 50개의 리프/독립 상품군/원본 payload와 hash를 대조했다.
+- 상품군 2,283 / variant 2,287 / listing 2,318 / offer 3,627 / matching rule 2,262. 카테고리 244(부모 포함), 키워드 176, 원본 경로 매핑 222.
+- 원본 9,196관측 전량 accounting, 미분류·규격 보류 5,569(리프 미지정 5,461), 동일 bundle 2회 import 멱등성, FK/integrity 통과. 선택 원본 해시는 불변이다.
+- mart별 stage 관측/listing: Costco 135/135, Emart 220/210, Homeplus 2,712/1,413, Lotte 560/560. 상품별 시점 관측은 중복 listing으로 삭제하지 않았다.
+- 기존 수동 병합 30군 유지. 실제 runtime/export 원본 92관측에서 88 hit/4 miss, 변경 276건은 각 경로에서 모두 miss. 다중곱 guard 수정 이후 재검증이다.
+- 검증용 snapshot: pending 699개 제외, active 상태 2,928개와 비활성군 600개 유지, FK 0, stage 파일 해시 불변. 운영 게시/승인/원본 DB 변경은 없다. active는 전부 API 비교 가능하다는 뜻이 아니다.
+- 독립 검증 파일: pass7의 `batch4-independent-check.json`, `reviewed-runtime-check.json`, `public-snapshot-rehearsal.sqlite`. `.debug-artifacts/verify_produce_batch4.py`와 `verify_initial_stage.py`로 확인했다.
+- bundle SHA-256: `ac64f5f7949ce36a7f0f60eded71a716fd5c5566013b4cb4f6aa276d71b012c1`.
+- batch4는 데이터 결정만 변경해 추가 코드 회귀 실행은 하지 않았다. 최신 전체 결과는 API 71 / crawler 283 / DB 관리자 574 passed이며 각 실행 시점은 위 기록을 따른다.
+
+다음 생성은 기존 pass7을 덮어쓰지 않고 누적 batch4 문서를 입력한다:
+
+```powershell
+& 'C:\Users\user\AppData\Local\Programs\Python\Python313\python.exe' tools/prepare_initial_catalog.py --out .debug-artifacts/initial-catalog-NEXT --run-id initial-catalog-NEXT --review-decisions .debug-artifacts/reviewed-initial-decisions-20260905-batch4.json
+```
