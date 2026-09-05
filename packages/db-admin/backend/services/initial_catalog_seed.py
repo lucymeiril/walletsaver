@@ -165,6 +165,11 @@ def _package(payload: Mapping[str, Any], attrs: Mapping[str, Any], title: str) -
         # Neither a crawler default of one nor another numeric field proves
         # that an otherwise unparsed multiplication has been interpreted.
         issues.append("bundle_multiplier_unresolved")
+    if any(len(re.findall(r"[x×*]\s*\d+", text, re.I)) > 1 for text in (title, display_unit)):
+        # The convenience parser extracts only one factor from 400g x 3 x 2
+        # (also 5g x 30ct x 2). A numeric crawler field cannot prove the full
+        # chain was interpreted; retain it for explicit package review.
+        issues.append("bundle_multiplier_unresolved")
     if "+" in title and len(re.findall(rf"(?<![A-Za-z0-9])\d+\s*{_COUNT_UNIT_PATTERN}(?![A-Za-z])", title, re.I)) > 1:
         issues.append("mixed_package_unresolved")
     parsed = next((parsed for parsed in parsed_candidates if parsed.get("bundle_count")), parsed_candidates[0] if parsed_candidates else None)
@@ -215,7 +220,7 @@ def _package(payload: Mapping[str, Any], attrs: Mapping[str, Any], title: str) -
     }, sorted(set(issues))
 
 
-def _price(payload: Mapping[str, Any], attrs: Mapping[str, Any], mart: str) -> tuple[dict[str, Any], list[str]]:
+def _price(payload: Mapping[str, Any], attrs: Mapping[str, Any], mart: str, title: str) -> tuple[dict[str, Any], list[str]]:
     layers = (payload, attrs)
     price = _positive(_first(layers, ("sale_price", "current_price")))
     original = _positive(_first(layers, ("original_price",)))
@@ -263,8 +268,15 @@ def _price(payload: Mapping[str, Any], attrs: Mapping[str, Any], mart: str) -> t
             "min_purchase_quantity", "promotion_conditions", "coupon_conditions",
         ) if (value := _first(layers, (key,))) is not None
     }
+    title_purchase_condition = bool(re.search(r"최소\s*구매", title))
+    if title_purchase_condition:
+        # Some source listings put the minimum order only in their title.
+        # Preserve that evidence without inventing a payable total or treating
+        # the minimum order as the physical bundle size. No current promotion
+        # type establishes that this textual condition has been modelled.
+        conditions["source_title_purchase_condition"] = title
     has_conditions = any(bool(value) for value in conditions.values())
-    if has_conditions and promotion in {"final_price", "was_now_price"}:
+    if title_purchase_condition or (has_conditions and promotion in {"final_price", "was_now_price"}):
         promotion = "unknown"
         rate = None
         issues.append("promotion_conditions_unresolved")
@@ -308,7 +320,7 @@ def normalize_pending_ingestions(ingestions: Iterable[Any]) -> list[dict[str, An
             path = normalize_source_path(_first((attrs, raw_data, payload), ("mart_native_category_path", "source_category_path", "category_path", "category")))
             brand = next((brand for layer in (attrs, raw_data, payload) for name in ("brand", "brandName", "brandNm", "brand_name") if (brand := validated_brand(layer.get(name)))), None)
             package, unit_issues = _package(payload, attrs, title)
-            price, price_issues = _price(payload, attrs, mart)
+            price, price_issues = _price(payload, attrs, mart, title)
             timestamp = _timestamp(payload.get("crawled_at"))
             timestamp_source = "item_crawled_at"
             time_precision = "item"

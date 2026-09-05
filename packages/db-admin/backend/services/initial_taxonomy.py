@@ -115,6 +115,8 @@ LEAVES: tuple[Leaf, ...] = (
         ("banana", "바나나", "바나나"), ("kiwi", "키위", "키위|참다래"), ("berry", "딸기·베리", "딸기|블루베리"),
         ("melon", "멜론·참외", "멜론|참외"), ("watermelon", "수박", "수박"),
         ("tomato", "토마토", "토마토|방울토마토"),
+        # Exact reviewed listings only: fruit-name mentions do not prove form.
+        ("avocado", "아보카도", ""), ("mango", "망고", ""), ("jujube", "대추", ""),
     )),
     *_group("food.produce.processed_fruit", ("식품", "농산물", "가공과일"), "과일|쌀/잡곡/견과류", (
         ("frozen", "냉동과일", "냉동과일", "냉동과일|냉동 과일"),
@@ -129,6 +131,13 @@ LEAVES: tuple[Leaf, ...] = (
         ("leaf", "쌈채소", "쌈채소|상추|깻잎"), ("sprouts", "콩나물·숙주", "콩나물|숙주|숙주나물"),
         ("mushroom", "버섯", "버섯|팽이버섯|새송이버섯|느타리버섯|표고버섯"),
         ("salad", "샐러드채소", "믹스샐러드|샐러드채소"),
+        ("scallion", "대파", ""), ("napa_cabbage", "배추", ""),
+    )),
+    # Dry/frozen processing wins over an unreliable Fresh-Foods source path.
+    # These leaves and search terms add no automatic source/name mappings.
+    *_group("food.produce.processed_vegetables", ("식품", "농산물", "가공채소"), "채소", (
+        ("dried", "건채소", ""), ("dried_mushroom", "건버섯", ""),
+        ("frozen", "냉동채소", ""),
     )),
     *_group("food.grains.rice", ("식품", "곡물·견과", "쌀·잡곡"), "쌀/잡곡/견과류|쌀/잡곡|쌀|잡곡", (
         ("white", "백미", "백미|쌀/백미"), ("mixed", "혼합곡", "혼합곡|혼합잡곡"),
@@ -185,7 +194,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("boiled", "물만두", "물만두", "물만두"), ("dimsum", "딤섬", "딤섬"),
     )),
     *_group("food.meals.prepared", ("식품", "간편식·면", "조리식품"), "간편식/밀키트|냉장/냉동/밀키트|라면/즉석식품/통조림|델리/즉석조리", (
-        ("soup_stew", "국·탕", "국/탕|탕|즉석국|즉석국(레토르트)"),
+        ("soup_stew", "국·탕·찌개", "국/탕|탕|즉석국|즉석국(레토르트)"),
         ("curry", "즉석카레", "즉석카레", "즉석카레"), ("black_bean", "즉석짜장", "즉석짜장", "즉석짜장"),
         ("tteokbokki", "떡볶이", "간편떡볶이|떡볶이"), ("pork_cutlet", "돈까스", "돈까스"),
         ("chicken", "조리치킨", "치킨|치킨/닭강정|치킨기타"), ("nugget", "치킨너겟·텐더", "너겟|치킨너겟/치킨텐더"),

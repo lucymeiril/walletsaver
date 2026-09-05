@@ -11,7 +11,7 @@
 - `eb1c5be`: 매칭 ID의 3개 형식 동기화 및 인증 테스트 계약 격리.
 - `75f4bd0`: 원본 listing/이름/규격 재검증, export miss 보존, 복합포장·수량구간 검수.
 - `62e8e2e`: 스냅샷의 검토 대기 offer/주간 링크 제외 및 로컬·원격 검증기 거부.
-- 위 커밋은 로컬 보존 상태다. 공개 원격 `lucymeiril/walletsaver`에 대한 push는 권한 검사에서 보류됐고 사용자에게 확인을 요청했다. 답변 전 재시도하거나 다른 도구로 우회하지 않는다.
+- 사용자가 push를 승인했고, 위 변경을 포함한 8개 커밋은 원격에 반영됐다. 로컬/원격 HEAD `53642d9473094adca970285d3c76e76e80c20c20` 일치를 확인했다.
 - 실제 원본: `.walletsavior/admin.sqlite`. 이 작업에서 운영 DB 마이그레이션·분류 적재·수집 승인·공개 snapshot 승인은 하지 않았다.
 - 기존 백업: `.walletsavior/backups/pre-initial-catalog-20260903-044952/admin.sqlite` (17,711,104 bytes).
 - 원본은 108개 pending ingestion, 9,196개 관측이다. Emart 1,802 / Homeplus 5,227 / Lotte 829 / Costco 1,338. 고유 listing은 6,543개다.
@@ -53,6 +53,8 @@
 - `.debug-artifacts/keyword-migration-rehearsal-20260903.json` 및 `.sqlite`: 운영 DB 복사본 마이그레이션/롤백 검증 증거.
 
 ## 다음 시작점
+
+2026-09-05 재개 시 **pass5/누적 122개 결정/21개 수동 병합군 검증 완료**를 확인했다. 최신 결과와 명령 입력은 `docs/CLASSIFICATION_BATCH_20260903.md` 마지막 절을 우선한다. 아래 pass4 건수는 이전 기록이다. 조사·제안 파일을 승인본으로 취급하지 않는다.
 
 1. 최신 전체 테스트 결과와 `git status`를 확인한다. 아래 완료한 단위/스냅샷 수정을 다시 시작하지 않는다.
 2. 현재 pass4가 최신이다. 분류 코드/검토 문서 변경 후에는 새 출력 폴더에 workspace를 재생성한다. 12군 병합과 후속 47개 리프 결정을 유지하려면 아래 `--review-decisions`를 반드시 사용한다.

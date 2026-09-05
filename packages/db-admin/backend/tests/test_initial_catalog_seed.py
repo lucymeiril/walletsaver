@@ -115,6 +115,38 @@ def test_numeric_bundle_count_does_not_override_unparsed_parenthesized_multiplic
     assert bundle["offers"] == []
 
 
+@pytest.mark.parametrize(("title", "quantity"), [
+    ("냉동 다진마늘 400g x 3 x 2", 400),
+    ("차 5g x 30ct x 2", 5),
+    ("냉동 다진마늘 400g×3×2", 400),
+])
+@pytest.mark.parametrize("count", [None, 1, 3, 6])
+def test_repeated_multiplication_requires_review_even_with_numeric_bundle_count(title, quantity, count):
+    raw = item(name=title, package_quantity=quantity, package_unit="g", bundle_count=count, display_unit=f"{quantity}g", unit=f"{quantity}g")
+    bundle = build([ingestion(1, [raw])])
+    assert "bundle_multiplier_unresolved" in bundle["unresolved"][0]["reasons"]
+    assert bundle["variants"] == []
+    assert bundle["offers"] == []
+    assert bundle["match_rules"] == []
+
+
+def test_repeated_multiplication_in_display_unit_also_requires_review():
+    raw = item(name="냉동 다진마늘", package_quantity=400, package_unit="g", display_unit="400g x 3 x 2", unit="400g")
+    bundle = build([ingestion(1, [raw])])
+    assert "bundle_multiplier_unresolved" in bundle["unresolved"][0]["reasons"]
+    assert bundle["offers"] == []
+    assert bundle["match_rules"] == []
+
+
+def test_single_explicit_mass_bundle_is_still_comparable():
+    raw = item(name="목이버섯 200g×2", package_quantity=200, package_unit="g", display_unit="200g×2", unit="200g×2", sale_price=10000, original_price=None)
+    bundle = build([ingestion(1, [raw])])
+    assert bundle["unresolved"] == []
+    assert bundle["variants"][0]["package_quantity"] == 200
+    assert bundle["variants"][0]["bundle_count"] == 2
+    assert bundle["offers"][0]["standard_unit_price"] == 2500
+
+
 @pytest.mark.parametrize(("title", "quantity", "unit"), [
     ("맑은청 찰토마토 7~10입/팩", 10, "입"),
     ("토마토 7입~10입/팩", 10, "입"),
@@ -174,6 +206,54 @@ def test_conditional_price_without_safe_semantics_is_not_comparable():
     assert bundle["products"][0]["is_active"] is False
     assert "promotion_conditions_unresolved" in offer["audit_provenance"]["review_reasons"]
     assert bundle["unresolved"] == []
+
+
+@pytest.mark.parametrize("source_title", [
+    "일품채 목이버섯 200g / 최소구매 2",
+    "일품채 목이버섯 200g / 최소 구매 수량: 2개",
+    "일품채 목이버섯 200g / 최소구매 수량 별도 안내",
+])
+@pytest.mark.parametrize("promotion_type", [None, "final_price", "checkout_discount", "bundle_price"])
+def test_source_title_minimum_purchase_is_preserved_and_requires_offer_review(source_title, promotion_type):
+    # The public category decision cannot approve an unmodelled purchase
+    # condition, even when a crawler supplies an otherwise known promo type.
+    raw = item(
+        source="costco", name="일품채 목이버섯 200g", sale_price=16990,
+        original_price=None, event_name=None, promotion_type=promotion_type,
+        package_quantity=200, package_unit="g", display_unit="200g", unit="200g",
+        attributes={"source_record_key": "615852", "raw_name": source_title},
+    )
+    bundle = build([ingestion(1, [raw], "costco")], {("costco", "615852"): assignment()})
+    offer = bundle["offers"][0]
+    assert offer["promotion_conditions"]["source_title_purchase_condition"] == source_title
+    assert offer["price"] == 16990  # Never invent 33980 or claim one pack is purchasable.
+    assert offer["offer_state"] == "pending_review"
+    assert offer["promotion_type"] == "unknown"
+    assert offer["standard_unit_price"] is None
+    assert offer["price_per_100g"] is None
+    assert offer["audit_provenance"]["review_reasons"] == ["promotion_conditions_unresolved"]
+    assert offer["raw_evidence"]["observations"][0]["raw_payload"] == raw
+    assert bundle["variants"][0]["package_quantity"] == 200
+    assert bundle["variants"][0]["bundle_count"] == 1
+    assert bundle["offer_week_links"][0]["observed_min_price"] is None
+    assert bundle["offer_week_links"][0]["observed_max_price"] is None
+    assert bundle["products"][0]["is_active"] is False
+    assert bundle["observation_accounting"][0]["offer_state"] == "pending_review"
+    assert bundle["unresolved"] == []
+
+
+def test_costco_title_without_purchase_condition_remains_comparable():
+    raw = item(
+        source="costco", name="일품채 목이버섯 200g", sale_price=16990,
+        original_price=None, event_name=None,
+        package_quantity=200, package_unit="g", display_unit="200g", unit="200g",
+    )
+    bundle = build([ingestion(1, [raw], "costco")], {("costco", "123"): assignment()})
+    offer = bundle["offers"][0]
+    assert offer["offer_state"] == "active"
+    assert offer["promotion_type"] == "final_price"
+    assert offer["promotion_conditions"] == {}
+    assert offer["standard_unit_price"] == 8495
 
 
 def test_costco_only_can_use_explicitly_labelled_utc_batch_received_time_proxy():

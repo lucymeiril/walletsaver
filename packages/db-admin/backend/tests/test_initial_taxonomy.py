@@ -382,6 +382,63 @@ def test_explicit_review_only_leaves_do_not_add_loose_name_rules():
         assert classify_record(_raw("emart", "베스트", title))["unified_category_id"] is None
 
 
+def test_reviewed_produce_leaves_have_four_levels_and_unique_search_keywords():
+    paths = {
+        "food.produce.fruit.avocado": ["식품", "농산물", "신선과일", "아보카도"],
+        "food.produce.fruit.mango": ["식품", "농산물", "신선과일", "망고"],
+        "food.produce.fruit.jujube": ["식품", "농산물", "신선과일", "대추"],
+        "food.produce.vegetables.scallion": ["식품", "농산물", "신선채소", "대파"],
+        "food.produce.vegetables.napa_cabbage": ["식품", "농산물", "신선채소", "배추"],
+        "food.produce.processed_vegetables.dried": ["식품", "농산물", "가공채소", "건채소"],
+        "food.produce.processed_vegetables.dried_mushroom": ["식품", "농산물", "가공채소", "건버섯"],
+        "food.produce.processed_vegetables.frozen": ["식품", "농산물", "가공채소", "냉동채소"],
+    }
+    categories = {row["id"]: row for row in taxonomy_categories(paths)}
+    validate_taxonomy(categories.values(), paths)
+    for leaf_id, expected_path in paths.items():
+        actual_path = []
+        cursor = leaf_id
+        while cursor:
+            actual_path.insert(0, categories[cursor]["name_ko"])
+            cursor = categories[cursor]["parent_id"]
+        assert actual_path == expected_path
+    keywords = keyword_definitions(paths)
+    assert {row["unified_category_id"]: row["word"] for row in keywords} == {
+        leaf_id: path[-1] for leaf_id, path in paths.items()
+    }
+    assert keyword_collisions(keyword_definitions()) == {}
+
+
+@pytest.mark.parametrize(("path", "title"), [
+    ("과일", "페루산 아보카도 1kg (5~6입)"),
+    ("과일", "브라질애플망고3.7kg(7~9입)"),
+    ("과일", "사과대추 500g 팩"),
+    ("채소", "흙대파 750g"), ("채소", "손질배추 (통)"),
+    ("채소", "건고사리 200g"), ("채소", "일품채 목이버섯 200g / 최소구매 2"),
+    ("채소", "[냉동] 대파 (500g)"), ("채소", "[냉동] 볶음밥용 채소 (500g)"),
+    ("채소", "냉동 다진마늘 400g x 3 x 2"),
+    ("과일", "애플 & 태국망고 선물세트 2.8kg"),
+    ("과일", "샤인머스캣&애플망고세트3.5kg"),
+    ("과일", "아보카도 오일 1L"),
+    ("채소", "채소 행사전 (대파/배추 등)"),
+    ("채소", "뉴트리플랜 동결건조 야채트릿 200g"),
+])
+def test_new_produce_leaves_do_not_implicitly_classify_unreviewed_listings(path, title):
+    result = classify_record(_raw("emart", path, title))
+    assert result["unified_category_id"] is None
+
+
+def test_fresh_napa_cabbage_leaf_does_not_override_existing_kimchi_contract():
+    result = classify_record(_raw("emart", "채소", "배추김치 1kg"))
+    assert result["unified_category_id"] == "food.preserved.kimchi.cabbage"
+
+
+def test_prepared_soup_stew_label_covers_the_existing_stew_contract():
+    result = classify_record(_raw("homeplus", "라면/즉석식품/통조림 > 즉석식품/누룽지/죽 > 즉석국", "CJ 비비고 두부 듬뿍 된장찌개 460G"))
+    assert result["unified_category_id"] == "food.meals.prepared.soup_stew"
+    assert result["category_path"] == ["식품", "간편식·면", "조리식품", "국·탕·찌개"]
+
+
 @pytest.mark.parametrize(("mart", "path", "title", "leaf"), [
     ("homeplus", "우유/유제품 > 치즈/버터 > 슈레드/피자치즈/파마산 > 피자치즈", "매일 쫄깃하게늘어나는 피자용 슈레드치즈75G*4", "food.dairy.cheese.shredded"),
     ("lottemart", "우유ㆍ유제품 > 치즈 > 슈레드ㆍ피자치즈", "덴마크 피자 모짜렐라 치즈300G", "food.dairy.cheese.shredded"),
