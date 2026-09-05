@@ -29,7 +29,10 @@ def html() -> str:
 
 
 @pytest.fixture
-def crawler(tmp_path) -> EmartCrawler:
+def crawler(tmp_path, monkeypatch) -> EmartCrawler:
+    # Existing persistence/failure tests exercise the minimum interval.
+    # The dedicated range test below overrides this deterministic draw.
+    monkeypatch.setattr("crawlers.marts.emart.crawler.random.uniform", lambda low, high: low)
     return EmartCrawler(category_cursor_path=tmp_path / "emart_category_cursor.json")
 
 
@@ -272,6 +275,32 @@ def test_category_cursor_persists_next_unfinished_category(crawler):
     assert crawler._build_category_source_requests()[0]["category_id"] == category_ids[1]
     restored = EmartCrawler(category_cursor_path=crawler._category_cursor_path)
     assert restored._build_category_source_requests()[0]["category_id"] == category_ids[1]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("interval", [360.0, 390.0, 420.0])
+async def test_category_interval_draws_six_to_seven_minutes_once_per_attempt(
+    crawler, monkeypatch, interval,
+):
+    clock = [1_000.0]
+    sleeps = []
+    draw = MagicMock(return_value=interval)
+    monkeypatch.setattr("crawlers.marts.emart.crawler.random.uniform", draw)
+    monkeypatch.setattr("crawlers.marts.emart.crawler.time.time", lambda: clock[0])
+
+    async def fake_sleep(seconds):
+        sleeps.append(seconds)
+        clock[0] += seconds
+
+    monkeypatch.setattr(asyncio, "sleep", fake_sleep)
+    assert await crawler._wait_for_category_request_slot() == 0
+    clock[0] += 75
+    restored = EmartCrawler(category_cursor_path=crawler._category_cursor_path)
+    assert await restored._wait_for_category_request_slot() == pytest.approx(interval - 75)
+    assert sleeps == [pytest.approx(interval - 75)]
+    assert restored._last_category_request_at == pytest.approx(1_000 + interval)
+    assert draw.call_count == 2  # No redraw inside the wait loop.
+    assert all(call.args == (360.0, 420.0) for call in draw.call_args_list)
 
 
 @pytest.mark.asyncio

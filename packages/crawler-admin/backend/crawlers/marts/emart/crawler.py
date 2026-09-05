@@ -109,9 +109,10 @@ class EmartCrawler(CrawlerContract):
     # 카테고리 첫 페이지만 수집해 수천 건 범위를 확보하면서 부하를 제한한다.
     MAX_PAGES = 1
     # SSG starts blocking category browsing when categories are requested close
-    # together.  This is a durable, fixed minimum (rather than per-process
-    # jitter) so a selected-category run or an app restart cannot reset it.
+    # together. Choose a 6–7 minute interval per request attempt; the durable
+    # previous timestamp keeps selected runs/restarts above the 6 minute floor.
     CATEGORY_REQUEST_MIN_INTERVAL_SECONDS = 360.0
+    CATEGORY_REQUEST_MAX_INTERVAL_SECONDS = 420.0
     CATEGORY_BROWSER_CHANNEL = "chrome"
     CATEGORY_BROWSER_HEADLESS = False
     CATEGORY_CURSOR_SCHEMA_VERSION = 1
@@ -244,7 +245,10 @@ class EmartCrawler(CrawlerContract):
         restart all share the same cooldown.  A missing timestamp represents a
         genuinely first request and therefore does not sleep.
         """
-        interval = max(0.0, float(self.CATEGORY_REQUEST_MIN_INTERVAL_SECONDS))
+        interval = random.uniform(
+            self.CATEGORY_REQUEST_MIN_INTERVAL_SECONDS,
+            self.CATEGORY_REQUEST_MAX_INTERVAL_SECONDS,
+        )
         total_wait_seconds = 0.0
         while True:
             with self._category_request_lock:
