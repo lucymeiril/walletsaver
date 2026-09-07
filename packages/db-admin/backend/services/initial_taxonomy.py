@@ -142,6 +142,11 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.grains.rice", ("식품", "곡물·견과", "쌀·잡곡"), "쌀/잡곡/견과류|쌀/잡곡|쌀|잡곡", (
         ("white", "백미", "백미|쌀/백미"), ("mixed", "혼합곡", "혼합곡|혼합잡곡"),
         ("brown", "현미", "현미"), ("oat", "귀리", "귀리"),
+        # Reviewed raw grains; no implicit source/name rules for processed
+        # foods that merely mention these ingredients.
+        ("glutinous", "찹쌀", ""), ("black", "흑미", ""),
+        ("barley", "보리", ""), ("millet", "기장", ""),
+        ("chickpea", "병아리콩", ""),
     )),
     *_group("food.grains.nuts", ("식품", "곡물·견과", "견과류"), "견과|견과류|쌀/잡곡/견과류", (
         ("almond", "아몬드", "아몬드"), ("walnut", "호두", "호두"), ("peanut", "땅콩", "땅콩"),

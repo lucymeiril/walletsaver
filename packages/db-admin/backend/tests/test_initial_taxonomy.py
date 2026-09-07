@@ -456,6 +456,34 @@ def test_opaque_flavour_in_mixed_milk_source_is_not_defaulted_to_plain_milk():
     assert result["unified_category_id"] is None
 
 
+def test_reviewed_grain_leaves_have_independent_four_level_paths_and_keywords():
+    labels = {"glutinous": "찹쌀", "black": "흑미", "barley": "보리", "millet": "기장", "chickpea": "병아리콩"}
+    paths = {f"food.grains.rice.{key}": ["식품", "곡물·견과", "쌀·잡곡", label] for key, label in labels.items()}
+    categories = {row["id"]: row for row in taxonomy_categories(paths)}
+    validate_taxonomy(categories.values(), paths)
+    for leaf, expected in paths.items():
+        actual = []
+        cursor = leaf
+        while cursor:
+            actual.insert(0, categories[cursor]["name_ko"])
+            cursor = categories[cursor]["parent_id"]
+        assert actual == expected
+    assert {row["unified_category_id"]: row["word"] for row in keyword_definitions(paths)} == {
+        leaf: path[-1] for leaf, path in paths.items()
+    }
+    assert keyword_collisions(keyword_definitions()) == {}
+
+
+@pytest.mark.parametrize("title", [
+    "국산 찹쌀 5kg", "찰흑미 5kg", "찰보리쌀 4kg", "찰기장쌀 500g", "병아리콩 500g",
+    "찹쌀 호떡믹스 400g", "흑미과자 200g", "보리새우 200g", "보리차 500ml", "병아리콩 후무스 200g",
+])
+def test_review_only_grains_do_not_add_ingredient_based_automatic_assignments(title):
+    assert classify_record(_raw("emart", "쌀/잡곡/견과", title))["unified_category_id"] not in {
+        f"food.grains.rice.{key}" for key in ("glutinous", "black", "barley", "millet", "chickpea")
+    }
+
+
 @pytest.mark.parametrize("title", [
     "코코넛우유200ml", "아몬드우유200ml", "오트밀크1L", "식물성 우유1L",
     "비건 저지방 우유1L", "식물성 그릭요거트150g", "코코넛그릭요거트150g",
