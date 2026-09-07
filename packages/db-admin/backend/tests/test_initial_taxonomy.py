@@ -480,6 +480,34 @@ def test_review_only_chinese_leaves_do_not_create_implicit_title_rules(title):
     assert classify_record(_raw('emart', '밀키트/간편식', title))['unified_category_id'] is None
 
 
+def test_reviewed_sauce_and_cooking_oil_leaves_have_separate_four_level_paths():
+    paths = {
+        "food.seasonings.sauces.meat": ["식품", "양념·소스", "조미소스", "고기용소스"],
+        "food.seasonings.oils.cooking": ["식품", "양념·소스", "식용유", "요리유"],
+    }
+    nodes = {row["id"]: row for row in taxonomy_categories(paths)}
+    validate_taxonomy(nodes.values(), paths)
+    for leaf, expected in paths.items():
+        actual = []
+        cursor = leaf
+        while cursor:
+            actual.insert(0, nodes[cursor]["name_ko"])
+            cursor = nodes[cursor]["parent_id"]
+        assert actual == expected
+    assert {row["unified_category_id"]: row["word"] for row in keyword_definitions(paths)} == {
+        leaf: path[-1] for leaf, path in paths.items()
+    }
+    assert keyword_collisions(keyword_definitions()) == {}
+
+
+@pytest.mark.parametrize("path,title", [
+    ("양념/오일", "고기엔 참소스 800g"),
+    ("식용유/참기름", "해표 바삭요리유 900ml"),
+])
+def test_review_only_sauce_and_cooking_oil_leaves_do_not_widen_automatic_rules(path, title):
+    assert classify_record(_raw("emart", path, title))["unified_category_id"] is None
+
+
 def test_reviewed_grain_leaves_have_independent_four_level_paths_and_keywords():
     labels = {"glutinous": "찹쌀", "black": "흑미", "barley": "보리", "millet": "기장", "chickpea": "병아리콩"}
     paths = {f"food.grains.rice.{key}": ["식품", "곡물·견과", "쌀·잡곡", label] for key, label in labels.items()}

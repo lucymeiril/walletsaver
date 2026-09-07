@@ -1,11 +1,11 @@
 # 재개 체크포인트 — 2026-09-08
 
-할당량 중단 후 재개한 작업 기록이다. 최신은 pass11이며 상세 근거는 `CLASSIFICATION_BATCH_20260908.md` 마지막 절을 우선한다. 다음 작업은 이 문서와 `git status`를 함께 확인한다. 아래 초기 카탈로그는 **별도 검증 DB의 초안이며 운영 승인본이 아니다**. pass4 등 과거 수치는 이력으로 보존한다.
+할당량 중단 후 재개한 작업 기록이다. 최신은 pass13이며 상세 근거는 `CLASSIFICATION_BATCH_20260908.md` 마지막 절을 우선한다. 다음 작업은 이 문서와 `git status`를 함께 확인한다. 아래 초기 카탈로그는 **별도 검증 DB의 초안이며 운영 승인본이 아니다**. pass4 등 과거 수치는 이력으로 보존한다.
 
 ## 보존 상태
 
 - 최신 후속 변경: 이마트 카테고리 요청 간격을 고정 360초에서 매 요청 시도마다 360~420초 무작위로 변경했다. 마지막 요청 시각 저장은 유지하며 재시작 후에도 최소 360초를 지킨다. 이미 경과한 시간은 차감한다. 관련 검사 44 passed / 1 skipped, 실제 사이트 수집은 하지 않았다.
-- 사용자에게 설명한 완료 경계: 원본 백업과 별도 검토용 DB 구축은 했지만, 운영 관리자 DB의 초기 매칭·카테고리·키워드·상품 테이블을 모두 완성하여 적용한 것은 아니다. pass7은 검토용 초안이다. 조건부 할인 계산과 남은 상품 분류를 완료한 뒤 기존 승인 절차로 운영 적용해야 한다.
+- 사용자에게 설명한 완료 경계: 원본 백업과 별도 검토용 DB 구축은 했지만, 운영 관리자 DB의 초기 매칭·카테고리·키워드·상품 테이블을 모두 완성하여 적용한 것은 아니다. 최신 pass13도 검토용 초안이다. 조건부 할인 계산과 남은 상품 분류를 완료한 뒤 기존 승인 절차로 운영 적용해야 한다.
 
 - 브랜치: `cleanup/remove-legacy-ai-admin-coupling`.
 - `b6ef0cc`: 이마트 360초 영속 대기 제한, 검토 목록의 50개 배치 잘림 수정.
@@ -14,7 +14,7 @@
 - `eb1c5be`: 매칭 ID의 3개 형식 동기화 및 인증 테스트 계약 격리.
 - `75f4bd0`: 원본 listing/이름/규격 재검증, export miss 보존, 복합포장·수량구간 검수.
 - `62e8e2e`: 스냅샷의 검토 대기 offer/주간 링크 제외 및 로컬·원격 검증기 거부.
-- 사용자가 push를 승인했고, 위 변경을 포함한 8개 커밋은 원격에 반영됐다. 로컬/원격 HEAD `53642d9473094adca970285d3c76e76e80c20c20` 일치를 확인했다.
+- 사용자가 push를 승인했고 완료한 체크포인트는 원격에 반영한다. 과거 고정 커밋 수나 해시에 의존하지 말고 재개 시 `git status`와 로컬/원격 HEAD를 다시 확인한다.
 - 실제 원본: `.walletsavior/admin.sqlite`. 이 작업에서 운영 DB 마이그레이션·분류 적재·수집 승인·공개 snapshot 승인은 하지 않았다.
 - 기존 백업: `.walletsavior/backups/pre-initial-catalog-20260903-044952/admin.sqlite` (17,711,104 bytes).
 - 원본은 108개 pending ingestion, 9,196개 관측이다. Emart 1,802 / Homeplus 5,227 / Lotte 829 / Costco 1,338. 고유 listing은 6,543개다.
@@ -40,7 +40,7 @@
 
 ## 생성된 로컬 증거 (모두 Git 제외)
 
-- 최신 `.debug-artifacts/initial-catalog-20260903-pass4/`: `source-ingestions.json`, `catalog-bundle.json`, `classification-decisions.json`, `reviewed-decisions.json`, `product-group-candidates.json`, `review.html`, `staging.sqlite`, `summary.json`, `public-snapshot-rehearsal.sqlite`.
+- 과거 `.debug-artifacts/initial-catalog-20260903-pass4/`: `source-ingestions.json`, `catalog-bundle.json`, `classification-decisions.json`, `reviewed-decisions.json`, `product-group-candidates.json`, `review.html`, `staging.sqlite`, `summary.json`, `public-snapshot-rehearsal.sqlite`.
 - pass4: 상품군 2,236 / variant 2,236 / listing 2,248 / offer 3,552 / 매칭 규칙 2,185. 카테고리 233(부모 포함), 키워드 166, 원본 경로 매핑 222. 9,196관측 중 3,552개 stage, 5,644개 보류이며 전량 accounting/evidence가 일치한다. stage는 공개 승인이라는 뜻이 아니다.
 - stage의 2,854개 관측은 가격 비교 가능 형태이고, 698개는 조건 확인 전 pending_review다. 620개 상품군은 비교 가능한 active offer가 없어 비활성이다. pending offer에 단위가격이 없고 내부 카테고리 귀속/잘못된 variant 부모/레거시 상품·카테고리 적재가 0임을 별도 read-only SQL로 확인했다.
 - 원본 mart별 stage 관측: Costco 119 / Emart 165 / Homeplus 2,708 / Lotte 560. 미분류·규격 불확실 관측도 삭제하지 않고 보류 목록에 포함했다. 매칭 키 충돌 29그룹은 자동 규칙 생성에서 제외했다.
@@ -57,11 +57,11 @@
 
 ## 다음 시작점
 
-2026-09-08 최신은 **pass11/누적 266개 결정/49개 수동 병합군 검증 완료**다. 상품군 2,304 / variant 2,308 / listing 2,359 / offer 3,684, 보류 5,512관측이다. 최신 결과는 `docs/CLASSIFICATION_BATCH_20260908.md` 마지막 절을 우선한다. 위 pass4 건수는 이전 기록이다. 조사·제안 파일을 승인본으로 취급하지 않는다.
+2026-09-08 최신은 **pass13/누적 281개 결정/55개 수동 병합군 검증 완료**다. 상품군 2,303 / variant 2,310 / listing 2,367 / offer 3,698, 보류 5,498관측이다. 최신 결과는 `docs/CLASSIFICATION_BATCH_20260908.md` 마지막 절을 우선한다. 위 pass4 건수는 이전 기록이다. 조사·제안 파일을 승인본으로 취급하지 않는다.
 
 1. 최신 전체 테스트 결과와 `git status`를 확인한다. 아래 완료한 단위/스냅샷 수정을 다시 시작하지 않는다.
-2. 현재 pass11이 최신이다. 분류 코드/검토 문서 변경 후에는 새 출력 폴더에 workspace를 재생성한다. 누적 266개 결정을 유지하려면 아래 `--review-decisions`를 반드시 사용한다.
-3. 다음 좁은 원본 범위를 전량 검토하고 분류를 보강한다. 5,512개 보류 중 5,404개는 리프 assignment가 아직 없다. 신선식품 batch2/batch4와 곡물·컵라면 9군·오뚜기 3분 6군·차오차이 20개 조사는 중복 작업하지 않는다. 남은 양념·식용유 상품군 또는 비식품 분류가 다음 후보다.
+2. 현재 pass13이 최신이다. 분류 코드/검토 문서 변경 후에는 새 출력 폴더에 workspace를 재생성한다. 누적 281개 결정을 유지하려면 아래 `--review-decisions`를 반드시 사용한다.
+3. 다음 좁은 원본 범위를 전량 검토하고 분류를 보강한다. 5,498개 보류 중 5,390개는 리프 assignment가 아직 없다. 신선식품 batch2/batch4와 곡물·컵라면 9군·오뚜기 3분 6군·차오차이·이번 조미료/식용유 6군 조사는 중복 작업하지 않는다. 남은 가공식품 상품군 또는 비식품 분류가 다음 후보다.
 4. 이마트/코스트코의 대부분은 넓은 원본 카테고리와 부족한 제목 근거로 미분류다. 누락을 감추기 위해 `기타`/부모 노드에 밀어넣지 말고 실제 상품 검토로 보완한다.
 5. 코스트코 1,338개에는 상품별 시각이 없다. ingestion UTC 수신시각을 쓰되 `timestamp_source=ingestion_received_at`, `observed_time_precision=batch`로 표시한다. 실제 개별 수집시각처럼 표현하지 않는다.
 6. 불명확한 프로모션은 가격 원문을 보존하되 공개 가격 비교/단위가격/주간 최저가 계산과 분리한다. 규격 미해석·명칭 변경·브랜드 충돌은 여전히 검수 대기다.
@@ -70,14 +70,14 @@
 재생성 명령 (저장소 루트, 출력 폴더는 새 이름):
 
 ```powershell
-& 'C:\Users\user\AppData\Local\Programs\Python\Python313\python.exe' tools/prepare_initial_catalog.py --out .debug-artifacts/initial-catalog-NEXT --run-id initial-catalog-NEXT --review-decisions .debug-artifacts/reviewed-initial-decisions-20260908-chaochai.json
+& 'C:\Users\user\AppData\Local\Programs\Python\Python313\python.exe' tools/prepare_initial_catalog.py --out .debug-artifacts/initial-catalog-NEXT --run-id initial-catalog-NEXT --review-decisions .debug-artifacts/reviewed-initial-decisions-20260908-seasoning-variants.json
 ```
 
 이 환경의 `py` launcher가 실패했으므로 검증된 Python313 경로를 사용했다. JSON/HTML/SQLite 및 크롤링 산출물은 Git에 넣지 않는다.
 
 ## 최신 검증 기록
 
-- DB 관리자 전체: **591 passed**, 460 existing warnings, 45.94s (2026-09-08).
+- DB 관리자 전체: **594 passed**, 460 existing warnings, 49.48s (2026-09-08).
 - 크롤러 전체: **283 passed**, 1 live deselected, 32.86s (2026-09-05).
 - 공개 API 전체: **71 passed**, 25 existing warnings, 12.43s (2026-09-05). 실행에 비운영 `JWT_SECRET_KEY`를 지정했다.
 - 집중 테스트는 전체 테스트와 중복이므로 합산하지 않는다. 프런트/공유 패키지는 이번 후속 매칭·스냅샷 수정에서 변경하지 않았다.

@@ -85,3 +85,28 @@
 - snapshot 검증본 pending 708개 제외, active 상태 2,976개/비활성군 589개 유지. active 상태는 API에서 조건부 혜택가를 계산했다는 뜻이 아니다. 홈플러스 buy_x_get_y의 현재 API 비교 미지원은 여전히 남은 작업이다. 운영 적용/공개 없음.
 - bundle SHA-256 `eebc309127af5496d7e2828b8211319296c371412b958bafb020e62cc03cb674`. pass11 `chaochai-independent-check.json`, `reviewed-runtime-check.json`, `public-snapshot-rehearsal.sqlite`에 증거 보존.
 - 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-chaochai.json`. 기존 pass11 폴더는 덮어쓰지 않는다. 차오차이 20개 조사를 다시 시작하지 않는다. 다음 후보는 남은 양념·식용유 상품군 또는 비식품 분류다.
+
+## 조미료·식용유 6군과 규격 variant 검토 저장
+
+- 기존 누적 266개 결정을 그대로 보존하고 15개 판매 페이지/24관측을 직접 검토했다. 먼저 같은 용량의 교차마트 12개를 pass12 중간본으로 묶은 뒤, 원본 전체에서 같은 제품명의 다른 용량 3개를 찾아 pass13에 함께 연결했다.
+- 새 상품군 6개: 고기엔 참소스, 동원 참치액 진, 오뚜기 허니머스타드, 청정원 맛선생 멸치디포리 국물내기 한알, 해표 바삭요리유, 해표 카놀라유.
+- 규격 variant를 갖는 3군: 고기엔 참소스 300g/800g, 동원 참치액 진 500g/900g, 해표 카놀라유 500ml/900ml. 참치액 순·프리미엄, 백설 참치액, 해표 바삭요리유·포도씨유는 이름이 비슷해도 병합하지 않았다.
+- 기존 리프 `액젓·어류조미액`, `머스타드`, `육수`, `카놀라유`를 재사용했다. 정확한 리프가 없던 두 제품에는 `식품 → 양념·소스 → 조미소스 → 고기용소스`, `식품 → 양념·소스 → 식용유 → 요리유`를 추가했다. 두 리프는 검토 전용이라 자동 이름/원본경로 규칙은 비워 두었다.
+- 고기엔 참소스의 이마트 브랜드 공란과 해표/사조해표 차이는 이 15개 판매 페이지의 명시적 상품군 결정 안에서만 통일했다. 전역 브랜드 alias로 확대하지 않았다. 요리유의 원료 종류와 육수 한 알의 개수도 원본에 없으므로 추정하지 않았다.
+- 홈플러스의 1+1 `buy_x_get_y` 조건 공란과 롯데의 미해석 할인은 원문 그대로 보존했다. 상품 연결 성공을 할인 계산 또는 공개 가격 승인으로 바꾸지 않았다.
+- 누적 문서 `.debug-artifacts/reviewed-initial-decisions-20260908-seasoning-variants.json`: 281개 결정/55개 수동 병합군, SHA-256 `499389ed9368209047347264e39d3943a7e5a976d384fe6eb60b089b52291666`.
+- 근거는 `seasoning-review-20260908-evidence.json`, `seasoning-variant-review-20260908-evidence.json`, 조사/작성 스크립트는 같은 `.debug-artifacts` 폴더에 보존했다. 모두 Git 제외이며 운영 DB에는 쓰지 않았다.
+
+## pass13 검증 완료 — 최신
+
+- bundle SHA-256 `dc547ad4a731b6ac65a0a1b7a4fc8e0b73ce725d382cb980a2652731b6ffdf48`.
+- 상품군 2,303 / variant 2,310 / listing 2,367 / offer 3,698 / matching rule 2,306. 카테고리 258 / 키워드 190 / 원본 경로 매핑 231.
+- 전체 9,196관측 = 포함 3,698 + 보류 5,498(리프 미지정 5,390). 새로 검토한 24관측 중 기존 자동 포함 10개는 유지했고, 보류 14개를 새로 포함했다. 이전 266개 결정과 기존 포함 관측의 손실은 0이며 선택 원본 해시도 불변이다.
+- 실제 DB에서 6군/15개 판매 페이지/24관측의 제목·규격·리프·상품군·전체 raw payload/hash·행사 상태를 독립 대조했다. 3개 다중 규격군의 variant 경계와 카놀라유/바삭요리유 및 동원/백설 참치액의 상품군 분리를 확인했다.
+- 새 검토 전용 리프를 넣기 전후 실제 9,196관측의 자동 분류 결과는 모두 동일하다. FK/integrity, 동일 bundle 2회 import 멱등성, 원본 DB 미변경도 통과했다.
+- 실제 runtime/export는 누적 55군/172관측 중 168 hit/4 miss. 이름·규격·신규 ID 변경은 각 경로 516건 모두 miss였다.
+- 실제 공개 API router를 검증용 snapshot에 연결했다. 참소스의 300g 2,590원 결과는 총량 300g/100g당 863원과 같은 variant로 반환됐고 800g 정보가 섞이지 않았다. 1+1은 조건 계산 전 비교가가 없으며 롯데 pending offer도 공개 응답에서 제외됐다.
+- 검증용 snapshot은 pending 709개를 제거하고 active 상태 2,989개 및 비활성 상품군 585개를 유지했다. stage 파일은 불변이고 운영 게시/승인은 하지 않았다.
+- DB 관리자 전체 **594 passed**, 기존 경고 460개. 집중 분류 검사 193개는 전체와 중복이므로 합산하지 않는다.
+- 독립 증거: pass13의 `seasoning-variant-independent-check.json`, `seasoning-public-api-check.json`, `reviewed-runtime-check.json`, `public-snapshot-rehearsal.sqlite`.
+- 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-seasoning-variants.json`. pass12/pass13 폴더를 덮어쓰지 않으며 다음에는 아직 미검토인 가공식품 또는 비식품 범위를 새 체크포인트로 고른다.

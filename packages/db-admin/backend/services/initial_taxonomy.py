@@ -261,6 +261,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("mapo_tofu", "마파두부소스", ""),
         ("pepper_stir_fry", "고추잡채소스", ""),
         ("fish_fragrant", "어향소스", ""),
+        ("meat", "고기용소스", ""),
     )),
     *_group("food.bakery.spreads", ("식품", "베이커리·스프레드", "스프레드"), "", (
         ("peanut", "땅콩버터", ""),  # Never confused with dairy butter by its name.
@@ -268,6 +269,7 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.seasonings.oils", ("식품", "양념·소스", "식용유"), "장류/양념/제빵|양념/오일/분말류", (
         ("canola", "카놀라유", "카놀라유", "카놀라유"), ("grape", "포도씨유", "포도씨유", "포도씨유"),
         ("olive", "올리브유", "올리브유", "올리브유"), ("sesame", "참기름", "참기름", "참기름"),
+        ("cooking", "요리유", ""),
     )),
     *_group("food.seasonings.baking", ("식품", "양념·소스", "기초조미·제빵"), "장류/양념/제빵|양념/오일/분말류", (
         ("flour", "밀가루", "밀가루"), ("sugar", "설탕", "흰설탕|설탕"), ("vinegar", "식초", "식초"),
