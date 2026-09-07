@@ -64,3 +64,24 @@
 - bundle SHA-256 `1be89777dc66659b823f7732c6eaf8651d78e6013f4214c868d3b6810e939575`. 근거: pass10 `instant-curry-independent-check.json`, `reviewed-runtime-check.json`, `public-snapshot-rehearsal.sqlite`.
 - 이번에는 제품 코드 변경 없이 데이터 결정만 추가했다. 전체 회귀를 중복 실행하지 않았으며 최신 DB 관리자 전체 검사 585 passed는 위 pass8 기록이다.
 - 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-instant-curry.json`. 출력 폴더는 새 이름을 사용한다. 차오차이 소스/완성 요리 후보는 ID 목록만 확인했으며 원본 개별 검토·병합은 아직 하지 않았다.
+
+## 차오차이 검토 저장 — pass11 준비
+
+- 원본 20 listing/28관측을 모두 읽었다. 이전 기록 정정: 차오차이 전체가 미검토였던 것은 아니며 직화간짜장소스/특제짜장소스의 이마트·홈플러스 4개는 초기 검토 때 이미 연결되어 있었다. 중복 결정 차단 검증이 이를 잡았고, 기존 250개 결정을 변경 없이 보존해 새 16개/20관측만 추가했다.
+- 신규 병합 4군: 홍콩식 마파두부소스, 마라훠궈소스, 고추잡채소스, 130직화 간짜장 완성요리. 기존 직화간짜장소스 군에는 롯데 1개를 추가 연결했다. 기존 특제짜장소스 2개는 재확인만 했다.
+- 완성 간짜장 180g과 소스 165g을 별도 군/리프로 유지. 마파두부 완성요리 180g과 소스 150g도 구분한다. 홍콩식/한국풍은 다른 제품이며, 마라샹궈/마랴샹궈 표기 차이는 오기로 추정하여 병합하지 않았다. 개별 7 listing은 리프만 결정했다.
+- 새 4개 리프/키워드: 즉석마파두부, 마파두부소스, 고추잡채소스, 어향소스. 자동 분류 규칙은 추가하지 않았다. 집중 검사 190 passed.
+- 누적 문서 `.debug-artifacts/reviewed-initial-decisions-20260908-chaochai.json`: 266 listing/49군. SHA-256 `be788b5c192114117775602463f223f15cfd39cc715552e2df7d9aeb3a3dc37a`.
+- 근거 `.debug-artifacts/chaochai-review-20260908-evidence.json`, 조사/작성 `inspect_chaochai_20260908.py`/`review_chaochai_20260908.py` (같은 `.debug-artifacts` 폴더).
+- 검증 대상 `.debug-artifacts/initial-catalog-20260908-pass11/`. 아래 완료 기록이 없으면 마지막 검증본은 pass10이다. 원본/운영 DB에는 쓰지 않았다.
+
+## pass11 검증 완료 — 최신
+
+- 상품군 2,304 / variant 2,308 / listing 2,359 / offer 3,684 / matching rule 2,298. 카테고리 256 / 키워드 188 / 원본 경로 매핑 230.
+- 이전 250개 결정 그대로, 새 16 listing/20관측 중 기존 포함 4관측 유지·16관측 추가. 전체 원본 9,196 = 포함 3,684 + 보류 5,512(리프 미지정 5,404). 원본 선택 행 해시 불변.
+- 실제 DB의 리프·수량·상품군 경계·전체 payload/hash·할인 상태 독립 대조. 완성요리/소스·홍콩식/한국풍·마라샹궈/마랴샹궈가 각각 다른 상품군임을 SQL로 확인했다. 분류 코드 전후 9,196개 자동 판단 동일.
+- DB 관리자 전체 591 passed / 기존 경고 460개, 45.94초. 집중 190개는 중복이므로 합산하지 않는다. FK/integrity/두 번 import 멱등성 통과.
+- 49군 runtime/export 148관측 중 144 hit/4 miss, 이름·규격·신규 ID 변경 444건은 각 경로에서 전부 miss. 신규 4군과 기존 간짜장소스 군 확장도 확인했다.
+- snapshot 검증본 pending 708개 제외, active 상태 2,976개/비활성군 589개 유지. active 상태는 API에서 조건부 혜택가를 계산했다는 뜻이 아니다. 홈플러스 buy_x_get_y의 현재 API 비교 미지원은 여전히 남은 작업이다. 운영 적용/공개 없음.
+- bundle SHA-256 `eebc309127af5496d7e2828b8211319296c371412b958bafb020e62cc03cb674`. pass11 `chaochai-independent-check.json`, `reviewed-runtime-check.json`, `public-snapshot-rehearsal.sqlite`에 증거 보존.
+- 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-chaochai.json`. 기존 pass11 폴더는 덮어쓰지 않는다. 차오차이 20개 조사를 다시 시작하지 않는다. 다음 후보는 남은 양념·식용유 상품군 또는 비식품 분류다.

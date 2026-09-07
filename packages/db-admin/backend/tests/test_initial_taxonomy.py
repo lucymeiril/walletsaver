@@ -456,6 +456,30 @@ def test_opaque_flavour_in_mixed_milk_source_is_not_defaulted_to_plain_milk():
     assert result["unified_category_id"] is None
 
 
+def test_reviewed_chinese_meals_and_sauces_have_separate_leaf_paths():
+    paths = {
+        'food.meals.prepared.mapo_tofu': ['식품', '간편식·면', '조리식품', '즉석마파두부'],
+        'food.seasonings.sauces.mapo_tofu': ['식품', '양념·소스', '조미소스', '마파두부소스'],
+        'food.seasonings.sauces.pepper_stir_fry': ['식품', '양념·소스', '조미소스', '고추잡채소스'],
+        'food.seasonings.sauces.fish_fragrant': ['식품', '양념·소스', '조미소스', '어향소스'],
+    }
+    nodes = {r['id']: r for r in taxonomy_categories(paths)}
+    validate_taxonomy(nodes.values(), paths)
+    for leaf, expected in paths.items():
+        actual, cursor = [], leaf
+        while cursor:
+            actual.insert(0, nodes[cursor]['name_ko'])
+            cursor = nodes[cursor]['parent_id']
+        assert actual == expected
+    assert {r['unified_category_id']: r['word'] for r in keyword_definitions(paths)} == {leaf:path[-1] for leaf,path in paths.items()}
+    assert keyword_collisions(keyword_definitions()) == {}
+
+
+@pytest.mark.parametrize('title', ['마파두부 180g', '홍콩식 마파두부소스 150g', '한국풍 마파두부소스 150g', '고추잡채소스 100g', '어향가지소스 100g'])
+def test_review_only_chinese_leaves_do_not_create_implicit_title_rules(title):
+    assert classify_record(_raw('emart', '밀키트/간편식', title))['unified_category_id'] is None
+
+
 def test_reviewed_grain_leaves_have_independent_four_level_paths_and_keywords():
     labels = {"glutinous": "찹쌀", "black": "흑미", "barley": "보리", "millet": "기장", "chickpea": "병아리콩"}
     paths = {f"food.grains.rice.{key}": ["식품", "곡물·견과", "쌀·잡곡", label] for key, label in labels.items()}

@@ -201,6 +201,7 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.meals.prepared", ("식품", "간편식·면", "조리식품"), "간편식/밀키트|냉장/냉동/밀키트|라면/즉석식품/통조림|델리/즉석조리", (
         ("soup_stew", "국·탕·찌개", "국/탕|탕|즉석국|즉석국(레토르트)"),
         ("curry", "즉석카레", "즉석카레", "즉석카레"), ("black_bean", "즉석짜장", "즉석짜장", "즉석짜장"),
+        ("mapo_tofu", "즉석마파두부", ""),  # Reviewed meal, not cooking sauce.
         ("tteokbokki", "떡볶이", "간편떡볶이|떡볶이"), ("pork_cutlet", "돈까스", "돈까스"),
         ("chicken", "조리치킨", "치킨|치킨/닭강정|치킨기타"), ("nugget", "치킨너겟·텐더", "너겟|치킨너겟/치킨텐더"),
         ("pizza", "피자", "피자"), ("hotdog", "핫도그", "핫도그"), ("tteokgalbi", "떡갈비", "떡갈비"),
@@ -257,6 +258,9 @@ LEAVES: tuple[Leaf, ...] = (
         ("ketchup", "케첩", "케찹|케첩"), ("mayo", "마요네즈", "마요네즈"), ("mustard", "머스타드", "머스타드"),
         ("mala", "마라소스", "마라소스", "마라소스"), ("fish", "액젓·어류조미액", "액젓"),
         ("black_bean", "짜장소스", ""),  # Reviewed assignments only.
+        ("mapo_tofu", "마파두부소스", ""),
+        ("pepper_stir_fry", "고추잡채소스", ""),
+        ("fish_fragrant", "어향소스", ""),
     )),
     *_group("food.bakery.spreads", ("식품", "베이커리·스프레드", "스프레드"), "", (
         ("peanut", "땅콩버터", ""),  # Never confused with dairy butter by its name.
