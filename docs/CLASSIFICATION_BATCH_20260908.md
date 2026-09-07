@@ -44,3 +44,23 @@
 ```powershell
 & 'C:\Users\user\AppData\Local\Programs\Python\Python313\python.exe' tools/prepare_initial_catalog.py --out .debug-artifacts/initial-catalog-NEXT --run-id initial-catalog-NEXT --review-decisions .debug-artifacts/reviewed-initial-decisions-20260908-cup-noodles.json
 ```
+
+## 즉석카레·짜장 6군 결정 저장
+
+- 홈플러스/롯데 12 listing/18관측을 읽고 오뚜기 3분 쇠고기짜장·일반짜장·쇠고기카레·카레 매운맛/순한맛/약간매운맛을 각각 6군으로 연결했다. 모두 200g 단품이며 서로 다른 맛/원료형을 합치지 않는다.
+- 원본의 `즉석국(레토르트)`나 `짜장가루·짜장소스` 분류를 그대로 따르지 않고 실제 3분 제품선/상품명에 맞춰 우리 즉석카레·즉석짜장 리프를 지정했다. 이 원본 분류 전체에 적용하는 자동 규칙은 만들지 않는다. 롯데 6개 미해석 할인은 계속 검수 대기다.
+- 전체 관측에서 제목·브랜드·규격·경로·URL·행사유형의 중복을 접어 읽었으며, 다른 값이 있는 관측은 별도로 표시했다. 가격 이력/원본 payload는 근거 파일에 전부 저장했다.
+- 누적 문서 `.debug-artifacts/reviewed-initial-decisions-20260908-instant-curry.json`: 250 listing/45군, SHA-256 `82dc2dd2f0c72652c750281560cf6f6d8baf440fffc1f96ee68f55fb15f5770b`.
+- 근거 `.debug-artifacts/instant-curry-review-20260908-evidence.json`, 조사/작성 `.debug-artifacts/review_instant_curry_20260908.py`.
+- 검증 대상 `.debug-artifacts/initial-catalog-20260908-pass10/`. 아래 완료 기록이 없으면 마지막 검증본은 pass9다. 운영 DB 변경은 없다.
+
+## pass10 검증 완료 — 최신 재개 지점
+
+- 누적 250 listing 결정/45군. 상품군 2,297 / variant 2,301 / listing 2,347 / offer 3,668 / matching rule 2,289. 카테고리 252 / 키워드 184 / 원본 경로 매핑 228 유지.
+- 이번 검토 18관측 중 기존 포함 4개 유지, 미분류 14개 신규 포함. 이전 238개 결정과 포함 관측 손실 0. 실제 DB의 리프·200g 단품 규격·전체 raw payload/hash·각 관측 상태를 독립 대조했다.
+- 전체 9,196관측 = 포함 3,668 + 보류 5,528(리프 미지정 5,420). 원본 선택 행 해시 불변, FK/integrity 및 2회 import 멱등성 통과.
+- 45군 runtime/export 136관측 중 132 hit/4 miss, 이름/규격/신규 ID 변경 408건은 각 경로에서 모두 miss. 새 6군의 원본 18관측 모두 hit이며 롯데 6가격은 계속 pending이다. 상품 연결 성공과 가격 공개 승인은 별개다.
+- 검증용 snapshot pending 701개 제외, active 상태 2,967개/비활성군 587개 유지, stage 불변. 운영 DB/공개 데이터 변경 없음.
+- bundle SHA-256 `1be89777dc66659b823f7732c6eaf8651d78e6013f4214c868d3b6810e939575`. 근거: pass10 `instant-curry-independent-check.json`, `reviewed-runtime-check.json`, `public-snapshot-rehearsal.sqlite`.
+- 이번에는 제품 코드 변경 없이 데이터 결정만 추가했다. 전체 회귀를 중복 실행하지 않았으며 최신 DB 관리자 전체 검사 585 passed는 위 pass8 기록이다.
+- 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-instant-curry.json`. 출력 폴더는 새 이름을 사용한다. 차오차이 소스/완성 요리 후보는 ID 목록만 확인했으며 원본 개별 검토·병합은 아직 하지 않았다.
