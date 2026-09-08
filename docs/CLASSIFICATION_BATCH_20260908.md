@@ -133,3 +133,13 @@
 - 검증용 snapshot은 pending 711개를 제거하고 active 상태 3,008개 및 비활성 상품군 577개를 유지했다. stage 파일은 불변이고 운영 게시/승인은 하지 않았다.
 - DB 관리자 전체 **596 passed**, 기존 경고 460개. 집중 분류 검사 195개는 전체와 중복이므로 합산하지 않는다.
 - 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-snacks.json`. pass14 폴더를 덮어쓰지 않으며 과자 20군 조사는 다시 하지 않는다. 다음에는 아직 미검토인 가공식품 또는 비식품 범위를 새 체크포인트로 고른다.
+
+## 햇반컵반 4군 검토 및 pass15 검증 완료 — 최신
+
+- 미역국밥 167g, 스팸김치덮밥 251g, 스팸마요덮밥 219g, 치킨마요덮밥 233g을 각각 별도 상품군으로 두고 홈플러스·롯데의 같은 맛/같은 중량만 연결했다. 총 8개 판매 페이지/12관측이며 다른 컵반 맛으로 규칙을 넓히지 않았다.
+- 기존 자동 포함 4관측을 유지하고 홈플러스의 보류 8관측을 새로 stage했다. 12관측 모두 행사 조건을 해석할 수 없어 `pending_review`이고, 검증용 공개 snapshot 및 상품 상세·가격 비교 API에서는 전부 숨겨지는 것을 확인했다.
+- 누적 문서 `.debug-artifacts/reviewed-initial-decisions-20260908-cupban.json`: 345개 결정/79개 수동 병합군, SHA-256 `ef846b06cfcbd2203a01a5ddd7ae935e99b36ccfaccfb10c2a6a589ed1bdbd4d`.
+- bundle SHA-256 `66ba017345aac407355632569f2740cb8989230646aa3e68561788065805eb21`. 상품군 2,286 / variant 2,309 / listing 2,390 / offer 3,727 / matching rule 2,321.
+- 전체 9,196관측 = 포함 3,727 + 보류 5,469(리프 미지정 5,361). pending 719개를 제외한 active offer는 3,008개이고 비활성 상품군 577개를 유지했다.
+- 전체 accounting/evidence, FK/integrity, 동일 bundle 2회 import, snapshot 필터, 원본·stage·snapshot 파일 불변을 확인했다. 독립 근거는 pass15의 `cupban-independent-api-check.json`이다. 운영 게시/승인은 하지 않았다.
+- DB 관리자 전체 결과는 **596 passed**로 유지된다. 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-cupban.json`이며 pass15 폴더와 컵반 4군 조사를 다시 시작하지 않는다.
