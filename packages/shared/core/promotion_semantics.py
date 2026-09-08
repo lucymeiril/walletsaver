@@ -4,7 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from enum import Enum
 from math import isfinite
-from typing import Any
+from typing import Any, Mapping
 
 
 class PriceState(str, Enum):
@@ -180,3 +180,43 @@ def comparable_price_or_none(facts: PromotionPriceFacts | dict[str, Any] | Any) 
             promotion_type=facts.get("promotion_type"),
         ).comparable_price
     return confirmed_price_or_none(facts)
+
+
+def buy_x_get_y_terms_or_none(conditions: Any) -> tuple[int, int] | None:
+    """Return confirmed paid/free package counts, never infer missing promotion terms."""
+
+    if not isinstance(conditions, Mapping):
+        return None
+    try:
+        buy = int(conditions.get("buy_quantity"))
+        free = int(conditions.get("free_quantity"))
+    except (TypeError, ValueError):
+        return None
+    if buy <= 0 or free <= 0:
+        return None
+    return buy, free
+
+
+def comparable_transaction_or_none(
+    *,
+    current_price: Any,
+    promotion_type: PromotionType | str | None,
+    promotion_conditions: Any = None,
+) -> tuple[int, int] | None:
+    """Return (actual spend, received-package count) for a confirmed transaction."""
+
+    price = confirmed_price_or_none(current_price)
+    if price is None:
+        return None
+    try:
+        promotion = PromotionType(promotion_type) if promotion_type else PromotionType.UNKNOWN
+    except ValueError:
+        return None
+    if promotion in COMPARABLE_PROMOTION_TYPES:
+        return price, 1
+    if promotion == PromotionType.BUY_X_GET_Y:
+        terms = buy_x_get_y_terms_or_none(promotion_conditions)
+        if terms is not None:
+            buy, free = terms
+            return price * buy, buy + free
+    return None

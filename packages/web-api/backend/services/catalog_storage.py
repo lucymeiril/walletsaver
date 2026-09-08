@@ -8,6 +8,8 @@ from contextlib import contextmanager
 from datetime import datetime, timedelta
 from pathlib import Path
 
+from core.promotion_semantics import comparable_transaction_or_none
+
 
 _BACKEND_ROOT = Path(__file__).resolve().parents[1]
 _DEFAULT_DB = _BACKEND_ROOT / "storage" / "public_snapshot.sqlite"
@@ -44,6 +46,15 @@ def _json(value, fallback):
         return json.loads(value)
     except Exception:
         return fallback
+
+
+def _normalized_offer_sort_key(offer: dict) -> tuple[float, float, str]:
+    unit_price = offer.get("per_100g") or offer.get("per_100ml") or offer.get("per_item")
+    return (
+        float(unit_price) if unit_price is not None else float("inf"),
+        float(offer.get("comparable_price") or float("inf")),
+        str(offer.get("source") or offer.get("id") or ""),
+    )
 
 
 class PublicCatalogStore:
@@ -221,7 +232,7 @@ class PublicCatalogStore:
                 "display_unit": variant.get("display_unit"),
                 "listings": listings_payload,
             })
-        comparable_offers.sort(key=lambda row: (row["comparable_price"], row.get("source") or ""))
+        comparable_offers.sort(key=_normalized_offer_sort_key)
         best = comparable_offers[0] if comparable_offers else {}
         best_variant = next((variant for variant in variants_payload if variant["id"] == best.get("variant_id")), None)
         best_unit = ""
@@ -255,38 +266,42 @@ class PublicCatalogStore:
 
     @staticmethod
     def _normalized_offer(event: dict, variant: dict) -> dict:
-        comparable_types = {"final_price", "was_now_price", "bundle_price"}
         price = float(event["price"]) if event.get("price") is not None else None
-        comparable = (
-            price if price and price > 0
-            and event.get("price_state") in {"normal", "sale_price_only"}
-            and event.get("promotion_type") in comparable_types else None
-        )
+        evidence = _json(event.get("raw_evidence"), {})
+        conditions = evidence.get("promotion_conditions") if isinstance(evidence.get("promotion_conditions"), dict) else evidence
+        transaction = comparable_transaction_or_none(
+            current_price=price,
+            promotion_type=event.get("promotion_type"),
+            promotion_conditions=conditions,
+        ) if event.get("price_state") in {"normal", "sale_price_only"} else None
+        comparable = float(transaction[0]) if transaction else None
+        received_packages = int(transaction[1]) if transaction else 1
         quantity = float(variant["package_quantity"]) if variant.get("package_quantity") else None
         bundle = int(variant.get("bundle_count") or 1)
-        total_quantity = quantity * bundle if quantity else None
+        total_quantity = quantity * bundle * received_packages if quantity else None
         unit = str(variant.get("package_unit") or "").lower()
         per_100 = (round(comparable / total_quantity * 100) if comparable and total_quantity and unit in {"g", "ml"} else None)
-        evidence = _json(event.get("raw_evidence"), {})
-        condition = evidence.get("condition_text") or evidence.get("promotion_condition")
+        condition = conditions.get("condition_text") or evidence.get("condition_text") or evidence.get("promotion_condition")
         return {
             "id": event["public_offer_event_id"],
             "price_state": event.get("price_state"),
             "promotion_type": event.get("promotion_type"),
-            "total_price": price,
+            "listed_price": price,
+            "total_price": comparable if transaction else price,
             "comparable_price": comparable,
             "original_price": event.get("original_price"),
             "discount_rate": event.get("discount_rate"),
             "total_quantity": total_quantity,
             "quantity_unit": unit or None,
             "bundle_count": bundle,
-            "per_item": round(comparable / bundle) if comparable and bundle else None,
+            "per_item": round(comparable / (bundle * received_packages)) if comparable and bundle else None,
             "per_100g": per_100 if unit == "g" else None,
             "per_100ml": per_100 if unit == "ml" else None,
             "promotion_condition": condition,
-            "minimum_quantity": evidence.get("minimum_quantity"),
-            "membership_required": evidence.get("membership_required"),
-            "coupon_required": evidence.get("coupon_required"),
+            "minimum_quantity": conditions.get("minimum_quantity") or evidence.get("minimum_quantity"),
+            "received_package_count": received_packages if transaction else None,
+            "membership_required": conditions.get("membership_required") or evidence.get("membership_required"),
+            "coupon_required": conditions.get("coupon_required") or evidence.get("coupon_required"),
             "event_name": event.get("event_name"),
             "crawled_at": event.get("crawled_at"),
         }

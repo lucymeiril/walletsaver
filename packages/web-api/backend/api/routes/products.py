@@ -401,6 +401,15 @@ def _normalized_events(product: dict, *, latest_only: bool = False) -> list[dict
     return events
 
 
+def _normalized_comparison_sort_key(event: dict) -> tuple[float, float, str]:
+    unit_price = event.get("per_100g") or event.get("per_100ml") or event.get("per_item")
+    return (
+        float(unit_price) if unit_price is not None else float("inf"),
+        float(event.get("comparable_price") or float("inf")),
+        str(event.get("source") or ""),
+    )
+
+
 @router.get("/{product_id}")
 async def get_product(request: Request, product_id: str):
     try:
@@ -452,7 +461,7 @@ async def get_price_compare(request: Request, product_id: str):
         if product and product.get("public_product_id"):
             compare = sorted(
                 [event for event in _normalized_events(product, latest_only=True) if event.get("comparable_price") is not None],
-                key=lambda event: (event["comparable_price"], event.get("source") or ""),
+                key=_normalized_comparison_sort_key,
             )
         else:
             compare = storage.get_price_compare(int(product_id)) if product else []

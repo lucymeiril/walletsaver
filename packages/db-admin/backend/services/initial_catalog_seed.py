@@ -25,6 +25,7 @@ from typing import Any, Iterable, Mapping
 
 from core.match_key import build_match_key
 from core.product_units import parse_package_quantity
+from core.promotion_semantics import comparable_transaction_or_none
 
 SCHEMA_VERSION = "walletsaver-catalog-v2"
 BUILDER_VERSION = "initial-catalog-seed-v1"
@@ -268,6 +269,20 @@ def _price(payload: Mapping[str, Any], attrs: Mapping[str, Any], mart: str, titl
             "min_purchase_quantity", "promotion_conditions", "coupon_conditions",
         ) if (value := _first(layers, (key,))) is not None
     }
+    promotion_text = label or event_name
+    buy_get = re.fullmatch(r"\s*(\d+)\s*\+\s*(\d+)\s*", promotion_text)
+    if promotion == "buy_x_get_y":
+        if buy_get:
+            buy_quantity, free_quantity = (int(buy_get.group(1)), int(buy_get.group(2)))
+            if buy_quantity > 0 and free_quantity > 0:
+                conditions.update({
+                    "buy_quantity": buy_quantity,
+                    "free_quantity": free_quantity,
+                    "minimum_quantity": buy_quantity,
+                    "condition_text": f"{buy_quantity}+{free_quantity}",
+                })
+        if "buy_quantity" not in conditions or "free_quantity" not in conditions:
+            issues.append("promotion_conditions_unresolved")
     title_purchase_condition = bool(re.search(r"최소\s*구매", title))
     if title_purchase_condition:
         # Some source listings put the minimum order only in their title.
@@ -632,11 +647,19 @@ def build_initial_catalog_bundle(
                 "public_offer_event_id": offer_id, "public_source_listing_id": listing_id,
                 "raw_record_id": first["raw_record_id"], "offer_state": first["offer_state"],
                 "standard_unit_price": None, "price_per_100g": None,
-                "raw_evidence": {"observations": [{field: deepcopy(row[field]) for field in ("raw_record_id", "ingestion_id", "crawled_at", "timestamp_source", "observed_time_precision", "ingestion_received_at", "source_category_path", "mart_native_category_id", "raw_payload_sha256", "raw_payload")} for row in evidence_rows]},
+                "raw_evidence": {
+                    "promotion_conditions": deepcopy(first["promotion_conditions"]),
+                    "observations": [{field: deepcopy(row[field]) for field in ("raw_record_id", "ingestion_id", "crawled_at", "timestamp_source", "observed_time_precision", "ingestion_received_at", "source_category_path", "mart_native_category_id", "raw_payload_sha256", "raw_payload")} for row in evidence_rows],
+                },
                 "audit_provenance": {"builder_version": BUILDER_VERSION, "source_ingestion_ids": sorted({row["ingestion_id"] for row in evidence_rows}), "raw_record_ids": [row["raw_record_id"] for row in evidence_rows], "observation_count": len(evidence_rows), "timestamp_source": first["timestamp_source"], "observed_time_precision": first["observed_time_precision"], "naive_timestamp_timezone": "UTC" if first["timestamp_source"] == "ingestion_received_at" else "Asia/Seoul", "review_reasons": first["offer_review_reasons"], "publication_status": "not_approved"},
             })
-            if first["offer_state"] == "active" and package["package_unit"] in {"g", "ml"}:
-                offer["standard_unit_price"] = round(first["price"] * 100 / (package["package_quantity"] * package["bundle_count"]), 4)
+            transaction = comparable_transaction_or_none(
+                current_price=first["price"], promotion_type=first["promotion_type"],
+                promotion_conditions=first["promotion_conditions"],
+            ) if first["offer_state"] == "active" else None
+            if transaction and package["package_unit"] in {"g", "ml"}:
+                total_spend, received_packages = transaction
+                offer["standard_unit_price"] = round(total_spend * 100 / (package["package_quantity"] * package["bundle_count"] * received_packages), 4)
                 if package["package_unit"] == "g":
                     offer["price_per_100g"] = offer["standard_unit_price"]
             bundle["offers"].append(offer)
@@ -653,7 +676,7 @@ def build_initial_catalog_bundle(
             start = observed.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=observed.weekday())
             week_id = stable_id("week", start.date().isoformat(), "Asia/Seoul")
             weeks[week_id] = {"public_week_bucket_id": week_id, "week_start": _timestamp(start), "week_end": _timestamp(start + timedelta(days=7))}
-            comparable = first["price"] if first["offer_state"] == "active" and first["promotion_type"] in {"final_price", "was_now_price", "bundle_price"} else None
+            comparable = transaction[0] if transaction else None
             bundle["offer_week_links"].append({"public_offer_event_id": offer_id, "public_week_bucket_id": week_id, "observed_min_price": comparable, "observed_max_price": comparable})
             for row in evidence_rows:
                 bundle["observation_accounting"].append({"raw_record_id": row["raw_record_id"], "ingestion_id": row["ingestion_id"], "status": "included", "offer_state": row["offer_state"], "reasons": row["offer_review_reasons"], "publication_status": "not_approved", "public_source_listing_id": listing_id, "public_offer_event_id": offer_id})

@@ -183,6 +183,34 @@ def test_generic_homeplus_badge_does_not_invent_conditional_benefit():
     assert bundle["offers"][0]["promotion_type"] == "was_now_price"
 
 
+@pytest.mark.parametrize(("label", "buy", "free", "spend", "received"), [
+    ("1+1", 1, 1, 19900, 2),
+    ("2+1", 2, 1, 39800, 3),
+])
+def test_explicit_buy_x_get_y_preserves_terms_and_effective_unit_price(label, buy, free, spend, received):
+    bundle = build([ingestion(1, [item(original_price=None, promo_label=label, event_name=label)])])
+    offer = bundle["offers"][0]
+    assert offer["offer_state"] == "active"
+    assert offer["promotion_type"] == "buy_x_get_y"
+    assert offer["promotion_conditions"] == {
+        "buy_quantity": buy,
+        "free_quantity": free,
+        "minimum_quantity": buy,
+        "condition_text": label,
+    }
+    assert offer["raw_evidence"]["promotion_conditions"] == offer["promotion_conditions"]
+    assert offer["standard_unit_price"] == pytest.approx(spend * 100 / (120 * 24 * received))
+    assert bundle["offer_week_links"][0]["observed_min_price"] == spend
+
+
+def test_buy_x_get_y_without_numeric_terms_requires_review():
+    bundle = build([ingestion(1, [item(original_price=None, promo_type="buy_x_get_y", event_name="증정")])])
+    offer = bundle["offers"][0]
+    assert offer["offer_state"] == "pending_review"
+    assert offer["standard_unit_price"] is None
+    assert "promotion_conditions_unresolved" in offer["audit_provenance"]["review_reasons"]
+
+
 def test_different_explicit_promotion_conditions_do_not_collapse():
     first = item(promo_type="checkout_discount")
     second = deepcopy(first)

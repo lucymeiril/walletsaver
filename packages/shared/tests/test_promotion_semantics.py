@@ -5,6 +5,7 @@ from shared.core.promotion_semantics import (
     PromotionPriceFacts,
     PromotionType,
     comparable_price_or_none,
+    comparable_transaction_or_none,
     confirmed_price_or_none,
 )
 
@@ -89,6 +90,28 @@ def test_buy_x_get_y_is_not_converted_to_simple_discount_rate():
 
     assert facts.discount_rate is None
     assert facts.comparable_price is None
+
+
+def test_confirmed_buy_x_get_y_exposes_actual_spend_and_received_packages():
+    assert comparable_transaction_or_none(
+        current_price=10000,
+        promotion_type="buy_x_get_y",
+        promotion_conditions={"buy_quantity": 1, "free_quantity": 1},
+    ) == (10000, 2)
+    assert comparable_transaction_or_none(
+        current_price=4000,
+        promotion_type="buy_x_get_y",
+        promotion_conditions={"buy_quantity": 2, "free_quantity": 1},
+    ) == (8000, 3)
+
+
+@pytest.mark.parametrize("conditions", [None, {}, {"buy_quantity": 1}, {"buy_quantity": 0, "free_quantity": 1}])
+def test_incomplete_buy_x_get_y_terms_remain_non_comparable(conditions):
+    assert comparable_transaction_or_none(
+        current_price=10000,
+        promotion_type="buy_x_get_y",
+        promotion_conditions=conditions,
+    ) is None
 
 
 def test_bundle_price_is_sortable_only_when_bundle_price_is_confirmed():

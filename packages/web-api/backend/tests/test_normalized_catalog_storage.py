@@ -108,3 +108,30 @@ def test_normalized_catalog_exposes_total_bundle_and_unit_prices(tmp_path):
     assert deal["sale"] == 24000
     assert deal["per_100ml"] == 833
     assert deal["promotion_condition"] == "회원 1인 1개"
+
+
+def test_confirmed_one_plus_one_uses_actual_spend_and_doubled_received_quantity(tmp_path):
+    path = tmp_path / "one-plus-one.sqlite"
+    with sqlite3.connect(path) as db:
+        db.executescript("""
+        CREATE TABLE unified_categories (id TEXT PRIMARY KEY, name_ko TEXT);
+        INSERT INTO unified_categories VALUES ('cheese', '슬라이스치즈');
+        CREATE TABLE normalized_canonical_products (public_product_id TEXT, unified_category_id TEXT, canonical_name TEXT, brand TEXT, attributes TEXT, primary_image_url TEXT, is_active INTEGER);
+        INSERT INTO normalized_canonical_products VALUES ('prod', 'cheese', '검증 치즈', '', '{}', '', 1);
+        CREATE TABLE normalized_product_variants (public_variant_id TEXT, public_product_id TEXT, variant_name TEXT, package_quantity REAL, package_unit TEXT, bundle_count INTEGER, display_unit TEXT, is_active INTEGER);
+        INSERT INTO normalized_product_variants VALUES ('var', 'prod', '270g', 270, 'g', 1, '270g', 1);
+        CREATE TABLE normalized_source_listings (public_source_listing_id TEXT, public_variant_id TEXT, source_name TEXT, source_record_key TEXT, source_title TEXT, source_url TEXT, image_url TEXT, source_unit_text TEXT, is_active INTEGER);
+        INSERT INTO normalized_source_listings VALUES ('listing', 'var', 'homeplus', '1', '검증 치즈 270g', '', '', '270g', 1);
+        CREATE TABLE normalized_offer_events (public_offer_event_id TEXT, public_source_listing_id TEXT, price_state TEXT, promotion_type TEXT, price REAL, original_price REAL, discount_rate REAL, event_name TEXT, raw_evidence TEXT, crawled_at TEXT, offer_state TEXT);
+        """)
+        evidence = json.dumps({"promotion_conditions": {"buy_quantity": 1, "free_quantity": 1, "minimum_quantity": 1, "condition_text": "1+1"}})
+        db.execute("INSERT INTO normalized_offer_events VALUES (?,?,?,?,?,?,?,?,?,?,?)", ('offer', 'listing', 'sale_price_only', 'buy_x_get_y', 9890, None, None, '1+1', evidence, '2026-09-08', 'active'))
+    offer = PublicCatalogStore(path).get_normalized_product_detail("prod")["best_offer"]
+    assert offer["listed_price"] == 9890
+    assert offer["total_price"] == 9890
+    assert offer["total_quantity"] == 540
+    assert offer["per_item"] == 4945
+    assert offer["per_100g"] == 1831
+    assert offer["minimum_quantity"] == 1
+    assert offer["received_package_count"] == 2
+    assert offer["promotion_condition"] == "1+1"

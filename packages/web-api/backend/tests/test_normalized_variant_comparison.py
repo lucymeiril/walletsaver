@@ -1,4 +1,5 @@
 """Current comparison must keep price, variant and observation time together."""
+import json
 import sqlite3
 from types import SimpleNamespace
 
@@ -92,3 +93,17 @@ def test_missing_source_display_uses_verified_winning_variant_dimensions(catalog
     detail = catalog.get_normalized_product_detail('prod-tuna')
     assert detail['unit'] == '90g×4'
     assert detail['price'] == 3000
+
+
+def test_one_plus_one_ranks_by_effective_unit_price_and_keeps_actual_spend(catalog):
+    evidence = json.dumps({"promotion_conditions": {"buy_quantity": 1, "free_quantity": 1, "minimum_quantity": 1, "condition_text": "1+1"}})
+    with sqlite3.connect(catalog.path) as db:
+        db.execute("UPDATE normalized_offer_events SET promotion_type='buy_x_get_y', raw_evidence=? WHERE public_offer_event_id='latest-a'", (evidence,))
+    with client_for(catalog) as client:
+        rows = client.get('/products/prod-tuna/price-compare').json()['data']
+    assert [row['id'] for row in rows] == ['latest-a', 'latest-b']
+    assert rows[0]['listed_price'] == 9000
+    assert rows[0]['total_price'] == 9000
+    assert rows[0]['total_quantity'] == 720
+    assert rows[0]['per_100g'] == 1250
+    assert rows[0]['promotion_condition'] == '1+1'
