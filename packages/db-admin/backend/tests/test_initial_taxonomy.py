@@ -575,6 +575,40 @@ def test_reviewed_ready_meal_leaves_do_not_widen_automatic_rules(path, title):
     assert classify_record(_raw("lottemart", path, title))["unified_category_id"] is None
 
 
+@pytest.mark.parametrize("leaf,expected", [
+    ("food.produce.vegetables.radish", ["식품", "농산물", "신선채소", "무"]),
+    ("food.produce.vegetables.zucchini", ["식품", "농산물", "신선채소", "애호박"]),
+    ("food.meals.prepared.fried_shrimp", ["식품", "간편식·면", "조리식품", "새우튀김"]),
+    ("food.preserved.sides.stir_fried", ["식품", "반찬·저장식품", "밑반찬", "볶음반찬"]),
+])
+def test_reviewed_remaining_exact_leaves_have_four_levels(leaf, expected):
+    nodes = {row["id"]: row for row in taxonomy_categories({leaf})}
+    validate_taxonomy(nodes.values(), {leaf})
+    actual, cursor = [], leaf
+    while cursor:
+        actual.insert(0, nodes[cursor]["name_ko"])
+        cursor = nodes[cursor]["parent_id"]
+    assert actual == expected
+    keywords = {row["unified_category_id"]: row["word"] for row in keyword_definitions({leaf})}
+    if leaf.endswith(".radish"):
+        assert keywords == {}  # 한 글자 '무'는 무가당/무염 오탐 때문에 자동 키워드로 쓰지 않는다.
+    else:
+        assert keywords == {leaf: expected[-1]}
+
+
+@pytest.mark.parametrize("path,title", [
+    ("채소", "무 (개)"), ("채소", "애호박 (개)"),
+    ("기타튀김", "사세 바삭 튀긴 통새우튀김 300g"),
+    ("볶음반찬", "샘표 오징어채볶음 60g"),
+])
+def test_reviewed_remaining_exact_leaves_do_not_widen_automatic_rules(path, title):
+    result = classify_record(_raw("lottemart", path, title))["unified_category_id"]
+    assert result not in {
+        "food.produce.vegetables.radish", "food.produce.vegetables.zucchini",
+        "food.meals.prepared.fried_shrimp", "food.preserved.sides.stir_fried",
+    }
+
+
 def test_reviewed_grain_leaves_have_independent_four_level_paths_and_keywords():
     labels = {"glutinous": "찹쌀", "black": "흑미", "barley": "보리", "millet": "기장", "chickpea": "병아리콩"}
     paths = {f"food.grains.rice.{key}": ["식품", "곡물·견과", "쌀·잡곡", label] for key, label in labels.items()}

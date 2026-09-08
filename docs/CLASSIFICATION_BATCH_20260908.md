@@ -168,7 +168,7 @@
 - 전체 accounting/evidence, FK/integrity, 동일 bundle 2회 import, runtime 변형 거부, snapshot 필터, 원본·stage·snapshot 불변을 확인했다. 독립 근거는 pass19의 `drink-cheese-jelly-independent-api-check.json`, `buy-get-promotion-independent-check.json`이다. 운영 게시/승인은 하지 않았다.
 - 전체 검사: DB 관리자 601 passed, 공개 API 73 passed, 공통 계산 158 passed. 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-drink-cheese-jelly.json`이며 수정 전 계산 초안 pass17/pass18 대신 pass19를 사용한다.
 
-## 즉석식·카레·라면·냉동전 묶음 및 pass20 검증 완료 — 최신
+## 즉석식·카레·라면·냉동전 묶음 및 pass20 검증 완료
 
 - 정확 일치 후보를 하나씩 호출하지 않고 관련 이름의 원본 전체를 한 묶음으로 조사했다. 15개 상품군, 30개 판매 페이지, 45관측을 검토했으며 이 중 14개는 신규 상품군이고 참깨라면 큰컵은 기존 상품군에 코스트코 12입 규격을 추가했다.
 - 동원 양반 진국 사골곰탕, 백세카레 분말 순한맛/약간매운맛, 3분 백세카레 순한맛/약간매운맛, 진비빔면 봉지, 참깨라면 봉지/소컵/큰컵, 양송이 크림스프, 풀무원·햇반 계란볶음밥, 오징어김치전/부추전, 함흥 비빔냉면을 각각 경계에 맞게 연결했다.
@@ -180,3 +180,15 @@
 - 양송이 크림스프 180g과 햇반 볶음밥 400g의 1+1은 각각 실수령 360g/800g으로 계산됨을 실제 공개 API에서 확인했다. 행사 조건이 불명확한 백세카레 분말·진비빔면 등은 연결만 하고 공개 가격 비교에서는 제외했다.
 - 전체 accounting/evidence, FK/integrity, 동일 bundle 2회 import, 기존 결정 보존, runtime 이름·규격·신규 ID 변형 거부, snapshot 필터, 원본·stage·snapshot 불변을 확인했다. 독립 근거는 pass20의 `ready-meal-independent-api-check.json`과 `reviewed-runtime-check.json`이다. 운영 게시/승인은 하지 않았다.
 - DB 관리자 전체 **605 passed**, 기존 경고 460개. 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-ready-meals.json`이며 pass20 폴더를 덮어쓰지 않는다.
+
+## 남은 정확 일치 후보 묶음 및 pass21 검증 완료 — 최신
+
+- 김·김치·채소·두부·가공수산물 후보를 한 번에 조사해 11개 상품군, 25개 판매 페이지, 36관측을 검토했다. 비비고 김밥김, 깐마늘 500g, 종가 맛김치 일반/PET, 낱개 무·애호박, 친환경 청양고추 100g, 사세 통새우튀김, 샘표 오징어채볶음, 풀무원 유기농 두부 부침용/찌개용을 연결했다.
+- 종가 일반 맛김치는 200g/800g, PET는 380g/1.2kg 규격으로 나누고 두 상품군을 분리했다. 900g 별도 마케팅명과 전라도맛김치는 합치지 않았다. 두부도 부침용과 찌개용을 별도 상품군으로 유지했다.
+- `가지 3입(봉)`과 `팽이버섯 3입(봉)`은 한 마트가 1봉, 다른 마트가 3입으로 읽어 단위가 충돌하므로 보류했다. 4~7입 복숭아도 확정 수량이 아니어서 포함하지 않았다. 비슷한 오징어 볶음양념과 완성 반찬도 분리했다.
+- 검토 전용 리프 `신선채소 → 무/애호박`, `조리식품 → 새우튀김`, `밑반찬 → 볶음반찬`을 추가했다. 한 글자 `무`는 무가당·무염 오탐 위험 때문에 자동 검색 키워드로 만들지 않았고, 네 리프 모두 자동 분류 규칙을 비워 두었다. 변경 전후 9,196관측의 자동 판단은 동일하다.
+- 누적 문서 `.debug-artifacts/reviewed-initial-decisions-20260908-remaining-exact.json`: 431개 결정, SHA-256 `c5dcabdf84f4d69e75fefabd687edecdff97f0b2636da370958be97f170e67f6`.
+- pass21 bundle SHA-256 `bdc685fd86d22ce16813ad7189728199794818e2b094332fea6346fb9c3822b8`. 상품군 2,273 / variant 2,303 / listing 2,423 / offer 3,775 / matching rule 2,350. 카테고리 268 / 키워드 197.
+- 전체 9,196관측 = 포함 3,775 + 보류 5,421(리프 미지정 5,313). 이번 36관측 중 기존 포함 20개를 유지하고 16개를 새로 포함했다. snapshot은 pending 731개를 제거하고 active 3,044개/비활성 상품군 552개를 유지했다.
+- 종가 맛김치 800g과 사세 통새우튀김 300g의 1+1은 실제 공개 API에서 각각 1,600g/600g 수령으로 계산됨을 확인했다. 전체 evidence/accounting, 멱등성, runtime 변형 거부, 유사 상품 분리, 원본·stage·snapshot 불변도 통과했다.
+- DB 관리자 전체 **613 passed**, 기존 경고 460개. 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-remaining-exact.json`; 다음 작업부터는 정확 후보 나열이 아니라 카테고리 단위 전량 검토로 전환한다.

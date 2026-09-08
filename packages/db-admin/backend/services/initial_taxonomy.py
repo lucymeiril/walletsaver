@@ -132,6 +132,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("mushroom", "버섯", "버섯|팽이버섯|새송이버섯|느타리버섯|표고버섯"),
         ("salad", "샐러드채소", "믹스샐러드|샐러드채소"),
         ("scallion", "대파", ""), ("napa_cabbage", "배추", ""),
+        ("radish", "무", ""), ("zucchini", "애호박", ""),
     )),
     # Dry/frozen processing wins over an unreliable Fresh-Foods source path.
     # These leaves and search terms add no automatic source/name mappings.
@@ -203,6 +204,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("curry", "즉석카레", "즉석카레", "즉석카레"), ("black_bean", "즉석짜장", "즉석짜장", "즉석짜장"),
         ("mapo_tofu", "즉석마파두부", ""),  # Reviewed meal, not cooking sauce.
         ("pancake", "냉동전", ""),  # Reviewed frozen pancakes only; no broad name rule.
+        ("fried_shrimp", "새우튀김", ""),  # Reviewed prepared shrimp, not raw seafood.
         ("tteokbokki", "떡볶이", "간편떡볶이|떡볶이"), ("pork_cutlet", "돈까스", "돈까스"),
         ("chicken", "조리치킨", "치킨|치킨/닭강정|치킨기타"), ("nugget", "치킨너겟·텐더", "너겟|치킨너겟/치킨텐더"),
         ("pizza", "피자", "피자"), ("hotdog", "핫도그", "핫도그"), ("tteokgalbi", "떡갈비", "떡갈비"),
@@ -212,6 +214,9 @@ LEAVES: tuple[Leaf, ...] = (
         ("cabbage", "배추김치", "배추김치|포기김치|맛김치", "배추김치|포기김치|맛김치"),
         ("radish", "총각김치", "총각김치", "총각김치"), ("yeolmu", "열무김치", "열무김치", "열무김치"),
         ("water", "물김치", "물김치", "물김치"), ("white", "백김치", "백김치", "백김치"),
+    )),
+    *_group("food.preserved.sides", ("식품", "반찬·저장식품", "밑반찬"), "두부/김치/반찬|김치/반찬/젓갈", (
+        ("stir_fried", "볶음반찬", ""),
     )),
     *_group("food.preserved.canned", ("식품", "반찬·저장식품", "통조림"), "라면/즉석식품/통조림|라면/통조림/즉석밥|통조림", (
         ("tuna", "참치통조림", "참치|참치통조림", "참치통조림|참치 통조림"),
