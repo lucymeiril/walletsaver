@@ -6,6 +6,28 @@ import sqlite3
 from services.catalog_storage import PublicCatalogStore
 
 
+def test_count_quantity_uses_received_piece_count_for_per_item_price():
+    offer = PublicCatalogStore._normalized_offer(
+        {
+            "public_offer_event_id": "offer-capsule",
+            "price": 40990,
+            "price_state": "normal",
+            "promotion_type": "final_price",
+            "raw_evidence": "{}",
+        },
+        {
+            "package_quantity": 80,
+            "package_unit": "개",
+            "bundle_count": 1,
+        },
+    )
+
+    assert offer["total_price"] == 40990
+    assert offer["total_quantity"] == 80
+    assert offer["quantity_unit"] == "개"
+    assert offer["per_item"] == 512
+
+
 def test_empty_normalized_schema_does_not_resurrect_legacy_categories(tmp_path):
     path = tmp_path / "empty-capstone.sqlite"
     with sqlite3.connect(path) as db:

@@ -32,6 +32,16 @@ _PUBLIC_SNAPSHOT_TABLES = {
     "snapshot_meta",
 }
 
+# Units whose package quantity already means a count of individually received
+# items.  Mass/volume variants keep ``per_item`` as the price per package while
+# count variants (for example, 80 capsules) use the full received item count.
+_COUNT_QUANTITY_UNITS = {
+    "개입", "봉지", "인분", "세트", "마리", "회분", "구", "입", "개",
+    "팩", "봉", "병", "캔", "손", "매", "롤", "포", "장", "족", "통",
+    "인", "p", "t", "모", "두", "알", "미", "포기", "단", "망", "박스",
+    "쌍", "켤레",
+}
+
 
 class CatalogUnavailable(RuntimeError):
     pass
@@ -281,6 +291,11 @@ class PublicCatalogStore:
         total_quantity = quantity * bundle * received_packages if quantity else None
         unit = str(variant.get("package_unit") or "").lower()
         per_100 = (round(comparable / total_quantity * 100) if comparable and total_quantity and unit in {"g", "ml"} else None)
+        per_item_divisor = (
+            total_quantity
+            if unit in _COUNT_QUANTITY_UNITS
+            else bundle * received_packages
+        )
         condition = conditions.get("condition_text") or evidence.get("condition_text") or evidence.get("promotion_condition")
         return {
             "id": event["public_offer_event_id"],
@@ -294,7 +309,7 @@ class PublicCatalogStore:
             "total_quantity": total_quantity,
             "quantity_unit": unit or None,
             "bundle_count": bundle,
-            "per_item": round(comparable / (bundle * received_packages)) if comparable and bundle else None,
+            "per_item": round(comparable / per_item_divisor) if comparable and per_item_divisor else None,
             "per_100g": per_100 if unit == "g" else None,
             "per_100ml": per_100 if unit == "ml" else None,
             "promotion_condition": condition,

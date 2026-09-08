@@ -246,7 +246,10 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.drinks.coffee", ("식품", "음료", "커피"), "커피/차|커피/원두|우유/유제품|생수/음료|생수/음료/주류", (
         ("ready", "커피음료", "냉장커피|캔/PET커피|일반커피"),
         ("mix", "커피믹스", "커피믹스", "커피믹스|커피 믹스"),
-        ("beans", "원두커피", "원두커피|원두", "원두커피"),
+        ("instant", "인스턴트커피", "프리미엄커피"),
+        ("beans", "원두커피", "원두커피|원두|홀빈커피|분쇄커피", "원두커피"),
+        ("drip", "드립커피", "드립커피"),
+        ("capsule", "캡슐커피", "캡슐커피"),
     )),
     *_group("food.drinks.water_soda", ("식품", "음료", "생수·탄산"), "생수/음료|생수/음료/주류", (
         ("water", "생수", "생수|먹는샘물", "먹는샘물"), ("sparkling", "탄산수", "탄산수", "탄산수"),
@@ -410,6 +413,47 @@ _COSTCO_KNOWN_CONTEXT = _COSTCO_DAIRY_CONTEXT | frozenset((
     "ricegrains", "pastanoodles", "healthsupplement", "pet-supplies", "dog-foods",
 ))
 _PLANT_DAIRY_HINT = re.compile(r"식물성|비건|(?:코코넛|아몬드|오트|귀리|두유)(?:그릭)?(?:우유|밀크|요거트|치즈)")
+
+_COFFEE_CONTEXT_LABELS = frozenset(_label_key(label) for label in (
+    "커피", "커피/차", "커피/원두", "커피/원두/차",
+))
+_COFFEE_NON_PRODUCT = re.compile(
+    r"필터|커피컵|커피잔|보온|보냉|주전자|케틀|홀더|메이커|그라인더|드리퍼|"
+    r"핸들서버|바리스타서버|머그|포트|머신|테이블|식탁|블렌더|상품권|클리닝캡슐",
+    re.I,
+)
+_COFFEE_OTHER_DRINK = re.compile(
+    r"밀크티|티박스|티 에디션|티포트|녹차|홍차|보이차|우엉차|메밀차|옥수수차|"
+    r"생강차|쌍화차|유자차|한라봉차|아이스티|콤부차|코코아|제티|율무차|"
+    r"레몬즙|레몬청|자몽청|한라봉청|깔라만시|애사비|벌꿀|꿀 ",
+    re.I,
+)
+
+
+def _contextual_coffee_candidates(evidence: Mapping[str, Any]) -> set[str]:
+    """Classify explicit coffee forms inside audited, polluted coffee shelves."""
+    if not any(_label_key(part) in _COFFEE_CONTEXT_LABELS for part in evidence["source_path_parts"]):
+        return set()
+    title = evidence["source_title"]
+    if _COFFEE_NON_PRODUCT.search(title) or _COFFEE_OTHER_DRINK.search(title):
+        return set()
+    if re.search(r"아메리카노\s*&\s*드립백", title, re.I):
+        return set()
+    if re.search(r"캡슐", title, re.I):
+        return {"food.drinks.coffee.capsule"}
+    if re.search(r"드립백\s*커피|드립백커피|드립커피|핸드드립", title, re.I):
+        return {"food.drinks.coffee.drip"}
+    if re.search(r"(?:아메리카노|콜드브루|바리스타룰스).{0,20}\d+(?:\.\d+)?\s*(?:ml|l)\b", title, re.I):
+        return {"food.drinks.coffee.ready"}
+    if re.search(r"홀빈|원두", title, re.I):
+        return {"food.drinks.coffee.beans"}
+    if re.search(r"커피믹스|모카골드|스페셜\s*골드\s*블렌드|카누.{0,20}라떼", title, re.I):
+        return {"food.drinks.coffee.mix"}
+    if re.search(r"인스턴트\s*커피|카누|아메리카노|커피스틱", title, re.I):
+        return {"food.drinks.coffee.instant"}
+    if re.search(r"스타벅스\s*(?:더블샷|파이크\s*플레이스\s*로스트)\b", title, re.I):
+        return {"food.drinks.coffee.ready"}
+    return set()
 
 
 def _dairy_context(evidence: Mapping[str, Any]) -> tuple[bool, bool]:
@@ -809,7 +853,13 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     name_ids = _name_candidates(evidence["source_title"])
     url_ids, url_hints = _url_candidates(evidence)
     contextual_ids = _contextual_dairy_candidates(evidence)
-    all_ids = path_ids | name_ids | url_ids | contextual_ids
+    coffee_ids = _contextual_coffee_candidates(evidence)
+    if coffee_ids:
+        # Audited product-form words are more specific than a mart's broad
+        # "커피믹스" shelf (which also contains plain Kanu Americano).
+        path_ids = {candidate for candidate in path_ids if not candidate.startswith("food.drinks.coffee.")}
+        name_ids = {candidate for candidate in name_ids if not candidate.startswith("food.drinks.coffee.")}
+    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids
     result = {
         **evidence,
         "unified_category_id": None,
@@ -833,7 +883,12 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
             result["classification_reason"] = suspicion
             result["proposed_path"] = list(_BY_ID[category_id].path)
             return result
-        confidence, kind = (0.97, "source_full_path") if path_ids else ((0.93, "official_url_taxonomy") if url_ids else ((0.86, "unambiguous_name_tokens") if name_ids else (0.90, "contextual_dairy_title")))
+        confidence, kind = (
+            (0.97, "source_full_path") if path_ids else
+            ((0.93, "official_url_taxonomy") if url_ids else
+             ((0.90, "contextual_coffee_title") if coffee_ids else
+              ((0.86, "unambiguous_name_tokens") if name_ids else (0.90, "contextual_dairy_title"))))
+        )
         result.update(unified_category_id=category_id, classification_confidence=confidence, review_status="classified", classification_reason=f"supported_by_{kind}", evidence_type=kind, category_path=list(_BY_ID[category_id].path))
         if category_id.startswith("food.dairy.milk."):
             result["classification_attributes"] = {

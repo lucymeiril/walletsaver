@@ -252,7 +252,6 @@ def test_milk_fat_and_sterilization_are_attributes_not_flavour_siblings():
     ("costco", "우유", "마이아 프로틴 메이커 두유 제조기 800ml"),
     ("homeplus", "두부/김치/반찬 > 두부/나물 > 낫또", "풀무원 국산콩 진한 콩국물 960G"),
     ("homeplus", "두부/김치/반찬 > 두부/나물 > 순두부/연두부", "씨제이 다담 순두부 찌개 양념 140G"),
-    ("lottemart", ["커피ㆍ원두", "커피믹스ㆍ프림", "커피믹스"], "동서 카누 미니 마일드로스트 아메리카노 100포"),
     ("homeplus", "냉장/냉동/밀키트 > 떡볶이/면류 > 냉면/소바 > 간편냉면&소바", "씨제이 동치미 냉면육수 300ML"),
     ("homeplus", "수산물/건어물 > 간편/냉동수산물 > 냉동간편수산물 > 냉동새우", "손질 오징어링 500G"),
     ("homeplus", "두부/김치/반찬 > 어묵/맛살/단무지 > 어묵 > 볶음용어묵", "사조대림 실 곤약 400G"),
@@ -268,6 +267,42 @@ def test_observed_source_path_pollution_does_not_get_high_confidence(mart, path,
     assert result["review_status"] == "pending"
     assert result["classification_confidence"] < 0.80
     assert result["source_path_parts"]
+
+
+@pytest.mark.parametrize(("mart", "path", "title", "leaf"), [
+    ("costco", "커피", "커클랜드 시그니춰 인스턴트 커피 454g", "food.drinks.coffee.instant"),
+    ("costco", "커피", "스타벅스 카페 베로나 홀빈 커피 1.13kg", "food.drinks.coffee.beans"),
+    ("costco", "커피", "Hamaya 드립백 커피 8g x 36", "food.drinks.coffee.drip"),
+    ("costco", "커피", "벨미오 캡슐커피 클래식 80개입", "food.drinks.coffee.capsule"),
+    ("costco", "커피", "네스카페 돌체구스토 아이스 아메리카노 캡슐 36P", "food.drinks.coffee.capsule"),
+    ("costco", "커피", "스타벅스 더블샷 200ml x 36캔", "food.drinks.coffee.ready"),
+    ("emart", "커피/원두/차", "콜드브루아메리카노(390ml×6)", "food.drinks.coffee.ready"),
+    ("homeplus", "커피/차 > 원두커피/캡슐커피 > 분쇄커피 > 분쇄커피", "맥널티 리치 헤이즐넛 분쇄 1KG", "food.drinks.coffee.beans"),
+    ("lottemart", ["커피ㆍ원두", "커피믹스ㆍ프림", "커피믹스"], "동서 카누 미니 마일드로스트 아메리카노 100포", "food.drinks.coffee.instant"),
+])
+def test_audited_coffee_shelves_use_explicit_product_form(mart, path, title, leaf):
+    result = classify_record(_raw(mart, path, title))
+    assert result["unified_category_id"] == leaf
+    assert result["classification_confidence"] >= 0.90
+
+
+@pytest.mark.parametrize("title", [
+    "삼풍 커피필터 600매", "프리파라 네스프레소 전용 캡슐홀더",
+    "아소부 뉴 콜드브루 커피메이커", "쏘울핸드 커피 그라인더",
+    "카피탈리 시스템 캡슐 커피 머신", "쓰임 스테이블 커피잔 세트",
+    "카페, 진정성 밀크티 350ml", "펄세스 스테비아 율무차 18g x 100ct",
+    "커피빈 얼그레이 바닐라라떼 25g x 40ct", "루카스나인 우베라떼 18g x 50",
+    "맥널티 스테비아 단백질 고구마크림라떼 20T(360G)",
+])
+def test_polluted_coffee_shelf_accessories_and_other_drinks_stay_pending(title):
+    result = classify_record(_raw("costco", "커피", title))
+    assert result["unified_category_id"] is None
+    assert result["review_status"] == "pending"
+
+
+def test_mixed_instant_and_drip_coffee_gift_set_stays_pending():
+    result = classify_record(_raw("costco", "커피", "스타벅스 아메리카노 & 드립백커피 선물세트"))
+    assert result["unified_category_id"] is None
 
 
 @pytest.mark.parametrize(("title", "leaf"), [
