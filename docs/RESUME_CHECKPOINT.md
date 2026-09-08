@@ -1,6 +1,6 @@
 # 재개 체크포인트 — 2026-09-08
 
-할당량 중단 후 재개한 작업 기록이다. 최신은 pass19이며 상세 근거는 `CLASSIFICATION_BATCH_20260908.md` 마지막 절을 우선한다. 다음 작업은 이 문서와 `git status`를 함께 확인한다. 아래 초기 카탈로그는 **별도 검증 DB의 초안이며 운영 승인본이 아니다**. pass4 등 과거 수치는 이력으로 보존한다.
+할당량 중단 후 재개한 작업 기록이다. 최신은 pass20이며 상세 근거는 `CLASSIFICATION_BATCH_20260908.md` 마지막 절을 우선한다. 다음 작업은 이 문서와 `git status`를 함께 확인한다. 아래 초기 카탈로그는 **별도 검증 DB의 초안이며 운영 승인본이 아니다**. pass4 등 과거 수치는 이력으로 보존한다.
 
 ## 보존 상태
 
@@ -57,12 +57,12 @@
 
 ## 다음 시작점
 
-2026-09-08 최신은 **pass19/누적 376개 결정/94개 수동 병합군 검증 완료**다. 상품군 2,277 / variant 2,301 / listing 2,397 / offer 3,738, 보류 5,458관측이다. 최신 결과는 `docs/CLASSIFICATION_BATCH_20260908.md` 마지막 절을 우선한다. 위 pass4 건수는 이전 기록이다. 조사·제안 파일을 승인본으로 취급하지 않는다.
+2026-09-08 최신은 **pass20/누적 406개 결정/신규·확장 포함 108개 검토 상품군 검증 완료**다. 상품군 2,275 / variant 2,303 / listing 2,411 / offer 3,759, 보류 5,437관측이다. 최신 결과는 `docs/CLASSIFICATION_BATCH_20260908.md` 마지막 절을 우선한다. 위 pass4 건수는 이전 기록이다. 조사·제안 파일을 승인본으로 취급하지 않는다.
 
 1. 최신 전체 테스트 결과와 `git status`를 확인한다. 아래 완료한 단위/스냅샷 수정을 다시 시작하지 않는다.
-2. 현재 pass19가 최신이다. 분류 코드/검토 문서 변경 후에는 새 출력 폴더에 workspace를 재생성한다. 누적 376개 결정을 유지하려면 아래 `--review-decisions`를 반드시 사용한다.
-3. 다음 좁은 원본 범위를 전량 검토하고 분류를 보강한다. 5,458개 보류 중 5,350개, 고유 판매 페이지로는 4,058개가 리프 assignment 미지정이다. 완료한 모든 묶음과 음료/치즈/곤약젤리 6군은 중복 조사하지 않는다.
-4. 아직 정확히 일치하는 교차마트 후보는 25군이라 현재 크기의 묶음 약 3회면 끝난다. 이후에는 4,058개를 하나씩 보지 말고 과자·음료·커피·라면 등 원본 카테고리 단위의 규칙/예외 검토로 전환한다. 예상 잔여 작업은 교차마트 3회 + 카테고리 10~15회 + 최종 승인/화면 2~3회다.
+2. 현재 pass20이 최신이다. 분류 코드/검토 문서 변경 후에는 새 출력 폴더에 workspace를 재생성한다. 누적 406개 결정을 유지하려면 아래 `--review-decisions`를 반드시 사용한다.
+3. 다음 좁은 원본 범위를 전량 검토하고 분류를 보강한다. 5,437개 보류 중 5,329개가 리프 assignment 미지정이다. 완료한 즉석식·카레·라면·냉동전 묶음을 중복 조사하지 않는다.
+4. 정확 일치 교차마트 후보 중 이번에 14개 신규군과 기존 참깨라면 큰컵 확장을 묶어서 처리했다. 남은 후보는 김·김치·채소·두부·새우완제품 쪽 약 10군이며 1~2회로 끝낸 뒤, 나머지는 하나씩 보지 말고 음료·커피·라면 등 원본 카테고리 단위의 규칙/예외 검토로 전환한다.
 5. 이마트/코스트코의 대부분은 넓은 원본 카테고리와 부족한 제목 근거로 미분류다. 누락을 감추기 위해 `기타`/부모 노드에 밀어넣지 말고 실제 상품 검토로 보완한다.
 6. 코스트코 1,338개에는 상품별 시각이 없다. ingestion UTC 수신시각을 쓰되 `timestamp_source=ingestion_received_at`, `observed_time_precision=batch`로 표시한다. 실제 개별 수집시각처럼 표현하지 않는다.
 7. 1+1/2+1/10+1처럼 구매·증정 수량이 명시된 655개는 실지출과 실수령량으로 단위가격을 계산한다. 숫자 조건이 없거나 미해석인 프로모션은 가격 원문을 보존하되 공개 비교에서 제외한다.
@@ -71,14 +71,14 @@
 재생성 명령 (저장소 루트, 출력 폴더는 새 이름):
 
 ```powershell
-& 'C:\Users\user\AppData\Local\Programs\Python\Python313\python.exe' tools/prepare_initial_catalog.py --out .debug-artifacts/initial-catalog-NEXT --run-id initial-catalog-NEXT --review-decisions .debug-artifacts/reviewed-initial-decisions-20260908-drink-cheese-jelly.json
+& 'C:\Users\user\AppData\Local\Programs\Python\Python313\python.exe' tools/prepare_initial_catalog.py --out .debug-artifacts/initial-catalog-NEXT --run-id initial-catalog-NEXT --review-decisions .debug-artifacts/reviewed-initial-decisions-20260908-ready-meals.json
 ```
 
 이 환경의 `py` launcher가 실패했으므로 검증된 Python313 경로를 사용했다. JSON/HTML/SQLite 및 크롤링 산출물은 Git에 넣지 않는다.
 
 ## 최신 검증 기록
 
-- DB 관리자 전체: **601 passed**, 460 existing warnings, 39.93s (2026-09-08).
+- DB 관리자 전체: **605 passed**, 460 existing warnings, 44.64s (2026-09-08).
 - 크롤러 전체: **283 passed**, 1 live deselected, 32.86s (2026-09-05).
 - 공개 API 전체: **73 passed**, 25 existing warnings, 12.21s (2026-09-08). 실행에 비운영 `JWT_SECRET_KEY`를 지정했다.
 - 공통 계산 전체: **158 passed**, 0 warnings, 0.52s (2026-09-08).

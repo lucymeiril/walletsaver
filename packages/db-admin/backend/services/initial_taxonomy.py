@@ -202,6 +202,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("soup_stew", "국·탕·찌개", "국/탕|탕|즉석국|즉석국(레토르트)"),
         ("curry", "즉석카레", "즉석카레", "즉석카레"), ("black_bean", "즉석짜장", "즉석짜장", "즉석짜장"),
         ("mapo_tofu", "즉석마파두부", ""),  # Reviewed meal, not cooking sauce.
+        ("pancake", "냉동전", ""),  # Reviewed frozen pancakes only; no broad name rule.
         ("tteokbokki", "떡볶이", "간편떡볶이|떡볶이"), ("pork_cutlet", "돈까스", "돈까스"),
         ("chicken", "조리치킨", "치킨|치킨/닭강정|치킨기타"), ("nugget", "치킨너겟·텐더", "너겟|치킨너겟/치킨텐더"),
         ("pizza", "피자", "피자"), ("hotdog", "핫도그", "핫도그"), ("tteokgalbi", "떡갈비", "떡갈비"),
@@ -275,6 +276,9 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.seasonings.baking", ("식품", "양념·소스", "기초조미·제빵"), "장류/양념/제빵|양념/오일/분말류", (
         ("flour", "밀가루", "밀가루"), ("sugar", "설탕", "흰설탕|설탕"), ("vinegar", "식초", "식초"),
         ("pepper", "후추", "후추"), ("stock", "육수", "코인육수", "코인육수"),
+    )),
+    *_group("food.seasonings.powders", ("식품", "양념·소스", "분말조미료"), "장류/양념/제빵|양념/오일/분말류", (
+        ("curry", "카레가루", ""),  # Reviewed powder products only; instant curry stays separate.
     )),
     *_group("household.cleaning.laundry", ("생활용품", "청소·세탁", "세탁용품"), "세탁/청소|청소/생활용품", (
         ("liquid", "액체세탁세제", "액체 세탁세제|액체세탁세제", "액체세탁세제|액체 세탁세제"),

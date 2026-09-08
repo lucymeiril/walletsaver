@@ -548,6 +548,33 @@ def test_review_only_soda_leaf_does_not_widen_automatic_rules():
     assert classify_record(_raw("emart", "생수/음료/주류", "맥콜 제로 1.5L"))["unified_category_id"] is None
 
 
+@pytest.mark.parametrize("leaf,expected", [
+    ("food.meals.prepared.pancake", ["식품", "간편식·면", "조리식품", "냉동전"]),
+    ("food.seasonings.powders.curry", ["식품", "양념·소스", "분말조미료", "카레가루"]),
+])
+def test_reviewed_ready_meal_leaves_have_four_levels_and_unique_keywords(leaf, expected):
+    nodes = {row["id"]: row for row in taxonomy_categories({leaf})}
+    validate_taxonomy(nodes.values(), {leaf})
+    actual = []
+    cursor = leaf
+    while cursor:
+        actual.insert(0, nodes[cursor]["name_ko"])
+        cursor = nodes[cursor]["parent_id"]
+    assert actual == expected
+    assert {row["unified_category_id"]: row["word"] for row in keyword_definitions({leaf})} == {
+        leaf: expected[-1]
+    }
+    assert keyword_collisions(keyword_definitions()) == {}
+
+
+@pytest.mark.parametrize("path,title", [
+    ("냉동전", "풀무원 철판 오징어김치전 300g"),
+    ("카레가루/카레소스", "오뚜기 백세카레 순한맛 100g"),
+])
+def test_reviewed_ready_meal_leaves_do_not_widen_automatic_rules(path, title):
+    assert classify_record(_raw("lottemart", path, title))["unified_category_id"] is None
+
+
 def test_reviewed_grain_leaves_have_independent_four_level_paths_and_keywords():
     labels = {"glutinous": "찹쌀", "black": "흑미", "barley": "보리", "millet": "기장", "chickpea": "병아리콩"}
     paths = {f"food.grains.rice.{key}": ["식품", "곡물·견과", "쌀·잡곡", label] for key, label in labels.items()}

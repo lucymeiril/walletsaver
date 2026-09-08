@@ -155,7 +155,7 @@
 - 전체 accounting/evidence, variant 경계, FK/integrity, 동일 bundle 2회 import, 실제 공개 API, 원본·stage·snapshot 파일 불변을 확인했다. 독립 근거는 pass16의 `processed-protein-independent-api-check.json`이다. 운영 게시/승인은 하지 않았다.
 - 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-processed-protein.json`. pass16 폴더와 이번 9군 조사를 다시 시작하지 않는다.
 
-## 음료·치즈·곤약젤리 6군, 증정행사 계산 및 pass19 검증 완료 — 최신
+## 음료·치즈·곤약젤리 6군, 증정행사 계산 및 pass19 검증 완료
 
 - 일화 맥콜 제로, 서울우유 고단백 치즈, 짜지 않아 건강한치즈, 자임 곤약젤리 제로 사과/청포도, 푸르밀 딸기우유를 각각 별도 상품군으로 검토했다. 총 12개 판매 페이지/17관측이며 기존 자동 포함 11관측을 유지하고 6관측을 새로 stage했다.
 - 맥콜을 콜라나 사이다로 잘못 넣지 않도록 `식품 → 음료 → 생수·탄산 → 탄산음료` 검토 전용 리프를 추가했다. 자동 규칙은 비워 두었고 변경 전후 전체 9,196관측의 자동 분류 결과가 동일함을 확인했다.
@@ -167,3 +167,16 @@
 - 전체 9,196관측 = 포함 3,738 + 보류 5,458(리프 미지정 5,350). pending 721개를 제외한 active offer는 3,017개이고 비활성 상품군은 564개다.
 - 전체 accounting/evidence, FK/integrity, 동일 bundle 2회 import, runtime 변형 거부, snapshot 필터, 원본·stage·snapshot 불변을 확인했다. 독립 근거는 pass19의 `drink-cheese-jelly-independent-api-check.json`, `buy-get-promotion-independent-check.json`이다. 운영 게시/승인은 하지 않았다.
 - 전체 검사: DB 관리자 601 passed, 공개 API 73 passed, 공통 계산 158 passed. 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-drink-cheese-jelly.json`이며 수정 전 계산 초안 pass17/pass18 대신 pass19를 사용한다.
+
+## 즉석식·카레·라면·냉동전 묶음 및 pass20 검증 완료 — 최신
+
+- 정확 일치 후보를 하나씩 호출하지 않고 관련 이름의 원본 전체를 한 묶음으로 조사했다. 15개 상품군, 30개 판매 페이지, 45관측을 검토했으며 이 중 14개는 신규 상품군이고 참깨라면 큰컵은 기존 상품군에 코스트코 12입 규격을 추가했다.
+- 동원 양반 진국 사골곰탕, 백세카레 분말 순한맛/약간매운맛, 3분 백세카레 순한맛/약간매운맛, 진비빔면 봉지, 참깨라면 봉지/소컵/큰컵, 양송이 크림스프, 풀무원·햇반 계란볶음밥, 오징어김치전/부추전, 함흥 비빔냉면을 각각 경계에 맞게 연결했다.
+- 진비빔면 큰컵, 열려라 참깨라면, 참깨라면 볶음면, 베이컨 계란볶음밥은 비슷한 이름이어도 다른 제품이라 제외했다. 카레가루와 완성 즉석카레, 봉지/소컵/큰컵, 풀무원/햇반 볶음밥도 서로 다른 상품군이다.
+- 새 검토 전용 리프 `식품 → 양념·소스 → 분말조미료 → 카레가루`, `식품 → 간편식·면 → 조리식품 → 냉동전`을 추가했다. 자동 규칙은 비워 두었고 변경 전후 9,196관측의 자동 판단이 모두 같음을 확인했다.
+- 누적 문서 `.debug-artifacts/reviewed-initial-decisions-20260908-ready-meals.json`: 406개 결정, SHA-256 `d1871bfa216d139e50ea4637d48f7db02c929d14d0c5aece4b4ad54006b67356`.
+- pass20 bundle SHA-256 `71a334f2b4d24ce3257a6c8387f6d88c0ea80bbf0d443829d6d4c290df36702f`. 상품군 2,275 / variant 2,303 / listing 2,411 / offer 3,759 / matching rule 2,343. 카테고리 263 / 키워드 194.
+- 전체 9,196관측 = 포함 3,759 + 보류 5,437(리프 미지정 5,329). 이번 검토 45관측 중 기존 포함 24개를 유지하고 21개를 새로 포함했다. pending 729개를 뺀 공개 연습 snapshot은 active 3,030개와 비활성 상품군 558개를 유지했다.
+- 양송이 크림스프 180g과 햇반 볶음밥 400g의 1+1은 각각 실수령 360g/800g으로 계산됨을 실제 공개 API에서 확인했다. 행사 조건이 불명확한 백세카레 분말·진비빔면 등은 연결만 하고 공개 가격 비교에서는 제외했다.
+- 전체 accounting/evidence, FK/integrity, 동일 bundle 2회 import, 기존 결정 보존, runtime 이름·규격·신규 ID 변형 거부, snapshot 필터, 원본·stage·snapshot 불변을 확인했다. 독립 근거는 pass20의 `ready-meal-independent-api-check.json`과 `reviewed-runtime-check.json`이다. 운영 게시/승인은 하지 않았다.
+- DB 관리자 전체 **605 passed**, 기존 경고 460개. 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-ready-meals.json`이며 pass20 폴더를 덮어쓰지 않는다.
