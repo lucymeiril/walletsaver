@@ -154,3 +154,16 @@
 - 전체 9,196관측 = 포함 3,732 + 보류 5,464(리프 미지정 5,356). pending 720개를 제외한 active offer는 3,012개이고 비활성 상품군은 569개다.
 - 전체 accounting/evidence, variant 경계, FK/integrity, 동일 bundle 2회 import, 실제 공개 API, 원본·stage·snapshot 파일 불변을 확인했다. 독립 근거는 pass16의 `processed-protein-independent-api-check.json`이다. 운영 게시/승인은 하지 않았다.
 - 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-processed-protein.json`. pass16 폴더와 이번 9군 조사를 다시 시작하지 않는다.
+
+## 음료·치즈·곤약젤리 6군, 증정행사 계산 및 pass19 검증 완료 — 최신
+
+- 일화 맥콜 제로, 서울우유 고단백 치즈, 짜지 않아 건강한치즈, 자임 곤약젤리 제로 사과/청포도, 푸르밀 딸기우유를 각각 별도 상품군으로 검토했다. 총 12개 판매 페이지/17관측이며 기존 자동 포함 11관측을 유지하고 6관측을 새로 stage했다.
+- 맥콜을 콜라나 사이다로 잘못 넣지 않도록 `식품 → 음료 → 생수·탄산 → 탄산음료` 검토 전용 리프를 추가했다. 자동 규칙은 비워 두었고 변경 전후 전체 9,196관측의 자동 분류 결과가 동일함을 확인했다.
+- 원본에 정확한 `1+1`, `2+1`, `10+1` 문구가 있는데도 혜택 계산을 포기하던 문제를 수정했다. 구매 수량·증정 수량·최소 구매 수량을 원본 증거와 함께 보존하고, 실제 총지출은 `표시가격×구매수량`, 실수령 총량은 `상품 규격×(구매수량+증정수량)`으로 계산한다. 비교 순서는 총액이 아니라 100g/100ml/개당 혜택 단가를 우선한다.
+- pass19의 명시적 증정행사 655개 전량을 검증했다: 1+1 537개, 2+1 45개, 10+1 73개. 각 행사의 실제 총지출·실수령량·단위가격을 확인하고 세 종류 모두 실제 공개 API 응답으로 대조했다. 조건 숫자가 없는 `buy_x_get_y`는 계속 검수 대기다.
+- 예를 들어 푸르밀 딸기우유 `225ml×4`의 1+1은 6,290원을 지출해 총 1,800ml를 받는 것으로 계산한다. 롯데의 미해석 할인은 별도로 `pending_review`에 남는다.
+- 누적 문서 `.debug-artifacts/reviewed-initial-decisions-20260908-drink-cheese-jelly.json`: 376개 결정/94개 수동 병합군, SHA-256 `b8cd6297a9141d5620114c1274403c16104755d628dcc181856db128610e32ed`.
+- bundle SHA-256 `8e712860a687186c8c951780f47e943f6993cba579791de6e17cf1fb66fb6ebd`. 상품군 2,277 / variant 2,301 / listing 2,397 / offer 3,738 / matching rule 2,329. 카테고리 260 / 키워드 192.
+- 전체 9,196관측 = 포함 3,738 + 보류 5,458(리프 미지정 5,350). pending 721개를 제외한 active offer는 3,017개이고 비활성 상품군은 564개다.
+- 전체 accounting/evidence, FK/integrity, 동일 bundle 2회 import, runtime 변형 거부, snapshot 필터, 원본·stage·snapshot 불변을 확인했다. 독립 근거는 pass19의 `drink-cheese-jelly-independent-api-check.json`, `buy-get-promotion-independent-check.json`이다. 운영 게시/승인은 하지 않았다.
+- 전체 검사: DB 관리자 601 passed, 공개 API 73 passed, 공통 계산 158 passed. 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-drink-cheese-jelly.json`이며 수정 전 계산 초안 pass17/pass18 대신 pass19를 사용한다.

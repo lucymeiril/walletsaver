@@ -528,6 +528,26 @@ def test_review_only_grain_snack_leaf_does_not_widen_automatic_rules():
     assert classify_record(_raw("homeplus", "쌀/곡물 과자", "크라운 죠리퐁 74G"))["unified_category_id"] is None
 
 
+def test_reviewed_soda_leaf_has_four_levels_and_a_unique_keyword():
+    leaf = "food.drinks.water_soda.soda"
+    nodes = {row["id"]: row for row in taxonomy_categories({leaf})}
+    validate_taxonomy(nodes.values(), {leaf})
+    actual = []
+    cursor = leaf
+    while cursor:
+        actual.insert(0, nodes[cursor]["name_ko"])
+        cursor = nodes[cursor]["parent_id"]
+    assert actual == ["식품", "음료", "생수·탄산", "탄산음료"]
+    assert {row["unified_category_id"]: row["word"] for row in keyword_definitions({leaf})} == {
+        leaf: "탄산음료"
+    }
+    assert keyword_collisions(keyword_definitions()) == {}
+
+
+def test_review_only_soda_leaf_does_not_widen_automatic_rules():
+    assert classify_record(_raw("emart", "생수/음료/주류", "맥콜 제로 1.5L"))["unified_category_id"] is None
+
+
 def test_reviewed_grain_leaves_have_independent_four_level_paths_and_keywords():
     labels = {"glutinous": "찹쌀", "black": "흑미", "barley": "보리", "millet": "기장", "chickpea": "병아리콩"}
     paths = {f"food.grains.rice.{key}": ["식품", "곡물·견과", "쌀·잡곡", label] for key, label in labels.items()}
