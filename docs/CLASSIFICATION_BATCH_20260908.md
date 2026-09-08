@@ -143,3 +143,14 @@
 - 전체 9,196관측 = 포함 3,727 + 보류 5,469(리프 미지정 5,361). pending 719개를 제외한 active offer는 3,008개이고 비활성 상품군 577개를 유지했다.
 - 전체 accounting/evidence, FK/integrity, 동일 bundle 2회 import, snapshot 필터, 원본·stage·snapshot 파일 불변을 확인했다. 독립 근거는 pass15의 `cupban-independent-api-check.json`이다. 운영 게시/승인은 하지 않았다.
 - DB 관리자 전체 결과는 **596 passed**로 유지된다. 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-cupban.json`이며 pass15 폴더와 컵반 4군 조사를 다시 시작하지 않는다.
+
+## 만두·햄·어묵·맛살 9군 검토 및 pass16 검증 완료 — 최신
+
+- 동원 교자만두, 그릴리 델리햄 김밥용, 리얼 관자 크랩스 버터/오리지널, 바른어묵 전골용, 통그릴 비엔나, 사조대림 로얄크랩 디핑, 한성 몬스터크랩, 환공어묵 부산명품 어묵꼬치를 각각 별도 상품군으로 검토했다. 총 19개 판매 페이지/29관측이다.
+- 같은 제품명·맛·용도·규격만 연결했다. 통그릴 비엔나는 `180g×2=360g`, `300g×2=600g`을 별도 variant로 두었다. 롯데의 김밥용 델리햄이 소시지로 적힌 원본 분류는 보존하되, 더 구체적인 상품명에 따라 통합 리프는 햄으로 결정했다.
+- 기존 자동 포함 24관측을 유지하고 빠졌던 5관측을 새로 stage했다. 조건 없는 1+1인 교자만두와 김밥용 햄은 상품 상세에 원래 총액만 표시하되 혜택가·100g 가격·비교 순위를 계산하지 않는다. 롯데의 미해석 할인은 전부 `pending_review`로 공개 snapshot에서 제외했다.
+- 누적 문서 `.debug-artifacts/reviewed-initial-decisions-20260908-processed-protein.json`: 364개 결정/88개 수동 병합군, SHA-256 `aa5489cfccb82baa7443047a98f38566ea61054b6fdd4269a2c8868ee28e5328`.
+- bundle SHA-256 `93aad3f05a126d10f9936397cff13c89b24522773f3d77f9f462f7fb5c2ba5bf`. 상품군 2,279 / variant 2,303 / listing 2,393 / offer 3,732 / matching rule 2,328.
+- 전체 9,196관측 = 포함 3,732 + 보류 5,464(리프 미지정 5,356). pending 720개를 제외한 active offer는 3,012개이고 비활성 상품군은 569개다.
+- 전체 accounting/evidence, variant 경계, FK/integrity, 동일 bundle 2회 import, 실제 공개 API, 원본·stage·snapshot 파일 불변을 확인했다. 독립 근거는 pass16의 `processed-protein-independent-api-check.json`이다. 운영 게시/승인은 하지 않았다.
+- 다음 입력은 `.debug-artifacts/reviewed-initial-decisions-20260908-processed-protein.json`. pass16 폴더와 이번 9군 조사를 다시 시작하지 않는다.
