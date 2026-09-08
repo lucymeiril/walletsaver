@@ -1,11 +1,11 @@
 # 재개 체크포인트 — 2026-09-08
 
-할당량 중단 후 재개한 작업 기록이다. 최신은 pass13이며 상세 근거는 `CLASSIFICATION_BATCH_20260908.md` 마지막 절을 우선한다. 다음 작업은 이 문서와 `git status`를 함께 확인한다. 아래 초기 카탈로그는 **별도 검증 DB의 초안이며 운영 승인본이 아니다**. pass4 등 과거 수치는 이력으로 보존한다.
+할당량 중단 후 재개한 작업 기록이다. 최신은 pass14이며 상세 근거는 `CLASSIFICATION_BATCH_20260908.md` 마지막 절을 우선한다. 다음 작업은 이 문서와 `git status`를 함께 확인한다. 아래 초기 카탈로그는 **별도 검증 DB의 초안이며 운영 승인본이 아니다**. pass4 등 과거 수치는 이력으로 보존한다.
 
 ## 보존 상태
 
 - 최신 후속 변경: 이마트 카테고리 요청 간격을 고정 360초에서 매 요청 시도마다 360~420초 무작위로 변경했다. 마지막 요청 시각 저장은 유지하며 재시작 후에도 최소 360초를 지킨다. 이미 경과한 시간은 차감한다. 관련 검사 44 passed / 1 skipped, 실제 사이트 수집은 하지 않았다.
-- 사용자에게 설명한 완료 경계: 원본 백업과 별도 검토용 DB 구축은 했지만, 운영 관리자 DB의 초기 매칭·카테고리·키워드·상품 테이블을 모두 완성하여 적용한 것은 아니다. 최신 pass13도 검토용 초안이다. 조건부 할인 계산과 남은 상품 분류를 완료한 뒤 기존 승인 절차로 운영 적용해야 한다.
+- 사용자에게 설명한 완료 경계: 원본 백업과 별도 검토용 DB 구축은 했지만, 운영 관리자 DB의 초기 매칭·카테고리·키워드·상품 테이블을 모두 완성하여 적용한 것은 아니다. 최신 pass14도 검토용 초안이다. 조건부 할인 계산과 남은 상품 분류를 완료한 뒤 기존 승인 절차로 운영 적용해야 한다.
 
 - 브랜치: `cleanup/remove-legacy-ai-admin-coupling`.
 - `b6ef0cc`: 이마트 360초 영속 대기 제한, 검토 목록의 50개 배치 잘림 수정.
@@ -57,11 +57,11 @@
 
 ## 다음 시작점
 
-2026-09-08 최신은 **pass13/누적 281개 결정/55개 수동 병합군 검증 완료**다. 상품군 2,303 / variant 2,310 / listing 2,367 / offer 3,698, 보류 5,498관측이다. 최신 결과는 `docs/CLASSIFICATION_BATCH_20260908.md` 마지막 절을 우선한다. 위 pass4 건수는 이전 기록이다. 조사·제안 파일을 승인본으로 취급하지 않는다.
+2026-09-08 최신은 **pass14/누적 337개 결정/75개 수동 병합군 검증 완료**다. 상품군 2,286 / variant 2,309 / listing 2,386 / offer 3,719, 보류 5,477관측이다. 최신 결과는 `docs/CLASSIFICATION_BATCH_20260908.md` 마지막 절을 우선한다. 위 pass4 건수는 이전 기록이다. 조사·제안 파일을 승인본으로 취급하지 않는다.
 
 1. 최신 전체 테스트 결과와 `git status`를 확인한다. 아래 완료한 단위/스냅샷 수정을 다시 시작하지 않는다.
-2. 현재 pass13이 최신이다. 분류 코드/검토 문서 변경 후에는 새 출력 폴더에 workspace를 재생성한다. 누적 281개 결정을 유지하려면 아래 `--review-decisions`를 반드시 사용한다.
-3. 다음 좁은 원본 범위를 전량 검토하고 분류를 보강한다. 5,498개 보류 중 5,390개는 리프 assignment가 아직 없다. 신선식품 batch2/batch4와 곡물·컵라면 9군·오뚜기 3분 6군·차오차이·이번 조미료/식용유 6군 조사는 중복 작업하지 않는다. 남은 가공식품 상품군 또는 비식품 분류가 다음 후보다.
+2. 현재 pass14가 최신이다. 분류 코드/검토 문서 변경 후에는 새 출력 폴더에 workspace를 재생성한다. 누적 337개 결정을 유지하려면 아래 `--review-decisions`를 반드시 사용한다.
+3. 다음 좁은 원본 범위를 전량 검토하고 분류를 보강한다. 5,477개 보류 중 5,369개는 리프 assignment가 아직 없다. 신선식품 batch2/batch4와 곡물·컵라면 9군·오뚜기 3분 6군·차오차이·조미료/식용유 6군·과자 20군 조사는 중복 작업하지 않는다. 남은 가공식품 상품군 또는 비식품 분류가 다음 후보다.
 4. 이마트/코스트코의 대부분은 넓은 원본 카테고리와 부족한 제목 근거로 미분류다. 누락을 감추기 위해 `기타`/부모 노드에 밀어넣지 말고 실제 상품 검토로 보완한다.
 5. 코스트코 1,338개에는 상품별 시각이 없다. ingestion UTC 수신시각을 쓰되 `timestamp_source=ingestion_received_at`, `observed_time_precision=batch`로 표시한다. 실제 개별 수집시각처럼 표현하지 않는다.
 6. 불명확한 프로모션은 가격 원문을 보존하되 공개 가격 비교/단위가격/주간 최저가 계산과 분리한다. 규격 미해석·명칭 변경·브랜드 충돌은 여전히 검수 대기다.
@@ -70,14 +70,14 @@
 재생성 명령 (저장소 루트, 출력 폴더는 새 이름):
 
 ```powershell
-& 'C:\Users\user\AppData\Local\Programs\Python\Python313\python.exe' tools/prepare_initial_catalog.py --out .debug-artifacts/initial-catalog-NEXT --run-id initial-catalog-NEXT --review-decisions .debug-artifacts/reviewed-initial-decisions-20260908-seasoning-variants.json
+& 'C:\Users\user\AppData\Local\Programs\Python\Python313\python.exe' tools/prepare_initial_catalog.py --out .debug-artifacts/initial-catalog-NEXT --run-id initial-catalog-NEXT --review-decisions .debug-artifacts/reviewed-initial-decisions-20260908-snacks.json
 ```
 
 이 환경의 `py` launcher가 실패했으므로 검증된 Python313 경로를 사용했다. JSON/HTML/SQLite 및 크롤링 산출물은 Git에 넣지 않는다.
 
 ## 최신 검증 기록
 
-- DB 관리자 전체: **594 passed**, 460 existing warnings, 49.48s (2026-09-08).
+- DB 관리자 전체: **596 passed**, 460 existing warnings, 46.09s (2026-09-08).
 - 크롤러 전체: **283 passed**, 1 live deselected, 32.86s (2026-09-05).
 - 공개 API 전체: **71 passed**, 25 existing warnings, 12.43s (2026-09-05). 실행에 비운영 `JWT_SECRET_KEY`를 지정했다.
 - 집중 테스트는 전체 테스트와 중복이므로 합산하지 않는다. 프런트/공유 패키지는 이번 후속 매칭·스냅샷 수정에서 변경하지 않았다.
