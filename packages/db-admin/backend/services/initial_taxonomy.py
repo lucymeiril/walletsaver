@@ -230,6 +230,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("cheese_ball", "치즈볼", ""), ("vegetable_fritter", "채소튀김", ""),
         ("meat_patty", "동그랑땡", ""), ("rice_cake", "떡", ""),
         ("japchae", "조리잡채", ""), ("seasoned_meat", "양념육", ""),
+        ("grilled_fish", "조리생선구이", ""),
     )),
     *_group("food.preserved.kimchi", ("식품", "반찬·저장식품", "김치"), "두부/김치/반찬|김치/반찬/젓갈", (
         ("cabbage", "배추김치", "배추김치|포기김치|맛김치", "배추김치|포기김치|맛김치"),
@@ -238,6 +239,7 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("food.preserved.sides", ("식품", "반찬·저장식품", "밑반찬"), "두부/김치/반찬|김치/반찬/젓갈", (
         ("stir_fried", "볶음반찬", ""),
+        ("braised", "조림반찬", ""), ("pickled", "장아찌", ""), ("seasoned", "무침반찬", ""),
     )),
     *_group("food.preserved.canned", ("식품", "반찬·저장식품", "통조림"), "라면/즉석식품/통조림|라면/통조림/즉석밥|통조림", (
         ("tuna", "참치통조림", "참치|참치통조림", "참치통조림|참치 통조림"),
@@ -725,6 +727,45 @@ def _contextual_costco_fruit_candidates(evidence: Mapping[str, Any]) -> set[str]
     }
     leaf = titles.get(evidence["source_title"])
     return {f"food.produce.fruit.{leaf}"} if leaf else set()
+
+
+def _contextual_homeplus_reviewed_shelves(evidence: Mapping[str, Any]) -> set[str]:
+    """Audited four detailed shelves; require product form, not ingredients."""
+    if evidence["mart"] != "homeplus":
+        return set()
+    path = tuple(evidence["source_path_parts"])
+    title = evidence["source_title"]
+    if re.search(r"선물세트|혼합세트|사료|강아지|고양이|소스|양념장", title):
+        return set()
+    if path == ("두부/김치/반찬", "햄/소시지", "비엔나/후랑크/동그랑땡"):
+        if re.search(r"비엔나|후랑크|프랑크|부어스트|소시지|소세지", title) and not re.search(r"핫바|동그랑땡|함박|미트볼", title):
+            return {"food.meat.processed.sausage"}
+    elif path == ("두부/김치/반찬", "햄/소시지", "닭가슴살/훈제오리"):
+        if re.search(r"닭가슴살", title):
+            return {"food.meat.processed.breast"}
+        if title == "품애복 5無 훈제치킨 슬라이스 400G":
+            return {"food.meals.prepared.chicken"}
+    elif path == ("두부/김치/반찬", "반찬/젓갈", "조림/볶음/기타반찬류"):
+        if re.search(r"(?:가자미|갈치|고등어|삼치|임연수)\s*구이|연어 스테이크", title):
+            return {"food.meals.prepared.grilled_fish"}
+        if re.search(r"멸치\s*볶음", title):
+            return {"food.preserved.sides.stir_fried"}
+        if re.search(r"장조림|콩조림|반숙 계란장", title):
+            return {"food.preserved.sides.braised"}
+        if re.search(r"깻잎\s*(?:장아찌|지)", title):
+            return {"food.preserved.sides.pickled"}
+        if re.search(r"무말랭이", title):
+            return {"food.preserved.sides.seasoned"}
+    elif path == ("과자/시리얼", "과자/쿠키/파이", "쌀/곡물 과자", "기타곡물스낵"):
+        if re.search(r"쌀과자|쌀로별|메밀칩|보리과자|누룽지팝|뉴룽지", title):
+            return {"food.snacks.savory.grain"}
+        if re.search(r"강냉이", title):
+            return {"food.snacks.savory.corn"}
+        if re.search(r"마카로니 스낵", title):
+            return {"food.snacks.savory.wheat"}
+        if title == "simplus 반반고구마칩 50G":
+            return {"food.snacks.savory.vegetable"}
+    return set()
 
 
 def _contextual_costco_meat_shelf_candidates(evidence: Mapping[str, Any]) -> set[str]:
@@ -1245,12 +1286,13 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         } else None
     )
     household_ids = {household_leaf} if household_leaf else set()
+    homeplus_shelf_ids = _contextual_homeplus_reviewed_shelves(evidence)
     if coffee_ids:
         # Audited product-form words are more specific than a mart's broad
         # "커피믹스" shelf (which also contains plain Kanu Americano).
         path_ids = {candidate for candidate in path_ids if not candidate.startswith("food.drinks.coffee.")}
         name_ids = {candidate for candidate in name_ids if not candidate.startswith("food.drinks.coffee.")}
-    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids | cheese_shelf_ids | fruit_ids | meat_shelf_ids | audited_emart_ids | household_ids
+    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids | cheese_shelf_ids | fruit_ids | meat_shelf_ids | audited_emart_ids | household_ids | homeplus_shelf_ids
     result = {
         **evidence,
         "unified_category_id": None,
@@ -1292,6 +1334,8 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
             confidence, kind = 0.95, "audited_emart_food_title"
         if household_ids:
             confidence, kind = 0.95, "audited_emart_household_title"
+        if homeplus_shelf_ids:
+            confidence, kind = 0.90, "reviewed_homeplus_shelf_and_form"
         result.update(unified_category_id=category_id, classification_confidence=confidence, review_status="classified", classification_reason=f"supported_by_{kind}", evidence_type=kind, category_path=list(_BY_ID[category_id].path))
         if category_id.startswith("food.dairy.milk."):
             result["classification_attributes"] = {
