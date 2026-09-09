@@ -122,6 +122,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("frozen", "냉동과일", "냉동과일", "냉동과일|냉동 과일"),
         ("dried", "건과일", "건과일|건조과일"),
         ("cut", "손질과일", "간편/컷팅과일|컷팅과일"),
+        ("cup", "과일컵", ""),
     )),
     *_group("food.produce.vegetables", ("식품", "농산물", "신선채소"), "채소", (
         ("potato", "감자", "감자"), ("sweet_potato", "고구마", "고구마"), ("onion", "양파", "양파"),
@@ -152,6 +153,7 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.grains.nuts", ("식품", "곡물·견과", "견과류"), "견과|견과류|쌀/잡곡/견과류", (
         ("almond", "아몬드", "아몬드"), ("walnut", "호두", "호두"), ("peanut", "땅콩", "땅콩"),
         ("macadamia", "마카다미아", "마카다미아"), ("cashew", "캐슈넛", "캐슈넛"),
+        ("pistachio", "피스타치오", ""), ("mixed", "혼합견과", ""),
     )),
     *_group("food.meat.fresh", ("식품", "정육·계란", "신선육"), "정육/계란|정육/계란류|정육|축산", (
         ("beef", "소고기", "국내산소고기|수입산소고기|한우|한우간편팩상품|프리미엄 한우구이|소고기"),
@@ -230,11 +232,13 @@ LEAVES: tuple[Leaf, ...] = (
         ("biscuits", "쿠키·비스킷", "버터비스켓|초코비스켓|쿠키/비스킷|비스킷|쿠키"),
         ("cracker", "크래커", "크래커"), ("sandwich", "샌드과자", "크림비스켓|샌드"),
         ("wafer", "웨하스", "웨하스/웨이퍼"), ("pie", "파이과자", "파이케이크류|파이"),
+        ("cake", "케이크과자", ""),
     )),
     *_group("food.snacks.savory", ("식품", "과자·간식", "스낵"), "과자/시리얼|과자/스낵/간식", (
         ("corn", "옥수수스낵", "옥수수스낵|나쵸"), ("potato", "감자스낵", "감자스낵", "감자칩"),
         ("wheat", "밀가루스낵", "밀가루스낵"), ("popcorn", "팝콘", "팝콘"),
         ("grain", "곡물스낵", ""),
+        ("vegetable", "채소스낵", ""), ("seaweed", "해조스낵", ""),
     )),
     *_group("food.snacks.sweets", ("식품", "과자·간식", "단과자"), "과자/시리얼|과자/스낵/간식", (
         ("chocolate", "초콜릿", "바초콜릿|볼초콜릿|초콜릿"), ("jelly", "젤리", "젤리"),
@@ -242,6 +246,9 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("food.snacks.cereal", ("식품", "과자·간식", "시리얼"), "과자/시리얼|과자/스낵/간식", (
         ("flakes", "플레이크시리얼", "후레이크|플레이크"), ("granola", "그래놀라", "그래놀라", "그래놀라"),
+    )),
+    *_group("food.snacks.traditional", ("식품", "과자·간식", "전통간식"), "", (
+        ("hangwa", "한과·전병", ""), ("yanggaeng", "양갱", ""),
     )),
     *_group("food.drinks.coffee", ("식품", "음료", "커피"), "커피/차|커피/원두|우유/유제품|생수/음료|생수/음료/주류", (
         ("ready", "커피음료", "냉장커피|캔/PET커피|일반커피"),
@@ -534,6 +541,68 @@ def _contextual_audited_beverage_candidates(evidence: Mapping[str, Any]) -> set[
         return {"food.drinks.juice.aloe"}
     if re.search(r"갈아만든배|과즙|감귤음료|복숭아음료|쿨피스|쿨피치|피크닉\s*사과|델몬트\s*사과\s*드링크|(?:포도|사과)100(?:%|\b)", title, re.I):
         return {"food.drinks.juice.fruit_drink"}
+    return set()
+
+
+def _contextual_costco_snack_candidates(evidence: Mapping[str, Any]) -> set[str]:
+    """Classify explicit product forms in the fully audited Costco snack shelf."""
+    if evidence["mart"] != "costco" or tuple(map(_label_key, evidence["source_path_parts"])) != (_label_key("과자"),):
+        return set()
+    title = evidence["source_title"]
+    if re.search(r"애견|보틀|세척기|놀이\s*세트|제철과일|사과\s*선물세트|블루베리$|바로먹는감자|스낵치즈|쿠키버터무스|김과\s*김부각", title, re.I):
+        return set()
+    if re.search(r"1\s*kg\s*[x×*]\s*176", title, re.I):
+        return set()
+    if re.search(r"주스|쥬스", title, re.I):
+        return {"food.drinks.juice.fruit"}
+    if re.search(r"과일컵", title, re.I):
+        return {"food.produce.processed_fruit.cup"}
+    if re.search(r"동결건조\s*과일|건조과일", title, re.I):
+        return {"food.produce.processed_fruit.dried"}
+    if re.search(r"피스타치오", title, re.I):
+        return {"food.grains.nuts.pistachio"}
+    if re.search(r"캐슈넛", title, re.I):
+        return {"food.grains.nuts.cashew"}
+    if re.search(r"호두", title, re.I) and not re.search(r"정과", title, re.I):
+        return {"food.grains.nuts.walnut"}
+    if re.search(r"(?:피넛|땅콩)", title, re.I) and not re.search(r"프레첼|쿠키|초콜릿", title, re.I):
+        return {"food.grains.nuts.peanut"}
+    if re.search(r"견과|넛츠", title, re.I) and not re.search(r"초콜릿|쿠키", title, re.I):
+        return {"food.grains.nuts.mixed"}
+    if re.search(r"팝콘", title, re.I):
+        return {"food.snacks.savory.popcorn"}
+    if re.search(r"감자칩|프링글스|크리스피\s*프라이즈", title, re.I):
+        return {"food.snacks.savory.potato"}
+    if re.search(r"나초|토티야\s*칩|뻥이요", title, re.I):
+        return {"food.snacks.savory.corn"}
+    if re.search(r"고구마칩|야채부각", title, re.I):
+        return {"food.snacks.savory.vegetable"}
+    if re.search(r"다시마\s*부각칩|김부각", title, re.I):
+        return {"food.snacks.savory.seaweed"}
+    if re.search(r"어포", title, re.I):
+        return {"food.seafood.processed.dried_fish"}
+    if re.search(r"쌀\s*크래커|쌀과자|누룽지|두부\s*현미\s*스낵|서리태\s*스낵", title, re.I):
+        return {"food.snacks.savory.grain"}
+    if re.search(r"누가\s*샌드위치\s*크래커", title, re.I):
+        return {"food.snacks.baked.sandwich"}
+    if re.search(r"웨이퍼|웨하스", title, re.I):
+        return {"food.snacks.baked.wafer"}
+    if re.search(r"파이", title, re.I) and not re.search(r"파인애플", title, re.I):
+        return {"food.snacks.baked.pie"}
+    if re.search(r"프레첼|크래커", title, re.I):
+        return {"food.snacks.baked.cracker"}
+    if re.search(r"쿠키|비스킷|비스켓|랑그드샤|도너츠", title, re.I):
+        return {"food.snacks.baked.biscuits"}
+    if re.search(r"카스테라|도라야끼|바움쿠헨", title, re.I):
+        return {"food.snacks.baked.cake"}
+    if re.search(r"양갱", title, re.I):
+        return {"food.snacks.traditional.yanggaeng"}
+    if re.search(r"한과|오란다|전병", title, re.I):
+        return {"food.snacks.traditional.hangwa"}
+    if re.search(r"젤리", title, re.I):
+        return {"food.snacks.sweets.jelly"}
+    if re.search(r"캔디|마시멜로우", title, re.I):
+        return {"food.snacks.sweets.candy"}
     return set()
 
 
@@ -936,12 +1005,13 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     contextual_ids = _contextual_dairy_candidates(evidence)
     coffee_ids = _contextual_coffee_candidates(evidence)
     beverage_ids = _contextual_audited_beverage_candidates(evidence)
+    snack_ids = _contextual_costco_snack_candidates(evidence)
     if coffee_ids:
         # Audited product-form words are more specific than a mart's broad
         # "커피믹스" shelf (which also contains plain Kanu Americano).
         path_ids = {candidate for candidate in path_ids if not candidate.startswith("food.drinks.coffee.")}
         name_ids = {candidate for candidate in name_ids if not candidate.startswith("food.drinks.coffee.")}
-    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids
+    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids
     result = {
         **evidence,
         "unified_category_id": None,
@@ -970,7 +1040,8 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
             ((0.93, "official_url_taxonomy") if url_ids else
              ((0.90, "contextual_coffee_title") if coffee_ids else
               ((0.90, "contextual_costco_beverage_title") if beverage_ids else
-               ((0.86, "unambiguous_name_tokens") if name_ids else (0.90, "contextual_dairy_title")))))
+               ((0.90, "contextual_costco_snack_title") if snack_ids else
+                ((0.86, "unambiguous_name_tokens") if name_ids else (0.90, "contextual_dairy_title"))))))
         )
         result.update(unified_category_id=category_id, classification_confidence=confidence, review_status="classified", classification_reason=f"supported_by_{kind}", evidence_type=kind, category_path=list(_BY_ID[category_id].path))
         if category_id.startswith("food.dairy.milk."):

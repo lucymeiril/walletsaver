@@ -413,6 +413,46 @@ def test_adjacent_bottle_count_waits_until_package_parser_supports_it():
 
 
 @pytest.mark.parametrize(("title", "leaf"), [
+    ("커클랜드 시그니춰 탈각 피스타치오 680g", "food.grains.nuts.pistachio"),
+    ("커클랜드 시그니춰 무염 견과 스낵팩 945g", "food.grains.nuts.mixed"),
+    ("커클랜드 시그니춰 핑크 솔트감자칩 907g", "food.snacks.savory.potato"),
+    ("G.H.CRETORS 시카고 믹스 팝콘 737g", "food.snacks.savory.popcorn"),
+    ("El Sabroso 옐로우콘토티야칩851g", "food.snacks.savory.corn"),
+    ("Jackson고구마칩454g", "food.snacks.savory.vegetable"),
+    ("C-WEED다시마 부각칩 150g", "food.snacks.savory.seaweed"),
+    ("갓 튀김 어포 400g", "food.seafood.processed.dried_fish"),
+    ("미왕 고소한 쌀과자 250g x 5", "food.snacks.savory.grain"),
+    ("Shultz 미니 프레첼 2.72kg", "food.snacks.baked.cracker"),
+    ("커피크림 웨이퍼롤 180g x 6", "food.snacks.baked.wafer"),
+    ("롯데찰떡파이 35g x 35ea", "food.snacks.baked.pie"),
+    ("허쉬 초콜릿칩 쿠키 720g x 2", "food.snacks.baked.biscuits"),
+    ("Sennenya 브라운버터 바움쿠헨 50g x 16", "food.snacks.baked.cake"),
+    ("화과방 프리미엄 양갱 40g x 40", "food.snacks.traditional.yanggaeng"),
+    ("대조 우리쌀 전병 세트 24g x 24", "food.snacks.traditional.hangwa"),
+    ("Trolli 젤리 4종 100g x 12", "food.snacks.sweets.jelly"),
+    ("Trefin 벨기에 커피 캔디 1.5kg", "food.snacks.sweets.candy"),
+    ("Dole 복숭아 과일컵 113g x 16", "food.produce.processed_fruit.cup"),
+    ("100% 순수사과 동결건조 과일 30g x 10", "food.produce.processed_fruit.dried"),
+    ("카프리썬 오렌지망고 주스 200ml x 20", "food.drinks.juice.fruit"),
+])
+def test_audited_costco_snack_shelf_uses_explicit_product_form(title, leaf):
+    result = classify_record(_raw("costco", "과자", title))
+    assert result["unified_category_id"] == leaf
+
+
+@pytest.mark.parametrize("title", [
+    "정직하개 애견용 소고기 육포 1kg", "프리미엄 제철과일 선물세트 총 3.4kg이상",
+    "락앤락 휴대용 과일 & 요거트 보틀 600ml x 2P", "카스 초음파 야채 과일 세척기 4L",
+    "산리오 캐릭터즈 디저트 휘핑 데코 놀이 세트", "Arla 하바티 & 고다 스낵치즈 510g x 432ea",
+    "Snapik 화이트 마시멜로우 1kg x 176",
+    "Delici 쿠키버터무스 76g x 6", "해품은김과 김부각 세트",
+])
+def test_audited_costco_snack_shelf_contaminants_and_bad_packages_stay_pending(title):
+    result = classify_record(_raw("costco", "과자", title))
+    assert result["unified_category_id"] is None
+
+
+@pytest.mark.parametrize(("title", "leaf"), [
     ("소화잘되는 배안아픈저지방우유 (900ml*2)", "food.dairy.milk.plain"),
     ("서울 A2플러스우유 710ml", "food.dairy.milk.plain"),
     ("유기농우유 900ml", "food.dairy.milk.plain"),
