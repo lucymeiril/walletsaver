@@ -1,5 +1,15 @@
 # 재개 체크포인트 — 2026-09-08
 
+## 2026-09-10 재개 업데이트 — 최신 pass32 생활·위생·뷰티
+
+- 최신 `.debug-artifacts/initial-catalog-20260910-pass32`, 누적 결정 입력 기존 `reviewed-initial-decisions-20260908-remaining-exact.json` 431개 유지. 아래 과거 시작점보다 이 절을 우선한다.
+- 이마트 `청소/생활용품` 73 / `제지/위생/건강` 69 / `헤어/바디/뷰티` 49의 미분류 제목 191개 전량 검토. `initial_audited_household.py`에 145개 명시 제목 분류표 추가. 액상세제/캡슐세제/건조기시트, 일반샴푸/염색제, 화장지/생리용품 구분. 혼합 선물세트·형태 불명·의료성 품목은 보류.
+- 전체 9,196관측 비교에서 대상 145건만 미분류→리프. 최종 coverage +143, 검토 DB 포함 +134. 원본 listing/누적 결정 검증 후의 최종 수와 단건 분류 제안 수는 다르다. 기존 포함 전량과 431개 결정을 보존했다.
+- 상품군 2,926 / variant 2,956 / listing 3,076 / offer 4,526 / 매칭 규칙 3,003. 카테고리 369 / 키워드 288 / 경로 매핑 237. 보류 4,670관측, 미분류 4,457. active 3,787 / promotion pending 739. 운영 승인이 아닌 별도 검토 DB 초안이다.
+- 관리자 전체 1,113 passed(기존 경고 460), 집중 검사 544 passed. 멱등 import/stage/snapshot/runtime 검증 성공. 실제 API 치약420g/액체세제2000ml/캡슐100개/염색제10팩 리프·총량·해당 단위가격 검사 성공. API 전후 DB 해시 불변. snapshot 보류739제거/3,787유지, 운영 공개 없음.
+- bundle SHA-256 `bbad60acb7db6d3d393cf1a3bebbc3c7745d03c0bcbbaca2faf23664d8cd9695`. 원본 SHA 기존 `c4431eea85f0c1c2f54c202030daed8f8904d8c7b832491a126b8541590845e0` 유지. 운영 DB 변경·수집·승인 없음.
+- 독립 감사 `.debug-artifacts/audit_household_pass32.py`, `.debug-artifacts/verify_household_pass32.py`. 다음은 홈플러스 미분류 상세 경로를 여러 묶음으로 검토하거나 이마트 정육/수산/김치·반찬 묶음 진행. 휴지 길이×롤 수와 붙은 치약 규격 필드 충돌은 여전히 보류 사례가 있어 후속 단위 검토 대상으로 남긴다. 전체 DB 완성/운영 적용은 아직 남음.
+
 ## 2026-09-10 재개 업데이트 — 최신 pass31 (이마트 식품 3묶음)
 
 - 최신 `.debug-artifacts/initial-catalog-20260910-pass31`. 기존 누적 결정 입력 `reviewed-initial-decisions-20260908-remaining-exact.json` 431개 유지. 아래 과거 시작점보다 이 절을 우선한다.

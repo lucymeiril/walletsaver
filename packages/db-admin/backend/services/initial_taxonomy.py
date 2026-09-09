@@ -15,6 +15,7 @@ as ``우유/유제품`` is one broad node, not two nested categories.
 from __future__ import annotations
 
 from services.initial_audited_food import AUDITED_EMART_FOOD_TITLES
+from services.initial_audited_household import AUDITED_EMART_HOUSEHOLD_TITLES
 
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
@@ -338,13 +339,25 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("household.cleaning.laundry", ("생활용품", "청소·세탁", "세탁용품"), "세탁/청소|청소/생활용품", (
         ("liquid", "액체세탁세제", "액체 세탁세제|액체세탁세제", "액체세탁세제|액체 세탁세제"),
         ("softener", "섬유유연제", "고농축 섬유유연제|섬유유연제", "섬유유연제"),
+        ("capsule", "캡슐세탁세제", ""), ("dryer_sheet", "건조기시트", ""),
+        ("oxygen_bleach", "산소계표백제", ""), ("machine_cleaner", "세탁조세정제", ""),
     )),
     *_group("household.cleaning.kitchen", ("생활용품", "청소·세탁", "주방청소"), "세탁/청소|청소/생활용품", (
         ("detergent", "주방세제", "일반 주방세제/퐁퐁|주방세제", "주방세제|주방 세제"),
         ("dishwasher", "식기세척기세제", "식기세척기 세제|식기세척기세제", "식기세척기세제|식기세척기 세제"),
+        ("degreaser", "주방기름때세정제", ""),
     )),
     *_group("household.cleaning.bath", ("생활용품", "청소·세탁", "욕실청소"), "세탁/청소|청소/생활용품", (
         ("cleaner", "욕실세정제", "욕실세정제", "욕실세정제|욕실 세정제"),
+        ("drain", "배수관세정제", ""), ("toilet", "변기세정제", ""), ("mold", "곰팡이제거제", ""),
+    )),
+    *_group("household.cleaning.general", ("생활용품", "청소·세탁", "일반청소"), "", (
+        ("chlorine", "염소계표백제", ""), ("glass", "유리세정제", ""), ("wipes", "청소용티슈", ""),
+        ("dehumidifier", "제습제", ""), ("deodorizer", "탈취제", ""),
+    )),
+    *_group("household.hygiene.feminine", ("생활용품", "위생용품", "생리용품"), "", (
+        ("liner", "팬티라이너", ""), ("overnight", "오버나이트패드", ""),
+        ("pants", "입는오버나이트", ""), ("tampon", "탐폰", ""),
     )),
     *_group("household.hygiene.paper", ("생활용품", "위생용품", "제지"), "화장지/물티슈|제지/위생/건강|욕실/생활용품", (
         ("toilet", "두루마리휴지", "두루마리|두루마리화장지|두루마리휴지", "두루마리휴지|두루마리 화장지"),
@@ -360,6 +373,14 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("beauty.personal.hair", ("뷰티·개인관리", "개인위생", "헤어케어"), "헤어/바디/뷰티|헤어/바디|헤어케어|hair-care", (
         ("shampoo", "샴푸", "샴푸|shampoo", "샴푸|shampoo"),
         ("conditioner", "린스·컨디셔너", "린스|컨디셔너|conditioner", "린스|헤어컨디셔너"),
+        ("treatment", "헤어트리트먼트", ""), ("dye", "염색제", ""),
+    )),
+    *_group("beauty.personal.oral", ("뷰티·개인관리", "개인위생", "구강관리"), "", (
+        ("toothpaste", "치약", ""), ("toothbrush", "칫솔", ""), ("floss", "치실", ""),
+    )),
+    *_group("beauty.personal.body", ("뷰티·개인관리", "개인위생", "바디케어"), "", (
+        ("lotion", "바디로션", ""), ("wash", "바디워시", ""),
+        ("handwash", "핸드워시", ""), ("soap", "세안·목욕비누", ""),
     )),
     *_group("baby.hygiene.diapering", ("유아동", "유아위생", "배변용품"), "기저귀|유아동/완구|유아용품", (
         ("diapers", "유아기저귀", "하기스|마미포코|팸퍼스|보솜이|유아기저귀", "유아기저귀|아기기저귀"),
@@ -1217,12 +1238,19 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         } else None
     )
     audited_emart_ids = {audited_emart_leaf} if audited_emart_leaf else set()
+    household_leaf = (
+        AUDITED_EMART_HOUSEHOLD_TITLES.get(evidence["source_title"])
+        if evidence["mart"] == "emart" and tuple(evidence["source_path_parts"]) in {
+            ("청소/생활용품",), ("제지/위생/건강",), ("헤어/바디/뷰티",),
+        } else None
+    )
+    household_ids = {household_leaf} if household_leaf else set()
     if coffee_ids:
         # Audited product-form words are more specific than a mart's broad
         # "커피믹스" shelf (which also contains plain Kanu Americano).
         path_ids = {candidate for candidate in path_ids if not candidate.startswith("food.drinks.coffee.")}
         name_ids = {candidate for candidate in name_ids if not candidate.startswith("food.drinks.coffee.")}
-    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids | cheese_shelf_ids | fruit_ids | meat_shelf_ids | audited_emart_ids
+    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids | cheese_shelf_ids | fruit_ids | meat_shelf_ids | audited_emart_ids | household_ids
     result = {
         **evidence,
         "unified_category_id": None,
@@ -1262,6 +1290,8 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
             confidence, kind = 0.95, "audited_costco_meat_shelf_title"
         if audited_emart_ids:
             confidence, kind = 0.95, "audited_emart_food_title"
+        if household_ids:
+            confidence, kind = 0.95, "audited_emart_household_title"
         result.update(unified_category_id=category_id, classification_confidence=confidence, review_status="classified", classification_reason=f"supported_by_{kind}", evidence_type=kind, category_path=list(_BY_ID[category_id].path))
         if category_id.startswith("food.dairy.milk."):
             result["classification_attributes"] = {
