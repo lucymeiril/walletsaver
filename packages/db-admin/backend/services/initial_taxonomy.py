@@ -255,10 +255,18 @@ LEAVES: tuple[Leaf, ...] = (
         ("water", "생수", "생수|먹는샘물", "먹는샘물"), ("sparkling", "탄산수", "탄산수", "탄산수"),
         ("cola", "콜라", "콜라"), ("cider", "사이다", "사이다"), ("soda", "탄산음료", ""),
         ("sports", "스포츠음료", "스포츠/이온음료", "이온음료|스포츠음료"),
+        ("energy", "에너지음료", "", ""),
+    )),
+    *_group("food.drinks.juice", ("식품", "음료", "과채음료"), "생수/음료|생수/음료/주류", (
+        ("fruit", "과일주스", "", ""),
+        ("vegetable", "채소주스", "", ""),
+        ("coconut", "코코넛워터", "", ""),
     )),
     *_group("food.drinks.tea", ("식품", "음료", "차·코코아"), "커피/차|차/액상차/핫초코", (
         ("barley", "보리차", "보리차", "보리차"), ("herbal", "허브차", "허브차"),
         ("citron", "유자차", "유자차", "유자차"), ("cocoa", "코코아·핫초코", "코코아/핫초코", "핫초코|코코아분말"),
+        ("green", "녹차·말차", "", ""), ("black", "홍차·아이스티", "", ""),
+        ("puer", "보이차", "", ""), ("grain", "곡물차", "", ""),
     )),
     *_group("food.seasonings.pastes", ("식품", "양념·소스", "장류"), "장류/양념/제빵|양념/오일/분말류", (
         ("soy", "간장", "간장"), ("gochujang", "고추장", "고추장"), ("doenjang", "된장", "된장"), ("ssamjang", "쌈장", "쌈장"),
@@ -453,6 +461,51 @@ def _contextual_coffee_candidates(evidence: Mapping[str, Any]) -> set[str]:
         return {"food.drinks.coffee.instant"}
     if re.search(r"스타벅스\s*(?:더블샷|파이크\s*플레이스\s*로스트)\b", title, re.I):
         return {"food.drinks.coffee.ready"}
+    return set()
+
+
+def _contextual_costco_beverage_candidates(evidence: Mapping[str, Any]) -> set[str]:
+    """Classify explicit drink forms in the audited Costco beverage shelf."""
+    if evidence["mart"] != "costco" or tuple(map(_label_key, evidence["source_path_parts"])) != (_label_key("음료"),):
+        return set()
+    title = evidence["source_title"]
+    # These audited shelf contaminants are not packaged beverages.
+    if re.search(r"컵홀더|앰플|아이스바|영코코넛|콤보팩", title, re.I):
+        return set()
+    if re.search(r"레쓰비|스타벅스\s*더블샷", title, re.I):
+        return {"food.drinks.coffee.ready"}
+    if re.search(r"코코넛\s*(?:퓨어)?워터", title, re.I):
+        return {"food.drinks.juice.coconut"}
+    if re.search(r"피지워터|(?<![가-힣])생수(?![가-힣])", title, re.I):
+        return {"food.drinks.water_soda.water"}
+    if re.search(r"탄산수|스파클링워터|트레비", title, re.I):
+        return {"food.drinks.water_soda.sparkling"}
+    if re.search(r"콜라|코카콜라|펩시", title, re.I):
+        return {"food.drinks.water_soda.cola"}
+    if re.search(r"칠성\s*사이다", title, re.I):
+        return {"food.drinks.water_soda.cider"}
+    if re.search(r"에너지\s*드링크|레드불|몬스터에너지|핫식스", title, re.I):
+        return {"food.drinks.water_soda.energy"}
+    if re.search(r"이온음료|게토레이|토레타|전해질드링크", title, re.I):
+        return {"food.drinks.water_soda.sports"}
+    if re.search(r"탄산음료|진저\s*비어|밀키스|오랑지나|레몬소다|비타500\s*스파클링|웰치소다", title, re.I):
+        return {"food.drinks.water_soda.soda"}
+    if re.search(r"보이차", title, re.I):
+        return {"food.drinks.tea.puer"}
+    if re.search(r"말차", title, re.I):
+        return {"food.drinks.tea.green"}
+    if re.search(r"홍차|아이스티", title, re.I):
+        return {"food.drinks.tea.black"}
+    if re.search(r"블랙보리", title, re.I):
+        return {"food.drinks.tea.barley"}
+    if re.search(r"쑥차", title, re.I):
+        return {"food.drinks.tea.herbal"}
+    if re.search(r"누룽지", title, re.I):
+        return {"food.drinks.tea.grain"}
+    if re.search(r"녹즙|(?:토마토|야채|채소|ABC|그린).{0,20}(?:착즙\s*)?주스", title, re.I):
+        return {"food.drinks.juice.vegetable"}
+    if re.search(r"(?:주스|쥬스)", title, re.I):
+        return {"food.drinks.juice.fruit"}
     return set()
 
 
@@ -854,12 +907,13 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     url_ids, url_hints = _url_candidates(evidence)
     contextual_ids = _contextual_dairy_candidates(evidence)
     coffee_ids = _contextual_coffee_candidates(evidence)
+    beverage_ids = _contextual_costco_beverage_candidates(evidence)
     if coffee_ids:
         # Audited product-form words are more specific than a mart's broad
         # "커피믹스" shelf (which also contains plain Kanu Americano).
         path_ids = {candidate for candidate in path_ids if not candidate.startswith("food.drinks.coffee.")}
         name_ids = {candidate for candidate in name_ids if not candidate.startswith("food.drinks.coffee.")}
-    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids
+    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids
     result = {
         **evidence,
         "unified_category_id": None,
@@ -887,7 +941,8 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
             (0.97, "source_full_path") if path_ids else
             ((0.93, "official_url_taxonomy") if url_ids else
              ((0.90, "contextual_coffee_title") if coffee_ids else
-              ((0.86, "unambiguous_name_tokens") if name_ids else (0.90, "contextual_dairy_title"))))
+              ((0.90, "contextual_costco_beverage_title") if beverage_ids else
+               ((0.86, "unambiguous_name_tokens") if name_ids else (0.90, "contextual_dairy_title")))))
         )
         result.update(unified_category_id=category_id, classification_confidence=confidence, review_status="classified", classification_reason=f"supported_by_{kind}", evidence_type=kind, category_path=list(_BY_ID[category_id].path))
         if category_id.startswith("food.dairy.milk."):

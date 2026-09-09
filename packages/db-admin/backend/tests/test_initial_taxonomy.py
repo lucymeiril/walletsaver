@@ -306,6 +306,54 @@ def test_mixed_instant_and_drip_coffee_gift_set_stays_pending():
 
 
 @pytest.mark.parametrize(("title", "leaf"), [
+    ("커클랜드 시그니춰 홍자몽주스 2.84L x 2", "food.drinks.juice.fruit"),
+    ("델몬트 스테비아 토마토 주스 950ml x 6", "food.drinks.juice.vegetable"),
+    ("야채듬뿍 더'진한 레드 주스 125ml x 24", "food.drinks.juice.vegetable"),
+    ("풀무원녹즙 프레시업 양배추천해 190ml x 10", "food.drinks.juice.vegetable"),
+    ("커클랜드 시그니춰 유기농 코코넛워터 330mlx12", "food.drinks.juice.coconut"),
+    ("피지워터 330ml X 24", "food.drinks.water_soda.water"),
+    ("동원미네마인스파클링워터 500ml x 48", "food.drinks.water_soda.sparkling"),
+    ("코카콜라 250ml x 30", "food.drinks.water_soda.cola"),
+    ("칠성사이다 1.8L x 6", "food.drinks.water_soda.cider"),
+    ("몬스터에너지울트라 355ml x 24캔", "food.drinks.water_soda.energy"),
+    ("토레타과채이온음료 340ml x 24캔", "food.drinks.water_soda.sports"),
+    ("분다버그 진저 비어캔 200ml x 24", "food.drinks.water_soda.soda"),
+    ("녹차원 보이차 0.9g x 100티백 x 3", "food.drinks.tea.puer"),
+    ("동원보성말차500ml x 24병", "food.drinks.tea.green"),
+    ("동원보성홍차아이스티 500ml x 24병", "food.drinks.tea.black"),
+    ("블랙보리 520ml X 24", "food.drinks.tea.barley"),
+    ("쌍계 김동곤명인의 쑥차 파우더 15g x 40", "food.drinks.tea.herbal"),
+    ("양반가마솥누룽지500ml x 24", "food.drinks.tea.grain"),
+    ("스타벅스더블샷바닐라 275ml x 24", "food.drinks.coffee.ready"),
+])
+def test_audited_costco_beverage_shelf_uses_explicit_drink_form(title, leaf):
+    result = classify_record(_raw("costco", "음료", title))
+    assert result["unified_category_id"] == leaf
+    assert result["classification_confidence"] >= 0.90
+
+
+@pytest.mark.parametrize("title", [
+    "베트남 영코코넛 9입(7.5kg내외)",
+    "폴라레티 후르트 아이스바 40ml x 80",
+    "끌레드벨 럭셔리 콜라겐 82 앰플 100ml x 2",
+    "벤딕트 차량용 보냉 컵홀더 2개",
+    "본비 유차청 2kg",
+    "정관장 홍삼원력 50ml x 30포",
+    "프리미어 단백질 드링크 325ml x 12팩",
+    "칠성사이다 250ml x 30 + 펩시콜라 250ml x 30 콤보팩",
+])
+def test_audited_costco_beverage_shelf_contaminants_and_unclear_forms_stay_pending(title):
+    result = classify_record(_raw("costco", "음료", title))
+    assert result["unified_category_id"] is None
+    assert result["review_status"] == "pending"
+
+
+def test_frozen_watermelon_juice_does_not_match_the_korean_word_for_bottled_water():
+    result = classify_record(_raw("costco", "음료", "엘제이드얼린생수박주스340ml x 8 x 2"))
+    assert result["unified_category_id"] == "food.drinks.juice.fruit"
+
+
+@pytest.mark.parametrize(("title", "leaf"), [
     ("소화잘되는 배안아픈저지방우유 (900ml*2)", "food.dairy.milk.plain"),
     ("서울 A2플러스우유 710ml", "food.dairy.milk.plain"),
     ("유기농우유 900ml", "food.dairy.milk.plain"),
