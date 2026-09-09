@@ -168,6 +168,7 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.meat.eggs", ("식품", "정육·계란", "알류"), "정육/계란|정육/계란류|계란/알류|계란/메추리알", (
         ("chicken", "계란", "계란|일반란|계란15구|계란10구|계란25구 이상|동물복지란/유정란등"),
         ("quail", "메추리알", "메추리알", "메추리알"),
+        ("cooked", "조리계란", ""),
     )),
     *_group("food.meat.processed", ("식품", "정육·계란", "가공육"), "두부/김치/반찬|햄/어묵/맛살/닭가슴살|간편식/밀키트", (
         ("sausage", "소시지", "소시지|비엔나소시지|간식용소시지", "비엔나소시지|비엔나 소시지"),
@@ -177,6 +178,8 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("food.seafood.fish", ("식품", "수산물", "생선"), "수산물/건어물|수산물/건해산물|수산물", (
         ("mackerel", "고등어", "고등어"), ("salmon", "연어", "연어"), ("pollock", "명태", "명태|동태|생태"),
+        ("flounder", "가자미", ""), ("spanish_mackerel", "삼치", ""),
+        ("hairtail", "갈치", ""), ("croaker", "조기", ""), ("rockfish", "볼락", ""),
     )),
     *_group("food.seafood.shellfish", ("식품", "수산물", "갑각·패류"), "수산물/건어물|수산물/건해산물|수산물", (
         ("shrimp", "새우", "냉동새우|새우"), ("crab", "게", "게/꽃게/대게"), ("abalone", "전복", "전복"),
@@ -230,12 +233,14 @@ LEAVES: tuple[Leaf, ...] = (
         ("cheese_ball", "치즈볼", ""), ("vegetable_fritter", "채소튀김", ""),
         ("meat_patty", "동그랑땡", ""), ("rice_cake", "떡", ""),
         ("japchae", "조리잡채", ""), ("seasoned_meat", "양념육", ""),
+        ("sushi", "완성초밥", ""), ("kimbap", "김밥", ""), ("salad", "조리샐러드", ""),
         ("grilled_fish", "조리생선구이", ""),
     )),
     *_group("food.preserved.kimchi", ("식품", "반찬·저장식품", "김치"), "두부/김치/반찬|김치/반찬/젓갈", (
         ("cabbage", "배추김치", "배추김치|포기김치|맛김치", "배추김치|포기김치|맛김치"),
         ("radish", "총각김치", "총각김치", "총각김치"), ("yeolmu", "열무김치", "열무김치", "열무김치"),
         ("water", "물김치", "물김치", "물김치"), ("white", "백김치", "백김치", "백김치"),
+        ("green_onion", "파김치", ""), ("mustard", "갓김치", ""), ("seokbakji", "석박지", ""),
     )),
     *_group("food.preserved.sides", ("식품", "반찬·저장식품", "밑반찬"), "두부/김치/반찬|김치/반찬/젓갈", (
         ("stir_fried", "볶음반찬", ""),
@@ -732,6 +737,60 @@ def _contextual_costco_fruit_candidates(evidence: Mapping[str, Any]) -> set[str]
     }
     leaf = titles.get(evidence["source_title"])
     return {f"food.produce.fruit.{leaf}"} if leaf else set()
+
+
+def _contextual_emart_fresh_and_deli(evidence: Mapping[str, Any]) -> set[str]:
+    """Reviewed shelf forms; exclude promotions and uncertain variable weights."""
+    if evidence["mart"] != "emart":
+        return set()
+    path = tuple(evidence["source_path_parts"])
+    title = evidence["source_title"]
+    if re.search(r"[%％]|할인|특가|내외|이상|단위 판매|100g\)|사료|강아지|고양이", title, re.I):
+        return set()
+    if path == ("김치/반찬/델리",):
+        if re.search(r"파김치", title): return {"food.preserved.kimchi.green_onion"}
+        if re.search(r"갓김치", title): return {"food.preserved.kimchi.mustard"}
+        if re.search(r"석박지", title): return {"food.preserved.kimchi.seokbakji"}
+        if re.search(r"포기김치|포기배추김치|썰은배추김치|썰은김치|맛김치", title): return {"food.preserved.kimchi.cabbage"}
+        if re.search(r"열무물김치", title): return {"food.preserved.kimchi.water"}
+        if re.search(r"오징어채볶음|진미채볶음|김치볶음", title): return {"food.preserved.sides.stir_fried"}
+        if re.search(r"장조림|오징어실채조림", title): return {"food.preserved.sides.braised"}
+        if re.search(r"장아찌|^오이지", title): return {"food.preserved.sides.pickled"}
+        if re.search(r"무침|양념깻잎", title): return {"food.preserved.sides.seasoned"}
+        if re.search(r"샐러드", title): return {"food.meals.prepared.salad"}
+        if re.search(r"참치마요\s*김밥", title): return {"food.meals.prepared.kimbap"}
+        if "키친델리" in title and "초밥" in title and "&" not in title: return {"food.meals.prepared.sushi"}
+        if "두마리오븐구이치킨" in title: return {"food.meals.prepared.chicken"}
+        if "너비아니" in title: return {"food.meals.prepared.tteokgalbi"}
+        if "김밥용햄" in title: return {"food.meat.processed.ham"}
+        if "사골곰탕" in title: return {"food.meals.prepared.soup_stew"}
+    elif path == ("정육/계란류",):
+        if re.search(r"훈연한 계란", title): return {"food.meat.eggs.cooked"}
+        if re.search(r"계란|유정란|햇달걀|동물복지 왕란|가농 1\+등급|1등급 30구|행복한 특란", title): return {"food.meat.eggs.chicken"}
+        if "깐메추리알" in title: return {"food.meat.eggs.quail"}
+        if "훈제오리" in title: return {"food.meat.processed.smoked_duck"}
+        if "그릴 닭가슴살" in title: return {"food.meat.processed.breast"}
+        if "마늘치킨훈제" in title: return {"food.meals.prepared.chicken"}
+        if re.search(r"양념 돼지갈비|닭갈비|기사식당", title): return {"food.meals.prepared.seasoned_meat"}
+        if re.search(r"한우|우삼겹|차돌|LA갈비|냉동양지", title): return {"food.meat.fresh.beef"}
+        if re.search(r"삼겹살", title): return {"food.meat.fresh.pork"}
+        if re.search(r"\[냉동\] (?:닭안심|큐브 닭가슴살)|무항생제 닭", title): return {"food.meat.fresh.chicken"}
+    elif path == ("수산물/건해산",):
+        if re.search(r"훈제|슈림프링|자숙|해물모둠|광어회", title): return set()
+        if re.search(r"고등어", title): return {"food.seafood.fish.mackerel"}
+        if re.search(r"가자미", title): return {"food.seafood.fish.flounder"}
+        if re.search(r"삼치살", title): return {"food.seafood.fish.spanish_mackerel"}
+        if re.search(r"장문볼락", title): return {"food.seafood.fish.rockfish"}
+        if re.search(r"은갈치", title): return {"food.seafood.fish.hairtail"}
+        if re.search(r"참조기", title): return {"food.seafood.fish.croaker"}
+        if re.search(r"연어", title): return {"food.seafood.fish.salmon"}
+        if re.search(r"꽃게", title): return {"food.seafood.shellfish.crab"}
+        if re.search(r"생새우살|붉은 새우살|적새우살", title): return {"food.seafood.shellfish.shrimp"}
+        if re.search(r"미역", title): return {"food.seafood.seaweed.miyeok"}
+        if re.search(r"멸치", title): return {"food.seafood.processed.anchovy"}
+        if re.search(r"쥐치포|백진미채|맛오징어|오징어굿다리", title): return {"food.seafood.processed.dried_fish"}
+        if re.search(r"돌김|김자반|전장김|김밥용 김|재래김|도시락김|파래김|전장 김|소금김|구운김", title): return {"food.seafood.seaweed.laver"}
+    return set()
 
 
 def _contextual_homeplus_reviewed_shelves(evidence: Mapping[str, Any]) -> set[str]:
@@ -1325,6 +1384,7 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     household_ids = {household_leaf} if household_leaf else set()
     homeplus_shelf_ids = _contextual_homeplus_reviewed_shelves(evidence)
     homeplus_shelf_ids |= _contextual_homeplus_sauces_and_inari(evidence)
+    emart_fresh_ids = _contextual_emart_fresh_and_deli(evidence)
     if any(category.startswith("food.seasonings.sauces.") for category in homeplus_shelf_ids):
         # A corroborated sauce shelf and explicit 양념 establish product form.
         # Drop only name candidates already rejected by the ingredient veto;
@@ -1335,7 +1395,7 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         # "커피믹스" shelf (which also contains plain Kanu Americano).
         path_ids = {candidate for candidate in path_ids if not candidate.startswith("food.drinks.coffee.")}
         name_ids = {candidate for candidate in name_ids if not candidate.startswith("food.drinks.coffee.")}
-    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids | cheese_shelf_ids | fruit_ids | meat_shelf_ids | audited_emart_ids | household_ids | homeplus_shelf_ids
+    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids | cheese_shelf_ids | fruit_ids | meat_shelf_ids | audited_emart_ids | household_ids | homeplus_shelf_ids | emart_fresh_ids
     result = {
         **evidence,
         "unified_category_id": None,
@@ -1379,6 +1439,8 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
             confidence, kind = 0.95, "audited_emart_household_title"
         if homeplus_shelf_ids:
             confidence, kind = 0.90, "reviewed_homeplus_shelf_and_form"
+        if emart_fresh_ids:
+            confidence, kind = 0.90, "reviewed_emart_fresh_and_deli"
         result.update(unified_category_id=category_id, classification_confidence=confidence, review_status="classified", classification_reason=f"supported_by_{kind}", evidence_type=kind, category_path=list(_BY_ID[category_id].path))
         if category_id.startswith("food.dairy.milk."):
             result["classification_attributes"] = {
