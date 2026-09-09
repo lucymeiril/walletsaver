@@ -11,6 +11,8 @@ from crawlers.marts.costco.crawler import (
     BASE_URL,
     CATEGORY_CODES,
     CostcoCrawler,
+    CostcoCard,
+    _card_to_record,
     _occ_pagination,
     cards_to_discount_items,
     parse_costco_listing,
@@ -20,6 +22,28 @@ from crawlers.marts.costco.crawler import (
 
 HTML_FIXTURE = Path(__file__).parent / "fixtures" / "costco" / "special_offers_5cards.html"
 OCC_FIXTURE = Path(__file__).parent / "fixtures" / "costco" / "occ_products_3items.json"
+
+
+@pytest.mark.parametrize(("title", "quantity", "count"), [
+    ("순댓국 2,500g", 2500, None),
+    ("국 1,060g x 2ea", 1060, 2),
+    ("음료 240ml x 30 x 2팩", 240, 60),
+    ("볶음밥300g x 7 x 2봉(4200g)", 300, 14),
+])
+def test_collection_preserves_complete_package_not_last_numeric_suffix(title, quantity, count):
+    card = CostcoCard(name=title, sale_price=10000, original_price=None,
+        unit_price_text=None, detail_url=BASE_URL + "/p/123", image_url=None,
+        is_member_only=False, raw_html="", mart_native_code="123")
+    record = _card_to_record(card)
+    assert record["pack_qty"] == quantity
+    assert record["bundle_count"] == count
+    item = cards_to_discount_items([card], source_url=BASE_URL)[0]
+    assert item.package_quantity == quantity
+    assert item.attributes["bundle_count"] == count
+    assert item.display_unit == record["display_unit"]
+    exported = CostcoCrawler()._discount_item_to_product_record(item)
+    assert exported["bundle_count"] == count
+    assert exported["display_unit"] == record["display_unit"]
 
 
 @pytest.fixture

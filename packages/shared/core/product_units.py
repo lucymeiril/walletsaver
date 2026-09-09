@@ -5,18 +5,24 @@ import re
 from typing import Any
 
 _MEASURE_UNIT_PATTERN = r"kg|킬로그램|g|그램|ml|mL|밀리리터|미리리터|l|L|리터"
+_MEASURE_NUMBER_PATTERN = r"(?:\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?)"
 _QUANTITY_RE = re.compile(
-    rf"(?<![\d.])(?:\((?P<paren>\d+(?:\.\d+)?)\s*(?P<paren_unit>{_MEASURE_UNIT_PATTERN})(?![A-Za-z])\)|(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>{_MEASURE_UNIT_PATTERN})(?![A-Za-z]))",
+    rf"(?<![\d.,])(?:\((?P<paren>{_MEASURE_NUMBER_PATTERN})\s*(?P<paren_unit>{_MEASURE_UNIT_PATTERN})(?![A-Za-z])\)|(?P<qty>{_MEASURE_NUMBER_PATTERN})\s*(?P<unit>{_MEASURE_UNIT_PATTERN})(?![A-Za-z]))",
     re.IGNORECASE,
 )
 _MEASURE_BUNDLE_RE = re.compile(
-    r"(?<![\d.])"
+    r"(?<![\d.,])"
     # The mandatory multiplication token below is also the unit boundary;
     # do not reject compact provider titles such as ``100gx30``.
-    rf"(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>{_MEASURE_UNIT_PATTERN})"
+    rf"(?P<qty>{_MEASURE_NUMBER_PATTERN})\s*(?P<unit>{_MEASURE_UNIT_PATTERN})"
     r"\s*[xX×*]\s*"
     r"(?P<count>\d+)\s*(?:개입|입|개|팩|봉|병|캔|포|장)?",
     re.IGNORECASE,
+)
+_MEASURE_CHAIN_RE = re.compile(
+    rf"(?<![\d.,])(?P<qty>{_MEASURE_NUMBER_PATTERN})\s*(?P<unit>{_MEASURE_UNIT_PATTERN})"
+    r"(?P<factors>(?:\s*[x×*]\s*\d+\s*(?:개입|입|개|팩|봉|병|캔|포|장|ct|pk|ea)?){2,})"
+    r"(?![A-Za-z0-9가-힣.,])", re.I,
 )
 _COUNT_UNIT_PATTERN = r"개입|봉지|인분|세트|마리|회분|구|입|개|팩|봉|병|캔|손|매|롤|포|장|족|통|인|p|P|t|T"
 _COUNT_BUNDLE_RE = re.compile(
@@ -124,10 +130,26 @@ def _is_reference_unit_match(text: str, match: re.Match[str]) -> bool:
 def parse_package_quantity(text: str) -> dict[str, Any] | None:
     """Extract the sold package quantity from title text (e.g. 300g, (200g), 1.5L, 5입)."""
     text = text or ""
+    chain_matches = list(_MEASURE_CHAIN_RE.finditer(text))
+    if chain_matches:
+        match = chain_matches[-1]
+        quantity = float(match.group("qty").replace(",", ""))
+        factors = [int(n) for n in re.findall(r"[x×*]\s*(\d+)", match.group("factors"), re.I)]
+        if quantity <= 0 or any(n <= 0 for n in factors):
+            return None
+        bundle_count = 1
+        for factor in factors:
+            bundle_count *= factor
+        unit = _normalize_unit(match.group("unit"))
+        return {
+            "raw_match": match.group(0), "package_quantity": quantity,
+            "package_unit": unit, "bundle_count": bundle_count,
+            "display_unit": f"{quantity:g}{unit}×{bundle_count}",
+        }
     count_bundle_matches = list(_COUNT_BUNDLE_RE.finditer(text))
     if count_bundle_matches:
         match = max(count_bundle_matches, key=lambda item: item.start())
-        quantity = float(match.group("qty"))
+        quantity = float(match.group("qty").replace(",", ""))
         if quantity <= 0:
             return None
         bundle_count = int(match.group("count"))
@@ -144,7 +166,7 @@ def parse_package_quantity(text: str) -> dict[str, Any] | None:
     bundle_matches = list(_MEASURE_BUNDLE_RE.finditer(text))
     if bundle_matches:
         match = max(bundle_matches, key=lambda item: item.start())
-        quantity = float(match.group("qty"))
+        quantity = float(match.group("qty").replace(",", ""))
         if quantity <= 0:
             return None
         unit = _normalize_unit(match.group("unit"))
@@ -197,7 +219,7 @@ def parse_package_quantity(text: str) -> dict[str, Any] | None:
         }
     qty_text = match.group("paren") or match.group("qty")
     unit_text = match.group("paren_unit") or match.group("unit")
-    quantity = float(qty_text)
+    quantity = float(qty_text.replace(",", ""))
     if quantity <= 0:
         return None
     unit = _normalize_unit(unit_text)

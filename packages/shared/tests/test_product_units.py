@@ -106,6 +106,28 @@ def test_compact_measure_bundle_without_space_before_x_is_parsed() -> None:
     }
 
 
+def test_grouped_thousands_measure_is_not_truncated_to_suffix() -> None:
+    for title, quantity in [("국 2,500g", 2500), ("샴푸 1,050ml", 1050), ("고기 (1,000g)", 1000)]:
+        assert parse_package_quantity(title)["package_quantity"] == quantity
+    assert parse_package_quantity("국 2,500g x 2")["bundle_count"] == 2
+    assert normalize_unit_metadata(name="국 2,500g", sale_price=10000)["price_per_100g"] == 400
+    assert parse_package_quantity("잘못된 중량 1,05g") is None
+    assert parse_package_quantity("잘못된 중량 1,000,00g") is None
+
+
+def test_single_measure_chain_multiplies_all_explicit_factors() -> None:
+    for title, quantity, count in [
+        ("잡채350g x 5 x 2pk", 350, 10),
+        ("순대 500gx3x2", 500, 6),
+        ("콤부차 5g x 30ct x 2", 5, 60),
+        ("볶음밥300g x 7 x 2봉(4200g)", 300, 14),
+    ]:
+        parsed = parse_package_quantity(title)
+        assert parsed["package_quantity"] == quantity
+        assert parsed["bundle_count"] == count
+    assert normalize_unit_metadata(name="잡채350g x 5 x 2pk", sale_price=35000)["price_per_100g"] == 1000
+
+
 def test_trailing_unit_price_reference_does_not_override_package_quantity() -> None:
     parsed = normalize_unit_metadata(name="무항생제 한우 불고기 300g 100g당 4,950원", sale_price=14850)
     assert parsed["raw_match"] == "300g"

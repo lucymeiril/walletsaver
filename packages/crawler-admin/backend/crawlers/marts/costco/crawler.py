@@ -15,6 +15,7 @@ from bs4 import BeautifulSoup
 
 from core.contracts.crawler import CrawlerContract
 from core.models import CrawlerGroup, CrawlerInfo, CrawlResult, CrawlStatus, DiscountItem, ErrorType, StrategyFailure
+from core.product_units import parse_package_quantity
 from crawlers.marts.source_utils import (
     absolute_url,
     build_source_attributes,
@@ -53,7 +54,6 @@ OCC_MAX_PAGES = 3
 _WON_RE = re.compile(r"([0-9][0-9,]*)\s*원")
 _PRODUCT_RE = re.compile(r"/p/(\d+)(?:[/?#]|$)")
 _CATEGORY_RE = re.compile(r"/c/(cos_\d+(?:\.\d+)*)")
-_PACK_RE = re.compile(r"(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>kg|g|ml|L|l|개|봉|팩|입|매)", re.IGNORECASE)
 _SEED_KEY = "coco" + "dalin_join_key"
 
 
@@ -223,15 +223,10 @@ def _price_candidates(card_text: str) -> list[int]:
 
 
 def _extract_pack(name: str) -> tuple[float | None, str | None]:
-    matches = list(_PACK_RE.finditer(name or ""))
-    if not matches:
+    parsed = parse_package_quantity(name)
+    if not parsed:
         return None, None
-    m = matches[-1]
-    qty = float(m.group("qty"))
-    if qty.is_integer():
-        qty = int(qty)
-    unit = m.group("unit")
-    return qty, unit
+    return parsed["package_quantity"], parsed["package_unit"]
 
 
 def _normalize_name(name: str) -> str:
@@ -423,6 +418,7 @@ def _occ_pagination(data: dict) -> tuple[int, int]:
 
 def _card_to_record(card: CostcoCard) -> dict[str, Any]:
     pack_qty, pack_unit = _extract_pack(card.name)
+    parsed_package = parse_package_quantity(card.name) or {}
     normalized_name = _normalize_name(card.name)
     price = int(card.original_price or card.sale_price or 0)
     sale_price = int(card.sale_price or 0)
@@ -450,6 +446,8 @@ def _card_to_record(card: CostcoCard) -> dict[str, Any]:
         "brand": None,
         "pack_qty": pack_qty,
         "pack_unit": pack_unit,
+        "bundle_count": parsed_package.get("bundle_count"),
+        "display_unit": parsed_package.get("display_unit", ""),
         "image_url": card.image_url or "",
         "promo_label": card.promo_label,
         "promo_type": "checkout_discount" if card.promo_label else None,
@@ -492,8 +490,8 @@ def cards_to_discount_items(
                 store="코스트코",
                 original_price=record["price"] if record["price"] != record["sale_price"] else None,
                 sale_price=record["sale_price"],
-                unit=str(record.get("pack_qty") or "") + str(record.get("pack_unit") or "") if record.get("pack_qty") else "",
-                display_unit=str(record.get("pack_qty") or "") + str(record.get("pack_unit") or "") if record.get("pack_qty") else "",
+                unit=record["display_unit"],
+                display_unit=record["display_unit"],
                 package_quantity=record.get("pack_qty"),
                 package_unit=str(record.get("pack_unit") or ""),
                 price_per_100g=record["unit_price"] if str(record.get("unit_price_basis") or "").lower() == "100g" else None,
@@ -834,7 +832,7 @@ class CostcoCrawler(CrawlerContract):
             "unit_price_displayed", "unit_price_basis_raw", "unit_price_text", "mart_native_category_id",
             "mart_native_category_path", "canonical_url", "price", "sale_price", "name", "raw_name", "normalized_name",
             "brand", "pack_qty", "pack_unit", "image_url", "source_record_key", _SEED_KEY, "promo_label", "promo_type",
-            "raw_promo_type", "unit_price_display",
+            "raw_promo_type", "unit_price_display", "bundle_count", "display_unit",
         ]
         record = {key: attrs.get(key) for key in keys}
         record.update({

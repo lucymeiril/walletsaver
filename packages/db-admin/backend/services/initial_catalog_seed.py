@@ -166,10 +166,13 @@ def _package(payload: Mapping[str, Any], attrs: Mapping[str, Any], title: str) -
         # Neither a crawler default of one nor another numeric field proves
         # that an otherwise unparsed multiplication has been interpreted.
         issues.append("bundle_multiplier_unresolved")
-    if any(len(re.findall(r"[x×*]\s*\d+", text, re.I)) > 1 for text in (title, display_unit)):
-        # The convenience parser extracts only one factor from 400g x 3 x 2
-        # (also 5g x 30ct x 2). A numeric crawler field cannot prove the full
-        # chain was interpreted; retain it for explicit package review.
+    if any(
+        len(factors := re.findall(r"[x×*]\s*\d+", text, re.I)) > 1
+        and len(re.findall(r"[x×*]\s*\d+", (parse_package_quantity(text) or {}).get("raw_match", ""), re.I)) != len(factors)
+        for text in (title, display_unit)
+    ):
+        # Only a single fully parsed chain proves every factor. Separate
+        # products, unsupported suffixes and partial chains remain unresolved.
         issues.append("bundle_multiplier_unresolved")
     if "+" in title and len(re.findall(rf"(?<![A-Za-z0-9])\d+\s*{_COUNT_UNIT_PATTERN}(?![A-Za-z])", title, re.I)) > 1:
         issues.append("mixed_package_unresolved")
@@ -178,6 +181,10 @@ def _package(payload: Mapping[str, Any], attrs: Mapping[str, Any], title: str) -
     # retained it. Recover only an explicit multiplication confirmed by the
     # structured per-package quantity; never interpret 100ml+100ml as ×2.
     parsed_count = int(parsed.get("bundle_count", 1)) if parsed else 1
+    if parsed_count > 500 and parsed and len(re.findall(r"[x×*]\s*\d+", parsed["raw_match"], re.I)) > 1:
+        # Review unusually large wholesale/pallet packages before comparing
+        # them with retail packs; the arithmetic alone does not prove scope.
+        issues.append("bulk_package_review_required")
     if parsed and parsed.get("bundle_count"):
         parsed_unit = _text(parsed["package_unit"]).casefold()
         factor, parsed_unit = UNIT_ALIASES.get(parsed_unit, (1, parsed_unit))

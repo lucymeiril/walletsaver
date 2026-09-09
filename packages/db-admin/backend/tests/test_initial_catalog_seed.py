@@ -121,21 +121,51 @@ def test_numeric_bundle_count_does_not_override_unparsed_parenthesized_multiplic
     ("냉동 다진마늘 400g×3×2", 400),
 ])
 @pytest.mark.parametrize("count", [None, 1, 3, 6])
-def test_repeated_multiplication_requires_review_even_with_numeric_bundle_count(title, quantity, count):
+def test_complete_chain_requires_structured_count_agreement(title, quantity, count):
     raw = item(name=title, package_quantity=quantity, package_unit="g", bundle_count=count, display_unit=f"{quantity}g", unit=f"{quantity}g")
     bundle = build([ingestion(1, [raw])])
-    assert "bundle_multiplier_unresolved" in bundle["unresolved"][0]["reasons"]
-    assert bundle["variants"] == []
-    assert bundle["offers"] == []
-    assert bundle["match_rules"] == []
+    expected = 60 if quantity == 5 else 6
+    if count is None or count == expected:
+        assert bundle["unresolved"] == []
+        assert bundle["variants"][0]["bundle_count"] == expected
+        assert bundle["variants"][0]["package_quantity"] == quantity
+    else:
+        assert "bundle_count_conflict" in bundle["unresolved"][0]["reasons"]
+        assert bundle["variants"] == []
+        assert bundle["offers"] == []
+        assert bundle["match_rules"] == []
 
 
-def test_repeated_multiplication_in_display_unit_also_requires_review():
+def test_complete_chain_in_display_unit_is_recovered():
     raw = item(name="냉동 다진마늘", package_quantity=400, package_unit="g", display_unit="400g x 3 x 2", unit="400g")
+    bundle = build([ingestion(1, [raw])])
+    assert bundle["unresolved"] == []
+    assert bundle["variants"][0]["bundle_count"] == 6
+
+
+@pytest.mark.parametrize("title", [
+    "마늘 400g x 3 + 생강 200g x 2", "마늘 400g x 3묶음 x 2",
+    "마늘 400g x 3 x 2.5", "마늘 400g x 3 x 2종",
+])
+def test_separate_or_partially_parsed_chains_remain_unresolved(title):
+    raw = item(name=title, package_quantity=400, package_unit="g", display_unit="400g", unit="400g")
     bundle = build([ingestion(1, [raw])])
     assert "bundle_multiplier_unresolved" in bundle["unresolved"][0]["reasons"]
     assert bundle["offers"] == []
-    assert bundle["match_rules"] == []
+
+
+def test_thousands_parser_does_not_overwrite_conflicting_collected_quantity():
+    raw = item(name="국 2,500g", package_quantity=500, package_unit="g", display_unit="500g", unit="500g")
+    bundle = build([ingestion(1, [raw])])
+    assert "unit_title_conflict" in bundle["unresolved"][0]["reasons"]
+    assert bundle["offers"] == []
+
+
+def test_wholesale_chain_is_parsed_but_requires_package_review():
+    raw = item(name="두유 190ml x 24 x 189", package_quantity=190, package_unit="ml", display_unit="190ml", unit="190ml")
+    bundle = build([ingestion(1, [raw])])
+    assert "bulk_package_review_required" in bundle["unresolved"][0]["reasons"]
+    assert bundle["offers"] == []
 
 
 def test_single_explicit_mass_bundle_is_still_comparable():
