@@ -117,6 +117,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("tomato", "토마토", "토마토|방울토마토"),
         # Exact reviewed listings only: fruit-name mentions do not prove form.
         ("avocado", "아보카도", ""), ("mango", "망고", ""), ("jujube", "대추", ""),
+        ("lime", "라임", ""), ("grapefruit", "자몽", ""), ("dragon_fruit", "용과", ""),
     )),
     *_group("food.produce.processed_fruit", ("식품", "농산물", "가공과일"), "과일|쌀/잡곡/견과류", (
         ("frozen", "냉동과일", "냉동과일", "냉동과일|냉동 과일"),
@@ -659,6 +660,40 @@ def _contextual_costco_noodle_candidates(evidence: Mapping[str, Any]) -> set[str
     return set()
 
 
+def _contextual_costco_fruit_candidates(evidence: Mapping[str, Any]) -> set[str]:
+    """Exact audited titles: mixed gifts and approximate weights need review."""
+    if evidence["mart"] != "costco" or tuple(evidence["source_path_parts"]) != ("과일",):
+        return set()
+    titles = {
+        "후레쉬 라임 8kg": "lime",
+        "멕시코후레쉬라임2kg": "lime",
+        "남아공 자몽16kg": "grapefruit",
+        "남아공 자몽 6.4kg": "grapefruit",
+        "용과 4.8kg 선물세트": "dragon_fruit",
+        "복숭아 5kg 선물세트": "peach",
+        "황금배 7.5kg 선물세트": "pear",
+        "제스프리 골드키위 선물세트2.7kg": "kiwi",
+        "제스프리유기농골드키위 5.7kg(31~37입)": "kiwi",
+        "제스프리 그린키위(점보)4.9kg (36~39입)": "kiwi",
+        "뉴질랜드 제스프리 골드키위 5.7kg(26~31입)": "kiwi",
+        "뉴질랜드제스프리점보그린키위선물세트5.4kg": "kiwi",
+        "뉴질랜드 제스프리 점보 골드키위 선물세트 5.4kg": "kiwi",
+        "프리미엄샤인머스캣 선물세트 4kg": "grape",
+        "브라질애플망고선물세트3.7kg": "mango",
+        "프리미엄 배 선물세트 7.5kg(11~12입)": "pear",
+        "배 선물세트 5kg (9입이내)": "pear",
+        "사과 선물세트 4kg (15입이내)": "apple",
+        "프리미엄아보카도 선물세트 4kg (15입)": "avocado",
+        "제주 불로초 고당도 하우스 감귤 3kg": "citrus",
+        "청송사과세트5kg(15입이내)": "apple",
+        "의성眞사과세트4kg": "apple",
+        "하우스 밀감 3kg": "citrus",
+        "하우스 감귤 5kg 세트": "citrus",
+    }
+    leaf = titles.get(evidence["source_title"])
+    return {f"food.produce.fruit.{leaf}"} if leaf else set()
+
+
 def _contextual_costco_cheese_shelf_candidates(evidence: Mapping[str, Any]) -> set[str]:
     """Classify explicit food forms in Costco's heavily polluted cheese shelf."""
     if evidence["mart"] != "costco" or tuple(map(_label_key, evidence["source_path_parts"])) != (_label_key("치즈"),):
@@ -1125,12 +1160,13 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     snack_ids = _contextual_costco_snack_candidates(evidence)
     noodle_ids = _contextual_costco_noodle_candidates(evidence)
     cheese_shelf_ids = _contextual_costco_cheese_shelf_candidates(evidence)
+    fruit_ids = _contextual_costco_fruit_candidates(evidence)
     if coffee_ids:
         # Audited product-form words are more specific than a mart's broad
         # "커피믹스" shelf (which also contains plain Kanu Americano).
         path_ids = {candidate for candidate in path_ids if not candidate.startswith("food.drinks.coffee.")}
         name_ids = {candidate for candidate in name_ids if not candidate.startswith("food.drinks.coffee.")}
-    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids | cheese_shelf_ids
+    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids | cheese_shelf_ids | fruit_ids
     result = {
         **evidence,
         "unified_category_id": None,
@@ -1164,6 +1200,8 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
                  ((0.90, "contextual_costco_cheese_shelf_title") if cheese_shelf_ids else
                   ((0.86, "unambiguous_name_tokens") if name_ids else (0.90, "contextual_dairy_title"))))))))
         )
+        if fruit_ids:
+            confidence, kind = 0.95, "audited_costco_fruit_title"
         result.update(unified_category_id=category_id, classification_confidence=confidence, review_status="classified", classification_reason=f"supported_by_{kind}", evidence_type=kind, category_path=list(_BY_ID[category_id].path))
         if category_id.startswith("food.dairy.milk."):
             result["classification_attributes"] = {

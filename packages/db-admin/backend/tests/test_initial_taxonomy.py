@@ -526,6 +526,28 @@ def test_audited_costco_cheese_shelf_ambiguous_and_nonfood_items_stay_pending(ti
     assert result["unified_category_id"] is None
 
 
+@pytest.mark.parametrize(("title", "leaf"), [
+    ("후레쉬 라임 8kg", "lime"),
+    ("남아공 자몽16kg", "grapefruit"),
+    ("용과 4.8kg 선물세트", "dragon_fruit"),
+    ("브라질애플망고선물세트3.7kg", "mango"),
+])
+def test_audited_fruit_title_requires_matching_store_and_shelf(title, leaf):
+    result = classify_record(_raw("costco", "과일", title))
+    assert result["unified_category_id"] == f"food.produce.fruit.{leaf}"
+    assert result["evidence_type"] == "audited_costco_fruit_title"
+    assert classify_record(_raw("costco", "과일", title + " 주스"))["unified_category_id"] is None
+    assert classify_record(_raw("costco", "커피", title))["unified_category_id"] is None
+
+
+@pytest.mark.parametrize("title", [
+    "수박2호 ( 6KG 미만 )", "허니듀 & 머스크 멜론 세트 4입 (각 2입)",
+    "샤인머스캣 애플망고 사과 혼합선물세트4.6kg", "휴롬 원액기 P310 E31ST-BFM02MM",
+])
+def test_fruit_shelf_does_not_prove_a_single_fixed_product(title):
+    assert classify_record(_raw("costco", "과일", title))["unified_category_id"] is None
+
+
 def test_audited_costco_cheese_shelf_keeps_shredded_pizza_cheese_as_cheese():
     result = classify_record(_raw("costco", "치즈", "소와나무 이태리안 피자치즈 1kg x 3"))
     assert result["unified_category_id"] == "food.dairy.cheese.shredded"
