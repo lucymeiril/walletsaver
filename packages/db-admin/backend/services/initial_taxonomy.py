@@ -14,6 +14,8 @@ as ``우유/유제품`` is one broad node, not two nested categories.
 """
 from __future__ import annotations
 
+from services.initial_audited_food import AUDITED_EMART_FOOD_TITLES
+
 from collections import defaultdict
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
@@ -312,6 +314,14 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("food.bakery.spreads", ("식품", "베이커리·스프레드", "스프레드"), "", (
         ("peanut", "땅콩버터", ""),  # Never confused with dairy butter by its name.
+        ("fruit", "과일잼·마멀레이드", ""),
+    )),
+    *_group("food.bakery.bread", ("식품", "베이커리·스프레드", "빵"), "", (
+        ("sliced", "식빵", ""), ("roll", "모닝롤", ""), ("bagel", "베이글", ""),
+        ("hard", "하드롤·바게트", ""), ("pastry", "페이스트리", ""), ("dough", "제빵생지", ""),
+    )),
+    *_group("food.bakery.dessert", ("식품", "베이커리·스프레드", "디저트"), "", (
+        ("cake", "케이크", ""), ("muffin", "머핀", ""), ("scone", "스콘", ""), ("financier", "휘낭시에", ""),
     )),
     *_group("food.seasonings.oils", ("식품", "양념·소스", "식용유"), "장류/양념/제빵|양념/오일/분말류", (
         ("canola", "카놀라유", "카놀라유", "카놀라유"), ("grape", "포도씨유", "포도씨유", "포도씨유"),
@@ -1200,12 +1210,19 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     cheese_shelf_ids = _contextual_costco_cheese_shelf_candidates(evidence)
     fruit_ids = _contextual_costco_fruit_candidates(evidence)
     meat_shelf_ids = _contextual_costco_meat_shelf_candidates(evidence)
+    audited_emart_leaf = (
+        AUDITED_EMART_FOOD_TITLES.get(evidence["source_title"])
+        if evidence["mart"] == "emart" and tuple(evidence["source_path_parts"]) in {
+            ("밀키트/간편식",), ("면류/통조림",), ("베이커리/잼",),
+        } else None
+    )
+    audited_emart_ids = {audited_emart_leaf} if audited_emart_leaf else set()
     if coffee_ids:
         # Audited product-form words are more specific than a mart's broad
         # "커피믹스" shelf (which also contains plain Kanu Americano).
         path_ids = {candidate for candidate in path_ids if not candidate.startswith("food.drinks.coffee.")}
         name_ids = {candidate for candidate in name_ids if not candidate.startswith("food.drinks.coffee.")}
-    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids | cheese_shelf_ids | fruit_ids | meat_shelf_ids
+    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids | cheese_shelf_ids | fruit_ids | meat_shelf_ids | audited_emart_ids
     result = {
         **evidence,
         "unified_category_id": None,
@@ -1243,6 +1260,8 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
             confidence, kind = 0.95, "audited_costco_fruit_title"
         if meat_shelf_ids:
             confidence, kind = 0.95, "audited_costco_meat_shelf_title"
+        if audited_emart_ids:
+            confidence, kind = 0.95, "audited_emart_food_title"
         result.update(unified_category_id=category_id, classification_confidence=confidence, review_status="classified", classification_reason=f"supported_by_{kind}", evidence_type=kind, category_path=list(_BY_ID[category_id].path))
         if category_id.startswith("food.dairy.milk."):
             result["classification_attributes"] = {
