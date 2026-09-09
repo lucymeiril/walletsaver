@@ -96,6 +96,16 @@ def test_korean_measure_words_parse_as_canonical_package_units() -> None:
     assert parsed["bundle_count"] == 6
 
 
+def test_compact_measure_bundle_without_space_before_x_is_parsed() -> None:
+    assert parse_package_quantity("한우물 주먹밥100gx30") == {
+        "raw_match": "100gx30",
+        "package_quantity": 100.0,
+        "package_unit": "g",
+        "display_unit": "100g×30",
+        "bundle_count": 30,
+    }
+
+
 def test_trailing_unit_price_reference_does_not_override_package_quantity() -> None:
     parsed = normalize_unit_metadata(name="무항생제 한우 불고기 300g 100g당 4,950원", sale_price=14850)
     assert parsed["raw_match"] == "300g"

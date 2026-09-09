@@ -182,7 +182,17 @@ def _package(payload: Mapping[str, Any], attrs: Mapping[str, Any], title: str) -
         parsed_unit = _text(parsed["package_unit"]).casefold()
         factor, parsed_unit = UNIT_ALIASES.get(parsed_unit, (1, parsed_unit))
         parsed_quantity = Decimal(str(parsed["package_quantity"])) * Decimal(str(factor))
-        if (parsed_quantity, parsed_unit) != (canonical_quantity, canonical_unit):
+        # Some providers store the total (210g) while the title gives the
+        # comparable package boundary (30g×7). Recover that boundary only
+        # when the exact multiplication proves the same total and no separate
+        # structured bundle count claims otherwise.
+        if (
+            parsed_unit == canonical_unit
+            and count_number is None
+            and canonical_quantity == parsed_quantity * parsed_count
+        ):
+            canonical_quantity = parsed_quantity
+        elif (parsed_quantity, parsed_unit) != (canonical_quantity, canonical_unit):
             issues.append("unit_title_conflict")
         if count_number is not None and int(count_number) != parsed_count:
             issues.append("bundle_count_conflict")

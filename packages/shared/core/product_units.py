@@ -11,7 +11,9 @@ _QUANTITY_RE = re.compile(
 )
 _MEASURE_BUNDLE_RE = re.compile(
     r"(?<![\d.])"
-    rf"(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>{_MEASURE_UNIT_PATTERN})(?![A-Za-z])"
+    # The mandatory multiplication token below is also the unit boundary;
+    # do not reject compact provider titles such as ``100gx30``.
+    rf"(?P<qty>\d+(?:\.\d+)?)\s*(?P<unit>{_MEASURE_UNIT_PATTERN})"
     r"\s*[xX×*]\s*"
     r"(?P<count>\d+)\s*(?:개입|입|개|팩|봉|병|캔|포|장)?",
     re.IGNORECASE,

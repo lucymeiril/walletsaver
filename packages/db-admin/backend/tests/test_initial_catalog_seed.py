@@ -147,6 +147,19 @@ def test_single_explicit_mass_bundle_is_still_comparable():
     assert bundle["offers"][0]["standard_unit_price"] == 2500
 
 
+def test_structured_total_and_compact_title_bundle_recover_per_package_boundary():
+    raw = item(
+        name="에이클래스 체다 슬라이스치즈 210g (30gX7)",
+        package_quantity=210, package_unit="g", display_unit="210g", unit="210g",
+        sale_price=7000, original_price=None,
+    )
+    bundle = build([ingestion(1, [raw])])
+    assert bundle["unresolved"] == []
+    assert bundle["variants"][0]["package_quantity"] == 30
+    assert bundle["variants"][0]["bundle_count"] == 7
+    assert bundle["offers"][0]["standard_unit_price"] == pytest.approx(3333.3333)
+
+
 @pytest.mark.parametrize(("title", "quantity", "unit"), [
     ("맑은청 찰토마토 7~10입/팩", 10, "입"),
     ("토마토 7입~10입/팩", 10, "입"),
