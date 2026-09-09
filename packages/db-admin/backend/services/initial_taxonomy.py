@@ -190,6 +190,12 @@ LEAVES: tuple[Leaf, ...] = (
         ("udon", "우동", "우동|우동사리"), ("jjolmyeon", "쫄면", "쫄면"),
         ("black_bean", "짜장면", "짜장면"),
         ("glass", "당면", ""),  # Reviewed assignments only, not broad name matching.
+        ("rice_noodle", "쌀국수", ""), ("wheat_noodle", "소면·국수", ""),
+        ("buckwheat_noodle", "메밀국수", ""),
+        ("kalguksu", "칼국수", ""), ("makguksu", "막국수", ""),
+        ("sujebi", "수제비", ""), ("tofu_noodle", "두부면", ""),
+        ("jjamppong", "짬뽕면", ""),
+        ("pad_thai", "팟타이", ""),
     )),
     *_group("food.meals.rice", ("식품", "간편식·면", "밥·죽"), "라면/즉석식품/통조림|라면/통조림/즉석밥|간편식/밀키트|냉장/냉동/밀키트", (
         ("instant", "즉석밥", "즉석밥", "즉석밥"), ("cup", "컵밥", "컵밥", "컵밥"),
@@ -606,6 +612,46 @@ def _contextual_costco_snack_candidates(evidence: Mapping[str, Any]) -> set[str]
     return set()
 
 
+def _contextual_costco_noodle_candidates(evidence: Mapping[str, Any]) -> set[str]:
+    """Classify explicit noodle forms in the fully audited Costco ramen shelf."""
+    if evidence["mart"] != "costco" or tuple(map(_label_key, evidence["source_path_parts"])) != (_label_key("라면"),):
+        return set()
+    title = evidence["source_title"]
+    if re.search(r"조리기|면기\s*세트|냉동\s*손질\s*오징어|절단꽃게|가지\s*2봉|떡볶이\s*양념|곰탕\s*스틱|오징어소면|누룽지|뿌셔뿌셔", title, re.I):
+        return set()
+    if re.search(r"팟타이\s*키트", title, re.I):
+        return {"food.meals.noodles.pad_thai"}
+    if re.search(r"두부면|두유면", title, re.I):
+        return {"food.meals.noodles.tofu_noodle"}
+    if re.search(r"쌀국수", title, re.I):
+        return {"food.meals.noodles.rice_noodle"}
+    if re.search(r"메밀국수", title, re.I):
+        return {"food.meals.noodles.buckwheat_noodle"}
+    if re.search(r"수제비|누룽제비", title, re.I):
+        return {"food.meals.noodles.sujebi"}
+    if re.search(r"칼국수", title, re.I):
+        return {"food.meals.noodles.kalguksu"}
+    if re.search(r"막국수", title, re.I):
+        return {"food.meals.noodles.makguksu"}
+    if re.search(r"냉면|냉모밀", title, re.I):
+        return {"food.meals.noodles.naengmyeon"}
+    if re.search(r"우동", title, re.I) and not re.search(r"(?:컵|사발|용기)", title, re.I):
+        return {"food.meals.noodles.udon"}
+    if re.search(r"파스타|스파게티|라자냐|푸실리|파팔레|페투치네", title, re.I) and not re.search(r"(?:컵|사발|용기)", title, re.I):
+        return {"food.meals.noodles.pasta"}
+    if re.search(r"짜장면", title, re.I):
+        return {"food.meals.noodles.black_bean"}
+    if re.search(r"짬뽕", title, re.I) and not re.search(r"(?:컵|사발|용기|진짬뽕\s*\d)", title, re.I):
+        return {"food.meals.noodles.jjamppong"}
+    if re.search(r"(?:컵|사발|큰사발|왕뚜껑|용기|짜파게티범벅)", title, re.I):
+        return {"food.meals.noodles.cup_ramen"}
+    if re.search(r"우리밀\s*국수|다복면", title, re.I):
+        return {"food.meals.noodles.wheat_noodle"}
+    if re.search(r"라면|짜파게티|비빔면|안성탕면|너구리|짜슐랭|오동통면|스낵면|진짬뽕|사리면|생면식감", title, re.I):
+        return {"food.meals.noodles.bag_ramen"}
+    return set()
+
+
 def _dairy_context(evidence: Mapping[str, Any]) -> tuple[bool, bool]:
     """Return (supported context, conflicting context), never a leaf alone.
 
@@ -1006,12 +1052,13 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     coffee_ids = _contextual_coffee_candidates(evidence)
     beverage_ids = _contextual_audited_beverage_candidates(evidence)
     snack_ids = _contextual_costco_snack_candidates(evidence)
+    noodle_ids = _contextual_costco_noodle_candidates(evidence)
     if coffee_ids:
         # Audited product-form words are more specific than a mart's broad
         # "커피믹스" shelf (which also contains plain Kanu Americano).
         path_ids = {candidate for candidate in path_ids if not candidate.startswith("food.drinks.coffee.")}
         name_ids = {candidate for candidate in name_ids if not candidate.startswith("food.drinks.coffee.")}
-    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids
+    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids
     result = {
         **evidence,
         "unified_category_id": None,
@@ -1041,7 +1088,8 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
              ((0.90, "contextual_coffee_title") if coffee_ids else
               ((0.90, "contextual_costco_beverage_title") if beverage_ids else
                ((0.90, "contextual_costco_snack_title") if snack_ids else
-                ((0.86, "unambiguous_name_tokens") if name_ids else (0.90, "contextual_dairy_title"))))))
+                ((0.90, "contextual_costco_noodle_title") if noodle_ids else
+                 ((0.86, "unambiguous_name_tokens") if name_ids else (0.90, "contextual_dairy_title")))))))
         )
         result.update(unified_category_id=category_id, classification_confidence=confidence, review_status="classified", classification_reason=f"supported_by_{kind}", evidence_type=kind, category_path=list(_BY_ID[category_id].path))
         if category_id.startswith("food.dairy.milk."):

@@ -453,6 +453,43 @@ def test_audited_costco_snack_shelf_contaminants_and_bad_packages_stay_pending(t
 
 
 @pytest.mark.parametrize(("title", "leaf"), [
+    ("농심 신라면 120g x 30개", "food.meals.noodles.bag_ramen"),
+    ("농심 육개장 사발면 86g x 24개", "food.meals.noodles.cup_ramen"),
+    ("데 체코파스타면1kg x 4", "food.meals.noodles.pasta"),
+    ("백제 김치 쌀국수100g x 10", "food.meals.noodles.rice_noodle"),
+    ("풍국면 우리밀 국수 400g x 10팩", "food.meals.noodles.wheat_noodle"),
+    ("풍국면 메밀국수 500g x 6팩", "food.meals.noodles.buckwheat_noodle"),
+    ("동원들깨칼국수258g x 4", "food.meals.noodles.kalguksu"),
+    ("백제 도토리 비빔막국수 297.5g x 8", "food.meals.noodles.makguksu"),
+    ("이가자연면 감자수제비186.5g x 8", "food.meals.noodles.sujebi"),
+    ("마이노멀 두부면 130g x 12", "food.meals.noodles.tofu_noodle"),
+    ("풀무원 수타식 즉석생우동 195g x 10", "food.meals.noodles.udon"),
+    ("풀무원 평양 물냉면 205g x 8", "food.meals.noodles.naengmyeon"),
+    ("풀무원 로스팅 파기름 짜장면 105g x 24", "food.meals.noodles.black_bean"),
+    ("비비고 고메 중화짬뽕 326g x 6", "food.meals.noodles.jjamppong"),
+    ("Blue Dragon 팟타이키트 440g x 2", "food.meals.noodles.pad_thai"),
+    ("농심 짜파게티범벅 70g x30개", "food.meals.noodles.cup_ramen"),
+    ("오뚜기 진짬뽕 130g x32", "food.meals.noodles.bag_ramen"),
+    ("농심 사리면 110g x30", "food.meals.noodles.bag_ramen"),
+    ("풀무원 생면식감 순한맛 95.9g x 20", "food.meals.noodles.bag_ramen"),
+])
+def test_audited_costco_noodle_shelf_uses_explicit_noodle_form(title, leaf):
+    result = classify_record(_raw("costco", "라면", title))
+    assert result["unified_category_id"] == leaf
+
+
+@pytest.mark.parametrize("title", [
+    "마이어 라면 조리기", "코렐 더블링 라떼 면기 세트 4P", "냉동 손질 오징어 1.5kg X 2pack",
+    "절단꽃게 1.2kg X 2pack", "가지 2봉 (7개x 2봉)", "다담 떡볶이 양념 150g x 20",
+    "설성목장한우사골 곰탕 스틱 14g x 10 x 4", "Mama's Choice 오징어소면 300g",
+    "오뚜기 뿌셔뿌셔 불고기맛 95g x 16",
+])
+def test_audited_costco_noodle_shelf_contaminants_stay_pending(title):
+    result = classify_record(_raw("costco", "라면", title))
+    assert result["unified_category_id"] is None
+
+
+@pytest.mark.parametrize(("title", "leaf"), [
     ("소화잘되는 배안아픈저지방우유 (900ml*2)", "food.dairy.milk.plain"),
     ("서울 A2플러스우유 710ml", "food.dairy.milk.plain"),
     ("유기농우유 900ml", "food.dairy.milk.plain"),
