@@ -314,10 +314,15 @@ LEAVES: tuple[Leaf, ...] = (
         ("pepper_stir_fry", "고추잡채소스", ""),
         ("fish_fragrant", "어향소스", ""),
         ("meat", "고기용소스", ""),
+        ("stew", "찌개양념", ""), ("braise", "조림·찜양념", ""),
+        ("tteokbokki", "떡볶이양념", ""), ("broth", "요리육수·장국", ""),
     )),
     *_group("food.bakery.spreads", ("식품", "베이커리·스프레드", "스프레드"), "", (
         ("peanut", "땅콩버터", ""),  # Never confused with dairy butter by its name.
         ("fruit", "과일잼·마멀레이드", ""),
+    )),
+    *_group("food.preserved.ingredients", ("식품", "반찬·저장식품", "조리재료"), "", (
+        ("inari", "유부초밥재료", ""),
     )),
     *_group("food.bakery.bread", ("식품", "베이커리·스프레드", "빵"), "", (
         ("sliced", "식빵", ""), ("roll", "모닝롤", ""), ("bagel", "베이글", ""),
@@ -765,6 +770,38 @@ def _contextual_homeplus_reviewed_shelves(evidence: Mapping[str, Any]) -> set[st
             return {"food.snacks.savory.wheat"}
         if title == "simplus 반반고구마칩 50G":
             return {"food.snacks.savory.vegetable"}
+    return set()
+
+
+def _contextual_homeplus_sauces_and_inari(evidence: Mapping[str, Any]) -> set[str]:
+    if evidence["mart"] != "homeplus":
+        return set()
+    path = tuple(evidence["source_path_parts"])
+    title = evidence["source_title"]
+    if re.search(r"선물세트|혼합세트|사료|강아지|고양이", title):
+        return set()
+    if path == ("두부/김치/반찬", "유부초밥/김밥재료", "유부초밥재료"):
+        if re.search(r"유부\s*초밥", title):
+            return {"food.preserved.ingredients.inari"}
+    elif path in {
+        ("두부/김치/반찬", "냉장소스/냉장장류", "냉장소스"),
+        ("장류/양념/제빵", "소스", "즉석요리소스/장국"),
+    }:
+        if re.search(r"마파두부\s*양념", title):
+            return {"food.seasonings.sauces.mapo_tofu"}
+        if re.search(r"찌개\s*양념", title):
+            return {"food.seasonings.sauces.stew"}
+        if re.search(r"(?:조림|찜닭)\s*양념", title):
+            return {"food.seasonings.sauces.braise"}
+        if re.search(r"떡볶이\s*양념", title):
+            return {"food.seasonings.sauces.tteokbokki"}
+        if re.search(r"참치액", title):
+            return {"food.seasonings.sauces.fish"}
+        if re.search(r"쯔유|샤브샤브육수", title):
+            return {"food.seasonings.sauces.broth"}
+    elif path == ("과자/시리얼", "초콜릿/캔디/젤리/껌", "젤리/푸딩"):
+        if re.match(r"하리보 (?:골드베렌|메가파티|샤프트 골드베렌|스타믹스|프루티부시|해피그레이프|해피콜라)", title):
+            return {"food.snacks.sweets.jelly"}
     return set()
 
 
@@ -1287,6 +1324,12 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     )
     household_ids = {household_leaf} if household_leaf else set()
     homeplus_shelf_ids = _contextual_homeplus_reviewed_shelves(evidence)
+    homeplus_shelf_ids |= _contextual_homeplus_sauces_and_inari(evidence)
+    if any(category.startswith("food.seasonings.sauces.") for category in homeplus_shelf_ids):
+        # A corroborated sauce shelf and explicit 양념 establish product form.
+        # Drop only name candidates already rejected by the ingredient veto;
+        # conflicting source paths and otherwise valid candidates still block.
+        name_ids = {category for category in name_ids if _suspicion_reason(category, evidence) != "ingredient_or_accessory_instead_of_product"}
     if coffee_ids:
         # Audited product-form words are more specific than a mart's broad
         # "커피믹스" shelf (which also contains plain Kanu Americano).
