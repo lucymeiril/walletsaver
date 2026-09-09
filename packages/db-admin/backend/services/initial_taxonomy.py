@@ -140,6 +140,7 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.produce.processed_vegetables", ("식품", "농산물", "가공채소"), "채소", (
         ("dried", "건채소", ""), ("dried_mushroom", "건버섯", ""),
         ("frozen", "냉동채소", ""),
+        ("olive", "절임올리브", ""),
     )),
     *_group("food.grains.rice", ("식품", "곡물·견과", "쌀·잡곡"), "쌀/잡곡/견과류|쌀/잡곡|쌀|잡곡", (
         ("white", "백미", "백미|쌀/백미"), ("mixed", "혼합곡", "혼합곡|혼합잡곡"),
@@ -181,6 +182,7 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.seafood.processed", ("식품", "수산물", "수산가공품"), "수산물/건어물|수산물/건해산물|두부/김치/반찬|햄/어묵/맛살/닭가슴살", (
         ("fishcake", "어묵", "볶음용어묵|국탕용어묵|간식용어묵|요리용어묵"),
         ("surimi", "맛살", "맛살|간식용맛살"), ("dried_fish", "건어물스낵", "어포|쥐치"), ("anchovy", "건멸치", "멸치"),
+        ("pollock_roe", "명란", ""), ("seafood_ball", "해물경단", ""),
     )),
     *_group("food.meals.noodles", ("식품", "간편식·면", "면요리"), "라면/즉석식품/통조림|라면/통조림/즉석밥|간편식/밀키트|냉장/냉동/밀키트|건면/생면/면요리", (
         ("cup_ramen", "컵라면", "컵라면", "컵라면"),
@@ -196,16 +198,19 @@ LEAVES: tuple[Leaf, ...] = (
         ("sujebi", "수제비", ""), ("tofu_noodle", "두부면", ""),
         ("jjamppong", "짬뽕면", ""),
         ("pad_thai", "팟타이", ""),
+        ("gnocchi", "뇨끼", ""), ("ravioli", "라비올리", ""),
     )),
     *_group("food.meals.rice", ("식품", "간편식·면", "밥·죽"), "라면/즉석식품/통조림|라면/통조림/즉석밥|간편식/밀키트|냉장/냉동/밀키트", (
         ("instant", "즉석밥", "즉석밥", "즉석밥"), ("cup", "컵밥", "컵밥", "컵밥"),
         ("fried", "볶음밥", "볶음밥|냉동밥/덥밥류"), ("porridge", "죽", "죽|즉석죽"),
         ("soup", "스프", "스프|즉석스프"),
+        ("rice_ball", "주먹밥", ""), ("sticky", "찰밥", ""),
     )),
     *_group("food.meals.dumplings", ("식품", "간편식·면", "만두"), "간편식/밀키트|냉장/냉동/밀키트", (
         ("gyoza", "교자만두", "고기교자만두|교자만두", "교자만두"),
         ("steamed", "찐만두", "고기찐만두|찐만두", "찐만두"),
         ("boiled", "물만두", "물만두", "물만두"), ("dimsum", "딤섬", "딤섬"),
+        ("assorted", "일반만두", ""),
     )),
     *_group("food.meals.prepared", ("식품", "간편식·면", "조리식품"), "간편식/밀키트|냉장/냉동/밀키트|라면/즉석식품/통조림|델리/즉석조리", (
         ("soup_stew", "국·탕·찌개", "국/탕|탕|즉석국|즉석국(레토르트)"),
@@ -217,6 +222,8 @@ LEAVES: tuple[Leaf, ...] = (
         ("chicken", "조리치킨", "치킨|치킨/닭강정|치킨기타"), ("nugget", "치킨너겟·텐더", "너겟|치킨너겟/치킨텐더"),
         ("pizza", "피자", "피자"), ("hotdog", "핫도그", "핫도그"), ("tteokgalbi", "떡갈비", "떡갈비"),
         ("sandwich", "샌드위치", "샌드위치"), ("meal_kit", "밀키트", "한식밀키트|일식|아시안식"),
+        ("cheese_ball", "치즈볼", ""), ("vegetable_fritter", "채소튀김", ""),
+        ("meat_patty", "동그랑땡", ""), ("rice_cake", "떡", ""),
     )),
     *_group("food.preserved.kimchi", ("식품", "반찬·저장식품", "김치"), "두부/김치/반찬|김치/반찬/젓갈", (
         ("cabbage", "배추김치", "배추김치|포기김치|맛김치", "배추김치|포기김치|맛김치"),
@@ -652,6 +659,70 @@ def _contextual_costco_noodle_candidates(evidence: Mapping[str, Any]) -> set[str
     return set()
 
 
+def _contextual_costco_cheese_shelf_candidates(evidence: Mapping[str, Any]) -> set[str]:
+    """Classify explicit food forms in Costco's heavily polluted cheese shelf."""
+    if evidence["mart"] != "costco" or tuple(map(_label_key, evidence["source_path_parts"])) != (_label_key("치즈"),):
+        return set()
+    title = evidence["source_title"]
+    if re.search(r"애견|선물세트|로즈아치|중식도|필러\s*&\s*가위|치자\s*2개입", title, re.I):
+        return set()
+    if re.search(r"치즈\s*오징어", title, re.I):
+        return {"food.seafood.processed.dried_fish"}
+    if re.search(r"주먹밥", title, re.I):
+        return {"food.meals.rice.rice_ball"}
+    if re.search(r"치즈볼", title, re.I):
+        return {"food.meals.prepared.cheese_ball"}
+    if re.search(r"핫도그", title, re.I):
+        return {"food.meals.prepared.hotdog"}
+    if re.search(r"피자", title, re.I) and not re.search(r"피자치즈", title, re.I):
+        return {"food.meals.prepared.pizza"}
+    if re.search(r"파스타\s*소스|페스토", title, re.I):
+        return {"food.seasonings.sauces.pasta"}
+    if re.search(r"올리브", title, re.I):
+        return {"food.produce.processed_vegetables.olive"}
+    if re.search(r"뇨끼", title, re.I):
+        return {"food.meals.noodles.gnocchi"}
+    if re.search(r"라비올리", title, re.I):
+        return {"food.meals.noodles.ravioli"}
+    if re.search(r"곶감", title, re.I):
+        return {"food.produce.processed_fruit.dried"}
+    if re.search(r"명란", title, re.I):
+        return {"food.seafood.processed.pollock_roe"}
+    if re.search(r"(?:육전|빈대떡|감자채전|해물파전)", title, re.I):
+        return {"food.meals.prepared.pancake"}
+    if re.search(r"(?:오이고추|통표고)튀김", title, re.I):
+        return {"food.meals.prepared.vegetable_fritter"}
+    if re.search(r"왕교자", title, re.I):
+        return {"food.meals.dumplings.gyoza"}
+    if re.search(r"(?:수제만두|감자만두)", title, re.I):
+        return {"food.meals.dumplings.assorted"}
+    if re.search(r"(?:하가우|완탕)", title, re.I):
+        return {"food.meals.dumplings.dimsum"}
+    if re.search(r"(?:김치찌개|설렁탕|곰탕|육개장|추어탕|곱창전골)", title, re.I):
+        return {"food.meals.prepared.soup_stew"}
+    if re.search(r"(?:치킨텐더|치킨너겟|용가리\s*치킨)", title, re.I):
+        return {"food.meals.prepared.nugget"}
+    if re.search(r"돈까스", title, re.I):
+        return {"food.meals.prepared.pork_cutlet"}
+    if re.search(r"(?:통살치킨|닭강정|버팔로\s*핫봉|자메이카스타일\s*치킨|황금홀릭\s*순살)", title, re.I):
+        return {"food.meals.prepared.chicken"}
+    if re.search(r"해물경단", title, re.I):
+        return {"food.seafood.processed.seafood_ball"}
+    if re.search(r"우동", title, re.I):
+        return {"food.meals.noodles.udon"}
+    if re.search(r"찰밥", title, re.I):
+        return {"food.meals.rice.sticky"}
+    if re.search(r"꿀떡", title, re.I):
+        return {"food.meals.prepared.rice_cake"}
+    if re.search(r"떡볶이", title, re.I):
+        return {"food.meals.prepared.tteokbokki"}
+    if re.search(r"천하장사", title, re.I):
+        return {"food.meat.processed.sausage"}
+    if re.search(r"동그랑땡", title, re.I):
+        return {"food.meals.prepared.meat_patty"}
+    return set()
+
+
 def _dairy_context(evidence: Mapping[str, Any]) -> tuple[bool, bool]:
     """Return (supported context, conflicting context), never a leaf alone.
 
@@ -1053,12 +1124,13 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     beverage_ids = _contextual_audited_beverage_candidates(evidence)
     snack_ids = _contextual_costco_snack_candidates(evidence)
     noodle_ids = _contextual_costco_noodle_candidates(evidence)
+    cheese_shelf_ids = _contextual_costco_cheese_shelf_candidates(evidence)
     if coffee_ids:
         # Audited product-form words are more specific than a mart's broad
         # "커피믹스" shelf (which also contains plain Kanu Americano).
         path_ids = {candidate for candidate in path_ids if not candidate.startswith("food.drinks.coffee.")}
         name_ids = {candidate for candidate in name_ids if not candidate.startswith("food.drinks.coffee.")}
-    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids
+    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids | cheese_shelf_ids
     result = {
         **evidence,
         "unified_category_id": None,
@@ -1089,7 +1161,8 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
               ((0.90, "contextual_costco_beverage_title") if beverage_ids else
                ((0.90, "contextual_costco_snack_title") if snack_ids else
                 ((0.90, "contextual_costco_noodle_title") if noodle_ids else
-                 ((0.86, "unambiguous_name_tokens") if name_ids else (0.90, "contextual_dairy_title")))))))
+                 ((0.90, "contextual_costco_cheese_shelf_title") if cheese_shelf_ids else
+                  ((0.86, "unambiguous_name_tokens") if name_ids else (0.90, "contextual_dairy_title"))))))))
         )
         result.update(unified_category_id=category_id, classification_confidence=confidence, review_status="classified", classification_reason=f"supported_by_{kind}", evidence_type=kind, category_path=list(_BY_ID[category_id].path))
         if category_id.startswith("food.dairy.milk."):

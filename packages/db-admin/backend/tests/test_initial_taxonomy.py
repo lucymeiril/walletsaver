@@ -490,6 +490,48 @@ def test_audited_costco_noodle_shelf_contaminants_stay_pending(title):
 
 
 @pytest.mark.parametrize(("title", "leaf"), [
+    ("Mama's Choice치즈 오징어 120g x 3", "food.seafood.processed.dried_fish"),
+    ("한우물치즈닭갈비구운주먹밥100gx30", "food.meals.rice.rice_ball"),
+    ("풀무원치즈볼4개골라담기(360g x 4)", "food.meals.prepared.cheese_ball"),
+    ("애슐리 트리플 치즈 피자 395g x 3", "food.meals.prepared.pizza"),
+    ("폰타나토마토&로제파스타소스600g x 4", "food.seasonings.sauces.pasta"),
+    ("마다마 피티드 올리브 480g x 3", "food.produce.processed_vegetables.olive"),
+    ("수지탈 뇨끼 파타타(감자) 1kg x 3", "food.meals.noodles.gnocchi"),
+    ("덕화명란튜브110g x 8", "food.seafood.processed.pollock_roe"),
+    ("사옹원 소고기육전 765g x 2", "food.meals.prepared.pancake"),
+    ("개성제주돼지감자만두 2KG X 2", "food.meals.dumplings.assorted"),
+    ("동원 딤섬 새우하가우1.2KG X 2", "food.meals.dumplings.dimsum"),
+    ("CJ 비비고 소고기 듬뿍 설렁탕 460g x 6", "food.meals.prepared.soup_stew"),
+    ("하림 치킨너겟 1.5kg x 2", "food.meals.prepared.nugget"),
+    ("동원 7겹돈까스 1040g x 2", "food.meals.prepared.pork_cutlet"),
+    ("BBQ 야자당 닭강정 1.2KG x 2", "food.meals.prepared.chicken"),
+    ("테이블마크키츠네 유부우동 283G X 6", "food.meals.noodles.udon"),
+    ("마음이가 모둠 꿀떡1.4kg X 2ea", "food.meals.prepared.rice_cake"),
+    ("오마뎅 진짜 부산 떡볶이 352g x 5", "food.meals.prepared.tteokbokki"),
+    ("천하장사 더블링 콰트로치즈 25g X 40", "food.meat.processed.sausage"),
+    ("Scoiattolo 트러플파마지아노라비올리 908g", "food.meals.noodles.ravioli"),
+])
+def test_audited_costco_cheese_shelf_uses_explicit_product_form(title, leaf):
+    result = classify_record(_raw("costco", "치즈", title))
+    assert result["unified_category_id"] == leaf
+
+
+@pytest.mark.parametrize("title", [
+    "딩고 애견 치킨껌 2개 x 10봉", "덴마크 구워먹는치즈 500g x 2",
+    "구르메 치즈 & 초리조선물세트 875g", "타카쇼 로즈아치",
+    "쿠진아트 미니 중식도 & 강판 세트", "치자 2개입",
+])
+def test_audited_costco_cheese_shelf_ambiguous_and_nonfood_items_stay_pending(title):
+    result = classify_record(_raw("costco", "치즈", title))
+    assert result["unified_category_id"] is None
+
+
+def test_audited_costco_cheese_shelf_keeps_shredded_pizza_cheese_as_cheese():
+    result = classify_record(_raw("costco", "치즈", "소와나무 이태리안 피자치즈 1kg x 3"))
+    assert result["unified_category_id"] == "food.dairy.cheese.shredded"
+
+
+@pytest.mark.parametrize(("title", "leaf"), [
     ("소화잘되는 배안아픈저지방우유 (900ml*2)", "food.dairy.milk.plain"),
     ("서울 A2플러스우유 710ml", "food.dairy.milk.plain"),
     ("유기농우유 900ml", "food.dairy.milk.plain"),
