@@ -540,6 +540,36 @@ def test_audited_fruit_title_requires_matching_store_and_shelf(title, leaf):
     assert classify_record(_raw("costco", "커피", title))["unified_category_id"] is None
 
 
+@pytest.mark.parametrize(("title", "leaf"), [
+    ("한우물 소고기잡채350g x 5 x 2pk", "food.meals.prepared.japchae"),
+    ("오늘차림 한돈 양념 불고기600g x 3ea", "food.meals.prepared.seasoned_meat"),
+    ("부추고기순대 500gx3x2", "food.meat.processed.sundae"),
+    ("오리늘보 훈제 슬라이스 500g x 2", "food.meat.processed.smoked_duck"),
+    ("마이셰프한우소고기미역국 254g x 2", "food.meals.prepared.soup_stew"),
+    ("피터루거 스테이크소스 714ml x 2", "food.seasonings.sauces.meat"),
+    ("실키 핑크토마토4kg", "food.produce.fruit.tomato"),
+])
+def test_audited_meat_shelf_uses_food_form_not_ingredient(title, leaf):
+    result = classify_record(_raw("costco", "고기", title))
+    assert result["unified_category_id"] == leaf
+    assert result["evidence_type"] == "audited_costco_meat_shelf_title"
+    assert classify_record(_raw("costco", "고기", title + " 혼합세트"))["unified_category_id"] != leaf
+    assert classify_record(_raw("costco", "커피", title))["unified_category_id"] != leaf
+    validate_taxonomy(taxonomy_categories({leaf}), {leaf})
+
+
+@pytest.mark.parametrize("title", [
+    "안방그릴 울트라 AB1107CO", "오크우드 장작 15kg",
+    "하림 더리얼 밀 냉동 화식 닭고기 60g x 10",
+    "하림 더리얼 밀 그레인프리 냉동 화식 닭고기 60g x 10",
+    "부추고기순대500Gx3 족발슬라이스 960g",
+    "궁 안동식 한우국밥 800g x 2 + 나주식곰탕 510g x 3",
+    "설성목장 한우불고기 덮밥소스100g x 8",
+])
+def test_meat_shelf_contaminants_and_mixed_sets_stay_pending(title):
+    assert classify_record(_raw("costco", "고기", title))["unified_category_id"] is None
+
+
 @pytest.mark.parametrize("title", [
     "수박2호 ( 6KG 미만 )", "허니듀 & 머스크 멜론 세트 4입 (각 2입)",
     "샤인머스캣 애플망고 사과 혼합선물세트4.6kg", "휴롬 원액기 P310 E31ST-BFM02MM",

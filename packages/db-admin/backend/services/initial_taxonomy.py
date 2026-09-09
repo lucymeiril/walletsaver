@@ -170,6 +170,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("sausage", "소시지", "소시지|비엔나소시지|간식용소시지", "비엔나소시지|비엔나 소시지"),
         ("ham", "햄", "햄/샌드위치햄/슬라이스햄|햄/분절햄/슬라이스햄/김밥햄"),
         ("bacon", "베이컨", "베이컨"), ("breast", "가공닭가슴살", "닭가슴살"),
+        ("smoked_duck", "훈제오리", ""), ("sundae", "순대", ""),
     )),
     *_group("food.seafood.fish", ("식품", "수산물", "생선"), "수산물/건어물|수산물/건해산물|수산물", (
         ("mackerel", "고등어", "고등어"), ("salmon", "연어", "연어"), ("pollock", "명태", "명태|동태|생태"),
@@ -225,6 +226,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("sandwich", "샌드위치", "샌드위치"), ("meal_kit", "밀키트", "한식밀키트|일식|아시안식"),
         ("cheese_ball", "치즈볼", ""), ("vegetable_fritter", "채소튀김", ""),
         ("meat_patty", "동그랑땡", ""), ("rice_cake", "떡", ""),
+        ("japchae", "조리잡채", ""), ("seasoned_meat", "양념육", ""),
     )),
     *_group("food.preserved.kimchi", ("식품", "반찬·저장식품", "김치"), "두부/김치/반찬|김치/반찬/젓갈", (
         ("cabbage", "배추김치", "배추김치|포기김치|맛김치", "배추김치|포기김치|맛김치"),
@@ -694,6 +696,42 @@ def _contextual_costco_fruit_candidates(evidence: Mapping[str, Any]) -> set[str]
     return {f"food.produce.fruit.{leaf}"} if leaf else set()
 
 
+def _contextual_costco_meat_shelf_candidates(evidence: Mapping[str, Any]) -> set[str]:
+    """Audited exact listings: the search shelf also contains grills and pet food.
+
+    Do not infer raw meat from an ingredient, or extend these decisions to
+    changed titles/mixed sets. Quantity and promotion validation remain separate.
+    """
+    if evidence["mart"] != "costco" or tuple(evidence["source_path_parts"]) != ("고기",):
+        return set()
+    audited = {
+        "한우물 소고기잡채350g x 5 x 2pk": "food.meals.prepared.japchae",
+        "사리원궁중소고기버섯잡채458g x 2": "food.meals.prepared.japchae",
+        "마이셰프 알찬 고기마파두부 719g x 2": "food.meals.prepared.mapo_tofu",
+        "오늘차림 한돈 양념 불고기600g x 3ea": "food.meals.prepared.seasoned_meat",
+        "오늘차림서울식육수소불고기1,060g x 2ea": "food.meals.prepared.seasoned_meat",
+        "부추고기순대 500gx3x2": "food.meat.processed.sundae",
+        "해드림 부추고기순댓국 2,500g": "food.meals.prepared.soup_stew",
+        "해찬들 사계절쌈장 500g x 8": "food.seasonings.pastes.ssamjang",
+        "상하키친 비프카레 170g x 8": "food.meals.prepared.curry",
+        "피터루거 스테이크소스 714ml x 2": "food.seasonings.sauces.meat",
+        "온작 차돌 된장찌개 800G X 4": "food.meals.prepared.soup_stew",
+        "오리늘보 훈제 슬라이스 500g x 2": "food.meat.processed.smoked_duck",
+        "실키 핑크토마토4kg": "food.produce.fruit.tomato",
+        "수지스닭다리살 스테이크 1,050g": "food.meals.prepared.chicken",
+        "동원그릴리직화트러플도이치햄 500g x 6": "food.meat.processed.ham",
+        "궁 안동식 한우국밥800g x 2": "food.meals.prepared.soup_stew",
+        "오늘차림 한돈 고추장 불고기전골 1,150g x 3ea": "food.meals.prepared.soup_stew",
+        "동원양반진국소고기무국 460g x 5": "food.meals.prepared.soup_stew",
+        "한우물숯불닭고기볶음밥300g x 7 x 2봉(4200g)": "food.meals.rice.fried",
+        "마이셰프한우소고기미역국 254g x 2": "food.meals.prepared.soup_stew",
+        "해초미인 기장미역 280g": "food.seafood.seaweed.miyeok",
+        "화과방 프리미엄 양갱세트 1000g x 5세트": "food.snacks.traditional.yanggaeng",
+    }
+    leaf = audited.get(evidence["source_title"])
+    return {leaf} if leaf else set()
+
+
 def _contextual_costco_cheese_shelf_candidates(evidence: Mapping[str, Any]) -> set[str]:
     """Classify explicit food forms in Costco's heavily polluted cheese shelf."""
     if evidence["mart"] != "costco" or tuple(map(_label_key, evidence["source_path_parts"])) != (_label_key("치즈"),):
@@ -1161,12 +1199,13 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     noodle_ids = _contextual_costco_noodle_candidates(evidence)
     cheese_shelf_ids = _contextual_costco_cheese_shelf_candidates(evidence)
     fruit_ids = _contextual_costco_fruit_candidates(evidence)
+    meat_shelf_ids = _contextual_costco_meat_shelf_candidates(evidence)
     if coffee_ids:
         # Audited product-form words are more specific than a mart's broad
         # "커피믹스" shelf (which also contains plain Kanu Americano).
         path_ids = {candidate for candidate in path_ids if not candidate.startswith("food.drinks.coffee.")}
         name_ids = {candidate for candidate in name_ids if not candidate.startswith("food.drinks.coffee.")}
-    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids | cheese_shelf_ids | fruit_ids
+    all_ids = path_ids | name_ids | url_ids | contextual_ids | coffee_ids | beverage_ids | snack_ids | noodle_ids | cheese_shelf_ids | fruit_ids | meat_shelf_ids
     result = {
         **evidence,
         "unified_category_id": None,
@@ -1202,6 +1241,8 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         )
         if fruit_ids:
             confidence, kind = 0.95, "audited_costco_fruit_title"
+        if meat_shelf_ids:
+            confidence, kind = 0.95, "audited_costco_meat_shelf_title"
         result.update(unified_category_id=category_id, classification_confidence=confidence, review_status="classified", classification_reason=f"supported_by_{kind}", evidence_type=kind, category_path=list(_BY_ID[category_id].path))
         if category_id.startswith("food.dairy.milk."):
             result["classification_attributes"] = {
