@@ -252,7 +252,7 @@ LEAVES: tuple[Leaf, ...] = (
         ("capsule", "캡슐커피", "캡슐커피"),
     )),
     *_group("food.drinks.water_soda", ("식품", "음료", "생수·탄산"), "생수/음료|생수/음료/주류", (
-        ("water", "생수", "생수|먹는샘물", "먹는샘물"), ("sparkling", "탄산수", "탄산수", "탄산수"),
+        ("water", "생수", "생수|먹는샘물", "먹는샘물|미네랄워터|백산수|아이시스|트루워터|삼다수|에비앙|피지워터"), ("sparkling", "탄산수", "탄산수", "탄산수"),
         ("cola", "콜라", "콜라"), ("cider", "사이다", "사이다"), ("soda", "탄산음료", ""),
         ("sports", "스포츠음료", "스포츠/이온음료", "이온음료|스포츠음료"),
         ("energy", "에너지음료", "", ""),
@@ -261,6 +261,12 @@ LEAVES: tuple[Leaf, ...] = (
         ("fruit", "과일주스", "", ""),
         ("vegetable", "채소주스", "", ""),
         ("coconut", "코코넛워터", "", ""),
+        ("fruit_drink", "과일음료", "", ""),
+        ("vegetable_drink", "채소음료", "", ""),
+        ("aloe", "알로에음료", "", ""),
+    )),
+    *_group("food.drinks.non_alcoholic", ("식품", "음료", "무알코올음료"), "생수/음료|생수/음료/주류", (
+        ("beer", "무알코올맥주", "", ""),
     )),
     *_group("food.drinks.tea", ("식품", "음료", "차·코코아"), "커피/차|차/액상차/핫초코", (
         ("barley", "보리차", "보리차", "보리차"), ("herbal", "허브차", "허브차"),
@@ -373,6 +379,7 @@ _TITLE_FORBIDDEN = {
     "food.dairy.cheese.sliced": r"까요까요|파르미지아노|레지아노|아페리프레|크림치즈|스트링",
     "food.dairy.yogurt.spoon": r"그릭|짜먹|짜요짜요",
     "food.drinks.coffee.mix": r"아메리카노|카누.*(?:마일드로스트|디카페인)",
+    "food.drinks.water_soda.water": r"\d+(?:\.\d+)?\s*ml\s+\d+\s*병",
     "food.meals.noodles.bag_ramen": r"잡채|닭한마리",
     "food.meals.noodles.naengmyeon": r"쫄면|육수|소스",
     "food.meals.prepared.nugget": r"가라아게",
@@ -464,31 +471,40 @@ def _contextual_coffee_candidates(evidence: Mapping[str, Any]) -> set[str]:
     return set()
 
 
-def _contextual_costco_beverage_candidates(evidence: Mapping[str, Any]) -> set[str]:
-    """Classify explicit drink forms in the audited Costco beverage shelf."""
-    if evidence["mart"] != "costco" or tuple(map(_label_key, evidence["source_path_parts"])) != (_label_key("음료"),):
+def _contextual_audited_beverage_candidates(evidence: Mapping[str, Any]) -> set[str]:
+    """Classify explicit forms in fully audited Costco and Emart drink shelves."""
+    shelf = (evidence["mart"], tuple(map(_label_key, evidence["source_path_parts"])))
+    audited_shelves = {
+        ("costco", (_label_key("음료"),)),
+        ("emart", (_label_key("생수/음료/주류"),)),
+    }
+    if shelf not in audited_shelves:
         return set()
     title = evidence["source_title"]
     # These audited shelf contaminants are not packaged beverages.
-    if re.search(r"컵홀더|앰플|아이스바|영코코넛|콤보팩", title, re.I):
+    if re.search(r"컵홀더|앰플|아이스바|영코코넛|콤보팩|이유식\s*퓨레|고구마\s*퓨레|단호박\s*퓨레|감자\s*퓨레", title, re.I):
         return set()
+    if (re.search(r"논알콜|논알코올|무알콜|무알코올", title, re.I)
+            and re.search(r"클라우스탈러|버드와이저|클라우드|맥주|비어", title, re.I)
+            and re.search(r"\d+(?:\.\d+)?\s*ml", title, re.I)):
+        return {"food.drinks.non_alcoholic.beer"}
     if re.search(r"레쓰비|스타벅스\s*더블샷", title, re.I):
         return {"food.drinks.coffee.ready"}
     if re.search(r"코코넛\s*(?:퓨어)?워터", title, re.I):
         return {"food.drinks.juice.coconut"}
-    if re.search(r"피지워터|(?<![가-힣])생수(?![가-힣])", title, re.I):
+    if re.search(r"피지워터|미네랄워터|백산수|아이시스|트루워터|삼다수|에비앙|(?<![가-힣])생수(?![가-힣])", title, re.I):
         return {"food.drinks.water_soda.water"}
     if re.search(r"탄산수|스파클링워터|트레비", title, re.I):
         return {"food.drinks.water_soda.sparkling"}
     if re.search(r"콜라|코카콜라|펩시", title, re.I):
         return {"food.drinks.water_soda.cola"}
-    if re.search(r"칠성\s*사이다", title, re.I):
+    if "애플사이다비니거" not in title.replace(" ", "") and re.search(r"사이다", title, re.I):
         return {"food.drinks.water_soda.cider"}
     if re.search(r"에너지\s*드링크|레드불|몬스터에너지|핫식스", title, re.I):
         return {"food.drinks.water_soda.energy"}
-    if re.search(r"이온음료|게토레이|토레타|전해질드링크", title, re.I):
+    if re.search(r"이온음료|게토레이|토레타|전해질드링크|포카리스웨트|파워오투|맑은이온", title, re.I):
         return {"food.drinks.water_soda.sports"}
-    if re.search(r"탄산음료|진저\s*비어|밀키스|오랑지나|레몬소다|비타500\s*스파클링|웰치소다", title, re.I):
+    if re.search(r"탄산음료|진저\s*비어|밀키스|오랑지나|레몬소다|비타500\s*스파클링|웰치소다|제로스파클링", title, re.I):
         return {"food.drinks.water_soda.soda"}
     if re.search(r"보이차", title, re.I):
         return {"food.drinks.tea.puer"}
@@ -502,10 +518,22 @@ def _contextual_costco_beverage_candidates(evidence: Mapping[str, Any]) -> set[s
         return {"food.drinks.tea.herbal"}
     if re.search(r"누룽지", title, re.I):
         return {"food.drinks.tea.grain"}
+    if re.search(r"식혜|옥수수수염차", title, re.I):
+        return {"food.drinks.tea.grain"}
+    if re.search(r"하늘보리|안심아이차\s*보리", title, re.I):
+        return {"food.drinks.tea.barley"}
+    if re.search(r"녹차", title, re.I):
+        return {"food.drinks.tea.green"}
     if re.search(r"녹즙|(?:토마토|야채|채소|ABC|그린).{0,20}(?:착즙\s*)?주스", title, re.I):
         return {"food.drinks.juice.vegetable"}
     if re.search(r"(?:주스|쥬스)", title, re.I):
         return {"food.drinks.juice.fruit"}
+    if re.search(r"토마토음료", title, re.I):
+        return {"food.drinks.juice.vegetable_drink"}
+    if re.search(r"알로에음료", title, re.I):
+        return {"food.drinks.juice.aloe"}
+    if re.search(r"갈아만든배|과즙|감귤음료|복숭아음료|쿨피스|쿨피치|피크닉\s*사과|델몬트\s*사과\s*드링크|(?:포도|사과)100(?:%|\b)", title, re.I):
+        return {"food.drinks.juice.fruit_drink"}
     return set()
 
 
@@ -907,7 +935,7 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     url_ids, url_hints = _url_candidates(evidence)
     contextual_ids = _contextual_dairy_candidates(evidence)
     coffee_ids = _contextual_coffee_candidates(evidence)
-    beverage_ids = _contextual_costco_beverage_candidates(evidence)
+    beverage_ids = _contextual_audited_beverage_candidates(evidence)
     if coffee_ids:
         # Audited product-form words are more specific than a mart's broad
         # "커피믹스" shelf (which also contains plain Kanu Americano).

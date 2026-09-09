@@ -354,6 +354,65 @@ def test_frozen_watermelon_juice_does_not_match_the_korean_word_for_bottled_wate
 
 
 @pytest.mark.parametrize(("title", "leaf"), [
+    ("초정탄산수 1.5L", "food.drinks.water_soda.sparkling"),
+    ("백산수 2L", "food.drinks.water_soda.water"),
+    ("에비앙 500ml*12입+쇼퍼백 기획", "food.drinks.water_soda.water"),
+    ("포카리스웨트900ml", "food.drinks.water_soda.sports"),
+    ("칠성사이다 1.8L*2입", "food.drinks.water_soda.cider"),
+    ("제로사이다 1L", "food.drinks.water_soda.cider"),
+    ("썬키스트 애사비 제로스파클링 500ML", "food.drinks.water_soda.soda"),
+    ("[논알콜] 클라우스탈러 330ml(캔)", "food.drinks.non_alcoholic.beer"),
+    ("이토엔 오이오차녹차 525ml", "food.drinks.tea.green"),
+    ("하늘보리 500ml", "food.drinks.tea.barley"),
+    ("옥수수수염차 1.5L", "food.drinks.tea.grain"),
+    ("비락식혜 1.5L", "food.drinks.tea.grain"),
+    ("스페인 햇살 담은 오렌지 100% 착즙주스 1L", "food.drinks.juice.fruit"),
+    ("Fresh토마토음료 1.5L", "food.drinks.juice.vegetable_drink"),
+    ("Fresh감귤음료1.5L", "food.drinks.juice.fruit_drink"),
+    ("Fresh알로에음료1.5L", "food.drinks.juice.aloe"),
+    ("쿨피스플러스 930ml*2입", "food.drinks.juice.fruit_drink"),
+])
+def test_audited_emart_beverage_shelf_uses_explicit_product_form(title, leaf):
+    result = classify_record(_raw("emart", "생수/음료/주류", title))
+    assert result["unified_category_id"] == leaf
+    assert result["classification_confidence"] >= 0.90
+
+
+@pytest.mark.parametrize("title", [
+    "[매일유업]맘마밀 이유식 퓨레 사과와고구마 100g",
+    "처음먹는 평창감자 퓨레 80g",
+    "1.8L*2입",
+    "처음먹는 배도라지",
+    "오트몬드 프로틴 초코 250ml",
+    "[논알콜] 클라우드 논알콜릭 500캔",
+])
+def test_audited_emart_beverage_shelf_unclear_or_non_drinks_stay_pending(title):
+    result = classify_record(_raw("emart", "생수/음료/주류", title))
+    assert result["unified_category_id"] is None
+
+
+def test_explicit_bottled_water_name_stays_consistent_on_emart_promotion_shelf():
+    result = classify_record(_raw("emart", "베스트", "삼다수 2L (무라벨)"))
+    assert result["unified_category_id"] == "food.drinks.water_soda.water"
+
+
+def test_non_alcoholic_word_without_audited_beer_evidence_does_not_mean_beer():
+    result = classify_record(_raw("emart", "생수/음료/주류", "논알콜 샹그리아 750ml"))
+    assert result["unified_category_id"] is None
+
+
+def test_apple_cider_vinegar_drink_does_not_become_korean_cider_soda():
+    result = classify_record(_raw("costco", "음료", "쌍계 애플사이다비니거 드링크 사과 5g x 40ct"))
+    assert result["unified_category_id"] is None
+
+
+def test_adjacent_bottle_count_waits_until_package_parser_supports_it():
+    result = classify_record(_raw("emart", "생수/음료/주류", "제주 삼다수 그린 500ml 40병"))
+    assert result["unified_category_id"] is None
+    assert result["classification_reason"] == "source_title_product_type_conflict"
+
+
+@pytest.mark.parametrize(("title", "leaf"), [
     ("소화잘되는 배안아픈저지방우유 (900ml*2)", "food.dairy.milk.plain"),
     ("서울 A2플러스우유 710ml", "food.dairy.milk.plain"),
     ("유기농우유 900ml", "food.dairy.milk.plain"),
