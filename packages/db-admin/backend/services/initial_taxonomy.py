@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from services.initial_audited_food import AUDITED_EMART_FOOD_TITLES
 from services.initial_audited_baking import reviewed_baking_leaf
+from services.initial_audited_seasonings import reviewed_seasoning_leaf
 from services.initial_audited_household import AUDITED_EMART_HOUSEHOLD_TITLES
 
 from collections import defaultdict
@@ -360,6 +361,22 @@ LEAVES: tuple[Leaf, ...] = (
         ("perilla", "들기름", "", ""), ("soybean", "콩기름", "", ""),
         ("corn", "옥수수유", "", ""), ("sunflower", "해바라기유", "", ""),
         ("avocado", "아보카도유", "", ""), ("chili", "고추기름", "", ""),
+    )),
+    *_group("food.seasonings.spices", ("식품", "양념·소스", "향신료·깨"), "", (
+        ("mustard_paste", "연겨자", "", ""), ("wasabi_paste", "와사비페이스트", "", ""),
+        ("chili_powder", "고춧가루", "", ""), ("cumin", "쿠민", "", ""),
+        ("parsley", "파슬리", "", ""), ("star_anise", "팔각", "", ""),
+        ("roasted_sesame", "볶음참깨", "", ""), ("whole_chili", "건고추", "", ""),
+    )),
+    *_group("food.seasonings.stock", ("식품", "양념·소스", "조미료"), "", (
+        ("beef", "쇠고기조미료", "", ""), ("seasoned_salt", "맛소금", "", ""),
+        ("umami", "감칠맛조미료", "", ""), ("chicken", "치킨스톡", "", ""),
+        ("vegetable_tablet", "채소육수정", "", ""), ("cooking_wine", "맛술", "", ""),
+    )),
+    *_group("food.seasonings.syrups", ("식품", "양념·소스", "액상당류·청"), "", (
+        ("oligosaccharide", "올리고당", "", ""), ("starch", "물엿", "", ""),
+        ("plum", "매실청", "", ""), ("allulose", "액상알룰로스", "", ""),
+        ("rice", "쌀조청", "", ""),
     )),
     *_group("food.seasonings.baking", ("식품", "양념·소스", "기초조미·제빵"), "장류/양념/제빵|양념/오일/분말류", (
         ("flour", "밀가루", "밀가루"), ("sugar", "설탕", "흰설탕|설탕"), ("vinegar", "식초", "식초"),
@@ -1545,6 +1562,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     homeplus_shelf_ids |= _contextual_homeplus_sauces_and_inari(evidence)
     homeplus_shelf_ids |= _contextual_homeplus_cold_drinks(evidence)
     homeplus_shelf_ids |= _contextual_homeplus_pantry(evidence)
+    seasoning_leaf = reviewed_seasoning_leaf(evidence)
+    if seasoning_leaf:
+        homeplus_shelf_ids.add(seasoning_leaf)
     baking_leaf = reviewed_baking_leaf(evidence)
     if baking_leaf:
         homeplus_shelf_ids.add(baking_leaf)
