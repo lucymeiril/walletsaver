@@ -104,6 +104,7 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("food.plant.drinks", ("식품", "식물성식품", "식물성음료"), "우유/유제품|식물성음료", (
         ("almond", "아몬드음료", "아몬드음료"),
+        ("oat", "귀리음료", "", ""),
     )),
     *_group("food.plant.soy", ("식품", "식물성식품", "콩가공품"), "우유/유제품|두부/김치/반찬|채소|두부/나물|두부/나또/콩나물/숙주나물", (
         ("soymilk", "두유", "일반두유|가공두유|두유", "두유|soy milk"),
@@ -269,6 +270,7 @@ LEAVES: tuple[Leaf, ...] = (
     *_group("food.snacks.sweets", ("식품", "과자·간식", "단과자"), "과자/시리얼|과자/스낵/간식", (
         ("chocolate", "초콜릿", "바초콜릿|볼초콜릿|초콜릿"), ("jelly", "젤리", "젤리"),
         ("candy", "캔디", "하드캔디|소프트캔디|캔디"),
+        ("pudding", "푸딩", "", ""),
     )),
     *_group("food.snacks.cereal", ("식품", "과자·간식", "시리얼"), "과자/시리얼|과자/스낵/간식", (
         ("flakes", "플레이크시리얼", "후레이크|플레이크"), ("granola", "그래놀라", "그래놀라", "그래놀라"),
@@ -297,6 +299,9 @@ LEAVES: tuple[Leaf, ...] = (
         ("fruit_drink", "과일음료", "", ""),
         ("vegetable_drink", "채소음료", "", ""),
         ("aloe", "알로에음료", "", ""),
+    )),
+    *_group("food.drinks.traditional", ("식품", "음료", "전통음료"), "", (
+        ("sikhye", "식혜", "", ""),
     )),
     *_group("food.drinks.non_alcoholic", ("식품", "음료", "무알코올음료"), "생수/음료|생수/음료/주류", (
         ("beer", "무알코올맥주", "", ""),
@@ -1233,6 +1238,45 @@ def native_category_key(mart: str, source_path: Iterable[str]) -> str | None:
     return f"{mart}:path:{hashlib.sha256(body.encode('utf-8')).hexdigest()[:24]}"
 
 
+def _contextual_homeplus_cold_drinks(evidence: Mapping[str, Any]) -> set[str]:
+    """Reviewed cold shelves: dairy placement is not evidence of milk content.
+
+    Mixed packs and brand-only drink names deliberately remain unresolved.
+    Product-form evidence proposes a leaf; normal conflict/quantity gates remain.
+    """
+    if evidence["mart"] != "homeplus":
+        return set()
+    path = tuple(evidence["source_path_parts"])
+    prefix = ("우유/유제품", "냉장디저트/음료")
+    title = evidence["source_title"]
+    if path == (*prefix, "푸딩디저트류"):
+        if "젤리" in title or title == "씨제이 쁘띠첼 그린애플 210G":
+            return {"food.snacks.sweets.jelly"}
+        if re.search(r"^MDS (망고|사과) 푸딩 ", title):
+            return {"food.snacks.sweets.pudding"}
+    if path not in {(*prefix, "냉장주스"), (*prefix, "신선음료")}:
+        return set()
+    if "+" in title:
+        return set()
+    if re.search(r"야채사랑|사과당근", title):
+        return {"food.drinks.juice.vegetable"}
+    if re.search(r"과일주스|아침에주스|착즙\s*주스", title):
+        return {"food.drinks.juice.fruit"}
+    if title in {"풀무원 아임리얼 스트로베리 700ML", "풀무원 아임리얼 오렌지 700ML"}:
+        return {"food.drinks.juice.fruit"}
+    if title in {"서울우유 프루티 홈 오렌지 1L", "서울우유 프루티 홈 자몽 1L", "푸르밀 웰치 사과 에이드 250ML"}:
+        return {"food.drinks.juice.fruit_drink"}
+    if title == "서울우유 프루티 홈 토마토 1L":
+        return {"food.drinks.juice.vegetable_drink"}
+    if title == "simplus 복숭아 아이스티 2.1L":
+        return {"food.drinks.tea.black"}
+    if title in {"서정 느린식혜 1L", "자임 해담드리 식혜 2L"}:
+        return {"food.drinks.traditional.sikhye"}
+    if title == "쏘굿 오트 언스윗 1L":
+        return {"food.plant.drinks.oat"}
+    return set()
+
+
 def source_evidence(record: Mapping[str, Any]) -> dict[str, Any]:
     payload = record.get("payload") or record.get("raw_payload") or record
     if not isinstance(payload, Mapping):
@@ -1384,6 +1428,7 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     household_ids = {household_leaf} if household_leaf else set()
     homeplus_shelf_ids = _contextual_homeplus_reviewed_shelves(evidence)
     homeplus_shelf_ids |= _contextual_homeplus_sauces_and_inari(evidence)
+    homeplus_shelf_ids |= _contextual_homeplus_cold_drinks(evidence)
     emart_fresh_ids = _contextual_emart_fresh_and_deli(evidence)
     if any(category.startswith("food.seasonings.sauces.") for category in homeplus_shelf_ids):
         # A corroborated sauce shelf and explicit 양념 establish product form.
