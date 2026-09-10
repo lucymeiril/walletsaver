@@ -332,6 +332,11 @@ LEAVES: tuple[Leaf, ...] = (
         ("meat", "고기용소스", ""),
         ("stew", "찌개양념", ""), ("braise", "조림·찜양념", ""),
         ("tteokbokki", "떡볶이양념", ""), ("broth", "요리육수·장국", ""),
+        ("oyster", "굴소스", "", ""), ("tonkatsu", "돈까스소스", "", ""),
+        ("steak", "스테이크소스", "", ""), ("tartar", "타르타르소스", "", ""),
+        ("dressing", "샐러드드레싱", "", ""), ("chili", "칠리·핫소스", "", ""),
+        ("spring_roll", "월남쌈소스", "", ""), ("cho_gochujang", "초고추장", "", ""),
+        ("bibim", "비빔장", "", ""),
     )),
     *_group("food.bakery.spreads", ("식품", "베이커리·스프레드", "스프레드"), "", (
         ("peanut", "땅콩버터", ""),  # Never confused with dairy butter by its name.
@@ -351,6 +356,9 @@ LEAVES: tuple[Leaf, ...] = (
         ("canola", "카놀라유", "카놀라유", "카놀라유"), ("grape", "포도씨유", "포도씨유", "포도씨유"),
         ("olive", "올리브유", "올리브유", "올리브유"), ("sesame", "참기름", "참기름", "참기름"),
         ("cooking", "요리유", ""),
+        ("perilla", "들기름", "", ""), ("soybean", "콩기름", "", ""),
+        ("corn", "옥수수유", "", ""), ("sunflower", "해바라기유", "", ""),
+        ("avocado", "아보카도유", "", ""), ("chili", "고추기름", "", ""),
     )),
     *_group("food.seasonings.baking", ("식품", "양념·소스", "기초조미·제빵"), "장류/양념/제빵|양념/오일/분말류", (
         ("flour", "밀가루", "밀가루"), ("sugar", "설탕", "흰설탕|설탕"), ("vinegar", "식초", "식초"),
@@ -1244,6 +1252,55 @@ def native_category_key(mart: str, source_path: Iterable[str]) -> str | None:
     return f"{mart}:path:{hashlib.sha256(body.encode('utf-8')).hexdigest()[:24]}"
 
 
+def _contextual_homeplus_pantry(evidence: Mapping[str, Any]) -> set[str]:
+    """Reviewed pantry shelves; select the actual oil/sauce, not its ingredient."""
+    if evidence["mart"] != "homeplus":
+        return set()
+    path = tuple(evidence["source_path_parts"])
+    title = evidence["source_title"]
+    root = ("장류/양념/제빵",)
+    oil_paths = {
+        (*root, "식용유/참기름", "참기름/들기름", "들기름"),
+        *((*root, "식용유/참기름", "포도씨/카놀라유/식용유/기타유", leaf)
+          for leaf in ("식용유", "옥수수유", "포도씨/카놀라유/기타")),
+    }
+    if path in oil_paths:
+        for pattern, leaf in (
+            (r"들기름", "perilla"), (r"콩기름", "soybean"),
+            (r"옥수수유", "corn"), (r"해바라기(?:씨)?유", "sunflower"),
+            (r"아보카도(?:유| 오일)", "avocado"), (r"카놀라유", "canola"),
+            (r"포도씨유", "grape"), (r"고추맛 기름", "chili"),
+        ):
+            if re.search(pattern, title):
+                return {"food.seasonings.oils." + leaf}
+        # Opaque '230도' spray and unspecified frying blends need evidence.
+        return set()
+    if path == (*root, "고추장/된장/쌈장/간장", "고추장/초고추장"):
+        if "비빔장" in title:
+            return {"food.seasonings.sauces.bibim"}
+        if re.search(r"(?<!태양)초고추장", title):
+            return {"food.seasonings.sauces.cho_gochujang"}
+        if "고추장" in title and "볶음" not in title:
+            return {"food.seasonings.pastes.gochujang"}
+    sauce_paths = {
+        (*root, "소스", "굴소스/두반장/기타", "굴소스/두반장"),
+        *((*root, "소스", leaf) for leaf in (
+            "돈까스/스테이크소스", "불고기/갈비양념장", "샐러드드레싱/발사믹", "칠리/월남쌈/쌀국수소스",
+        )),
+    }
+    if path in sauce_paths:
+        for pattern, leaf in (
+            (r"굴소스", "oyster"), (r"돈까스\s*소스", "tonkatsu"),
+            (r"스테이크소스", "steak"), (r"타타르소스", "tartar"),
+            (r"(?:불고기|갈비)양념", "meat"), (r"드레싱", "dressing"),
+            (r"칠리소스|스리라차소스|타바스코소스", "chili"),
+            (r"월남쌈소스", "spring_roll"), (r"피쉬소스", "fish"),
+        ):
+            if re.search(pattern, title):
+                return {"food.seasonings.sauces." + leaf}
+    return set()
+
+
 def _contextual_homeplus_yogurt_cheese(evidence: Mapping[str, Any]) -> set[str]:
     """Specific reviewed forms, not automatic copying of retail shelf labels."""
     if evidence["mart"] != "homeplus":
@@ -1474,6 +1531,7 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     homeplus_shelf_ids = _contextual_homeplus_reviewed_shelves(evidence)
     homeplus_shelf_ids |= _contextual_homeplus_sauces_and_inari(evidence)
     homeplus_shelf_ids |= _contextual_homeplus_cold_drinks(evidence)
+    homeplus_shelf_ids |= _contextual_homeplus_pantry(evidence)
     reviewed_dairy_ids = _contextual_homeplus_yogurt_cheese(evidence)
     homeplus_shelf_ids |= reviewed_dairy_ids
     if reviewed_dairy_ids:
