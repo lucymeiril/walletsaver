@@ -15,6 +15,7 @@ as ``우유/유제품`` is one broad node, not two nested categories.
 from __future__ import annotations
 
 from services.initial_audited_food import AUDITED_EMART_FOOD_TITLES
+from services.initial_audited_baking import reviewed_baking_leaf
 from services.initial_audited_household import AUDITED_EMART_HOUSEHOLD_TITLES
 
 from collections import defaultdict
@@ -362,6 +363,18 @@ LEAVES: tuple[Leaf, ...] = (
     )),
     *_group("food.seasonings.baking", ("식품", "양념·소스", "기초조미·제빵"), "장류/양념/제빵|양념/오일/분말류", (
         ("flour", "밀가루", "밀가루"), ("sugar", "설탕", "흰설탕|설탕"), ("vinegar", "식초", "식초"),
+        ("brown_sugar", "갈색설탕", "", ""), ("black_sugar", "흑설탕", "", ""),
+        ("allulose", "알룰로스분말", "", ""), ("stevia_blend", "스테비아계감미료", "", ""),
+        ("roasted_salt", "구운소금", "", ""), ("herb_salt", "허브소금", "", ""),
+        ("sea_salt", "천일염", "", ""), ("refined_salt", "꽃소금", "", ""),
+        ("malt_flour", "엿기름가루", "", ""), ("rice_flour", "찹쌀가루", "", ""),
+        ("oat_flour", "귀리가루", "", ""), ("perilla_flour", "들깨가루", "", ""),
+        ("buckwheat_flour", "메밀가루", "", ""), ("pancake_mix", "부침가루", "", ""),
+        ("frying_mix", "튀김가루", "", ""), ("breadcrumbs", "빵가루", "", ""),
+        ("baking_soda", "식용베이킹소다", "", ""), ("baking_powder", "베이킹파우더", "", ""),
+        ("icing_sugar", "슈가파우더", "", ""), ("almond_flour", "아몬드가루", "", ""),
+        ("yeast", "제빵이스트", "", ""), ("hotcake_mix", "핫케이크믹스", "", ""),
+        ("hotteok_mix", "호떡믹스", "", ""),
         ("pepper", "후추", "후추"), ("stock", "육수", "코인육수", "코인육수"),
     )),
     *_group("food.seasonings.powders", ("식품", "양념·소스", "분말조미료"), "장류/양념/제빵|양념/오일/분말류", (
@@ -1532,6 +1545,10 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     homeplus_shelf_ids |= _contextual_homeplus_sauces_and_inari(evidence)
     homeplus_shelf_ids |= _contextual_homeplus_cold_drinks(evidence)
     homeplus_shelf_ids |= _contextual_homeplus_pantry(evidence)
+    baking_leaf = reviewed_baking_leaf(evidence)
+    if baking_leaf:
+        homeplus_shelf_ids.add(baking_leaf)
+        path_ids = {c for c in path_ids if _suspicion_reason(c, evidence) != "source_title_product_type_conflict"}
     reviewed_dairy_ids = _contextual_homeplus_yogurt_cheese(evidence)
     homeplus_shelf_ids |= reviewed_dairy_ids
     if reviewed_dairy_ids:
