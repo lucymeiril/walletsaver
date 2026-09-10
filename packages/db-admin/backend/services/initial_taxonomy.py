@@ -17,6 +17,7 @@ from __future__ import annotations
 from services.initial_audited_food import AUDITED_EMART_FOOD_TITLES
 from services.initial_audited_baking import reviewed_baking_leaf
 from services.initial_audited_seasonings import reviewed_seasoning_leaf
+from services.initial_audited_emart_produce import reviewed_emart_produce_leaf
 from services.initial_audited_household import AUDITED_EMART_HOUSEHOLD_TITLES
 
 from collections import defaultdict
@@ -147,12 +148,14 @@ LEAVES: tuple[Leaf, ...] = (
         ("salad", "샐러드채소", "믹스샐러드|샐러드채소"),
         ("scallion", "대파", ""), ("napa_cabbage", "배추", ""),
         ("radish", "무", ""), ("zucchini", "애호박", ""),
+        ("chives", "부추", "", ""),
     )),
     # Dry/frozen processing wins over an unreliable Fresh-Foods source path.
     # These leaves and search terms add no automatic source/name mappings.
     *_group("food.produce.processed_vegetables", ("식품", "농산물", "가공채소"), "채소", (
         ("dried", "건채소", ""), ("dried_mushroom", "건버섯", ""),
         ("frozen", "냉동채소", ""),
+        ("blanched", "데친나물", "", ""),
         ("olive", "절임올리브", ""),
     )),
     *_group("food.grains.rice", ("식품", "곡물·견과", "쌀·잡곡"), "쌀/잡곡/견과류|쌀/잡곡|쌀|잡곡", (
@@ -1577,6 +1580,9 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
         path_ids = {c for c in path_ids if _suspicion_reason(c, evidence) != "source_title_product_type_conflict"}
         name_ids = {c for c in name_ids if _suspicion_reason(c, evidence) != "source_title_product_type_conflict"}
     emart_fresh_ids = _contextual_emart_fresh_and_deli(evidence)
+    produce_leaf = reviewed_emart_produce_leaf(evidence)
+    if produce_leaf:
+        emart_fresh_ids.add(produce_leaf)
     if any(category.startswith("food.seasonings.sauces.") for category in homeplus_shelf_ids):
         # A corroborated sauce shelf and explicit 양념 establish product form.
         # Drop only name candidates already rejected by the ingredient veto;
