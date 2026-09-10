@@ -247,7 +247,6 @@ def test_milk_fat_and_sterilization_are_attributes_not_flavour_siblings():
     ("homeplus", "라면/즉석식품/통조림 > 즉석식품/누룽지/죽 > 즉석국 > 즉석국(레토르트)", "오뚜기 3분 카레 매운맛 200G"),
     ("homeplus", "냉장/냉동/밀키트 > 돈까스/떡갈비/너겟 > 돈까스", "목우촌 주부9단치킨까스 360G"),
     ("lottemart", ["델리ㆍ즉석조리", "샌드위치ㆍ햄버거", "샌드위치"], "탱글탱글 소세지가 쏙! 15핫도그 (팩)"),
-    ("homeplus", "우유/유제품 > 요거트/요구르트 > 떠먹는 요구르트", "일동후디스 그릭요거트달지않은저지방 80G*4"),
     ("homeplus", "우유/유제품 > 두유 > 일반두유", "매일 아몬드브리즈 무당 950ML"),
     ("costco", "우유", "마이아 프로틴 메이커 두유 제조기 800ml"),
     ("homeplus", "두부/김치/반찬 > 두부/나물 > 낫또", "풀무원 국산콩 진한 콩국물 960G"),
@@ -680,10 +679,11 @@ def test_dairy_context_needs_official_url_not_costco_search_label_or_product_slu
 
 
 def test_dairy_context_does_not_override_specific_source_type_conflict():
+    # Reviewed Greek-vs-spoon shelf resolution is covered by
+    # test_initial_homeplus_dairy_forms; other conflicts still require review.
     for path, title in (
         ("우유/유제품 > 두유 > 일반두유", "매일 아몬드브리즈 무당950ML"),
         ("우유/유제품 > 치즈/버터 > 슬라이스 치즈", "필라델피아 크림치즈190g"),
-        ("우유/유제품 > 요거트/요구르트 > 떠먹는 요구르트", "후디스 그릭요거트80g"),
     ):
         assert classify_record(_raw("homeplus", path, title))["unified_category_id"] is None
 

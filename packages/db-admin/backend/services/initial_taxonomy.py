@@ -82,6 +82,8 @@ LEAVES: tuple[Leaf, ...] = (
         ("spoon", "떠먹는요거트", "떠먹는 요구르트|떠먹는요구르트|떠먹는요거트", "떠먹는요거트|떠먹는 요거트|떠먹는 요구르트"),
         ("drink", "마시는요구르트", "마시는요구르트|마시는 요구르트|일반요구르트|농후발효유", "마시는요구르트|마시는 요구르트"),
         ("greek", "그릭요거트", "그릭요거트", "그릭요거트|그릭 요거트|greek yogurt"),
+        ("squeeze", "짜먹는요거트", "", ""),
+        ("topping", "토핑요거트", "", ""),
     )),
     *_group("food.dairy.cheese", ("식품", "유제품", "치즈·버터"), "우유/유제품|유제품|dairy|치즈|치즈/버터", (
         ("sliced", "슬라이스치즈", "슬라이스 치즈|슬라이스치즈", "슬라이스치즈|슬라이스 치즈"),
@@ -98,6 +100,10 @@ LEAVES: tuple[Leaf, ...] = (
         ("brie", "브리치즈", "브리치즈"),
         ("camembert", "까망베르치즈", "까망베르치즈"),
         ("hard_aged", "경성숙성치즈", "경성숙성치즈"),
+        ("grilling", "구워먹는치즈", "", ""),
+        ("fruit", "과일치즈", "", ""),
+        ("blue", "블루치즈", "", ""),
+        ("portion", "포션·큐브치즈", "", ""),
     )),
     *_group("food.dairy.cream", ("식품", "유제품", "유크림"), "우유/유제품|유제품|dairy", (
         ("fresh", "생크림", "생크림"),
@@ -1238,6 +1244,45 @@ def native_category_key(mart: str, source_path: Iterable[str]) -> str | None:
     return f"{mart}:path:{hashlib.sha256(body.encode('utf-8')).hexdigest()[:24]}"
 
 
+def _contextual_homeplus_yogurt_cheese(evidence: Mapping[str, Any]) -> set[str]:
+    """Specific reviewed forms, not automatic copying of retail shelf labels."""
+    if evidence["mart"] != "homeplus":
+        return set()
+    path = tuple(evidence["source_path_parts"])
+    title = evidence["source_title"]
+    if path in {
+        ("우유/유제품", "요거트/요구르트", "떠먹는 요구르트"),
+        ("우유/유제품", "요거트/요구르트", "그릭요거트", "그릭요거트기타"),
+        ("우유/유제품", "요거트/요구르트", "떠먹는 요구르트", "토핑요거트"),
+    }:
+        if "그릭" in title and not re.search(r"드링크|음료|마시는", title):
+            return {"food.dairy.yogurt.greek"}
+        if re.search(r"짜먹는요거트|짜요짜요 요구르트", title):
+            return {"food.dairy.yogurt.squeeze"}
+        if title in {"서울우유 비요뜨 초코링 138G*2", "서울우유 비요뜨 쿠키앤크림 131G*2", "서울우유 비요뜨 크런치볼 138G*2"}:
+            return {"food.dairy.yogurt.topping"}
+    if path in {
+        ("우유/유제품", "치즈/버터", "슬라이스 치즈"),
+        ("우유/유제품", "치즈/버터", "스트링/과일/스낵치즈", "구워먹는치즈등"),
+        ("우유/유제품", "치즈/버터", "크림/자연치즈", "크림/과일/스트링/까망베르/모짜렐라치즈"),
+    }:
+        if title in {"구르메 파르미지아노 레지아노 치즈 150G", "파르미지아노 레지아노 치즈 200G"}:
+            return {"food.dairy.cheese.hard_aged"}
+        if title == "simplus 스트링 치즈 200G (20G*10)":
+            return {"food.dairy.cheese.string"}
+        if re.search(r"구워먹는 치즈", title):
+            return {"food.dairy.cheese.grilling"}
+        if re.search(r"^램노스 과일치즈 ", title):
+            return {"food.dairy.cheese.fruit"}
+        if title == "밀라 마스카포네 250G":
+            return {"food.dairy.cheese.mascarpone"}
+        if title == "고르곤졸라 피칸테 150G":
+            return {"food.dairy.cheese.blue"}
+        if title == "래핑카우 포션 치즈 120G" or re.search(r"^벨큐브 .*큐브치즈 ", title):
+            return {"food.dairy.cheese.portion"}
+    return set()
+
+
 def _contextual_homeplus_cold_drinks(evidence: Mapping[str, Any]) -> set[str]:
     """Reviewed cold shelves: dairy placement is not evidence of milk content.
 
@@ -1429,6 +1474,13 @@ def classify_record(record: Mapping[str, Any]) -> dict[str, Any]:
     homeplus_shelf_ids = _contextual_homeplus_reviewed_shelves(evidence)
     homeplus_shelf_ids |= _contextual_homeplus_sauces_and_inari(evidence)
     homeplus_shelf_ids |= _contextual_homeplus_cold_drinks(evidence)
+    reviewed_dairy_ids = _contextual_homeplus_yogurt_cheese(evidence)
+    homeplus_shelf_ids |= reviewed_dairy_ids
+    if reviewed_dairy_ids:
+        # Only discard a retail/name candidate already vetoed by product form.
+        # Other valid contradictory evidence must still block classification.
+        path_ids = {c for c in path_ids if _suspicion_reason(c, evidence) != "source_title_product_type_conflict"}
+        name_ids = {c for c in name_ids if _suspicion_reason(c, evidence) != "source_title_product_type_conflict"}
     emart_fresh_ids = _contextual_emart_fresh_and_deli(evidence)
     if any(category.startswith("food.seasonings.sauces.") for category in homeplus_shelf_ids):
         # A corroborated sauce shelf and explicit 양념 establish product form.
