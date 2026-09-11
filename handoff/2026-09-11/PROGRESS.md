@@ -30,3 +30,14 @@
 - 추가 점검: `pending/284` 감귤 2관측과 `pending/289` 배 2관측을 확인했다. 두 묶음은 분류 자체는 각각 `food.produce.fruit.citrus`, `food.produce.fruit.pear`로 이미 resolved 상태이며, 감귤은 `source_title_changed`, 배는 `count_range_unresolved` 때문에 pending이다. 따라서 classification-only 제안으로 해결된 것처럼 기록하지 않고 별도 비분류 사유 pending으로 남긴다.
 - 실제 반영/검사: 이번 절 역시 GitHub 텍스트 읽기·쓰기만 사용했다. staging DB import/재구축, pytest, `verify_initial_stage.py`, 멱등 검사는 실행하지 않았다. pass41 적재/보류 수치에는 변화가 없다.
 - 다음 재개점: 소형 과일/농산물 pending 중 `category_not_resolved_to_leaf`가 실제 원인인 묶음을 우선 골라 기존 리프로 제안한다. 이미 분류가 resolved이고 제목변경·수량범위·행사조건만 남은 묶음은 분류 완료와 pending 해소를 혼동하지 말고 별도로 표시한다.
+
+## 2026-09-11 소형 신선과일 후속 제안 — pending 142 / 143 / 144 / 198 / 199 / 200 / 260 / 284 / 289 / 290 / 291 / 406 / 407
+
+- 제안 저장: `proposals/fruit-small-142-143-198-199-200-260-284-289-290-291-406-407.json`. 이번 파일도 `status=proposal_only`, `baseline_pass=pass41`, `executed_tests=[]`이며 DB 입력 파일이 아니다.
+- 분류 제안 26관측: 홈플러스 키위 3판매페이지의 반복관측 6건 → `food.produce.fruit.kiwi`; 국산포도 3판매페이지 6건과 수입포도 2판매페이지 4건 → `food.produce.fruit.grape`; 멜론 2판매페이지 4건 → `food.produce.fruit.melon`; 자몽 반복 2건 → `food.produce.fruit.grapefruit`; 아보카도 반복 2건 → `food.produce.fruit.avocado`; 황금향 1건 → `food.produce.fruit.citrus`; 골드망고 1건 → `food.produce.fruit.mango`.
+- 규격/단위 분리: 키위 7-10입/7-12입, 아보카도 3-4입, 황금향 4-7입의 `count_range_unresolved`는 분류 제안 후에도 그대로 남긴다. 허니듀 멜론과 골드망고의 `unit_unresolved`도 분류와 별개로 남긴다. 제목에 개수 범위가 있는 거봉 역시 이번 작업에서 정규화 규격을 다시 쓰지 않았다.
+- 분류 보류 5관측: 레몬 관련 3관측은 원본 경로가 레몬/라임이지만 pass41에는 라임 리프만 확인되어 레몬을 라임으로 오분류하지 않도록 보류했다. `고산지 허니글로우(베트남)` 반복 2관측은 바나나 진열이지만 제목에 바나나가 없고 기존 분류기도 `source_leaf_needs_name_corroboration`으로 판단하므로 경로만으로 확정하지 않았다.
+- 비분류 pending 별도 기록: 감귤 2관측은 이미 `food.produce.fruit.citrus`로 분류됐으나 `source_title_changed`; 배 2관측과 복숭아 6관측은 각각 기존 배/복숭아 리프에 분류됐으나 `count_range_unresolved`; 델몬트 바나나 반복 2관측은 이미 바나나로 분류됐으나 `unit_unresolved`가 남아 있다. 이들은 분류 제안 숫자에 포함하지 않았다.
+- 반복 수집 보존: 동일 홈플러스 `source_record_key`/판매페이지가 8월31일과 9월2일에 반복 수집된 경우 하나의 결정에 두 `raw_record_ids`를 묶어 기록했다. 서로 다른 판매페이지 상품군 병합은 요청하지 않았다.
+- 실제 반영/검사: GitHub 텍스트 읽기·쓰기만 사용했다. staging DB import/재구축, pytest, `verify_initial_stage.py`, 멱등 import 검사는 실행하지 않았다. pass41의 5,280 적재/3,916 보류 수치는 변경되지 않았다.
+- 다음 재개점: 소형 신선채소 묶음에서 기존 리프가 있는 대파·배추·무·양파·마늘·부추·버섯·샐러드채소 등을 먼저 검토한다. 세부 품종 리프가 없거나 처리형태(건조/데침/냉동)가 다른 상품은 기존 신선채소 리프에 억지로 합치지 않는다.
