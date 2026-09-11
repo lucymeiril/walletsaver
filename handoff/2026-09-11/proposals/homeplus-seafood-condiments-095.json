@@ -1,0 +1,65 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "095",
+  "source_path": "handoff/2026-09-11/pending/095/001.json",
+  "scope_note": "Classification-only proposal for Homeplus seafood-condiment shelf. Product form wins over the broad seafood shelf; quantity, price, raw observations, and source identity remain unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1179,
+    "current_reviewed": 1189,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2727
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "No conflicting explicit review decision was found for the five source_record_keys. Existing taxonomy has wasabi_paste, but no exact horseradish, sushi-vinegar/choderi, or mulhoe-sauce leaf was found; no prior horseradish candidate precedent was found."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:4:89", "ingestion:54:23"],
+      "source_record_key": "069465421",
+      "source_title": "자연에서갈아만든 생와사비 10G*4",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.seasonings.spices.wasabi_paste",
+      "reason": "생와사비 튜브/소포장 제품은 기존 와사비페이스트 leaf와 정확히 맞는다. 10G*4는 수량 속성이다."
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:4:78", "ingestion:53:89"],
+      "source_record_key": "070610531",
+      "source_title": "홀스래디쉬 소스 210G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.seasonings.sauces.horseradish",
+      "reason": "홀스래디쉬 소스는 기존 mustard/wasabi/dressing leaf 중 어느 하나와 동일시하기 어렵다. 제품 정체성을 보존하기 위해 신규 후보로 둔다."
+    },
+    {
+      "raw_record_ids": ["ingestion:5:17", "ingestion:54:33"],
+      "source_record_key": "123642026",
+      "source_title": "케이퍼 & 홀스래디쉬 소스 60G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.seasonings.sauces.horseradish",
+      "reason": "케이퍼 혼합은 변형 속성이지만 중심 product form은 홀스래디쉬 소스다. 동일 신규 후보를 재사용한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:4:93", "ingestion:54:19"],
+      "source_record_key": "148568251",
+      "source_title": "초데리소스 260G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.seasonings.sauces.sushi_vinegar",
+      "reason": "초데리/초밥용 산미 조미소스는 현재 specific sauce leaves에 정확한 대응이 없다. generic dressing이나 초고추장으로 강제하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:5:2", "ingestion:54:47"],
+      "source_record_key": "062201780",
+      "source_title": "속초식물회소스 500G(팩)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.seasonings.sauces.mulhoe",
+      "reason": "물회 전용 조리소스라는 제품 정체성이 명확하지만 현재 exact leaf가 없다. 요리명만으로 초고추장 등 기존 leaf에 축약하지 않는다."
+    }
+  ],
+  "executed_tests": []
+}
