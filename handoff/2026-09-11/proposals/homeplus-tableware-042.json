@@ -1,0 +1,151 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["042"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. The Homeplus shelf name '일회용/다회용공기' is broad/misleading for this batch and was not accepted as the answer; product title/form wins.",
+  "review_summary": {
+    "observations_reviewed": 24,
+    "source_listings_reviewed": 12,
+    "existing_leaf_decisions": 0,
+    "deferred_taxonomy_candidates": 12
+  },
+  "source_file_note": "pending group 042 spans pending/042/001.json and pending/042/002.json. The second file contains the final two repeated observations for source keys 070562915 and 070562909.",
+  "taxonomy_policy": {
+    "pass41_snapshot_result": "No household.kitchen.* leaf was found in the handoff catalog snapshot for these product forms.",
+    "legacy_code_note": "packages/db-admin/backend/category_data/categories.py contains legacy household.kitchen entries such as household.kitchen.plate, but legacy category_data is not treated as proof that the pass41 snapshot currently contains that leaf.",
+    "precedent": "Existing proposal/checkpoint work for kitchen cups, utensils, wraps, gloves, and cleaning tools also records missing exact kitchen leaves as held new-taxonomy candidates.",
+    "attribute_rule": "paper/foil/reusable/disposable and dimensions/counts are treated as material/use/package attributes where possible, not as reasons to duplicate product-form leaves."
+  },
+  "accounting_note": "Do not mechanically add 24 to historical cumulative reviewed counts until proposal accounting reconciliation is complete. This file establishes group-042 coverage.",
+  "explicit_review_decision_conflict_check": {
+    "file": "handoff/2026-09-11/review-decisions-input.json",
+    "method": "batched repository source_record_key search",
+    "checked_source_record_keys": [
+      "070564585",
+      "070564942",
+      "070252038",
+      "070565244",
+      "070252021",
+      "070565618",
+      "070564061",
+      "070564003",
+      "070283928",
+      "070251241",
+      "070562915",
+      "070562909"
+    ],
+    "review_decisions_file_matches_found": 0,
+    "note": "The batched searches returned raw/pending/unresolved records but did not return review-decisions-input.json for these keys. This is a proposal-stage conflict screen only."
+  },
+  "deferred_taxonomy_candidates": [
+    {
+      "raw_record_ids": ["ingestion:27:29", "ingestion:76:93"],
+      "source_record_key": "070564585",
+      "source_title": "simplus 다회용스푼 20개입",
+      "suggested_new_leaf": "household.kitchen.tableware.spoon",
+      "reason": "상품형태는 식사용 스푼이다. '다회용'은 사용속성이고 조리용 cooking_spoon으로 보내지 않는다. pass41 snapshot에 식사용 스푼 exact leaf가 없어 신규 후보로 보류한다.",
+      "quantity_review": "unchanged; 20-count package preserved",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:44", "ingestion:77:0"],
+      "source_record_key": "070564942",
+      "source_title": "simplus 종이공기 10개입",
+      "suggested_new_leaf": "household.kitchen.tableware.bowl",
+      "reason": "종이 재질의 공기/볼 형태다. 재질과 일회용 여부는 속성으로 두고 제품형태 bowl 후보로 보류한다.",
+      "quantity_review": "unchanged; 10-count package preserved",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:45", "ingestion:76:87"],
+      "source_record_key": "070252038",
+      "source_title": "플라워 종이접시 23CM*10P",
+      "suggested_new_leaf": "household.kitchen.tableware.plate",
+      "reason": "제목이 종이접시를 직접 명시한다. 23cm, 종이, 10P는 규격/재질/수량 속성이고 제품형태는 plate다.",
+      "quantity_review": "unchanged; promotion preserved separately",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:50", "ingestion:76:92"],
+      "source_record_key": "070565244",
+      "source_title": "simplus 종이접시 18CM*10개입",
+      "suggested_new_leaf": "household.kitchen.tableware.plate",
+      "reason": "종이접시 제품이며 18cm/10개입은 규격 속성이다. 동일 plate 후보로 묶는다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:51", "ingestion:77:2"],
+      "source_record_key": "070252021",
+      "source_title": "플라워 종이접시 18CM*10P",
+      "suggested_new_leaf": "household.kitchen.tableware.plate",
+      "reason": "종이접시 제품이며 브랜드/지름/수량 차이는 분류가 아니라 상품 속성이다.",
+      "quantity_review": "unchanged; promotion preserved separately",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:56", "ingestion:76:91"],
+      "source_record_key": "070565618",
+      "source_title": "simplus 종이접시 23CM*10개입",
+      "suggested_new_leaf": "household.kitchen.tableware.plate",
+      "reason": "종이접시 제품이며 23cm/10개입은 규격 속성이다. plate 후보가 제품형태에 맞다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:59", "ingestion:77:35"],
+      "source_record_key": "070564061",
+      "source_title": "simplus 은박도시락 5개입",
+      "suggested_new_leaf": "household.kitchen.storage.food_container",
+      "reason": "은박 재질의 일회용 도시락/식품용기다. plate나 bowl에 강제하지 않고 food_container 후보로 보류하며 은박 재질과 5개입은 속성으로 둔다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:60", "ingestion:77:36"],
+      "source_record_key": "070564003",
+      "source_title": "simplus 은박접시 14CM*10개입",
+      "suggested_new_leaf": "household.kitchen.tableware.plate",
+      "reason": "제목이 은박접시를 직접 명시한다. 은박/14cm/10개입은 재질·규격 속성이고 제품형태는 plate다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:61", "ingestion:77:7"],
+      "source_record_key": "070283928",
+      "source_title": "simplus 나무젓가락 20입",
+      "suggested_new_leaf": "household.kitchen.tableware.chopsticks",
+      "reason": "상품형태가 식사용 나무젓가락이다. 목재와 20입은 재질/수량 속성으로 두고 chopsticks 후보로 보류한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:62", "ingestion:77:8"],
+      "source_record_key": "070251241",
+      "source_title": "일회용 마늘종지 5입",
+      "suggested_new_leaf": "household.kitchen.tableware.condiment_dish",
+      "reason": "제목의 '마늘종지'는 마늘 식품이 아니라 작은 소스/찬용 종지라는 식기 형태다. 일회용과 5입은 속성으로 두고 condiment_dish 후보로 보류한다.",
+      "quantity_review": "unchanged; promotion preserved separately",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:80", "ingestion:77:37"],
+      "source_record_key": "070562915",
+      "source_title": "simplus 은박접시 18CM*10개입",
+      "suggested_new_leaf": "household.kitchen.tableware.plate",
+      "reason": "은박접시 제품으로 18cm/10개입은 규격 속성이다. 다른 종이/은박 접시와 같은 plate 후보로 둔다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:81", "ingestion:77:38"],
+      "source_record_key": "070562909",
+      "source_title": "simplus 은박접시 23CM*10개입",
+      "suggested_new_leaf": "household.kitchen.tableware.plate",
+      "reason": "은박접시 제품으로 재질/지름/수량은 속성이다. 동일 plate 후보로 보류한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "same_source_listing_observations_only"
+    }
+  ],
+  "executed_tests": []
+}
