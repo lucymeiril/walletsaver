@@ -1,0 +1,115 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["067"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data, promotions, quantity evidence, and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 860,
+    "batch_reviewed_unique_observations": 14,
+    "cumulative_reviewed_unique_observations": 874,
+    "remaining_unreviewed_observations": 3042
+  },
+  "review_summary": {
+    "unique_source_products_reviewed": 7,
+    "observations_reviewed": 14,
+    "proposed_existing_leaf_products": 0,
+    "proposed_existing_leaf_observations": 0,
+    "held_or_new_taxonomy_products": 7,
+    "held_or_new_taxonomy_observations": 14,
+    "existing_source_product_proposal_duplicates_found": 0,
+    "related_prior_taxonomy_candidate": "household.bath.accessories.shower_ball",
+    "related_prior_proposal": "handoff/2026-09-11/proposals/emart-household-044.json",
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "taxonomy_note": "원본 shelf 이름은 때타올이지만 7개 상품 모두 샤워볼이다. pass41에는 샤워볼 전용 leaf가 없으며 pending 044의 이마트 샤워볼 검토에서 이미 household.bath.accessories.shower_ball 후보가 제안되었다. 새 병렬 후보를 만들지 않고 동일 후보를 재사용한다. 색상과 롱 타입은 상품 variant이므로 서로 다른 판매 상품으로 유지한다.",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:25:96", "ingestion:75:43"],
+      "source_name": "homeplus",
+      "source_record_key": "070890808",
+      "source_title": "simplus 샤워볼 1P 베이지",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.bath.accessories.shower_ball",
+      "reason": "신체 세정용 샤워볼이며 때타올과는 제품형태가 다르다. pending 044에서 이미 제안된 샤워볼 후보 leaf를 재사용한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:25:97", "ingestion:75:21"],
+      "source_name": "homeplus",
+      "source_record_key": "070890889",
+      "source_title": "simplus 샤워볼 1P 투톤그레이",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.bath.accessories.shower_ball",
+      "reason": "투톤그레이 색상 variant의 샤워볼이다. 색상은 taxonomy 분기 사유가 아니므로 기존 샤워볼 후보를 재사용한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:26:6", "ingestion:75:38"],
+      "source_name": "homeplus",
+      "source_record_key": "070890739",
+      "source_title": "simplus 샤워볼 1P 옐로우",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.bath.accessories.shower_ball",
+      "reason": "옐로우 색상 샤워볼로 동일 제품형태 후보에 해당한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:26:14", "ingestion:75:27"],
+      "source_name": "homeplus",
+      "source_record_key": "070890837",
+      "source_title": "simplus 데일리 샤워볼 1P 핑크",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.bath.accessories.shower_ball",
+      "reason": "데일리 라인의 핑크 샤워볼이며 별도 taxonomy 제품형태가 아니다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:26:21", "ingestion:75:44"],
+      "source_name": "homeplus",
+      "source_record_key": "070890768",
+      "source_title": "simplus 샤워볼 1P 퍼플",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.bath.accessories.shower_ball",
+      "reason": "퍼플 색상 샤워볼로 동일 신규 후보를 재사용한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:26:43", "ingestion:75:23"],
+      "source_name": "homeplus",
+      "source_record_key": "070890912",
+      "source_title": "simplus 롱샤워볼 1P 그레이",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.bath.accessories.shower_ball",
+      "reason": "롱 타입이라는 형태 차이는 있으나 사용 목적과 핵심 제품형태는 샤워볼이다. 과도한 세분화 없이 같은 후보를 사용한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:26:44", "ingestion:75:32"],
+      "source_name": "homeplus",
+      "source_record_key": "070890872",
+      "source_title": "simplus 샤워볼 1P 투톤핑크",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.bath.accessories.shower_ball",
+      "reason": "투톤핑크 색상 variant이며 같은 샤워볼 제품형태 후보에 해당한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
