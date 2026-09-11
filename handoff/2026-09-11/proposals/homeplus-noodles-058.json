@@ -1,0 +1,125 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["058"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data, promotions, quantity evidence, and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 724,
+    "batch_reviewed_unique_observations": 16,
+    "cumulative_reviewed_unique_observations": 740,
+    "remaining_unreviewed_observations": 3176
+  },
+  "review_summary": {
+    "unique_source_products_reviewed": 8,
+    "observations_reviewed": 16,
+    "proposed_existing_leaf_products": 8,
+    "proposed_existing_leaf_observations": 16,
+    "held_products": 0,
+    "held_observations": 0,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_matches_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:9:96", "ingestion:59:21"],
+      "source_name": "homeplus",
+      "source_record_key": "100378166",
+      "source_title": "오뚜기 생 쫄면 2인분 452G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.meals.noodles.jjolmyeon",
+      "reason": "원본 진열은 간편냉면&소바이지만 상품명이 생 쫄면을 직접 명시한다. pass41에 쫄면 전용 leaf가 있으므로 더 넓은 냉면·메밀면 leaf 대신 제품 정체성이 일치하는 jjolmyeon을 제안한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:10:69", "ingestion:59:69"],
+      "source_name": "homeplus",
+      "source_record_key": "105742764",
+      "source_title": "씨제이 동치미 냉면육수 1인 300ML",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seasonings.sauces.broth",
+      "reason": "면 상품이 아니라 독립 판매되는 액상 냉면육수다. pass41의 요리육수·장국 leaf는 액상 샤브샤브육수 등 독립 육수 상품을 수용하므로 냉면 leaf보다 제품형태와 맞는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:10:95", "ingestion:59:66"],
+      "source_name": "homeplus",
+      "source_record_key": "100409891",
+      "source_title": "풀무원 바로조리 생쫄면 2인분 460G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.meals.noodles.jjolmyeon",
+      "reason": "상품명이 바로조리 생쫄면을 직접 명시하며 pass41의 쫄면 전용 leaf와 일치한다. 원본 진열의 간편냉면&소바보다 제목의 구체적 제품유형을 우선한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:11:15", "ingestion:60:9"],
+      "source_name": "homeplus",
+      "source_record_key": "071038562",
+      "source_title": "칠갑농산 냉면육수(5인분) 1500ML",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seasonings.sauces.broth",
+      "reason": "냉면 면발이나 완성 면요리가 아니라 5인분 액상 냉면육수 단품이다. 기존 요리육수·장국 leaf가 독립 액상 육수 제품을 수용하므로 해당 leaf를 제안한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:11:85", "ingestion:61:26"],
+      "source_name": "homeplus",
+      "source_record_key": "103420964",
+      "source_title": "오뚜기 쫄면 4인분 904G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.meals.noodles.jjolmyeon",
+      "reason": "상품명이 쫄면을 직접 명시하고 pass41에 쫄면 전용 leaf가 존재한다. 4인분/904G는 규격 정보이며 분류 정체성을 바꾸지 않는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:11:96", "ingestion:61:38"],
+      "source_name": "homeplus",
+      "source_record_key": "071392728",
+      "source_title": "풀무원 저당 생쫄면 2인 460G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.meals.noodles.jjolmyeon",
+      "reason": "저당은 상품 속성이고 제품유형은 생쫄면으로 명확하다. pass41의 쫄면 전용 leaf에 직접 대응한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:12:5", "ingestion:61:47"],
+      "source_name": "homeplus",
+      "source_record_key": "071387447",
+      "source_title": "대상 청정원 동치미 육수 1인분 300G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seasonings.sauces.broth",
+      "reason": "간편냉면&소바 진열에 있으나 제목은 동치미 육수 단품을 명시한다. 면류로 분류하지 않고 기존 요리육수·장국 leaf로 분류하는 것이 제품형태에 맞는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:12:16", "ingestion:61:58"],
+      "source_name": "homeplus",
+      "source_record_key": "071367673",
+      "source_title": "칠갑농산 냉천골 부드러운 생쫄면 424G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.meals.noodles.jjolmyeon",
+      "reason": "상품명이 생쫄면을 직접 명시하며 pass41의 쫄면 전용 leaf와 일치한다. 원본 냉면/소바 진열의 넓은 범주보다 구체적 제목을 우선한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
