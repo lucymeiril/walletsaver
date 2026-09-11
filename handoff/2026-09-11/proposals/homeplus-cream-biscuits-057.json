@@ -1,0 +1,116 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["057"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data, promotions, and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 708,
+    "batch_reviewed_unique_observations": 16,
+    "cumulative_reviewed_unique_observations": 724,
+    "remaining_unreviewed_observations": 3192
+  },
+  "review_summary": {
+    "unique_source_products_reviewed": 8,
+    "observations_reviewed": 16,
+    "proposed_existing_leaf_products": 8,
+    "proposed_existing_leaf_observations": 16,
+    "held_products": 0,
+    "held_observations": 0,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:17:12", "ingestion:66:47"],
+      "source_name": "homeplus",
+      "source_record_key": "104770341",
+      "source_title": "크라운 초코하임 142G",
+      "proposed_unified_category_id": "food.snacks.baked.sandwich",
+      "reason": "크림비스켓 진열과 하임 제품명이 일치하며 pass41의 sandwich 제목 방어규칙이 하임을 명시적으로 인정한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; promotion_unresolved remains unresolved where present",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:17:24", "ingestion:66:51"],
+      "source_name": "homeplus",
+      "source_record_key": "104770472",
+      "source_title": "크라운 화이트하임 142G",
+      "proposed_unified_category_id": "food.snacks.baked.sandwich",
+      "reason": "크림비스켓 진열과 하임 제품명이 일치하며 pass41의 sandwich 제목 방어규칙이 하임을 명시적으로 인정한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; promotion_unresolved remains unresolved where present",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:18:27", "ingestion:68:56"],
+      "source_name": "homeplus",
+      "source_record_key": "124097151",
+      "source_title": "크라운 쿠크다스 커피 289G",
+      "proposed_unified_category_id": "food.snacks.baked.sandwich",
+      "reason": "pass41의 sandwich 제목 방어규칙이 쿠크다스를 명시적으로 인정하며 크림비스켓 진열과도 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:18:45", "ingestion:67:85"],
+      "source_name": "homeplus",
+      "source_record_key": "071050016",
+      "source_title": "해태 크림 미니웨하스 150G",
+      "proposed_unified_category_id": "food.snacks.baked.wafer",
+      "reason": "상품명이 웨하스를 직접 명시하고 pass41에 전용 wafer leaf가 있으므로 넓은 크림비스켓 shelf보다 직접 제품형태를 우선한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:19:50", "ingestion:67:71"],
+      "source_name": "homeplus",
+      "source_record_key": "124097180",
+      "source_title": "크라운 쿠크다스 화이트 289G",
+      "proposed_unified_category_id": "food.snacks.baked.sandwich",
+      "reason": "pass41의 sandwich 제목 방어규칙이 쿠크다스를 명시적으로 인정하며 크림비스켓 진열과도 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:19:62", "ingestion:68:66"],
+      "source_name": "homeplus",
+      "source_record_key": "009961070",
+      "source_title": "크라운 화이트하임 284G",
+      "proposed_unified_category_id": "food.snacks.baked.sandwich",
+      "reason": "하임 제품명과 크림비스켓 진열이 일치하며 pass41 sandwich 제목 방어규칙에 하임이 명시되어 있다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:19:82", "ingestion:69:31"],
+      "source_name": "homeplus",
+      "source_record_key": "115323580",
+      "source_title": "로아커 웨하스 바닐라 125G",
+      "proposed_unified_category_id": "food.snacks.baked.wafer",
+      "reason": "상품명이 웨하스를 직접 명시하고 pass41에 전용 wafer leaf가 있다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:20:9", "ingestion:68:65"],
+      "source_name": "homeplus",
+      "source_record_key": "009992294",
+      "source_title": "크라운 초코하임 284G",
+      "proposed_unified_category_id": "food.snacks.baked.sandwich",
+      "reason": "하임 제품명과 크림비스켓 진열이 일치하며 pass41 sandwich 제목 방어규칙에 하임이 명시되어 있다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
