@@ -1,0 +1,99 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["139", "282", "344", "400", "405", "443", "444", "445", "446"],
+  "scope_note": "GitHub read/write review only. Existing pass41 taxonomy leaves were reused where evidence was direct. No staging DB import or repository tests were executed.",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:3:75", "ingestion:52:92"],
+      "source_title": "피스타치오 200G(봉)",
+      "proposed_leaf": "food.grains.nuts.pistachio",
+      "reason": "홈플러스 원본 경로가 견과 > 캐슈넛/피스타치오 > 피스타치오이고 제목도 피스타치오 200g을 직접 명시한다. 동일 판매페이지의 반복 수집 두 관측을 함께 보존한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:3:86", "ingestion:53:7"],
+      "source_title": "원더풀 무염 피스타치오 500G(봉)",
+      "proposed_leaf": "food.grains.nuts.pistachio",
+      "reason": "원본 경로와 제목 모두 피스타치오를 직접 가리킨다. 무염은 제품 속성이지 별도 상품유형 리프 근거가 아니다. 동일 판매페이지의 반복 수집 두 관측을 함께 보존한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:3:88", "ingestion:53:6"],
+      "source_title": "원더풀 가염 피스타치오 500G(봉)",
+      "proposed_leaf": "food.grains.nuts.pistachio",
+      "reason": "원본 경로와 제목 모두 피스타치오를 직접 가리킨다. 가염은 제품 속성이지 별도 상품유형 리프 근거가 아니다. 동일 판매페이지의 반복 수집 두 관측을 함께 보존한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:3:67", "ingestion:52:93"],
+      "source_title": "베스트 견과 3MIX 230G(봉)",
+      "proposed_leaf": "food.grains.nuts.mixed",
+      "reason": "홈플러스 원본 경로가 견과 > 믹스넛/하루견과 > 믹스넛이고 제목도 3MIX 견과를 명시한다. 동일 판매페이지 반복 관측을 하나의 검토 결정으로 묶는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:3:64"],
+      "source_title": "하루견과 30입 600G(봉)",
+      "proposed_leaf": "food.grains.nuts.mixed",
+      "reason": "홈플러스 원본 경로가 견과 > 믹스넛/하루견과 > 하루견과이고 제목이 하루견과 30입을 직접 명시한다. 구성별 세부 견과를 임의 추정하지 않고 혼합견과 리프만 제안한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:31:88"],
+      "source_title": "미담쌀(백미) 20KG (20KG)",
+      "proposed_leaf": "food.grains.rice.white",
+      "reason": "롯데마트 세부 원본 경로가 쌀ㆍ백미 > 20kg이고 제목도 미담쌀(백미) 20kg을 직접 명시한다. 행사조건 문제와 분류 판단은 분리한다.",
+      "quantity_review": "unchanged; classification-only proposal; promotion remains unresolved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:3"],
+      "source_title": "가을 햅쌀(26년 햅쌀) (4KG)",
+      "proposed_leaf": "food.grains.rice.white",
+      "reason": "롯데마트 세부 원본 경로가 쌀ㆍ백미 > 4kg내외이고 제목도 햅쌀 4kg을 직접 명시한다. 행사조건 문제와 분류 판단은 분리한다.",
+      "quantity_review": "unchanged; classification-only proposal; promotion remains unresolved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:31:63"],
+      "source_title": "병아리콩 (1.5KG)",
+      "proposed_leaf": "food.grains.rice.chickpea",
+      "reason": "롯데마트 슈퍼곡물 진열에서 제목이 병아리콩 1.5kg을 직접 명시하며 pass41에 병아리콩 독립 리프가 존재한다. 행사조건 문제와 분류 판단은 분리한다.",
+      "quantity_review": "unchanged; classification-only proposal; promotion remains unresolved",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:2:69", "ingestion:51:74"],
+      "source_title": "국산 서리태 1KG(봉)",
+      "reason": "원물 서리태임은 명확하지만 pass41 곡물 리프에는 서리태/검정콩 독립 리프가 없다. 병아리콩 등 다른 콩 리프로 대체하지 않는다.",
+      "followup": "서리태 또는 일반 콩류 신규 리프 정책 검토"
+    },
+    {
+      "raw_record_ids": ["ingestion:33:27"],
+      "source_title": "렌틸콩 (1.7KG)",
+      "reason": "렌틸콩 원물임은 명확하지만 pass41에 렌틸콩 독립 리프가 없다. 병아리콩 리프로 대체하지 않는다.",
+      "followup": "렌틸콩 신규 리프 필요성 검토"
+    },
+    {
+      "raw_record_ids": ["ingestion:32:23"],
+      "source_title": "국내산 고구마 말랭이 (150G)",
+      "reason": "롯데 경로는 건과일이지만 제목의 제품 원료는 고구마이며 기존 분류기도 source_title_product_type_conflict를 기록했다. 가공과일 리프로 강제하지 않는다.",
+      "followup": "건조 고구마/채소 간식의 통합 리프 정책 검토"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:31"],
+      "source_title": "명인부각 오리지널 (180G)",
+      "reason": "원본 경로는 과일칩이지만 제목은 부각으로 제품유형이 다르다. 어떤 원재료의 부각인지 제목만으로 확정하지 못하므로 과일/견과 리프로 강제하지 않는다.",
+      "followup": "부각/전통스낵 리프와 원문 상세 근거 검토"
+    }
+  ],
+  "executed_tests": []
+}
