@@ -12,11 +12,11 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다.
 ## 1. 작업 계약
 
 - pending 원문을 직접 읽고 통합 taxonomy 분류 제안/hold를 만든다.
-- broad mart shelf보다 **title/product form**, 필요하면 URL taxonomy path를 우선한다.
+- broad mart shelf보다 **title/product form**, 필요하면 URL taxonomy path나 exact product identity를 우선한다.
 - `review_status=classified`인데 단위/수량/행사 문제로 pending에 남은 행은 신규 classification 작업량에서 제외한다.
 - 반복 수집은 listing 하나의 판단으로 보되 모든 `raw_record_ids`를 보존한다.
 - pass41 snapshot에 없는 leaf는 legacy 코드에 있다는 이유만으로 existing leaf로 쓰지 않는다.
-- deal/promotion collection은 단일 상품으로 분류하지 않는다.
+- deal/promotion collection은 단일 상품으로 분류하지 않는다. 반대로 promotion shelf의 individual itemView는 실제 상품 정체성이 명확하면 상품형태로 판단한다.
 - proposal 파일 존재만으로 완료로 보지 않는다. **raw_record_id/source-key coverage를 실측**한다.
 - uncertainty는 hold한다. 억지로 broad/오답 existing leaf에 넣지 않는다.
 - 431개 explicit decisions(`review-decisions-input.json`)와 source-key collision screen을 한다.
@@ -25,11 +25,11 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다.
 
 ## 2. 완성까지 남은 strict-audit 상한
 
-- 미완 strict 범위: `pending 001~027`
-- 해당 원본 관측: **1,434 observations**
-- pass41 전체 pending 3,916 대비 **약 36.6%**
-- 관측 범위 기준 `028~451`은 약 63.4%를 strict/ordered 방식으로 지나왔다. 단, 이것을 최종 완료율로 부르면 안 된다. 과거 proposal 중복/re-review, taxonomy holds, 최종 reconciliation이 남아 있다.
-- `001~027`에도 과거 proposal이 있으므로 실제 새 판단량은 1,434보다 작을 가능성이 높다.
+- 미완 strict 범위: `pending 001~026`
+- 해당 원본 관측: **1,401 observations**
+- pass41 전체 pending 3,916 대비 **약 35.8%**
+- 관측 범위 기준 `027~451`은 약 64.2%를 strict/ordered 방식으로 지나왔다. 단, 이것을 최종 완료율로 부르면 안 된다. 과거 proposal 중복/re-review, taxonomy holds, 최종 reconciliation이 남아 있다.
+- `001~026`에도 과거 proposal과 cross-group duplicate가 있으므로 실제 새 판단량은 1,401보다 작을 가능성이 높다.
 
 분류 sweep 뒤 DB 반영 전 남는 단계:
 1. proposal 간 raw-record/source-key dedupe
@@ -40,16 +40,17 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다.
 
 ## 3. strict reverse sweep 누계
 
-완료 범위: **pending 028~043**
+완료 범위: **pending 027~043**
 
-- observations opened: **449**
+- observations opened: **482**
 - already-classified exclusions: **44**
-- strict/new classification reviews: **405**
-- distinct newly reviewed source listings: **377**
-- existing-leaf proposals: **146 listings**
-- taxonomy/product-form/promotion/manual-review holds: **231 listings**
+- strict/new classification reviews: **438**
+- distinct newly reviewed source listings: **410**
+- existing-leaf proposals: **177 listings**
+- taxonomy/product-form/promotion/manual-review holds: **233 listings**
 
 최근 그룹:
+- 027 `proposals/emart-best-027.json` — 33 opened / 0 excluded / 33 new / existing 31 / hold 2
 - 028 `proposals/reconciliation-pending-028.json` — 33 pending / prior coverage 11 / uncovered 22 / final existing 28 / hold 5
 - 029 `proposals/costco-cheese-shelf-029.json` — 32 opened / 8 excluded / 24 new / existing 5 / hold 19
 - 030 `proposals/emart-obanjang-030.json` — 32 / 1 excluded / 31 new / existing 5 / hold 26
@@ -63,6 +64,7 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다.
 - 038~043: see `checkpoints/checkpoint-reverse-sweep-038-043.md`
 
 Latest checkpoints:
+- `checkpoints/checkpoint-after-pending-027.md`
 - `checkpoints/checkpoint-after-pending-028-reconciliation.md`
 - `checkpoints/checkpoint-after-pending-029.md`
 - `checkpoints/checkpoint-after-pending-030.md`
@@ -74,20 +76,24 @@ Latest checkpoints:
 
 ## 4. 최근 중요 발견
 
+### pending 027 — Emart `베스트`
+- 33 observations 전부 classification-pending, exclusions 0.
+- broad promotion surface이지만 전부 individual `itemView`; title/product identity 기준으로 31 existing / 2 holds.
+- holds: fresh fig -> candidate `food.produce.fruit.fig`; hamburg steak -> candidate `food.meals.prepared.hamburg_steak`.
+- opaque milk titles `1000ml 나100%`와 `2.3L`은 exact retailer product identity로 서울우유 흰우유임을 확인해 `food.dairy.milk.plain`으로 제안.
+- source key `0000006615474`는 pending026에도, `1000768602033` 송탄식 부대찌개는 pending020에도 존재. 027 strict group accounting에는 유지하고 최종 global source-key dedupe에서 병합한다.
+- 33 source keys explicit-decision collision screen 0.
+
 ### pending 028 — second confirmed raw-coverage gap
 - 33 observations 전부 classification-pending.
 - older `proposals/grains-nuts-028-034.json`이 group 028을 reviewed로 표시했지만 exact raw coverage는 **11/33뿐**이었다.
 - strict audit에서 **22/33 누락**을 발견해 `proposals/reconciliation-pending-028.json`으로 보완.
-- earlier 11 revalidation conflict 0.
-- final existing 28 / hold 5.
-- holds: pecan -> `food.grains.nuts.pecan`; pumpkin seed -> `food.grains.seeds.pumpkin`; nurungji -> `food.grains.processed.nurungji`; raw durum wheat -> `food.grains.wheat.durum`; almond+pretzel mixed snack -> mixed-product-form hold.
-- useful existing precedents: sweet-potato/pumpkin vegetable chips -> `food.snacks.savory.vegetable`; banana chips -> `food.produce.processed_fruit.dried`; flavor-only single-nut snacks keep their core nut leaf.
-- all 33 source keys explicit-decision collision screen 0.
+- earlier 11 revalidation conflict 0; final existing 28 / hold 5.
 
 ### raw-coverage lesson now confirmed twice
-- pending 034: older proposal covered 19/29, missing 10.
-- pending 028: older proposal covered 11/33, missing 22.
-- Therefore **group name/listing inside an old proposal is never completion evidence. Exact raw/source-key coverage is mandatory for remaining low-number groups.**
+- pending034: older proposal covered 19/29, missing 10.
+- pending028: older proposal covered 11/33, missing 22.
+- 따라서 **group name/listing inside an old proposal is never completion evidence. Exact raw/source-key coverage가 남은 low-number 그룹에서도 필수다.**
 
 ### pending 030 — promotion anomaly
 - 31 new reviews 중 24가 `dealItemView` promotion surface.
@@ -102,30 +108,32 @@ Latest checkpoints:
 - pending313 `농심 생생 우동 용기 276G`: older proposal `cup_ramen` vs final sweep `udon` conflict. 최종 승격 전 해결.
 - 과거 `2,165`, `+266 final sweep`, `840 classification reviews 044~109` 같은 숫자를 global unique completion으로 사용하지 않는다.
 
-## 6. 현재 재개점 — pending 027
+## 6. 현재 재개점 — pending 026
 
 **다음 AI는 여기서 이어간다.**
 
-- group: `pending/027`
-- pending 028 strict reconciliation 완료:
-  - `proposals/reconciliation-pending-028.json`
-  - `checkpoints/checkpoint-after-pending-028-reconciliation.md`
-- 027은 아직 현재 strict 방식으로 시작하지 않았다.
+- group: `pending/026`
+- mart/shelf: Emart `우유/유제품`
+- index: **35 observations / 35 titles**
+- files: `pending/026/001.json`, `pending/026/002.json`
+- pending027 strict 완료:
+  - `proposals/emart-best-027.json`
+  - `checkpoints/checkpoint-after-pending-027.md`
 
-027 절차:
-1. `pending/027/` 디렉터리 모든 조각을 먼저 list/fetch.
-2. already-classified vs classification-pending 분리.
-3. 027을 언급하는 기존 proposal이 있으면 **exact raw/source-key coverage**를 계산.
-4. 기존 proposal과 strict 재판단 conflict/누락을 명시.
+026 절차:
+1. 두 pending 조각을 전부 fetch하고 `review_status=classified` 제외 수를 먼저 확정.
+2. 026을 언급하는 기존 proposal들의 **exact raw/source-key coverage**를 계산. 파일 존재/그룹명만 믿지 않는다.
+3. source key `0000006615474` (`1000ml 나100%`)는 027에서 exact identity까지 검토했지만, 026의 관측은 strict group accounting에 그대로 포함한다. 최종 global dedupe에서만 source-key 중복을 제거한다.
+4. 기존 proposal과 strict 재판단 conflict/누락을 명시하고 보완.
 5. 431 explicit decision collision screen.
-6. 완료 즉시 이 파일을 `pending 026` 재개점으로 갱신.
+6. 완료 즉시 이 파일을 `pending 025` 재개점으로 갱신.
 
 ## 7. 새 AI 문서 신뢰 순서
 
 1. `README.md`
 2. **`CURRENT_STATUS.md` (이 파일, 최우선)**
 3. `PROGRESS.md` — 역사 로그, 오래된 누적치/재개점 무시 가능
-4. `PENDING_INDEX.md` — 원본 그룹 크기/진열 인덱스, 완료표 아님
+4. `PENDING_INDEX.md` / `pending/index.json` — 원본 그룹 크기/진열 인덱스, 완료표 아님
 5. 필요한 최신 `checkpoints/*.md`, `proposals/*.json`
 
 최종 사실 판단은 항상 `pending/`·`raw/` 원문으로 확인한다.
