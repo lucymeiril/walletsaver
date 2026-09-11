@@ -1,0 +1,71 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "082",
+  "source_path": "건강식품 > 소화제/자양강장/숙취해소 > 상쾌환",
+  "scope_note": "Classification-only proposal. Repeated observations are grouped by Homeplus source_record_key. No medical efficacy claim is inferred from the retail shelf or product name.",
+  "review_accounting": {
+    "pending_rows_checked": 11,
+    "unique_products": 6,
+    "new_classification_reviews": 11,
+    "prior_reviewed": 1046,
+    "current_reviewed": 1057,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2859
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "All six source_record_keys returned pending/raw/catalog-unresolved evidence only; no earlier proposal or explicit review decision was found."
+  },
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:26:62", "ingestion:76:19"],
+      "source_record_key": "127372080",
+      "source_title": "삼양사 큐원 상쾌환 3G*3포",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.health.supplements.hangover",
+      "reason": "상쾌환 숙취 관련 건강식품이지만 pass41에는 건강보조식품/숙취해소 제품 leaf가 없다. 일반 식품·음료 leaf로 강제하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:26:67", "ingestion:76:25"],
+      "source_record_key": "070612270",
+      "source_title": "삼양사 상쾌환스틱 복숭아맛 18G*3입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.health.supplements.hangover",
+      "reason": "상쾌환 스틱형의 맛 변형이며 동일한 숙취 관련 건강식품군이다. 복숭아맛을 과일식품/음료로 보지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:26:68", "ingestion:76:26"],
+      "source_record_key": "070612264",
+      "source_title": "삼양사 상쾌환스틱 샤인머스캣맛 18G*3입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.health.supplements.hangover",
+      "reason": "상쾌환 스틱형 맛 변형으로 제품형태는 건강식품이며 과일 leaf로 분류하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:26:71", "ingestion:76:29"],
+      "source_record_key": "069402859",
+      "source_title": "삼양사 상쾌환 스틱형 레드 18G 3입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.health.supplements.hangover",
+      "reason": "상쾌환 스틱형 제품으로 pass41 내 대응 leaf가 없어 신규 건강식품 후보로 유지한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:26:72", "ingestion:76:30"],
+      "source_record_key": "069402826",
+      "source_title": "삼양사 상쾌환 스틱형 옐로우 18G*3입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.health.supplements.hangover",
+      "reason": "상쾌환 스틱형 제품으로 pass41 내 대응 leaf가 없어 신규 건강식품 후보로 유지한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:76:20"],
+      "source_record_key": "071354711",
+      "source_title": "알부민 프리미엄 골드 20G*14포",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.health.supplements.albumin",
+      "reason": "같은 상쾌환 shelf에 섞여 있지만 제목상 알부민 보충 제품이다. 숙취해소 제품으로 합치거나 단백질 일반음료 leaf로 보내지 않는다."
+    }
+  ],
+  "executed_tests": []
+}
