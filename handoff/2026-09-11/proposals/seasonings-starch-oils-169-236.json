@@ -1,0 +1,106 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["169", "170", "171", "234", "235", "236"],
+  "scope_note": "GitHub read/write review only. Suggested new leaf ids are review labels only; taxonomy code, review decisions, importer inputs, and staging DB were not changed.",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:23:0", "ingestion:72:20"],
+      "source_title": "해표 식용유 1.5L",
+      "proposed_leaf": "food.seasonings.oils.cooking",
+      "reason": "제목과 원본 경로 모두 원료유 종류를 특정하지 않은 일반 식용유를 명시한다. 카놀라유·포도씨유 등으로 추정하지 않고 기존 일반 요리유 리프에만 보수적으로 제안한다.",
+      "quantity_review": "unchanged; repeated observations share the same source listing and 1.5L package",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:25:57", "ingestion:74:59"],
+      "source_title": "해표 식용유 1.8L",
+      "proposed_leaf": "food.seasonings.oils.cooking",
+      "reason": "제목과 원본 경로 모두 원료유 종류를 특정하지 않은 일반 식용유를 명시한다. 세부 원료를 추정하지 않고 기존 일반 요리유 리프에 제안한다.",
+      "quantity_review": "unchanged; repeated observations share the same source listing and 1.8L package",
+      "identity_merge": "same_source_listing_observations_only"
+    }
+  ],
+  "deferred_taxonomy_candidates": [
+    {
+      "raw_record_ids": ["ingestion:23:37", "ingestion:74:16"],
+      "source_title": "샘표 연두 순 500ML",
+      "suggested_new_leaf": "food.seasonings.stock.liquid_seasoning",
+      "reason": "원본 세부 경로가 액상조미료이고 제품도 연두 액상 조미료이나 현재 stock 리프에는 쇠고기/맛소금/감칠맛/치킨/채소육수정/맛술만 있다. 기존 umami 등에 억지로 흡수하지 않고 액상조미료 리프 후보로 모은다."
+    },
+    {
+      "raw_record_ids": ["ingestion:24:65", "ingestion:74:44"],
+      "source_title": "샘표 연두 순 320G",
+      "suggested_new_leaf": "food.seasonings.stock.liquid_seasoning",
+      "reason": "동일 연두 계열의 별도 판매페이지/규격이다. 상품군 병합은 요청하지 않고 액상조미료 taxonomy 후보만 공유한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:24:87", "ingestion:73:83"],
+      "source_title": "샘표 연두진 500ML",
+      "suggested_new_leaf": "food.seasonings.stock.liquid_seasoning",
+      "reason": "원본 경로가 액상조미료이며 기존 stock 리프에 정확 대응 유형이 없다. 연두 순과 제품 정체성을 임의 병합하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:23:97", "ingestion:73:34"],
+      "source_title": "simplus 감자맛 전분 400G",
+      "suggested_new_leaf": "food.seasonings.baking.starch",
+      "reason": "제목과 원본 경로가 분말 전분을 직접 명시한다. 기존 food.seasonings.syrups.starch는 물엿 리프이므로 절대 재사용하지 않고 기초조미·제빵 아래 전분 신규 리프 후보로 둔다."
+    },
+    {
+      "raw_record_ids": ["ingestion:24:53", "ingestion:73:96"],
+      "source_title": "simplus 옥수수맛 전분 400G",
+      "suggested_new_leaf": "food.seasonings.baking.starch",
+      "reason": "옥수수계 분말 전분이며 물엿과 다른 제품형태다. 원재료 차이는 속성/상품명으로 보존하고 우선 일반 전분 리프 후보로 모은다."
+    },
+    {
+      "raw_record_ids": ["ingestion:25:41", "ingestion:74:50"],
+      "source_title": "simplus 국내산 고구마맛 전분 400G",
+      "suggested_new_leaf": "food.seasonings.baking.starch",
+      "reason": "고구마계 분말 전분이며 현재 정확 리프가 없다. 감자/옥수수 전분과 동일한 신규 전분 제품유형 후보로 모으되 판매페이지 병합은 하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:24:77", "ingestion:73:18"],
+      "source_title": "건국 연유 500G",
+      "suggested_new_leaf": "food.dairy.condensed_milk.plain",
+      "reason": "마트 혼합 진열은 시럽/연유이지만 제목이 연유를 직접 명시한다. 현재 유제품 taxonomy에 연유 리프가 확인되지 않아 시럽 리프로 강제하지 않고 유제품 연유 신규 후보로 둔다."
+    },
+    {
+      "raw_record_ids": ["ingestion:24:99", "ingestion:72:92"],
+      "source_title": "허쉬 초코시럽 623G",
+      "suggested_new_leaf": "food.seasonings.syrups.chocolate",
+      "reason": "제목이 초코시럽을 직접 명시하며 현재 액상당류·청 리프에는 올리고당/물엿/매실청/알룰로스/쌀조청만 있다. 다른 당류 리프에 넣지 않고 초코시럽 신규 후보로 둔다."
+    }
+  ],
+  "deferred_policy": [
+    {
+      "raw_record_ids": ["ingestion:25:10", "ingestion:74:63"],
+      "source_title": "CJ 2배 바삭 튀김유 900ML",
+      "reason": "현재 initial_taxonomy.py가 원료가 불명확한 frying blend는 추가 근거 없이는 분류하지 않도록 명시한다. 일반 cooking oil로 우회 분류하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:25:50", "ingestion:74:55"],
+      "source_title": "만토바 230도 오일스프레이 200ML",
+      "reason": "현재 initial_taxonomy.py가 opaque '230도' spray를 추가 근거 없이 분류하지 않도록 명시한다. 원료유가 확인되기 전까지 보류한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:24:52", "ingestion:72:69"],
+      "source_title": "대상 청정원 순창 쇠고기 볶음고추장 60G*3",
+      "reason": "고추장 진열이지만 쇠고기가 들어간 볶음고추장이라는 조리·가공 형태가 일반 고추장과 동일 리프인지 기존 검토 근거가 없다. 이름만 보고 gochujang으로 축소하지 않고 정책 검토를 기다린다."
+    }
+  ],
+  "nonclassification_pending": [
+    {
+      "raw_record_ids": ["ingestion:22:85", "ingestion:72:24"],
+      "source_title": "CJ 100%태양초 우리쌀고추장 1.5KG+350G",
+      "existing_leaf": "food.seasonings.pastes.gochujang",
+      "reason": "분류는 이미 gochujang으로 resolved 상태다. pending 원인은 mixed_package_unresolved/multiple_package_quantities이며 분류 제안으로 해결하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:23:20", "ingestion:72:31"],
+      "source_title": "대상 청정원 순창 태양초 고추장 1.5KG+400G",
+      "existing_leaf": "food.seasonings.pastes.gochujang",
+      "reason": "분류는 이미 gochujang으로 resolved 상태다. 1.5kg+400g 혼합규격 해석이 남아 있으므로 수량을 변경하지 않는다."
+    }
+  ],
+  "executed_tests": []
+}
