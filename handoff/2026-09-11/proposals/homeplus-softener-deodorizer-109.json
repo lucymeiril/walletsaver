@@ -1,0 +1,71 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "109",
+  "source_path": "handoff/2026-09-11/pending/109/001.json",
+  "scope_note": "Classification-only proposal. Rows whose classification is already resolved are documented but not counted as new classification progress. Raw observation identity, pricing, quantity, promotion, and source evidence remain authoritative in the pending source file.",
+  "review_accounting": {
+    "pending_rows_checked": 9,
+    "unique_products": 6,
+    "new_classification_reviews": 3,
+    "prior_reviewed": 1315,
+    "current_reviewed": 1318,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2598
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "All six source_record_key values were checked against the existing explicit review decisions with no match. Six Pigeon observations are already classified as household.cleaning.laundry.softener and remain pending only for mixed_package_unresolved, so they are not counted as new classification progress. Current taxonomy contains household.cleaning.general.deodorizer for the three Aura deodorizer products whose titles conflict with the softener shelf."
+  },
+  "decisions": [
+    {
+      "source_record_key": "068840514",
+      "source_title": "LG 아우라 피톤치드 편백탈취제 숲속향 500ML",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "household.cleaning.general.deodorizer",
+      "reason": "Title explicitly identifies a deodorizer; the broad high-concentration softener shelf conflicts with actual product type and must not override it."
+    },
+    {
+      "source_record_key": "068840508",
+      "source_title": "LG 아우라 피톤치드 편백탈취제 은은한향 500ML",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "household.cleaning.general.deodorizer",
+      "reason": "Explicit 편백탈취제 product form maps to the existing general deodorizer leaf; scent is an attribute."
+    },
+    {
+      "source_record_key": "068840497",
+      "source_title": "LG 아우라 편백탈취제 피톤치드 상쾌한향 500ML",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "household.cleaning.general.deodorizer",
+      "reason": "Explicit 탈취제 title overrides the misleading softener shelf; phytoncide/scent wording does not change product type."
+    }
+  ],
+  "already_classified_rows": [
+    {
+      "source_record_key": "125025178",
+      "source_title": "피죤 섬유유연제 핑크로즈 기획팩 2.1L+2.1L",
+      "observations": 2,
+      "unified_category_id": "household.cleaning.laundry.softener",
+      "remaining_reason": "mixed_package_unresolved",
+      "classification_progress_counted": 0
+    },
+    {
+      "source_record_key": "121183036",
+      "source_title": "피죤 섬유유연제 옐로우 미모사 기획팩 2.1L+2.1L",
+      "observations": 2,
+      "unified_category_id": "household.cleaning.laundry.softener",
+      "remaining_reason": "mixed_package_unresolved",
+      "classification_progress_counted": 0
+    },
+    {
+      "source_record_key": "121183416",
+      "source_title": "피죤 섬유유연제 블루비앙카 기획팩 2.1L+2.1L",
+      "observations": 2,
+      "unified_category_id": "household.cleaning.laundry.softener",
+      "remaining_reason": "mixed_package_unresolved",
+      "classification_progress_counted": 0
+    }
+  ],
+  "held_decisions": [],
+  "executed_tests": []
+}
