@@ -1,0 +1,133 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["048"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 540,
+    "batch_reviewed_unique_observations": 20,
+    "cumulative_reviewed_unique_observations": 560,
+    "remaining_unreviewed_observations": 3356
+  },
+  "review_summary": {
+    "unique_source_products_reviewed": 10,
+    "observations_reviewed": 20,
+    "proposed_existing_leaf_products": 4,
+    "proposed_existing_leaf_observations": 8,
+    "held_products": 6,
+    "held_observations": 12,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:9:88", "ingestion:60:18"],
+      "source_name": "homeplus",
+      "source_record_key": "071408096",
+      "source_title": "화정당 두바이 쫀득쿠키 오리지널 160G",
+      "status": "held",
+      "reason": "제목은 쿠키지만 냉동 디저트 표면의 쫀득쿠키이고 동일 제품군의 감사 선례가 없다. 일반 구운 쿠키 leaf로 자동 흡수하지 않음",
+      "quantity_review": "unchanged; 160g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:9:94", "ingestion:60:28"],
+      "source_name": "homeplus",
+      "source_record_key": "070861279",
+      "source_title": "씨제이 고메 츄러스 시나몬 262G",
+      "status": "held",
+      "reason": "repo의 기존 츄러스 감사 선례는 과자형 제품의 wheat snack이고, 이 제품은 냉동 디저트형이라 동일 leaf로 단정하지 않음",
+      "promotion_review": "1+1 promotion retained unchanged; no classification-side price or quantity rewrite",
+      "quantity_review": "unchanged; 262g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:10:55", "ingestion:60:54"],
+      "source_name": "homeplus",
+      "source_record_key": "126923853",
+      "source_title": "풀무원 토이쿠키 만들기 300G",
+      "status": "held",
+      "reason": "만들기 제품은 완성 쿠키인지 냉동 생지/키트인지 제목과 현재 repo 감사 근거만으로 확정하기 어려워 biscuits 또는 dough leaf 강제 분류를 보류",
+      "quantity_review": "unchanged; 300g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:10:57", "ingestion:59:64"],
+      "source_name": "homeplus",
+      "source_record_key": "071331992",
+      "source_title": "화정당 모짜렐라 십원빵 360G",
+      "status": "held",
+      "reason": "십원빵은 현재 bakery leaves의 식빵/모닝롤/베이글/하드롤·바게트/페이스트리/생지 중 정확히 대응하는 감사 축이 없어 보류",
+      "quantity_review": "unchanged; 360g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:10:58", "ingestion:59:94"],
+      "source_name": "homeplus",
+      "source_record_key": "071331986",
+      "source_title": "화정당 슈크림 십원빵 360G",
+      "status": "held",
+      "reason": "십원빵은 현재 bakery leaves 중 정확한 감사 축이 없으며 슈크림은 속성/필링이므로 임의의 pastry leaf로 보내지 않음",
+      "quantity_review": "unchanged; 360g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:10:96", "ingestion:59:61"],
+      "source_name": "homeplus",
+      "source_record_key": "071408390",
+      "source_title": "화정당 두바이+말차 쫀득쿠키 160G",
+      "status": "held",
+      "reason": "냉동 디저트형 쫀득쿠키의 직접 감사 선례가 없어 일반 biscuits leaf에 자동 흡수하지 않음",
+      "quantity_review": "unchanged; 160g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:11:17", "ingestion:60:35"],
+      "source_name": "homeplus",
+      "source_record_key": "070992164",
+      "source_title": "풀무원 바질토마토크림치즈베이글 435G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.bakery.bread.bagel",
+      "reason": "제목이 베이글을 직접 명시하며 pass41 bakery taxonomy에 bagel leaf가 존재. 바질·토마토·크림치즈는 맛/필링 속성",
+      "quantity_review": "unchanged; 435g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:11:18", "ingestion:60:40"],
+      "source_name": "homeplus",
+      "source_record_key": "070992158",
+      "source_title": "풀무원 대파크림치즈베이글 405G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.bakery.bread.bagel",
+      "reason": "제목이 베이글을 직접 명시하며 pass41 bakery taxonomy에 bagel leaf가 존재. 대파·크림치즈는 맛/필링 속성",
+      "quantity_review": "unchanged; 405g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:12:60", "ingestion:62:0"],
+      "source_name": "homeplus",
+      "source_record_key": "071244450",
+      "source_title": "널담 네모바게트 치즈올리브 450G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.bakery.bread.hard",
+      "reason": "제목이 바게트를 직접 명시하며 pass41 bakery taxonomy의 hard leaf 이름이 하드롤·바게트임. 치즈·올리브는 변형 속성",
+      "quantity_review": "unchanged; 450g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:12:61", "ingestion:62:1"],
+      "source_name": "homeplus",
+      "source_record_key": "071244438",
+      "source_title": "널담 네모바게트 플레인 450G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.bakery.bread.hard",
+      "reason": "제목이 바게트를 직접 명시하며 pass41 bakery taxonomy의 hard leaf 이름이 하드롤·바게트임",
+      "quantity_review": "unchanged; 450g retained",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
