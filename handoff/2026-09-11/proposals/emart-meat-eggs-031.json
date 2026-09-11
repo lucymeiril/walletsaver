@@ -1,0 +1,56 @@
+{
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["031"],
+  "scope_note": "GitHub read/write review only. Both pending/031/001.json and 002.json were inspected. Already-classified rows were excluded from new classification accounting. Emart's broad 정육/계란류 shelf was treated as supporting evidence only; product title/form and dealItemView vs itemView were used to distinguish real products from promotion surfaces. No DB import/rebuild or repository tests were run.",
+  "accounting": {
+    "observations_opened": 32,
+    "already_classified_exclusions": 6,
+    "classification_review_observations": 26,
+    "distinct_source_listings": 26,
+    "existing_leaf_proposals": 15,
+    "holds": 11,
+    "promotion_surface_holds": 9,
+    "species_ambiguity_holds": 2,
+    "explicit_review_decision_matches": 0
+  },
+  "excluded_already_classified": [
+    {"raw_record_id":"ingestion:81:0","source_record_key":"1000220072503","source_title":"1등급 30구 (특란, 1800g)","unified_category_id":"food.meat.eggs.chicken"},
+    {"raw_record_id":"ingestion:81:1","source_record_key":"1000337134399","source_title":"[냉동] 삼겹살 바로구이 (1,000g)","unified_category_id":"food.meat.fresh.pork"},
+    {"raw_record_id":"ingestion:81:17","source_record_key":"1000018651129","source_title":"[냉동] 닭안심 (1,000g)","unified_category_id":"food.meat.fresh.chicken"},
+    {"raw_record_id":"ingestion:81:29","source_record_key":"1000043234904","source_title":"무항생제 닭 (볶음탕용) (1,000g)","unified_category_id":"food.meat.fresh.chicken"},
+    {"raw_record_id":"ingestion:81:41","source_record_key":"1000795114477","source_title":"[냉동] 큐브 닭가슴살 (1,000g)","unified_category_id":"food.meat.fresh.chicken"},
+    {"raw_record_id":"ingestion:81:54","source_record_key":"1000708420412","source_title":"행복한 특란 30구 (15구 X 2ea, 1800g)","unified_category_id":"food.meat.eggs.chicken"}
+  ],
+  "decisions": [
+    {"raw_record_ids":["ingestion:81:3"],"source_record_key":"1000005672219","source_title":"국내산 앞다리 불고기용 (100g)","status":"proposed","proposed_unified_category_id":"food.meat.fresh.pork"},
+    {"raw_record_ids":["ingestion:81:5"],"source_record_key":"1000633807640","source_title":"[농할 20% 할인쿠폰 다운로드] 건강하고 행복한 닭이 낳은 동물복지 계란 15구 (대란, 780g)","status":"proposed","proposed_unified_category_id":"food.meat.eggs.chicken"},
+    {"raw_record_ids":["ingestion:81:8"],"source_record_key":"1000874919925","source_title":"닭다리살/닭가슴살 등 ~20%","status":"held_promotion_surface","reason":"dealItemView collection covering multiple chicken cuts; not a single product listing."},
+    {"raw_record_ids":["ingestion:81:9"],"source_record_key":"1000542270574","source_title":"국내산 앞다리 수육용 (100g)","status":"proposed","proposed_unified_category_id":"food.meat.fresh.pork"},
+    {"raw_record_ids":["ingestion:81:11"],"source_record_key":"1000689798994","source_title":"[농할 20% 할인쿠폰 다운로드] 동물복지 유정란 20구 (대란, 1040g)","status":"proposed","proposed_unified_category_id":"food.meat.eggs.chicken"},
+    {"raw_record_ids":["ingestion:81:13"],"source_record_key":"1000614988034","source_title":"냉동 삼겹살/목심 할인행사","status":"held_promotion_surface","reason":"dealItemView promotion covering multiple pork cuts."},
+    {"raw_record_ids":["ingestion:81:14"],"source_record_key":"1000632938329","source_title":"[농할 20% 할인쿠폰 다운로드] 무항생제 동물복지 유정란 신선 햇달걀 20구 (760g)","status":"proposed","proposed_unified_category_id":"food.meat.eggs.chicken"},
+    {"raw_record_ids":["ingestion:81:15"],"source_record_key":"1000033571039","source_title":"국내산 등심 카레용 (100g) (팩)","status":"held_species_review","candidate_unified_category_id":"food.meat.fresh.pork","reason":"Title and raw attributes establish domestic sirloin/curry cut but do not explicitly establish animal species. A similar repo product is pork, but that is not exact proof for this listing."},
+    {"raw_record_ids":["ingestion:81:16"],"source_record_key":"1000754501260","source_title":"(30%) 브랜드한우 국거리,불고기 할인","status":"held_promotion_surface","reason":"dealItemView promotion, not one SKU."},
+    {"raw_record_ids":["ingestion:81:18"],"source_record_key":"1000633383180","source_title":"[농할 20% 할인쿠폰 다운로드] 순수백색 1등급 동물복지 유정란 20구 (대란, 1040g)","status":"proposed","proposed_unified_category_id":"food.meat.eggs.chicken"},
+    {"raw_record_ids":["ingestion:81:22"],"source_record_key":"1000641326300","source_title":"(농할 20% 쿠폰 다운로드) 한우 국거리/불고기 등","status":"held_promotion_surface","reason":"dealItemView promotion spanning multiple beef cuts."},
+    {"raw_record_ids":["ingestion:81:24"],"source_record_key":"1000075668765","source_title":"찜갈비, la갈비 ~30% 할인","status":"held_promotion_surface","reason":"dealItemView promotion spanning multiple rib products."},
+    {"raw_record_ids":["ingestion:81:25"],"source_record_key":"1000004795403","source_title":"국내산 냉장 갈비 찜용 (100g)","status":"held_species_review","reason":"Fresh domestic rib cut is clear but the title/raw attributes shown in pending data do not identify pork vs beef; do not force a species leaf."},
+    {"raw_record_ids":["ingestion:81:26"],"source_record_key":"1000313581745","source_title":"[더느림+] 무항생제 삼겹살 (100g)","status":"proposed","proposed_unified_category_id":"food.meat.fresh.pork"},
+    {"raw_record_ids":["ingestion:81:27"],"source_record_key":"1000559412975","source_title":"바로구이 ~6천원 할인","status":"held_promotion_surface","reason":"dealItemView promotion and title does not identify a single meat SKU/species."},
+    {"raw_record_ids":["ingestion:81:28"],"source_record_key":"1000004869137","source_title":"국내산 뒷다리 불고기용 (100g)","status":"proposed","proposed_unified_category_id":"food.meat.fresh.pork"},
+    {"raw_record_ids":["ingestion:81:31"],"source_record_key":"1000685025597","source_title":"가슴살/안심 등 ~40% + 농할쿠폰 20%","status":"held_promotion_surface","reason":"dealItemView promotion spanning multiple cuts."},
+    {"raw_record_ids":["ingestion:81:34"],"source_record_key":"1000313581872","source_title":"[더느림+] 무항생제 목심 (100g)","status":"proposed","proposed_unified_category_id":"food.meat.fresh.pork"},
+    {"raw_record_ids":["ingestion:81:35"],"source_record_key":"1000692483011","source_title":"[농할 20% 할인쿠폰 다운로드] 지리산 영양 신선산골란 20구 (특란, 1,200g)","status":"proposed","proposed_unified_category_id":"food.meat.eggs.chicken"},
+    {"raw_record_ids":["ingestion:81:36"],"source_record_key":"1000632938084","source_title":"[농할 20% 할인쿠폰 다운로드] 1등급 우리집 신선계란 20구 (대란, 1040g)","status":"proposed","proposed_unified_category_id":"food.meat.eggs.chicken"},
+    {"raw_record_ids":["ingestion:81:40"],"source_record_key":"1000770917288","source_title":"바로구이/샤브샤브 ~40% 할인","status":"held_promotion_surface","reason":"dealItemView promotion spanning multiple products/cuts."},
+    {"raw_record_ids":["ingestion:81:42"],"source_record_key":"1000632723066","source_title":"[농할 20% 할인쿠폰 다운로드][냉장] 한우 등심구이용1+등급300g","status":"proposed","proposed_unified_category_id":"food.meat.fresh.beef"},
+    {"raw_record_ids":["ingestion:81:51"],"source_record_key":"0000007409756","source_title":"와규 윗등심살 ST (100g)","status":"proposed","proposed_unified_category_id":"food.meat.fresh.beef"},
+    {"raw_record_ids":["ingestion:81:52"],"source_record_key":"1000805546509","source_title":"(~50%) 한우 구이,국거리,불고기 등","status":"held_promotion_surface","reason":"dealItemView promotion spanning multiple Hanwoo cuts."},
+    {"raw_record_ids":["ingestion:81:55"],"source_record_key":"0000007454971","source_title":"와규 부채 구이용 (100g)","status":"proposed","proposed_unified_category_id":"food.meat.fresh.beef"},
+    {"raw_record_ids":["ingestion:81:61"],"source_record_key":"1000846512852","source_title":"(닭구이닭)칼집통다리800g","status":"proposed","proposed_unified_category_id":"food.meat.fresh.chicken","reason":"Chicken species and raw cut/product form are explicit; no seasoning/prepared-meal wording is present in the listing title."}
+  ],
+  "explicit_decision_screen": {
+    "method": "Four batched repository searches using all 26 source_record_key values together with review-decisions-input",
+    "result": "No review-decisions-input match returned in any batch."
+  }
+}
