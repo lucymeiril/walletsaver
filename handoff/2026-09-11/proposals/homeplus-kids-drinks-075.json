@@ -1,0 +1,77 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "075",
+  "source_path": "생수/음료/주류 > 과일/야채음료 > 어린이음료",
+  "scope_note": "Classification-only proposal. Repeated Homeplus observations are grouped by source_record_key. Promotion and quantity fields are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 12,
+    "unique_products": 6,
+    "new_classification_reviews": 12,
+    "prior_reviewed": 962,
+    "current_reviewed": 974,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2942
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "All six source_record_keys were checked against review-decisions-input.json and repository search; no existing explicit decision or prior proposal conflict was found."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:16:84", "ingestion:66:25"],
+      "source_record_key": "107348613",
+      "source_title": "팔도 뽀로로 딸기맛 235ML",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.drinks.juice.fruit_drink",
+      "reason": "과일/야채음료의 어린이음료 진열에서 딸기맛 음료로 판매되는 제품이다. 과일주스 함량을 확정할 근거는 없으므로 주스보다 과일음료 leaf가 보수적이다.",
+      "promotion_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:89", "ingestion:66:24"],
+      "source_record_key": "113076458",
+      "source_title": "팔도 뽀로로 사과 235ML",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.drinks.juice.fruit_drink",
+      "reason": "어린이용 사과 음료로서 과일주스보다 과일음료 leaf가 제품표현과 원본 진열에 더 안전하게 맞는다.",
+      "promotion_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:99", "ingestion:66:37"],
+      "source_record_key": "000026174",
+      "source_title": "농심 카프리썬 오렌지 200ML*10",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.drinks.juice.fruit_drink",
+      "reason": "카프리썬 오렌지 어린이 과일음료이며 제목에 100% 주스나 착즙 근거가 없어 fruit_drink가 적절하다.",
+      "quantity_review": "unchanged; 200ML*10 bundle preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:17:7", "ingestion:66:33"],
+      "source_record_key": "007931719",
+      "source_title": "농심 카프리썬 오렌지망고 200ML*10",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.drinks.juice.fruit_drink",
+      "reason": "오렌지·망고 혼합 어린이 과일음료이며 주스/착즙을 확정할 근거가 없어 fruit_drink로 제안한다.",
+      "quantity_review": "unchanged; 200ML*10 bundle preserved"
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:16:83", "ingestion:66:23"],
+      "source_record_key": "105365954",
+      "source_title": "팔도 뽀로로 밀크 235ML",
+      "suggested_new_leaf": "food.drinks.kids.milk_flavored",
+      "reason": "어린이음료 진열의 '밀크' 음료라는 점은 분명하지만 제목만으로 일반 흰우유나 가공유라고 단정하기 어렵다. 기존 food.dairy.milk.plain에 강제하지 않는다.",
+      "followup": "어린이 밀크향/밀크음료의 성분·상품형태 확인 후 dairy milk 또는 kids drink 정책 결정"
+    },
+    {
+      "raw_record_ids": ["ingestion:17:9", "ingestion:66:45"],
+      "source_record_key": "071373008",
+      "source_title": "마일로 초코 200ML",
+      "suggested_new_leaf": "food.drinks.malt.chocolate",
+      "reason": "초코 음료임은 명확하지만 제목과 진열만으로 초코우유라고 확정할 근거가 부족하다. 기존 food.dairy.milk.chocolate에 강제하지 않는다.",
+      "followup": "RTD 초코/몰트 음료 taxonomy와 유제품 가공유 경계 검토"
+    }
+  ],
+  "executed_tests": []
+}
