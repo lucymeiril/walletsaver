@@ -1,0 +1,126 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["062"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data, promotions, quantity evidence, and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 788,
+    "batch_reviewed_unique_observations": 15,
+    "cumulative_reviewed_unique_observations": 803,
+    "remaining_unreviewed_observations": 3113
+  },
+  "review_summary": {
+    "unique_source_products_reviewed": 8,
+    "observations_reviewed": 15,
+    "proposed_existing_leaf_products": 8,
+    "proposed_existing_leaf_observations": 15,
+    "held_or_new_taxonomy_products": 0,
+    "held_or_new_taxonomy_observations": 0,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_matches_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "taxonomy_note": "원본 진열 leaf는 버터비스켓이지만 실제 상품명에는 크래커·샌드과자·파이가 섞여 있다. pass41에는 food.snacks.baked.cracker, food.snacks.baked.sandwich, food.snacks.baked.pie가 이미 존재하므로 원본 진열을 그대로 복사하지 않고 상품명에 직접 드러난 제품형태를 우선한다.",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:17:36", "ingestion:66:69"],
+      "source_name": "homeplus",
+      "source_record_key": "070793267",
+      "source_title": "플레인 크래커 340G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.baked.cracker",
+      "reason": "상품명이 크래커를 직접 명시한다. 버터비스켓 진열보다 실제 제품형태를 우선하며 기존 크래커 leaf와 정확히 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:17:38", "ingestion:66:92"],
+      "source_name": "homeplus",
+      "source_record_key": "100575910",
+      "source_title": "해태 아이비 크래커 155G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.baked.cracker",
+      "reason": "아이비 상품명이 크래커를 직접 명시해 기존 크래커 leaf가 맞다. 함께할인 promotion_unresolved 상태는 분류와 별개로 그대로 보존한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "promotion_unresolved preserved; classification proposal does not resolve the promotion",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:17:58", "ingestion:66:70"],
+      "source_name": "homeplus",
+      "source_record_key": "071167570",
+      "source_title": "참깨 크래커 340G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.baked.cracker",
+      "reason": "상품명이 참깨 크래커를 직접 명시하고 기존 크래커 leaf의 제품형태와 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:17:61", "ingestion:66:87"],
+      "source_name": "homeplus",
+      "source_record_key": "071283973",
+      "source_title": "오리지널 크래커 500G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.baked.cracker",
+      "reason": "상품명이 오리지널 크래커를 직접 명시해 기존 크래커 leaf와 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:18:4", "ingestion:67:13"],
+      "source_name": "homeplus",
+      "source_record_key": "071433664",
+      "source_title": "해태 샌드에이스 크림라떼 204G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.baked.sandwich",
+      "reason": "샌드에이스는 크림을 사이에 둔 샌드과자 제품형태가 상품명에 드러나며 pass41의 샌드과자 leaf와 일치한다. 버터비스켓 진열에 강제하지 않는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:18:12", "ingestion:66:52"],
+      "source_name": "homeplus",
+      "source_record_key": "071433606",
+      "source_title": "퀴노아크래커 340G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.baked.cracker",
+      "reason": "상품명 자체가 퀴노아 크래커 제품형태를 명시하므로 기존 크래커 leaf에 제안한다. 퀴노아는 원료 특성이지 별도 과자 유형으로 보지 않는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:18:22", "ingestion:68:32"],
+      "source_name": "homeplus",
+      "source_record_key": "106718934",
+      "source_title": "롯데 엄마손파이 254G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.baked.pie",
+      "reason": "상품명이 파이를 직접 명시하며 pass41의 파이과자 leaf와 일치한다. 원본 버터비스켓 진열보다 제품형태를 우선한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:68:88"],
+      "source_name": "homeplus",
+      "source_record_key": "126116956",
+      "source_title": "롯데 야채크래커 249G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.baked.cracker",
+      "reason": "상품명이 야채크래커를 직접 명시하며 야채는 맛·원료 요소다. 제품형태는 기존 크래커 leaf와 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
