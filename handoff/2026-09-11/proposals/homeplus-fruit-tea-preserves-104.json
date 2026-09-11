@@ -1,0 +1,59 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "104",
+  "source_path": "handoff/2026-09-11/pending/104/001.json",
+  "scope_note": "Classification-only proposal. Raw observation identity, pricing, quantity, promotion, and source evidence remain authoritative in the pending source file.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1269,
+    "current_reviewed": 1279,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2637
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "The five source_record_key values were checked against the existing explicit review decisions. No match was found. Existing food.drinks.tea.citron is specific to yuzu/citron tea and does not justify treating other fruit preserves as citron."
+  },
+  "decisions": [],
+  "held_decisions": [
+    {
+      "source_record_key": "071000848",
+      "source_title": "simplus 한라봉청 1KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.fruit_preserve",
+      "reason": "Hallabong fruit preserve/tea base is not citron/yuzu tea merely because the retail shelf is 유자차."
+    },
+    {
+      "source_record_key": "071000854",
+      "source_title": "simplus 자몽청 1KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.fruit_preserve",
+      "reason": "Grapefruit preserve/tea base is a fruit-tea preserve product, not yuzu tea."
+    },
+    {
+      "source_record_key": "071000831",
+      "source_title": "simplus 레몬청 1KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.fruit_preserve",
+      "reason": "Lemon preserve/tea base is distinct from existing citron/yuzu tea."
+    },
+    {
+      "source_record_key": "071000819",
+      "source_title": "simplus 생강레몬청 1KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.fruit_preserve",
+      "reason": "Ginger-lemon preserve is still a fruit/herbal tea-base preserve; ginger is a flavor/blend attribute."
+    },
+    {
+      "source_record_key": "071270752",
+      "source_title": "자임 비타민들어있는 햇 제주 한라봉차 800G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.fruit_preserve",
+      "reason": "Hallabong tea product belongs with fruit-tea bases rather than the yuzu-specific citron leaf."
+    }
+  ],
+  "executed_tests": []
+}
