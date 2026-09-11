@@ -1,0 +1,59 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "103",
+  "source_path": "handoff/2026-09-11/pending/103/001.json",
+  "scope_note": "Classification-only proposal. Raw observation identity, pricing, quantity, promotion, and source evidence remain authoritative in the pending source file.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1259,
+    "current_reviewed": 1269,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2647
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "The five source_record_key values were checked against the existing explicit review decisions. No match was found. Current taxonomy has no exact fruit-concentrate drink leaf."
+  },
+  "decisions": [],
+  "held_decisions": [
+    {
+      "source_record_key": "070688692",
+      "source_title": "하루하나 유기농 레몬즙 14T",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.concentrates.fruit",
+      "reason": "Explicit lemon juice sold on a liquid-tea/concentrate shelf. Do not force this beverage concentrate into the cooking-acid candidate used for a cooking lemon-juice product; 1+1 remains unchanged."
+    },
+    {
+      "source_record_key": "070812407",
+      "source_title": "하루하나 유기농 레몬즙 480ML",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.concentrates.fruit",
+      "reason": "Fruit juice/concentrate product form is clear, but no exact current leaf exists; 1+1 remains unchanged."
+    },
+    {
+      "source_record_key": "128545842",
+      "source_title": "녹차원 깔라만시 100 480G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.concentrates.fruit",
+      "reason": "Calamansi concentrate/juice base belongs with fruit concentrates rather than tea flavor or fresh fruit."
+    },
+    {
+      "source_record_key": "070414556",
+      "source_title": "비타민 레몬 티앤에이드 680G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.concentrates.fruit",
+      "reason": "Tea-and-ade lemon base is a concentrated fruit beverage base; current taxonomy has no exact concentrate leaf."
+    },
+    {
+      "source_record_key": "070028604",
+      "source_title": "100%깔라만시 1L",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.concentrates.fruit",
+      "reason": "Explicit 100% calamansi liquid on the concentrate shelf is safer as a fruit-concentrate candidate than forcing it into ready-to-drink juice."
+    }
+  ],
+  "executed_tests": []
+}
