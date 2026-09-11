@@ -1,0 +1,142 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "scope_note": "GitHub read/write classification gap repair. Pending 045 was absent from the proposal-only sweep even though all 22 rows remained classification-pending. Existing taxonomy leaf food.meals.prepared.pizza is reused because every title explicitly identifies pizza. No DB import/rebuild, taxonomy edit, quantity rewrite, promotion rewrite, identity merge, or repository tests were performed.",
+  "reviewed_pending_groups": ["045"],
+  "reviewed_observations": 22,
+  "unique_source_products": 11,
+  "decisions": [
+    {
+      "pending_group": "045",
+      "raw_record_ids": ["ingestion:9:64", "ingestion:59:2"],
+      "source_record_key": "061178566",
+      "source_title": "오뚜기 페페로니 디럭스 치즈크러스트 피자 510G",
+      "proposed_leaf": "food.meals.prepared.pizza",
+      "reason": "제목이 피자를 직접 명시하고 원본 진열도 냉동피자/브리또다. 페페로니·치즈크러스트는 토핑/스타일 속성이며 기존 피자 리프를 더 세분할 근거가 아니다.",
+      "quantity_review": "unchanged; preserve existing 510g and promotion state",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "045",
+      "raw_record_ids": ["ingestion:9:85", "ingestion:59:54"],
+      "source_record_key": "069424257",
+      "source_title": "풀무원 노엣지피자 코리안BBQ 322G",
+      "proposed_leaf": "food.meals.prepared.pizza",
+      "reason": "제목이 노엣지피자를 직접 명시하고 원본 진열도 냉동피자/브리또다. 코리안BBQ는 맛/토핑 속성으로 보고 기존 피자 리프를 사용한다.",
+      "quantity_review": "unchanged; preserve existing 322g and promotion state",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "045",
+      "raw_record_ids": ["ingestion:10:16", "ingestion:59:53"],
+      "source_record_key": "126345736",
+      "source_title": "오뚜기 불고기 피자 396G",
+      "proposed_leaf": "food.meals.prepared.pizza",
+      "reason": "제목이 불고기 피자를 직접 명시한다. 불고기는 토핑 속성이고 상품형태는 피자이므로 기존 피자 리프와 정확히 맞는다.",
+      "quantity_review": "unchanged; preserve existing 396g and promotion state",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "045",
+      "raw_record_ids": ["ingestion:10:17", "ingestion:59:40"],
+      "source_record_key": "069318320",
+      "source_title": "씨제이 고메 스윗 치즈피자 325G",
+      "proposed_leaf": "food.meals.prepared.pizza",
+      "reason": "제목이 치즈피자를 직접 명시한다. 스윗/치즈는 맛과 토핑 속성으로 유지하고 기존 피자 리프를 사용한다.",
+      "quantity_review": "unchanged; preserve existing 325g and promotion state",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "045",
+      "raw_record_ids": ["ingestion:10:20", "ingestion:59:42"],
+      "source_record_key": "069424205",
+      "source_title": "풀무원 노엣지피자 스위트포테이토&콘 365G",
+      "proposed_leaf": "food.meals.prepared.pizza",
+      "reason": "제목이 노엣지피자를 직접 명시한다. 고구마·콘은 토핑 속성이고 상품형태는 피자이므로 기존 피자 리프를 사용한다.",
+      "quantity_review": "unchanged; preserve existing 365g and promotion state",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "045",
+      "raw_record_ids": ["ingestion:10:22", "ingestion:59:44"],
+      "source_record_key": "069318337",
+      "source_title": "씨제이 고메 토마토 치즈피자 345G",
+      "proposed_leaf": "food.meals.prepared.pizza",
+      "reason": "제목이 토마토 치즈피자를 직접 명시한다. 토마토/치즈는 토핑·맛 속성으로 유지하고 기존 피자 리프를 사용한다.",
+      "quantity_review": "unchanged; preserve existing 345g and promotion state",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "045",
+      "raw_record_ids": ["ingestion:10:43", "ingestion:59:33"],
+      "source_record_key": "126345667",
+      "source_title": "오뚜기 콤비네이션 피자 415G",
+      "proposed_leaf": "food.meals.prepared.pizza",
+      "reason": "제목이 콤비네이션 피자를 직접 명시한다. 콤비네이션은 토핑 구성 속성이고 기존 피자 리프와 상품형태가 일치한다.",
+      "quantity_review": "unchanged; preserve existing 415g and promotion state",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "045",
+      "raw_record_ids": ["ingestion:10:61", "ingestion:59:98"],
+      "source_record_key": "059662721",
+      "source_title": "simplus 콰트로치즈 피자 340G",
+      "proposed_leaf": "food.meals.prepared.pizza",
+      "reason": "제목이 콰트로치즈 피자를 직접 명시한다. 치즈 종류는 토핑 속성이고 상품형태는 피자다.",
+      "quantity_review": "unchanged; preserve existing 340g and promotion state",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "045",
+      "raw_record_ids": ["ingestion:10:63", "ingestion:59:97"],
+      "source_record_key": "059662715",
+      "source_title": "simplus 모짜렐라 치즈피자 355G",
+      "proposed_leaf": "food.meals.prepared.pizza",
+      "reason": "제목이 모짜렐라 치즈피자를 직접 명시한다. 치즈 종류는 속성으로 유지하고 기존 피자 리프를 사용한다.",
+      "quantity_review": "unchanged; preserve existing 355g and promotion state",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "045",
+      "raw_record_ids": ["ingestion:10:65", "ingestion:60:42"],
+      "source_record_key": "059662738",
+      "source_title": "simplus 머쉬룸 피자 365G",
+      "proposed_leaf": "food.meals.prepared.pizza",
+      "reason": "제목이 머쉬룸 피자를 직접 명시한다. 버섯은 토핑 속성이고 기존 피자 리프와 상품형태가 일치한다.",
+      "quantity_review": "unchanged; preserve existing 365g and promotion state",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "045",
+      "raw_record_ids": ["ingestion:11:37", "ingestion:60:75"],
+      "source_record_key": "142796621",
+      "source_title": "오뚜기 베이컨 치즈 피자 352G",
+      "proposed_leaf": "food.meals.prepared.pizza",
+      "reason": "제목이 베이컨 치즈 피자를 직접 명시한다. 베이컨/치즈는 토핑 속성이며 기존 피자 리프를 사용한다.",
+      "quantity_review": "unchanged; preserve existing 352g and promotion state",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "taxonomy_evidence": {
+    "existing_leaf": "food.meals.prepared.pizza",
+    "existing_leaf_name_ko": "피자",
+    "new_taxonomy_needed": false,
+    "note": "Repository taxonomy/catalog already contains the pizza leaf and audited pizza examples; no narrower frozen-pizza leaf was found or needed for this batch."
+  },
+  "explicit_review_conflict_check": {
+    "checked_against": "handoff/2026-09-11/review-decisions-input.json",
+    "source_record_keys_checked": ["061178566", "069424257", "126345736", "069318320", "069424205", "069318337", "126345667", "059662721", "059662715", "059662738", "142796621"],
+    "conflicts_found": 0
+  },
+  "reconciliation_note": {
+    "gap_found": true,
+    "previous_checkpoint": "handoff/2026-09-11/checkpoints/checkpoint-after-pending-451-classification-complete.md",
+    "correction": "Pending 045 had no proposal-only classification record despite all 22 observations remaining classification-pending and having no exact explicit-review-decision collision. This proposal repairs that coverage gap.",
+    "historical_cumulative_not_recomputed": true,
+    "reason": "Earlier progress counters mixed opened/reviewed observations with classification-only increments at different stages. Global raw_record_id/source_record_key reconciliation remains required before publishing one final unique-reviewed total."
+  },
+  "database_modified": false,
+  "taxonomy_modified": false,
+  "explicit_review_decisions_modified": false,
+  "executed_tests": []
+}
