@@ -1,0 +1,136 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.prepared.sandwich"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_leaf_needs_name_corroboration",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:565d9c218a128dfc04c836fd",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "간편식·면",
+        "조리식품",
+        "샌드위치"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:35",
+      "review_status": "pending",
+      "source_path": "델리ㆍ즉석조리 > 샌드위치ㆍ햄버거 > 샌드위치",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "델리ㆍ즉석조리",
+        "샌드위치ㆍ햄버거",
+        "샌드위치"
+      ],
+      "source_title": "탱글탱글 소세지가 쏙! 15핫도그 (팩)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS2700000096345/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "YORIHADA",
+      "crawled_at": "2026-08-31T01:46:57.086707Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "[배송시간예약]2~3번째 선택시 주문가능",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e397e291-e43c-4da7-9783-b1ea2475678c/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 35,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1팩",
+        "package_quantity": 1.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 1500,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "YORIHADA",
+          "canon_hash": "1989222d094f80093ea7ca87137118e8f7b388af",
+          "canonical_url": "https://lottemartzetta.com/products/OS2700000096345/details",
+          "category_hint": "델리ㆍ즉석조리",
+          "category_path": [
+            "델리ㆍ즉석조리",
+            "샌드위치ㆍ햄버거",
+            "샌드위치"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e397e291-e43c-4da7-9783-b1ea2475678c/300x300.jpg",
+          "mart_native_code": "2700000096345",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "2700000096345",
+          "source_url": "https://lottemartzetta.com/products/OS2700000096345/details"
+        },
+        "brand": "__no_brand__",
+        "category": "델리ㆍ즉석조리",
+        "crawled_at": "2026-08-31T10:46:57.086707",
+        "detail_url": "https://lottemartzetta.com/products/OS2700000096345/details",
+        "discount_percent": null,
+        "display_unit": "1팩",
+        "event_name": "[배송시간예약]2~3번째 선택시 주문가능",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e397e291-e43c-4da7-9783-b1ea2475678c/300x300.jpg",
+        "match_key": "__no_brand__|탱글탱글 소세지가 쏙 15핫도그 팩||1팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "탱글탱글 소세지가 쏙!  15핫도그 (팩)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.0,
+        "package_unit": "팩",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1500,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "1팩",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "685b90a11f4db9bce41e7f8905280c5a4e017f3409bfa7c421e8a2616f4b2fef",
+      "raw_record_id": "ingestion:28:35",
+      "source_category_path": [
+        "델리ᆞ즉석조리",
+        "샌드위치ᆞ햄버거",
+        "샌드위치"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "2700000096345",
+      "source_title": "탱글탱글 소세지가 쏙!  15핫도그 (팩)",
+      "source_url": "https://lottemartzetta.com/products/OS2700000096345/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:28:35",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "2700000096345",
+    "source_title": "탱글탱글 소세지가 쏙! 15핫도그 (팩)"
+  }
+]

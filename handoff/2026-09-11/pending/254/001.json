@@ -1,0 +1,514 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:af239bef83873539edb245a0",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "어린이음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:30:26",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 어린이음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "어린이음료"
+      ],
+      "source_title": "카프리썬 (오렌지망고) (200ML * 10)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801043900096/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "카프리썬",
+      "crawled_at": "2026-08-31T01:46:57.102720Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 9,900원",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/42174989-7082-4522-b755-279ca7414b59/300x300.jpg",
+      "ingestion_id": 30,
+      "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 26,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "200ml×10",
+        "package_quantity": 200.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 7600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "카프리썬",
+          "canon_hash": "f0a0835340ba66edb8f9c4cbedb9ffce8c2a6c99",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801043900096/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "어린이음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/42174989-7082-4522-b755-279ca7414b59/300x300.jpg",
+          "mart_native_code": "8801043900096",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801043900096",
+          "source_url": "https://lottemartzetta.com/products/OS8801043900096/details",
+          "storage_label": "상온",
+          "storage_type": "ambient"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:46:57.102720",
+        "detail_url": "https://lottemartzetta.com/products/OS8801043900096/details",
+        "discount_percent": null,
+        "display_unit": "200ml×10",
+        "event_name": "2개씩 골라 담으면, 9,900원",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/42174989-7082-4522-b755-279ca7414b59/300x300.jpg",
+        "match_key": "__no_brand__|카프리썬 오렌지망고 200ml 10||200ml×10",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "카프리썬 (오렌지망고) (200ML * 10)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 200.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 7600,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "200ml×10",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "66255c811017523eca84de67cf51ae74b96695eff2975a4561909ee32069f997",
+      "raw_record_id": "ingestion:30:26",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "어린이음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801043900096",
+      "source_title": "카프리썬 (오렌지망고) (200ML * 10)",
+      "source_url": "https://lottemartzetta.com/products/OS8801043900096/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:30:26",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801043900096",
+    "source_title": "카프리썬 (오렌지망고) (200ML * 10)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:af239bef83873539edb245a0",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "어린이음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:30:93",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 어린이음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "어린이음료"
+      ],
+      "source_title": "카프리썬 (오렌지) (200ML * 10)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801043900010/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "카프리썬",
+      "crawled_at": "2026-08-31T01:47:02.645107Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 9,900원",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c319676f-9129-41c1-ae5c-196be344a5c7/300x300.jpg",
+      "ingestion_id": 30,
+      "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 93,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "200ml×10",
+        "package_quantity": 200.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 7600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "카프리썬",
+          "canon_hash": "a86848495180732eda8d7e63a180e8e7fbb1575e",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801043900010/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "어린이음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c319676f-9129-41c1-ae5c-196be344a5c7/300x300.jpg",
+          "mart_native_code": "8801043900010",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801043900010",
+          "source_url": "https://lottemartzetta.com/products/OS8801043900010/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:47:02.645107",
+        "detail_url": "https://lottemartzetta.com/products/OS8801043900010/details",
+        "discount_percent": null,
+        "display_unit": "200ml×10",
+        "event_name": "2개씩 골라 담으면, 9,900원",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c319676f-9129-41c1-ae5c-196be344a5c7/300x300.jpg",
+        "match_key": "__no_brand__|카프리썬 오렌지 200ml 10||200ml×10",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "카프리썬 (오렌지) (200ML * 10)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 200.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 7600,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "200ml×10",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "f5e6e3ba543ff5ffc74c62fc44baff5ad96400a7b440957cf1fc6ccac297ff4e",
+      "raw_record_id": "ingestion:30:93",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "어린이음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801043900010",
+      "source_title": "카프리썬 (오렌지) (200ML * 10)",
+      "source_url": "https://lottemartzetta.com/products/OS8801043900010/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:30:93",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801043900010",
+    "source_title": "카프리썬 (오렌지) (200ML * 10)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:af239bef83873539edb245a0",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "어린이음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:32:5",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 어린이음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "어린이음료"
+      ],
+      "source_title": "카프리썬 (사파리) (200ML * 10)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801043900027/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "카프리썬",
+      "crawled_at": "2026-08-31T01:47:02.658010Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 9,900원",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4bd07982-c2bc-4c13-9b7e-f78c9743c81d/300x300.jpg",
+      "ingestion_id": 32,
+      "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 5,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "200ml×10",
+        "package_quantity": 200.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 7600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "카프리썬",
+          "canon_hash": "b8faf3ddb0918480cab2d53928aeabf1b3d68d03",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801043900027/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "어린이음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4bd07982-c2bc-4c13-9b7e-f78c9743c81d/300x300.jpg",
+          "mart_native_code": "8801043900027",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801043900027",
+          "source_url": "https://lottemartzetta.com/products/OS8801043900027/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:47:02.658010",
+        "detail_url": "https://lottemartzetta.com/products/OS8801043900027/details",
+        "discount_percent": null,
+        "display_unit": "200ml×10",
+        "event_name": "2개씩 골라 담으면, 9,900원",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4bd07982-c2bc-4c13-9b7e-f78c9743c81d/300x300.jpg",
+        "match_key": "__no_brand__|카프리썬 사파리 200ml 10||200ml×10",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "카프리썬 (사파리) (200ML * 10)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 200.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 7600,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "200ml×10",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "05c5fe77a07a20ff9a714167a821f8f6acc334cd7bcd58ec16759931d5bc6f0f",
+      "raw_record_id": "ingestion:32:5",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "어린이음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801043900027",
+      "source_title": "카프리썬 (사파리) (200ML * 10)",
+      "source_url": "https://lottemartzetta.com/products/OS8801043900027/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:32:5",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801043900027",
+    "source_title": "카프리썬 (사파리) (200ML * 10)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:af239bef83873539edb245a0",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "어린이음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:32:84",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 어린이음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "어린이음료"
+      ],
+      "source_title": "카프리썬 (사과) (200ML * 10)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801043900508/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "카프리썬",
+      "crawled_at": "2026-08-31T01:47:02.667414Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 9,900원",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/7145730c-d1a3-47dd-ac91-54593bd6467d/300x300.jpg",
+      "ingestion_id": 32,
+      "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 84,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "200ml×10",
+        "package_quantity": 200.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 7600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "카프리썬",
+          "canon_hash": "f9530c12b098ff3dd2dfc24974d8b0cb86ed2ae2",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801043900508/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "어린이음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/7145730c-d1a3-47dd-ac91-54593bd6467d/300x300.jpg",
+          "mart_native_code": "8801043900508",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801043900508",
+          "source_url": "https://lottemartzetta.com/products/OS8801043900508/details",
+          "storage_label": "상온",
+          "storage_type": "ambient"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:47:02.667414",
+        "detail_url": "https://lottemartzetta.com/products/OS8801043900508/details",
+        "discount_percent": null,
+        "display_unit": "200ml×10",
+        "event_name": "2개씩 골라 담으면, 9,900원",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/7145730c-d1a3-47dd-ac91-54593bd6467d/300x300.jpg",
+        "match_key": "__no_brand__|카프리썬 사과 200ml 10||200ml×10",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "카프리썬 (사과) (200ML * 10)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 200.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 7600,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "200ml×10",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "01544180ce7211aa0d90817f5c766ed51abc0e5d8df5dac013978160d06c3865",
+      "raw_record_id": "ingestion:32:84",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "어린이음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801043900508",
+      "source_title": "카프리썬 (사과) (200ML * 10)",
+      "source_url": "https://lottemartzetta.com/products/OS8801043900508/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:32:84",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801043900508",
+    "source_title": "카프리썬 (사과) (200ML * 10)"
+  }
+]

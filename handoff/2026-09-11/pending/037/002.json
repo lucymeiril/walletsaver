@@ -1,0 +1,513 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.drinks.juice.fruit_drink"
+      ],
+      "category_path": [
+        "식품",
+        "음료",
+        "과채음료",
+        "과일음료"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_beverage_title",
+      "evidence_type": "contextual_costco_beverage_title",
+      "mart": "emart",
+      "native_category_key": "emart:path:80de553d45ae4a06eccb9a00",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "6000213424",
+      "raw_record_id": "ingestion:87:56",
+      "review_status": "classified",
+      "source_path": "생수/음료/주류",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "해태 갈아만든배(1.5ℓ)",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609113&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": "food.drinks.juice.fruit_drink",
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:17:45.949771Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/13/91/60/item/0000006609113_i1_290.jpg",
+      "ingestion_id": 87,
+      "ingestion_received_at": "2026-09-02T15:17:46.958718Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 56,
+      "mart_native_category_id": "6000213424",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": null,
+      "price": 4980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "생수/음료/주류",
+          "collection": "해태음료",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/13/91/60/item/0000006609113_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213424",
+          "mart_native_category_path": "생수/음료/주류",
+          "mart_native_code": "0000006609113",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000006609113",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609113&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 332원"
+        },
+        "brand": "__no_brand__",
+        "category": "생수/음료/주류",
+        "crawled_at": "2026-09-03T00:17:45.949771",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609113&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "100ml 당 332원",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/13/91/60/item/0000006609113_i1_290.jpg",
+        "match_key": "__no_brand__|해태 갈아만든배 1 5ℓ||100ml 당 332원",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "해태 갈아만든배(1.5ℓ)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": null,
+        "package_unit": "",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "100ml 당 332원",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "a69975dd7c17d87a4d4fd56395055e3109a5d40c767cdd167d002ec8e23ed6a2",
+      "raw_record_id": "ingestion:87:56",
+      "source_category_path": [
+        "생수/음료/주류"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000006609113",
+      "source_title": "해태 갈아만든배(1.5l)",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609113&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:87:56",
+    "reasons": [
+      "unit_unresolved"
+    ],
+    "source_record_key": "0000006609113",
+    "source_title": "해태 갈아만든배(1.5ℓ)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:80de553d45ae4a06eccb9a00",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수/음료/주류"
+      ],
+      "raw_native_category_id": "6000213424",
+      "raw_record_id": "ingestion:87:63",
+      "review_status": "pending",
+      "source_path": "생수/음료/주류",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "오트몬드 프로틴 쿠키앤크림 250ml",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000702355856&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:17:45.998349Z",
+      "crawler_name": "emart",
+      "discount_rate": 0.3,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/56/58/35/item/1000702355856_i1_290.jpg",
+      "ingestion_id": 87,
+      "ingestion_received_at": "2026-09-02T15:17:46.958718Z",
+      "issues": [],
+      "item_index": 63,
+      "mart_native_category_id": "6000213424",
+      "observed_time_precision": "item",
+      "original_price": 2280,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "250ml",
+        "package_quantity": 250.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 1596,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "was_now_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "생수/음료/주류",
+          "collection": "롯데칠성",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/56/58/35/item/1000702355856_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213424",
+          "mart_native_category_path": "생수/음료/주류",
+          "mart_native_code": "1000702355856",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000702355856",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000702355856&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 638원"
+        },
+        "brand": "__no_brand__",
+        "category": "생수/음료/주류",
+        "crawled_at": "2026-09-03T00:17:45.998349",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000702355856&siteNo=6001&salestrNo=2037",
+        "discount_percent": 30.0,
+        "display_unit": "250ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/56/58/35/item/1000702355856_i1_290.jpg",
+        "match_key": "__no_brand__|오트몬드 프로틴 쿠키앤크림 250ml||250ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오트몬드 프로틴 쿠키앤크림 250ml",
+        "normalized_name": "",
+        "original_price": 2280,
+        "package_quantity": 250.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 1596,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "250ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "837f7eb743a1a965a067a519420de999db6e1280a33936f21891c1a874f9bec1",
+      "raw_record_id": "ingestion:87:63",
+      "source_category_path": [
+        "생수/음료/주류"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000702355856",
+      "source_title": "오트몬드 프로틴 쿠키앤크림 250ml",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000702355856&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:87:63",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000702355856",
+    "source_title": "오트몬드 프로틴 쿠키앤크림 250ml"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:80de553d45ae4a06eccb9a00",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수/음료/주류"
+      ],
+      "raw_native_category_id": "6000213424",
+      "raw_record_id": "ingestion:87:65",
+      "review_status": "pending",
+      "source_path": "생수/음료/주류",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "따옴 오렌지 730ml",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=0000009014175&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:17:46.007254Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/75/41/01/item/0000009014175_i1_290.jpg",
+      "ingestion_id": 87,
+      "ingestion_received_at": "2026-09-02T15:17:46.958718Z",
+      "issues": [],
+      "item_index": 65,
+      "mart_native_category_id": "6000213424",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "730ml",
+        "package_quantity": 730.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 4580,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "생수/음료/주류",
+          "collection": "빙그레",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/75/41/01/item/0000009014175_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213424",
+          "mart_native_category_path": "생수/음료/주류",
+          "mart_native_code": "0000009014175",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "0000009014175",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000009014175&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 627원"
+        },
+        "brand": "__no_brand__",
+        "category": "생수/음료/주류",
+        "crawled_at": "2026-09-03T00:17:46.007254",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000009014175&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "730ml",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/75/41/01/item/0000009014175_i1_290.jpg",
+        "match_key": "__no_brand__|따옴 오렌지 730ml||730ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "따옴 오렌지 730ml",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 730.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4580,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "730ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "7be7f696a0991f1df2df13d500c769cf1e5dc46b7b0684f5b84074c6e8a8b387",
+      "raw_record_id": "ingestion:87:65",
+      "source_category_path": [
+        "생수/음료/주류"
+      ],
+      "source_name": "emart",
+      "source_record_key": "0000009014175",
+      "source_title": "따옴 오렌지 730ml",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000009014175&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:87:65",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "0000009014175",
+    "source_title": "따옴 오렌지 730ml"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "emart",
+      "native_category_key": "emart:path:80de553d45ae4a06eccb9a00",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수/음료/주류"
+      ],
+      "raw_native_category_id": "6000213424",
+      "raw_record_id": "ingestion:87:67",
+      "review_status": "pending",
+      "source_path": "생수/음료/주류",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "생수/음료/주류"
+      ],
+      "source_title": "1.8L*2입",
+      "source_urls": [
+        "https://emart.ssg.com/item/itemView.ssg?itemId=1000009710322&siteNo=6001&salestrNo=2037"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-09-02T15:17:46.024562Z",
+      "crawler_name": "emart",
+      "discount_rate": null,
+      "event_name": "이마트 할인",
+      "image_url": "https://sitem.ssgcdn.com/22/03/71/item/1000009710322_i1_290.jpg",
+      "ingestion_id": 87,
+      "ingestion_received_at": "2026-09-02T15:17:46.958718Z",
+      "issues": [],
+      "item_index": 67,
+      "mart_native_category_id": "6000213424",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "1.8L×2",
+        "package_quantity": 1800.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 6980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "category_hint": "생수/음료/주류",
+          "collection": "코카콜라",
+          "collection_surface": "category",
+          "external_seller": false,
+          "image_url": "https://sitem.ssgcdn.com/22/03/71/item/1000009710322_i1_290.jpg",
+          "mart": "이마트",
+          "mart_native_category_id": "6000213424",
+          "mart_native_category_path": "생수/음료/주류",
+          "mart_native_code": "1000009710322",
+          "promo_label": "",
+          "salestr_no": "2037",
+          "shipping_labels": [
+            "주간배송 오늘(목) 14:00까지 도착",
+            "주간배송",
+            "주간배송",
+            "오늘(목) 14:00까지 도착"
+          ],
+          "shipping_type_code": "10",
+          "site_no": "6001",
+          "source_name": "emart",
+          "source_record_key": "1000009710322",
+          "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000009710322&siteNo=6001&salestrNo=2037",
+          "unit_price_display": "100ml 당 194원"
+        },
+        "brand": "__no_brand__",
+        "category": "생수/음료/주류",
+        "crawled_at": "2026-09-03T00:17:46.024562",
+        "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000009710322&siteNo=6001&salestrNo=2037",
+        "discount_percent": null,
+        "display_unit": "1.8L×2",
+        "event_name": "이마트 할인",
+        "image_url": "https://sitem.ssgcdn.com/22/03/71/item/1000009710322_i1_290.jpg",
+        "match_key": "__no_brand__|1 8l 2입||1.8l×2",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "1.8L*2입",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.8,
+        "package_unit": "L",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 6980,
+        "source": "emart",
+        "store": "이마트",
+        "unit": "1.8L×2",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "e09358f88bd9eeeb92d4ea9d415a5e45fdb408cc455f6ae282a3a81df37d48c4",
+      "raw_record_id": "ingestion:87:67",
+      "source_category_path": [
+        "생수/음료/주류"
+      ],
+      "source_name": "emart",
+      "source_record_key": "1000009710322",
+      "source_title": "1.8L*2입",
+      "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000009710322&siteNo=6001&salestrNo=2037",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:87:67",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "1000009710322",
+    "source_title": "1.8L*2입"
+  }
+]

@@ -1,0 +1,4664 @@
+[
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:44:94"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        44
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:02.567492Z",
+    "discount_rate": null,
+    "event_name": "할인",
+    "offer_state": "active",
+    "original_price": 25990,
+    "price": 21990,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "checkout_discount",
+    "public_offer_event_id": "offer-37757ab5b72ba557ae2e555b564c608c",
+    "public_source_listing_id": "listing-3971296d71c3fcdf3d1071ec586fc9c5",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:02.567492Z",
+          "ingestion_id": 44,
+          "ingestion_received_at": "2026-08-31T01:52:02.567492Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "9222620f0f4e1ffbe7d864bca2b15e1734952b6c",
+            "canonical_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/CJ-Jamaican-Style-Chicken-1050G/p/694945",
+            "category": "치즈",
+            "cocodalin_join_key": "694945",
+            "detail_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/CJ-Jamaican-Style-Chicken-1050G/p/694945",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd2/h49/470697782542366.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "치즈",
+            "mart_native_code": "694945",
+            "match_key": "__no_brand__|cj 자메이카스타일 치킨 1050g|1050.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 자메이카스타일 치킨 1050G",
+            "normalized_name": "CJ 자메이카스타일 치킨 1050G",
+            "pack_qty": 1050,
+            "pack_unit": "G",
+            "price": 25990,
+            "promo_label": "할인",
+            "promo_type": "checkout_discount",
+            "raw_name": "CJ 자메이카스타일 치킨 1050G",
+            "raw_promo_type": "discount",
+            "sale_price": 21990,
+            "source": "costco",
+            "source_record_key": "694945",
+            "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/CJ-Jamaican-Style-Chicken-1050G/p/694945",
+            "unit_price": 2094.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 2,094원",
+            "unit_price_displayed": 2094,
+            "unit_price_text": "100G당 2,094원"
+          },
+          "raw_payload_sha256": "986e0ca94aa0c6bf1e4471486ebb25250c7920cd0db29ff8484316cf1cf16026",
+          "raw_record_id": "ingestion:44:94",
+          "source_category_path": [
+            "치즈"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:44:94",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:45:28"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        45
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:06.138871Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 33990,
+    "price_per_100g": 1133.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-bb21b5a32cf3a565c30d6780be6b7cb8",
+    "public_source_listing_id": "listing-6446d2366b781d3473b7d3579ff69c1d",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:06.138871Z",
+          "ingestion_id": 45,
+          "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "7d12c076a6349babfc946afd030b0ce4b9799562",
+            "canonical_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/CJ-Traditional-Meatball-15kg-X-2/p/694946",
+            "category": "치즈",
+            "cocodalin_join_key": "694946",
+            "detail_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/CJ-Traditional-Meatball-15kg-X-2/p/694946",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc3/h98/470697792176158.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "치즈",
+            "mart_native_code": "694946",
+            "match_key": "__no_brand__|cj 도톰동그랑땡 1 5kg x 2|1500.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 도톰동그랑땡 1.5KG X 2",
+            "normalized_name": "CJ 도톰동그랑땡 1.5KG X 2",
+            "pack_qty": 1.5,
+            "pack_unit": "KG",
+            "price": 33990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "CJ 도톰동그랑땡 1.5KG X 2",
+            "raw_promo_type": null,
+            "sale_price": 33990,
+            "source": "costco",
+            "source_record_key": "694946",
+            "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/CJ-Traditional-Meatball-15kg-X-2/p/694946",
+            "unit_price": 2266.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 2,266원",
+            "unit_price_displayed": 2266,
+            "unit_price_text": "100G당 2,266원"
+          },
+          "raw_payload_sha256": "d34301a7f2211e3649456e1772229358b5a3a3ca0df9215e0d4835c5277238c1",
+          "raw_record_id": "ingestion:45:28",
+          "source_category_path": [
+            "치즈"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:45:28",
+    "standard_unit_price": 1133.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:40:12"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        40
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:48.320787Z",
+    "discount_rate": null,
+    "event_name": "할인",
+    "offer_state": "active",
+    "original_price": 25990,
+    "price": 21990,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "checkout_discount",
+    "public_offer_event_id": "offer-14c6559888517331dcc5c6d05b8560cb",
+    "public_source_listing_id": "listing-835aa803c46a8e0d3443573d251d0d51",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:48.320787Z",
+          "ingestion_id": 40,
+          "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "11fcc8e741af3c85fd962eb56432f0deed0fd2bf",
+            "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Bibigo-Gourmet-Jjamppong-326g-x-6/p/694947",
+            "category": "라면",
+            "cocodalin_join_key": "694947",
+            "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Bibigo-Gourmet-Jjamppong-326g-x-6/p/694947",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha4/h5c/473342662017054.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "라면",
+            "mart_native_code": "694947",
+            "match_key": "__no_brand__|비비고 고메 중화짬뽕 326g x 6|326.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "비비고 고메 중화짬뽕 326g x 6",
+            "normalized_name": "비비고 고메 중화짬뽕 326g x 6",
+            "pack_qty": 326,
+            "pack_unit": "g",
+            "price": 25990,
+            "promo_label": "할인",
+            "promo_type": "checkout_discount",
+            "raw_name": "비비고 고메 중화짬뽕 326g x 6",
+            "raw_promo_type": "discount",
+            "sale_price": 21990,
+            "source": "costco",
+            "source_record_key": "694947",
+            "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Bibigo-Gourmet-Jjamppong-326g-x-6/p/694947",
+            "unit_price": 1124.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,124원",
+            "unit_price_displayed": 1124,
+            "unit_price_text": "100G당 1,124원"
+          },
+          "raw_payload_sha256": "3fc4ae7fd818921e55569d520e89405de78cc2792cb2c5e3b83a30ffd7fd43f3",
+          "raw_record_id": "ingestion:40:12",
+          "source_category_path": [
+            "라면"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:40:12",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:45:33"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        45
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:06.138871Z",
+    "discount_rate": null,
+    "event_name": "할인",
+    "offer_state": "active",
+    "original_price": 29990,
+    "price": 25990,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "checkout_discount",
+    "public_offer_event_id": "offer-87b0f528a16aa97e1af4e0c5efec3702",
+    "public_source_listing_id": "listing-1ab1e297046448dd6d47aca321aec3e1",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:06.138871Z",
+          "ingestion_id": 45,
+          "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "3a95413446bf2c21c423dbad08ff88439e413eab",
+            "canonical_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/CJ-Bibigo-Plantable-Dumplings-14kg-x-2/p/694948",
+            "category": "치즈",
+            "cocodalin_join_key": "694948",
+            "detail_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/CJ-Bibigo-Plantable-Dumplings-14kg-x-2/p/694948",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h8d/hd2/473342662606878.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "치즈",
+            "mart_native_code": "694948",
+            "match_key": "__no_brand__|비비고 플랜테이블 왕교자 1 4kg x 2|1400.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "비비고 플랜테이블 왕교자 1.4kg x 2",
+            "normalized_name": "비비고 플랜테이블 왕교자 1.4kg x 2",
+            "pack_qty": 1.4,
+            "pack_unit": "kg",
+            "price": 29990,
+            "promo_label": "할인",
+            "promo_type": "checkout_discount",
+            "raw_name": "비비고 플랜테이블 왕교자 1.4kg x 2",
+            "raw_promo_type": "discount",
+            "sale_price": 25990,
+            "source": "costco",
+            "source_record_key": "694948",
+            "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/CJ-Bibigo-Plantable-Dumplings-14kg-x-2/p/694948",
+            "unit_price": 928.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 928원",
+            "unit_price_displayed": 928,
+            "unit_price_text": "100G당 928원"
+          },
+          "raw_payload_sha256": "2034d5123fe8b6ab2a3fb0e25d7ef04d6f2ee8693772f350009f59056c493c62",
+          "raw_record_id": "ingestion:45:33",
+          "source_category_path": [
+            "치즈"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:45:33",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:45:29"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        45
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:06.138871Z",
+    "discount_rate": null,
+    "event_name": "할인",
+    "offer_state": "active",
+    "original_price": 30490,
+    "price": 26990,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "checkout_discount",
+    "public_offer_event_id": "offer-3856366718364900604b5acf1d4b11a5",
+    "public_source_listing_id": "listing-192b86966f10b61cc4111ee7cc7a31a3",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:06.138871Z",
+          "ingestion_id": 45,
+          "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "e5e07c39c6faef52e3175e5af1e24a5764f127a3",
+            "canonical_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/CJ-Bibigo-Plantable-Boiled-Dumplings-15kg-x-2/p/694950",
+            "category": "치즈",
+            "cocodalin_join_key": "694950",
+            "detail_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/CJ-Bibigo-Plantable-Boiled-Dumplings-15kg-x-2/p/694950",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/had/hd2/473342663917598.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "치즈",
+            "mart_native_code": "694950",
+            "match_key": "__no_brand__|비비고플랜테이블 물만두 1 5kg x 2|1500.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "비비고플랜테이블 물만두 1.5kg x 2",
+            "normalized_name": "비비고플랜테이블 물만두 1.5kg x 2",
+            "pack_qty": 1.5,
+            "pack_unit": "kg",
+            "price": 30490,
+            "promo_label": "할인",
+            "promo_type": "checkout_discount",
+            "raw_name": "비비고플랜테이블 물만두 1.5kg x 2",
+            "raw_promo_type": "discount",
+            "sale_price": 26990,
+            "source": "costco",
+            "source_record_key": "694950",
+            "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/CJ-Bibigo-Plantable-Boiled-Dumplings-15kg-x-2/p/694950",
+            "unit_price": 1799.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,799원",
+            "unit_price_displayed": 1799,
+            "unit_price_text": "100G당 1,799원"
+          },
+          "raw_payload_sha256": "c52b4c641f3e0320eee0cd58fbac6b5d2b58b9b897a5bba927b9c13ff7949eb4",
+          "raw_record_id": "ingestion:45:29",
+          "source_category_path": [
+            "치즈"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:45:29",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:80"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 15990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-e43e0d5321c2fe64fd706b84236ad954",
+    "public_source_listing_id": "listing-e6ae0df4b0d5b699f871c5d56239ed7b",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "4b0d37702d511ee077d7e67590b381be734a601b",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Chemical-Free-Butterhead-Lettuce-8ea/p/694987",
+            "category": "채소",
+            "cocodalin_join_key": "694987",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Chemical-Free-Butterhead-Lettuce-8ea/p/694987",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd2/h8c/467018810327070.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "채소",
+            "mart_native_code": "694987",
+            "match_key": "__no_brand__|무농약버터헤드레터스 8입|8.0|입",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "무농약버터헤드레터스 8입",
+            "normalized_name": "무농약버터헤드레터스 8입",
+            "pack_qty": 8,
+            "pack_unit": "입",
+            "price": 15990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "무농약버터헤드레터스 8입",
+            "raw_promo_type": null,
+            "sale_price": 15990,
+            "source": "costco",
+            "source_record_key": "694987",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Chemical-Free-Butterhead-Lettuce-8ea/p/694987",
+            "unit_price": 3998.0,
+            "unit_price_basis": "개　　　",
+            "unit_price_basis_raw": "개　　　",
+            "unit_price_display": "개　　　당 3,998원",
+            "unit_price_displayed": 3998,
+            "unit_price_text": "개　　　당 3,998원"
+          },
+          "raw_payload_sha256": "a42bf0270a3dfab236886ae09d4b3ceaf179cbb9aedff30ede23541afafbeb2e",
+          "raw_record_id": "ingestion:47:80",
+          "source_category_path": [
+            "채소"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:80",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:78"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 21990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-c095e8d7ada6860059d5e17211992727",
+    "public_source_listing_id": "listing-1e1aed03f0e4a4d6e5345ae1e93016c2",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "f1f22be22e67418571c51eb9a3e2c18d522f48a5",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Chemical-Free-Mini-Romaine-10ea/p/694988",
+            "category": "채소",
+            "cocodalin_join_key": "694988",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Chemical-Free-Mini-Romaine-10ea/p/694988",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h12/haf/467018813014046.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "채소",
+            "mart_native_code": "694988",
+            "match_key": "__no_brand__|무농약미니로메인10입|10.0|입",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "무농약미니로메인10입",
+            "normalized_name": "무농약미니로메인10입",
+            "pack_qty": 10,
+            "pack_unit": "입",
+            "price": 21990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "무농약미니로메인10입",
+            "raw_promo_type": null,
+            "sale_price": 21990,
+            "source": "costco",
+            "source_record_key": "694988",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Chemical-Free-Mini-Romaine-10ea/p/694988",
+            "unit_price": 2199.0,
+            "unit_price_basis": "개　　　",
+            "unit_price_basis_raw": "개　　　",
+            "unit_price_display": "개　　　당 2,199원",
+            "unit_price_displayed": 2199,
+            "unit_price_text": "개　　　당 2,199원"
+          },
+          "raw_payload_sha256": "3fbb3f728574b7a7bb9cb786a1333c13cbc8a1c36b2f4bd66c752b9a96aacf80",
+          "raw_record_id": "ingestion:47:78",
+          "source_category_path": [
+            "채소"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:78",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:44:81"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        44
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:02.567492Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 54900,
+    "price_per_100g": 5490.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-7abf79920b171e6b66821f13ba4e2979",
+    "public_source_listing_id": "listing-5d8d6b050c654e727a6c24c410238486",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:02.567492Z",
+          "ingestion_id": 44,
+          "ingestion_received_at": "2026-08-31T01:52:02.567492Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "583c10945ab0240452545d069160a32ea507c3d5",
+            "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Ile-De-France-Mini-Camembert-25g-x-10-x-4/p/695108",
+            "category": "치즈",
+            "cocodalin_join_key": "695108",
+            "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Ile-De-France-Mini-Camembert-25g-x-10-x-4/p/695108",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/he5/h68/469480329379870.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "치즈",
+            "mart_native_code": "695108",
+            "match_key": "__no_brand__|일드프랑스 미니까망베르 25g x 10 x 4|25.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "일드프랑스 미니까망베르 25g x 10 x 4",
+            "normalized_name": "일드프랑스 미니까망베르 25g x 10 x 4",
+            "pack_qty": 25,
+            "pack_unit": "g",
+            "price": 54900,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "일드프랑스 미니까망베르 25g x 10 x 4",
+            "raw_promo_type": null,
+            "sale_price": 54900,
+            "source": "costco",
+            "source_record_key": "695108",
+            "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Ile-De-France-Mini-Camembert-25g-x-10-x-4/p/695108",
+            "unit_price": 549.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 549원",
+            "unit_price_displayed": 549,
+            "unit_price_text": "10G당 549원"
+          },
+          "raw_payload_sha256": "d940ccae60905d2a285879225248468020efc2d5b973b6072084c22d516cc1f9",
+          "raw_record_id": "ingestion:44:81",
+          "source_category_path": [
+            "치즈"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:44:81",
+    "standard_unit_price": 5490.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:41:34"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        41
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:51.875403Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 14990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-5434d08b458eb8bd708d1f8bbcb06dd7",
+    "public_source_listing_id": "listing-51bff15d5f6f11dc736a548a270b6c7c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:51.875403Z",
+          "ingestion_id": 41,
+          "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+          "mart_native_category_id": "cos_10.3.1",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "a5f176198ff86be0dff9e51877b506e062a725d0",
+            "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Badasori-Bugak-Set/p/695236",
+            "category": "과자",
+            "cocodalin_join_key": "695236",
+            "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Badasori-Bugak-Set/p/695236",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf4/h34/489263054192670.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.3.1",
+            "mart_native_category_path": "과자",
+            "mart_native_code": "695236",
+            "match_key": "__no_brand__|찹쌀 김부각 세트 5개입|5.0|ea",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "찹쌀 김부각 세트 (5개입)",
+            "normalized_name": "찹쌀 김부각 세트 (5개입)",
+            "pack_qty": 5,
+            "pack_unit": "개",
+            "price": 14990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "찹쌀 김부각 세트 (5개입)",
+            "raw_promo_type": null,
+            "sale_price": 14990,
+            "source": "costco",
+            "source_record_key": "695236",
+            "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Badasori-Bugak-Set/p/695236",
+            "unit_price": 14990.0,
+            "unit_price_basis": "개　　　",
+            "unit_price_basis_raw": "개　　　",
+            "unit_price_display": "개　　　당 14,990원",
+            "unit_price_displayed": 14990,
+            "unit_price_text": "개　　　당 14,990원"
+          },
+          "raw_payload_sha256": "05db49bcd3ff40b419a54fa5cc9cdd0d103326be515d372a1fc2ae740651eae8",
+          "raw_record_id": "ingestion:41:34",
+          "source_category_path": [
+            "과자"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:41:34",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:82"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 15790,
+    "price_per_100g": 1973.75,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-129f8368184086a561cb8fc48e187857",
+    "public_source_listing_id": "listing-6ecbcf698e37ee4811eabf34faf382cb",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "48c7f37e8377a8914cae41e5415585df5accd51f",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Shiitake-Mushroom-400G-X-2CT/p/695290",
+            "category": "채소",
+            "cocodalin_join_key": "695290",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Shiitake-Mushroom-400G-X-2CT/p/695290",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hdf/h52/468172221743134.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "채소",
+            "mart_native_code": "695290",
+            "match_key": "__no_brand__|무농약 표고버섯 400g x 2ct|400.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "무농약 표고버섯 400G X 2CT",
+            "normalized_name": "무농약 표고버섯 400G X 2CT",
+            "pack_qty": 400,
+            "pack_unit": "G",
+            "price": 15790,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "무농약 표고버섯 400G X 2CT",
+            "raw_promo_type": null,
+            "sale_price": 15790,
+            "source": "costco",
+            "source_record_key": "695290",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Shiitake-Mushroom-400G-X-2CT/p/695290",
+            "unit_price": 1974.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,974원",
+            "unit_price_displayed": 1974,
+            "unit_price_text": "100G당 1,974원"
+          },
+          "raw_payload_sha256": "c5cf6cc0245330d7ac2073fdd71760f825184776b2440f9a872cccb198e42b3b",
+          "raw_record_id": "ingestion:47:82",
+          "source_category_path": [
+            "채소"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:82",
+    "standard_unit_price": 1973.75,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:6"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 16490,
+    "price_per_100g": 824.5,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-7c1813bd5775104a768508ade8bc17ac",
+    "public_source_listing_id": "listing-78a5cd05debb25f7b7f291cf5bf2ccf0",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "7ded2137658fcf9368758fcef5f10ff534605663",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Stevia-Tomatoes-2kg/p/695926",
+            "category": "과일",
+            "cocodalin_join_key": "695926",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Stevia-Tomatoes-2kg/p/695926",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h10/h4f/474765772750878.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "695926",
+            "match_key": "__no_brand__|스테비아 토마토2kg|2000.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "스테비아 토마토2kg",
+            "normalized_name": "스테비아 토마토2kg",
+            "pack_qty": 2,
+            "pack_unit": "kg",
+            "price": 16490,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "스테비아 토마토2kg",
+            "raw_promo_type": null,
+            "sale_price": 16490,
+            "source": "costco",
+            "source_record_key": "695926",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Stevia-Tomatoes-2kg/p/695926",
+            "unit_price": 825.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 825원",
+            "unit_price_displayed": 825,
+            "unit_price_text": "100G당 825원"
+          },
+          "raw_payload_sha256": "29936705b3ae052e4d854179ae19427c0f612825910702d6d42d894d6ca8a87a",
+          "raw_record_id": "ingestion:47:6",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:6",
+    "standard_unit_price": 824.5,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:41:35"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        41
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:51.875403Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 22990,
+    "price_per_100g": 2498.913,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-13b65f2c80f553e7158dbbdd3941ef04",
+    "public_source_listing_id": "listing-2179c09c2c5ce78c9a76ac1f9bc0ef4d",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:51.875403Z",
+          "ingestion_id": 41,
+          "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "79ede77122bed8698dc0ab2598235dfe6c8a7d0b",
+            "canonical_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/Misura-Whole-Wheat-Choco-Cip-Donuts-230g-x-4/p/696218",
+            "category": "과자",
+            "cocodalin_join_key": "696218",
+            "detail_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/Misura-Whole-Wheat-Choco-Cip-Donuts-230g-x-4/p/696218",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hef/h4b/487733602025502.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "과자",
+            "mart_native_code": "696218",
+            "match_key": "__no_brand__|미주라 통밀 도너츠 초코칩 통밀 도너츠 230g x 4|230.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "미주라 통밀 도너츠 & 초코칩 통밀 도너츠 230g x 4",
+            "normalized_name": "미주라 통밀 도너츠 & 초코칩 통밀 도너츠 230g x 4",
+            "pack_qty": 230,
+            "pack_unit": "g",
+            "price": 22990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "미주라 통밀 도너츠 & 초코칩 통밀 도너츠 230g x 4",
+            "raw_promo_type": null,
+            "sale_price": 22990,
+            "source": "costco",
+            "source_record_key": "696218",
+            "source_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/Misura-Whole-Wheat-Choco-Cip-Donuts-230g-x-4/p/696218",
+            "unit_price": 250.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 250원",
+            "unit_price_displayed": 250,
+            "unit_price_text": "10G당 250원"
+          },
+          "raw_payload_sha256": "fd15ea08a488149e1ec82c4dbf8c2f5df9c75a831f971c182dcc879f0675408b",
+          "raw_record_id": "ingestion:41:35",
+          "source_category_path": [
+            "과자"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:41:35",
+    "standard_unit_price": 2498.913,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:41:15"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        41
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:51.875403Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 24990,
+    "price_per_100g": 2402.8846,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-027feac355f8f901402ebd7f260e8a18",
+    "public_source_listing_id": "listing-a842edae87b522cd8a0bbc1489e203d9",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:51.875403Z",
+          "ingestion_id": 41,
+          "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "d10b36ffd4e005a97da6975427edfe10bf067ccd",
+            "canonical_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/Misura-Protein-Oat-Meal-Almond-Biscuits-260g-x-4/p/696220",
+            "category": "과자",
+            "cocodalin_join_key": "696220",
+            "detail_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/Misura-Protein-Oat-Meal-Almond-Biscuits-260g-x-4/p/696220",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha5/hd2/487887733260318.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "과자",
+            "mart_native_code": "696220",
+            "match_key": "__no_brand__|미주라 프로틴 오트밀 아몬드 비스켓 260g x 4|260.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "미주라 프로틴 오트밀 & 아몬드 비스켓 260g x 4",
+            "normalized_name": "미주라 프로틴 오트밀 & 아몬드 비스켓 260g x 4",
+            "pack_qty": 260,
+            "pack_unit": "g",
+            "price": 24990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "미주라 프로틴 오트밀 & 아몬드 비스켓 260g x 4",
+            "raw_promo_type": null,
+            "sale_price": 24990,
+            "source": "costco",
+            "source_record_key": "696220",
+            "source_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/Misura-Protein-Oat-Meal-Almond-Biscuits-260g-x-4/p/696220",
+            "unit_price": 240.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 240원",
+            "unit_price_displayed": 240,
+            "unit_price_text": "10G당 240원"
+          },
+          "raw_payload_sha256": "bd08a9e98571493d451bcedc80678ee6d930e6b814814d9fa90629e193f64e29",
+          "raw_record_id": "ingestion:41:15",
+          "source_category_path": [
+            "과자"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:41:15",
+    "standard_unit_price": 2402.8846,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:40:6"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        40
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:48.320787Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 17990,
+    "price_per_100g": 713.8889,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-1759840dc133936e8554f711e83b7d26",
+    "public_source_listing_id": "listing-2c0218a99e7182166367d42580137cea",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:48.320787Z",
+          "ingestion_id": 40,
+          "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+          "mart_native_category_id": "cos_10.3",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "decd820303a6bfa23e5cb80483d90c827498a91d",
+            "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Pulmuone-Roasting-Jjajang-Noodle-105g-x-24/p/696223",
+            "category": "라면",
+            "cocodalin_join_key": "696223",
+            "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Pulmuone-Roasting-Jjajang-Noodle-105g-x-24/p/696223",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd6/h3f/490473234038814.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.3",
+            "mart_native_category_path": "라면",
+            "mart_native_code": "696223",
+            "match_key": "__no_brand__|풀무원 로스팅 파기름 짜장면 105g x 24|105.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 로스팅 파기름 짜장면 105g x 24",
+            "normalized_name": "풀무원 로스팅 파기름 짜장면 105g x 24",
+            "pack_qty": 105,
+            "pack_unit": "g",
+            "price": 17990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "풀무원 로스팅 파기름 짜장면 105g x 24",
+            "raw_promo_type": null,
+            "sale_price": 17990,
+            "source": "costco",
+            "source_record_key": "696223",
+            "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Pulmuone-Roasting-Jjajang-Noodle-105g-x-24/p/696223",
+            "unit_price": 714.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 714원",
+            "unit_price_displayed": 714,
+            "unit_price_text": "100G당 714원"
+          },
+          "raw_payload_sha256": "b6c52b7444141bcc64cf5f68f633cd7d5a8c8bc5ab71a045b3ac51a1a1839c05",
+          "raw_record_id": "ingestion:40:6",
+          "source_category_path": [
+            "라면"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:40:6",
+    "standard_unit_price": 713.8889,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:41:10"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        41
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:51.875403Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 19990,
+    "price_per_100g": 4164.5833,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-a458321be9bb59b6c19fefe5ca8fc5d0",
+    "public_source_listing_id": "listing-3d507261ed7f9473114884cc8a822697",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:51.875403Z",
+          "ingestion_id": 41,
+          "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "1b0aff1353fcef387473e694d9a2778121cde397",
+            "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sandwafer-Gift-Set-480g/p/696234",
+            "category": "과자",
+            "cocodalin_join_key": "696234",
+            "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sandwafer-Gift-Set-480g/p/696234",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h26/h4b/491181791117342.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "과자",
+            "mart_native_code": "696234",
+            "match_key": "__no_brand__|샌드웨이퍼 선물세트 480g|480.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "샌드웨이퍼 선물세트 480g",
+            "normalized_name": "샌드웨이퍼 선물세트 480g",
+            "pack_qty": 480,
+            "pack_unit": "g",
+            "price": 19990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "샌드웨이퍼 선물세트 480g",
+            "raw_promo_type": null,
+            "sale_price": 19990,
+            "source": "costco",
+            "source_record_key": "696234",
+            "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sandwafer-Gift-Set-480g/p/696234",
+            "unit_price": 416.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 416원",
+            "unit_price_displayed": 416,
+            "unit_price_text": "10G당 416원"
+          },
+          "raw_payload_sha256": "4fbd1e99d3eb29d61192610331af8bcbac677dc0e03d4590a4296d8abb064b8e",
+          "raw_record_id": "ingestion:41:10",
+          "source_category_path": [
+            "과자"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:41:10",
+    "standard_unit_price": 4164.5833,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:42:42"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        42
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:55.448754Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 17490,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-d0b84b26a02821bd330fd33097211e82",
+    "public_source_listing_id": "listing-1fed6a1a15994cbf1c856f08281ab28e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:55.448754Z",
+          "ingestion_id": 42,
+          "ingestion_received_at": "2026-08-31T01:51:55.448754Z",
+          "mart_native_category_id": "cos_10.11",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "20592c6fa8914a12d653cf722613d1d560ddaf11",
+            "canonical_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Yangban-Sweet-Rice-Drink-238ml-x-24can/p/696434",
+            "category": "음료",
+            "cocodalin_join_key": "696434",
+            "detail_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Yangban-Sweet-Rice-Drink-238ml-x-24can/p/696434",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h5d/h69/486315353866270.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.11",
+            "mart_native_category_path": "음료",
+            "mart_native_code": "696434",
+            "match_key": "__no_brand__|양반 백미 식혜 238ml x 24캔|238.0|ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "양반 백미 식혜 238ml x 24캔",
+            "normalized_name": "양반 백미 식혜 238ml x 24캔",
+            "pack_qty": 238,
+            "pack_unit": "ml",
+            "price": 17490,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "양반 백미 식혜 238ml x 24캔",
+            "raw_promo_type": null,
+            "sale_price": 17490,
+            "source": "costco",
+            "source_record_key": "696434",
+            "source_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Yangban-Sweet-Rice-Drink-238ml-x-24can/p/696434",
+            "unit_price": 306.0,
+            "unit_price_basis": "100㎖",
+            "unit_price_basis_raw": "100㎖",
+            "unit_price_display": "100㎖당 306원",
+            "unit_price_displayed": 306,
+            "unit_price_text": "100㎖당 306원"
+          },
+          "raw_payload_sha256": "e32fdbe338688a79100a4186a09453b04784cdc90f592fee1a8836cc01292a5b",
+          "raw_record_id": "ingestion:42:42",
+          "source_category_path": [
+            "음료"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:42:42",
+    "standard_unit_price": 306.1975,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:1"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 26990,
+    "price_per_100g": 1349.5,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-d3901d5aa3c354f7a64a2ea7f463fa6e",
+    "public_source_listing_id": "listing-0e5e9a1b170159b1593819cdbdfb7fe2",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "79364ed826d6c5a693097db1e8ef291d525c2653",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Gu-Bong-Grapes-2kg/p/696437",
+            "category": "과일",
+            "cocodalin_join_key": "696437",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Gu-Bong-Grapes-2kg/p/696437",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hae/h5f/486556891054110.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "696437",
+            "match_key": "__no_brand__|거봉포도 2kg|2000.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "거봉포도 2kg",
+            "normalized_name": "거봉포도 2kg",
+            "pack_qty": 2,
+            "pack_unit": "kg",
+            "price": 26990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "거봉포도 2kg",
+            "raw_promo_type": null,
+            "sale_price": 26990,
+            "source": "costco",
+            "source_record_key": "696437",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Gu-Bong-Grapes-2kg/p/696437",
+            "unit_price": 1350.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,350원",
+            "unit_price_displayed": 1350,
+            "unit_price_text": "100G당 1,350원"
+          },
+          "raw_payload_sha256": "d51d03a987aefbe17d77535952166fd5e0956ba6f256b445c41121524ad7e88c",
+          "raw_record_id": "ingestion:47:1",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:1",
+    "standard_unit_price": 1349.5,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:41:14"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        41
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:51.875403Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 15990,
+    "price_per_100g": 2776.0417,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-0b646d94ec64fb94cd966eb343c99a98",
+    "public_source_listing_id": "listing-6fa787fb8408552686715afc01a5ceff",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:51.875403Z",
+          "ingestion_id": 41,
+          "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "7c47a4ce2025ba5592cc22db84c895d6a73f1c9f",
+            "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Daejo-Rice-Cracker-576g-24g-x-24/p/696507",
+            "category": "과자",
+            "cocodalin_join_key": "696507",
+            "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Daejo-Rice-Cracker-576g-24g-x-24/p/696507",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha0/hbf/491730240700446.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "과자",
+            "mart_native_code": "696507",
+            "match_key": "__no_brand__|대조 우리쌀 전병 세트 576g 24g x 24|24.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "대조 우리쌀 전병 세트 576g / 24g x 24",
+            "normalized_name": "대조 우리쌀 전병 세트 576g / 24g x 24",
+            "pack_qty": 24,
+            "pack_unit": "g",
+            "price": 15990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "대조 우리쌀 전병 세트 576g / 24g x 24",
+            "raw_promo_type": null,
+            "sale_price": 15990,
+            "source": "costco",
+            "source_record_key": "696507",
+            "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Daejo-Rice-Cracker-576g-24g-x-24/p/696507",
+            "unit_price": 278.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 278원",
+            "unit_price_displayed": 278,
+            "unit_price_text": "10G당 278원"
+          },
+          "raw_payload_sha256": "7e9e62607d257a2d1645cfe8f3c74bfff2654901d6f51b371e8a4c153eec5631",
+          "raw_record_id": "ingestion:41:14",
+          "source_category_path": [
+            "과자"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:41:14",
+    "standard_unit_price": 2776.0417,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:44:8"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        44
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:02.567492Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 49990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-9f8504c9eb4edebf0d8067149a3781b4",
+    "public_source_listing_id": "listing-52f7a6219eb119e6d7665c8a0f16e988",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:02.567492Z",
+          "ingestion_id": 44,
+          "ingestion_received_at": "2026-08-31T01:52:02.567492Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "8bf9471e0b5ae952e56c63e0ec78060418899d6f",
+            "canonical_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/Belmio-100-Classic-Coffee-Capsules/p/696869",
+            "category": "커피",
+            "cocodalin_join_key": "696869",
+            "detail_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/Belmio-100-Classic-Coffee-Capsules/p/696869",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3d/hf7/488659186614302.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "커피",
+            "mart_native_code": "696869",
+            "match_key": "__no_brand__|벨미오 캡슐커피 클래식 100개입|100.0|ea",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "벨미오 캡슐커피 클래식 100개입",
+            "normalized_name": "벨미오 캡슐커피 클래식 100개입",
+            "pack_qty": 100,
+            "pack_unit": "개",
+            "price": 49990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "벨미오 캡슐커피 클래식 100개입",
+            "raw_promo_type": null,
+            "sale_price": 49990,
+            "source": "costco",
+            "source_record_key": "696869",
+            "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/Belmio-100-Classic-Coffee-Capsules/p/696869",
+            "unit_price": 500.0,
+            "unit_price_basis": "개　　　",
+            "unit_price_basis_raw": "개　　　",
+            "unit_price_display": "개　　　당 500원",
+            "unit_price_displayed": 500,
+            "unit_price_text": "개　　　당 500원"
+          },
+          "raw_payload_sha256": "4b705ca7a7f4f206bfcec7c4554f78348f85a0512f4bf6bf9ef9cec1deb305f7",
+          "raw_record_id": "ingestion:44:8",
+          "source_category_path": [
+            "커피"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:44:8",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:45:25"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        45
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:06.138871Z",
+    "discount_rate": null,
+    "event_name": "할인",
+    "offer_state": "active",
+    "original_price": 38990,
+    "price": 29990,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "checkout_discount",
+    "public_offer_event_id": "offer-ae6dc18420d8c09e6a33b1b324b48d59",
+    "public_source_listing_id": "listing-dea22382b956ab2368604b9807e3c1a8",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:06.138871Z",
+          "ingestion_id": 45,
+          "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "70de2b66646c3f878a5124187ec0dc2a2f66fd8f",
+            "canonical_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Sobaba-Golden-Holic-Boneless-Chicken-1100g-x-2/p/696973",
+            "category": "치즈",
+            "cocodalin_join_key": "696973",
+            "detail_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Sobaba-Golden-Holic-Boneless-Chicken-1100g-x-2/p/696973",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4c/he4/490126908456990.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "치즈",
+            "mart_native_code": "696973",
+            "match_key": "__no_brand__|소바바 황금홀릭 순살 1100g x 2|1100.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "소바바 황금홀릭 순살 1100g x 2",
+            "normalized_name": "소바바 황금홀릭 순살 1100g x 2",
+            "pack_qty": 1100,
+            "pack_unit": "g",
+            "price": 38990,
+            "promo_label": "할인",
+            "promo_type": "checkout_discount",
+            "raw_name": "소바바 황금홀릭 순살 1100g x 2",
+            "raw_promo_type": "discount",
+            "sale_price": 29990,
+            "source": "costco",
+            "source_record_key": "696973",
+            "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Sobaba-Golden-Holic-Boneless-Chicken-1100g-x-2/p/696973",
+            "unit_price": null,
+            "unit_price_basis": null,
+            "unit_price_basis_raw": null,
+            "unit_price_display": null,
+            "unit_price_displayed": null,
+            "unit_price_text": null
+          },
+          "raw_payload_sha256": "2cea2dd674b150067d32f18f7d32ee4def352216a3fac5969a9a13893117f029",
+          "raw_record_id": "ingestion:45:25",
+          "source_category_path": [
+            "치즈"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:45:25",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:45:26"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        45
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:06.138871Z",
+    "discount_rate": null,
+    "event_name": "할인",
+    "offer_state": "active",
+    "original_price": 37990,
+    "price": 32990,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "checkout_discount",
+    "public_offer_event_id": "offer-780a768d82fcb46f1ce19b2c9541d3ed",
+    "public_source_listing_id": "listing-7a8713a2faa6f28e9011de23f2ad613a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:06.138871Z",
+          "ingestion_id": 45,
+          "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "4d013c22e5a1d79c667ebc42507aa8feae54c4b3",
+            "canonical_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Premium-Seafood-Pancake-130g-x-10-x-2/p/697326",
+            "category": "치즈",
+            "cocodalin_join_key": "697326",
+            "detail_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Premium-Seafood-Pancake-130g-x-10-x-2/p/697326",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hbc/h4e/490926551662622.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "치즈",
+            "mart_native_code": "697326",
+            "match_key": "__no_brand__|사옹원 부침명장 해물파전 130g x 10 x 2|130.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "사옹원 부침명장 해물파전 130g x 10 x 2",
+            "normalized_name": "사옹원 부침명장 해물파전 130g x 10 x 2",
+            "pack_qty": 130,
+            "pack_unit": "g",
+            "price": 37990,
+            "promo_label": "할인",
+            "promo_type": "checkout_discount",
+            "raw_name": "사옹원 부침명장 해물파전 130g x 10 x 2",
+            "raw_promo_type": "discount",
+            "sale_price": 32990,
+            "source": "costco",
+            "source_record_key": "697326",
+            "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Premium-Seafood-Pancake-130g-x-10-x-2/p/697326",
+            "unit_price": 1269.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,269원",
+            "unit_price_displayed": 1269,
+            "unit_price_text": "100G당 1,269원"
+          },
+          "raw_payload_sha256": "605541f3d5ad05cce26a5099d45179389387ec64aa1adf972e35ddb631c5dcb2",
+          "raw_record_id": "ingestion:45:26",
+          "source_category_path": [
+            "치즈"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:45:26",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:46:99"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        46
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:09.675986Z",
+    "discount_rate": null,
+    "event_name": "할인",
+    "offer_state": "active",
+    "original_price": 41990,
+    "price": 36990,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "checkout_discount",
+    "public_offer_event_id": "offer-4fbefc2c356a109657679b0b22174a18",
+    "public_source_listing_id": "listing-336e1a4eceafc3ab8184c484611d670d",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:09.675986Z",
+          "ingestion_id": 46,
+          "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "936688e50b3ffed76a07909d3e98bb4bfd49cb9d",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Dragon-Fruit-Gift-Set-48kg/p/697403",
+            "category": "과일",
+            "cocodalin_join_key": "697403",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Dragon-Fruit-Gift-Set-48kg/p/697403",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h66/hc5/492569259900958.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "697403",
+            "match_key": "__no_brand__|용과 4 8kg 선물세트|4800.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "용과 4.8kg 선물세트",
+            "normalized_name": "용과 4.8kg 선물세트",
+            "pack_qty": 4.8,
+            "pack_unit": "kg",
+            "price": 41990,
+            "promo_label": "할인",
+            "promo_type": "checkout_discount",
+            "raw_name": "용과 4.8kg 선물세트",
+            "raw_promo_type": "discount",
+            "sale_price": 36990,
+            "source": "costco",
+            "source_record_key": "697403",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Dragon-Fruit-Gift-Set-48kg/p/697403",
+            "unit_price": null,
+            "unit_price_basis": null,
+            "unit_price_basis_raw": null,
+            "unit_price_display": null,
+            "unit_price_displayed": null,
+            "unit_price_text": null
+          },
+          "raw_payload_sha256": "aea31f28c94560a7ec45d1ad35e96dd91a378589edaecf97fd3084e479d6dd1f",
+          "raw_record_id": "ingestion:46:99",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:46:99",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:0"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 51990,
+    "price_per_100g": 1039.8,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-8a78ea16a761d0c608f6ed2354915d61",
+    "public_source_listing_id": "listing-9b1ce0cb3a7501a8ac64deebde994e5e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "a6dec9e3f552c592180bf6b7f6fac8a04d4c46eb",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Peach-Gift-Set-5kg/p/697406",
+            "category": "과일",
+            "cocodalin_join_key": "697406",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Peach-Gift-Set-5kg/p/697406",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h14/h7b/492569264979998.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "697406",
+            "match_key": "__no_brand__|복숭아 5kg 선물세트|5000.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "복숭아 5kg 선물세트",
+            "normalized_name": "복숭아 5kg 선물세트",
+            "pack_qty": 5,
+            "pack_unit": "kg",
+            "price": 51990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "복숭아 5kg 선물세트",
+            "raw_promo_type": null,
+            "sale_price": 51990,
+            "source": "costco",
+            "source_record_key": "697406",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Peach-Gift-Set-5kg/p/697406",
+            "unit_price": null,
+            "unit_price_basis": null,
+            "unit_price_basis_raw": null,
+            "unit_price_display": null,
+            "unit_price_displayed": null,
+            "unit_price_text": null
+          },
+          "raw_payload_sha256": "7088d57aabe27de7e5d25c041484f46f4694ccca5d38761d36a6492a4c3e0817",
+          "raw_record_id": "ingestion:47:0",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:0",
+    "standard_unit_price": 1039.8,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:7"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": "할인",
+    "offer_state": "active",
+    "original_price": 60990,
+    "price": 54490,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "checkout_discount",
+    "public_offer_event_id": "offer-371262f47567cc95faabeb127983a540",
+    "public_source_listing_id": "listing-9b69a11e1cfc7c9cab71bb023c1948da",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "d4ca5748b364f818d0890cff1ed783da57d0c5b0",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Golden-Pear-Whangkeum-Pear-Gift-Set-75kg/p/697407",
+            "category": "과일",
+            "cocodalin_join_key": "697407",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Golden-Pear-Whangkeum-Pear-Gift-Set-75kg/p/697407",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd9/hf7/503355848261662.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "697407",
+            "match_key": "__no_brand__|황금배 7 5kg 선물세트|7500.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "황금배 7.5kg 선물세트",
+            "normalized_name": "황금배 7.5kg 선물세트",
+            "pack_qty": 7.5,
+            "pack_unit": "kg",
+            "price": 60990,
+            "promo_label": "할인",
+            "promo_type": "checkout_discount",
+            "raw_name": "황금배 7.5kg 선물세트",
+            "raw_promo_type": "discount",
+            "sale_price": 54490,
+            "source": "costco",
+            "source_record_key": "697407",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Golden-Pear-Whangkeum-Pear-Gift-Set-75kg/p/697407",
+            "unit_price": null,
+            "unit_price_basis": null,
+            "unit_price_basis_raw": null,
+            "unit_price_display": null,
+            "unit_price_displayed": null,
+            "unit_price_text": null
+          },
+          "raw_payload_sha256": "c740162c6a31eab061d2ca4303382ed5c0bb4381cbd8c49e40bd5a5a2b47a0b5",
+          "raw_record_id": "ingestion:47:7",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:7",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:45:42"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        45
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:06.138871Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 44990,
+    "price_per_100g": 2999.3333,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-f6786c30fb8b6f93a7449ec08562988d",
+    "public_source_listing_id": "listing-50eb26eb50abe8399661f0223f64f95c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:06.138871Z",
+          "ingestion_id": 45,
+          "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "f5561a592ad82cdd68ab614a40160d75081c5f10",
+            "canonical_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/CP-Shrimp-Wonton-750g-x-2/p/697475",
+            "category": "치즈",
+            "cocodalin_join_key": "697475",
+            "detail_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/CP-Shrimp-Wonton-750g-x-2/p/697475",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc4/h7b/490926553530398.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "치즈",
+            "mart_native_code": "697475",
+            "match_key": "__no_brand__|cp 통새우 완탕 750g x 2|750.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CP 통새우 완탕 750g x 2",
+            "normalized_name": "CP 통새우 완탕 750g x 2",
+            "pack_qty": 750,
+            "pack_unit": "g",
+            "price": 44990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "CP 통새우 완탕 750g x 2",
+            "raw_promo_type": null,
+            "sale_price": 44990,
+            "source": "costco",
+            "source_record_key": "697475",
+            "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/CP-Shrimp-Wonton-750g-x-2/p/697475",
+            "unit_price": 2999.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 2,999원",
+            "unit_price_displayed": 2999,
+            "unit_price_text": "100G당 2,999원"
+          },
+          "raw_payload_sha256": "e27d9b0b183951fc59e80d1169f0da2b7d005c505de2b0a1104cfc6241050472",
+          "raw_record_id": "ingestion:45:42",
+          "source_category_path": [
+            "치즈"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:45:42",
+    "standard_unit_price": 2999.3333,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:45:71"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        45
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:06.138871Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 28990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-1b519aba9b6ff621dc7a53775111906b",
+    "public_source_listing_id": "listing-5ba4ec74d72aa10de3f7ae466460de5f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:06.138871Z",
+          "ingestion_id": 45,
+          "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "29c9c505d322dd6806d8372fdfa8d0088f7f9e12",
+            "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/OLD-Fashioned-Steak-Sauce-714ml-x-2/p/743724",
+            "category": "고기",
+            "cocodalin_join_key": "743724",
+            "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/OLD-Fashioned-Steak-Sauce-714ml-x-2/p/743724",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb7/h85/261443126034462.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "고기",
+            "mart_native_code": "743724",
+            "match_key": "__no_brand__|피터루거 스테이크소스 714ml x 2|714.0|ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "피터루거 스테이크소스 714ml x 2",
+            "normalized_name": "피터루거 스테이크소스 714ml x 2",
+            "pack_qty": 714,
+            "pack_unit": "ml",
+            "price": 28990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "피터루거 스테이크소스 714ml x 2",
+            "raw_promo_type": null,
+            "sale_price": 28990,
+            "source": "costco",
+            "source_record_key": "743724",
+            "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/OLD-Fashioned-Steak-Sauce-714ml-x-2/p/743724",
+            "unit_price": 2030.0,
+            "unit_price_basis": "100㎖",
+            "unit_price_basis_raw": "100㎖",
+            "unit_price_display": "100㎖당 2,030원",
+            "unit_price_displayed": 2030,
+            "unit_price_text": "100㎖당 2,030원"
+          },
+          "raw_payload_sha256": "c445d538c304daf866d0891b4668d9c4fdc6b614d1084ccce61d13dad0c95eac",
+          "raw_record_id": "ingestion:45:71",
+          "source_category_path": [
+            "고기"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:45:71",
+    "standard_unit_price": 2030.112,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:46:18"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        46
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:09.675986Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 23990,
+    "price_per_100g": 1499.375,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-c454e196cdf958d1ecc9c09a39be20f5",
+    "public_source_listing_id": "listing-3e6efaca20bca7cdb5dc7d951192ef6b",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:09.675986Z",
+          "ingestion_id": 46,
+          "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "e931a45abeb4c9259e46b0992d1e8ae8244b2541",
+            "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Koong-Andong-style-Korean-Spicy-Beef-Soup-800g-x-2/p/780070",
+            "category": "고기",
+            "cocodalin_join_key": "780070",
+            "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Koong-Andong-style-Korean-Spicy-Beef-Soup-800g-x-2/p/780070",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/he9/h9a/311645058269214.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "고기",
+            "mart_native_code": "780070",
+            "match_key": "__no_brand__|궁 안동식 한우국밥800g x 2|800.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "궁 안동식 한우국밥800g x 2",
+            "normalized_name": "궁 안동식 한우국밥800g x 2",
+            "pack_qty": 800,
+            "pack_unit": "g",
+            "price": 23990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "궁 안동식 한우국밥800g x 2",
+            "raw_promo_type": null,
+            "sale_price": 23990,
+            "source": "costco",
+            "source_record_key": "780070",
+            "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Koong-Andong-style-Korean-Spicy-Beef-Soup-800g-x-2/p/780070",
+            "unit_price": 1499.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,499원",
+            "unit_price_displayed": 1499,
+            "unit_price_text": "100G당 1,499원"
+          },
+          "raw_payload_sha256": "ddb98b90bf4b42fb6a0e0e33007f90860a7f642eaca1a90ae8b062f53451e79e",
+          "raw_record_id": "ingestion:46:18",
+          "source_category_path": [
+            "고기"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:46:18",
+    "standard_unit_price": 1499.375,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:45:89"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        45
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:06.138871Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 21990,
+    "price_per_100g": 2199.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-2e7312d1b0d868b9b84c3db978e88cf9",
+    "public_source_listing_id": "listing-10f9c2212e5da0197a201c28e7e36e4f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:06.138871Z",
+          "ingestion_id": 45,
+          "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+          "mart_native_category_id": "cos_10.10.6",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "6e1b6282410e33e88ea7986db3633e93287ae6a2",
+            "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Orineulbo-Smoked-Duck-Slices-500g-x-2/p/786967",
+            "category": "고기",
+            "cocodalin_join_key": "786967",
+            "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Orineulbo-Smoked-Duck-Slices-500g-x-2/p/786967",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h12/h01/383198091345950.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10.6",
+            "mart_native_category_path": "고기",
+            "mart_native_code": "786967",
+            "match_key": "__no_brand__|오리늘보 훈제 슬라이스 500g x 2|500.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오리늘보 훈제 슬라이스 500g x 2",
+            "normalized_name": "오리늘보 훈제 슬라이스 500g x 2",
+            "pack_qty": 500,
+            "pack_unit": "g",
+            "price": 21990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "오리늘보 훈제 슬라이스 500g x 2",
+            "raw_promo_type": null,
+            "sale_price": 21990,
+            "source": "costco",
+            "source_record_key": "786967",
+            "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/Chilled-Foods/Orineulbo-Smoked-Duck-Slices-500g-x-2/p/786967",
+            "unit_price": 220.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 220원",
+            "unit_price_displayed": 220,
+            "unit_price_text": "10G당 220원"
+          },
+          "raw_payload_sha256": "d1b6669c29666494c79e2c780b71e3af200c9201fd0d8ce92d68ea603a416005",
+          "raw_record_id": "ingestion:45:89",
+          "source_category_path": [
+            "고기"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:45:89",
+    "standard_unit_price": 2199.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:42:41"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        42
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:55.448754Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 20490,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-6b82dc8747e288bd40195e7152493c7e",
+    "public_source_listing_id": "listing-84016df2fb3a0ae711ccad9565fcbaac",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:55.448754Z",
+          "ingestion_id": 42,
+          "ingestion_received_at": "2026-08-31T01:51:55.448754Z",
+          "mart_native_category_id": "cos_10.11",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "c8f5a3284d0017331d3d6a11063cacfbbe805851",
+            "canonical_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Welchs-Soda-355ml-x-24/p/833572",
+            "category": "음료",
+            "cocodalin_join_key": "833572",
+            "detail_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Welchs-Soda-355ml-x-24/p/833572",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h7e/h5b/418226953977886.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.11",
+            "mart_native_category_path": "음료",
+            "mart_native_code": "833572",
+            "match_key": "__no_brand__|웰치소다포도355ml x 24|355.0|ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "웰치소다포도355ml x 24",
+            "normalized_name": "웰치소다포도355ml x 24",
+            "pack_qty": 355,
+            "pack_unit": "ml",
+            "price": 20490,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "웰치소다포도355ml x 24",
+            "raw_promo_type": null,
+            "sale_price": 20490,
+            "source": "costco",
+            "source_record_key": "833572",
+            "source_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Welchs-Soda-355ml-x-24/p/833572",
+            "unit_price": 240.0,
+            "unit_price_basis": "100㎖",
+            "unit_price_basis_raw": "100㎖",
+            "unit_price_display": "100㎖당 240원",
+            "unit_price_displayed": 240,
+            "unit_price_text": "100㎖당 240원"
+          },
+          "raw_payload_sha256": "a14e2af8612a1d654eeeb8b45e790e95f29e1a623967a86573789b53c001b235",
+          "raw_record_id": "ingestion:42:41",
+          "source_category_path": [
+            "음료"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:42:41",
+    "standard_unit_price": 240.493,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:40:42"
+      ],
+      "review_reasons": [
+        "promotion_conditions_unresolved"
+      ],
+      "source_ingestion_ids": [
+        40
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:48.320787Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 16990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "source_title_purchase_condition": "갈로팔로 스파게티 500g x 8 /최소구매 2"
+    },
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-4f64b36cf784855de4a50e386965c99f",
+    "public_source_listing_id": "listing-6c08e3f60464262e8dd56a5d37b73a18",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:48.320787Z",
+          "ingestion_id": 40,
+          "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+          "mart_native_category_id": "cos_10.3",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "a4deeaf081ff8432d3186613c022bc7765934911",
+            "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Garofalo-Spaghetti-500g-x-8-Min-Order-Qty-2/p/880456",
+            "category": "라면",
+            "cocodalin_join_key": "880456",
+            "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Garofalo-Spaghetti-500g-x-8-Min-Order-Qty-2/p/880456",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h58/haa/238268616966174.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.3",
+            "mart_native_category_path": "라면",
+            "mart_native_code": "880456",
+            "match_key": "__no_brand__|갈로팔로 스파게티 500g x 8 최소구매 2|500.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "갈로팔로 스파게티 500g x 8 /최소구매 2",
+            "normalized_name": "갈로팔로 스파게티 500g x 8 /최소구매 2",
+            "pack_qty": 500,
+            "pack_unit": "g",
+            "price": 16990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "갈로팔로 스파게티 500g x 8 /최소구매 2",
+            "raw_promo_type": null,
+            "sale_price": 16990,
+            "source": "costco",
+            "source_record_key": "880456",
+            "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Garofalo-Spaghetti-500g-x-8-Min-Order-Qty-2/p/880456",
+            "unit_price": 425.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 425원",
+            "unit_price_displayed": 425,
+            "unit_price_text": "100G당 425원"
+          },
+          "raw_payload_sha256": "3744924fcea91ece07e128b0d8715ef33ed96ba810b0f75d82e33a950c9189f3",
+          "raw_record_id": "ingestion:40:42",
+          "source_category_path": [
+            "라면"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {
+        "source_title_purchase_condition": "갈로팔로 스파게티 500g x 8 /최소구매 2"
+      }
+    },
+    "raw_record_id": "ingestion:40:42",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:43:40"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        43
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:59.030448Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 46990,
+    "price_per_100g": 4158.4071,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-763179d98e6ea869761d77b1c33923ed",
+    "public_source_listing_id": "listing-db3259b47cade5ccb9d2423b97781a81",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:59.030448Z",
+          "ingestion_id": 43,
+          "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+          "mart_native_category_id": "cos_10.2",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "af95ef18aea7983b7844193e904ae1ed4998a784",
+            "canonical_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Starbucks-Breakfast-Whole-Bean-Coffee-113kg/p/90082",
+            "category": "커피",
+            "cocodalin_join_key": "90082",
+            "detail_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Starbucks-Breakfast-Whole-Bean-Coffee-113kg/p/90082",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h6c/hb7/31385033375774.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.2",
+            "mart_native_category_path": "커피",
+            "mart_native_code": "90082",
+            "match_key": "__no_brand__|스타벅스 브랙퍼스트블렌드 홀빈커피 1 13kg|1130.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "스타벅스 브랙퍼스트블렌드 홀빈커피 1.13kg",
+            "normalized_name": "스타벅스 브랙퍼스트블렌드 홀빈커피 1.13kg",
+            "pack_qty": 1.13,
+            "pack_unit": "kg",
+            "price": 46990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "스타벅스 브랙퍼스트블렌드 홀빈커피 1.13kg",
+            "raw_promo_type": null,
+            "sale_price": 46990,
+            "source": "costco",
+            "source_record_key": "90082",
+            "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Starbucks-Breakfast-Whole-Bean-Coffee-113kg/p/90082",
+            "unit_price": 416.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 416원",
+            "unit_price_displayed": 416,
+            "unit_price_text": "10G당 416원"
+          },
+          "raw_payload_sha256": "fd9d3fbfe9ee07b6843d1c219454addd7e9413aea3123e6d613248936815c268",
+          "raw_record_id": "ingestion:43:40",
+          "source_category_path": [
+            "커피"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:43:40",
+    "standard_unit_price": 4158.4071,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:41:96"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        41
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:51.875403Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 17990,
+    "price_per_100g": 1322.7941,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-16fec9da0ccdc4b30d4ddb698f3f2cdb",
+    "public_source_listing_id": "listing-2bbe05ea4193cb1740d1aa2c254524fd",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:51.875403Z",
+          "ingestion_id": 41,
+          "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+          "mart_native_category_id": "cos_18.15",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "4310b3af2fb7b3ba8fcc685680bc1c0c4abc6e11",
+            "canonical_url": "https://www.costco.co.kr/Foods/p/999987",
+            "category": "과자",
+            "cocodalin_join_key": "999987",
+            "detail_url": "https://www.costco.co.kr/Foods/p/999987",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h32/hdb/9867687264286.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_18.15",
+            "mart_native_category_path": "과자",
+            "mart_native_code": "999987",
+            "match_key": "__no_brand__|커클랜드 시그니춰 호두 1 36kg|1360.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "커클랜드 시그니춰 호두 1.36kg",
+            "normalized_name": "커클랜드 시그니춰 호두 1.36kg",
+            "pack_qty": 1.36,
+            "pack_unit": "kg",
+            "price": 17990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "커클랜드 시그니춰 호두 1.36kg",
+            "raw_promo_type": null,
+            "sale_price": 17990,
+            "source": "costco",
+            "source_record_key": "999987",
+            "source_url": "https://www.costco.co.kr/Foods/p/999987",
+            "unit_price": 1323.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,323원",
+            "unit_price_displayed": 1323,
+            "unit_price_text": "100G당 1,323원"
+          },
+          "raw_payload_sha256": "066fe84b8673f4eea5b7de4b3e3942f73cf93708fa75e941a0ef81bc7879f7f9",
+          "raw_record_id": "ingestion:41:96",
+          "source_category_path": [
+            "과자"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:41:96",
+    "standard_unit_price": 1322.7941,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:88:43"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        88
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:18:52.855159Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2480,
+    "price_per_100g": 24800.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-8a7daeb04267e875461317c10bafbf81",
+    "public_source_listing_id": "listing-6366694e74008cab71363519da8f00c1",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:18:52.855159Z",
+          "ingestion_id": 88,
+          "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+          "mart_native_category_id": "6000215245",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "커피/원두/차",
+              "collection": "동서",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/48/93/60/item/0000006609348_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000215245",
+              "mart_native_category_path": "커피/원두/차",
+              "mart_native_code": "0000006609348",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006609348",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609348&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "10g 당 83원"
+            },
+            "brand": "__no_brand__",
+            "category": "커피/원두/차",
+            "crawled_at": "2026-09-03T00:18:52.855159",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609348&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "10g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/48/93/60/item/0000006609348_i1_290.jpg",
+            "match_key": "__no_brand__|보리차 30티백||10g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "보리차 30티백",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 10.0,
+            "package_unit": "g",
+            "price_per_100g": 24800.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2480,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "10g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "2ab1f720a5f773ac46e8ded32af84b069143eef2eca09be44a42a0483c1f4fb5",
+          "raw_record_id": "ingestion:88:43",
+          "source_category_path": [
+            "커피/원두/차"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:88:43",
+    "standard_unit_price": 24800.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:84:2"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        84
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:06:09.227301Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": 1090.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-56091d3c38cfa10a417d2886de3f3a38",
+    "public_source_listing_id": "listing-af03e922f3a8f0132b7d2e9eda930990",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:06:09.227301Z",
+          "ingestion_id": 84,
+          "ingestion_received_at": "2026-09-02T15:06:10.481337Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "오뚜기",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/50/95/60/item/0000006609550_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "0000006609550",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006609550",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609550&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,090원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:06:09.227301",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609550&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/50/95/60/item/0000006609550_i1_232.jpg",
+            "match_key": "__no_brand__|3분 쇠고기 카레 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "3분 쇠고기 카레 200g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "a7228e968e8644fcd73fa1b83ac595837fdc2f48f863e60738bcfa3f6341974a",
+          "raw_record_id": "ingestion:84:2",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:84:2",
+    "standard_unit_price": 1090.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:85:2"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        85
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:16:06.996910Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": 1090.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-f5c93c86b2611b79dbf7b802dceab660",
+    "public_source_listing_id": "listing-af03e922f3a8f0132b7d2e9eda930990",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:16:06.996910Z",
+          "ingestion_id": 85,
+          "ingestion_received_at": "2026-09-02T15:16:08.234370Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "오뚜기",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/50/95/60/item/0000006609550_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "0000006609550",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006609550",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609550&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,090원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:16:06.996910",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609550&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/50/95/60/item/0000006609550_i1_232.jpg",
+            "match_key": "__no_brand__|3분 쇠고기 카레 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "3분 쇠고기 카레 200g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "7ee1fbaf526c2de2bb8478d30c42c870649424bcdf46a042593c0d1156252a16",
+          "raw_record_id": "ingestion:85:2",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:85:2",
+    "standard_unit_price": 1090.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:85:0"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        85
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:16:06.988222Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": 1090.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-28bb3253d8935fef6302cc55e6b4f2d1",
+    "public_source_listing_id": "listing-2827da9d1948468c6460fc0a82766654",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:16:06.988222Z",
+          "ingestion_id": 85,
+          "ingestion_received_at": "2026-09-02T15:16:08.234370Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "오뚜기",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/51/95/60/item/0000006609551_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "0000006609551",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006609551",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609551&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,090원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:16:06.988222",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609551&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/51/95/60/item/0000006609551_i1_232.jpg",
+            "match_key": "__no_brand__|3분카레 순한맛 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "3분카레 순한맛 200g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "0472cb321e05cf656be340978ed28481c4c0455637581c999b84c078e229af7d",
+          "raw_record_id": "ingestion:85:0",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:85:0",
+    "standard_unit_price": 1090.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:84:0"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        84
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:06:09.217158Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": 1090.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-f095b287ac0ff318a4916af8dd16019b",
+    "public_source_listing_id": "listing-2827da9d1948468c6460fc0a82766654",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:06:09.217158Z",
+          "ingestion_id": 84,
+          "ingestion_received_at": "2026-09-02T15:06:10.481337Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "오뚜기",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/51/95/60/item/0000006609551_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "0000006609551",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006609551",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609551&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,090원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:06:09.217158",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609551&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/51/95/60/item/0000006609551_i1_232.jpg",
+            "match_key": "__no_brand__|3분카레 순한맛 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "3분카레 순한맛 200g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "57f0c0e95f9e9544144f140a27ea7dfc471711a97b24494270788ed7665d0fb7",
+          "raw_record_id": "ingestion:84:0",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:84:0",
+    "standard_unit_price": 1090.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:84:1"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        84
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:06:09.221002Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": 1090.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-3b01559ef964c23f48946103251ff661",
+    "public_source_listing_id": "listing-ce72445b6da681c5dc2c45b6779c7f07",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:06:09.221002Z",
+          "ingestion_id": 84,
+          "ingestion_received_at": "2026-09-02T15:06:10.481337Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "오뚜기",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/52/95/60/item/0000006609552_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "0000006609552",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006609552",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609552&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,090원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:06:09.221002",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609552&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/52/95/60/item/0000006609552_i1_232.jpg",
+            "match_key": "__no_brand__|3분 짜장 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "3분 짜장 200g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "a563f0d184029ced534686cef25a46ce310d1daf423b694a47cd4e4aba6a6529",
+          "raw_record_id": "ingestion:84:1",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:84:1",
+    "standard_unit_price": 1090.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:85:1"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        85
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:16:06.991541Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": 1090.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-b9617ca5b005bb51887f0aacbd64d4e7",
+    "public_source_listing_id": "listing-ce72445b6da681c5dc2c45b6779c7f07",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:16:06.991541Z",
+          "ingestion_id": 85,
+          "ingestion_received_at": "2026-09-02T15:16:08.234370Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "오뚜기",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/52/95/60/item/0000006609552_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "0000006609552",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006609552",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609552&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,090원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:16:06.991541",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609552&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/52/95/60/item/0000006609552_i1_232.jpg",
+            "match_key": "__no_brand__|3분 짜장 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "3분 짜장 200g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "87e635c435c5e7cb8850728c342aa29ff31d7e1f0c92c548ebaf8f4c2e63705a",
+          "raw_record_id": "ingestion:85:1",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:85:1",
+    "standard_unit_price": 1090.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:85:4"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        85
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:16:07.004816Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": 1090.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-0701dbaf5bad2923454f2c477d7bed58",
+    "public_source_listing_id": "listing-448d41d03f78457f20af8c471ac5e216",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:16:07.004816Z",
+          "ingestion_id": 85,
+          "ingestion_received_at": "2026-09-02T15:16:08.234370Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "오뚜기",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/53/95/60/item/0000006609553_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "0000006609553",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006609553",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609553&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,090원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:16:07.004816",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609553&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/53/95/60/item/0000006609553_i1_232.jpg",
+            "match_key": "__no_brand__|3분 쇠고기 짜장 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "3분 쇠고기 짜장 200g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ff19149c5d4cc4431e0acc09f5495c711ad986db9114dd31b5cdb4f4d9567925",
+          "raw_record_id": "ingestion:85:4",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:85:4",
+    "standard_unit_price": 1090.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:84:4"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        84
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:06:09.236446Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": 1090.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-fc0f865c291d5199cf9445f94f5a90dc",
+    "public_source_listing_id": "listing-448d41d03f78457f20af8c471ac5e216",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:06:09.236446Z",
+          "ingestion_id": 84,
+          "ingestion_received_at": "2026-09-02T15:06:10.481337Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "오뚜기",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/53/95/60/item/0000006609553_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "0000006609553",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006609553",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609553&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,090원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:06:09.236446",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609553&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/53/95/60/item/0000006609553_i1_232.jpg",
+            "match_key": "__no_brand__|3분 쇠고기 짜장 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "3분 쇠고기 짜장 200g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ede06ccaa6d3058a38d0e6e9a2bb22abd64c11eb5e847c259d19f1cdbe23e968",
+          "raw_record_id": "ingestion:84:4",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:84:4",
+    "standard_unit_price": 1090.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:85:5"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        85
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:16:07.008785Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": 1090.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-a1b762ff82903fd7cd58251fa0d97c39",
+    "public_source_listing_id": "listing-5f0b10f12cfe74701cdf3817c9c972e9",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:16:07.008785Z",
+          "ingestion_id": 85,
+          "ingestion_received_at": "2026-09-02T15:16:08.234370Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "오뚜기",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/64/95/60/item/0000006609564_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "0000006609564",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006609564",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609564&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,090원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:16:07.008785",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609564&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/64/95/60/item/0000006609564_i1_232.jpg",
+            "match_key": "__no_brand__|3분 카레 매운맛 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "3분 카레 매운맛 200g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "b734106117463e63232d2d0bd06e65a74a0c7afab6ef067e2775b499e83bf55a",
+          "raw_record_id": "ingestion:85:5",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:85:5",
+    "standard_unit_price": 1090.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:84:5"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        84
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:06:09.239759Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": 1090.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-ca8b47a24ff987cfa83e5d37096283c7",
+    "public_source_listing_id": "listing-5f0b10f12cfe74701cdf3817c9c972e9",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:06:09.239759Z",
+          "ingestion_id": 84,
+          "ingestion_received_at": "2026-09-02T15:06:10.481337Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "오뚜기",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/64/95/60/item/0000006609564_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "0000006609564",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006609564",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609564&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,090원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:06:09.239759",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609564&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/64/95/60/item/0000006609564_i1_232.jpg",
+            "match_key": "__no_brand__|3분 카레 매운맛 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "3분 카레 매운맛 200g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "989be8f67fb93ee5b2d9258ad213697ba71c50257f11d3961cb05238cae46a10",
+          "raw_record_id": "ingestion:84:5",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:84:5",
+    "standard_unit_price": 1090.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:85:3"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        85
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:16:07.000814Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": 1090.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-4a00daaadeca56178496f5c7500c3c55",
+    "public_source_listing_id": "listing-5a09864aa0b7c30bebd352e14494f376",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:16:07.000814Z",
+          "ingestion_id": 85,
+          "ingestion_received_at": "2026-09-02T15:16:08.234370Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "오뚜기",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/65/95/60/item/0000006609565_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "0000006609565",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006609565",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609565&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,090원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:16:07.000814",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609565&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/65/95/60/item/0000006609565_i1_232.jpg",
+            "match_key": "__no_brand__|3분 카레 약간매운맛 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "3분 카레 약간매운맛 200g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "304fa06998572ac3947c2f2aeb3464a102df418e1c49e1fdbb5750e390e165d7",
+          "raw_record_id": "ingestion:85:3",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:85:3",
+    "standard_unit_price": 1090.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:84:3"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        84
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:06:09.231653Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": 1090.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-f60d7f4bfcb376fc51e651a3d87ebbf9",
+    "public_source_listing_id": "listing-5a09864aa0b7c30bebd352e14494f376",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:06:09.231653Z",
+          "ingestion_id": 84,
+          "ingestion_received_at": "2026-09-02T15:06:10.481337Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "오뚜기",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/65/95/60/item/0000006609565_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "0000006609565",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006609565",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609565&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,090원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:06:09.231653",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006609565&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/65/95/60/item/0000006609565_i1_232.jpg",
+            "match_key": "__no_brand__|3분 카레 약간매운맛 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "3분 카레 약간매운맛 200g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "03c8d2c9af7e796915ca398c0ce1aef8cb6a66f301e7db1e487d306c2b5990da",
+          "raw_record_id": "ingestion:84:3",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:84:3",
+    "standard_unit_price": 1090.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:83:72"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        83
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T14:51:14.745740Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2800,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-a3bad9c1614c82039a73b947d7d5b010",
+    "public_source_listing_id": "listing-0c77d90fd12a2640e2d0750bd8a0e085",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T14:51:14.745740Z",
+          "ingestion_id": 83,
+          "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+          "mart_native_category_id": "6000213534",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "우유/유제품",
+              "collection": "베지밀",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/15/00/61/item/0000006610015_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213534",
+              "mart_native_category_path": "우유/유제품",
+              "mart_native_code": "0000006610015",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 내일(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "내일(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006610015",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610015&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100ml 당 295원"
+            },
+            "brand": "__no_brand__",
+            "category": "우유/유제품",
+            "crawled_at": "2026-09-02T23:51:14.745740",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610015&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "950ml",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/15/00/61/item/0000006610015_i1_290.jpg",
+            "match_key": "__no_brand__|달콤한 두유 베지밀 비 950ml||950ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "달콤한 두유 베지밀 비 950ml",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 950.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2800,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "950ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "8ad4d6303aae37b78d396c4ead0ba1a5f56a3f84286674d212c89bfd3d0c1862",
+          "raw_record_id": "ingestion:83:72",
+          "source_category_path": [
+            "우유/유제품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:83:72",
+    "standard_unit_price": 294.7368,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:90:28"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        90
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:15:37.785353Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 3080,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-6c533c435b74bc8f5dd0b7b782c481b8",
+    "public_source_listing_id": "listing-5d5cc4017eef14361abd2bb6d86ffac4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:15:37.785353Z",
+          "ingestion_id": 90,
+          "ingestion_received_at": "2026-09-02T16:15:39.638424Z",
+          "mart_native_category_id": "6000213319",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "면류/통조림",
+              "collection": "삼양",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/47/01/61/item/0000006610147_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213319",
+              "mart_native_category_path": "면류/통조림",
+              "mart_native_code": "0000006610147",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006610147",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610147&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 513원"
+            },
+            "brand": "__no_brand__",
+            "category": "면류/통조림",
+            "crawled_at": "2026-09-03T01:15:37.785353",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610147&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "5입",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/47/01/61/item/0000006610147_i1_290.jpg",
+            "match_key": "__no_brand__|삼양라면 5입||5입",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "삼양라면 5입",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 5.0,
+            "package_unit": "입",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3080,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "5입",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "54823751714871169d2b6b6c22269ac63fbe2cf1973ac4930d98497ea3d17d7d",
+          "raw_record_id": "ingestion:90:28",
+          "source_category_path": [
+            "면류/통조림"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:90:28",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:89:23"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        89
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:23:22.138127Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 3080,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-9a5d17d1c96fc872c3261d4b7feeab00",
+    "public_source_listing_id": "listing-5d5cc4017eef14361abd2bb6d86ffac4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:23:22.138127Z",
+          "ingestion_id": 89,
+          "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+          "mart_native_category_id": "6000213319",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "면류/통조림",
+              "collection": "삼양",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/47/01/61/item/0000006610147_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213319",
+              "mart_native_category_path": "면류/통조림",
+              "mart_native_code": "0000006610147",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006610147",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610147&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 513원"
+            },
+            "brand": "__no_brand__",
+            "category": "면류/통조림",
+            "crawled_at": "2026-09-03T00:23:22.138127",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610147&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "5입",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/47/01/61/item/0000006610147_i1_290.jpg",
+            "match_key": "__no_brand__|삼양라면 5입||5입",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "삼양라면 5입",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 5.0,
+            "package_unit": "입",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3080,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "5입",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "6a468c051004fbf4acb02a26f731b949fc85829c719b4a74ae48065bf682b55c",
+          "raw_record_id": "ingestion:89:23",
+          "source_category_path": [
+            "면류/통조림"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:89:23",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:90:10"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        90
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:15:37.707360Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1280,
+    "price_per_100g": 1163.6364,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-790a08b7e38be9dca0432f3776d3600f",
+    "public_source_listing_id": "listing-5fe35fa90ff164d5292a4006b08ca7c9",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:15:37.707360Z",
+          "ingestion_id": 90,
+          "ingestion_received_at": "2026-09-02T16:15:39.638424Z",
+          "mart_native_category_id": "6000213319",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "면류/통조림",
+              "collection": "팔도",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/89/01/61/item/0000006610189_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213319",
+              "mart_native_category_path": "면류/통조림",
+              "mart_native_code": "0000006610189",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006610189",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610189&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,164원"
+            },
+            "brand": "__no_brand__",
+            "category": "면류/통조림",
+            "crawled_at": "2026-09-03T01:15:37.707360",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610189&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "110g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/89/01/61/item/0000006610189_i1_290.jpg",
+            "match_key": "__no_brand__|김치 왕뚜껑 110g||110g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "김치 왕뚜껑 110g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 110.0,
+            "package_unit": "g",
+            "price_per_100g": 1163.64,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1280,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "110g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "7bec4ad3810806f9ffa221023ee6c7e814bf63c6d8095769963788b2fc3ea51f",
+          "raw_record_id": "ingestion:90:10",
+          "source_category_path": [
+            "면류/통조림"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:90:10",
+    "standard_unit_price": 1163.6364,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:89:7"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        89
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:23:22.068499Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1280,
+    "price_per_100g": 1163.6364,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-e699ca7c8dde0b49d9b3ce71b77858e8",
+    "public_source_listing_id": "listing-5fe35fa90ff164d5292a4006b08ca7c9",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:23:22.068499Z",
+          "ingestion_id": 89,
+          "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+          "mart_native_category_id": "6000213319",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "면류/통조림",
+              "collection": "팔도",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/89/01/61/item/0000006610189_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213319",
+              "mart_native_category_path": "면류/통조림",
+              "mart_native_code": "0000006610189",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "0000006610189",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610189&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,164원"
+            },
+            "brand": "__no_brand__",
+            "category": "면류/통조림",
+            "crawled_at": "2026-09-03T00:23:22.068499",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=0000006610189&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "110g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/89/01/61/item/0000006610189_i1_290.jpg",
+            "match_key": "__no_brand__|김치 왕뚜껑 110g||110g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "김치 왕뚜껑 110g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 110.0,
+            "package_unit": "g",
+            "price_per_100g": 1163.64,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1280,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "110g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "a84ee20843db7acd8976637047772f08e423564cd63e74902bbbe50d7d30becc",
+          "raw_record_id": "ingestion:89:7",
+          "source_category_path": [
+            "면류/통조림"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:89:7",
+    "standard_unit_price": 1163.6364,
+    "valid_from": null,
+    "valid_to": null
+  }
+]

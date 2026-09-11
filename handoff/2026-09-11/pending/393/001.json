@@ -1,0 +1,264 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:6970f9afd7eca2e656947dcf",
+      "promotion_surface": false,
+      "proposed_path": [
+        "간편식ㆍ밀키트",
+        "유부초밥ㆍ김밥ㆍ주먹밥",
+        "유부초밥"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:29:70",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 유부초밥ㆍ김밥ㆍ주먹밥 > 유부초밥",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "유부초밥ㆍ김밥ㆍ주먹밥",
+        "유부초밥"
+      ],
+      "source_title": "CJ 주부초밥왕 저당 유부초밥 (280G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801392172519/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "CJ",
+      "crawled_at": "2026-08-31T01:46:57.097631Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/81e4552b-786a-4383-bdd2-f05e45bb673d/300x300.jpg",
+      "ingestion_id": 29,
+      "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 70,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "280g",
+        "package_quantity": 280.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 7980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "CJ",
+          "canon_hash": "3cf07978ce8527a38f62ead62b90d62f81fc244c",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801392172519/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "유부초밥ㆍ김밥ㆍ주먹밥",
+            "유부초밥"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/81e4552b-786a-4383-bdd2-f05e45bb673d/300x300.jpg",
+          "mart_native_code": "8801392172519",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801392172519",
+          "source_url": "https://lottemartzetta.com/products/OS8801392172519/details"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:46:57.097631",
+        "detail_url": "https://lottemartzetta.com/products/OS8801392172519/details",
+        "discount_percent": null,
+        "display_unit": "280g",
+        "event_name": "2개씩 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/81e4552b-786a-4383-bdd2-f05e45bb673d/300x300.jpg",
+        "match_key": "__no_brand__|cj 주부초밥왕 저당 유부초밥 280g||280g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "CJ 주부초밥왕 저당 유부초밥 (280G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 280.0,
+        "package_unit": "g",
+        "price_per_100g": 2850.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 7980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "280g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "89ae965b6ebf8ffeed6f6ce8e112a1917b6224cc060ccdd0a399640c335101be",
+      "raw_record_id": "ingestion:29:70",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "유부초밥ᆞ김밥ᆞ주먹밥",
+        "유부초밥"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801392172519",
+      "source_title": "CJ 주부초밥왕 저당 유부초밥 (280G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801392172519/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:29:70",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801392172519",
+    "source_title": "CJ 주부초밥왕 저당 유부초밥 (280G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:6970f9afd7eca2e656947dcf",
+      "promotion_surface": false,
+      "proposed_path": [
+        "간편식ㆍ밀키트",
+        "유부초밥ㆍ김밥ㆍ주먹밥",
+        "유부초밥"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:31:73",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 유부초밥ㆍ김밥ㆍ주먹밥 > 유부초밥",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "유부초밥ㆍ김밥ㆍ주먹밥",
+        "유부초밥"
+      ],
+      "source_title": "대림 주부초밥짱 (160G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801066600379/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "대림",
+      "crawled_at": "2026-08-31T01:47:02.653831Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/608e54e5-a923-4e94-8c2f-bdae767f68c3/300x300.jpg",
+      "ingestion_id": 31,
+      "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 73,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "160g",
+        "package_quantity": 160.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 3990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "대림",
+          "canon_hash": "a3d54c964372472f2cfa1dd1b7529c48249e2b52",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801066600379/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "유부초밥ㆍ김밥ㆍ주먹밥",
+            "유부초밥"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/608e54e5-a923-4e94-8c2f-bdae767f68c3/300x300.jpg",
+          "mart_native_code": "8801066600379",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801066600379",
+          "source_url": "https://lottemartzetta.com/products/OS8801066600379/details"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:47:02.653831",
+        "detail_url": "https://lottemartzetta.com/products/OS8801066600379/details",
+        "discount_percent": null,
+        "display_unit": "160g",
+        "event_name": "2개씩 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/608e54e5-a923-4e94-8c2f-bdae767f68c3/300x300.jpg",
+        "match_key": "__no_brand__|대림 주부초밥짱 160g||160g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "대림 주부초밥짱 (160G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 160.0,
+        "package_unit": "g",
+        "price_per_100g": 2493.75,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "160g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "4794ff55b37096a5e0b2729f47c2d3a359c9097e54d346a753ec4542e781e3f7",
+      "raw_record_id": "ingestion:31:73",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "유부초밥ᆞ김밥ᆞ주먹밥",
+        "유부초밥"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801066600379",
+      "source_title": "대림 주부초밥짱 (160G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801066600379/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:31:73",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801066600379",
+    "source_title": "대림 주부초밥짱 (160G)"
+  }
+]

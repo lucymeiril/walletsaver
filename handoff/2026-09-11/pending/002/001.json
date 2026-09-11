@@ -1,0 +1,2890 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_2.5.12",
+      "raw_record_id": "ingestion:43:18",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "삼풍 이중단열 커피컵 354ml x 80개",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Paper-Cup-Lid-354ml-x-80/p/512674"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "kitchen-accessories",
+        "foilpaperplastic-disposables"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hfc/h9d/367690413801502.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 18,
+      "mart_native_category_id": "cos_2.5.12",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 80,
+        "display_unit": "",
+        "package_quantity": 80.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 15990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "eb440892b6c41cd31a9935aa6db9e1412390435c",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Paper-Cup-Lid-354ml-x-80/p/512674",
+        "category": "커피",
+        "cocodalin_join_key": "512674",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Paper-Cup-Lid-354ml-x-80/p/512674",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hfc/h9d/367690413801502.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.5.12",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "512674",
+        "match_key": "__no_brand__|삼풍 이중단열 커피컵 354ml x 80개|80.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "삼풍 이중단열 커피컵 354ml x 80개",
+        "normalized_name": "삼풍 이중단열 커피컵 354ml x 80개",
+        "pack_qty": 80,
+        "pack_unit": "개",
+        "price": 15990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "삼풍 이중단열 커피컵 354ml x 80개",
+        "raw_promo_type": null,
+        "sale_price": 15990,
+        "source": "costco",
+        "source_record_key": "512674",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Paper-Cup-Lid-354ml-x-80/p/512674",
+        "unit_price": 200.0,
+        "unit_price_basis": "개　　　",
+        "unit_price_basis_raw": "개　　　",
+        "unit_price_display": "개　　　당 200원",
+        "unit_price_displayed": 200,
+        "unit_price_text": "개　　　당 200원"
+      },
+      "raw_payload_sha256": "6661dc2138b1f61d9ec6c2bfaa54aa21f45240b0fd85cdd3546b125d52aa1dae",
+      "raw_record_id": "ingestion:43:18",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "512674",
+      "source_title": "삼풍 이중단열 커피컵 354ml x 80개",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Paper-Cup-Lid-354ml-x-80/p/512674",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:18",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "512674",
+    "source_title": "삼풍 이중단열 커피컵 354ml x 80개"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.drinks.coffee.mix"
+      ],
+      "category_path": [
+        "식품",
+        "음료",
+        "커피",
+        "커피믹스"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_coffee_title",
+      "evidence_type": "contextual_coffee_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.2",
+      "raw_record_id": "ingestion:43:19",
+      "review_status": "classified",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "카누 라떼 커피 13.5g x 50스틱 x 2박스",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Instant-Coffee/Kanu-Latte-Coffee-135g-x-50sticks-x-2/p/611167"
+      ],
+      "unified_category_id": "food.drinks.coffee.mix",
+      "url_taxonomy_hints": [
+        "foods",
+        "coffeeteadrink",
+        "instant-coffee"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha7/he2/503370579050526.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "bundle_multiplier_unresolved"
+      ],
+      "item_index": 19,
+      "mart_native_category_id": "cos_10.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 50,
+        "display_unit": "",
+        "package_quantity": 13.5,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 43490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "ef94e0de734a27a89180332fa82062b1e0d88a89",
+        "canonical_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Instant-Coffee/Kanu-Latte-Coffee-135g-x-50sticks-x-2/p/611167",
+        "category": "커피",
+        "cocodalin_join_key": "611167",
+        "detail_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Instant-Coffee/Kanu-Latte-Coffee-135g-x-50sticks-x-2/p/611167",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha7/he2/503370579050526.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "611167",
+        "match_key": "__no_brand__|카누 라떼 커피 13 5g x 50스틱 x 2박스|13.5|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "카누 라떼 커피 13.5g x 50스틱 x 2박스",
+        "normalized_name": "카누 라떼 커피 13.5g x 50스틱 x 2박스",
+        "pack_qty": 13.5,
+        "pack_unit": "g",
+        "price": 43490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "카누 라떼 커피 13.5g x 50스틱 x 2박스",
+        "raw_promo_type": null,
+        "sale_price": 43490,
+        "source": "costco",
+        "source_record_key": "611167",
+        "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Instant-Coffee/Kanu-Latte-Coffee-135g-x-50sticks-x-2/p/611167",
+        "unit_price": 322.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 322원",
+        "unit_price_displayed": 322,
+        "unit_price_text": "10G당 322원"
+      },
+      "raw_payload_sha256": "c982c77f54aa7a55032e1374af70f10b545bd7dfc7ada38eb7c96c476bd4dcfb",
+      "raw_record_id": "ingestion:43:19",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "611167",
+      "source_title": "카누 라떼 커피 13.5g x 50스틱 x 2박스",
+      "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Instant-Coffee/Kanu-Latte-Coffee-135g-x-50sticks-x-2/p/611167",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:19",
+    "reasons": [
+      "bundle_multiplier_unresolved"
+    ],
+    "source_record_key": "611167",
+    "source_title": "카누 라떼 커피 13.5g x 50스틱 x 2박스"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_2.5.2",
+      "raw_record_id": "ingestion:43:20",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "쏘울핸드 커피 그라인더",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Soulhand-Coffee-Grinder/p/642910"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "kitchen-accessories",
+        "coffe-accessoriesbakeware"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h35/h21/62766648492062.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 20,
+      "mart_native_category_id": "cos_2.5.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 29990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "ad0586120d1a24f1604c0fe27520951b17e3c032",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Soulhand-Coffee-Grinder/p/642910",
+        "category": "커피",
+        "cocodalin_join_key": "642910",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Soulhand-Coffee-Grinder/p/642910",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h35/h21/62766648492062.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.5.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "642910",
+        "match_key": "__no_brand__|쏘울핸드 커피 그라인더||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "쏘울핸드 커피 그라인더",
+        "normalized_name": "쏘울핸드 커피 그라인더",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 29990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "쏘울핸드 커피 그라인더",
+        "raw_promo_type": null,
+        "sale_price": 29990,
+        "source": "costco",
+        "source_record_key": "642910",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Soulhand-Coffee-Grinder/p/642910",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "85c614008bb0d2a54808ae7e5beaf11ff6f0c65a29a324c4394676d53572980e",
+      "raw_record_id": "ingestion:43:20",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "642910",
+      "source_title": "쏘울핸드 커피 그라인더",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Soulhand-Coffee-Grinder/p/642910",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:20",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "642910",
+    "source_title": "쏘울핸드 커피 그라인더"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:43:22",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "아소부 뉴 콜드브루 커피메이커",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Asobu-New-Cold-Brew-Maker/p/618877"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "kitchen-accessories",
+        "coffe-accessoriesbakeware"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hce/h45/208071867400222.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 22,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 59900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "2be62d3c2a546a5c55fb2ddd16856df265d6f60b",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Asobu-New-Cold-Brew-Maker/p/618877",
+        "category": "커피",
+        "cocodalin_join_key": "618877",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Asobu-New-Cold-Brew-Maker/p/618877",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hce/h45/208071867400222.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "618877",
+        "match_key": "__no_brand__|아소부 뉴 콜드브루 커피메이커||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "아소부 뉴 콜드브루 커피메이커",
+        "normalized_name": "아소부 뉴 콜드브루 커피메이커",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 59900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "아소부 뉴 콜드브루 커피메이커",
+        "raw_promo_type": null,
+        "sale_price": 59900,
+        "source": "costco",
+        "source_record_key": "618877",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Asobu-New-Cold-Brew-Maker/p/618877",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "58ec2de0ba814896377c846a4501946777841e956aa2f95380d5f1cc46bf380b",
+      "raw_record_id": "ingestion:43:22",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "618877",
+      "source_title": "아소부 뉴 콜드브루 커피메이커",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Asobu-New-Cold-Brew-Maker/p/618877",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:22",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "618877",
+    "source_title": "아소부 뉴 콜드브루 커피메이커"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_2.5.12",
+      "raw_record_id": "ingestion:43:23",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "삼풍 이중단열 커피컵 473ml x 160 (뚜껑 포함)",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Double-layered-Paper-Cup-Lid-473ml-x160/p/682165"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "kitchen-accessories",
+        "foilpaperplastic-disposables"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb8/h11/225695034966046.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [],
+      "item_index": 23,
+      "mart_native_category_id": "cos_2.5.12",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 160,
+        "display_unit": "",
+        "package_quantity": 473.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 27990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "a3c73050b125fe0c02b4aac06298e754ef927940",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Double-layered-Paper-Cup-Lid-473ml-x160/p/682165",
+        "category": "커피",
+        "cocodalin_join_key": "682165",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Double-layered-Paper-Cup-Lid-473ml-x160/p/682165",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb8/h11/225695034966046.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.5.12",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "682165",
+        "match_key": "__no_brand__|삼풍 이중단열 커피컵 473ml x 160 뚜껑 포함|473.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "삼풍 이중단열 커피컵 473ml x 160 (뚜껑 포함)",
+        "normalized_name": "삼풍 이중단열 커피컵 473ml x 160 (뚜껑 포함)",
+        "pack_qty": 473,
+        "pack_unit": "ml",
+        "price": 27990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "삼풍 이중단열 커피컵 473ml x 160 (뚜껑 포함)",
+        "raw_promo_type": null,
+        "sale_price": 27990,
+        "source": "costco",
+        "source_record_key": "682165",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Double-layered-Paper-Cup-Lid-473ml-x160/p/682165",
+        "unit_price": 175.0,
+        "unit_price_basis": "개　　　",
+        "unit_price_basis_raw": "개　　　",
+        "unit_price_display": "개　　　당 175원",
+        "unit_price_displayed": 175,
+        "unit_price_text": "개　　　당 175원"
+      },
+      "raw_payload_sha256": "add022ff55a0e3b13c7fc33e21660552cd915fb96f19b6f80ab17d6d0e6c872f",
+      "raw_record_id": "ingestion:43:23",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "682165",
+      "source_title": "삼풍 이중단열 커피컵 473ml x 160 (뚜껑 포함)",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Double-layered-Paper-Cup-Lid-473ml-x160/p/682165",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:23",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "682165",
+    "source_title": "삼풍 이중단열 커피컵 473ml x 160 (뚜껑 포함)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_15.2",
+      "raw_record_id": "ingestion:43:25",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "마리슈타이거 전동 커피그라인더 (보관용기 포함)",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Mari-Steiger-Lumi-Coffee-Grinder-Extra-Container/p/676027"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "kitchen-accessories",
+        "coffe-accessoriesbakeware"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hde/h68/311429873336350.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 25,
+      "mart_native_category_id": "cos_15.2",
+      "observed_time_precision": "batch",
+      "original_price": 31990,
+      "package": null,
+      "price": 25990,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "1bc9321b9f4a5df9867b5e15422df21179301589",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Mari-Steiger-Lumi-Coffee-Grinder-Extra-Container/p/676027",
+        "category": "커피",
+        "cocodalin_join_key": "676027",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Mari-Steiger-Lumi-Coffee-Grinder-Extra-Container/p/676027",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hde/h68/311429873336350.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_15.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "676027",
+        "match_key": "__no_brand__|마리슈타이거 전동 커피그라인더 보관용기 포함||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "마리슈타이거 전동 커피그라인더 (보관용기 포함)",
+        "normalized_name": "마리슈타이거 전동 커피그라인더 (보관용기 포함)",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 31990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "마리슈타이거 전동 커피그라인더 (보관용기 포함)",
+        "raw_promo_type": "discount",
+        "sale_price": 25990,
+        "source": "costco",
+        "source_record_key": "676027",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Mari-Steiger-Lumi-Coffee-Grinder-Extra-Container/p/676027",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "cb006962fa13b8cc097217c92ec51eea09fbe2a8d97eb52dab99ff441d7796e7",
+      "raw_record_id": "ingestion:43:25",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "676027",
+      "source_title": "마리슈타이거 전동 커피그라인더 (보관용기 포함)",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Mari-Steiger-Lumi-Coffee-Grinder-Extra-Container/p/676027",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:25",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "676027",
+    "source_title": "마리슈타이거 전동 커피그라인더 (보관용기 포함)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_10.2",
+      "raw_record_id": "ingestion:43:26",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "커피명가 올굿블렌드 1.13kg",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/-113kg/p/637094"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "coffeeteadrink",
+        "whole-beansground-coffee"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/heb/hae/49077351546910.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [],
+      "item_index": 26,
+      "mart_native_category_id": "cos_10.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 1130.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 29990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "ac200da143eb579d0851f33ea6b01fa54987fb64",
+        "canonical_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/-113kg/p/637094",
+        "category": "커피",
+        "cocodalin_join_key": "637094",
+        "detail_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/-113kg/p/637094",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/heb/hae/49077351546910.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "637094",
+        "match_key": "__no_brand__|커피명가 올굿블렌드 1 13kg|1130.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "커피명가 올굿블렌드 1.13kg",
+        "normalized_name": "커피명가 올굿블렌드 1.13kg",
+        "pack_qty": 1.13,
+        "pack_unit": "kg",
+        "price": 29990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "커피명가 올굿블렌드 1.13kg",
+        "raw_promo_type": null,
+        "sale_price": 29990,
+        "source": "costco",
+        "source_record_key": "637094",
+        "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/-113kg/p/637094",
+        "unit_price": 265.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 265원",
+        "unit_price_displayed": 265,
+        "unit_price_text": "10G당 265원"
+      },
+      "raw_payload_sha256": "fd01d330ce807c20909aae6eae6cf24dc109719633f7026f268d5c6859c1de33",
+      "raw_record_id": "ingestion:43:26",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "637094",
+      "source_title": "커피명가 올굿블렌드 1.13kg",
+      "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/-113kg/p/637094",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:26",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "637094",
+    "source_title": "커피명가 올굿블렌드 1.13kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_1.9",
+      "raw_record_id": "ingestion:43:27",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "위즈웰 분리형 커피 그라인더 WSG-9100",
+      "source_urls": [
+        "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Wiswell-Detachable-Coffee-Grinder-WSG-9100/p/645805"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "appliances",
+        "kitchen-miscellaneous",
+        "coffeeespresso-makers"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hdd/h89/67516995141662.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 27,
+      "mart_native_category_id": "cos_1.9",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 27990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "846fb2a2cff2c85af7442b003084c0c0cb50b29f",
+        "canonical_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Wiswell-Detachable-Coffee-Grinder-WSG-9100/p/645805",
+        "category": "커피",
+        "cocodalin_join_key": "645805",
+        "detail_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Wiswell-Detachable-Coffee-Grinder-WSG-9100/p/645805",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hdd/h89/67516995141662.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_1.9",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "645805",
+        "match_key": "__no_brand__|위즈웰 분리형 커피 그라인더 wsg 9100||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "위즈웰 분리형 커피 그라인더 WSG-9100",
+        "normalized_name": "위즈웰 분리형 커피 그라인더 WSG-9100",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 27990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "위즈웰 분리형 커피 그라인더 WSG-9100",
+        "raw_promo_type": null,
+        "sale_price": 27990,
+        "source": "costco",
+        "source_record_key": "645805",
+        "source_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Wiswell-Detachable-Coffee-Grinder-WSG-9100/p/645805",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "aadb58880f575e81c6dea132a1f36fe25f55db109f10c983cf540884548689fa",
+      "raw_record_id": "ingestion:43:27",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "645805",
+      "source_title": "위즈웰 분리형 커피 그라인더 WSG-9100",
+      "source_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Wiswell-Detachable-Coffee-Grinder-WSG-9100/p/645805",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:27",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "645805",
+    "source_title": "위즈웰 분리형 커피 그라인더 WSG-9100"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_2.5.12",
+      "raw_record_id": "ingestion:43:29",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "삼풍 이중단열 커피컵 473ml x 180 (무지)",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Paper-Cup-473ml-x-180/p/672165"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "kitchen-accessories",
+        "foilpaperplastic-disposables"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3d/h27/223043387031582.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [],
+      "item_index": 29,
+      "mart_native_category_id": "cos_2.5.12",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 180,
+        "display_unit": "",
+        "package_quantity": 473.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 25990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "42664a7a18e0e9893b5d08469af6dfab6f950d40",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Paper-Cup-473ml-x-180/p/672165",
+        "category": "커피",
+        "cocodalin_join_key": "672165",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Paper-Cup-473ml-x-180/p/672165",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3d/h27/223043387031582.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.5.12",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "672165",
+        "match_key": "__no_brand__|삼풍 이중단열 커피컵 473ml x 180 무지|473.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "삼풍 이중단열 커피컵 473ml x 180 (무지)",
+        "normalized_name": "삼풍 이중단열 커피컵 473ml x 180 (무지)",
+        "pack_qty": 473,
+        "pack_unit": "ml",
+        "price": 25990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "삼풍 이중단열 커피컵 473ml x 180 (무지)",
+        "raw_promo_type": null,
+        "sale_price": 25990,
+        "source": "costco",
+        "source_record_key": "672165",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Paper-Cup-473ml-x-180/p/672165",
+        "unit_price": 144.0,
+        "unit_price_basis": "개　　　",
+        "unit_price_basis_raw": "개　　　",
+        "unit_price_display": "개　　　당 144원",
+        "unit_price_displayed": 144,
+        "unit_price_text": "개　　　당 144원"
+      },
+      "raw_payload_sha256": "4fc01c46560e0a04ad65ddaede0bb9e95542152fe1ea6b9661dab7ff249e7538",
+      "raw_record_id": "ingestion:43:29",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "672165",
+      "source_title": "삼풍 이중단열 커피컵 473ml x 180 (무지)",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/FoilPaperPlastic-Disposables/Sampoong-Paper-Cup-473ml-x-180/p/672165",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:29",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "672165",
+    "source_title": "삼풍 이중단열 커피컵 473ml x 180 (무지)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_10.2",
+      "raw_record_id": "ingestion:43:32",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "칸타타 콘트라베이스 디카페인 커피 500ml x 18",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Instant-Coffee/Cantata-Contrabass-Decaffeine-500ml-x-18/p/690836"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "coffeeteadrink",
+        "instant-coffee"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h96/h39/449664393707550.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [],
+      "item_index": 32,
+      "mart_native_category_id": "cos_10.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 18,
+        "display_unit": "",
+        "package_quantity": 500.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 22490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "cf0a4577780d826d79fcf3d76e391718d8097f1c",
+        "canonical_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Instant-Coffee/Cantata-Contrabass-Decaffeine-500ml-x-18/p/690836",
+        "category": "커피",
+        "cocodalin_join_key": "690836",
+        "detail_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Instant-Coffee/Cantata-Contrabass-Decaffeine-500ml-x-18/p/690836",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h96/h39/449664393707550.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "690836",
+        "match_key": "__no_brand__|칸타타 콘트라베이스 디카페인 커피 500ml x 18|500.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "칸타타 콘트라베이스 디카페인 커피 500ml x 18",
+        "normalized_name": "칸타타 콘트라베이스 디카페인 커피 500ml x 18",
+        "pack_qty": 500,
+        "pack_unit": "ml",
+        "price": 22490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "칸타타 콘트라베이스 디카페인 커피 500ml x 18",
+        "raw_promo_type": null,
+        "sale_price": 22490,
+        "source": "costco",
+        "source_record_key": "690836",
+        "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Instant-Coffee/Cantata-Contrabass-Decaffeine-500ml-x-18/p/690836",
+        "unit_price": 250.0,
+        "unit_price_basis": "100㎖",
+        "unit_price_basis_raw": "100㎖",
+        "unit_price_display": "100㎖당 250원",
+        "unit_price_displayed": 250,
+        "unit_price_text": "100㎖당 250원"
+      },
+      "raw_payload_sha256": "262cf4a08509626850170f521f85ea4db4a45f015e21f452f977a468021009a8",
+      "raw_record_id": "ingestion:43:32",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "690836",
+      "source_title": "칸타타 콘트라베이스 디카페인 커피 500ml x 18",
+      "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Instant-Coffee/Cantata-Contrabass-Decaffeine-500ml-x-18/p/690836",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:32",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "690836",
+    "source_title": "칸타타 콘트라베이스 디카페인 커피 500ml x 18"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_2.5.2",
+      "raw_record_id": "ingestion:43:33",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "하리오 V60 크래프트 커피메이커",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/HARIO-V60-Craft-Coffee-Maker/p/695083"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "kitchen-accessories",
+        "coffe-accessoriesbakeware"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h37/he1/474765769801758.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 33,
+      "mart_native_category_id": "cos_2.5.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 18490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "8577b29816db677dfea378f342de72c8754a0977",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/HARIO-V60-Craft-Coffee-Maker/p/695083",
+        "category": "커피",
+        "cocodalin_join_key": "695083",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/HARIO-V60-Craft-Coffee-Maker/p/695083",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h37/he1/474765769801758.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.5.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "695083",
+        "match_key": "__no_brand__|하리오 v60 크래프트 커피메이커||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "하리오 V60 크래프트 커피메이커",
+        "normalized_name": "하리오 V60 크래프트 커피메이커",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 18490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "하리오 V60 크래프트 커피메이커",
+        "raw_promo_type": null,
+        "sale_price": 18490,
+        "source": "costco",
+        "source_record_key": "695083",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/HARIO-V60-Craft-Coffee-Maker/p/695083",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "e296e7ef5972d032e477e86d5c7651fc177d8cee8d8ec9406776b1894c80adb3",
+      "raw_record_id": "ingestion:43:33",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "695083",
+      "source_title": "하리오 V60 크래프트 커피메이커",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/HARIO-V60-Craft-Coffee-Maker/p/695083",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:33",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "695083",
+    "source_title": "하리오 V60 크래프트 커피메이커"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_2.5.2",
+      "raw_record_id": "ingestion:43:34",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "삼풍 커피필터 600매",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Sampoong-Coffee-Filter-600ct/p/308068"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "kitchen-accessories",
+        "coffe-accessoriesbakeware"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h96/hbb/456182598008862.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [],
+      "item_index": 34,
+      "mart_native_category_id": "cos_2.5.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 600.0,
+        "package_unit": "매",
+        "standard_unit": null
+      },
+      "price": 14290,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "7eaa0e0151de1b190ecdba2838a061e8cdb3454f",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Sampoong-Coffee-Filter-600ct/p/308068",
+        "category": "커피",
+        "cocodalin_join_key": "308068",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Sampoong-Coffee-Filter-600ct/p/308068",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h96/hbb/456182598008862.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.5.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "308068",
+        "match_key": "__no_brand__|삼풍 커피필터 600매|600.0|매",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "삼풍 커피필터 600매",
+        "normalized_name": "삼풍 커피필터 600매",
+        "pack_qty": 600,
+        "pack_unit": "매",
+        "price": 14290,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "삼풍 커피필터 600매",
+        "raw_promo_type": null,
+        "sale_price": 14290,
+        "source": "costco",
+        "source_record_key": "308068",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Sampoong-Coffee-Filter-600ct/p/308068",
+        "unit_price": 24.0,
+        "unit_price_basis": "장",
+        "unit_price_basis_raw": "장",
+        "unit_price_display": "장당 24원",
+        "unit_price_displayed": 24,
+        "unit_price_text": "장당 24원"
+      },
+      "raw_payload_sha256": "d6a5301d7a6e576f5615bee7c83b66fdffbafcc4f05e8b3e64c144b8e6e183aa",
+      "raw_record_id": "ingestion:43:34",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "308068",
+      "source_title": "삼풍 커피필터 600매",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Sampoong-Coffee-Filter-600ct/p/308068",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:34",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "308068",
+    "source_title": "삼풍 커피필터 600매"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_1.9",
+      "raw_record_id": "ingestion:43:35",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "아르떼 카푸치노 멀티 캡슐 커피 머신 A03",
+      "source_urls": [
+        "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Arte-Cappuccino-Multi-Capsule-Coffee-Machine-A03/p/678745"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "appliances",
+        "kitchen-miscellaneous",
+        "coffeeespresso-makers"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h10/hf6/344465373167646.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 35,
+      "mart_native_category_id": "cos_1.9",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 159900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "0d2947a9604b99c86a52573723e966e1b59a9adb",
+        "canonical_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Arte-Cappuccino-Multi-Capsule-Coffee-Machine-A03/p/678745",
+        "category": "커피",
+        "cocodalin_join_key": "678745",
+        "detail_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Arte-Cappuccino-Multi-Capsule-Coffee-Machine-A03/p/678745",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h10/hf6/344465373167646.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_1.9",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "678745",
+        "match_key": "__no_brand__|아르떼 카푸치노 멀티 캡슐 커피 머신 a03||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "아르떼 카푸치노 멀티 캡슐 커피 머신 A03",
+        "normalized_name": "아르떼 카푸치노 멀티 캡슐 커피 머신 A03",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 159900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "아르떼 카푸치노 멀티 캡슐 커피 머신 A03",
+        "raw_promo_type": null,
+        "sale_price": 159900,
+        "source": "costco",
+        "source_record_key": "678745",
+        "source_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Arte-Cappuccino-Multi-Capsule-Coffee-Machine-A03/p/678745",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "5bcfca8945d90351afd3e91a706522a3bc526d8cac8c1caeb234eea543c19235",
+      "raw_record_id": "ingestion:43:35",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "678745",
+      "source_title": "아르떼 카푸치노 멀티 캡슐 커피 머신 A03",
+      "source_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Arte-Cappuccino-Multi-Capsule-Coffee-Machine-A03/p/678745",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:35",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "678745",
+    "source_title": "아르떼 카푸치노 멀티 캡슐 커피 머신 A03"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:43:36",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "카피탈리 시스템 캡슐 커피 머신 레미 S24",
+      "source_urls": [
+        "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Caffitaly-System-Capsule-Coffee-Machine-S24/p/673844"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "appliances",
+        "kitchen-miscellaneous",
+        "coffeeespresso-makers"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf1/h52/238127290679326.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 36,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 78900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "483efddb1d61856503a9e44f313e99465bdd7927",
+        "canonical_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Caffitaly-System-Capsule-Coffee-Machine-S24/p/673844",
+        "category": "커피",
+        "cocodalin_join_key": "673844",
+        "detail_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Caffitaly-System-Capsule-Coffee-Machine-S24/p/673844",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf1/h52/238127290679326.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "673844",
+        "match_key": "__no_brand__|카피탈리 시스템 캡슐 커피 머신 레미 s24||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "카피탈리 시스템 캡슐 커피 머신 레미 S24",
+        "normalized_name": "카피탈리 시스템 캡슐 커피 머신 레미 S24",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 78900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "카피탈리 시스템 캡슐 커피 머신 레미 S24",
+        "raw_promo_type": null,
+        "sale_price": 78900,
+        "source": "costco",
+        "source_record_key": "673844",
+        "source_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Caffitaly-System-Capsule-Coffee-Machine-S24/p/673844",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "0e12874fda1f49da6730e5ac2b77aaffa0fece2fd8c0f8d85b70947c58e233af",
+      "raw_record_id": "ingestion:43:36",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "673844",
+      "source_title": "카피탈리 시스템 캡슐 커피 머신 레미 S24",
+      "source_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Caffitaly-System-Capsule-Coffee-Machine-S24/p/673844",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:36",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "673844",
+    "source_title": "카피탈리 시스템 캡슐 커피 머신 레미 S24"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.drinks.coffee.capsule"
+      ],
+      "category_path": [
+        "식품",
+        "음료",
+        "커피",
+        "캡슐커피"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_coffee_title",
+      "evidence_type": "contextual_coffee_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:43:39",
+      "review_status": "classified",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "일리 캡슐커피 번들팩 63EA (21EA X 3팩)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/Illy-Three-Can-Bundle-Coffee-Capsule-63EA-21EAX3/p/657084"
+      ],
+      "unified_category_id": "food.drinks.coffee.capsule",
+      "url_taxonomy_hints": [
+        "foods",
+        "coffeeteadrink",
+        "capsule-coffee"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd4/h1a/120189109469214.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "bundle_multiplier_unresolved"
+      ],
+      "item_index": 39,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 3.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 43990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "a19901c38911ec190fe1b75448c519a39c0d89ce",
+        "canonical_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/Illy-Three-Can-Bundle-Coffee-Capsule-63EA-21EAX3/p/657084",
+        "category": "커피",
+        "cocodalin_join_key": "657084",
+        "detail_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/Illy-Three-Can-Bundle-Coffee-Capsule-63EA-21EAX3/p/657084",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd4/h1a/120189109469214.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "657084",
+        "match_key": "__no_brand__|일리 캡슐커피 번들팩 63ea 21ea x 3팩|3.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "일리 캡슐커피 번들팩 63EA (21EA X 3팩)",
+        "normalized_name": "일리 캡슐커피 번들팩 63EA (21EA X 3팩)",
+        "pack_qty": 3,
+        "pack_unit": "팩",
+        "price": 43990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "일리 캡슐커피 번들팩 63EA (21EA X 3팩)",
+        "raw_promo_type": null,
+        "sale_price": 43990,
+        "source": "costco",
+        "source_record_key": "657084",
+        "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/Illy-Three-Can-Bundle-Coffee-Capsule-63EA-21EAX3/p/657084",
+        "unit_price": 698.0,
+        "unit_price_basis": "개　　　",
+        "unit_price_basis_raw": "개　　　",
+        "unit_price_display": "개　　　당 698원",
+        "unit_price_displayed": 698,
+        "unit_price_text": "개　　　당 698원"
+      },
+      "raw_payload_sha256": "261d5333caab4fd56f8e64a5c028494e7aabcc0cd67c9bb21b6a240fa8fdea89",
+      "raw_record_id": "ingestion:43:39",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "657084",
+      "source_title": "일리 캡슐커피 번들팩 63EA (21EA X 3팩)",
+      "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/Illy-Three-Can-Bundle-Coffee-Capsule-63EA-21EAX3/p/657084",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:39",
+    "reasons": [
+      "bundle_multiplier_unresolved"
+    ],
+    "source_record_key": "657084",
+    "source_title": "일리 캡슐커피 번들팩 63EA (21EA X 3팩)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_10.2",
+      "raw_record_id": "ingestion:43:42",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "테라로사 올데이 블렌드 1.13kg",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Terarosa-All-Day-Blend-113kg/p/598439"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "coffeeteadrink",
+        "whole-beansground-coffee"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h8c/h48/448854188556318.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [],
+      "item_index": 42,
+      "mart_native_category_id": "cos_10.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 1130.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 38990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "0c2614af374c8b25000efc7fe08899b175517611",
+        "canonical_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Terarosa-All-Day-Blend-113kg/p/598439",
+        "category": "커피",
+        "cocodalin_join_key": "598439",
+        "detail_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Terarosa-All-Day-Blend-113kg/p/598439",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h8c/h48/448854188556318.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "598439",
+        "match_key": "__no_brand__|테라로사 올데이 블렌드 1 13kg|1130.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "테라로사 올데이 블렌드 1.13kg",
+        "normalized_name": "테라로사 올데이 블렌드 1.13kg",
+        "pack_qty": 1.13,
+        "pack_unit": "kg",
+        "price": 38990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "테라로사 올데이 블렌드 1.13kg",
+        "raw_promo_type": null,
+        "sale_price": 38990,
+        "source": "costco",
+        "source_record_key": "598439",
+        "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Terarosa-All-Day-Blend-113kg/p/598439",
+        "unit_price": 345.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 345원",
+        "unit_price_displayed": 345,
+        "unit_price_text": "10G당 345원"
+      },
+      "raw_payload_sha256": "ac6c37cad1b58fa5beb3bc0c9bfc0fd876b037d67a4e303b324dd595d8debd6a",
+      "raw_record_id": "ingestion:43:42",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "598439",
+      "source_title": "테라로사 올데이 블렌드 1.13kg",
+      "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Terarosa-All-Day-Blend-113kg/p/598439",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:42",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "598439",
+    "source_title": "테라로사 올데이 블렌드 1.13kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.drinks.coffee.mix"
+      ],
+      "category_path": [
+        "식품",
+        "음료",
+        "커피",
+        "커피믹스"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_coffee_title",
+      "evidence_type": "contextual_coffee_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.2.2",
+      "raw_record_id": "ingestion:43:43",
+      "review_status": "classified",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "맥심 화이트 골드 커피믹스 11.7g x 210T x 2",
+      "source_urls": [
+        "https://www.costco.co.kr/Maxim/Maxim-White-Gold-Coffee-Mix-117g-x-210T-x-2/p/512934"
+      ],
+      "unified_category_id": "food.drinks.coffee.mix",
+      "url_taxonomy_hints": [
+        "maxim"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h33/h90/503370578231326.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 43,
+      "mart_native_category_id": "cos_10.2.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 11.7,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 61900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "87817258976d4ac25ff7f3224939171ce8a767ba",
+        "canonical_url": "https://www.costco.co.kr/Maxim/Maxim-White-Gold-Coffee-Mix-117g-x-210T-x-2/p/512934",
+        "category": "커피",
+        "cocodalin_join_key": "512934",
+        "detail_url": "https://www.costco.co.kr/Maxim/Maxim-White-Gold-Coffee-Mix-117g-x-210T-x-2/p/512934",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h33/h90/503370578231326.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.2.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "512934",
+        "match_key": "__no_brand__|맥심 화이트 골드 커피믹스 11 7g x 210t x 2|11.7|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "맥심 화이트 골드 커피믹스 11.7g x 210T x 2",
+        "normalized_name": "맥심 화이트 골드 커피믹스 11.7g x 210T x 2",
+        "pack_qty": 11.7,
+        "pack_unit": "g",
+        "price": 61900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "맥심 화이트 골드 커피믹스 11.7g x 210T x 2",
+        "raw_promo_type": null,
+        "sale_price": 61900,
+        "source": "costco",
+        "source_record_key": "512934",
+        "source_url": "https://www.costco.co.kr/Maxim/Maxim-White-Gold-Coffee-Mix-117g-x-210T-x-2/p/512934",
+        "unit_price": 126.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 126원",
+        "unit_price_displayed": 126,
+        "unit_price_text": "10G당 126원"
+      },
+      "raw_payload_sha256": "5cf3b4fb64589ba9cb3049c2579b9202a626f894baea4e2db5d7303218ecd96e",
+      "raw_record_id": "ingestion:43:43",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "512934",
+      "source_title": "맥심 화이트 골드 커피믹스 11.7g x 210T x 2",
+      "source_url": "https://www.costco.co.kr/Maxim/Maxim-White-Gold-Coffee-Mix-117g-x-210T-x-2/p/512934",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:43",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "512934",
+    "source_title": "맥심 화이트 골드 커피믹스 11.7g x 210T x 2"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_2.5.1",
+      "raw_record_id": "ingestion:43:45",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "메종오브제 로얄베일 라이닝 머그 350ml 4P",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/Dining/CupMugWater-Bottle/Maison-Objet-Royale-Vale-Lining-Mug-350ml-4P/p/680687"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "dining",
+        "cupmugwater-bottle"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3d/hda/369141045166110.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [],
+      "item_index": 45,
+      "mart_native_category_id": "cos_2.5.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 350.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 18490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "ec2c71728248bbbb3f471a4fd45ed298568dc5ea",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/Dining/CupMugWater-Bottle/Maison-Objet-Royale-Vale-Lining-Mug-350ml-4P/p/680687",
+        "category": "커피",
+        "cocodalin_join_key": "680687",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/Dining/CupMugWater-Bottle/Maison-Objet-Royale-Vale-Lining-Mug-350ml-4P/p/680687",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3d/hda/369141045166110.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.5.1",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "680687",
+        "match_key": "__no_brand__|메종오브제 로얄베일 라이닝 머그 350ml 4p|350.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "메종오브제 로얄베일 라이닝 머그 350ml 4P",
+        "normalized_name": "메종오브제 로얄베일 라이닝 머그 350ml 4P",
+        "pack_qty": 350,
+        "pack_unit": "ml",
+        "price": 18490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "메종오브제 로얄베일 라이닝 머그 350ml 4P",
+        "raw_promo_type": null,
+        "sale_price": 18490,
+        "source": "costco",
+        "source_record_key": "680687",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/Dining/CupMugWater-Bottle/Maison-Objet-Royale-Vale-Lining-Mug-350ml-4P/p/680687",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "617f85f682a6e9f988bb39badffdeb8d47702e04b8482befb7c9956460cab410",
+      "raw_record_id": "ingestion:43:45",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "680687",
+      "source_title": "메종오브제 로얄베일 라이닝 머그 350ml 4P",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/Dining/CupMugWater-Bottle/Maison-Objet-Royale-Vale-Lining-Mug-350ml-4P/p/680687",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:45",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "680687",
+    "source_title": "메종오브제 로얄베일 라이닝 머그 350ml 4P"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_10.2.2",
+      "raw_record_id": "ingestion:43:50",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "룰리커피클레버커피드립 세트",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Rully-Coffee-Clever-Drip-Set/p/637092"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h19/hd3/98613715828766.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 50,
+      "mart_native_category_id": "cos_10.2.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 32990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "f1411ef4cf512345f3969aefef64278217dc64e9",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Rully-Coffee-Clever-Drip-Set/p/637092",
+        "category": "커피",
+        "cocodalin_join_key": "637092",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Rully-Coffee-Clever-Drip-Set/p/637092",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h19/hd3/98613715828766.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.2.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "637092",
+        "match_key": "__no_brand__|룰리커피클레버커피드립 세트||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "룰리커피클레버커피드립 세트",
+        "normalized_name": "룰리커피클레버커피드립 세트",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 32990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "룰리커피클레버커피드립 세트",
+        "raw_promo_type": null,
+        "sale_price": 32990,
+        "source": "costco",
+        "source_record_key": "637092",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Rully-Coffee-Clever-Drip-Set/p/637092",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "8e0d2d4e16b49070aef1762081a86d663c7ce9d77fb96b7c370c7ed28204805e",
+      "raw_record_id": "ingestion:43:50",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "637092",
+      "source_title": "룰리커피클레버커피드립 세트",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Rully-Coffee-Clever-Drip-Set/p/637092",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:50",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "637092",
+    "source_title": "룰리커피클레버커피드립 세트"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.drinks.coffee.instant"
+      ],
+      "category_path": [
+        "식품",
+        "음료",
+        "커피",
+        "인스턴트커피"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_coffee_title",
+      "evidence_type": "contextual_coffee_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.2",
+      "raw_record_id": "ingestion:43:51",
+      "review_status": "classified",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "카누 미니 디카페인 커피 0.9g x 30스틱 x 6박스",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/CoffeeTeaDrink/p/611169"
+      ],
+      "unified_category_id": "food.drinks.coffee.instant",
+      "url_taxonomy_hints": [
+        "foods"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4f/h36/502978656960542.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "bundle_multiplier_unresolved"
+      ],
+      "item_index": 51,
+      "mart_native_category_id": "cos_10.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 30,
+        "display_unit": "",
+        "package_quantity": 0.9,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 47490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "0df59b9222201c3c93641d70934bf1ebd06b7929",
+        "canonical_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/p/611169",
+        "category": "커피",
+        "cocodalin_join_key": "611169",
+        "detail_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/p/611169",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4f/h36/502978656960542.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "611169",
+        "match_key": "__no_brand__|카누 미니 디카페인 커피 0 9g x 30스틱 x 6박스|0.9|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "카누 미니 디카페인 커피 0.9g x 30스틱 x 6박스",
+        "normalized_name": "카누 미니 디카페인 커피 0.9g x 30스틱 x 6박스",
+        "pack_qty": 0.9,
+        "pack_unit": "g",
+        "price": 47490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "카누 미니 디카페인 커피 0.9g x 30스틱 x 6박스",
+        "raw_promo_type": null,
+        "sale_price": 47490,
+        "source": "costco",
+        "source_record_key": "611169",
+        "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/p/611169",
+        "unit_price": 2931.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 2,931원",
+        "unit_price_displayed": 2931,
+        "unit_price_text": "10G당 2,931원"
+      },
+      "raw_payload_sha256": "cfb95336108b0ca40a02ab4327eccb9b46b9155ac27e2a496009030ec305fbac",
+      "raw_record_id": "ingestion:43:51",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "611169",
+      "source_title": "카누 미니 디카페인 커피 0.9g x 30스틱 x 6박스",
+      "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/p/611169",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:51",
+    "reasons": [
+      "bundle_multiplier_unresolved"
+    ],
+    "source_record_key": "611169",
+    "source_title": "카누 미니 디카페인 커피 0.9g x 30스틱 x 6박스"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.drinks.coffee.instant"
+      ],
+      "category_path": [
+        "식품",
+        "음료",
+        "커피",
+        "인스턴트커피"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_coffee_title",
+      "evidence_type": "contextual_coffee_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.2",
+      "raw_record_id": "ingestion:43:55",
+      "review_status": "classified",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "카누 미니 다크 로스트 커피 0.9g x 150스틱 x 6박스",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Kanu-Mini-Dark-Roasted-Coffee-09g-x-150sticks-x-6/p/611163"
+      ],
+      "unified_category_id": "food.drinks.coffee.instant",
+      "url_taxonomy_hints": [
+        "foods",
+        "coffeeteadrink",
+        "whole-beansground-coffee"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h9c/h1b/10249050390558.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "bundle_multiplier_unresolved"
+      ],
+      "item_index": 55,
+      "mart_native_category_id": "cos_10.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 150,
+        "display_unit": "",
+        "package_quantity": 0.9,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 188900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "319910db753bbada6d5e6fca2056d9a8a8f828ac",
+        "canonical_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Kanu-Mini-Dark-Roasted-Coffee-09g-x-150sticks-x-6/p/611163",
+        "category": "커피",
+        "cocodalin_join_key": "611163",
+        "detail_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Kanu-Mini-Dark-Roasted-Coffee-09g-x-150sticks-x-6/p/611163",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h9c/h1b/10249050390558.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "611163",
+        "match_key": "__no_brand__|카누 미니 다크 로스트 커피 0 9g x 150스틱 x 6박스|0.9|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "카누 미니 다크 로스트 커피 0.9g x 150스틱 x 6박스",
+        "normalized_name": "카누 미니 다크 로스트 커피 0.9g x 150스틱 x 6박스",
+        "pack_qty": 0.9,
+        "pack_unit": "g",
+        "price": 188900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "카누 미니 다크 로스트 커피 0.9g x 150스틱 x 6박스",
+        "raw_promo_type": null,
+        "sale_price": 188900,
+        "source": "costco",
+        "source_record_key": "611163",
+        "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Kanu-Mini-Dark-Roasted-Coffee-09g-x-150sticks-x-6/p/611163",
+        "unit_price": 2332.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 2,332원",
+        "unit_price_displayed": 2332,
+        "unit_price_text": "10G당 2,332원"
+      },
+      "raw_payload_sha256": "9d01a73bbd0108547ac1842d3b5316bf09162d6c909840b1122f76260585977a",
+      "raw_record_id": "ingestion:43:55",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "611163",
+      "source_title": "카누 미니 다크 로스트 커피 0.9g x 150스틱 x 6박스",
+      "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Kanu-Mini-Dark-Roasted-Coffee-09g-x-150sticks-x-6/p/611163",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:55",
+    "reasons": [
+      "bundle_multiplier_unresolved"
+    ],
+    "source_record_key": "611163",
+    "source_title": "카누 미니 다크 로스트 커피 0.9g x 150스틱 x 6박스"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.drinks.coffee.mix"
+      ],
+      "category_path": [
+        "식품",
+        "음료",
+        "커피",
+        "커피믹스"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_coffee_title",
+      "evidence_type": "contextual_coffee_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.2.2",
+      "raw_record_id": "ingestion:43:56",
+      "review_status": "classified",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "맥심 모카골드마일드커피믹스 12g x 210T x 2",
+      "source_urls": [
+        "https://www.costco.co.kr/Maxim/Maxim-Mocha-Gold-Coffee-Mix-12g-x-210T-x-2/p/512933"
+      ],
+      "unified_category_id": "food.drinks.coffee.mix",
+      "url_taxonomy_hints": [
+        "maxim"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h8b/hb4/503370577510430.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 56,
+      "mart_native_category_id": "cos_10.2.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 12.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 61900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "1d8b5befe2c9068b9582c995c94d63e166b7ef39",
+        "canonical_url": "https://www.costco.co.kr/Maxim/Maxim-Mocha-Gold-Coffee-Mix-12g-x-210T-x-2/p/512933",
+        "category": "커피",
+        "cocodalin_join_key": "512933",
+        "detail_url": "https://www.costco.co.kr/Maxim/Maxim-Mocha-Gold-Coffee-Mix-12g-x-210T-x-2/p/512933",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h8b/hb4/503370577510430.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.2.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "512933",
+        "match_key": "__no_brand__|맥심 모카골드마일드커피믹스 12g x 210t x 2|12.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "맥심 모카골드마일드커피믹스 12g x 210T x 2",
+        "normalized_name": "맥심 모카골드마일드커피믹스 12g x 210T x 2",
+        "pack_qty": 12,
+        "pack_unit": "g",
+        "price": 61900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "맥심 모카골드마일드커피믹스 12g x 210T x 2",
+        "raw_promo_type": null,
+        "sale_price": 61900,
+        "source": "costco",
+        "source_record_key": "512933",
+        "source_url": "https://www.costco.co.kr/Maxim/Maxim-Mocha-Gold-Coffee-Mix-12g-x-210T-x-2/p/512933",
+        "unit_price": 123.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 123원",
+        "unit_price_displayed": 123,
+        "unit_price_text": "10G당 123원"
+      },
+      "raw_payload_sha256": "4bf9fc4eb6ce69684fbc4a89187ca6f736b2b490c5dccf414a1688c349b882b3",
+      "raw_record_id": "ingestion:43:56",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "512933",
+      "source_title": "맥심 모카골드마일드커피믹스 12g x 210T x 2",
+      "source_url": "https://www.costco.co.kr/Maxim/Maxim-Mocha-Gold-Coffee-Mix-12g-x-210T-x-2/p/512933",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:56",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "512933",
+    "source_title": "맥심 모카골드마일드커피믹스 12g x 210T x 2"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_10.2",
+      "raw_record_id": "ingestion:43:58",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "일리 E.S.E. 파드 커피 번들팩 54EA (18EA x3팩)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/illy-ESE-POD-Coffee-Bundle-Pack-54EA18EA-x3PK/p/672669"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "coffeeteadrink",
+        "capsule-coffee"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb6/hd3/449664040861726.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "bundle_multiplier_unresolved"
+      ],
+      "item_index": 58,
+      "mart_native_category_id": "cos_10.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 3.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 37990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "8aeb004c4261b38f24c3dc34aa125137f20471c7",
+        "canonical_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/illy-ESE-POD-Coffee-Bundle-Pack-54EA18EA-x3PK/p/672669",
+        "category": "커피",
+        "cocodalin_join_key": "672669",
+        "detail_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/illy-ESE-POD-Coffee-Bundle-Pack-54EA18EA-x3PK/p/672669",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb6/hd3/449664040861726.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "672669",
+        "match_key": "__no_brand__|일리 e s e 파드 커피 번들팩 54ea 18ea x3팩|3.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "일리 E.S.E. 파드 커피 번들팩 54EA (18EA x3팩)",
+        "normalized_name": "일리 E.S.E. 파드 커피 번들팩 54EA (18EA x3팩)",
+        "pack_qty": 3,
+        "pack_unit": "팩",
+        "price": 37990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "일리 E.S.E. 파드 커피 번들팩 54EA (18EA x3팩)",
+        "raw_promo_type": null,
+        "sale_price": 37990,
+        "source": "costco",
+        "source_record_key": "672669",
+        "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/illy-ESE-POD-Coffee-Bundle-Pack-54EA18EA-x3PK/p/672669",
+        "unit_price": 603.0,
+        "unit_price_basis": "개　　　",
+        "unit_price_basis_raw": "개　　　",
+        "unit_price_display": "개　　　당 603원",
+        "unit_price_displayed": 603,
+        "unit_price_text": "개　　　당 603원"
+      },
+      "raw_payload_sha256": "11e6a1ceb5aaeb571fcb50d6348385094ac6480d693ade7c136f3f38e410150d",
+      "raw_record_id": "ingestion:43:58",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "672669",
+      "source_title": "일리 E.S.E. 파드 커피 번들팩 54EA (18EA x3팩)",
+      "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/illy-ESE-POD-Coffee-Bundle-Pack-54EA18EA-x3PK/p/672669",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:58",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "672669",
+    "source_title": "일리 E.S.E. 파드 커피 번들팩 54EA (18EA x3팩)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.drinks.coffee.capsule"
+      ],
+      "category_path": [
+        "식품",
+        "음료",
+        "커피",
+        "캡슐커피"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_coffee_title",
+      "evidence_type": "contextual_coffee_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.2",
+      "raw_record_id": "ingestion:43:59",
+      "review_status": "classified",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "일리 디카페인 캡슐커피 63EA (21EA x 3캔)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/illy-Decaf-Coffee-Capsule-63EA-21EA-x-3Can/p/670923"
+      ],
+      "unified_category_id": "food.drinks.coffee.capsule",
+      "url_taxonomy_hints": [
+        "foods",
+        "coffeeteadrink",
+        "capsule-coffee"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3a/ha4/206840657084446.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 59,
+      "mart_native_category_id": "cos_10.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 43990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "d9621ec3377e3ecea1b57a058e96691457e95678",
+        "canonical_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/illy-Decaf-Coffee-Capsule-63EA-21EA-x-3Can/p/670923",
+        "category": "커피",
+        "cocodalin_join_key": "670923",
+        "detail_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/illy-Decaf-Coffee-Capsule-63EA-21EA-x-3Can/p/670923",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3a/ha4/206840657084446.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "670923",
+        "match_key": "__no_brand__|일리 디카페인 캡슐커피 63ea 21ea x 3캔||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "일리 디카페인 캡슐커피 63EA (21EA x 3캔)",
+        "normalized_name": "일리 디카페인 캡슐커피 63EA (21EA x 3캔)",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 43990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "일리 디카페인 캡슐커피 63EA (21EA x 3캔)",
+        "raw_promo_type": null,
+        "sale_price": 43990,
+        "source": "costco",
+        "source_record_key": "670923",
+        "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/illy-Decaf-Coffee-Capsule-63EA-21EA-x-3Can/p/670923",
+        "unit_price": 698.0,
+        "unit_price_basis": "개　　　",
+        "unit_price_basis_raw": "개　　　",
+        "unit_price_display": "개　　　당 698원",
+        "unit_price_displayed": 698,
+        "unit_price_text": "개　　　당 698원"
+      },
+      "raw_payload_sha256": "22daa3f49c86c00ab67e288a9732a1fc28c0267af3f9ff40e919ddb9d2b60850",
+      "raw_record_id": "ingestion:43:59",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "670923",
+      "source_title": "일리 디카페인 캡슐커피 63EA (21EA x 3캔)",
+      "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Capsule-Coffee/illy-Decaf-Coffee-Capsule-63EA-21EA-x-3Can/p/670923",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:59",
+    "reasons": [
+      "unit_unresolved"
+    ],
+    "source_record_key": "670923",
+    "source_title": "일리 디카페인 캡슐커피 63EA (21EA x 3캔)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_2.5.2",
+      "raw_record_id": "ingestion:43:62",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "하리오 커피밀 스마트 G 프로",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Hario-Coffee-Mill-Smart-G-Pro/p/685951"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "kitchen-accessories",
+        "coffe-accessoriesbakeware"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h81/hd4/368503092805662.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 62,
+      "mart_native_category_id": "cos_2.5.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 61900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "3e99cf1dbcdab004d599eefc8ed473a54a809842",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Hario-Coffee-Mill-Smart-G-Pro/p/685951",
+        "category": "커피",
+        "cocodalin_join_key": "685951",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Hario-Coffee-Mill-Smart-G-Pro/p/685951",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h81/hd4/368503092805662.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.5.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "685951",
+        "match_key": "__no_brand__|하리오 커피밀 스마트 g 프로||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "하리오 커피밀 스마트 G 프로",
+        "normalized_name": "하리오 커피밀 스마트 G 프로",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 61900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "하리오 커피밀 스마트 G 프로",
+        "raw_promo_type": null,
+        "sale_price": 61900,
+        "source": "costco",
+        "source_record_key": "685951",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Hario-Coffee-Mill-Smart-G-Pro/p/685951",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "1c4d0b1146d13a5f55a1a8e401eb9321e7822b1b92520c885b62f786e2bcd110",
+      "raw_record_id": "ingestion:43:62",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "685951",
+      "source_title": "하리오 커피밀 스마트 G 프로",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Hario-Coffee-Mill-Smart-G-Pro/p/685951",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:62",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "685951",
+    "source_title": "하리오 커피밀 스마트 G 프로"
+  }
+]

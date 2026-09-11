@@ -1,0 +1,4619 @@
+[
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:28"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": "할인",
+    "offer_state": "active",
+    "original_price": 27490,
+    "price": 23790,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "checkout_discount",
+    "public_offer_event_id": "offer-c3438c37b33df030cea108457aaf4f62",
+    "public_source_listing_id": "listing-df80e16445210f732a9ed8120ca367a3",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "2b2a3150f03349b7ef65bf7f8a89eb699cc56096",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Avocados-Large-12ct28kg/p/602500",
+            "category": "과일",
+            "cocodalin_join_key": "602500",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Avocados-Large-12ct28kg/p/602500",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h18/h5f/193067675254814.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "602500",
+            "match_key": "__no_brand__|아보카도 12입 2 8kg|2800.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "아보카도 12입(2.8kg)",
+            "normalized_name": "아보카도 12입(2.8kg)",
+            "pack_qty": 2.8,
+            "pack_unit": "kg",
+            "price": 27490,
+            "promo_label": "할인",
+            "promo_type": "checkout_discount",
+            "raw_name": "아보카도 12입(2.8kg)",
+            "raw_promo_type": "discount",
+            "sale_price": 23790,
+            "source": "costco",
+            "source_record_key": "602500",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Avocados-Large-12ct28kg/p/602500",
+            "unit_price": 850.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 850원",
+            "unit_price_displayed": 850,
+            "unit_price_text": "100G당 850원"
+          },
+          "raw_payload_sha256": "529f86c0237d1662997e7afa707c637d504877766de2e396738cc407ec88d601",
+          "raw_record_id": "ingestion:47:28",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:28",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:43:82"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        43
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:59.030448Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 36490,
+    "price_per_100g": 3612.8713,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-008155b22eef9dfe04a52d0b03c79785",
+    "public_source_listing_id": "listing-15802505c27b532fbf49c50e175d6f37",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:59.030448Z",
+          "ingestion_id": 43,
+          "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+          "mart_native_category_id": "cos_10.2",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "a003f495695221e296b7cd91e0748a5f53e7d9de",
+            "canonical_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Paul-Bassett-Whole-Bean-Coffee-101kg/p/603301",
+            "category": "커피",
+            "cocodalin_join_key": "603301",
+            "detail_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Paul-Bassett-Whole-Bean-Coffee-101kg/p/603301",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h32/hd6/421874450202654.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.2",
+            "mart_native_category_path": "커피",
+            "mart_native_code": "603301",
+            "match_key": "__no_brand__|폴바셋 시그니처 블렌드 원두커피 1 01kg|1010.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "폴바셋 시그니처 블렌드 원두커피 1.01kg",
+            "normalized_name": "폴바셋 시그니처 블렌드 원두커피 1.01kg",
+            "pack_qty": 1.01,
+            "pack_unit": "kg",
+            "price": 36490,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "폴바셋 시그니처 블렌드 원두커피 1.01kg",
+            "raw_promo_type": null,
+            "sale_price": 36490,
+            "source": "costco",
+            "source_record_key": "603301",
+            "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Whole-BeansGround-Coffee/Paul-Bassett-Whole-Bean-Coffee-101kg/p/603301",
+            "unit_price": 361.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 361원",
+            "unit_price_displayed": 361,
+            "unit_price_text": "10G당 361원"
+          },
+          "raw_payload_sha256": "12ad6395fd60bf27678b7e21c5c38d44f22d960df58af64483e23c96fa5e1ad6",
+          "raw_record_id": "ingestion:43:82",
+          "source_category_path": [
+            "커피"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:43:82",
+    "standard_unit_price": 3612.8713,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:48:0"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        48
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:16.801509Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 36990,
+    "price_per_100g": 739.8,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-b1a388e48520bbec25c711e7efcfd508",
+    "public_source_listing_id": "listing-aaa722ac056ece644403ea90e849a3a0",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:16.801509Z",
+          "ingestion_id": 48,
+          "ingestion_received_at": "2026-08-31T01:52:16.801509Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "61a5d54abaaddd07e291c06a3881a70aa98ab1ae",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Premium-Grape-Tomatoes-5kg/p/604233",
+            "category": "채소",
+            "cocodalin_join_key": "604233",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Premium-Grape-Tomatoes-5kg/p/604233",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h61/ha3/294820651794462.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "채소",
+            "mart_native_code": "604233",
+            "match_key": "__no_brand__|대추토마토 5kg|5000.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "대추토마토 5kg",
+            "normalized_name": "대추토마토 5kg",
+            "pack_qty": 5,
+            "pack_unit": "kg",
+            "price": 36990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "대추토마토 5kg",
+            "raw_promo_type": null,
+            "sale_price": 36990,
+            "source": "costco",
+            "source_record_key": "604233",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Premium-Grape-Tomatoes-5kg/p/604233",
+            "unit_price": 740.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 740원",
+            "unit_price_displayed": 740,
+            "unit_price_text": "100G당 740원"
+          },
+          "raw_payload_sha256": "a05e476b408d3c80c5afcf6b2368f83aab5f58016c105e08c2e672eeeae886f8",
+          "raw_record_id": "ingestion:48:0",
+          "source_category_path": [
+            "채소"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:48:0",
+    "standard_unit_price": 739.8,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:23"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 34990,
+    "price_per_100g": 699.8,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-3c5b7ee9ac41b913e961e135ffcaf10c",
+    "public_source_listing_id": "listing-c3f3b7505d4fdea04a7e97ccee42b6a9",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "270cad055965c40eacc7a53e23a842d9e26b7c53",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Tomatoes-5kg/p/604234",
+            "category": "과일",
+            "cocodalin_join_key": "604234",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Tomatoes-5kg/p/604234",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hee/hd1/62211837657118.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "604234",
+            "match_key": "__no_brand__|토마토 5kg|5000.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "토마토 5kg",
+            "normalized_name": "토마토 5kg",
+            "pack_qty": 5,
+            "pack_unit": "kg",
+            "price": 34990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "토마토 5kg",
+            "raw_promo_type": null,
+            "sale_price": 34990,
+            "source": "costco",
+            "source_record_key": "604234",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Tomatoes-5kg/p/604234",
+            "unit_price": 700.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 700원",
+            "unit_price_displayed": 700,
+            "unit_price_text": "100G당 700원"
+          },
+          "raw_payload_sha256": "7112846bea4400aff7a2953932b6eebbf6555da45186cfa2724c5e397360babe",
+          "raw_record_id": "ingestion:47:23",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:23",
+    "standard_unit_price": 699.8,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:63"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 37990,
+    "price_per_100g": 1266.3333,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-8d2846de3728b03cfac5ddd737d72dc3",
+    "public_source_listing_id": "listing-3217dfc2424f4da77dd7daee59689a3c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "e15573e1e79fe5372f4a6ce3ab23edc81c5abeb8",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/-3kg/p/604235",
+            "category": "과일",
+            "cocodalin_join_key": "604235",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/-3kg/p/604235",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb5/hd2/155083808866334.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "604235",
+            "match_key": "__no_brand__|하우스 밀감 3kg|3000.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하우스 밀감 3kg",
+            "normalized_name": "하우스 밀감 3kg",
+            "pack_qty": 3,
+            "pack_unit": "kg",
+            "price": 37990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "하우스 밀감 3kg",
+            "raw_promo_type": null,
+            "sale_price": 37990,
+            "source": "costco",
+            "source_record_key": "604235",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/-3kg/p/604235",
+            "unit_price": 1266.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,266원",
+            "unit_price_displayed": 1266,
+            "unit_price_text": "100G당 1,266원"
+          },
+          "raw_payload_sha256": "28495f8c7f063385fd43f09e6bf74c83dc9a9ee2740dd470294181d3fed0fc1d",
+          "raw_record_id": "ingestion:47:63",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:63",
+    "standard_unit_price": 1266.3333,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:59"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 24490,
+    "price_per_100g": 382.6562,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-ce3b2fedac0039fbdd9fb75e89e8d46b",
+    "public_source_listing_id": "listing-77be4909bf1f67106e52763922d0cdff",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "e8b4d39efa04f42c2e38386cd1587e8c54c88bc0",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Republic-of-South-Africa-Grapefruits-64kg/p/604814",
+            "category": "과일",
+            "cocodalin_join_key": "604814",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Republic-of-South-Africa-Grapefruits-64kg/p/604814",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h41/hff/255088375824414.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "604814",
+            "match_key": "__no_brand__|남아공 자몽 6 4kg|6400.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "남아공 자몽 6.4kg",
+            "normalized_name": "남아공 자몽 6.4kg",
+            "pack_qty": 6.4,
+            "pack_unit": "kg",
+            "price": 24490,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "남아공 자몽 6.4kg",
+            "raw_promo_type": null,
+            "sale_price": 24490,
+            "source": "costco",
+            "source_record_key": "604814",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Republic-of-South-Africa-Grapefruits-64kg/p/604814",
+            "unit_price": null,
+            "unit_price_basis": null,
+            "unit_price_basis_raw": null,
+            "unit_price_display": null,
+            "unit_price_displayed": null,
+            "unit_price_text": null
+          },
+          "raw_payload_sha256": "fc2786a92a7b2558e4fe319dbe16c72ce29fce34fdb3386e671f81de45e16801",
+          "raw_record_id": "ingestion:47:59",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:59",
+    "standard_unit_price": 382.6562,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:29"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": "할인",
+    "offer_state": "active",
+    "original_price": 39990,
+    "price": 35990,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "checkout_discount",
+    "public_offer_event_id": "offer-9df039af7114ea4c5653b3b6687e6d3e",
+    "public_source_listing_id": "listing-b3c9305c25d3b40d5586efa05defd457",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "5e2af21e8aef5bb067f22c3efa18bcd4b80b3f95",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Grape-Tomatoes-5kg/p/605533",
+            "category": "과일",
+            "cocodalin_join_key": "605533",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Grape-Tomatoes-5kg/p/605533",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4f/h9c/294109796139038.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "605533",
+            "match_key": "__no_brand__|방울토마토 5kg|5000.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "방울토마토 5kg",
+            "normalized_name": "방울토마토 5kg",
+            "pack_qty": 5,
+            "pack_unit": "kg",
+            "price": 39990,
+            "promo_label": "할인",
+            "promo_type": "checkout_discount",
+            "raw_name": "방울토마토 5kg",
+            "raw_promo_type": "discount",
+            "sale_price": 35990,
+            "source": "costco",
+            "source_record_key": "605533",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Grape-Tomatoes-5kg/p/605533",
+            "unit_price": 720.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 720원",
+            "unit_price_displayed": 720,
+            "unit_price_text": "100G당 720원"
+          },
+          "raw_payload_sha256": "cf9b29053737cb279b080d87bd2651aa8d32f90ad8a69d397df6eb066d1d25cf",
+          "raw_record_id": "ingestion:47:29",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:29",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:40:85"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        40
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:48.320787Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 13990,
+    "price_per_100g": 1238.0531,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-845351eebf9eb13fc65426651e2f1f18",
+    "public_source_listing_id": "listing-fcef2c508307d726148b67807f1b5178",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:48.320787Z",
+          "ingestion_id": 40,
+          "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+          "mart_native_category_id": "cos_18.15",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "b3e630a3811b7fca0e743ce0f00f18b8fcbaf765",
+            "canonical_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/Kirkland-Signature-Tortilla-Chips-113kg/p/605927",
+            "category": "과자",
+            "cocodalin_join_key": "605927",
+            "detail_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/Kirkland-Signature-Tortilla-Chips-113kg/p/605927",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h7b/h7e/14044007464990.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_18.15",
+            "mart_native_category_path": "과자",
+            "mart_native_code": "605927",
+            "match_key": "__no_brand__|커클랜드 시그니춰 토티야 칩스 1 13kg|1130.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "커클랜드 시그니춰 토티야 칩스 1.13kg",
+            "normalized_name": "커클랜드 시그니춰 토티야 칩스 1.13kg",
+            "pack_qty": 1.13,
+            "pack_unit": "kg",
+            "price": 13990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "커클랜드 시그니춰 토티야 칩스 1.13kg",
+            "raw_promo_type": null,
+            "sale_price": 13990,
+            "source": "costco",
+            "source_record_key": "605927",
+            "source_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/Kirkland-Signature-Tortilla-Chips-113kg/p/605927",
+            "unit_price": 124.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 124원",
+            "unit_price_displayed": 124,
+            "unit_price_text": "10G당 124원"
+          },
+          "raw_payload_sha256": "d4d389c9f301556db541f1ba7817f65dfe6b4cfedde553677717be98169eb0a2",
+          "raw_record_id": "ingestion:40:85",
+          "source_category_path": [
+            "과자"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:40:85",
+    "standard_unit_price": 1238.0531,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:12"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": "할인",
+    "offer_state": "active",
+    "original_price": 36490,
+    "price": 32490,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "checkout_discount",
+    "public_offer_event_id": "offer-4f676dc3d8cc7b1c0b5917d8539cbaf6",
+    "public_source_listing_id": "listing-136bcf00e49ee307d9ed040be2a6af81",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "4dfaa8f82c397b0d69b410ae7a7766047f54f6cf",
+            "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Zespri-Gold-Kiwi-Gift-Set-27kg/p/606658",
+            "category": "과일",
+            "cocodalin_join_key": "606658",
+            "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Zespri-Gold-Kiwi-Gift-Set-27kg/p/606658",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h76/hb2/396334175158302.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "606658",
+            "match_key": "__no_brand__|제스프리 골드키위 선물세트2 7kg|2700.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "제스프리 골드키위 선물세트2.7kg",
+            "normalized_name": "제스프리 골드키위 선물세트2.7kg",
+            "pack_qty": 2.7,
+            "pack_unit": "kg",
+            "price": 36490,
+            "promo_label": "할인",
+            "promo_type": "checkout_discount",
+            "raw_name": "제스프리 골드키위 선물세트2.7kg",
+            "raw_promo_type": "discount",
+            "sale_price": 32490,
+            "source": "costco",
+            "source_record_key": "606658",
+            "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Zespri-Gold-Kiwi-Gift-Set-27kg/p/606658",
+            "unit_price": 1203.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,203원",
+            "unit_price_displayed": 1203,
+            "unit_price_text": "100G당 1,203원"
+          },
+          "raw_payload_sha256": "ee47313ec0b1eb65436030c23d6161f43a40e24911900dfa8b7ef73a86381e64",
+          "raw_record_id": "ingestion:47:12",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:12",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:41:67"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        41
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:51.875403Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 14990,
+    "price_per_100g": 3903.6458,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-2bd6642dc344cff91b02c846e91800aa",
+    "public_source_listing_id": "listing-01d7f0838e55d998ed3d345445b0c27e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:51.875403Z",
+          "ingestion_id": 41,
+          "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+          "mart_native_category_id": "cos_10.5",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "452521fa87270492d7603bcbceac8db2d0b2baad",
+            "canonical_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/Podam-Fish-Snack-24g-x-16/p/608044",
+            "category": "과자",
+            "cocodalin_join_key": "608044",
+            "detail_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/Podam-Fish-Snack-24g-x-16/p/608044",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf2/hfd/485405147562014.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.5",
+            "mart_native_category_path": "과자",
+            "mart_native_code": "608044",
+            "match_key": "__no_brand__|포담 빼빼어포 24g x 16|24.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "포담 빼빼어포 24g x 16",
+            "normalized_name": "포담 빼빼어포 24g x 16",
+            "pack_qty": 24,
+            "pack_unit": "g",
+            "price": 14990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "포담 빼빼어포 24g x 16",
+            "raw_promo_type": null,
+            "sale_price": 14990,
+            "source": "costco",
+            "source_record_key": "608044",
+            "source_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/Podam-Fish-Snack-24g-x-16/p/608044",
+            "unit_price": 3904.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 3,904원",
+            "unit_price_displayed": 3904,
+            "unit_price_text": "100G당 3,904원"
+          },
+          "raw_payload_sha256": "9456de1c321b66c8ba0858b4a81ee63a9354ae42c60937175dd3d2d2e5f54d8e",
+          "raw_record_id": "ingestion:41:67",
+          "source_category_path": [
+            "과자"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:41:67",
+    "standard_unit_price": 3903.6458,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:43:54"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        43
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:59.030448Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 33990,
+    "price_per_100g": 25177.7778,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-10c83a4faf8261073fbbdd1c966fbf97",
+    "public_source_listing_id": "listing-745881599f0061278db95034914b13ad",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:59.030448Z",
+          "ingestion_id": 43,
+          "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+          "mart_native_category_id": "cos_10.2",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "ba8195f1e250bebd546ae0793c2bb0a76b552635",
+            "canonical_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/p/611162",
+            "category": "커피",
+            "cocodalin_join_key": "611162",
+            "detail_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/p/611162",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h0b/haf/502978655059998.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.2",
+            "mart_native_category_path": "커피",
+            "mart_native_code": "611162",
+            "match_key": "__no_brand__|카누 미니 다크 로스트 커피 0 9g x 150스틱|0.9|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "카누 미니 다크 로스트 커피 0.9g x 150스틱",
+            "normalized_name": "카누 미니 다크 로스트 커피 0.9g x 150스틱",
+            "pack_qty": 0.9,
+            "pack_unit": "g",
+            "price": 33990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "카누 미니 다크 로스트 커피 0.9g x 150스틱",
+            "raw_promo_type": null,
+            "sale_price": 33990,
+            "source": "costco",
+            "source_record_key": "611162",
+            "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/p/611162",
+            "unit_price": 2518.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 2,518원",
+            "unit_price_displayed": 2518,
+            "unit_price_text": "10G당 2,518원"
+          },
+          "raw_payload_sha256": "74e1fd83742ff7d831c61eefdce75d41d93783c9e4cba8f071756cad7e6e4542",
+          "raw_record_id": "ingestion:43:54",
+          "source_category_path": [
+            "커피"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:43:54",
+    "standard_unit_price": 25177.7778,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:43:28"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        43
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:59.030448Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 33990,
+    "price_per_100g": 25177.7778,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-c1e1bfed9a8b5f252870396828c52a30",
+    "public_source_listing_id": "listing-e6c8678670a12b0d56fa078b109947ae",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:59.030448Z",
+          "ingestion_id": 43,
+          "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+          "mart_native_category_id": "cos_10.2",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "534b3fc82ddca8bc4a133305520f19fd89e496b9",
+            "canonical_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Instant-Coffee/Kanu-Mini-Mild-Roasted-Coffee-09g-x-150sticks/p/611164",
+            "category": "커피",
+            "cocodalin_join_key": "611164",
+            "detail_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Instant-Coffee/Kanu-Mini-Mild-Roasted-Coffee-09g-x-150sticks/p/611164",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h86/h61/502978656010270.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.2",
+            "mart_native_category_path": "커피",
+            "mart_native_code": "611164",
+            "match_key": "__no_brand__|카누 미니 마일드 로스트 커피 0 9g x 150스틱|0.9|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "카누 미니 마일드 로스트 커피 0.9g x 150스틱",
+            "normalized_name": "카누 미니 마일드 로스트 커피 0.9g x 150스틱",
+            "pack_qty": 0.9,
+            "pack_unit": "g",
+            "price": 33990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "카누 미니 마일드 로스트 커피 0.9g x 150스틱",
+            "raw_promo_type": null,
+            "sale_price": 33990,
+            "source": "costco",
+            "source_record_key": "611164",
+            "source_url": "https://www.costco.co.kr/Foods/CoffeeTeaDrink/Instant-Coffee/Kanu-Mini-Mild-Roasted-Coffee-09g-x-150sticks/p/611164",
+            "unit_price": 2518.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 2,518원",
+            "unit_price_displayed": 2518,
+            "unit_price_text": "10G당 2,518원"
+          },
+          "raw_payload_sha256": "9f12569f96c027558edabea9af4f48c872a6e63ecd2a60cf284e7e242581e941",
+          "raw_record_id": "ingestion:43:28",
+          "source_category_path": [
+            "커피"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:43:28",
+    "standard_unit_price": 25177.7778,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:41:83"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        41
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:51.875403Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 54490,
+    "price_per_100g": 9081.6667,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-3547e72b105d1a2d4c4909b8895ca7f0",
+    "public_source_listing_id": "listing-6c5b5eae499aa03670e5cd43bb3c6bbf",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:51.875403Z",
+          "ingestion_id": 41,
+          "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "fdf551220f6a4323cfc5865b11cc4f219732ef9b",
+            "canonical_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/Delight-Garden-Dried-Fruit-300g-x-2/p/611875",
+            "category": "과자",
+            "cocodalin_join_key": "611875",
+            "detail_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/Delight-Garden-Dried-Fruit-300g-x-2/p/611875",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3c/h91/10376878293022.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "",
+            "mart_native_category_path": "과자",
+            "mart_native_code": "611875",
+            "match_key": "__no_brand__|딜라이트가든 건조과일칩 300g x 2|300.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "딜라이트가든 건조과일칩 300g x 2",
+            "normalized_name": "딜라이트가든 건조과일칩 300g x 2",
+            "pack_qty": 300,
+            "pack_unit": "g",
+            "price": 54490,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "딜라이트가든 건조과일칩 300g x 2",
+            "raw_promo_type": null,
+            "sale_price": 54490,
+            "source": "costco",
+            "source_record_key": "611875",
+            "source_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/Delight-Garden-Dried-Fruit-300g-x-2/p/611875",
+            "unit_price": 9082.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 9,082원",
+            "unit_price_displayed": 9082,
+            "unit_price_text": "100G당 9,082원"
+          },
+          "raw_payload_sha256": "44798d1eb8541b5859a0a8aba9a1dd7a995dff2ec8c6007627b1914eecedcb11",
+          "raw_record_id": "ingestion:41:83",
+          "source_category_path": [
+            "과자"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:41:83",
+    "standard_unit_price": 9081.6667,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:43:63"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        43
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:59.030448Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 47990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-bcf64cb6c98283cd32307905c341318d",
+    "public_source_listing_id": "listing-ea47ab782593ab769374db8e6a54865d",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:59.030448Z",
+          "ingestion_id": 43,
+          "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "7bbd560b36f47e818797787336d7c89e01263c1f",
+            "canonical_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Starbucks-Espresso-Cream-200ml-x-36can/p/612344",
+            "category": "커피",
+            "cocodalin_join_key": "612344",
+            "detail_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Starbucks-Espresso-Cream-200ml-x-36can/p/612344",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h6b/h1d/312445798318110.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "",
+            "mart_native_category_path": "커피",
+            "mart_native_code": "612344",
+            "match_key": "__no_brand__|스타벅스 더블샷 200ml x 36캔|200.0|ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "스타벅스 더블샷 200ml x 36캔",
+            "normalized_name": "스타벅스 더블샷 200ml x 36캔",
+            "pack_qty": 200,
+            "pack_unit": "ml",
+            "price": 47990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "스타벅스 더블샷 200ml x 36캔",
+            "raw_promo_type": null,
+            "sale_price": 47990,
+            "source": "costco",
+            "source_record_key": "612344",
+            "source_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Starbucks-Espresso-Cream-200ml-x-36can/p/612344",
+            "unit_price": 667.0,
+            "unit_price_basis": "100㎖",
+            "unit_price_basis_raw": "100㎖",
+            "unit_price_display": "100㎖당 667원",
+            "unit_price_displayed": 667,
+            "unit_price_text": "100㎖당 667원"
+          },
+          "raw_payload_sha256": "c88c47bde2985b08c56d4a3b72e2f66f60f3d9df13d6e7b40490bc92e27f55e4",
+          "raw_record_id": "ingestion:43:63",
+          "source_category_path": [
+            "커피"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:43:63",
+    "standard_unit_price": 666.5278,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:44:4"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        44
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:02.567492Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 43490,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-430396af08144ab5d48fc5b24881a6e6",
+    "public_source_listing_id": "listing-73d855bc2fd2820a9f58ae0b1d9b7d91",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:02.567492Z",
+          "ingestion_id": 44,
+          "ingestion_received_at": "2026-08-31T01:52:02.567492Z",
+          "mart_native_category_id": "cos_10.11",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "3c954dd3d2b55ef268d26d4735543669395dc976",
+            "canonical_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Starbucks-Pike-Place-Roast-Coffee-275ml-x-24bottle/p/612346",
+            "category": "커피",
+            "cocodalin_join_key": "612346",
+            "detail_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Starbucks-Pike-Place-Roast-Coffee-275ml-x-24bottle/p/612346",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h18/hfc/312445799006238.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.11",
+            "mart_native_category_path": "커피",
+            "mart_native_code": "612346",
+            "match_key": "__no_brand__|스타벅스 파이크 플레이스 로스트 275ml x 24|275.0|ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "스타벅스 파이크 플레이스 로스트 275ml x 24",
+            "normalized_name": "스타벅스 파이크 플레이스 로스트 275ml x 24",
+            "pack_qty": 275,
+            "pack_unit": "ml",
+            "price": 43490,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "스타벅스 파이크 플레이스 로스트 275ml x 24",
+            "raw_promo_type": null,
+            "sale_price": 43490,
+            "source": "costco",
+            "source_record_key": "612346",
+            "source_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Starbucks-Pike-Place-Roast-Coffee-275ml-x-24bottle/p/612346",
+            "unit_price": 659.0,
+            "unit_price_basis": "100㎖",
+            "unit_price_basis_raw": "100㎖",
+            "unit_price_display": "100㎖당 659원",
+            "unit_price_displayed": 659,
+            "unit_price_text": "100㎖당 659원"
+          },
+          "raw_payload_sha256": "4910c77b8bf80e45374cab69840e4940ec4e591fd044ee3f0634fac66772f3ec",
+          "raw_record_id": "ingestion:44:4",
+          "source_category_path": [
+            "커피"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:44:4",
+    "standard_unit_price": 658.9394,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:42:1"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        42
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:55.448754Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 47990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-0d546ba36fc627415ba19da652c374a1",
+    "public_source_listing_id": "listing-5b93815c07a0de453434a360edaf7a8b",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:55.448754Z",
+          "ingestion_id": 42,
+          "ingestion_received_at": "2026-08-31T01:51:55.448754Z",
+          "mart_native_category_id": "cos_10.11",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "9fcaaf722bb9efe6a96eb71ebf4e24a35efd02af",
+            "canonical_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Red-Bull-Energy-Drink-355ml-x-24can/p/612356",
+            "category": "음료",
+            "cocodalin_join_key": "612356",
+            "detail_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Red-Bull-Energy-Drink-355ml-x-24can/p/612356",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4b/h4d/10413311524894.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.11",
+            "mart_native_category_path": "음료",
+            "mart_native_code": "612356",
+            "match_key": "__no_brand__|레드불 에너지 드링크 355ml x 24캔|355.0|ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "레드불 에너지 드링크 355ml x 24캔",
+            "normalized_name": "레드불 에너지 드링크 355ml x 24캔",
+            "pack_qty": 355,
+            "pack_unit": "ml",
+            "price": 47990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "레드불 에너지 드링크 355ml x 24캔",
+            "raw_promo_type": null,
+            "sale_price": 47990,
+            "source": "costco",
+            "source_record_key": "612356",
+            "source_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Red-Bull-Energy-Drink-355ml-x-24can/p/612356",
+            "unit_price": 563.0,
+            "unit_price_basis": "100㎖",
+            "unit_price_basis_raw": "100㎖",
+            "unit_price_display": "100㎖당 563원",
+            "unit_price_displayed": 563,
+            "unit_price_text": "100㎖당 563원"
+          },
+          "raw_payload_sha256": "ad1d6129a92c909b0b98e6c9a068e28288674366496bad12273ae6dc688e4b3b",
+          "raw_record_id": "ingestion:42:1",
+          "source_category_path": [
+            "음료"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:42:1",
+    "standard_unit_price": 563.2629,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:41:7"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        41
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:51.875403Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 19390,
+    "price_per_100g": 3231.6667,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-fb59c37d4efe2c92551754356e801f60",
+    "public_source_listing_id": "listing-d9c9c9ae373ea8d72328a6064af10854",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:51.875403Z",
+          "ingestion_id": 41,
+          "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+          "mart_native_category_id": "cos_10.5",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "e02b95740402ea8a110be2fb7ee758347604729e",
+            "canonical_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/AMANOYA-Rice-Cracker-600g-25g-x-24/p/612939",
+            "category": "과자",
+            "cocodalin_join_key": "612939",
+            "detail_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/AMANOYA-Rice-Cracker-600g-25g-x-24/p/612939",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h75/hde/245232699047966.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.5",
+            "mart_native_category_path": "과자",
+            "mart_native_code": "612939",
+            "match_key": "__no_brand__|amanoya 쌀 크래커 600g 25g x 24|25.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "AMANOYA 쌀 크래커 600g / 25g x 24",
+            "normalized_name": "AMANOYA 쌀 크래커 600g / 25g x 24",
+            "pack_qty": 25,
+            "pack_unit": "g",
+            "price": 19390,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "AMANOYA 쌀 크래커 600g / 25g x 24",
+            "raw_promo_type": null,
+            "sale_price": 19390,
+            "source": "costco",
+            "source_record_key": "612939",
+            "source_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/AMANOYA-Rice-Cracker-600g-25g-x-24/p/612939",
+            "unit_price": 323.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 323원",
+            "unit_price_displayed": 323,
+            "unit_price_text": "10G당 323원"
+          },
+          "raw_payload_sha256": "acb4a292d01bcb39b19390f64ce6f3c562b7fbf9f65ef8e7427845438f2a8c5f",
+          "raw_record_id": "ingestion:41:7",
+          "source_category_path": [
+            "과자"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:41:7",
+    "standard_unit_price": 3231.6667,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:40:95"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        40
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:48.320787Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 12890,
+    "price_per_100g": 3682.8571,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-1161250ce9f184c42aac2733bc62912b",
+    "public_source_listing_id": "listing-9b577c0eba225e491d29a1886e65185a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:48.320787Z",
+          "ingestion_id": 40,
+          "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+          "mart_native_category_id": "cos_10.5",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "1711a81b00ef23bffb81ba6657512f52363175b0",
+            "canonical_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/Tofu-Cracker-350G-50G-X-7/p/613478",
+            "category": "과자",
+            "cocodalin_join_key": "613478",
+            "detail_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/Tofu-Cracker-350G-50G-X-7/p/613478",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h26/h73/240119813439518.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.5",
+            "mart_native_category_path": "과자",
+            "mart_native_code": "613478",
+            "match_key": "__no_brand__|쿠키아 뚜부크래커 350g 50g x 7|50.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "쿠키아 뚜부크래커 350G / 50G X 7",
+            "normalized_name": "쿠키아 뚜부크래커 350G / 50G X 7",
+            "pack_qty": 50,
+            "pack_unit": "G",
+            "price": 12890,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "쿠키아 뚜부크래커 350G / 50G X 7",
+            "raw_promo_type": null,
+            "sale_price": 12890,
+            "source": "costco",
+            "source_record_key": "613478",
+            "source_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/Tofu-Cracker-350G-50G-X-7/p/613478",
+            "unit_price": 368.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 368원",
+            "unit_price_displayed": 368,
+            "unit_price_text": "10G당 368원"
+          },
+          "raw_payload_sha256": "052840e750e995dd0d0569e530e749c6b3539befa5e9d0f36e9e3b5896d70897",
+          "raw_record_id": "ingestion:40:95",
+          "source_category_path": [
+            "과자"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:40:95",
+    "standard_unit_price": 3682.8571,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:38:86"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        38
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:41.209255Z",
+    "discount_rate": null,
+    "event_name": "할인",
+    "offer_state": "active",
+    "original_price": 39990,
+    "price": 33490,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "checkout_discount",
+    "public_offer_event_id": "offer-2854d4a8b848d5e0ac85745874547887",
+    "public_source_listing_id": "listing-68b3a99822c18f3f08d327f070e3e1a3",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:41.209255Z",
+          "ingestion_id": 38,
+          "ingestion_received_at": "2026-08-31T01:51:41.209255Z",
+          "mart_native_category_id": "cos_10.11",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "3df62c4801b75de823cb93a66aef5a9c79493e3c",
+            "canonical_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Yonsei-Black-Bean-Soymilk-190ml-x-72/p/613910",
+            "category": "우유",
+            "cocodalin_join_key": "613910",
+            "detail_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Yonsei-Black-Bean-Soymilk-190ml-x-72/p/613910",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h18/h07/168863317491742.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.11",
+            "mart_native_category_path": "우유",
+            "mart_native_code": "613910",
+            "match_key": "__no_brand__|연세 우리콩 두유 검은콩 190ml x 72|190.0|ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "연세 우리콩 두유 검은콩 190ml x 72",
+            "normalized_name": "연세 우리콩 두유 검은콩 190ml x 72",
+            "pack_qty": 190,
+            "pack_unit": "ml",
+            "price": 39990,
+            "promo_label": "할인",
+            "promo_type": "checkout_discount",
+            "raw_name": "연세 우리콩 두유 검은콩 190ml x 72",
+            "raw_promo_type": "discount",
+            "sale_price": 33490,
+            "source": "costco",
+            "source_record_key": "613910",
+            "source_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Yonsei-Black-Bean-Soymilk-190ml-x-72/p/613910",
+            "unit_price": 245.0,
+            "unit_price_basis": "100㎖",
+            "unit_price_basis_raw": "100㎖",
+            "unit_price_display": "100㎖당 245원",
+            "unit_price_displayed": 245,
+            "unit_price_text": "100㎖당 245원"
+          },
+          "raw_payload_sha256": "202681f91ddc4382a66e9eee08f30bd5b95e67177b8733dec0cdbe57572b6d47",
+          "raw_record_id": "ingestion:38:86",
+          "source_category_path": [
+            "우유"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:38:86",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:48"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 44990,
+    "price_per_100g": 1499.6667,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-e396ff511d573d83a7c6bab2b2a8c109",
+    "public_source_listing_id": "listing-dae80878dfd1afcaa3cc9675b037eeba",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "5821ffb620a73713dcf7b6f19e3ba2b300eacaca",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Jeju-Bulrocho-Premium-House-Mandarins-3kg/p/614433",
+            "category": "과일",
+            "cocodalin_join_key": "614433",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Jeju-Bulrocho-Premium-House-Mandarins-3kg/p/614433",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb7/had/189722457538590.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "614433",
+            "match_key": "__no_brand__|제주 불로초 고당도 하우스 감귤 3kg|3000.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "제주 불로초 고당도 하우스 감귤 3kg",
+            "normalized_name": "제주 불로초 고당도 하우스 감귤 3kg",
+            "pack_qty": 3,
+            "pack_unit": "kg",
+            "price": 44990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "제주 불로초 고당도 하우스 감귤 3kg",
+            "raw_promo_type": null,
+            "sale_price": 44990,
+            "source": "costco",
+            "source_record_key": "614433",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Jeju-Bulrocho-Premium-House-Mandarins-3kg/p/614433",
+            "unit_price": 1500.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,500원",
+            "unit_price_displayed": 1500,
+            "unit_price_text": "100G당 1,500원"
+          },
+          "raw_payload_sha256": "698306b925fe04222be301c2da1a97f90e354e98fbf02b8ec9b885c6328de03d",
+          "raw_record_id": "ingestion:47:48",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:48",
+    "standard_unit_price": 1499.6667,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:99"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 33490,
+    "price_per_100g": 669.8,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-cd30596110d6e6931ff22642b6c775d6",
+    "public_source_listing_id": "listing-d4c394eca507a5219098e7710aafcf17",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "2d91bc2dc55e45a09976d8545dab200fcbd3d869",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Tomatoes-5kg/p/614490",
+            "category": "채소",
+            "cocodalin_join_key": "614490",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Tomatoes-5kg/p/614490",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hdc/h71/294820655104030.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "채소",
+            "mart_native_code": "614490",
+            "match_key": "__no_brand__|찰토마토 5kg|5000.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "찰토마토 5kg",
+            "normalized_name": "찰토마토 5kg",
+            "pack_qty": 5,
+            "pack_unit": "kg",
+            "price": 33490,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "찰토마토 5kg",
+            "raw_promo_type": null,
+            "sale_price": 33490,
+            "source": "costco",
+            "source_record_key": "614490",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Tomatoes-5kg/p/614490",
+            "unit_price": 670.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 670원",
+            "unit_price_displayed": 670,
+            "unit_price_text": "100G당 670원"
+          },
+          "raw_payload_sha256": "88f56f68606ea042fc09e26d5e0d0956696067b58e59021cd1bd0ed020f837c3",
+          "raw_record_id": "ingestion:47:99",
+          "source_category_path": [
+            "채소"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:99",
+    "standard_unit_price": 669.8,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:38:78"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        38
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:41.209255Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 54900,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-255a4496d45fc1f3d17b082783e3abf1",
+    "public_source_listing_id": "listing-ab50fe700b4eea5aa74ad9ef74078a3d",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:41.209255Z",
+          "ingestion_id": 38,
+          "ingestion_received_at": "2026-08-31T01:51:41.209255Z",
+          "mart_native_category_id": "cos_10.11",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "6fc74cd90bd5bf5bc70d6432f716447ffd09924f",
+            "canonical_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Sahmyook-Black-Bean-Soymilk-190ml-x-24ct-x-3/p/615290",
+            "category": "우유",
+            "cocodalin_join_key": "615290",
+            "detail_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Sahmyook-Black-Bean-Soymilk-190ml-x-24ct-x-3/p/615290",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h35/h94/228113618763806.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.11",
+            "mart_native_category_path": "우유",
+            "mart_native_code": "615290",
+            "match_key": "__no_brand__|삼육두유 국산 검은콩 두유 190ml x 24 x 3|190.0|ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "삼육두유 국산 검은콩 두유 190ml x 24 x 3",
+            "normalized_name": "삼육두유 국산 검은콩 두유 190ml x 24 x 3",
+            "pack_qty": 190,
+            "pack_unit": "ml",
+            "price": 54900,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "삼육두유 국산 검은콩 두유 190ml x 24 x 3",
+            "raw_promo_type": null,
+            "sale_price": 54900,
+            "source": "costco",
+            "source_record_key": "615290",
+            "source_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Sahmyook-Black-Bean-Soymilk-190ml-x-24ct-x-3/p/615290",
+            "unit_price": 401.0,
+            "unit_price_basis": "100㎖",
+            "unit_price_basis_raw": "100㎖",
+            "unit_price_display": "100㎖당 401원",
+            "unit_price_displayed": 401,
+            "unit_price_text": "100㎖당 401원"
+          },
+          "raw_payload_sha256": "425b5bb358b0f621cfd612c312f4bfe6280056330f8e3d374546329c9514989e",
+          "raw_record_id": "ingestion:38:78",
+          "source_category_path": [
+            "우유"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:38:78",
+    "standard_unit_price": 401.3158,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:40:88"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        40
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:48.320787Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 14990,
+    "price_per_100g": 1763.5294,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-55e33d419f0b839eac2c4e193eeef405",
+    "public_source_listing_id": "listing-6cd6f6f03db9f60ce7d579bedc7e9db0",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:48.320787Z",
+          "ingestion_id": 40,
+          "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+          "mart_native_category_id": "cos_10.5",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "ede380a48e3d551e8a9e3a06789ad41cceff877d",
+            "canonical_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/FRITO-LAY-DORITOS-Nacho-Cheese-Chips-850g/p/615742",
+            "category": "과자",
+            "cocodalin_join_key": "615742",
+            "detail_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/FRITO-LAY-DORITOS-Nacho-Cheese-Chips-850g/p/615742",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hbf/h70/490076996534302.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.5",
+            "mart_native_category_path": "과자",
+            "mart_native_code": "615742",
+            "match_key": "__no_brand__|frito lay 도리토스 나초 칩 850g|850.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "FRITO-LAY 도리토스 나초 칩 850g",
+            "normalized_name": "FRITO-LAY 도리토스 나초 칩 850g",
+            "pack_qty": 850,
+            "pack_unit": "g",
+            "price": 14990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "FRITO-LAY 도리토스 나초 칩 850g",
+            "raw_promo_type": null,
+            "sale_price": 14990,
+            "source": "costco",
+            "source_record_key": "615742",
+            "source_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/FRITO-LAY-DORITOS-Nacho-Cheese-Chips-850g/p/615742",
+            "unit_price": 176.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 176원",
+            "unit_price_displayed": 176,
+            "unit_price_text": "10G당 176원"
+          },
+          "raw_payload_sha256": "f4e1db1ff47b6b9b8325b041c50b5b2197a962444ec2668a16fd5ba0b5cea1e7",
+          "raw_record_id": "ingestion:40:88",
+          "source_category_path": [
+            "과자"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:40:88",
+    "standard_unit_price": 1763.5294,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:86"
+      ],
+      "review_reasons": [
+        "promotion_conditions_unresolved"
+      ],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 16990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "source_title_purchase_condition": "일품채 목이버섯 200g / 최소구매 2"
+    },
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-813204a2b1d82cc128e7481fac9c0a7f",
+    "public_source_listing_id": "listing-bb9a233b8b3e6cdcb5560540f6b8753f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.4",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "40298f07e21a894a9f3f04326ee2c534b179c075",
+            "canonical_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/Ilpumchae-Dried-Tree-Ear-Mushroom-200g-MOQ-2/p/615852",
+            "category": "채소",
+            "cocodalin_join_key": "615852",
+            "detail_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/Ilpumchae-Dried-Tree-Ear-Mushroom-200g-MOQ-2/p/615852",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h03/hab/153742562754590.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.4",
+            "mart_native_category_path": "채소",
+            "mart_native_code": "615852",
+            "match_key": "__no_brand__|일품채 목이버섯 200g 최소구매 2|200.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "일품채 목이버섯 200g / 최소구매 2",
+            "normalized_name": "일품채 목이버섯 200g / 최소구매 2",
+            "pack_qty": 200,
+            "pack_unit": "g",
+            "price": 16990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "일품채 목이버섯 200g / 최소구매 2",
+            "raw_promo_type": null,
+            "sale_price": 16990,
+            "source": "costco",
+            "source_record_key": "615852",
+            "source_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/Ilpumchae-Dried-Tree-Ear-Mushroom-200g-MOQ-2/p/615852",
+            "unit_price": 8495.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 8,495원",
+            "unit_price_displayed": 8495,
+            "unit_price_text": "100G당 8,495원"
+          },
+          "raw_payload_sha256": "3c872458fdcc961e6c92ab6d55379f9bee500ee434854b08ec175d1c3de36bcf",
+          "raw_record_id": "ingestion:47:86",
+          "source_category_path": [
+            "채소"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {
+        "source_title_purchase_condition": "일품채 목이버섯 200g / 최소구매 2"
+      }
+    },
+    "raw_record_id": "ingestion:47:86",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:39:89"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        39
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:44.797215Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 21990,
+    "price_per_100g": 1308.9286,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-4d23e90c8886e33aa11f6dae5a8ac752",
+    "public_source_listing_id": "listing-2079c5498b9d84392ac9f9a53ab0eb1f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:44.797215Z",
+          "ingestion_id": 39,
+          "ingestion_received_at": "2026-08-31T01:51:44.797215Z",
+          "mart_native_category_id": "cos_10.3",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "4364f4da03bd4b60c3f0914a39ac2cc82cae5d61",
+            "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Samyang-Carbo-Buldak-Cup-Ramyun-105g-x-16/p/615854",
+            "category": "라면",
+            "cocodalin_join_key": "615854",
+            "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Samyang-Carbo-Buldak-Cup-Ramyun-105g-x-16/p/615854",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb3/h75/492060333047838.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.3",
+            "mart_native_category_path": "라면",
+            "mart_native_code": "615854",
+            "match_key": "__no_brand__|삼양 까르보 불닭볶음면 큰 컵 105g x 16|105.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "삼양 까르보 불닭볶음면 큰 컵 105g x 16",
+            "normalized_name": "삼양 까르보 불닭볶음면 큰 컵 105g x 16",
+            "pack_qty": 105,
+            "pack_unit": "g",
+            "price": 21990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "삼양 까르보 불닭볶음면 큰 컵 105g x 16",
+            "raw_promo_type": null,
+            "sale_price": 21990,
+            "source": "costco",
+            "source_record_key": "615854",
+            "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/Samyang-Carbo-Buldak-Cup-Ramyun-105g-x-16/p/615854",
+            "unit_price": 1309.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,309원",
+            "unit_price_displayed": 1309,
+            "unit_price_text": "100G당 1,309원"
+          },
+          "raw_payload_sha256": "e402622f2290e02aa3599d939997c62087fef55a51a0c426c5f04a22f48215a7",
+          "raw_record_id": "ingestion:39:89",
+          "source_category_path": [
+            "라면"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:39:89",
+    "standard_unit_price": 1308.9286,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:49"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": "할인",
+    "offer_state": "active",
+    "original_price": 65990,
+    "price": 58990,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "checkout_discount",
+    "public_offer_event_id": "offer-8be5d077c807aa13729e6a950fe7887f",
+    "public_source_listing_id": "listing-84edc75c0a8140959e7bf61e7e6502bf",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "19aed694e51463e1dcd920180f2d1739e2313ca8",
+            "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/New-Zealand-Zespri-Jumbo-Gold-Kiwi-Gift-Set-54kg/p/616606",
+            "category": "과일",
+            "cocodalin_join_key": "616606",
+            "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/New-Zealand-Zespri-Jumbo-Gold-Kiwi-Gift-Set-54kg/p/616606",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hc2/h00/256492909887518.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "616606",
+            "match_key": "__no_brand__|뉴질랜드 제스프리 점보 골드키위 선물세트 5 4kg|5400.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "뉴질랜드 제스프리 점보 골드키위 선물세트 5.4kg",
+            "normalized_name": "뉴질랜드 제스프리 점보 골드키위 선물세트 5.4kg",
+            "pack_qty": 5.4,
+            "pack_unit": "kg",
+            "price": 65990,
+            "promo_label": "할인",
+            "promo_type": "checkout_discount",
+            "raw_name": "뉴질랜드 제스프리 점보 골드키위 선물세트 5.4kg",
+            "raw_promo_type": "discount",
+            "sale_price": 58990,
+            "source": "costco",
+            "source_record_key": "616606",
+            "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/New-Zealand-Zespri-Jumbo-Gold-Kiwi-Gift-Set-54kg/p/616606",
+            "unit_price": 1092.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,092원",
+            "unit_price_displayed": 1092,
+            "unit_price_text": "100G당 1,092원"
+          },
+          "raw_payload_sha256": "84bee9357f30d548808d5e0eaccaf427355639c1f4b9f575ec536d4d45e934c3",
+          "raw_record_id": "ingestion:47:49",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:49",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:41:0"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        41
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:51.875403Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 13790,
+    "price_per_100g": 2188.8889,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-ebc787a2823116a6b189081688037184",
+    "public_source_listing_id": "listing-eff7d65ff85bc9ea0459ceae15b08298",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:51.875403Z",
+          "ingestion_id": 41,
+          "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+          "mart_native_category_id": "cos_10.5",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "9960f55f609665f4528060164f3cb11b078923cc",
+            "canonical_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/Kenji-Green-Onion-Cracker-630g-15g-x-42/p/617025",
+            "category": "과자",
+            "cocodalin_join_key": "617025",
+            "detail_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/Kenji-Green-Onion-Cracker-630g-15g-x-42/p/617025",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h36/he0/208439797350430.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.5",
+            "mart_native_category_path": "과자",
+            "mart_native_code": "617025",
+            "match_key": "__no_brand__|kenji파 크래커 630g 15g x 42|15.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "Kenji파 크래커 630g / 15g x 42",
+            "normalized_name": "Kenji파 크래커 630g / 15g x 42",
+            "pack_qty": 15,
+            "pack_unit": "g",
+            "price": 13790,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "Kenji파 크래커 630g / 15g x 42",
+            "raw_promo_type": null,
+            "sale_price": 13790,
+            "source": "costco",
+            "source_record_key": "617025",
+            "source_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/Kenji-Green-Onion-Cracker-630g-15g-x-42/p/617025",
+            "unit_price": 219.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 219원",
+            "unit_price_displayed": 219,
+            "unit_price_text": "10G당 219원"
+          },
+          "raw_payload_sha256": "6fd617f645bbfadecfb456e57b863321f676cc586ae614cebc3ac886929af3f2",
+          "raw_record_id": "ingestion:41:0",
+          "source_category_path": [
+            "과자"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:41:0",
+    "standard_unit_price": 2188.8889,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:40:64"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        40
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:48.320787Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 31690,
+    "price_per_100g": 10563.3333,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-f9417d1e0344d57720b89b83cd9ba240",
+    "public_source_listing_id": "listing-a4ce1853cea9eb4b9247f4a26cc2de96",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:48.320787Z",
+          "ingestion_id": 40,
+          "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "29f5c82fda47918008310933100cf8bf566601f4",
+            "canonical_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/100-Pure-Freeze-Dried-Apple-30g-x-10/p/617938",
+            "category": "과자",
+            "cocodalin_join_key": "617938",
+            "detail_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/100-Pure-Freeze-Dried-Apple-30g-x-10/p/617938",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h17/hd1/46401810563102.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "과자",
+            "mart_native_code": "617938",
+            "match_key": "__no_brand__|100 순수사과 동결건조 과일 30g x 10|30.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "100% 순수사과 동결건조 과일 30g x 10",
+            "normalized_name": "100% 순수사과 동결건조 과일 30g x 10",
+            "pack_qty": 30,
+            "pack_unit": "g",
+            "price": 31690,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "100% 순수사과 동결건조 과일 30g x 10",
+            "raw_promo_type": null,
+            "sale_price": 31690,
+            "source": "costco",
+            "source_record_key": "617938",
+            "source_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/100-Pure-Freeze-Dried-Apple-30g-x-10/p/617938",
+            "unit_price": 10563.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 10,563원",
+            "unit_price_displayed": 10563,
+            "unit_price_text": "100G당 10,563원"
+          },
+          "raw_payload_sha256": "780da42a2a197fc2ed4401f82a9733fa8000b9b5591d028b1c5e98a2e58c765b",
+          "raw_record_id": "ingestion:40:64",
+          "source_category_path": [
+            "과자"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:40:64",
+    "standard_unit_price": 10563.3333,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:40:65"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        40
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:48.320787Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 33690,
+    "price_per_100g": 16845.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-bafa3aa04f9f8a1da2a064266cb120e7",
+    "public_source_listing_id": "listing-01245a767eb16d1fad93ab977278de6c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:48.320787Z",
+          "ingestion_id": 40,
+          "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+          "mart_native_category_id": "cos_10.4",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "b29cbabb32d2e75d5af300d48563a39ca1e78f77",
+            "canonical_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/100-Pure-Freeze-Dried-Strawberry-20g-x-10/p/617939",
+            "category": "과자",
+            "cocodalin_join_key": "617939",
+            "detail_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/100-Pure-Freeze-Dried-Strawberry-20g-x-10/p/617939",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hee/hfa/68671170871326.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.4",
+            "mart_native_category_path": "과자",
+            "mart_native_code": "617939",
+            "match_key": "__no_brand__|100 순수딸기 동결건조 과일 20g x 10|20.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "100% 순수딸기 동결건조 과일 20g x 10",
+            "normalized_name": "100% 순수딸기 동결건조 과일 20g x 10",
+            "pack_qty": 20,
+            "pack_unit": "g",
+            "price": 33690,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "100% 순수딸기 동결건조 과일 20g x 10",
+            "raw_promo_type": null,
+            "sale_price": 33690,
+            "source": "costco",
+            "source_record_key": "617939",
+            "source_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/100-Pure-Freeze-Dried-Strawberry-20g-x-10/p/617939",
+            "unit_price": 16845.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 16,845원",
+            "unit_price_displayed": 16845,
+            "unit_price_text": "100G당 16,845원"
+          },
+          "raw_payload_sha256": "169079a8f86ca659dc7068d0d0b87fb3a54d497e87b188462ff7037e92f62785",
+          "raw_record_id": "ingestion:40:65",
+          "source_category_path": [
+            "과자"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:40:65",
+    "standard_unit_price": 16845.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:46:97"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        46
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:09.675986Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 34490,
+    "price_per_100g": 459.8667,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-4d8f1e694a86aedc0ceaeffa369f6fe1",
+    "public_source_listing_id": "listing-aa9db36c76c514e0e775c744da9a2309",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:09.675986Z",
+          "ingestion_id": 46,
+          "ingestion_received_at": "2026-08-31T01:52:09.675986Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "6ccd88bed14eb02148ecb4559920c85508de2140",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Pears-75kg/p/619185",
+            "category": "과일",
+            "cocodalin_join_key": "619185",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Pears-75kg/p/619185",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h83/h2b/98280720367646.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "619185",
+            "match_key": "__no_brand__|햇배7 5kg|7500.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "햇배7.5kg",
+            "normalized_name": "햇배7.5kg",
+            "pack_qty": 7.5,
+            "pack_unit": "kg",
+            "price": 34490,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "햇배7.5kg",
+            "raw_promo_type": null,
+            "sale_price": 34490,
+            "source": "costco",
+            "source_record_key": "619185",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Pears-75kg/p/619185",
+            "unit_price": 460.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 460원",
+            "unit_price_displayed": 460,
+            "unit_price_text": "100G당 460원"
+          },
+          "raw_payload_sha256": "bfb890d7cbeceb67403236aa7c401059206745871931827125f1b374d29706c0",
+          "raw_record_id": "ingestion:46:97",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:46:97",
+    "standard_unit_price": 459.8667,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:58"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 17490,
+    "price_per_100g": 1286.0294,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-cdb7059daafd2bb4544441d52d8cd0e1",
+    "public_source_listing_id": "listing-a63fd7956fa37c7436a4d72166f1a696",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_18",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "069997e85a979549237ed80c895ac2c25ac681b2",
+            "canonical_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/Ocean-Spray-Craisins-WholeJuicy-136kg/p/620856",
+            "category": "과일",
+            "cocodalin_join_key": "620856",
+            "detail_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/Ocean-Spray-Craisins-WholeJuicy-136kg/p/620856",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd3/hb9/294978654830622.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_18",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "620856",
+            "match_key": "__no_brand__|ocean spray 건크랜베리 1 36kg|1360.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "Ocean Spray 건크랜베리 1.36kg",
+            "normalized_name": "Ocean Spray 건크랜베리 1.36kg",
+            "pack_qty": 1.36,
+            "pack_unit": "kg",
+            "price": 17490,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "Ocean Spray 건크랜베리 1.36kg",
+            "raw_promo_type": null,
+            "sale_price": 17490,
+            "source": "costco",
+            "source_record_key": "620856",
+            "source_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FruitsVegetables/Ocean-Spray-Craisins-WholeJuicy-136kg/p/620856",
+            "unit_price": 1286.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,286원",
+            "unit_price_displayed": 1286,
+            "unit_price_text": "100G당 1,286원"
+          },
+          "raw_payload_sha256": "f0ca3108075f811329137970abf0409b53a018230b128fe8472362347cce79f3",
+          "raw_record_id": "ingestion:47:58",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:58",
+    "standard_unit_price": 1286.0294,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:40:15"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        40
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:48.320787Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 16490,
+    "price_per_100g": 1649.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-8dfe6b06377ae7f86b29c535d7ff6534",
+    "public_source_listing_id": "listing-e751271391e1a65d5f483c6990a95c04",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:48.320787Z",
+          "ingestion_id": 40,
+          "ingestion_received_at": "2026-08-31T01:51:48.320787Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "98733ce5218e1b30f60b7922af023760b11cc245",
+            "canonical_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/100g-x-10x-2/p/621483",
+            "category": "라면",
+            "cocodalin_join_key": "621483",
+            "detail_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/100g-x-10x-2/p/621483",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h62/h94/414826290216990.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "",
+            "mart_native_category_path": "라면",
+            "mart_native_code": "621483",
+            "match_key": "__no_brand__|백제 김치 쌀국수100g x 10|100.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "백제 김치 쌀국수100g x 10",
+            "normalized_name": "백제 김치 쌀국수100g x 10",
+            "pack_qty": 100,
+            "pack_unit": "g",
+            "price": 16490,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "백제 김치 쌀국수100g x 10",
+            "raw_promo_type": null,
+            "sale_price": 16490,
+            "source": "costco",
+            "source_record_key": "621483",
+            "source_url": "https://www.costco.co.kr/Foods/Processed-Food/PastaNoodles/100g-x-10x-2/p/621483",
+            "unit_price": 1649.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,649원",
+            "unit_price_displayed": 1649,
+            "unit_price_text": "100G당 1,649원"
+          },
+          "raw_payload_sha256": "fc05ba52dd420d4c9d6428bbd613d898156477b517b3853b9ef96145f16a5e4f",
+          "raw_record_id": "ingestion:40:15",
+          "source_category_path": [
+            "라면"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:40:15",
+    "standard_unit_price": 1649.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:41:30"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        41
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:51.875403Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 18990,
+    "price_per_100g": 1186.875,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-4a3d98dcb163a3ba129beb5cc4a20f49",
+    "public_source_listing_id": "listing-d26cf15504ba25e5a474656bdda1ada6",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:51.875403Z",
+          "ingestion_id": 41,
+          "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+          "mart_native_category_id": "cos_10.5",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "4cf7e674d7d8cc0a1ce5bca62e29a6b0f8bf49a0",
+            "canonical_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/PREMIUIM-BEAN-JELLY-16kg-40g-x-40/p/622044",
+            "category": "과자",
+            "cocodalin_join_key": "622044",
+            "detail_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/PREMIUIM-BEAN-JELLY-16kg-40g-x-40/p/622044",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h08/h8f/241424267542558.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.5",
+            "mart_native_category_path": "과자",
+            "mart_native_code": "622044",
+            "match_key": "__no_brand__|화과방 프리미엄 양갱 1 6kg 40g x 40|40.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "화과방 프리미엄 양갱 1.6kg / 40g x 40",
+            "normalized_name": "화과방 프리미엄 양갱 1.6kg / 40g x 40",
+            "pack_qty": 40,
+            "pack_unit": "g",
+            "price": 18990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "화과방 프리미엄 양갱 1.6kg / 40g x 40",
+            "raw_promo_type": null,
+            "sale_price": 18990,
+            "source": "costco",
+            "source_record_key": "622044",
+            "source_url": "https://www.costco.co.kr/Foods/Snack/CookieCracker/PREMIUIM-BEAN-JELLY-16kg-40g-x-40/p/622044",
+            "unit_price": 119.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 119원",
+            "unit_price_displayed": 119,
+            "unit_price_text": "10G당 119원"
+          },
+          "raw_payload_sha256": "1b7ed3da7af0ee619d18da80031a3ac56853586dfe36bc66d3f8cbe12a8e5602",
+          "raw_record_id": "ingestion:41:30",
+          "source_category_path": [
+            "과자"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:41:30",
+    "standard_unit_price": 1186.875,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:38:92"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        38
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:41.209255Z",
+    "discount_rate": null,
+    "event_name": "할인",
+    "offer_state": "active",
+    "original_price": 39990,
+    "price": 33490,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "checkout_discount",
+    "public_offer_event_id": "offer-bc81617599f1f3deae22f92a531f550d",
+    "public_source_listing_id": "listing-633b7ede12b697118993c7abca36d4eb",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:41.209255Z",
+          "ingestion_id": 38,
+          "ingestion_received_at": "2026-08-31T01:51:41.209255Z",
+          "mart_native_category_id": "cos_10.11",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "9ab82d7825514925a845bfa5deda386464a39d63",
+            "canonical_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Yonsei-Black-Bean-Soymilk-190ml-x-72/p/624711",
+            "category": "우유",
+            "cocodalin_join_key": "624711",
+            "detail_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Yonsei-Black-Bean-Soymilk-190ml-x-72/p/624711",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/he3/h34/186655254478878.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.11",
+            "mart_native_category_path": "우유",
+            "mart_native_code": "624711",
+            "match_key": "__no_brand__|연세 우리콩 두유 약콩 190ml x 72|190.0|ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "연세 우리콩 두유 약콩 190ml x 72",
+            "normalized_name": "연세 우리콩 두유 약콩 190ml x 72",
+            "pack_qty": 190,
+            "pack_unit": "ml",
+            "price": 39990,
+            "promo_label": "할인",
+            "promo_type": "checkout_discount",
+            "raw_name": "연세 우리콩 두유 약콩 190ml x 72",
+            "raw_promo_type": "discount",
+            "sale_price": 33490,
+            "source": "costco",
+            "source_record_key": "624711",
+            "source_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Yonsei-Black-Bean-Soymilk-190ml-x-72/p/624711",
+            "unit_price": 245.0,
+            "unit_price_basis": "100㎖",
+            "unit_price_basis_raw": "100㎖",
+            "unit_price_display": "100㎖당 245원",
+            "unit_price_displayed": 245,
+            "unit_price_text": "100㎖당 245원"
+          },
+          "raw_payload_sha256": "20442f2cfc21e4fb3e621c8358da8c79de93b30622150278853e6a9b707d789f",
+          "raw_record_id": "ingestion:38:92",
+          "source_category_path": [
+            "우유"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:38:92",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:27"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 38990,
+    "price_per_100g": 974.75,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-127cc19704778aa76071f3ed89dd2a61",
+    "public_source_listing_id": "listing-97a8b99ea9c9087107d7a1c7a8a07c57",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "f3c60de00fff9a90099187985c32c6e75678e123",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Soft-Peaches-4kg/p/624772",
+            "category": "과일",
+            "cocodalin_join_key": "624772",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Soft-Peaches-4kg/p/624772",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h26/h2c/378800171974686.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "624772",
+            "match_key": "__no_brand__|부드러운복숭아 4kg|4000.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "부드러운복숭아 4kg",
+            "normalized_name": "부드러운복숭아 4kg",
+            "pack_qty": 4,
+            "pack_unit": "kg",
+            "price": 38990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "부드러운복숭아 4kg",
+            "raw_promo_type": null,
+            "sale_price": 38990,
+            "source": "costco",
+            "source_record_key": "624772",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Soft-Peaches-4kg/p/624772",
+            "unit_price": null,
+            "unit_price_basis": null,
+            "unit_price_basis_raw": null,
+            "unit_price_display": null,
+            "unit_price_displayed": null,
+            "unit_price_text": null
+          },
+          "raw_payload_sha256": "108a2fe173a9d9206f9e1c9dfa32ccb202ed85f0325fdae3d4c8b6a25e1dcbac",
+          "raw_record_id": "ingestion:47:27",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:27",
+    "standard_unit_price": 974.75,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:14"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 49990,
+    "price_per_100g": 312.4375,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-7fcef7adea9bac9954746051f2b2efb5",
+    "public_source_listing_id": "listing-5cefa38274e30f9e29dc652950ef2b3a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "6209b9992c0b22cdcddcd8bdb1d18d5de1341f5b",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Republic-of-South-Africa-Grapefruits-16kg/p/624903",
+            "category": "과일",
+            "cocodalin_join_key": "624903",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Republic-of-South-Africa-Grapefruits-16kg/p/624903",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/he7/h54/255088376807454.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "624903",
+            "match_key": "__no_brand__|남아공 자몽16kg|16000.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "남아공 자몽16kg",
+            "normalized_name": "남아공 자몽16kg",
+            "pack_qty": 16,
+            "pack_unit": "kg",
+            "price": 49990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "남아공 자몽16kg",
+            "raw_promo_type": null,
+            "sale_price": 49990,
+            "source": "costco",
+            "source_record_key": "624903",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Republic-of-South-Africa-Grapefruits-16kg/p/624903",
+            "unit_price": null,
+            "unit_price_basis": null,
+            "unit_price_basis_raw": null,
+            "unit_price_display": null,
+            "unit_price_displayed": null,
+            "unit_price_text": null
+          },
+          "raw_payload_sha256": "3b03c8af2f23f9e80db2eb7131e76f247d7aee6d85a6069c7e312e968aeb148a",
+          "raw_record_id": "ingestion:47:14",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:14",
+    "standard_unit_price": 312.4375,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:38:90"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        38
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:41.209255Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 15990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-7b7411ce9d66357cf9a3bf26cca13062",
+    "public_source_listing_id": "listing-7185f46e3ae9a1a680e604c88d5b5f00",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:41.209255Z",
+          "ingestion_id": 38,
+          "ingestion_received_at": "2026-08-31T01:51:41.209255Z",
+          "mart_native_category_id": "cos_10.11",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "90fcb7225de919a659e7c8db3c70ea443a5100bb",
+            "canonical_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Erom-Blackbean-Soymilk-190ml-x-24/p/625499",
+            "category": "우유",
+            "cocodalin_join_key": "625499",
+            "detail_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Erom-Blackbean-Soymilk-190ml-x-24/p/625499",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h1c/h5f/206023701528606.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.11",
+            "mart_native_category_path": "우유",
+            "mart_native_code": "625499",
+            "match_key": "__no_brand__|이롬 약콩 두유 190ml x 24|190.0|ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "이롬 약콩 두유 190ml x 24",
+            "normalized_name": "이롬 약콩 두유 190ml x 24",
+            "pack_qty": 190,
+            "pack_unit": "ml",
+            "price": 15990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "이롬 약콩 두유 190ml x 24",
+            "raw_promo_type": null,
+            "sale_price": 15990,
+            "source": "costco",
+            "source_record_key": "625499",
+            "source_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Erom-Blackbean-Soymilk-190ml-x-24/p/625499",
+            "unit_price": 351.0,
+            "unit_price_basis": "100㎖",
+            "unit_price_basis_raw": "100㎖",
+            "unit_price_display": "100㎖당 351원",
+            "unit_price_displayed": 351,
+            "unit_price_text": "100㎖당 351원"
+          },
+          "raw_payload_sha256": "405c06262d416673d91196effe4826c825e7a7eeeca976368a4fdce4dcd9a22d",
+          "raw_record_id": "ingestion:38:90",
+          "source_category_path": [
+            "우유"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:38:90",
+    "standard_unit_price": 350.6579,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:26"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 38990,
+    "price_per_100g": 974.75,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-029ac8574ce757c3b3f0883563af614f",
+    "public_source_listing_id": "listing-7c465dadac784d4050f6e28ce94dd850",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "daae6e623befc2704aded912fdd1a6be89749210",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Peach-4kg/p/625526",
+            "category": "과일",
+            "cocodalin_join_key": "625526",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Peach-4kg/p/625526",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb1/hee/258937859768350.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "625526",
+            "match_key": "__no_brand__|아삭한 복숭아 4kg|4000.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "아삭한 복숭아 4kg",
+            "normalized_name": "아삭한 복숭아 4kg",
+            "pack_qty": 4,
+            "pack_unit": "kg",
+            "price": 38990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "아삭한 복숭아 4kg",
+            "raw_promo_type": null,
+            "sale_price": 38990,
+            "source": "costco",
+            "source_record_key": "625526",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Peach-4kg/p/625526",
+            "unit_price": 975.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 975원",
+            "unit_price_displayed": 975,
+            "unit_price_text": "100G당 975원"
+          },
+          "raw_payload_sha256": "aa551170e20f76c8f3a32df10a642305543f761328580189436a72a7c402f0e1",
+          "raw_record_id": "ingestion:47:26",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:26",
+    "standard_unit_price": 974.75,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:31"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 26990,
+    "price_per_100g": 1349.5,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-2061fd754bb1df30170bfcf4f8a66309",
+    "public_source_listing_id": "listing-7ef5a62062f6df10db0cc22b8b701e6f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "609648e911aae7abddba7664dde8637acbf8c2f7",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Shine-Muscat-2kg/p/625527",
+            "category": "과일",
+            "cocodalin_join_key": "625527",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Shine-Muscat-2kg/p/625527",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb8/hf7/117709216808990.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "625527",
+            "match_key": "__no_brand__|샤인머스캣 청포도2kg|2000.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "샤인머스캣 청포도2kg",
+            "normalized_name": "샤인머스캣 청포도2kg",
+            "pack_qty": 2,
+            "pack_unit": "kg",
+            "price": 26990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "샤인머스캣 청포도2kg",
+            "raw_promo_type": null,
+            "sale_price": 26990,
+            "source": "costco",
+            "source_record_key": "625527",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Shine-Muscat-2kg/p/625527",
+            "unit_price": 1350.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,350원",
+            "unit_price_displayed": 1350,
+            "unit_price_text": "100G당 1,350원"
+          },
+          "raw_payload_sha256": "c30f3f00a91acba2dadfc35eb6c0d850612a591c6abfb8a0c6e7753f95e35920",
+          "raw_record_id": "ingestion:47:31",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:31",
+    "standard_unit_price": 1349.5,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:50:12"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        50
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:24.342067Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 23990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-1047ad200dbc2b274157a99d90389c0b",
+    "public_source_listing_id": "listing-a81172d5241c4cfd2de64201c3223cb7",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:24.342067Z",
+          "ingestion_id": 50,
+          "ingestion_received_at": "2026-08-31T01:52:24.342067Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "1c9e78727c84456cac3353fa1ac2c1388b98bd7b",
+            "canonical_url": "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Laundry-Detergent/-20x-3/p/625705",
+            "category": "세제",
+            "cocodalin_join_key": "625705",
+            "detail_url": "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Laundry-Detergent/-20x-3/p/625705",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hfa/h37/155735241687070.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "",
+            "mart_native_category_path": "세제",
+            "mart_native_code": "625705",
+            "match_key": "__no_brand__|피죤 리치퍼퓸 의류청정기 섬유유연제 시트 20매x 3|20.0|매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "피죤 리치퍼퓸 의류청정기 섬유유연제 시트 20매x 3",
+            "normalized_name": "피죤 리치퍼퓸 의류청정기 섬유유연제 시트 20매x 3",
+            "pack_qty": 20,
+            "pack_unit": "매",
+            "price": 23990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "피죤 리치퍼퓸 의류청정기 섬유유연제 시트 20매x 3",
+            "raw_promo_type": null,
+            "sale_price": 23990,
+            "source": "costco",
+            "source_record_key": "625705",
+            "source_url": "https://www.costco.co.kr/HomeKitchen/Cleaning-Products/Laundry-Detergent/-20x-3/p/625705",
+            "unit_price": 400.0,
+            "unit_price_basis": "장",
+            "unit_price_basis_raw": "장",
+            "unit_price_display": "장당 400원",
+            "unit_price_displayed": 400,
+            "unit_price_text": "장당 400원"
+          },
+          "raw_payload_sha256": "e04c492d8a5a7e970080a8b13342296086c844b5c8fb549d3de696af0c94b146",
+          "raw_record_id": "ingestion:50:12",
+          "source_category_path": [
+            "세제"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:50:12",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:35"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": "할인",
+    "offer_state": "active",
+    "original_price": 71990,
+    "price": 64990,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "checkout_discount",
+    "public_offer_event_id": "offer-677b55049a1ee394b10805789f404188",
+    "public_source_listing_id": "listing-1c5b4c9e1b12a18d56b3006526548253",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "8c7efabdb41710c2e51aeddb82d1c2aab904422a",
+            "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Brazil-Applemango-Giftset-37kg/p/626033",
+            "category": "과일",
+            "cocodalin_join_key": "626033",
+            "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Brazil-Applemango-Giftset-37kg/p/626033",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h8c/h79/395947103846430.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "626033",
+            "match_key": "__no_brand__|브라질애플망고선물세트3 7kg|3700.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "브라질애플망고선물세트3.7kg",
+            "normalized_name": "브라질애플망고선물세트3.7kg",
+            "pack_qty": 3.7,
+            "pack_unit": "kg",
+            "price": 71990,
+            "promo_label": "할인",
+            "promo_type": "checkout_discount",
+            "raw_name": "브라질애플망고선물세트3.7kg",
+            "raw_promo_type": "discount",
+            "sale_price": 64990,
+            "source": "costco",
+            "source_record_key": "626033",
+            "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Brazil-Applemango-Giftset-37kg/p/626033",
+            "unit_price": 1756.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,756원",
+            "unit_price_displayed": 1756,
+            "unit_price_text": "100G당 1,756원"
+          },
+          "raw_payload_sha256": "ef58433cfdc6cf8c3b5525e372827ba4eaf17e46569b753a54ddc971adc931b7",
+          "raw_record_id": "ingestion:47:35",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:35",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:33"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 55990,
+    "price_per_100g": 1036.8519,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-4f5e1d81cc1d997951fc7e97ea834b70",
+    "public_source_listing_id": "listing-469f619961787c84981aadc533989429",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "9515a1c948e7495f060bf06bbb9cdb119a82a710",
+            "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Newzealand-Zespri-Jumbo-GreenKiwi-Giftset-54kg/p/626036",
+            "category": "과일",
+            "cocodalin_join_key": "626036",
+            "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Newzealand-Zespri-Jumbo-GreenKiwi-Giftset-54kg/p/626036",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf4/hd0/117571080224798.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "626036",
+            "match_key": "__no_brand__|뉴질랜드제스프리점보그린키위선물세트5 4kg|5400.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "뉴질랜드제스프리점보그린키위선물세트5.4kg",
+            "normalized_name": "뉴질랜드제스프리점보그린키위선물세트5.4kg",
+            "pack_qty": 5.4,
+            "pack_unit": "kg",
+            "price": 55990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "뉴질랜드제스프리점보그린키위선물세트5.4kg",
+            "raw_promo_type": null,
+            "sale_price": 55990,
+            "source": "costco",
+            "source_record_key": "626036",
+            "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Newzealand-Zespri-Jumbo-GreenKiwi-Giftset-54kg/p/626036",
+            "unit_price": 1037.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,037원",
+            "unit_price_displayed": 1037,
+            "unit_price_text": "100G당 1,037원"
+          },
+          "raw_payload_sha256": "e8f575fff1abd0eff24ec3326926c9770dd455d91e5a169780b6c7eaadbb918b",
+          "raw_record_id": "ingestion:47:33",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:33",
+    "standard_unit_price": 1036.8519,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:44:74"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        44
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:02.567492Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 28990,
+    "price_per_100g": 8052.7778,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-2ca94d41b3d879889838385b76288ab4",
+    "public_source_listing_id": "listing-afbcc2e16d9c42c874d831e732490896",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:02.567492Z",
+          "ingestion_id": 44,
+          "ingestion_received_at": "2026-08-31T01:52:02.567492Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "0d7473e9fb29fe091dd2dd68f6eada575f79ebd1",
+            "canonical_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FishSeafoods/Mamas-Choice-Cheese-Calamari-120g-x-3/p/626436",
+            "category": "치즈",
+            "cocodalin_join_key": "626436",
+            "detail_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FishSeafoods/Mamas-Choice-Cheese-Calamari-120g-x-3/p/626436",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h95/hbb/84270512930846.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "치즈",
+            "mart_native_code": "626436",
+            "match_key": "__no_brand__|mama s choice치즈 오징어 120g x 3|120.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "Mama's Choice치즈 오징어 120g x 3",
+            "normalized_name": "Mama's Choice치즈 오징어 120g x 3",
+            "pack_qty": 120,
+            "pack_unit": "g",
+            "price": 28990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "Mama's Choice치즈 오징어 120g x 3",
+            "raw_promo_type": null,
+            "sale_price": 28990,
+            "source": "costco",
+            "source_record_key": "626436",
+            "source_url": "https://www.costco.co.kr/Foods/Dried-Products/Dried-FishSeafoods/Mamas-Choice-Cheese-Calamari-120g-x-3/p/626436",
+            "unit_price": 8053.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 8,053원",
+            "unit_price_displayed": 8053,
+            "unit_price_text": "100G당 8,053원"
+          },
+          "raw_payload_sha256": "7bb1ca71c1b90f13eecd4c1471f9fde4440b45f5423ddfbef8b8af1022868f00",
+          "raw_record_id": "ingestion:44:74",
+          "source_category_path": [
+            "치즈"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:44:74",
+    "standard_unit_price": 8052.7778,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:9"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 49990,
+    "price_per_100g": 1388.6111,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-4c781ad36866e55d3145c8b8e66569a9",
+    "public_source_listing_id": "listing-5cbab38298a51f6732014e4e359435d6",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "85545e1b785459cff5230f89171995f2ebe7b24c",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Green-Seedless-Grapes-36kg/p/626512",
+            "category": "과일",
+            "cocodalin_join_key": "626512",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Green-Seedless-Grapes-36kg/p/626512",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h0d/hd5/171376466755614.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "626512",
+            "match_key": "__no_brand__|씨없는 청포도 3 6kg|3600.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "씨없는 청포도 3.6kg",
+            "normalized_name": "씨없는 청포도 3.6kg",
+            "pack_qty": 3.6,
+            "pack_unit": "kg",
+            "price": 49990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "씨없는 청포도 3.6kg",
+            "raw_promo_type": null,
+            "sale_price": 49990,
+            "source": "costco",
+            "source_record_key": "626512",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Green-Seedless-Grapes-36kg/p/626512",
+            "unit_price": 1389.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,389원",
+            "unit_price_displayed": 1389,
+            "unit_price_text": "100G당 1,389원"
+          },
+          "raw_payload_sha256": "147b1fc9b609d03d792ed0a3fd100103691ddeb52d0f8cdc3849e6ab70bcd5f6",
+          "raw_record_id": "ingestion:47:9",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:9",
+    "standard_unit_price": 1388.6111,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:10"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 46990,
+    "price_per_100g": 1305.2778,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-612bfe09fa440d1ae136f0a3a199d179",
+    "public_source_listing_id": "listing-83308b11d28e1f77b6fb548c86df5acb",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "2c92216e6f0fb062f44eae994397abfdb4ac7028",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Red-Seedless-Grapes-36kg/p/626513",
+            "category": "과일",
+            "cocodalin_join_key": "626513",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Red-Seedless-Grapes-36kg/p/626513",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/heb/h52/171376471703582.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "과일",
+            "mart_native_code": "626513",
+            "match_key": "__no_brand__|씨없는 적포도 3 6kg|3600.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "씨없는 적포도 3.6kg",
+            "normalized_name": "씨없는 적포도 3.6kg",
+            "pack_qty": 3.6,
+            "pack_unit": "kg",
+            "price": 46990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "씨없는 적포도 3.6kg",
+            "raw_promo_type": null,
+            "sale_price": 46990,
+            "source": "costco",
+            "source_record_key": "626513",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Red-Seedless-Grapes-36kg/p/626513",
+            "unit_price": 1305.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 1,305원",
+            "unit_price_displayed": 1305,
+            "unit_price_text": "100G당 1,305원"
+          },
+          "raw_payload_sha256": "d55f2619cec977d419d3cad1131107325c328ac778b286c5636e6d8d4f2e223e",
+          "raw_record_id": "ingestion:47:10",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:10",
+    "standard_unit_price": 1305.2778,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:42:19"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        42
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:55.448754Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 27990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-fb1d99058e8a23227d865a5d5b58d018",
+    "public_source_listing_id": "listing-2c824583cc0392ee93050a67fedc0451",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:55.448754Z",
+          "ingestion_id": 42,
+          "ingestion_received_at": "2026-08-31T01:51:55.448754Z",
+          "mart_native_category_id": "cos_10.11",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "073624939d34a1f505c20988c7b643b1465ab62e",
+            "canonical_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Coca-Cola-Original-250ml-x-30/p/626670",
+            "category": "음료",
+            "cocodalin_join_key": "626670",
+            "detail_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Coca-Cola-Original-250ml-x-30/p/626670",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hea/he0/15495715684382.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.11",
+            "mart_native_category_path": "음료",
+            "mart_native_code": "626670",
+            "match_key": "__no_brand__|코카콜라 250ml x 30|250.0|ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "코카콜라 250ml x 30",
+            "normalized_name": "코카콜라 250ml x 30",
+            "pack_qty": 250,
+            "pack_unit": "ml",
+            "price": 27990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "코카콜라 250ml x 30",
+            "raw_promo_type": null,
+            "sale_price": 27990,
+            "source": "costco",
+            "source_record_key": "626670",
+            "source_url": "https://www.costco.co.kr/Foods/Beverages/SoftConcentrated-Drinks/Coca-Cola-Original-250ml-x-30/p/626670",
+            "unit_price": 373.0,
+            "unit_price_basis": "100㎖",
+            "unit_price_basis_raw": "100㎖",
+            "unit_price_display": "100㎖당 373원",
+            "unit_price_displayed": 373,
+            "unit_price_text": "100㎖당 373원"
+          },
+          "raw_payload_sha256": "f0da1121632b915f4ff9cc5df04fee912d116d7f976ee49c633e51fd80836a5f",
+          "raw_record_id": "ingestion:42:19",
+          "source_category_path": [
+            "음료"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:42:19",
+    "standard_unit_price": 373.2,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:38:58"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        38
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:41.209255Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 34490,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-f64d59f56438f102f92dccd56e650361",
+    "public_source_listing_id": "listing-501dc783afe3452d06ad7ec832425f64",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:41.209255Z",
+          "ingestion_id": 38,
+          "ingestion_received_at": "2026-08-31T01:51:41.209255Z",
+          "mart_native_category_id": "cos_10.11",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "aa381686ca6bcdad0d9a0904b2e6d8f381894d3e",
+            "canonical_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Vegemil-Oatmeal-Soymilk-190ml-x-24-x-3/p/626979",
+            "category": "우유",
+            "cocodalin_join_key": "626979",
+            "detail_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Vegemil-Oatmeal-Soymilk-190ml-x-24-x-3/p/626979",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h09/h3d/15544781439006.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.11",
+            "mart_native_category_path": "우유",
+            "mart_native_code": "626979",
+            "match_key": "__no_brand__|베지밀 오트밀 두유 190ml x 24 x 3|190.0|ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "베지밀 오트밀 두유 190ml x 24 x 3",
+            "normalized_name": "베지밀 오트밀 두유 190ml x 24 x 3",
+            "pack_qty": 190,
+            "pack_unit": "ml",
+            "price": 34490,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "베지밀 오트밀 두유 190ml x 24 x 3",
+            "raw_promo_type": null,
+            "sale_price": 34490,
+            "source": "costco",
+            "source_record_key": "626979",
+            "source_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Vegemil-Oatmeal-Soymilk-190ml-x-24-x-3/p/626979",
+            "unit_price": 252.0,
+            "unit_price_basis": "100㎖",
+            "unit_price_basis_raw": "100㎖",
+            "unit_price_display": "100㎖당 252원",
+            "unit_price_displayed": 252,
+            "unit_price_text": "100㎖당 252원"
+          },
+          "raw_payload_sha256": "1d54b7299377d4d5b4f8aa246dd9fdb8242a96d4bf05e7dd874f80018613cca7",
+          "raw_record_id": "ingestion:38:58",
+          "source_category_path": [
+            "우유"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:38:58",
+    "standard_unit_price": 252.1199,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:45:15"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        45
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:06.138871Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 34990,
+    "price_per_100g": 4373.75,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-49ec2303b9929b3af232db0fc5fadcdf",
+    "public_source_listing_id": "listing-54e759fdbc5584ea6e00dbcc6e91487c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:06.138871Z",
+          "ingestion_id": 45,
+          "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+          "mart_native_category_id": "cos_10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "f1410cc3677ecbc30dc42ce94ab3369123c89950",
+            "canonical_url": "https://www.costco.co.kr/Foods/Chilled-Foods/CheeseButter/President-Mini-Unsalted-Butter-200g-x-4/p/627040",
+            "category": "치즈",
+            "cocodalin_join_key": "627040",
+            "detail_url": "https://www.costco.co.kr/Foods/Chilled-Foods/CheeseButter/President-Mini-Unsalted-Butter-200g-x-4/p/627040",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/h56/h23/369141029470238.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10",
+            "mart_native_category_path": "치즈",
+            "mart_native_code": "627040",
+            "match_key": "__no_brand__|프레지덩 무가염버터 미니포션 200g x 4|200.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "프레지덩 무가염버터 미니포션 200g x 4",
+            "normalized_name": "프레지덩 무가염버터 미니포션 200g x 4",
+            "pack_qty": 200,
+            "pack_unit": "g",
+            "price": 34990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "프레지덩 무가염버터 미니포션 200g x 4",
+            "raw_promo_type": null,
+            "sale_price": 34990,
+            "source": "costco",
+            "source_record_key": "627040",
+            "source_url": "https://www.costco.co.kr/Foods/Chilled-Foods/CheeseButter/President-Mini-Unsalted-Butter-200g-x-4/p/627040",
+            "unit_price": 437.0,
+            "unit_price_basis": "10G",
+            "unit_price_basis_raw": "10G",
+            "unit_price_display": "10G당 437원",
+            "unit_price_displayed": 437,
+            "unit_price_text": "10G당 437원"
+          },
+          "raw_payload_sha256": "65f3c3e1cecd99d44daeda09c92ff424c979cc265d7ecd93ce949bfe58afaf34",
+          "raw_record_id": "ingestion:45:15",
+          "source_category_path": [
+            "치즈"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:45:15",
+    "standard_unit_price": 4373.75,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:38:55"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        38
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:41.209255Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 21990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-f987051e9b4b335dfd0a4deb77b6f72b",
+    "public_source_listing_id": "listing-4eb80481ce16db0626d41591540477e8",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:41.209255Z",
+          "ingestion_id": 38,
+          "ingestion_received_at": "2026-08-31T01:51:41.209255Z",
+          "mart_native_category_id": "cos_10.11",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "d34d67073f5d2682bd313df66231794c59948791",
+            "canonical_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Sahmyook-Soymilk-190ml-x-20-x-2/p/627723",
+            "category": "우유",
+            "cocodalin_join_key": "627723",
+            "detail_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Sahmyook-Soymilk-190ml-x-20-x-2/p/627723",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd5/hed/16023110254622.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.11",
+            "mart_native_category_path": "우유",
+            "mart_native_code": "627723",
+            "match_key": "__no_brand__|삼육두유 파우치 190ml x 20 x 2|190.0|ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "삼육두유 파우치 190ml x 20 x 2",
+            "normalized_name": "삼육두유 파우치 190ml x 20 x 2",
+            "pack_qty": 190,
+            "pack_unit": "ml",
+            "price": 21990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "삼육두유 파우치 190ml x 20 x 2",
+            "raw_promo_type": null,
+            "sale_price": 21990,
+            "source": "costco",
+            "source_record_key": "627723",
+            "source_url": "https://www.costco.co.kr/Foods/Beverages/Soy-MilkMilk/Sahmyook-Soymilk-190ml-x-20-x-2/p/627723",
+            "unit_price": 289.0,
+            "unit_price_basis": "100㎖",
+            "unit_price_basis_raw": "100㎖",
+            "unit_price_display": "100㎖당 289원",
+            "unit_price_displayed": 289,
+            "unit_price_text": "100㎖당 289원"
+          },
+          "raw_payload_sha256": "925a64edde58f92756e2e5fa4358cf75fa23de9c5f3b966888dca688e303cdfd",
+          "raw_record_id": "ingestion:38:55",
+          "source_category_path": [
+            "우유"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:38:55",
+    "standard_unit_price": 289.3421,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:47:98"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        47
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:13.223165Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 36990,
+    "price_per_100g": 739.8,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-2c3236e5f521dd14ea0c9abe50c6f893",
+    "public_source_listing_id": "listing-1f29b0a4a1fd8327ea90b4b99e2c39ec",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:13.223165Z",
+          "ingestion_id": 47,
+          "ingestion_received_at": "2026-08-31T01:52:13.223165Z",
+          "mart_native_category_id": "cos_10.10",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "24dc9668efc735e3b07771cc211dc09b92e70f45",
+            "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Dalsoo-Sweet-Potatoes-5kg/p/627863",
+            "category": "채소",
+            "cocodalin_join_key": "627863",
+            "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Dalsoo-Sweet-Potatoes-5kg/p/627863",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf9/hd1/16141318127646.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.10",
+            "mart_native_category_path": "채소",
+            "mart_native_code": "627863",
+            "match_key": "__no_brand__|친환경 달수 고구마 5kg|5000.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "친환경 달수 고구마 5kg",
+            "normalized_name": "친환경 달수 고구마 5kg",
+            "pack_qty": 5,
+            "pack_unit": "kg",
+            "price": 36990,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "친환경 달수 고구마 5kg",
+            "raw_promo_type": null,
+            "sale_price": 36990,
+            "source": "costco",
+            "source_record_key": "627863",
+            "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Dalsoo-Sweet-Potatoes-5kg/p/627863",
+            "unit_price": 740.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 740원",
+            "unit_price_displayed": 740,
+            "unit_price_text": "100G당 740원"
+          },
+          "raw_payload_sha256": "16d27cdb562d146681e596749cb3d82f7279d77310cc03b4f7b83676f2e7a359",
+          "raw_record_id": "ingestion:47:98",
+          "source_category_path": [
+            "채소"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:47:98",
+    "standard_unit_price": 739.8,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:42:20"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        42
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:55.448754Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 22790,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-d7af9a2666b66d233e88d9cd983840ac",
+    "public_source_listing_id": "listing-611d7d3c49f5663e9aab82b0f6b83e4b",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:55.448754Z",
+          "ingestion_id": 42,
+          "ingestion_received_at": "2026-08-31T01:51:55.448754Z",
+          "mart_native_category_id": "cos_10.11",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "4f4cc2e3ae2a3544756073633589bf64c6843eb8",
+            "canonical_url": "https://www.costco.co.kr/Coca-Cola/Coca-Cola-Original-300ml-x-24/p/628945",
+            "category": "음료",
+            "cocodalin_join_key": "628945",
+            "detail_url": "https://www.costco.co.kr/Coca-Cola/Coca-Cola-Original-300ml-x-24/p/628945",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha4/h84/17257186689054.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.11",
+            "mart_native_category_path": "음료",
+            "mart_native_code": "628945",
+            "match_key": "__no_brand__|코카콜라 300ml x 24페트|300.0|ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "코카콜라 300ml x 24페트",
+            "normalized_name": "코카콜라 300ml x 24페트",
+            "pack_qty": 300,
+            "pack_unit": "ml",
+            "price": 22790,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "코카콜라 300ml x 24페트",
+            "raw_promo_type": null,
+            "sale_price": 22790,
+            "source": "costco",
+            "source_record_key": "628945",
+            "source_url": "https://www.costco.co.kr/Coca-Cola/Coca-Cola-Original-300ml-x-24/p/628945",
+            "unit_price": 317.0,
+            "unit_price_basis": "100㎖",
+            "unit_price_basis_raw": "100㎖",
+            "unit_price_display": "100㎖당 317원",
+            "unit_price_displayed": 317,
+            "unit_price_text": "100㎖당 317원"
+          },
+          "raw_payload_sha256": "769a96fccf5d9e63af67f7158f66af4b81b07dad3a24aa6ba8743132c46c359b",
+          "raw_record_id": "ingestion:42:20",
+          "source_category_path": [
+            "음료"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:42:20",
+    "standard_unit_price": 316.5278,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:45:67"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        45
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:52:06.138871Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 16490,
+    "price_per_100g": 412.25,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-b701aa5b9a82ec2ed1027de8324db603",
+    "public_source_listing_id": "listing-ed003081481bba4b9f18b570c562bc34",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:52:06.138871Z",
+          "ingestion_id": 45,
+          "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+          "mart_native_category_id": "cos_10.6",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "27b471ed663f7bc9995233b6be728c33271168b4",
+            "canonical_url": "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Haechandle-Ssamjang-500g-x-8/p/629622",
+            "category": "고기",
+            "cocodalin_join_key": "629622",
+            "detail_url": "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Haechandle-Ssamjang-500g-x-8/p/629622",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hea/hee/274789457231902.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.6",
+            "mart_native_category_path": "고기",
+            "mart_native_code": "629622",
+            "match_key": "__no_brand__|해찬들 사계절쌈장 500g x 8|500.0|g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "해찬들 사계절쌈장 500g x 8",
+            "normalized_name": "해찬들 사계절쌈장 500g x 8",
+            "pack_qty": 500,
+            "pack_unit": "g",
+            "price": 16490,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "해찬들 사계절쌈장 500g x 8",
+            "raw_promo_type": null,
+            "sale_price": 16490,
+            "source": "costco",
+            "source_record_key": "629622",
+            "source_url": "https://www.costco.co.kr/Foods/SaucesCondiments/CondimentsSpices/Haechandle-Ssamjang-500g-x-8/p/629622",
+            "unit_price": 412.0,
+            "unit_price_basis": "100G",
+            "unit_price_basis_raw": "100G",
+            "unit_price_display": "100G당 412원",
+            "unit_price_displayed": 412,
+            "unit_price_text": "100G당 412원"
+          },
+          "raw_payload_sha256": "3ff8cc86cdf7160beeb4678aef666e7512f7a7fbde749511c82c193e8961c7eb",
+          "raw_record_id": "ingestion:45:67",
+          "source_category_path": [
+            "고기"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:45:67",
+    "standard_unit_price": 412.25,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "UTC",
+      "observation_count": 1,
+      "observed_time_precision": "batch",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:42:60"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        42
+      ],
+      "timestamp_source": "ingestion_received_at"
+    },
+    "crawled_at": "2026-08-31T01:51:55.448754Z",
+    "discount_rate": null,
+    "event_name": null,
+    "offer_state": "active",
+    "original_price": null,
+    "price": 13490,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-63fd297b02a639940c3b93a8eb1fa688",
+    "public_source_listing_id": "listing-c790f0dfc31e9a26d00e9df98dde70bf",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:51:55.448754Z",
+          "ingestion_id": 42,
+          "ingestion_received_at": "2026-08-31T01:51:55.448754Z",
+          "mart_native_category_id": "cos_10.11",
+          "observed_time_precision": "batch",
+          "raw_payload": {
+            "brand": "__no_brand__",
+            "canon_hash": "3ef0171bad7740115d2a545467d21d6898e4f2e6",
+            "canonical_url": "https://www.costco.co.kr/Foods/Beverages/Juice/Denmark-Alive-Mango-Juice-200ml-x-24/p/630841",
+            "category": "음료",
+            "cocodalin_join_key": "630841",
+            "detail_url": "https://www.costco.co.kr/Foods/Beverages/Juice/Denmark-Alive-Mango-Juice-200ml-x-24/p/630841",
+            "external_seller": false,
+            "image_url": "https://www.costco.co.kr/medias/sys_master/images/hce/hd6/378691003088926.jpg",
+            "mart": "costco",
+            "mart_native_category_id": "cos_10.11",
+            "mart_native_category_path": "음료",
+            "mart_native_code": "630841",
+            "match_key": "__no_brand__|덴마크 얼라이브 망고주스 200ml x 24|200.0|ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "덴마크 얼라이브 망고주스 200ml x 24",
+            "normalized_name": "덴마크 얼라이브 망고주스 200ml x 24",
+            "pack_qty": 200,
+            "pack_unit": "ml",
+            "price": 13490,
+            "promo_label": null,
+            "promo_type": null,
+            "raw_name": "덴마크 얼라이브 망고주스 200ml x 24",
+            "raw_promo_type": null,
+            "sale_price": 13490,
+            "source": "costco",
+            "source_record_key": "630841",
+            "source_url": "https://www.costco.co.kr/Foods/Beverages/Juice/Denmark-Alive-Mango-Juice-200ml-x-24/p/630841",
+            "unit_price": 281.0,
+            "unit_price_basis": "100㎖",
+            "unit_price_basis_raw": "100㎖",
+            "unit_price_display": "100㎖당 281원",
+            "unit_price_displayed": 281,
+            "unit_price_text": "100㎖당 281원"
+          },
+          "raw_payload_sha256": "10e49eb5a56280d325d9347333518aa2e9fac18a3bee7117e9ddde640b9570e5",
+          "raw_record_id": "ingestion:42:60",
+          "source_category_path": [
+            "음료"
+          ],
+          "timestamp_source": "ingestion_received_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:42:60",
+    "standard_unit_price": 281.0417,
+    "valid_from": null,
+    "valid_to": null
+  }
+]

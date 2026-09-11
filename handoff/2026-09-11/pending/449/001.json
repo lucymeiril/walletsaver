@@ -1,0 +1,145 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.dairy.yogurt.drink",
+        "food.dairy.yogurt.greek"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "conflicting_category_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:4b80934ed494932782fb199f",
+      "promotion_surface": false,
+      "proposed_path": [
+        [
+          "식품",
+          "유제품",
+          "발효유",
+          "마시는요구르트"
+        ],
+        [
+          "식품",
+          "유제품",
+          "발효유",
+          "그릭요거트"
+        ]
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:32:76",
+      "review_status": "pending",
+      "source_path": "우유ㆍ유제품 > 요거트ㆍ요구르트 > 마시는요구르트",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "우유ㆍ유제품",
+        "요거트ㆍ요구르트",
+        "마시는요구르트"
+      ],
+      "source_title": "요즘 마시는 그릭요거트 무가당 플레인 (750ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809520491549/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "요즘",
+      "crawled_at": "2026-08-31T01:47:02.666569Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "제타패스 X 요즘 1만원 이상 3천원 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b32c0e79-9367-4384-8249-2977998c2e16/300x300.jpg",
+      "ingestion_id": 32,
+      "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 76,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "750ml",
+        "package_quantity": 750.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 3980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "요즘",
+          "canon_hash": "f2cd7cd8cfd0a6fa19e9912f5f5646ba084acafd",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809520491549/details",
+          "category_hint": "우유ㆍ유제품",
+          "category_path": [
+            "우유ㆍ유제품",
+            "요거트ㆍ요구르트",
+            "마시는요구르트"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b32c0e79-9367-4384-8249-2977998c2e16/300x300.jpg",
+          "mart_native_code": "8809520491549",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809520491549",
+          "source_url": "https://lottemartzetta.com/products/OS8809520491549/details"
+        },
+        "brand": "__no_brand__",
+        "category": "우유ㆍ유제품",
+        "crawled_at": "2026-08-31T10:47:02.666569",
+        "detail_url": "https://lottemartzetta.com/products/OS8809520491549/details",
+        "discount_percent": null,
+        "display_unit": "750ml",
+        "event_name": "제타패스 X 요즘 1만원 이상 3천원 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b32c0e79-9367-4384-8249-2977998c2e16/300x300.jpg",
+        "match_key": "__no_brand__|요즘 마시는 그릭요거트 무가당 플레인 750ml||750ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "요즘 마시는 그릭요거트 무가당 플레인 (750ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 750.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "750ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "356de4d2e45dfe4e55e3415155beea66eb91937dd0f85799a84e34372922db2c",
+      "raw_record_id": "ingestion:32:76",
+      "source_category_path": [
+        "우유ᆞ유제품",
+        "요거트ᆞ요구르트",
+        "마시는요구르트"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809520491549",
+      "source_title": "요즘 마시는 그릭요거트 무가당 플레인 (750ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8809520491549/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:32:76",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809520491549",
+    "source_title": "요즘 마시는 그릭요거트 무가당 플레인 (750ML)"
+  }
+]

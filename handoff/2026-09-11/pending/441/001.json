@@ -1,0 +1,135 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:88eb1f914b6c7af5b6099ec2",
+      "promotion_surface": false,
+      "proposed_path": [
+        "수산물ㆍ건해산물",
+        "생선",
+        "기타생선"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:35:42",
+      "review_status": "pending",
+      "source_path": "수산물ㆍ건해산물 > 생선 > 기타생선",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "생선",
+        "기타생선"
+      ],
+      "source_title": "국산 생물도미 (마리)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS2580430000002/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:47:08.165447Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "수산대전 20% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/bcade3f5-c09c-4b65-9a75-6e471c34fa6f/300x300.jpg",
+      "ingestion_id": 35,
+      "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 42,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1마리",
+        "package_quantity": 1.0,
+        "package_unit": "마리",
+        "standard_unit": null
+      },
+      "price": 3990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "단독기획",
+          "canon_hash": "13409877114513e6bc27edaa79d73957088717f5",
+          "canonical_url": "https://lottemartzetta.com/products/OS2580430000002/details",
+          "category_hint": "수산물ㆍ건해산물",
+          "category_path": [
+            "수산물ㆍ건해산물",
+            "생선",
+            "기타생선"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/bcade3f5-c09c-4b65-9a75-6e471c34fa6f/300x300.jpg",
+          "mart_native_code": "2580430000002",
+          "origin": "domestic",
+          "origin_label": "국산",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "2580430000002",
+          "source_url": "https://lottemartzetta.com/products/OS2580430000002/details"
+        },
+        "brand": "__no_brand__",
+        "category": "수산물ㆍ건해산물",
+        "crawled_at": "2026-08-31T10:47:08.165447",
+        "detail_url": "https://lottemartzetta.com/products/OS2580430000002/details",
+        "discount_percent": null,
+        "display_unit": "1마리",
+        "event_name": "수산대전 20% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/bcade3f5-c09c-4b65-9a75-6e471c34fa6f/300x300.jpg",
+        "match_key": "__no_brand__|국산 생물도미 마리||1마리",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "국산 생물도미 (마리)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.0,
+        "package_unit": "마리",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "1마리",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "82144276f214aea1ae8e1b4f810cb568b50e79c523fa5fae66b6c8ff18bc69aa",
+      "raw_record_id": "ingestion:35:42",
+      "source_category_path": [
+        "수산물ᆞ건해산물",
+        "생선",
+        "기타생선"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "2580430000002",
+      "source_title": "국산 생물도미 (마리)",
+      "source_url": "https://lottemartzetta.com/products/OS2580430000002/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:35:42",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "2580430000002",
+    "source_title": "국산 생물도미 (마리)"
+  }
+]

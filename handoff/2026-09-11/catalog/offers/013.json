@@ -1,0 +1,4886 @@
+[
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:98:70"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        98
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:21:09.723726Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 4900,
+    "price_per_100g": 3500.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-744ec9f1c6d9886db6f22783975dc2c5",
+    "public_source_listing_id": "listing-e8784a70487ff0316ddc95cbbdff904b",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:21:09.723726Z",
+          "ingestion_id": 98,
+          "ingestion_received_at": "2026-09-02T17:21:11.611474Z",
+          "mart_native_category_id": "6000214420",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "청소/생활용품",
+              "collection": "홈즈",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/55/40/00/item/1000023004055_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214420",
+              "mart_native_category_path": "청소/생활용품",
+              "mart_native_code": "1000023004055",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000023004055",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000023004055&siteNo=6001&salestrNo=2037",
+              "storage_label": "냉장",
+              "storage_type": "chilled",
+              "unit_price_display": "100g 당 3,500원"
+            },
+            "brand": "__no_brand__",
+            "category": "청소/생활용품",
+            "crawled_at": "2026-09-03T02:21:09.723726",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000023004055&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "140g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/55/40/00/item/1000023004055_i1_290.jpg",
+            "match_key": "__no_brand__|탈취탄 냉장고용 140g||140g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "탈취탄 냉장고용 140G",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 140.0,
+            "package_unit": "g",
+            "price_per_100g": 3500.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4900,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "140g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "aa2986ea95668be917b0a56c7d3dffa1ce7c4d1f5997deefb309c3314abb41c8",
+          "raw_record_id": "ingestion:98:70",
+          "source_category_path": [
+            "청소/생활용품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:98:70",
+    "standard_unit_price": 3500.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:91:33"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        91
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:25:59.625246Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 11280,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-0446ec64b347d82aa4d06f0240fccccd",
+    "public_source_listing_id": "listing-b9c96e7f5e867558c7f2d8978503fd11",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:25:59.625246Z",
+          "ingestion_id": 91,
+          "ingestion_received_at": "2026-09-02T16:26:00.691448Z",
+          "mart_native_category_id": "6000215286",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "양념/오일",
+              "collection": "CJ제일제당",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/13/28/31/item/1000023312813_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000215286",
+              "mart_native_category_path": "양념/오일",
+              "mart_native_code": "1000023312813",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000023312813",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000023312813&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "10ml 당 376원"
+            },
+            "brand": "__no_brand__",
+            "category": "양념/오일",
+            "crawled_at": "2026-09-03T01:25:59.625246",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000023312813&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "320ml",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/13/28/31/item/1000023312813_i1_290.jpg",
+            "match_key": "__no_brand__|백설 100 통참깨 참기름 320ml||320ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "백설 100% 통참깨 참기름 320ml",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 320.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 11280,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "320ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "9e326d3b70a61834f79a26664aa542aa69fa516eedee53f42c61f57da179263c",
+          "raw_record_id": "ingestion:91:33",
+          "source_category_path": [
+            "양념/오일"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:91:33",
+    "standard_unit_price": 3525.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:90:15"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        90
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:15:37.728585Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": 905.4545,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-896c62cc792ae294d5f33a6eb0ffc931",
+    "public_source_listing_id": "listing-a5aef29cdd44d9762cb6befed33b0cff",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:15:37.728585Z",
+          "ingestion_id": 90,
+          "ingestion_received_at": "2026-09-02T16:15:39.638424Z",
+          "mart_native_category_id": "6000213319",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "면류/통조림",
+              "collection": "CJ제일제당",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/39/85/23/item/1000024238539_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213319",
+              "mart_native_category_path": "면류/통조림",
+              "mart_native_code": "1000024238539",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000024238539",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000024238539&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 905원"
+            },
+            "brand": "__no_brand__",
+            "category": "면류/통조림",
+            "crawled_at": "2026-09-03T01:15:37.728585",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000024238539&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "550g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/39/85/23/item/1000024238539_i1_290.jpg",
+            "match_key": "__no_brand__|백설 생칼국수 550g||550g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "백설 생칼국수 550g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 550.0,
+            "package_unit": "g",
+            "price_per_100g": 905.45,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "550g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "817b0d447e481204b0061b2d082ca06ab5495aa1634bf3faed8b42ee1b66f8eb",
+          "raw_record_id": "ingestion:90:15",
+          "source_category_path": [
+            "면류/통조림"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:90:15",
+    "standard_unit_price": 905.4545,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:89:11"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        89
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:23:22.086266Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": 905.4545,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-a79815e0d905232be207ed8d179fa653",
+    "public_source_listing_id": "listing-a5aef29cdd44d9762cb6befed33b0cff",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:23:22.086266Z",
+          "ingestion_id": 89,
+          "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+          "mart_native_category_id": "6000213319",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "면류/통조림",
+              "collection": "CJ제일제당",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/39/85/23/item/1000024238539_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213319",
+              "mart_native_category_path": "면류/통조림",
+              "mart_native_code": "1000024238539",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000024238539",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000024238539&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 905원"
+            },
+            "brand": "__no_brand__",
+            "category": "면류/통조림",
+            "crawled_at": "2026-09-03T00:23:22.086266",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000024238539&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "550g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/39/85/23/item/1000024238539_i1_290.jpg",
+            "match_key": "__no_brand__|백설 생칼국수 550g||550g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "백설 생칼국수 550g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 550.0,
+            "package_unit": "g",
+            "price_per_100g": 905.45,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "550g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "e32ed3dff5496cfb7be53c758ab25cdf7f23684f8922f234c65ce903d9959e82",
+          "raw_record_id": "ingestion:89:11",
+          "source_category_path": [
+            "면류/통조림"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:89:11",
+    "standard_unit_price": 905.4545,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:95:3"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        95
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:49:33.196245Z",
+    "discount_rate": 0.1938,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 2580,
+    "price": 2080,
+    "price_per_100g": 2080.0,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-5438a94675ba12d67e9fff054fec78ed",
+    "public_source_listing_id": "listing-1d30d20a09b49596a97a227658ebf5a3",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:49:33.196245Z",
+          "ingestion_id": 95,
+          "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+          "mart_native_category_id": "6000228036",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "친환경/유기농",
+              "collection": "자연주의",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/26/30/90/item/1000024903026_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000228036",
+              "mart_native_category_path": "친환경/유기농",
+              "mart_native_code": "1000024903026",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000024903026",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000024903026&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 2,080원"
+            },
+            "brand": "__no_brand__",
+            "category": "친환경/유기농",
+            "crawled_at": "2026-09-03T01:49:33.196245",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000024903026&siteNo=6001&salestrNo=2037",
+            "discount_percent": 19.4,
+            "display_unit": "100g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/26/30/90/item/1000024903026_i1_290.jpg",
+            "match_key": "__no_brand__|친환경 청양고추 100g 봉||100g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "친환경 청양고추 100g/봉",
+            "normalized_name": "",
+            "original_price": 2580,
+            "package_quantity": 100.0,
+            "package_unit": "g",
+            "price_per_100g": 2080.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2080,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "100g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "78e03139085467b66d98b99e5277aa0491be7454bacf5067d16fd30d0aeada58",
+          "raw_record_id": "ingestion:95:3",
+          "source_category_path": [
+            "친환경/유기농"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:95:3",
+    "standard_unit_price": 2080.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:85:14"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        85
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:16:07.050433Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 11480,
+    "price_per_100g": 1025.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-47d1e983ea25baa3c8b4fd7d6e721d3e",
+    "public_source_listing_id": "listing-2ef6681d4b77981976e572a44274fc86",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:16:07.050433Z",
+          "ingestion_id": 85,
+          "ingestion_received_at": "2026-09-02T15:16:08.234370Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "비비고",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/85/58/93/item/1000025935885_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "1000025935885",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000025935885",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000025935885&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,025원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:16:07.050433",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000025935885&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "1.12kg",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/85/58/93/item/1000025935885_i1_290.jpg",
+            "match_key": "__no_brand__|cj 왕교자1 12kg||1.12kg",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 왕교자1.12kg",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 1.12,
+            "package_unit": "kg",
+            "price_per_100g": 1025.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 11480,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "1.12kg",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "bb02032b716f20c2fe5f0aec3820620d1b874d5816e8a40a4ea51b2898c249d1",
+          "raw_record_id": "ingestion:85:14",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:85:14",
+    "standard_unit_price": 1025.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:84:14"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        84
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:06:09.276540Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 9980,
+    "price_per_100g": 891.0714,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-582fd877ddc4bcda5922fe18ac2b10aa",
+    "public_source_listing_id": "listing-2ef6681d4b77981976e572a44274fc86",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:06:09.276540Z",
+          "ingestion_id": 84,
+          "ingestion_received_at": "2026-09-02T15:06:10.481337Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "비비고",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/85/58/93/item/1000025935885_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "1000025935885",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000025935885",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000025935885&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 891원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:06:09.276540",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000025935885&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "1.12kg",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/85/58/93/item/1000025935885_i1_290.jpg",
+            "match_key": "__no_brand__|cj 왕교자1 12kg||1.12kg",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 왕교자1.12kg",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 1.12,
+            "package_unit": "kg",
+            "price_per_100g": 891.07,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "1.12kg",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "5c2e0694c1eb6b9d5e52689294b31de0e7c39b8626d351e1efdaaa3a36cf84b5",
+          "raw_record_id": "ingestion:84:14",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:84:14",
+    "standard_unit_price": 891.0714,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:86:33"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        86
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:17:00.562997Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 8980,
+    "price_per_100g": 2245.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-4df4decbe6465325593802bd840711ca",
+    "public_source_listing_id": "listing-646f46d0e501d05946695d362ceb53a7",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:17:00.562997Z",
+          "ingestion_id": 86,
+          "ingestion_received_at": "2026-09-02T15:17:01.681076Z",
+          "mart_native_category_id": "6000213299",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "김치/반찬/델리",
+              "collection": "비비고",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/01/21/50/item/1000026502101_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213299",
+              "mart_native_category_path": "김치/반찬/델리",
+              "mart_native_code": "1000026502101",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000026502101",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000026502101&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 2,245원"
+            },
+            "brand": "__no_brand__",
+            "category": "김치/반찬/델리",
+            "crawled_at": "2026-09-03T00:17:00.562997",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000026502101&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "80g×5",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/01/21/50/item/1000026502101_i1_290.jpg",
+            "match_key": "__no_brand__|김치볶음 80g 5||80g×5",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "김치볶음 80g*5",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 80.0,
+            "package_unit": "g",
+            "price_per_100g": 2245.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 8980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "80g×5",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "1066ac99b138dca021fcae015954db8e5d898d3f931bbd79f1732d9cfdaef331",
+          "raw_record_id": "ingestion:86:33",
+          "source_category_path": [
+            "김치/반찬/델리"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:86:33",
+    "standard_unit_price": 2245.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:1:63"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        1
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:44:36.390438Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-5e0e73679358650f238ea3221f260c21",
+    "public_source_listing_id": "listing-b0012fed641c55d79d2007cfc92feb8d",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:44:36.390438Z",
+          "ingestion_id": 1,
+          "ingestion_received_at": "2026-08-31T01:44:51.418782Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "베스트",
+              "collection_surface": "베스트",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/02/89/54/item/1000026548902_i1_500.jpg",
+              "mart": "이마트",
+              "mart_native_category_path": "",
+              "mart_native_code": "1000026548902",
+              "promo_label": "",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000026548902",
+              "source_url": "https://m-emart.ssg.com/item/itemView.ssg?itemId=1000026548902&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "1개당 2,480원"
+            },
+            "brand": "__no_brand__",
+            "category": "베스트",
+            "crawled_at": "2026-08-31T10:44:36.390438",
+            "detail_url": "https://m-emart.ssg.com/item/itemView.ssg?itemId=1000026548902&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "1개",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/02/89/54/item/1000026548902_i1_500.jpg",
+            "match_key": "__no_brand__|무 개||1개",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "무 (개)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 1.0,
+            "package_unit": "개",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2480,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "1개",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "b8d667ed8f77f4ecf94e85665658f83f483b41b57700e02d3ab46e124e688fec",
+          "raw_record_id": "ingestion:1:63",
+          "source_category_path": [
+            "베스트"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:1:63",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:85:57"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        85
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:16:07.226481Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 6680,
+    "price_per_100g": 927.7778,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-1b55f8b22579c56cd93779ce7b7df680",
+    "public_source_listing_id": "listing-87d95027a52d9c8aaf7e7c8e1688c7e4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:16:07.226481Z",
+          "ingestion_id": 85,
+          "ingestion_received_at": "2026-09-02T15:16:08.234370Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "노브랜드",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/01/85/21/item/1000027218501_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "1000027218501",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "1000027218501",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000027218501&siteNo=7009&salestrNo=2551",
+              "unit_price_display": "100g 당 928원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:16:07.226481",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000027218501&siteNo=7009&salestrNo=2551",
+            "discount_percent": null,
+            "display_unit": "720g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/01/85/21/item/1000027218501_i1_290.jpg",
+            "match_key": "__no_brand__|갈비만두720g||720g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "갈비만두720g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 720.0,
+            "package_unit": "g",
+            "price_per_100g": 927.78,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6680,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "720g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "024ec9c8a6a0b8a181b1090d5c8f73d0d8e369d2e255e68b240aa3984cd1a656",
+          "raw_record_id": "ingestion:85:57",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:85:57",
+    "standard_unit_price": 927.7778,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:84:57"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        84
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:06:09.450536Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 6680,
+    "price_per_100g": 927.7778,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-7d11aabe88d0d1a9b71ceb11c9201804",
+    "public_source_listing_id": "listing-87d95027a52d9c8aaf7e7c8e1688c7e4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:06:09.450536Z",
+          "ingestion_id": 84,
+          "ingestion_received_at": "2026-09-02T15:06:10.481337Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "노브랜드",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/01/85/21/item/1000027218501_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "1000027218501",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "1000027218501",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000027218501&siteNo=7009&salestrNo=2551",
+              "unit_price_display": "100g 당 928원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:06:09.450536",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000027218501&siteNo=7009&salestrNo=2551",
+            "discount_percent": null,
+            "display_unit": "720g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/01/85/21/item/1000027218501_i1_290.jpg",
+            "match_key": "__no_brand__|갈비만두720g||720g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "갈비만두720g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 720.0,
+            "package_unit": "g",
+            "price_per_100g": 927.78,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6680,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "720g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "5f9446053dbf64536703664b2060a7d2efb916feaab5f4a1eb88dcd81ca99247",
+          "raw_record_id": "ingestion:84:57",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:84:57",
+    "standard_unit_price": 927.7778,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:46"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.239305Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 5900,
+    "price_per_100g": 1638.8889,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-2a2072aa8f489b026bd3234c73e045cc",
+    "public_source_listing_id": "listing-e70feef407187288cba522d893cff196",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.239305Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection": "엘지생활건강",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/54/01/30/item/1000028300154_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "1000028300154",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000028300154",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000028300154&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "10g 당 164원"
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.239305",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000028300154&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "90g×4",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/54/01/30/item/1000028300154_i1_290.jpg",
+            "match_key": "__no_brand__|스파 히말라야 핑크솔트 비누 90g 4입||90g×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "스파 히말라야 핑크솔트 비누 90g*4입",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 90.0,
+            "package_unit": "g",
+            "price_per_100g": 1638.89,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5900,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "90g×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ef21f2be6d40cbbd75189c929e9849c7757669f9ba913bb36f59b85e118075a7",
+          "raw_record_id": "ingestion:97:46",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:46",
+    "standard_unit_price": 1638.8889,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:95:47"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        95
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:49:33.360164Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 6900,
+    "price_per_100g": 3484.8485,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-3b427cb193850d1d7f8335c8bd6df9fb",
+    "public_source_listing_id": "listing-5f658552e6c97c5483de8e75794dbe54",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:49:33.360164Z",
+          "ingestion_id": 95,
+          "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+          "mart_native_category_id": "6000228036",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "친환경/유기농",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/32/04/30/item/1000028300432_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000228036",
+              "mart_native_category_path": "친환경/유기농",
+              "mart_native_code": "1000028300432",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000028300432",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000028300432&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 3,485원"
+            },
+            "brand": "__no_brand__",
+            "category": "친환경/유기농",
+            "crawled_at": "2026-09-03T01:49:33.360164",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000028300432&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "198g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/32/04/30/item/1000028300432_i1_290.jpg",
+            "match_key": "__no_brand__|썬뷰 유기농 건청포도 198g||198g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "썬뷰 유기농 건청포도 198g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 198.0,
+            "package_unit": "g",
+            "price_per_100g": 3484.85,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6900,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "198g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "8929cf4ee2ba4114f02ae4aabc76871a880bd0a193ad9ce9f8ea10dce9fbf8b0",
+          "raw_record_id": "ingestion:95:47",
+          "source_category_path": [
+            "친환경/유기농"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:95:47",
+    "standard_unit_price": 3484.8485,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:78:15"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        78
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T14:46:34.940415Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 11980,
+    "price_per_100g": 1198.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-f2c6c59dbaf17de0acd1c9ced31df896",
+    "public_source_listing_id": "listing-95790a1cf5751bcc9562b63040df8d54",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T14:46:34.940415Z",
+          "ingestion_id": 78,
+          "ingestion_received_at": "2026-09-02T14:46:36.292525Z",
+          "mart_native_category_id": "6000213114",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "과일",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/65/46/38/item/1000028384665_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213114",
+              "mart_native_category_path": "과일",
+              "mart_native_code": "1000028384665",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 내일(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "내일(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000028384665",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000028384665&siteNo=6001&salestrNo=2037",
+              "storage_label": "냉동",
+              "storage_type": "frozen",
+              "unit_price_display": "100g 당 1,198원"
+            },
+            "brand": "__no_brand__",
+            "category": "과일",
+            "crawled_at": "2026-09-02T23:46:34.940415",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000028384665&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "1kg",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/65/46/38/item/1000028384665_i1_290.jpg",
+            "match_key": "__no_brand__|페루산 냉동 반쪽 아보카도 1kg 봉||1kg",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "페루산 냉동 반쪽 아보카도 1kg 봉",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 1.0,
+            "package_unit": "kg",
+            "price_per_100g": 1198.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 11980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "1kg",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ceb476151083f8191024139c7f89ac3d3a6a8cccfc9d01d81b3d9c925e14ab41",
+          "raw_record_id": "ingestion:78:15",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:78:15",
+    "standard_unit_price": 1198.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:95:76"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        95
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:49:33.471630Z",
+    "discount_rate": 0.1844,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 4880,
+    "price": 3980,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-a0540598cee1d232c59f1f002b5f0c79",
+    "public_source_listing_id": "listing-3de72160a776ad295ef51cda606a9d5a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:49:33.471630Z",
+          "ingestion_id": 95,
+          "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+          "mart_native_category_id": "6000228036",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "친환경/유기농",
+              "collection": "서울우유",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/34/34/60/item/1000028603434_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000228036",
+              "mart_native_category_path": "친환경/유기농",
+              "mart_native_code": "1000028603434",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송",
+                "주간배송",
+                "주간배송"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000028603434",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000028603434&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100ml 당 442원"
+            },
+            "brand": "__no_brand__",
+            "category": "친환경/유기농",
+            "crawled_at": "2026-09-03T01:49:33.471630",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000028603434&siteNo=6001&salestrNo=2037",
+            "discount_percent": 18.4,
+            "display_unit": "900ml",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/34/34/60/item/1000028603434_i1_290.jpg",
+            "match_key": "__no_brand__|아침에주스 유기농 토마토주스 900ml||900ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "아침에주스 유기농 토마토주스 900ml",
+            "normalized_name": "",
+            "original_price": 4880,
+            "package_quantity": 900.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "900ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "2ddc8f636bface0cf5a146cdfbdc7df463850ab2d956f806b1d0a44cc758963a",
+          "raw_record_id": "ingestion:95:76",
+          "source_category_path": [
+            "친환경/유기농"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:95:76",
+    "standard_unit_price": 442.2222,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:78:37"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        78
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T14:46:35.098124Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 7980,
+    "price_per_100g": 1596.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-2202739bfd20d71a01a05d3e707b57a4",
+    "public_source_listing_id": "listing-7dbce6773d9e3eaef016f2d9999fd9da",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T14:46:35.098124Z",
+          "ingestion_id": 78,
+          "ingestion_received_at": "2026-09-02T14:46:36.292525Z",
+          "mart_native_category_id": "6000213114",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "과일",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/89/31/11/item/1000029113189_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213114",
+              "mart_native_category_path": "과일",
+              "mart_native_code": "1000029113189",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 09/04(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "09/04(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "1000029113189",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000029113189&siteNo=7009&salestrNo=2551",
+              "storage_label": "냉동",
+              "storage_type": "frozen",
+              "unit_price_display": "100g 당 1,596원"
+            },
+            "brand": "__no_brand__",
+            "category": "과일",
+            "crawled_at": "2026-09-02T23:46:35.098124",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000029113189&siteNo=7009&salestrNo=2551",
+            "discount_percent": null,
+            "display_unit": "500g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/89/31/11/item/1000029113189_i1_290.jpg",
+            "match_key": "__no_brand__|페루산 냉동 아보카도 500g 봉||500g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "페루산 냉동 아보카도 500g 봉",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "g",
+            "price_per_100g": 1596.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "500g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "3a8052d4760a3aff72b4d5574e0f3f70acc71c773dc91e5426d03d28d4b933a7",
+          "raw_record_id": "ingestion:78:37",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:78:37",
+    "standard_unit_price": 1596.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:98:43"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        98
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:21:09.590381Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 10900,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-bb194390bc4944fa1f858c19c7c67aa5",
+    "public_source_listing_id": "listing-70089cd172368d041a4ceda6311f1031",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:21:09.590381Z",
+          "ingestion_id": 98,
+          "ingestion_received_at": "2026-09-02T17:21:11.611474Z",
+          "mart_native_category_id": "6000214420",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "청소/생활용품",
+              "collection": "홈스타",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/08/14/23/item/1000029231408_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214420",
+              "mart_native_category_path": "청소/생활용품",
+              "mart_native_code": "1000029231408",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000029231408",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000029231408&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100ml 당 2,180원"
+            },
+            "brand": "__no_brand__",
+            "category": "청소/생활용품",
+            "crawled_at": "2026-09-03T02:21:09.590381",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000029231408&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "500ml",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/08/14/23/item/1000029231408_i1_290.jpg",
+            "match_key": "__no_brand__|렌지후드 클리너 500ml||500ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "렌지후드 클리너 500ML",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 10900,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "500ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "4daf98bb83df6cc4787891f5809ad91ca3c0bee359d0c497acd9d358c700feba",
+          "raw_record_id": "ingestion:98:43",
+          "source_category_path": [
+            "청소/생활용품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:98:43",
+    "standard_unit_price": 2180.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:86:37"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        86
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:17:00.583307Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 10430,
+    "price_per_100g": 2607.5,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-d262b2850903a1889351ea8679485e03",
+    "public_source_listing_id": "listing-b737f5654005ffcc72bf25787e6cdb29",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:17:00.583307Z",
+          "ingestion_id": 86,
+          "ingestion_received_at": "2026-09-02T15:17:01.681076Z",
+          "mart_native_category_id": "6000213299",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "김치/반찬/델리",
+              "collection": "종가",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/11/76/38/item/1000029387611_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213299",
+              "mart_native_category_path": "김치/반찬/델리",
+              "mart_native_code": "1000029387611",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000029387611",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000029387611&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 2,608원"
+            },
+            "brand": "__no_brand__",
+            "category": "김치/반찬/델리",
+            "crawled_at": "2026-09-03T00:17:00.583307",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000029387611&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "400g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/11/76/38/item/1000029387611_i1_290.jpg",
+            "match_key": "__no_brand__|갓김치 400g||400g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "갓김치 400g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 400.0,
+            "package_unit": "g",
+            "price_per_100g": 2607.5,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 10430,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "400g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "136bc43349eeb65fe0ce9a2a8b825f4b39e5bfcaa474929ad547b0939ff939fb",
+          "raw_record_id": "ingestion:86:37",
+          "source_category_path": [
+            "김치/반찬/델리"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:86:37",
+    "standard_unit_price": 2607.5,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:96:62"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        96
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:53:56.955669Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 15900,
+    "price_per_100g": 5578.9474,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-75b61ae60d1f2c1cbfdccd8cc191b575",
+    "public_source_listing_id": "listing-d5268a7c458439a82465857201eeee29",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:53:56.955669Z",
+          "ingestion_id": 96,
+          "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+          "mart_native_category_id": "6000213997",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "제지/위생/건강",
+              "collection": "엘지생활건강",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/61/83/08/item/1000030088361_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213997",
+              "mart_native_category_path": "제지/위생/건강",
+              "mart_native_code": "1000030088361",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000030088361",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000030088361&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "10g 당 558원"
+            },
+            "brand": "__no_brand__",
+            "category": "제지/위생/건강",
+            "crawled_at": "2026-09-03T01:53:56.955669",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000030088361&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "285g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/61/83/08/item/1000030088361_i1_290.jpg",
+            "match_key": "__no_brand__|히말라야 핑크솔트 펌핑치약 플로럴민트 285g||285g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "히말라야 핑크솔트 펌핑치약 플로럴민트 285G",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 285.0,
+            "package_unit": "g",
+            "price_per_100g": 5578.95,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 15900,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "285g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "f810270632ae2ff0c2411a339da7dffe6f129414bef2d229ccdcc36ded907954",
+          "raw_record_id": "ingestion:96:62",
+          "source_category_path": [
+            "제지/위생/건강"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:96:62",
+    "standard_unit_price": 5578.9474,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:86:44"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        86
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:17:00.628779Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 6030,
+    "price_per_100g": 2010.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-00c7562283e9b449f0ecccbdca622155",
+    "public_source_listing_id": "listing-edac35ca6f055e4965e1e39e32f6d614",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:17:00.628779Z",
+          "ingestion_id": 86,
+          "ingestion_received_at": "2026-09-02T15:17:01.681076Z",
+          "mart_native_category_id": "6000213299",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "김치/반찬/델리",
+              "collection": "종가",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/01/09/82/item/1000030820901_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213299",
+              "mart_native_category_path": "김치/반찬/델리",
+              "mart_native_code": "1000030820901",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000030820901",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000030820901&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 2,010원"
+            },
+            "brand": "__no_brand__",
+            "category": "김치/반찬/델리",
+            "crawled_at": "2026-09-03T00:17:00.628779",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000030820901&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "300g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/01/09/82/item/1000030820901_i1_290.jpg",
+            "match_key": "__no_brand__|맛김치 300g pet||300g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "맛김치 300g(PET)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 300.0,
+            "package_unit": "g",
+            "price_per_100g": 2010.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6030,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "300g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "09e68e8695e8eba22bc427fc8418d0bb74064f9bf220f290b289616522501cb2",
+          "raw_record_id": "ingestion:86:44",
+          "source_category_path": [
+            "김치/반찬/델리"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:86:44",
+    "standard_unit_price": 2010.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:98:56"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        98
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:21:09.663285Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-d86be81c5fbde145c11a5e1973835b8e",
+    "public_source_listing_id": "listing-e707a9751d81b3dde36e11077e57f23f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:21:09.663285Z",
+          "ingestion_id": 98,
+          "ingestion_received_at": "2026-09-02T17:21:11.611474Z",
+          "mart_native_category_id": "6000214420",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "청소/생활용품",
+              "collection": "노브랜드",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/83/19/14/item/1000031141983_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214420",
+              "mart_native_category_path": "청소/생활용품",
+              "mart_native_code": "1000031141983",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000031141983",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000031141983&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100ml 당 142원"
+            },
+            "brand": "__no_brand__",
+            "category": "청소/생활용품",
+            "crawled_at": "2026-09-03T02:21:09.663285",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000031141983&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "2.1L",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/83/19/14/item/1000031141983_i1_290.jpg",
+            "match_key": "__no_brand__|섬유유연제 2 1l 로즈템테이션||2.1l",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "섬유유연제 2.1L(로즈템테이션)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 2.1,
+            "package_unit": "L",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "2.1L",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "9156ebed32dfa29447c9d02b9d5e37482d127ec91f417e9dec482eba86267170",
+          "raw_record_id": "ingestion:98:56",
+          "source_category_path": [
+            "청소/생활용품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:98:56",
+    "standard_unit_price": 141.9048,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:89:15"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        89
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:23:22.102172Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 5180,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-0ca361188a16d6c45668467a49ecbefe",
+    "public_source_listing_id": "listing-a692620e33e51d912e880dcd2be68bbb",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:23:22.102172Z",
+          "ingestion_id": 89,
+          "ingestion_received_at": "2026-09-02T15:23:23.244467Z",
+          "mart_native_category_id": "6000213319",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "면류/통조림",
+              "collection": "농심",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/85/60/81/item/1000031816085_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213319",
+              "mart_native_category_path": "면류/통조림",
+              "mart_native_code": "1000031816085",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000031816085",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000031816085&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,068원"
+            },
+            "brand": "__no_brand__",
+            "category": "면류/통조림",
+            "crawled_at": "2026-09-03T00:23:22.102172",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000031816085&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "5입",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/85/60/81/item/1000031816085_i1_290.jpg",
+            "match_key": "__no_brand__|신라면 건면 5입||5입",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "신라면 건면 5입",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 5.0,
+            "package_unit": "입",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5180,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "5입",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "2103f450f7547ff7519d7205cf9eb6137993c5e3541aa3e2392de671ab09445f",
+          "raw_record_id": "ingestion:89:15",
+          "source_category_path": [
+            "면류/통조림"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:89:15",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:90:20"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        90
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:15:37.747864Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 5180,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-af9179e04901322365b64519ea7702af",
+    "public_source_listing_id": "listing-a692620e33e51d912e880dcd2be68bbb",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:15:37.747864Z",
+          "ingestion_id": 90,
+          "ingestion_received_at": "2026-09-02T16:15:39.638424Z",
+          "mart_native_category_id": "6000213319",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "면류/통조림",
+              "collection": "농심",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/85/60/81/item/1000031816085_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213319",
+              "mart_native_category_path": "면류/통조림",
+              "mart_native_code": "1000031816085",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000031816085",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000031816085&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,068원"
+            },
+            "brand": "__no_brand__",
+            "category": "면류/통조림",
+            "crawled_at": "2026-09-03T01:15:37.747864",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000031816085&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "5입",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/85/60/81/item/1000031816085_i1_290.jpg",
+            "match_key": "__no_brand__|신라면 건면 5입||5입",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "신라면 건면 5입",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 5.0,
+            "package_unit": "입",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5180,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "5입",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "9e6c76050b5a25c154409625ecca43a2b2153f0cc6cd1ab0d1b5bf95c999e06d",
+          "raw_record_id": "ingestion:90:20",
+          "source_category_path": [
+            "면류/통조림"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:90:20",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:84:34"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        84
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:06:09.358466Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 6480,
+    "price_per_100g": 1296.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-1d66ec3b83bfe25d7d3326c4c1c6d99a",
+    "public_source_listing_id": "listing-40103749e69fe6ee3b3a4a920941bdc9",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:06:09.358466Z",
+          "ingestion_id": 84,
+          "ingestion_received_at": "2026-09-02T15:06:10.481337Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "노브랜드",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/32/95/68/item/1000032689532_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "1000032689532",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000032689532",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000032689532&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,296원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:06:09.358466",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000032689532&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "500g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/32/95/68/item/1000032689532_i1_290.jpg",
+            "match_key": "__no_brand__|바삭바삭 돈까스 500g||500g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "바삭바삭 돈까스 500g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "g",
+            "price_per_100g": 1296.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6480,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "500g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "2ba8330c577c3620d51b48fd9fb1e0db84dbe619eb2cfd0adb428992952e753c",
+          "raw_record_id": "ingestion:84:34",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:84:34",
+    "standard_unit_price": 1296.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:85:34"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        85
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:16:07.131033Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 6480,
+    "price_per_100g": 1296.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-f80c03b913601918fc30fa7e68e9f20b",
+    "public_source_listing_id": "listing-40103749e69fe6ee3b3a4a920941bdc9",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:16:07.131033Z",
+          "ingestion_id": 85,
+          "ingestion_received_at": "2026-09-02T15:16:08.234370Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "노브랜드",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/32/95/68/item/1000032689532_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "1000032689532",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000032689532",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000032689532&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,296원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:16:07.131033",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000032689532&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "500g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/32/95/68/item/1000032689532_i1_290.jpg",
+            "match_key": "__no_brand__|바삭바삭 돈까스 500g||500g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "바삭바삭 돈까스 500g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "g",
+            "price_per_100g": 1296.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6480,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "500g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "e2dd896518e6a78689278b013cde461a05386b8192781df64e0e1c4dbacecc92",
+          "raw_record_id": "ingestion:85:34",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:85:34",
+    "standard_unit_price": 1296.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:86:66"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        86
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:17:00.736046Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 10430,
+    "price_per_100g": 3476.6667,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-f37328cb4b2f6e6824fb27c5db522b46",
+    "public_source_listing_id": "listing-4de815bd9333f1d00d3581214b4d57bb",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:17:00.736046Z",
+          "ingestion_id": 86,
+          "ingestion_received_at": "2026-09-02T15:17:01.681076Z",
+          "mart_native_category_id": "6000213299",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "김치/반찬/델리",
+              "collection": "종가",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/35/93/84/item/1000032849335_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213299",
+              "mart_native_category_path": "김치/반찬/델리",
+              "mart_native_code": "1000032849335",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송",
+                "주간배송",
+                "주간배송"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000032849335",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000032849335&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 3,477원"
+            },
+            "brand": "__no_brand__",
+            "category": "김치/반찬/델리",
+            "crawled_at": "2026-09-03T00:17:00.736046",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000032849335&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "300g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/35/93/84/item/1000032849335_i1_290.jpg",
+            "match_key": "__no_brand__|파김치 300g||300g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "파김치 300g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 300.0,
+            "package_unit": "g",
+            "price_per_100g": 3476.67,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 10430,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "300g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "9caf03e458f67a12a4c177686f01066c087a40dbfe93d02d396478683178e6e7",
+          "raw_record_id": "ingestion:86:66",
+          "source_category_path": [
+            "김치/반찬/델리"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:86:66",
+    "standard_unit_price": 3476.6667,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:84:35"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        84
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:06:09.362477Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 9980,
+    "price_per_100g": 1108.8889,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-6fd3a4efde595159541b7952d584651f",
+    "public_source_listing_id": "listing-c3dc1eebdf7ff141ef52110252773fbc",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:06:09.362477Z",
+          "ingestion_id": 84,
+          "ingestion_received_at": "2026-09-02T15:06:10.481337Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "목우촌",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/13/54/96/item/1000032965413_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "1000032965413",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000032965413",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000032965413&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "10g 당 111원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:06:09.362477",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000032965413&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "450g×2",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/13/54/96/item/1000032965413_i1_290.jpg",
+            "match_key": "__no_brand__|big 주부9단 두툼프랑크 450g 2||450g×2",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "BIG 주부9단 두툼프랑크 450g*2",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 450.0,
+            "package_unit": "g",
+            "price_per_100g": 1108.89,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "450g×2",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "e107e5257645cfedfe776d55dd7dd7445f43ce7aab329e984a29f25cfc9644af",
+          "raw_record_id": "ingestion:84:35",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:84:35",
+    "standard_unit_price": 1108.8889,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:85:35"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        85
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:16:07.135436Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 10980,
+    "price_per_100g": 1220.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-8245e0ae645a797af635e949d5102f75",
+    "public_source_listing_id": "listing-c3dc1eebdf7ff141ef52110252773fbc",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:16:07.135436Z",
+          "ingestion_id": 85,
+          "ingestion_received_at": "2026-09-02T15:16:08.234370Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "목우촌",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/13/54/96/item/1000032965413_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "1000032965413",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000032965413",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000032965413&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "10g 당 122원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:16:07.135436",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000032965413&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "450g×2",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/13/54/96/item/1000032965413_i1_290.jpg",
+            "match_key": "__no_brand__|big 주부9단 두툼프랑크 450g 2||450g×2",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "BIG 주부9단 두툼프랑크 450g*2",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 450.0,
+            "package_unit": "g",
+            "price_per_100g": 1220.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 10980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "450g×2",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "d967c22cb87b0d870d3d1328e691087490965d069b8b6ab5cd3e60de0187aa3e",
+          "raw_record_id": "ingestion:85:35",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:85:35",
+    "standard_unit_price": 1220.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:78:8"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        78
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T14:46:34.877302Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 5980,
+    "price_per_100g": 498.3333,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-23efa49eccf05bf337a96c0e493a6b0e",
+    "public_source_listing_id": "listing-2c3ffec09e4a83fd1746633e9fabadb7",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T14:46:34.877302Z",
+          "ingestion_id": 78,
+          "ingestion_received_at": "2026-09-02T14:46:36.292525Z",
+          "mart_native_category_id": "6000213114",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "과일",
+              "collection": "dole",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/31/32/54/item/1000033543231_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213114",
+              "mart_native_category_path": "과일",
+              "mart_native_code": "1000033543231",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 09/04(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "09/04(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "1000033543231",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000033543231&siteNo=7009&salestrNo=2551",
+              "storage_label": "상온",
+              "storage_type": "ambient",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "과일",
+            "crawled_at": "2026-09-02T23:46:34.877302",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000033543231&siteNo=7009&salestrNo=2551",
+            "discount_percent": null,
+            "display_unit": "1.2kg",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/31/32/54/item/1000033543231_i1_290.jpg",
+            "match_key": "__no_brand__|필리핀산 스위티오 바나나 1 2kg||1.2kg",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "필리핀산 스위티오 바나나 1.2kg",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 1.2,
+            "package_unit": "kg",
+            "price_per_100g": 498.33,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "1.2kg",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "1f05fcae3b4b70af2c967deb00f18cf03badd226016002e99a50fc4fb725cd2f",
+          "raw_record_id": "ingestion:78:8",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:78:8",
+    "standard_unit_price": 498.3333,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:87:68"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        87
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:17:46.027681Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1650,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-53b318bd0da51c5ba43cbb69377ff675",
+    "public_source_listing_id": "listing-d5725be6817f10f80582efcbce796b0e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:17:46.027681Z",
+          "ingestion_id": 87,
+          "ingestion_received_at": "2026-09-02T15:17:46.958718Z",
+          "mart_native_category_id": "6000213424",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "생수/음료/주류",
+              "collection": "농심",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/19/25/76/item/1000033762519_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213424",
+              "mart_native_category_path": "생수/음료/주류",
+              "mart_native_code": "1000033762519",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000033762519",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000033762519&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100ml 당 330원"
+            },
+            "brand": "__no_brand__",
+            "category": "생수/음료/주류",
+            "crawled_at": "2026-09-03T00:17:46.027681",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000033762519&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "500ml",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/19/25/76/item/1000033762519_i1_290.jpg",
+            "match_key": "__no_brand__|파워오투 복숭아자몽향 500ml||500ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "파워오투 복숭아자몽향 500ml",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1650,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "500ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "68b57c240b0ac96f1c709dc650bb429e2ee2d6ac5d6cbc0af8a7c75b6c71ac6d",
+          "raw_record_id": "ingestion:87:68",
+          "source_category_path": [
+            "생수/음료/주류"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:87:68",
+    "standard_unit_price": 330.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:84:19"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        84
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:06:09.296396Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 6980,
+    "price_per_100g": 1269.0909,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-65d0f1ff428d68550d6631ca298fd358",
+    "public_source_listing_id": "listing-baa023aa9c90efbfbb5947eb9a4eb9e4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:06:09.296396Z",
+          "ingestion_id": 84,
+          "ingestion_received_at": "2026-09-02T15:06:10.481337Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "노브랜드",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/67/17/83/item/1000033831767_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "1000033831767",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000033831767",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000033831767&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "10g 당 127원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:06:09.296396",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000033831767&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "550g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/67/17/83/item/1000033831767_i1_290.jpg",
+            "match_key": "__no_brand__|한입쏙쏙비엔나 550g||550g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "한입쏙쏙비엔나 550g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 550.0,
+            "package_unit": "g",
+            "price_per_100g": 1269.09,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "550g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "e462f11b79204d88ff62b2ce95dafd1e08189c6cffe9b9eee10a0b5946832715",
+          "raw_record_id": "ingestion:84:19",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:84:19",
+    "standard_unit_price": 1269.0909,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:85:19"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        85
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:16:07.068824Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 6980,
+    "price_per_100g": 1269.0909,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-b72e13fd160764efa7294940599fc8f1",
+    "public_source_listing_id": "listing-baa023aa9c90efbfbb5947eb9a4eb9e4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:16:07.068824Z",
+          "ingestion_id": 85,
+          "ingestion_received_at": "2026-09-02T15:16:08.234370Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "노브랜드",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/67/17/83/item/1000033831767_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "1000033831767",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000033831767",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000033831767&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "10g 당 127원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:16:07.068824",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000033831767&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "550g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/67/17/83/item/1000033831767_i1_290.jpg",
+            "match_key": "__no_brand__|한입쏙쏙비엔나 550g||550g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "한입쏙쏙비엔나 550g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 550.0,
+            "package_unit": "g",
+            "price_per_100g": 1269.09,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "550g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "dd9b0d23f7b348df1877914f6a3eec4402ba6b3ffc3371516e6a445ca08de924",
+          "raw_record_id": "ingestion:85:19",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:85:19",
+    "standard_unit_price": 1269.0909,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:95:35"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        95
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:49:33.311871Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 5180,
+    "price_per_100g": 518.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-854c5224fea00109e88e95ceb4e2e914",
+    "public_source_listing_id": "listing-643fcd47fa5d82a920e7aa0d9e6faaaf",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:49:33.311871Z",
+          "ingestion_id": 95,
+          "ingestion_received_at": "2026-09-02T16:49:34.432844Z",
+          "mart_native_category_id": "6000228036",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "친환경/유기농",
+              "collection": "자연촌",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/98/61/90/item/1000033906198_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000228036",
+              "mart_native_category_path": "친환경/유기농",
+              "mart_native_code": "1000033906198",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000033906198",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000033906198&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 518원"
+            },
+            "brand": "__no_brand__",
+            "category": "친환경/유기농",
+            "crawled_at": "2026-09-03T01:49:33.311871",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000033906198&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "500g×2",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/98/61/90/item/1000033906198_i1_290.jpg",
+            "match_key": "__no_brand__|순수한 유기농두부 1kg 500g 2ea||500g×2",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "순수한 유기농두부 1kg(500g×2ea)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "g",
+            "price_per_100g": 518.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5180,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "500g×2",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "1b3fbff1c24731d5fcd75c3cecbdb2a37397799eee2bae30ee65cd952053ed57",
+          "raw_record_id": "ingestion:95:35",
+          "source_category_path": [
+            "친환경/유기농"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:95:35",
+    "standard_unit_price": 518.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:81:38"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        81
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T14:49:46.509702Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 8980,
+    "price_per_100g": 1151.2821,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-5fe8c7ac04e3639cecfa314237253d34",
+    "public_source_listing_id": "listing-35d10c2e8f611e5a3bb9cfe2c1179048",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T14:49:46.509702Z",
+          "ingestion_id": 81,
+          "ingestion_received_at": "2026-09-02T14:49:47.597245Z",
+          "mart_native_category_id": "6000215194",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "정육/계란류",
+              "collection": "풀무원",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/42/17/67/item/1000034671742_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000215194",
+              "mart_native_category_path": "정육/계란류",
+              "mart_native_code": "1000034671742",
+              "promo_label": "",
+              "quality_grade": "1+",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 내일(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "내일(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000034671742",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000034671742&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,151원"
+            },
+            "brand": "__no_brand__",
+            "category": "정육/계란류",
+            "crawled_at": "2026-09-02T23:49:46.509702",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000034671742&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "780g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/42/17/67/item/1000034671742_i1_290.jpg",
+            "match_key": "__no_brand__|1 등급 무항생제 계란 15구 대란 780g||780g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "1+등급 무항생제 계란 15구 (대란, 780g)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 780.0,
+            "package_unit": "g",
+            "price_per_100g": 1151.28,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 8980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "780g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "4248757ac5ef99434a94b4d15601818d881fd4d64d75a274f99e6f1501b0acf1",
+          "raw_record_id": "ingestion:81:38",
+          "source_category_path": [
+            "정육/계란류"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:81:38",
+    "standard_unit_price": 1151.2821,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:93:42"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        93
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:43:28.876138Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 9980,
+    "price_per_100g": 3326.6667,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-90e80db388f9b3a9a4cbc5ef45ab3b37",
+    "public_source_listing_id": "listing-b2ec0cfbca2be6434682553ffca89c15",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:43:28.876138Z",
+          "ingestion_id": 93,
+          "ingestion_received_at": "2026-09-02T16:43:29.903173Z",
+          "mart_native_category_id": "6000213412",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "베이커리/잼",
+              "collection": "피코크",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/86/22/80/item/1000034802286_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213412",
+              "mart_native_category_path": "베이커리/잼",
+              "mart_native_code": "1000034802286",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000034802286",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000034802286&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "10g 당 333원"
+            },
+            "brand": "__no_brand__",
+            "category": "베이커리/잼",
+            "crawled_at": "2026-09-03T01:43:28.876138",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000034802286&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "300g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/86/22/80/item/1000034802286_i1_290.jpg",
+            "match_key": "__no_brand__|미니 크로와상300g 생지||300g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "미니 크로와상300g(생지)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 300.0,
+            "package_unit": "g",
+            "price_per_100g": 3326.67,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "300g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "8b22fd72ff4f7b01aeb97393fd8d5fa6a1afd7e5b2729292ec39d9e1c8193821",
+          "raw_record_id": "ingestion:93:42",
+          "source_category_path": [
+            "베이커리/잼"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:93:42",
+    "standard_unit_price": 3326.6667,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:88:33"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        88
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:18:52.815308Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 21840,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-69f06cfde3e3db64cf7c894806b71d4b",
+    "public_source_listing_id": "listing-b285a31eec5a6140675fb631024effd4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:18:52.815308Z",
+          "ingestion_id": 88,
+          "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+          "mart_native_category_id": "6000215245",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "커피/원두/차",
+              "collection": "맥심",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/95/43/21/item/1000035214395_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000215245",
+              "mart_native_category_path": "커피/원두/차",
+              "mart_native_code": "1000035214395",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000035214395",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000035214395&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "10g 당 2,275원"
+            },
+            "brand": "__no_brand__",
+            "category": "커피/원두/차",
+            "crawled_at": "2026-09-03T00:18:52.815308",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000035214395&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "60입",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/95/43/21/item/1000035214395_i1_290.jpg",
+            "match_key": "__no_brand__|카누 마일드로스트 아메리카노 60입||60입",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "카누 마일드로스트 아메리카노 60입",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 60.0,
+            "package_unit": "입",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 21840,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "60입",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "08ce320e1a104d2fa10ec3b0f2b01472bce00681300340417282a559e1d4c36c",
+          "raw_record_id": "ingestion:88:33",
+          "source_category_path": [
+            "커피/원두/차"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:88:33",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:83:45"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        83
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T14:51:14.595550Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 4990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-6131d3e9ccd2f7924d808f86fb9a0002",
+    "public_source_listing_id": "listing-b33b6be5a398a4d101f3bd2b7e15fde5",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T14:51:14.595550Z",
+          "ingestion_id": 83,
+          "ingestion_received_at": "2026-09-02T14:51:15.693470Z",
+          "mart_native_category_id": "6000213534",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "우유/유제품",
+              "collection": "상하목장",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/85/43/35/item/1000035354385_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213534",
+              "mart_native_category_path": "우유/유제품",
+              "mart_native_code": "1000035354385",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 내일(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "내일(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000035354385",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000035354385&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100ml 당 554원"
+            },
+            "brand": "__no_brand__",
+            "category": "우유/유제품",
+            "crawled_at": "2026-09-02T23:51:14.595550",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000035354385&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "900ml",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/85/43/35/item/1000035354385_i1_290.jpg",
+            "match_key": "__no_brand__|유기농우유 900ml||900ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "유기농우유 900ml",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 900.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4990,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "900ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "279dfcfea0b3eb83fe9861652e3cc895d171c01dc2b1acced810f21703f9a6b7",
+          "raw_record_id": "ingestion:83:45",
+          "source_category_path": [
+            "우유/유제품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:83:45",
+    "standard_unit_price": 554.4444,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:84:47"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        84
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:06:09.406336Z",
+    "discount_rate": 0.2,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 9980,
+    "price": 7984,
+    "price_per_100g": 1848.1481,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-6bea7a256b389f88442a56c9339bccdc",
+    "public_source_listing_id": "listing-caff6ac68b4f19f3ff93699eeff847a1",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:06:09.406336Z",
+          "ingestion_id": 84,
+          "ingestion_received_at": "2026-09-02T15:06:10.481337Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "피코크",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/50/88/37/item/1000035378850_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "1000035378850",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000035378850",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000035378850&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,848원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:06:09.406336",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000035378850&siteNo=6001&salestrNo=2037",
+            "discount_percent": 20.0,
+            "display_unit": "432g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/50/88/37/item/1000035378850_i1_290.jpg",
+            "match_key": "__no_brand__|고래사어묵 모듬국탕어묵 432g||432g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "고래사어묵 모듬국탕어묵 432g",
+            "normalized_name": "",
+            "original_price": 9980,
+            "package_quantity": 432.0,
+            "package_unit": "g",
+            "price_per_100g": 1848.15,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7984,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "432g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "38fdb3a4f0bd59788a6fbe01723b2d5ceee693e9eb62cea9cdd7b9bd3edbd6a6",
+          "raw_record_id": "ingestion:84:47",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:84:47",
+    "standard_unit_price": 1848.1481,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:85:47"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        85
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:16:07.186628Z",
+    "discount_rate": 0.2,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 9980,
+    "price": 7984,
+    "price_per_100g": 1848.1481,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-bcca47c1fea8cafcd1bbc0ffe8591654",
+    "public_source_listing_id": "listing-caff6ac68b4f19f3ff93699eeff847a1",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:16:07.186628Z",
+          "ingestion_id": 85,
+          "ingestion_received_at": "2026-09-02T15:16:08.234370Z",
+          "mart_native_category_id": "6000213247",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "밀키트/간편식",
+              "collection": "피코크",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/50/88/37/item/1000035378850_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213247",
+              "mart_native_category_path": "밀키트/간편식",
+              "mart_native_code": "1000035378850",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000035378850",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000035378850&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 1,848원"
+            },
+            "brand": "__no_brand__",
+            "category": "밀키트/간편식",
+            "crawled_at": "2026-09-03T00:16:07.186628",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000035378850&siteNo=6001&salestrNo=2037",
+            "discount_percent": 20.0,
+            "display_unit": "432g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/50/88/37/item/1000035378850_i1_290.jpg",
+            "match_key": "__no_brand__|고래사어묵 모듬국탕어묵 432g||432g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "고래사어묵 모듬국탕어묵 432g",
+            "normalized_name": "",
+            "original_price": 9980,
+            "package_quantity": 432.0,
+            "package_unit": "g",
+            "price_per_100g": 1848.15,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7984,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "432g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "6f2cd15048a1e4f0d5f2901a70bc87265f6f439d1114bb36b40a96b77545597d",
+          "raw_record_id": "ingestion:85:47",
+          "source_category_path": [
+            "밀키트/간편식"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:85:47",
+    "standard_unit_price": 1848.1481,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:79:40"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        79
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T14:48:13.064173Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2280,
+    "price_per_100g": 456.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-6bcaa67bc71bdbfb90577b8c0cac7c25",
+    "public_source_listing_id": "listing-19a86875dcabe30ccd3f97b02829ea7c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T14:48:13.064173Z",
+          "ingestion_id": 79,
+          "ingestion_received_at": "2026-09-02T14:48:14.138405Z",
+          "mart_native_category_id": "6000213167",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "채소",
+              "collection": "풀무원",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/44/65/46/item/1000035466544_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213167",
+              "mart_native_category_path": "채소",
+              "mart_native_code": "1000035466544",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 내일(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "내일(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000035466544",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000035466544&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 456원"
+            },
+            "brand": "__no_brand__",
+            "category": "채소",
+            "crawled_at": "2026-09-02T23:48:13.064173",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000035466544&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "500g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/44/65/46/item/1000035466544_i1_290.jpg",
+            "match_key": "__no_brand__|소가 크고단단한두부 500g||500g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "소가 크고단단한두부 500g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "g",
+            "price_per_100g": 456.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2280,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "500g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "4badef489dc9421aed6f83771953b2ad03f345fe520c247f872e57ab320c88ac",
+          "raw_record_id": "ingestion:79:40",
+          "source_category_path": [
+            "채소"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:79:40",
+    "standard_unit_price": 456.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:90:23"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        90
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:15:37.759849Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2980,
+    "price_per_100g": 596.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-77d50875cc2750f80fe2ac79d3725385",
+    "public_source_listing_id": "listing-f8465c3cd059f326d9a210b4ea415861",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:15:37.759849Z",
+          "ingestion_id": 90,
+          "ingestion_received_at": "2026-09-02T16:15:39.638424Z",
+          "mart_native_category_id": "6000213319",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "면류/통조림",
+              "collection": "노브랜드",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/04/55/15/item/1000036155504_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213319",
+              "mart_native_category_path": "면류/통조림",
+              "mart_native_code": "1000036155504",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000036155504",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000036155504&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 596원"
+            },
+            "brand": "__no_brand__",
+            "category": "면류/통조림",
+            "crawled_at": "2026-09-03T01:15:37.759849",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000036155504&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "500g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/04/55/15/item/1000036155504_i1_290.jpg",
+            "match_key": "__no_brand__|당면 500g||500g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "당면 500g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "g",
+            "price_per_100g": 596.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "500g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "31863e889fcbfc4a1acb6bd1221a1f0bd292b7465be125163b92cf2cfea3c408",
+          "raw_record_id": "ingestion:90:23",
+          "source_category_path": [
+            "면류/통조림"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:90:23",
+    "standard_unit_price": 596.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:88:34"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        88
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:18:52.817646Z",
+    "discount_rate": 0.2,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 12980,
+    "price": 10384,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-cfe0f4b99096dd4effeb1277e861387c",
+    "public_source_listing_id": "listing-79cab8ecba3cf0d9a935d62f4f18013a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:18:52.817646Z",
+          "ingestion_id": 88,
+          "ingestion_received_at": "2026-09-02T15:18:53.836275Z",
+          "mart_native_category_id": "6000215245",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "커피/원두/차",
+              "collection": "피코크",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/66/83/58/item/1000036588366_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000215245",
+              "mart_native_category_path": "커피/원두/차",
+              "mart_native_code": "1000036588366",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000036588366",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000036588366&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100ml 당 444원"
+            },
+            "brand": "__no_brand__",
+            "category": "커피/원두/차",
+            "crawled_at": "2026-09-03T00:18:52.817646",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000036588366&siteNo=6001&salestrNo=2037",
+            "discount_percent": 20.0,
+            "display_unit": "390ml×6",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/66/83/58/item/1000036588366_i1_290.jpg",
+            "match_key": "__no_brand__|콜드브루아메리카노 390ml 6||390ml×6",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "콜드브루아메리카노(390ml×6)",
+            "normalized_name": "",
+            "original_price": 12980,
+            "package_quantity": 390.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 10384,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "390ml×6",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "e7bd05ce53550a1a2496958fa63803defd56851baf2e00832f953e3dfaf361d3",
+          "raw_record_id": "ingestion:88:34",
+          "source_category_path": [
+            "커피/원두/차"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:88:34",
+    "standard_unit_price": 443.7607,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:86:61"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        86
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:17:00.698566Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 3880,
+    "price_per_100g": 7054.5455,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-1cfaa46acaf6db71ad4285ddb33dcb1c",
+    "public_source_listing_id": "listing-eabe8033fc968bc81a06f7b6e12154cf",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:17:00.698566Z",
+          "ingestion_id": 86,
+          "ingestion_received_at": "2026-09-02T15:17:01.681076Z",
+          "mart_native_category_id": "6000213299",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "김치/반찬/델리",
+              "collection": "비비고",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/16/95/64/item/1000036649516_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213299",
+              "mart_native_category_path": "김치/반찬/델리",
+              "mart_native_code": "1000036649516",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000036649516",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000036649516&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 7,055원"
+            },
+            "brand": "__no_brand__",
+            "category": "김치/반찬/델리",
+            "crawled_at": "2026-09-03T00:17:00.698566",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000036649516&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "55g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/16/95/64/item/1000036649516_i1_290.jpg",
+            "match_key": "__no_brand__|오징어채볶음 55g||55g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오징어채볶음 55g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 55.0,
+            "package_unit": "g",
+            "price_per_100g": 7054.55,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3880,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "55g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "4e02d37d18e618b00514f312e08dadd1eef5544d0578635b657718c9aecb2520",
+          "raw_record_id": "ingestion:86:61",
+          "source_category_path": [
+            "김치/반찬/델리"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:86:61",
+    "standard_unit_price": 7054.5455,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:86:19"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        86
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:17:00.496193Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 3280,
+    "price_per_100g": 2624.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-70f7f18bb4ea5c35ff58d4fe06924ee3",
+    "public_source_listing_id": "listing-69dd31005b8c5793f6e8ed4eb82b91ca",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:17:00.496193Z",
+          "ingestion_id": 86,
+          "ingestion_received_at": "2026-09-02T15:17:01.681076Z",
+          "mart_native_category_id": "6000213299",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "김치/반찬/델리",
+              "collection": "비비고",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/22/95/64/item/1000036649522_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213299",
+              "mart_native_category_path": "김치/반찬/델리",
+              "mart_native_code": "1000036649522",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000036649522",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000036649522&siteNo=6001&salestrNo=2037",
+              "unit_price_display": "100g 당 2,624원"
+            },
+            "brand": "__no_brand__",
+            "category": "김치/반찬/델리",
+            "crawled_at": "2026-09-03T00:17:00.496193",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000036649522&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "125g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/22/95/64/item/1000036649522_i1_290.jpg",
+            "match_key": "__no_brand__|소고기 장조림 125g||125g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "소고기 장조림 125g",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 125.0,
+            "package_unit": "g",
+            "price_per_100g": 2624.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3280,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "125g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "0d56f403753e2b4cbd172ac6cb88fe8c58d37f6b6ee9c555124aa0e0f68db027",
+          "raw_record_id": "ingestion:86:19",
+          "source_category_path": [
+            "김치/반찬/델리"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:86:19",
+    "standard_unit_price": 2624.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:86:9"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        86
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T15:17:00.457264Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 17480,
+    "price_per_100g": 499.4286,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-d6162ffcf8f5139bb129e180e2437139",
+    "public_source_listing_id": "listing-b49f800c3b5dfe185414987eb60e0d3c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T15:17:00.457264Z",
+          "ingestion_id": 86,
+          "ingestion_received_at": "2026-09-02T15:17:01.681076Z",
+          "mart_native_category_id": "6000213299",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "김치/반찬/델리",
+              "collection": "노브랜드",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/49/49/68/item/1000036684949_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213299",
+              "mart_native_category_path": "김치/반찬/델리",
+              "mart_native_code": "1000036684949",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 오늘(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "오늘(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000036684949",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000036684949&siteNo=6001&salestrNo=2037",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "김치/반찬/델리",
+            "crawled_at": "2026-09-03T00:17:00.457264",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000036684949&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "3.5kg",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/49/49/68/item/1000036684949_i1_290.jpg",
+            "match_key": "__no_brand__|별미포기김치3 5kg||3.5kg",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "별미포기김치3.5kg",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 3.5,
+            "package_unit": "kg",
+            "price_per_100g": 499.43,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 17480,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "3.5kg",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "209c74a569c7017935589e49d4d7f2dcd7245814647e27e776aa103244e57c76",
+          "raw_record_id": "ingestion:86:9",
+          "source_category_path": [
+            "김치/반찬/델리"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:86:9",
+    "standard_unit_price": 499.4286,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:96:19"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        96
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:53:56.737867Z",
+    "discount_rate": 0.2703,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 25900,
+    "price": 18900,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-6ac5756a6020291977f9c748581167fa",
+    "public_source_listing_id": "listing-a9b942a7c00a292e713bb57889b2cbb4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:53:56.737867Z",
+          "ingestion_id": 96,
+          "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+          "mart_native_category_id": "6000213997",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "제지/위생/건강",
+              "collection": "크리넥스",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/25/89/49/item/1000037498925_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213997",
+              "mart_native_category_path": "제지/위생/건강",
+              "mart_native_code": "1000037498925",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "1000037498925",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000037498925&siteNo=7009&salestrNo=2551",
+              "unit_price_display": "10m 당 210원"
+            },
+            "brand": "__no_brand__",
+            "category": "제지/위생/건강",
+            "crawled_at": "2026-09-03T01:53:56.737867",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000037498925&siteNo=7009&salestrNo=2551",
+            "discount_percent": 27.0,
+            "display_unit": "30롤",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/25/89/49/item/1000037498925_i1_290.jpg",
+            "match_key": "__no_brand__|3겹 울트라클린 30m 30롤 온||30롤",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "3겹 울트라클린 30m*30롤 (온)",
+            "normalized_name": "",
+            "original_price": 25900,
+            "package_quantity": 30.0,
+            "package_unit": "롤",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 18900,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "30롤",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "e05060f22aa5e6ffd762134fe5e0f431b75c4bc976cbb7534464d3384940c449",
+          "raw_record_id": "ingestion:96:19",
+          "source_category_path": [
+            "제지/위생/건강"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:96:19",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:78:0"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        78
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T14:46:34.829493Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": 498.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-50569a5a6f5646fefae72a5ef8259482",
+    "public_source_listing_id": "listing-f52e309fbe349dce75833e0f5082b6e4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T14:46:34.829493Z",
+          "ingestion_id": 78,
+          "ingestion_received_at": "2026-09-02T14:46:36.292525Z",
+          "mart_native_category_id": "6000213114",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "과일",
+              "collection": "dole",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/70/96/16/item/1000038169670_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213114",
+              "mart_native_category_path": "과일",
+              "mart_native_code": "1000038169670",
+              "promo_label": "",
+              "salestr_no": "2037",
+              "shipping_labels": [
+                "주간배송 내일(목) 14:00까지 도착",
+                "주간배송",
+                "주간배송",
+                "내일(목) 14:00까지 도착"
+              ],
+              "shipping_type_code": "10",
+              "site_no": "6001",
+              "source_name": "emart",
+              "source_record_key": "1000038169670",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000038169670&siteNo=6001&salestrNo=2037",
+              "storage_label": "상온",
+              "storage_type": "ambient",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "과일",
+            "crawled_at": "2026-09-02T23:46:34.829493",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=1000038169670&siteNo=6001&salestrNo=2037",
+            "discount_percent": null,
+            "display_unit": "1kg",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/70/96/16/item/1000038169670_i1_290.jpg",
+            "match_key": "__no_brand__|필리핀산 스위티오 바나나 1kg||1kg",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "필리핀산 스위티오 바나나 1kg",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 1.0,
+            "package_unit": "kg",
+            "price_per_100g": 498.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "1kg",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "b1f1162f54337d564a9ba81f7d8d009db30ca1a52b8a88e3119aac93bbc322d2",
+          "raw_record_id": "ingestion:78:0",
+          "source_category_path": [
+            "과일"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:78:0",
+    "standard_unit_price": 498.0,
+    "valid_from": null,
+    "valid_to": null
+  }
+]

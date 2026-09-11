@@ -1,0 +1,4758 @@
+[
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:2"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.100958Z",
+    "discount_rate": null,
+    "event_name": "4개씩 골라 담으면, 5,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-278aee7f6d55aa7de888258f6c848379",
+    "public_source_listing_id": "listing-7798a5da1de9d51184a616e92318d4b4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.100958Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "a3c7a17d730ae658449f9aa4397eb5fc43bb1858",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045167237/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "짜장라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/0356a70e-8559-47b9-99c5-068156f9a116/300x300.jpg",
+              "mart_native_code": "8801045167237",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045167237",
+              "source_url": "https://lottemartzetta.com/products/OS8801045167237/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.100958",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045167237/details",
+            "discount_percent": null,
+            "display_unit": "125g",
+            "event_name": "4개씩 골라 담으면, 5,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/0356a70e-8559-47b9-99c5-068156f9a116/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 짜슐랭 큰컵 125g||125g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 짜슐랭 큰컵 (125G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 125.0,
+            "package_unit": "g",
+            "price_per_100g": 1584.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "125g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "6b08ff352eb9c3e6edca9b42a9af9c52cd7775d0a48dc68d35926d34f29ba083",
+          "raw_record_id": "ingestion:30:2",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "짜장라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:2",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:94"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.656839Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 20% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-510852559fef4ecf469f6836fd17e5e4",
+    "public_source_listing_id": "listing-4704765776a71cdf459dacbdf16f8b51",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.656839Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "e0c334fd4de577ac9b2618bbb279c97a5eeca241",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045176338/details",
+              "category_hint": "양념ㆍ오일ㆍ분말류",
+              "category_path": [
+                "양념ㆍ오일ㆍ분말류",
+                "케찹ㆍ마요네즈ㆍ머스타드ㆍ디핑소스",
+                "머스타드"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2a6ce0d9-b773-47fa-810a-b5946d2c4704/300x300.jpg",
+              "mart_native_code": "8801045176338",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045176338",
+              "source_url": "https://lottemartzetta.com/products/OS8801045176338/details"
+            },
+            "brand": "__no_brand__",
+            "category": "양념ㆍ오일ㆍ분말류",
+            "crawled_at": "2026-08-31T10:47:02.656839",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045176338/details",
+            "discount_percent": null,
+            "display_unit": "265g",
+            "event_name": "2개씩 골라 담으면, 20% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2a6ce0d9-b773-47fa-810a-b5946d2c4704/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 허니머스타드 265g||265g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 허니머스타드 (265G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 265.0,
+            "package_unit": "g",
+            "price_per_100g": 1313.21,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "265g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "0b55b362bf609f5a021ad104f941dac9c442fcc4bbd475732a40d462c8d7eed6",
+          "raw_record_id": "ingestion:31:94",
+          "source_category_path": [
+            "양념ᆞ오일ᆞ분말류",
+            "케찹ᆞ마요네즈ᆞ머스타드ᆞ디핑소스",
+            "머스타드"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:94",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:93"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.668274Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-84fc0b5d5e1cb0729fc054334ac973d0",
+    "public_source_listing_id": "listing-e647b632d3602818d6586b5e08dddfd1",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.668274Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "7be9298c32edf4aaa9163e65b4e17052e9969f07",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045269498/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ac35ad4f-28cc-46cf-ae43-b13665b4f698/300x300.jpg",
+              "mart_native_code": "8801045269498",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045269498",
+              "source_url": "https://lottemartzetta.com/products/OS8801045269498/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.668274",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045269498/details",
+            "discount_percent": null,
+            "display_unit": "390g",
+            "event_name": "2개씩 골라 담으면, 10% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ac35ad4f-28cc-46cf-ae43-b13665b4f698/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 오뚜기 진라면 약간매운맛 소컵 390g||390g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 오뚜기 진라면 약간매운맛 소컵 (390G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 390.0,
+            "package_unit": "g",
+            "price_per_100g": 1276.92,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "390g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "99457703007bdaac394dd53ac13812e290dc6d569286795c2911db93e538c766",
+          "raw_record_id": "ingestion:32:93",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:93",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:63"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.106780Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 20% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-2e27f488537681bfa0b68b801532798a",
+    "public_source_listing_id": "listing-35b960b0ef8b3c72b6ce332eadc8aa93",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.106780Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "6c8b81e1b0da82d908c5d2e5c97528ba52ef9475",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045290300/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "카레ㆍ짜장ㆍ즉석요리",
+                "즉석카레"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e30e98f0-0cb9-4cf5-b0a6-ccabe0ea3c3a/300x300.jpg",
+              "mart_native_code": "8801045290300",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045290300",
+              "source_url": "https://lottemartzetta.com/products/OS8801045290300/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:46:57.106780",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045290300/details",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "2개씩 골라 담으면, 20% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e30e98f0-0cb9-4cf5-b0a6-ccabe0ea3c3a/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 3분 카레 순한맛 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 3분 카레 순한맛 (200G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "12f0155df5ab9bdd3d8e2cc7550690745f3cb050e38630be2e32ab54ad414e27",
+          "raw_record_id": "ingestion:30:63",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "카레ᆞ짜장ᆞ즉석요리",
+            "즉석카레"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:63",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:52"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.105645Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 20% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-288b81ac537c086890c88d994e33ffb3",
+    "public_source_listing_id": "listing-42d66985dff67a31896de1a4ee737785",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.105645Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "155d9e415fdc0337cd086203816db18a6bef3ffd",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045290317/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "카레ㆍ짜장ㆍ즉석요리",
+                "즉석카레"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/7b3ff51c-dd33-44a8-bcd5-368ffacc3c1b/300x300.jpg",
+              "mart_native_code": "8801045290317",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045290317",
+              "source_url": "https://lottemartzetta.com/products/OS8801045290317/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:46:57.105645",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045290317/details",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "2개씩 골라 담으면, 20% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/7b3ff51c-dd33-44a8-bcd5-368ffacc3c1b/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 3분 카레 약간 매운맛 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 3분 카레 약간 매운맛 (200G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "1bc0b2a677d9d9d8df3e13a9ce16e891863b298e8d495b315d5cde952ec08430",
+          "raw_record_id": "ingestion:30:52",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "카레ᆞ짜장ᆞ즉석요리",
+            "즉석카레"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:52",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:41"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.661580Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 20% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-9fcb3d9829716a6d675b2ea7e321febe",
+    "public_source_listing_id": "listing-7b4196ea587c5ff8ebb3abeaef7e7027",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.661580Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "904016311f983016934db1ddf777752f23485df6",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045290324/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "카레ㆍ짜장ㆍ즉석요리",
+                "즉석카레"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/42d1a66f-c5ab-4a13-b3b6-757f8d348a02/300x300.jpg",
+              "mart_native_code": "8801045290324",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045290324",
+              "source_url": "https://lottemartzetta.com/products/OS8801045290324/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.661580",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045290324/details",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "2개씩 골라 담으면, 20% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/42d1a66f-c5ab-4a13-b3b6-757f8d348a02/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 3분 카레 매운맛 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 3분 카레 매운맛 (200G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "56320e9aa5412b04494e186a5cf1962ae6904323370338822c823b106b116173",
+          "raw_record_id": "ingestion:32:41",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "카레ᆞ짜장ᆞ즉석요리",
+            "즉석카레"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:41",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:99"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.161245Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-b8b9bb508e6d2315664a5754c3477245",
+    "public_source_listing_id": "listing-00d77548a822624c5fc848479d1f9afd",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.161245Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "a836de6811430fbca46520879ab49fdd9e94c9b6",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045290973/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1f233cdd-ed6c-4db6-abfc-271d8f3ce45f/300x300.jpg",
+              "mart_native_code": "8801045290973",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045290973",
+              "source_url": "https://lottemartzetta.com/products/OS8801045290973/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.161245",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045290973/details",
+            "discount_percent": null,
+            "display_unit": "500g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1f233cdd-ed6c-4db6-abfc-271d8f3ce45f/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 의정부식 부대찌개 500g||500g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 의정부식 부대찌개 (500G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "g",
+            "price_per_100g": 1296.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "500g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "25f0f32a34d523a07558bf06e246f66db40a6e10377607695a9a20fadecb89f2",
+          "raw_record_id": "ingestion:34:99",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:99",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:18"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.162965Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 20% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-80d14524d1793bcf29360676b64244ce",
+    "public_source_listing_id": "listing-31015fc6221bceb67b7207e64155c3e1",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.162965Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "279d178c61e0338a0f069e18e8aa0d6c91b74ded",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045291307/details",
+              "category_hint": "양념ㆍ오일ㆍ분말류",
+              "category_path": [
+                "양념ㆍ오일ㆍ분말류",
+                "짜장가루ㆍ짜장소스"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/16aac79f-5124-4c36-8656-c59d474d9bfd/300x300.jpg",
+              "mart_native_code": "8801045291307",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045291307",
+              "source_url": "https://lottemartzetta.com/products/OS8801045291307/details"
+            },
+            "brand": "__no_brand__",
+            "category": "양념ㆍ오일ㆍ분말류",
+            "crawled_at": "2026-08-31T10:47:08.162965",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045291307/details",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "2개씩 골라 담으면, 20% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/16aac79f-5124-4c36-8656-c59d474d9bfd/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 3분 짜장 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 3분 짜장 (200G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "111b14b60bbee5c303544ee9eb728cee506a78fe4a8dbcf5081d770d21661da9",
+          "raw_record_id": "ingestion:35:18",
+          "source_category_path": [
+            "양념ᆞ오일ᆞ분말류",
+            "짜장가루ᆞ짜장소스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:18",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:36"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.650334Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 20% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-c8c5bd73ded6fbd77c31396a8464ff17",
+    "public_source_listing_id": "listing-c80d521745d135d74b21eb66fc0a09e8",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.650334Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "fd2071dd4072e477e4fffbd5dd06d5f1576a711d",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045291314/details",
+              "category_hint": "양념ㆍ오일ㆍ분말류",
+              "category_path": [
+                "양념ㆍ오일ㆍ분말류",
+                "짜장가루ㆍ짜장소스"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c5d27d05-5824-434f-96cb-4905fcb773f6/300x300.jpg",
+              "mart_native_code": "8801045291314",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045291314",
+              "source_url": "https://lottemartzetta.com/products/OS8801045291314/details"
+            },
+            "brand": "__no_brand__",
+            "category": "양념ㆍ오일ㆍ분말류",
+            "crawled_at": "2026-08-31T10:47:02.650334",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045291314/details",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "2개씩 골라 담으면, 20% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c5d27d05-5824-434f-96cb-4905fcb773f6/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 3분 쇠고기 짜장 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 3분 쇠고기 짜장 (200G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ac0b4f5c89bfb224bb8141179af11233e310ae1b6d1e106435853a537574c1f7",
+          "raw_record_id": "ingestion:31:36",
+          "source_category_path": [
+            "양념ᆞ오일ᆞ분말류",
+            "짜장가루ᆞ짜장소스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:36",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:35"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.153165Z",
+    "discount_rate": null,
+    "event_name": "4개씩 골라 담으면, 5,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1580,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-aa2db6ab9875dcf50c7526e71c8d4283",
+    "public_source_listing_id": "listing-fd10746fe4b09b3ae5cdf5073e17785a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.153165Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "e60990460f1a54c41c867f2d5e44a8fabfa5e3a8",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045312170/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/3b8bf999-d721-4730-aa80-e99b558e121e/300x300.jpg",
+              "mart_native_code": "8801045312170",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045312170",
+              "source_url": "https://lottemartzetta.com/products/OS8801045312170/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.153165",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045312170/details",
+            "discount_percent": null,
+            "display_unit": "105g",
+            "event_name": "4개씩 골라 담으면, 5,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/3b8bf999-d721-4730-aa80-e99b558e121e/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 마열라면 큰컵 105g||105g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 마열라면 큰컵 (105G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 105.0,
+            "package_unit": "g",
+            "price_per_100g": 1504.76,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1580,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "105g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "4d40ab2f9c416d1627d2baff6f3fd201df8a82dc45916fb630abfa3c6f93ca7b",
+          "raw_record_id": "ingestion:34:35",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:35",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:24"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.672590Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 20% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-63ebf336208f277682984e457d5b47af",
+    "public_source_listing_id": "listing-30073468b739412152e75400458a0af5",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.672590Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "a6b4649702292e583f0461b089e47307dfe235d4",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045312316/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "카레ㆍ짜장ㆍ즉석요리",
+                "즉석카레"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/da4a4e38-16e1-4b63-9971-912f8d7567c9/300x300.jpg",
+              "mart_native_code": "8801045312316",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045312316",
+              "source_url": "https://lottemartzetta.com/products/OS8801045312316/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.672590",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045312316/details",
+            "discount_percent": null,
+            "display_unit": "200g",
+            "event_name": "2개씩 골라 담으면, 20% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/da4a4e38-16e1-4b63-9971-912f8d7567c9/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 3분 쇠고기 카레 200g||200g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 3분 쇠고기 카레 (200G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "200g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "089a47fe0ca4f4c0bf10d1bfe71a1565d7ed98cf2d06f662aaab11e040528e0f",
+          "raw_record_id": "ingestion:33:24",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "카레ᆞ짜장ᆞ즉석요리",
+            "즉석카레"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:24",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:23"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.163458Z",
+    "discount_rate": null,
+    "event_name": "4개씩 골라 담으면, 5,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1580,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-2d676f4d246ab0845a4a8431f8af7b90",
+    "public_source_listing_id": "listing-1f9deee54cd43b7550929e5e653dc691",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.163458Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "926f01061e62191d1735bf7714297637de006bcb",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045335612/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "볶음면ㆍ기타라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fc9ea424-6cd1-4df4-a13a-7ae7207bd268/300x300.jpg",
+              "mart_native_code": "8801045335612",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045335612",
+              "source_url": "https://lottemartzetta.com/products/OS8801045335612/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.163458",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045335612/details",
+            "discount_percent": null,
+            "display_unit": "51g",
+            "event_name": "4개씩 골라 담으면, 5,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fc9ea424-6cd1-4df4-a13a-7ae7207bd268/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 lightjoy 컵누들 로제맛 51g||51g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 LIGHTJOY 컵누들 로제맛 (51G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 51.0,
+            "package_unit": "g",
+            "price_per_100g": 3098.04,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1580,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "51g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "b3266e817caf400fd531bbe0220646b0fd769ae4cf6d72966e1dfd4bf503ec1a",
+          "raw_record_id": "ingestion:35:23",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "볶음면ᆞ기타라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:23",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:66"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.144647Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-e7f77915e51bb6717d5885b9c62a9fbc",
+    "public_source_listing_id": "listing-375d2df0610e2746cacec2eb7120fea0",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.144647Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "fc4ca1bc0a6bc8b3faa31022bea194102e394e03",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045415888/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석죽ㆍ즉석스프",
+                "즉석스프"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/37dd68d7-7e88-4754-8c3c-d2cb16ac177a/300x300.jpg",
+              "mart_native_code": "8801045415888",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045415888",
+              "source_url": "https://lottemartzetta.com/products/OS8801045415888/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.144647",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045415888/details",
+            "discount_percent": null,
+            "display_unit": "180g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/37dd68d7-7e88-4754-8c3c-d2cb16ac177a/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 프레스코 양송이크림스프 180g||180g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 프레스코 양송이크림스프 (180G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 180.0,
+            "package_unit": "g",
+            "price_per_100g": 1655.56,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "180g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "13e026b449d739cb5482741de01b393ea93495af01354b3c806e7afebb9860e1",
+          "raw_record_id": "ingestion:33:66",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석죽ᆞ즉석스프",
+            "즉석스프"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:66",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:34"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.164484Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-ff08ec446250b0e9d48aabd476a4dfc5",
+    "public_source_listing_id": "listing-5a278e8703cacec75963f1126f48d8e2",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.164484Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "8ebdbe3f0600780ee38fba2452f668cc74951d2f",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045416762/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "냉동밥ㆍ즉석죽ㆍ즉석스프",
+                "즉석스프"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/578f5e9f-1de7-4947-b7fa-b0e9f1a4449d/300x300.jpg",
+              "mart_native_code": "8801045416762",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045416762",
+              "source_url": "https://lottemartzetta.com/products/OS8801045416762/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.164484",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045416762/details",
+            "discount_percent": null,
+            "display_unit": "250g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/578f5e9f-1de7-4947-b7fa-b0e9f1a4449d/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 채소가득 마녀스프 250g||250g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 채소가득 마녀스프 250G",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 250.0,
+            "package_unit": "g",
+            "price_per_100g": 1992.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "250g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "22acda5bae74f423c70ce6f9e89478a840362713c8b2b2ddc1568af6b3de632c",
+          "raw_record_id": "ingestion:35:34",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "냉동밥ᆞ즉석죽ᆞ즉석스프",
+            "즉석스프"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:34",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:80"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.147954Z",
+    "discount_rate": null,
+    "event_name": "4개씩 골라 담으면, 5,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1580,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-f243426b47e51580720679dbab721d6b",
+    "public_source_listing_id": "listing-7b506bcf41e7105258487a2b6042745c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.147954Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "e68556f68788529a07fc17378042abeb625bb3ed",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045431314/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "비빔면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ebf8d0ca-7507-4709-866e-2d3de424b3db/300x300.jpg",
+              "mart_native_code": "8801045431314",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045431314",
+              "source_url": "https://lottemartzetta.com/products/OS8801045431314/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.147954",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045431314/details",
+            "discount_percent": null,
+            "display_unit": "134g",
+            "event_name": "4개씩 골라 담으면, 5,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ebf8d0ca-7507-4709-866e-2d3de424b3db/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 진비빔면 큰컵 134g||134g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 진비빔면 큰컵 (134G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 134.0,
+            "package_unit": "g",
+            "price_per_100g": 1179.1,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1580,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "134g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "63127f424a6f3a2624fd831064ac46283d1b5cb0ef12657a8bda9610076d2f61",
+          "raw_record_id": "ingestion:33:80",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "비빔면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:80",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:4"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.669931Z",
+    "discount_rate": null,
+    "event_name": "4개씩 골라 담으면, 5,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1580,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-d53d9a511cd001e31a071c7d06ccd960",
+    "public_source_listing_id": "listing-d5f44f9d68b3eb3d9d1c84f8b659a4d5",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.669931Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "2ac1df58777395de6d8d610967cf864bbe0221a6",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045512518/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "볶음면ㆍ기타라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8703051c-acee-44b2-ae9f-10de620c3cd8/300x300.jpg",
+              "mart_native_code": "8801045512518",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045512518",
+              "source_url": "https://lottemartzetta.com/products/OS8801045512518/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.669931",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045512518/details",
+            "discount_percent": null,
+            "display_unit": "44.7g",
+            "event_name": "4개씩 골라 담으면, 5,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8703051c-acee-44b2-ae9f-10de620c3cd8/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 컵누들 마라탕 44 7g||44.7g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 컵누들 마라탕 (44.7G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 44.7,
+            "package_unit": "g",
+            "price_per_100g": 3534.68,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1580,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "44.7g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "c1f8b9c73c9bbef1b51c23322ee2445881b476b359c2c26153363b1728f02105",
+          "raw_record_id": "ingestion:33:4",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "볶음면ᆞ기타라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:4",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:12"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.658518Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-31a0a25127786bfb777afb905bcdb27b",
+    "public_source_listing_id": "listing-30cf8cba8f9e0b0ca07c2dbb3ecd260c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.658518Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "afb8b4eb179705e3c570a1a977e3d24c94c68f21",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045517209/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "간편면요리",
+                "냉면ㆍ쫄면",
+                "쫄면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a32dc7e5-19dc-4ff1-b863-cb894d5e2b41/300x300.jpg",
+              "mart_native_code": "8801045517209",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045517209",
+              "source_url": "https://lottemartzetta.com/products/OS8801045517209/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.658518",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045517209/details",
+            "discount_percent": null,
+            "display_unit": "452g",
+            "event_name": "2개씩 골라 담으면, 10,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a32dc7e5-19dc-4ff1-b863-cb894d5e2b41/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 면사랑 생쫄면 2인 452g||452g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 면사랑 생쫄면 (2인) (452G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 452.0,
+            "package_unit": "g",
+            "price_per_100g": 1544.25,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "452g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "231cffa5f9614a54dd0bcd172de9fb4b8d273111df5f4327448c25eefcb11d4c",
+          "raw_record_id": "ingestion:32:12",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "간편면요리",
+            "냉면ᆞ쫄면",
+            "쫄면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:12",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:3"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.092241Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-0777260462983324a999cf6c64a87921",
+    "public_source_listing_id": "listing-c6b354f6626d206891a7ba54ccea3d82",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.092241Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "e3d5c0b305b613b787e8ba62a45eae1a3b5d47cb",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045520759/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "봉지라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/09b6bff4-f255-45c4-8cf7-2f9d25d46ee3/300x300.jpg",
+              "mart_native_code": "8801045520759",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045520759",
+              "source_url": "https://lottemartzetta.com/products/OS8801045520759/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.092241",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045520759/details",
+            "discount_percent": null,
+            "display_unit": "108g×5",
+            "event_name": "2개씩 골라 담으면, 10% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/09b6bff4-f255-45c4-8cf7-2f9d25d46ee3/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 스낵면 108g 5||108g×5",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 스낵면 (108G*5)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 108.0,
+            "package_unit": "g",
+            "price_per_100g": 644.44,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "108g×5",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "3258e57e3334ef80d7e10105c1105f56774192b31438ff3950521c98c4788b1f",
+          "raw_record_id": "ingestion:29:3",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "봉지라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:3",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:97"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.091810Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3950,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-3e3a81cf2e19985c948735855b08fa77",
+    "public_source_listing_id": "listing-06460eaabc98a7dcf85c26a4c1e7efb0",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.091810Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "5d09662be66f7a4c645c97a20979027cc5ab31d5",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045521077/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "봉지라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/74d01eb4-1066-4d96-849c-aedc9bc6e657/300x300.jpg",
+              "mart_native_code": "8801045521077",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045521077",
+              "source_url": "https://lottemartzetta.com/products/OS8801045521077/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.091810",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045521077/details",
+            "discount_percent": null,
+            "display_unit": "120g×5",
+            "event_name": "2개씩 골라 담으면, 10% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/74d01eb4-1066-4d96-849c-aedc9bc6e657/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 열라면 120g 5||120g×5",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 열라면 (120G*5)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 120.0,
+            "package_unit": "g",
+            "price_per_100g": 658.33,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3950,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "120g×5",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "be3f636b3e312aeae78265b2bb1203035e38e89681f68d210ed06d4546f90ce7",
+          "raw_record_id": "ingestion:28:97",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "봉지라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:97",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:14"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.093076Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3950,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-afdeb1634dab43067f1a2c60efc575a7",
+    "public_source_listing_id": "listing-ece3ef559c3197c5d1e5b50ada192ecf",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.093076Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "c6f00b9fce381e589a222ee3ce147bc7180ce42d",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045522234/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "봉지라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b08df771-f0e3-47d4-ac71-6ebdbb04fde3/300x300.jpg",
+              "mart_native_code": "8801045522234",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045522234",
+              "source_url": "https://lottemartzetta.com/products/OS8801045522234/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.093076",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045522234/details",
+            "discount_percent": null,
+            "display_unit": "120g×5",
+            "event_name": "2개씩 골라 담으면, 10% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b08df771-f0e3-47d4-ac71-6ebdbb04fde3/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 진라면 순한맛 120g 5||120g×5",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 진라면 순한맛 (120G*5)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 120.0,
+            "package_unit": "g",
+            "price_per_100g": 658.33,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3950,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "120g×5",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "e94cbfb91607a96d7fa22c894aaa7faccf06f74cd209491c2a2c190eb1e1174d",
+          "raw_record_id": "ingestion:29:14",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "봉지라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:14",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:62"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.088543Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3950,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-b7f436743c4d620b367b12ec578932bc",
+    "public_source_listing_id": "listing-2a11fd77ab47819692826a3e4c38eb15",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.088543Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "a8f72db80357a08261dae98d291f00e653486759",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045522265/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "봉지라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f633accf-b4ce-48ba-b157-b84179202815/300x300.jpg",
+              "mart_native_code": "8801045522265",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045522265",
+              "source_url": "https://lottemartzetta.com/products/OS8801045522265/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.088543",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045522265/details",
+            "discount_percent": null,
+            "display_unit": "120g×5",
+            "event_name": "2개씩 골라 담으면, 10% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f633accf-b4ce-48ba-b157-b84179202815/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 진라면 매운맛 120g 5||120g×5",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 진라면 매운맛 (120G*5)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 120.0,
+            "package_unit": "g",
+            "price_per_100g": 658.33,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3950,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "120g×5",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "a61c63ffa8ead574c30dc8d8ab9330efa4879b099601680b22bf9dbab8d69b92",
+          "raw_record_id": "ingestion:28:62",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "봉지라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:62",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:95"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.645250Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 5980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-1dbfcda061e22ad86f00b158df729e2e",
+    "public_source_listing_id": "listing-460d5e666a03983028abb749cd0b27af",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.645250Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "0855681fceef3ef12af011694a19598dae9eac65",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045522838/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "봉지라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ecc81b18-b755-4dc3-968e-27a860cab49d/300x300.jpg",
+              "mart_native_code": "8801045522838",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045522838",
+              "source_url": "https://lottemartzetta.com/products/OS8801045522838/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.645250",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045522838/details",
+            "discount_percent": null,
+            "display_unit": "130g×4",
+            "event_name": "2개씩 골라 담으면, 10% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ecc81b18-b755-4dc3-968e-27a860cab49d/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 진짬뽕 130g 4||130g×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 진짬뽕 (130G*4)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 130.0,
+            "package_unit": "g",
+            "price_per_100g": 1150.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "130g×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "85bec8f6fede28bb509a9c9d297b8eb970ea28aa4a29df1e85218eda7e8ea361",
+          "raw_record_id": "ingestion:30:95",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "봉지라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:95",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:14"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.162633Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3180,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-a61ac269cd7dbc47a225dfc98e2a3b93",
+    "public_source_listing_id": "listing-dea0321c3265a285624eb5715ac5e615",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.162633Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "f51416b595c297527f18b70e81a368c9d15be5cd",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045525709/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "봉지라면",
+                "볶음면ㆍ기타라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9e2140a6-2946-4748-b222-27a9e71bb36d/300x300.jpg",
+              "mart_native_code": "8801045525709",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045525709",
+              "source_url": "https://lottemartzetta.com/products/OS8801045525709/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.162633",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045525709/details",
+            "discount_percent": null,
+            "display_unit": "130g×4",
+            "event_name": "2개씩 골라 담으면, 10% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9e2140a6-2946-4748-b222-27a9e71bb36d/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 메밀비빔면 130g 4||130g×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 메밀비빔면 (130G*4)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 130.0,
+            "package_unit": "g",
+            "price_per_100g": 611.54,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3180,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "130g×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "db58a910b8deaf43799c5bec30f77a883747b78671e0269ccb968261d5cd9505",
+          "raw_record_id": "ingestion:35:14",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "봉지라면",
+            "볶음면ᆞ기타라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:14",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:35"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.103388Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4380,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-d584041eb1da06700cb898abed2d4db9",
+    "public_source_listing_id": "listing-a7dadd31afd833c8c63c363cf97fde0a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.103388Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "3002d6139a1fbe236c600162a90c86b9f92406f7",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045526201/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "봉지라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5ceb2fde-ad6b-48dd-924a-49683bf53f41/300x300.jpg",
+              "mart_native_code": "8801045526201",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045526201",
+              "source_url": "https://lottemartzetta.com/products/OS8801045526201/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.103388",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045526201/details",
+            "discount_percent": null,
+            "display_unit": "115g×4",
+            "event_name": "2개씩 골라 담으면, 10% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5ceb2fde-ad6b-48dd-924a-49683bf53f41/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 참깨라면 115g 4||115g×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 참깨라면 (115G*4)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 115.0,
+            "package_unit": "g",
+            "price_per_100g": 952.17,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4380,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "115g×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "e5a7892da40fd811908b93fea96ffb2e2045eefe7e99fb44cbc5ab6451ee0e57",
+          "raw_record_id": "ingestion:30:35",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "봉지라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:35",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:83"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.099077Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-17ac87ab3ce6ffc4e2191e58398efe2f",
+    "public_source_listing_id": "listing-63242db83ddec7c5b290abcaf3161987",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.099077Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "e4501b65bbb5cc8489a359ebe8dfaa53eef10846",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045526317/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "봉지라면",
+                "비빔면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4e9cd96d-ce0a-42e2-990d-6fc1cfa794fa/300x300.jpg",
+              "mart_native_code": "8801045526317",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045526317",
+              "source_url": "https://lottemartzetta.com/products/OS8801045526317/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.099077",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045526317/details",
+            "discount_percent": null,
+            "display_unit": "156g×4",
+            "event_name": "2개씩 골라 담으면, 10% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4e9cd96d-ce0a-42e2-990d-6fc1cfa794fa/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 진비빔면 156g 4||156g×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 진비빔면 (156G*4)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 156.0,
+            "package_unit": "g",
+            "price_per_100g": 477.56,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "156g×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "efe7350558822a4e48939677644af98e1e57a6b6e0f4a7315f4a7ca6e7f09007",
+          "raw_record_id": "ingestion:29:83",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "봉지라면",
+            "비빔면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:83",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:45"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.154462Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 20% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-dcb6f501a45342df993519775d76f8cb",
+    "public_source_listing_id": "listing-61eef6b31c6b6d9bf82f90d0260ce7ef",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.154462Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "e9f1f1f0e3b4e9c66b55d7663de285323525af3c",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045534855/details",
+              "category_hint": "양념ㆍ오일ㆍ분말류",
+              "category_path": [
+                "양념ㆍ오일ㆍ분말류",
+                "케찹ㆍ마요네즈ㆍ머스타드ㆍ디핑소스",
+                "케찹"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e630d97a-2d74-4952-a004-60f656917db8/300x300.jpg",
+              "mart_native_code": "8801045534855",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045534855",
+              "source_url": "https://lottemartzetta.com/products/OS8801045534855/details"
+            },
+            "brand": "__no_brand__",
+            "category": "양념ㆍ오일ㆍ분말류",
+            "crawled_at": "2026-08-31T10:47:08.154462",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045534855/details",
+            "discount_percent": null,
+            "display_unit": "290g",
+            "event_name": "2개씩 골라 담으면, 20% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e630d97a-2d74-4952-a004-60f656917db8/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 light joy 저당 케찹 290g||290g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 LIGHT&JOY 저당 케찹 (290G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 290.0,
+            "package_unit": "g",
+            "price_per_100g": 1200.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "290g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "22861f576aceb5dbe5f032c177c0257cc3cfee0f4653279174d21353059f4593",
+          "raw_record_id": "ingestion:34:45",
+          "source_category_path": [
+            "양념ᆞ오일ᆞ분말류",
+            "케찹ᆞ마요네즈ᆞ머스타드ᆞ디핑소스",
+            "케찹"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:45",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:87"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.108883Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-a54ba1a3bd4ad9acbabd38508466e5f1",
+    "public_source_listing_id": "listing-f0c1055132ed2bae082441e1f8d5ff67",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.108883Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "03a628d068c740e80eb6daa95c88997066d4844b",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045570105/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b034ad19-3b69-4c58-a6d7-77b08c408c6a/300x300.jpg",
+              "mart_native_code": "8801045570105",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045570105",
+              "source_url": "https://lottemartzetta.com/products/OS8801045570105/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.108883",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045570105/details",
+            "discount_percent": null,
+            "display_unit": "65g×6",
+            "event_name": "2개씩 골라 담으면, 10% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b034ad19-3b69-4c58-a6d7-77b08c408c6a/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 진라면 순한맛 소컵 65g 6||65g×6",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 진라면 순한맛 소컵 (65G*6)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 65.0,
+            "package_unit": "g",
+            "price_per_100g": 1276.92,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "65g×6",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "1845773f55c851c423f9395bab4ab67eb25d18e8ef3e13ef94718f160917834d",
+          "raw_record_id": "ingestion:30:87",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:87",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:18"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.102143Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-10fac043d546f8d396a332e1a3edd4c1",
+    "public_source_listing_id": "listing-6380d9dfff37ea10ccef8244a975d8f3",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.102143Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "2613f8f4024bfe1195130ff364cc36c6cc5eae8b",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045570280/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/16164430-b660-4091-b679-266aadf6d8aa/300x300.jpg",
+              "mart_native_code": "8801045570280",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045570280",
+              "source_url": "https://lottemartzetta.com/products/OS8801045570280/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.102143",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045570280/details",
+            "discount_percent": null,
+            "display_unit": "65g×6",
+            "event_name": "2개씩 골라 담으면, 10% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/16164430-b660-4091-b679-266aadf6d8aa/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 진라면 매운맛 소컵 65g 6||65g×6",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 진라면 매운맛 소컵 (65G*6)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 65.0,
+            "package_unit": "g",
+            "price_per_100g": 1276.92,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "65g×6",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "99ec9c83c87354456a90f3b393c2b5eabed0bad93e3616db8774339cd25e0735",
+          "raw_record_id": "ingestion:30:18",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:18",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:64"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.088679Z",
+    "discount_rate": null,
+    "event_name": "4개씩 골라 담으면, 5,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1400,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-1c3343582ef01c4955abd457dba96cb1",
+    "public_source_listing_id": "listing-8c983be3e140afdbbe1192a8028581bc",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.088679Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "c200384e83e77dd0bd106c21b6474a345975e0de",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045570419/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d860339e-6b8a-4b74-994d-c4cbc9d8d65f/300x300.jpg",
+              "mart_native_code": "8801045570419",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045570419",
+              "source_url": "https://lottemartzetta.com/products/OS8801045570419/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.088679",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045570419/details",
+            "discount_percent": null,
+            "display_unit": "110g",
+            "event_name": "4개씩 골라 담으면, 5,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d860339e-6b8a-4b74-994d-c4cbc9d8d65f/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 참깨라면 큰컵 110g||110g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 참깨라면 큰컵 (110G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 110.0,
+            "package_unit": "g",
+            "price_per_100g": 1272.73,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1400,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "110g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ffd7d34ca9e78ab7069b1734542315d67c34cd889422758aa719d22eddce8c02",
+          "raw_record_id": "ingestion:28:64",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:64",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:34"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.661038Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 3,300원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-02d438f55836f42bb9095779ae7dfaf4",
+    "public_source_listing_id": "listing-3331f165f8f829b0b70ed5e85f29c721",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.661038Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "8a566292875c12e1767f6bb9724d2e06a8135f60",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045570716/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5b4124ae-8b4e-4871-b6cf-9ac80a5c07db/300x300.jpg",
+              "mart_native_code": "8801045570716",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045570716",
+              "source_url": "https://lottemartzetta.com/products/OS8801045570716/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.661038",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045570716/details",
+            "discount_percent": null,
+            "display_unit": "105g",
+            "event_name": "3개씩 골라 담으면, 3,300원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5b4124ae-8b4e-4871-b6cf-9ac80a5c07db/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 열라면 큰컵 105g||105g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 열라면 큰컵 (105G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 105.0,
+            "package_unit": "g",
+            "price_per_100g": 1142.86,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1200,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "105g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "0e36c432ce0a2b36e6c9f8c08365f9bc280a5d862a83ce08f120a67dde63b390",
+          "raw_record_id": "ingestion:32:34",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:34",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:45"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.651218Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 3,300원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-ae34888a829473d0b75a3b6c19050961",
+    "public_source_listing_id": "listing-67a98c380a8a0bcc3dbda11df9f9e06f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.651218Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "be3dd491395d60d744808238b9397af5de569b2e",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045571362/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8937040a-9b18-4fcf-9b7a-1152fd7d091c/300x300.jpg",
+              "mart_native_code": "8801045571362",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045571362",
+              "source_url": "https://lottemartzetta.com/products/OS8801045571362/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.651218",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045571362/details",
+            "discount_percent": null,
+            "display_unit": "110g",
+            "event_name": "3개씩 골라 담으면, 3,300원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8937040a-9b18-4fcf-9b7a-1152fd7d091c/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 진라면 순한맛 큰컵 110g||110g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 진라면 순한맛 큰컵 (110G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 110.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.91,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1200,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "110g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ee9cada9af1f9a4ead37f4cf7e9bdcae57e1abb2ff48b7611e76793c912aabc9",
+          "raw_record_id": "ingestion:31:45",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:45",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:26"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.093958Z",
+    "discount_rate": null,
+    "event_name": "4개씩 골라 담으면, 5,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1580,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-a72ca3806f3e9f627784067d42afd18a",
+    "public_source_listing_id": "listing-e9c5197ae3e08abd666ac825def7b7eb",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.093958Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "d000cd7d5e32cfdc65d0db5a2582ef53774df408",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045571386/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "볶음면ㆍ기타라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9bcbc65d-eb05-47da-ad97-13bd97f050bd/300x300.jpg",
+              "mart_native_code": "8801045571386",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045571386",
+              "source_url": "https://lottemartzetta.com/products/OS8801045571386/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.093958",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045571386/details",
+            "discount_percent": null,
+            "display_unit": "120g",
+            "event_name": "4개씩 골라 담으면, 5,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9bcbc65d-eb05-47da-ad97-13bd97f050bd/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 라면볶이 큰컵 120g||120g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 라면볶이 큰컵 (120G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 120.0,
+            "package_unit": "g",
+            "price_per_100g": 1316.67,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1580,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "120g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "45ed803b0d7b30450682d3f384116dcd960f09c9a734f851590ac60e8ded3fd1",
+          "raw_record_id": "ingestion:29:26",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "볶음면ᆞ기타라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:26",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:10"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.092782Z",
+    "discount_rate": null,
+    "event_name": "4개씩 골라 담으면, 5,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1580,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-ef3d178bbd5927f25afde68a91d1aeb0",
+    "public_source_listing_id": "listing-3800c46eb3c06007e947a3768a6632aa",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.092782Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "f36c4ed92e9af6a2bb4807dac14b4a2d54ef45ed",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045571416/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "볶음면ㆍ기타라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/571200c1-6fca-4d60-8d87-1aba0d6184c9/300x300.jpg",
+              "mart_native_code": "8801045571416",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045571416",
+              "source_url": "https://lottemartzetta.com/products/OS8801045571416/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.092782",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045571416/details",
+            "discount_percent": null,
+            "display_unit": "120g",
+            "event_name": "4개씩 골라 담으면, 5,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/571200c1-6fca-4d60-8d87-1aba0d6184c9/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 스파게티 큰컵 120g||120g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 스파게티 큰컵 (120G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 120.0,
+            "package_unit": "g",
+            "price_per_100g": 1316.67,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1580,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "120g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "8eb53b6aa16360177b387e6c0ab6cc109a5d4dec9cc241e662308511145cf206",
+          "raw_record_id": "ingestion:29:10",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "볶음면ᆞ기타라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:10",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:5"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.161692Z",
+    "discount_rate": null,
+    "event_name": "4개씩 골라 담으면, 5,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-639259052da17033bcc6a64627d7e446",
+    "public_source_listing_id": "listing-c45ccfa1b4395bc0b304c4330383c4af",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.161692Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "9c5ed287656739632cc7bc2af693d161882d62d7",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045571577/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "볶음면ㆍ기타라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8bf4567f-2e08-4916-8371-4e171d40187a/300x300.jpg",
+              "mart_native_code": "8801045571577",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045571577",
+              "source_url": "https://lottemartzetta.com/products/OS8801045571577/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.161692",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045571577/details",
+            "discount_percent": null,
+            "display_unit": "37.8g",
+            "event_name": "4개씩 골라 담으면, 5,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8bf4567f-2e08-4916-8371-4e171d40187a/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 컵누들매콤한맛 37 8g||37.8g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 컵누들매콤한맛 (37.8G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 37.8,
+            "package_unit": "g",
+            "price_per_100g": 3915.34,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "37.8g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "a8d7a9f050b6572782e8a658144ae3708d85d9fc8873f797ca6e9d949c863433",
+          "raw_record_id": "ingestion:35:5",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "볶음면ᆞ기타라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:5",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:56"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.105968Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 3,300원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-93884712d713b186794e6d953838b851",
+    "public_source_listing_id": "listing-2830097908e17bc4cfbedb381a959fb4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.105968Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "33b4d1af0e2325584f3f3259ed0f1f96de7a46c2",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045571638/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/742d5a10-68c2-4584-a491-e5d0da4743ff/300x300.jpg",
+              "mart_native_code": "8801045571638",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045571638",
+              "source_url": "https://lottemartzetta.com/products/OS8801045571638/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.105968",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045571638/details",
+            "discount_percent": null,
+            "display_unit": "110g",
+            "event_name": "3개씩 골라 담으면, 3,300원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/742d5a10-68c2-4584-a491-e5d0da4743ff/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 진라면 매운맛 큰컵 110g||110g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 진라면 매운맛 큰컵 (110G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 110.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.91,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1200,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "110g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "91784b5dba4f908ecb2423b725bb9558e8b54bce82f3f5b7fd883890070defad",
+          "raw_record_id": "ingestion:30:56",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:56",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:69"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.089029Z",
+    "discount_rate": null,
+    "event_name": "4개씩 골라 담으면, 5,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-c6d0743e65be0caf48ad1575916ae721",
+    "public_source_listing_id": "listing-213b18738134654343e8e5718b129de2",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.089029Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "0c091f27e1e4954b7567731e7cdb8b689808b090",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045574585/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/85a52b32-0eec-4e9e-a056-4122b0d31eee/300x300.jpg",
+              "mart_native_code": "8801045574585",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045574585",
+              "source_url": "https://lottemartzetta.com/products/OS8801045574585/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.089029",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045574585/details",
+            "discount_percent": null,
+            "display_unit": "115g",
+            "event_name": "4개씩 골라 담으면, 5,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/85a52b32-0eec-4e9e-a056-4122b0d31eee/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 진짬뽕 큰컵 115g||115g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 진짬뽕 큰컵 (115G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 115.0,
+            "package_unit": "g",
+            "price_per_100g": 1721.74,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "115g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "eaa2b8b4740b5b9cc5818a34aea8225cb9f9e702342f813b1d2af390e4e76c7b",
+          "raw_record_id": "ingestion:28:69",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:69",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:65"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.144573Z",
+    "discount_rate": null,
+    "event_name": "4개씩 골라 담으면, 5,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-daddbba4651f7c24c715c0153b372a32",
+    "public_source_listing_id": "listing-488319524487cb2358c22bb9f2534879",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.144573Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "8a158b3da5e49644a4a7611ca610c02ea85e7d1b",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045576664/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "볶음면ㆍ기타라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9a2387c2-003e-46b2-9ac5-a2de96625bde/300x300.jpg",
+              "mart_native_code": "8801045576664",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045576664",
+              "source_url": "https://lottemartzetta.com/products/OS8801045576664/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.144573",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045576664/details",
+            "discount_percent": null,
+            "display_unit": "37.8g",
+            "event_name": "4개씩 골라 담으면, 5,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9a2387c2-003e-46b2-9ac5-a2de96625bde/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 컵누들 얼큰쌀국수 37 8g||37.8g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 컵누들 얼큰쌀국수 (37.8G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 37.8,
+            "package_unit": "g",
+            "price_per_100g": 3915.34,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "37.8g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "8b4c55ce597f8d360515cc8c8c7ddbb267c753484875b585d8cba6e6b0446149",
+          "raw_record_id": "ingestion:33:65",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "볶음면ᆞ기타라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:65",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:72"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.665895Z",
+    "discount_rate": null,
+    "event_name": "4개씩 골라 담으면, 5,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-73309af15b190108c5aa4086c2cb8050",
+    "public_source_listing_id": "listing-03e9a466bcfe83acb695d9fe6ad2c0a9",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.665895Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "3934b80b7579ba1e97e45dd0b975d88e77d1870a",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045576688/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "볶음면ㆍ기타라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/32c8c93a-95b3-452f-9360-ee0edebd06ca/300x300.jpg",
+              "mart_native_code": "8801045576688",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045576688",
+              "source_url": "https://lottemartzetta.com/products/OS8801045576688/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.665895",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045576688/details",
+            "discount_percent": null,
+            "display_unit": "34.2g",
+            "event_name": "4개씩 골라 담으면, 5,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/32c8c93a-95b3-452f-9360-ee0edebd06ca/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 컵누들 잔치쌀국수 34 2g||34.2g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 컵누들 잔치쌀국수 (34.2G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 34.2,
+            "package_unit": "g",
+            "price_per_100g": 4327.49,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "34.2g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "10b8c72fdd9a3bf408b7908ea31ae3f717726c6d30fdd8e00fb1d6085f5fd103",
+          "raw_record_id": "ingestion:32:72",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "볶음면ᆞ기타라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:72",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:43"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.104385Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-066d2f8559cab8bc34929837eabc983e",
+    "public_source_listing_id": "listing-1d1522493e1116ca728f0310c1f0bf8a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.104385Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "15494036c83c49e86344f9f4bfe5629457594314",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045662305/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "봉지라면",
+                "짜장라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/661a82e5-f225-49c7-b2c7-6a617aedee89/300x300.jpg",
+              "mart_native_code": "8801045662305",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045662305",
+              "source_url": "https://lottemartzetta.com/products/OS8801045662305/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.104385",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045662305/details",
+            "discount_percent": null,
+            "display_unit": "145g×5",
+            "event_name": "2개씩 골라 담으면, 10% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/661a82e5-f225-49c7-b2c7-6a617aedee89/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 짜슐랭 145g 5||145g×5",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 짜슐랭 (145G*5)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 145.0,
+            "package_unit": "g",
+            "price_per_100g": 686.9,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "145g×5",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "b215724c5d35ca7e297e339881ef3ce867d491013603401c4d1078aa9cd4859e",
+          "raw_record_id": "ingestion:30:43",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "봉지라면",
+            "짜장라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:43",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:18"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.647666Z",
+    "discount_rate": null,
+    "event_name": "4개씩 골라 담으면, 5,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1580,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-fe82c31bbc2dd795df5b285de7ae56e1",
+    "public_source_listing_id": "listing-0104e434b179f330e95e604afdac71d7",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.647666Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "19f5b3920d71f7d9738c871db9a903df0fb56fd2",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045720760/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/faa59c43-b29e-441d-a461-994c785cce10/300x300.jpg",
+              "mart_native_code": "8801045720760",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045720760",
+              "source_url": "https://lottemartzetta.com/products/OS8801045720760/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.647666",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045720760/details",
+            "discount_percent": null,
+            "display_unit": "110g",
+            "event_name": "4개씩 골라 담으면, 5,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/faa59c43-b29e-441d-a461-994c785cce10/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 열려라 참깨라면 큰컵 110g||110g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 열려라 참깨라면 큰컵 (110G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 110.0,
+            "package_unit": "g",
+            "price_per_100g": 1436.36,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1580,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "110g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "3b6985513d0fc55b41da93352053062b5f8dbcd085ba0c2328c99a2f076ac42b",
+          "raw_record_id": "ingestion:31:18",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:18",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:68"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.653490Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-09058d13352c68f4e805d6ced8da3344",
+    "public_source_listing_id": "listing-dde28b9bf181feda332ba938fc64d71f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.653490Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "aec4b2aad5beeedea4af1e77c1c7c925c4476073",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045723297/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "봉지라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e8d6a04a-6cb0-4f59-950f-dcc057dbff47/300x300.jpg",
+              "mart_native_code": "8801045723297",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045723297",
+              "source_url": "https://lottemartzetta.com/products/OS8801045723297/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.653490",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045723297/details",
+            "discount_percent": null,
+            "display_unit": "120g×5",
+            "event_name": "2개씩 골라 담으면, 10% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e8d6a04a-6cb0-4f59-950f-dcc057dbff47/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 김치라면 120g 5||120g×5",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 김치라면 (120G*5)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 120.0,
+            "package_unit": "g",
+            "price_per_100g": 580.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "120g×5",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "df6c3e21a6962a7766d748e1c2d0483278f44e66b905ddea35e2b6ed7d67dfda",
+          "raw_record_id": "ingestion:31:68",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "봉지라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:68",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:21"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.672388Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-762c7f476d88567ac09b581d82d43c39",
+    "public_source_listing_id": "listing-ddf9ee55b67c9e57f2ef6912196ad785",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.672388Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "9a02c2473bebf1d2a8b76b0f95b41f9281565184",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045725512/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/17023dc3-0733-43d4-9494-b5072a1d3d7c/300x300.jpg",
+              "mart_native_code": "8801045725512",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045725512",
+              "source_url": "https://lottemartzetta.com/products/OS8801045725512/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.672388",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045725512/details",
+            "discount_percent": null,
+            "display_unit": "104g×6",
+            "event_name": "2개씩 골라 담으면, 10% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/17023dc3-0733-43d4-9494-b5072a1d3d7c/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 육개장 104g 6||104g×6",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 육개장 (104G*6)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 104.0,
+            "package_unit": "g",
+            "price_per_100g": 798.08,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "104g×6",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "83fb14e5685f7cd9aa2af4fb38c929841bd4168fd130369b9d907a91ae0cb8ea",
+          "raw_record_id": "ingestion:33:21",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:21",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:36"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.661183Z",
+    "discount_rate": null,
+    "event_name": "4개씩 골라 담으면, 5,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-93afbd0c9edb7ad71ba5862db0111c14",
+    "public_source_listing_id": "listing-06995a7a40e48f4777367281ea839177",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.661183Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "8b8dd270edda7fff75fcc3a845c2fde5b0bc36a9",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045759623/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "볶음면ㆍ기타라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/cbd0fadb-7d2b-4216-9791-6cbea3f41184/300x300.jpg",
+              "mart_native_code": "8801045759623",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045759623",
+              "source_url": "https://lottemartzetta.com/products/OS8801045759623/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.661183",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045759623/details",
+            "discount_percent": null,
+            "display_unit": "110g",
+            "event_name": "4개씩 골라 담으면, 5,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/cbd0fadb-7d2b-4216-9791-6cbea3f41184/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 참깨라면 볶음면 큰컵 110g||110g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 참깨라면 볶음면 큰컵 (110G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 110.0,
+            "package_unit": "g",
+            "price_per_100g": 1800.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "110g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "cbb11068cfbc0180be5bc52a552351097c647be040f701e9383baa9e952a9c7e",
+          "raw_record_id": "ingestion:32:36",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "볶음면ᆞ기타라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:36",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:21"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.151829Z",
+    "discount_rate": null,
+    "event_name": "4개씩 골라 담으면, 5,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1580,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-c5667c64887e09b4a677562267815779",
+    "public_source_listing_id": "listing-72541fc9ef0ed76d1e14438e00a0a58e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.151829Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "8fba030c9180b1bfba0f068d989e30363ad465ef",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045779959/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "볶음면ㆍ기타라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d3bb9972-02a1-4d57-9f60-a63b2907ec68/300x300.jpg",
+              "mart_native_code": "8801045779959",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045779959",
+              "source_url": "https://lottemartzetta.com/products/OS8801045779959/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.151829",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045779959/details",
+            "discount_percent": null,
+            "display_unit": "42g",
+            "event_name": "4개씩 골라 담으면, 5,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d3bb9972-02a1-4d57-9f60-a63b2907ec68/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 lightjoy 컵누들 불닭맛 42g||42g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 LIGHTJOY 컵누들 불닭맛 (42G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 42.0,
+            "package_unit": "g",
+            "price_per_100g": 3761.9,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1580,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "42g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "09c75f36a54ce685411fea2d0816737657ad7bc26291e2c9ccaeafed5668087d",
+          "raw_record_id": "ingestion:34:21",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "볶음면ᆞ기타라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:21",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:33"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.152910Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 3,300원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-06cfcf67f12a22ee32bdce4da946b479",
+    "public_source_listing_id": "listing-c6add10a3b34cb8dc5aecaa573f3bf69",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.152910Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "fafadf46429b85f4c3c9e7dced420ab7ebff39eb",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045823898/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "라면",
+                "컵라면",
+                "일반라면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9ba6faca-4e2e-4161-868e-355d393e80a0/300x300.jpg",
+              "mart_native_code": "8801045823898",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045823898",
+              "source_url": "https://lottemartzetta.com/products/OS8801045823898/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.152910",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045823898/details",
+            "discount_percent": null,
+            "display_unit": "110g",
+            "event_name": "3개씩 골라 담으면, 3,300원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9ba6faca-4e2e-4161-868e-355d393e80a0/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 진라면 약간매운맛 큰컵 110g||110g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 진라면 약간매운맛 큰컵 (110G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 110.0,
+            "package_unit": "g",
+            "price_per_100g": 1090.91,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1200,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "110g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "cd1a24a30444b74d1598db8445da42fb46b7cab4e60243dac1032e5324b15e60",
+          "raw_record_id": "ingestion:34:33",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "라면",
+            "컵라면",
+            "일반라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:33",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:54"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.155458Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-0407e3c4841e6dd971c147cd125e1514",
+    "public_source_listing_id": "listing-6163c0069a4efa06289fbc774e7dfee0",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.155458Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "5de9f6800c58777496f7f85a757c1ce482f0a0ec",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801045893044/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석밥ㆍ컵밥",
+                "즉석밥"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/56eafe48-d8ee-4802-925b-72b3b2284021/300x300.jpg",
+              "mart_native_code": "8801045893044",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801045893044",
+              "source_url": "https://lottemartzetta.com/products/OS8801045893044/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.155458",
+            "detail_url": "https://lottemartzetta.com/products/OS8801045893044/details",
+            "discount_percent": null,
+            "display_unit": "210g×3",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/56eafe48-d8ee-4802-925b-72b3b2284021/300x300.jpg",
+            "match_key": "__no_brand__|오뚜기 맛있는밥 오곡 210g 3입||210g×3",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 맛있는밥 오곡 (210G*3입)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 210.0,
+            "package_unit": "g",
+            "price_per_100g": 1107.94,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "210g×3",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ea6434c6d70132762005bb4425c2ca9a3cf528af665592af59180ebd9c62eb22",
+          "raw_record_id": "ingestion:34:54",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석밥ᆞ컵밥",
+            "즉석밥"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:54",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  }
+]

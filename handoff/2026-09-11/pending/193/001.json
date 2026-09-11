@@ -1,0 +1,657 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:0ed5ca34cc81ff464d54a017",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:91",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 탄산음료 > 기타탄산음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "source_title": "코카콜라 제로 (1.2L)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801094082321/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "코카콜라",
+      "crawled_at": "2026-08-31T01:46:57.091364Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e5995939-5ac5-4ecf-98e6-1a7008ee4541/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 91,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1.2L",
+        "package_quantity": 1200.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 4080,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "코카콜라",
+          "canon_hash": "842463793de994bbc3192bcd2e0d7cf32e956ef2",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801094082321/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "탄산음료",
+            "기타탄산음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e5995939-5ac5-4ecf-98e6-1a7008ee4541/300x300.jpg",
+          "mart_native_code": "8801094082321",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801094082321",
+          "source_url": "https://lottemartzetta.com/products/OS8801094082321/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:46:57.091364",
+        "detail_url": "https://lottemartzetta.com/products/OS8801094082321/details",
+        "discount_percent": null,
+        "display_unit": "1.2L",
+        "event_name": "2개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e5995939-5ac5-4ecf-98e6-1a7008ee4541/300x300.jpg",
+        "match_key": "__no_brand__|코카콜라 제로 1 2l||1.2l",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "코카콜라 제로 (1.2L)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.2,
+        "package_unit": "L",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4080,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "1.2L",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "2cf9e1b2950b3ef6b2d08a0122f875a811cac0d8787bfbf3cd119169728ee187",
+      "raw_record_id": "ingestion:28:91",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801094082321",
+      "source_title": "코카콜라 제로 (1.2L)",
+      "source_url": "https://lottemartzetta.com/products/OS8801094082321/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:28:91",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801094082321",
+    "source_title": "코카콜라 제로 (1.2L)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:0ed5ca34cc81ff464d54a017",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:29:17",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 탄산음료 > 기타탄산음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "source_title": "맥콜 (1.25L)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801223007935/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "일화",
+      "crawled_at": "2026-08-31T01:46:57.093283Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/eb7037f6-256c-40cd-9423-50584cfa08cf/300x300.jpg",
+      "ingestion_id": 29,
+      "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 17,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1.25L",
+        "package_quantity": 1250.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 2690,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "일화",
+          "canon_hash": "fdb11d81e6b682519affd0f99c24656f9e50dc84",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801223007935/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "탄산음료",
+            "기타탄산음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/eb7037f6-256c-40cd-9423-50584cfa08cf/300x300.jpg",
+          "mart_native_code": "8801223007935",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801223007935",
+          "source_url": "https://lottemartzetta.com/products/OS8801223007935/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:46:57.093283",
+        "detail_url": "https://lottemartzetta.com/products/OS8801223007935/details",
+        "discount_percent": null,
+        "display_unit": "1.25L",
+        "event_name": "2개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/eb7037f6-256c-40cd-9423-50584cfa08cf/300x300.jpg",
+        "match_key": "__no_brand__|맥콜 1 25l||1.25l",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "맥콜 (1.25L)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.25,
+        "package_unit": "L",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2690,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "1.25L",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "db95ba2ec3fdf930dca32ee774436abf05c1b97871c20fe33d26fb278c1f7409",
+      "raw_record_id": "ingestion:29:17",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801223007935",
+      "source_title": "맥콜 (1.25L)",
+      "source_url": "https://lottemartzetta.com/products/OS8801223007935/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:29:17",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801223007935",
+    "source_title": "맥콜 (1.25L)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:0ed5ca34cc81ff464d54a017",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:29:37",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 탄산음료 > 기타탄산음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "source_title": "칠성 사이다제로 (1.25L)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801056235987/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "롯데칠성음료",
+      "crawled_at": "2026-08-31T01:46:57.094740Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/687abe47-15ab-4cdd-989f-f6fc094ee792/300x300.jpg",
+      "ingestion_id": 29,
+      "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 37,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "1.25L",
+        "package_quantity": 1250.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 3590,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "롯데칠성음료",
+          "canon_hash": "91392e7294cc5ed5c04131e8b294da854f9e5160",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801056235987/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "탄산음료",
+            "기타탄산음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/687abe47-15ab-4cdd-989f-f6fc094ee792/300x300.jpg",
+          "mart_native_code": "8801056235987",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801056235987",
+          "source_url": "https://lottemartzetta.com/products/OS8801056235987/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:46:57.094740",
+        "detail_url": "https://lottemartzetta.com/products/OS8801056235987/details",
+        "discount_percent": null,
+        "display_unit": "1.25L",
+        "event_name": "2개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/687abe47-15ab-4cdd-989f-f6fc094ee792/300x300.jpg",
+        "match_key": "__no_brand__|칠성 사이다제로 1 25l||1.25l",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "칠성 사이다제로 (1.25L)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 1.25,
+        "package_unit": "L",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3590,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "1.25L",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "b7925b464cab43d191ad736ad97f0bb91fd40b932bff37aabf661884da3be429",
+      "raw_record_id": "ingestion:29:37",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801056235987",
+      "source_title": "칠성 사이다제로 (1.25L)",
+      "source_url": "https://lottemartzetta.com/products/OS8801056235987/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:29:37",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801056235987",
+    "source_title": "칠성 사이다제로 (1.25L)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:0ed5ca34cc81ff464d54a017",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:32",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 탄산음료 > 기타탄산음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "source_title": "웰치 포도 캔 (355ML * 6)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801043650632/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "웰치",
+      "crawled_at": "2026-08-31T01:47:02.673448Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 9,900원",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/dc28870a-4e14-4705-b2ad-f5510b2baf62/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 32,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "355ml×6",
+        "package_quantity": 355.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 6600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "웰치",
+          "canon_hash": "a0d25a0cf61be1516815424c284e82a329583b9e",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801043650632/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "탄산음료",
+            "기타탄산음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/dc28870a-4e14-4705-b2ad-f5510b2baf62/300x300.jpg",
+          "mart_native_code": "8801043650632",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801043650632",
+          "source_url": "https://lottemartzetta.com/products/OS8801043650632/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:47:02.673448",
+        "detail_url": "https://lottemartzetta.com/products/OS8801043650632/details",
+        "discount_percent": null,
+        "display_unit": "355ml×6",
+        "event_name": "2개씩 골라 담으면, 9,900원",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/dc28870a-4e14-4705-b2ad-f5510b2baf62/300x300.jpg",
+        "match_key": "__no_brand__|웰치 포도 캔 355ml 6||355ml×6",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "웰치 포도 캔 (355ML * 6)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 355.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 6600,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "355ml×6",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "6f741266eb748e12766e761ce9a3dccafbd01627dc9cf42958d3f9e70ed33837",
+      "raw_record_id": "ingestion:33:32",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801043650632",
+      "source_title": "웰치 포도 캔 (355ML * 6)",
+      "source_url": "https://lottemartzetta.com/products/OS8801043650632/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:33:32",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801043650632",
+    "source_title": "웰치 포도 캔 (355ML * 6)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:0ed5ca34cc81ff464d54a017",
+      "promotion_surface": false,
+      "proposed_path": [
+        "생수ㆍ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:35:9",
+      "review_status": "pending",
+      "source_path": "생수ㆍ음료 > 탄산음료 > 기타탄산음료",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "생수ㆍ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "source_title": "웰치포도 제로 (355ML * 6)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801043064101/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "웰치",
+      "crawled_at": "2026-08-31T01:47:08.162049Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 9,900원",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/aaa0dbd6-d28b-4d9f-946e-29e357471655/300x300.jpg",
+      "ingestion_id": 35,
+      "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 9,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 6,
+        "display_unit": "355ml×6",
+        "package_quantity": 355.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 6600,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "웰치",
+          "canon_hash": "3f502c1db9c5d1e27f881f1243856a286ce3dde0",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801043064101/details",
+          "category_hint": "생수ㆍ음료",
+          "category_path": [
+            "생수ㆍ음료",
+            "탄산음료",
+            "기타탄산음료"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/aaa0dbd6-d28b-4d9f-946e-29e357471655/300x300.jpg",
+          "mart_native_code": "8801043064101",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801043064101",
+          "source_url": "https://lottemartzetta.com/products/OS8801043064101/details"
+        },
+        "brand": "__no_brand__",
+        "category": "생수ㆍ음료",
+        "crawled_at": "2026-08-31T10:47:08.162049",
+        "detail_url": "https://lottemartzetta.com/products/OS8801043064101/details",
+        "discount_percent": null,
+        "display_unit": "355ml×6",
+        "event_name": "2개씩 골라 담으면, 9,900원",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/aaa0dbd6-d28b-4d9f-946e-29e357471655/300x300.jpg",
+        "match_key": "__no_brand__|웰치포도 제로 355ml 6||355ml×6",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "웰치포도 제로 (355ML * 6)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 355.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 6600,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "355ml×6",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "ca17d488476fe1b090634e5168201a5aab54b4c8d7d5ab817392370a5433c8cd",
+      "raw_record_id": "ingestion:35:9",
+      "source_category_path": [
+        "생수ᆞ음료",
+        "탄산음료",
+        "기타탄산음료"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801043064101",
+      "source_title": "웰치포도 제로 (355ML * 6)",
+      "source_url": "https://lottemartzetta.com/products/OS8801043064101/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:35:9",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801043064101",
+    "source_title": "웰치포도 제로 (355ML * 6)"
+  }
+]

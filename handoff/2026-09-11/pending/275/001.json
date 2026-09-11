@@ -1,0 +1,404 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.prepared.soup_stew"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:95ed4d452821f1dd9ffeaa46",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "간편식·면",
+        "조리식품",
+        "국·탕·찌개"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:30:70",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 국ㆍ탕ㆍ찌개ㆍ전골 > 국ㆍ탕",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "국ㆍ탕ㆍ찌개ㆍ전골",
+        "국ㆍ탕"
+      ],
+      "source_title": "요리하다 차돌짬뽕밥 (210G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809294666426/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "YORIHADA",
+      "crawled_at": "2026-08-31T01:46:57.107278Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "4개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2a7e562e-6a4b-44ed-ba47-92894181abfe/300x300.jpg",
+      "ingestion_id": 30,
+      "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 70,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "210g",
+        "package_quantity": 210.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2590,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "YORIHADA",
+          "canon_hash": "a5634821477246c7c80fab0ba22eab62ff69fe74",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809294666426/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "국ㆍ탕ㆍ찌개ㆍ전골",
+            "국ㆍ탕"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2a7e562e-6a4b-44ed-ba47-92894181abfe/300x300.jpg",
+          "mart_native_code": "8809294666426",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809294666426",
+          "source_url": "https://lottemartzetta.com/products/OS8809294666426/details"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:46:57.107278",
+        "detail_url": "https://lottemartzetta.com/products/OS8809294666426/details",
+        "discount_percent": null,
+        "display_unit": "210g",
+        "event_name": "4개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2a7e562e-6a4b-44ed-ba47-92894181abfe/300x300.jpg",
+        "match_key": "__no_brand__|요리하다 차돌짬뽕밥 210g||210g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "요리하다 차돌짬뽕밥 (210G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 210.0,
+        "package_unit": "g",
+        "price_per_100g": 1233.33,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2590,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "210g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "854f068fd0339fef63142f55c77ba94db84ee9eaaba106c0b771c5bafc928611",
+      "raw_record_id": "ingestion:30:70",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "국ᆞ탕ᆞ찌개ᆞ전골",
+        "국ᆞ탕"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809294666426",
+      "source_title": "요리하다 차돌짬뽕밥 (210G)",
+      "source_url": "https://lottemartzetta.com/products/OS8809294666426/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:30:70",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809294666426",
+    "source_title": "요리하다 차돌짬뽕밥 (210G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.prepared.soup_stew"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:95ed4d452821f1dd9ffeaa46",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "간편식·면",
+        "조리식품",
+        "국·탕·찌개"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:31:71",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 국ㆍ탕ㆍ찌개ㆍ전골 > 국ㆍ탕",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "국ㆍ탕ㆍ찌개ㆍ전골",
+        "국ㆍ탕"
+      ],
+      "source_title": "CJ 비비고 소고기양지 육수 (500G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801007984490/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "비비고",
+      "crawled_at": "2026-08-31T01:47:02.653692Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "3개씩 골라 담으면, 4,980원",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a7e5cf14-0405-42d6-aaf6-2cf0dc8abd0d/300x300.jpg",
+      "ingestion_id": 31,
+      "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 71,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "500g",
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "비비고",
+          "canon_hash": "dd729d3e7e8784a8b8a8b92c2943a5ca0e26b31f",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801007984490/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "국ㆍ탕ㆍ찌개ㆍ전골",
+            "국ㆍ탕"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a7e5cf14-0405-42d6-aaf6-2cf0dc8abd0d/300x300.jpg",
+          "mart_native_code": "8801007984490",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801007984490",
+          "source_url": "https://lottemartzetta.com/products/OS8801007984490/details"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:47:02.653692",
+        "detail_url": "https://lottemartzetta.com/products/OS8801007984490/details",
+        "discount_percent": null,
+        "display_unit": "500g",
+        "event_name": "3개씩 골라 담으면, 4,980원",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a7e5cf14-0405-42d6-aaf6-2cf0dc8abd0d/300x300.jpg",
+        "match_key": "__no_brand__|cj 비비고 소고기양지 육수 500g||500g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "CJ 비비고 소고기양지 육수 (500G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 500.0,
+        "package_unit": "g",
+        "price_per_100g": 596.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "500g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "273e68079c218921be8478f1a23efab630a52c1f0b1bf0b00ca4334b5b85055f",
+      "raw_record_id": "ingestion:31:71",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "국ᆞ탕ᆞ찌개ᆞ전골",
+        "국ᆞ탕"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801007984490",
+      "source_title": "CJ 비비고 소고기양지 육수 (500G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801007984490/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:31:71",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801007984490",
+    "source_title": "CJ 비비고 소고기양지 육수 (500G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.prepared.soup_stew"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:95ed4d452821f1dd9ffeaa46",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "간편식·면",
+        "조리식품",
+        "국·탕·찌개"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:34:25",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 국ㆍ탕ㆍ찌개ㆍ전골 > 국ㆍ탕",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "국ㆍ탕ㆍ찌개ㆍ전골",
+        "국ㆍ탕"
+      ],
+      "source_title": "요리하다 차돌된장밥 (210G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809294667614/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "YORIHADA",
+      "crawled_at": "2026-08-31T01:47:08.152319Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "4개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1f3edcf7-741c-4122-a79d-5db62b0473be/300x300.jpg",
+      "ingestion_id": 34,
+      "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 25,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "210g",
+        "package_quantity": 210.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2590,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "YORIHADA",
+          "canon_hash": "78f7da5de1bb0f1f6e4a6123b1a1ab505a0ca1bd",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809294667614/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "국ㆍ탕ㆍ찌개ㆍ전골",
+            "국ㆍ탕"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1f3edcf7-741c-4122-a79d-5db62b0473be/300x300.jpg",
+          "mart_native_code": "8809294667614",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809294667614",
+          "source_url": "https://lottemartzetta.com/products/OS8809294667614/details"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:47:08.152319",
+        "detail_url": "https://lottemartzetta.com/products/OS8809294667614/details",
+        "discount_percent": null,
+        "display_unit": "210g",
+        "event_name": "4개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1f3edcf7-741c-4122-a79d-5db62b0473be/300x300.jpg",
+        "match_key": "__no_brand__|요리하다 차돌된장밥 210g||210g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "요리하다 차돌된장밥 (210G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 210.0,
+        "package_unit": "g",
+        "price_per_100g": 1233.33,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2590,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "210g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "555bd3a8ce6fc9fdcc9e85b42787943ae9ca98afd6ee55973dacaed2a5b7267a",
+      "raw_record_id": "ingestion:34:25",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "국ᆞ탕ᆞ찌개ᆞ전골",
+        "국ᆞ탕"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809294667614",
+      "source_title": "요리하다 차돌된장밥 (210G)",
+      "source_url": "https://lottemartzetta.com/products/OS8809294667614/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:34:25",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809294667614",
+    "source_title": "요리하다 차돌된장밥 (210G)"
+  }
+]

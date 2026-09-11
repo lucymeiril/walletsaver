@@ -1,0 +1,1 @@
+GitHub의 lucymeiril/walletsaver 저장소에서 cleanup/remove-legacy-ai-admin-coupling 브랜치의 handoff/2026-09-11/README.md를 먼저 읽고 WalletSaver 초기 상품 DB 분류 작업을 이어가줘. 이어서 PROGRESS.md와 PENDING_INDEX.md를 보고 다음 미완료 묶음을 골라 실제 상품을 검토해. 원본/기존 결정은 보존하고 카테고리·매칭·규격·행사를 구분해 작업해줘. 실행 도구가 없으면 GitHub에서 분류표나 proposal_only 제안을 저장하되, DB 반영이나 테스트를 실행했다고 말하지 마. 먼저 현재 상태와 이번에 처리할 묶음을 짧게 알려주고 진행해줘.

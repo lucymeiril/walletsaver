@@ -71,6 +71,9 @@ copilot-session-*.md
 .copilot/
 
 # Generated/manual validation state
+# Exception by explicit user request: handoff/2026-09-11 contains a frozen,
+# privacy-checked catalog handoff (.sqlite.gz plus readable JSON shards).
+# Live .walletsavior databases, accounts, secrets and new outputs stay ignored.
 .debug-artifacts/
 .walletsavior/
 .walletsavior-live-validation/

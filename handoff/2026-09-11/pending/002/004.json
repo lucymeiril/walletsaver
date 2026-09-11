@@ -1,0 +1,676 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_2.5.2",
+      "raw_record_id": "ingestion:44:39",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "쏘울핸드 핸드드립 케틀1.5L",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Soulhand-Pour-Over-Kettle-15-L-with-Thermometer/p/635216"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "kitchen-accessories",
+        "coffe-accessoriesbakeware"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:02.567492Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf3/h62/34232913133598.jpg",
+      "ingestion_id": 44,
+      "ingestion_received_at": "2026-08-31T01:52:02.567492Z",
+      "issues": [],
+      "item_index": 39,
+      "mart_native_category_id": "cos_2.5.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 1500.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 46990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "075a050265ed3584396c8dda18dc1789f94f8966",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Soulhand-Pour-Over-Kettle-15-L-with-Thermometer/p/635216",
+        "category": "커피",
+        "cocodalin_join_key": "635216",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Soulhand-Pour-Over-Kettle-15-L-with-Thermometer/p/635216",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf3/h62/34232913133598.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.5.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "635216",
+        "match_key": "__no_brand__|쏘울핸드 핸드드립 케틀1 5l|1500.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "쏘울핸드 핸드드립 케틀1.5L",
+        "normalized_name": "쏘울핸드 핸드드립 케틀1.5L",
+        "pack_qty": 1.5,
+        "pack_unit": "L",
+        "price": 46990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "쏘울핸드 핸드드립 케틀1.5L",
+        "raw_promo_type": null,
+        "sale_price": 46990,
+        "source": "costco",
+        "source_record_key": "635216",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Soulhand-Pour-Over-Kettle-15-L-with-Thermometer/p/635216",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "64165e2d925201cd9a1dd86c85aaaf6ce494b6b58f83cf177e9ae5c4646aabb0",
+      "raw_record_id": "ingestion:44:39",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "635216",
+      "source_title": "쏘울핸드 핸드드립 케틀1.5L",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Soulhand-Pour-Over-Kettle-15-L-with-Thermometer/p/635216",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:44:39",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "635216",
+    "source_title": "쏘울핸드 핸드드립 케틀1.5L"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_2.5.2",
+      "raw_record_id": "ingestion:44:40",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "프리파라 네스프레소 전용 캡슐홀더",
+      "source_urls": [
+        "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Prepara-Nespresso-Capsule-Holder/p/600503"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "homekitchen",
+        "kitchen-accessories",
+        "coffe-accessoriesbakeware"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:02.567492Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/h02/h5d/8809296789534.jpg",
+      "ingestion_id": 44,
+      "ingestion_received_at": "2026-08-31T01:52:02.567492Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 40,
+      "mart_native_category_id": "cos_2.5.2",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 24990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "a54c0ba364c5e8d381b5f4697bcf082c11a8fa8e",
+        "canonical_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Prepara-Nespresso-Capsule-Holder/p/600503",
+        "category": "커피",
+        "cocodalin_join_key": "600503",
+        "detail_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Prepara-Nespresso-Capsule-Holder/p/600503",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/h02/h5d/8809296789534.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.5.2",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "600503",
+        "match_key": "__no_brand__|프리파라 네스프레소 전용 캡슐홀더||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "프리파라 네스프레소 전용 캡슐홀더",
+        "normalized_name": "프리파라 네스프레소 전용 캡슐홀더",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 24990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "프리파라 네스프레소 전용 캡슐홀더",
+        "raw_promo_type": null,
+        "sale_price": 24990,
+        "source": "costco",
+        "source_record_key": "600503",
+        "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Prepara-Nespresso-Capsule-Holder/p/600503",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "12b4b119e3ac5a8cb0b7670be81932a9a9bf88896fc6dd257db1df3561e6fb48",
+      "raw_record_id": "ingestion:44:40",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "600503",
+      "source_title": "프리파라 네스프레소 전용 캡슐홀더",
+      "source_url": "https://www.costco.co.kr/HomeKitchen/Kitchen-Accessories/Coffe-AccessoriesBakeware/Prepara-Nespresso-Capsule-Holder/p/600503",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:44:40",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "600503",
+    "source_title": "프리파라 네스프레소 전용 캡슐홀더"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_1.9",
+      "raw_record_id": "ingestion:44:41",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "필립스 전자동 커피머신 1000 시리즈 EP0820/00",
+      "source_urls": [
+        "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/PHILIPS-Series-1000-Automatic-Espresso-Machine/p/691922"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "appliances",
+        "kitchen-miscellaneous",
+        "coffeeespresso-makers"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:02.567492Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h2a/h5e/434446588379166.jpg",
+      "ingestion_id": 44,
+      "ingestion_received_at": "2026-08-31T01:52:02.567492Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 41,
+      "mart_native_category_id": "cos_1.9",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 359900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "3e92b45486dda33c666fbf744dc661735ab09e1f",
+        "canonical_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/PHILIPS-Series-1000-Automatic-Espresso-Machine/p/691922",
+        "category": "커피",
+        "cocodalin_join_key": "691922",
+        "detail_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/PHILIPS-Series-1000-Automatic-Espresso-Machine/p/691922",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h2a/h5e/434446588379166.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_1.9",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "691922",
+        "match_key": "__no_brand__|필립스 전자동 커피머신 1000 시리즈 ep0820 00||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "필립스 전자동 커피머신 1000 시리즈 EP0820/00",
+        "normalized_name": "필립스 전자동 커피머신 1000 시리즈 EP0820/00",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 359900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "필립스 전자동 커피머신 1000 시리즈 EP0820/00",
+        "raw_promo_type": null,
+        "sale_price": 359900,
+        "source": "costco",
+        "source_record_key": "691922",
+        "source_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/PHILIPS-Series-1000-Automatic-Espresso-Machine/p/691922",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "a110479f1acb6f65aaf3d4c2e9f322c6364c2de76cd9ae1b18cb37e72bdb5bf3",
+      "raw_record_id": "ingestion:44:41",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "691922",
+      "source_title": "필립스 전자동 커피머신 1000 시리즈 EP0820/00",
+      "source_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/PHILIPS-Series-1000-Automatic-Espresso-Machine/p/691922",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:44:41",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "691922",
+    "source_title": "필립스 전자동 커피머신 1000 시리즈 EP0820/00"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_2.5.1",
+      "raw_record_id": "ingestion:44:42",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "쓰임 스테이블 커피잔 세트 4인조",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Nonfood-Gifts/Ssueim-Stable-Coffee-Sauver-Set-8P/p/669730"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "nonfood-gifts"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:02.567492Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd0/h7d/378526388944926.jpg",
+      "ingestion_id": 44,
+      "ingestion_received_at": "2026-08-31T01:52:02.567492Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 42,
+      "mart_native_category_id": "cos_2.5.1",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 31990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "6a016037e59b0a56decbe1720c5f2cc1489c56a6",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Nonfood-Gifts/Ssueim-Stable-Coffee-Sauver-Set-8P/p/669730",
+        "category": "커피",
+        "cocodalin_join_key": "669730",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Nonfood-Gifts/Ssueim-Stable-Coffee-Sauver-Set-8P/p/669730",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hd0/h7d/378526388944926.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_2.5.1",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "669730",
+        "match_key": "__no_brand__|쓰임 스테이블 커피잔 세트 4인조||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "쓰임 스테이블 커피잔 세트 4인조",
+        "normalized_name": "쓰임 스테이블 커피잔 세트 4인조",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 31990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "쓰임 스테이블 커피잔 세트 4인조",
+        "raw_promo_type": null,
+        "sale_price": 31990,
+        "source": "costco",
+        "source_record_key": "669730",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Nonfood-Gifts/Ssueim-Stable-Coffee-Sauver-Set-8P/p/669730",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "d4cef75277eeb961d889307dc897752033257f9fd368d2ef37d15eae73098ec0",
+      "raw_record_id": "ingestion:44:42",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "669730",
+      "source_title": "쓰임 스테이블 커피잔 세트 4인조",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Nonfood-Gifts/Ssueim-Stable-Coffee-Sauver-Set-8P/p/669730",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:44:42",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "669730",
+    "source_title": "쓰임 스테이블 커피잔 세트 4인조"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_1.9",
+      "raw_record_id": "ingestion:44:43",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "네스프레소 에센자 미니 C30 캡슐커피머신스타터 팩",
+      "source_urls": [
+        "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Nespresso-Essenza-Mini-C30-Coffee-Capsule-Machine/p/694053"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "appliances",
+        "kitchen-miscellaneous",
+        "coffeeespresso-makers"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:02.567492Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h70/hcf/456991722668062.jpg",
+      "ingestion_id": 44,
+      "ingestion_received_at": "2026-08-31T01:52:02.567492Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 43,
+      "mart_native_category_id": "cos_1.9",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 157900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "8262892f71b60263e119749309e84fc32a5b8619",
+        "canonical_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Nespresso-Essenza-Mini-C30-Coffee-Capsule-Machine/p/694053",
+        "category": "커피",
+        "cocodalin_join_key": "694053",
+        "detail_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Nespresso-Essenza-Mini-C30-Coffee-Capsule-Machine/p/694053",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h70/hcf/456991722668062.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_1.9",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "694053",
+        "match_key": "__no_brand__|네스프레소 에센자 미니 c30 캡슐커피머신스타터 팩||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "네스프레소 에센자 미니 C30 캡슐커피머신스타터 팩",
+        "normalized_name": "네스프레소 에센자 미니 C30 캡슐커피머신스타터 팩",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 157900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "네스프레소 에센자 미니 C30 캡슐커피머신스타터 팩",
+        "raw_promo_type": null,
+        "sale_price": 157900,
+        "source": "costco",
+        "source_record_key": "694053",
+        "source_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Nespresso-Essenza-Mini-C30-Coffee-Capsule-Machine/p/694053",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "51e3239d5aec60e2153ad1a702e591d62ef4ef11c869aee5e32768446c72aa67",
+      "raw_record_id": "ingestion:44:43",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "694053",
+      "source_title": "네스프레소 에센자 미니 C30 캡슐커피머신스타터 팩",
+      "source_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Nespresso-Essenza-Mini-C30-Coffee-Capsule-Machine/p/694053",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:44:43",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "694053",
+    "source_title": "네스프레소 에센자 미니 C30 캡슐커피머신스타터 팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:50c9934f334dc2480434852f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "커피"
+      ],
+      "raw_native_category_id": "cos_1.9",
+      "raw_record_id": "ingestion:44:44",
+      "review_status": "pending",
+      "source_path": "커피",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "커피"
+      ],
+      "source_title": "드쉘 네스프레소호환캡슐머신 클리닝캡슐30EA(10EAx3PK)",
+      "source_urls": [
+        "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Capsule-Coffee-Machine-Cleaner-for-Nespresso-30ea/p/657500"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "appliances",
+        "kitchen-miscellaneous",
+        "coffeeespresso-makers"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:02.567492Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h7a/h8b/120449536884766.jpg",
+      "ingestion_id": 44,
+      "ingestion_received_at": "2026-08-31T01:52:02.567492Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 44,
+      "mart_native_category_id": "cos_1.9",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 24790,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "94435fd037fb880a1771f9971d5e3be037f4b451",
+        "canonical_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Capsule-Coffee-Machine-Cleaner-for-Nespresso-30ea/p/657500",
+        "category": "커피",
+        "cocodalin_join_key": "657500",
+        "detail_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Capsule-Coffee-Machine-Cleaner-for-Nespresso-30ea/p/657500",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h7a/h8b/120449536884766.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_1.9",
+        "mart_native_category_path": "커피",
+        "mart_native_code": "657500",
+        "match_key": "__no_brand__|드쉘 네스프레소호환캡슐머신 클리닝캡슐30ea 10eax3pk||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "드쉘 네스프레소호환캡슐머신 클리닝캡슐30EA(10EAx3PK)",
+        "normalized_name": "드쉘 네스프레소호환캡슐머신 클리닝캡슐30EA(10EAx3PK)",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 24790,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "드쉘 네스프레소호환캡슐머신 클리닝캡슐30EA(10EAx3PK)",
+        "raw_promo_type": null,
+        "sale_price": 24790,
+        "source": "costco",
+        "source_record_key": "657500",
+        "source_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Capsule-Coffee-Machine-Cleaner-for-Nespresso-30ea/p/657500",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "fad059a55c2a8b7dac9c032b6c756071a70fed8951c95bf9e0fa5aaddb2eb2c3",
+      "raw_record_id": "ingestion:44:44",
+      "source_category_path": [
+        "커피"
+      ],
+      "source_name": "costco",
+      "source_record_key": "657500",
+      "source_title": "드쉘 네스프레소호환캡슐머신 클리닝캡슐30EA(10EAx3PK)",
+      "source_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/CoffeeEspresso-Makers/Capsule-Coffee-Machine-Cleaner-for-Nespresso-30ea/p/657500",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:44:44",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "657500",
+    "source_title": "드쉘 네스프레소호환캡슐머신 클리닝캡슐30EA(10EAx3PK)"
+  }
+]

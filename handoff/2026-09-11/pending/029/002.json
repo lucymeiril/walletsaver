@@ -1,0 +1,821 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:d16bc6868870efa4e745381e",
+      "promotion_surface": false,
+      "proposed_path": [
+        "치즈"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:45:27",
+      "review_status": "pending",
+      "source_path": "치즈",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "애슐리 바비큐 폭립 (800gx2 + 50gx2)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Ashley-Barbecue-Pork-Ribs-800gx2-50gx2/p/669358"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "frozen-foods",
+        "instant-fooddumplingtraditional-pancakescheese"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:06.138871Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h74/h06/255786374168606.jpg",
+      "ingestion_id": 45,
+      "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+      "issues": [
+        "bundle_multiplier_unresolved"
+      ],
+      "item_index": 27,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 50.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 33990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "c54b94c003be07fd854c6a7967a18134f68f4b1c",
+        "canonical_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Ashley-Barbecue-Pork-Ribs-800gx2-50gx2/p/669358",
+        "category": "치즈",
+        "cocodalin_join_key": "669358",
+        "detail_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Ashley-Barbecue-Pork-Ribs-800gx2-50gx2/p/669358",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h74/h06/255786374168606.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "치즈",
+        "mart_native_code": "669358",
+        "match_key": "__no_brand__|애슐리 바비큐 폭립 800gx2 50gx2|50.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "애슐리 바비큐 폭립 (800gx2 + 50gx2)",
+        "normalized_name": "애슐리 바비큐 폭립 (800gx2 + 50gx2)",
+        "pack_qty": 50,
+        "pack_unit": "g",
+        "price": 33990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "애슐리 바비큐 폭립 (800gx2 + 50gx2)",
+        "raw_promo_type": null,
+        "sale_price": 33990,
+        "source": "costco",
+        "source_record_key": "669358",
+        "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Ashley-Barbecue-Pork-Ribs-800gx2-50gx2/p/669358",
+        "unit_price": 1999.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,999원",
+        "unit_price_displayed": 1999,
+        "unit_price_text": "100G당 1,999원"
+      },
+      "raw_payload_sha256": "3895b24f7f0dda73ad7653899b0da60c541fd160c8acda53ade25abcea68826f",
+      "raw_record_id": "ingestion:45:27",
+      "source_category_path": [
+        "치즈"
+      ],
+      "source_name": "costco",
+      "source_record_key": "669358",
+      "source_title": "애슐리 바비큐 폭립 (800gx2 + 50gx2)",
+      "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Ashley-Barbecue-Pork-Ribs-800gx2-50gx2/p/669358",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:45:27",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "669358",
+    "source_title": "애슐리 바비큐 폭립 (800gx2 + 50gx2)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.prepared.soup_stew"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "조리식품",
+        "국·탕·찌개"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_cheese_shelf_title",
+      "evidence_type": "contextual_costco_cheese_shelf_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:d16bc6868870efa4e745381e",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:45:30",
+      "review_status": "classified",
+      "source_path": "치즈",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "왕애밥상 묵은지고기김치찌개(600g x 4ea) x 2 set",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/SPICY-PORK-KIMCHI-STEW-600g-x-4ea-x-2-set/p/671257"
+      ],
+      "unified_category_id": "food.meals.prepared.soup_stew",
+      "url_taxonomy_hints": [
+        "foods",
+        "frozen-foods",
+        "instant-fooddumplingtraditional-pancakescheese"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:06.138871Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha3/h85/220074465230878.jpg",
+      "ingestion_id": 45,
+      "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+      "issues": [
+        "bundle_multiplier_unresolved"
+      ],
+      "item_index": 30,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "",
+        "package_quantity": 600.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 39990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "cd5f00e08d04144e5a0b67fd4080e7191d26960e",
+        "canonical_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/SPICY-PORK-KIMCHI-STEW-600g-x-4ea-x-2-set/p/671257",
+        "category": "치즈",
+        "cocodalin_join_key": "671257",
+        "detail_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/SPICY-PORK-KIMCHI-STEW-600g-x-4ea-x-2-set/p/671257",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha3/h85/220074465230878.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "치즈",
+        "mart_native_code": "671257",
+        "match_key": "__no_brand__|왕애밥상 묵은지고기김치찌개 600g x 4ea x 2 set|600.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "왕애밥상 묵은지고기김치찌개(600g x 4ea) x 2 set",
+        "normalized_name": "왕애밥상 묵은지고기김치찌개(600g x 4ea) x 2 set",
+        "pack_qty": 600,
+        "pack_unit": "g",
+        "price": 39990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "왕애밥상 묵은지고기김치찌개(600g x 4ea) x 2 set",
+        "raw_promo_type": null,
+        "sale_price": 39990,
+        "source": "costco",
+        "source_record_key": "671257",
+        "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/SPICY-PORK-KIMCHI-STEW-600g-x-4ea-x-2-set/p/671257",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "cc389669b7e120fefbda1f9e4badcaa00308a7209413261f956badc50fa49f94",
+      "raw_record_id": "ingestion:45:30",
+      "source_category_path": [
+        "치즈"
+      ],
+      "source_name": "costco",
+      "source_record_key": "671257",
+      "source_title": "왕애밥상 묵은지고기김치찌개(600g x 4ea) x 2 set",
+      "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/SPICY-PORK-KIMCHI-STEW-600g-x-4ea-x-2-set/p/671257",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:45:30",
+    "reasons": [
+      "bundle_multiplier_unresolved"
+    ],
+    "source_record_key": "671257",
+    "source_title": "왕애밥상 묵은지고기김치찌개(600g x 4ea) x 2 set"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.dumplings.gyoza"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "만두",
+        "교자만두"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_cheese_shelf_title",
+      "evidence_type": "contextual_costco_cheese_shelf_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:d16bc6868870efa4e745381e",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:45:31",
+      "review_status": "classified",
+      "source_path": "치즈",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "비비고 왕교자 골라담기",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Bibigo-Dumplings-Selection/p/641176"
+      ],
+      "unified_category_id": "food.meals.dumplings.gyoza",
+      "url_taxonomy_hints": [
+        "foods",
+        "frozen-foods",
+        "instant-fooddumplingtraditional-pancakescheese"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:06.138871Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h28/h87/273802416750622.jpg",
+      "ingestion_id": 45,
+      "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 31,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 23290,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "17f5dcdf029bac7c347dde2fe0354394bea1f6c2",
+        "canonical_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Bibigo-Dumplings-Selection/p/641176",
+        "category": "치즈",
+        "cocodalin_join_key": "641176",
+        "detail_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Bibigo-Dumplings-Selection/p/641176",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h28/h87/273802416750622.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "치즈",
+        "mart_native_code": "641176",
+        "match_key": "__no_brand__|비비고 왕교자 골라담기||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "비비고 왕교자 골라담기",
+        "normalized_name": "비비고 왕교자 골라담기",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 23290,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "비비고 왕교자 골라담기",
+        "raw_promo_type": null,
+        "sale_price": 23290,
+        "source": "costco",
+        "source_record_key": "641176",
+        "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Bibigo-Dumplings-Selection/p/641176",
+        "unit_price": 792.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 792원",
+        "unit_price_displayed": 792,
+        "unit_price_text": "100G당 792원"
+      },
+      "raw_payload_sha256": "23f8df16417902a1d445619aae3a79924f9fa9600594bd176a6a35faa2243860",
+      "raw_record_id": "ingestion:45:31",
+      "source_category_path": [
+        "치즈"
+      ],
+      "source_name": "costco",
+      "source_record_key": "641176",
+      "source_title": "비비고 왕교자 골라담기",
+      "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Bibigo-Dumplings-Selection/p/641176",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:45:31",
+    "reasons": [
+      "unit_unresolved"
+    ],
+    "source_record_key": "641176",
+    "source_title": "비비고 왕교자 골라담기"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:d16bc6868870efa4e745381e",
+      "promotion_surface": false,
+      "proposed_path": [
+        "치즈"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:45:37",
+      "review_status": "pending",
+      "source_path": "치즈",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "궁 소문난돼지불백 400G x 5 x 2",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Koong-Marinated-Pork-Bulgogi-400G-x-5-x-2/p/677501"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "frozen-foods",
+        "instant-fooddumplingtraditional-pancakescheese"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:06.138871Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hab/h97/261752643387422.jpg",
+      "ingestion_id": 45,
+      "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+      "issues": [],
+      "item_index": 37,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "",
+        "package_quantity": 400.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 41990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "8d647f3829eb51177fc273b23dfcba6973a1b458",
+        "canonical_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Koong-Marinated-Pork-Bulgogi-400G-x-5-x-2/p/677501",
+        "category": "치즈",
+        "cocodalin_join_key": "677501",
+        "detail_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Koong-Marinated-Pork-Bulgogi-400G-x-5-x-2/p/677501",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hab/h97/261752643387422.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "치즈",
+        "mart_native_code": "677501",
+        "match_key": "__no_brand__|궁 소문난돼지불백 400g x 5 x 2|400.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "궁 소문난돼지불백 400G x 5 x 2",
+        "normalized_name": "궁 소문난돼지불백 400G x 5 x 2",
+        "pack_qty": 400,
+        "pack_unit": "G",
+        "price": 41990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "궁 소문난돼지불백 400G x 5 x 2",
+        "raw_promo_type": null,
+        "sale_price": 41990,
+        "source": "costco",
+        "source_record_key": "677501",
+        "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Koong-Marinated-Pork-Bulgogi-400G-x-5-x-2/p/677501",
+        "unit_price": 1050.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,050원",
+        "unit_price_displayed": 1050,
+        "unit_price_text": "100G당 1,050원"
+      },
+      "raw_payload_sha256": "efff7fdc036136356e923d04bd370e3144beae91dfa4b5dfd5d8808e064568e4",
+      "raw_record_id": "ingestion:45:37",
+      "source_category_path": [
+        "치즈"
+      ],
+      "source_name": "costco",
+      "source_record_key": "677501",
+      "source_title": "궁 소문난돼지불백 400G x 5 x 2",
+      "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Koong-Marinated-Pork-Bulgogi-400G-x-5-x-2/p/677501",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:45:37",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "677501",
+    "source_title": "궁 소문난돼지불백 400G x 5 x 2"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.prepared.pizza"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "조리식품",
+        "피자"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_cheese_shelf_title",
+      "evidence_type": "contextual_costco_cheese_shelf_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:d16bc6868870efa4e745381e",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:45:40",
+      "review_status": "classified",
+      "source_path": "치즈",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "애슐리 화덕피자3종",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Ashley-Neapolitan-Pizza/p/684940"
+      ],
+      "unified_category_id": "food.meals.prepared.pizza",
+      "url_taxonomy_hints": [
+        "foods",
+        "frozen-foods",
+        "instant-fooddumplingtraditional-pancakescheese"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:06.138871Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h52/h64/350734753562654.jpg",
+      "ingestion_id": 45,
+      "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 40,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 44990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "89ccabc17c26ff3ee8e33a65aaf3333480096fd1",
+        "canonical_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Ashley-Neapolitan-Pizza/p/684940",
+        "category": "치즈",
+        "cocodalin_join_key": "684940",
+        "detail_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Ashley-Neapolitan-Pizza/p/684940",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h52/h64/350734753562654.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "치즈",
+        "mart_native_code": "684940",
+        "match_key": "__no_brand__|애슐리 화덕피자3종||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "애슐리 화덕피자3종",
+        "normalized_name": "애슐리 화덕피자3종",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 44990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "애슐리 화덕피자3종",
+        "raw_promo_type": null,
+        "sale_price": 44990,
+        "source": "costco",
+        "source_record_key": "684940",
+        "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Ashley-Neapolitan-Pizza/p/684940",
+        "unit_price": 2999.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,999원",
+        "unit_price_displayed": 2999,
+        "unit_price_text": "100G당 2,999원"
+      },
+      "raw_payload_sha256": "d43107fe1414608f847a66751bd8ab59848585e73ae48124e38aa35536179c52",
+      "raw_record_id": "ingestion:45:40",
+      "source_category_path": [
+        "치즈"
+      ],
+      "source_name": "costco",
+      "source_record_key": "684940",
+      "source_title": "애슐리 화덕피자3종",
+      "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Ashley-Neapolitan-Pizza/p/684940",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:45:40",
+    "reasons": [
+      "unit_unresolved"
+    ],
+    "source_record_key": "684940",
+    "source_title": "애슐리 화덕피자3종"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.prepared.pancake"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "조리식품",
+        "냉동전"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_cheese_shelf_title",
+      "evidence_type": "contextual_costco_cheese_shelf_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:d16bc6868870efa4e745381e",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:45:52",
+      "review_status": "classified",
+      "source_path": "치즈",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "사옹원깻잎전 & 녹두빈대떡 400g x 4 (총1,600g)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Saongwon-Perilla-Leaf-Mung-bean-Pancakes-1600g/p/635391"
+      ],
+      "unified_category_id": "food.meals.prepared.pancake",
+      "url_taxonomy_hints": [
+        "foods",
+        "frozen-foods",
+        "instant-fooddumplingtraditional-pancakescheese"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:06.138871Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h49/he5/50807757963294.jpg",
+      "ingestion_id": 45,
+      "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 52,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": 30490,
+      "package": {
+        "bundle_count": 4,
+        "display_unit": "",
+        "package_quantity": 600.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 26490,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "837b1b9acfc3bcc365656fae1cfa5e9922ef0706",
+        "canonical_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Saongwon-Perilla-Leaf-Mung-bean-Pancakes-1600g/p/635391",
+        "category": "치즈",
+        "cocodalin_join_key": "635391",
+        "detail_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Saongwon-Perilla-Leaf-Mung-bean-Pancakes-1600g/p/635391",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h49/he5/50807757963294.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "치즈",
+        "mart_native_code": "635391",
+        "match_key": "__no_brand__|사옹원깻잎전 녹두빈대떡 400g x 4 총1 600g|600.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "사옹원깻잎전 & 녹두빈대떡 400g x 4 (총1,600g)",
+        "normalized_name": "사옹원깻잎전 & 녹두빈대떡 400g x 4 (총1,600g)",
+        "pack_qty": 600,
+        "pack_unit": "g",
+        "price": 30490,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "사옹원깻잎전 & 녹두빈대떡 400g x 4 (총1,600g)",
+        "raw_promo_type": "discount",
+        "sale_price": 26490,
+        "source": "costco",
+        "source_record_key": "635391",
+        "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Saongwon-Perilla-Leaf-Mung-bean-Pancakes-1600g/p/635391",
+        "unit_price": 1656.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,656원",
+        "unit_price_displayed": 1656,
+        "unit_price_text": "100G당 1,656원"
+      },
+      "raw_payload_sha256": "5dd53d26ecee20e59919510fa5bc7dfb1f788fa9e3ca80b7952f36e99e1a9c06",
+      "raw_record_id": "ingestion:45:52",
+      "source_category_path": [
+        "치즈"
+      ],
+      "source_name": "costco",
+      "source_record_key": "635391",
+      "source_title": "사옹원깻잎전 & 녹두빈대떡 400g x 4 (총1,600g)",
+      "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Saongwon-Perilla-Leaf-Mung-bean-Pancakes-1600g/p/635391",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:45:52",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "635391",
+    "source_title": "사옹원깻잎전 & 녹두빈대떡 400g x 4 (총1,600g)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.prepared.pizza"
+      ],
+      "category_path": [
+        "식품",
+        "간편식·면",
+        "조리식품",
+        "피자"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_cheese_shelf_title",
+      "evidence_type": "contextual_costco_cheese_shelf_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:d16bc6868870efa4e745381e",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:45:57",
+      "review_status": "classified",
+      "source_path": "치즈",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "치즈"
+      ],
+      "source_title": "풀무원 노엣지피자 4판 골라담기",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Pulmuone-No-Edge-Pizza-Selection/p/642459"
+      ],
+      "unified_category_id": "food.meals.prepared.pizza",
+      "url_taxonomy_hints": [
+        "foods",
+        "frozen-foods",
+        "instant-fooddumplingtraditional-pancakescheese"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:52:06.138871Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h5e/hc5/136502490431518.jpg",
+      "ingestion_id": 45,
+      "ingestion_received_at": "2026-08-31T01:52:06.138871Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 57,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 23990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "a355e3f8bea98b0657dbf591a8df73f3e9f5936a",
+        "canonical_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Pulmuone-No-Edge-Pizza-Selection/p/642459",
+        "category": "치즈",
+        "cocodalin_join_key": "642459",
+        "detail_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Pulmuone-No-Edge-Pizza-Selection/p/642459",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h5e/hc5/136502490431518.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "치즈",
+        "mart_native_code": "642459",
+        "match_key": "__no_brand__|풀무원 노엣지피자 4판 골라담기||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "풀무원 노엣지피자 4판 골라담기",
+        "normalized_name": "풀무원 노엣지피자 4판 골라담기",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 23990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "풀무원 노엣지피자 4판 골라담기",
+        "raw_promo_type": null,
+        "sale_price": 23990,
+        "source": "costco",
+        "source_record_key": "642459",
+        "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Pulmuone-No-Edge-Pizza-Selection/p/642459",
+        "unit_price": 1559.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,559원",
+        "unit_price_displayed": 1559,
+        "unit_price_text": "100G당 1,559원"
+      },
+      "raw_payload_sha256": "517267a4a1e9b82d6a50b68dc8f77ae67c9fba155c2f53f75b76d47e42c4ebe2",
+      "raw_record_id": "ingestion:45:57",
+      "source_category_path": [
+        "치즈"
+      ],
+      "source_name": "costco",
+      "source_record_key": "642459",
+      "source_title": "풀무원 노엣지피자 4판 골라담기",
+      "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/Instant-FoodDumplingTraditional-PancakesCheese/Pulmuone-No-Edge-Pizza-Selection/p/642459",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:45:57",
+    "reasons": [
+      "unit_unresolved"
+    ],
+    "source_record_key": "642459",
+    "source_title": "풀무원 노엣지피자 4판 골라담기"
+  }
+]

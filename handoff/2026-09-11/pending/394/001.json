@@ -1,0 +1,272 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.processed_fruit.frozen"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:f602f7bee2888299a5a470d7",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "농산물",
+        "가공과일",
+        "냉동과일"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:30:11",
+      "review_status": "pending",
+      "source_path": "과일 > 간편ㆍ냉동과일 > 냉동과일",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "과일",
+        "간편ㆍ냉동과일",
+        "냉동과일"
+      ],
+      "source_title": "아사이볼 (104G/팩)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809654956518/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:46:57.101659Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/495baba2-f882-41ae-8fc0-9ff9afc12d5f/300x300.jpg",
+      "ingestion_id": 30,
+      "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 11,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "104g",
+        "package_quantity": 104.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "브랜드없음",
+          "canon_hash": "c6a57d2a2c282f50be9f3f30570be06211dc3448",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809654956518/details",
+          "category_hint": "과일",
+          "category_path": [
+            "과일",
+            "간편ㆍ냉동과일",
+            "냉동과일"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/495baba2-f882-41ae-8fc0-9ff9afc12d5f/300x300.jpg",
+          "mart_native_code": "8809654956518",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809654956518",
+          "source_url": "https://lottemartzetta.com/products/OS8809654956518/details"
+        },
+        "brand": "__no_brand__",
+        "category": "과일",
+        "crawled_at": "2026-08-31T10:46:57.101659",
+        "detail_url": "https://lottemartzetta.com/products/OS8809654956518/details",
+        "discount_percent": null,
+        "display_unit": "104g",
+        "event_name": "2개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/495baba2-f882-41ae-8fc0-9ff9afc12d5f/300x300.jpg",
+        "match_key": "__no_brand__|아사이볼 104g 팩||104g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "아사이볼 (104G/팩)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 104.0,
+        "package_unit": "g",
+        "price_per_100g": 5759.62,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "104g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "d3d13970208eb5cf24b3a806238ea80b7b03aff8c66b0687546ab4c44708fcc4",
+      "raw_record_id": "ingestion:30:11",
+      "source_category_path": [
+        "과일",
+        "간편ᆞ냉동과일",
+        "냉동과일"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809654956518",
+      "source_title": "아사이볼 (104G/팩)",
+      "source_url": "https://lottemartzetta.com/products/OS8809654956518/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:30:11",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809654956518",
+    "source_title": "아사이볼 (104G/팩)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.processed_fruit.frozen"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_title_product_type_conflict",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:f602f7bee2888299a5a470d7",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "농산물",
+        "가공과일",
+        "냉동과일"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:32:51",
+      "review_status": "pending",
+      "source_path": "과일 > 간편ㆍ냉동과일 > 냉동과일",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "과일",
+        "간편ㆍ냉동과일",
+        "냉동과일"
+      ],
+      "source_title": "망고볼 (104G/팩)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809654956525/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:47:02.663268Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 50% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/80a8c758-37b0-4ac2-9aa1-c47db40bf444/300x300.jpg",
+      "ingestion_id": 32,
+      "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 51,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "104g",
+        "package_quantity": 104.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "브랜드없음",
+          "canon_hash": "f66ce3ee3307fa819ded5b668a1ebdb0bbb5a559",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809654956525/details",
+          "category_hint": "과일",
+          "category_path": [
+            "과일",
+            "간편ㆍ냉동과일",
+            "냉동과일"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/80a8c758-37b0-4ac2-9aa1-c47db40bf444/300x300.jpg",
+          "mart_native_code": "8809654956525",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809654956525",
+          "source_url": "https://lottemartzetta.com/products/OS8809654956525/details",
+          "storage_label": "상온",
+          "storage_type": "ambient"
+        },
+        "brand": "__no_brand__",
+        "category": "과일",
+        "crawled_at": "2026-08-31T10:47:02.663268",
+        "detail_url": "https://lottemartzetta.com/products/OS8809654956525/details",
+        "discount_percent": null,
+        "display_unit": "104g",
+        "event_name": "2개씩 골라 담으면, 50% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/80a8c758-37b0-4ac2-9aa1-c47db40bf444/300x300.jpg",
+        "match_key": "__no_brand__|망고볼 104g 팩||104g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "망고볼 (104G/팩)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 104.0,
+        "package_unit": "g",
+        "price_per_100g": 5759.62,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "104g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "3676bb71cee193c85f7644f57646851117d3ccb4a5087a3c310bc8bc7cae779f",
+      "raw_record_id": "ingestion:32:51",
+      "source_category_path": [
+        "과일",
+        "간편ᆞ냉동과일",
+        "냉동과일"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809654956525",
+      "source_title": "망고볼 (104G/팩)",
+      "source_url": "https://lottemartzetta.com/products/OS8809654956525/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:32:51",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809654956525",
+    "source_title": "망고볼 (104G/팩)"
+  }
+]

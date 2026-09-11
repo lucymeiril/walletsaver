@@ -1,0 +1,395 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:51f757471fd7219de707879a",
+      "promotion_surface": false,
+      "proposed_path": [
+        "수산물ㆍ건해산물",
+        "건오징어ㆍ건어물",
+        "육포"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:31:29",
+      "review_status": "pending",
+      "source_path": "수산물ㆍ건해산물 > 건오징어ㆍ건어물 > 육포",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "건오징어ㆍ건어물",
+        "육포"
+      ],
+      "source_title": "상상육포 오리지널 (30G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801047183846/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "동원",
+      "crawled_at": "2026-08-31T01:47:02.649343Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5d93bcc4-1b93-4283-9186-bd50ea25ac96/300x300.jpg",
+      "ingestion_id": 31,
+      "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 29,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "30g",
+        "package_quantity": 30.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "동원",
+          "canon_hash": "5043a475610167e6b2a9400091d108e70e742ede",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801047183846/details",
+          "category_hint": "수산물ㆍ건해산물",
+          "category_path": [
+            "수산물ㆍ건해산물",
+            "건오징어ㆍ건어물",
+            "육포"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5d93bcc4-1b93-4283-9186-bd50ea25ac96/300x300.jpg",
+          "mart_native_code": "8801047183846",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801047183846",
+          "source_url": "https://lottemartzetta.com/products/OS8801047183846/details"
+        },
+        "brand": "__no_brand__",
+        "category": "수산물ㆍ건해산물",
+        "crawled_at": "2026-08-31T10:47:02.649343",
+        "detail_url": "https://lottemartzetta.com/products/OS8801047183846/details",
+        "discount_percent": null,
+        "display_unit": "30g",
+        "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5d93bcc4-1b93-4283-9186-bd50ea25ac96/300x300.jpg",
+        "match_key": "__no_brand__|상상육포 오리지널 30g||30g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "상상육포 오리지널 (30G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 30.0,
+        "package_unit": "g",
+        "price_per_100g": 16633.33,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "30g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "9d985cd454f0184deaadae9b73e574c03eec3a25c7440fcfabfc687b9438d128",
+      "raw_record_id": "ingestion:31:29",
+      "source_category_path": [
+        "수산물ᆞ건해산물",
+        "건오징어ᆞ건어물",
+        "육포"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801047183846",
+      "source_title": "상상육포 오리지널 (30G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801047183846/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:31:29",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801047183846",
+    "source_title": "상상육포 오리지널 (30G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:51f757471fd7219de707879a",
+      "promotion_surface": false,
+      "proposed_path": [
+        "수산물ㆍ건해산물",
+        "건오징어ㆍ건어물",
+        "육포"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:31:70",
+      "review_status": "pending",
+      "source_path": "수산물ㆍ건해산물 > 건오징어ㆍ건어물 > 육포",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "건오징어ㆍ건어물",
+        "육포"
+      ],
+      "source_title": "상상육포 안심 (30G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801047183877/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "동원",
+      "crawled_at": "2026-08-31T01:47:02.653621Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/84a64b0c-4141-418f-9ff3-e84790ed74f1/300x300.jpg",
+      "ingestion_id": 31,
+      "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 70,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "30g",
+        "package_quantity": 30.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "동원",
+          "canon_hash": "30395222d8842086b1de03d27c4562c81ce60401",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801047183877/details",
+          "category_hint": "수산물ㆍ건해산물",
+          "category_path": [
+            "수산물ㆍ건해산물",
+            "건오징어ㆍ건어물",
+            "육포"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/84a64b0c-4141-418f-9ff3-e84790ed74f1/300x300.jpg",
+          "mart_native_code": "8801047183877",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801047183877",
+          "source_url": "https://lottemartzetta.com/products/OS8801047183877/details"
+        },
+        "brand": "__no_brand__",
+        "category": "수산물ㆍ건해산물",
+        "crawled_at": "2026-08-31T10:47:02.653621",
+        "detail_url": "https://lottemartzetta.com/products/OS8801047183877/details",
+        "discount_percent": null,
+        "display_unit": "30g",
+        "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/84a64b0c-4141-418f-9ff3-e84790ed74f1/300x300.jpg",
+        "match_key": "__no_brand__|상상육포 안심 30g||30g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "상상육포 안심 (30G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 30.0,
+        "package_unit": "g",
+        "price_per_100g": 16633.33,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "30g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "85169f7db7224b45abc6961a59b340ebd83acb9452315261cdd085d615bc630f",
+      "raw_record_id": "ingestion:31:70",
+      "source_category_path": [
+        "수산물ᆞ건해산물",
+        "건오징어ᆞ건어물",
+        "육포"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801047183877",
+      "source_title": "상상육포 안심 (30G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801047183877/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:31:70",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801047183877",
+    "source_title": "상상육포 안심 (30G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:51f757471fd7219de707879a",
+      "promotion_surface": false,
+      "proposed_path": [
+        "수산물ㆍ건해산물",
+        "건오징어ㆍ건어물",
+        "육포"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:34:3",
+      "review_status": "pending",
+      "source_path": "수산물ㆍ건해산물 > 건오징어ㆍ건어물 > 육포",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "건오징어ㆍ건어물",
+        "육포"
+      ],
+      "source_title": "리얼스테이크 육포 (140G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809150674190/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "청미식품",
+      "crawled_at": "2026-08-31T01:47:08.150104Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f2f117fb-8629-431d-913b-9b507cda222c/300x300.jpg",
+      "ingestion_id": 34,
+      "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 3,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "140g",
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 19900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "청미식품",
+          "canon_hash": "e3e3d3de17bd66e25734d4fea734ae1c4ff3d884",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809150674190/details",
+          "category_hint": "수산물ㆍ건해산물",
+          "category_path": [
+            "수산물ㆍ건해산물",
+            "건오징어ㆍ건어물",
+            "육포"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f2f117fb-8629-431d-913b-9b507cda222c/300x300.jpg",
+          "mart_native_code": "8809150674190",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809150674190",
+          "source_url": "https://lottemartzetta.com/products/OS8809150674190/details"
+        },
+        "brand": "__no_brand__",
+        "category": "수산물ㆍ건해산물",
+        "crawled_at": "2026-08-31T10:47:08.150104",
+        "detail_url": "https://lottemartzetta.com/products/OS8809150674190/details",
+        "discount_percent": null,
+        "display_unit": "140g",
+        "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f2f117fb-8629-431d-913b-9b507cda222c/300x300.jpg",
+        "match_key": "__no_brand__|리얼스테이크 육포 140g||140g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "리얼스테이크 육포 (140G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 140.0,
+        "package_unit": "g",
+        "price_per_100g": 14214.29,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 19900,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "140g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "3c4ef61c087719b322a4b3bf9a04a5eff4031fbcd56222ea6e116d9fbb90a0ca",
+      "raw_record_id": "ingestion:34:3",
+      "source_category_path": [
+        "수산물ᆞ건해산물",
+        "건오징어ᆞ건어물",
+        "육포"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809150674190",
+      "source_title": "리얼스테이크 육포 (140G)",
+      "source_url": "https://lottemartzetta.com/products/OS8809150674190/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:34:3",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809150674190",
+    "source_title": "리얼스테이크 육포 (140G)"
+  }
+]

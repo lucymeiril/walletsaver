@@ -1,0 +1,133 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:7d894a4628b434f7baca29c8",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "쌀ㆍ백미",
+        "4kg내외"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:35:3",
+      "review_status": "pending",
+      "source_path": "쌀ㆍ잡곡ㆍ견과류 > 쌀ㆍ백미 > 4kg내외",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "쌀ㆍ백미",
+        "4kg내외"
+      ],
+      "source_title": "가을 햅쌀(26년 햅쌀) (4KG)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8808836976177/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "롯데상사",
+      "crawled_at": "2026-08-31T01:47:08.161540Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "[농할] 가을햅쌀 2천원 할인 (1포 한정)",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/32296406-24aa-48c9-aec7-8ef82851e20a/300x300.jpg",
+      "ingestion_id": 35,
+      "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 3,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "4kg",
+        "package_quantity": 4000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 21900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "롯데상사",
+          "canon_hash": "63b03bebec4e1a503e35785710b2fa32bafbdcd2",
+          "canonical_url": "https://lottemartzetta.com/products/OS8808836976177/details",
+          "category_hint": "쌀ㆍ잡곡ㆍ견과류",
+          "category_path": [
+            "쌀ㆍ잡곡ㆍ견과류",
+            "쌀ㆍ백미",
+            "4kg내외"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/32296406-24aa-48c9-aec7-8ef82851e20a/300x300.jpg",
+          "mart_native_code": "8808836976177",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8808836976177",
+          "source_url": "https://lottemartzetta.com/products/OS8808836976177/details"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀ㆍ잡곡ㆍ견과류",
+        "crawled_at": "2026-08-31T10:47:08.161540",
+        "detail_url": "https://lottemartzetta.com/products/OS8808836976177/details",
+        "discount_percent": null,
+        "display_unit": "4kg",
+        "event_name": "[농할] 가을햅쌀 2천원 할인 (1포 한정)",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/32296406-24aa-48c9-aec7-8ef82851e20a/300x300.jpg",
+        "match_key": "__no_brand__|가을 햅쌀 26년 햅쌀 4kg||4kg",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "가을 햅쌀(26년 햅쌀) (4KG)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 4.0,
+        "package_unit": "kg",
+        "price_per_100g": 547.5,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 21900,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "4kg",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "0f811171c359072ef2b43af957c990b548a39836df5f808e87bf0f0060288682",
+      "raw_record_id": "ingestion:35:3",
+      "source_category_path": [
+        "쌀ᆞ잡곡ᆞ견과류",
+        "쌀ᆞ백미",
+        "4kg내외"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8808836976177",
+      "source_title": "가을 햅쌀(26년 햅쌀) (4KG)",
+      "source_url": "https://lottemartzetta.com/products/OS8808836976177/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:35:3",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8808836976177",
+    "source_title": "가을 햅쌀(26년 햅쌀) (4KG)"
+  }
+]

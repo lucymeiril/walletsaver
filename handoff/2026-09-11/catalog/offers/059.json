@@ -1,0 +1,4435 @@
+[
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:75"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.098875Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 44200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-4ef74ef464580633a82a7769f4103a9a",
+    "public_source_listing_id": "listing-85c18a1e5388ced8490e0e2fe846f374",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.098875Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "70d4eed672a9bc4ec88dc44ab8613720cad20fa3",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209251&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209251N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%ED%8A%B9%EC%A0%90%EB%B3%B4-7%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-24%EB%A7%A4/071209251",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209251",
+              "normalized_name": "하기스 네이처메이드 팬티기저귀 특점보 7단계(공용) 24매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209251&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 팬티기저귀 특점보 7단계(공용) 24매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209251",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209251&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1842.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.098875",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209251&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "24매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 팬티기저귀 특점보 7단계 공용 24매||24매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 팬티기저귀 특점보 7단계(공용) 24매",
+            "normalized_name": "하기스 네이처메이드 팬티기저귀 특점보 7단계(공용) 24매",
+            "original_price": null,
+            "package_quantity": 24.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 44200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "24매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "0a7093abfc6e69a60434d671c75f0d111e5bd7d032ba767da9e038863754f375",
+          "raw_record_id": "ingestion:76:75",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:75",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:50"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.093210Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 36300,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-803c85168ab82f459073940ecaed4a44",
+    "public_source_listing_id": "listing-275541bce801f43d437707683fd8634a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.093210Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "cf26fb8d7ab90379541c02b0dfd5170d935eccac",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209274&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209274N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%B4%EB%93%9C%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%86%8C%ED%98%95-2%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-58%EB%A7%A4/071209274",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209274",
+              "normalized_name": "하기스 네이처메이드 밴드기저귀 소형 2단계(공용) 58매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209274&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밴드기저귀 소형 2단계(공용) 58매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209274",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209274&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 626.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.093210",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209274&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "58매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밴드기저귀 소형 2단계 공용 58매||58매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밴드기저귀 소형 2단계(공용) 58매",
+            "normalized_name": "하기스 네이처메이드 밴드기저귀 소형 2단계(공용) 58매",
+            "original_price": null,
+            "package_quantity": 58.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 36300,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "58매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "d683558e77601654dcdb5f8743dbb1f14908725eb613672e6ca89eb5b7b83654",
+          "raw_record_id": "ingestion:76:50",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:50",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:27:13"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        27
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.643535Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 36300,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-e0390b76cbc17b9c64ba303164c89d0c",
+    "public_source_listing_id": "listing-275541bce801f43d437707683fd8634a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.643535Z",
+          "ingestion_id": 27,
+          "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "cf26fb8d7ab90379541c02b0dfd5170d935eccac",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209274&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209274N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%B4%EB%93%9C%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%86%8C%ED%98%95-2%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-58%EB%A7%A4/071209274",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209274",
+              "normalized_name": "하기스 네이처메이드 밴드기저귀 소형 2단계(공용) 58매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209274&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밴드기저귀 소형 2단계(공용) 58매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209274",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209274&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 626.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.643535",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209274&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "58매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밴드기저귀 소형 2단계 공용 58매||58매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밴드기저귀 소형 2단계(공용) 58매",
+            "normalized_name": "하기스 네이처메이드 밴드기저귀 소형 2단계(공용) 58매",
+            "original_price": null,
+            "package_quantity": 58.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 36300,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "58매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "3ff91da55c005a2c1fe7680f6c7420c5cb43680f31b6e4ea24f75db4d02ab9a7",
+          "raw_record_id": "ingestion:27:13",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:27:13",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:27:12"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        27
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.643416Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 36300,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-5075f047c3f586e501b006c53be72888",
+    "public_source_listing_id": "listing-eff3e0054edfa0f807049c692a096f2f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.643416Z",
+          "ingestion_id": 27,
+          "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "292a233b55fc684d72482536bf7f89f1e09cbdf5",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209280&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209280N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%B4%EB%93%9C%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%A4%91%ED%98%95-3%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-50%EB%A7%A4/071209280",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209280",
+              "normalized_name": "하기스 네이처메이드 밴드기저귀 중형 3단계(공용) 50매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209280&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밴드기저귀 중형 3단계(공용) 50매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209280",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209280&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 726.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.643416",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209280&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "50매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밴드기저귀 중형 3단계 공용 50매||50매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밴드기저귀 중형 3단계(공용) 50매",
+            "normalized_name": "하기스 네이처메이드 밴드기저귀 중형 3단계(공용) 50매",
+            "original_price": null,
+            "package_quantity": 50.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 36300,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "50매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "1ff66fac417425b4f73bce57f689d239d2e4b8bd791bd5817a9a2a0b233edc7f",
+          "raw_record_id": "ingestion:27:12",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:27:12",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:40"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.091803Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 36300,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-ce30da53f5e0908bf2b1488795c2b171",
+    "public_source_listing_id": "listing-eff3e0054edfa0f807049c692a096f2f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.091803Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "292a233b55fc684d72482536bf7f89f1e09cbdf5",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209280&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209280N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%B4%EB%93%9C%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%A4%91%ED%98%95-3%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-50%EB%A7%A4/071209280",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209280",
+              "normalized_name": "하기스 네이처메이드 밴드기저귀 중형 3단계(공용) 50매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209280&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밴드기저귀 중형 3단계(공용) 50매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209280",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209280&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 726.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.091803",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209280&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "50매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밴드기저귀 중형 3단계 공용 50매||50매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밴드기저귀 중형 3단계(공용) 50매",
+            "normalized_name": "하기스 네이처메이드 밴드기저귀 중형 3단계(공용) 50매",
+            "original_price": null,
+            "package_quantity": 50.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 36300,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "50매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "e88304eeaf9b171c0893b70fbedebd800ebc71bf2a310d924ab9bfb4ac7ce16f",
+          "raw_record_id": "ingestion:76:40",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:40",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:27:11"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        27
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.643290Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 36400,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-5ae518d56afd351d9c028aae8d9ce3ed",
+    "public_source_listing_id": "listing-4febb0b32de53067492fbc498a93409a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.643290Z",
+          "ingestion_id": 27,
+          "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "7c6a159764766510cd5e6176ffa5bb02ef3f4be6",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209337&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209337N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%EB%B0%B4%EB%93%9C%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%86%8C%ED%98%95-2%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-58%EB%A7%A4/071209337",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209337",
+              "normalized_name": "하기스 네이처메이드 밤부 밴드기저귀 소형 2단계(공용) 58매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209337&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 밴드기저귀 소형 2단계(공용) 58매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209337",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209337&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 628.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.643290",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209337&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "58매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 밴드기저귀 소형 2단계 공용 58매||58매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 밴드기저귀 소형 2단계(공용) 58매",
+            "normalized_name": "하기스 네이처메이드 밤부 밴드기저귀 소형 2단계(공용) 58매",
+            "original_price": null,
+            "package_quantity": 58.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 36400,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "58매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "513abe51d67b71a5d10b9801b9957d4a6fe50c10ae933b918ddcd8d147c63d35",
+          "raw_record_id": "ingestion:27:11",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:27:11",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:47"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.092794Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 36400,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-dabc4e38269302b19853f18d0fb226b9",
+    "public_source_listing_id": "listing-4febb0b32de53067492fbc498a93409a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.092794Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "7c6a159764766510cd5e6176ffa5bb02ef3f4be6",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209337&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209337N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%EB%B0%B4%EB%93%9C%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%86%8C%ED%98%95-2%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-58%EB%A7%A4/071209337",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209337",
+              "normalized_name": "하기스 네이처메이드 밤부 밴드기저귀 소형 2단계(공용) 58매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209337&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 밴드기저귀 소형 2단계(공용) 58매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209337",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209337&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 628.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.092794",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209337&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "58매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 밴드기저귀 소형 2단계 공용 58매||58매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 밴드기저귀 소형 2단계(공용) 58매",
+            "normalized_name": "하기스 네이처메이드 밤부 밴드기저귀 소형 2단계(공용) 58매",
+            "original_price": null,
+            "package_quantity": 58.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 36400,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "58매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "5dadb42c2afddb554adb5ac7ba98bda2ae7d4fa4cefa8ced92f67d0abaec6d6e",
+          "raw_record_id": "ingestion:76:47",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:47",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:49"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.093081Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 36400,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-04a330306fa97683215cc2d4378afc17",
+    "public_source_listing_id": "listing-5491c5597d6e6a84d401ebd06ad58906",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.093081Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "9f977f8be4d40e4aa434bd2610cfdbfda9ed71ef",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209343&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209343N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%EB%B0%B4%EB%93%9C%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%A4%91%ED%98%95-3%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-48%EB%A7%A4/071209343",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209343",
+              "normalized_name": "하기스 네이처메이드 밤부 밴드기저귀 중형 3단계(공용) 48매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209343&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 밴드기저귀 중형 3단계(공용) 48매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209343",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209343&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 758.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.093081",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209343&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "48매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 밴드기저귀 중형 3단계 공용 48매||48매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 밴드기저귀 중형 3단계(공용) 48매",
+            "normalized_name": "하기스 네이처메이드 밤부 밴드기저귀 중형 3단계(공용) 48매",
+            "original_price": null,
+            "package_quantity": 48.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 36400,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "48매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "16f578a4576dbe889e1c7c4cef90ff789809621add315b14f088471eadcdfab0",
+          "raw_record_id": "ingestion:76:49",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:49",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:27:10"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        27
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.643116Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 36400,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-9c1ada26f98a34ee14cf1a218c0097f3",
+    "public_source_listing_id": "listing-5491c5597d6e6a84d401ebd06ad58906",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.643116Z",
+          "ingestion_id": 27,
+          "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "9f977f8be4d40e4aa434bd2610cfdbfda9ed71ef",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209343&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209343N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%EB%B0%B4%EB%93%9C%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%A4%91%ED%98%95-3%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-48%EB%A7%A4/071209343",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209343",
+              "normalized_name": "하기스 네이처메이드 밤부 밴드기저귀 중형 3단계(공용) 48매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209343&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 밴드기저귀 중형 3단계(공용) 48매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209343",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209343&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 758.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.643116",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209343&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "48매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 밴드기저귀 중형 3단계 공용 48매||48매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 밴드기저귀 중형 3단계(공용) 48매",
+            "normalized_name": "하기스 네이처메이드 밤부 밴드기저귀 중형 3단계(공용) 48매",
+            "original_price": null,
+            "package_quantity": 48.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 36400,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "48매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "4d3a9d4cdc38fc7824499d0624aac07930ed527da06a1dcd4edeac873d1d7ffc",
+          "raw_record_id": "ingestion:27:10",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:27:10",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:54"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.094374Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 59200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-5c644a1ff9e78ca3ac3077bf109b2b5a",
+    "public_source_listing_id": "listing-9d790723227901db64b7c126de9666ad",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.094374Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "79447303d9db568115de8b275903e58e456b21ef",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209372&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209372N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%EB%8C%80%ED%98%95-4%EB%8B%A8%EA%B3%84-%EB%82%A8%EC%95%84-54%EB%A7%A4/071209372",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209372",
+              "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 대형 4단계(남아) 54매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209372&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 팬티기저귀 대형 4단계(남아) 54매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209372",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209372&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1096.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.094374",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209372&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "54매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 팬티기저귀 대형 4단계 남아 54매||54매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 팬티기저귀 대형 4단계(남아) 54매",
+            "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 대형 4단계(남아) 54매",
+            "original_price": null,
+            "package_quantity": 54.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 59200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "54매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "5b11fd9d62991d3f589edd6595c1e44b61d9f8dc39d52d2622744fe7790f2443",
+          "raw_record_id": "ingestion:76:54",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:54",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:27:9"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        27
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.642956Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 59200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-6f94fd393295759c6aacb33d6a1244e5",
+    "public_source_listing_id": "listing-9d790723227901db64b7c126de9666ad",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.642956Z",
+          "ingestion_id": 27,
+          "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "79447303d9db568115de8b275903e58e456b21ef",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209372&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209372N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%EB%8C%80%ED%98%95-4%EB%8B%A8%EA%B3%84-%EB%82%A8%EC%95%84-54%EB%A7%A4/071209372",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209372",
+              "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 대형 4단계(남아) 54매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209372&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 팬티기저귀 대형 4단계(남아) 54매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209372",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209372&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1096.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.642956",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209372&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "54매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 팬티기저귀 대형 4단계 남아 54매||54매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 팬티기저귀 대형 4단계(남아) 54매",
+            "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 대형 4단계(남아) 54매",
+            "original_price": null,
+            "package_quantity": 54.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 59200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "54매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "ede4be80345264d02ea6ba8609464c363bda19d8100d356e8fc376577719b864",
+          "raw_record_id": "ingestion:27:9",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:27:9",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:27:8"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        27
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.642820Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 59200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-20a5c098c6c9927f9bdfd9cb04b842bd",
+    "public_source_listing_id": "listing-0b3914349d30ce6fc8275fdd3076f42e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.642820Z",
+          "ingestion_id": 27,
+          "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "4e3d0d1c6fefd1cc767631be0ba69ae518b08a8d",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209389&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209389N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%EB%8C%80%ED%98%95-4%EB%8B%A8%EA%B3%84-%EC%97%AC%EC%95%84-54%EB%A7%A4/071209389",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209389",
+              "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 대형 4단계(여아) 54매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209389&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 팬티기저귀 대형 4단계(여아) 54매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209389",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209389&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1096.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.642820",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209389&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "54매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 팬티기저귀 대형 4단계 여아 54매||54매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 팬티기저귀 대형 4단계(여아) 54매",
+            "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 대형 4단계(여아) 54매",
+            "original_price": null,
+            "package_quantity": 54.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 59200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "54매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "1d9e4baaf4b59954b321f133b73f91e75d67318df1ea38c015a01d7a740a8ef5",
+          "raw_record_id": "ingestion:27:8",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:27:8",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:32"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.090738Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 59200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-9a9cdf64bf12644f5752339d9d3e9f36",
+    "public_source_listing_id": "listing-0b3914349d30ce6fc8275fdd3076f42e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.090738Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "4e3d0d1c6fefd1cc767631be0ba69ae518b08a8d",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209389&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209389N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%EB%8C%80%ED%98%95-4%EB%8B%A8%EA%B3%84-%EC%97%AC%EC%95%84-54%EB%A7%A4/071209389",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209389",
+              "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 대형 4단계(여아) 54매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209389&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 팬티기저귀 대형 4단계(여아) 54매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209389",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209389&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1096.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.090738",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209389&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "54매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 팬티기저귀 대형 4단계 여아 54매||54매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 팬티기저귀 대형 4단계(여아) 54매",
+            "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 대형 4단계(여아) 54매",
+            "original_price": null,
+            "package_quantity": 54.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 59200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "54매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "9545dab7b3a6a5a7bdd07b188c9488949407f0920ac5415f9092d298836fefed",
+          "raw_record_id": "ingestion:76:32",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:32",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:44"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.092266Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 59200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-6da6649b5bcab4a9a056d16f5313a4da",
+    "public_source_listing_id": "listing-f84f6066fbe57448431b420daf17cebf",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.092266Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "c3ab1b769539741d5575e7b99cbe1edaeec39e2c",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209395&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209395N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%ED%8A%B9%EB%8C%80%ED%98%95-5%EB%8B%A8%EA%B3%84-%EB%82%A8%EC%95%84-44%EB%A7%A4/071209395",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209395",
+              "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계(남아) 44매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209395&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계(남아) 44매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209395",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209395&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1345.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.092266",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209395&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "44매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계 남아 44매||44매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계(남아) 44매",
+            "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계(남아) 44매",
+            "original_price": null,
+            "package_quantity": 44.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 59200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "44매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "ff7ba7de0f2a07479fb81fea4a8131c598564a04b6a3af4ce3815a279a328fe4",
+          "raw_record_id": "ingestion:76:44",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:44",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:27:7"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        27
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.642690Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 59200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-a86eb2af52152fc1d3f72da1879a073e",
+    "public_source_listing_id": "listing-f84f6066fbe57448431b420daf17cebf",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.642690Z",
+          "ingestion_id": 27,
+          "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "c3ab1b769539741d5575e7b99cbe1edaeec39e2c",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209395&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209395N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%ED%8A%B9%EB%8C%80%ED%98%95-5%EB%8B%A8%EA%B3%84-%EB%82%A8%EC%95%84-44%EB%A7%A4/071209395",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209395",
+              "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계(남아) 44매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209395&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계(남아) 44매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209395",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209395&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1345.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.642690",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209395&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "44매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계 남아 44매||44매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계(남아) 44매",
+            "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계(남아) 44매",
+            "original_price": null,
+            "package_quantity": 44.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 59200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "44매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "9075cc5881afd35cef74eaa70591ef84e7836fb067252238139fc0bfb5a49ac9",
+          "raw_record_id": "ingestion:27:7",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:27:7",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:35"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.091190Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 59200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-30d071d1d5f20011cc30e2a6fc7f0857",
+    "public_source_listing_id": "listing-3dd7d08803f16409df5598ecbbad5e32",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.091190Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "4d0c22595dd3f7239a5eb9c7478cf6b8554a55fd",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209406&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209406N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%ED%8A%B9%EB%8C%80%ED%98%95-5%EB%8B%A8%EA%B3%84-%EC%97%AC%EC%95%84-44%EB%A7%A4/071209406",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209406",
+              "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계(여아) 44매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209406&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계(여아) 44매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209406",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209406&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1345.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.091190",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209406&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "44매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계 여아 44매||44매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계(여아) 44매",
+            "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계(여아) 44매",
+            "original_price": null,
+            "package_quantity": 44.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 59200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "44매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "f3243e2fc5ab102885d86081b1b85682079eadc5d6193b7df45ae5324d702851",
+          "raw_record_id": "ingestion:76:35",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:35",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:27:6"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        27
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.642535Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 59200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-66ff08ee0364fa1687b186d79dc64558",
+    "public_source_listing_id": "listing-3dd7d08803f16409df5598ecbbad5e32",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.642535Z",
+          "ingestion_id": 27,
+          "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "4d0c22595dd3f7239a5eb9c7478cf6b8554a55fd",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209406&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209406N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%ED%8A%B9%EB%8C%80%ED%98%95-5%EB%8B%A8%EA%B3%84-%EC%97%AC%EC%95%84-44%EB%A7%A4/071209406",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209406",
+              "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계(여아) 44매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209406&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계(여아) 44매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209406",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209406&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1345.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.642535",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209406&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "44매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계 여아 44매||44매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계(여아) 44매",
+            "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 특대형 5단계(여아) 44매",
+            "original_price": null,
+            "package_quantity": 44.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 59200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "44매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "2b4973167867b0c8049af661022dfc16cb3f829de3b17d5030f6ede4325fdaf1",
+          "raw_record_id": "ingestion:27:6",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:27:6",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:74"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.098661Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 59200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-76576f80758ce988d14a20d29f0f8549",
+    "public_source_listing_id": "listing-e72228876f2155b032a1bbd2ef216935",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.098661Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "1bd579bbc389bdaeaf45faf06a619acd7af52947",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209412&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209412N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%A0%90%EB%B3%B4-6%EB%8B%A8%EA%B3%84-%EB%82%A8%EC%95%84-38%EB%A7%A4/071209412",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209412",
+              "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 점보 6단계(남아) 38매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209412&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 팬티기저귀 점보 6단계(남아) 38매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209412",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209412&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1558.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.098661",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209412&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "38매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 팬티기저귀 점보 6단계 남아 38매||38매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 팬티기저귀 점보 6단계(남아) 38매",
+            "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 점보 6단계(남아) 38매",
+            "original_price": null,
+            "package_quantity": 38.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 59200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "38매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "e179bb60dee69961547287c6c43972ae52ebe1cc4362aecaa690468d7a024618",
+          "raw_record_id": "ingestion:76:74",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:74",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:27:5"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        27
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.642339Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 59200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-adb8214c6104b16fff84b4e86364e776",
+    "public_source_listing_id": "listing-e72228876f2155b032a1bbd2ef216935",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.642339Z",
+          "ingestion_id": 27,
+          "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "1bd579bbc389bdaeaf45faf06a619acd7af52947",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209412&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209412N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%A0%90%EB%B3%B4-6%EB%8B%A8%EA%B3%84-%EB%82%A8%EC%95%84-38%EB%A7%A4/071209412",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209412",
+              "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 점보 6단계(남아) 38매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209412&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 팬티기저귀 점보 6단계(남아) 38매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209412",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209412&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1558.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.642339",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209412&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "38매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 팬티기저귀 점보 6단계 남아 38매||38매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 팬티기저귀 점보 6단계(남아) 38매",
+            "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 점보 6단계(남아) 38매",
+            "original_price": null,
+            "package_quantity": 38.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 59200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "38매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "73edc46b9a88dae3f1c66e4fe4d91151dade796e2dc94d95d64e24803db02f18",
+          "raw_record_id": "ingestion:27:5",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:27:5",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:27:4"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        27
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.642176Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 59200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-b15bb250c9f7cbe2600e7efeb4f0483e",
+    "public_source_listing_id": "listing-d83e0a485f3681b90f039eab6c4f953e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.642176Z",
+          "ingestion_id": 27,
+          "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "3380298f80efe9de69323bc51fa7d1099bde12e6",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209429&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209429N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%A0%90%EB%B3%B4-6%EB%8B%A8%EA%B3%84-%EC%97%AC%EC%95%84-38%EB%A7%A4/071209429",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209429",
+              "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 점보 6단계(여아) 38매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209429&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 팬티기저귀 점보 6단계(여아) 38매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209429",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209429&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1558.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.642176",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209429&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "38매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 팬티기저귀 점보 6단계 여아 38매||38매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 팬티기저귀 점보 6단계(여아) 38매",
+            "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 점보 6단계(여아) 38매",
+            "original_price": null,
+            "package_quantity": 38.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 59200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "38매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "fb690b5cbbbc1061b1a9b4fbc9da47b9d115a1cb48d6accd09f8e8897812548d",
+          "raw_record_id": "ingestion:27:4",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:27:4",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:60"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.095358Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 59200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-d26c9b3ad5ec0851085d15b3b2668e27",
+    "public_source_listing_id": "listing-d83e0a485f3681b90f039eab6c4f953e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.095358Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "3380298f80efe9de69323bc51fa7d1099bde12e6",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209429&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209429N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%A0%90%EB%B3%B4-6%EB%8B%A8%EA%B3%84-%EC%97%AC%EC%95%84-38%EB%A7%A4/071209429",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209429",
+              "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 점보 6단계(여아) 38매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209429&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 팬티기저귀 점보 6단계(여아) 38매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209429",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209429&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1558.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.095358",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209429&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "38매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 팬티기저귀 점보 6단계 여아 38매||38매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 팬티기저귀 점보 6단계(여아) 38매",
+            "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 점보 6단계(여아) 38매",
+            "original_price": null,
+            "package_quantity": 38.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 59200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "38매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "f8e46b33683c028c28e864dab15ae76c5df64dae562370b569d01d83bde73b88",
+          "raw_record_id": "ingestion:76:60",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:60",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:73"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.098428Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 59200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-02380447d0c1759862919ae7febf9d80",
+    "public_source_listing_id": "listing-d888b1c75ad9838d6611a6ea7ea98a14",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.098428Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "1c84d20ddb01812ac1327943a9e891f1021274e8",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209435&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209435N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%ED%8A%B9%EC%A0%90%EB%B3%B4-7%EB%8B%A8%EA%B3%84-%EB%82%A8%EC%95%84-32%EB%A7%A4/071209435",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209435",
+              "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계(남아) 32매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209435&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계(남아) 32매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209435",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209435&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1850.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.098428",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209435&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "32매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계 남아 32매||32매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계(남아) 32매",
+            "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계(남아) 32매",
+            "original_price": null,
+            "package_quantity": 32.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 59200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "32매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "be60d50c2af51ba08ee071893ad8d606c78200f41611af1de3d1cb755b173018",
+          "raw_record_id": "ingestion:76:73",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:73",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:27:3"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        27
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.642041Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 59200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-c4aa9629b79980cf337d93ac5f05aabf",
+    "public_source_listing_id": "listing-d888b1c75ad9838d6611a6ea7ea98a14",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.642041Z",
+          "ingestion_id": 27,
+          "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "1c84d20ddb01812ac1327943a9e891f1021274e8",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209435&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209435N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%ED%8A%B9%EC%A0%90%EB%B3%B4-7%EB%8B%A8%EA%B3%84-%EB%82%A8%EC%95%84-32%EB%A7%A4/071209435",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209435",
+              "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계(남아) 32매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209435&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계(남아) 32매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209435",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209435&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1850.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.642041",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209435&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "32매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계 남아 32매||32매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계(남아) 32매",
+            "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계(남아) 32매",
+            "original_price": null,
+            "package_quantity": 32.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 59200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "32매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "4d47d39af22019779c82078697bc02aae875571f6ab8eec3a020910f4fbbbc2e",
+          "raw_record_id": "ingestion:27:3",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:27:3",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:72"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.098194Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 59200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-3c2529e28aff43e8e3819c8e217eb3cd",
+    "public_source_listing_id": "listing-a05881278e2bba4643c26a5cad70b908",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.098194Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "1dc23be1d7340ac2214e8deb142603753052f1ca",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209441&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209441N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%ED%8A%B9%EC%A0%90%EB%B3%B4-7%EB%8B%A8%EA%B3%84-%EC%97%AC%EC%95%84-32%EB%A7%A4/071209441",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209441",
+              "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계(여아) 32매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209441&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계(여아) 32매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209441",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209441&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1850.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.098194",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209441&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "32매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계 여아 32매||32매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계(여아) 32매",
+            "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계(여아) 32매",
+            "original_price": null,
+            "package_quantity": 32.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 59200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "32매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "b1a5fae817ce170367f240bbe950a8ebbf51764bdd5481e6bbb4a4f90fb6e473",
+          "raw_record_id": "ingestion:76:72",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:72",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:27:2"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        27
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.641868Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 59200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-bae86054d00c68d506d33f939acffe5f",
+    "public_source_listing_id": "listing-a05881278e2bba4643c26a5cad70b908",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.641868Z",
+          "ingestion_id": 27,
+          "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "1dc23be1d7340ac2214e8deb142603753052f1ca",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209441&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209441N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%84%A4%EC%9D%B4%EC%B2%98%EB%A9%94%EC%9D%B4%EB%93%9C-%EB%B0%A4%EB%B6%80-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%ED%8A%B9%EC%A0%90%EB%B3%B4-7%EB%8B%A8%EA%B3%84-%EC%97%AC%EC%95%84-32%EB%A7%A4/071209441",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209441",
+              "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계(여아) 32매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209441&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계(여아) 32매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209441",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209441&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1850.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.641868",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209441&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "32매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계 여아 32매||32매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계(여아) 32매",
+            "normalized_name": "하기스 네이처메이드 밤부 팬티기저귀 특점보 7단계(여아) 32매",
+            "original_price": null,
+            "package_quantity": 32.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 59200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "32매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "b9fdb73cac365f3fffbe4c8341a7f55f5c303482f6758606850a1835a2b44668",
+          "raw_record_id": "ingestion:27:2",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:27:2",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:59"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.095074Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 32300,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-24a0a9308348f994dc22ab43b87af27e",
+    "public_source_listing_id": "listing-fcdd406a3aba1e75aafa517191f99583",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.095074Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "364a1985bea31970d1b58ab7c05aa0d1d7cef9a4",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209464&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209464N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%A7%A5%EC%8A%A4%EB%93%9C%EB%9D%BC%EC%9D%B4-%EB%B0%B4%EB%93%9C%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%86%8C%ED%98%95-2%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-58%EB%A7%A4/071209464",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209464",
+              "normalized_name": "하기스 맥스드라이 밴드기저귀 소형 2단계(공용) 58매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209464&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 맥스드라이 밴드기저귀 소형 2단계(공용) 58매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209464",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209464&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 557.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.095074",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209464&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "58매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 맥스드라이 밴드기저귀 소형 2단계 공용 58매||58매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 맥스드라이 밴드기저귀 소형 2단계(공용) 58매",
+            "normalized_name": "하기스 맥스드라이 밴드기저귀 소형 2단계(공용) 58매",
+            "original_price": null,
+            "package_quantity": 58.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 32300,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "58매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "3684f060eb20fe41d898c2af06e911633619c54457eae39538b856041e0c383a",
+          "raw_record_id": "ingestion:76:59",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:59",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:27:1"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        27
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.641730Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 32300,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-85b1fef2710d218b1bae31fd6756333e",
+    "public_source_listing_id": "listing-fcdd406a3aba1e75aafa517191f99583",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.641730Z",
+          "ingestion_id": 27,
+          "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "364a1985bea31970d1b58ab7c05aa0d1d7cef9a4",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209464&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209464N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%A7%A5%EC%8A%A4%EB%93%9C%EB%9D%BC%EC%9D%B4-%EB%B0%B4%EB%93%9C%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%86%8C%ED%98%95-2%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-58%EB%A7%A4/071209464",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209464",
+              "normalized_name": "하기스 맥스드라이 밴드기저귀 소형 2단계(공용) 58매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209464&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 맥스드라이 밴드기저귀 소형 2단계(공용) 58매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209464",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209464&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 557.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.641730",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209464&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "58매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 맥스드라이 밴드기저귀 소형 2단계 공용 58매||58매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 맥스드라이 밴드기저귀 소형 2단계(공용) 58매",
+            "normalized_name": "하기스 맥스드라이 밴드기저귀 소형 2단계(공용) 58매",
+            "original_price": null,
+            "package_quantity": 58.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 32300,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "58매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "29eee4f3c25a10f35099cc2f8c762a0ef27295ec50385c0c7c22b0aa634027b4",
+          "raw_record_id": "ingestion:27:1",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:27:1",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:27:0"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        27
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.641613Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 48400,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-137f70f9615968ecc6e633dbad09a3eb",
+    "public_source_listing_id": "listing-6a838767d96d5ca936e380a1bb28e1ca",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.641613Z",
+          "ingestion_id": 27,
+          "ingestion_received_at": "2026-08-31T01:48:18.530261Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "698c68df99131db7c50dc27226f68edce615cfd4",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209470&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209470N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%A7%A5%EC%8A%A4%EB%93%9C%EB%9D%BC%EC%9D%B4-%EB%B0%B4%EB%93%9C%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%A4%91%ED%98%95-3%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-72%EB%A7%A4/071209470",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209470",
+              "normalized_name": "하기스 맥스드라이 밴드기저귀 중형 3단계(공용) 72매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209470&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 맥스드라이 밴드기저귀 중형 3단계(공용) 72매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209470",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209470&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 672.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.641613",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209470&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "72매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 맥스드라이 밴드기저귀 중형 3단계 공용 72매||72매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 맥스드라이 밴드기저귀 중형 3단계(공용) 72매",
+            "normalized_name": "하기스 맥스드라이 밴드기저귀 중형 3단계(공용) 72매",
+            "original_price": null,
+            "package_quantity": 72.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 48400,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "72매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "d1ddb350369f489b619179ca3ccd8da012e54de05e836f84f1ee7fe143dcdab3",
+          "raw_record_id": "ingestion:27:0",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:27:0",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:46"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.092619Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 48400,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-5a72fb20e20a1ac080c3884ccfb1fb78",
+    "public_source_listing_id": "listing-6a838767d96d5ca936e380a1bb28e1ca",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.092619Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "698c68df99131db7c50dc27226f68edce615cfd4",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209470&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209470N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%A7%A5%EC%8A%A4%EB%93%9C%EB%9D%BC%EC%9D%B4-%EB%B0%B4%EB%93%9C%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%A4%91%ED%98%95-3%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-72%EB%A7%A4/071209470",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209470",
+              "normalized_name": "하기스 맥스드라이 밴드기저귀 중형 3단계(공용) 72매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209470&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 맥스드라이 밴드기저귀 중형 3단계(공용) 72매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209470",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209470&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 672.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.092619",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209470&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "72매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 맥스드라이 밴드기저귀 중형 3단계 공용 72매||72매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 맥스드라이 밴드기저귀 중형 3단계(공용) 72매",
+            "normalized_name": "하기스 맥스드라이 밴드기저귀 중형 3단계(공용) 72매",
+            "original_price": null,
+            "package_quantity": 72.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 48400,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "72매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "5b79fa27cb7d58da138f5935cb4c110d9a701b2edae8916a8623195b1ad80b44",
+          "raw_record_id": "ingestion:76:46",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:46",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:53"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.094164Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 40200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-0bb47ab5795504431f3c69e089427254",
+    "public_source_listing_id": "listing-b21464fedaf966af15aabddd22b66ff6",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.094164Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "1621e75ce60d12b91726ead5aa4b39b7cd56317b",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209533&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209533N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%A7%A5%EC%8A%A4%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%EB%8C%80%ED%98%95-4%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-42%EB%A7%A4/071209533",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209533",
+              "normalized_name": "하기스 맥스드라이 팬티기저귀 대형 4단계(공용) 42매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209533&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 맥스드라이 팬티기저귀 대형 4단계(공용) 42매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209533",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209533&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 957.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.094164",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209533&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "42매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 맥스드라이 팬티기저귀 대형 4단계 공용 42매||42매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 맥스드라이 팬티기저귀 대형 4단계(공용) 42매",
+            "normalized_name": "하기스 맥스드라이 팬티기저귀 대형 4단계(공용) 42매",
+            "original_price": null,
+            "package_quantity": 42.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 40200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "42매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "feaf55f38bbc7548d71307daa97c5a4b7feb06cb45f26e3bda6f3c3969e5dd04",
+          "raw_record_id": "ingestion:76:53",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:53",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:26:75"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        26
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.637776Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 40200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-3d093cf97d7b8d8d21fa18f875604d90",
+    "public_source_listing_id": "listing-b21464fedaf966af15aabddd22b66ff6",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.637776Z",
+          "ingestion_id": 26,
+          "ingestion_received_at": "2026-08-31T01:48:14.971816Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "1621e75ce60d12b91726ead5aa4b39b7cd56317b",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209533&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209533N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%A7%A5%EC%8A%A4%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%EB%8C%80%ED%98%95-4%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-42%EB%A7%A4/071209533",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209533",
+              "normalized_name": "하기스 맥스드라이 팬티기저귀 대형 4단계(공용) 42매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209533&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 맥스드라이 팬티기저귀 대형 4단계(공용) 42매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209533",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209533&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 957.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.637776",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209533&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "42매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 맥스드라이 팬티기저귀 대형 4단계 공용 42매||42매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 맥스드라이 팬티기저귀 대형 4단계(공용) 42매",
+            "normalized_name": "하기스 맥스드라이 팬티기저귀 대형 4단계(공용) 42매",
+            "original_price": null,
+            "package_quantity": 42.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 40200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "42매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "d2d3dc9bf0f98ac9ad17a609808f9240d42f26a7087031e443c39f7fdd1a7f8e",
+          "raw_record_id": "ingestion:26:75",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:26:75",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:39"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.091689Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 40200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-924159d846d40ffe6ed022579ea9f4f6",
+    "public_source_listing_id": "listing-b0b0de24dfcf68387b5ce95cf8ea283a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.091689Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "0c407b9370cfc5fac92358217c3b529032fac2a6",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209544&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209544N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%A7%A5%EC%8A%A4%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%ED%8A%B9%EB%8C%80%ED%98%95-5%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-34%EB%A7%A4/071209544",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209544",
+              "normalized_name": "하기스 맥스드라이 팬티기저귀 특대형 5단계(공용) 34매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209544&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 맥스드라이 팬티기저귀 특대형 5단계(공용) 34매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209544",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209544&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1182.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.091689",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209544&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "34매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 맥스드라이 팬티기저귀 특대형 5단계 공용 34매||34매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 맥스드라이 팬티기저귀 특대형 5단계(공용) 34매",
+            "normalized_name": "하기스 맥스드라이 팬티기저귀 특대형 5단계(공용) 34매",
+            "original_price": null,
+            "package_quantity": 34.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 40200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "34매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "c5e94ef0a31d38e205b020538bae38eaeb9a476dc37c2ee50a2fd58050396fdf",
+          "raw_record_id": "ingestion:76:39",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:39",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:26:99"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        26
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.641486Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 40200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-a391e9af52006ef834038e6215b3aef8",
+    "public_source_listing_id": "listing-b0b0de24dfcf68387b5ce95cf8ea283a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.641486Z",
+          "ingestion_id": 26,
+          "ingestion_received_at": "2026-08-31T01:48:14.971816Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "0c407b9370cfc5fac92358217c3b529032fac2a6",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209544&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209544N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%A7%A5%EC%8A%A4%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%ED%8A%B9%EB%8C%80%ED%98%95-5%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-34%EB%A7%A4/071209544",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209544",
+              "normalized_name": "하기스 맥스드라이 팬티기저귀 특대형 5단계(공용) 34매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209544&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 맥스드라이 팬티기저귀 특대형 5단계(공용) 34매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209544",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209544&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1182.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.641486",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209544&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "34매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 맥스드라이 팬티기저귀 특대형 5단계 공용 34매||34매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 맥스드라이 팬티기저귀 특대형 5단계(공용) 34매",
+            "normalized_name": "하기스 맥스드라이 팬티기저귀 특대형 5단계(공용) 34매",
+            "original_price": null,
+            "package_quantity": 34.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 40200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "34매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "52bf05190807d7e2be0c066f0aedfbee807d356ff02431acf84e329058bbf09a",
+          "raw_record_id": "ingestion:26:99",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:26:99",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:26:98"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        26
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.641347Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 40200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-eaf1781b03df3a9c2eecf99581e398a9",
+    "public_source_listing_id": "listing-8a2d4aca4ce0320223114f23674462ae",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.641347Z",
+          "ingestion_id": 26,
+          "ingestion_received_at": "2026-08-31T01:48:14.971816Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "bf1127f93e0d3f51176355f50ecb7a820527fde6",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209556&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209556N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%A7%A5%EC%8A%A4%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%A0%90%EB%B3%B4-6%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-29%EB%A7%A4/071209556",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209556",
+              "normalized_name": "하기스 맥스드라이 팬티기저귀 점보 6단계(공용) 29매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209556&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 맥스드라이 팬티기저귀 점보 6단계(공용) 29매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209556",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209556&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1386.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.641347",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209556&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "29매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 맥스드라이 팬티기저귀 점보 6단계 공용 29매||29매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 맥스드라이 팬티기저귀 점보 6단계(공용) 29매",
+            "normalized_name": "하기스 맥스드라이 팬티기저귀 점보 6단계(공용) 29매",
+            "original_price": null,
+            "package_quantity": 29.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 40200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "29매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "bd9413eecd25ca9687e3f058ba62ec08d5171bc13aeafb619e7342568906f41c",
+          "raw_record_id": "ingestion:26:98",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:26:98",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:33"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.090916Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 40200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-f1bc1664bcec2c7030e7a8edc90cccb7",
+    "public_source_listing_id": "listing-8a2d4aca4ce0320223114f23674462ae",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.090916Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "bf1127f93e0d3f51176355f50ecb7a820527fde6",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209556&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209556N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%A7%A5%EC%8A%A4%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%EC%A0%90%EB%B3%B4-6%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-29%EB%A7%A4/071209556",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209556",
+              "normalized_name": "하기스 맥스드라이 팬티기저귀 점보 6단계(공용) 29매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209556&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 맥스드라이 팬티기저귀 점보 6단계(공용) 29매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209556",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209556&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1386.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.090916",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209556&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "29매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 맥스드라이 팬티기저귀 점보 6단계 공용 29매||29매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 맥스드라이 팬티기저귀 점보 6단계(공용) 29매",
+            "normalized_name": "하기스 맥스드라이 팬티기저귀 점보 6단계(공용) 29매",
+            "original_price": null,
+            "package_quantity": 29.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 40200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "29매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "97b88727590b865ef355a278300bce9d505c5de9b04583f1aea5699cf407b6bd",
+          "raw_record_id": "ingestion:76:33",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:33",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:76:41"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        76
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:45.091918Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 40200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-4e73d69a59992a8ba8f8011245830dbc",
+    "public_source_listing_id": "listing-83ca73d8284601dce1f32c8cc1044861",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:45.091918Z",
+          "ingestion_id": 76,
+          "ingestion_received_at": "2026-09-02T13:41:16.637844Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "92d716b3cd673f30b9fbfc93a52609f161ffddbe",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209562&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209562N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%A7%A5%EC%8A%A4%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%ED%8A%B9%EC%A0%90%EB%B3%B4-7%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-24%EB%A7%A4/071209562",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209562",
+              "normalized_name": "하기스 맥스드라이 팬티기저귀 특점보 7단계(공용) 24매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209562&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 맥스드라이 팬티기저귀 특점보 7단계(공용) 24매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209562",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209562&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1675.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-09-02T22:39:45.091918",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209562&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "24매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 맥스드라이 팬티기저귀 특점보 7단계 공용 24매||24매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 맥스드라이 팬티기저귀 특점보 7단계(공용) 24매",
+            "normalized_name": "하기스 맥스드라이 팬티기저귀 특점보 7단계(공용) 24매",
+            "original_price": null,
+            "package_quantity": 24.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 40200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "24매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "3b5354f6ab73c13750a97e08cf54d7eb2f1fb01a993897179907adbcedbb96f6",
+          "raw_record_id": "ingestion:76:41",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:76:41",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:26:97"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        26
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:47.641131Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 40200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-e84f3e3580c5d33c0d8fcd3eee547e30",
+    "public_source_listing_id": "listing-83ca73d8284601dce1f32c8cc1044861",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:47.641131Z",
+          "ingestion_id": 26,
+          "ingestion_received_at": "2026-08-31T01:48:14.971816Z",
+          "mart_native_category_id": "22",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하기스",
+              "canon_hash": "92d716b3cd673f30b9fbfc93a52609f161ffddbe",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071209562&storeType=HYPER",
+              "category_hint": "하기스",
+              "docId": "H071209562N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EA%B8%B0%EC%8A%A4-%EB%A7%A5%EC%8A%A4%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%8C%AC%ED%8B%B0%EA%B8%B0%EC%A0%80%EA%B7%80-%ED%8A%B9%EC%A0%90%EB%B3%B4-7%EB%8B%A8%EA%B3%84-%EA%B3%B5%EC%9A%A9-24%EB%A7%A4/071209562",
+              "mart_native_category_id": "22",
+              "mart_native_category_path": "기저귀 > 하기스/마미포코 > 하기스 > 하기스",
+              "mart_native_code": "071209562",
+              "normalized_name": "하기스 맥스드라이 팬티기저귀 특점보 7단계(공용) 24매",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071209562&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "하기스 맥스드라이 팬티기저귀 특점보 7단계(공용) 24매",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071209562",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071209562&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1675.0
+            },
+            "brand": "__no_brand__",
+            "category": "하기스",
+            "crawled_at": "2026-08-31T10:46:47.641131",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071209562&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "24매",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|하기스 맥스드라이 팬티기저귀 특점보 7단계 공용 24매||24매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하기스 맥스드라이 팬티기저귀 특점보 7단계(공용) 24매",
+            "normalized_name": "하기스 맥스드라이 팬티기저귀 특점보 7단계(공용) 24매",
+            "original_price": null,
+            "package_quantity": 24.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 40200,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "24매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "5e11aaa752f6de65f06bd69cad5fdc048746f65dda6ca3f6cbd8a902ec17ed52",
+          "raw_record_id": "ingestion:26:97",
+          "source_category_path": [
+            "기저귀",
+            "하기스/마미포코",
+            "하기스",
+            "하기스"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:26:97",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:55:58"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        55
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:38:37.169831Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 9900,
+    "price_per_100g": 990.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-2dccc95a38afa357600cb3b7310247ba",
+    "public_source_listing_id": "listing-4e51392a3f34f7db74169cc5181ad2be",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:38:37.169831Z",
+          "ingestion_id": 55,
+          "ingestion_received_at": "2026-09-02T13:40:02.154293Z",
+          "mart_native_category_id": "6",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "simplus",
+              "canon_hash": "0b4f6625a8959df6892e80dc6f9d4b429b8f2744",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071210524&storeType=HYPER",
+              "category_hint": "메추리알",
+              "docId": "H071210524N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/simplus-%EA%B9%90%EB%A9%94%EC%B6%94%EB%A6%AC%EC%95%8C-1KG/071210524",
+              "mart_native_category_id": "6",
+              "mart_native_category_path": "정육/계란 > 계란/알류 > 메추리알 > 메추리알",
+              "mart_native_code": "071210524",
+              "normalized_name": "simplus 깐메추리알 1KG",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071210524&storeType=HYPER",
+              "raw_name": "simplus 깐메추리알 1KG",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "071210524",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071210524&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 990.0
+            },
+            "brand": "__no_brand__",
+            "category": "메추리알",
+            "crawled_at": "2026-09-02T22:38:37.169831",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071210524&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "1kg",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|simplus 깐메추리알 1kg||1kg",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "simplus 깐메추리알 1KG",
+            "normalized_name": "simplus 깐메추리알 1KG",
+            "original_price": null,
+            "package_quantity": 1.0,
+            "package_unit": "kg",
+            "price_per_100g": 990.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9900,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "1kg",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "6086b92185f41299f92df06da2c816488f832bf4ba30f920aa77c19c5b4a801a",
+          "raw_record_id": "ingestion:55:58",
+          "source_category_path": [
+            "정육/계란",
+            "계란/알류",
+            "메추리알",
+            "메추리알"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:55:58",
+    "standard_unit_price": 990.0,
+    "valid_from": null,
+    "valid_to": null
+  }
+]

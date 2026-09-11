@@ -1,0 +1,137 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:d24cfb69265a52e93cef6e37",
+      "promotion_surface": false,
+      "proposed_path": [
+        "양념ㆍ오일ㆍ분말류",
+        "샐러드드레싱",
+        "오리엔탈ㆍ발사믹드레싱",
+        "오리엔탈드레싱"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:35:15",
+      "review_status": "pending",
+      "source_path": "양념ㆍ오일ㆍ분말류 > 샐러드드레싱 > 오리엔탈ㆍ발사믹드레싱 > 오리엔탈드레싱",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "샐러드드레싱",
+        "오리엔탈ㆍ발사믹드레싱",
+        "오리엔탈드레싱"
+      ],
+      "source_title": "청정원 저당 오리엔탈드레싱 (310G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801052127897/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "대상",
+      "crawled_at": "2026-08-31T01:47:08.162700Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 30% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9008ef29-c813-49b6-9b8b-349025699028/300x300.jpg",
+      "ingestion_id": 35,
+      "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 15,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "310g",
+        "package_quantity": 310.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "대상",
+          "canon_hash": "928aae470d8a0d00fc0ded05be6d6bdd84847fc0",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801052127897/details",
+          "category_hint": "양념ㆍ오일ㆍ분말류",
+          "category_path": [
+            "양념ㆍ오일ㆍ분말류",
+            "샐러드드레싱",
+            "오리엔탈ㆍ발사믹드레싱",
+            "오리엔탈드레싱"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9008ef29-c813-49b6-9b8b-349025699028/300x300.jpg",
+          "mart_native_code": "8801052127897",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801052127897",
+          "source_url": "https://lottemartzetta.com/products/OS8801052127897/details"
+        },
+        "brand": "__no_brand__",
+        "category": "양념ㆍ오일ㆍ분말류",
+        "crawled_at": "2026-08-31T10:47:08.162700",
+        "detail_url": "https://lottemartzetta.com/products/OS8801052127897/details",
+        "discount_percent": null,
+        "display_unit": "310g",
+        "event_name": "2개씩 골라 담으면, 30% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9008ef29-c813-49b6-9b8b-349025699028/300x300.jpg",
+        "match_key": "__no_brand__|청정원 저당 오리엔탈드레싱 310g||310g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "청정원 저당 오리엔탈드레싱 (310G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 310.0,
+        "package_unit": "g",
+        "price_per_100g": 1606.45,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "310g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "6643c8ce4423633610ae1df8bfa7b7bbda714c0f55fe3ccf0e1a788a95e9a93f",
+      "raw_record_id": "ingestion:35:15",
+      "source_category_path": [
+        "양념ᆞ오일ᆞ분말류",
+        "샐러드드레싱",
+        "오리엔탈ᆞ발사믹드레싱",
+        "오리엔탈드레싱"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801052127897",
+      "source_title": "청정원 저당 오리엔탈드레싱 (310G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801052127897/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:35:15",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801052127897",
+    "source_title": "청정원 저당 오리엔탈드레싱 (310G)"
+  }
+]

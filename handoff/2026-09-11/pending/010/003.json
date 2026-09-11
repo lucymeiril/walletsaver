@@ -1,0 +1,462 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:6ca86089fdb3339af8521350",
+      "promotion_surface": false,
+      "proposed_path": [
+        "음료"
+      ],
+      "raw_native_category_id": "cos_10.11",
+      "raw_record_id": "ingestion:43:11",
+      "review_status": "pending",
+      "source_path": "음료",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "폴라레티 후르트 아이스바 40ml x 80",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Frozen-Foods/BeverageIce-Cream/Polaretti-Fruit-Ice-Bar-40ml-x-80/p/669975"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "frozen-foods",
+        "beverageice-cream"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb9/h84/226282388750366.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [],
+      "item_index": 11,
+      "mart_native_category_id": "cos_10.11",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 80,
+        "display_unit": "",
+        "package_quantity": 40.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 19490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "540548ead456ef9234de8615871caf4fa1fa7c4f",
+        "canonical_url": "https://www.costco.co.kr/Foods/Frozen-Foods/BeverageIce-Cream/Polaretti-Fruit-Ice-Bar-40ml-x-80/p/669975",
+        "category": "음료",
+        "cocodalin_join_key": "669975",
+        "detail_url": "https://www.costco.co.kr/Foods/Frozen-Foods/BeverageIce-Cream/Polaretti-Fruit-Ice-Bar-40ml-x-80/p/669975",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hb9/h84/226282388750366.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.11",
+        "mart_native_category_path": "음료",
+        "mart_native_code": "669975",
+        "match_key": "__no_brand__|폴라레티 후르트 아이스바 40ml x 80|40.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "폴라레티 후르트 아이스바 40ml x 80",
+        "normalized_name": "폴라레티 후르트 아이스바 40ml x 80",
+        "pack_qty": 40,
+        "pack_unit": "ml",
+        "price": 19490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "폴라레티 후르트 아이스바 40ml x 80",
+        "raw_promo_type": null,
+        "sale_price": 19490,
+        "source": "costco",
+        "source_record_key": "669975",
+        "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/BeverageIce-Cream/Polaretti-Fruit-Ice-Bar-40ml-x-80/p/669975",
+        "unit_price": 609.0,
+        "unit_price_basis": "100㎖",
+        "unit_price_basis_raw": "100㎖",
+        "unit_price_display": "100㎖당 609원",
+        "unit_price_displayed": 609,
+        "unit_price_text": "100㎖당 609원"
+      },
+      "raw_payload_sha256": "f1e39761e5643b843fe3e31d8f645b69bcb64a97dc41bb017ef4d447e83fae3c",
+      "raw_record_id": "ingestion:43:11",
+      "source_category_path": [
+        "음료"
+      ],
+      "source_name": "costco",
+      "source_record_key": "669975",
+      "source_title": "폴라레티 후르트 아이스바 40ml x 80",
+      "source_url": "https://www.costco.co.kr/Foods/Frozen-Foods/BeverageIce-Cream/Polaretti-Fruit-Ice-Bar-40ml-x-80/p/669975",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:11",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "669975",
+    "source_title": "폴라레티 후르트 아이스바 40ml x 80"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:6ca86089fdb3339af8521350",
+      "promotion_surface": false,
+      "proposed_path": [
+        "음료"
+      ],
+      "raw_native_category_id": "cos_8.3",
+      "raw_record_id": "ingestion:43:12",
+      "review_status": "pending",
+      "source_path": "음료",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "끌레드벨 럭셔리 콜라겐 82 앰플 100ml x 2",
+      "source_urls": [
+        "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/Beauty/EssenceSerumAmpoule/Cledbel-Luxury-Collagen-82-Ampoule-100ml-x-2/p/664826"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "beautyhouseholdpersonal-care",
+        "beauty",
+        "essenceserumampoule"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h9d/hc5/157409515503646.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [],
+      "item_index": 12,
+      "mart_native_category_id": "cos_8.3",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 2,
+        "display_unit": "",
+        "package_quantity": 100.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 19490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "9f3ecc5e36258a73aed336ab6c50d076fa7293c3",
+        "canonical_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/Beauty/EssenceSerumAmpoule/Cledbel-Luxury-Collagen-82-Ampoule-100ml-x-2/p/664826",
+        "category": "음료",
+        "cocodalin_join_key": "664826",
+        "detail_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/Beauty/EssenceSerumAmpoule/Cledbel-Luxury-Collagen-82-Ampoule-100ml-x-2/p/664826",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h9d/hc5/157409515503646.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_8.3",
+        "mart_native_category_path": "음료",
+        "mart_native_code": "664826",
+        "match_key": "__no_brand__|끌레드벨 럭셔리 콜라겐 82 앰플 100ml x 2|100.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "끌레드벨 럭셔리 콜라겐 82 앰플 100ml x 2",
+        "normalized_name": "끌레드벨 럭셔리 콜라겐 82 앰플 100ml x 2",
+        "pack_qty": 100,
+        "pack_unit": "ml",
+        "price": 19490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "끌레드벨 럭셔리 콜라겐 82 앰플 100ml x 2",
+        "raw_promo_type": null,
+        "sale_price": 19490,
+        "source": "costco",
+        "source_record_key": "664826",
+        "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/Beauty/EssenceSerumAmpoule/Cledbel-Luxury-Collagen-82-Ampoule-100ml-x-2/p/664826",
+        "unit_price": 975.0,
+        "unit_price_basis": "10㎖",
+        "unit_price_basis_raw": "10㎖",
+        "unit_price_display": "10㎖당 975원",
+        "unit_price_displayed": 975,
+        "unit_price_text": "10㎖당 975원"
+      },
+      "raw_payload_sha256": "93975da8f6d245eeee61789fdd3dddb8c164b69c8438743b3fd0e4367eb05e9c",
+      "raw_record_id": "ingestion:43:12",
+      "source_category_path": [
+        "음료"
+      ],
+      "source_name": "costco",
+      "source_record_key": "664826",
+      "source_title": "끌레드벨 럭셔리 콜라겐 82 앰플 100ml x 2",
+      "source_url": "https://www.costco.co.kr/BeautyHouseholdPersonal-Care/Beauty/EssenceSerumAmpoule/Cledbel-Luxury-Collagen-82-Ampoule-100ml-x-2/p/664826",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:12",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "664826",
+    "source_title": "끌레드벨 럭셔리 콜라겐 82 앰플 100ml x 2"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:6ca86089fdb3339af8521350",
+      "promotion_surface": false,
+      "proposed_path": [
+        "음료"
+      ],
+      "raw_native_category_id": "cos_10.11",
+      "raw_record_id": "ingestion:43:14",
+      "review_status": "pending",
+      "source_path": "음료",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "국산서리태귀리쉐이크 1.5kg",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Beverages/CocoaDrink-Mix/Black-Beans-Oat-Shake-15kg/p/631991"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "beverages",
+        "cocoadrink-mix"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3e/h09/367549961732126.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [],
+      "item_index": 14,
+      "mart_native_category_id": "cos_10.11",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 1500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 12990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "f962b71d7d91d057a8e48abad5b2a96ebe95fb46",
+        "canonical_url": "https://www.costco.co.kr/Foods/Beverages/CocoaDrink-Mix/Black-Beans-Oat-Shake-15kg/p/631991",
+        "category": "음료",
+        "cocodalin_join_key": "631991",
+        "detail_url": "https://www.costco.co.kr/Foods/Beverages/CocoaDrink-Mix/Black-Beans-Oat-Shake-15kg/p/631991",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3e/h09/367549961732126.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.11",
+        "mart_native_category_path": "음료",
+        "mart_native_code": "631991",
+        "match_key": "__no_brand__|국산서리태귀리쉐이크 1 5kg|1500.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "국산서리태귀리쉐이크 1.5kg",
+        "normalized_name": "국산서리태귀리쉐이크 1.5kg",
+        "pack_qty": 1.5,
+        "pack_unit": "kg",
+        "price": 12990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "국산서리태귀리쉐이크 1.5kg",
+        "raw_promo_type": null,
+        "sale_price": 12990,
+        "source": "costco",
+        "source_record_key": "631991",
+        "source_url": "https://www.costco.co.kr/Foods/Beverages/CocoaDrink-Mix/Black-Beans-Oat-Shake-15kg/p/631991",
+        "unit_price": 866.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 866원",
+        "unit_price_displayed": 866,
+        "unit_price_text": "100G당 866원"
+      },
+      "raw_payload_sha256": "3c8578181ce36ff5ff0eb32b06ef4d927e8bf489ff280456de083bb0153e8068",
+      "raw_record_id": "ingestion:43:14",
+      "source_category_path": [
+        "음료"
+      ],
+      "source_name": "costco",
+      "source_record_key": "631991",
+      "source_title": "국산서리태귀리쉐이크 1.5kg",
+      "source_url": "https://www.costco.co.kr/Foods/Beverages/CocoaDrink-Mix/Black-Beans-Oat-Shake-15kg/p/631991",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:14",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "631991",
+    "source_title": "국산서리태귀리쉐이크 1.5kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:6ca86089fdb3339af8521350",
+      "promotion_surface": false,
+      "proposed_path": [
+        "음료"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:43:17",
+      "review_status": "pending",
+      "source_path": "음료",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "음료"
+      ],
+      "source_title": "벤딕트 차량용 보냉 컵홀더 2개",
+      "source_urls": [
+        "https://www.costco.co.kr/HardwareAutomotive/Automotive/Auto-Accessories/Vendict-Insulated-Car-Cup-Holder-2P/p/690174"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "hardwareautomotive",
+        "automotive",
+        "auto-accessories"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:59.030448Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h60/hc3/434793906602014.jpg",
+      "ingestion_id": 43,
+      "ingestion_received_at": "2026-08-31T01:51:59.030448Z",
+      "issues": [],
+      "item_index": 17,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": 34990,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 2.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 31490,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "a837d784f6dbb03891c1605eddd15f6476223fd0",
+        "canonical_url": "https://www.costco.co.kr/HardwareAutomotive/Automotive/Auto-Accessories/Vendict-Insulated-Car-Cup-Holder-2P/p/690174",
+        "category": "음료",
+        "cocodalin_join_key": "690174",
+        "detail_url": "https://www.costco.co.kr/HardwareAutomotive/Automotive/Auto-Accessories/Vendict-Insulated-Car-Cup-Holder-2P/p/690174",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h60/hc3/434793906602014.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "음료",
+        "mart_native_code": "690174",
+        "match_key": "__no_brand__|벤딕트 차량용 보냉 컵홀더 2개|2.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "벤딕트 차량용 보냉 컵홀더 2개",
+        "normalized_name": "벤딕트 차량용 보냉 컵홀더 2개",
+        "pack_qty": 2,
+        "pack_unit": "개",
+        "price": 34990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "벤딕트 차량용 보냉 컵홀더 2개",
+        "raw_promo_type": "discount",
+        "sale_price": 31490,
+        "source": "costco",
+        "source_record_key": "690174",
+        "source_url": "https://www.costco.co.kr/HardwareAutomotive/Automotive/Auto-Accessories/Vendict-Insulated-Car-Cup-Holder-2P/p/690174",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "28f24c5c8e710a4a4d4cc51d5f1ce2958b7cfbe60ee9ee4a63f199139c1d3f2d",
+      "raw_record_id": "ingestion:43:17",
+      "source_category_path": [
+        "음료"
+      ],
+      "source_name": "costco",
+      "source_record_key": "690174",
+      "source_title": "벤딕트 차량용 보냉 컵홀더 2개",
+      "source_url": "https://www.costco.co.kr/HardwareAutomotive/Automotive/Auto-Accessories/Vendict-Insulated-Car-Cup-Holder-2P/p/690174",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:43:17",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "690174",
+    "source_title": "벤딕트 차량용 보냉 컵홀더 2개"
+  }
+]

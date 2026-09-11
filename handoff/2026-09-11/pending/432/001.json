@@ -1,0 +1,135 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.fruit.pear"
+      ],
+      "category_path": [
+        "식품",
+        "농산물",
+        "신선과일",
+        "배"
+      ],
+      "classification_confidence": 0.97,
+      "classification_reason": "supported_by_source_full_path",
+      "evidence_type": "source_full_path",
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:dbbb5b20e9673a38fb7c1ae4",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:32:80",
+      "review_status": "classified",
+      "source_path": "과일 > 사과ㆍ배 > 배",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "과일",
+        "사과ㆍ배",
+        "배"
+      ],
+      "source_title": "저탄소 배 (3~5입/봉)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS0430000532766/details"
+      ],
+      "unified_category_id": "food.produce.fruit.pear",
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:47:02.666921Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "농할 할인 20%_결제시 자동적용",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b5e4a22e-619f-4776-b582-5a274a442196/300x300.jpg",
+      "ingestion_id": 32,
+      "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+      "issues": [
+        "count_range_unresolved",
+        "promotion_unresolved"
+      ],
+      "item_index": 80,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "5입",
+        "package_quantity": 5.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 13700,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "단독기획",
+          "canon_hash": "cae3cb9c845f883dc931a9f571e8359b7a856fac",
+          "canonical_url": "https://lottemartzetta.com/products/OS0430000532766/details",
+          "category_hint": "과일",
+          "category_path": [
+            "과일",
+            "사과ㆍ배",
+            "배"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b5e4a22e-619f-4776-b582-5a274a442196/300x300.jpg",
+          "mart_native_code": "0430000532766",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "0430000532766",
+          "source_url": "https://lottemartzetta.com/products/OS0430000532766/details"
+        },
+        "brand": "__no_brand__",
+        "category": "과일",
+        "crawled_at": "2026-08-31T10:47:02.666921",
+        "detail_url": "https://lottemartzetta.com/products/OS0430000532766/details",
+        "discount_percent": null,
+        "display_unit": "5입",
+        "event_name": "농할 할인 20%_결제시 자동적용",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b5e4a22e-619f-4776-b582-5a274a442196/300x300.jpg",
+        "match_key": "__no_brand__|저탄소 배 3 5입 봉||5입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "저탄소 배 (3~5입/봉)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 5.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 13700,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "5입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "26c3e8df2dbac3f20cb348929dd399ff030ec1022e17e7430bf1ca94c1d47cfc",
+      "raw_record_id": "ingestion:32:80",
+      "source_category_path": [
+        "과일",
+        "사과ᆞ배",
+        "배"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "0430000532766",
+      "source_title": "저탄소 배 (3~5입/봉)",
+      "source_url": "https://lottemartzetta.com/products/OS0430000532766/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:32:80",
+    "reasons": [
+      "count_range_unresolved",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "0430000532766",
+    "source_title": "저탄소 배 (3~5입/봉)"
+  }
+]

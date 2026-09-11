@@ -1,0 +1,4460 @@
+[
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:9:89"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        9
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:45:55.600918Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 5990,
+    "price_per_100g": 935.9375,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-aa8ce3443331a376fd3cd8fa5631c696",
+    "public_source_listing_id": "listing-4a2cd79e334052bbaaed237980e87169",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:45:55.600918Z",
+          "ingestion_id": 9,
+          "ingestion_received_at": "2026-08-31T01:47:14.353484Z",
+          "mart_native_category_id": "10",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "해태",
+              "canon_hash": "df2e04883004a1228cbb6d8bbe091e88a12e7189",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069662153&storeType=HYPER",
+              "category_hint": "고기교자만두",
+              "docId": "H069662153N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%B4%ED%83%9C-%EA%B3%A0%ED%96%A5%EB%A7%8C%EB%91%90-320G/069662153",
+              "mart_native_category_id": "10",
+              "mart_native_category_path": "냉장/냉동/밀키트 > 만두 > 교자만두/군만두 > 고기교자만두",
+              "mart_native_code": "069662153",
+              "normalized_name": "해태 고향만두 320G",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069662153&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "해태 고향만두 320G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069662153",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069662153&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 1872.0
+            },
+            "brand": "__no_brand__",
+            "category": "고기교자만두",
+            "crawled_at": "2026-08-31T10:45:55.600918",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069662153&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "320g",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|해태 고향만두 320g||320g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "해태 고향만두 320G",
+            "normalized_name": "해태 고향만두 320G",
+            "original_price": null,
+            "package_quantity": 320.0,
+            "package_unit": "g",
+            "price_per_100g": 1871.88,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 5990,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "320g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "f6fa369fa9e3633495f3483001e5d45b060e7ef1f78f6a1af6d3fbf9c6306e4b",
+          "raw_record_id": "ingestion:9:89",
+          "source_category_path": [
+            "냉장/냉동/밀키트",
+            "만두",
+            "교자만두/군만두",
+            "고기교자만두"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:9:89",
+    "standard_unit_price": 935.9375,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:13:63"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        13
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:07.178007Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 3590,
+    "price_per_100g": 1237.931,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-30733a7d412bbabb86cb13c227ef9c77",
+    "public_source_listing_id": "listing-02221ef24f1fda865907f13a7fe891c2",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:07.178007Z",
+          "ingestion_id": 13,
+          "ingestion_received_at": "2026-08-31T01:47:28.609121Z",
+          "mart_native_category_id": "11",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "풀무원",
+              "canon_hash": "1a2f0afd58a7aa8c62b46a6888f4e1611ce42aa3",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069664548&storeType=HYPER",
+              "category_hint": "찌개용두부",
+              "docId": "H069664548N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%92%80%EB%AC%B4%EC%9B%90-%EA%B3%A0%EC%86%8C%ED%95%9C-%EC%9C%A0%EA%B8%B0%EB%86%8D-%EB%91%90%EB%B6%80%EB%B6%80%EC%B9%A8%EC%9A%A9-290G/069664548",
+              "mart_native_category_id": "11",
+              "mart_native_category_path": "두부/김치/반찬 > 두부/나물 > 부침/찌개용두부 > 찌개용두부",
+              "mart_native_code": "069664548",
+              "normalized_name": "풀무원 고소한 유기농 두부부침용 290G",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069664548&storeType=HYPER",
+              "raw_name": "풀무원 고소한 유기농 두부부침용 290G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069664548",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069664548&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 1238.0
+            },
+            "brand": "__no_brand__",
+            "category": "찌개용두부",
+            "crawled_at": "2026-08-31T10:46:07.178007",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069664548&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "290g",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|풀무원 고소한 유기농 두부부침용 290g||290g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 고소한 유기농 두부부침용 290G",
+            "normalized_name": "풀무원 고소한 유기농 두부부침용 290G",
+            "original_price": null,
+            "package_quantity": 290.0,
+            "package_unit": "g",
+            "price_per_100g": 1237.93,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3590,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "290g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "a7f9810510621d69548ddde3c82f78f3cf88582ecbd7a8909ba380a51ae7db60",
+          "raw_record_id": "ingestion:13:63",
+          "source_category_path": [
+            "두부/김치/반찬",
+            "두부/나물",
+            "부침/찌개용두부",
+            "찌개용두부"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:13:63",
+    "standard_unit_price": 1237.931,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:63:10"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        63
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:05.434565Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1800,
+    "price_per_100g": 620.6897,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-33a59739b71826bb8601fcbfa7c0f368",
+    "public_source_listing_id": "listing-02221ef24f1fda865907f13a7fe891c2",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:05.434565Z",
+          "ingestion_id": 63,
+          "ingestion_received_at": "2026-09-02T13:40:30.196436Z",
+          "mart_native_category_id": "11",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "풀무원",
+              "canon_hash": "1a2f0afd58a7aa8c62b46a6888f4e1611ce42aa3",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069664548&storeType=HYPER",
+              "category_hint": "찌개용두부",
+              "docId": "H069664548N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%92%80%EB%AC%B4%EC%9B%90-%EA%B3%A0%EC%86%8C%ED%95%9C-%EC%9C%A0%EA%B8%B0%EB%86%8D-%EB%91%90%EB%B6%80%EB%B6%80%EC%B9%A8%EC%9A%A9-290G/069664548",
+              "mart_native_category_id": "11",
+              "mart_native_category_path": "두부/김치/반찬 > 두부/나물 > 부침/찌개용두부 > 찌개용두부",
+              "mart_native_code": "069664548",
+              "normalized_name": "풀무원 고소한 유기농 두부부침용 290G",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069664548&storeType=HYPER",
+              "raw_name": "풀무원 고소한 유기농 두부부침용 290G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069664548",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069664548&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 621.0
+            },
+            "brand": "__no_brand__",
+            "category": "찌개용두부",
+            "crawled_at": "2026-09-02T22:39:05.434565",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069664548&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "290g",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|풀무원 고소한 유기농 두부부침용 290g||290g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 고소한 유기농 두부부침용 290G",
+            "normalized_name": "풀무원 고소한 유기농 두부부침용 290G",
+            "original_price": null,
+            "package_quantity": 290.0,
+            "package_unit": "g",
+            "price_per_100g": 620.69,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1800,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "290g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "58c2b0d9f04da6fecf4edc7b4ebee4319e07e3f284e6fbaca7b0871ce888ccee",
+          "raw_record_id": "ingestion:63:10",
+          "source_category_path": [
+            "두부/김치/반찬",
+            "두부/나물",
+            "부침/찌개용두부",
+            "찌개용두부"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:63:10",
+    "standard_unit_price": 620.6897,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:13:80"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        13
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:11.771279Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 3590,
+    "price_per_100g": 1237.931,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-600122dcbc402fe5858ebb30f07e6c1a",
+    "public_source_listing_id": "listing-af8a7c804afe15c43a2531709040342a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:11.771279Z",
+          "ingestion_id": 13,
+          "ingestion_received_at": "2026-08-31T01:47:28.609121Z",
+          "mart_native_category_id": "11",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "풀무원",
+              "canon_hash": "684eefb5e945f9419592a4ca31b0ea6c59412c5a",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069664577&storeType=HYPER",
+              "category_hint": "찌개용두부",
+              "docId": "H069664577N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%92%80%EB%AC%B4%EC%9B%90-%EA%B3%A0%EC%86%8C%ED%95%9C-%EC%9C%A0%EA%B8%B0%EB%86%8D-%EB%91%90%EB%B6%80%EC%B0%8C%EA%B0%9C%EC%9A%A9-290G/069664577",
+              "mart_native_category_id": "11",
+              "mart_native_category_path": "두부/김치/반찬 > 두부/나물 > 부침/찌개용두부 > 찌개용두부",
+              "mart_native_code": "069664577",
+              "normalized_name": "풀무원 고소한 유기농 두부찌개용 290G",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069664577&storeType=HYPER",
+              "raw_name": "풀무원 고소한 유기농 두부찌개용 290G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069664577",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069664577&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 1238.0
+            },
+            "brand": "__no_brand__",
+            "category": "찌개용두부",
+            "crawled_at": "2026-08-31T10:46:11.771279",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069664577&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "290g",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|풀무원 고소한 유기농 두부찌개용 290g||290g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 고소한 유기농 두부찌개용 290G",
+            "normalized_name": "풀무원 고소한 유기농 두부찌개용 290G",
+            "original_price": null,
+            "package_quantity": 290.0,
+            "package_unit": "g",
+            "price_per_100g": 1237.93,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3590,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "290g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "4018cdf45671776871bc8c1f78b1388a59092fa75f55fef541997201a1660bb3",
+          "raw_record_id": "ingestion:13:80",
+          "source_category_path": [
+            "두부/김치/반찬",
+            "두부/나물",
+            "부침/찌개용두부",
+            "찌개용두부"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:13:80",
+    "standard_unit_price": 1237.931,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:63:34"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        63
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:05.438031Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1800,
+    "price_per_100g": 620.6897,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-d76b07808324c0b08e26d222bd2d368a",
+    "public_source_listing_id": "listing-af8a7c804afe15c43a2531709040342a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:05.438031Z",
+          "ingestion_id": 63,
+          "ingestion_received_at": "2026-09-02T13:40:30.196436Z",
+          "mart_native_category_id": "11",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "풀무원",
+              "canon_hash": "684eefb5e945f9419592a4ca31b0ea6c59412c5a",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069664577&storeType=HYPER",
+              "category_hint": "찌개용두부",
+              "docId": "H069664577N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%92%80%EB%AC%B4%EC%9B%90-%EA%B3%A0%EC%86%8C%ED%95%9C-%EC%9C%A0%EA%B8%B0%EB%86%8D-%EB%91%90%EB%B6%80%EC%B0%8C%EA%B0%9C%EC%9A%A9-290G/069664577",
+              "mart_native_category_id": "11",
+              "mart_native_category_path": "두부/김치/반찬 > 두부/나물 > 부침/찌개용두부 > 찌개용두부",
+              "mart_native_code": "069664577",
+              "normalized_name": "풀무원 고소한 유기농 두부찌개용 290G",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069664577&storeType=HYPER",
+              "raw_name": "풀무원 고소한 유기농 두부찌개용 290G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069664577",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069664577&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 621.0
+            },
+            "brand": "__no_brand__",
+            "category": "찌개용두부",
+            "crawled_at": "2026-09-02T22:39:05.438031",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069664577&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "290g",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|풀무원 고소한 유기농 두부찌개용 290g||290g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 고소한 유기농 두부찌개용 290G",
+            "normalized_name": "풀무원 고소한 유기농 두부찌개용 290G",
+            "original_price": null,
+            "package_quantity": 290.0,
+            "package_unit": "g",
+            "price_per_100g": 620.69,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1800,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "290g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "6555e06be075baaaf218f47d0ca2e9d972ec8e682b7b9af54a2b9943eeb1d848",
+          "raw_record_id": "ingestion:63:34",
+          "source_category_path": [
+            "두부/김치/반찬",
+            "두부/나물",
+            "부침/찌개용두부",
+            "찌개용두부"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:63:34",
+    "standard_unit_price": 620.6897,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:70:46"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        70
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:26.243858Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 5300,
+    "price_per_100g": 1027.1318,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-08e251266f8da99aad05c6e2db2176f5",
+    "public_source_listing_id": "listing-896f78d69a72c65081a6612aeca626e4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:26.243858Z",
+          "ingestion_id": 70,
+          "ingestion_received_at": "2026-09-02T13:40:55.496176Z",
+          "mart_native_category_id": "16",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "농심",
+              "canon_hash": "0288e80ce80b3c6cecce086da150fd05a2a86fed",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069669860&storeType=HYPER",
+              "category_hint": "일반라면/비빔라면",
+              "docId": "H069669860N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%86%8D%EC%8B%AC-%EB%B0%B0%ED%99%8D%EB%8F%99%EC%AB%84%EC%AB%84%EB%A9%B4-129G-4%EC%9E%85/069669860",
+              "mart_native_category_id": "16",
+              "mart_native_category_path": "라면/즉석식품/통조림 > 라면/수입면류 > 일반라면/비빔라면 > 일반라면/비빔라면",
+              "mart_native_code": "069669860",
+              "normalized_name": "농심 배홍동쫄쫄면 129G*4입",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069669860&storeType=HYPER",
+              "raw_name": "농심 배홍동쫄쫄면 129G*4입",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069669860",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069669860&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 1027.0
+            },
+            "brand": "__no_brand__",
+            "category": "일반라면/비빔라면",
+            "crawled_at": "2026-09-02T22:39:26.243858",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069669860&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "129g×4",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|농심 배홍동쫄쫄면 129g 4입||129g×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "농심 배홍동쫄쫄면 129G*4입",
+            "normalized_name": "농심 배홍동쫄쫄면 129G*4입",
+            "original_price": null,
+            "package_quantity": 129.0,
+            "package_unit": "g",
+            "price_per_100g": 1027.13,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5300,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "129g×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "76ed92628dc14842ccbda829add9ad7078b5c19cdcacc26491dd3f45d16474ab",
+          "raw_record_id": "ingestion:70:46",
+          "source_category_path": [
+            "라면/즉석식품/통조림",
+            "라면/수입면류",
+            "일반라면/비빔라면",
+            "일반라면/비빔라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:70:46",
+    "standard_unit_price": 1027.1318,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:22:47"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        22
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:37.200920Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 5300,
+    "price_per_100g": 1027.1318,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-0f3b69620a664775209b12423c51ab53",
+    "public_source_listing_id": "listing-896f78d69a72c65081a6612aeca626e4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:37.200920Z",
+          "ingestion_id": 22,
+          "ingestion_received_at": "2026-08-31T01:48:00.777171Z",
+          "mart_native_category_id": "16",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "농심",
+              "canon_hash": "0288e80ce80b3c6cecce086da150fd05a2a86fed",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069669860&storeType=HYPER",
+              "category_hint": "일반라면/비빔라면",
+              "docId": "H069669860N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%86%8D%EC%8B%AC-%EB%B0%B0%ED%99%8D%EB%8F%99%EC%AB%84%EC%AB%84%EB%A9%B4-129G-4%EC%9E%85/069669860",
+              "mart_native_category_id": "16",
+              "mart_native_category_path": "라면/즉석식품/통조림 > 라면/수입면류 > 일반라면/비빔라면 > 일반라면/비빔라면",
+              "mart_native_code": "069669860",
+              "normalized_name": "농심 배홍동쫄쫄면 129G*4입",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069669860&storeType=HYPER",
+              "raw_name": "농심 배홍동쫄쫄면 129G*4입",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069669860",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069669860&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 1027.0
+            },
+            "brand": "__no_brand__",
+            "category": "일반라면/비빔라면",
+            "crawled_at": "2026-08-31T10:46:37.200920",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069669860&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "129g×4",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|농심 배홍동쫄쫄면 129g 4입||129g×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "농심 배홍동쫄쫄면 129G*4입",
+            "normalized_name": "농심 배홍동쫄쫄면 129G*4입",
+            "original_price": null,
+            "package_quantity": 129.0,
+            "package_unit": "g",
+            "price_per_100g": 1027.13,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5300,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "129g×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "bb349395683d3df1852918e102a7021253f2a4e806c57b764a2cd23676d080e1",
+          "raw_record_id": "ingestion:22:47",
+          "source_category_path": [
+            "라면/즉석식품/통조림",
+            "라면/수입면류",
+            "일반라면/비빔라면",
+            "일반라면/비빔라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:22:47",
+    "standard_unit_price": 1027.1318,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:17:87"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        17
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:18.272346Z",
+    "discount_rate": null,
+    "event_name": "10+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1000,
+    "price_per_100g": 1420.4545,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 10,
+      "condition_text": "10+1",
+      "free_quantity": 1,
+      "minimum_quantity": 10
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-0dd4ee7b6dd5427a61090c9439a7aae3",
+    "public_source_listing_id": "listing-5d260980c81ca7b360b15069061714ec",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:18.272346Z",
+          "ingestion_id": 17,
+          "ingestion_received_at": "2026-08-31T01:47:42.855607Z",
+          "mart_native_category_id": "14",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오리온",
+              "canon_hash": "88fe5c12cbb9e968be2ea29382dae0ffac93e9de",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069684226&storeType=HYPER",
+              "category_hint": "옥수수스낵",
+              "docId": "H069684226N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%98%A4%EB%A6%AC%EC%98%A8-%EA%BC%AC%EB%B6%81%EC%B9%A9-%EC%B4%88%EC%BD%94%EC%B8%84%EB%9F%AC%EC%8A%A4%EB%A7%9B-64G/069684226",
+              "mart_native_category_id": "14",
+              "mart_native_category_path": "과자/시리얼 > 과자/쿠키/파이 > 나쵸/팝콘/옥수수과자 > 옥수수스낵",
+              "mart_native_code": "069684226",
+              "normalized_name": "오리온 꼬북칩 초코츄러스맛 64G",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069684226&storeType=HYPER",
+              "promo_label": "10+1",
+              "raw_name": "오리온 꼬북칩 초코츄러스맛 64G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069684226",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069684226&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "10G",
+              "unit_price_displayed": 156.0
+            },
+            "brand": "__no_brand__",
+            "category": "옥수수스낵",
+            "crawled_at": "2026-08-31T10:46:18.272346",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069684226&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "64g",
+            "event_name": "10+1",
+            "image_url": "",
+            "match_key": "__no_brand__|오리온 꼬북칩 초코츄러스맛 64g||64g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오리온 꼬북칩 초코츄러스맛 64G",
+            "normalized_name": "오리온 꼬북칩 초코츄러스맛 64G",
+            "original_price": null,
+            "package_quantity": 64.0,
+            "package_unit": "g",
+            "price_per_100g": 1562.5,
+            "promo_label": "10+1",
+            "promo_type": null,
+            "sale_price": 1000,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "64g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "423c2c6f9a91888c9137eea05e0a212ecdb196100f408dadf8cc07c911c17ba6",
+          "raw_record_id": "ingestion:17:87",
+          "source_category_path": [
+            "과자/시리얼",
+            "과자/쿠키/파이",
+            "나쵸/팝콘/옥수수과자",
+            "옥수수스낵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 10,
+        "condition_text": "10+1",
+        "free_quantity": 1,
+        "minimum_quantity": 10
+      }
+    },
+    "raw_record_id": "ingestion:17:87",
+    "standard_unit_price": 1420.4545,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:67:25"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        67
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:13.829322Z",
+    "discount_rate": null,
+    "event_name": "10+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1000,
+    "price_per_100g": 1420.4545,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 10,
+      "condition_text": "10+1",
+      "free_quantity": 1,
+      "minimum_quantity": 10
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-8981f336ab572b2db0ec9ea77c0e9a4a",
+    "public_source_listing_id": "listing-5d260980c81ca7b360b15069061714ec",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:13.829322Z",
+          "ingestion_id": 67,
+          "ingestion_received_at": "2026-09-02T13:40:44.236458Z",
+          "mart_native_category_id": "14",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오리온",
+              "canon_hash": "88fe5c12cbb9e968be2ea29382dae0ffac93e9de",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069684226&storeType=HYPER",
+              "category_hint": "옥수수스낵",
+              "docId": "H069684226N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%98%A4%EB%A6%AC%EC%98%A8-%EA%BC%AC%EB%B6%81%EC%B9%A9-%EC%B4%88%EC%BD%94%EC%B8%84%EB%9F%AC%EC%8A%A4%EB%A7%9B-64G/069684226",
+              "mart_native_category_id": "14",
+              "mart_native_category_path": "과자/시리얼 > 과자/쿠키/파이 > 나쵸/팝콘/옥수수과자 > 옥수수스낵",
+              "mart_native_code": "069684226",
+              "normalized_name": "오리온 꼬북칩 초코츄러스맛 64G",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069684226&storeType=HYPER",
+              "promo_label": "10+1",
+              "raw_name": "오리온 꼬북칩 초코츄러스맛 64G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069684226",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069684226&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "10G",
+              "unit_price_displayed": 156.0
+            },
+            "brand": "__no_brand__",
+            "category": "옥수수스낵",
+            "crawled_at": "2026-09-02T22:39:13.829322",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069684226&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "64g",
+            "event_name": "10+1",
+            "image_url": "",
+            "match_key": "__no_brand__|오리온 꼬북칩 초코츄러스맛 64g||64g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오리온 꼬북칩 초코츄러스맛 64G",
+            "normalized_name": "오리온 꼬북칩 초코츄러스맛 64G",
+            "original_price": null,
+            "package_quantity": 64.0,
+            "package_unit": "g",
+            "price_per_100g": 1562.5,
+            "promo_label": "10+1",
+            "promo_type": null,
+            "sale_price": 1000,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "64g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "6c655ba74990743f1c42c1afe04a7c877ab7d9251afbef931491059bced9ecd9",
+          "raw_record_id": "ingestion:67:25",
+          "source_category_path": [
+            "과자/시리얼",
+            "과자/쿠키/파이",
+            "나쵸/팝콘/옥수수과자",
+            "옥수수스낵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 10,
+        "condition_text": "10+1",
+        "free_quantity": 1,
+        "minimum_quantity": 10
+      }
+    },
+    "raw_record_id": "ingestion:67:25",
+    "standard_unit_price": 1420.4545,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:17:56"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        17
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:18.267820Z",
+    "discount_rate": null,
+    "event_name": "10+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1000,
+    "price_per_100g": 1377.4105,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 10,
+      "condition_text": "10+1",
+      "free_quantity": 1,
+      "minimum_quantity": 10
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-0dcdb9c37be07bdc5aca826bf8a4259f",
+    "public_source_listing_id": "listing-d22316f96d60987c32b186e5ec651697",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:18.267820Z",
+          "ingestion_id": 17,
+          "ingestion_received_at": "2026-08-31T01:47:42.855607Z",
+          "mart_native_category_id": "14",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오리온",
+              "canon_hash": "d6d06cef32c63322c3093ae4635a058bc2fc2614",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069684242&storeType=HYPER",
+              "category_hint": "옥수수스낵",
+              "docId": "H069684242N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%98%A4%EB%A6%AC%EC%98%A8-%EC%8D%AC-%ED%95%AB%EC%8A%A4%ED%8C%8C%EC%9D%B4%EC%8B%9C%EB%A7%9B-66G/069684242",
+              "mart_native_category_id": "14",
+              "mart_native_category_path": "과자/시리얼 > 과자/쿠키/파이 > 나쵸/팝콘/옥수수과자 > 옥수수스낵",
+              "mart_native_code": "069684242",
+              "normalized_name": "오리온 썬 핫스파이시맛 66G",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069684242&storeType=HYPER",
+              "promo_label": "10+1",
+              "raw_name": "오리온 썬 핫스파이시맛 66G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069684242",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069684242&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "10G",
+              "unit_price_displayed": 152.0
+            },
+            "brand": "__no_brand__",
+            "category": "옥수수스낵",
+            "crawled_at": "2026-08-31T10:46:18.267820",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069684242&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "66g",
+            "event_name": "10+1",
+            "image_url": "",
+            "match_key": "__no_brand__|오리온 썬 핫스파이시맛 66g||66g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오리온 썬 핫스파이시맛 66G",
+            "normalized_name": "오리온 썬 핫스파이시맛 66G",
+            "original_price": null,
+            "package_quantity": 66.0,
+            "package_unit": "g",
+            "price_per_100g": 1515.15,
+            "promo_label": "10+1",
+            "promo_type": null,
+            "sale_price": 1000,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "66g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "ac2d8077c64b9ccb4f650f86433ff5561a324ff4c83a96b9b70d22fcddeec540",
+          "raw_record_id": "ingestion:17:56",
+          "source_category_path": [
+            "과자/시리얼",
+            "과자/쿠키/파이",
+            "나쵸/팝콘/옥수수과자",
+            "옥수수스낵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 10,
+        "condition_text": "10+1",
+        "free_quantity": 1,
+        "minimum_quantity": 10
+      }
+    },
+    "raw_record_id": "ingestion:17:56",
+    "standard_unit_price": 1377.4105,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:66:73"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        66
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:13.822813Z",
+    "discount_rate": null,
+    "event_name": "10+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1000,
+    "price_per_100g": 1377.4105,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 10,
+      "condition_text": "10+1",
+      "free_quantity": 1,
+      "minimum_quantity": 10
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-4e19e1d0c05c72b0622ef6437b4334a0",
+    "public_source_listing_id": "listing-d22316f96d60987c32b186e5ec651697",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:13.822813Z",
+          "ingestion_id": 66,
+          "ingestion_received_at": "2026-09-02T13:40:40.714118Z",
+          "mart_native_category_id": "14",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오리온",
+              "canon_hash": "d6d06cef32c63322c3093ae4635a058bc2fc2614",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069684242&storeType=HYPER",
+              "category_hint": "옥수수스낵",
+              "docId": "H069684242N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%98%A4%EB%A6%AC%EC%98%A8-%EC%8D%AC-%ED%95%AB%EC%8A%A4%ED%8C%8C%EC%9D%B4%EC%8B%9C%EB%A7%9B-66G/069684242",
+              "mart_native_category_id": "14",
+              "mart_native_category_path": "과자/시리얼 > 과자/쿠키/파이 > 나쵸/팝콘/옥수수과자 > 옥수수스낵",
+              "mart_native_code": "069684242",
+              "normalized_name": "오리온 썬 핫스파이시맛 66G",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069684242&storeType=HYPER",
+              "promo_label": "10+1",
+              "raw_name": "오리온 썬 핫스파이시맛 66G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069684242",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069684242&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "10G",
+              "unit_price_displayed": 152.0
+            },
+            "brand": "__no_brand__",
+            "category": "옥수수스낵",
+            "crawled_at": "2026-09-02T22:39:13.822813",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069684242&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "66g",
+            "event_name": "10+1",
+            "image_url": "",
+            "match_key": "__no_brand__|오리온 썬 핫스파이시맛 66g||66g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오리온 썬 핫스파이시맛 66G",
+            "normalized_name": "오리온 썬 핫스파이시맛 66G",
+            "original_price": null,
+            "package_quantity": 66.0,
+            "package_unit": "g",
+            "price_per_100g": 1515.15,
+            "promo_label": "10+1",
+            "promo_type": null,
+            "sale_price": 1000,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "66g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "c4a9715e677956beb07cd074b2fbd5189edd29fe3b475a085b3068bfae9e08be",
+          "raw_record_id": "ingestion:66:73",
+          "source_category_path": [
+            "과자/시리얼",
+            "과자/쿠키/파이",
+            "나쵸/팝콘/옥수수과자",
+            "옥수수스낵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 10,
+        "condition_text": "10+1",
+        "free_quantity": 1,
+        "minimum_quantity": 10
+      }
+    },
+    "raw_record_id": "ingestion:66:73",
+    "standard_unit_price": 1377.4105,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:10:99"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        10
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:45:59.134710Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 13900,
+    "price_per_100g": 1356.0976,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-74a690eba762dbbfb6073698081ab3e6",
+    "public_source_listing_id": "listing-bc76839419ba863dd1b89305f481e3ac",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:45:59.134710Z",
+          "ingestion_id": 10,
+          "ingestion_received_at": "2026-08-31T01:47:17.915249Z",
+          "mart_native_category_id": "10",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "밀키트",
+              "canon_hash": "592c9a97a93c6f1e16b81fe12767b5263b5c0c81",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069692140&storeType=HYPER",
+              "category_hint": "한식밀키트",
+              "docId": "H069692140N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%B0%80%ED%82%A4%ED%8A%B8-%ED%99%88%EB%B0%80-%EC%9D%B4%EB%B9%84%EA%B0%80-%EC%A7%AC%EB%BD%95%EC%88%9C%EB%91%90%EB%B6%80-1025G/069692140",
+              "mart_native_category_id": "10",
+              "mart_native_category_path": "냉장/냉동/밀키트 > 밀키트 > 한식밀키트 > 한식밀키트",
+              "mart_native_code": "069692140",
+              "normalized_name": "홈밀 이비가 짬뽕순두부 1025G",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069692140&storeType=HYPER",
+              "raw_name": "[밀키트] 홈밀 이비가 짬뽕순두부 1025G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069692140",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069692140&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 1356.0
+            },
+            "brand": "__no_brand__",
+            "category": "한식밀키트",
+            "crawled_at": "2026-08-31T10:45:59.134710",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069692140&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "1025g",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|홈밀 이비가 짬뽕순두부 1025g||1025g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "[밀키트] 홈밀 이비가 짬뽕순두부 1025G",
+            "normalized_name": "홈밀 이비가 짬뽕순두부 1025G",
+            "original_price": null,
+            "package_quantity": 1025.0,
+            "package_unit": "g",
+            "price_per_100g": 1356.1,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 13900,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "1025g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "9840b2e95fdb8549901decedda5bbef66d33e817f6bc2cd55eb97b48484ac033",
+          "raw_record_id": "ingestion:10:99",
+          "source_category_path": [
+            "냉장/냉동/밀키트",
+            "밀키트",
+            "한식밀키트",
+            "한식밀키트"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:10:99",
+    "standard_unit_price": 1356.0976,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:12:70"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        12
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:07.168182Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 5290,
+    "price_per_100g": 1603.0303,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-2147243d5a261769b4227b37ccc4745c",
+    "public_source_listing_id": "listing-d5ac012cd69e8605da011c14f6452d7e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:07.168182Z",
+          "ingestion_id": 12,
+          "ingestion_received_at": "2026-08-31T01:47:25.074093Z",
+          "mart_native_category_id": "11",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "풀무원",
+              "canon_hash": "8e044dca0e4441409e92c8af2094ed11131570f6",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069692261&storeType=HYPER",
+              "category_hint": "유부초밥재료",
+              "docId": "H069692261N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%92%80%EB%AC%B4%EC%9B%90-%EC%83%88%EC%BD%A4%EB%8B%AC%EC%BD%A4-%EC%9C%A0%EB%B6%80%EC%B4%88%EB%B0%A5-165G/069692261",
+              "mart_native_category_id": "11",
+              "mart_native_category_path": "두부/김치/반찬 > 유부초밥/김밥재료 > 유부초밥/김밥재료 > 유부초밥재료",
+              "mart_native_code": "069692261",
+              "normalized_name": "풀무원 새콤달콤 유부초밥 165G",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069692261&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "풀무원 새콤달콤 유부초밥 165G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069692261",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069692261&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 3206.0
+            },
+            "brand": "__no_brand__",
+            "category": "유부초밥재료",
+            "crawled_at": "2026-08-31T10:46:07.168182",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069692261&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "165g",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|풀무원 새콤달콤 유부초밥 165g||165g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 새콤달콤 유부초밥 165G",
+            "normalized_name": "풀무원 새콤달콤 유부초밥 165G",
+            "original_price": null,
+            "package_quantity": 165.0,
+            "package_unit": "g",
+            "price_per_100g": 3206.06,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 5290,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "165g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "7977df614c2c77a6c1c30cee3a87f090427a1f196b9a0a16266650e9ad66790c",
+          "raw_record_id": "ingestion:12:70",
+          "source_category_path": [
+            "두부/김치/반찬",
+            "유부초밥/김밥재료",
+            "유부초밥/김밥재료",
+            "유부초밥재료"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:12:70",
+    "standard_unit_price": 1603.0303,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:62:10"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        62
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:01.710293Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 5290,
+    "price_per_100g": 1603.0303,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-96f10a8eb8ee77c99f2b0ba0cef9c29f",
+    "public_source_listing_id": "listing-d5ac012cd69e8605da011c14f6452d7e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:01.710293Z",
+          "ingestion_id": 62,
+          "ingestion_received_at": "2026-09-02T13:40:26.661646Z",
+          "mart_native_category_id": "11",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "풀무원",
+              "canon_hash": "8e044dca0e4441409e92c8af2094ed11131570f6",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069692261&storeType=HYPER",
+              "category_hint": "유부초밥재료",
+              "docId": "H069692261N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%92%80%EB%AC%B4%EC%9B%90-%EC%83%88%EC%BD%A4%EB%8B%AC%EC%BD%A4-%EC%9C%A0%EB%B6%80%EC%B4%88%EB%B0%A5-165G/069692261",
+              "mart_native_category_id": "11",
+              "mart_native_category_path": "두부/김치/반찬 > 유부초밥/김밥재료 > 유부초밥/김밥재료 > 유부초밥재료",
+              "mart_native_code": "069692261",
+              "normalized_name": "풀무원 새콤달콤 유부초밥 165G",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069692261&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "풀무원 새콤달콤 유부초밥 165G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069692261",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069692261&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 3206.0
+            },
+            "brand": "__no_brand__",
+            "category": "유부초밥재료",
+            "crawled_at": "2026-09-02T22:39:01.710293",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069692261&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "165g",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|풀무원 새콤달콤 유부초밥 165g||165g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 새콤달콤 유부초밥 165G",
+            "normalized_name": "풀무원 새콤달콤 유부초밥 165G",
+            "original_price": null,
+            "package_quantity": 165.0,
+            "package_unit": "g",
+            "price_per_100g": 3206.06,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 5290,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "165g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "9aa1f2b1e2145667330de91205bff7d13bdfb9555697738e64c79f437666cf8f",
+          "raw_record_id": "ingestion:62:10",
+          "source_category_path": [
+            "두부/김치/반찬",
+            "유부초밥/김밥재료",
+            "유부초밥/김밥재료",
+            "유부초밥재료"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:62:10",
+    "standard_unit_price": 1603.0303,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:60:63"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        60
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:38:54.405591Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 3490,
+    "price_per_100g": 1938.8889,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-86c5df1920e4221bfea69d4b2fc0d553",
+    "public_source_listing_id": "listing-9cc9d591f9a78cf8e88cf1edfee0f0e9",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:38:54.405591Z",
+          "ingestion_id": 60,
+          "ingestion_received_at": "2026-09-02T13:40:19.631018Z",
+          "mart_native_category_id": "10",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "풀무원",
+              "canon_hash": "4400882631fe0de789ce99ab19e01648c674b0cf",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069695350&storeType=HYPER",
+              "category_hint": "스프",
+              "docId": "H069695350N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%92%80%EB%AC%B4%EC%9B%90-%EB%B8%8C%EB%9F%B0%EC%B9%98%EC%88%98%ED%94%84-%ED%8A%B8%EB%9F%AC%ED%94%8C-%EC%96%91%EC%86%A1%EC%9D%B4%ED%81%AC%EB%A6%BC%EC%88%98%ED%94%84-180G/069695350",
+              "mart_native_category_id": "10",
+              "mart_native_category_path": "냉장/냉동/밀키트 > 냉동밥/죽/스프 > 죽/스프 > 스프",
+              "mart_native_code": "069695350",
+              "normalized_name": "풀무원 브런치수프 트러플 양송이크림수프 180G",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069695350&storeType=HYPER",
+              "raw_name": "풀무원 브런치수프 트러플 양송이크림수프 180G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069695350",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069695350&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 1939.0
+            },
+            "brand": "__no_brand__",
+            "category": "스프",
+            "crawled_at": "2026-09-02T22:38:54.405591",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069695350&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "180g",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|풀무원 브런치수프 트러플 양송이크림수프 180g||180g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 브런치수프 트러플 양송이크림수프 180G",
+            "normalized_name": "풀무원 브런치수프 트러플 양송이크림수프 180G",
+            "original_price": null,
+            "package_quantity": 180.0,
+            "package_unit": "g",
+            "price_per_100g": 1938.89,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3490,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "180g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "d457021c195c652d90c9302069315f1b7bba8338a498f5d1a6505fda45f76634",
+          "raw_record_id": "ingestion:60:63",
+          "source_category_path": [
+            "냉장/냉동/밀키트",
+            "냉동밥/죽/스프",
+            "죽/스프",
+            "스프"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:60:63",
+    "standard_unit_price": 1938.8889,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:60:62"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        60
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:38:54.405507Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 3490,
+    "price_per_100g": 1938.8889,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-ce9b860982c2495f7851ccc334b02374",
+    "public_source_listing_id": "listing-745c8cc266a1390af39a6c6b7764fa94",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:38:54.405507Z",
+          "ingestion_id": 60,
+          "ingestion_received_at": "2026-09-02T13:40:19.631018Z",
+          "mart_native_category_id": "10",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "풀무원",
+              "canon_hash": "f5b28b5ae26b34074d43647944a0f32f10888b51",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069695407&storeType=HYPER",
+              "category_hint": "스프",
+              "docId": "H069695407N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%92%80%EB%AC%B4%EC%9B%90-%EB%B8%8C%EB%9F%B0%EC%B9%98%EC%88%98%ED%94%84-%EB%8D%94%EB%B8%94%EC%B9%98%EC%A6%88-%EB%8B%A8%ED%98%B8%EB%B0%95%ED%81%AC%EB%A6%BC%EC%88%98%ED%94%84-180G/069695407",
+              "mart_native_category_id": "10",
+              "mart_native_category_path": "냉장/냉동/밀키트 > 냉동밥/죽/스프 > 죽/스프 > 스프",
+              "mart_native_code": "069695407",
+              "normalized_name": "풀무원 브런치수프 더블치즈 단호박크림수프 180G",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069695407&storeType=HYPER",
+              "raw_name": "풀무원 브런치수프 더블치즈 단호박크림수프 180G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069695407",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069695407&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 1939.0
+            },
+            "brand": "__no_brand__",
+            "category": "스프",
+            "crawled_at": "2026-09-02T22:38:54.405507",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069695407&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "180g",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|풀무원 브런치수프 더블치즈 단호박크림수프 180g||180g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 브런치수프 더블치즈 단호박크림수프 180G",
+            "normalized_name": "풀무원 브런치수프 더블치즈 단호박크림수프 180G",
+            "original_price": null,
+            "package_quantity": 180.0,
+            "package_unit": "g",
+            "price_per_100g": 1938.89,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3490,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "180g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "8e70417b03241871aa32e024ebc3309ebdab7b6a474756a0df496e535c7603af",
+          "raw_record_id": "ingestion:60:62",
+          "source_category_path": [
+            "냉장/냉동/밀키트",
+            "냉동밥/죽/스프",
+            "죽/스프",
+            "스프"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:60:62",
+    "standard_unit_price": 1938.8889,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:22:20"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        22
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:33.118719Z",
+    "discount_rate": null,
+    "event_name": "행사상품",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 3980,
+    "price_per_100g": 721.0145,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-07798bd90fc0e8f00163e2322ec0901b",
+    "public_source_listing_id": "listing-e65b9e12182fa65d135eb869fb3cc344",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:33.118719Z",
+          "ingestion_id": 22,
+          "ingestion_received_at": "2026-08-31T01:48:00.777171Z",
+          "mart_native_category_id": "16",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하림",
+              "canon_hash": "81a097bef607db4b39036669a3433d1305dc44a9",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069700558&storeType=HYPER",
+              "category_hint": "일반라면/비빔라면",
+              "docId": "H069700558N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EB%A6%BC-%EB%8D%94%EB%AF%B8%EC%8B%9D-%EB%B9%84%EB%B9%94%EB%A9%B4-138G-4/069700558",
+              "mart_native_category_id": "16",
+              "mart_native_category_path": "라면/즉석식품/통조림 > 라면/수입면류 > 일반라면/비빔라면 > 일반라면/비빔라면",
+              "mart_native_code": "069700558",
+              "normalized_name": "하림 더미식 비빔면 138G*4",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069700558&storeType=HYPER",
+              "raw_name": "하림 더미식 비빔면 138G*4",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069700558",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069700558&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 721.0
+            },
+            "brand": "__no_brand__",
+            "category": "일반라면/비빔라면",
+            "crawled_at": "2026-08-31T10:46:33.118719",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069700558&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "138g×4",
+            "event_name": "행사상품",
+            "image_url": "",
+            "match_key": "__no_brand__|하림 더미식 비빔면 138g 4||138g×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하림 더미식 비빔면 138G*4",
+            "normalized_name": "하림 더미식 비빔면 138G*4",
+            "original_price": null,
+            "package_quantity": 138.0,
+            "package_unit": "g",
+            "price_per_100g": 721.01,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3980,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "138g×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "fb707f275bcacf4d80a119f7cb48f0f5986f22b516b3cb24b562713f613d8ff9",
+          "raw_record_id": "ingestion:22:20",
+          "source_category_path": [
+            "라면/즉석식품/통조림",
+            "라면/수입면류",
+            "일반라면/비빔라면",
+            "일반라면/비빔라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:22:20",
+    "standard_unit_price": 721.0145,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:71:2"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        71
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:30.948945Z",
+    "discount_rate": null,
+    "event_name": "행사상품",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 3980,
+    "price_per_100g": 721.0145,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-a11ce5975e0975de70ccb14327d52f8b",
+    "public_source_listing_id": "listing-e65b9e12182fa65d135eb869fb3cc344",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:30.948945Z",
+          "ingestion_id": 71,
+          "ingestion_received_at": "2026-09-02T13:40:59.106972Z",
+          "mart_native_category_id": "16",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "하림",
+              "canon_hash": "81a097bef607db4b39036669a3433d1305dc44a9",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069700558&storeType=HYPER",
+              "category_hint": "일반라면/비빔라면",
+              "docId": "H069700558N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%95%98%EB%A6%BC-%EB%8D%94%EB%AF%B8%EC%8B%9D-%EB%B9%84%EB%B9%94%EB%A9%B4-138G-4/069700558",
+              "mart_native_category_id": "16",
+              "mart_native_category_path": "라면/즉석식품/통조림 > 라면/수입면류 > 일반라면/비빔라면 > 일반라면/비빔라면",
+              "mart_native_code": "069700558",
+              "normalized_name": "하림 더미식 비빔면 138G*4",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069700558&storeType=HYPER",
+              "raw_name": "하림 더미식 비빔면 138G*4",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069700558",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069700558&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 721.0
+            },
+            "brand": "__no_brand__",
+            "category": "일반라면/비빔라면",
+            "crawled_at": "2026-09-02T22:39:30.948945",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069700558&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "138g×4",
+            "event_name": "행사상품",
+            "image_url": "",
+            "match_key": "__no_brand__|하림 더미식 비빔면 138g 4||138g×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "하림 더미식 비빔면 138G*4",
+            "normalized_name": "하림 더미식 비빔면 138G*4",
+            "original_price": null,
+            "package_quantity": 138.0,
+            "package_unit": "g",
+            "price_per_100g": 721.01,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3980,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "138g×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "7faba3a39d780e68373d1046186d052572d94c382d797b45106c70eef642b950",
+          "raw_record_id": "ingestion:71:2",
+          "source_category_path": [
+            "라면/즉석식품/통조림",
+            "라면/수입면류",
+            "일반라면/비빔라면",
+            "일반라면/비빔라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:71:2",
+    "standard_unit_price": 721.0145,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:20:39"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        20
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:29.061282Z",
+    "discount_rate": null,
+    "event_name": "함께할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3950,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-11727e5a146771a7052c75e397bfb5b6",
+    "public_source_listing_id": "listing-52c54fc0dac8ba2330fd9b174b10d1d5",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:29.061282Z",
+          "ingestion_id": 20,
+          "ingestion_received_at": "2026-08-31T01:47:53.654857Z",
+          "mart_native_category_id": "16",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "6a124d4f203b93592fb18d8c797389d4ab2a0151",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069702683&storeType=HYPER",
+              "category_hint": "일반라면/비빔라면",
+              "docId": "H069702683N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%98%A4%EB%9A%9C%EA%B8%B0-%EC%98%A4%EB%8F%99%ED%86%B5%EB%A9%B4-120G-5/069702683",
+              "mart_native_category_id": "16",
+              "mart_native_category_path": "라면/즉석식품/통조림 > 라면/수입면류 > 일반라면/비빔라면 > 일반라면/비빔라면",
+              "mart_native_code": "069702683",
+              "normalized_name": "오뚜기 오동통면 120G*5",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069702683&storeType=HYPER",
+              "raw_name": "오뚜기 오동통면 120G*5",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069702683",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069702683&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 658.0
+            },
+            "brand": "__no_brand__",
+            "category": "일반라면/비빔라면",
+            "crawled_at": "2026-08-31T10:46:29.061282",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069702683&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "120g×5",
+            "event_name": "함께할인",
+            "image_url": "",
+            "match_key": "__no_brand__|오뚜기 오동통면 120g 5||120g×5",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 오동통면 120G*5",
+            "normalized_name": "오뚜기 오동통면 120G*5",
+            "original_price": null,
+            "package_quantity": 120.0,
+            "package_unit": "g",
+            "price_per_100g": 658.33,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3950,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "120g×5",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "84475958e6838ca3d21a44620110f7072eaa73fb79789039b3ef3ebfc8365fea",
+          "raw_record_id": "ingestion:20:39",
+          "source_category_path": [
+            "라면/즉석식품/통조림",
+            "라면/수입면류",
+            "일반라면/비빔라면",
+            "일반라면/비빔라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:20:39",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:69:66"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        69
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:26.230950Z",
+    "discount_rate": null,
+    "event_name": "함께할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3950,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-6e2f2a051215c5e79f3dff126b93bb51",
+    "public_source_listing_id": "listing-52c54fc0dac8ba2330fd9b174b10d1d5",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:26.230950Z",
+          "ingestion_id": 69,
+          "ingestion_received_at": "2026-09-02T13:40:51.338711Z",
+          "mart_native_category_id": "16",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오뚜기",
+              "canon_hash": "6a124d4f203b93592fb18d8c797389d4ab2a0151",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069702683&storeType=HYPER",
+              "category_hint": "일반라면/비빔라면",
+              "docId": "H069702683N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%98%A4%EB%9A%9C%EA%B8%B0-%EC%98%A4%EB%8F%99%ED%86%B5%EB%A9%B4-120G-5/069702683",
+              "mart_native_category_id": "16",
+              "mart_native_category_path": "라면/즉석식품/통조림 > 라면/수입면류 > 일반라면/비빔라면 > 일반라면/비빔라면",
+              "mart_native_code": "069702683",
+              "normalized_name": "오뚜기 오동통면 120G*5",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069702683&storeType=HYPER",
+              "raw_name": "오뚜기 오동통면 120G*5",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069702683",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069702683&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100G",
+              "unit_price_displayed": 658.0
+            },
+            "brand": "__no_brand__",
+            "category": "일반라면/비빔라면",
+            "crawled_at": "2026-09-02T22:39:26.230950",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069702683&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "120g×5",
+            "event_name": "함께할인",
+            "image_url": "",
+            "match_key": "__no_brand__|오뚜기 오동통면 120g 5||120g×5",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오뚜기 오동통면 120G*5",
+            "normalized_name": "오뚜기 오동통면 120G*5",
+            "original_price": null,
+            "package_quantity": 120.0,
+            "package_unit": "g",
+            "price_per_100g": 658.33,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3950,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "120g×5",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "74260257983166c0e13413db040165ed8bb67b1e4563c51026b1e7e870b42479",
+          "raw_record_id": "ingestion:69:66",
+          "source_category_path": [
+            "라면/즉석식품/통조림",
+            "라면/수입면류",
+            "일반라면/비빔라면",
+            "일반라면/비빔라면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:69:66",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:75:1"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        75
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:42.297955Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 5300,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-179fa10d27c17e2f4646e6f275f442e2",
+    "public_source_listing_id": "listing-544cc43b3bc3ccbd5640b649392fafe4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:42.297955Z",
+          "ingestion_id": 75,
+          "ingestion_received_at": "2026-09-02T13:41:13.126380Z",
+          "mart_native_category_id": "18",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "LG",
+              "canon_hash": "529ed59d0c549ab7eb04018e2fb3c54f30122b31",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069702723&storeType=HYPER",
+              "category_hint": "일반 주방세제/퐁퐁",
+              "docId": "H069702723N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/LG-%ED%90%81%ED%90%81-%EC%A3%BC%EB%B0%A9%EC%84%B8%EC%A0%9C-%EC%98%A4%EB%A0%8C%EC%A7%80-%EB%A6%AC%ED%95%84-1-2L/069702723",
+              "mart_native_category_id": "18",
+              "mart_native_category_path": "세탁/청소 > 주방/청소용 세제 > 주방용 > 일반 주방세제/퐁퐁",
+              "mart_native_code": "069702723",
+              "normalized_name": "LG 퐁퐁 주방세제 오렌지 리필 1.2L",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069702723&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "LG 퐁퐁 주방세제 오렌지 리필 1.2L",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069702723",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069702723&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100ML",
+              "unit_price_displayed": 442.0
+            },
+            "brand": "__no_brand__",
+            "category": "일반 주방세제/퐁퐁",
+            "crawled_at": "2026-09-02T22:39:42.297955",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069702723&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "1.2L",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|lg 퐁퐁 주방세제 오렌지 리필 1 2l||1.2l",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "LG 퐁퐁 주방세제 오렌지 리필 1.2L",
+            "normalized_name": "LG 퐁퐁 주방세제 오렌지 리필 1.2L",
+            "original_price": null,
+            "package_quantity": 1.2,
+            "package_unit": "L",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 5300,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "1.2L",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "8928cbc2757de6e92abd0b10cfb33c175cb2534f851ce3e0cc2d2262f2eff47b",
+          "raw_record_id": "ingestion:75:1",
+          "source_category_path": [
+            "세탁/청소",
+            "주방/청소용 세제",
+            "주방용",
+            "일반 주방세제/퐁퐁"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:75:1",
+    "standard_unit_price": 220.8333,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:25:66"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        25
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:44.629438Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 5300,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-2c7c7ac3017f0ecaf74cc3eaf9e0e939",
+    "public_source_listing_id": "listing-544cc43b3bc3ccbd5640b649392fafe4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:44.629438Z",
+          "ingestion_id": 25,
+          "ingestion_received_at": "2026-08-31T01:48:11.420387Z",
+          "mart_native_category_id": "18",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "LG",
+              "canon_hash": "529ed59d0c549ab7eb04018e2fb3c54f30122b31",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069702723&storeType=HYPER",
+              "category_hint": "일반 주방세제/퐁퐁",
+              "docId": "H069702723N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/LG-%ED%90%81%ED%90%81-%EC%A3%BC%EB%B0%A9%EC%84%B8%EC%A0%9C-%EC%98%A4%EB%A0%8C%EC%A7%80-%EB%A6%AC%ED%95%84-1-2L/069702723",
+              "mart_native_category_id": "18",
+              "mart_native_category_path": "세탁/청소 > 주방/청소용 세제 > 주방용 > 일반 주방세제/퐁퐁",
+              "mart_native_code": "069702723",
+              "normalized_name": "LG 퐁퐁 주방세제 오렌지 리필 1.2L",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069702723&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "LG 퐁퐁 주방세제 오렌지 리필 1.2L",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069702723",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069702723&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100ML",
+              "unit_price_displayed": 442.0
+            },
+            "brand": "__no_brand__",
+            "category": "일반 주방세제/퐁퐁",
+            "crawled_at": "2026-08-31T10:46:44.629438",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069702723&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "1.2L",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|lg 퐁퐁 주방세제 오렌지 리필 1 2l||1.2l",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "LG 퐁퐁 주방세제 오렌지 리필 1.2L",
+            "normalized_name": "LG 퐁퐁 주방세제 오렌지 리필 1.2L",
+            "original_price": null,
+            "package_quantity": 1.2,
+            "package_unit": "L",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 5300,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "1.2L",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "b97c24bf37021382e40b7569daf6fe4fa388b7a14afa947de71eb0064c5245ce",
+          "raw_record_id": "ingestion:25:66",
+          "source_category_path": [
+            "세탁/청소",
+            "주방/청소용 세제",
+            "주방용",
+            "일반 주방세제/퐁퐁"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:25:66",
+    "standard_unit_price": 220.8333,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:25:68"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        25
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:44.629804Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 5300,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-4ca9d08f9d483064660f334379b4c51e",
+    "public_source_listing_id": "listing-b29ca198fd1a885df6f9f3b073b5f23c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:44.629804Z",
+          "ingestion_id": 25,
+          "ingestion_received_at": "2026-08-31T01:48:11.420387Z",
+          "mart_native_category_id": "18",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "LG",
+              "canon_hash": "f737c485ff368a3e42762b4ce7afed2616e3245a",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069702736&storeType=HYPER",
+              "category_hint": "일반 주방세제/퐁퐁",
+              "docId": "H069702736N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/LG-%ED%90%81%ED%90%81-%EC%A3%BC%EB%B0%A9%EC%84%B8%EC%A0%9C-%EC%BD%94%EC%BD%94%EB%84%9B-%EB%A6%AC%ED%95%84-1-2L/069702736",
+              "mart_native_category_id": "18",
+              "mart_native_category_path": "세탁/청소 > 주방/청소용 세제 > 주방용 > 일반 주방세제/퐁퐁",
+              "mart_native_code": "069702736",
+              "normalized_name": "LG 퐁퐁 주방세제 코코넛 리필 1.2L",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069702736&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "LG 퐁퐁 주방세제 코코넛 리필 1.2L",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069702736",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069702736&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100ML",
+              "unit_price_displayed": 442.0
+            },
+            "brand": "__no_brand__",
+            "category": "일반 주방세제/퐁퐁",
+            "crawled_at": "2026-08-31T10:46:44.629804",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069702736&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "1.2L",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|lg 퐁퐁 주방세제 코코넛 리필 1 2l||1.2l",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "LG 퐁퐁 주방세제 코코넛 리필 1.2L",
+            "normalized_name": "LG 퐁퐁 주방세제 코코넛 리필 1.2L",
+            "original_price": null,
+            "package_quantity": 1.2,
+            "package_unit": "L",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 5300,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "1.2L",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "d9db8590e3f33ae70cc2f079c2331a4559874c2f0e95148516a4ef9a5e798c53",
+          "raw_record_id": "ingestion:25:68",
+          "source_category_path": [
+            "세탁/청소",
+            "주방/청소용 세제",
+            "주방용",
+            "일반 주방세제/퐁퐁"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:25:68",
+    "standard_unit_price": 220.8333,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:74:93"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        74
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:42.296737Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 5300,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-4df552a062c4a79ac3c87fed7d22deaa",
+    "public_source_listing_id": "listing-b29ca198fd1a885df6f9f3b073b5f23c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:42.296737Z",
+          "ingestion_id": 74,
+          "ingestion_received_at": "2026-09-02T13:41:09.626348Z",
+          "mart_native_category_id": "18",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "LG",
+              "canon_hash": "f737c485ff368a3e42762b4ce7afed2616e3245a",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069702736&storeType=HYPER",
+              "category_hint": "일반 주방세제/퐁퐁",
+              "docId": "H069702736N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/LG-%ED%90%81%ED%90%81-%EC%A3%BC%EB%B0%A9%EC%84%B8%EC%A0%9C-%EC%BD%94%EC%BD%94%EB%84%9B-%EB%A6%AC%ED%95%84-1-2L/069702736",
+              "mart_native_category_id": "18",
+              "mart_native_category_path": "세탁/청소 > 주방/청소용 세제 > 주방용 > 일반 주방세제/퐁퐁",
+              "mart_native_code": "069702736",
+              "normalized_name": "LG 퐁퐁 주방세제 코코넛 리필 1.2L",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069702736&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "LG 퐁퐁 주방세제 코코넛 리필 1.2L",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069702736",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069702736&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100ML",
+              "unit_price_displayed": 442.0
+            },
+            "brand": "__no_brand__",
+            "category": "일반 주방세제/퐁퐁",
+            "crawled_at": "2026-09-02T22:39:42.296737",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069702736&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "1.2L",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|lg 퐁퐁 주방세제 코코넛 리필 1 2l||1.2l",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "LG 퐁퐁 주방세제 코코넛 리필 1.2L",
+            "normalized_name": "LG 퐁퐁 주방세제 코코넛 리필 1.2L",
+            "original_price": null,
+            "package_quantity": 1.2,
+            "package_unit": "L",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 5300,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "1.2L",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "9768bfc74258462fd9969378281e479b02986c3094ea3c4c8290286c3b4b7701",
+          "raw_record_id": "ingestion:74:93",
+          "source_category_path": [
+            "세탁/청소",
+            "주방/청소용 세제",
+            "주방용",
+            "일반 주방세제/퐁퐁"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:74:93",
+    "standard_unit_price": 220.8333,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:7:46"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        7
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:45:45.472064Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 4800,
+    "price_per_100g": 2823.5294,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-42972624c93c2d6167592d42ab58e639",
+    "public_source_listing_id": "listing-4cefac9679c35db896aaf46508aaddbd",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:45:45.472064Z",
+          "ingestion_id": 7,
+          "ingestion_received_at": "2026-08-31T01:47:07.120919Z",
+          "mart_native_category_id": "9",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원덴마크",
+              "canon_hash": "3574182ca847007fab8bd17441c1ea3ac15798bc",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069709946&storeType=HYPER",
+              "category_hint": "슬라이스 치즈",
+              "docId": "H069709946N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%8F%99%EC%9B%90%EB%8D%B4%EB%A7%88%ED%81%AC-%EC%9E%90%EC%97%B0%EB%B0%A9%EB%AA%A9-%EC%9C%A0%EA%B8%B0%EB%86%8D-%EC%A7%9C%EC%A7%80%EC%95%8A%EC%9D%80-%EC%95%84%EA%B8%B0%EC%B9%98%EC%A6%881%EB%8B%A8%EA%B3%84-170G/069709946",
+              "mart_native_category_id": "9",
+              "mart_native_category_path": "우유/유제품 > 치즈/버터 > 슬라이스 치즈 > 슬라이스 치즈",
+              "mart_native_code": "069709946",
+              "normalized_name": "동원덴마크 자연방목 유기농 짜지않은 아기치즈1단계 170G",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069709946&storeType=HYPER",
+              "raw_name": "동원덴마크 자연방목 유기농 짜지않은 아기치즈1단계 170G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069709946",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069709946&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "10G",
+              "unit_price_displayed": 282.0
+            },
+            "brand": "__no_brand__",
+            "category": "슬라이스 치즈",
+            "crawled_at": "2026-08-31T10:45:45.472064",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069709946&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "170g",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|동원덴마크 자연방목 유기농 짜지않은 아기치즈1단계 170g||170g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원덴마크 자연방목 유기농 짜지않은 아기치즈1단계 170G",
+            "normalized_name": "동원덴마크 자연방목 유기농 짜지않은 아기치즈1단계 170G",
+            "original_price": null,
+            "package_quantity": 170.0,
+            "package_unit": "g",
+            "price_per_100g": 2823.53,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4800,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "170g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "1614aabd0fb2de930a6c9444570ec22211022dcea44b68363985d08a1ee74fe2",
+          "raw_record_id": "ingestion:7:46",
+          "source_category_path": [
+            "우유/유제품",
+            "치즈/버터",
+            "슬라이스 치즈",
+            "슬라이스 치즈"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:7:46",
+    "standard_unit_price": 2823.5294,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:56:81"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        56
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:38:40.769172Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 6480,
+    "price_per_100g": 3811.7647,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-d9af9e060ec77367de54d725ecd97253",
+    "public_source_listing_id": "listing-4cefac9679c35db896aaf46508aaddbd",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:38:40.769172Z",
+          "ingestion_id": 56,
+          "ingestion_received_at": "2026-09-02T13:40:05.670860Z",
+          "mart_native_category_id": "9",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원덴마크",
+              "canon_hash": "3574182ca847007fab8bd17441c1ea3ac15798bc",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069709946&storeType=HYPER",
+              "category_hint": "슬라이스 치즈",
+              "docId": "H069709946N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%8F%99%EC%9B%90%EB%8D%B4%EB%A7%88%ED%81%AC-%EC%9E%90%EC%97%B0%EB%B0%A9%EB%AA%A9-%EC%9C%A0%EA%B8%B0%EB%86%8D-%EC%A7%9C%EC%A7%80%EC%95%8A%EC%9D%80-%EC%95%84%EA%B8%B0%EC%B9%98%EC%A6%881%EB%8B%A8%EA%B3%84-170G/069709946",
+              "mart_native_category_id": "9",
+              "mart_native_category_path": "우유/유제품 > 치즈/버터 > 슬라이스 치즈 > 슬라이스 치즈",
+              "mart_native_code": "069709946",
+              "normalized_name": "동원덴마크 자연방목 유기농 짜지않은 아기치즈1단계 170G",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069709946&storeType=HYPER",
+              "raw_name": "동원덴마크 자연방목 유기농 짜지않은 아기치즈1단계 170G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069709946",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069709946&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "10G",
+              "unit_price_displayed": 381.0
+            },
+            "brand": "__no_brand__",
+            "category": "슬라이스 치즈",
+            "crawled_at": "2026-09-02T22:38:40.769172",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069709946&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "170g",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|동원덴마크 자연방목 유기농 짜지않은 아기치즈1단계 170g||170g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원덴마크 자연방목 유기농 짜지않은 아기치즈1단계 170G",
+            "normalized_name": "동원덴마크 자연방목 유기농 짜지않은 아기치즈1단계 170G",
+            "original_price": null,
+            "package_quantity": 170.0,
+            "package_unit": "g",
+            "price_per_100g": 3811.76,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6480,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "170g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "78a2bd8ead34e23a5cb7dbc85c4455b27b63a1d90af7e99b8f61d037e2a9afca",
+          "raw_record_id": "ingestion:56:81",
+          "source_category_path": [
+            "우유/유제품",
+            "치즈/버터",
+            "슬라이스 치즈",
+            "슬라이스 치즈"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:56:81",
+    "standard_unit_price": 3811.7647,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:8:17"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        8
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:45:48.775196Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 4800,
+    "price_per_100g": 2823.5294,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-070bdea7dda7631d785ed55856cb6bf2",
+    "public_source_listing_id": "listing-3370b7d2fb63307bd3a3c750f88b2915",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:45:48.775196Z",
+          "ingestion_id": 8,
+          "ingestion_received_at": "2026-08-31T01:47:10.770524Z",
+          "mart_native_category_id": "9",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원덴마크",
+              "canon_hash": "516952ac0c7926d54d521615e52fd2e50fc818d2",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069709952&storeType=HYPER",
+              "category_hint": "슬라이스 치즈",
+              "docId": "H069709952N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%8F%99%EC%9B%90%EB%8D%B4%EB%A7%88%ED%81%AC-%EC%9E%90%EC%97%B0%EB%B0%A9%EB%AA%A9-%EC%9C%A0%EA%B8%B0%EB%86%8D-%EC%A7%9C%EC%A7%80%EC%95%8A%EC%9D%80-%EC%95%84%EA%B8%B0%EC%B9%98%EC%A6%882%EB%8B%A8%EA%B3%84-170G/069709952",
+              "mart_native_category_id": "9",
+              "mart_native_category_path": "우유/유제품 > 치즈/버터 > 슬라이스 치즈 > 슬라이스 치즈",
+              "mart_native_code": "069709952",
+              "normalized_name": "동원덴마크 자연방목 유기농 짜지않은 아기치즈2단계 170G",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069709952&storeType=HYPER",
+              "raw_name": "동원덴마크 자연방목 유기농 짜지않은 아기치즈2단계 170G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069709952",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069709952&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "10G",
+              "unit_price_displayed": 282.0
+            },
+            "brand": "__no_brand__",
+            "category": "슬라이스 치즈",
+            "crawled_at": "2026-08-31T10:45:48.775196",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069709952&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "170g",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|동원덴마크 자연방목 유기농 짜지않은 아기치즈2단계 170g||170g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원덴마크 자연방목 유기농 짜지않은 아기치즈2단계 170G",
+            "normalized_name": "동원덴마크 자연방목 유기농 짜지않은 아기치즈2단계 170G",
+            "original_price": null,
+            "package_quantity": 170.0,
+            "package_unit": "g",
+            "price_per_100g": 2823.53,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4800,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "170g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "22fa9056ae59a30c3d50391c953b6a83c9437a44b96f79cb16aa97ec45274fbb",
+          "raw_record_id": "ingestion:8:17",
+          "source_category_path": [
+            "우유/유제품",
+            "치즈/버터",
+            "슬라이스 치즈",
+            "슬라이스 치즈"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:8:17",
+    "standard_unit_price": 2823.5294,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:8:6"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        8
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:45:48.773363Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 7590,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-1cce20d491a7a10e475b2caf6006a87b",
+    "public_source_listing_id": "listing-984250f55ce7601c5a44b07d8a750d33",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:45:48.773363Z",
+          "ingestion_id": 8,
+          "ingestion_received_at": "2026-08-31T01:47:10.770524Z",
+          "mart_native_category_id": "9",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비락",
+              "canon_hash": "95a727af8fc82e67e90b44b4e91aa5ffbac8cecc",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069727095&storeType=HYPER",
+              "category_hint": "신선음료",
+              "docId": "H069727095N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%B9%84%EB%9D%BD-%EC%9C%A0%EA%B8%B0%EB%86%8D-%EC%95%BC%EC%B1%84%EC%82%AC%EB%9E%91365-190ML-4/069727095",
+              "mart_native_category_id": "9",
+              "mart_native_category_path": "우유/유제품 > 냉장디저트/음료 > 신선음료 > 신선음료",
+              "mart_native_code": "069727095",
+              "normalized_name": "비락 유기농 야채사랑365 190ML*4",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069727095&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "비락 유기농 야채사랑365 190ML*4",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069727095",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069727095&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100ML",
+              "unit_price_displayed": 999.0
+            },
+            "brand": "__no_brand__",
+            "category": "신선음료",
+            "crawled_at": "2026-08-31T10:45:48.773363",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069727095&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "190ml×4",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|비락 유기농 야채사랑365 190ml 4||190ml×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "비락 유기농 야채사랑365 190ML*4",
+            "normalized_name": "비락 유기농 야채사랑365 190ML*4",
+            "original_price": null,
+            "package_quantity": 190.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 7590,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "190ml×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "8d41f9184c25c056468f381d38ca303ed718e1b31914db20f8d1905086761949",
+          "raw_record_id": "ingestion:8:6",
+          "source_category_path": [
+            "우유/유제품",
+            "냉장디저트/음료",
+            "신선음료",
+            "신선음료"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:8:6",
+    "standard_unit_price": 499.3421,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:56:53"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        56
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:38:40.765203Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 7590,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-9003fadab33a68c19fafe897cdb9b7dc",
+    "public_source_listing_id": "listing-984250f55ce7601c5a44b07d8a750d33",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:38:40.765203Z",
+          "ingestion_id": 56,
+          "ingestion_received_at": "2026-09-02T13:40:05.670860Z",
+          "mart_native_category_id": "9",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비락",
+              "canon_hash": "95a727af8fc82e67e90b44b4e91aa5ffbac8cecc",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069727095&storeType=HYPER",
+              "category_hint": "신선음료",
+              "docId": "H069727095N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%B9%84%EB%9D%BD-%EC%9C%A0%EA%B8%B0%EB%86%8D-%EC%95%BC%EC%B1%84%EC%82%AC%EB%9E%91365-190ML-4/069727095",
+              "mart_native_category_id": "9",
+              "mart_native_category_path": "우유/유제품 > 냉장디저트/음료 > 신선음료 > 신선음료",
+              "mart_native_code": "069727095",
+              "normalized_name": "비락 유기농 야채사랑365 190ML*4",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069727095&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "비락 유기농 야채사랑365 190ML*4",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069727095",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069727095&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100ML",
+              "unit_price_displayed": 999.0
+            },
+            "brand": "__no_brand__",
+            "category": "신선음료",
+            "crawled_at": "2026-09-02T22:38:40.765203",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069727095&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "190ml×4",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|비락 유기농 야채사랑365 190ml 4||190ml×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "비락 유기농 야채사랑365 190ML*4",
+            "normalized_name": "비락 유기농 야채사랑365 190ML*4",
+            "original_price": null,
+            "package_quantity": 190.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 7590,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "190ml×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "5e536a180a29757d7b5da8eb4e1214aec24d0beb11946ad890eee555c1226b9c",
+          "raw_record_id": "ingestion:56:53",
+          "source_category_path": [
+            "우유/유제품",
+            "냉장디저트/음료",
+            "신선음료",
+            "신선음료"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:56:53",
+    "standard_unit_price": 499.3421,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:7:15"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        7
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:45:45.469139Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 7590,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-6ffe5ef43c2174d1612339d926618f4d",
+    "public_source_listing_id": "listing-5b44ff1346b6787b7c74e3ea15f5024f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:45:45.469139Z",
+          "ingestion_id": 7,
+          "ingestion_received_at": "2026-08-31T01:47:07.120919Z",
+          "mart_native_category_id": "9",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비락",
+              "canon_hash": "a5359260d1c34a50916dab1afc029d398dd0f344",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069727106&storeType=HYPER",
+              "category_hint": "신선음료",
+              "docId": "H069727106N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%B9%84%EB%9D%BD-%EC%9C%A0%EA%B8%B0%EB%86%8D-%EC%95%BC%EC%B1%84%EC%82%AC%EB%9E%91-%EB%8B%B9%EA%B7%BC-%EB%B9%84%ED%8A%B8-180ML-4/069727106",
+              "mart_native_category_id": "9",
+              "mart_native_category_path": "우유/유제품 > 냉장디저트/음료 > 신선음료 > 신선음료",
+              "mart_native_code": "069727106",
+              "normalized_name": "비락 유기농 야채사랑 당근 비트 180ML*4",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069727106&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "비락 유기농 야채사랑 당근 비트 180ML*4",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069727106",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069727106&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100ML",
+              "unit_price_displayed": 1054.0
+            },
+            "brand": "__no_brand__",
+            "category": "신선음료",
+            "crawled_at": "2026-08-31T10:45:45.469139",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069727106&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "180ml×4",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|비락 유기농 야채사랑 당근 비트 180ml 4||180ml×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "비락 유기농 야채사랑 당근 비트 180ML*4",
+            "normalized_name": "비락 유기농 야채사랑 당근 비트 180ML*4",
+            "original_price": null,
+            "package_quantity": 180.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 7590,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "180ml×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "133206dcbef3e8b4188a5961e32f8bb57eab291c9277114e180ea343b30457c2",
+          "raw_record_id": "ingestion:7:15",
+          "source_category_path": [
+            "우유/유제품",
+            "냉장디저트/음료",
+            "신선음료",
+            "신선음료"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:7:15",
+    "standard_unit_price": 527.0833,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:57:28"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        57
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:38:43.408233Z",
+    "discount_rate": null,
+    "event_name": "1+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 7590,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 1,
+      "condition_text": "1+1",
+      "free_quantity": 1,
+      "minimum_quantity": 1
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-8919cd4e29419a6ed10f01f6c3e01773",
+    "public_source_listing_id": "listing-5b44ff1346b6787b7c74e3ea15f5024f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:38:43.408233Z",
+          "ingestion_id": 57,
+          "ingestion_received_at": "2026-09-02T13:40:09.170128Z",
+          "mart_native_category_id": "9",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비락",
+              "canon_hash": "a5359260d1c34a50916dab1afc029d398dd0f344",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069727106&storeType=HYPER",
+              "category_hint": "신선음료",
+              "docId": "H069727106N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%B9%84%EB%9D%BD-%EC%9C%A0%EA%B8%B0%EB%86%8D-%EC%95%BC%EC%B1%84%EC%82%AC%EB%9E%91-%EB%8B%B9%EA%B7%BC-%EB%B9%84%ED%8A%B8-180ML-4/069727106",
+              "mart_native_category_id": "9",
+              "mart_native_category_path": "우유/유제품 > 냉장디저트/음료 > 신선음료 > 신선음료",
+              "mart_native_code": "069727106",
+              "normalized_name": "비락 유기농 야채사랑 당근 비트 180ML*4",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069727106&storeType=HYPER",
+              "promo_label": "1+1",
+              "raw_name": "비락 유기농 야채사랑 당근 비트 180ML*4",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069727106",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069727106&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100ML",
+              "unit_price_displayed": 1054.0
+            },
+            "brand": "__no_brand__",
+            "category": "신선음료",
+            "crawled_at": "2026-09-02T22:38:43.408233",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069727106&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "180ml×4",
+            "event_name": "1+1",
+            "image_url": "",
+            "match_key": "__no_brand__|비락 유기농 야채사랑 당근 비트 180ml 4||180ml×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "비락 유기농 야채사랑 당근 비트 180ML*4",
+            "normalized_name": "비락 유기농 야채사랑 당근 비트 180ML*4",
+            "original_price": null,
+            "package_quantity": 180.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": "1+1",
+            "promo_type": null,
+            "sale_price": 7590,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "180ml×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "936355d777430dc1cbb0a8aa4105cbe4d9f84081deb0808c950502259c98f0f8",
+          "raw_record_id": "ingestion:57:28",
+          "source_category_path": [
+            "우유/유제품",
+            "냉장디저트/음료",
+            "신선음료",
+            "신선음료"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      }
+    },
+    "raw_record_id": "ingestion:57:28",
+    "standard_unit_price": 527.0833,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:67:82"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        67
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:17.350601Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 3390,
+    "price_per_100g": 847.5,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-b6c3322d4f83fbac01caa4b81f6490e9",
+    "public_source_listing_id": "listing-31b05706b5b8cc5e17b635450294889e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:17.350601Z",
+          "ingestion_id": 67,
+          "ingestion_received_at": "2026-09-02T13:40:44.236458Z",
+          "mart_native_category_id": "14",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "크라운",
+              "canon_hash": "497d9041c87527660647ecf8cb086358552d72e7",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069729336&storeType=HYPER",
+              "category_hint": "옥수수스낵",
+              "docId": "H069729336N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%81%AC%EB%9D%BC%EC%9A%B4-%EC%8B%A0%EC%A7%B1-2%EB%B2%88%EB%93%A4-400G/069729336",
+              "mart_native_category_id": "14",
+              "mart_native_category_path": "과자/시리얼 > 과자/쿠키/파이 > 나쵸/팝콘/옥수수과자 > 옥수수스낵",
+              "mart_native_code": "069729336",
+              "normalized_name": "크라운 신짱 2번들 400G",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069729336&storeType=HYPER",
+              "raw_name": "크라운 신짱 2번들 400G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069729336",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069729336&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "10G",
+              "unit_price_displayed": 85.0
+            },
+            "brand": "__no_brand__",
+            "category": "옥수수스낵",
+            "crawled_at": "2026-09-02T22:39:17.350601",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069729336&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "400g",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|크라운 신짱 2번들 400g||400g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "크라운 신짱 2번들 400G",
+            "normalized_name": "크라운 신짱 2번들 400G",
+            "original_price": null,
+            "package_quantity": 400.0,
+            "package_unit": "g",
+            "price_per_100g": 847.5,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3390,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "400g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ae4eb7de9c4ed81f4b21dc5729fe0f842a89ac5ab2af4412560d89cec77ca40b",
+          "raw_record_id": "ingestion:67:82",
+          "source_category_path": [
+            "과자/시리얼",
+            "과자/쿠키/파이",
+            "나쵸/팝콘/옥수수과자",
+            "옥수수스낵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:67:82",
+    "standard_unit_price": 847.5,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:20:3"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        20
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:24.566882Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 3390,
+    "price_per_100g": 847.5,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-cce6c9fbdbb9566e3e78334da8743d85",
+    "public_source_listing_id": "listing-31b05706b5b8cc5e17b635450294889e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:24.566882Z",
+          "ingestion_id": 20,
+          "ingestion_received_at": "2026-08-31T01:47:53.654857Z",
+          "mart_native_category_id": "14",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "크라운",
+              "canon_hash": "497d9041c87527660647ecf8cb086358552d72e7",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069729336&storeType=HYPER",
+              "category_hint": "옥수수스낵",
+              "docId": "H069729336N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%81%AC%EB%9D%BC%EC%9A%B4-%EC%8B%A0%EC%A7%B1-2%EB%B2%88%EB%93%A4-400G/069729336",
+              "mart_native_category_id": "14",
+              "mart_native_category_path": "과자/시리얼 > 과자/쿠키/파이 > 나쵸/팝콘/옥수수과자 > 옥수수스낵",
+              "mart_native_code": "069729336",
+              "normalized_name": "크라운 신짱 2번들 400G",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069729336&storeType=HYPER",
+              "raw_name": "크라운 신짱 2번들 400G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069729336",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069729336&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "10G",
+              "unit_price_displayed": 85.0
+            },
+            "brand": "__no_brand__",
+            "category": "옥수수스낵",
+            "crawled_at": "2026-08-31T10:46:24.566882",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069729336&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "400g",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|크라운 신짱 2번들 400g||400g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "크라운 신짱 2번들 400G",
+            "normalized_name": "크라운 신짱 2번들 400G",
+            "original_price": null,
+            "package_quantity": 400.0,
+            "package_unit": "g",
+            "price_per_100g": 847.5,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3390,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "400g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "b07f9ee1a4bd0c99e895c06946917a6469b6db467434ab59a7467d3744e1bce5",
+          "raw_record_id": "ingestion:20:3",
+          "source_category_path": [
+            "과자/시리얼",
+            "과자/쿠키/파이",
+            "나쵸/팝콘/옥수수과자",
+            "옥수수스낵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:20:3",
+    "standard_unit_price": 847.5,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:66:96"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        66
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:13.825479Z",
+    "discount_rate": null,
+    "event_name": "10+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1000,
+    "price_per_100g": 1420.4545,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 10,
+      "condition_text": "10+1",
+      "free_quantity": 1,
+      "minimum_quantity": 10
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-a08b6665d8398773b2cbfe86c3d0203b",
+    "public_source_listing_id": "listing-eda3ae18cd9ff17a712fef1ca3754529",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:13.825479Z",
+          "ingestion_id": 66,
+          "ingestion_received_at": "2026-09-02T13:40:40.714118Z",
+          "mart_native_category_id": "14",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "롯데",
+              "canon_hash": "b94b533b3ff2164a889db4e16c7eef0107aedf17",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069731043&storeType=HYPER",
+              "category_hint": "옥수수스낵",
+              "docId": "H069731043N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%A1%AF%EB%8D%B0-%EC%B9%98%ED%86%A0%EC%8A%A4-%EB%A7%A4%EC%BD%A4%EB%8B%AC%EC%BD%A4%ED%95%9C%EB%A7%9B-64G/069731043",
+              "mart_native_category_id": "14",
+              "mart_native_category_path": "과자/시리얼 > 과자/쿠키/파이 > 나쵸/팝콘/옥수수과자 > 옥수수스낵",
+              "mart_native_code": "069731043",
+              "normalized_name": "롯데 치토스 매콤달콤한맛 64G",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069731043&storeType=HYPER",
+              "promo_label": "10+1",
+              "raw_name": "롯데 치토스 매콤달콤한맛 64G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069731043",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069731043&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "10G",
+              "unit_price_displayed": 156.0
+            },
+            "brand": "__no_brand__",
+            "category": "옥수수스낵",
+            "crawled_at": "2026-09-02T22:39:13.825479",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069731043&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "64g",
+            "event_name": "10+1",
+            "image_url": "",
+            "match_key": "__no_brand__|롯데 치토스 매콤달콤한맛 64g||64g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "롯데 치토스 매콤달콤한맛 64G",
+            "normalized_name": "롯데 치토스 매콤달콤한맛 64G",
+            "original_price": null,
+            "package_quantity": 64.0,
+            "package_unit": "g",
+            "price_per_100g": 1562.5,
+            "promo_label": "10+1",
+            "promo_type": null,
+            "sale_price": 1000,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "64g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "77b4d3ffafb2249122d3611cfef9cfa8e1e1b19927de58f61fcc855a6ca07fa4",
+          "raw_record_id": "ingestion:66:96",
+          "source_category_path": [
+            "과자/시리얼",
+            "과자/쿠키/파이",
+            "나쵸/팝콘/옥수수과자",
+            "옥수수스낵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 10,
+        "condition_text": "10+1",
+        "free_quantity": 1,
+        "minimum_quantity": 10
+      }
+    },
+    "raw_record_id": "ingestion:66:96",
+    "standard_unit_price": 1420.4545,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:17:49"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        17
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:18.267098Z",
+    "discount_rate": null,
+    "event_name": "10+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1000,
+    "price_per_100g": 1420.4545,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 10,
+      "condition_text": "10+1",
+      "free_quantity": 1,
+      "minimum_quantity": 10
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-c09eef0d0741a722c4aac2f3f545f74c",
+    "public_source_listing_id": "listing-eda3ae18cd9ff17a712fef1ca3754529",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:18.267098Z",
+          "ingestion_id": 17,
+          "ingestion_received_at": "2026-08-31T01:47:42.855607Z",
+          "mart_native_category_id": "14",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "롯데",
+              "canon_hash": "b94b533b3ff2164a889db4e16c7eef0107aedf17",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069731043&storeType=HYPER",
+              "category_hint": "옥수수스낵",
+              "docId": "H069731043N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%A1%AF%EB%8D%B0-%EC%B9%98%ED%86%A0%EC%8A%A4-%EB%A7%A4%EC%BD%A4%EB%8B%AC%EC%BD%A4%ED%95%9C%EB%A7%9B-64G/069731043",
+              "mart_native_category_id": "14",
+              "mart_native_category_path": "과자/시리얼 > 과자/쿠키/파이 > 나쵸/팝콘/옥수수과자 > 옥수수스낵",
+              "mart_native_code": "069731043",
+              "normalized_name": "롯데 치토스 매콤달콤한맛 64G",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069731043&storeType=HYPER",
+              "promo_label": "10+1",
+              "raw_name": "롯데 치토스 매콤달콤한맛 64G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069731043",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069731043&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "10G",
+              "unit_price_displayed": 156.0
+            },
+            "brand": "__no_brand__",
+            "category": "옥수수스낵",
+            "crawled_at": "2026-08-31T10:46:18.267098",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069731043&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "64g",
+            "event_name": "10+1",
+            "image_url": "",
+            "match_key": "__no_brand__|롯데 치토스 매콤달콤한맛 64g||64g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "롯데 치토스 매콤달콤한맛 64G",
+            "normalized_name": "롯데 치토스 매콤달콤한맛 64G",
+            "original_price": null,
+            "package_quantity": 64.0,
+            "package_unit": "g",
+            "price_per_100g": 1562.5,
+            "promo_label": "10+1",
+            "promo_type": null,
+            "sale_price": 1000,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "64g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "5ee9ecacf4a138fe7790a137b228082a9634ce15812030a01eab0e9793592214",
+          "raw_record_id": "ingestion:17:49",
+          "source_category_path": [
+            "과자/시리얼",
+            "과자/쿠키/파이",
+            "나쵸/팝콘/옥수수과자",
+            "옥수수스낵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 10,
+        "condition_text": "10+1",
+        "free_quantity": 1,
+        "minimum_quantity": 10
+      }
+    },
+    "raw_record_id": "ingestion:17:49",
+    "standard_unit_price": 1420.4545,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:17:86"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        17
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:18.272249Z",
+    "discount_rate": null,
+    "event_name": "10+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1000,
+    "price_per_100g": 1420.4545,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 10,
+      "condition_text": "10+1",
+      "free_quantity": 1,
+      "minimum_quantity": 10
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-828ff7290943457670a23377e19f6ae8",
+    "public_source_listing_id": "listing-4309ece6406c7e83d6215057f509ef2a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:18.272249Z",
+          "ingestion_id": 17,
+          "ingestion_received_at": "2026-08-31T01:47:42.855607Z",
+          "mart_native_category_id": "14",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "롯데",
+              "canon_hash": "551096dd8656bc64c1705968179acafdc9db0a3b",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069731066&storeType=HYPER",
+              "category_hint": "옥수수스낵",
+              "docId": "H069731066N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%A1%AF%EB%8D%B0-%EC%B9%98%ED%86%A0%EC%8A%A4-%EC%8A%A4%EB%AA%A8%ED%82%A4%EB%B0%94%EB%B2%A0%ED%81%90%EB%A7%9B-64G/069731066",
+              "mart_native_category_id": "14",
+              "mart_native_category_path": "과자/시리얼 > 과자/쿠키/파이 > 나쵸/팝콘/옥수수과자 > 옥수수스낵",
+              "mart_native_code": "069731066",
+              "normalized_name": "롯데 치토스 스모키바베큐맛 64G",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069731066&storeType=HYPER",
+              "promo_label": "10+1",
+              "raw_name": "롯데 치토스 스모키바베큐맛 64G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069731066",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069731066&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "10G",
+              "unit_price_displayed": 156.0
+            },
+            "brand": "__no_brand__",
+            "category": "옥수수스낵",
+            "crawled_at": "2026-08-31T10:46:18.272249",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069731066&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "64g",
+            "event_name": "10+1",
+            "image_url": "",
+            "match_key": "__no_brand__|롯데 치토스 스모키바베큐맛 64g||64g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "롯데 치토스 스모키바베큐맛 64G",
+            "normalized_name": "롯데 치토스 스모키바베큐맛 64G",
+            "original_price": null,
+            "package_quantity": 64.0,
+            "package_unit": "g",
+            "price_per_100g": 1562.5,
+            "promo_label": "10+1",
+            "promo_type": null,
+            "sale_price": 1000,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "64g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "c600e56769315401d876f7c0af742e5df796895f63feb89acc6106437e1abf59",
+          "raw_record_id": "ingestion:17:86",
+          "source_category_path": [
+            "과자/시리얼",
+            "과자/쿠키/파이",
+            "나쵸/팝콘/옥수수과자",
+            "옥수수스낵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 10,
+        "condition_text": "10+1",
+        "free_quantity": 1,
+        "minimum_quantity": 10
+      }
+    },
+    "raw_record_id": "ingestion:17:86",
+    "standard_unit_price": 1420.4545,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:66:97"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        66
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:13.825577Z",
+    "discount_rate": null,
+    "event_name": "10+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1000,
+    "price_per_100g": 1420.4545,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 10,
+      "condition_text": "10+1",
+      "free_quantity": 1,
+      "minimum_quantity": 10
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-f9cb6fb2548ded69283bb323c8993404",
+    "public_source_listing_id": "listing-4309ece6406c7e83d6215057f509ef2a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:13.825577Z",
+          "ingestion_id": 66,
+          "ingestion_received_at": "2026-09-02T13:40:40.714118Z",
+          "mart_native_category_id": "14",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "롯데",
+              "canon_hash": "551096dd8656bc64c1705968179acafdc9db0a3b",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069731066&storeType=HYPER",
+              "category_hint": "옥수수스낵",
+              "docId": "H069731066N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%A1%AF%EB%8D%B0-%EC%B9%98%ED%86%A0%EC%8A%A4-%EC%8A%A4%EB%AA%A8%ED%82%A4%EB%B0%94%EB%B2%A0%ED%81%90%EB%A7%9B-64G/069731066",
+              "mart_native_category_id": "14",
+              "mart_native_category_path": "과자/시리얼 > 과자/쿠키/파이 > 나쵸/팝콘/옥수수과자 > 옥수수스낵",
+              "mart_native_code": "069731066",
+              "normalized_name": "롯데 치토스 스모키바베큐맛 64G",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069731066&storeType=HYPER",
+              "promo_label": "10+1",
+              "raw_name": "롯데 치토스 스모키바베큐맛 64G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069731066",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069731066&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "10G",
+              "unit_price_displayed": 156.0
+            },
+            "brand": "__no_brand__",
+            "category": "옥수수스낵",
+            "crawled_at": "2026-09-02T22:39:13.825577",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069731066&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "64g",
+            "event_name": "10+1",
+            "image_url": "",
+            "match_key": "__no_brand__|롯데 치토스 스모키바베큐맛 64g||64g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "롯데 치토스 스모키바베큐맛 64G",
+            "normalized_name": "롯데 치토스 스모키바베큐맛 64G",
+            "original_price": null,
+            "package_quantity": 64.0,
+            "package_unit": "g",
+            "price_per_100g": 1562.5,
+            "promo_label": "10+1",
+            "promo_type": null,
+            "sale_price": 1000,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "64g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "4ee484c0f9474ed430a1ae46bcf969f7d5a8e89e90ab0b759814e5b8a4abaf40",
+          "raw_record_id": "ingestion:66:97",
+          "source_category_path": [
+            "과자/시리얼",
+            "과자/쿠키/파이",
+            "나쵸/팝콘/옥수수과자",
+            "옥수수스낵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 10,
+        "condition_text": "10+1",
+        "free_quantity": 1,
+        "minimum_quantity": 10
+      }
+    },
+    "raw_record_id": "ingestion:66:97",
+    "standard_unit_price": 1420.4545,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:67:1"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        67
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:13.826005Z",
+    "discount_rate": null,
+    "event_name": "10+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1000,
+    "price_per_100g": 1748.2517,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 10,
+      "condition_text": "10+1",
+      "free_quantity": 1,
+      "minimum_quantity": 10
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-20c6e56777ba382d92b505eb3b5fdcea",
+    "public_source_listing_id": "listing-d5e694f2f9fbfe14078d5ccfdbd9a12f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:13.826005Z",
+          "ingestion_id": 67,
+          "ingestion_received_at": "2026-09-02T13:40:44.236458Z",
+          "mart_native_category_id": "14",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "롯데",
+              "canon_hash": "05679a2a129a97b7cd11c4f1cb110efcc20e5888",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069731072&storeType=HYPER",
+              "category_hint": "옥수수스낵",
+              "docId": "H069731072N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%A1%AF%EB%8D%B0-%EA%BC%AC%EA%B9%94%EC%BD%98-%EA%B3%A0%EC%86%8C%ED%95%9C%EB%A7%9B-52G/069731072",
+              "mart_native_category_id": "14",
+              "mart_native_category_path": "과자/시리얼 > 과자/쿠키/파이 > 나쵸/팝콘/옥수수과자 > 옥수수스낵",
+              "mart_native_code": "069731072",
+              "normalized_name": "롯데 꼬깔콘 고소한맛 52G",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069731072&storeType=HYPER",
+              "promo_label": "10+1",
+              "raw_name": "롯데 꼬깔콘 고소한맛 52G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069731072",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069731072&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "10G",
+              "unit_price_displayed": 192.0
+            },
+            "brand": "__no_brand__",
+            "category": "옥수수스낵",
+            "crawled_at": "2026-09-02T22:39:13.826005",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069731072&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "52g",
+            "event_name": "10+1",
+            "image_url": "",
+            "match_key": "__no_brand__|롯데 꼬깔콘 고소한맛 52g||52g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "롯데 꼬깔콘 고소한맛 52G",
+            "normalized_name": "롯데 꼬깔콘 고소한맛 52G",
+            "original_price": null,
+            "package_quantity": 52.0,
+            "package_unit": "g",
+            "price_per_100g": 1923.08,
+            "promo_label": "10+1",
+            "promo_type": null,
+            "sale_price": 1000,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "52g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "7e38904f2af4deed724f1f314fe66b243d5f750a7af77f3fe73a9ab7480000b1",
+          "raw_record_id": "ingestion:67:1",
+          "source_category_path": [
+            "과자/시리얼",
+            "과자/쿠키/파이",
+            "나쵸/팝콘/옥수수과자",
+            "옥수수스낵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 10,
+        "condition_text": "10+1",
+        "free_quantity": 1,
+        "minimum_quantity": 10
+      }
+    },
+    "raw_record_id": "ingestion:67:1",
+    "standard_unit_price": 1748.2517,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:17:80"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        17
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:18.271643Z",
+    "discount_rate": null,
+    "event_name": "10+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1000,
+    "price_per_100g": 1748.2517,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 10,
+      "condition_text": "10+1",
+      "free_quantity": 1,
+      "minimum_quantity": 10
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-3a575fd7fcf341119fd6f8d57ed8a5e8",
+    "public_source_listing_id": "listing-d5e694f2f9fbfe14078d5ccfdbd9a12f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:18.271643Z",
+          "ingestion_id": 17,
+          "ingestion_received_at": "2026-08-31T01:47:42.855607Z",
+          "mart_native_category_id": "14",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "롯데",
+              "canon_hash": "05679a2a129a97b7cd11c4f1cb110efcc20e5888",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069731072&storeType=HYPER",
+              "category_hint": "옥수수스낵",
+              "docId": "H069731072N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%A1%AF%EB%8D%B0-%EA%BC%AC%EA%B9%94%EC%BD%98-%EA%B3%A0%EC%86%8C%ED%95%9C%EB%A7%9B-52G/069731072",
+              "mart_native_category_id": "14",
+              "mart_native_category_path": "과자/시리얼 > 과자/쿠키/파이 > 나쵸/팝콘/옥수수과자 > 옥수수스낵",
+              "mart_native_code": "069731072",
+              "normalized_name": "롯데 꼬깔콘 고소한맛 52G",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069731072&storeType=HYPER",
+              "promo_label": "10+1",
+              "raw_name": "롯데 꼬깔콘 고소한맛 52G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069731072",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069731072&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "10G",
+              "unit_price_displayed": 192.0
+            },
+            "brand": "__no_brand__",
+            "category": "옥수수스낵",
+            "crawled_at": "2026-08-31T10:46:18.271643",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069731072&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "52g",
+            "event_name": "10+1",
+            "image_url": "",
+            "match_key": "__no_brand__|롯데 꼬깔콘 고소한맛 52g||52g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "롯데 꼬깔콘 고소한맛 52G",
+            "normalized_name": "롯데 꼬깔콘 고소한맛 52G",
+            "original_price": null,
+            "package_quantity": 52.0,
+            "package_unit": "g",
+            "price_per_100g": 1923.08,
+            "promo_label": "10+1",
+            "promo_type": null,
+            "sale_price": 1000,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "52g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "559af22c4eebe1de5fa1ae3130592c7a2c5810bda8e022dc8f60d51947623ed0",
+          "raw_record_id": "ingestion:17:80",
+          "source_category_path": [
+            "과자/시리얼",
+            "과자/쿠키/파이",
+            "나쵸/팝콘/옥수수과자",
+            "옥수수스낵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 10,
+        "condition_text": "10+1",
+        "free_quantity": 1,
+        "minimum_quantity": 10
+      }
+    },
+    "raw_record_id": "ingestion:17:80",
+    "standard_unit_price": 1748.2517,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:66:59"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        66
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:39:13.821281Z",
+    "discount_rate": null,
+    "event_name": "10+1",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1000,
+    "price_per_100g": 1748.2517,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {
+      "buy_quantity": 10,
+      "condition_text": "10+1",
+      "free_quantity": 1,
+      "minimum_quantity": 10
+    },
+    "promotion_type": "buy_x_get_y",
+    "public_offer_event_id": "offer-006ceff7d6b43d522f210098350a3e88",
+    "public_source_listing_id": "listing-215bc42a134fe3cebdfe71a582bd50d9",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:39:13.821281Z",
+          "ingestion_id": 66,
+          "ingestion_received_at": "2026-09-02T13:40:40.714118Z",
+          "mart_native_category_id": "14",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "롯데",
+              "canon_hash": "7a15bda193909607e89d7c1e07f5281f4e827614",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=069731095&storeType=HYPER",
+              "category_hint": "옥수수스낵",
+              "docId": "H069731095N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%A1%AF%EB%8D%B0-%EA%BC%AC%EA%B9%94%EC%BD%98-%EA%B5%B0%EC%98%A5%EC%88%98%EC%88%98%EB%A7%9B-52G/069731095",
+              "mart_native_category_id": "14",
+              "mart_native_category_path": "과자/시리얼 > 과자/쿠키/파이 > 나쵸/팝콘/옥수수과자 > 옥수수스낵",
+              "mart_native_code": "069731095",
+              "normalized_name": "롯데 꼬깔콘 군옥수수맛 52G",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=069731095&storeType=HYPER",
+              "promo_label": "10+1",
+              "raw_name": "롯데 꼬깔콘 군옥수수맛 52G",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "069731095",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=069731095&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "10G",
+              "unit_price_displayed": 192.0
+            },
+            "brand": "__no_brand__",
+            "category": "옥수수스낵",
+            "crawled_at": "2026-09-02T22:39:13.821281",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=069731095&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "52g",
+            "event_name": "10+1",
+            "image_url": "",
+            "match_key": "__no_brand__|롯데 꼬깔콘 군옥수수맛 52g||52g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "롯데 꼬깔콘 군옥수수맛 52G",
+            "normalized_name": "롯데 꼬깔콘 군옥수수맛 52G",
+            "original_price": null,
+            "package_quantity": 52.0,
+            "package_unit": "g",
+            "price_per_100g": 1923.08,
+            "promo_label": "10+1",
+            "promo_type": null,
+            "sale_price": 1000,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "52g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "3928030c15ee04798a3062aff4d633c77a450d56580ee11831e9478d6cc06af4",
+          "raw_record_id": "ingestion:66:59",
+          "source_category_path": [
+            "과자/시리얼",
+            "과자/쿠키/파이",
+            "나쵸/팝콘/옥수수과자",
+            "옥수수스낵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {
+        "buy_quantity": 10,
+        "condition_text": "10+1",
+        "free_quantity": 1,
+        "minimum_quantity": 10
+      }
+    },
+    "raw_record_id": "ingestion:66:59",
+    "standard_unit_price": 1748.2517,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  }
+]

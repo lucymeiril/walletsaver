@@ -1,0 +1,133 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:8816ef0923ca12723b0c92b9",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "건과일ㆍ과일칩",
+        "과일칩"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:35:31",
+      "review_status": "pending",
+      "source_path": "쌀ㆍ잡곡ㆍ견과류 > 건과일ㆍ과일칩 > 과일칩",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "건과일ㆍ과일칩",
+        "과일칩"
+      ],
+      "source_title": "명인부각 오리지널 (180G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8807354223435/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "선명농수산",
+      "crawled_at": "2026-08-31T01:47:08.164110Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 40% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fb0ef18f-383e-4e14-a729-978239ef8294/300x300.jpg",
+      "ingestion_id": 35,
+      "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 31,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "180g",
+        "package_quantity": 180.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 9990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "선명농수산",
+          "canon_hash": "fef016a14e891130f05421c54d0f2602f41839c5",
+          "canonical_url": "https://lottemartzetta.com/products/OS8807354223435/details",
+          "category_hint": "쌀ㆍ잡곡ㆍ견과류",
+          "category_path": [
+            "쌀ㆍ잡곡ㆍ견과류",
+            "건과일ㆍ과일칩",
+            "과일칩"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fb0ef18f-383e-4e14-a729-978239ef8294/300x300.jpg",
+          "mart_native_code": "8807354223435",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8807354223435",
+          "source_url": "https://lottemartzetta.com/products/OS8807354223435/details"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀ㆍ잡곡ㆍ견과류",
+        "crawled_at": "2026-08-31T10:47:08.164110",
+        "detail_url": "https://lottemartzetta.com/products/OS8807354223435/details",
+        "discount_percent": null,
+        "display_unit": "180g",
+        "event_name": "2개씩 골라 담으면, 40% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fb0ef18f-383e-4e14-a729-978239ef8294/300x300.jpg",
+        "match_key": "__no_brand__|명인부각 오리지널 180g||180g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "명인부각 오리지널 (180G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 180.0,
+        "package_unit": "g",
+        "price_per_100g": 5550.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 9990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "180g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "242495f87a5ecf592359a322614ac069a413ec441f0189861a44b95f4f2249a7",
+      "raw_record_id": "ingestion:35:31",
+      "source_category_path": [
+        "쌀ᆞ잡곡ᆞ견과류",
+        "건과일ᆞ과일칩",
+        "과일칩"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8807354223435",
+      "source_title": "명인부각 오리지널 (180G)",
+      "source_url": "https://lottemartzetta.com/products/OS8807354223435/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:35:31",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8807354223435",
+    "source_title": "명인부각 오리지널 (180G)"
+  }
+]

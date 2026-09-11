@@ -1,0 +1,142 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:a90c79b8a9702074e015d3d6",
+      "promotion_surface": false,
+      "proposed_path": [
+        "베이커리/잼",
+        "기타 빵류",
+        "호빵/호떡"
+      ],
+      "raw_native_category_id": "15",
+      "raw_record_id": "ingestion:20:12",
+      "review_status": "pending",
+      "source_path": "베이커리/잼 > 기타 빵류 > 호빵/호떡",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "베이커리/잼",
+        "기타 빵류",
+        "호빵/호떡"
+      ],
+      "source_title": "삼립 꿀호떡 요요 8입 192G",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=113655610&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "삼립",
+      "crawled_at": "2026-08-31T01:46:28.937609Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "1+1",
+      "image_url": "",
+      "ingestion_id": 20,
+      "ingestion_received_at": "2026-08-31T01:47:53.654857Z",
+      "issues": [],
+      "item_index": 12,
+      "mart_native_category_id": "15",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "192g",
+        "package_quantity": 192.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 3990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {
+        "buy_quantity": 1,
+        "condition_text": "1+1",
+        "free_quantity": 1,
+        "minimum_quantity": 1
+      },
+      "promotion_type": "buy_x_get_y",
+      "raw_payload": {
+        "attributes": {
+          "brand": "삼립",
+          "canon_hash": "85a309247d96d5125ea38cf75055f67b8ea94e7b",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=113655610&storeType=HYPER",
+          "category_hint": "호빵/호떡",
+          "docId": "H113655610N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%82%BC%EB%A6%BD-%EA%BF%80%ED%98%B8%EB%96%A1-%EC%9A%94%EC%9A%94-8%EC%9E%85-192G/113655610",
+          "mart_native_category_id": "15",
+          "mart_native_category_path": "베이커리/잼 > 기타 빵류 > 호빵/호떡 > 호빵/호떡",
+          "mart_native_code": "113655610",
+          "normalized_name": "삼립 꿀호떡 요요 8입 192G",
+          "period": "~2026-09-02",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=113655610&storeType=HYPER",
+          "promo_label": "1+1",
+          "raw_name": "삼립 꿀호떡 요요 8입 192G",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "113655610",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=113655610&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "10G",
+          "unit_price_displayed": 208.0
+        },
+        "brand": "__no_brand__",
+        "category": "호빵/호떡",
+        "crawled_at": "2026-08-31T10:46:28.937609",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=113655610&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "192g",
+        "event_name": "1+1",
+        "image_url": "",
+        "match_key": "__no_brand__|삼립 꿀호떡 요요 8입 192g||192g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "삼립 꿀호떡 요요 8입 192G",
+        "normalized_name": "삼립 꿀호떡 요요 8입 192G",
+        "original_price": null,
+        "package_quantity": 192.0,
+        "package_unit": "g",
+        "price_per_100g": 2078.12,
+        "promo_label": "1+1",
+        "promo_type": null,
+        "sale_price": 3990,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "192g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_to": "2026-09-02T00:00:00",
+        "valid_until": "2026-09-02T00:00:00"
+      },
+      "raw_payload_sha256": "b41401c463e3f2f0086093ad27d337cd09b24859bcb261e66a780f2fcfcd1041",
+      "raw_record_id": "ingestion:20:12",
+      "source_category_path": [
+        "베이커리/잼",
+        "기타 빵류",
+        "호빵/호떡",
+        "호빵/호떡"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "113655610",
+      "source_title": "삼립 꿀호떡 요요 8입 192G",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=113655610&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": "2026-09-01T15:00:00Z"
+    },
+    "raw_record_id": "ingestion:20:12",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "113655610",
+    "source_title": "삼립 꿀호떡 요요 8입 192G"
+  }
+]

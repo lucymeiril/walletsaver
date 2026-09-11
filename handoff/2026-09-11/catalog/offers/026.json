@@ -1,0 +1,4787 @@
+[
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:52"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.273280Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 12700,
+    "price": 8890,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-8e80b4af4e6034d743b5dcc0307f4c47",
+    "public_source_listing_id": "listing-0531e74b461f32210b4eda43517ab1f2",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.273280Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/15/27/12/item/2097002122715_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002122715",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002122715",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002122715&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.273280",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002122715&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "510ml",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/15/27/12/item/2097002122715_i1_290.jpg",
+            "match_key": "__no_brand__|수뜰리에 독일더마 고보습 버블 핸드워시 510ml 블랑쉬||510ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "수뜰리에 독일더마 고보습 버블 핸드워시 510ml 블랑쉬",
+            "normalized_name": "",
+            "original_price": 12700,
+            "package_quantity": 510.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 8890,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "510ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "8a389384304a1e0b6a59d3675547bf53444ce612eeea2b1b177332aef0646e4e",
+          "raw_record_id": "ingestion:97:52",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:52",
+    "standard_unit_price": 1743.1373,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:32"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.175720Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 12700,
+    "price": 8890,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-697612541b02201150befe5f24dd3770",
+    "public_source_listing_id": "listing-b8cd88990aa4176503a1dc35fd7cc7d0",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.175720Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/53/27/12/item/2097002122753_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002122753",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002122753",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002122753&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.175720",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002122753&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "510ml",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/53/27/12/item/2097002122753_i1_290.jpg",
+            "match_key": "__no_brand__|수뜰리에 독일더마 고보습 버블 핸드워시 510ml 일랑일랑||510ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "수뜰리에 독일더마 고보습 버블 핸드워시 510ml 일랑일랑",
+            "normalized_name": "",
+            "original_price": 12700,
+            "package_quantity": 510.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 8890,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "510ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "11b41303b7375e2f9f6e5e0a455db2b4a71edd817f1f9996d16d4e2fac8d7fcc",
+          "raw_record_id": "ingestion:97:32",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:32",
+    "standard_unit_price": 1743.1373,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:98:12"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        98
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:21:09.437648Z",
+    "discount_rate": 0.47,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 29900,
+    "price": 15847,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-6391608137ed888a63d5f69af21f5830",
+    "public_source_listing_id": "listing-281a21cf58a5de9c32072237e1384910",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:21:09.437648Z",
+          "ingestion_id": 98,
+          "ingestion_received_at": "2026-09-02T17:21:11.611474Z",
+          "mart_native_category_id": "6000214420",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "청소/생활용품",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/34/58/17/item/2097002175834_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214420",
+              "mart_native_category_path": "청소/생활용품",
+              "mart_native_code": "2097002175834",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002175834",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002175834&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "청소/생활용품",
+            "crawled_at": "2026-09-03T02:21:09.437648",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002175834&siteNo=7009&salestrNo=2551",
+            "discount_percent": 47.0,
+            "display_unit": "40개입",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/34/58/17/item/2097002175834_i1_232.jpg",
+            "match_key": "__no_brand__|수뜰리에 독일더마 초고농축 올인원 캡슐세제 40개입 인칸토향||40개입",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "수뜰리에 독일더마 초고농축 올인원 캡슐세제 40개입 인칸토향",
+            "normalized_name": "",
+            "original_price": 29900,
+            "package_quantity": 40.0,
+            "package_unit": "개입",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 15847,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "40개입",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ac7e4f02db0d36f2ad10d25b4c444f0fb03f51ceb0bc1bc2a91d15c56d35f309",
+          "raw_record_id": "ingestion:98:12",
+          "source_category_path": [
+            "청소/생활용품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:98:12",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:98:9"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        98
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:21:09.430832Z",
+    "discount_rate": 0.47,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 29900,
+    "price": 15847,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-78216250cedd6eff47ef9a4c7e8e3540",
+    "public_source_listing_id": "listing-c8b86e3ef290fb8e47596fb01ec08da3",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:21:09.430832Z",
+          "ingestion_id": 98,
+          "ingestion_received_at": "2026-09-02T17:21:11.611474Z",
+          "mart_native_category_id": "6000214420",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "청소/생활용품",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/58/58/17/item/2097002175858_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214420",
+              "mart_native_category_path": "청소/생활용품",
+              "mart_native_code": "2097002175858",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002175858",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002175858&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "청소/생활용품",
+            "crawled_at": "2026-09-03T02:21:09.430832",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002175858&siteNo=7009&salestrNo=2551",
+            "discount_percent": 47.0,
+            "display_unit": "40개입",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/58/58/17/item/2097002175858_i1_232.jpg",
+            "match_key": "__no_brand__|수뜰리에 독일더마 초고농축 올인원 캡슐세제 40개입 린넨블랑향||40개입",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "수뜰리에 독일더마 초고농축 올인원 캡슐세제 40개입 린넨블랑향",
+            "normalized_name": "",
+            "original_price": 29900,
+            "package_quantity": 40.0,
+            "package_unit": "개입",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 15847,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "40개입",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ee85a646caa44610ad9a57cf95bcc4aac6192690ce51354aba16225c02827e00",
+          "raw_record_id": "ingestion:98:9",
+          "source_category_path": [
+            "청소/생활용품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:98:9",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:98:7"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        98
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:21:09.426246Z",
+    "discount_rate": 0.47,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 28400,
+    "price": 15052,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-8bd12faf429e5536df6d91b07e5ae2da",
+    "public_source_listing_id": "listing-205bc68e01a21dcae63a4ad17f7801f7",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:21:09.426246Z",
+          "ingestion_id": 98,
+          "ingestion_received_at": "2026-09-02T17:21:11.611474Z",
+          "mart_native_category_id": "6000214420",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "청소/생활용품",
+              "collection": "아이앤어스",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/88/66/17/item/2097002176688_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214420",
+              "mart_native_category_path": "청소/생활용품",
+              "mart_native_code": "2097002176688",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002176688",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002176688&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "청소/생활용품",
+            "crawled_at": "2026-09-03T02:21:09.426246",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002176688&siteNo=7009&salestrNo=2551",
+            "discount_percent": 47.0,
+            "display_unit": "100개입",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/88/66/17/item/2097002176688_i1_232.jpg",
+            "match_key": "__no_brand__|초고농축 올인원 캡슐세제 세탁세제 100개입 프리지아향||100개입",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "초고농축 올인원 캡슐세제 세탁세제 100개입 프리지아향",
+            "normalized_name": "",
+            "original_price": 28400,
+            "package_quantity": 100.0,
+            "package_unit": "개입",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 15052,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "100개입",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "3005e69ff56c48fe557191627ee12c2f6af559a295f092ca51f2933e1b70ab54",
+          "raw_record_id": "ingestion:98:7",
+          "source_category_path": [
+            "청소/생활용품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:98:7",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:98:8"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        98
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:21:09.428587Z",
+    "discount_rate": 0.47,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 28400,
+    "price": 15052,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-aa69f866672fd4d878af00b2cb826e44",
+    "public_source_listing_id": "listing-eb73fae43c29b4ac4809c3eddc58bbf7",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:21:09.428587Z",
+          "ingestion_id": 98,
+          "ingestion_received_at": "2026-09-02T17:21:11.611474Z",
+          "mart_native_category_id": "6000214420",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "청소/생활용품",
+              "collection": "아이앤어스",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/95/66/17/item/2097002176695_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214420",
+              "mart_native_category_path": "청소/생활용품",
+              "mart_native_code": "2097002176695",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002176695",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002176695&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "청소/생활용품",
+            "crawled_at": "2026-09-03T02:21:09.428587",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002176695&siteNo=7009&salestrNo=2551",
+            "discount_percent": 47.0,
+            "display_unit": "100개입",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/95/66/17/item/2097002176695_i1_232.jpg",
+            "match_key": "__no_brand__|올인원 컬러복원 초고농축 캡슐세제 세탁세제 100개입||100개입",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "올인원 컬러복원 초고농축 캡슐세제 세탁세제 100개입",
+            "normalized_name": "",
+            "original_price": 28400,
+            "package_quantity": 100.0,
+            "package_unit": "개입",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 15052,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "100개입",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "abf5097cfe81c9b44c18e00dd43f6ccde4bd56dd1efcb1d43105f29a4ac74fc8",
+          "raw_record_id": "ingestion:98:8",
+          "source_category_path": [
+            "청소/생활용품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:98:8",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:98:14"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        98
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:21:09.441995Z",
+    "discount_rate": 0.47,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 30000,
+    "price": 15900,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-f5afe634246affeb0aed1b8891a5da20",
+    "public_source_listing_id": "listing-058a26d1730dcbd570b7f46f4942918c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:21:09.441995Z",
+          "ingestion_id": 98,
+          "ingestion_received_at": "2026-09-02T17:21:11.611474Z",
+          "mart_native_category_id": "6000214420",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "청소/생활용품",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/30/83/17/item/2097002178330_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214420",
+              "mart_native_category_path": "청소/생활용품",
+              "mart_native_code": "2097002178330",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002178330",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002178330&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "청소/생활용품",
+            "crawled_at": "2026-09-03T02:21:09.441995",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002178330&siteNo=7009&salestrNo=2551",
+            "discount_percent": 47.0,
+            "display_unit": "50개입",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/30/83/17/item/2097002178330_i1_232.jpg",
+            "match_key": "__no_brand__|수뜰리에 비건 올인원 식기세척기 세제 타블렛 레몬향 50개입||50개입",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "수뜰리에 비건 올인원 식기세척기 세제 타블렛 레몬향 50개입",
+            "normalized_name": "",
+            "original_price": 30000,
+            "package_quantity": 50.0,
+            "package_unit": "개입",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 15900,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "50개입",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "aa57b11103063e93c809b29e16fc481eff98caf160c45c9baf09d4f13369f8e0",
+          "raw_record_id": "ingestion:98:14",
+          "source_category_path": [
+            "청소/생활용품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:98:14",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:9"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.039008Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 34000,
+    "price": 23800,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-83dadedb104e7160f4406322d01a3b23",
+    "public_source_listing_id": "listing-4c8ce3f645e739cec4bc862aa4215039",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.039008Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection": "닥터시드",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/94/22/21/item/2097002212294_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002212294",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002212294",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002212294&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.039008",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002212294&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "1L",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/94/22/21/item/2097002212294_i1_232.jpg",
+            "match_key": "__no_brand__|티트리 앤 라임 비건 지성케어 쿨 탈모샴푸 대용량 1l||1l",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "티트리 앤 라임 비건 지성케어 쿨 탈모샴푸 대용량 1L",
+            "normalized_name": "",
+            "original_price": 34000,
+            "package_quantity": 1.0,
+            "package_unit": "L",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 23800,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "1L",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "9f449bf0998e5c15c0fb4ea60cdc55f8175340d7bdc829616a62f9148508d52b",
+          "raw_record_id": "ingestion:97:9",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:9",
+    "standard_unit_price": 2380.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:11"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.044345Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 37100,
+    "price": 25970,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-94613aad7bad329fb6a6a4d9e44d55a3",
+    "public_source_listing_id": "listing-a3d53a7e23147535979c3c5cb6518f8f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.044345Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection": "닥터시드",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/00/23/21/item/2097002212300_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002212300",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002212300",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002212300&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.044345",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002212300&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "1L",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/00/23/21/item/2097002212300_i1_232.jpg",
+            "match_key": "__no_brand__|페퍼민트 앤 레몬 비건 비듬케어 쿨 탈모샴푸 대용량 1l||1l",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "페퍼민트 앤 레몬 비건 비듬케어 쿨 탈모샴푸 대용량 1L",
+            "normalized_name": "",
+            "original_price": 37100,
+            "package_quantity": 1.0,
+            "package_unit": "L",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 25970,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "1L",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "6dadd08380f183309c349eef293af024aca50f368a88a34acd54a8db4afca3da",
+          "raw_record_id": "ingestion:97:11",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:11",
+    "standard_unit_price": 2597.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:14"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.051890Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 41400,
+    "price": 28980,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-e9b661ee65f1d1a9ecfb4b9d47c137c6",
+    "public_source_listing_id": "listing-3dc03097d39f4773d067c01ecd986a37",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.051890Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection": "하라즈",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/09/53/23/item/2097002235309_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002235309",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002235309",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002235309&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.051890",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002235309&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "10팩",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/09/53/23/item/2097002235309_i1_232.jpg",
+            "match_key": "__no_brand__|프리미엄x 샴푸형 앰플염색 자연갈색 10팩||10팩",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "프리미엄X 샴푸형 앰플염색 자연갈색 10팩",
+            "normalized_name": "",
+            "original_price": 41400,
+            "package_quantity": 10.0,
+            "package_unit": "팩",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 28980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "10팩",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "b108aa3461129a6101e7815e6512c8508fc12a46a64693b2c629ab0111e3e454",
+          "raw_record_id": "ingestion:97:14",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:14",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:15"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.054821Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 41400,
+    "price": 28980,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-285cf1be683f04ab72162555ea8214c0",
+    "public_source_listing_id": "listing-236e6fdb7c848533cc919d9e20d0241d",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.054821Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection": "하라즈",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/16/53/23/item/2097002235316_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002235316",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002235316",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002235316&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.054821",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002235316&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "10팩",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/16/53/23/item/2097002235316_i1_232.jpg",
+            "match_key": "__no_brand__|프리미엄x 샴푸형 앰플염색 진한갈색 10팩||10팩",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "프리미엄X 샴푸형 앰플염색 진한갈색 10팩",
+            "normalized_name": "",
+            "original_price": 41400,
+            "package_quantity": 10.0,
+            "package_unit": "팩",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 28980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "10팩",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "34331679081384212e7cf3a40d6c3f8aee05edae8e535fac99673018ac1d5aad",
+          "raw_record_id": "ingestion:97:15",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:15",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:16"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.057755Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 41400,
+    "price": 28980,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-df10f903f80e70f1f5eb41ae8075f435",
+    "public_source_listing_id": "listing-4c0d10628085d7acf1d93c0aedf442cf",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.057755Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection": "하라즈",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/23/53/23/item/2097002235323_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002235323",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002235323",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002235323&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.057755",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002235323&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "10팩",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/23/53/23/item/2097002235323_i1_232.jpg",
+            "match_key": "__no_brand__|프리미엄x 샴푸형 앰플염색 흑색 10팩||10팩",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "프리미엄X 샴푸형 앰플염색 흑색 10팩",
+            "normalized_name": "",
+            "original_price": 41400,
+            "package_quantity": 10.0,
+            "package_unit": "팩",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 28980,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "10팩",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "b0696b29fea12eb5ff6122ddcc32da10c1a254093ee8692994016365b7dbf431",
+          "raw_record_id": "ingestion:97:16",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:16",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:12"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.046392Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 38500,
+    "price": 26950,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-d53f90853688fe3d5d4fdac9f67f1d7d",
+    "public_source_listing_id": "listing-7bb082a290d4b3b2655f31b4df9a9446",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.046392Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection": "하라즈",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/30/53/23/item/2097002235330_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002235330",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002235330",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002235330&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.046392",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002235330&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "10팩",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/30/53/23/item/2097002235330_i1_232.jpg",
+            "match_key": "__no_brand__|샴푸형 앰플염색 내추럴브라운 10팩||10팩",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "샴푸형 앰플염색 내추럴브라운 10팩",
+            "normalized_name": "",
+            "original_price": 38500,
+            "package_quantity": 10.0,
+            "package_unit": "팩",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 26950,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "10팩",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "9b14ea75c7a383b14712af9e361a665a390280f065236d39461ef38eea3edf6a",
+          "raw_record_id": "ingestion:97:12",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:12",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:13"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.049311Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 38500,
+    "price": 26950,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-371a4a980a7aab32bc90a0a61c7617f3",
+    "public_source_listing_id": "listing-54ce2628f5b67035fa55c2095205a2a1",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.049311Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection": "하라즈",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/47/53/23/item/2097002235347_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002235347",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002235347",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002235347&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.049311",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002235347&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "10팩",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/47/53/23/item/2097002235347_i1_232.jpg",
+            "match_key": "__no_brand__|샴푸형 앰플염색 다크브라운 10팩||10팩",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "샴푸형 앰플염색 다크브라운 10팩",
+            "normalized_name": "",
+            "original_price": 38500,
+            "package_quantity": 10.0,
+            "package_unit": "팩",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 26950,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "10팩",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "a3ac40592369f6187135801ac694e790e0e2916d1ec3fd410504d239abe2a4c3",
+          "raw_record_id": "ingestion:97:13",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:13",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:3"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.023757Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 8500,
+    "price": 5950,
+    "price_per_100g": 5950.0,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-6e91bdea277a7d5e184a290c36f4fbe3",
+    "public_source_listing_id": "listing-b086d9b42b8a8c373960b3b9383a9124",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.023757Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/83/20/27/item/2097002272083_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002272083",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002272083",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002272083&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.023757",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002272083&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "100g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/83/20/27/item/2097002272083_i1_232.jpg",
+            "match_key": "__no_brand__|톡톡스킨 트러블 청솝 천연 어성초 비누 100g||100g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "톡톡스킨 트러블 청솝, 천연 어성초 비누 100g",
+            "normalized_name": "",
+            "original_price": 8500,
+            "package_quantity": 100.0,
+            "package_unit": "g",
+            "price_per_100g": 5950.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5950,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "100g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "c3217e52283e73fa7f587d022b1d7aa160fff5b2448a7d1a0b0f0127f525eb20",
+          "raw_record_id": "ingestion:97:3",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:3",
+    "standard_unit_price": 5950.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:4"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.026087Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 8500,
+    "price": 5950,
+    "price_per_100g": 5950.0,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-56757230aff1be145e9d82f4acf7a808",
+    "public_source_listing_id": "listing-53fd602dc426d757d4daa00dcc220843",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.026087Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/61/28/27/item/2097002272861_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002272861",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002272861",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002272861&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.026087",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002272861&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "100g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/61/28/27/item/2097002272861_i1_232.jpg",
+            "match_key": "__no_brand__|톡톡스킨 피지 청솝 천연 숯비누 100g||100g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "톡톡스킨 피지 청솝, 천연 숯비누 100g",
+            "normalized_name": "",
+            "original_price": 8500,
+            "package_quantity": 100.0,
+            "package_unit": "g",
+            "price_per_100g": 5950.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5950,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "100g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "77e8db882d0dd4f928b6aee4e893e9caec09f57acd755969c8c593395f3f9fcb",
+          "raw_record_id": "ingestion:97:4",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:4",
+    "standard_unit_price": 5950.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:2"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.021529Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 8500,
+    "price": 5950,
+    "price_per_100g": 5950.0,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-e5ce8b27c64c9eabb130d4908c4e5b78",
+    "public_source_listing_id": "listing-d29efefec58d9e8b26452cbb993d1644",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.021529Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/96/31/27/item/2097002273196_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002273196",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002273196",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002273196&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.021529",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002273196&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "100g",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/96/31/27/item/2097002273196_i1_232.jpg",
+            "match_key": "__no_brand__|톡톡스킨 각질 청솝 레몬 비누 100g||100g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "톡톡스킨 각질 청솝, 레몬 비누 100g",
+            "normalized_name": "",
+            "original_price": 8500,
+            "package_quantity": 100.0,
+            "package_unit": "g",
+            "price_per_100g": 5950.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5950,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "100g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "f613ef037214bdaeea93fcbdcd53066079b4fa4440b09663196ebad6c278db85",
+          "raw_record_id": "ingestion:97:2",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:2",
+    "standard_unit_price": 5950.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:7"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.034041Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 28200,
+    "price": 19740,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-08ea7023b2ba4a883963005fe8e3fdb5",
+    "public_source_listing_id": "listing-f6d4c10b15e71a1062f9a276eb2f5aac",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.034041Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection": "논코스트",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/19/32/27/item/2097002273219_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002273219",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002273219",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002273219&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.034041",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002273219&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "1055ml",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/19/32/27/item/2097002273219_i1_232.jpg",
+            "match_key": "__no_brand__|프리미엄 맥주효모 비건 탈모 퍼퓸 샴푸 1055ml 대용량 유자우디향||1055ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "프리미엄 맥주효모 비건 탈모 퍼퓸 샴푸 1055ml 대용량  유자우디향",
+            "normalized_name": "",
+            "original_price": 28200,
+            "package_quantity": 1055.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 19740,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "1055ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "369c8132ac75d7c51733801f666f2c682aac7af5d2ae24ea962522f9e5f92e36",
+          "raw_record_id": "ingestion:97:7",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:7",
+    "standard_unit_price": 1871.09,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:8"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.036829Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 28200,
+    "price": 19740,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-ec18dde44d8c7da23a0d615ff0cb0523",
+    "public_source_listing_id": "listing-c9006fb396f411d8b1164514819b3cd9",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.036829Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection": "논코스트",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/26/32/27/item/2097002273226_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002273226",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002273226",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002273226&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.036829",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002273226&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "1055ml",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/26/32/27/item/2097002273226_i1_232.jpg",
+            "match_key": "__no_brand__|프리미엄 맥주효모 비건 퍼퓸 트리트먼트 1055ml 대용량 유자우디향||1055ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "프리미엄 맥주효모 비건 퍼퓸 트리트먼트 1055ml 대용량 유자우디향",
+            "normalized_name": "",
+            "original_price": 28200,
+            "package_quantity": 1055.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 19740,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "1055ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "765be4940bfece4e5db8715a4b37efa973c0e4b1354fc172035e422122eed943",
+          "raw_record_id": "ingestion:97:8",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:8",
+    "standard_unit_price": 1871.09,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:5"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.028715Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 25600,
+    "price": 17920,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-cd7f78ba7f1e2d0ce3b7eb63e46c5c74",
+    "public_source_listing_id": "listing-151a34e14a0f30bae4ca1aeee6120eda",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.028715Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection": "논코스트",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/33/32/27/item/2097002273233_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002273233",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002273233",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002273233&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.028715",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002273233&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "1055ml",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/33/32/27/item/2097002273233_i1_232.jpg",
+            "match_key": "__no_brand__|프리미엄 비건 퍼퓸 바디워시 1055ml 대용량 유자우디향||1055ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "프리미엄 비건 퍼퓸 바디워시 1055ml 대용량  유자우디향",
+            "normalized_name": "",
+            "original_price": 25600,
+            "package_quantity": 1055.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 17920,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "1055ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "26ae2211a038a8e7aa850217e1d32e1e0443aa970c1a0ccb6c48205e3c4e36c3",
+          "raw_record_id": "ingestion:97:5",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:5",
+    "standard_unit_price": 1698.5782,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:6"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.030823Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 25600,
+    "price": 17920,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-37b5e41711f8d7bc4037c9d7ac28645b",
+    "public_source_listing_id": "listing-6721213a40da71749d9b1c2de91da63c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.030823Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection": "논코스트",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/40/32/27/item/2097002273240_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002273240",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002273240",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002273240&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.030823",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002273240&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "1055ml",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/40/32/27/item/2097002273240_i1_232.jpg",
+            "match_key": "__no_brand__|프리미엄 비건 퍼퓸 고보습 바디로션 1055ml 대용량 유자우디향||1055ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "프리미엄 비건 퍼퓸 고보습 바디로션 1055ml 대용량 유자우디향",
+            "normalized_name": "",
+            "original_price": 25600,
+            "package_quantity": 1055.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 17920,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "1055ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "17eccec5ca61ef5069e923c9bc7f9c18eb45a1ef7d633a1c4525866dc45ed771",
+          "raw_record_id": "ingestion:97:6",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:6",
+    "standard_unit_price": 1698.5782,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:96:64"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        96
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:53:56.967513Z",
+    "discount_rate": 0.05,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 23800,
+    "price": 22610,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-4a79a13dc9f44075f68617bd73e5cda1",
+    "public_source_listing_id": "listing-8e0ec9e17afa79e2c829cfb617a2b906",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:53:56.967513Z",
+          "ingestion_id": 96,
+          "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+          "mart_native_category_id": "6000213997",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "제지/위생/건강",
+              "collection": "모나리자",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/74/02/30/item/2097002300274_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213997",
+              "mart_native_category_path": "제지/위생/건강",
+              "mart_native_code": "2097002300274",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002300274",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002300274&siteNo=7009&salestrNo=2551",
+              "unit_price_display": "10m 당 251원"
+            },
+            "brand": "__no_brand__",
+            "category": "제지/위생/건강",
+            "crawled_at": "2026-09-03T01:53:56.967513",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002300274&siteNo=7009&salestrNo=2551",
+            "discount_percent": 5.0,
+            "display_unit": "30롤",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/74/02/30/item/2097002300274_i1_290.jpg",
+            "match_key": "__no_brand__|ssg only 모나리자 쓱싹 라벤더 30m 30롤||30롤",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "(SSG Only)모나리자 쓱싹 라벤더 30m*30롤",
+            "normalized_name": "",
+            "original_price": 23800,
+            "package_quantity": 30.0,
+            "package_unit": "롤",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 22610,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "30롤",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "5569ec9124903ae5f9094c8b331b8d39241f2b62236efb1c8c8ed0693025a843",
+          "raw_record_id": "ingestion:96:64",
+          "source_category_path": [
+            "제지/위생/건강"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:96:64",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:98:1"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        98
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:21:09.412683Z",
+    "discount_rate": 0.5,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 35800,
+    "price": 17900,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-743474d1dbecdbb2adccb60993d45b17",
+    "public_source_listing_id": "listing-5b669b71006ed632cdba59a3e146dfa1",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:21:09.412683Z",
+          "ingestion_id": 98,
+          "ingestion_received_at": "2026-09-02T17:21:11.611474Z",
+          "mart_native_category_id": "6000214420",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "청소/생활용품",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/81/30/33/item/2097002333081_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214420",
+              "mart_native_category_path": "청소/생활용품",
+              "mart_native_code": "2097002333081",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002333081",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002333081&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "청소/생활용품",
+            "crawled_at": "2026-09-03T02:21:09.412683",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002333081&siteNo=7009&salestrNo=2551",
+            "discount_percent": 50.0,
+            "display_unit": "120매",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/81/30/33/item/2097002333081_i1_232.jpg",
+            "match_key": "__no_brand__|수뜰리에 독일더마 초고농축 건조기시트 코튼블랑향 120매||120매",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "수뜰리에 독일더마 초고농축 건조기시트 코튼블랑향 120매",
+            "normalized_name": "",
+            "original_price": 35800,
+            "package_quantity": 120.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 17900,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "120매",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "d6373194e1fb40a4b4680d0876704d8f259e8d9b1e3aeb748bd9035e30cf3bda",
+          "raw_record_id": "ingestion:98:1",
+          "source_category_path": [
+            "청소/생활용품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:98:1",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:98:53"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        98
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:21:09.646146Z",
+    "discount_rate": 0.3,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 9800,
+    "price": 6860,
+    "price_per_100g": 686.0,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-bbe1b35e0448cee9cb108feac3d11833",
+    "public_source_listing_id": "listing-88d93732ecade4704f5fb8d25146b2be",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:21:09.646146Z",
+          "ingestion_id": 98,
+          "ingestion_received_at": "2026-09-02T17:21:11.611474Z",
+          "mart_native_category_id": "6000214420",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "청소/생활용품",
+              "collection": "아이앤어스",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/02/56/34/item/2097002345602_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214420",
+              "mart_native_category_path": "청소/생활용품",
+              "mart_native_code": "2097002345602",
+              "origin": "domestic",
+              "origin_label": "국내산",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002345602",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002345602&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "청소/생활용품",
+            "crawled_at": "2026-09-03T02:21:09.646146",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002345602&siteNo=7009&salestrNo=2551",
+            "discount_percent": 30.0,
+            "display_unit": "1kg",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/02/56/34/item/2097002345602_i1_290.jpg",
+            "match_key": "__no_brand__|국내산 프리미엄 과탄산소다 1kg||1kg",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "국내산 프리미엄 과탄산소다 1kg",
+            "normalized_name": "",
+            "original_price": 9800,
+            "package_quantity": 1.0,
+            "package_unit": "kg",
+            "price_per_100g": 686.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6860,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "1kg",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "f6b9b94eb2a72f0d979c1efa7e21ad0f4e31c53551bd251f685da3db82c7eb86",
+          "raw_record_id": "ingestion:98:53",
+          "source_category_path": [
+            "청소/생활용품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:98:53",
+    "standard_unit_price": 686.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:97:18"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        97
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:09:34.068841Z",
+    "discount_rate": 0.2,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 17000,
+    "price": 13600,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-1478b0cf1b8509f1dba2d9eda7f8d99a",
+    "public_source_listing_id": "listing-909f2c4c368bd0a9de439f448423638e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:09:34.068841Z",
+          "ingestion_id": 97,
+          "ingestion_received_at": "2026-09-02T17:09:35.267851Z",
+          "mart_native_category_id": "6000214658",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "헤어/바디/뷰티",
+              "collection": "하라즈",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/42/76/36/item/2097002367642_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214658",
+              "mart_native_category_path": "헤어/바디/뷰티",
+              "mart_native_code": "2097002367642",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002367642",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002367642&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "헤어/바디/뷰티",
+            "crawled_at": "2026-09-03T02:09:34.068841",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002367642&siteNo=7009&salestrNo=2551",
+            "discount_percent": 20.0,
+            "display_unit": "1L",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/42/76/36/item/2097002367642_i1_290.jpg",
+            "match_key": "__no_brand__|맥주효모 샴푸 플로럴머스크향 1l 대용량||1l",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "맥주효모 샴푸 플로럴머스크향 1L 대용량",
+            "normalized_name": "",
+            "original_price": 17000,
+            "package_quantity": 1.0,
+            "package_unit": "L",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 13600,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "1L",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "48b15a90a10b0ef9dd87c316c5d00356e87b0602e9abb6a079a556639cbe9e9a",
+          "raw_record_id": "ingestion:97:18",
+          "source_category_path": [
+            "헤어/바디/뷰티"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:97:18",
+    "standard_unit_price": 1360.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:98:19"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        98
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:21:09.453668Z",
+    "discount_rate": 0.4,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 16500,
+    "price": 9900,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-424f0ce49d0b8650eda8ced2f8f48fe3",
+    "public_source_listing_id": "listing-6a6538ff3e0b262dd73001de855b3929",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:21:09.453668Z",
+          "ingestion_id": 98,
+          "ingestion_received_at": "2026-09-02T17:21:11.611474Z",
+          "mart_native_category_id": "6000214420",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "청소/생활용품",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/36/30/40/item/2097002403036_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214420",
+              "mart_native_category_path": "청소/생활용품",
+              "mart_native_code": "2097002403036",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002403036",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002403036&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "청소/생활용품",
+            "crawled_at": "2026-09-03T02:21:09.453668",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002403036&siteNo=7009&salestrNo=2551",
+            "discount_percent": 40.0,
+            "display_unit": "2.1L",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/36/30/40/item/2097002403036_i1_232.jpg",
+            "match_key": "__no_brand__|쉬슬러 고농축 타깃워시 실내건조 세탁세제 2 1l 리필||2.1l",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "쉬슬러 고농축 타깃워시 실내건조 세탁세제 2.1L 리필",
+            "normalized_name": "",
+            "original_price": 16500,
+            "package_quantity": 2.1,
+            "package_unit": "L",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9900,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "2.1L",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "e3bf77c4eb538178cb4895b3fbe679a8239ce530b1252e07b7b9121b566cc79a",
+          "raw_record_id": "ingestion:98:19",
+          "source_category_path": [
+            "청소/생활용품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:98:19",
+    "standard_unit_price": 471.4286,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:98:18"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        98
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:21:09.451494Z",
+    "discount_rate": 0.4,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 16500,
+    "price": 9900,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-96ffa453990671ae2cc7e0e098b6e441",
+    "public_source_listing_id": "listing-d30ab34e5388ed43d9ad5c96fffe36c6",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:21:09.451494Z",
+          "ingestion_id": 98,
+          "ingestion_received_at": "2026-09-02T17:21:11.611474Z",
+          "mart_native_category_id": "6000214420",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "청소/생활용품",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/50/47/40/item/2097002404750_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214420",
+              "mart_native_category_path": "청소/생활용품",
+              "mart_native_code": "2097002404750",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002404750",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002404750&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "청소/생활용품",
+            "crawled_at": "2026-09-03T02:21:09.451494",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002404750&siteNo=7009&salestrNo=2551",
+            "discount_percent": 40.0,
+            "display_unit": "2.5L",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/50/47/40/item/2097002404750_i1_232.jpg",
+            "match_key": "__no_brand__|쉬슬러 고농축 액상세제 에이프릴 세탁세제 2 5l||2.5l",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "쉬슬러 고농축 액상세제 에이프릴 세탁세제 2.5L",
+            "normalized_name": "",
+            "original_price": 16500,
+            "package_quantity": 2.5,
+            "package_unit": "L",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9900,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "2.5L",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "f45fab4ac9a3e4cfff03d177098761e85750f2150862416758ef7c6016d6fcd5",
+          "raw_record_id": "ingestion:98:18",
+          "source_category_path": [
+            "청소/생활용품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:98:18",
+    "standard_unit_price": 396.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:98:15"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        98
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:21:09.444849Z",
+    "discount_rate": 0.4,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 14900,
+    "price": 8940,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-5cd329c7124bd5c35b214cafd376ac4c",
+    "public_source_listing_id": "listing-68f4d5293294c304f861e270fe3351ec",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:21:09.444849Z",
+          "ingestion_id": 98,
+          "ingestion_received_at": "2026-09-02T17:21:11.611474Z",
+          "mart_native_category_id": "6000214420",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "청소/생활용품",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/50/54/40/item/2097002405450_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214420",
+              "mart_native_category_path": "청소/생활용품",
+              "mart_native_code": "2097002405450",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002405450",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002405450&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "청소/생활용품",
+            "crawled_at": "2026-09-03T02:21:09.444849",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002405450&siteNo=7009&salestrNo=2551",
+            "discount_percent": 40.0,
+            "display_unit": "2.1L",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/50/54/40/item/2097002405450_i1_232.jpg",
+            "match_key": "__no_brand__|쉬슬러 고농축 액상세제 에이프릴 세탁세제 2 1l 리필||2.1l",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "쉬슬러 고농축 액상세제 에이프릴 세탁세제 2.1L 리필",
+            "normalized_name": "",
+            "original_price": 14900,
+            "package_quantity": 2.1,
+            "package_unit": "L",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 8940,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "2.1L",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "9a21ea4b27ad96c5be4c327820a1ed1196d6025a28e769fdd6f426aa4c9a4bfe",
+          "raw_record_id": "ingestion:98:15",
+          "source_category_path": [
+            "청소/생활용품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:98:15",
+    "standard_unit_price": 425.7143,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:98:17"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        98
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:21:09.449006Z",
+    "discount_rate": 0.4,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 16500,
+    "price": 9900,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-7be5f46b656f4bd4f7e4b4d56a09923b",
+    "public_source_listing_id": "listing-b712e1ec20e4c6f3d4d110a4202c737f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:21:09.449006Z",
+          "ingestion_id": 98,
+          "ingestion_received_at": "2026-09-02T17:21:11.611474Z",
+          "mart_native_category_id": "6000214420",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "청소/생활용품",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/67/54/40/item/2097002405467_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214420",
+              "mart_native_category_path": "청소/생활용품",
+              "mart_native_code": "2097002405467",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002405467",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002405467&siteNo=7009&salestrNo=2551",
+              "unit_price_display": ""
+            },
+            "brand": "__no_brand__",
+            "category": "청소/생활용품",
+            "crawled_at": "2026-09-03T02:21:09.449006",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002405467&siteNo=7009&salestrNo=2551",
+            "discount_percent": 40.0,
+            "display_unit": "2L",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/67/54/40/item/2097002405467_i1_232.jpg",
+            "match_key": "__no_brand__|쉬슬러 산소 표백제 액상세제 얼룩제거 2l||2l",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "쉬슬러 산소 표백제 액상세제 얼룩제거 2L",
+            "normalized_name": "",
+            "original_price": 16500,
+            "package_quantity": 2.0,
+            "package_unit": "L",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9900,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "2L",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "074e67389a937d2581864afd17ca683e6c1e3c4be30ea7ac35a48c4c2c1bfe25",
+          "raw_record_id": "ingestion:98:17",
+          "source_category_path": [
+            "청소/생활용품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:98:17",
+    "standard_unit_price": 495.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:96:58"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        96
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:53:56.935045Z",
+    "discount_rate": 0.05,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 10900,
+    "price": 10355,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-6cdf119c628f9bfc12984924bbdaa563",
+    "public_source_listing_id": "listing-857a4c43210af1563f5bf381271bab6c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:53:56.935045Z",
+          "ingestion_id": 96,
+          "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+          "mart_native_category_id": "6000213997",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "제지/위생/건강",
+              "collection": "모나리자",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/92/28/41/item/2097002412892_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213997",
+              "mart_native_category_path": "제지/위생/건강",
+              "mart_native_code": "2097002412892",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002412892",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002412892&siteNo=7009&salestrNo=2551",
+              "unit_price_display": "10매 당 115원"
+            },
+            "brand": "__no_brand__",
+            "category": "제지/위생/건강",
+            "crawled_at": "2026-09-03T01:53:56.935045",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002412892&siteNo=7009&salestrNo=2551",
+            "discount_percent": 5.0,
+            "display_unit": "300매×3",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/92/28/41/item/2097002412892_i1_290.jpg",
+            "match_key": "__no_brand__|ssg only 모나리자 쓱싹 미용티슈 300매 3입||300매×3",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "(SSG Only)모나리자 쓱싹 미용티슈 300매*3입",
+            "normalized_name": "",
+            "original_price": 10900,
+            "package_quantity": 300.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 10355,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "300매×3",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "87036075b138ed28a06671f1d6ee98a064262b1a0999ca5d5c193f60f273f065",
+          "raw_record_id": "ingestion:96:58",
+          "source_category_path": [
+            "제지/위생/건강"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:96:58",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:96:69"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        96
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:53:56.994171Z",
+    "discount_rate": 0.2247,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 8900,
+    "price": 6900,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-99c1d1835671ac55727316bb665d9f04",
+    "public_source_listing_id": "listing-1adeea8c41211178d48308af4fad757e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:53:56.994171Z",
+          "ingestion_id": 96,
+          "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+          "mart_native_category_id": "6000213997",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "제지/위생/건강",
+              "collection": "미래생활",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/62/95/42/item/2097002429562_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213997",
+              "mart_native_category_path": "제지/위생/건강",
+              "mart_native_code": "2097002429562",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002429562",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002429562&siteNo=7009&salestrNo=2551",
+              "unit_price_display": "10매 당 115원"
+            },
+            "brand": "__no_brand__",
+            "category": "제지/위생/건강",
+            "crawled_at": "2026-09-03T01:53:56.994171",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002429562&siteNo=7009&salestrNo=2551",
+            "discount_percent": 22.5,
+            "display_unit": "200매×3",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/62/95/42/item/2097002429562_i1_290.jpg",
+            "match_key": "__no_brand__|잘풀리는집 스퀘어 미용티슈 200매 x 3입||200매×3",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "잘풀리는집 스퀘어 미용티슈 200매 x 3입",
+            "normalized_name": "",
+            "original_price": 8900,
+            "package_quantity": 200.0,
+            "package_unit": "매",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6900,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "200매×3",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ce6c7299642b760943525aea94d87f5e18ef6b7956379cc7aa8255e3fb166d9c",
+          "raw_record_id": "ingestion:96:69",
+          "source_category_path": [
+            "제지/위생/건강"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:96:69",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:96:28"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        96
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:53:56.782714Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 31800,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-65a594a5f16b22a64e2fc2fcbc6e23b4",
+    "public_source_listing_id": "listing-787b6320f80a89d9418fe844d0560e12",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:53:56.782714Z",
+          "ingestion_id": 96,
+          "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+          "mart_native_category_id": "6000213997",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "제지/위생/건강",
+              "collection": "깨끗한나라",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/92/40/43/item/2097002434092_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213997",
+              "mart_native_category_path": "제지/위생/건강",
+              "mart_native_code": "2097002434092",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002434092",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002434092&siteNo=7009&salestrNo=2551",
+              "unit_price_display": "10m 당 353원"
+            },
+            "brand": "__no_brand__",
+            "category": "제지/위생/건강",
+            "crawled_at": "2026-09-03T01:53:56.782714",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002434092&siteNo=7009&salestrNo=2551",
+            "discount_percent": null,
+            "display_unit": "30롤",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/92/40/43/item/2097002434092_i1_290.jpg",
+            "match_key": "__no_brand__|순수 소프트 화장지 3겹 30m 30롤||30롤",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "순수 소프트 화장지 3겹 30M 30롤",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 30.0,
+            "package_unit": "롤",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 31800,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "30롤",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ad1dcd983d4d0b2f5aa42f086d3ce915b1da014c95304f1899b3eaf40fcca06f",
+          "raw_record_id": "ingestion:96:28",
+          "source_category_path": [
+            "제지/위생/건강"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:96:28",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:100:4"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        100
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T17:42:12.696625Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 15600,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-c77131818ebdd92db08c29721220a323",
+    "public_source_listing_id": "listing-9db4fd7faf77a0cc27faa4d37530f7d0",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T17:42:12.696625Z",
+          "ingestion_id": 100,
+          "ingestion_received_at": "2026-09-02T17:42:14.155584Z",
+          "mart_native_category_id": "6000214128",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "주방용품",
+              "collection": "깨끗한나라",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/08/41/43/item/2097002434108_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000214128",
+              "mart_native_category_path": "주방용품",
+              "mart_native_code": "2097002434108",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002434108",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002434108&siteNo=7009&salestrNo=2551",
+              "unit_price_display": "1매 당 26원"
+            },
+            "brand": "__no_brand__",
+            "category": "주방용품",
+            "crawled_at": "2026-09-03T02:42:12.696625",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002434108&siteNo=7009&salestrNo=2551",
+            "discount_percent": null,
+            "display_unit": "4입",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/08/41/43/item/2097002434108_i1_290.jpg",
+            "match_key": "__no_brand__|뽑아쓰는 키친타올 톡톡 150매 4입||4입",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "뽑아쓰는 키친타올 톡톡 150매 4입",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 4.0,
+            "package_unit": "입",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 15600,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "4입",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "cf14b36976da28ec4a06b4cd1ad2fbe48585c585fc9153ed3c98109a42132e45",
+          "raw_record_id": "ingestion:100:4",
+          "source_category_path": [
+            "주방용품"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:100:4",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:96:15"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        96
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:53:56.725894Z",
+    "discount_rate": 0.1,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 8400,
+    "price": 7560,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-913f4204d549fdf46c4c91951666807c",
+    "public_source_listing_id": "listing-1da0dd3729e732bd5887583e9c0616db",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:53:56.725894Z",
+          "ingestion_id": 96,
+          "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+          "mart_native_category_id": "6000213997",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "제지/위생/건강",
+              "collection": "유기농본",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/91/24/46/item/2097002462491_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213997",
+              "mart_native_category_path": "제지/위생/건강",
+              "mart_native_code": "2097002462491",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002462491",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002462491&siteNo=7009&salestrNo=2551",
+              "unit_price_display": "1개 당 756원"
+            },
+            "brand": "__no_brand__",
+            "category": "제지/위생/건강",
+            "crawled_at": "2026-09-03T01:53:56.725894",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002462491&siteNo=7009&salestrNo=2551",
+            "discount_percent": 10.0,
+            "display_unit": "10개입",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/91/24/46/item/2097002462491_i1_232.jpg",
+            "match_key": "__no_brand__|본플러스 도톰한 유기농순면 오버나이트 10개입||10개입",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "본플러스 도톰한 유기농순면 오버나이트 10개입",
+            "normalized_name": "",
+            "original_price": 8400,
+            "package_quantity": 10.0,
+            "package_unit": "개입",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7560,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "10개입",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "c3cafe118c91ae38a5987ea63b768d90bdb6e8d9fc3fe4bc2656f2d01593d57f",
+          "raw_record_id": "ingestion:96:15",
+          "source_category_path": [
+            "제지/위생/건강"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:96:15",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:96:16"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        96
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:53:56.728122Z",
+    "discount_rate": 0.1,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": 8400,
+    "price": 7560,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-944424b3dcc073aa799090436cfb7817",
+    "public_source_listing_id": "listing-aef37ed9b9241e23768a22abae927ab1",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:53:56.728122Z",
+          "ingestion_id": 96,
+          "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+          "mart_native_category_id": "6000213997",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "제지/위생/건강",
+              "collection": "유기농본",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/07/25/46/item/2097002462507_i1_232.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213997",
+              "mart_native_category_path": "제지/위생/건강",
+              "mart_native_code": "2097002462507",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002462507",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002462507&siteNo=7009&salestrNo=2551",
+              "unit_price_display": "1개 당 189원"
+            },
+            "brand": "__no_brand__",
+            "category": "제지/위생/건강",
+            "crawled_at": "2026-09-03T01:53:56.728122",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002462507&siteNo=7009&salestrNo=2551",
+            "discount_percent": 10.0,
+            "display_unit": "40개입",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/07/25/46/item/2097002462507_i1_232.jpg",
+            "match_key": "__no_brand__|본플러스 도톰한 유기농순면 팬티라이너 일반 40개입||40개입",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "본플러스 도톰한 유기농순면 팬티라이너 일반 40개입",
+            "normalized_name": "",
+            "original_price": 8400,
+            "package_quantity": 40.0,
+            "package_unit": "개입",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7560,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "40개입",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "5b04758aa4823b30b832e2df364dd1531de8dd1f544080c4eec0d878a96e3780",
+          "raw_record_id": "ingestion:96:16",
+          "source_category_path": [
+            "제지/위생/건강"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:96:16",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:96:29"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        96
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:53:56.788271Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 33800,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-f6c0cb73580a46c631f61324e6d09b73",
+    "public_source_listing_id": "listing-daf35e1c2bc3440291a6696d909ef970",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:53:56.788271Z",
+          "ingestion_id": 96,
+          "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+          "mart_native_category_id": "6000213997",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "제지/위생/건강",
+              "collection": "깨끗한나라",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/60/62/46/item/2097002466260_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213997",
+              "mart_native_category_path": "제지/위생/건강",
+              "mart_native_code": "2097002466260",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002466260",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002466260&siteNo=7009&salestrNo=2551",
+              "unit_price_display": "10m 당 402원"
+            },
+            "brand": "__no_brand__",
+            "category": "제지/위생/건강",
+            "crawled_at": "2026-09-03T01:53:56.788271",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002466260&siteNo=7009&salestrNo=2551",
+            "discount_percent": null,
+            "display_unit": "30롤",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/60/62/46/item/2097002466260_i1_290.jpg",
+            "match_key": "__no_brand__|벚꽃 프리미엄 3겹 화장지 28m 30롤||30롤",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "벚꽃 프리미엄 3겹 화장지 28M 30롤",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 30.0,
+            "package_unit": "롤",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 33800,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "30롤",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "e68c849d6bf7e979ce7980c34675f476e8acc52844b0048dfe0721285e52727f",
+          "raw_record_id": "ingestion:96:29",
+          "source_category_path": [
+            "제지/위생/건강"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:96:29",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:96:20"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        96
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:53:56.741562Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 37800,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-406b6cd38a20a4304b62e32817e13b9b",
+    "public_source_listing_id": "listing-568a0cc085a770e7b0d7eff6ce0f2132",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:53:56.741562Z",
+          "ingestion_id": 96,
+          "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+          "mart_native_category_id": "6000213997",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "제지/위생/건강",
+              "collection": "깨끗한나라",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/80/03/47/item/2097002470380_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213997",
+              "mart_native_category_path": "제지/위생/건강",
+              "mart_native_code": "2097002470380",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002470380",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002470380&siteNo=7009&salestrNo=2551",
+              "unit_price_display": "10m 당 420원"
+            },
+            "brand": "__no_brand__",
+            "category": "제지/위생/건강",
+            "crawled_at": "2026-09-03T01:53:56.741562",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002470380&siteNo=7009&salestrNo=2551",
+            "discount_percent": null,
+            "display_unit": "30롤",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/80/03/47/item/2097002470380_i1_290.jpg",
+            "match_key": "__no_brand__|순수 프리미엄 3겹 화장지 30m 30롤||30롤",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "순수 프리미엄 3겹 화장지 30M 30롤",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 30.0,
+            "package_unit": "롤",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 37800,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "30롤",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "da99410c511efe29eeb7b8f463ac778967de2ddb4d00524203dd481d36389931",
+          "raw_record_id": "ingestion:96:20",
+          "source_category_path": [
+            "제지/위생/건강"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:96:20",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:96:26"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        96
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T16:53:56.771449Z",
+    "discount_rate": null,
+    "event_name": "이마트 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 26900,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-87fbb6cb6b157e6679292fad923d934a",
+    "public_source_listing_id": "listing-7b01201d2c7de6e4b9e1d8647e074bde",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T16:53:56.771449Z",
+          "ingestion_id": 96,
+          "ingestion_received_at": "2026-09-02T16:53:57.933987Z",
+          "mart_native_category_id": "6000213997",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "category_hint": "제지/위생/건강",
+              "collection": "크리넥스",
+              "collection_surface": "category",
+              "external_seller": false,
+              "image_url": "https://sitem.ssgcdn.com/01/50/48/item/2097002485001_i1_290.jpg",
+              "mart": "이마트",
+              "mart_native_category_id": "6000213997",
+              "mart_native_category_path": "제지/위생/건강",
+              "mart_native_code": "2097002485001",
+              "promo_label": "",
+              "salestr_no": "2551",
+              "shipping_labels": [
+                "새벽배송 내일(금) 07:00까지 도착",
+                "새벽배송",
+                "새벽배송",
+                "내일(금) 07:00까지 도착"
+              ],
+              "shipping_type_code": "20",
+              "site_no": "7009",
+              "source_name": "emart",
+              "source_record_key": "2097002485001",
+              "source_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002485001&siteNo=7009&salestrNo=2551",
+              "unit_price_display": "10m 당 374원"
+            },
+            "brand": "__no_brand__",
+            "category": "제지/위생/건강",
+            "crawled_at": "2026-09-03T01:53:56.771449",
+            "detail_url": "https://emart.ssg.com/item/itemView.ssg?itemId=2097002485001&siteNo=7009&salestrNo=2551",
+            "discount_percent": null,
+            "display_unit": "24롤",
+            "event_name": "이마트 할인",
+            "image_url": "https://sitem.ssgcdn.com/01/50/48/item/2097002485001_i1_290.jpg",
+            "match_key": "__no_brand__|ssg only 크리넥스 3겹 컴포트소프트 비타민 e 30m 24롤||24롤",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "(SSG Only)크리넥스 3겹 컴포트소프트 비타민 E+ 30M*24롤",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 24.0,
+            "package_unit": "롤",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 26900,
+            "source": "emart",
+            "store": "이마트",
+            "unit": "24롤",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "28d607fbbae5fe7b1872178e0f4c67d35a5ef09a499af8ac2ce0fe8dab4adf4c",
+          "raw_record_id": "ingestion:96:26",
+          "source_category_path": [
+            "제지/위생/건강"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:96:26",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:2:74"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        2
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:45:36.829415Z",
+    "discount_rate": 0.2506,
+    "event_name": "행사상품",
+    "offer_state": "active",
+    "original_price": 3990,
+    "price": 2990,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-090b109d28766595468863a1614b6782",
+    "public_source_listing_id": "listing-3c374a982425088aad2ef5865652a671",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:45:36.829415Z",
+          "ingestion_id": 2,
+          "ingestion_received_at": "2026-08-31T01:46:49.159187Z",
+          "mart_native_category_id": "3",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "양배추(국산)통",
+              "canon_hash": "ddf24a8a9ff0052aeab3cdb66746f99f115278cc",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=000005495&storeType=HYPER",
+              "category_hint": "양배추",
+              "docId": "H000005495N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%96%91%EB%B0%B0%EC%B6%94-%EA%B5%AD%EC%82%B0-%ED%86%B5/000005495",
+              "mart_native_category_id": "3",
+              "mart_native_category_path": "채소 > 양배추/양상추/샐러리/기타 > 양배추 > 양배추",
+              "mart_native_code": "000005495",
+              "normalized_name": "양배추(국산)통",
+              "origin": "domestic",
+              "origin_label": "국산",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=000005495&storeType=HYPER",
+              "raw_name": "양배추(국산)통",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "000005495",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=000005495&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 2990.0
+            },
+            "brand": "__no_brand__",
+            "category": "양배추",
+            "crawled_at": "2026-08-31T10:45:36.829415",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=000005495&storeType=HYPER",
+            "discount_percent": 25.0,
+            "display_unit": "1개",
+            "event_name": "행사상품",
+            "image_url": "",
+            "match_key": "__no_brand__|양배추 국산 통||1개",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "양배추(국산)통",
+            "normalized_name": "양배추(국산)통",
+            "original_price": 3990,
+            "package_quantity": 1.0,
+            "package_unit": "개",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2990,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "1개",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "6212fe9d32399bada8bde5be66659baff4105d4f25f6b1df751c350051c4f343",
+          "raw_record_id": "ingestion:2:74",
+          "source_category_path": [
+            "채소",
+            "양배추/양상추/샐러리/기타",
+            "양배추",
+            "양배추"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:2:74",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:51:79"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        51
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:38:28.504439Z",
+    "discount_rate": 0.2506,
+    "event_name": "행사상품",
+    "offer_state": "active",
+    "original_price": 3990,
+    "price": 2990,
+    "price_per_100g": null,
+    "price_state": "normal",
+    "promotion_conditions": {},
+    "promotion_type": "was_now_price",
+    "public_offer_event_id": "offer-90b66d03a9f1b903e57ce871608fa2b3",
+    "public_source_listing_id": "listing-3c374a982425088aad2ef5865652a671",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:38:28.504439Z",
+          "ingestion_id": 51,
+          "ingestion_received_at": "2026-09-02T13:39:48.136333Z",
+          "mart_native_category_id": "3",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "양배추(국산)통",
+              "canon_hash": "ddf24a8a9ff0052aeab3cdb66746f99f115278cc",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=000005495&storeType=HYPER",
+              "category_hint": "양배추",
+              "docId": "H000005495N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%96%91%EB%B0%B0%EC%B6%94-%EA%B5%AD%EC%82%B0-%ED%86%B5/000005495",
+              "mart_native_category_id": "3",
+              "mart_native_category_path": "채소 > 양배추/양상추/샐러리/기타 > 양배추 > 양배추",
+              "mart_native_code": "000005495",
+              "normalized_name": "양배추(국산)통",
+              "origin": "domestic",
+              "origin_label": "국산",
+              "period": "~2026-09-02",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=000005495&storeType=HYPER",
+              "raw_name": "양배추(국산)통",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "000005495",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=000005495&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 2990.0
+            },
+            "brand": "__no_brand__",
+            "category": "양배추",
+            "crawled_at": "2026-09-02T22:38:28.504439",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=000005495&storeType=HYPER",
+            "discount_percent": 25.0,
+            "display_unit": "1개",
+            "event_name": "행사상품",
+            "image_url": "",
+            "match_key": "__no_brand__|양배추 국산 통||1개",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "양배추(국산)통",
+            "normalized_name": "양배추(국산)통",
+            "original_price": 3990,
+            "package_quantity": 1.0,
+            "package_unit": "개",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2990,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "1개",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_to": "2026-09-02T00:00:00",
+            "valid_until": "2026-09-02T00:00:00"
+          },
+          "raw_payload_sha256": "10bc5faab4662f9fed7834f9ede067eda82c39dec13d3bf67a2fdaf653d70911",
+          "raw_record_id": "ingestion:51:79",
+          "source_category_path": [
+            "채소",
+            "양배추/양상추/샐러리/기타",
+            "양배추",
+            "양배추"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:51:79",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": "2026-09-01T15:00:00Z"
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:51:92"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        51
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:38:28.505813Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-7793ed2ea38e6da24375dc803dece92e",
+    "public_source_listing_id": "listing-4aab95f17f02c3251e39a2d92a41150c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:38:28.505813Z",
+          "ingestion_id": 51,
+          "ingestion_received_at": "2026-09-02T13:39:48.136333Z",
+          "mart_native_category_id": "3",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "애호박(국산/1개)",
+              "canon_hash": "1c51ad68d391d93d60e212a4ebf5d27d589eff4e",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=000006262&storeType=HYPER",
+              "category_hint": "호박",
+              "docId": "H000006262N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%95%A0%ED%98%B8%EB%B0%95-%EA%B5%AD%EC%82%B0-1%EA%B0%9C/000006262",
+              "mart_native_category_id": "3",
+              "mart_native_category_path": "채소 > 오이/가지/호박/옥수수 > 호박 > 호박",
+              "mart_native_code": "000006262",
+              "normalized_name": "애호박(국산/1개)",
+              "origin": "domestic",
+              "origin_label": "국산",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=000006262&storeType=HYPER",
+              "raw_name": "애호박(국산/1개)",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "000006262",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=000006262&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1990.0
+            },
+            "brand": "__no_brand__",
+            "category": "호박",
+            "crawled_at": "2026-09-02T22:38:28.505813",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=000006262&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "1개",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|애호박 국산 1개||1개",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "애호박(국산/1개)",
+            "normalized_name": "애호박(국산/1개)",
+            "original_price": null,
+            "package_quantity": 1.0,
+            "package_unit": "개",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1990,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "1개",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "8a78ca46768fb68dda0025832bcb5f6f2663aed6a9fbe0076ec9c72fbe12109e",
+          "raw_record_id": "ingestion:51:92",
+          "source_category_path": [
+            "채소",
+            "오이/가지/호박/옥수수",
+            "호박",
+            "호박"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:51:92",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:2:90"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        2
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:45:36.831255Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 1990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-fd026febdaaadd3ec09c5cb177641b91",
+    "public_source_listing_id": "listing-4aab95f17f02c3251e39a2d92a41150c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:45:36.831255Z",
+          "ingestion_id": 2,
+          "ingestion_received_at": "2026-08-31T01:46:49.159187Z",
+          "mart_native_category_id": "3",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "애호박(국산/1개)",
+              "canon_hash": "1c51ad68d391d93d60e212a4ebf5d27d589eff4e",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=000006262&storeType=HYPER",
+              "category_hint": "호박",
+              "docId": "H000006262N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%95%A0%ED%98%B8%EB%B0%95-%EA%B5%AD%EC%82%B0-1%EA%B0%9C/000006262",
+              "mart_native_category_id": "3",
+              "mart_native_category_path": "채소 > 오이/가지/호박/옥수수 > 호박 > 호박",
+              "mart_native_code": "000006262",
+              "normalized_name": "애호박(국산/1개)",
+              "origin": "domestic",
+              "origin_label": "국산",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=000006262&storeType=HYPER",
+              "raw_name": "애호박(국산/1개)",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "000006262",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=000006262&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "1개",
+              "unit_price_displayed": 1990.0
+            },
+            "brand": "__no_brand__",
+            "category": "호박",
+            "crawled_at": "2026-08-31T10:45:36.831255",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=000006262&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "1개",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|애호박 국산 1개||1개",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "애호박(국산/1개)",
+            "normalized_name": "애호박(국산/1개)",
+            "original_price": null,
+            "package_quantity": 1.0,
+            "package_unit": "개",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1990,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "1개",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "d1b644e120931131f4085d20a9f3438b0d8517b5b1982620504c3738be24a446",
+          "raw_record_id": "ingestion:2:90",
+          "source_category_path": [
+            "채소",
+            "오이/가지/호박/옥수수",
+            "호박",
+            "호박"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:2:90",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:57:47"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        57
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:38:43.410295Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 6990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-1de333f31387441bfdf3f97dee99c435",
+    "public_source_listing_id": "listing-bcbb8a2a5729b2f8c3aab062f7a897fe",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:38:43.410295Z",
+          "ingestion_id": 57,
+          "ingestion_received_at": "2026-09-02T13:40:09.170128Z",
+          "mart_native_category_id": "9",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "파스퇴르",
+              "canon_hash": "7506f9ea3043d42b0f6832e1021f64be74b08203",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=000018856&storeType=HYPER",
+              "category_hint": "흰우유",
+              "docId": "H000018856N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%8C%8C%EC%8A%A4%ED%87%B4%EB%A5%B4-%ED%9B%84%EB%A0%88%EC%89%AC%EC%9A%B0%EC%9C%A0-2-3L/000018856",
+              "mart_native_category_id": "9",
+              "mart_native_category_path": "우유/유제품 > 우유 > 흰우유/저지방우유 > 흰우유",
+              "mart_native_code": "000018856",
+              "normalized_name": "파스퇴르 후레쉬우유 2.3L",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=000018856&storeType=HYPER",
+              "raw_name": "파스퇴르 후레쉬우유 2.3L",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "000018856",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=000018856&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100ML",
+              "unit_price_displayed": 304.0
+            },
+            "brand": "__no_brand__",
+            "category": "흰우유",
+            "crawled_at": "2026-09-02T22:38:43.410295",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=000018856&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "2.3L",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|파스퇴르 후레쉬우유 2 3l||2.3l",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "파스퇴르 후레쉬우유 2.3L",
+            "normalized_name": "파스퇴르 후레쉬우유 2.3L",
+            "original_price": null,
+            "package_quantity": 2.3,
+            "package_unit": "L",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6990,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "2.3L",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "30998162e717ca0641893e6a198ac774c33707a86a64010b82386d0da4f2214d",
+          "raw_record_id": "ingestion:57:47",
+          "source_category_path": [
+            "우유/유제품",
+            "우유",
+            "흰우유/저지방우유",
+            "흰우유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:57:47",
+    "standard_unit_price": 303.913,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:8:37"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        8
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:45:48.778540Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 6990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-78175f91ea89aaf2fddaabfc66026685",
+    "public_source_listing_id": "listing-bcbb8a2a5729b2f8c3aab062f7a897fe",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:45:48.778540Z",
+          "ingestion_id": 8,
+          "ingestion_received_at": "2026-08-31T01:47:10.770524Z",
+          "mart_native_category_id": "9",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "파스퇴르",
+              "canon_hash": "7506f9ea3043d42b0f6832e1021f64be74b08203",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=000018856&storeType=HYPER",
+              "category_hint": "흰우유",
+              "docId": "H000018856N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%ED%8C%8C%EC%8A%A4%ED%87%B4%EB%A5%B4-%ED%9B%84%EB%A0%88%EC%89%AC%EC%9A%B0%EC%9C%A0-2-3L/000018856",
+              "mart_native_category_id": "9",
+              "mart_native_category_path": "우유/유제품 > 우유 > 흰우유/저지방우유 > 흰우유",
+              "mart_native_code": "000018856",
+              "normalized_name": "파스퇴르 후레쉬우유 2.3L",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=000018856&storeType=HYPER",
+              "raw_name": "파스퇴르 후레쉬우유 2.3L",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "000018856",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=000018856&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100ML",
+              "unit_price_displayed": 304.0
+            },
+            "brand": "__no_brand__",
+            "category": "흰우유",
+            "crawled_at": "2026-08-31T10:45:48.778540",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=000018856&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "2.3L",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|파스퇴르 후레쉬우유 2 3l||2.3l",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "파스퇴르 후레쉬우유 2.3L",
+            "normalized_name": "파스퇴르 후레쉬우유 2.3L",
+            "original_price": null,
+            "package_quantity": 2.3,
+            "package_unit": "L",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6990,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "2.3L",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "073b84c5c5de21758ec393765f17c777a3503018048c3a45427dba6f77c90e72",
+          "raw_record_id": "ingestion:8:37",
+          "source_category_path": [
+            "우유/유제품",
+            "우유",
+            "흰우유/저지방우유",
+            "흰우유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:8:37",
+    "standard_unit_price": 303.913,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:56:76"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        56
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-09-02T13:38:40.768735Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 5990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-940e65092ff31112980ac3c17d3d18f1",
+    "public_source_listing_id": "listing-4d37f2cb31d1d220a88f958dfd7ecb5e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-09-02T13:38:40.768735Z",
+          "ingestion_id": 56,
+          "ingestion_received_at": "2026-09-02T13:40:05.670860Z",
+          "mart_native_category_id": "9",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "서울우유",
+              "canon_hash": "4b01d8139a2e544cfe513bd7febfbea396dce7ef",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=000018864&storeType=HYPER",
+              "category_hint": "흰우유",
+              "docId": "H000018864N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%84%9C%EC%9A%B8%EC%9A%B0%EC%9C%A0-%EC%9A%B0%EC%9C%A0-1-8L/000018864",
+              "mart_native_category_id": "9",
+              "mart_native_category_path": "우유/유제품 > 우유 > 흰우유/저지방우유 > 흰우유",
+              "mart_native_code": "000018864",
+              "normalized_name": "서울우유 우유 1.8L",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=000018864&storeType=HYPER",
+              "raw_name": "서울우유 우유 1.8L",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "000018864",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=000018864&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100ML",
+              "unit_price_displayed": 333.0
+            },
+            "brand": "__no_brand__",
+            "category": "흰우유",
+            "crawled_at": "2026-09-02T22:38:40.768735",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=000018864&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "1.8L",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|서울우유 우유 1 8l||1.8l",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "서울우유 우유 1.8L",
+            "normalized_name": "서울우유 우유 1.8L",
+            "original_price": null,
+            "package_quantity": 1.8,
+            "package_unit": "L",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5990,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "1.8L",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "9cb06bdf77cad88f6347df94fe1d59684ee43e9979c94c542838119edff5874b",
+          "raw_record_id": "ingestion:56:76",
+          "source_category_path": [
+            "우유/유제품",
+            "우유",
+            "흰우유/저지방우유",
+            "흰우유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:56:76",
+    "standard_unit_price": 332.7778,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:6:69"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        6
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:45:45.462196Z",
+    "discount_rate": null,
+    "event_name": "홈플러스 할인",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 2990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-0f18f5201a48f153f70a379da3a4b0e2",
+    "public_source_listing_id": "listing-915d4cdd5726333a55088485534466ec",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:45:45.462196Z",
+          "ingestion_id": 6,
+          "ingestion_received_at": "2026-08-31T01:47:03.528729Z",
+          "mart_native_category_id": "9",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "서울우유",
+              "canon_hash": "0b2618c14525cf0c04ae8e92160142c39dcee5a8",
+              "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=000018872&storeType=HYPER",
+              "category_hint": "흰우유",
+              "docId": "H000018872N37O0",
+              "external_seller": false,
+              "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%84%9C%EC%9A%B8%EC%9A%B0%EC%9C%A0-%EC%9A%B0%EC%9C%A0-1L/000018872",
+              "mart_native_category_id": "9",
+              "mart_native_category_path": "우유/유제품 > 우유 > 흰우유/저지방우유 > 흰우유",
+              "mart_native_code": "000018872",
+              "normalized_name": "서울우유 우유 1L",
+              "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=000018872&storeType=HYPER",
+              "raw_name": "서울우유 우유 1L",
+              "source": "homeplus",
+              "source_name": "homeplus",
+              "source_record_key": "000018872",
+              "source_url": "https://mfront.homeplus.co.kr/item?itemNo=000018872&storeType=HYPER",
+              "storeType": "HYPER",
+              "unit_price_basis_raw": "100ML",
+              "unit_price_displayed": 299.0
+            },
+            "brand": "__no_brand__",
+            "category": "흰우유",
+            "crawled_at": "2026-08-31T10:45:45.462196",
+            "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=000018872&storeType=HYPER",
+            "discount_percent": null,
+            "display_unit": "1L",
+            "event_name": "홈플러스 할인",
+            "image_url": "",
+            "match_key": "__no_brand__|서울우유 우유 1l||1l",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "서울우유 우유 1L",
+            "normalized_name": "서울우유 우유 1L",
+            "original_price": null,
+            "package_quantity": 1.0,
+            "package_unit": "L",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2990,
+            "source": "homeplus",
+            "store": "홈플러스",
+            "unit": "1L",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "c27afbe3662126ebfa7185d8e2f597b19f507a8068960d5efa9b1a6704d214cc",
+          "raw_record_id": "ingestion:6:69",
+          "source_category_path": [
+            "우유/유제품",
+            "우유",
+            "흰우유/저지방우유",
+            "흰우유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:6:69",
+    "standard_unit_price": 299.0,
+    "valid_from": null,
+    "valid_to": null
+  }
+]

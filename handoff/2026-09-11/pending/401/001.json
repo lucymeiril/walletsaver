@@ -1,0 +1,264 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:747e696dc9aa4e0f774ba356",
+      "promotion_surface": false,
+      "proposed_path": [
+        "아이스크림ㆍ빙과류",
+        "파인트ㆍ컵아이스크림",
+        "컵아이스크림"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:29",
+      "review_status": "pending",
+      "source_path": "아이스크림ㆍ빙과류 > 파인트ㆍ컵아이스크림 > 컵아이스크림",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "아이스크림ㆍ빙과류",
+        "파인트ㆍ컵아이스크림",
+        "컵아이스크림"
+      ],
+      "source_title": "크라시에 시즈쿠 유자 샤베트 (140ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS0000049320367/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:47:02.673111Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/de159e90-a037-4cef-b2fa-ca7f1151deb0/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 29,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "140ml",
+        "package_quantity": 140.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 3900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "브랜드없음",
+          "canon_hash": "ae86ea800995af53d1de94ebe0f5abed14e4a0f4",
+          "canonical_url": "https://lottemartzetta.com/products/OS0000049320367/details",
+          "category_hint": "아이스크림ㆍ빙과류",
+          "category_path": [
+            "아이스크림ㆍ빙과류",
+            "파인트ㆍ컵아이스크림",
+            "컵아이스크림"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/de159e90-a037-4cef-b2fa-ca7f1151deb0/300x300.jpg",
+          "mart_native_code": "0000049320367",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "0000049320367",
+          "source_url": "https://lottemartzetta.com/products/OS0000049320367/details"
+        },
+        "brand": "__no_brand__",
+        "category": "아이스크림ㆍ빙과류",
+        "crawled_at": "2026-08-31T10:47:02.673111",
+        "detail_url": "https://lottemartzetta.com/products/OS0000049320367/details",
+        "discount_percent": null,
+        "display_unit": "140ml",
+        "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/de159e90-a037-4cef-b2fa-ca7f1151deb0/300x300.jpg",
+        "match_key": "__no_brand__|크라시에 시즈쿠 유자 샤베트 140ml||140ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "크라시에 시즈쿠 유자 샤베트 (140ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 140.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3900,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "140ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "4d339cc9cb9b90d6652c149c1195e2e3d50c6f03e36320d2ce39830504817ffe",
+      "raw_record_id": "ingestion:33:29",
+      "source_category_path": [
+        "아이스크림ᆞ빙과류",
+        "파인트ᆞ컵아이스크림",
+        "컵아이스크림"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "0000049320367",
+      "source_title": "크라시에 시즈쿠 유자 샤베트 (140ML)",
+      "source_url": "https://lottemartzetta.com/products/OS0000049320367/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:33:29",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "0000049320367",
+    "source_title": "크라시에 시즈쿠 유자 샤베트 (140ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:747e696dc9aa4e0f774ba356",
+      "promotion_surface": false,
+      "proposed_path": [
+        "아이스크림ㆍ빙과류",
+        "파인트ㆍ컵아이스크림",
+        "컵아이스크림"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:98",
+      "review_status": "pending",
+      "source_path": "아이스크림ㆍ빙과류 > 파인트ㆍ컵아이스크림 > 컵아이스크림",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "아이스크림ㆍ빙과류",
+        "파인트ㆍ컵아이스크림",
+        "컵아이스크림"
+      ],
+      "source_title": "크라시에 시즈쿠 백포도 샤베트 (140ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS0000049320381/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:47:08.149566Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f3c891a1-732b-4510-bb57-bf5fee09b59d/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 98,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "140ml",
+        "package_quantity": 140.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 3900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "브랜드없음",
+          "canon_hash": "13078f8be357b5c969bf5af0c06235a588d7ed8b",
+          "canonical_url": "https://lottemartzetta.com/products/OS0000049320381/details",
+          "category_hint": "아이스크림ㆍ빙과류",
+          "category_path": [
+            "아이스크림ㆍ빙과류",
+            "파인트ㆍ컵아이스크림",
+            "컵아이스크림"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f3c891a1-732b-4510-bb57-bf5fee09b59d/300x300.jpg",
+          "mart_native_code": "0000049320381",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "0000049320381",
+          "source_url": "https://lottemartzetta.com/products/OS0000049320381/details"
+        },
+        "brand": "__no_brand__",
+        "category": "아이스크림ㆍ빙과류",
+        "crawled_at": "2026-08-31T10:47:08.149566",
+        "detail_url": "https://lottemartzetta.com/products/OS0000049320381/details",
+        "discount_percent": null,
+        "display_unit": "140ml",
+        "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f3c891a1-732b-4510-bb57-bf5fee09b59d/300x300.jpg",
+        "match_key": "__no_brand__|크라시에 시즈쿠 백포도 샤베트 140ml||140ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "크라시에 시즈쿠 백포도 샤베트 (140ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 140.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3900,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "140ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "3a9067fb8782028c99cc21dea348922c4ed42e807b23fa9d7da9b639c449b6fc",
+      "raw_record_id": "ingestion:33:98",
+      "source_category_path": [
+        "아이스크림ᆞ빙과류",
+        "파인트ᆞ컵아이스크림",
+        "컵아이스크림"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "0000049320381",
+      "source_title": "크라시에 시즈쿠 백포도 샤베트 (140ML)",
+      "source_url": "https://lottemartzetta.com/products/OS0000049320381/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:33:98",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "0000049320381",
+    "source_title": "크라시에 시즈쿠 백포도 샤베트 (140ML)"
+  }
+]

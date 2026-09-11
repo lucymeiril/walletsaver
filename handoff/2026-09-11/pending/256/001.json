@@ -1,0 +1,510 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:da38ccd72a28101788639a4f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "양념ㆍ오일ㆍ분말류",
+        "카레가루ㆍ카레소스"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:30:41",
+      "review_status": "pending",
+      "source_path": "양념ㆍ오일ㆍ분말류 > 카레가루ㆍ카레소스",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "카레가루ㆍ카레소스"
+      ],
+      "source_title": "오뚜기 카레분말 약간매운맛 (100G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801045010120/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "오뚜기",
+      "crawled_at": "2026-08-31T01:46:57.104030Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 30% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f7dd7872-f321-4ab6-a66d-8068711eeb30/300x300.jpg",
+      "ingestion_id": 30,
+      "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 41,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "100g",
+        "package_quantity": 100.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오뚜기",
+          "canon_hash": "969cf0d749a339fac21b230dc071f141e6915755",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801045010120/details",
+          "category_hint": "양념ㆍ오일ㆍ분말류",
+          "category_path": [
+            "양념ㆍ오일ㆍ분말류",
+            "카레가루ㆍ카레소스"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f7dd7872-f321-4ab6-a66d-8068711eeb30/300x300.jpg",
+          "mart_native_code": "8801045010120",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801045010120",
+          "source_url": "https://lottemartzetta.com/products/OS8801045010120/details"
+        },
+        "brand": "__no_brand__",
+        "category": "양념ㆍ오일ㆍ분말류",
+        "crawled_at": "2026-08-31T10:46:57.104030",
+        "detail_url": "https://lottemartzetta.com/products/OS8801045010120/details",
+        "discount_percent": null,
+        "display_unit": "100g",
+        "event_name": "2개씩 골라 담으면, 30% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f7dd7872-f321-4ab6-a66d-8068711eeb30/300x300.jpg",
+        "match_key": "__no_brand__|오뚜기 카레분말 약간매운맛 100g||100g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오뚜기 카레분말 약간매운맛 (100G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 100.0,
+        "package_unit": "g",
+        "price_per_100g": 2980.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "100g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "9ab2dc2d2eb1d8269f30b6a06605b121ccfc8cf5b012d1b44bf6c8eaec0fbf9f",
+      "raw_record_id": "ingestion:30:41",
+      "source_category_path": [
+        "양념ᆞ오일ᆞ분말류",
+        "카레가루ᆞ카레소스"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801045010120",
+      "source_title": "오뚜기 카레분말 약간매운맛 (100G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801045010120/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:30:41",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801045010120",
+    "source_title": "오뚜기 카레분말 약간매운맛 (100G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:da38ccd72a28101788639a4f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "양념ㆍ오일ㆍ분말류",
+        "카레가루ㆍ카레소스"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:30:47",
+      "review_status": "pending",
+      "source_path": "양념ㆍ오일ㆍ분말류 > 카레가루ㆍ카레소스",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "카레가루ㆍ카레소스"
+      ],
+      "source_title": "오뚜기 카레분말 순한맛 (100G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801045010113/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "오뚜기",
+      "crawled_at": "2026-08-31T01:46:57.105105Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 30% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/728fbb7e-8984-4868-bc7a-1ad306f9708c/300x300.jpg",
+      "ingestion_id": 30,
+      "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 47,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "100g",
+        "package_quantity": 100.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오뚜기",
+          "canon_hash": "7bff284890524356221da5ff9401fcfa0ba2412d",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801045010113/details",
+          "category_hint": "양념ㆍ오일ㆍ분말류",
+          "category_path": [
+            "양념ㆍ오일ㆍ분말류",
+            "카레가루ㆍ카레소스"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/728fbb7e-8984-4868-bc7a-1ad306f9708c/300x300.jpg",
+          "mart_native_code": "8801045010113",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801045010113",
+          "source_url": "https://lottemartzetta.com/products/OS8801045010113/details"
+        },
+        "brand": "__no_brand__",
+        "category": "양념ㆍ오일ㆍ분말류",
+        "crawled_at": "2026-08-31T10:46:57.105105",
+        "detail_url": "https://lottemartzetta.com/products/OS8801045010113/details",
+        "discount_percent": null,
+        "display_unit": "100g",
+        "event_name": "2개씩 골라 담으면, 30% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/728fbb7e-8984-4868-bc7a-1ad306f9708c/300x300.jpg",
+        "match_key": "__no_brand__|오뚜기 카레분말 순한맛 100g||100g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오뚜기 카레분말 순한맛 (100G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 100.0,
+        "package_unit": "g",
+        "price_per_100g": 2980.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "100g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "93a0f9b0d9c20488f8130baabaaae980abe6b6dd128ba78d5be7fa0b4c7bf7b8",
+      "raw_record_id": "ingestion:30:47",
+      "source_category_path": [
+        "양념ᆞ오일ᆞ분말류",
+        "카레가루ᆞ카레소스"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801045010113",
+      "source_title": "오뚜기 카레분말 순한맛 (100G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801045010113/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:30:47",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801045010113",
+    "source_title": "오뚜기 카레분말 순한맛 (100G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:da38ccd72a28101788639a4f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "양념ㆍ오일ㆍ분말류",
+        "카레가루ㆍ카레소스"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:32:59",
+      "review_status": "pending",
+      "source_path": "양념ㆍ오일ㆍ분말류 > 카레가루ㆍ카레소스",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "카레가루ㆍ카레소스"
+      ],
+      "source_title": "오뚜기 3일 숙성카레 클래식 고형 (약간매운맛) (100G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801045010946/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "오뚜기",
+      "crawled_at": "2026-08-31T01:47:02.664721Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 30% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/afa6b8d7-08ae-48b5-9cd0-a1c96fc4b5c1/300x300.jpg",
+      "ingestion_id": 32,
+      "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 59,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "100g",
+        "package_quantity": 100.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4380,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오뚜기",
+          "canon_hash": "14f005160c7447eb5139e3604b69cfc258e2b52b",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801045010946/details",
+          "category_hint": "양념ㆍ오일ㆍ분말류",
+          "category_path": [
+            "양념ㆍ오일ㆍ분말류",
+            "카레가루ㆍ카레소스"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/afa6b8d7-08ae-48b5-9cd0-a1c96fc4b5c1/300x300.jpg",
+          "mart_native_code": "8801045010946",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801045010946",
+          "source_url": "https://lottemartzetta.com/products/OS8801045010946/details"
+        },
+        "brand": "__no_brand__",
+        "category": "양념ㆍ오일ㆍ분말류",
+        "crawled_at": "2026-08-31T10:47:02.664721",
+        "detail_url": "https://lottemartzetta.com/products/OS8801045010946/details",
+        "discount_percent": null,
+        "display_unit": "100g",
+        "event_name": "2개씩 골라 담으면, 30% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/afa6b8d7-08ae-48b5-9cd0-a1c96fc4b5c1/300x300.jpg",
+        "match_key": "__no_brand__|오뚜기 3일 숙성카레 클래식 고형 약간매운맛 100g||100g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오뚜기 3일 숙성카레 클래식 고형 (약간매운맛) (100G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 100.0,
+        "package_unit": "g",
+        "price_per_100g": 4380.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4380,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "100g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "b2daba83715d436bbb6ca443f188f2288dd38cf921fc2e71be653a2bf4913df9",
+      "raw_record_id": "ingestion:32:59",
+      "source_category_path": [
+        "양념ᆞ오일ᆞ분말류",
+        "카레가루ᆞ카레소스"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801045010946",
+      "source_title": "오뚜기 3일 숙성카레 클래식 고형 (약간매운맛) (100G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801045010946/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:32:59",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801045010946",
+    "source_title": "오뚜기 3일 숙성카레 클래식 고형 (약간매운맛) (100G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:da38ccd72a28101788639a4f",
+      "promotion_surface": false,
+      "proposed_path": [
+        "양념ㆍ오일ㆍ분말류",
+        "카레가루ㆍ카레소스"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:42",
+      "review_status": "pending",
+      "source_path": "양념ㆍ오일ㆍ분말류 > 카레가루ㆍ카레소스",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "양념ㆍ오일ㆍ분말류",
+        "카레가루ㆍ카레소스"
+      ],
+      "source_title": "오뚜기 카레분말 매운맛 (100G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801045010137/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "오뚜기",
+      "crawled_at": "2026-08-31T01:47:08.142057Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 30% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f99a18c9-d8a0-46a1-a5c8-63196271cf5e/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 42,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "100g",
+        "package_quantity": 100.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오뚜기",
+          "canon_hash": "17efbd7b8f7f144dad5f6e12e1b30ddcbc9071fb",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801045010137/details",
+          "category_hint": "양념ㆍ오일ㆍ분말류",
+          "category_path": [
+            "양념ㆍ오일ㆍ분말류",
+            "카레가루ㆍ카레소스"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f99a18c9-d8a0-46a1-a5c8-63196271cf5e/300x300.jpg",
+          "mart_native_code": "8801045010137",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801045010137",
+          "source_url": "https://lottemartzetta.com/products/OS8801045010137/details"
+        },
+        "brand": "__no_brand__",
+        "category": "양념ㆍ오일ㆍ분말류",
+        "crawled_at": "2026-08-31T10:47:08.142057",
+        "detail_url": "https://lottemartzetta.com/products/OS8801045010137/details",
+        "discount_percent": null,
+        "display_unit": "100g",
+        "event_name": "2개씩 골라 담으면, 30% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f99a18c9-d8a0-46a1-a5c8-63196271cf5e/300x300.jpg",
+        "match_key": "__no_brand__|오뚜기 카레분말 매운맛 100g||100g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오뚜기 카레분말 매운맛 (100G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 100.0,
+        "package_unit": "g",
+        "price_per_100g": 2980.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "100g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "7a9854cf3dffcc2266ab691063665f941e186c476648e90ac149cb18a3e87ab1",
+      "raw_record_id": "ingestion:33:42",
+      "source_category_path": [
+        "양념ᆞ오일ᆞ분말류",
+        "카레가루ᆞ카레소스"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801045010137",
+      "source_title": "오뚜기 카레분말 매운맛 (100G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801045010137/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:33:42",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801045010137",
+    "source_title": "오뚜기 카레분말 매운맛 (100G)"
+  }
+]

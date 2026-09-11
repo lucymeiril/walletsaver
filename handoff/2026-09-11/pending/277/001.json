@@ -1,0 +1,395 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:8c2da8a79a9866dbdf99544d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "견과류",
+        "시즈닝견과"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:34:71",
+      "review_status": "pending",
+      "source_path": "쌀ㆍ잡곡ㆍ견과류 > 견과류 > 시즈닝견과",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "견과류",
+        "시즈닝견과"
+      ],
+      "source_title": "HBAF 메이플피칸 아몬드 믹스넛 (200G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809617949373/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "바프",
+      "crawled_at": "2026-08-31T01:47:08.157461Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 30% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/959ec9da-e168-438c-97fe-ded26e12491c/300x300.jpg",
+      "ingestion_id": 34,
+      "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 71,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "200g",
+        "package_quantity": 200.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 8990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "바프",
+          "canon_hash": "3888d95465c44bf492db3f2afd12badc7f568700",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809617949373/details",
+          "category_hint": "쌀ㆍ잡곡ㆍ견과류",
+          "category_path": [
+            "쌀ㆍ잡곡ㆍ견과류",
+            "견과류",
+            "시즈닝견과"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/959ec9da-e168-438c-97fe-ded26e12491c/300x300.jpg",
+          "mart_native_code": "8809617949373",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809617949373",
+          "source_url": "https://lottemartzetta.com/products/OS8809617949373/details"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀ㆍ잡곡ㆍ견과류",
+        "crawled_at": "2026-08-31T10:47:08.157461",
+        "detail_url": "https://lottemartzetta.com/products/OS8809617949373/details",
+        "discount_percent": null,
+        "display_unit": "200g",
+        "event_name": "2개씩 골라 담으면, 30% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/959ec9da-e168-438c-97fe-ded26e12491c/300x300.jpg",
+        "match_key": "__no_brand__|hbaf 메이플피칸 아몬드 믹스넛 200g||200g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "HBAF 메이플피칸 아몬드 믹스넛 (200G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 200.0,
+        "package_unit": "g",
+        "price_per_100g": 4495.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 8990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "200g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "1e9b2992c1c2cd86a115f8ec32b78fd9dae0da4b7651bbf5421f9e0215966323",
+      "raw_record_id": "ingestion:34:71",
+      "source_category_path": [
+        "쌀ᆞ잡곡ᆞ견과류",
+        "견과류",
+        "시즈닝견과"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809617949373",
+      "source_title": "HBAF 메이플피칸 아몬드 믹스넛 (200G)",
+      "source_url": "https://lottemartzetta.com/products/OS8809617949373/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:34:71",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809617949373",
+    "source_title": "HBAF 메이플피칸 아몬드 믹스넛 (200G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:8c2da8a79a9866dbdf99544d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "견과류",
+        "시즈닝견과"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:34:98",
+      "review_status": "pending",
+      "source_path": "쌀ㆍ잡곡ㆍ견과류 > 견과류 > 시즈닝견과",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "견과류",
+        "시즈닝견과"
+      ],
+      "source_title": "HBAF 허니버터 아몬드 (120G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809617944491/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "바프",
+      "crawled_at": "2026-08-31T01:47:08.161098Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 30% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/16cac1c3-e60d-4544-b183-e3c499810039/300x300.jpg",
+      "ingestion_id": 34,
+      "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 98,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "120g",
+        "package_quantity": 120.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "바프",
+          "canon_hash": "ca93ec1e0ba64851f415488a48ab0d3d073904ef",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809617944491/details",
+          "category_hint": "쌀ㆍ잡곡ㆍ견과류",
+          "category_path": [
+            "쌀ㆍ잡곡ㆍ견과류",
+            "견과류",
+            "시즈닝견과"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/16cac1c3-e60d-4544-b183-e3c499810039/300x300.jpg",
+          "mart_native_code": "8809617944491",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809617944491",
+          "source_url": "https://lottemartzetta.com/products/OS8809617944491/details"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀ㆍ잡곡ㆍ견과류",
+        "crawled_at": "2026-08-31T10:47:08.161098",
+        "detail_url": "https://lottemartzetta.com/products/OS8809617944491/details",
+        "discount_percent": null,
+        "display_unit": "120g",
+        "event_name": "2개씩 골라 담으면, 30% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/16cac1c3-e60d-4544-b183-e3c499810039/300x300.jpg",
+        "match_key": "__no_brand__|hbaf 허니버터 아몬드 120g||120g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "HBAF 허니버터 아몬드 (120G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 120.0,
+        "package_unit": "g",
+        "price_per_100g": 4575.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5490,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "120g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "a472d2eee13a8bfb6b42d02a6ec8c0617a65ffbddffcfbc505d597d0225a4e22",
+      "raw_record_id": "ingestion:34:98",
+      "source_category_path": [
+        "쌀ᆞ잡곡ᆞ견과류",
+        "견과류",
+        "시즈닝견과"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809617944491",
+      "source_title": "HBAF 허니버터 아몬드 (120G)",
+      "source_url": "https://lottemartzetta.com/products/OS8809617944491/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:34:98",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809617944491",
+    "source_title": "HBAF 허니버터 아몬드 (120G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:8c2da8a79a9866dbdf99544d",
+      "promotion_surface": false,
+      "proposed_path": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "견과류",
+        "시즈닝견과"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:35:1",
+      "review_status": "pending",
+      "source_path": "쌀ㆍ잡곡ㆍ견과류 > 견과류 > 시즈닝견과",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "쌀ㆍ잡곡ㆍ견과류",
+        "견과류",
+        "시즈닝견과"
+      ],
+      "source_title": "오늘좋은 체다치즈 마카다미아 (40G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801133013392/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "오늘좋은",
+      "crawled_at": "2026-08-31T01:47:08.161395Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 20% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/41f4e9a9-f9f3-434b-8af4-b62c57ea7c24/300x300.jpg",
+      "ingestion_id": 35,
+      "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 1,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "40g",
+        "package_quantity": 40.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오늘좋은",
+          "canon_hash": "a66a47164d5eff20394b1bbca370ca6bec03458a",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801133013392/details",
+          "category_hint": "쌀ㆍ잡곡ㆍ견과류",
+          "category_path": [
+            "쌀ㆍ잡곡ㆍ견과류",
+            "견과류",
+            "시즈닝견과"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/41f4e9a9-f9f3-434b-8af4-b62c57ea7c24/300x300.jpg",
+          "mart_native_code": "8801133013392",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801133013392",
+          "source_url": "https://lottemartzetta.com/products/OS8801133013392/details"
+        },
+        "brand": "__no_brand__",
+        "category": "쌀ㆍ잡곡ㆍ견과류",
+        "crawled_at": "2026-08-31T10:47:08.161395",
+        "detail_url": "https://lottemartzetta.com/products/OS8801133013392/details",
+        "discount_percent": null,
+        "display_unit": "40g",
+        "event_name": "2개씩 골라 담으면, 20% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/41f4e9a9-f9f3-434b-8af4-b62c57ea7c24/300x300.jpg",
+        "match_key": "__no_brand__|오늘좋은 체다치즈 마카다미아 40g||40g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오늘좋은 체다치즈 마카다미아 (40G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 40.0,
+        "package_unit": "g",
+        "price_per_100g": 5000.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2000,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "40g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "a04a8d514fb70e5979092ac84a147b8af9b50b79001d7d9c6e0bd00e836d8df3",
+      "raw_record_id": "ingestion:35:1",
+      "source_category_path": [
+        "쌀ᆞ잡곡ᆞ견과류",
+        "견과류",
+        "시즈닝견과"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801133013392",
+      "source_title": "오늘좋은 체다치즈 마카다미아 (40G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801133013392/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:35:1",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801133013392",
+    "source_title": "오늘좋은 체다치즈 마카다미아 (40G)"
+  }
+]

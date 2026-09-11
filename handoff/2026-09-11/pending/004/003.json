@@ -1,0 +1,2037 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과자"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:41:77",
+      "review_status": "pending",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "프리미엄 제철과일 선물세트 5.5KG 이상",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Fruit-Gift-Set-55kg/p/679668"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3e/he3/491730366693406.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [],
+      "item_index": 77,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": 93490,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 5500.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 84990,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "b76f13e5edb7408f634801865bffbd84cead4cbe",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Fruit-Gift-Set-55kg/p/679668",
+        "category": "과자",
+        "cocodalin_join_key": "679668",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Fruit-Gift-Set-55kg/p/679668",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h3e/he3/491730366693406.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "679668",
+        "match_key": "__no_brand__|프리미엄 제철과일 선물세트 5 5kg 이상|5500.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "프리미엄 제철과일 선물세트 5.5KG 이상",
+        "normalized_name": "프리미엄 제철과일 선물세트 5.5KG 이상",
+        "pack_qty": 5.5,
+        "pack_unit": "KG",
+        "price": 93490,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "프리미엄 제철과일 선물세트 5.5KG 이상",
+        "raw_promo_type": "discount",
+        "sale_price": 84990,
+        "source": "costco",
+        "source_record_key": "679668",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Fruit-Gift-Set-55kg/p/679668",
+        "unit_price": 1545.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,545원",
+        "unit_price_displayed": 1545,
+        "unit_price_text": "100G당 1,545원"
+      },
+      "raw_payload_sha256": "4c2588f4710c79e37fab411b1cf17d70e883aee0f748a4f1f34705f9f3c6c0e8",
+      "raw_record_id": "ingestion:41:77",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "679668",
+      "source_title": "프리미엄 제철과일 선물세트 5.5KG 이상",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Fruit-Gift-Set-55kg/p/679668",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:77",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "679668",
+    "source_title": "프리미엄 제철과일 선물세트 5.5KG 이상"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과자"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:41:78",
+      "review_status": "pending",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "양구 사과세트 5kg",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Yanggu-Apple-Gift-Set-5kg/p/680036"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h94/ha1/503538772901918.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [],
+      "item_index": 78,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": 79990,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 5000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 71990,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "814a0aeea5ee2c29f209a89a4352fdd58152c6f3",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Yanggu-Apple-Gift-Set-5kg/p/680036",
+        "category": "과자",
+        "cocodalin_join_key": "680036",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Yanggu-Apple-Gift-Set-5kg/p/680036",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h94/ha1/503538772901918.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "680036",
+        "match_key": "__no_brand__|양구 사과세트 5kg|5000.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "양구 사과세트 5kg",
+        "normalized_name": "양구 사과세트 5kg",
+        "pack_qty": 5,
+        "pack_unit": "kg",
+        "price": 79990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "양구 사과세트 5kg",
+        "raw_promo_type": "discount",
+        "sale_price": 71990,
+        "source": "costco",
+        "source_record_key": "680036",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Yanggu-Apple-Gift-Set-5kg/p/680036",
+        "unit_price": 1440.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,440원",
+        "unit_price_displayed": 1440,
+        "unit_price_text": "100G당 1,440원"
+      },
+      "raw_payload_sha256": "c0452bc8fc2b0b69b630c311db81f2f7f620e386efcb078142592add1a329338",
+      "raw_record_id": "ingestion:41:78",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "680036",
+      "source_title": "양구 사과세트 5kg",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Yanggu-Apple-Gift-Set-5kg/p/680036",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:78",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "680036",
+    "source_title": "양구 사과세트 5kg"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과자"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:41:79",
+      "review_status": "pending",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "프리미엄 제철과일 선물세트 총 3.4kg이상",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Fruit-Gift-Set-34kg/p/679667"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h53/hdf/492570179665950.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [],
+      "item_index": 79,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": 69490,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 3400.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 62990,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "79faff20d2b0a7689cb1ccda2fa7f878408d61ab",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Fruit-Gift-Set-34kg/p/679667",
+        "category": "과자",
+        "cocodalin_join_key": "679667",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Fruit-Gift-Set-34kg/p/679667",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h53/hdf/492570179665950.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "679667",
+        "match_key": "__no_brand__|프리미엄 제철과일 선물세트 총 3 4kg이상|3400.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "프리미엄 제철과일 선물세트 총 3.4kg이상",
+        "normalized_name": "프리미엄 제철과일 선물세트 총 3.4kg이상",
+        "pack_qty": 3.4,
+        "pack_unit": "kg",
+        "price": 69490,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "프리미엄 제철과일 선물세트 총 3.4kg이상",
+        "raw_promo_type": "discount",
+        "sale_price": 62990,
+        "source": "costco",
+        "source_record_key": "679667",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Fruit-Gift-Set-34kg/p/679667",
+        "unit_price": 1853.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,853원",
+        "unit_price_displayed": 1853,
+        "unit_price_text": "100G당 1,853원"
+      },
+      "raw_payload_sha256": "c0dd7172d3759bc6168d7f8cf3976caa0673045d11c3ce67c6d8e1b934fdacfb",
+      "raw_record_id": "ingestion:41:79",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "679667",
+      "source_title": "프리미엄 제철과일 선물세트 총 3.4kg이상",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Premium-Fruit-Gift-Set-34kg/p/679667",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:79",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "679667",
+    "source_title": "프리미엄 제철과일 선물세트 총 3.4kg이상"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과자"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:41:80",
+      "review_status": "pending",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "후레시컷믹스컵과일 150g x 8팩",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Freshcut-Mix-Cup-Fruits-150g-x-8-PK/p/641596"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "fruit"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hfe/h44/133209177587742.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 80,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 8,
+        "display_unit": "",
+        "package_quantity": 8.0,
+        "package_unit": "팩",
+        "standard_unit": null
+      },
+      "price": 25490,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "bbd4325434872c1799ff03865196d2595d11dd97",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Freshcut-Mix-Cup-Fruits-150g-x-8-PK/p/641596",
+        "category": "과자",
+        "cocodalin_join_key": "641596",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Freshcut-Mix-Cup-Fruits-150g-x-8-PK/p/641596",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hfe/h44/133209177587742.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "641596",
+        "match_key": "__no_brand__|후레시컷믹스컵과일 150g x 8팩|8.0|팩",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "후레시컷믹스컵과일 150g x 8팩",
+        "normalized_name": "후레시컷믹스컵과일 150g x 8팩",
+        "pack_qty": 8,
+        "pack_unit": "팩",
+        "price": 25490,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "후레시컷믹스컵과일 150g x 8팩",
+        "raw_promo_type": null,
+        "sale_price": 25490,
+        "source": "costco",
+        "source_record_key": "641596",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Freshcut-Mix-Cup-Fruits-150g-x-8-PK/p/641596",
+        "unit_price": 2124.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,124원",
+        "unit_price_displayed": 2124,
+        "unit_price_text": "100G당 2,124원"
+      },
+      "raw_payload_sha256": "085f0d5681ef8b69475b2d3f37ea48a32d49c4958ecfb4e4062116649080bc3f",
+      "raw_record_id": "ingestion:41:80",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "641596",
+      "source_title": "후레시컷믹스컵과일 150g x 8팩",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Freshcut-Mix-Cup-Fruits-150g-x-8-PK/p/641596",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:80",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "641596",
+    "source_title": "후레시컷믹스컵과일 150g x 8팩"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과자"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:41:81",
+      "review_status": "pending",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "아리수 사과 5kg 선물세트",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Arisu-Apple-Gift-Set-5kg/p/697405"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "fruit"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": "할인",
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf2/h86/502593067089950.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [],
+      "item_index": 81,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": 78990,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 5000.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 70990,
+      "price_state": "normal",
+      "promotion_conditions": {},
+      "promotion_type": "checkout_discount",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "34a6ad2ab0f6dda2afb32a5fd69ea571d5a85f30",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Arisu-Apple-Gift-Set-5kg/p/697405",
+        "category": "과자",
+        "cocodalin_join_key": "697405",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Arisu-Apple-Gift-Set-5kg/p/697405",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/hf2/h86/502593067089950.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "697405",
+        "match_key": "__no_brand__|아리수 사과 5kg 선물세트|5000.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "아리수 사과 5kg 선물세트",
+        "normalized_name": "아리수 사과 5kg 선물세트",
+        "pack_qty": 5,
+        "pack_unit": "kg",
+        "price": 78990,
+        "promo_label": "할인",
+        "promo_type": "checkout_discount",
+        "raw_name": "아리수 사과 5kg 선물세트",
+        "raw_promo_type": "discount",
+        "sale_price": 70990,
+        "source": "costco",
+        "source_record_key": "697405",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Arisu-Apple-Gift-Set-5kg/p/697405",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "15670ee03b5bbea8c1a79ae319aa8f09c83e0cafe60da5650d7dbfbdabd9c928",
+      "raw_record_id": "ingestion:41:81",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "697405",
+      "source_title": "아리수 사과 5kg 선물세트",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Fruit/Arisu-Apple-Gift-Set-5kg/p/697405",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:81",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "697405",
+    "source_title": "아리수 사과 5kg 선물세트"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과자"
+      ],
+      "raw_native_category_id": "cos_10.10",
+      "raw_record_id": "ingestion:41:82",
+      "review_status": "pending",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "바로먹는감자 130g X 12ea",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Fully-Cooked-Potatoes-130g-x-12ea/p/679067"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "fresh-foods",
+        "vegetables"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/had/hc1/293899228807198.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [],
+      "item_index": 82,
+      "mart_native_category_id": "cos_10.10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 12,
+        "display_unit": "",
+        "package_quantity": 130.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 22290,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "e00aa164fc6842f18924a5ce9905cf750ddb11ed",
+        "canonical_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Fully-Cooked-Potatoes-130g-x-12ea/p/679067",
+        "category": "과자",
+        "cocodalin_join_key": "679067",
+        "detail_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Fully-Cooked-Potatoes-130g-x-12ea/p/679067",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/had/hc1/293899228807198.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.10",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "679067",
+        "match_key": "__no_brand__|바로먹는감자 130g x 12ea|130.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "바로먹는감자 130g X 12ea",
+        "normalized_name": "바로먹는감자 130g X 12ea",
+        "pack_qty": 130,
+        "pack_unit": "g",
+        "price": 22290,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "바로먹는감자 130g X 12ea",
+        "raw_promo_type": null,
+        "sale_price": 22290,
+        "source": "costco",
+        "source_record_key": "679067",
+        "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Fully-Cooked-Potatoes-130g-x-12ea/p/679067",
+        "unit_price": 1429.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 1,429원",
+        "unit_price_displayed": 1429,
+        "unit_price_text": "100G당 1,429원"
+      },
+      "raw_payload_sha256": "0d0d8addede2309dd2fbeccefd619d59c68edaccac80d88eb42cf6f852d3f8b0",
+      "raw_record_id": "ingestion:41:82",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "679067",
+      "source_title": "바로먹는감자 130g X 12ea",
+      "source_url": "https://www.costco.co.kr/Foods/Fresh-Foods/Vegetables/Fully-Cooked-Potatoes-130g-x-12ea/p/679067",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:82",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "679067",
+    "source_title": "바로먹는감자 130g X 12ea"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.snacks.sweets.candy"
+      ],
+      "category_path": [
+        "식품",
+        "과자·간식",
+        "단과자",
+        "캔디"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_snack_title",
+      "evidence_type": "contextual_costco_snack_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:41:84",
+      "review_status": "classified",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "펄몰 미니 과일 캔디 960g (20g x 24 입 x 2)",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Snack/CandyGum/Pulmoll-Mini-Candy-960g-20g-x-24-x-2/p/663439"
+      ],
+      "unified_category_id": "food.snacks.sweets.candy",
+      "url_taxonomy_hints": [
+        "foods",
+        "snack",
+        "candygum"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h86/h87/152424094171166.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 84,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 48,
+        "display_unit": "",
+        "package_quantity": 24.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 59900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "5fdab68e0cae2d4dc121616dd490f3cf959cb194",
+        "canonical_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/Pulmoll-Mini-Candy-960g-20g-x-24-x-2/p/663439",
+        "category": "과자",
+        "cocodalin_join_key": "663439",
+        "detail_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/Pulmoll-Mini-Candy-960g-20g-x-24-x-2/p/663439",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h86/h87/152424094171166.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "663439",
+        "match_key": "__no_brand__|펄몰 미니 과일 캔디 960g 20g x 24 입 x 2|24.0|입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "펄몰 미니 과일 캔디 960g (20g x 24 입 x 2)",
+        "normalized_name": "펄몰 미니 과일 캔디 960g (20g x 24 입 x 2)",
+        "pack_qty": 24,
+        "pack_unit": "입",
+        "price": 59900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "펄몰 미니 과일 캔디 960g (20g x 24 입 x 2)",
+        "raw_promo_type": null,
+        "sale_price": 59900,
+        "source": "costco",
+        "source_record_key": "663439",
+        "source_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/Pulmoll-Mini-Candy-960g-20g-x-24-x-2/p/663439",
+        "unit_price": 624.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 624원",
+        "unit_price_displayed": 624,
+        "unit_price_text": "10G당 624원"
+      },
+      "raw_payload_sha256": "ed9991bd374b85d68c95f328acdd8dc1c7dbc5decddcd9b0bede5db983d2f95c",
+      "raw_record_id": "ingestion:41:84",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "663439",
+      "source_title": "펄몰 미니 과일 캔디 960g (20g x 24 입 x 2)",
+      "source_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/Pulmoll-Mini-Candy-960g-20g-x-24-x-2/p/663439",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:84",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "663439",
+    "source_title": "펄몰 미니 과일 캔디 960g (20g x 24 입 x 2)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과자"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:41:85",
+      "review_status": "pending",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "카스 초음파 야채 과일 세척기 4L",
+      "source_urls": [
+        "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/DishwasherDryer/CAS-Ultrasonic-Vegetable-and-Fruit-Washer-4L/p/696079"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "appliances",
+        "kitchen-miscellaneous",
+        "dishwasherdryer"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h6d/hcb/484872110211102.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [],
+      "item_index": 85,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 4000.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 129900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "6834e3ab807b933155a52fe4b8c6166a3f528416",
+        "canonical_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/DishwasherDryer/CAS-Ultrasonic-Vegetable-and-Fruit-Washer-4L/p/696079",
+        "category": "과자",
+        "cocodalin_join_key": "696079",
+        "detail_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/DishwasherDryer/CAS-Ultrasonic-Vegetable-and-Fruit-Washer-4L/p/696079",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h6d/hcb/484872110211102.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "696079",
+        "match_key": "__no_brand__|카스 초음파 야채 과일 세척기 4l|4000.0|ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "카스 초음파 야채 과일 세척기 4L",
+        "normalized_name": "카스 초음파 야채 과일 세척기 4L",
+        "pack_qty": 4,
+        "pack_unit": "L",
+        "price": 129900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "카스 초음파 야채 과일 세척기 4L",
+        "raw_promo_type": null,
+        "sale_price": 129900,
+        "source": "costco",
+        "source_record_key": "696079",
+        "source_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/DishwasherDryer/CAS-Ultrasonic-Vegetable-and-Fruit-Washer-4L/p/696079",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "d1a9edd9a4da827afa36897e8e747c8b12aeb85df17fb98a361ea5a88361b9b9",
+      "raw_record_id": "ingestion:41:85",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "696079",
+      "source_title": "카스 초음파 야채 과일 세척기 4L",
+      "source_url": "https://www.costco.co.kr/Appliances/Kitchen-Miscellaneous/DishwasherDryer/CAS-Ultrasonic-Vegetable-and-Fruit-Washer-4L/p/696079",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:85",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "696079",
+    "source_title": "카스 초음파 야채 과일 세척기 4L"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.snacks.sweets.candy"
+      ],
+      "category_path": [
+        "식품",
+        "과자·간식",
+        "단과자",
+        "캔디"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_snack_title",
+      "evidence_type": "contextual_costco_snack_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:41:86",
+      "review_status": "classified",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "펄몰 과일캔디 45g x 10 개",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Snack/CandyGum/Pulmoll-Lozenges-Bonbons-45g-x-10ea/p/603728"
+      ],
+      "unified_category_id": "food.snacks.sweets.candy",
+      "url_taxonomy_hints": [
+        "foods",
+        "snack",
+        "candygum"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/h0b/h75/8810609606686.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 86,
+      "mart_native_category_id": "",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 10,
+        "display_unit": "",
+        "package_quantity": 10.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 19990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "6bea8a85c27bd3f15138b124167a7b3d314896ac",
+        "canonical_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/Pulmoll-Lozenges-Bonbons-45g-x-10ea/p/603728",
+        "category": "과자",
+        "cocodalin_join_key": "603728",
+        "detail_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/Pulmoll-Lozenges-Bonbons-45g-x-10ea/p/603728",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/h0b/h75/8810609606686.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "603728",
+        "match_key": "__no_brand__|펄몰 과일캔디 45g x 10 개|10.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "펄몰 과일캔디 45g x 10 개",
+        "normalized_name": "펄몰 과일캔디 45g x 10 개",
+        "pack_qty": 10,
+        "pack_unit": "개",
+        "price": 19990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "펄몰 과일캔디 45g x 10 개",
+        "raw_promo_type": null,
+        "sale_price": 19990,
+        "source": "costco",
+        "source_record_key": "603728",
+        "source_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/Pulmoll-Lozenges-Bonbons-45g-x-10ea/p/603728",
+        "unit_price": 444.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 444원",
+        "unit_price_displayed": 444,
+        "unit_price_text": "10G당 444원"
+      },
+      "raw_payload_sha256": "d703eddf37c5a08df30f7b2489db901916487ec5164160ebd59d48b9addd6603",
+      "raw_record_id": "ingestion:41:86",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "603728",
+      "source_title": "펄몰 과일캔디 45g x 10 개",
+      "source_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/Pulmoll-Lozenges-Bonbons-45g-x-10ea/p/603728",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:86",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "603728",
+    "source_title": "펄몰 과일캔디 45g x 10 개"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과자"
+      ],
+      "raw_native_category_id": "cos_5",
+      "raw_record_id": "ingestion:41:88",
+      "review_status": "pending",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "블루베리",
+      "source_urls": [
+        "https://www.costco.co.kr/PatioLawnGarden/Live-Plants/Blueberry/p/674828"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "patiolawngarden",
+        "live-plants"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h23/h90/488899740499998.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [
+        "unit_unresolved"
+      ],
+      "item_index": 88,
+      "mart_native_category_id": "cos_5",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": null,
+      "price": 24990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "8d878647accba2e041564eefdc9adb01d442f895",
+        "canonical_url": "https://www.costco.co.kr/PatioLawnGarden/Live-Plants/Blueberry/p/674828",
+        "category": "과자",
+        "cocodalin_join_key": "674828",
+        "detail_url": "https://www.costco.co.kr/PatioLawnGarden/Live-Plants/Blueberry/p/674828",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h23/h90/488899740499998.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_5",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "674828",
+        "match_key": "__no_brand__|블루베리||",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "블루베리",
+        "normalized_name": "블루베리",
+        "pack_qty": null,
+        "pack_unit": null,
+        "price": 24990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "블루베리",
+        "raw_promo_type": null,
+        "sale_price": 24990,
+        "source": "costco",
+        "source_record_key": "674828",
+        "source_url": "https://www.costco.co.kr/PatioLawnGarden/Live-Plants/Blueberry/p/674828",
+        "unit_price": null,
+        "unit_price_basis": null,
+        "unit_price_basis_raw": null,
+        "unit_price_display": null,
+        "unit_price_displayed": null,
+        "unit_price_text": null
+      },
+      "raw_payload_sha256": "a00af30abadbda6b0c474105745bfcafc7b5fe2e2546a22a15a8f3a73cd70ea8",
+      "raw_record_id": "ingestion:41:88",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "674828",
+      "source_title": "블루베리",
+      "source_url": "https://www.costco.co.kr/PatioLawnGarden/Live-Plants/Blueberry/p/674828",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:88",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "unit_unresolved"
+    ],
+    "source_record_key": "674828",
+    "source_title": "블루베리"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "broad_source_category",
+      "evidence_type": null,
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과자"
+      ],
+      "raw_native_category_id": "cos_10",
+      "raw_record_id": "ingestion:41:89",
+      "review_status": "pending",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "스위토리 졸음 확 깨는 껌 108g x 8개",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Snack/CandyGum/Sweetory-No-Sleep-Gums-108g-x-8ct/p/612985"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": [
+        "foods",
+        "snack",
+        "candygum"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h75/h0c/138461008658462.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 89,
+      "mart_native_category_id": "cos_10",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 8,
+        "display_unit": "",
+        "package_quantity": 8.0,
+        "package_unit": "개",
+        "standard_unit": null
+      },
+      "price": 23990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "d0e8a98e6b108270caf7e76b06fc45d8c263bb83",
+        "canonical_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/Sweetory-No-Sleep-Gums-108g-x-8ct/p/612985",
+        "category": "과자",
+        "cocodalin_join_key": "612985",
+        "detail_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/Sweetory-No-Sleep-Gums-108g-x-8ct/p/612985",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h75/h0c/138461008658462.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "612985",
+        "match_key": "__no_brand__|스위토리 졸음 확 깨는 껌 108g x 8개|8.0|ea",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "스위토리 졸음 확 깨는 껌 108g x 8개",
+        "normalized_name": "스위토리 졸음 확 깨는 껌 108g x 8개",
+        "pack_qty": 8,
+        "pack_unit": "개",
+        "price": 23990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "스위토리 졸음 확 깨는 껌 108g x 8개",
+        "raw_promo_type": null,
+        "sale_price": 23990,
+        "source": "costco",
+        "source_record_key": "612985",
+        "source_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/Sweetory-No-Sleep-Gums-108g-x-8ct/p/612985",
+        "unit_price": 278.0,
+        "unit_price_basis": "10G",
+        "unit_price_basis_raw": "10G",
+        "unit_price_display": "10G당 278원",
+        "unit_price_displayed": 278,
+        "unit_price_text": "10G당 278원"
+      },
+      "raw_payload_sha256": "6f1b3ef2767dd3c47f46d27a1ca3816f14788d968cb6cad20c26e1b3d06e765e",
+      "raw_record_id": "ingestion:41:89",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "612985",
+      "source_title": "스위토리 졸음 확 깨는 껌 108g x 8개",
+      "source_url": "https://www.costco.co.kr/Foods/Snack/CandyGum/Sweetory-No-Sleep-Gums-108g-x-8ct/p/612985",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:89",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "612985",
+    "source_title": "스위토리 졸음 확 깨는 껌 108g x 8개"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.grains.nuts.walnut"
+      ],
+      "category_path": [
+        "식품",
+        "곡물·견과",
+        "견과류",
+        "호두"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_snack_title",
+      "evidence_type": "contextual_costco_snack_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.5",
+      "raw_record_id": "ingestion:41:90",
+      "review_status": "classified",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "황토가마에 구운 호두 250g x 5봉",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Snack/Nuts/Roasted-Walnuts-250g-x-5-Pack/p/617604"
+      ],
+      "unified_category_id": "food.grains.nuts.walnut",
+      "url_taxonomy_hints": [
+        "foods",
+        "snack",
+        "nuts"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h29/h5b/11518577606686.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 90,
+      "mart_native_category_id": "cos_10.5",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 5,
+        "display_unit": "",
+        "package_quantity": 5.0,
+        "package_unit": "봉",
+        "standard_unit": null
+      },
+      "price": 29890,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "e29422b1110a3cdc512fc2787162e9770ed37f9d",
+        "canonical_url": "https://www.costco.co.kr/Foods/Snack/Nuts/Roasted-Walnuts-250g-x-5-Pack/p/617604",
+        "category": "과자",
+        "cocodalin_join_key": "617604",
+        "detail_url": "https://www.costco.co.kr/Foods/Snack/Nuts/Roasted-Walnuts-250g-x-5-Pack/p/617604",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h29/h5b/11518577606686.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.5",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "617604",
+        "match_key": "__no_brand__|황토가마에 구운 호두 250g x 5봉|5.0|봉",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "황토가마에 구운 호두 250g x 5봉",
+        "normalized_name": "황토가마에 구운 호두 250g x 5봉",
+        "pack_qty": 5,
+        "pack_unit": "봉",
+        "price": 29890,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "황토가마에 구운 호두 250g x 5봉",
+        "raw_promo_type": null,
+        "sale_price": 29890,
+        "source": "costco",
+        "source_record_key": "617604",
+        "source_url": "https://www.costco.co.kr/Foods/Snack/Nuts/Roasted-Walnuts-250g-x-5-Pack/p/617604",
+        "unit_price": 2391.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,391원",
+        "unit_price_displayed": 2391,
+        "unit_price_text": "100G당 2,391원"
+      },
+      "raw_payload_sha256": "de0680eb7944a8648cbc116a3c1f003a0a48200ea4cea901d8ba55bc4f2061d5",
+      "raw_record_id": "ingestion:41:90",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "617604",
+      "source_title": "황토가마에 구운 호두 250g x 5봉",
+      "source_url": "https://www.costco.co.kr/Foods/Snack/Nuts/Roasted-Walnuts-250g-x-5-Pack/p/617604",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:90",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "617604",
+    "source_title": "황토가마에 구운 호두 250g x 5봉"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.grains.nuts.mixed"
+      ],
+      "category_path": [
+        "식품",
+        "곡물·견과",
+        "견과류",
+        "혼합견과"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_snack_title",
+      "evidence_type": "contextual_costco_snack_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.5",
+      "raw_record_id": "ingestion:41:91",
+      "review_status": "classified",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "썬키스트 견과 ３종세트 25g x 60봉 x 20세트",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-3-Variety-25g-x-60-x-20set/p/523645"
+      ],
+      "unified_category_id": "food.grains.nuts.mixed",
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha1/h4f/9867896717342.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 91,
+      "mart_native_category_id": "cos_10.5",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 60,
+        "display_unit": "",
+        "package_quantity": 60.0,
+        "package_unit": "봉",
+        "standard_unit": null
+      },
+      "price": 689900,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "681c5c87af3e0a3aded79b0dfb874c598c48107b",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-3-Variety-25g-x-60-x-20set/p/523645",
+        "category": "과자",
+        "cocodalin_join_key": "523645",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-3-Variety-25g-x-60-x-20set/p/523645",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/ha1/h4f/9867896717342.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.5",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "523645",
+        "match_key": "__no_brand__|썬키스트 견과 ３종세트 25g x 60봉 x 20세트|60.0|봉",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "썬키스트 견과 ３종세트 25g x 60봉 x 20세트",
+        "normalized_name": "썬키스트 견과 ３종세트 25g x 60봉 x 20세트",
+        "pack_qty": 60,
+        "pack_unit": "봉",
+        "price": 689900,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "썬키스트 견과 ３종세트 25g x 60봉 x 20세트",
+        "raw_promo_type": null,
+        "sale_price": 689900,
+        "source": "costco",
+        "source_record_key": "523645",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-3-Variety-25g-x-60-x-20set/p/523645",
+        "unit_price": 34495.0,
+        "unit_price_basis": "개　　　",
+        "unit_price_basis_raw": "개　　　",
+        "unit_price_display": "개　　　당 34,495원",
+        "unit_price_displayed": 34495,
+        "unit_price_text": "개　　　당 34,495원"
+      },
+      "raw_payload_sha256": "60abef485ca970eeaad6c6356bb135147fd2eaf36e4936c5282dc5f390474825",
+      "raw_record_id": "ingestion:41:91",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "523645",
+      "source_title": "썬키스트 견과 3종세트 25g x 60봉 x 20세트",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-3-Variety-25g-x-60-x-20set/p/523645",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:91",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "523645",
+    "source_title": "썬키스트 견과 ３종세트 25g x 60봉 x 20세트"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.grains.nuts.cashew"
+      ],
+      "category_path": [
+        "식품",
+        "곡물·견과",
+        "견과류",
+        "캐슈넛"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_snack_title",
+      "evidence_type": "contextual_costco_snack_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.5",
+      "raw_record_id": "ingestion:41:92",
+      "review_status": "classified",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "썬키스트 구운 캐슈넛 250g x 3봉",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Snack/Nuts/Sunkist-Roasted-Cashews-250g-x-3-pack/p/605844"
+      ],
+      "unified_category_id": "food.grains.nuts.cashew",
+      "url_taxonomy_hints": [
+        "foods",
+        "snack",
+        "nuts"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h73/h2c/9868210143262.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 92,
+      "mart_native_category_id": "cos_10.5",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 3,
+        "display_unit": "",
+        "package_quantity": 3.0,
+        "package_unit": "봉",
+        "standard_unit": null
+      },
+      "price": 18990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "71fa1b78c7bbf44d067eed9f804ad40131372b78",
+        "canonical_url": "https://www.costco.co.kr/Foods/Snack/Nuts/Sunkist-Roasted-Cashews-250g-x-3-pack/p/605844",
+        "category": "과자",
+        "cocodalin_join_key": "605844",
+        "detail_url": "https://www.costco.co.kr/Foods/Snack/Nuts/Sunkist-Roasted-Cashews-250g-x-3-pack/p/605844",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h73/h2c/9868210143262.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.5",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "605844",
+        "match_key": "__no_brand__|썬키스트 구운 캐슈넛 250g x 3봉|3.0|봉",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "썬키스트 구운 캐슈넛 250g x 3봉",
+        "normalized_name": "썬키스트 구운 캐슈넛 250g x 3봉",
+        "pack_qty": 3,
+        "pack_unit": "봉",
+        "price": 18990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "썬키스트 구운 캐슈넛 250g x 3봉",
+        "raw_promo_type": null,
+        "sale_price": 18990,
+        "source": "costco",
+        "source_record_key": "605844",
+        "source_url": "https://www.costco.co.kr/Foods/Snack/Nuts/Sunkist-Roasted-Cashews-250g-x-3-pack/p/605844",
+        "unit_price": 2532.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,532원",
+        "unit_price_displayed": 2532,
+        "unit_price_text": "100G당 2,532원"
+      },
+      "raw_payload_sha256": "c871912ac52df4f2f77bdb401857bf49704954e8f0519dcf44e7cbd07c1394bf",
+      "raw_record_id": "ingestion:41:92",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "605844",
+      "source_title": "썬키스트 구운 캐슈넛 250g x 3봉",
+      "source_url": "https://www.costco.co.kr/Foods/Snack/Nuts/Sunkist-Roasted-Cashews-250g-x-3-pack/p/605844",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:92",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "605844",
+    "source_title": "썬키스트 구운 캐슈넛 250g x 3봉"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.grains.nuts.mixed"
+      ],
+      "category_path": [
+        "식품",
+        "곡물·견과",
+        "견과류",
+        "혼합견과"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_snack_title",
+      "evidence_type": "contextual_costco_snack_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.5",
+      "raw_record_id": "ingestion:41:93",
+      "review_status": "classified",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "Dole 후룻앤넛츠 15g x 50봉 x 2박스",
+      "source_urls": [
+        "https://www.costco.co.kr/Foods/Snack/Nuts/Dole-Fruit-Nuts-15g-x-50pack-x-2ct/p/609798"
+      ],
+      "unified_category_id": "food.grains.nuts.mixed",
+      "url_taxonomy_hints": [
+        "foods",
+        "snack",
+        "nuts"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h88/hf5/14638552317982.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [
+        "bundle_multiplier_unresolved",
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 93,
+      "mart_native_category_id": "cos_10.5",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 50,
+        "display_unit": "",
+        "package_quantity": 50.0,
+        "package_unit": "봉",
+        "standard_unit": null
+      },
+      "price": 49990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "b74300b97ea5a0244770047018324f2eb161a033",
+        "canonical_url": "https://www.costco.co.kr/Foods/Snack/Nuts/Dole-Fruit-Nuts-15g-x-50pack-x-2ct/p/609798",
+        "category": "과자",
+        "cocodalin_join_key": "609798",
+        "detail_url": "https://www.costco.co.kr/Foods/Snack/Nuts/Dole-Fruit-Nuts-15g-x-50pack-x-2ct/p/609798",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h88/hf5/14638552317982.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.5",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "609798",
+        "match_key": "__no_brand__|dole 후룻앤넛츠 15g x 50봉 x 2박스|50.0|봉",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "Dole 후룻앤넛츠 15g x 50봉 x 2박스",
+        "normalized_name": "Dole 후룻앤넛츠 15g x 50봉 x 2박스",
+        "pack_qty": 50,
+        "pack_unit": "봉",
+        "price": 49990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "Dole 후룻앤넛츠 15g x 50봉 x 2박스",
+        "raw_promo_type": null,
+        "sale_price": 49990,
+        "source": "costco",
+        "source_record_key": "609798",
+        "source_url": "https://www.costco.co.kr/Foods/Snack/Nuts/Dole-Fruit-Nuts-15g-x-50pack-x-2ct/p/609798",
+        "unit_price": 3333.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 3,333원",
+        "unit_price_displayed": 3333,
+        "unit_price_text": "100G당 3,333원"
+      },
+      "raw_payload_sha256": "9df28753c4533a8c699b91cee147fced9c2e6dbc446dcaef4c93fe1d44f10159",
+      "raw_record_id": "ingestion:41:93",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "609798",
+      "source_title": "Dole 후룻앤넛츠 15g x 50봉 x 2박스",
+      "source_url": "https://www.costco.co.kr/Foods/Snack/Nuts/Dole-Fruit-Nuts-15g-x-50pack-x-2ct/p/609798",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:93",
+    "reasons": [
+      "bundle_multiplier_unresolved",
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "609798",
+    "source_title": "Dole 후룻앤넛츠 15g x 50봉 x 2박스"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.grains.nuts.mixed"
+      ],
+      "category_path": [
+        "식품",
+        "곡물·견과",
+        "견과류",
+        "혼합견과"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_snack_title",
+      "evidence_type": "contextual_costco_snack_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.5",
+      "raw_record_id": "ingestion:41:94",
+      "review_status": "classified",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "썬키스트 견과 ５종 세트1,850g",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-5-Variety-Set-1850g/p/606293"
+      ],
+      "unified_category_id": "food.grains.nuts.mixed",
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h90/hd2/9868223938590.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 94,
+      "mart_native_category_id": "cos_10.5",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "",
+        "package_quantity": 850.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 50990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "a06b3d499b3305045efda4bef09970f6b0530a68",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-5-Variety-Set-1850g/p/606293",
+        "category": "과자",
+        "cocodalin_join_key": "606293",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-5-Variety-Set-1850g/p/606293",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h90/hd2/9868223938590.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.5",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "606293",
+        "match_key": "__no_brand__|썬키스트 견과 ５종 세트1 850g|850.0|g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "썬키스트 견과 ５종 세트1,850g",
+        "normalized_name": "썬키스트 견과 ５종 세트1,850g",
+        "pack_qty": 850,
+        "pack_unit": "g",
+        "price": 50990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "썬키스트 견과 ５종 세트1,850g",
+        "raw_promo_type": null,
+        "sale_price": 50990,
+        "source": "costco",
+        "source_record_key": "606293",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-5-Variety-Set-1850g/p/606293",
+        "unit_price": 2756.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,756원",
+        "unit_price_displayed": 2756,
+        "unit_price_text": "100G당 2,756원"
+      },
+      "raw_payload_sha256": "80db4c5a7a3a61e61e0e7452cae5adb06c66ab0cc7172f07a7c734451470c179",
+      "raw_record_id": "ingestion:41:94",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "606293",
+      "source_title": "썬키스트 견과 5종 세트1,850g",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-5-Variety-Set-1850g/p/606293",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:94",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "606293",
+    "source_title": "썬키스트 견과 ５종 세트1,850g"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.grains.nuts.mixed"
+      ],
+      "category_path": [
+        "식품",
+        "곡물·견과",
+        "견과류",
+        "혼합견과"
+      ],
+      "classification_confidence": 0.9,
+      "classification_reason": "supported_by_contextual_costco_snack_title",
+      "evidence_type": "contextual_costco_snack_title",
+      "mart": "costco",
+      "native_category_key": "costco:path:18b61ae75a84f00bbfc70cd8",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": "cos_10.5",
+      "raw_record_id": "ingestion:41:95",
+      "review_status": "classified",
+      "source_path": "과자",
+      "source_path_field": "mart_native_category_path",
+      "source_path_parts": [
+        "과자"
+      ],
+      "source_title": "썬키스트 견과 ３종세트 25g x 60봉",
+      "source_urls": [
+        "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-3-Variety-Set-25g-x-60/p/509119"
+      ],
+      "unified_category_id": "food.grains.nuts.mixed",
+      "url_taxonomy_hints": [
+        "gift-set-special",
+        "food-gift-set"
+      ]
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:51:51.875403Z",
+      "crawler_name": "costco",
+      "discount_rate": null,
+      "event_name": null,
+      "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4e/h2c/9894602407966.jpg",
+      "ingestion_id": 41,
+      "ingestion_received_at": "2026-08-31T01:51:51.875403Z",
+      "issues": [
+        "multiple_package_quantities",
+        "unit_text_conflict",
+        "unit_title_conflict"
+      ],
+      "item_index": 95,
+      "mart_native_category_id": "cos_10.5",
+      "observed_time_precision": "batch",
+      "original_price": null,
+      "package": {
+        "bundle_count": 60,
+        "display_unit": "",
+        "package_quantity": 60.0,
+        "package_unit": "봉",
+        "standard_unit": null
+      },
+      "price": 41990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "brand": "__no_brand__",
+        "canon_hash": "613fc5a730ffce1155865f3ab4ef52677b5f3b1d",
+        "canonical_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-3-Variety-Set-25g-x-60/p/509119",
+        "category": "과자",
+        "cocodalin_join_key": "509119",
+        "detail_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-3-Variety-Set-25g-x-60/p/509119",
+        "external_seller": false,
+        "image_url": "https://www.costco.co.kr/medias/sys_master/images/h4e/h2c/9894602407966.jpg",
+        "mart": "costco",
+        "mart_native_category_id": "cos_10.5",
+        "mart_native_category_path": "과자",
+        "mart_native_code": "509119",
+        "match_key": "__no_brand__|썬키스트 견과 ３종세트 25g x 60봉|60.0|봉",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "썬키스트 견과 ３종세트 25g x 60봉",
+        "normalized_name": "썬키스트 견과 ３종세트 25g x 60봉",
+        "pack_qty": 60,
+        "pack_unit": "봉",
+        "price": 41990,
+        "promo_label": null,
+        "promo_type": null,
+        "raw_name": "썬키스트 견과 ３종세트 25g x 60봉",
+        "raw_promo_type": null,
+        "sale_price": 41990,
+        "source": "costco",
+        "source_record_key": "509119",
+        "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-3-Variety-Set-25g-x-60/p/509119",
+        "unit_price": 2799.0,
+        "unit_price_basis": "100G",
+        "unit_price_basis_raw": "100G",
+        "unit_price_display": "100G당 2,799원",
+        "unit_price_displayed": 2799,
+        "unit_price_text": "100G당 2,799원"
+      },
+      "raw_payload_sha256": "666baad4e8cf9737a721ddab05c5c699ff9179a293fc05797e0790cecec54ae3",
+      "raw_record_id": "ingestion:41:95",
+      "source_category_path": [
+        "과자"
+      ],
+      "source_name": "costco",
+      "source_record_key": "509119",
+      "source_title": "썬키스트 견과 3종세트 25g x 60봉",
+      "source_url": "https://www.costco.co.kr/Gift-Set-Special/Food-Gift-Set/Sunkist-Nut-3-Variety-Set-25g-x-60/p/509119",
+      "timestamp_source": "ingestion_received_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:41:95",
+    "reasons": [
+      "multiple_package_quantities",
+      "unit_text_conflict",
+      "unit_title_conflict"
+    ],
+    "source_record_key": "509119",
+    "source_title": "썬키스트 견과 ３종세트 25g x 60봉"
+  }
+]

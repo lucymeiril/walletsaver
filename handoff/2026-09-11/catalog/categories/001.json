@@ -1,0 +1,4169 @@
+[
+  {
+    "id": "baby",
+    "level": 0,
+    "name_ko": "유아동",
+    "parent_id": null,
+    "slug": "baby",
+    "sort_order": 0,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "baby.hygiene",
+    "level": 1,
+    "name_ko": "유아위생",
+    "parent_id": "baby",
+    "slug": "hygiene",
+    "sort_order": 4,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "baby.hygiene.diapering",
+    "level": 2,
+    "name_ko": "배변용품",
+    "parent_id": "baby.hygiene",
+    "slug": "diapering",
+    "sort_order": 20,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "baby.hygiene.diapering.diapers",
+    "level": 3,
+    "name_ko": "유아기저귀",
+    "parent_id": "baby.hygiene.diapering",
+    "slug": "diapers",
+    "sort_order": 80,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "baby.hygiene.diapering.wipes",
+    "level": 3,
+    "name_ko": "유아물티슈",
+    "parent_id": "baby.hygiene.diapering",
+    "slug": "wipes",
+    "sort_order": 81,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "beauty",
+    "level": 0,
+    "name_ko": "뷰티·개인관리",
+    "parent_id": null,
+    "slug": "beauty",
+    "sort_order": 1,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "beauty.personal",
+    "level": 1,
+    "name_ko": "개인위생",
+    "parent_id": "beauty",
+    "slug": "personal",
+    "sort_order": 5,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "beauty.personal.body",
+    "level": 2,
+    "name_ko": "바디케어",
+    "parent_id": "beauty.personal",
+    "slug": "body",
+    "sort_order": 21,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "beauty.personal.body.handwash",
+    "level": 3,
+    "name_ko": "핸드워시",
+    "parent_id": "beauty.personal.body",
+    "slug": "handwash",
+    "sort_order": 82,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "beauty.personal.body.lotion",
+    "level": 3,
+    "name_ko": "바디로션",
+    "parent_id": "beauty.personal.body",
+    "slug": "lotion",
+    "sort_order": 83,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "beauty.personal.body.soap",
+    "level": 3,
+    "name_ko": "세안·목욕비누",
+    "parent_id": "beauty.personal.body",
+    "slug": "soap",
+    "sort_order": 84,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "beauty.personal.body.wash",
+    "level": 3,
+    "name_ko": "바디워시",
+    "parent_id": "beauty.personal.body",
+    "slug": "wash",
+    "sort_order": 85,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "beauty.personal.hair",
+    "level": 2,
+    "name_ko": "헤어케어",
+    "parent_id": "beauty.personal",
+    "slug": "hair",
+    "sort_order": 22,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "beauty.personal.hair.conditioner",
+    "level": 3,
+    "name_ko": "린스·컨디셔너",
+    "parent_id": "beauty.personal.hair",
+    "slug": "conditioner",
+    "sort_order": 86,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "beauty.personal.hair.dye",
+    "level": 3,
+    "name_ko": "염색제",
+    "parent_id": "beauty.personal.hair",
+    "slug": "dye",
+    "sort_order": 87,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "beauty.personal.hair.shampoo",
+    "level": 3,
+    "name_ko": "샴푸",
+    "parent_id": "beauty.personal.hair",
+    "slug": "shampoo",
+    "sort_order": 88,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "beauty.personal.hair.treatment",
+    "level": 3,
+    "name_ko": "헤어트리트먼트",
+    "parent_id": "beauty.personal.hair",
+    "slug": "treatment",
+    "sort_order": 89,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "beauty.personal.oral",
+    "level": 2,
+    "name_ko": "구강관리",
+    "parent_id": "beauty.personal",
+    "slug": "oral",
+    "sort_order": 23,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "beauty.personal.oral.floss",
+    "level": 3,
+    "name_ko": "치실",
+    "parent_id": "beauty.personal.oral",
+    "slug": "floss",
+    "sort_order": 90,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "beauty.personal.oral.toothbrush",
+    "level": 3,
+    "name_ko": "칫솔",
+    "parent_id": "beauty.personal.oral",
+    "slug": "toothbrush",
+    "sort_order": 91,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "beauty.personal.oral.toothpaste",
+    "level": 3,
+    "name_ko": "치약",
+    "parent_id": "beauty.personal.oral",
+    "slug": "toothpaste",
+    "sort_order": 92,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food",
+    "level": 0,
+    "name_ko": "식품",
+    "parent_id": null,
+    "slug": "food",
+    "sort_order": 2,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.bakery",
+    "level": 1,
+    "name_ko": "베이커리·스프레드",
+    "parent_id": "food",
+    "slug": "bakery",
+    "sort_order": 6,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.bakery.bread",
+    "level": 2,
+    "name_ko": "빵",
+    "parent_id": "food.bakery",
+    "slug": "bread",
+    "sort_order": 25,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.bakery.bread.bagel",
+    "level": 3,
+    "name_ko": "베이글",
+    "parent_id": "food.bakery.bread",
+    "slug": "bagel",
+    "sort_order": 96,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.bakery.bread.dough",
+    "level": 3,
+    "name_ko": "제빵생지",
+    "parent_id": "food.bakery.bread",
+    "slug": "dough",
+    "sort_order": 97,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.bakery.bread.hard",
+    "level": 3,
+    "name_ko": "하드롤·바게트",
+    "parent_id": "food.bakery.bread",
+    "slug": "hard",
+    "sort_order": 98,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.bakery.bread.pastry",
+    "level": 3,
+    "name_ko": "페이스트리",
+    "parent_id": "food.bakery.bread",
+    "slug": "pastry",
+    "sort_order": 99,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.bakery.bread.roll",
+    "level": 3,
+    "name_ko": "모닝롤",
+    "parent_id": "food.bakery.bread",
+    "slug": "roll",
+    "sort_order": 100,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.bakery.bread.sliced",
+    "level": 3,
+    "name_ko": "식빵",
+    "parent_id": "food.bakery.bread",
+    "slug": "sliced",
+    "sort_order": 101,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.bakery.dessert",
+    "level": 2,
+    "name_ko": "디저트",
+    "parent_id": "food.bakery",
+    "slug": "dessert",
+    "sort_order": 26,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.bakery.dessert.cake",
+    "level": 3,
+    "name_ko": "케이크",
+    "parent_id": "food.bakery.dessert",
+    "slug": "cake",
+    "sort_order": 102,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.bakery.dessert.financier",
+    "level": 3,
+    "name_ko": "휘낭시에",
+    "parent_id": "food.bakery.dessert",
+    "slug": "financier",
+    "sort_order": 103,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.bakery.dessert.muffin",
+    "level": 3,
+    "name_ko": "머핀",
+    "parent_id": "food.bakery.dessert",
+    "slug": "muffin",
+    "sort_order": 104,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.bakery.dessert.scone",
+    "level": 3,
+    "name_ko": "스콘",
+    "parent_id": "food.bakery.dessert",
+    "slug": "scone",
+    "sort_order": 105,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.bakery.spreads",
+    "level": 2,
+    "name_ko": "스프레드",
+    "parent_id": "food.bakery",
+    "slug": "spreads",
+    "sort_order": 27,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.bakery.spreads.fruit",
+    "level": 3,
+    "name_ko": "과일잼·마멀레이드",
+    "parent_id": "food.bakery.spreads",
+    "slug": "fruit",
+    "sort_order": 106,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.bakery.spreads.peanut",
+    "level": 3,
+    "name_ko": "땅콩버터",
+    "parent_id": "food.bakery.spreads",
+    "slug": "peanut",
+    "sort_order": 107,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy",
+    "level": 1,
+    "name_ko": "유제품",
+    "parent_id": "food",
+    "slug": "dairy",
+    "sort_order": 7,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cheese",
+    "level": 2,
+    "name_ko": "치즈·버터",
+    "parent_id": "food.dairy",
+    "slug": "cheese",
+    "sort_order": 28,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cheese.blue",
+    "level": 3,
+    "name_ko": "블루치즈",
+    "parent_id": "food.dairy.cheese",
+    "slug": "blue",
+    "sort_order": 108,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cheese.brie",
+    "level": 3,
+    "name_ko": "브리치즈",
+    "parent_id": "food.dairy.cheese",
+    "slug": "brie",
+    "sort_order": 109,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cheese.butter",
+    "level": 3,
+    "name_ko": "버터",
+    "parent_id": "food.dairy.cheese",
+    "slug": "butter",
+    "sort_order": 111,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cheese.camembert",
+    "level": 3,
+    "name_ko": "까망베르치즈",
+    "parent_id": "food.dairy.cheese",
+    "slug": "camembert",
+    "sort_order": 112,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cheese.cream",
+    "level": 3,
+    "name_ko": "크림치즈",
+    "parent_id": "food.dairy.cheese",
+    "slug": "cream",
+    "sort_order": 113,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cheese.fresh_mozzarella",
+    "level": 3,
+    "name_ko": "생모짜렐라",
+    "parent_id": "food.dairy.cheese",
+    "slug": "fresh_mozzarella",
+    "sort_order": 114,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cheese.fruit",
+    "level": 3,
+    "name_ko": "과일치즈",
+    "parent_id": "food.dairy.cheese",
+    "slug": "fruit",
+    "sort_order": 115,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cheese.grilling",
+    "level": 3,
+    "name_ko": "구워먹는치즈",
+    "parent_id": "food.dairy.cheese",
+    "slug": "grilling",
+    "sort_order": 116,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cheese.hard_aged",
+    "level": 3,
+    "name_ko": "경성숙성치즈",
+    "parent_id": "food.dairy.cheese",
+    "slug": "hard_aged",
+    "sort_order": 117,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cheese.mascarpone",
+    "level": 3,
+    "name_ko": "마스카르포네",
+    "parent_id": "food.dairy.cheese",
+    "slug": "mascarpone",
+    "sort_order": 118,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cheese.portion",
+    "level": 3,
+    "name_ko": "포션·큐브치즈",
+    "parent_id": "food.dairy.cheese",
+    "slug": "portion",
+    "sort_order": 119,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cheese.ricotta",
+    "level": 3,
+    "name_ko": "리코타치즈",
+    "parent_id": "food.dairy.cheese",
+    "slug": "ricotta",
+    "sort_order": 120,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cheese.shredded",
+    "level": 3,
+    "name_ko": "슈레드치즈",
+    "parent_id": "food.dairy.cheese",
+    "slug": "shredded",
+    "sort_order": 121,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cheese.sliced",
+    "level": 3,
+    "name_ko": "슬라이스치즈",
+    "parent_id": "food.dairy.cheese",
+    "slug": "sliced",
+    "sort_order": 122,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cheese.string",
+    "level": 3,
+    "name_ko": "스트링치즈",
+    "parent_id": "food.dairy.cheese",
+    "slug": "string",
+    "sort_order": 123,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cream",
+    "level": 2,
+    "name_ko": "유크림",
+    "parent_id": "food.dairy",
+    "slug": "cream",
+    "sort_order": 29,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.cream.fresh",
+    "level": 3,
+    "name_ko": "생크림",
+    "parent_id": "food.dairy.cream",
+    "slug": "fresh",
+    "sort_order": 124,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.milk",
+    "level": 2,
+    "name_ko": "우유",
+    "parent_id": "food.dairy",
+    "slug": "milk",
+    "sort_order": 30,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.milk.banana",
+    "level": 3,
+    "name_ko": "바나나우유",
+    "parent_id": "food.dairy.milk",
+    "slug": "banana",
+    "sort_order": 125,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.milk.chocolate",
+    "level": 3,
+    "name_ko": "초코우유",
+    "parent_id": "food.dairy.milk",
+    "slug": "chocolate",
+    "sort_order": 126,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.milk.coffee",
+    "level": 3,
+    "name_ko": "커피우유",
+    "parent_id": "food.dairy.milk",
+    "slug": "coffee",
+    "sort_order": 127,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.milk.matcha",
+    "level": 3,
+    "name_ko": "말차우유",
+    "parent_id": "food.dairy.milk",
+    "slug": "matcha",
+    "sort_order": 128,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.milk.plain",
+    "level": 3,
+    "name_ko": "흰우유",
+    "parent_id": "food.dairy.milk",
+    "slug": "plain",
+    "sort_order": 129,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.milk.strawberry",
+    "level": 3,
+    "name_ko": "딸기우유",
+    "parent_id": "food.dairy.milk",
+    "slug": "strawberry",
+    "sort_order": 130,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.yogurt",
+    "level": 2,
+    "name_ko": "발효유",
+    "parent_id": "food.dairy",
+    "slug": "yogurt",
+    "sort_order": 31,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.yogurt.drink",
+    "level": 3,
+    "name_ko": "마시는요구르트",
+    "parent_id": "food.dairy.yogurt",
+    "slug": "drink",
+    "sort_order": 131,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.yogurt.greek",
+    "level": 3,
+    "name_ko": "그릭요거트",
+    "parent_id": "food.dairy.yogurt",
+    "slug": "greek",
+    "sort_order": 132,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.yogurt.spoon",
+    "level": 3,
+    "name_ko": "떠먹는요거트",
+    "parent_id": "food.dairy.yogurt",
+    "slug": "spoon",
+    "sort_order": 133,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.yogurt.squeeze",
+    "level": 3,
+    "name_ko": "짜먹는요거트",
+    "parent_id": "food.dairy.yogurt",
+    "slug": "squeeze",
+    "sort_order": 134,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.dairy.yogurt.topping",
+    "level": 3,
+    "name_ko": "토핑요거트",
+    "parent_id": "food.dairy.yogurt",
+    "slug": "topping",
+    "sort_order": 135,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks",
+    "level": 1,
+    "name_ko": "음료",
+    "parent_id": "food",
+    "slug": "drinks",
+    "sort_order": 8,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.coffee",
+    "level": 2,
+    "name_ko": "커피",
+    "parent_id": "food.drinks",
+    "slug": "coffee",
+    "sort_order": 32,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.coffee.beans",
+    "level": 3,
+    "name_ko": "원두커피",
+    "parent_id": "food.drinks.coffee",
+    "slug": "beans",
+    "sort_order": 136,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.coffee.capsule",
+    "level": 3,
+    "name_ko": "캡슐커피",
+    "parent_id": "food.drinks.coffee",
+    "slug": "capsule",
+    "sort_order": 137,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.coffee.drip",
+    "level": 3,
+    "name_ko": "드립커피",
+    "parent_id": "food.drinks.coffee",
+    "slug": "drip",
+    "sort_order": 138,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.coffee.instant",
+    "level": 3,
+    "name_ko": "인스턴트커피",
+    "parent_id": "food.drinks.coffee",
+    "slug": "instant",
+    "sort_order": 139,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.coffee.mix",
+    "level": 3,
+    "name_ko": "커피믹스",
+    "parent_id": "food.drinks.coffee",
+    "slug": "mix",
+    "sort_order": 140,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.coffee.ready",
+    "level": 3,
+    "name_ko": "커피음료",
+    "parent_id": "food.drinks.coffee",
+    "slug": "ready",
+    "sort_order": 141,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.juice",
+    "level": 2,
+    "name_ko": "과채음료",
+    "parent_id": "food.drinks",
+    "slug": "juice",
+    "sort_order": 33,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.juice.aloe",
+    "level": 3,
+    "name_ko": "알로에음료",
+    "parent_id": "food.drinks.juice",
+    "slug": "aloe",
+    "sort_order": 142,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.juice.coconut",
+    "level": 3,
+    "name_ko": "코코넛워터",
+    "parent_id": "food.drinks.juice",
+    "slug": "coconut",
+    "sort_order": 143,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.juice.fruit",
+    "level": 3,
+    "name_ko": "과일주스",
+    "parent_id": "food.drinks.juice",
+    "slug": "fruit",
+    "sort_order": 144,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.juice.fruit_drink",
+    "level": 3,
+    "name_ko": "과일음료",
+    "parent_id": "food.drinks.juice",
+    "slug": "fruit_drink",
+    "sort_order": 145,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.juice.vegetable",
+    "level": 3,
+    "name_ko": "채소주스",
+    "parent_id": "food.drinks.juice",
+    "slug": "vegetable",
+    "sort_order": 146,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.juice.vegetable_drink",
+    "level": 3,
+    "name_ko": "채소음료",
+    "parent_id": "food.drinks.juice",
+    "slug": "vegetable_drink",
+    "sort_order": 147,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.non_alcoholic",
+    "level": 2,
+    "name_ko": "무알코올음료",
+    "parent_id": "food.drinks",
+    "slug": "non_alcoholic",
+    "sort_order": 34,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.non_alcoholic.beer",
+    "level": 3,
+    "name_ko": "무알코올맥주",
+    "parent_id": "food.drinks.non_alcoholic",
+    "slug": "beer",
+    "sort_order": 148,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.tea",
+    "level": 2,
+    "name_ko": "차·코코아",
+    "parent_id": "food.drinks",
+    "slug": "tea",
+    "sort_order": 35,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.tea.barley",
+    "level": 3,
+    "name_ko": "보리차",
+    "parent_id": "food.drinks.tea",
+    "slug": "barley",
+    "sort_order": 149,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.tea.black",
+    "level": 3,
+    "name_ko": "홍차·아이스티",
+    "parent_id": "food.drinks.tea",
+    "slug": "black",
+    "sort_order": 150,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.tea.citron",
+    "level": 3,
+    "name_ko": "유자차",
+    "parent_id": "food.drinks.tea",
+    "slug": "citron",
+    "sort_order": 151,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.tea.cocoa",
+    "level": 3,
+    "name_ko": "코코아·핫초코",
+    "parent_id": "food.drinks.tea",
+    "slug": "cocoa",
+    "sort_order": 152,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.tea.grain",
+    "level": 3,
+    "name_ko": "곡물차",
+    "parent_id": "food.drinks.tea",
+    "slug": "grain",
+    "sort_order": 153,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.tea.green",
+    "level": 3,
+    "name_ko": "녹차·말차",
+    "parent_id": "food.drinks.tea",
+    "slug": "green",
+    "sort_order": 154,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.tea.herbal",
+    "level": 3,
+    "name_ko": "허브차",
+    "parent_id": "food.drinks.tea",
+    "slug": "herbal",
+    "sort_order": 155,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.traditional",
+    "level": 2,
+    "name_ko": "전통음료",
+    "parent_id": "food.drinks",
+    "slug": "traditional",
+    "sort_order": 36,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.traditional.sikhye",
+    "level": 3,
+    "name_ko": "식혜",
+    "parent_id": "food.drinks.traditional",
+    "slug": "sikhye",
+    "sort_order": 157,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.water_soda",
+    "level": 2,
+    "name_ko": "생수·탄산",
+    "parent_id": "food.drinks",
+    "slug": "water_soda",
+    "sort_order": 37,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.water_soda.cider",
+    "level": 3,
+    "name_ko": "사이다",
+    "parent_id": "food.drinks.water_soda",
+    "slug": "cider",
+    "sort_order": 158,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.water_soda.cola",
+    "level": 3,
+    "name_ko": "콜라",
+    "parent_id": "food.drinks.water_soda",
+    "slug": "cola",
+    "sort_order": 159,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.water_soda.energy",
+    "level": 3,
+    "name_ko": "에너지음료",
+    "parent_id": "food.drinks.water_soda",
+    "slug": "energy",
+    "sort_order": 160,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.water_soda.soda",
+    "level": 3,
+    "name_ko": "탄산음료",
+    "parent_id": "food.drinks.water_soda",
+    "slug": "soda",
+    "sort_order": 161,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.water_soda.sparkling",
+    "level": 3,
+    "name_ko": "탄산수",
+    "parent_id": "food.drinks.water_soda",
+    "slug": "sparkling",
+    "sort_order": 162,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.water_soda.sports",
+    "level": 3,
+    "name_ko": "스포츠음료",
+    "parent_id": "food.drinks.water_soda",
+    "slug": "sports",
+    "sort_order": 163,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.drinks.water_soda.water",
+    "level": 3,
+    "name_ko": "생수",
+    "parent_id": "food.drinks.water_soda",
+    "slug": "water",
+    "sort_order": 164,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains",
+    "level": 1,
+    "name_ko": "곡물·견과",
+    "parent_id": "food",
+    "slug": "grains",
+    "sort_order": 9,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.nuts",
+    "level": 2,
+    "name_ko": "견과류",
+    "parent_id": "food.grains",
+    "slug": "nuts",
+    "sort_order": 38,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.nuts.almond",
+    "level": 3,
+    "name_ko": "아몬드",
+    "parent_id": "food.grains.nuts",
+    "slug": "almond",
+    "sort_order": 165,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.nuts.cashew",
+    "level": 3,
+    "name_ko": "캐슈넛",
+    "parent_id": "food.grains.nuts",
+    "slug": "cashew",
+    "sort_order": 166,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.nuts.macadamia",
+    "level": 3,
+    "name_ko": "마카다미아",
+    "parent_id": "food.grains.nuts",
+    "slug": "macadamia",
+    "sort_order": 167,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.nuts.mixed",
+    "level": 3,
+    "name_ko": "혼합견과",
+    "parent_id": "food.grains.nuts",
+    "slug": "mixed",
+    "sort_order": 168,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.nuts.peanut",
+    "level": 3,
+    "name_ko": "땅콩",
+    "parent_id": "food.grains.nuts",
+    "slug": "peanut",
+    "sort_order": 169,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.nuts.pistachio",
+    "level": 3,
+    "name_ko": "피스타치오",
+    "parent_id": "food.grains.nuts",
+    "slug": "pistachio",
+    "sort_order": 170,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.nuts.walnut",
+    "level": 3,
+    "name_ko": "호두",
+    "parent_id": "food.grains.nuts",
+    "slug": "walnut",
+    "sort_order": 171,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.rice",
+    "level": 2,
+    "name_ko": "쌀·잡곡",
+    "parent_id": "food.grains",
+    "slug": "rice",
+    "sort_order": 39,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.rice.barley",
+    "level": 3,
+    "name_ko": "보리",
+    "parent_id": "food.grains.rice",
+    "slug": "barley",
+    "sort_order": 172,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.rice.black",
+    "level": 3,
+    "name_ko": "흑미",
+    "parent_id": "food.grains.rice",
+    "slug": "black",
+    "sort_order": 173,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.rice.brown",
+    "level": 3,
+    "name_ko": "현미",
+    "parent_id": "food.grains.rice",
+    "slug": "brown",
+    "sort_order": 174,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.rice.chickpea",
+    "level": 3,
+    "name_ko": "병아리콩",
+    "parent_id": "food.grains.rice",
+    "slug": "chickpea",
+    "sort_order": 175,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.rice.glutinous",
+    "level": 3,
+    "name_ko": "찹쌀",
+    "parent_id": "food.grains.rice",
+    "slug": "glutinous",
+    "sort_order": 176,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.rice.millet",
+    "level": 3,
+    "name_ko": "기장",
+    "parent_id": "food.grains.rice",
+    "slug": "millet",
+    "sort_order": 177,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.rice.mixed",
+    "level": 3,
+    "name_ko": "혼합곡",
+    "parent_id": "food.grains.rice",
+    "slug": "mixed",
+    "sort_order": 178,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.rice.oat",
+    "level": 3,
+    "name_ko": "귀리",
+    "parent_id": "food.grains.rice",
+    "slug": "oat",
+    "sort_order": 179,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.grains.rice.white",
+    "level": 3,
+    "name_ko": "백미",
+    "parent_id": "food.grains.rice",
+    "slug": "white",
+    "sort_order": 180,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals",
+    "level": 1,
+    "name_ko": "간편식·면",
+    "parent_id": "food",
+    "slug": "meals",
+    "sort_order": 10,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.dumplings",
+    "level": 2,
+    "name_ko": "만두",
+    "parent_id": "food.meals",
+    "slug": "dumplings",
+    "sort_order": 40,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.dumplings.assorted",
+    "level": 3,
+    "name_ko": "일반만두",
+    "parent_id": "food.meals.dumplings",
+    "slug": "assorted",
+    "sort_order": 181,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.dumplings.boiled",
+    "level": 3,
+    "name_ko": "물만두",
+    "parent_id": "food.meals.dumplings",
+    "slug": "boiled",
+    "sort_order": 182,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.dumplings.dimsum",
+    "level": 3,
+    "name_ko": "딤섬",
+    "parent_id": "food.meals.dumplings",
+    "slug": "dimsum",
+    "sort_order": 183,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.dumplings.gyoza",
+    "level": 3,
+    "name_ko": "교자만두",
+    "parent_id": "food.meals.dumplings",
+    "slug": "gyoza",
+    "sort_order": 184,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.dumplings.steamed",
+    "level": 3,
+    "name_ko": "찐만두",
+    "parent_id": "food.meals.dumplings",
+    "slug": "steamed",
+    "sort_order": 185,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles",
+    "level": 2,
+    "name_ko": "면요리",
+    "parent_id": "food.meals",
+    "slug": "noodles",
+    "sort_order": 41,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.bag_ramen",
+    "level": 3,
+    "name_ko": "봉지라면",
+    "parent_id": "food.meals.noodles",
+    "slug": "bag_ramen",
+    "sort_order": 186,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.black_bean",
+    "level": 3,
+    "name_ko": "짜장면",
+    "parent_id": "food.meals.noodles",
+    "slug": "black_bean",
+    "sort_order": 187,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.cup_ramen",
+    "level": 3,
+    "name_ko": "컵라면",
+    "parent_id": "food.meals.noodles",
+    "slug": "cup_ramen",
+    "sort_order": 189,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.glass",
+    "level": 3,
+    "name_ko": "당면",
+    "parent_id": "food.meals.noodles",
+    "slug": "glass",
+    "sort_order": 190,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.gnocchi",
+    "level": 3,
+    "name_ko": "뇨끼",
+    "parent_id": "food.meals.noodles",
+    "slug": "gnocchi",
+    "sort_order": 191,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.jjamppong",
+    "level": 3,
+    "name_ko": "짬뽕면",
+    "parent_id": "food.meals.noodles",
+    "slug": "jjamppong",
+    "sort_order": 192,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.jjolmyeon",
+    "level": 3,
+    "name_ko": "쫄면",
+    "parent_id": "food.meals.noodles",
+    "slug": "jjolmyeon",
+    "sort_order": 193,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.kalguksu",
+    "level": 3,
+    "name_ko": "칼국수",
+    "parent_id": "food.meals.noodles",
+    "slug": "kalguksu",
+    "sort_order": 194,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.makguksu",
+    "level": 3,
+    "name_ko": "막국수",
+    "parent_id": "food.meals.noodles",
+    "slug": "makguksu",
+    "sort_order": 195,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.naengmyeon",
+    "level": 3,
+    "name_ko": "냉면·메밀면",
+    "parent_id": "food.meals.noodles",
+    "slug": "naengmyeon",
+    "sort_order": 196,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.pad_thai",
+    "level": 3,
+    "name_ko": "팟타이",
+    "parent_id": "food.meals.noodles",
+    "slug": "pad_thai",
+    "sort_order": 197,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.pasta",
+    "level": 3,
+    "name_ko": "파스타면",
+    "parent_id": "food.meals.noodles",
+    "slug": "pasta",
+    "sort_order": 198,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.ravioli",
+    "level": 3,
+    "name_ko": "라비올리",
+    "parent_id": "food.meals.noodles",
+    "slug": "ravioli",
+    "sort_order": 199,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.rice_noodle",
+    "level": 3,
+    "name_ko": "쌀국수",
+    "parent_id": "food.meals.noodles",
+    "slug": "rice_noodle",
+    "sort_order": 200,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.sujebi",
+    "level": 3,
+    "name_ko": "수제비",
+    "parent_id": "food.meals.noodles",
+    "slug": "sujebi",
+    "sort_order": 201,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.tofu_noodle",
+    "level": 3,
+    "name_ko": "두부면",
+    "parent_id": "food.meals.noodles",
+    "slug": "tofu_noodle",
+    "sort_order": 202,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.noodles.udon",
+    "level": 3,
+    "name_ko": "우동",
+    "parent_id": "food.meals.noodles",
+    "slug": "udon",
+    "sort_order": 203,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared",
+    "level": 2,
+    "name_ko": "조리식품",
+    "parent_id": "food.meals",
+    "slug": "prepared",
+    "sort_order": 42,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.black_bean",
+    "level": 3,
+    "name_ko": "즉석짜장",
+    "parent_id": "food.meals.prepared",
+    "slug": "black_bean",
+    "sort_order": 205,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.cheese_ball",
+    "level": 3,
+    "name_ko": "치즈볼",
+    "parent_id": "food.meals.prepared",
+    "slug": "cheese_ball",
+    "sort_order": 206,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.chicken",
+    "level": 3,
+    "name_ko": "조리치킨",
+    "parent_id": "food.meals.prepared",
+    "slug": "chicken",
+    "sort_order": 207,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.curry",
+    "level": 3,
+    "name_ko": "즉석카레",
+    "parent_id": "food.meals.prepared",
+    "slug": "curry",
+    "sort_order": 208,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.fried_shrimp",
+    "level": 3,
+    "name_ko": "새우튀김",
+    "parent_id": "food.meals.prepared",
+    "slug": "fried_shrimp",
+    "sort_order": 209,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.grilled_fish",
+    "level": 3,
+    "name_ko": "조리생선구이",
+    "parent_id": "food.meals.prepared",
+    "slug": "grilled_fish",
+    "sort_order": 210,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.hotdog",
+    "level": 3,
+    "name_ko": "핫도그",
+    "parent_id": "food.meals.prepared",
+    "slug": "hotdog",
+    "sort_order": 211,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.japchae",
+    "level": 3,
+    "name_ko": "조리잡채",
+    "parent_id": "food.meals.prepared",
+    "slug": "japchae",
+    "sort_order": 212,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.kimbap",
+    "level": 3,
+    "name_ko": "김밥",
+    "parent_id": "food.meals.prepared",
+    "slug": "kimbap",
+    "sort_order": 213,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.mapo_tofu",
+    "level": 3,
+    "name_ko": "즉석마파두부",
+    "parent_id": "food.meals.prepared",
+    "slug": "mapo_tofu",
+    "sort_order": 214,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.meal_kit",
+    "level": 3,
+    "name_ko": "밀키트",
+    "parent_id": "food.meals.prepared",
+    "slug": "meal_kit",
+    "sort_order": 215,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.meat_patty",
+    "level": 3,
+    "name_ko": "동그랑땡",
+    "parent_id": "food.meals.prepared",
+    "slug": "meat_patty",
+    "sort_order": 216,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.nugget",
+    "level": 3,
+    "name_ko": "치킨너겟·텐더",
+    "parent_id": "food.meals.prepared",
+    "slug": "nugget",
+    "sort_order": 217,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.pancake",
+    "level": 3,
+    "name_ko": "냉동전",
+    "parent_id": "food.meals.prepared",
+    "slug": "pancake",
+    "sort_order": 218,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.pizza",
+    "level": 3,
+    "name_ko": "피자",
+    "parent_id": "food.meals.prepared",
+    "slug": "pizza",
+    "sort_order": 219,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.pork_cutlet",
+    "level": 3,
+    "name_ko": "돈까스",
+    "parent_id": "food.meals.prepared",
+    "slug": "pork_cutlet",
+    "sort_order": 220,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.rice_cake",
+    "level": 3,
+    "name_ko": "떡",
+    "parent_id": "food.meals.prepared",
+    "slug": "rice_cake",
+    "sort_order": 221,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.salad",
+    "level": 3,
+    "name_ko": "조리샐러드",
+    "parent_id": "food.meals.prepared",
+    "slug": "salad",
+    "sort_order": 222,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.sandwich",
+    "level": 3,
+    "name_ko": "샌드위치",
+    "parent_id": "food.meals.prepared",
+    "slug": "sandwich",
+    "sort_order": 223,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.seasoned_meat",
+    "level": 3,
+    "name_ko": "양념육",
+    "parent_id": "food.meals.prepared",
+    "slug": "seasoned_meat",
+    "sort_order": 224,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.soup_stew",
+    "level": 3,
+    "name_ko": "국·탕·찌개",
+    "parent_id": "food.meals.prepared",
+    "slug": "soup_stew",
+    "sort_order": 225,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.sushi",
+    "level": 3,
+    "name_ko": "완성초밥",
+    "parent_id": "food.meals.prepared",
+    "slug": "sushi",
+    "sort_order": 226,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.tteokbokki",
+    "level": 3,
+    "name_ko": "떡볶이",
+    "parent_id": "food.meals.prepared",
+    "slug": "tteokbokki",
+    "sort_order": 227,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.tteokgalbi",
+    "level": 3,
+    "name_ko": "떡갈비",
+    "parent_id": "food.meals.prepared",
+    "slug": "tteokgalbi",
+    "sort_order": 228,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.prepared.vegetable_fritter",
+    "level": 3,
+    "name_ko": "채소튀김",
+    "parent_id": "food.meals.prepared",
+    "slug": "vegetable_fritter",
+    "sort_order": 229,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.rice",
+    "level": 2,
+    "name_ko": "밥·죽",
+    "parent_id": "food.meals",
+    "slug": "rice",
+    "sort_order": 43,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.rice.cup",
+    "level": 3,
+    "name_ko": "컵밥",
+    "parent_id": "food.meals.rice",
+    "slug": "cup",
+    "sort_order": 230,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.rice.fried",
+    "level": 3,
+    "name_ko": "볶음밥",
+    "parent_id": "food.meals.rice",
+    "slug": "fried",
+    "sort_order": 231,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.rice.instant",
+    "level": 3,
+    "name_ko": "즉석밥",
+    "parent_id": "food.meals.rice",
+    "slug": "instant",
+    "sort_order": 232,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.rice.porridge",
+    "level": 3,
+    "name_ko": "죽",
+    "parent_id": "food.meals.rice",
+    "slug": "porridge",
+    "sort_order": 233,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.rice.rice_ball",
+    "level": 3,
+    "name_ko": "주먹밥",
+    "parent_id": "food.meals.rice",
+    "slug": "rice_ball",
+    "sort_order": 234,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.rice.soup",
+    "level": 3,
+    "name_ko": "스프",
+    "parent_id": "food.meals.rice",
+    "slug": "soup",
+    "sort_order": 235,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meals.rice.sticky",
+    "level": 3,
+    "name_ko": "찰밥",
+    "parent_id": "food.meals.rice",
+    "slug": "sticky",
+    "sort_order": 236,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meat",
+    "level": 1,
+    "name_ko": "정육·계란",
+    "parent_id": "food",
+    "slug": "meat",
+    "sort_order": 11,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meat.eggs",
+    "level": 2,
+    "name_ko": "알류",
+    "parent_id": "food.meat",
+    "slug": "eggs",
+    "sort_order": 44,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meat.eggs.chicken",
+    "level": 3,
+    "name_ko": "계란",
+    "parent_id": "food.meat.eggs",
+    "slug": "chicken",
+    "sort_order": 237,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meat.eggs.cooked",
+    "level": 3,
+    "name_ko": "조리계란",
+    "parent_id": "food.meat.eggs",
+    "slug": "cooked",
+    "sort_order": 238,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meat.eggs.quail",
+    "level": 3,
+    "name_ko": "메추리알",
+    "parent_id": "food.meat.eggs",
+    "slug": "quail",
+    "sort_order": 239,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meat.fresh",
+    "level": 2,
+    "name_ko": "신선육",
+    "parent_id": "food.meat",
+    "slug": "fresh",
+    "sort_order": 45,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meat.fresh.beef",
+    "level": 3,
+    "name_ko": "소고기",
+    "parent_id": "food.meat.fresh",
+    "slug": "beef",
+    "sort_order": 240,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meat.fresh.chicken",
+    "level": 3,
+    "name_ko": "닭고기",
+    "parent_id": "food.meat.fresh",
+    "slug": "chicken",
+    "sort_order": 241,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meat.fresh.pork",
+    "level": 3,
+    "name_ko": "돼지고기",
+    "parent_id": "food.meat.fresh",
+    "slug": "pork",
+    "sort_order": 242,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meat.processed",
+    "level": 2,
+    "name_ko": "가공육",
+    "parent_id": "food.meat",
+    "slug": "processed",
+    "sort_order": 46,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meat.processed.bacon",
+    "level": 3,
+    "name_ko": "베이컨",
+    "parent_id": "food.meat.processed",
+    "slug": "bacon",
+    "sort_order": 243,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meat.processed.breast",
+    "level": 3,
+    "name_ko": "가공닭가슴살",
+    "parent_id": "food.meat.processed",
+    "slug": "breast",
+    "sort_order": 244,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meat.processed.ham",
+    "level": 3,
+    "name_ko": "햄",
+    "parent_id": "food.meat.processed",
+    "slug": "ham",
+    "sort_order": 245,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meat.processed.sausage",
+    "level": 3,
+    "name_ko": "소시지",
+    "parent_id": "food.meat.processed",
+    "slug": "sausage",
+    "sort_order": 246,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meat.processed.smoked_duck",
+    "level": 3,
+    "name_ko": "훈제오리",
+    "parent_id": "food.meat.processed",
+    "slug": "smoked_duck",
+    "sort_order": 247,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.meat.processed.sundae",
+    "level": 3,
+    "name_ko": "순대",
+    "parent_id": "food.meat.processed",
+    "slug": "sundae",
+    "sort_order": 248,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.plant",
+    "level": 1,
+    "name_ko": "식물성식품",
+    "parent_id": "food",
+    "slug": "plant",
+    "sort_order": 12,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.plant.drinks",
+    "level": 2,
+    "name_ko": "식물성음료",
+    "parent_id": "food.plant",
+    "slug": "drinks",
+    "sort_order": 47,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.plant.drinks.almond",
+    "level": 3,
+    "name_ko": "아몬드음료",
+    "parent_id": "food.plant.drinks",
+    "slug": "almond",
+    "sort_order": 249,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.plant.drinks.oat",
+    "level": 3,
+    "name_ko": "귀리음료",
+    "parent_id": "food.plant.drinks",
+    "slug": "oat",
+    "sort_order": 250,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.plant.soy",
+    "level": 2,
+    "name_ko": "콩가공품",
+    "parent_id": "food.plant",
+    "slug": "soy",
+    "sort_order": 48,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.plant.soy.natto",
+    "level": 3,
+    "name_ko": "낫토",
+    "parent_id": "food.plant.soy",
+    "slug": "natto",
+    "sort_order": 252,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.plant.soy.silken",
+    "level": 3,
+    "name_ko": "순두부·연두부",
+    "parent_id": "food.plant.soy",
+    "slug": "silken",
+    "sort_order": 253,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.plant.soy.soymilk",
+    "level": 3,
+    "name_ko": "두유",
+    "parent_id": "food.plant.soy",
+    "slug": "soymilk",
+    "sort_order": 254,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.plant.soy.tofu",
+    "level": 3,
+    "name_ko": "두부",
+    "parent_id": "food.plant.soy",
+    "slug": "tofu",
+    "sort_order": 255,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved",
+    "level": 1,
+    "name_ko": "반찬·저장식품",
+    "parent_id": "food",
+    "slug": "preserved",
+    "sort_order": 13,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.canned",
+    "level": 2,
+    "name_ko": "통조림",
+    "parent_id": "food.preserved",
+    "slug": "canned",
+    "sort_order": 49,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.canned.corn",
+    "level": 3,
+    "name_ko": "옥수수통조림",
+    "parent_id": "food.preserved.canned",
+    "slug": "corn",
+    "sort_order": 256,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.canned.fruit",
+    "level": 3,
+    "name_ko": "과일통조림",
+    "parent_id": "food.preserved.canned",
+    "slug": "fruit",
+    "sort_order": 257,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.canned.ham",
+    "level": 3,
+    "name_ko": "햄통조림",
+    "parent_id": "food.preserved.canned",
+    "slug": "ham",
+    "sort_order": 258,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.canned.saury",
+    "level": 3,
+    "name_ko": "꽁치통조림",
+    "parent_id": "food.preserved.canned",
+    "slug": "saury",
+    "sort_order": 259,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.canned.tuna",
+    "level": 3,
+    "name_ko": "참치통조림",
+    "parent_id": "food.preserved.canned",
+    "slug": "tuna",
+    "sort_order": 260,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.canned.whelk",
+    "level": 3,
+    "name_ko": "골뱅이통조림",
+    "parent_id": "food.preserved.canned",
+    "slug": "whelk",
+    "sort_order": 261,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.ingredients",
+    "level": 2,
+    "name_ko": "조리재료",
+    "parent_id": "food.preserved",
+    "slug": "ingredients",
+    "sort_order": 50,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.ingredients.inari",
+    "level": 3,
+    "name_ko": "유부초밥재료",
+    "parent_id": "food.preserved.ingredients",
+    "slug": "inari",
+    "sort_order": 262,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.kimchi",
+    "level": 2,
+    "name_ko": "김치",
+    "parent_id": "food.preserved",
+    "slug": "kimchi",
+    "sort_order": 51,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.kimchi.cabbage",
+    "level": 3,
+    "name_ko": "배추김치",
+    "parent_id": "food.preserved.kimchi",
+    "slug": "cabbage",
+    "sort_order": 263,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.kimchi.green_onion",
+    "level": 3,
+    "name_ko": "파김치",
+    "parent_id": "food.preserved.kimchi",
+    "slug": "green_onion",
+    "sort_order": 264,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.kimchi.mustard",
+    "level": 3,
+    "name_ko": "갓김치",
+    "parent_id": "food.preserved.kimchi",
+    "slug": "mustard",
+    "sort_order": 265,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.kimchi.radish",
+    "level": 3,
+    "name_ko": "총각김치",
+    "parent_id": "food.preserved.kimchi",
+    "slug": "radish",
+    "sort_order": 266,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.kimchi.seokbakji",
+    "level": 3,
+    "name_ko": "석박지",
+    "parent_id": "food.preserved.kimchi",
+    "slug": "seokbakji",
+    "sort_order": 267,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.kimchi.water",
+    "level": 3,
+    "name_ko": "물김치",
+    "parent_id": "food.preserved.kimchi",
+    "slug": "water",
+    "sort_order": 268,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.kimchi.white",
+    "level": 3,
+    "name_ko": "백김치",
+    "parent_id": "food.preserved.kimchi",
+    "slug": "white",
+    "sort_order": 269,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.kimchi.yeolmu",
+    "level": 3,
+    "name_ko": "열무김치",
+    "parent_id": "food.preserved.kimchi",
+    "slug": "yeolmu",
+    "sort_order": 270,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.sides",
+    "level": 2,
+    "name_ko": "밑반찬",
+    "parent_id": "food.preserved",
+    "slug": "sides",
+    "sort_order": 52,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.sides.braised",
+    "level": 3,
+    "name_ko": "조림반찬",
+    "parent_id": "food.preserved.sides",
+    "slug": "braised",
+    "sort_order": 271,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.sides.pickled",
+    "level": 3,
+    "name_ko": "장아찌",
+    "parent_id": "food.preserved.sides",
+    "slug": "pickled",
+    "sort_order": 272,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.sides.seasoned",
+    "level": 3,
+    "name_ko": "무침반찬",
+    "parent_id": "food.preserved.sides",
+    "slug": "seasoned",
+    "sort_order": 273,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.preserved.sides.stir_fried",
+    "level": 3,
+    "name_ko": "볶음반찬",
+    "parent_id": "food.preserved.sides",
+    "slug": "stir_fried",
+    "sort_order": 274,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce",
+    "level": 1,
+    "name_ko": "농산물",
+    "parent_id": "food",
+    "slug": "produce",
+    "sort_order": 14,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit",
+    "level": 2,
+    "name_ko": "신선과일",
+    "parent_id": "food.produce",
+    "slug": "fruit",
+    "sort_order": 53,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.apple",
+    "level": 3,
+    "name_ko": "사과",
+    "parent_id": "food.produce.fruit",
+    "slug": "apple",
+    "sort_order": 275,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.avocado",
+    "level": 3,
+    "name_ko": "아보카도",
+    "parent_id": "food.produce.fruit",
+    "slug": "avocado",
+    "sort_order": 276,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.banana",
+    "level": 3,
+    "name_ko": "바나나",
+    "parent_id": "food.produce.fruit",
+    "slug": "banana",
+    "sort_order": 277,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.berry",
+    "level": 3,
+    "name_ko": "딸기·베리",
+    "parent_id": "food.produce.fruit",
+    "slug": "berry",
+    "sort_order": 278,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.citrus",
+    "level": 3,
+    "name_ko": "감귤류",
+    "parent_id": "food.produce.fruit",
+    "slug": "citrus",
+    "sort_order": 279,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.dragon_fruit",
+    "level": 3,
+    "name_ko": "용과",
+    "parent_id": "food.produce.fruit",
+    "slug": "dragon_fruit",
+    "sort_order": 280,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.grape",
+    "level": 3,
+    "name_ko": "포도",
+    "parent_id": "food.produce.fruit",
+    "slug": "grape",
+    "sort_order": 281,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.grapefruit",
+    "level": 3,
+    "name_ko": "자몽",
+    "parent_id": "food.produce.fruit",
+    "slug": "grapefruit",
+    "sort_order": 282,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.jujube",
+    "level": 3,
+    "name_ko": "대추",
+    "parent_id": "food.produce.fruit",
+    "slug": "jujube",
+    "sort_order": 283,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.kiwi",
+    "level": 3,
+    "name_ko": "키위",
+    "parent_id": "food.produce.fruit",
+    "slug": "kiwi",
+    "sort_order": 284,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.lime",
+    "level": 3,
+    "name_ko": "라임",
+    "parent_id": "food.produce.fruit",
+    "slug": "lime",
+    "sort_order": 285,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.mango",
+    "level": 3,
+    "name_ko": "망고",
+    "parent_id": "food.produce.fruit",
+    "slug": "mango",
+    "sort_order": 286,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.melon",
+    "level": 3,
+    "name_ko": "멜론·참외",
+    "parent_id": "food.produce.fruit",
+    "slug": "melon",
+    "sort_order": 287,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.peach",
+    "level": 3,
+    "name_ko": "복숭아",
+    "parent_id": "food.produce.fruit",
+    "slug": "peach",
+    "sort_order": 288,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.pear",
+    "level": 3,
+    "name_ko": "배",
+    "parent_id": "food.produce.fruit",
+    "slug": "pear",
+    "sort_order": 289,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.plum",
+    "level": 3,
+    "name_ko": "자두",
+    "parent_id": "food.produce.fruit",
+    "slug": "plum",
+    "sort_order": 290,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.tomato",
+    "level": 3,
+    "name_ko": "토마토",
+    "parent_id": "food.produce.fruit",
+    "slug": "tomato",
+    "sort_order": 291,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.fruit.watermelon",
+    "level": 3,
+    "name_ko": "수박",
+    "parent_id": "food.produce.fruit",
+    "slug": "watermelon",
+    "sort_order": 292,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.processed_fruit",
+    "level": 2,
+    "name_ko": "가공과일",
+    "parent_id": "food.produce",
+    "slug": "processed_fruit",
+    "sort_order": 54,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.processed_fruit.cup",
+    "level": 3,
+    "name_ko": "과일컵",
+    "parent_id": "food.produce.processed_fruit",
+    "slug": "cup",
+    "sort_order": 293,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.processed_fruit.cut",
+    "level": 3,
+    "name_ko": "손질과일",
+    "parent_id": "food.produce.processed_fruit",
+    "slug": "cut",
+    "sort_order": 294,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.processed_fruit.dried",
+    "level": 3,
+    "name_ko": "건과일",
+    "parent_id": "food.produce.processed_fruit",
+    "slug": "dried",
+    "sort_order": 295,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.processed_fruit.frozen",
+    "level": 3,
+    "name_ko": "냉동과일",
+    "parent_id": "food.produce.processed_fruit",
+    "slug": "frozen",
+    "sort_order": 296,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.processed_vegetables",
+    "level": 2,
+    "name_ko": "가공채소",
+    "parent_id": "food.produce",
+    "slug": "processed_vegetables",
+    "sort_order": 55,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.processed_vegetables.blanched",
+    "level": 3,
+    "name_ko": "데친나물",
+    "parent_id": "food.produce.processed_vegetables",
+    "slug": "blanched",
+    "sort_order": 297,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.processed_vegetables.dried",
+    "level": 3,
+    "name_ko": "건채소",
+    "parent_id": "food.produce.processed_vegetables",
+    "slug": "dried",
+    "sort_order": 298,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.processed_vegetables.dried_mushroom",
+    "level": 3,
+    "name_ko": "건버섯",
+    "parent_id": "food.produce.processed_vegetables",
+    "slug": "dried_mushroom",
+    "sort_order": 299,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.processed_vegetables.frozen",
+    "level": 3,
+    "name_ko": "냉동채소",
+    "parent_id": "food.produce.processed_vegetables",
+    "slug": "frozen",
+    "sort_order": 300,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.processed_vegetables.olive",
+    "level": 3,
+    "name_ko": "절임올리브",
+    "parent_id": "food.produce.processed_vegetables",
+    "slug": "olive",
+    "sort_order": 301,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables",
+    "level": 2,
+    "name_ko": "신선채소",
+    "parent_id": "food.produce",
+    "slug": "vegetables",
+    "sort_order": 56,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.cabbage",
+    "level": 3,
+    "name_ko": "양배추",
+    "parent_id": "food.produce.vegetables",
+    "slug": "cabbage",
+    "sort_order": 302,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.carrot",
+    "level": 3,
+    "name_ko": "당근",
+    "parent_id": "food.produce.vegetables",
+    "slug": "carrot",
+    "sort_order": 303,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.chives",
+    "level": 3,
+    "name_ko": "부추",
+    "parent_id": "food.produce.vegetables",
+    "slug": "chives",
+    "sort_order": 304,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.cucumber",
+    "level": 3,
+    "name_ko": "오이",
+    "parent_id": "food.produce.vegetables",
+    "slug": "cucumber",
+    "sort_order": 305,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.eggplant",
+    "level": 3,
+    "name_ko": "가지",
+    "parent_id": "food.produce.vegetables",
+    "slug": "eggplant",
+    "sort_order": 306,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.garlic",
+    "level": 3,
+    "name_ko": "마늘",
+    "parent_id": "food.produce.vegetables",
+    "slug": "garlic",
+    "sort_order": 307,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.leaf",
+    "level": 3,
+    "name_ko": "쌈채소",
+    "parent_id": "food.produce.vegetables",
+    "slug": "leaf",
+    "sort_order": 308,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.mushroom",
+    "level": 3,
+    "name_ko": "버섯",
+    "parent_id": "food.produce.vegetables",
+    "slug": "mushroom",
+    "sort_order": 309,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.napa_cabbage",
+    "level": 3,
+    "name_ko": "배추",
+    "parent_id": "food.produce.vegetables",
+    "slug": "napa_cabbage",
+    "sort_order": 310,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.onion",
+    "level": 3,
+    "name_ko": "양파",
+    "parent_id": "food.produce.vegetables",
+    "slug": "onion",
+    "sort_order": 311,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.pepper",
+    "level": 3,
+    "name_ko": "고추·파프리카",
+    "parent_id": "food.produce.vegetables",
+    "slug": "pepper",
+    "sort_order": 312,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.potato",
+    "level": 3,
+    "name_ko": "감자",
+    "parent_id": "food.produce.vegetables",
+    "slug": "potato",
+    "sort_order": 313,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.pumpkin",
+    "level": 3,
+    "name_ko": "호박",
+    "parent_id": "food.produce.vegetables",
+    "slug": "pumpkin",
+    "sort_order": 314,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.radish",
+    "level": 3,
+    "name_ko": "무",
+    "parent_id": "food.produce.vegetables",
+    "slug": "radish",
+    "sort_order": 315,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.salad",
+    "level": 3,
+    "name_ko": "샐러드채소",
+    "parent_id": "food.produce.vegetables",
+    "slug": "salad",
+    "sort_order": 316,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.scallion",
+    "level": 3,
+    "name_ko": "대파",
+    "parent_id": "food.produce.vegetables",
+    "slug": "scallion",
+    "sort_order": 317,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.sprouts",
+    "level": 3,
+    "name_ko": "콩나물·숙주",
+    "parent_id": "food.produce.vegetables",
+    "slug": "sprouts",
+    "sort_order": 318,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.sweet_potato",
+    "level": 3,
+    "name_ko": "고구마",
+    "parent_id": "food.produce.vegetables",
+    "slug": "sweet_potato",
+    "sort_order": 319,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.produce.vegetables.zucchini",
+    "level": 3,
+    "name_ko": "애호박",
+    "parent_id": "food.produce.vegetables",
+    "slug": "zucchini",
+    "sort_order": 320,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood",
+    "level": 1,
+    "name_ko": "수산물",
+    "parent_id": "food",
+    "slug": "seafood",
+    "sort_order": 15,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.fish",
+    "level": 2,
+    "name_ko": "생선",
+    "parent_id": "food.seafood",
+    "slug": "fish",
+    "sort_order": 57,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.fish.croaker",
+    "level": 3,
+    "name_ko": "조기",
+    "parent_id": "food.seafood.fish",
+    "slug": "croaker",
+    "sort_order": 321,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.fish.flounder",
+    "level": 3,
+    "name_ko": "가자미",
+    "parent_id": "food.seafood.fish",
+    "slug": "flounder",
+    "sort_order": 322,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.fish.hairtail",
+    "level": 3,
+    "name_ko": "갈치",
+    "parent_id": "food.seafood.fish",
+    "slug": "hairtail",
+    "sort_order": 323,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.fish.mackerel",
+    "level": 3,
+    "name_ko": "고등어",
+    "parent_id": "food.seafood.fish",
+    "slug": "mackerel",
+    "sort_order": 324,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.fish.rockfish",
+    "level": 3,
+    "name_ko": "볼락",
+    "parent_id": "food.seafood.fish",
+    "slug": "rockfish",
+    "sort_order": 326,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.fish.salmon",
+    "level": 3,
+    "name_ko": "연어",
+    "parent_id": "food.seafood.fish",
+    "slug": "salmon",
+    "sort_order": 327,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.fish.spanish_mackerel",
+    "level": 3,
+    "name_ko": "삼치",
+    "parent_id": "food.seafood.fish",
+    "slug": "spanish_mackerel",
+    "sort_order": 328,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.processed",
+    "level": 2,
+    "name_ko": "수산가공품",
+    "parent_id": "food.seafood",
+    "slug": "processed",
+    "sort_order": 58,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.processed.anchovy",
+    "level": 3,
+    "name_ko": "건멸치",
+    "parent_id": "food.seafood.processed",
+    "slug": "anchovy",
+    "sort_order": 329,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.processed.dried_fish",
+    "level": 3,
+    "name_ko": "건어물스낵",
+    "parent_id": "food.seafood.processed",
+    "slug": "dried_fish",
+    "sort_order": 330,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.processed.fishcake",
+    "level": 3,
+    "name_ko": "어묵",
+    "parent_id": "food.seafood.processed",
+    "slug": "fishcake",
+    "sort_order": 331,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.processed.pollock_roe",
+    "level": 3,
+    "name_ko": "명란",
+    "parent_id": "food.seafood.processed",
+    "slug": "pollock_roe",
+    "sort_order": 332,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.processed.seafood_ball",
+    "level": 3,
+    "name_ko": "해물경단",
+    "parent_id": "food.seafood.processed",
+    "slug": "seafood_ball",
+    "sort_order": 333,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.processed.surimi",
+    "level": 3,
+    "name_ko": "맛살",
+    "parent_id": "food.seafood.processed",
+    "slug": "surimi",
+    "sort_order": 334,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.seaweed",
+    "level": 2,
+    "name_ko": "해조류",
+    "parent_id": "food.seafood",
+    "slug": "seaweed",
+    "sort_order": 59,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.seaweed.laver",
+    "level": 3,
+    "name_ko": "김",
+    "parent_id": "food.seafood.seaweed",
+    "slug": "laver",
+    "sort_order": 336,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.seaweed.miyeok",
+    "level": 3,
+    "name_ko": "미역",
+    "parent_id": "food.seafood.seaweed",
+    "slug": "miyeok",
+    "sort_order": 337,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.shellfish",
+    "level": 2,
+    "name_ko": "갑각·패류",
+    "parent_id": "food.seafood",
+    "slug": "shellfish",
+    "sort_order": 60,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.shellfish.abalone",
+    "level": 3,
+    "name_ko": "전복",
+    "parent_id": "food.seafood.shellfish",
+    "slug": "abalone",
+    "sort_order": 338,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.shellfish.crab",
+    "level": 3,
+    "name_ko": "게",
+    "parent_id": "food.seafood.shellfish",
+    "slug": "crab",
+    "sort_order": 339,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seafood.shellfish.shrimp",
+    "level": 3,
+    "name_ko": "새우",
+    "parent_id": "food.seafood.shellfish",
+    "slug": "shrimp",
+    "sort_order": 340,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings",
+    "level": 1,
+    "name_ko": "양념·소스",
+    "parent_id": "food",
+    "slug": "seasonings",
+    "sort_order": 16,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking",
+    "level": 2,
+    "name_ko": "기초조미·제빵",
+    "parent_id": "food.seasonings",
+    "slug": "baking",
+    "sort_order": 61,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.allulose",
+    "level": 3,
+    "name_ko": "알룰로스분말",
+    "parent_id": "food.seasonings.baking",
+    "slug": "allulose",
+    "sort_order": 341,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.almond_flour",
+    "level": 3,
+    "name_ko": "아몬드가루",
+    "parent_id": "food.seasonings.baking",
+    "slug": "almond_flour",
+    "sort_order": 342,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.baking_powder",
+    "level": 3,
+    "name_ko": "베이킹파우더",
+    "parent_id": "food.seasonings.baking",
+    "slug": "baking_powder",
+    "sort_order": 343,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.baking_soda",
+    "level": 3,
+    "name_ko": "식용베이킹소다",
+    "parent_id": "food.seasonings.baking",
+    "slug": "baking_soda",
+    "sort_order": 344,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.black_sugar",
+    "level": 3,
+    "name_ko": "흑설탕",
+    "parent_id": "food.seasonings.baking",
+    "slug": "black_sugar",
+    "sort_order": 345,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.breadcrumbs",
+    "level": 3,
+    "name_ko": "빵가루",
+    "parent_id": "food.seasonings.baking",
+    "slug": "breadcrumbs",
+    "sort_order": 346,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.brown_sugar",
+    "level": 3,
+    "name_ko": "갈색설탕",
+    "parent_id": "food.seasonings.baking",
+    "slug": "brown_sugar",
+    "sort_order": 347,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.buckwheat_flour",
+    "level": 3,
+    "name_ko": "메밀가루",
+    "parent_id": "food.seasonings.baking",
+    "slug": "buckwheat_flour",
+    "sort_order": 348,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.flour",
+    "level": 3,
+    "name_ko": "밀가루",
+    "parent_id": "food.seasonings.baking",
+    "slug": "flour",
+    "sort_order": 349,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.frying_mix",
+    "level": 3,
+    "name_ko": "튀김가루",
+    "parent_id": "food.seasonings.baking",
+    "slug": "frying_mix",
+    "sort_order": 350,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.herb_salt",
+    "level": 3,
+    "name_ko": "허브소금",
+    "parent_id": "food.seasonings.baking",
+    "slug": "herb_salt",
+    "sort_order": 351,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.hotcake_mix",
+    "level": 3,
+    "name_ko": "핫케이크믹스",
+    "parent_id": "food.seasonings.baking",
+    "slug": "hotcake_mix",
+    "sort_order": 352,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.hotteok_mix",
+    "level": 3,
+    "name_ko": "호떡믹스",
+    "parent_id": "food.seasonings.baking",
+    "slug": "hotteok_mix",
+    "sort_order": 353,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.icing_sugar",
+    "level": 3,
+    "name_ko": "슈가파우더",
+    "parent_id": "food.seasonings.baking",
+    "slug": "icing_sugar",
+    "sort_order": 354,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.malt_flour",
+    "level": 3,
+    "name_ko": "엿기름가루",
+    "parent_id": "food.seasonings.baking",
+    "slug": "malt_flour",
+    "sort_order": 355,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.oat_flour",
+    "level": 3,
+    "name_ko": "귀리가루",
+    "parent_id": "food.seasonings.baking",
+    "slug": "oat_flour",
+    "sort_order": 356,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.pancake_mix",
+    "level": 3,
+    "name_ko": "부침가루",
+    "parent_id": "food.seasonings.baking",
+    "slug": "pancake_mix",
+    "sort_order": 357,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.pepper",
+    "level": 3,
+    "name_ko": "후추",
+    "parent_id": "food.seasonings.baking",
+    "slug": "pepper",
+    "sort_order": 358,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.perilla_flour",
+    "level": 3,
+    "name_ko": "들깨가루",
+    "parent_id": "food.seasonings.baking",
+    "slug": "perilla_flour",
+    "sort_order": 359,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.refined_salt",
+    "level": 3,
+    "name_ko": "꽃소금",
+    "parent_id": "food.seasonings.baking",
+    "slug": "refined_salt",
+    "sort_order": 360,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.rice_flour",
+    "level": 3,
+    "name_ko": "찹쌀가루",
+    "parent_id": "food.seasonings.baking",
+    "slug": "rice_flour",
+    "sort_order": 361,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.roasted_salt",
+    "level": 3,
+    "name_ko": "구운소금",
+    "parent_id": "food.seasonings.baking",
+    "slug": "roasted_salt",
+    "sort_order": 362,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.sea_salt",
+    "level": 3,
+    "name_ko": "천일염",
+    "parent_id": "food.seasonings.baking",
+    "slug": "sea_salt",
+    "sort_order": 363,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.stevia_blend",
+    "level": 3,
+    "name_ko": "스테비아계감미료",
+    "parent_id": "food.seasonings.baking",
+    "slug": "stevia_blend",
+    "sort_order": 364,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.stock",
+    "level": 3,
+    "name_ko": "육수",
+    "parent_id": "food.seasonings.baking",
+    "slug": "stock",
+    "sort_order": 365,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.sugar",
+    "level": 3,
+    "name_ko": "설탕",
+    "parent_id": "food.seasonings.baking",
+    "slug": "sugar",
+    "sort_order": 366,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.vinegar",
+    "level": 3,
+    "name_ko": "식초",
+    "parent_id": "food.seasonings.baking",
+    "slug": "vinegar",
+    "sort_order": 367,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.baking.yeast",
+    "level": 3,
+    "name_ko": "제빵이스트",
+    "parent_id": "food.seasonings.baking",
+    "slug": "yeast",
+    "sort_order": 368,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.oils",
+    "level": 2,
+    "name_ko": "식용유",
+    "parent_id": "food.seasonings",
+    "slug": "oils",
+    "sort_order": 62,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.oils.avocado",
+    "level": 3,
+    "name_ko": "아보카도유",
+    "parent_id": "food.seasonings.oils",
+    "slug": "avocado",
+    "sort_order": 369,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.oils.canola",
+    "level": 3,
+    "name_ko": "카놀라유",
+    "parent_id": "food.seasonings.oils",
+    "slug": "canola",
+    "sort_order": 370,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.oils.chili",
+    "level": 3,
+    "name_ko": "고추기름",
+    "parent_id": "food.seasonings.oils",
+    "slug": "chili",
+    "sort_order": 371,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.oils.cooking",
+    "level": 3,
+    "name_ko": "요리유",
+    "parent_id": "food.seasonings.oils",
+    "slug": "cooking",
+    "sort_order": 372,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.oils.corn",
+    "level": 3,
+    "name_ko": "옥수수유",
+    "parent_id": "food.seasonings.oils",
+    "slug": "corn",
+    "sort_order": 373,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.oils.grape",
+    "level": 3,
+    "name_ko": "포도씨유",
+    "parent_id": "food.seasonings.oils",
+    "slug": "grape",
+    "sort_order": 374,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.oils.olive",
+    "level": 3,
+    "name_ko": "올리브유",
+    "parent_id": "food.seasonings.oils",
+    "slug": "olive",
+    "sort_order": 375,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.oils.perilla",
+    "level": 3,
+    "name_ko": "들기름",
+    "parent_id": "food.seasonings.oils",
+    "slug": "perilla",
+    "sort_order": 376,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.oils.sesame",
+    "level": 3,
+    "name_ko": "참기름",
+    "parent_id": "food.seasonings.oils",
+    "slug": "sesame",
+    "sort_order": 377,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.oils.soybean",
+    "level": 3,
+    "name_ko": "콩기름",
+    "parent_id": "food.seasonings.oils",
+    "slug": "soybean",
+    "sort_order": 378,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.oils.sunflower",
+    "level": 3,
+    "name_ko": "해바라기유",
+    "parent_id": "food.seasonings.oils",
+    "slug": "sunflower",
+    "sort_order": 379,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.pastes",
+    "level": 2,
+    "name_ko": "장류",
+    "parent_id": "food.seasonings",
+    "slug": "pastes",
+    "sort_order": 63,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.pastes.doenjang",
+    "level": 3,
+    "name_ko": "된장",
+    "parent_id": "food.seasonings.pastes",
+    "slug": "doenjang",
+    "sort_order": 380,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.pastes.gochujang",
+    "level": 3,
+    "name_ko": "고추장",
+    "parent_id": "food.seasonings.pastes",
+    "slug": "gochujang",
+    "sort_order": 381,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.pastes.soy",
+    "level": 3,
+    "name_ko": "간장",
+    "parent_id": "food.seasonings.pastes",
+    "slug": "soy",
+    "sort_order": 382,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.pastes.ssamjang",
+    "level": 3,
+    "name_ko": "쌈장",
+    "parent_id": "food.seasonings.pastes",
+    "slug": "ssamjang",
+    "sort_order": 383,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.powders",
+    "level": 2,
+    "name_ko": "분말조미료",
+    "parent_id": "food.seasonings",
+    "slug": "powders",
+    "sort_order": 64,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.powders.curry",
+    "level": 3,
+    "name_ko": "카레가루",
+    "parent_id": "food.seasonings.powders",
+    "slug": "curry",
+    "sort_order": 384,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces",
+    "level": 2,
+    "name_ko": "조미소스",
+    "parent_id": "food.seasonings",
+    "slug": "sauces",
+    "sort_order": 65,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.bibim",
+    "level": 3,
+    "name_ko": "비빔장",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "bibim",
+    "sort_order": 385,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.black_bean",
+    "level": 3,
+    "name_ko": "짜장소스",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "black_bean",
+    "sort_order": 386,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.braise",
+    "level": 3,
+    "name_ko": "조림·찜양념",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "braise",
+    "sort_order": 387,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.broth",
+    "level": 3,
+    "name_ko": "요리육수·장국",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "broth",
+    "sort_order": 388,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.chili",
+    "level": 3,
+    "name_ko": "칠리·핫소스",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "chili",
+    "sort_order": 389,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.cho_gochujang",
+    "level": 3,
+    "name_ko": "초고추장",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "cho_gochujang",
+    "sort_order": 390,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.dressing",
+    "level": 3,
+    "name_ko": "샐러드드레싱",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "dressing",
+    "sort_order": 391,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.fish",
+    "level": 3,
+    "name_ko": "액젓·어류조미액",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "fish",
+    "sort_order": 392,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.fish_fragrant",
+    "level": 3,
+    "name_ko": "어향소스",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "fish_fragrant",
+    "sort_order": 393,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.ketchup",
+    "level": 3,
+    "name_ko": "케첩",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "ketchup",
+    "sort_order": 394,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.mala",
+    "level": 3,
+    "name_ko": "마라소스",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "mala",
+    "sort_order": 395,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.mapo_tofu",
+    "level": 3,
+    "name_ko": "마파두부소스",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "mapo_tofu",
+    "sort_order": 396,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.mayo",
+    "level": 3,
+    "name_ko": "마요네즈",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "mayo",
+    "sort_order": 397,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.meat",
+    "level": 3,
+    "name_ko": "고기용소스",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "meat",
+    "sort_order": 398,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.mustard",
+    "level": 3,
+    "name_ko": "머스타드",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "mustard",
+    "sort_order": 399,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.oyster",
+    "level": 3,
+    "name_ko": "굴소스",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "oyster",
+    "sort_order": 400,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.pasta",
+    "level": 3,
+    "name_ko": "파스타소스",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "pasta",
+    "sort_order": 401,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.pepper_stir_fry",
+    "level": 3,
+    "name_ko": "고추잡채소스",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "pepper_stir_fry",
+    "sort_order": 402,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.spring_roll",
+    "level": 3,
+    "name_ko": "월남쌈소스",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "spring_roll",
+    "sort_order": 403,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.steak",
+    "level": 3,
+    "name_ko": "스테이크소스",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "steak",
+    "sort_order": 404,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.stew",
+    "level": 3,
+    "name_ko": "찌개양념",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "stew",
+    "sort_order": 405,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.tartar",
+    "level": 3,
+    "name_ko": "타르타르소스",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "tartar",
+    "sort_order": 406,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.tonkatsu",
+    "level": 3,
+    "name_ko": "돈까스소스",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "tonkatsu",
+    "sort_order": 407,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.sauces.tteokbokki",
+    "level": 3,
+    "name_ko": "떡볶이양념",
+    "parent_id": "food.seasonings.sauces",
+    "slug": "tteokbokki",
+    "sort_order": 408,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.spices",
+    "level": 2,
+    "name_ko": "향신료·깨",
+    "parent_id": "food.seasonings",
+    "slug": "spices",
+    "sort_order": 66,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.spices.chili_powder",
+    "level": 3,
+    "name_ko": "고춧가루",
+    "parent_id": "food.seasonings.spices",
+    "slug": "chili_powder",
+    "sort_order": 409,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.spices.cumin",
+    "level": 3,
+    "name_ko": "쿠민",
+    "parent_id": "food.seasonings.spices",
+    "slug": "cumin",
+    "sort_order": 410,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.spices.mustard_paste",
+    "level": 3,
+    "name_ko": "연겨자",
+    "parent_id": "food.seasonings.spices",
+    "slug": "mustard_paste",
+    "sort_order": 411,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.spices.parsley",
+    "level": 3,
+    "name_ko": "파슬리",
+    "parent_id": "food.seasonings.spices",
+    "slug": "parsley",
+    "sort_order": 412,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.spices.roasted_sesame",
+    "level": 3,
+    "name_ko": "볶음참깨",
+    "parent_id": "food.seasonings.spices",
+    "slug": "roasted_sesame",
+    "sort_order": 413,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.spices.star_anise",
+    "level": 3,
+    "name_ko": "팔각",
+    "parent_id": "food.seasonings.spices",
+    "slug": "star_anise",
+    "sort_order": 414,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.spices.wasabi_paste",
+    "level": 3,
+    "name_ko": "와사비페이스트",
+    "parent_id": "food.seasonings.spices",
+    "slug": "wasabi_paste",
+    "sort_order": 415,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.stock",
+    "level": 2,
+    "name_ko": "조미료",
+    "parent_id": "food.seasonings",
+    "slug": "stock",
+    "sort_order": 67,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.stock.beef",
+    "level": 3,
+    "name_ko": "쇠고기조미료",
+    "parent_id": "food.seasonings.stock",
+    "slug": "beef",
+    "sort_order": 417,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.stock.chicken",
+    "level": 3,
+    "name_ko": "치킨스톡",
+    "parent_id": "food.seasonings.stock",
+    "slug": "chicken",
+    "sort_order": 418,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.stock.cooking_wine",
+    "level": 3,
+    "name_ko": "맛술",
+    "parent_id": "food.seasonings.stock",
+    "slug": "cooking_wine",
+    "sort_order": 419,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.stock.seasoned_salt",
+    "level": 3,
+    "name_ko": "맛소금",
+    "parent_id": "food.seasonings.stock",
+    "slug": "seasoned_salt",
+    "sort_order": 420,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.stock.umami",
+    "level": 3,
+    "name_ko": "감칠맛조미료",
+    "parent_id": "food.seasonings.stock",
+    "slug": "umami",
+    "sort_order": 421,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.stock.vegetable_tablet",
+    "level": 3,
+    "name_ko": "채소육수정",
+    "parent_id": "food.seasonings.stock",
+    "slug": "vegetable_tablet",
+    "sort_order": 422,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.syrups",
+    "level": 2,
+    "name_ko": "액상당류·청",
+    "parent_id": "food.seasonings",
+    "slug": "syrups",
+    "sort_order": 68,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.syrups.allulose",
+    "level": 3,
+    "name_ko": "액상알룰로스",
+    "parent_id": "food.seasonings.syrups",
+    "slug": "allulose",
+    "sort_order": 423,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.syrups.oligosaccharide",
+    "level": 3,
+    "name_ko": "올리고당",
+    "parent_id": "food.seasonings.syrups",
+    "slug": "oligosaccharide",
+    "sort_order": 424,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.syrups.plum",
+    "level": 3,
+    "name_ko": "매실청",
+    "parent_id": "food.seasonings.syrups",
+    "slug": "plum",
+    "sort_order": 425,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.syrups.rice",
+    "level": 3,
+    "name_ko": "쌀조청",
+    "parent_id": "food.seasonings.syrups",
+    "slug": "rice",
+    "sort_order": 426,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.seasonings.syrups.starch",
+    "level": 3,
+    "name_ko": "물엿",
+    "parent_id": "food.seasonings.syrups",
+    "slug": "starch",
+    "sort_order": 427,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks",
+    "level": 1,
+    "name_ko": "과자·간식",
+    "parent_id": "food",
+    "slug": "snacks",
+    "sort_order": 17,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.baked",
+    "level": 2,
+    "name_ko": "구운과자",
+    "parent_id": "food.snacks",
+    "slug": "baked",
+    "sort_order": 69,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.baked.biscuits",
+    "level": 3,
+    "name_ko": "쿠키·비스킷",
+    "parent_id": "food.snacks.baked",
+    "slug": "biscuits",
+    "sort_order": 428,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.baked.cake",
+    "level": 3,
+    "name_ko": "케이크과자",
+    "parent_id": "food.snacks.baked",
+    "slug": "cake",
+    "sort_order": 429,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.baked.cracker",
+    "level": 3,
+    "name_ko": "크래커",
+    "parent_id": "food.snacks.baked",
+    "slug": "cracker",
+    "sort_order": 430,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.baked.pie",
+    "level": 3,
+    "name_ko": "파이과자",
+    "parent_id": "food.snacks.baked",
+    "slug": "pie",
+    "sort_order": 431,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.baked.sandwich",
+    "level": 3,
+    "name_ko": "샌드과자",
+    "parent_id": "food.snacks.baked",
+    "slug": "sandwich",
+    "sort_order": 432,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.baked.wafer",
+    "level": 3,
+    "name_ko": "웨하스",
+    "parent_id": "food.snacks.baked",
+    "slug": "wafer",
+    "sort_order": 433,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.cereal",
+    "level": 2,
+    "name_ko": "시리얼",
+    "parent_id": "food.snacks",
+    "slug": "cereal",
+    "sort_order": 70,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.cereal.flakes",
+    "level": 3,
+    "name_ko": "플레이크시리얼",
+    "parent_id": "food.snacks.cereal",
+    "slug": "flakes",
+    "sort_order": 434,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.cereal.granola",
+    "level": 3,
+    "name_ko": "그래놀라",
+    "parent_id": "food.snacks.cereal",
+    "slug": "granola",
+    "sort_order": 435,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.savory",
+    "level": 2,
+    "name_ko": "스낵",
+    "parent_id": "food.snacks",
+    "slug": "savory",
+    "sort_order": 71,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.savory.corn",
+    "level": 3,
+    "name_ko": "옥수수스낵",
+    "parent_id": "food.snacks.savory",
+    "slug": "corn",
+    "sort_order": 436,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.savory.grain",
+    "level": 3,
+    "name_ko": "곡물스낵",
+    "parent_id": "food.snacks.savory",
+    "slug": "grain",
+    "sort_order": 437,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.savory.popcorn",
+    "level": 3,
+    "name_ko": "팝콘",
+    "parent_id": "food.snacks.savory",
+    "slug": "popcorn",
+    "sort_order": 438,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.savory.potato",
+    "level": 3,
+    "name_ko": "감자스낵",
+    "parent_id": "food.snacks.savory",
+    "slug": "potato",
+    "sort_order": 439,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.savory.seaweed",
+    "level": 3,
+    "name_ko": "해조스낵",
+    "parent_id": "food.snacks.savory",
+    "slug": "seaweed",
+    "sort_order": 440,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.savory.vegetable",
+    "level": 3,
+    "name_ko": "채소스낵",
+    "parent_id": "food.snacks.savory",
+    "slug": "vegetable",
+    "sort_order": 441,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.savory.wheat",
+    "level": 3,
+    "name_ko": "밀가루스낵",
+    "parent_id": "food.snacks.savory",
+    "slug": "wheat",
+    "sort_order": 442,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.sweets",
+    "level": 2,
+    "name_ko": "단과자",
+    "parent_id": "food.snacks",
+    "slug": "sweets",
+    "sort_order": 72,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.sweets.candy",
+    "level": 3,
+    "name_ko": "캔디",
+    "parent_id": "food.snacks.sweets",
+    "slug": "candy",
+    "sort_order": 443,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.sweets.chocolate",
+    "level": 3,
+    "name_ko": "초콜릿",
+    "parent_id": "food.snacks.sweets",
+    "slug": "chocolate",
+    "sort_order": 444,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.sweets.jelly",
+    "level": 3,
+    "name_ko": "젤리",
+    "parent_id": "food.snacks.sweets",
+    "slug": "jelly",
+    "sort_order": 445,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.sweets.pudding",
+    "level": 3,
+    "name_ko": "푸딩",
+    "parent_id": "food.snacks.sweets",
+    "slug": "pudding",
+    "sort_order": 446,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.traditional",
+    "level": 2,
+    "name_ko": "전통간식",
+    "parent_id": "food.snacks",
+    "slug": "traditional",
+    "sort_order": 73,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.traditional.hangwa",
+    "level": 3,
+    "name_ko": "한과·전병",
+    "parent_id": "food.snacks.traditional",
+    "slug": "hangwa",
+    "sort_order": 447,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "food.snacks.traditional.yanggaeng",
+    "level": 3,
+    "name_ko": "양갱",
+    "parent_id": "food.snacks.traditional",
+    "slug": "yanggaeng",
+    "sort_order": 448,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household",
+    "level": 0,
+    "name_ko": "생활용품",
+    "parent_id": null,
+    "slug": "household",
+    "sort_order": 3,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning",
+    "level": 1,
+    "name_ko": "청소·세탁",
+    "parent_id": "household",
+    "slug": "cleaning",
+    "sort_order": 18,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.bath",
+    "level": 2,
+    "name_ko": "욕실청소",
+    "parent_id": "household.cleaning",
+    "slug": "bath",
+    "sort_order": 74,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.bath.cleaner",
+    "level": 3,
+    "name_ko": "욕실세정제",
+    "parent_id": "household.cleaning.bath",
+    "slug": "cleaner",
+    "sort_order": 449,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.bath.drain",
+    "level": 3,
+    "name_ko": "배수관세정제",
+    "parent_id": "household.cleaning.bath",
+    "slug": "drain",
+    "sort_order": 450,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.bath.mold",
+    "level": 3,
+    "name_ko": "곰팡이제거제",
+    "parent_id": "household.cleaning.bath",
+    "slug": "mold",
+    "sort_order": 451,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.bath.toilet",
+    "level": 3,
+    "name_ko": "변기세정제",
+    "parent_id": "household.cleaning.bath",
+    "slug": "toilet",
+    "sort_order": 452,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.general",
+    "level": 2,
+    "name_ko": "일반청소",
+    "parent_id": "household.cleaning",
+    "slug": "general",
+    "sort_order": 75,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.general.chlorine",
+    "level": 3,
+    "name_ko": "염소계표백제",
+    "parent_id": "household.cleaning.general",
+    "slug": "chlorine",
+    "sort_order": 453,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.general.dehumidifier",
+    "level": 3,
+    "name_ko": "제습제",
+    "parent_id": "household.cleaning.general",
+    "slug": "dehumidifier",
+    "sort_order": 454,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.general.deodorizer",
+    "level": 3,
+    "name_ko": "탈취제",
+    "parent_id": "household.cleaning.general",
+    "slug": "deodorizer",
+    "sort_order": 455,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.general.glass",
+    "level": 3,
+    "name_ko": "유리세정제",
+    "parent_id": "household.cleaning.general",
+    "slug": "glass",
+    "sort_order": 456,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.general.wipes",
+    "level": 3,
+    "name_ko": "청소용티슈",
+    "parent_id": "household.cleaning.general",
+    "slug": "wipes",
+    "sort_order": 457,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.kitchen",
+    "level": 2,
+    "name_ko": "주방청소",
+    "parent_id": "household.cleaning",
+    "slug": "kitchen",
+    "sort_order": 76,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.kitchen.degreaser",
+    "level": 3,
+    "name_ko": "주방기름때세정제",
+    "parent_id": "household.cleaning.kitchen",
+    "slug": "degreaser",
+    "sort_order": 458,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.kitchen.detergent",
+    "level": 3,
+    "name_ko": "주방세제",
+    "parent_id": "household.cleaning.kitchen",
+    "slug": "detergent",
+    "sort_order": 459,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.kitchen.dishwasher",
+    "level": 3,
+    "name_ko": "식기세척기세제",
+    "parent_id": "household.cleaning.kitchen",
+    "slug": "dishwasher",
+    "sort_order": 460,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.laundry",
+    "level": 2,
+    "name_ko": "세탁용품",
+    "parent_id": "household.cleaning",
+    "slug": "laundry",
+    "sort_order": 77,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.laundry.capsule",
+    "level": 3,
+    "name_ko": "캡슐세탁세제",
+    "parent_id": "household.cleaning.laundry",
+    "slug": "capsule",
+    "sort_order": 461,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.laundry.dryer_sheet",
+    "level": 3,
+    "name_ko": "건조기시트",
+    "parent_id": "household.cleaning.laundry",
+    "slug": "dryer_sheet",
+    "sort_order": 462,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.laundry.liquid",
+    "level": 3,
+    "name_ko": "액체세탁세제",
+    "parent_id": "household.cleaning.laundry",
+    "slug": "liquid",
+    "sort_order": 463,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.laundry.machine_cleaner",
+    "level": 3,
+    "name_ko": "세탁조세정제",
+    "parent_id": "household.cleaning.laundry",
+    "slug": "machine_cleaner",
+    "sort_order": 464,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.laundry.oxygen_bleach",
+    "level": 3,
+    "name_ko": "산소계표백제",
+    "parent_id": "household.cleaning.laundry",
+    "slug": "oxygen_bleach",
+    "sort_order": 465,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.cleaning.laundry.softener",
+    "level": 3,
+    "name_ko": "섬유유연제",
+    "parent_id": "household.cleaning.laundry",
+    "slug": "softener",
+    "sort_order": 466,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.hygiene",
+    "level": 1,
+    "name_ko": "위생용품",
+    "parent_id": "household",
+    "slug": "hygiene",
+    "sort_order": 19,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.hygiene.feminine",
+    "level": 2,
+    "name_ko": "생리용품",
+    "parent_id": "household.hygiene",
+    "slug": "feminine",
+    "sort_order": 78,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.hygiene.feminine.liner",
+    "level": 3,
+    "name_ko": "팬티라이너",
+    "parent_id": "household.hygiene.feminine",
+    "slug": "liner",
+    "sort_order": 467,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.hygiene.feminine.overnight",
+    "level": 3,
+    "name_ko": "오버나이트패드",
+    "parent_id": "household.hygiene.feminine",
+    "slug": "overnight",
+    "sort_order": 468,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.hygiene.feminine.pants",
+    "level": 3,
+    "name_ko": "입는오버나이트",
+    "parent_id": "household.hygiene.feminine",
+    "slug": "pants",
+    "sort_order": 469,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.hygiene.feminine.tampon",
+    "level": 3,
+    "name_ko": "탐폰",
+    "parent_id": "household.hygiene.feminine",
+    "slug": "tampon",
+    "sort_order": 470,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.hygiene.paper",
+    "level": 2,
+    "name_ko": "제지",
+    "parent_id": "household.hygiene",
+    "slug": "paper",
+    "sort_order": 79,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.hygiene.paper.facial",
+    "level": 3,
+    "name_ko": "미용티슈",
+    "parent_id": "household.hygiene.paper",
+    "slug": "facial",
+    "sort_order": 471,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.hygiene.paper.kitchen",
+    "level": 3,
+    "name_ko": "키친타월",
+    "parent_id": "household.hygiene.paper",
+    "slug": "kitchen",
+    "sort_order": 472,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.hygiene.paper.toilet",
+    "level": 3,
+    "name_ko": "두루마리휴지",
+    "parent_id": "household.hygiene.paper",
+    "slug": "toilet",
+    "sort_order": 473,
+    "source_origin": "initial-real-catalog-v1"
+  },
+  {
+    "id": "household.hygiene.paper.wipes",
+    "level": 3,
+    "name_ko": "물티슈",
+    "parent_id": "household.hygiene.paper",
+    "slug": "wipes",
+    "sort_order": 474,
+    "source_origin": "initial-real-catalog-v1"
+  }
+]

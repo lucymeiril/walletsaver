@@ -1,0 +1,133 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:67712f24d19554705ba43746",
+      "promotion_surface": false,
+      "proposed_path": [
+        "과자ㆍ스낵ㆍ간식",
+        "떡ㆍ한과ㆍ전통과자",
+        "전통과자"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:31:84",
+      "review_status": "pending",
+      "source_path": "과자ㆍ스낵ㆍ간식 > 떡ㆍ한과ㆍ전통과자 > 전통과자",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "과자ㆍ스낵ㆍ간식",
+        "떡ㆍ한과ㆍ전통과자",
+        "전통과자"
+      ],
+      "source_title": "오늘좋은 옥수수 똘뱅이 (195G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801268006665/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "오늘좋은",
+      "crawled_at": "2026-08-31T01:47:02.654876Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "5개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/cfc01d09-e6e7-48fb-a283-2701b9efc4ae/300x300.jpg",
+      "ingestion_id": 31,
+      "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 84,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "195g",
+        "package_quantity": 195.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 2000,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "오늘좋은",
+          "canon_hash": "fd2eda4a832728aeebbbf19793adb463f7183525",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801268006665/details",
+          "category_hint": "과자ㆍ스낵ㆍ간식",
+          "category_path": [
+            "과자ㆍ스낵ㆍ간식",
+            "떡ㆍ한과ㆍ전통과자",
+            "전통과자"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/cfc01d09-e6e7-48fb-a283-2701b9efc4ae/300x300.jpg",
+          "mart_native_code": "8801268006665",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801268006665",
+          "source_url": "https://lottemartzetta.com/products/OS8801268006665/details"
+        },
+        "brand": "__no_brand__",
+        "category": "과자ㆍ스낵ㆍ간식",
+        "crawled_at": "2026-08-31T10:47:02.654876",
+        "detail_url": "https://lottemartzetta.com/products/OS8801268006665/details",
+        "discount_percent": null,
+        "display_unit": "195g",
+        "event_name": "5개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/cfc01d09-e6e7-48fb-a283-2701b9efc4ae/300x300.jpg",
+        "match_key": "__no_brand__|오늘좋은 옥수수 똘뱅이 195g||195g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "오늘좋은 옥수수 똘뱅이 (195G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 195.0,
+        "package_unit": "g",
+        "price_per_100g": 1025.64,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2000,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "195g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "b4bdd2ffcc413160c89216aab88f91035cd8884728710567af98322f35c58982",
+      "raw_record_id": "ingestion:31:84",
+      "source_category_path": [
+        "과자ᆞ스낵ᆞ간식",
+        "떡ᆞ한과ᆞ전통과자",
+        "전통과자"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801268006665",
+      "source_title": "오늘좋은 옥수수 똘뱅이 (195G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801268006665/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:31:84",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801268006665",
+    "source_title": "오늘좋은 옥수수 똘뱅이 (195G)"
+  }
+]

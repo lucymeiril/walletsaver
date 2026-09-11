@@ -1,0 +1,264 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:0fc874d1013b3a05d19011b8",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유ㆍ유제품",
+        "우유",
+        "멸균우유"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:32:35",
+      "review_status": "pending",
+      "source_path": "우유ㆍ유제품 > 우유 > 멸균우유",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "우유ㆍ유제품",
+        "우유",
+        "멸균우유"
+      ],
+      "source_title": "파스퇴르 단백질플러스 검은콩&검은깨맛 (195ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801207000433/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "파스퇴르",
+      "crawled_at": "2026-08-31T01:47:02.661110Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1a33a95b-f02f-4af8-b100-4925448e3cb6/300x300.jpg",
+      "ingestion_id": 32,
+      "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 35,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "195ml",
+        "package_quantity": 195.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 2500,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "파스퇴르",
+          "canon_hash": "96e58b7831f564794f62956a75d088a74ffc4d22",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801207000433/details",
+          "category_hint": "우유ㆍ유제품",
+          "category_path": [
+            "우유ㆍ유제품",
+            "우유",
+            "멸균우유"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1a33a95b-f02f-4af8-b100-4925448e3cb6/300x300.jpg",
+          "mart_native_code": "8801207000433",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801207000433",
+          "source_url": "https://lottemartzetta.com/products/OS8801207000433/details"
+        },
+        "brand": "__no_brand__",
+        "category": "우유ㆍ유제품",
+        "crawled_at": "2026-08-31T10:47:02.661110",
+        "detail_url": "https://lottemartzetta.com/products/OS8801207000433/details",
+        "discount_percent": null,
+        "display_unit": "195ml",
+        "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1a33a95b-f02f-4af8-b100-4925448e3cb6/300x300.jpg",
+        "match_key": "__no_brand__|파스퇴르 단백질플러스 검은콩 검은깨맛 195ml||195ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "파스퇴르 단백질플러스 검은콩&검은깨맛 (195ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 195.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2500,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "195ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "c7addbb297bffbc32f8e27f24b58f4c43c714dbfa4f64b711bf102fd05cff93b",
+      "raw_record_id": "ingestion:32:35",
+      "source_category_path": [
+        "우유ᆞ유제품",
+        "우유",
+        "멸균우유"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801207000433",
+      "source_title": "파스퇴르 단백질플러스 검은콩&검은깨맛 (195ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8801207000433/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:32:35",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801207000433",
+    "source_title": "파스퇴르 단백질플러스 검은콩&검은깨맛 (195ML)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:0fc874d1013b3a05d19011b8",
+      "promotion_surface": false,
+      "proposed_path": [
+        "우유ㆍ유제품",
+        "우유",
+        "멸균우유"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:34:70",
+      "review_status": "pending",
+      "source_path": "우유ㆍ유제품 > 우유 > 멸균우유",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "우유ㆍ유제품",
+        "우유",
+        "멸균우유"
+      ],
+      "source_title": "파스퇴르 단백질플러스 곡물맛 (195ML)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801207000303/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "파스퇴르",
+      "crawled_at": "2026-08-31T01:47:08.157386Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9ea89404-8213-423a-91e1-162984c05b59/300x300.jpg",
+      "ingestion_id": 34,
+      "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 70,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "195ml",
+        "package_quantity": 195.0,
+        "package_unit": "ml",
+        "standard_unit": "ml"
+      },
+      "price": 2500,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "파스퇴르",
+          "canon_hash": "a21d48456d762eb7ab119fe890781a41ea750340",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801207000303/details",
+          "category_hint": "우유ㆍ유제품",
+          "category_path": [
+            "우유ㆍ유제품",
+            "우유",
+            "멸균우유"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9ea89404-8213-423a-91e1-162984c05b59/300x300.jpg",
+          "mart_native_code": "8801207000303",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801207000303",
+          "source_url": "https://lottemartzetta.com/products/OS8801207000303/details"
+        },
+        "brand": "__no_brand__",
+        "category": "우유ㆍ유제품",
+        "crawled_at": "2026-08-31T10:47:08.157386",
+        "detail_url": "https://lottemartzetta.com/products/OS8801207000303/details",
+        "discount_percent": null,
+        "display_unit": "195ml",
+        "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9ea89404-8213-423a-91e1-162984c05b59/300x300.jpg",
+        "match_key": "__no_brand__|파스퇴르 단백질플러스 곡물맛 195ml||195ml",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "파스퇴르 단백질플러스 곡물맛 (195ML)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 195.0,
+        "package_unit": "ml",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 2500,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "195ml",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "6127b166d3ee6fa93b1aca26a1bb721ee045793604be4cf3a70ec51c7e628e54",
+      "raw_record_id": "ingestion:34:70",
+      "source_category_path": [
+        "우유ᆞ유제품",
+        "우유",
+        "멸균우유"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801207000303",
+      "source_title": "파스퇴르 단백질플러스 곡물맛 (195ML)",
+      "source_url": "https://lottemartzetta.com/products/OS8801207000303/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:34:70",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801207000303",
+    "source_title": "파스퇴르 단백질플러스 곡물맛 (195ML)"
+  }
+]

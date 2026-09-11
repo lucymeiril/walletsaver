@@ -1,0 +1,4718 @@
+[
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:2"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.645839Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 50% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3590,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-3c2110b89fc62f2eedd44990f60932f2",
+    "public_source_listing_id": "listing-4077c7530fab8032fbcf427ed07b728a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.645839Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "풀무원",
+              "canon_hash": "b2c54e7cc3a3589114873827115ab140392705f6",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801114147092/details",
+              "category_hint": "채소",
+              "category_path": [
+                "채소",
+                "두부ㆍ나또ㆍ콩나물ㆍ숙주나물",
+                "두부"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4d501ad1-4b56-4627-8d44-1509c052e1f3/300x300.jpg",
+              "mart_native_code": "8801114147092",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801114147092",
+              "source_url": "https://lottemartzetta.com/products/OS8801114147092/details"
+            },
+            "brand": "__no_brand__",
+            "category": "채소",
+            "crawled_at": "2026-08-31T10:47:02.645839",
+            "detail_url": "https://lottemartzetta.com/products/OS8801114147092/details",
+            "discount_percent": null,
+            "display_unit": "290g",
+            "event_name": "2개씩 골라 담으면, 50% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4d501ad1-4b56-4627-8d44-1509c052e1f3/300x300.jpg",
+            "match_key": "__no_brand__|풀무원 고소한 유기농 두부 부침용 290g||290g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 고소한 유기농 두부 (부침용) (290G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 290.0,
+            "package_unit": "g",
+            "price_per_100g": 1237.93,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3590,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "290g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "6f4e41350cb7846570438884e297d15dfefc10ceca00aa917e903b9b829fbe1f",
+          "raw_record_id": "ingestion:31:2",
+          "source_category_path": [
+            "채소",
+            "두부ᆞ나또ᆞ콩나물ᆞ숙주나물",
+            "두부"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:2",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:7"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.161837Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 7480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-7fd4caf3b081b61c61624961347b5da4",
+    "public_source_listing_id": "listing-40da755d017ca7da87a901b2458a569b",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.161837Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "반듯한식",
+              "canon_hash": "efaeeddc617387ed562d842dcd6b5069dc6ace0a",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801114170700/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8c6c6eea-99c1-40c6-b65c-3247dae29a0d/300x300.jpg",
+              "mart_native_code": "8801114170700",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801114170700",
+              "source_url": "https://lottemartzetta.com/products/OS8801114170700/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.161837",
+            "detail_url": "https://lottemartzetta.com/products/OS8801114170700/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "2개씩 골라 담으면, 10,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8c6c6eea-99c1-40c6-b65c-3247dae29a0d/300x300.jpg",
+            "match_key": "__no_brand__|풀무원 반듯한식 시래기 보양추어탕 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 반듯한식 시래기 보양추어탕 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 1626.09,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "bbaa2cd358d12b794b39260d3c870f391e153202153e22a44d4fdaab79eb920e",
+          "raw_record_id": "ingestion:35:7",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:7",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:15"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.659003Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 2,000원 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-9c2fc126fd4601579b2ace8dc0291632",
+    "public_source_listing_id": "listing-fd37cc8e274c10cf8e3c8cde67aeec2a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.659003Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "풀무원",
+              "canon_hash": "a1d3ef8ba68034006328e5aae722ddd473ad2c20",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801114172704/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "요리ㆍ안주",
+                "떡갈비ㆍ완자ㆍ전",
+                "냉동전"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9ca2bfa3-ecba-4810-a0a7-f49bbc2711c4/300x300.jpg",
+              "mart_native_code": "8801114172704",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801114172704",
+              "source_url": "https://lottemartzetta.com/products/OS8801114172704/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.659003",
+            "detail_url": "https://lottemartzetta.com/products/OS8801114172704/details",
+            "discount_percent": null,
+            "display_unit": "300g",
+            "event_name": "2개씩 골라 담으면, 2,000원 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9ca2bfa3-ecba-4810-a0a7-f49bbc2711c4/300x300.jpg",
+            "match_key": "__no_brand__|풀무원 철판 오징어부추전 300g||300g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 철판 오징어부추전 (300G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 300.0,
+            "package_unit": "g",
+            "price_per_100g": 2160.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "300g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "97b1807216c8ec6a9855eb94c0bae2b9f2fb27a24f734f0e8a4a611fff8310db",
+          "raw_record_id": "ingestion:32:15",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "요리ᆞ안주",
+            "떡갈비ᆞ완자ᆞ전",
+            "냉동전"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:15",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:94"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.668431Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 50% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 5490,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-507f3789d7b036b7eb2827f7a481317d",
+    "public_source_listing_id": "listing-1597fea21b2eda2f59b68e5e3f8a17c6",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.668431Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "풀무원",
+              "canon_hash": "7fcd93d4b25b3c462579e9c64339ff3d2b9ceb9f",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801114175019/details",
+              "category_hint": "채소",
+              "category_path": [
+                "채소",
+                "두부ㆍ나또ㆍ콩나물ㆍ숙주나물",
+                "두부"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/7be7e2b9-8aab-4df4-97e1-23ac654404bd/300x300.jpg",
+              "mart_native_code": "8801114175019",
+              "origin": "domestic",
+              "origin_label": "국산",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801114175019",
+              "source_url": "https://lottemartzetta.com/products/OS8801114175019/details"
+            },
+            "brand": "__no_brand__",
+            "category": "채소",
+            "crawled_at": "2026-08-31T10:47:02.668431",
+            "detail_url": "https://lottemartzetta.com/products/OS8801114175019/details",
+            "discount_percent": null,
+            "display_unit": "340g",
+            "event_name": "2개씩 골라 담으면, 50% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/7be7e2b9-8aab-4df4-97e1-23ac654404bd/300x300.jpg",
+            "match_key": "__no_brand__|풀무원 국산 반찬조리용 두부 340g||340g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 국산 반찬조리용 두부 (340G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 340.0,
+            "package_unit": "g",
+            "price_per_100g": 1614.71,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5490,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "340g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "1df8aa5c6a5ddc027ee1c6e3eb8ca975e28371006e9e4b4e5bacf0f4b7c5e4e1",
+          "raw_record_id": "ingestion:32:94",
+          "source_category_path": [
+            "채소",
+            "두부ᆞ나또ᆞ콩나물ᆞ숙주나물",
+            "두부"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:94",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:56"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.155606Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 2,000원 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-4ea312fae8fe1d708608592d7f183c50",
+    "public_source_listing_id": "listing-35cb59740436927ceab732f3b1263ef7",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.155606Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "풀무원",
+              "canon_hash": "43c309779bbd01cfc1935e8e02b9c7240e57d9c0",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801114177013/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "요리ㆍ안주",
+                "떡갈비ㆍ완자ㆍ전",
+                "냉동전"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/05fc8768-0c45-4124-9eb3-8f8209e1f468/300x300.jpg",
+              "mart_native_code": "8801114177013",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801114177013",
+              "source_url": "https://lottemartzetta.com/products/OS8801114177013/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.155606",
+            "detail_url": "https://lottemartzetta.com/products/OS8801114177013/details",
+            "discount_percent": null,
+            "display_unit": "300g",
+            "event_name": "2개씩 골라 담으면, 2,000원 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/05fc8768-0c45-4124-9eb3-8f8209e1f468/300x300.jpg",
+            "match_key": "__no_brand__|풀무원 철판 오징어김치전 300g||300g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 철판 오징어김치전 (300G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 300.0,
+            "package_unit": "g",
+            "price_per_100g": 2160.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "300g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "db6b7499f1635547182d79d87f0c036b4d44e6edabbde12075ee21bcfe84a3a8",
+          "raw_record_id": "ingestion:34:56",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "요리ᆞ안주",
+            "떡갈비ᆞ완자ᆞ전",
+            "냉동전"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:56",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:40"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.165173Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 10,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-e3ad19ffdece801233280f95fd7f4748",
+    "public_source_listing_id": "listing-128b60bb7a243b891752a4d4eb3b10f0",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.165173Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "풀무원",
+              "canon_hash": "7a1924cbffca72ab959487f93c211a42075a7496",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801114185377/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "냉동밥ㆍ즉석죽ㆍ즉석스프",
+                "볶음밥"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b36093ea-57ec-416a-943b-29a28ef99706/300x300.jpg",
+              "mart_native_code": "8801114185377",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801114185377",
+              "source_url": "https://lottemartzetta.com/products/OS8801114185377/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.165173",
+            "detail_url": "https://lottemartzetta.com/products/OS8801114185377/details",
+            "discount_percent": null,
+            "display_unit": "400g",
+            "event_name": "2개씩 골라 담으면, 10,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b36093ea-57ec-416a-943b-29a28ef99706/300x300.jpg",
+            "match_key": "__no_brand__|풀무원 비법기름 계란볶음밥 400g||400g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 비법기름 계란볶음밥 (400G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 400.0,
+            "package_unit": "g",
+            "price_per_100g": 1745.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "400g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "109c46a432e32f9fa673e7dc54807117dea102f8cc3c63e5a2672a05e7aaad58",
+          "raw_record_id": "ingestion:35:40",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "냉동밥ᆞ즉석죽ᆞ즉석스프",
+            "볶음밥"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:40",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:62"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.106706Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 7480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-fcec621730ec05bbc89a86a22bda4b2e",
+    "public_source_listing_id": "listing-0fdd455444e10fbb2b8a37a7ef921bff",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.106706Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "풀무원",
+              "canon_hash": "a1bfc6bc4f5c4aab68824d278c709b9490449838",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801114302606/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "간편면요리",
+                "냉면ㆍ쫄면",
+                "냉면ㆍ메밀면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2301b09a-50f1-4665-bf1f-19782514adab/300x300.jpg",
+              "mart_native_code": "8801114302606",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801114302606",
+              "source_url": "https://lottemartzetta.com/products/OS8801114302606/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:46:57.106706",
+            "detail_url": "https://lottemartzetta.com/products/OS8801114302606/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2301b09a-50f1-4665-bf1f-19782514adab/300x300.jpg",
+            "match_key": "__no_brand__|풀무원 함흥 비빔냉면 2인 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 함흥 비빔냉면 (2인) (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 1626.09,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "82e18921cf221396fafb441117937886a0b04903a5f8b90b96e5be5c64267f25",
+          "raw_record_id": "ingestion:30:62",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "간편면요리",
+            "냉면ᆞ쫄면",
+            "냉면ᆞ메밀면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:62",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:44"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.104691Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 7480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-e552acd41d755bdd1629d84ee0c98149",
+    "public_source_listing_id": "listing-8ba290fbab32afa5a1cae695fef70d23",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.104691Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "풀무원",
+              "canon_hash": "45fd95a6428ae8ff59def9ef03ff5b52c3d4b933",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801114305812/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "간편면요리",
+                "냉면ㆍ쫄면",
+                "냉면ㆍ메밀면"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4b24bc6d-5b60-4187-9b7e-20eaa2085570/300x300.jpg",
+              "mart_native_code": "8801114305812",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801114305812",
+              "source_url": "https://lottemartzetta.com/products/OS8801114305812/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:46:57.104691",
+            "detail_url": "https://lottemartzetta.com/products/OS8801114305812/details",
+            "discount_percent": null,
+            "display_unit": "846g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4b24bc6d-5b60-4187-9b7e-20eaa2085570/300x300.jpg",
+            "match_key": "__no_brand__|풀무원 평양 냉면 2인 846g||846g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "풀무원 평양 냉면 (2인) (846G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 846.0,
+            "package_unit": "g",
+            "price_per_100g": 884.16,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "846g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "09962c26c1b2b35eb5e834a3a8757766fd94367fbd08617a5abe667a9278ceb7",
+          "raw_record_id": "ingestion:30:44",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "간편면요리",
+            "냉면ᆞ쫄면",
+            "냉면ᆞ메밀면"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:44",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:68"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.088963Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 50% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2700,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-75d181074d110cb13b55b90d535e6da7",
+    "public_source_listing_id": "listing-728265a241c0ad33491441cde01db002",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.088963Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "서울우유",
+              "canon_hash": "b2b9e6e4985c0564475a6a35ffeeca28f43ed52b",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801115136682/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "우유",
+                "바나나ㆍ딸기ㆍ초코ㆍ커피우유",
+                "커피우유"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ce798a93-23ab-4f6b-8533-3215190ce3bd/300x300.jpg",
+              "mart_native_code": "8801115136682",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801115136682",
+              "source_url": "https://lottemartzetta.com/products/OS8801115136682/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:46:57.088963",
+            "detail_url": "https://lottemartzetta.com/products/OS8801115136682/details",
+            "discount_percent": null,
+            "display_unit": "200ml",
+            "event_name": "2개씩 골라 담으면, 50% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ce798a93-23ab-4f6b-8533-3215190ce3bd/300x300.jpg",
+            "match_key": "__no_brand__|서울우유 포리커피 컵 200ml||200ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "서울우유 포리커피 컵 (200ML)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2700,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "200ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "89ee1b226c261f3fb5a04eab6283bc338caa7f6185343eedf226a594e6cf3ff4",
+          "raw_record_id": "ingestion:28:68",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "우유",
+            "바나나ᆞ딸기ᆞ초코ᆞ커피우유",
+            "커피우유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:68",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:26"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.660242Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 50% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2880,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-36d8566776dc20bfb6e59889ccead20f",
+    "public_source_listing_id": "listing-e1443252a70e61bb90467b99a90a731e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.660242Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "서울우유",
+              "canon_hash": "2814ca1b99cb7a0f47bc1251f5317d27f6cda7f2",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801115140214/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "우유",
+                "바나나ㆍ딸기ㆍ초코ㆍ커피우유",
+                "딸기우유"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4542e12c-5ce0-4af2-9fcf-46d0591e76a0/300x300.jpg",
+              "mart_native_code": "8801115140214",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801115140214",
+              "source_url": "https://lottemartzetta.com/products/OS8801115140214/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:47:02.660242",
+            "detail_url": "https://lottemartzetta.com/products/OS8801115140214/details",
+            "discount_percent": null,
+            "display_unit": "200ml",
+            "event_name": "2개씩 골라 담으면, 50% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4542e12c-5ce0-4af2-9fcf-46d0591e76a0/300x300.jpg",
+            "match_key": "__no_brand__|서울우유 킹말차 스트로베리 200ml||200ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "서울우유 킹말차 스트로베리 (200ML)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 200.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2880,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "200ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "b3a68534807552481bf47e8ff77a63237d186fa5a1895a3255e065364251faba",
+          "raw_record_id": "ingestion:32:26",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "우유",
+            "바나나ᆞ딸기ᆞ초코ᆞ커피우유",
+            "딸기우유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:26",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:43"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.095141Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3890,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-cb1f79d91200ef58fae8f1bddffd0e6b",
+    "public_source_listing_id": "listing-0785860994d7d14e826be90fa17d54e5",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.095141Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "서울우유",
+              "canon_hash": "50dfc9e6c000719d357fc0c813b1036cbe4d9d1c",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801115216001/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "요거트ㆍ요구르트",
+                "떠먹는요구르트"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4dbff75d-2668-4055-bd1e-50b178799c33/300x300.jpg",
+              "mart_native_code": "8801115216001",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801115216001",
+              "source_url": "https://lottemartzetta.com/products/OS8801115216001/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:46:57.095141",
+            "detail_url": "https://lottemartzetta.com/products/OS8801115216001/details",
+            "discount_percent": null,
+            "display_unit": "85g×4",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4dbff75d-2668-4055-bd1e-50b178799c33/300x300.jpg",
+            "match_key": "__no_brand__|서울우유 요거트 딸기 85g 4입||85g×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "서울우유 요거트 딸기 (85G*4입)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 85.0,
+            "package_unit": "g",
+            "price_per_100g": 1144.12,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3890,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "85g×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "255c18d8d0fed2f18326b51c1651994d0442db0c0cc9b42707cc6e9547a4c4b5",
+          "raw_record_id": "ingestion:29:43",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "요거트ᆞ요구르트",
+            "떠먹는요구르트"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:43",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:15"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.093142Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3890,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-23598b819a03c89d8c4bb7ca4af3a11f",
+    "public_source_listing_id": "listing-286a949b5e051d7b2a06f614aa810a0d",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.093142Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "서울우유",
+              "canon_hash": "f64136ae829f6a06157639083e57256eead34155",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801115216025/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "요거트ㆍ요구르트",
+                "떠먹는요구르트"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/0884e055-78b4-4b7c-9570-92d84558b7eb/300x300.jpg",
+              "mart_native_code": "8801115216025",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801115216025",
+              "source_url": "https://lottemartzetta.com/products/OS8801115216025/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:46:57.093142",
+            "detail_url": "https://lottemartzetta.com/products/OS8801115216025/details",
+            "discount_percent": null,
+            "display_unit": "85g×4",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/0884e055-78b4-4b7c-9570-92d84558b7eb/300x300.jpg",
+            "match_key": "__no_brand__|서울우유 요거트 복숭아 85g 4입||85g×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "서울우유 요거트 복숭아 (85G*4입)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 85.0,
+            "package_unit": "g",
+            "price_per_100g": 1144.12,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3890,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "85g×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ae73d7f4d9e79166a048f6c82743e7127b38445a034049e9a396765e1bf0afc5",
+          "raw_record_id": "ingestion:29:15",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "요거트ᆞ요구르트",
+            "떠먹는요구르트"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:15",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:99"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.091959Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3890,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-c285fc48e0db3349e1b9ed24290b951d",
+    "public_source_listing_id": "listing-97210c5f44fbb8d365620dccb426b0a4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.091959Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "서울우유",
+              "canon_hash": "8aeb9eb7b52054dea5239bf274e2044c6fca7dfe",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801115216032/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "요거트ㆍ요구르트",
+                "떠먹는요구르트"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/0fe1b045-d7f2-4ddb-97c7-3def200c8564/300x300.jpg",
+              "mart_native_code": "8801115216032",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801115216032",
+              "source_url": "https://lottemartzetta.com/products/OS8801115216032/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:46:57.091959",
+            "detail_url": "https://lottemartzetta.com/products/OS8801115216032/details",
+            "discount_percent": null,
+            "display_unit": "85g×4",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/0fe1b045-d7f2-4ddb-97c7-3def200c8564/300x300.jpg",
+            "match_key": "__no_brand__|서울우유 요거트 블루베리 85g 4입||85g×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "서울우유 요거트 블루베리 (85G*4입)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 85.0,
+            "package_unit": "g",
+            "price_per_100g": 1144.12,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3890,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "85g×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "d8d25c7467df10a8b84fa6c1448a9ba0a2a6afa38113b50f69c118e1242045d2",
+          "raw_record_id": "ingestion:28:99",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "요거트ᆞ요구르트",
+            "떠먹는요구르트"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:99",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:73"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.098147Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4280,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-3b35b16b170863d1fa6133df67455c21",
+    "public_source_listing_id": "listing-ee6005873847e6ecd0b9b43ab09e9075",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.098147Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "서울우유",
+              "canon_hash": "d444fe4892842f50b483483db8a17ded027da858",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801115224631/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "요거트ㆍ요구르트",
+                "마시는요구르트"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1755d8bf-031b-48f8-a6ab-fb5d8fceacaa/300x300.jpg",
+              "mart_native_code": "8801115224631",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801115224631",
+              "source_url": "https://lottemartzetta.com/products/OS8801115224631/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:46:57.098147",
+            "detail_url": "https://lottemartzetta.com/products/OS8801115224631/details",
+            "discount_percent": null,
+            "display_unit": "150ml×4",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1755d8bf-031b-48f8-a6ab-fb5d8fceacaa/300x300.jpg",
+            "match_key": "__no_brand__|서울우유 듀오안 오리지널 150ml 4입||150ml×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "서울우유 듀오안 오리지널 (150ML*4입)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 150.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4280,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "150ml×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "219743bc6fab9ca1149b386dced0e16155ae4116354056431801321e81c9be69",
+          "raw_record_id": "ingestion:29:73",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "요거트ᆞ요구르트",
+            "마시는요구르트"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:73",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:37"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.661253Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 50% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 9880,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-d6e500d30891e765a4b009115fac8e41",
+    "public_source_listing_id": "listing-3c348c0f1a40a64a5bb6644adae5da98",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.661253Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "서울우유",
+              "canon_hash": "7571b2ae11cc51d18b12c445cd445cf94318962e",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801115632016/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "치즈",
+                "슬라이스치즈"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6156783b-9fba-4dd7-b184-b7c91b1d1b9b/300x300.jpg",
+              "mart_native_code": "8801115632016",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801115632016",
+              "source_url": "https://lottemartzetta.com/products/OS8801115632016/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:47:02.661253",
+            "detail_url": "https://lottemartzetta.com/products/OS8801115632016/details",
+            "discount_percent": null,
+            "display_unit": "270g",
+            "event_name": "2개씩 골라 담으면, 50% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6156783b-9fba-4dd7-b184-b7c91b1d1b9b/300x300.jpg",
+            "match_key": "__no_brand__|서울우유 짜지 않아 건강한치즈 270g||270g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "서울우유 짜지 않아 건강한치즈 (270G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 270.0,
+            "package_unit": "g",
+            "price_per_100g": 3659.26,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9880,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "270g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "3141cea2f8222c658e49a00f527bc55a80c355ed2b6bb030ce32400388ae108a",
+          "raw_record_id": "ingestion:32:37",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "치즈",
+            "슬라이스치즈"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:37",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:90"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.644785Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 50% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 9880,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-4f53e8c4a9f53d65c9a3074f33b0caef",
+    "public_source_listing_id": "listing-31c7baf043fdc94dcf7588ec9e30ff96",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.644785Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "서울우유",
+              "canon_hash": "533cd7cdff90fbbdb1d9e486d63d6f4c997ae7df",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801115633785/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "치즈",
+                "슬라이스치즈"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4ec7dbc5-6d9d-4a1f-b561-6aaf57f6a0f9/300x300.jpg",
+              "mart_native_code": "8801115633785",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801115633785",
+              "source_url": "https://lottemartzetta.com/products/OS8801115633785/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:47:02.644785",
+            "detail_url": "https://lottemartzetta.com/products/OS8801115633785/details",
+            "discount_percent": null,
+            "display_unit": "270g",
+            "event_name": "2개씩 골라 담으면, 50% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4ec7dbc5-6d9d-4a1f-b561-6aaf57f6a0f9/300x300.jpg",
+            "match_key": "__no_brand__|서울우유 고단백치즈 270g||270g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "서울우유 고단백치즈 (270G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 270.0,
+            "package_unit": "g",
+            "price_per_100g": 3659.26,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9880,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "270g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "e8a502cb476883ca8f718543454872575a9584ecae3913ae4673d2bc274ef067",
+          "raw_record_id": "ingestion:30:90",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "치즈",
+            "슬라이스치즈"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:90",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:60"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.096382Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 50% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 8990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-c628fd1acefcc98319ae46eee953157f",
+    "public_source_listing_id": "listing-5d845dd383ad33343607ab230e362f09",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.096382Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "서울우유",
+              "canon_hash": "41d8e6f61c61c2bfa91a792ab9a924a4ef2c0db0",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801115634614/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "치즈",
+                "슬라이스치즈"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8900fa1b-519f-42b8-af75-03941df1a537/300x300.jpg",
+              "mart_native_code": "8801115634614",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801115634614",
+              "source_url": "https://lottemartzetta.com/products/OS8801115634614/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:46:57.096382",
+            "detail_url": "https://lottemartzetta.com/products/OS8801115634614/details",
+            "discount_percent": null,
+            "display_unit": "270g",
+            "event_name": "2개씩 골라 담으면, 50% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8900fa1b-519f-42b8-af75-03941df1a537/300x300.jpg",
+            "match_key": "__no_brand__|서울우유 지방을 줄인 고칼슘치즈 270g||270g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "서울우유 지방을 줄인 고칼슘치즈 (270G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 270.0,
+            "package_unit": "g",
+            "price_per_100g": 3329.63,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 8990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "270g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "f94a416ef102c6d7132a190418565541763ee9727b0ad97cfd20d85a5708eb7d",
+          "raw_record_id": "ingestion:29:60",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "치즈",
+            "슬라이스치즈"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:60",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:6"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.084041Z",
+    "discount_rate": null,
+    "event_name": "과자 990원",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 990,
+    "price_per_100g": 1500.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-36a719430db30bb24358257308334c25",
+    "public_source_listing_id": "listing-3b8fbafd61cced8544aa2d6c57aab44f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.084041Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오리온",
+              "canon_hash": "4a34bfe2cc0ce3e5a5031545aebab0c0df5f7d4c",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801117165802/details",
+              "category_hint": "과자ㆍ스낵ㆍ간식",
+              "category_path": [
+                "과자ㆍ스낵ㆍ간식",
+                "과자ㆍ쿠키ㆍ파이",
+                "일반과자"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a5c9b4a6-83c0-4fad-a54f-041e4aed8ab0/300x300.jpg",
+              "mart_native_code": "8801117165802",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801117165802",
+              "source_url": "https://lottemartzetta.com/products/OS8801117165802/details"
+            },
+            "brand": "__no_brand__",
+            "category": "과자ㆍ스낵ㆍ간식",
+            "crawled_at": "2026-08-31T10:46:57.084041",
+            "detail_url": "https://lottemartzetta.com/products/OS8801117165802/details",
+            "discount_percent": null,
+            "display_unit": "66g",
+            "event_name": "과자 990원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a5c9b4a6-83c0-4fad-a54f-041e4aed8ab0/300x300.jpg",
+            "match_key": "__no_brand__|오리온 썬핫스파이시맛 66g||66g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오리온 썬핫스파이시맛 (66G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 66.0,
+            "package_unit": "g",
+            "price_per_100g": 1500.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "66g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "3110db6b2e0bb11fa90b7ad9b0440ba2092747775a5d269f157e9e0723f849b0",
+          "raw_record_id": "ingestion:28:6",
+          "source_category_path": [
+            "과자ᆞ스낵ᆞ간식",
+            "과자ᆞ쿠키ᆞ파이",
+            "일반과자"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:6",
+    "standard_unit_price": 1500.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:42"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.104176Z",
+    "discount_rate": null,
+    "event_name": "과자 990원",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 990,
+    "price_per_100g": 1414.2857,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-9078b188ccf1e100ca8ededacabc2a09",
+    "public_source_listing_id": "listing-4ec582354155fa81182f9cd85ef48e7b",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.104176Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오리온",
+              "canon_hash": "1b6ff94743ba062f8822473e7e24d5c4b18d6526",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801117282806/details",
+              "category_hint": "과자ㆍ스낵ㆍ간식",
+              "category_path": [
+                "과자ㆍ스낵ㆍ간식",
+                "과자ㆍ쿠키ㆍ파이",
+                "크래커ㆍ샌드",
+                "크래커"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d5576994-f2f4-4b3b-aee9-acd4f1c5e032/300x300.jpg",
+              "mart_native_code": "8801117282806",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801117282806",
+              "source_url": "https://lottemartzetta.com/products/OS8801117282806/details"
+            },
+            "brand": "__no_brand__",
+            "category": "과자ㆍ스낵ㆍ간식",
+            "crawled_at": "2026-08-31T10:46:57.104176",
+            "detail_url": "https://lottemartzetta.com/products/OS8801117282806/details",
+            "discount_percent": null,
+            "display_unit": "70g",
+            "event_name": "과자 990원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d5576994-f2f4-4b3b-aee9-acd4f1c5e032/300x300.jpg",
+            "match_key": "__no_brand__|오리온 고소미 70g||70g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오리온 고소미 (70G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 70.0,
+            "package_unit": "g",
+            "price_per_100g": 1414.29,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "70g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "5dfde5545077b3dd11720158d220f091d322423e5396e11ac7851106d2a97a5f",
+          "raw_record_id": "ingestion:30:42",
+          "source_category_path": [
+            "과자ᆞ스낵ᆞ간식",
+            "과자ᆞ쿠키ᆞ파이",
+            "크래커ᆞ샌드",
+            "크래커"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:42",
+    "standard_unit_price": 1414.2857,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:13"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.084837Z",
+    "discount_rate": null,
+    "event_name": "과자 990원",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 990,
+    "price_per_100g": 2750.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-613a1b4bd1f8b0f313d43a8e26365942",
+    "public_source_listing_id": "listing-78fbaee52c61524d48d8cddbcefd9e69",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.084837Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오리온",
+              "canon_hash": "fe8dbe21b81d48bd93ed67bff8ea788e14d6215f",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801117389604/details",
+              "category_hint": "과자ㆍ스낵ㆍ간식",
+              "category_path": [
+                "과자ㆍ스낵ㆍ간식",
+                "과자ㆍ쿠키ㆍ파이",
+                "일반과자"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4a54bde2-a36b-45c5-974c-8005cc2b1fa8/300x300.jpg",
+              "mart_native_code": "8801117389604",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801117389604",
+              "source_url": "https://lottemartzetta.com/products/OS8801117389604/details",
+              "storage_label": "상온",
+              "storage_type": "ambient"
+            },
+            "brand": "__no_brand__",
+            "category": "과자ㆍ스낵ㆍ간식",
+            "crawled_at": "2026-08-31T10:46:57.084837",
+            "detail_url": "https://lottemartzetta.com/products/OS8801117389604/details",
+            "discount_percent": null,
+            "display_unit": "36g",
+            "event_name": "과자 990원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4a54bde2-a36b-45c5-974c-8005cc2b1fa8/300x300.jpg",
+            "match_key": "__no_brand__|오리온 눈을감자 36g||36g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오리온 눈을감자 (36G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 36.0,
+            "package_unit": "g",
+            "price_per_100g": 2750.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "36g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "7f98a92039b278cc179a5d4bd218fa7f4281a76f7bd25237951a0e9c7f358388",
+          "raw_record_id": "ingestion:28:13",
+          "source_category_path": [
+            "과자ᆞ스낵ᆞ간식",
+            "과자ᆞ쿠키ᆞ파이",
+            "일반과자"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:13",
+    "standard_unit_price": 2750.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:22"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.085761Z",
+    "discount_rate": null,
+    "event_name": "과자 990원",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 990,
+    "price_per_100g": 1237.5,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-ee80a47a17f7b041c3ec25761ae3f57a",
+    "public_source_listing_id": "listing-30f1208a31736b81c078154a2a7f6728",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.085761Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오리온",
+              "canon_hash": "0f1ea57462472da7bd60db22fdda83f6b4027641",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801117396800/details",
+              "category_hint": "과자ㆍ스낵ㆍ간식",
+              "category_path": [
+                "과자ㆍ스낵ㆍ간식",
+                "과자ㆍ쿠키ㆍ파이",
+                "일반과자"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/025a754b-1899-4c04-b1ca-25d577effe24/300x300.jpg",
+              "mart_native_code": "8801117396800",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801117396800",
+              "source_url": "https://lottemartzetta.com/products/OS8801117396800/details"
+            },
+            "brand": "__no_brand__",
+            "category": "과자ㆍ스낵ㆍ간식",
+            "crawled_at": "2026-08-31T10:46:57.085761",
+            "detail_url": "https://lottemartzetta.com/products/OS8801117396800/details",
+            "discount_percent": null,
+            "display_unit": "80g",
+            "event_name": "과자 990원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/025a754b-1899-4c04-b1ca-25d577effe24/300x300.jpg",
+            "match_key": "__no_brand__|오리온 오징어땅콩 80g||80g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오리온 오징어땅콩 (80G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 80.0,
+            "package_unit": "g",
+            "price_per_100g": 1237.5,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "80g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "97c004c59efb678469feb00e1dbda2852c729c51544ff472f2505e2a9b777dd3",
+          "raw_record_id": "ingestion:28:22",
+          "source_category_path": [
+            "과자ᆞ스낵ᆞ간식",
+            "과자ᆞ쿠키ᆞ파이",
+            "일반과자"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:22",
+    "standard_unit_price": 1237.5,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:40"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.087068Z",
+    "discount_rate": null,
+    "event_name": "과자 990원",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 990,
+    "price_per_100g": 1980.0,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-7dff894204975595af45de32b968a856",
+    "public_source_listing_id": "listing-e15ed47065f28e30547d1b6905ce66cd",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.087068Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오리온",
+              "canon_hash": "342d97842f07f9cc629ce5df9b8f7c6eeba84068",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801117446901/details",
+              "category_hint": "과자ㆍ스낵ㆍ간식",
+              "category_path": [
+                "과자ㆍ스낵ㆍ간식",
+                "과자ㆍ쿠키ㆍ파이",
+                "쿠키ㆍ비스킷"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/50251864-e7d6-4f24-a485-3992abf093b2/300x300.jpg",
+              "mart_native_code": "8801117446901",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801117446901",
+              "source_url": "https://lottemartzetta.com/products/OS8801117446901/details"
+            },
+            "brand": "__no_brand__",
+            "category": "과자ㆍ스낵ㆍ간식",
+            "crawled_at": "2026-08-31T10:46:57.087068",
+            "detail_url": "https://lottemartzetta.com/products/OS8801117446901/details",
+            "discount_percent": null,
+            "display_unit": "50g",
+            "event_name": "과자 990원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/50251864-e7d6-4f24-a485-3992abf093b2/300x300.jpg",
+            "match_key": "__no_brand__|오리온 초코송이 50g||50g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오리온 초코송이 (50G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 50.0,
+            "package_unit": "g",
+            "price_per_100g": 1980.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "50g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "feaa59f4d61a0d8b268cffbdc307600b260e82d45488f0685b663c581dc69592",
+          "raw_record_id": "ingestion:28:40",
+          "source_category_path": [
+            "과자ᆞ스낵ᆞ간식",
+            "과자ᆞ쿠키ᆞ파이",
+            "쿠키ᆞ비스킷"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:40",
+    "standard_unit_price": 1980.0,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:47"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.095409Z",
+    "discount_rate": null,
+    "event_name": "과자 990원",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 990,
+    "price_per_100g": 1523.0769,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-f19b1063185bdb5fbc640505b98e4bab",
+    "public_source_listing_id": "listing-9a9f30f23af4d75a4b26a7bedd14cd24",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.095409Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오리온",
+              "canon_hash": "8b10de112cb7821a6e1c76cb9718b255db2fa0cf",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801117674601/details",
+              "category_hint": "과자ㆍ스낵ㆍ간식",
+              "category_path": [
+                "과자ㆍ스낵ㆍ간식",
+                "과자ㆍ쿠키ㆍ파이",
+                "나쵸ㆍ팝콘",
+                "나쵸"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/03843113-2f8e-4394-9248-bac3c620e9d5/300x300.jpg",
+              "mart_native_code": "8801117674601",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801117674601",
+              "source_url": "https://lottemartzetta.com/products/OS8801117674601/details"
+            },
+            "brand": "__no_brand__",
+            "category": "과자ㆍ스낵ㆍ간식",
+            "crawled_at": "2026-08-31T10:46:57.095409",
+            "detail_url": "https://lottemartzetta.com/products/OS8801117674601/details",
+            "discount_percent": null,
+            "display_unit": "65g",
+            "event_name": "과자 990원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/03843113-2f8e-4394-9248-bac3c620e9d5/300x300.jpg",
+            "match_key": "__no_brand__|오리온 치킨팝 닭강정맛 65g||65g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오리온 치킨팝 닭강정맛 (65G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 65.0,
+            "package_unit": "g",
+            "price_per_100g": 1523.08,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "65g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "90628729eb55881d78ae7fcc516b2a061b57f68af28a44a83dd7a1f89ac82412",
+          "raw_record_id": "ingestion:29:47",
+          "source_category_path": [
+            "과자ᆞ스낵ᆞ간식",
+            "과자ᆞ쿠키ᆞ파이",
+            "나쵸ᆞ팝콘",
+            "나쵸"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:47",
+    "standard_unit_price": 1523.0769,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:27"
+      ],
+      "review_reasons": [],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.102787Z",
+    "discount_rate": null,
+    "event_name": "과자 990원",
+    "offer_state": "active",
+    "original_price": null,
+    "price": 990,
+    "price_per_100g": 1523.0769,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "final_price",
+    "public_offer_event_id": "offer-0e24c3018dda78120cb60b0422a79700",
+    "public_source_listing_id": "listing-1dc048a4823555401236e5e88c1a912e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.102787Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "오리온",
+              "canon_hash": "9878924b8818803fdb964d2eb3beb8361ceb9ce2",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801117689704/details",
+              "category_hint": "과자ㆍ스낵ㆍ간식",
+              "category_path": [
+                "과자ㆍ스낵ㆍ간식",
+                "과자ㆍ쿠키ㆍ파이",
+                "나쵸ㆍ팝콘",
+                "나쵸"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/019cbede-20df-4bdc-bd64-ccd16d47b374/300x300.jpg",
+              "mart_native_code": "8801117689704",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801117689704",
+              "source_url": "https://lottemartzetta.com/products/OS8801117689704/details"
+            },
+            "brand": "__no_brand__",
+            "category": "과자ㆍ스낵ㆍ간식",
+            "crawled_at": "2026-08-31T10:46:57.102787",
+            "detail_url": "https://lottemartzetta.com/products/OS8801117689704/details",
+            "discount_percent": null,
+            "display_unit": "65g",
+            "event_name": "과자 990원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/019cbede-20df-4bdc-bd64-ccd16d47b374/300x300.jpg",
+            "match_key": "__no_brand__|오리온 치즈뿌린 치킨팝 65g||65g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "오리온 치즈뿌린 치킨팝 (65G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 65.0,
+            "package_unit": "g",
+            "price_per_100g": 1523.08,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "65g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "25819cbd4340ccbcc0d24fa7391957a7c89771e04c1754e64ecb723b83ae960d",
+          "raw_record_id": "ingestion:30:27",
+          "source_category_path": [
+            "과자ᆞ스낵ᆞ간식",
+            "과자ᆞ쿠키ᆞ파이",
+            "나쵸ᆞ팝콘",
+            "나쵸"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:27",
+    "standard_unit_price": 1523.0769,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:0"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.161327Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 8480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-ee2302b9c898202fa8134d93ad020118",
+    "public_source_listing_id": "listing-fdc4ae4bdbfd4c4c6ff746b8d6df46fd",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.161327Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "롯데",
+              "canon_hash": "922757276844cff26ddca2ab67c56d21c2cc0aee",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801118027321/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/aca25a78-a630-4cca-8479-e5d099d17996/300x300.jpg",
+              "mart_native_code": "8801118027321",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801118027321",
+              "source_url": "https://lottemartzetta.com/products/OS8801118027321/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.161327",
+            "detail_url": "https://lottemartzetta.com/products/OS8801118027321/details",
+            "discount_percent": null,
+            "display_unit": "450g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/aca25a78-a630-4cca-8479-e5d099d17996/300x300.jpg",
+            "match_key": "__no_brand__|롯데 식사이론 의정부식 부대찌개 450g||450g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "롯데 식사이론 의정부식 부대찌개 (450G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 450.0,
+            "package_unit": "g",
+            "price_per_100g": 1884.44,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 8480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "450g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "0defc0c16049e9dbeceffab740708144cbeea037eaa9fc3a490828d3ebffed65",
+          "raw_record_id": "ingestion:35:0",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:0",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:49"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.167382Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 8480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-a4772f7077b1b351bd5c5c72fa12842a",
+    "public_source_listing_id": "listing-b21697d3223652fc2337ecf378668956",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.167382Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "롯데",
+              "canon_hash": "d11451678101e9906ec52b29b055698ea2f1d90d",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801118027338/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5d522f20-194c-46e3-9bb1-7a682f57a0f4/300x300.jpg",
+              "mart_native_code": "8801118027338",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801118027338",
+              "source_url": "https://lottemartzetta.com/products/OS8801118027338/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.167382",
+            "detail_url": "https://lottemartzetta.com/products/OS8801118027338/details",
+            "discount_percent": null,
+            "display_unit": "450g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5d522f20-194c-46e3-9bb1-7a682f57a0f4/300x300.jpg",
+            "match_key": "__no_brand__|롯데 식사이론 경상도식 소고기무국 450g||450g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "롯데 식사이론 경상도식 소고기무국 (450G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 450.0,
+            "package_unit": "g",
+            "price_per_100g": 1884.44,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 8480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "450g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "18f21a0507c328c47d0628f9096177471aadaeaa1084e5225c6472c9a2086cae",
+          "raw_record_id": "ingestion:35:49",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:49",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:65"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.665171Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 8480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-fbf31f83bcc2be19db62a7bc3cb5e35d",
+    "public_source_listing_id": "listing-7c0f7ce18fbd4af4ec2095dc26e4b50d",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.665171Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "롯데",
+              "canon_hash": "d980ba93ab96a08632e539a1302bce7abe1fa50b",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801118027345/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d2136dbb-4d32-47c5-9f46-09e18f24c14e/300x300.jpg",
+              "mart_native_code": "8801118027345",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801118027345",
+              "source_url": "https://lottemartzetta.com/products/OS8801118027345/details",
+              "storage_label": "상온",
+              "storage_type": "ambient"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.665171",
+            "detail_url": "https://lottemartzetta.com/products/OS8801118027345/details",
+            "discount_percent": null,
+            "display_unit": "450g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d2136dbb-4d32-47c5-9f46-09e18f24c14e/300x300.jpg",
+            "match_key": "__no_brand__|롯데 식사이론 순살감자탕 450g||450g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "롯데 식사이론 순살감자탕 (450G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 450.0,
+            "package_unit": "g",
+            "price_per_100g": 1884.44,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 8480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "450g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "5754ce131c94caffd7d33eb02b40cc47f7d742579ee4a47ba51eb75a684a00e7",
+          "raw_record_id": "ingestion:32:65",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:65",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:23"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.648413Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 7980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-d5ebc82294964f763867256de1eecefc",
+    "public_source_listing_id": "listing-dee4ca29b0ba23ec9064d147c62d5b3a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.648413Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "롯데웰푸드",
+              "canon_hash": "86ccb3d18ce7b3f67819d5a90253d0cd05f40c25",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801123001408/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+                "베이컨"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/73b05bf3-6638-4cb5-b0b2-b5f99413f5dd/300x300.jpg",
+              "mart_native_code": "8801123001408",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801123001408",
+              "source_url": "https://lottemartzetta.com/products/OS8801123001408/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:47:02.648413",
+            "detail_url": "https://lottemartzetta.com/products/OS8801123001408/details",
+            "discount_percent": null,
+            "display_unit": "160g",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/73b05bf3-6638-4cb5-b0b2-b5f99413f5dd/300x300.jpg",
+            "match_key": "__no_brand__|롯데 의성마늘 담백한 베이컨 160g||160g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "롯데 의성마늘 담백한 베이컨 (160G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 160.0,
+            "package_unit": "g",
+            "price_per_100g": 4987.5,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "160g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "cbf2372e5b9f7252a4806bcc01892ab27a2973d50647841aef330471471ef48f",
+          "raw_record_id": "ingestion:31:23",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "햄ᆞ소시지ᆞ베이컨ᆞ하몽",
+            "베이컨"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:23",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:65"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.088759Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 10980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-9116f1828e88b349b999b3500fadcb38",
+    "public_source_listing_id": "listing-ca7893df1ae3af1ded896f649f5de9c7",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.088759Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "롯데웰푸드",
+              "canon_hash": "84d2b06e46987330f55b5116d1885fab42a56a85",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801123001439/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+                "소시지"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/05720c19-ad7f-4731-8ded-41e0d4eec1fa/300x300.jpg",
+              "mart_native_code": "8801123001439",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801123001439",
+              "source_url": "https://lottemartzetta.com/products/OS8801123001439/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:46:57.088759",
+            "detail_url": "https://lottemartzetta.com/products/OS8801123001439/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/05720c19-ad7f-4731-8ded-41e0d4eec1fa/300x300.jpg",
+            "match_key": "__no_brand__|롯데 의성마늘 프랑크 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "롯데 의성마늘 프랑크 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 2386.96,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 10980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "1125537aedb46bcb44e75cfcc0ebfca41f6cf49675199b73f14f5d46ebd55508",
+          "raw_record_id": "ingestion:28:65",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "햄ᆞ소시지ᆞ베이컨ᆞ하몽",
+            "소시지"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:65",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:67"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.097192Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 9980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-5c5d1367911bc2e7648635d937edfdcc",
+    "public_source_listing_id": "listing-69dbf12615482cf6cd7eb50852ac2c22",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.097192Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "롯데",
+              "canon_hash": "7436c4f77bd697124cb3861182fc3dfe3a13c736",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801123002740/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "피자ㆍ핫도그ㆍ소시지",
+                "소시지"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/67db3de7-8a12-4aaa-a164-880fdf5e4d51/300x300.jpg",
+              "mart_native_code": "8801123002740",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801123002740",
+              "source_url": "https://lottemartzetta.com/products/OS8801123002740/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:46:57.097192",
+            "detail_url": "https://lottemartzetta.com/products/OS8801123002740/details",
+            "discount_percent": null,
+            "display_unit": "280g",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/67db3de7-8a12-4aaa-a164-880fdf5e4d51/300x300.jpg",
+            "match_key": "__no_brand__|롯데 에센뽀득 더블리치 280g||280g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "롯데 에센뽀득 더블리치 (280G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 280.0,
+            "package_unit": "g",
+            "price_per_100g": 3564.29,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "280g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "3bdc59d0b86ada861480b3cc6aeaa3aca9f22028f934f1acb65a6bf6d4646c80",
+          "raw_record_id": "ingestion:29:67",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "피자ᆞ핫도그ᆞ소시지",
+            "소시지"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:67",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:84"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.099162Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6280,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-5f1009d38b0f46dcff496f1e8936bb07",
+    "public_source_listing_id": "listing-54846ba27252ce310b86595faae5605b",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.099162Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "푸르밀",
+              "canon_hash": "327d2891e4e67a09e0a498fb7c060861edb2b747",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801123101184/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "우유",
+                "바나나ㆍ딸기ㆍ초코ㆍ커피우유",
+                "바나나우유"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8edfa7b1-3069-4179-84bb-a45012efae96/300x300.jpg",
+              "mart_native_code": "8801123101184",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801123101184",
+              "source_url": "https://lottemartzetta.com/products/OS8801123101184/details",
+              "storage_label": "상온",
+              "storage_type": "ambient"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:46:57.099162",
+            "detail_url": "https://lottemartzetta.com/products/OS8801123101184/details",
+            "discount_percent": null,
+            "display_unit": "225ml×4",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8edfa7b1-3069-4179-84bb-a45012efae96/300x300.jpg",
+            "match_key": "__no_brand__|푸르밀 바나나 우유 225ml 4||225ml×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "푸르밀 바나나 우유 (225ML * 4)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 225.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6280,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "225ml×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "f1c8b31e1751a5732a4a156254301d25f717b74de10f23d96fcb41d455179ac4",
+          "raw_record_id": "ingestion:29:84",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "우유",
+            "바나나ᆞ딸기ᆞ초코ᆞ커피우유",
+            "바나나우유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:84",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:22"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.648245Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6280,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-1eb189aab48d4b1b5c95f8e1ca8d2e19",
+    "public_source_listing_id": "listing-30744e9b0c4c8f61e7d2294936829130",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.648245Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "푸르밀",
+              "canon_hash": "0d846b81222ae275ab110e33ee080690629579b6",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801123102020/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "우유",
+                "바나나ㆍ딸기ㆍ초코ㆍ커피우유",
+                "초코우유"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/071511e7-5320-4acd-a174-3a7152b1c029/300x300.jpg",
+              "mart_native_code": "8801123102020",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801123102020",
+              "source_url": "https://lottemartzetta.com/products/OS8801123102020/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:47:02.648245",
+            "detail_url": "https://lottemartzetta.com/products/OS8801123102020/details",
+            "discount_percent": null,
+            "display_unit": "225ml×4",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/071511e7-5320-4acd-a174-3a7152b1c029/300x300.jpg",
+            "match_key": "__no_brand__|푸르밀 가나 쵸코우유 225ml 4||225ml×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "푸르밀 가나 쵸코우유 (225ML * 4)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 225.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6280,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "225ml×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "9b4f4fb94c752a60ab529e0eacd3ced062ee3b8ffad430165950642c78733e64",
+          "raw_record_id": "ingestion:31:22",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "우유",
+            "바나나ᆞ딸기ᆞ초코ᆞ커피우유",
+            "초코우유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:22",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:32"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.103162Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 8990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-d7edf6947b2de0d24a5283c8859dc1c9",
+    "public_source_listing_id": "listing-af9c3336ed036ed792acf537be808adb",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.103162Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "롯데웰푸드",
+              "canon_hash": "bfaa91634cf4b797f36d1aa6833269abdcf0d6e6",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801123203567/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+                "간식용소시지"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6a5a2cd6-ce58-4793-a175-60314f53d2da/300x300.jpg",
+              "mart_native_code": "8801123203567",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801123203567",
+              "source_url": "https://lottemartzetta.com/products/OS8801123203567/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:46:57.103162",
+            "detail_url": "https://lottemartzetta.com/products/OS8801123203567/details",
+            "discount_percent": null,
+            "display_unit": "550g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6a5a2cd6-ce58-4793-a175-60314f53d2da/300x300.jpg",
+            "match_key": "__no_brand__|롯데 키스틱소시지 550g||550g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "롯데 키스틱소시지 (550G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 550.0,
+            "package_unit": "g",
+            "price_per_100g": 1634.55,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 8990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "550g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "c6e592eac51f42cf85146f3046250a22c311d5246cba0cb3c05906205072b5a6",
+          "raw_record_id": "ingestion:30:32",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "햄ᆞ소시지ᆞ베이컨ᆞ하몽",
+            "간식용소시지"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:32",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:9"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.092686Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 5990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-61a72236164b66693feef22a862b9866",
+    "public_source_listing_id": "listing-3f5dbf37e67fa0d7fabc76d2b34df99c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.092686Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "롯데웰푸드",
+              "canon_hash": "d3aae7745bc4243e0620dc98570517376fd4c095",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801123309856/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+                "비엔나소시지"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/52c63076-2d2c-4ff3-b020-951c23c52fdd/300x300.jpg",
+              "mart_native_code": "8801123309856",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801123309856",
+              "source_url": "https://lottemartzetta.com/products/OS8801123309856/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:46:57.092686",
+            "detail_url": "https://lottemartzetta.com/products/OS8801123309856/details",
+            "discount_percent": null,
+            "display_unit": "180g",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/52c63076-2d2c-4ff3-b020-951c23c52fdd/300x300.jpg",
+            "match_key": "__no_brand__|롯데 라퀴진 에센 브런치 비엔나 오리지널 180g||180g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "롯데 라퀴진 에센 브런치 비엔나 오리지널 (180G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 180.0,
+            "package_unit": "g",
+            "price_per_100g": 3327.78,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "180g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "2ff61d0e32f8d73f01a20d0ff4b014eacb2c52ec6cf8c020dcdb5cb06ae98c33",
+          "raw_record_id": "ingestion:29:9",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "햄ᆞ소시지ᆞ베이컨ᆞ하몽",
+            "비엔나소시지"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:9",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:95"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.100255Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 50% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 9980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-4483ff90e90664bca8fc5c47a268ce08",
+    "public_source_listing_id": "listing-f6c8d8fc735c7504b3a46b7f4bded4ae",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.100255Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "매일유업",
+              "canon_hash": "2c52dc6f9c252a42ea5c6afc29212ddbbab3c130",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801150109030/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "치즈",
+                "슬라이스치즈"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fc9927c8-05a6-4c9b-99b1-9dbfee82247a/300x300.jpg",
+              "mart_native_code": "8801150109030",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801150109030",
+              "source_url": "https://lottemartzetta.com/products/OS8801150109030/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:46:57.100255",
+            "detail_url": "https://lottemartzetta.com/products/OS8801150109030/details",
+            "discount_percent": null,
+            "display_unit": "270g",
+            "event_name": "2개씩 골라 담으면, 50% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fc9927c8-05a6-4c9b-99b1-9dbfee82247a/300x300.jpg",
+            "match_key": "__no_brand__|매일 상하 뼈로가는 칼슘치즈 270g||270g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "매일 상하 뼈로가는 칼슘치즈 (270G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 270.0,
+            "package_unit": "g",
+            "price_per_100g": 3696.3,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "270g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "7ce3f54fd0fe7934df773de98856fbe7343cadba4976a624c4b3e257efab89bc",
+          "raw_record_id": "ingestion:29:95",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "치즈",
+            "슬라이스치즈"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:95",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:31"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.103095Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 9990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-701be6f3617768bbcfbd505c811a718e",
+    "public_source_listing_id": "listing-dfea759acf7b0c2922c5b4ba85970571",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.103095Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "덴마크",
+              "canon_hash": "0e41b937749d103d68407c07883f3cd908f65e43",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801155000134/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "치즈",
+                "슈레드ㆍ피자치즈"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/400cb61d-e00e-4014-8056-cbbb70644368/300x300.jpg",
+              "mart_native_code": "8801155000134",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801155000134",
+              "source_url": "https://lottemartzetta.com/products/OS8801155000134/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:46:57.103095",
+            "detail_url": "https://lottemartzetta.com/products/OS8801155000134/details",
+            "discount_percent": null,
+            "display_unit": "300g",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/400cb61d-e00e-4014-8056-cbbb70644368/300x300.jpg",
+            "match_key": "__no_brand__|덴마크 피자 모짜렐라 치즈 300g||300g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "덴마크 피자 모짜렐라 치즈 (300G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 300.0,
+            "package_unit": "g",
+            "price_per_100g": 3330.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "300g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "7e96a764b8c838ae67fd04b1d975d7c3999a4212ed40f08e7ea9a50fd278956e",
+          "raw_record_id": "ingestion:30:31",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "치즈",
+            "슈레드ᆞ피자치즈"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:31",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:71"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.107344Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 50% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-050233839fef202597d66c3e0e114597",
+    "public_source_listing_id": "listing-ce6a6fc25360038ae7878d79ae36e74c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.107344Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원에프엔씨",
+              "canon_hash": "876925c43fa49407d319e0ee9fa1163d885483eb",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801155000141/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "치즈",
+                "슬라이스치즈"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5ad1b89a-3fad-4f71-8fba-e60ed3b8dcac/300x300.jpg",
+              "mart_native_code": "8801155000141",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801155000141",
+              "source_url": "https://lottemartzetta.com/products/OS8801155000141/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:46:57.107344",
+            "detail_url": "https://lottemartzetta.com/products/OS8801155000141/details",
+            "discount_percent": null,
+            "display_unit": "192g",
+            "event_name": "2개씩 골라 담으면, 50% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5ad1b89a-3fad-4f71-8fba-e60ed3b8dcac/300x300.jpg",
+            "match_key": "__no_brand__|동원 투엑스 체다치즈 192g||192g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 투엑스 체다치즈 (192G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 192.0,
+            "package_unit": "g",
+            "price_per_100g": 3635.42,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "192g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ce0401a4a252e61bf3a5f11b95687cc5a5432ffed6448582813b6820145c8718",
+          "raw_record_id": "ingestion:30:71",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "치즈",
+            "슬라이스치즈"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:71",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:78"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.098720Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 50% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-82b2fecfcb4b591035c4d88aa57fe54d",
+    "public_source_listing_id": "listing-790baf20b1dfee4cb560eaf33b34598b",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.098720Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원에프앤비",
+              "canon_hash": "3b362104aa45594c88dc9fb127836fa96718b1be",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801155000158/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "치즈",
+                "슬라이스치즈"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/931b7579-4da6-4d81-b721-9291b23d7a6d/300x300.jpg",
+              "mart_native_code": "8801155000158",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801155000158",
+              "source_url": "https://lottemartzetta.com/products/OS8801155000158/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:46:57.098720",
+            "detail_url": "https://lottemartzetta.com/products/OS8801155000158/details",
+            "discount_percent": null,
+            "display_unit": "192g",
+            "event_name": "2개씩 골라 담으면, 50% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/931b7579-4da6-4d81-b721-9291b23d7a6d/300x300.jpg",
+            "match_key": "__no_brand__|동원 투엑스 모짜렐라 치즈 192g||192g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 투엑스 모짜렐라 치즈 (192G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 192.0,
+            "package_unit": "g",
+            "price_per_100g": 3635.42,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "192g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "5dcdd13f80bdbf70c72222419327853b85b3e2d960aedd9b6dd078373e645b1c",
+          "raw_record_id": "ingestion:29:78",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "치즈",
+            "슬라이스치즈"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:78",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:38"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.650511Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 50% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 8990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-ffd7432c607e2d06ef61cdb99542674b",
+    "public_source_listing_id": "listing-e77f48e7df433a057c31a62caa184e21",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.650511Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "소와나무",
+              "canon_hash": "c74fab3e73226b8a1d1b3cf613496832a198d8e4",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801155728793/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "치즈",
+                "슬라이스치즈"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/63beb91b-a6ad-4126-b429-fd5fd7cf83dc/300x300.jpg",
+              "mart_native_code": "8801155728793",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801155728793",
+              "source_url": "https://lottemartzetta.com/products/OS8801155728793/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:47:02.650511",
+            "detail_url": "https://lottemartzetta.com/products/OS8801155728793/details",
+            "discount_percent": null,
+            "display_unit": "270g",
+            "event_name": "2개씩 골라 담으면, 50% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/63beb91b-a6ad-4126-b429-fd5fd7cf83dc/300x300.jpg",
+            "match_key": "__no_brand__|동원 소와나무 체다치즈 270g||270g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 소와나무 체다치즈 (270G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 270.0,
+            "package_unit": "g",
+            "price_per_100g": 3329.63,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 8990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "270g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ea1a420e9432164c05a064b77cca679d4e4767b42ad02028dfde4a8494895685",
+          "raw_record_id": "ingestion:31:38",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "치즈",
+            "슬라이스치즈"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:38",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:66"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.653337Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 50% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 7980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-c7d9fc56ae42e5f8415cc4d8e0ab2ac1",
+    "public_source_listing_id": "listing-2d5d8f4247983a0c7e75fd2d8175a2e7",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.653337Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "소와나무",
+              "canon_hash": "8975d91990314cdcf4979ba690af7a30c57fcdf7",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801155729998/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "치즈",
+                "슬라이스치즈"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/33a0d3b6-b353-445c-a391-bfc215366e31/300x300.jpg",
+              "mart_native_code": "8801155729998",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801155729998",
+              "source_url": "https://lottemartzetta.com/products/OS8801155729998/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:47:02.653337",
+            "detail_url": "https://lottemartzetta.com/products/OS8801155729998/details",
+            "discount_percent": null,
+            "display_unit": "234g",
+            "event_name": "2개씩 골라 담으면, 50% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/33a0d3b6-b353-445c-a391-bfc215366e31/300x300.jpg",
+            "match_key": "__no_brand__|동원 소와나무 트리플 치즈 슬라이스 234g||234g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 소와나무 트리플 치즈 슬라이스 (234G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 234.0,
+            "package_unit": "g",
+            "price_per_100g": 3410.26,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "234g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "b08d444f89451b38e20b6975ccb8a781986c1942d017f0b95bcaa135ead0217f",
+          "raw_record_id": "ingestion:31:66",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "치즈",
+            "슬라이스치즈"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:66",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:99"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.645548Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1900,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-3d9a50321f0720533bca8f44c9a0216b",
+    "public_source_listing_id": "listing-0dfe5486058205c27ab00a000d9581d4",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.645548Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "덴마크",
+              "canon_hash": "8453d2d4d3ef5a6415f1063ac1d5e622bf968ce5",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801155731625/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "우유",
+                "바나나ㆍ딸기ㆍ초코ㆍ커피우유",
+                "초코우유"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5cacddd7-3686-457d-b5b6-3a3cff444b66/300x300.jpg",
+              "mart_native_code": "8801155731625",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801155731625",
+              "source_url": "https://lottemartzetta.com/products/OS8801155731625/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:47:02.645548",
+            "detail_url": "https://lottemartzetta.com/products/OS8801155731625/details",
+            "discount_percent": null,
+            "display_unit": "300ml",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5cacddd7-3686-457d-b5b6-3a3cff444b66/300x300.jpg",
+            "match_key": "__no_brand__|동원 덴마크 초코초코 우유 300ml||300ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 덴마크 초코초코 우유 (300ML)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 300.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1900,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "300ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "1b84f97c6b78931b21cf63b9c9e6a5cdc329575018be4fc879c863e50a74850d",
+          "raw_record_id": "ingestion:30:99",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "우유",
+            "바나나ᆞ딸기ᆞ초코ᆞ커피우유",
+            "초코우유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:99",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:49"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.105335Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1900,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-c56c5a5b0b278976239c9bf5b4406ef5",
+    "public_source_listing_id": "listing-d1d5244d61b5284b40b8b28b54dff5e5",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.105335Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "덴마크",
+              "canon_hash": "9eae1cf0d1e81d27b9fe97b2560e950ae4553c47",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801155731632/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "우유",
+                "바나나ㆍ딸기ㆍ초코ㆍ커피우유",
+                "딸기우유"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/def73821-5da0-43f9-a2b7-d29f07a3967b/300x300.jpg",
+              "mart_native_code": "8801155731632",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801155731632",
+              "source_url": "https://lottemartzetta.com/products/OS8801155731632/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:46:57.105335",
+            "detail_url": "https://lottemartzetta.com/products/OS8801155731632/details",
+            "discount_percent": null,
+            "display_unit": "300ml",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/def73821-5da0-43f9-a2b7-d29f07a3967b/300x300.jpg",
+            "match_key": "__no_brand__|동원 덴마크 딸기딸기 우유 300ml||300ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 덴마크 딸기딸기 우유 (300ML)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 300.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1900,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "300ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "7a612b07b6fab405d43ffd94afb8fe845d63f02e8a95f660a3ef0926af8ff3aa",
+          "raw_record_id": "ingestion:30:49",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "우유",
+            "바나나ᆞ딸기ᆞ초코ᆞ커피우유",
+            "딸기우유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:49",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:86"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.108820Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1900,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-eb710bef23f170dad88590fbd560b2a1",
+    "public_source_listing_id": "listing-e939c8288d3b8f621d68d232a146c678",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.108820Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "덴마크",
+              "canon_hash": "2c23edfbf0f8e1af5e9bc2f78b63cc8b21540b82",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801155731830/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "우유",
+                "바나나ㆍ딸기ㆍ초코ㆍ커피우유",
+                "바나나우유"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/07afbd99-850e-41b8-b5a5-d4fa34ae7074/300x300.jpg",
+              "mart_native_code": "8801155731830",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801155731830",
+              "source_url": "https://lottemartzetta.com/products/OS8801155731830/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:46:57.108820",
+            "detail_url": "https://lottemartzetta.com/products/OS8801155731830/details",
+            "discount_percent": null,
+            "display_unit": "300ml",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/07afbd99-850e-41b8-b5a5-d4fa34ae7074/300x300.jpg",
+            "match_key": "__no_brand__|동원 덴마크 바나바나 우유 300ml||300ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 덴마크 바나바나 우유 (300ML)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 300.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1900,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "300ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ba0392d4cd1e5fffa4816720030b2191621d22c354e6d29e5b5fc2b87c67e526",
+          "raw_record_id": "ingestion:30:86",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "우유",
+            "바나나ᆞ딸기ᆞ초코ᆞ커피우유",
+            "바나나우유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:86",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:0"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.645687Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1900,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-f213c26659c43bdece05893cc16a0774",
+    "public_source_listing_id": "listing-f14aa43a45170b769fca701b4c00851f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.645687Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "덴마크",
+              "canon_hash": "55bf077702035daff2134412ea96cd53bf4f0c65",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801155731847/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "우유",
+                "바나나ㆍ딸기ㆍ초코ㆍ커피우유",
+                "커피우유"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/29ac2882-6e6a-483c-9ea1-958bbd5157d4/300x300.jpg",
+              "mart_native_code": "8801155731847",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801155731847",
+              "source_url": "https://lottemartzetta.com/products/OS8801155731847/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:47:02.645687",
+            "detail_url": "https://lottemartzetta.com/products/OS8801155731847/details",
+            "discount_percent": null,
+            "display_unit": "300ml",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/29ac2882-6e6a-483c-9ea1-958bbd5157d4/300x300.jpg",
+            "match_key": "__no_brand__|동원 덴마크 커피커피 우유 300ml||300ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 덴마크 커피커피 우유 (300ML)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 300.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1900,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "300ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "475f6d9d6c517462948ebc55123ba4d3be7257293ee85f18e1259d30e4781008",
+          "raw_record_id": "ingestion:31:0",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "우유",
+            "바나나ᆞ딸기ᆞ초코ᆞ커피우유",
+            "커피우유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:0",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:79"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.108328Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-b479eaaaa4de66ab78ec0d32090a3859",
+    "public_source_listing_id": "listing-44887e34764b12b0b3e02529c308f18f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.108328Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원에프앤비",
+              "canon_hash": "605fe1bd7b337d02601c0c5721ee2b573edac543",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801155745455/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "요거트ㆍ요구르트",
+                "마시는요구르트"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/37b945a4-3eaf-4ee7-b049-dc509226ed8f/300x300.jpg",
+              "mart_native_code": "8801155745455",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801155745455",
+              "source_url": "https://lottemartzetta.com/products/OS8801155745455/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:46:57.108328",
+            "detail_url": "https://lottemartzetta.com/products/OS8801155745455/details",
+            "discount_percent": null,
+            "display_unit": "150ml×4",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/37b945a4-3eaf-4ee7-b049-dc509226ed8f/300x300.jpg",
+            "match_key": "__no_brand__|동원 덴마크 소화가 잘되는 요구르트 장플러스 150ml 4입||150ml×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 덴마크 소화가 잘되는 요구르트 장플러스 (150ML*4입)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 150.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "150ml×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "aa82d5531aa00c918e654dcb4758dd4ff8ea7aa0edc2ca15dca88619ca60cdba",
+          "raw_record_id": "ingestion:30:79",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "요거트ᆞ요구르트",
+            "마시는요구르트"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:79",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:6"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.161764Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-55e953727d8b9db2abbef7386b8a292d",
+    "public_source_listing_id": "listing-6f8501650de91dcc9c44d85afc3e8748",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.161764Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원에프앤비",
+              "canon_hash": "84e9ea0b0e1bc1a2d1f134cb72386cf1a78d8658",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801155745462/details",
+              "category_hint": "우유ㆍ유제품",
+              "category_path": [
+                "우유ㆍ유제품",
+                "요거트ㆍ요구르트",
+                "마시는요구르트"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f7390f59-bf62-4445-bf61-a1b02c5ba1fd/300x300.jpg",
+              "mart_native_code": "8801155745462",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801155745462",
+              "source_url": "https://lottemartzetta.com/products/OS8801155745462/details"
+            },
+            "brand": "__no_brand__",
+            "category": "우유ㆍ유제품",
+            "crawled_at": "2026-08-31T10:47:08.161764",
+            "detail_url": "https://lottemartzetta.com/products/OS8801155745462/details",
+            "discount_percent": null,
+            "display_unit": "150ml×4",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f7390f59-bf62-4445-bf61-a1b02c5ba1fd/300x300.jpg",
+            "match_key": "__no_brand__|동원 덴마크 소화가 잘되는 요구르트 위플러스 150ml 4입||150ml×4",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 덴마크 소화가 잘되는 요구르트 위플러스 (150ML*4입)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 150.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "150ml×4",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "f487bf64ddb9af4ecae0a41a51b260f8ff522baf7259667fdf1d75c6c0dc8423",
+          "raw_record_id": "ingestion:35:6",
+          "source_category_path": [
+            "우유ᆞ유제품",
+            "요거트ᆞ요구르트",
+            "마시는요구르트"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:6",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  }
+]

@@ -1,0 +1,137 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:0f4b83826907e466f1080e7b",
+      "promotion_surface": false,
+      "proposed_path": [
+        "간편식ㆍ밀키트",
+        "간편면요리",
+        "짜장면ㆍ중화면",
+        "중화면"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:34:44",
+      "review_status": "pending",
+      "source_path": "간편식ㆍ밀키트 > 간편면요리 > 짜장면ㆍ중화면 > 중화면",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "간편식ㆍ밀키트",
+        "간편면요리",
+        "짜장면ㆍ중화면",
+        "중화면"
+      ],
+      "source_title": "면사랑 해물짬뽕 (363G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8802039010812/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "면사랑",
+      "crawled_at": "2026-08-31T01:47:08.154319Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e4147757-f623-4244-b5aa-76c16a84d53f/300x300.jpg",
+      "ingestion_id": 34,
+      "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 44,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "363g",
+        "package_quantity": 363.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "면사랑",
+          "canon_hash": "f8debe92300400521aeed36bfa8c7d93664228ae",
+          "canonical_url": "https://lottemartzetta.com/products/OS8802039010812/details",
+          "category_hint": "간편식ㆍ밀키트",
+          "category_path": [
+            "간편식ㆍ밀키트",
+            "간편면요리",
+            "짜장면ㆍ중화면",
+            "중화면"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e4147757-f623-4244-b5aa-76c16a84d53f/300x300.jpg",
+          "mart_native_code": "8802039010812",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8802039010812",
+          "source_url": "https://lottemartzetta.com/products/OS8802039010812/details"
+        },
+        "brand": "__no_brand__",
+        "category": "간편식ㆍ밀키트",
+        "crawled_at": "2026-08-31T10:47:08.154319",
+        "detail_url": "https://lottemartzetta.com/products/OS8802039010812/details",
+        "discount_percent": null,
+        "display_unit": "363g",
+        "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e4147757-f623-4244-b5aa-76c16a84d53f/300x300.jpg",
+        "match_key": "__no_brand__|면사랑 해물짬뽕 363g||363g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "면사랑 해물짬뽕 (363G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 363.0,
+        "package_unit": "g",
+        "price_per_100g": 1650.14,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "363g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "b726477e06727ef3bbcc24b6dc41002a4b8fedb33de79da053a4fb79962c5a68",
+      "raw_record_id": "ingestion:34:44",
+      "source_category_path": [
+        "간편식ᆞ밀키트",
+        "간편면요리",
+        "짜장면ᆞ중화면",
+        "중화면"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8802039010812",
+      "source_title": "면사랑 해물짬뽕 (363G)",
+      "source_url": "https://lottemartzetta.com/products/OS8802039010812/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:34:44",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8802039010812",
+    "source_title": "면사랑 해물짬뽕 (363G)"
+  }
+]

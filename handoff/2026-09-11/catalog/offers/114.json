@@ -1,0 +1,4692 @@
+[
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:83"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.654807Z",
+    "discount_rate": null,
+    "event_name": "[동원] 4만원 이상 구매시, 5천원 즉시할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4380,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-b69fee337bbcb705c7bac709eccb1afb",
+    "public_source_listing_id": "listing-0bfca0cdfd70432ed328753efd28d260",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.654807Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "069530b9190c00dfaf99126bd445a44d7c28ac04",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047111870/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "통조림",
+                "참치통조림"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fe0b77be-c669-49ea-8038-b8ad41673732/300x300.jpg",
+              "mart_native_code": "8801047111870",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047111870",
+              "source_url": "https://lottemartzetta.com/products/OS8801047111870/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.654807",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047111870/details",
+            "discount_percent": null,
+            "display_unit": "250g",
+            "event_name": "[동원] 4만원 이상 구매시, 5천원 즉시할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fe0b77be-c669-49ea-8038-b8ad41673732/300x300.jpg",
+            "match_key": "__no_brand__|동원 살코기참치 250g||250g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 살코기참치 (250G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 250.0,
+            "package_unit": "g",
+            "price_per_100g": 1752.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4380,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "250g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "aa07a61874d61eba39fcbdb46f45902796bff230da1563428f8617adde35d2c8",
+          "raw_record_id": "ingestion:31:83",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "통조림",
+            "참치통조림"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:83",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:67"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.665334Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 25% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 5980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-70b8bcf72d632a72dca5da806ddc5617",
+    "public_source_listing_id": "listing-2e78503616a72c9d7562e9664b3cfade",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.665334Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "d97d45b04c2db65e1429653764eb52f2751bbe2b",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047141082/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "통조림",
+                "고등어ㆍ꽁치ㆍ골뱅이",
+                "꽁치통조림"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f17fcef8-621e-4ce9-8e02-7b29cf4778f3/300x300.jpg",
+              "mart_native_code": "8801047141082",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047141082",
+              "source_url": "https://lottemartzetta.com/products/OS8801047141082/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.665334",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047141082/details",
+            "discount_percent": null,
+            "display_unit": "300g",
+            "event_name": "2개씩 골라 담으면, 25% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f17fcef8-621e-4ce9-8e02-7b29cf4778f3/300x300.jpg",
+            "match_key": "__no_brand__|동원 자연산 진 꽁치 300g||300g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 자연산 진 꽁치 (300G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 300.0,
+            "package_unit": "g",
+            "price_per_100g": 1993.33,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "300g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "00bdd4ebc85b9a4e1c02cb38daa743e3429b0d9e724159fb75c8869dd45113ff",
+          "raw_record_id": "ingestion:32:67",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "통조림",
+            "고등어ᆞ꽁치ᆞ골뱅이",
+            "꽁치통조림"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:67",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:63"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.665029Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 25% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 9980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-e64516f6507c74da81d0b8e63ab9a12b",
+    "public_source_listing_id": "listing-4b2ee31487ec1ff5193d429b28ff9779",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.665029Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "81d2e31c4726294876a75c621378071c20482046",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047146285/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "통조림",
+                "고등어ㆍ꽁치ㆍ골뱅이",
+                "골뱅이통조림"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e69728f9-2b92-4044-858e-b4ae0ab38644/300x300.jpg",
+              "mart_native_code": "8801047146285",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047146285",
+              "source_url": "https://lottemartzetta.com/products/OS8801047146285/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.665029",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047146285/details",
+            "discount_percent": null,
+            "display_unit": "300g",
+            "event_name": "2개씩 골라 담으면, 25% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e69728f9-2b92-4044-858e-b4ae0ab38644/300x300.jpg",
+            "match_key": "__no_brand__|동원 자연산 골뱅이 300g||300g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 자연산 골뱅이 (300G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 300.0,
+            "package_unit": "g",
+            "price_per_100g": 3326.67,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "300g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "df557e6058ea826dfbf35350553acef43d1b100d7868fee7c19ac04672e9de0a",
+          "raw_record_id": "ingestion:32:63",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "통조림",
+            "고등어ᆞ꽁치ᆞ골뱅이",
+            "골뱅이통조림"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:63",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:10"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.084538Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2280,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-7833e6a386259c8a9dddb97f0bf33d0e",
+    "public_source_listing_id": "listing-96df4d1465b87a754f170742d47c3738",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.084538Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "f592d609aac24fbf79ad4ede624909aa202372e8",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047150008/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "통조림",
+                "옥수수ㆍ과일통조림",
+                "옥수수통조림"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c416e837-3333-4710-99df-8e69e2b90bfc/300x300.jpg",
+              "mart_native_code": "8801047150008",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047150008",
+              "source_url": "https://lottemartzetta.com/products/OS8801047150008/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.084538",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047150008/details",
+            "discount_percent": null,
+            "display_unit": "340g",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c416e837-3333-4710-99df-8e69e2b90bfc/300x300.jpg",
+            "match_key": "__no_brand__|동원 저스트 노슈가 스위트콘 340g||340g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 저스트 노슈가 스위트콘 (340G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 340.0,
+            "package_unit": "g",
+            "price_per_100g": 670.59,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2280,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "340g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "2fe97fbd55e5ee4099dc90415af3867034481b73b7ecaa122665770cf140ec62",
+          "raw_record_id": "ingestion:28:10",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "통조림",
+            "옥수수ᆞ과일통조림",
+            "옥수수통조림"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:10",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:24"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.163524Z",
+    "discount_rate": null,
+    "event_name": "[동원] 4만원 이상 구매시, 5천원 즉시할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-ac5a3da412101eda2c6fd95a9cf7c7b2",
+    "public_source_listing_id": "listing-b42560dbd8c4948209d6af198385c72f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.163524Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "8aadaf9374522b9d9008bbc9384c9945022bdfdb",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047150039/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "통조림",
+                "옥수수ㆍ과일통조림",
+                "과일통조림"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9498ed6f-5f05-44d7-bb30-2f8a8801f0ec/300x300.jpg",
+              "mart_native_code": "8801047150039",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047150039",
+              "source_url": "https://lottemartzetta.com/products/OS8801047150039/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.163524",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047150039/details",
+            "discount_percent": null,
+            "display_unit": "425g",
+            "event_name": "[동원] 4만원 이상 구매시, 5천원 즉시할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9498ed6f-5f05-44d7-bb30-2f8a8801f0ec/300x300.jpg",
+            "match_key": "__no_brand__|동원 저스트 노슈가 파인애플 425g||425g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 저스트 노슈가 파인애플 (425G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 425.0,
+            "package_unit": "g",
+            "price_per_100g": 583.53,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "425g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "90503ea776bbc5f1ede6107347165d1a33eb6c961e2f74619748c2ed1ff1d5f9",
+          "raw_record_id": "ingestion:35:24",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "통조림",
+            "옥수수ᆞ과일통조림",
+            "과일통조림"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:24",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:48"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.154672Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-2cb17cf6eea7a08d16b160fb3088af29",
+    "public_source_listing_id": "listing-ac087cc9918276449e11a379527fbc6b",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.154672Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "0f7c12b2507f7d1caf82671bb4d4015a3c5f5161",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047161523/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "냉동밥ㆍ즉석죽ㆍ즉석스프",
+                "즉석죽"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4bbe7afc-0248-48cb-a536-9320e1b9d29a/300x300.jpg",
+              "mart_native_code": "8801047161523",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047161523",
+              "source_url": "https://lottemartzetta.com/products/OS8801047161523/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.154672",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047161523/details",
+            "discount_percent": null,
+            "display_unit": "287.5g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4bbe7afc-0248-48cb-a536-9320e1b9d29a/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 진 전복죽 287 5g||287.5g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 진 전복죽 (287.5G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 287.5,
+            "package_unit": "g",
+            "price_per_100g": 1732.17,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "287.5g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "0b727a3c603ca6b38580cf4844790110f674b0d94b4d11271e9695ae1f3303e0",
+          "raw_record_id": "ingestion:34:48",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "냉동밥ᆞ즉석죽ᆞ즉석스프",
+            "즉석죽"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:48",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:43"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.165532Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-9a4dc0d3d94577f993f1a735058330b4",
+    "public_source_listing_id": "listing-ffe242575b692828f8dfad9bbbdb9d8c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.165532Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "6e5465e2d40e77a346ebbaa1650c3c1616098bb0",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047161646/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석죽ㆍ즉석스프",
+                "즉석죽"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/24100e0f-0b42-4671-ab26-137f691ae28d/300x300.jpg",
+              "mart_native_code": "8801047161646",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047161646",
+              "source_url": "https://lottemartzetta.com/products/OS8801047161646/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.165532",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047161646/details",
+            "discount_percent": null,
+            "display_unit": "287.5g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/24100e0f-0b42-4671-ab26-137f691ae28d/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 야채죽 287 5g||287.5g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 야채죽 (287.5G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 287.5,
+            "package_unit": "g",
+            "price_per_100g": 1384.35,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "287.5g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "22f9c49285956db78fdea02782a3ddbf69d78996a283e644dd45a2b9a1ee60e0",
+          "raw_record_id": "ingestion:35:43",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석죽ᆞ즉석스프",
+            "즉석죽"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:43",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:27"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.163864Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-becb471524d238542c535b3b43e48bf8",
+    "public_source_listing_id": "listing-8d3936e1b96e14f5f58debce3f12b8ed",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.163864Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "4288b0df49ada81d42605e7534c89299851de272",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047161653/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석죽ㆍ즉석스프",
+                "즉석죽"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2139cfaa-e2de-435d-be51-3220994fb44b/300x300.jpg",
+              "mart_native_code": "8801047161653",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047161653",
+              "source_url": "https://lottemartzetta.com/products/OS8801047161653/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.163864",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047161653/details",
+            "discount_percent": null,
+            "display_unit": "285g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2139cfaa-e2de-435d-be51-3220994fb44b/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 밤단팥죽 285g||285g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 밤단팥죽 (285G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 285.0,
+            "package_unit": "g",
+            "price_per_100g": 1396.49,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "285g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "b139568d60d729446675905c4ee55a12f98816ca3eae408a15069d8dca433780",
+          "raw_record_id": "ingestion:35:27",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석죽ᆞ즉석스프",
+            "즉석죽"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:27",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:4"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.161622Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-81140c8b92cfe20b3f356919612ac428",
+    "public_source_listing_id": "listing-d86b89a780188b6228380eac890387cb",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.161622Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "2d227aa1f3ad92395c87247d1d2c45889107491e",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047161677/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석죽ㆍ즉석스프",
+                "즉석죽"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/29a37006-7210-40bb-b0b7-fa7cc6e4cbc2/300x300.jpg",
+              "mart_native_code": "8801047161677",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047161677",
+              "source_url": "https://lottemartzetta.com/products/OS8801047161677/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.161622",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047161677/details",
+            "discount_percent": null,
+            "display_unit": "285g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/29a37006-7210-40bb-b0b7-fa7cc6e4cbc2/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 누룽지닭죽 285g||285g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 누룽지닭죽 (285G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 285.0,
+            "package_unit": "g",
+            "price_per_100g": 1396.49,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "285g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "85e4cce8ce96643320610af10a86d8f8998929873ee28dd01d670c2b5880c46b",
+          "raw_record_id": "ingestion:35:4",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석죽ᆞ즉석스프",
+            "즉석죽"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:4",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:88"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.148703Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 5980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-8ebfe37903d61eb97163bad5054b25ce",
+    "public_source_listing_id": "listing-53c90d8f10cdd2fa97032c25bbff89d0",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.148703Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "ebcf2e16143cf0e88c0a17a0b943e75f28776171",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047168126/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/0ff9d002-18c2-4e6b-ae16-0b187bbd6a4b/300x300.jpg",
+              "mart_native_code": "8801047168126",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047168126",
+              "source_url": "https://lottemartzetta.com/products/OS8801047168126/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.148703",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047168126/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/0ff9d002-18c2-4e6b-ae16-0b187bbd6a4b/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 소고기미역국 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 소고기미역국 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 1300.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "d2e3c264a42ad11835e42b6ff676460b8ef566abad5c24d6fe36d95be2da147e",
+          "raw_record_id": "ingestion:33:88",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:88",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:87"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.655143Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 8980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-502740ff62ded47f51d52a09c1c35bad",
+    "public_source_listing_id": "listing-6d92919b08a9a78c4faf362fb9c42c75",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.655143Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "95b8351733c865d63d7b86d7f97f3013d4e5462b",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047168140/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4c8618e6-9d4a-4d30-85bd-329ec3c70526/300x300.jpg",
+              "mart_native_code": "8801047168140",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047168140",
+              "source_url": "https://lottemartzetta.com/products/OS8801047168140/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.655143",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047168140/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4c8618e6-9d4a-4d30-85bd-329ec3c70526/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 수라 통다리삼계탕 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 수라 통다리삼계탕 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 1952.17,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 8980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "b8b0ea7245c08876d980299237a231a9d226765567954bdd90a825f690069eaf",
+          "raw_record_id": "ingestion:31:87",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:87",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:35"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.164636Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 7480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-053513031e01d80e288cb07c16e15529",
+    "public_source_listing_id": "listing-241a58f2109f697698d3c9ab8c6eef0d",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.164636Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "578c97ecd2c2e2eb7bb37d3896766c38ce9f67f9",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047168171/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6a6c3e48-705d-4e21-a9a3-8e4189a625c2/300x300.jpg",
+              "mart_native_code": "8801047168171",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047168171",
+              "source_url": "https://lottemartzetta.com/products/OS8801047168171/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.164636",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047168171/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6a6c3e48-705d-4e21-a9a3-8e4189a625c2/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 수라 돼지고기김치찌개 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 수라 돼지고기김치찌개 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 1626.09,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "4139a97beafd4262e357abe369b97c7f76686153833ea2f67471de787ad1a97f",
+          "raw_record_id": "ingestion:35:35",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:35",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:8"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.670883Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-dab6487dcbdb901bc3739e327c4c2bd9",
+    "public_source_listing_id": "listing-4d23234d1e5b1689268fa0b3758cbcb7",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.670883Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "e503845bba003441a4b089677ff39fa3b803ddfc",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047168263/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a8097f7e-c40a-48cd-96f6-674a39f2ad0b/300x300.jpg",
+              "mart_native_code": "8801047168263",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047168263",
+              "source_url": "https://lottemartzetta.com/products/OS8801047168263/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.670883",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047168263/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a8097f7e-c40a-48cd-96f6-674a39f2ad0b/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 나주식 곰탕 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 나주식 곰탕 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 647.83,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "2a7b6f37793edb2fba6764457d468913b2a67aae922e1b2d2cbc4de8ad478e01",
+          "raw_record_id": "ingestion:33:8",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:8",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:92"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.668194Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-8d9ab262ee586e03fdf91e1a3fe48560",
+    "public_source_listing_id": "listing-5a4f805f4b4e6d463515c302b661e90c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.668194Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "c60e589646e0e019849dda4664875368076fad3f",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047169253/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석죽ㆍ즉석스프",
+                "즉석죽"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/cd762b1b-015f-45ef-96ce-0e3b93b37b04/300x300.jpg",
+              "mart_native_code": "8801047169253",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047169253",
+              "source_url": "https://lottemartzetta.com/products/OS8801047169253/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.668194",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047169253/details",
+            "discount_percent": null,
+            "display_unit": "420g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/cd762b1b-015f-45ef-96ce-0e3b93b37b04/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 쇠고기죽 420g||420g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 쇠고기죽 (420G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 420.0,
+            "package_unit": "g",
+            "price_per_100g": 1185.71,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "420g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "76a915dbca2c1b013fb5bc907f7dac561f0598cb6d824fcee4f366cb9e58387c",
+          "raw_record_id": "ingestion:32:92",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석죽ᆞ즉석스프",
+            "즉석죽"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:92",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:74"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.147136Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-ab9a67541628dbe8e4ebbf0dfe44f8b0",
+    "public_source_listing_id": "listing-21f0b487a773534fa1ecd6432159c597",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.147136Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "c8430298c0281661c331d18ce5d60af942828ee5",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047169260/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석죽ㆍ즉석스프",
+                "즉석죽"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/120d396b-e13f-467c-b1e0-612ac1e4499e/300x300.jpg",
+              "mart_native_code": "8801047169260",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047169260",
+              "source_url": "https://lottemartzetta.com/products/OS8801047169260/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.147136",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047169260/details",
+            "discount_percent": null,
+            "display_unit": "420g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/120d396b-e13f-467c-b1e0-612ac1e4499e/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 단호박죽 420g||420g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 단호박죽 (420G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 420.0,
+            "package_unit": "g",
+            "price_per_100g": 1185.71,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "420g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "556eaae9879b0cd8d20c66d110c7ee4e44c57e05369a802bf0ee2e2b1f85538c",
+          "raw_record_id": "ingestion:33:74",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석죽ᆞ즉석스프",
+            "즉석죽"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:74",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:30"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.673296Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-48272389e78d9155b50e0a18d5f735a0",
+    "public_source_listing_id": "listing-8b6ec8157d701241ef09628648100ced",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.673296Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "464c1b9bb8cec80e1931799ee392e9c8085d2b8e",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047169277/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석죽ㆍ즉석스프",
+                "즉석죽"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/94890a8f-82e6-46e1-a7c5-18bd1e2a34b6/300x300.jpg",
+              "mart_native_code": "8801047169277",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047169277",
+              "source_url": "https://lottemartzetta.com/products/OS8801047169277/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.673296",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047169277/details",
+            "discount_percent": null,
+            "display_unit": "420g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/94890a8f-82e6-46e1-a7c5-18bd1e2a34b6/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 밤단팥죽 420g||420g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 밤단팥죽 (420G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 420.0,
+            "package_unit": "g",
+            "price_per_100g": 1185.71,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "420g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "da5ff38b2762d96a36bfedd2ce230b4eceeed97ac0ad2ad6e0134555abb392cb",
+          "raw_record_id": "ingestion:33:30",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석죽ᆞ즉석스프",
+            "즉석죽"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:30",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:72"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.146883Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-46ea5b451f6f14373f13e33d7263a5bb",
+    "public_source_listing_id": "listing-c6b9f1cac15cfc07bd591a9e0f7987d5",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.146883Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "f5c765aeae00c2ab8dcf51792af2ef27ccd2a946",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047169291/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석죽ㆍ즉석스프",
+                "즉석죽"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/36d8c4b6-849e-431b-b2e1-db16be4fa409/300x300.jpg",
+              "mart_native_code": "8801047169291",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047169291",
+              "source_url": "https://lottemartzetta.com/products/OS8801047169291/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.146883",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047169291/details",
+            "discount_percent": null,
+            "display_unit": "420g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/36d8c4b6-849e-431b-b2e1-db16be4fa409/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 누룽지닭죽 420g||420g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 누룽지닭죽 (420G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 420.0,
+            "package_unit": "g",
+            "price_per_100g": 1185.71,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "420g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "616d76755e83b6dcf38e0421d39bb486df9fb0a3658c34612ea95c4808d81dad",
+          "raw_record_id": "ingestion:33:72",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석죽ᆞ즉석스프",
+            "즉석죽"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:72",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:84"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.159143Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-93acb4b5090d09849ddc0327f950ca75",
+    "public_source_listing_id": "listing-0397a78a1c6664d424063e346aa8d60f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.159143Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "e63a7140c31f9dfcdbd1189274f73ec05c7added",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047169307/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석죽ㆍ즉석스프",
+                "즉석죽"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fcb41a4e-317a-4130-bcc2-85da3a0c6491/300x300.jpg",
+              "mart_native_code": "8801047169307",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047169307",
+              "source_url": "https://lottemartzetta.com/products/OS8801047169307/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.159143",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047169307/details",
+            "discount_percent": null,
+            "display_unit": "420g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fcb41a4e-317a-4130-bcc2-85da3a0c6491/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 백합죽 420g||420g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 백합죽 (420G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 420.0,
+            "package_unit": "g",
+            "price_per_100g": 1185.71,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "420g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "b355d62e1f2a52e8cf1e580b3a400edb17667b541ef257a04478b7c60ddb37ff",
+          "raw_record_id": "ingestion:34:84",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석죽ᆞ즉석스프",
+            "즉석죽"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:84",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:9"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.150745Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-61c872a41ecc56e07ef60aac340e014b",
+    "public_source_listing_id": "listing-3658888a087bba237e16df44f0c22737",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.150745Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "54ab6b40e23e18f27441706db32af271e54e4f2b",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047169314/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석죽ㆍ즉석스프",
+                "즉석죽"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e0c57989-fb10-48cf-9b9d-259b48efb827/300x300.jpg",
+              "mart_native_code": "8801047169314",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047169314",
+              "source_url": "https://lottemartzetta.com/products/OS8801047169314/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.150745",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047169314/details",
+            "discount_percent": null,
+            "display_unit": "420g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e0c57989-fb10-48cf-9b9d-259b48efb827/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 버섯야채죽 420g||420g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 버섯야채죽 (420G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 420.0,
+            "package_unit": "g",
+            "price_per_100g": 1185.71,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "420g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "77a66b925a30a812b2afafb7954f3fd37bb290ec868083729ff0938528e36940",
+          "raw_record_id": "ingestion:34:9",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석죽ᆞ즉석스프",
+            "즉석죽"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:9",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:90"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.656051Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 5980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-06218c644efcaa984f502374b748b127",
+    "public_source_listing_id": "listing-4afe8354f22f9bb68f1cea5315db080b",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.656051Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "fe473fd82dc2ab14fa616fcd09cc72d889ca517b",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047169406/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/31fac477-7962-4c21-b28b-af0d156ca4f8/300x300.jpg",
+              "mart_native_code": "8801047169406",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047169406",
+              "source_url": "https://lottemartzetta.com/products/OS8801047169406/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.656051",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047169406/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/31fac477-7962-4c21-b28b-af0d156ca4f8/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 차돌 육개장 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 차돌 육개장 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 1300.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "9ddaab7270ee97b141226683b725f38bc877937bd2f3bef8b7cb6b6c27d574f6",
+          "raw_record_id": "ingestion:31:90",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:90",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:17"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.672105Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 5980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-14f97f78113b66cb3f5efc1d31403769",
+    "public_source_listing_id": "listing-1a4bf1e396347475f51b8b4c0055077c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.672105Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "0b0884326f90fd5fee66321bb102d1bc7e5e506e",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047169413/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2efa035a-be1f-48f4-af47-fed954ea432f/300x300.jpg",
+              "mart_native_code": "8801047169413",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047169413",
+              "source_url": "https://lottemartzetta.com/products/OS8801047169413/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.672105",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047169413/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2efa035a-be1f-48f4-af47-fed954ea432f/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 백합 미역국 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 백합 미역국 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 1300.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "87d2141393277a9e8aa0c5cd33dd9513cda0304255e0f4180e8cde188910a91f",
+          "raw_record_id": "ingestion:33:17",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:17",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:97"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.668672Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 8980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-672003c0a498586987d3fdfef9dbf6f8",
+    "public_source_listing_id": "listing-604f7692d5d082a5aa4aec2064c224dd",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.668672Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "01229135eed5b66c0991f71d2a28072790a8c082",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047169437/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5788f0fd-2a3c-4998-9cc2-8408b740ec4e/300x300.jpg",
+              "mart_native_code": "8801047169437",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047169437",
+              "source_url": "https://lottemartzetta.com/products/OS8801047169437/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.668672",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047169437/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/5788f0fd-2a3c-4998-9cc2-8408b740ec4e/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 수라 왕갈비탕 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 수라 왕갈비탕 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 1952.17,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 8980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "87287cd47f3ff3ef30ed92bfa97f5ed46fb4b30083d0e199c56d87e7a2b2d484",
+          "raw_record_id": "ingestion:32:97",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:97",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:60"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.106554Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-38c5655c6007b6d3ae5e40cbfedd29ff",
+    "public_source_listing_id": "listing-db370c92dcd8cd8ba3964ecf16e5ce47",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.106554Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "5d2fb2552b58149264f98c37c6b783808bb66f40",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047169482/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/0ab16d96-f38c-471e-8f10-8052d93e0ec3/300x300.jpg",
+              "mart_native_code": "8801047169482",
+              "origin": "domestic",
+              "origin_label": "한우",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047169482",
+              "source_url": "https://lottemartzetta.com/products/OS8801047169482/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:46:57.106554",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047169482/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/0ab16d96-f38c-471e-8f10-8052d93e0ec3/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 수라 한우사골곰탕 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 수라 한우사골곰탕 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 647.83,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "552ad3423c252acc0f42e7fbc5ac88dd4bfee24d68a2d0ffdd0bb959d74603a0",
+          "raw_record_id": "ingestion:30:60",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:60",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:38"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.141594Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 5980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-5766673783800f12e1e7674791a9fc50",
+    "public_source_listing_id": "listing-58fcb762b29acc9d6f291c0813260e6e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.141594Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "c400328b943e52321f0a84d91c0f232b6c5824e0",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047169499/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f48ecd67-4a79-4d8c-8fd6-64cb1ffee078/300x300.jpg",
+              "mart_native_code": "8801047169499",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047169499",
+              "source_url": "https://lottemartzetta.com/products/OS8801047169499/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.141594",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047169499/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f48ecd67-4a79-4d8c-8fd6-64cb1ffee078/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 진국 소고기무국 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 진국 소고기무국 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 1300.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "fbb113a0aedbd5d305d0b1c8f4a3795ce94ccf6ac157968392675c090b80348a",
+          "raw_record_id": "ingestion:33:38",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:38",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:54"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.105809Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2180,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-2c51c21e74bdafd5b2f8d5d626a1bd9a",
+    "public_source_listing_id": "listing-ab23a87e28de0b92b7516ed4070c237b",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.105809Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "aeb2dab09999b5544b19e78822e5205c29469397",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047169598/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/54b6a11f-720e-41ab-969f-5fe5c1237cb7/300x300.jpg",
+              "mart_native_code": "8801047169598",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047169598",
+              "source_url": "https://lottemartzetta.com/products/OS8801047169598/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:46:57.105809",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047169598/details",
+            "discount_percent": null,
+            "display_unit": "500g",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/54b6a11f-720e-41ab-969f-5fe5c1237cb7/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 진국 사골곰탕 500g||500g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 진국 사골곰탕 (500G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "g",
+            "price_per_100g": 436.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2180,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "500g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ed5f62673135b1ba025d7ab5400858151c9321a5fbb4b76fdce56b8b5cd28d68",
+          "raw_record_id": "ingestion:30:54",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:54",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:17"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.151448Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 5980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-fdf8d9ed48720711dc7b34d06db7a900",
+    "public_source_listing_id": "listing-140eae09498ad17f700a50e99db50cb3",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.151448Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반",
+              "canon_hash": "c06fe76a6bbda6db984ecb1109cdc980d3fea8e7",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047169734/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6361459f-4d56-4f57-a019-640adc224420/300x300.jpg",
+              "mart_native_code": "8801047169734",
+              "origin": "domestic",
+              "origin_label": "한우",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047169734",
+              "source_url": "https://lottemartzetta.com/products/OS8801047169734/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.151448",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047169734/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6361459f-4d56-4f57-a019-640adc224420/300x300.jpg",
+            "match_key": "__no_brand__|동원 양반 한우사골 시래기국 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 양반 한우사골 시래기국 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 1300.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ff7331e7d7bb277e053dd50fe2497af8bcaf6a6d78020d33577441eb15b2207c",
+          "raw_record_id": "ingestion:34:17",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:17",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:8"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.658237Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 7980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-d868cb04d9edf5a2293cc97a0b0f0786",
+    "public_source_listing_id": "listing-1119ef68135a8641ffe7f288956a2714",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.658237Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "988d67881010ac22c70997695c72a0f6308673aa",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047216414/details",
+              "category_hint": "양념ㆍ오일ㆍ분말류",
+              "category_path": [
+                "양념ㆍ오일ㆍ분말류",
+                "물엿ㆍ식초ㆍ맛술ㆍ액젓",
+                "액젓"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1ad294e3-fea6-4b1e-a03e-de0556c3deef/300x300.jpg",
+              "mart_native_code": "8801047216414",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047216414",
+              "source_url": "https://lottemartzetta.com/products/OS8801047216414/details"
+            },
+            "brand": "__no_brand__",
+            "category": "양념ㆍ오일ㆍ분말류",
+            "crawled_at": "2026-08-31T10:47:02.658237",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047216414/details",
+            "discount_percent": null,
+            "display_unit": "500g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1ad294e3-fea6-4b1e-a03e-de0556c3deef/300x300.jpg",
+            "match_key": "__no_brand__|동원 참치액 진 500g||500g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 참치액 진 (500G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "g",
+            "price_per_100g": 1596.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "500g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "808ce2fee6b5ed171bbefe476581b5370b20f3c295b0e3f19fc2426a87e27a3d",
+          "raw_record_id": "ingestion:32:8",
+          "source_category_path": [
+            "양념ᆞ오일ᆞ분말류",
+            "물엿ᆞ식초ᆞ맛술ᆞ액젓",
+            "액젓"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:8",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:94"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.100066Z",
+    "discount_rate": null,
+    "event_name": "수산대전 20% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-5ca6d14eee90adcd012f6bb6a0bc5917",
+    "public_source_listing_id": "listing-5dbb05e2d4eb217b3c06875c96fc3b21",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.100066Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반김",
+              "canon_hash": "80f3e9080058e84c94a60ef6410fb7fea6723a77",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047221616/details",
+              "category_hint": "수산물ㆍ건해산물",
+              "category_path": [
+                "수산물ㆍ건해산물",
+                "김ㆍ미역ㆍ해조류",
+                "김"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/05acd0c6-5633-4b5a-ab4d-09bfdbd99663/300x300.jpg",
+              "mart_native_code": "8801047221616",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047221616",
+              "source_url": "https://lottemartzetta.com/products/OS8801047221616/details"
+            },
+            "brand": "__no_brand__",
+            "category": "수산물ㆍ건해산물",
+            "crawled_at": "2026-08-31T10:46:57.100066",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047221616/details",
+            "discount_percent": null,
+            "display_unit": "22g",
+            "event_name": "수산대전 20% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/05acd0c6-5633-4b5a-ab4d-09bfdbd99663/300x300.jpg",
+            "match_key": "__no_brand__|양반 구운 김밥김 10매 22g||22g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "양반 구운 김밥김(10매) (22G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 22.0,
+            "package_unit": "g",
+            "price_per_100g": 13590.91,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "22g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "c62e29d83ba58f7ab7c871ecabc078b8892cc8788c02c0849a060818979312d1",
+          "raw_record_id": "ingestion:29:94",
+          "source_category_path": [
+            "수산물ᆞ건해산물",
+            "김ᆞ미역ᆞ해조류",
+            "김"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:94",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:85"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.090933Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 12980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-3280f56049d2ab8db23cedb395753c7f",
+    "public_source_listing_id": "listing-bd0e37b0441244d3f7f59982f6b5f0c1",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.090933Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반김",
+              "canon_hash": "bcd8180d34151465020d720eb8f9ce50e218f2f0",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047227328/details",
+              "category_hint": "수산물ㆍ건해산물",
+              "category_path": [
+                "수산물ㆍ건해산물",
+                "김ㆍ미역ㆍ해조류",
+                "김"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/0e98dff3-ca7b-4fd5-a5a8-0bf7e4eb2022/300x300.jpg",
+              "mart_native_code": "8801047227328",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047227328",
+              "source_url": "https://lottemartzetta.com/products/OS8801047227328/details"
+            },
+            "brand": "__no_brand__",
+            "category": "수산물ㆍ건해산물",
+            "crawled_at": "2026-08-31T10:46:57.090933",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047227328/details",
+            "discount_percent": null,
+            "display_unit": "4g×16",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/0e98dff3-ca7b-4fd5-a5a8-0bf7e4eb2022/300x300.jpg",
+            "match_key": "__no_brand__|양반 참기름김 4g 16봉||4g×16",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "양반 참기름김 (4G*16봉)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 4.0,
+            "package_unit": "g",
+            "price_per_100g": 20281.25,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 12980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "4g×16",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "2a9541f95a60fd7ce5c6c549d42080760151d8bf4b1bc0b1ef9abe9f2bf5a1fd",
+          "raw_record_id": "ingestion:28:85",
+          "source_category_path": [
+            "수산물ᆞ건해산물",
+            "김ᆞ미역ᆞ해조류",
+            "김"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:85",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:65"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.106930Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 12980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-31b1e1a9769c03d7c20ab88107e61060",
+    "public_source_listing_id": "listing-bd409b0e0913d603f21d45fc81ced951",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.106930Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원양반김",
+              "canon_hash": "44385c97b49d13857884c723fe3087e57c2bfcaf",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047227434/details",
+              "category_hint": "수산물ㆍ건해산물",
+              "category_path": [
+                "수산물ㆍ건해산물",
+                "김ㆍ미역ㆍ해조류",
+                "김"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/07b37c0c-c3b1-415f-b5b2-57052a349451/300x300.jpg",
+              "mart_native_code": "8801047227434",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047227434",
+              "source_url": "https://lottemartzetta.com/products/OS8801047227434/details"
+            },
+            "brand": "__no_brand__",
+            "category": "수산물ㆍ건해산물",
+            "crawled_at": "2026-08-31T10:46:57.106930",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047227434/details",
+            "discount_percent": null,
+            "display_unit": "4g×16",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/07b37c0c-c3b1-415f-b5b2-57052a349451/300x300.jpg",
+            "match_key": "__no_brand__|양반 참숯구이김 4g 16봉||4g×16",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "양반 참숯구이김 (4G*16봉)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 4.0,
+            "package_unit": "g",
+            "price_per_100g": 20281.25,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 12980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "4g×16",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "1f8c45e73274104108188c5c8979fc8d403db44b337c05bb547cfe8d728fb778",
+          "raw_record_id": "ingestion:30:65",
+          "source_category_path": [
+            "수산물ᆞ건해산물",
+            "김ᆞ미역ᆞ해조류",
+            "김"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:65",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:67"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.653426Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 7490,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-b9e678f8e58a1d7dcf899b40bc70d295",
+    "public_source_listing_id": "listing-a0383aca313935e7736ceb95ee628123",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.653426Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "394e76b8eaffe1f43e64a4caf3fdfd5af041c23f",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047309024/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "만두ㆍ냉동간식",
+                "교자만두"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/73b89a7d-04b8-48a8-b7ac-84c4ebdcde1d/300x300.jpg",
+              "mart_native_code": "8801047309024",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047309024",
+              "source_url": "https://lottemartzetta.com/products/OS8801047309024/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.653426",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047309024/details",
+            "discount_percent": null,
+            "display_unit": "600g",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/73b89a7d-04b8-48a8-b7ac-84c4ebdcde1d/300x300.jpg",
+            "match_key": "__no_brand__|동원 교자만두 600g||600g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 교자만두 (600G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 600.0,
+            "package_unit": "g",
+            "price_per_100g": 1248.33,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7490,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "600g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "4579e4e09d52c9e3ea4018b7ab83ab55bcf2e741cad9fa2e3a54daac32b6e5c1",
+          "raw_record_id": "ingestion:31:67",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "만두ᆞ냉동간식",
+            "교자만두"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:67",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:21"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.659852Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 40% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 12980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-df80311eef9a41f4c48ef4913a1510f9",
+    "public_source_listing_id": "listing-6efef76a24e903f31d93b6ba833cb7e0",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.659852Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "024c43a1c09b93b3099e6cdd0484c91348be303a",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047317272/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "만두ㆍ냉동간식",
+                "딤섬"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/94425f82-227e-439c-9c36-c1db114aa21b/300x300.jpg",
+              "mart_native_code": "8801047317272",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047317272",
+              "source_url": "https://lottemartzetta.com/products/OS8801047317272/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.659852",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047317272/details",
+            "discount_percent": null,
+            "display_unit": "420g",
+            "event_name": "2개씩 골라 담으면, 40% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/94425f82-227e-439c-9c36-c1db114aa21b/300x300.jpg",
+            "match_key": "__no_brand__|동원 딤섬 새우하가우 420g||420g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 딤섬 새우하가우 (420G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 420.0,
+            "package_unit": "g",
+            "price_per_100g": 3090.48,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 12980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "420g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "87b8f6ca2050981cf84e27afb0cf5cae205e3b48cdd26e4521cdb46f83f937ee",
+          "raw_record_id": "ingestion:32:21",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "만두ᆞ냉동간식",
+            "딤섬"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:21",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:73"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.665997Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 40% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 12480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-e630f3abe9b6db696f0f73f30594e73d",
+    "public_source_listing_id": "listing-171fa16e2a983816dd768d880683c6af",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.665997Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "56421a747b64f49d8090dd95e640e05507555af6",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047317289/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "만두ㆍ냉동간식",
+                "딤섬"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d3da85d3-070e-47dd-9d31-143c2b772f36/300x300.jpg",
+              "mart_native_code": "8801047317289",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047317289",
+              "source_url": "https://lottemartzetta.com/products/OS8801047317289/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.665997",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047317289/details",
+            "discount_percent": null,
+            "display_unit": "550g",
+            "event_name": "2개씩 골라 담으면, 40% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d3da85d3-070e-47dd-9d31-143c2b772f36/300x300.jpg",
+            "match_key": "__no_brand__|동원 딤섬 부추창펀 550g||550g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 딤섬 부추창펀 (550G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 550.0,
+            "package_unit": "g",
+            "price_per_100g": 2269.09,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 12480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "550g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "19eb13396a980d2937977ff41bcf62b12b6c8f5716ff914569b9939ca517ab9f",
+          "raw_record_id": "ingestion:32:73",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "만두ᆞ냉동간식",
+            "딤섬"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:73",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:61"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.156288Z",
+    "discount_rate": null,
+    "event_name": "[동원] 4만원 이상 구매시, 5천원 즉시할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 9990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-7ba47429dae2c0842bd10455adb74807",
+    "public_source_listing_id": "listing-9dd125bf13bd4fe5779a4c4ce59e991b",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.156288Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "퀴진",
+              "canon_hash": "5e536a98e3fcd0df972d3df4e8041cfd29754879",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047351924/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "피자ㆍ핫도그ㆍ소시지",
+                "핫도그"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c0b1ddb3-91da-4bd0-96b5-ab479dd79e30/300x300.jpg",
+              "mart_native_code": "8801047351924",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047351924",
+              "source_url": "https://lottemartzetta.com/products/OS8801047351924/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.156288",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047351924/details",
+            "discount_percent": null,
+            "display_unit": "400g",
+            "event_name": "[동원] 4만원 이상 구매시, 5천원 즉시할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c0b1ddb3-91da-4bd0-96b5-ab479dd79e30/300x300.jpg",
+            "match_key": "__no_brand__|동원 퀴진 크리스피 핫도그 오리지널 400g||400g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 퀴진 크리스피 핫도그 오리지널 (400G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 400.0,
+            "package_unit": "g",
+            "price_per_100g": 2497.5,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "400g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "022cd27b5733ce72e6f3dd7c3baef5f32497ffc40c777502f6c9195bb7afbbf2",
+          "raw_record_id": "ingestion:34:61",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "피자ᆞ핫도그ᆞ소시지",
+            "핫도그"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:61",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:94"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.160689Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 7490,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-a27740ab28c59e2db33ce04f9b5b6e60",
+    "public_source_listing_id": "listing-79252019efc2092d5421f6fd4b5c8684",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.160689Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원에프앤비",
+              "canon_hash": "10c8d8e044dd5534815f7567c107b9fb499a72f4",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047511021/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "맛살"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fecb7e87-9ffd-4b2e-9d8b-8569aa8bfd36/300x300.jpg",
+              "mart_native_code": "8801047511021",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047511021",
+              "source_url": "https://lottemartzetta.com/products/OS8801047511021/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:47:08.160689",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047511021/details",
+            "discount_percent": null,
+            "display_unit": "216g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fecb7e87-9ffd-4b2e-9d8b-8569aa8bfd36/300x300.jpg",
+            "match_key": "__no_brand__|동원 리얼 랍스터 216g||216g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 리얼 랍스터 (216G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 216.0,
+            "package_unit": "g",
+            "price_per_100g": 3467.59,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7490,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "216g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "7f2f2ca0cc7fd4c5be726d5959ac91425bea25c6a4f04e83f7c5dfbdaea762bb",
+          "raw_record_id": "ingestion:34:94",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "맛살"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:94",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:30"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.094258Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-284648a451e797c8f1a05a57f5bede64",
+    "public_source_listing_id": "listing-eeb2c9d4b73c032be1f6b897a5347168",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.094258Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "290ff4fda5b3688245bdb224d84bbe722ce03949",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047511267/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "맛살"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4273f3eb-d2f9-40bd-b480-7440bac945ff/300x300.jpg",
+              "mart_native_code": "8801047511267",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047511267",
+              "source_url": "https://lottemartzetta.com/products/OS8801047511267/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:46:57.094258",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047511267/details",
+            "discount_percent": null,
+            "display_unit": "144g",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/4273f3eb-d2f9-40bd-b480-7440bac945ff/300x300.jpg",
+            "match_key": "__no_brand__|동원 리얼 가쓰오 크랩스 144g||144g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 리얼 가쓰오 크랩스 (144G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 144.0,
+            "package_unit": "g",
+            "price_per_100g": 3465.28,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "144g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "5d9f2b3427becd54c4b672337f72cd593cdbef6e0e0f61aeed5f86656438a28e",
+          "raw_record_id": "ingestion:29:30",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "맛살"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:30",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:3"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.657783Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 7490,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-0158942c3917a12c3b0fc2b34840170e",
+    "public_source_listing_id": "listing-a7c6c043a59771560cac33e0b3034ae2",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.657783Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원에프앤비",
+              "canon_hash": "7cbf70d95181bc9a9c00705416fd7db26772c6c0",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047511830/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "맛살"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/035f020b-919f-4c6b-8f05-77b6004c53bb/300x300.jpg",
+              "mart_native_code": "8801047511830",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047511830",
+              "source_url": "https://lottemartzetta.com/products/OS8801047511830/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:47:02.657783",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047511830/details",
+            "discount_percent": null,
+            "display_unit": "216g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/035f020b-919f-4c6b-8f05-77b6004c53bb/300x300.jpg",
+            "match_key": "__no_brand__|동원 리얼 크랩스 216g||216g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 리얼 크랩스 (216G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 216.0,
+            "package_unit": "g",
+            "price_per_100g": 3467.59,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7490,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "216g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "02ddf8754fba912c43b487a049cf7d0fba0184b6f17816ea525ab0e46b15e0c9",
+          "raw_record_id": "ingestion:32:3",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "맛살"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:3",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:53"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.155386Z",
+    "discount_rate": null,
+    "event_name": "[동원] 4만원 이상 구매시, 5천원 즉시할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-1b8bfca02cb993a5e912f704f4f3adaf",
+    "public_source_listing_id": "listing-3226730cc8e57a6f3c6f5f70d2056afc",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.155386Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "e31ac4af001b2ca1340d74d652b7d2fddf077244",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047513001/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "맛살"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6fea866b-aef2-4b6b-8b68-9d587a3b1506/300x300.jpg",
+              "mart_native_code": "8801047513001",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047513001",
+              "source_url": "https://lottemartzetta.com/products/OS8801047513001/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:47:08.155386",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047513001/details",
+            "discount_percent": null,
+            "display_unit": "140g×2",
+            "event_name": "[동원] 4만원 이상 구매시, 5천원 즉시할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6fea866b-aef2-4b6b-8b68-9d587a3b1506/300x300.jpg",
+            "match_key": "__no_brand__|동원 랍스틱 김밥용 140g 2입||140g×2",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 랍스틱 김밥용 (140G*2입)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 140.0,
+            "package_unit": "g",
+            "price_per_100g": 1242.86,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "140g×2",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "963496627960b8dbc77eeaadd7f12d2349590513e53b6b9f566b656e9911d025",
+          "raw_record_id": "ingestion:34:53",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "맛살"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:53",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:40"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.661507Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 25% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-2b08da94d856f8fa29d5988140ad44cc",
+    "public_source_listing_id": "listing-6cb6f661e06c6c34eaa6207129912e78",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.661507Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "08873188fee6f66c3506f269519cb3a2e74f2448",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047513599/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "맛살"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e1f1e9a5-72bb-41e6-978a-cb5f3fa47422/300x300.jpg",
+              "mart_native_code": "8801047513599",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047513599",
+              "source_url": "https://lottemartzetta.com/products/OS8801047513599/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:47:02.661507",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047513599/details",
+            "discount_percent": null,
+            "display_unit": "72g",
+            "event_name": "2개씩 골라 담으면, 25% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e1f1e9a5-72bb-41e6-978a-cb5f3fa47422/300x300.jpg",
+            "match_key": "__no_brand__|동원 리얼 관자 크랩스 오리지널 72g||72g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 리얼 관자 크랩스 오리지널 (72G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 72.0,
+            "package_unit": "g",
+            "price_per_100g": 5527.78,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "72g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "f7dc924d846533a17531a2adc44fa16dcc4403d63ea04c4860630f621656e560",
+          "raw_record_id": "ingestion:32:40",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "맛살"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:40",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:70"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.146395Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 25% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-2f76199325980bfbadfee70f5d809ae7",
+    "public_source_listing_id": "listing-663f0ec4d91cfc9376145949b2a29cd3",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.146395Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "67539e9650b67080d724e531b1c88787a44eb953",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047513605/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "맛살"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b4d77a33-a36c-49a1-bc45-952cd7a8a6df/300x300.jpg",
+              "mart_native_code": "8801047513605",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047513605",
+              "source_url": "https://lottemartzetta.com/products/OS8801047513605/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:47:08.146395",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047513605/details",
+            "discount_percent": null,
+            "display_unit": "72g",
+            "event_name": "2개씩 골라 담으면, 25% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b4d77a33-a36c-49a1-bc45-952cd7a8a6df/300x300.jpg",
+            "match_key": "__no_brand__|동원 리얼 관자 크랩스 버터 72g||72g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 리얼 관자 크랩스 버터 (72G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 72.0,
+            "package_unit": "g",
+            "price_per_100g": 5527.78,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "72g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "3d3cc88bc861fcef8a857a0a53a122e782360677b229129c98af269330037349",
+          "raw_record_id": "ingestion:33:70",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "맛살"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:70",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:41"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.141967Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 50% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 3980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-31828752fc5339352cee6ae4edfc1c9b",
+    "public_source_listing_id": "listing-c1348a42e2b857ef3b3b57e012e94f4e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.141967Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "954d00b80b1071d8cb84d08423f4454d6e700b33",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047521709/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "어묵ㆍ핫바",
+                "요리용어묵"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6c1d9e2a-21a0-43b9-a0f2-1633c4499249/300x300.jpg",
+              "mart_native_code": "8801047521709",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047521709",
+              "source_url": "https://lottemartzetta.com/products/OS8801047521709/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:47:08.141967",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047521709/details",
+            "discount_percent": null,
+            "display_unit": "180g",
+            "event_name": "2개씩 골라 담으면, 50% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6c1d9e2a-21a0-43b9-a0f2-1633c4499249/300x300.jpg",
+            "match_key": "__no_brand__|동원 동원 바른어묵 라이트 사각 180g||180g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 동원 바른어묵 라이트 사각 (180G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 180.0,
+            "package_unit": "g",
+            "price_per_100g": 2211.11,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 3980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "180g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "94a0ca69bd49065511f4f7297333082a79e8b7c7d5036b0e874eb9d1d750471d",
+          "raw_record_id": "ingestion:33:41",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "어묵ᆞ핫바",
+            "요리용어묵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:41",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:21"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.102369Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6490,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-08e32f87029d586cff42d94bad17cb8f",
+    "public_source_listing_id": "listing-799eb388b97c43009bf15013ab4472e3",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.102369Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "e3aee7a932efb097435d7a7875b4b7fb53303ef7",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047529033/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "어묵ㆍ핫바",
+                "국탕용어묵"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a23772b7-4794-4018-b758-ffe2e3ae3bb7/300x300.jpg",
+              "mart_native_code": "8801047529033",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047529033",
+              "source_url": "https://lottemartzetta.com/products/OS8801047529033/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:46:57.102369",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047529033/details",
+            "discount_percent": null,
+            "display_unit": "350g",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a23772b7-4794-4018-b758-ffe2e3ae3bb7/300x300.jpg",
+            "match_key": "__no_brand__|동원 바른어묵 전골용 350g||350g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 바른어묵 전골용 (350G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 350.0,
+            "package_unit": "g",
+            "price_per_100g": 1854.29,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6490,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "350g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "c78873a49833360e55ee95604c99938d49ee7710ad3137688ef86b23950d6bdf",
+          "raw_record_id": "ingestion:30:21",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "어묵ᆞ핫바",
+            "국탕용어묵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:21",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:64"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.096681Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 50% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-cbbd65bf4fb2facc6d935723fea9ed49",
+    "public_source_listing_id": "listing-70c54e6746096fa91d7f1d5dc769ffd5",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.096681Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원",
+              "canon_hash": "bb9957f34d059d4452e08c1ce0da2a7cbf129c78",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047529552/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "어묵ㆍ핫바",
+                "요리용어묵"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8f18a16c-478b-4290-b541-8e7ae672ac0b/300x300.jpg",
+              "mart_native_code": "8801047529552",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047529552",
+              "source_url": "https://lottemartzetta.com/products/OS8801047529552/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:46:57.096681",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047529552/details",
+            "discount_percent": null,
+            "display_unit": "180g",
+            "event_name": "2개씩 골라 담으면, 50% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8f18a16c-478b-4290-b541-8e7ae672ac0b/300x300.jpg",
+            "match_key": "__no_brand__|동원 바른어묵 실꼬리돔사각 180g||180g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 바른어묵 실꼬리돔사각 (180G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 180.0,
+            "package_unit": "g",
+            "price_per_100g": 2766.67,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "180g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "99de15082f872125126598a9fcaf196f78e7a7dcfd050407283cf0cc883dd376",
+          "raw_record_id": "ingestion:29:64",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "어묵ᆞ핫바",
+            "요리용어묵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:64",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:41"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.154119Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 50% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 5990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-1392b9aee6e829b486f222dfe5f37186",
+    "public_source_listing_id": "listing-22c6f7a85354c60469405040e0e81b48",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.154119Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원에프앤비",
+              "canon_hash": "9b3769dc86a8edd6de9f44dab1afa2a3b59cdfb7",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047529576/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "어묵ㆍ핫바",
+                "국탕용어묵"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/815753c2-c28a-4408-a43f-df17128b6afc/300x300.jpg",
+              "mart_native_code": "8801047529576",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047529576",
+              "source_url": "https://lottemartzetta.com/products/OS8801047529576/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:47:08.154119",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047529576/details",
+            "discount_percent": null,
+            "display_unit": "220g",
+            "event_name": "2개씩 골라 담으면, 50% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/815753c2-c28a-4408-a43f-df17128b6afc/300x300.jpg",
+            "match_key": "__no_brand__|동원 바른어묵 종합어묵탕 220g||220g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 바른어묵 종합어묵탕 (220G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 220.0,
+            "package_unit": "g",
+            "price_per_100g": 2722.73,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "220g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "df76520b8be54510e1c753199151c91cb2d3f1ea5df8bc674b5ab3776cae9362",
+          "raw_record_id": "ingestion:34:41",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "어묵ᆞ핫바",
+            "국탕용어묵"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:41",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:75"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.654134Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-7d644eb534cc5df1e29888e6d09836d3",
+    "public_source_listing_id": "listing-9fdc2db64136077e7564b4c2fc3be9e6",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.654134Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "동원에프앤비",
+              "canon_hash": "d90ef0f7a5808752f4bb3dce080cbe7fe38358cd",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047569534/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+                "소시지"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6f37a2d1-63c4-44bd-8f25-6fae13a27e48/300x300.jpg",
+              "mart_native_code": "8801047569534",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047569534",
+              "source_url": "https://lottemartzetta.com/products/OS8801047569534/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:47:02.654134",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047569534/details",
+            "discount_percent": null,
+            "display_unit": "70g",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6f37a2d1-63c4-44bd-8f25-6fae13a27e48/300x300.jpg",
+            "match_key": "__no_brand__|동원 통그릴 벌집후랑크 오리지널 70g||70g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 통그릴 벌집후랑크 (오리지널) (70G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 70.0,
+            "package_unit": "g",
+            "price_per_100g": 4257.14,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "70g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "12529251297d80d10121e7417cff9b9760059670e41d500420602843ee8e18b7",
+          "raw_record_id": "ingestion:31:75",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "햄ᆞ소시지ᆞ베이컨ᆞ하몽",
+            "소시지"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:75",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:54"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.143431Z",
+    "discount_rate": null,
+    "event_name": "동원 그릴리 닭가슴살 2,000원 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-795a675bef50116c432d642692228280",
+    "public_source_listing_id": "listing-91723a656c2c76997caaed18e1ec892b",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.143431Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "그릴리",
+              "canon_hash": "ff765eea5510def333b96d093c8affa6874cc184",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801047569800/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "닭가슴살"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c7564688-647f-4a03-9d96-8e13b26b0a5c/300x300.jpg",
+              "mart_native_code": "8801047569800",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801047569800",
+              "source_url": "https://lottemartzetta.com/products/OS8801047569800/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:47:08.143431",
+            "detail_url": "https://lottemartzetta.com/products/OS8801047569800/details",
+            "discount_percent": null,
+            "display_unit": "100g",
+            "event_name": "동원 그릴리 닭가슴살 2,000원 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c7564688-647f-4a03-9d96-8e13b26b0a5c/300x300.jpg",
+            "match_key": "__no_brand__|동원 그릴리 닭가슴살 스테이크 오리지널 100g||100g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "동원 그릴리 닭가슴살 스테이크 오리지널 (100G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 100.0,
+            "package_unit": "g",
+            "price_per_100g": 4480.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "100g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "01ab38eff2f09667e81bd9e421dc4f9d37000de851303b30454a8182c568682c",
+          "raw_record_id": "ingestion:33:54",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "닭가슴살"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:54",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  }
+]

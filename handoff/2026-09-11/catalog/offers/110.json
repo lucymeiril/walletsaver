@@ -1,0 +1,4620 @@
+[
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:65"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.096745Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 5680,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-7ae14878ef5335ea5ed71c2614a3a902",
+    "public_source_listing_id": "listing-a3889dcbe29ac4bca11b35e5848eb45c",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.096745Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "해찬들",
+              "canon_hash": "80a29fb133e9ce8fea15f687f1d93c987f8918e8",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007052854/details",
+              "category_hint": "양념ㆍ오일ㆍ분말류",
+              "category_path": [
+                "양념ㆍ오일ㆍ분말류",
+                "양념ㆍ장류",
+                "쌈장"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a7a367b9-1639-4628-b404-f2f232d19825/300x300.jpg",
+              "mart_native_code": "8801007052854",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007052854",
+              "source_url": "https://lottemartzetta.com/products/OS8801007052854/details"
+            },
+            "brand": "__no_brand__",
+            "category": "양념ㆍ오일ㆍ분말류",
+            "crawled_at": "2026-08-31T10:46:57.096745",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007052854/details",
+            "discount_percent": null,
+            "display_unit": "500g",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a7a367b9-1639-4628-b404-f2f232d19825/300x300.jpg",
+            "match_key": "__no_brand__|해찬들 사계절쌈장 500g||500g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "해찬들 사계절쌈장 (500G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "g",
+            "price_per_100g": 1136.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5680,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "500g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "6893624d6aef4431524f72a17f8446faf8a70c0f5ef836021b59e69e8be86488",
+          "raw_record_id": "ingestion:29:65",
+          "source_category_path": [
+            "양념ᆞ오일ᆞ분말류",
+            "양념ᆞ장류",
+            "쌈장"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:65",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:10"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.646740Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 7480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-4e1e65853b6cbedb876cb8a14e2a0830",
+    "public_source_listing_id": "listing-ab1acfb489c0a6b56d0f8c1e7bf359f5",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.646740Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "해찬들",
+              "canon_hash": "ed3beb9ba11190ce92cf5e4b6424a47166e024e3",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007053134/details",
+              "category_hint": "양념ㆍ오일ㆍ분말류",
+              "category_path": [
+                "양념ㆍ오일ㆍ분말류",
+                "양념ㆍ장류",
+                "쌈장"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f3eec7b6-c836-4cc4-a807-f464255ac070/300x300.jpg",
+              "mart_native_code": "8801007053134",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007053134",
+              "source_url": "https://lottemartzetta.com/products/OS8801007053134/details"
+            },
+            "brand": "__no_brand__",
+            "category": "양념ㆍ오일ㆍ분말류",
+            "crawled_at": "2026-08-31T10:47:02.646740",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007053134/details",
+            "discount_percent": null,
+            "display_unit": "450g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f3eec7b6-c836-4cc4-a807-f464255ac070/300x300.jpg",
+            "match_key": "__no_brand__|해찬들 고기전용 쌈장 450g||450g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "해찬들 고기전용 쌈장 (450G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 450.0,
+            "package_unit": "g",
+            "price_per_100g": 1662.22,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "450g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "59c305cf0544e3879ba22d1d1b0868556a8d8a4b6afd9693bbeedaaee8255797",
+          "raw_record_id": "ingestion:31:10",
+          "source_category_path": [
+            "양념ᆞ오일ᆞ분말류",
+            "양념ᆞ장류",
+            "쌈장"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:10",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:57"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.155682Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 10670,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-e64b7c72da9e45d99ec63537d88ea068",
+    "public_source_listing_id": "listing-5718ef3ebf44d3de757ba6fd47d76773",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.155682Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "해찬들",
+              "canon_hash": "a14ce766e772e11d11175e8529b3ee37ea986777",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007053394/details",
+              "category_hint": "양념ㆍ오일ㆍ분말류",
+              "category_path": [
+                "양념ㆍ오일ㆍ분말류",
+                "양념ㆍ장류",
+                "된장"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/250e582c-1e29-4b06-9cf2-0462807dc4d6/300x300.jpg",
+              "mart_native_code": "8801007053394",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007053394",
+              "source_url": "https://lottemartzetta.com/products/OS8801007053394/details"
+            },
+            "brand": "__no_brand__",
+            "category": "양념ㆍ오일ㆍ분말류",
+            "crawled_at": "2026-08-31T10:47:08.155682",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007053394/details",
+            "discount_percent": null,
+            "display_unit": "1kg",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/250e582c-1e29-4b06-9cf2-0462807dc4d6/300x300.jpg",
+            "match_key": "__no_brand__|해찬들 맛있는 재래식 된장 1kg||1kg",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "해찬들 맛있는 재래식 된장 (1KG)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 1.0,
+            "package_unit": "kg",
+            "price_per_100g": 1067.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 10670,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "1kg",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "524445f2735ac6a01046d28434802088d91ed43cf44270a594f81754224901a7",
+          "raw_record_id": "ingestion:34:57",
+          "source_category_path": [
+            "양념ᆞ오일ᆞ분말류",
+            "양념ᆞ장류",
+            "된장"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:57",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:91"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.668110Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 9200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-94152df9ba2d6a92eb8e3c235e03dbad",
+    "public_source_listing_id": "listing-32b56dd50c2f986b8a6df187810d4ef5",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.668110Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "백설",
+              "canon_hash": "a41a2329f2dd6efd22042748cbe3126a27c3897c",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007093444/details",
+              "category_hint": "양념ㆍ오일ㆍ분말류",
+              "category_path": [
+                "양념ㆍ오일ㆍ분말류",
+                "식용유ㆍ참기름ㆍ오일",
+                "카놀라유ㆍ해바라기유ㆍ포도씨유",
+                "포도씨유"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d2a7c0d3-84ae-4fba-8e64-9f8344760ee8/300x300.jpg",
+              "mart_native_code": "8801007093444",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007093444",
+              "source_url": "https://lottemartzetta.com/products/OS8801007093444/details"
+            },
+            "brand": "__no_brand__",
+            "category": "양념ㆍ오일ㆍ분말류",
+            "crawled_at": "2026-08-31T10:47:02.668110",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007093444/details",
+            "discount_percent": null,
+            "display_unit": "500ml",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d2a7c0d3-84ae-4fba-8e64-9f8344760ee8/300x300.jpg",
+            "match_key": "__no_brand__|백설 포도씨오일 500ml||500ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "백설 포도씨오일 (500ML)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9200,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "500ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "5c4cdd495a8e48cd23b6c69b168eeca62bafb325b5cfe79d8c674d39f30881b5",
+          "raw_record_id": "ingestion:32:91",
+          "source_category_path": [
+            "양념ᆞ오일ᆞ분말류",
+            "식용유ᆞ참기름ᆞ오일",
+            "카놀라유ᆞ해바라기유ᆞ포도씨유",
+            "포도씨유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:91",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:39"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.650674Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 5200,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-b8c1a3676642f7a828e7ac48ab018f25",
+    "public_source_listing_id": "listing-2f7e10d84e1141dda62a94cff1f79b69",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.650674Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "백설",
+              "canon_hash": "771b910ce6cd65f8069c2ea7291459a05c6a165e",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007093451/details",
+              "category_hint": "양념ㆍ오일ㆍ분말류",
+              "category_path": [
+                "양념ㆍ오일ㆍ분말류",
+                "식용유ㆍ참기름ㆍ오일",
+                "카놀라유ㆍ해바라기유ㆍ포도씨유",
+                "카놀라유"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/89adb8fd-cd7f-4600-9cb7-38f774049a96/300x300.jpg",
+              "mart_native_code": "8801007093451",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007093451",
+              "source_url": "https://lottemartzetta.com/products/OS8801007093451/details"
+            },
+            "brand": "__no_brand__",
+            "category": "양념ㆍ오일ㆍ분말류",
+            "crawled_at": "2026-08-31T10:47:02.650674",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007093451/details",
+            "discount_percent": null,
+            "display_unit": "500ml",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/89adb8fd-cd7f-4600-9cb7-38f774049a96/300x300.jpg",
+            "match_key": "__no_brand__|백설 카놀라오일 500ml||500ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "백설 카놀라오일 (500ML)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5200,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "500ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "4adb2c5456a5f2d912f886636e87815794b7b2ec8a2711544f3a54bdfabcc7c4",
+          "raw_record_id": "ingestion:31:39",
+          "source_category_path": [
+            "양념ᆞ오일ᆞ분말류",
+            "식용유ᆞ참기름ᆞ오일",
+            "카놀라유ᆞ해바라기유ᆞ포도씨유",
+            "카놀라유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:39",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:24"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.102568Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 9000,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-07ea4d2d6d15673c5b66764ddc8e3683",
+    "public_source_listing_id": "listing-cedd3414bc3964d0a6471667b746e0d2",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.102568Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "백설",
+              "canon_hash": "c43ed00cd0d5a82815ab2a8ae8841cacbabafe74",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007093468/details",
+              "category_hint": "양념ㆍ오일ㆍ분말류",
+              "category_path": [
+                "양념ㆍ오일ㆍ분말류",
+                "식용유ㆍ참기름ㆍ오일",
+                "카놀라유ㆍ해바라기유ㆍ포도씨유",
+                "카놀라유"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f6d68385-3b33-4c95-9515-71cda9666928/300x300.jpg",
+              "mart_native_code": "8801007093468",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007093468",
+              "source_url": "https://lottemartzetta.com/products/OS8801007093468/details"
+            },
+            "brand": "__no_brand__",
+            "category": "양념ㆍ오일ㆍ분말류",
+            "crawled_at": "2026-08-31T10:46:57.102568",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007093468/details",
+            "discount_percent": null,
+            "display_unit": "900ml",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f6d68385-3b33-4c95-9515-71cda9666928/300x300.jpg",
+            "match_key": "__no_brand__|백설 카놀라유 900ml||900ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "백설 카놀라유 (900ML)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 900.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9000,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "900ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "39a9a50198f6133152ecca0439f90d419d5fcca83e58ab335a916dabadff6a84",
+          "raw_record_id": "ingestion:30:24",
+          "source_category_path": [
+            "양념ᆞ오일ᆞ분말류",
+            "식용유ᆞ참기름ᆞ오일",
+            "카놀라유ᆞ해바라기유ᆞ포도씨유",
+            "카놀라유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:24",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:99"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.657475Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 26500,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-a921eea9bb92db966190bf04f92da93a",
+    "public_source_listing_id": "listing-fc41e13186b1bfb6782282c26970db04",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.657475Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "백설",
+              "canon_hash": "c4b98b2ee539700924563fec4e751503d6e643d0",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007093475/details",
+              "category_hint": "양념ㆍ오일ㆍ분말류",
+              "category_path": [
+                "양념ㆍ오일ㆍ분말류",
+                "식용유ㆍ참기름ㆍ오일",
+                "올리브유"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/56df24b8-38cb-4451-a1f2-22e8bbcc611f/300x300.jpg",
+              "mart_native_code": "8801007093475",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007093475",
+              "source_url": "https://lottemartzetta.com/products/OS8801007093475/details"
+            },
+            "brand": "__no_brand__",
+            "category": "양념ㆍ오일ㆍ분말류",
+            "crawled_at": "2026-08-31T10:47:02.657475",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007093475/details",
+            "discount_percent": null,
+            "display_unit": "900ml",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/56df24b8-38cb-4451-a1f2-22e8bbcc611f/300x300.jpg",
+            "match_key": "__no_brand__|백설 압착올리브유 900ml||900ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "백설 압착올리브유 (900ML)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 900.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 26500,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "900ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "b4435677827145023b5bf8113d3e69d7cb4df8867adfef2312722669246ee1c3",
+          "raw_record_id": "ingestion:31:99",
+          "source_category_path": [
+            "양념ᆞ오일ᆞ분말류",
+            "식용유ᆞ참기름ᆞ오일",
+            "올리브유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:99",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:51"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.105523Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 14500,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-70b1ce1a93431baef0add2f9ed845ff0",
+    "public_source_listing_id": "listing-db4cd4ca02c70b31dfee115f4b8b680f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.105523Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "백설",
+              "canon_hash": "d315252009848c1836bfb01ff3d09298fdc9fc6b",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007093482/details",
+              "category_hint": "양념ㆍ오일ㆍ분말류",
+              "category_path": [
+                "양념ㆍ오일ㆍ분말류",
+                "식용유ㆍ참기름ㆍ오일",
+                "카놀라유ㆍ해바라기유ㆍ포도씨유",
+                "포도씨유"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/cae032df-5dc9-4eb9-81cb-080701ff3fd8/300x300.jpg",
+              "mart_native_code": "8801007093482",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007093482",
+              "source_url": "https://lottemartzetta.com/products/OS8801007093482/details"
+            },
+            "brand": "__no_brand__",
+            "category": "양념ㆍ오일ㆍ분말류",
+            "crawled_at": "2026-08-31T10:46:57.105523",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007093482/details",
+            "discount_percent": null,
+            "display_unit": "900ml",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/cae032df-5dc9-4eb9-81cb-080701ff3fd8/300x300.jpg",
+            "match_key": "__no_brand__|백설 포도씨유 900ml||900ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "백설 포도씨유 (900ML)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 900.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 14500,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "900ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ebeec07d50bf109ae3cb1f44f3c4ca33bc4ca15528a477bc2995fe9555fa3c77",
+          "raw_record_id": "ingestion:30:51",
+          "source_category_path": [
+            "양념ᆞ오일ᆞ분말류",
+            "식용유ᆞ참기름ᆞ오일",
+            "카놀라유ᆞ해바라기유ᆞ포도씨유",
+            "포도씨유"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:51",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:51"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.651863Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 29980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-75719da6471ce7b194e03faf93d10229",
+    "public_source_listing_id": "listing-10baf0fb6723afd63313827bec97c61f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.651863Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "해찬들",
+              "canon_hash": "91c2c13720081e18e85df3f2e722cba4e5c90916",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007128016/details",
+              "category_hint": "양념ㆍ오일ㆍ분말류",
+              "category_path": [
+                "양념ㆍ오일ㆍ분말류",
+                "양념ㆍ장류",
+                "고추장"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/3002a6e4-c012-4972-83ab-6e8f9a357e5a/300x300.jpg",
+              "mart_native_code": "8801007128016",
+              "origin": "domestic",
+              "origin_label": "국산",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007128016",
+              "source_url": "https://lottemartzetta.com/products/OS8801007128016/details"
+            },
+            "brand": "__no_brand__",
+            "category": "양념ㆍ오일ㆍ분말류",
+            "crawled_at": "2026-08-31T10:47:02.651863",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007128016/details",
+            "discount_percent": null,
+            "display_unit": "1kg",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/3002a6e4-c012-4972-83ab-6e8f9a357e5a/300x300.jpg",
+            "match_key": "__no_brand__|해찬들 100 국산고추장 1kg||1kg",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "해찬들 100% 국산고추장 (1KG)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 1.0,
+            "package_unit": "kg",
+            "price_per_100g": 2998.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 29980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "1kg",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "6026d05e07ae36629bfb3d6adc0aaa3fc7f88ff0fc5997c91a6e1d51a8cdcacd",
+          "raw_record_id": "ingestion:31:51",
+          "source_category_path": [
+            "양념ᆞ오일ᆞ분말류",
+            "양념ᆞ장류",
+            "고추장"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:51",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:1"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.669229Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 22100,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-486aa70f3077bc7411baebbd08a20c57",
+    "public_source_listing_id": "listing-165eb70fbe8db498ebfa51ef4b792dce",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.669229Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "해찬들",
+              "canon_hash": "4614348ff4106dc568a951bc729f2868b5f5c32d",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007166599/details",
+              "category_hint": "양념ㆍ오일ㆍ분말류",
+              "category_path": [
+                "양념ㆍ오일ㆍ분말류",
+                "양념ㆍ장류",
+                "고추장"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/951bed53-b974-4968-aa6a-ca14503430b3/300x300.jpg",
+              "mart_native_code": "8801007166599",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007166599",
+              "source_url": "https://lottemartzetta.com/products/OS8801007166599/details"
+            },
+            "brand": "__no_brand__",
+            "category": "양념ㆍ오일ㆍ분말류",
+            "crawled_at": "2026-08-31T10:47:02.669229",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007166599/details",
+            "discount_percent": null,
+            "display_unit": "1kg",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/951bed53-b974-4968-aa6a-ca14503430b3/300x300.jpg",
+            "match_key": "__no_brand__|해찬들 100 태양초 우리쌀 고추장 1kg||1kg",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "해찬들 100% 태양초 우리쌀 고추장 (1KG)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 1.0,
+            "package_unit": "kg",
+            "price_per_100g": 2210.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 22100,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "1kg",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "eebb7302f931f6e3463b3ff16eb7344ddf85aae463c8c6ed43d61adea147ebbc",
+          "raw_record_id": "ingestion:33:1",
+          "source_category_path": [
+            "양념ᆞ오일ᆞ분말류",
+            "양념ᆞ장류",
+            "고추장"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:1",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:72"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.107411Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 10480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-80ad9a324b7cece5c590f684609ce9c9",
+    "public_source_listing_id": "listing-b79dcb7f383e0dd7b91ebbb7c7f93cde",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.107411Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "씨제이제일제당",
+              "canon_hash": "575d6e2da146389edd414a12d93fadd87dce34bb",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007185989/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+                "베이컨"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e68331d0-d794-4cf9-914c-8e153f345dae/300x300.jpg",
+              "mart_native_code": "8801007185989",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007185989",
+              "source_url": "https://lottemartzetta.com/products/OS8801007185989/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:46:57.107411",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007185989/details",
+            "discount_percent": null,
+            "display_unit": "90g×2",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/e68331d0-d794-4cf9-914c-8e153f345dae/300x300.jpg",
+            "match_key": "__no_brand__|cj 더건강한 베이컨 90g 2||90g×2",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 더건강한 베이컨 (90G*2)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 90.0,
+            "package_unit": "g",
+            "price_per_100g": 5822.22,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 10480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "90g×2",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "009f7a2e48778a579a3abc7831a98685b6e1f8f1b6ce35a30cbcf930ea515b66",
+          "raw_record_id": "ingestion:30:72",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "햄ᆞ소시지ᆞ베이컨ᆞ하몽",
+            "베이컨"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:72",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:0"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.657547Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 9,900원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4680,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-bbc76a0da32060bb87f3e13046b335e6",
+    "public_source_listing_id": "listing-e243c9fb9e931759435228621a72c946",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.657547Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "씨제이제일제당",
+              "canon_hash": "9c7b8ad094794d9bc1b22b7f4bcbf3cb0b98b1a9",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007256238/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석밥ㆍ컵밥",
+                "즉석밥"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ecb8bc6c-56e0-46df-96ec-1f9c642c9cd1/300x300.jpg",
+              "mart_native_code": "8801007256238",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007256238",
+              "source_url": "https://lottemartzetta.com/products/OS8801007256238/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.657547",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007256238/details",
+            "discount_percent": null,
+            "display_unit": "130g×3",
+            "event_name": "3개씩 골라 담으면, 9,900원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ecb8bc6c-56e0-46df-96ec-1f9c642c9cd1/300x300.jpg",
+            "match_key": "__no_brand__|씨제이 작은햇반 130g 3입||130g×3",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "씨제이 작은햇반 (130G*3입)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 130.0,
+            "package_unit": "g",
+            "price_per_100g": 1200.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4680,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "130g×3",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "0bae6318fc2e1a7168f360d01b9fada6b20243f7fa9ab0684d008d126c1a2f61",
+          "raw_record_id": "ingestion:32:0",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석밥ᆞ컵밥",
+            "즉석밥"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:0",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:60"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.652743Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 9,900원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6380,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-58a72ba73db3c55e3971c254f0555bc7",
+    "public_source_listing_id": "listing-fba01decc79f2ef9ecba780cb43b0d99",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.652743Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "씨제이제일제당",
+              "canon_hash": "74f7b54fa8c7756d621c035dbda6a88b992e39a7",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007281223/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석밥ㆍ컵밥",
+                "즉석밥"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/3c2f7df1-04ad-4d62-a7e8-55ed980513f7/300x300.jpg",
+              "mart_native_code": "8801007281223",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007281223",
+              "source_url": "https://lottemartzetta.com/products/OS8801007281223/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.652743",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007281223/details",
+            "discount_percent": null,
+            "display_unit": "130g×3",
+            "event_name": "3개씩 골라 담으면, 9,900원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/3c2f7df1-04ad-4d62-a7e8-55ed980513f7/300x300.jpg",
+            "match_key": "__no_brand__|씨제이 작은햇반 발아현미밥 130g 3입||130g×3",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "씨제이 작은햇반 발아현미밥 (130G*3입)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 130.0,
+            "package_unit": "g",
+            "price_per_100g": 1635.9,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6380,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "130g×3",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "9a1273c4c879ca1308dc72c479e30420ef7dc14a0f7cdf3ffb28f296d133b867",
+          "raw_record_id": "ingestion:31:60",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석밥ᆞ컵밥",
+            "즉석밥"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:60",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:26"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.163788Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 9,900원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6380,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-ac71173c2072ddbd485c86fc7174b7b0",
+    "public_source_listing_id": "listing-928ed63080605365e897f7babec71432",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.163788Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "씨제이제일제당",
+              "canon_hash": "367f536c3e8b8f1424f077bb3b3c61fc696374a8",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007281247/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석밥ㆍ컵밥",
+                "즉석밥"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/05cffe6c-4668-4c98-afe6-6d92d4f111d4/300x300.jpg",
+              "mart_native_code": "8801007281247",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007281247",
+              "source_url": "https://lottemartzetta.com/products/OS8801007281247/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.163788",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007281247/details",
+            "discount_percent": null,
+            "display_unit": "130g×3",
+            "event_name": "3개씩 골라 담으면, 9,900원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/05cffe6c-4668-4c98-afe6-6d92d4f111d4/300x300.jpg",
+            "match_key": "__no_brand__|씨제이 작은햇반 흑미밥 130g 3입||130g×3",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "씨제이 작은햇반 흑미밥 (130G*3입)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 130.0,
+            "package_unit": "g",
+            "price_per_100g": 1635.9,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6380,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "130g×3",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "6bb8eefa4621c391870bdfc7f1fb3e334df0022ed25d8b2731d2dd83e069616e",
+          "raw_record_id": "ingestion:35:26",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석밥ᆞ컵밥",
+            "즉석밥"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:26",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:45"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.095279Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 10480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-75e2865e35c1e6709e6f822268f0e116",
+    "public_source_listing_id": "listing-a34cacd61ee7828802a8508d5094af16",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.095279Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "씨제이제일제당",
+              "canon_hash": "00cb72ef98a274a0ad8e486c54e1dc6f0cf23f67",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007366012/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+                "햄ㆍ샌드위치햄ㆍ슬라이스햄"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/44f85ba0-e8da-45f8-9bb1-8447d2a910e1/300x300.jpg",
+              "mart_native_code": "8801007366012",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007366012",
+              "source_url": "https://lottemartzetta.com/products/OS8801007366012/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:46:57.095279",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007366012/details",
+            "discount_percent": null,
+            "display_unit": "250g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/44f85ba0-e8da-45f8-9bb1-8447d2a910e1/300x300.jpg",
+            "match_key": "__no_brand__|cj 육공육 더 얇은 슬라이스 씬 250g||250g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 육공육 더 얇은 슬라이스 씬 (250G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 250.0,
+            "package_unit": "g",
+            "price_per_100g": 4192.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 10480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "250g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "d9f7b36f3f43037352d4fe937dcc319462abdefc7aa85c04c88fedb4dea8e6b7",
+          "raw_record_id": "ingestion:29:45",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "햄ᆞ소시지ᆞ베이컨ᆞ하몽",
+            "햄ᆞ샌드위치햄ᆞ슬라이스햄"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:45",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:35:32"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        35
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.164342Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 20% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-68a07576b2bf9b955a7d53fed2fa5d0d",
+    "public_source_listing_id": "listing-074a7fd7724dae9ef132b0e48c5d74cd",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.164342Z",
+          "ingestion_id": 35,
+          "ingestion_received_at": "2026-08-31T01:50:03.201977Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "씨제이제일제당",
+              "canon_hash": "bc108a3a95a771a896623617d80ab3a0ff6ab4e8",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007403267/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석밥ㆍ컵밥",
+                "컵밥"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c591cca4-ec06-4d1a-a363-53aae09f8b75/300x300.jpg",
+              "mart_native_code": "8801007403267",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007403267",
+              "source_url": "https://lottemartzetta.com/products/OS8801007403267/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.164342",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007403267/details",
+            "discount_percent": null,
+            "display_unit": "167g",
+            "event_name": "2개씩 골라 담으면, 20% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c591cca4-ec06-4d1a-a363-53aae09f8b75/300x300.jpg",
+            "match_key": "__no_brand__|cj 햇반컵반 미역국밥 167g||167g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 햇반컵반 미역국밥 (167G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 167.0,
+            "package_unit": "g",
+            "price_per_100g": 2982.04,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "167g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "88e192dc20b3dc19ebaccdc32f2da16d57767a73f5b0e6160d8bc8c2e1ef1d14",
+          "raw_record_id": "ingestion:35:32",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석밥ᆞ컵밥",
+            "컵밥"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:35:32",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:39"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.103669Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 14950,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-5cae71be32a1573c84d170e0a378d752",
+    "public_source_listing_id": "listing-5d0a2b67190a196bc6c9093f996338c7",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.103669Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "백설",
+              "canon_hash": "1f9686510fc78e460ba089b73e441fa54f201dbb",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007440750/details",
+              "category_hint": "양념ㆍ오일ㆍ분말류",
+              "category_path": [
+                "양념ㆍ오일ㆍ분말류",
+                "식용유ㆍ참기름ㆍ오일",
+                "참기름"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b3a34e51-45fd-4975-bb81-5af820a75e0b/300x300.jpg",
+              "mart_native_code": "8801007440750",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007440750",
+              "source_url": "https://lottemartzetta.com/products/OS8801007440750/details"
+            },
+            "brand": "__no_brand__",
+            "category": "양념ㆍ오일ㆍ분말류",
+            "crawled_at": "2026-08-31T10:46:57.103669",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007440750/details",
+            "discount_percent": null,
+            "display_unit": "500ml",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b3a34e51-45fd-4975-bb81-5af820a75e0b/300x300.jpg",
+            "match_key": "__no_brand__|백설 고소함가득 참기름 500ml||500ml",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "백설 고소함가득 참기름 (500ML)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "ml",
+            "price_per_100g": null,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 14950,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "500ml",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "8065a1a8a4818128a35e2ad8fff9bcd648cb75c127db80f656c888a2f42fc3df",
+          "raw_record_id": "ingestion:30:39",
+          "source_category_path": [
+            "양념ᆞ오일ᆞ분말류",
+            "식용유ᆞ참기름ᆞ오일",
+            "참기름"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:39",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:8"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.646537Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 10980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-608043520f6ca77b50da1aff8add4969",
+    "public_source_listing_id": "listing-88419ac9100031d9aba41bb600589f99",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.646537Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "고메",
+              "canon_hash": "c8db2b935ee3097d1a930e4931beefc74fac9e24",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007526225/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "치킨ㆍ돈까스ㆍ튀김",
+                "치킨ㆍ너겟ㆍ텐더",
+                "치킨너겟ㆍ치킨텐더"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6b9cb683-b0d2-4e71-abfa-46f9731ea23a/300x300.jpg",
+              "mart_native_code": "8801007526225",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007526225",
+              "source_url": "https://lottemartzetta.com/products/OS8801007526225/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.646537",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007526225/details",
+            "discount_percent": null,
+            "display_unit": "450g",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6b9cb683-b0d2-4e71-abfa-46f9731ea23a/300x300.jpg",
+            "match_key": "__no_brand__|cj 고메 크리스피 너겟 450g||450g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 고메 크리스피 너겟 (450G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 450.0,
+            "package_unit": "g",
+            "price_per_100g": 2440.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 10980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "450g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "dec6b0d1a80f06a19039c3dfa50a9aeb1297a43510f323fa88b7f41f60f82979",
+          "raw_record_id": "ingestion:31:8",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "치킨ᆞ돈까스ᆞ튀김",
+            "치킨ᆞ너겟ᆞ텐더",
+            "치킨너겟ᆞ치킨텐더"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:8",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:52"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.087846Z",
+    "discount_rate": null,
+    "event_name": "4개씩 골라 담으면, 5,480원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-6ad95cfef6ab83f68df36f6006a6f4e7",
+    "public_source_listing_id": "listing-44dc22b252af17c768ddb91de8629727",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.087846Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비비고",
+              "canon_hash": "3b61bc82e21373ca4650512e7335732fac9bc77e",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007526492/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/38d0d3ee-4a45-4d06-b665-972f25cb8af8/300x300.jpg",
+              "mart_native_code": "8801007526492",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007526492",
+              "source_url": "https://lottemartzetta.com/products/OS8801007526492/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:46:57.087846",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007526492/details",
+            "discount_percent": null,
+            "display_unit": "500g",
+            "event_name": "4개씩 골라 담으면, 5,480원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/38d0d3ee-4a45-4d06-b665-972f25cb8af8/300x300.jpg",
+            "match_key": "__no_brand__|cj 비비고 사골곰탕 500g||500g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 비비고 사골곰탕 (500G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "g",
+            "price_per_100g": 396.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "500g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "77d6732e3dbc1a9c495da94ae5c115a0eb27e4ae601fc102f14100ba7ccc48d5",
+          "raw_record_id": "ingestion:28:52",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:52",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:54"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.652174Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-a4935e98b05092c25499090ea1041241",
+    "public_source_listing_id": "listing-e619046adec93f46b760cc0bcce859f5",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.652174Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비비고",
+              "canon_hash": "436647ee3ae4cf857629731ad3d867b988d7741c",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007526515/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fca4b526-5d3a-4834-a1bc-84f42527dc73/300x300.jpg",
+              "mart_native_code": "8801007526515",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007526515",
+              "source_url": "https://lottemartzetta.com/products/OS8801007526515/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.652174",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007526515/details",
+            "discount_percent": null,
+            "display_unit": "500g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/fca4b526-5d3a-4834-a1bc-84f42527dc73/300x300.jpg",
+            "match_key": "__no_brand__|cj 비비고 육개장 500g||500g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 비비고 육개장 (500G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "g",
+            "price_per_100g": 1296.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "500g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "9eb9e10019222d9ef6dae7b1ed1f9e6653aab5372876b0b287330b1813d77c65",
+          "raw_record_id": "ingestion:31:54",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:54",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:90"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.148848Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-b09e43e41483756eb4cf34f6eded0092",
+    "public_source_listing_id": "listing-f33eb80b6b7bddf8e2584600f765104a",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.148848Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비비고",
+              "canon_hash": "66b959e479df92601be835f310f5dde060b3b85b",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007528557/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9d1ee20c-bd4a-4ed6-b20c-e1858980c87f/300x300.jpg",
+              "mart_native_code": "8801007528557",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007528557",
+              "source_url": "https://lottemartzetta.com/products/OS8801007528557/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.148848",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007528557/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/9d1ee20c-bd4a-4ed6-b20c-e1858980c87f/300x300.jpg",
+            "match_key": "__no_brand__|cj 비비고 두부듬뿍 김치찌개 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 비비고 두부듬뿍 김치찌개 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 1408.7,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "cf328b1afac2da4890af8abca6ec6e8f29b4d25fc5aaf194d79947f686b9fd49",
+          "raw_record_id": "ingestion:33:90",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:90",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:31"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.152782Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-e0b6238c177e5a95004516886c7231b6",
+    "public_source_listing_id": "listing-89757e20f240c3c9dba228f359c6ebab",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.152782Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비비고",
+              "canon_hash": "cb3517d25dc697b45aa0f1fd8ee6680208fd1976",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007528595/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f26ec3ea-234f-4d38-9e2d-27ffaf6cd0f9/300x300.jpg",
+              "mart_native_code": "8801007528595",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007528595",
+              "source_url": "https://lottemartzetta.com/products/OS8801007528595/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.152782",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007528595/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/f26ec3ea-234f-4d38-9e2d-27ffaf6cd0f9/300x300.jpg",
+            "match_key": "__no_brand__|cj 비비고 두부듬뿍 된장찌개 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 비비고 두부듬뿍 된장찌개 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 1408.7,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "846a760f3b3e7ce8d89b092e6f04ea53474557dd1ea7fa949224e4889f354ee2",
+          "raw_record_id": "ingestion:34:31",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:31",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:46"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.154527Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 7980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-00c33298d5f110b8e10fcb5aa04f489e",
+    "public_source_listing_id": "listing-e71f1e41c35e3ddd6f11c5707e598aab",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.154527Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비비고",
+              "canon_hash": "4ed8f971698956c17c0313948288451cd7700ef1",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007528618/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c37db647-6840-4c11-94ec-60478c6c67ae/300x300.jpg",
+              "mart_native_code": "8801007528618",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007528618",
+              "source_url": "https://lottemartzetta.com/products/OS8801007528618/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.154527",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007528618/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/c37db647-6840-4c11-94ec-60478c6c67ae/300x300.jpg",
+            "match_key": "__no_brand__|cj 비비고 스팸부대찌개 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 비비고 스팸부대찌개 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 1734.78,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "00be515909552504d0b795a26168a8c958920f8fd6dcc6e057537f2b6d9fcf34",
+          "raw_record_id": "ingestion:34:46",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:46",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:32:4"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        32
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.657853Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 21,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 15900,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-d872643aa3faba6969c3f4391b940a0b",
+    "public_source_listing_id": "listing-0f348b52b7e3dd10ed6ad08a0dc0cca5",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.657853Z",
+          "ingestion_id": 32,
+          "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비비고",
+              "canon_hash": "c8b039e5bc0d700af633c5d86785a939f0a7769e",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007529127/details",
+              "category_hint": "김치ㆍ반찬ㆍ젓갈",
+              "category_path": [
+                "김치ㆍ반찬ㆍ젓갈",
+                "김치",
+                "배추김치",
+                "포기김치"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b24ee299-9aa2-449f-b94f-862184e0e805/300x300.jpg",
+              "mart_native_code": "8801007529127",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007529127",
+              "source_url": "https://lottemartzetta.com/products/OS8801007529127/details"
+            },
+            "brand": "__no_brand__",
+            "category": "김치ㆍ반찬ㆍ젓갈",
+            "crawled_at": "2026-08-31T10:47:02.657853",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007529127/details",
+            "discount_percent": null,
+            "display_unit": "900g",
+            "event_name": "2개씩 담으면, 21,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b24ee299-9aa2-449f-b94f-862184e0e805/300x300.jpg",
+            "match_key": "__no_brand__|cj 비비고 포기 배추김치 900g||900g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 비비고 포기 배추김치 (900G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 900.0,
+            "package_unit": "g",
+            "price_per_100g": 1766.67,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 15900,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "900g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "38ef174e36c3a0d00bceabde4ab2ae8be028b3b8fc2605448f553841d0aff42e",
+          "raw_record_id": "ingestion:32:4",
+          "source_category_path": [
+            "김치ᆞ반찬ᆞ젓갈",
+            "김치",
+            "배추김치",
+            "포기김치"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:32:4",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:21"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.648135Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 21,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 15900,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-2b391c8d8063a22275c4ce5890843a00",
+    "public_source_listing_id": "listing-637d79af77a8289c10f62ebda70dbb10",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.648135Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비비고",
+              "canon_hash": "d75539597afec6ddfd44788cb055ca8dfa1c89ca",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007529202/details",
+              "category_hint": "김치ㆍ반찬ㆍ젓갈",
+              "category_path": [
+                "김치ㆍ반찬ㆍ젓갈",
+                "김치",
+                "배추김치",
+                "포기김치"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/24607cff-1381-4172-a9d8-ee7e39a2316e/300x300.jpg",
+              "mart_native_code": "8801007529202",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007529202",
+              "source_url": "https://lottemartzetta.com/products/OS8801007529202/details"
+            },
+            "brand": "__no_brand__",
+            "category": "김치ㆍ반찬ㆍ젓갈",
+            "crawled_at": "2026-08-31T10:47:02.648135",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007529202/details",
+            "discount_percent": null,
+            "display_unit": "900g",
+            "event_name": "2개씩 골라 담으면, 21,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/24607cff-1381-4172-a9d8-ee7e39a2316e/300x300.jpg",
+            "match_key": "__no_brand__|cj 비비고 썰은 배추김치 900g||900g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 비비고 썰은 배추김치 (900G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 900.0,
+            "package_unit": "g",
+            "price_per_100g": 1766.67,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 15900,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "900g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ef53e17104254cff53c2b22e41e0cc3a406616f7eb9ecda59d10006c701a778f",
+          "raw_record_id": "ingestion:31:21",
+          "source_category_path": [
+            "김치ᆞ반찬ᆞ젓갈",
+            "김치",
+            "배추김치",
+            "포기김치"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:21",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:59"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.106457Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 21,000원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 15900,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-f07d45d42be7e0f1f1eb0e54252d742a",
+    "public_source_listing_id": "listing-a790ff4a8003b9aae2e086b73c415fca",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.106457Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비비고",
+              "canon_hash": "1dc68e2d006b88c52e9f24dc0017dd1fea3510f2",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007529424/details",
+              "category_hint": "김치ㆍ반찬ㆍ젓갈",
+              "category_path": [
+                "김치ㆍ반찬ㆍ젓갈",
+                "김치",
+                "총각김치ㆍ파김치ㆍ갓김치",
+                "총각김치"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/da3dc01f-268c-4a1c-83aa-7c1e29d19975/300x300.jpg",
+              "mart_native_code": "8801007529424",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007529424",
+              "source_url": "https://lottemartzetta.com/products/OS8801007529424/details"
+            },
+            "brand": "__no_brand__",
+            "category": "김치ㆍ반찬ㆍ젓갈",
+            "crawled_at": "2026-08-31T10:46:57.106457",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007529424/details",
+            "discount_percent": null,
+            "display_unit": "900g",
+            "event_name": "2개씩 골라 담으면, 21,000원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/da3dc01f-268c-4a1c-83aa-7c1e29d19975/300x300.jpg",
+            "match_key": "__no_brand__|cj 비비고 총각김치 900g||900g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 비비고 총각김치 (900G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 900.0,
+            "package_unit": "g",
+            "price_per_100g": 1766.67,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 15900,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "900g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "c8cf9d3c94185bef89e0d486bfe65ad865f3153cbf55eaeac02a7d3385be3c8a",
+          "raw_record_id": "ingestion:30:59",
+          "source_category_path": [
+            "김치ᆞ반찬ᆞ젓갈",
+            "김치",
+            "총각김치ᆞ파김치ᆞ갓김치",
+            "총각김치"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:59",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:89"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.148775Z",
+    "discount_rate": null,
+    "event_name": "CJ 비비고 썰은 배추김치 4,310원 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 11990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-57761ecb6ef3cfb3053cce9261a2348d",
+    "public_source_listing_id": "listing-332c9324bf4f72ae2adfcf646af805a6",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.148775Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "CJ",
+              "canon_hash": "fe23626bbf705b7346e18d3462874d011281743c",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007546599/details",
+              "category_hint": "김치ㆍ반찬ㆍ젓갈",
+              "category_path": [
+                "김치ㆍ반찬ㆍ젓갈",
+                "김치",
+                "배추김치",
+                "포기김치"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ae0d4cb4-db57-414c-89c3-f3736390517f/300x300.jpg",
+              "mart_native_code": "8801007546599",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007546599",
+              "source_url": "https://lottemartzetta.com/products/OS8801007546599/details"
+            },
+            "brand": "__no_brand__",
+            "category": "김치ㆍ반찬ㆍ젓갈",
+            "crawled_at": "2026-08-31T10:47:08.148775",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007546599/details",
+            "discount_percent": null,
+            "display_unit": "500g",
+            "event_name": "CJ 비비고 썰은 배추김치 4,310원 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ae0d4cb4-db57-414c-89c3-f3736390517f/300x300.jpg",
+            "match_key": "__no_brand__|cj 비비고 썰은배추김치 pet 500g||500g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 비비고 썰은배추김치 (PET) (500G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "g",
+            "price_per_100g": 2398.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 11990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "500g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "25ceccc0cf7036e169b64cdd92a5379106a5ed600ccf44abef6f01ca32993b49",
+          "raw_record_id": "ingestion:33:89",
+          "source_category_path": [
+            "김치ᆞ반찬ᆞ젓갈",
+            "김치",
+            "배추김치",
+            "포기김치"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:89",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:76"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.654201Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 6480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-edfcab404c41fb83d8d010448bdbf895",
+    "public_source_listing_id": "listing-bd041fbcc68c35f794f63f237ac5015e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.654201Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비비고",
+              "canon_hash": "bfa25849c5802181e6edc7f2fc4f1dea34595113",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007561677/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/02f95881-faef-49f9-aab4-746d710836c5/300x300.jpg",
+              "mart_native_code": "8801007561677",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007561677",
+              "source_url": "https://lottemartzetta.com/products/OS8801007561677/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.654201",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007561677/details",
+            "discount_percent": null,
+            "display_unit": "500g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/02f95881-faef-49f9-aab4-746d710836c5/300x300.jpg",
+            "match_key": "__no_brand__|cj 비비고 소고기미역국 500g||500g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 비비고 소고기미역국 (500G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "g",
+            "price_per_100g": 1296.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 6480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "500g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "3947f6f1adf09e070499d1efd55bfac6c56d98f5ec73fdddff46d958958f2f86",
+          "raw_record_id": "ingestion:31:76",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:76",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:33"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.673533Z",
+    "discount_rate": null,
+    "event_name": "CJ 비비고 썰은 배추김치 4,310원 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 11990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-0b7ccb3b7feb8c64c0fb6e58c162ea4e",
+    "public_source_listing_id": "listing-bafa3a7a149f82f5684e4c44dd22aacf",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.673533Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "CJ",
+              "canon_hash": "4a144c8899976f36538b9f270f6e425f4c40a4f6",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007611990/details",
+              "category_hint": "김치ㆍ반찬ㆍ젓갈",
+              "category_path": [
+                "김치ㆍ반찬ㆍ젓갈",
+                "김치",
+                "배추김치",
+                "포기김치"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b57f7c9b-8efa-429d-9a4f-3f6797b76441/300x300.jpg",
+              "mart_native_code": "8801007611990",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007611990",
+              "source_url": "https://lottemartzetta.com/products/OS8801007611990/details"
+            },
+            "brand": "__no_brand__",
+            "category": "김치ㆍ반찬ㆍ젓갈",
+            "crawled_at": "2026-08-31T10:47:02.673533",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007611990/details",
+            "discount_percent": null,
+            "display_unit": "500g",
+            "event_name": "CJ 비비고 썰은 배추김치 4,310원 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b57f7c9b-8efa-429d-9a4f-3f6797b76441/300x300.jpg",
+            "match_key": "__no_brand__|cj 비비고 남도식 썰은배추김치 pet 500g||500g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 비비고 남도식 썰은배추김치 (PET) (500G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "g",
+            "price_per_100g": 2398.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 11990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "500g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "8a4310c762bffb5b77b63d137a12960cb51379351d0b5028f4131231cb5fbc18",
+          "raw_record_id": "ingestion:33:33",
+          "source_category_path": [
+            "김치ᆞ반찬ᆞ젓갈",
+            "김치",
+            "배추김치",
+            "포기김치"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:33",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:4"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.092312Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 11980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-e2e04ee5dc10ff0d0eaf6cb5cbd0b976",
+    "public_source_listing_id": "listing-664403718125d9ff807e542fa09b2902",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.092312Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "백설",
+              "canon_hash": "4695fc6b1086d72efb84afbb6eac1615bb58d953",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007616179/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+                "소시지"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/78fa38e1-c91c-448a-9cc0-a2a6addf9717/300x300.jpg",
+              "mart_native_code": "8801007616179",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007616179",
+              "source_url": "https://lottemartzetta.com/products/OS8801007616179/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:46:57.092312",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007616179/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/78fa38e1-c91c-448a-9cc0-a2a6addf9717/300x300.jpg",
+            "match_key": "__no_brand__|cj 백설 오리지널 후랑크 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 백설 오리지널 후랑크 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 2604.35,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 11980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ef552b6fa6766afeb000a8060192f796a2c33ff6dee6d161622b1bb26e07bbee",
+          "raw_record_id": "ingestion:29:4",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "햄ᆞ소시지ᆞ베이컨ᆞ하몽",
+            "소시지"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:4",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:71"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.089191Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 9990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-e23b16a265915c1bd1b19de7b4803484",
+    "public_source_listing_id": "listing-797cf7dbf03349ff06480599fe26ebbc",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.089191Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "씨제이",
+              "canon_hash": "991935d5a45ba5c71f630dcac95aae329a9b43f8",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007625058/details",
+              "category_hint": "수산물ㆍ건해산물",
+              "category_path": [
+                "수산물ㆍ건해산물",
+                "김ㆍ미역ㆍ해조류",
+                "김"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/69314100-94b4-4015-b2c0-c420909ef65b/300x300.jpg",
+              "mart_native_code": "8801007625058",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007625058",
+              "source_url": "https://lottemartzetta.com/products/OS8801007625058/details"
+            },
+            "brand": "__no_brand__",
+            "category": "수산물ㆍ건해산물",
+            "crawled_at": "2026-08-31T10:46:57.089191",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007625058/details",
+            "discount_percent": null,
+            "display_unit": "4.5g×12",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/69314100-94b4-4015-b2c0-c420909ef65b/300x300.jpg",
+            "match_key": "__no_brand__|비비고 더 고소한 참기름김 4 5g 12봉||4.5g×12",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "비비고 더 고소한 참기름김 (4.5G*12봉)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 4.5,
+            "package_unit": "g",
+            "price_per_100g": 18500.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "4.5g×12",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "7c2faa78a1439713143dbe3d03cd96c2c9f9711bf43d73691738b8ec1d8a975b",
+          "raw_record_id": "ingestion:28:71",
+          "source_category_path": [
+            "수산물ᆞ건해산물",
+            "김ᆞ미역ᆞ해조류",
+            "김"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:71",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:5"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.101197Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 9990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-4d6fb8236b3793ca6ce5f6e46081340f",
+    "public_source_listing_id": "listing-2cba10ea72a7b6fb0df95d51272b8278",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.101197Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "씨제이",
+              "canon_hash": "58dbc305b1d679e4f8dcd6f19ee0b34db22b2df2",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007683522/details",
+              "category_hint": "수산물ㆍ건해산물",
+              "category_path": [
+                "수산물ㆍ건해산물",
+                "김ㆍ미역ㆍ해조류",
+                "김"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d014e4d9-1970-4b68-8cb6-f96e5ae23b51/300x300.jpg",
+              "mart_native_code": "8801007683522",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007683522",
+              "source_url": "https://lottemartzetta.com/products/OS8801007683522/details"
+            },
+            "brand": "__no_brand__",
+            "category": "수산물ㆍ건해산물",
+            "crawled_at": "2026-08-31T10:46:57.101197",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007683522/details",
+            "discount_percent": null,
+            "display_unit": "4.5g×12",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d014e4d9-1970-4b68-8cb6-f96e5ae23b51/300x300.jpg",
+            "match_key": "__no_brand__|비비고 더 고소한 들기름김 4 5g 12봉||4.5g×12",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "비비고 더 고소한 들기름김 (4.5G*12봉)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 4.5,
+            "package_unit": "g",
+            "price_per_100g": 18500.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 9990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "4.5g×12",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "49e1f18e604d32b5c8d53a6b440f2fc1cde0ab6e1184a9071465ac93cf966157",
+          "raw_record_id": "ingestion:30:5",
+          "source_category_path": [
+            "수산물ᆞ건해산물",
+            "김ᆞ미역ᆞ해조류",
+            "김"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:5",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:63"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.088615Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 50% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 1990,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-118e65551195d98390cda46e6c681355",
+    "public_source_listing_id": "listing-94fd4a38395a8b369947d6e04d417a50",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.088615Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "씨제이제일제당",
+              "canon_hash": "d25a336aa23eacc23b387c3ab62a21b2ce641af3",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007711140/details",
+              "category_hint": "채소",
+              "category_path": [
+                "채소",
+                "두부ㆍ나또ㆍ콩나물ㆍ숙주나물",
+                "순두부ㆍ연두부"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/51772e79-f087-465c-9a2c-f60f951c84e9/300x300.jpg",
+              "mart_native_code": "8801007711140",
+              "origin": "domestic",
+              "origin_label": "국산",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007711140",
+              "source_url": "https://lottemartzetta.com/products/OS8801007711140/details"
+            },
+            "brand": "__no_brand__",
+            "category": "채소",
+            "crawled_at": "2026-08-31T10:46:57.088615",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007711140/details",
+            "discount_percent": null,
+            "display_unit": "140g",
+            "event_name": "2개씩 골라 담으면, 50% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/51772e79-f087-465c-9a2c-f60f951c84e9/300x300.jpg",
+            "match_key": "__no_brand__|cj 국산콩 작은 연두부 140g||140g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 국산콩 작은 연두부 (140G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 140.0,
+            "package_unit": "g",
+            "price_per_100g": 1421.43,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 1990,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "140g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "546c441a10cce9bc0ddb828eb585f6f31f8649132302d828fc6525fb79214f9d",
+          "raw_record_id": "ingestion:28:63",
+          "source_category_path": [
+            "채소",
+            "두부ᆞ나또ᆞ콩나물ᆞ숙주나물",
+            "순두부ᆞ연두부"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:63",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:31:86"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        31
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.655026Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 8980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-1fb6443c4ea147dbb6270dfa6c667350",
+    "public_source_listing_id": "listing-60ab0018b6fd1a096730ff708286b4f2",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.655026Z",
+          "ingestion_id": 31,
+          "ingestion_received_at": "2026-08-31T01:49:48.962725Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비비고",
+              "canon_hash": "9844d93c494a4e47edbc6461033188d3e3d94d76",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007712079/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/eabdbd91-4dcf-4bb7-b59a-4ba50e13f268/300x300.jpg",
+              "mart_native_code": "8801007712079",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007712079",
+              "source_url": "https://lottemartzetta.com/products/OS8801007712079/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.655026",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007712079/details",
+            "discount_percent": null,
+            "display_unit": "400g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/eabdbd91-4dcf-4bb7-b59a-4ba50e13f268/300x300.jpg",
+            "match_key": "__no_brand__|cj 비비고 갈비탕 400g||400g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 비비고 갈비탕 (400G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 400.0,
+            "package_unit": "g",
+            "price_per_100g": 2245.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 8980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "400g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "5ce43af31bb3cbfe503f65a5d420525b9164d5b7cd1b51880c8308e18f324f13",
+          "raw_record_id": "ingestion:31:86",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:31:86",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:27"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.152461Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-de284c63d9f85067f7f2b4ae48c1d158",
+    "public_source_listing_id": "listing-bb4533a46506127eaec55d98bd86307f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.152461Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "씨제이제일제당",
+              "canon_hash": "bf06ff5e86776ef43662df94642f5b40d5a817d7",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007719801/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "떡볶이ㆍ분식류",
+                "떡볶이"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/56487792-fd7a-4e55-b0e8-18450bde2ca0/300x300.jpg",
+              "mart_native_code": "8801007719801",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007719801",
+              "source_url": "https://lottemartzetta.com/products/OS8801007719801/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.152461",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007719801/details",
+            "discount_percent": null,
+            "display_unit": "401g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/56487792-fd7a-4e55-b0e8-18450bde2ca0/300x300.jpg",
+            "match_key": "__no_brand__|cj 미정당 순쌀떡볶이 401g||401g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 미정당 순쌀떡볶이 (401G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 401.0,
+            "package_unit": "g",
+            "price_per_100g": 1241.9,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "401g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "137d78d4eeb6f0921727c07bc6e3372979c7ac39d008bc3472d9ea1fb2524dba",
+          "raw_record_id": "ingestion:34:27",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "떡볶이ᆞ분식류",
+            "떡볶이"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:27",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:26"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.672729Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 20% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-a2e2abdc3b6ac8f5aa90398110369c0c",
+    "public_source_listing_id": "listing-836a4e7d464969016ff4bc2cb67a29bd",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.672729Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "씨제이제일제당",
+              "canon_hash": "7739a9a826d65a3441afe634742857c7bb4e5e24",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007732442/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석밥ㆍ컵밥",
+                "컵밥"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/bcf87b15-c5ae-4bee-b31d-2fbe4b1d1d8d/300x300.jpg",
+              "mart_native_code": "8801007732442",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007732442",
+              "source_url": "https://lottemartzetta.com/products/OS8801007732442/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:02.672729",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007732442/details",
+            "discount_percent": null,
+            "display_unit": "219g",
+            "event_name": "2개씩 골라 담으면, 20% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/bcf87b15-c5ae-4bee-b31d-2fbe4b1d1d8d/300x300.jpg",
+            "match_key": "__no_brand__|cj 햇반컵반 스팸마요덮밥 219g||219g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 햇반컵반 스팸마요덮밥 (219G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 219.0,
+            "package_unit": "g",
+            "price_per_100g": 2273.97,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "219g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "5289630f1d0cd9fdedc332eae36d7a764b1923aee95088d6311a0bcd6312a9bc",
+          "raw_record_id": "ingestion:33:26",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석밥ᆞ컵밥",
+            "컵밥"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:26",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:46"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.142686Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 7980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-b161aafac7d67fd8740d1ed0f57771d3",
+    "public_source_listing_id": "listing-1ccc085402240db0c81f54af5fa9d636",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.142686Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비비고",
+              "canon_hash": "3516b7b6123eafe02e836c7d4344da22d8eb56b4",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007737089/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/93a69170-d253-436f-b8fa-cbc6749ada8d/300x300.jpg",
+              "mart_native_code": "8801007737089",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007737089",
+              "source_url": "https://lottemartzetta.com/products/OS8801007737089/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.142686",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007737089/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/93a69170-d253-436f-b8fa-cbc6749ada8d/300x300.jpg",
+            "match_key": "__no_brand__|cj 비비고 차돌된장찌개 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 비비고 차돌된장찌개 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 1734.78,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "d7669de43e96563000475aa771cf336916dde78673fcec30b52791277be5d7a2",
+          "raw_record_id": "ingestion:33:46",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:46",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:61"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.106628Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 5980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-060923e96edff86aaec2700a17e80ba5",
+    "public_source_listing_id": "listing-d362599752d01c1198e9e23727f59e4b",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.106628Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "씨제이제일제당",
+              "canon_hash": "b8bc2812fef5cdb9ed9b3e5261aab093e17c508c",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007745657/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석죽ㆍ즉석스프",
+                "즉석죽"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6c9377fe-39a9-41be-8485-d89ed68111de/300x300.jpg",
+              "mart_native_code": "8801007745657",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007745657",
+              "source_url": "https://lottemartzetta.com/products/OS8801007745657/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.106628",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007745657/details",
+            "discount_percent": null,
+            "display_unit": "420g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6c9377fe-39a9-41be-8485-d89ed68111de/300x300.jpg",
+            "match_key": "__no_brand__|cj 햇반 전복죽 420g||420g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 햇반 전복죽 (420G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 420.0,
+            "package_unit": "g",
+            "price_per_100g": 1423.81,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 5980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "420g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "91d46f1c1ed0264043c551c2e7546b542f5a8bd6a595841b85159f5385047f15",
+          "raw_record_id": "ingestion:30:61",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석죽ᆞ즉석스프",
+            "즉석죽"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:61",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:30:55"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        30
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.105886Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-19f43ea537725e8ff7fd822786d3ce55",
+    "public_source_listing_id": "listing-1809f3cdf8cb98ec45f313fac5081491",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.105886Z",
+          "ingestion_id": 30,
+          "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "씨제이제일제당",
+              "canon_hash": "be771e5d02f7729a0573f73561c68467d0887694",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007745732/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석죽ㆍ즉석스프",
+                "즉석죽"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8fb4ec86-ac94-407d-91c0-6fb6d2e16a52/300x300.jpg",
+              "mart_native_code": "8801007745732",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007745732",
+              "source_url": "https://lottemartzetta.com/products/OS8801007745732/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:46:57.105886",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007745732/details",
+            "discount_percent": null,
+            "display_unit": "420g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/8fb4ec86-ac94-407d-91c0-6fb6d2e16a52/300x300.jpg",
+            "match_key": "__no_brand__|cj 햇반 단호박죽 420g||420g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 햇반 단호박죽 (420G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 420.0,
+            "package_unit": "g",
+            "price_per_100g": 1185.71,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "420g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "12b6b5e5567f49a4fd8a35fcb511d3758f3bfad0f9bb8dfd0ef5977456a4be44",
+          "raw_record_id": "ingestion:30:55",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석죽ᆞ즉석스프",
+            "즉석죽"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:30:55",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:2"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:02.669304Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 7980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-07ad02c8c56fc8f7177d071e642bd970",
+    "public_source_listing_id": "listing-97515cd336d053e27fd967f79ba3753f",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:02.669304Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비비고",
+              "canon_hash": "28e8034ac955c93f8b73e4c7145f86844e2134a4",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007761749/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/94824198-ab04-4738-ac7e-90360eddc764/300x300.jpg",
+              "mart_native_code": "8801007761749",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007761749",
+              "source_url": "https://lottemartzetta.com/products/OS8801007761749/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:02.669304",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007761749/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/94824198-ab04-4738-ac7e-90360eddc764/300x300.jpg",
+            "match_key": "__no_brand__|cj 비비고 돼지고기김치찌개 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 비비고 돼지고기김치찌개 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 1734.78,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "50cfd1895c7db52d89ce9bc04f67ece8818cb4a06a5ee619da6a964c7cfa712b",
+          "raw_record_id": "ingestion:33:2",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:2",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:88"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.099458Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2480,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-706de3c23e735a583dd746d1d7e2e7a1",
+    "public_source_listing_id": "listing-3725333574da40863d71ca7abaa93252",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.099458Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "씨제이제일제당",
+              "canon_hash": "bcf2cd52d27aa38bead47bb4ea1de3139a76d7e8",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007766652/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+                "소시지"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/586dd21f-e9cf-4cb8-baad-038b2533ab4c/300x300.jpg",
+              "mart_native_code": "8801007766652",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007766652",
+              "source_url": "https://lottemartzetta.com/products/OS8801007766652/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:46:57.099458",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007766652/details",
+            "discount_percent": null,
+            "display_unit": "70g",
+            "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/586dd21f-e9cf-4cb8-baad-038b2533ab4c/300x300.jpg",
+            "match_key": "__no_brand__|cj 맥스봉 숯불구이맛 핫바 70g||70g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 맥스봉 숯불구이맛 핫바 (70G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 70.0,
+            "package_unit": "g",
+            "price_per_100g": 3542.86,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2480,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "70g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "bb03600fe11df31ce173b326f40b37a612a65c9127e16a6a6ef13e5873d5a62b",
+          "raw_record_id": "ingestion:29:88",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "햄ᆞ소시지ᆞ베이컨ᆞ하몽",
+            "소시지"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:88",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:33:49"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        33
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.142925Z",
+    "discount_rate": null,
+    "event_name": "2개씩 골라 담으면, 20% 할인",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 4980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-98520985b4c368123db8888c74743b0c",
+    "public_source_listing_id": "listing-31147dcfba615963501dc438d811a5b7",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.142925Z",
+          "ingestion_id": 33,
+          "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "씨제이제일제당",
+              "canon_hash": "6b778ca865f9ac15d975dec6ef88d27c3c3904b7",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007778280/details",
+              "category_hint": "라면ㆍ통조림ㆍ즉석밥",
+              "category_path": [
+                "라면ㆍ통조림ㆍ즉석밥",
+                "즉석밥ㆍ컵밥",
+                "컵밥"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/34e2a874-e0d1-489d-ad07-320312aae79b/300x300.jpg",
+              "mart_native_code": "8801007778280",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007778280",
+              "source_url": "https://lottemartzetta.com/products/OS8801007778280/details"
+            },
+            "brand": "__no_brand__",
+            "category": "라면ㆍ통조림ㆍ즉석밥",
+            "crawled_at": "2026-08-31T10:47:08.142925",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007778280/details",
+            "discount_percent": null,
+            "display_unit": "233g",
+            "event_name": "2개씩 골라 담으면, 20% 할인",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/34e2a874-e0d1-489d-ad07-320312aae79b/300x300.jpg",
+            "match_key": "__no_brand__|cj 햇반컵반 치킨마요덮밥 233g||233g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 햇반컵반 치킨마요덮밥 (233G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 233.0,
+            "package_unit": "g",
+            "price_per_100g": 2137.34,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 4980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "233g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "145249153693e68d653f17408580dbba8cd42f47f8acc23c58d2abb57cf82550",
+          "raw_record_id": "ingestion:33:49",
+          "source_category_path": [
+            "라면ᆞ통조림ᆞ즉석밥",
+            "즉석밥ᆞ컵밥",
+            "컵밥"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:33:49",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:34:82"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        34
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:47:08.158362Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 7980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-8fa58791a6ba4ef231c7f99eb4221907",
+    "public_source_listing_id": "listing-7dce2f289f397c1945fb83afce745fd5",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:47:08.158362Z",
+          "ingestion_id": 34,
+          "ingestion_received_at": "2026-08-31T01:49:59.646915Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비비고",
+              "canon_hash": "b9f971928f017d562130bd58d84ce14e4f66f8de",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007792736/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a4936b10-b54b-4249-91b9-831ad54233ae/300x300.jpg",
+              "mart_native_code": "8801007792736",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007792736",
+              "source_url": "https://lottemartzetta.com/products/OS8801007792736/details",
+              "storage_label": "상온",
+              "storage_type": "ambient"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:47:08.158362",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007792736/details",
+            "discount_percent": null,
+            "display_unit": "460g",
+            "event_name": "3개씩 골라 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a4936b10-b54b-4249-91b9-831ad54233ae/300x300.jpg",
+            "match_key": "__no_brand__|cj 비비고 시래기감자탕 460g||460g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 비비고 시래기감자탕 (460G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 460.0,
+            "package_unit": "g",
+            "price_per_100g": 1734.78,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 7980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "460g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "069195a2dfe23cca7aec0e6be872240d697321da262ef2a8c123f0aa0ec42f6c",
+          "raw_record_id": "ingestion:34:82",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:34:82",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:28:41"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        28
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.087135Z",
+    "discount_rate": null,
+    "event_name": "2개씩 담으면, 그 중 1개는 무료",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 8980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-265945b062efbecdd281934e0b49786d",
+    "public_source_listing_id": "listing-45c76f3583f16b06cd0b7f64454dbf8e",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.087135Z",
+          "ingestion_id": 28,
+          "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "씨제이제일제당",
+              "canon_hash": "31ac0c2229192104af3fbd3adb642191480b35f0",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007842417/details",
+              "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+              "category_path": [
+                "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+                "햄ㆍ소시지ㆍ베이컨ㆍ하몽",
+                "베이컨"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a7b7011f-0e07-45b0-9343-bc0598dbd645/300x300.jpg",
+              "mart_native_code": "8801007842417",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007842417",
+              "source_url": "https://lottemartzetta.com/products/OS8801007842417/details"
+            },
+            "brand": "__no_brand__",
+            "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "crawled_at": "2026-08-31T10:46:57.087135",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007842417/details",
+            "discount_percent": null,
+            "display_unit": "110g×3",
+            "event_name": "2개씩 담으면, 그 중 1개는 무료",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a7b7011f-0e07-45b0-9343-bc0598dbd645/300x300.jpg",
+            "match_key": "__no_brand__|cj 백설 햄스빌 굿 베이컨 110g 3||110g×3",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 백설 햄스빌 굿 베이컨 (110G*3)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 110.0,
+            "package_unit": "g",
+            "price_per_100g": 2721.21,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 8980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "110g×3",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "ff33a4edd30f3fe00006b425fd0d0fad371c4cd14e6df557b172788ceaeea5c6",
+          "raw_record_id": "ingestion:28:41",
+          "source_category_path": [
+            "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+            "햄ᆞ소시지ᆞ베이컨ᆞ하몽",
+            "베이컨"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:28:41",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  },
+  {
+    "audit_provenance": {
+      "builder_version": "initial-catalog-seed-v1",
+      "naive_timestamp_timezone": "Asia/Seoul",
+      "observation_count": 1,
+      "observed_time_precision": "item",
+      "publication_status": "not_approved",
+      "raw_record_ids": [
+        "ingestion:29:76"
+      ],
+      "review_reasons": [
+        "promotion_unresolved"
+      ],
+      "source_ingestion_ids": [
+        29
+      ],
+      "timestamp_source": "item_crawled_at"
+    },
+    "crawled_at": "2026-08-31T01:46:57.098545Z",
+    "discount_rate": null,
+    "event_name": "3개씩 골라 담으면, 4,980원",
+    "offer_state": "pending_review",
+    "original_price": null,
+    "price": 2980,
+    "price_per_100g": null,
+    "price_state": "sale_price_only",
+    "promotion_conditions": {},
+    "promotion_type": "unknown",
+    "public_offer_event_id": "offer-8f57f0fad8a43793c826adba3d7ff8ed",
+    "public_source_listing_id": "listing-5ff3ee16b95db0719bbcff43be1b6a19",
+    "raw_evidence": {
+      "observations": [
+        {
+          "crawled_at": "2026-08-31T01:46:57.098545Z",
+          "ingestion_id": 29,
+          "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+          "mart_native_category_id": "",
+          "observed_time_precision": "item",
+          "raw_payload": {
+            "attributes": {
+              "brand": "비비고",
+              "canon_hash": "16960e0d9de7cbc4df0ffa80fccfa0f6acce358c",
+              "canonical_url": "https://lottemartzetta.com/products/OS8801007849805/details",
+              "category_hint": "간편식ㆍ밀키트",
+              "category_path": [
+                "간편식ㆍ밀키트",
+                "국ㆍ탕ㆍ찌개ㆍ전골",
+                "국ㆍ탕"
+              ],
+              "ean_source_key": "retailerProductId",
+              "external_seller": false,
+              "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1553670d-8723-4c15-98b1-f3302ca50a9f/300x300.jpg",
+              "mart_native_code": "8801007849805",
+              "origin": "domestic",
+              "origin_label": "한우",
+              "source": "lottemart",
+              "source_name": "lottemart",
+              "source_record_key": "8801007849805",
+              "source_url": "https://lottemartzetta.com/products/OS8801007849805/details"
+            },
+            "brand": "__no_brand__",
+            "category": "간편식ㆍ밀키트",
+            "crawled_at": "2026-08-31T10:46:57.098545",
+            "detail_url": "https://lottemartzetta.com/products/OS8801007849805/details",
+            "discount_percent": null,
+            "display_unit": "500g",
+            "event_name": "3개씩 골라 담으면, 4,980원",
+            "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1553670d-8723-4c15-98b1-f3302ca50a9f/300x300.jpg",
+            "match_key": "__no_brand__|cj 비비고 한우사골곰탕 500g||500g",
+            "matching_miss_reason": "key_not_found",
+            "matching_status": "miss",
+            "name": "CJ 비비고 한우사골곰탕 (500G)",
+            "normalized_name": "",
+            "original_price": null,
+            "package_quantity": 500.0,
+            "package_unit": "g",
+            "price_per_100g": 596.0,
+            "promo_label": null,
+            "promo_type": null,
+            "sale_price": 2980,
+            "source": "lottemart",
+            "store": "롯데마트",
+            "unit": "500g",
+            "unit_price_display": "",
+            "valid_from": null,
+            "valid_until": null
+          },
+          "raw_payload_sha256": "eafcc11503abb371b367f4eec95dfe96155a0d2467246fc38291cbbb25cc6657",
+          "raw_record_id": "ingestion:29:76",
+          "source_category_path": [
+            "간편식ᆞ밀키트",
+            "국ᆞ탕ᆞ찌개ᆞ전골",
+            "국ᆞ탕"
+          ],
+          "timestamp_source": "item_crawled_at"
+        }
+      ],
+      "promotion_conditions": {}
+    },
+    "raw_record_id": "ingestion:29:76",
+    "standard_unit_price": null,
+    "valid_from": null,
+    "valid_to": null
+  }
+]

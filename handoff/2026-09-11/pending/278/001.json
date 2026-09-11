@@ -1,0 +1,395 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:f932ad67b1db12c4b265cbbb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "유부ㆍ곤약",
+        "유부"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:29:21",
+      "review_status": "pending",
+      "source_path": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살 > 유부ㆍ곤약 > 유부",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "유부ㆍ곤약",
+        "유부"
+      ],
+      "source_title": "동원 초밥의달인 롤 유부초밥 고소한 맛 (254G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801047559900/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "동원",
+      "crawled_at": "2026-08-31T01:46:57.093600Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/91e7280a-9aa9-4155-a3b3-b6e6d2562bb3/300x300.jpg",
+      "ingestion_id": 29,
+      "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 21,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "254g",
+        "package_quantity": 254.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 7980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "동원",
+          "canon_hash": "f8d21a0130a905b3f329ff2d49da802c3056ad23",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801047559900/details",
+          "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+          "category_path": [
+            "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "유부ㆍ곤약",
+            "유부"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/91e7280a-9aa9-4155-a3b3-b6e6d2562bb3/300x300.jpg",
+          "mart_native_code": "8801047559900",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801047559900",
+          "source_url": "https://lottemartzetta.com/products/OS8801047559900/details"
+        },
+        "brand": "__no_brand__",
+        "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "crawled_at": "2026-08-31T10:46:57.093600",
+        "detail_url": "https://lottemartzetta.com/products/OS8801047559900/details",
+        "discount_percent": null,
+        "display_unit": "254g",
+        "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/91e7280a-9aa9-4155-a3b3-b6e6d2562bb3/300x300.jpg",
+        "match_key": "__no_brand__|동원 초밥의달인 롤 유부초밥 고소한 맛 254g||254g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "동원 초밥의달인 롤 유부초밥 고소한 맛 (254G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 254.0,
+        "package_unit": "g",
+        "price_per_100g": 3141.73,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 7980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "254g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "21c9d4a7eee4307b691d44b59430d59bc32565b5ac04dd1686655bdb3cf40816",
+      "raw_record_id": "ingestion:29:21",
+      "source_category_path": [
+        "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+        "유부ᆞ곤약",
+        "유부"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801047559900",
+      "source_title": "동원 초밥의달인 롤 유부초밥 고소한 맛 (254G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801047559900/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:29:21",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801047559900",
+    "source_title": "동원 초밥의달인 롤 유부초밥 고소한 맛 (254G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:f932ad67b1db12c4b265cbbb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "유부ㆍ곤약",
+        "유부"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:29:75",
+      "review_status": "pending",
+      "source_path": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살 > 유부ㆍ곤약 > 유부",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "유부ㆍ곤약",
+        "유부"
+      ],
+      "source_title": "동원 초밥의달인 큰 사각 유부초밥 (189G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801047559887/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "동원에프앤비",
+      "crawled_at": "2026-08-31T01:46:57.098456Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/402850aa-15dc-4ce2-9b65-ac4f45d6413b/300x300.jpg",
+      "ingestion_id": 29,
+      "ingestion_received_at": "2026-08-31T01:49:41.800681Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 75,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "189g",
+        "package_quantity": 189.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 4990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "동원에프앤비",
+          "canon_hash": "8a25ccc487a353d0a5483c51129470a7bc3f5b51",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801047559887/details",
+          "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+          "category_path": [
+            "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "유부ㆍ곤약",
+            "유부"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/402850aa-15dc-4ce2-9b65-ac4f45d6413b/300x300.jpg",
+          "mart_native_code": "8801047559887",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801047559887",
+          "source_url": "https://lottemartzetta.com/products/OS8801047559887/details"
+        },
+        "brand": "__no_brand__",
+        "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "crawled_at": "2026-08-31T10:46:57.098456",
+        "detail_url": "https://lottemartzetta.com/products/OS8801047559887/details",
+        "discount_percent": null,
+        "display_unit": "189g",
+        "event_name": "2개씩 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/402850aa-15dc-4ce2-9b65-ac4f45d6413b/300x300.jpg",
+        "match_key": "__no_brand__|동원 초밥의달인 큰 사각 유부초밥 189g||189g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "동원 초밥의달인 큰 사각 유부초밥 (189G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 189.0,
+        "package_unit": "g",
+        "price_per_100g": 2640.21,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 4990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "189g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "d3b6ec47d2558e36fddbc3e1e637a1d1b334e4c1688271a43f120f70e6b6da28",
+      "raw_record_id": "ingestion:29:75",
+      "source_category_path": [
+        "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+        "유부ᆞ곤약",
+        "유부"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801047559887",
+      "source_title": "동원 초밥의달인 큰 사각 유부초밥 (189G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801047559887/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:29:75",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801047559887",
+    "source_title": "동원 초밥의달인 큰 사각 유부초밥 (189G)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:f932ad67b1db12c4b265cbbb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "유부ㆍ곤약",
+        "유부"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:32:13",
+      "review_status": "pending",
+      "source_path": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살 > 유부ㆍ곤약 > 유부",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "유부ㆍ곤약",
+        "유부"
+      ],
+      "source_title": "동원 저당 롤유부초밥 (고소) (254G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801047559962/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "동원에프앤비",
+      "crawled_at": "2026-08-31T01:47:02.658795Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6b78b062-1b4a-4cfa-9e92-d68e5a5dd17a/300x300.jpg",
+      "ingestion_id": 32,
+      "ingestion_received_at": "2026-08-31T01:49:52.535444Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 13,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "254g",
+        "package_quantity": 254.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 7980,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "동원에프앤비",
+          "canon_hash": "4bf7908a989d75e89c2eb38b09780d13ccdaba9d",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801047559962/details",
+          "category_hint": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+          "category_path": [
+            "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+            "유부ㆍ곤약",
+            "유부"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6b78b062-1b4a-4cfa-9e92-d68e5a5dd17a/300x300.jpg",
+          "mart_native_code": "8801047559962",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801047559962",
+          "source_url": "https://lottemartzetta.com/products/OS8801047559962/details"
+        },
+        "brand": "__no_brand__",
+        "category": "햄ㆍ어묵ㆍ맛살ㆍ닭가슴살",
+        "crawled_at": "2026-08-31T10:47:02.658795",
+        "detail_url": "https://lottemartzetta.com/products/OS8801047559962/details",
+        "discount_percent": null,
+        "display_unit": "254g",
+        "event_name": "2개씩 골라 담으면, 그 중 1개는 무료",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/6b78b062-1b4a-4cfa-9e92-d68e5a5dd17a/300x300.jpg",
+        "match_key": "__no_brand__|동원 저당 롤유부초밥 고소 254g||254g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "동원 저당 롤유부초밥 (고소) (254G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 254.0,
+        "package_unit": "g",
+        "price_per_100g": 3141.73,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 7980,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "254g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "e780dabc7357283160a2a761179fdf7e90d8c318c9b4999028310815da9d6293",
+      "raw_record_id": "ingestion:32:13",
+      "source_category_path": [
+        "햄ᆞ어묵ᆞ맛살ᆞ닭가슴살",
+        "유부ᆞ곤약",
+        "유부"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801047559962",
+      "source_title": "동원 저당 롤유부초밥 (고소) (254G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801047559962/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:32:13",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801047559962",
+    "source_title": "동원 저당 롤유부초밥 (고소) (254G)"
+  }
+]

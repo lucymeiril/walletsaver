@@ -1,0 +1,667 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.fruit.peach"
+      ],
+      "category_path": [
+        "식품",
+        "농산물",
+        "신선과일",
+        "복숭아"
+      ],
+      "classification_confidence": 0.97,
+      "classification_reason": "supported_by_source_full_path",
+      "evidence_type": "source_full_path",
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9afee6d0ce07e6f93f5ffb2d",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:7",
+      "review_status": "classified",
+      "source_path": "과일 > 복숭아ㆍ자두ㆍ무화과ㆍ살구 > 복숭아",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "과일",
+        "복숭아ㆍ자두ㆍ무화과ㆍ살구",
+        "복숭아"
+      ],
+      "source_title": "햇사레 부드러운 복숭아 (4-7입/박스)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809045342005/details"
+      ],
+      "unified_category_id": "food.produce.fruit.peach",
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:46:57.084157Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "농할 할인 20%_결제시 자동적용",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d6607958-754e-4450-8b42-91b28a7c98e9/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "count_range_unresolved",
+        "promotion_unresolved"
+      ],
+      "item_index": 7,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "7입",
+        "package_quantity": 7.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 13700,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "단독기획",
+          "canon_hash": "bca4f716c6ce201b04c980aa36a6240bd9dee7f1",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809045342005/details",
+          "category_hint": "과일",
+          "category_path": [
+            "과일",
+            "복숭아ㆍ자두ㆍ무화과ㆍ살구",
+            "복숭아"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d6607958-754e-4450-8b42-91b28a7c98e9/300x300.jpg",
+          "mart_native_code": "8809045342005",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809045342005",
+          "source_url": "https://lottemartzetta.com/products/OS8809045342005/details"
+        },
+        "brand": "__no_brand__",
+        "category": "과일",
+        "crawled_at": "2026-08-31T10:46:57.084157",
+        "detail_url": "https://lottemartzetta.com/products/OS8809045342005/details",
+        "discount_percent": null,
+        "display_unit": "7입",
+        "event_name": "농할 할인 20%_결제시 자동적용",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/d6607958-754e-4450-8b42-91b28a7c98e9/300x300.jpg",
+        "match_key": "__no_brand__|햇사레 부드러운 복숭아 4 7입 박스||7입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "햇사레 부드러운 복숭아 (4-7입/박스)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 7.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 13700,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "7입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "c851d2aa095992c993599894107df3a23fe32eacb8a345fc318a448dfbe1ca4e",
+      "raw_record_id": "ingestion:28:7",
+      "source_category_path": [
+        "과일",
+        "복숭아ᆞ자두ᆞ무화과ᆞ살구",
+        "복숭아"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809045342005",
+      "source_title": "햇사레 부드러운 복숭아 (4-7입/박스)",
+      "source_url": "https://lottemartzetta.com/products/OS8809045342005/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:28:7",
+    "reasons": [
+      "count_range_unresolved",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809045342005",
+    "source_title": "햇사레 부드러운 복숭아 (4-7입/박스)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.fruit.peach"
+      ],
+      "category_path": [
+        "식품",
+        "농산물",
+        "신선과일",
+        "복숭아"
+      ],
+      "classification_confidence": 0.97,
+      "classification_reason": "supported_by_source_full_path",
+      "evidence_type": "source_full_path",
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9afee6d0ce07e6f93f5ffb2d",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:33",
+      "review_status": "classified",
+      "source_path": "과일 > 복숭아ㆍ자두ㆍ무화과ㆍ살구 > 복숭아",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "과일",
+        "복숭아ㆍ자두ㆍ무화과ㆍ살구",
+        "복숭아"
+      ],
+      "source_title": "아삭한복숭아 (4~7입/박스)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809953530129/details"
+      ],
+      "unified_category_id": "food.produce.fruit.peach",
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:46:57.086571Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "농할 할인 20%_결제시 자동적용",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/7534ef59-8f47-47a1-9bf3-e5963fe97aa4/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "count_range_unresolved",
+        "promotion_unresolved"
+      ],
+      "item_index": 33,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "7입",
+        "package_quantity": 7.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 12400,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "단독기획",
+          "canon_hash": "46d09ab24ebe9acbc31e883b1a29beae29ccc149",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809953530129/details",
+          "category_hint": "과일",
+          "category_path": [
+            "과일",
+            "복숭아ㆍ자두ㆍ무화과ㆍ살구",
+            "복숭아"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/7534ef59-8f47-47a1-9bf3-e5963fe97aa4/300x300.jpg",
+          "mart_native_code": "8809953530129",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809953530129",
+          "source_url": "https://lottemartzetta.com/products/OS8809953530129/details"
+        },
+        "brand": "__no_brand__",
+        "category": "과일",
+        "crawled_at": "2026-08-31T10:46:57.086571",
+        "detail_url": "https://lottemartzetta.com/products/OS8809953530129/details",
+        "discount_percent": null,
+        "display_unit": "7입",
+        "event_name": "농할 할인 20%_결제시 자동적용",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/7534ef59-8f47-47a1-9bf3-e5963fe97aa4/300x300.jpg",
+        "match_key": "__no_brand__|아삭한복숭아 4 7입 박스||7입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "아삭한복숭아 (4~7입/박스)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 7.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 12400,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "7입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "293870f241236105a41000a828c8bb888262d1af8af84ada8c5b72b02b64dee2",
+      "raw_record_id": "ingestion:28:33",
+      "source_category_path": [
+        "과일",
+        "복숭아ᆞ자두ᆞ무화과ᆞ살구",
+        "복숭아"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809953530129",
+      "source_title": "아삭한복숭아 (4~7입/박스)",
+      "source_url": "https://lottemartzetta.com/products/OS8809953530129/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:28:33",
+    "reasons": [
+      "count_range_unresolved",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809953530129",
+    "source_title": "아삭한복숭아 (4~7입/박스)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.fruit.peach"
+      ],
+      "category_path": [
+        "식품",
+        "농산물",
+        "신선과일",
+        "복숭아"
+      ],
+      "classification_confidence": 0.97,
+      "classification_reason": "supported_by_source_full_path",
+      "evidence_type": "source_full_path",
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9afee6d0ce07e6f93f5ffb2d",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:37",
+      "review_status": "classified",
+      "source_path": "과일 > 복숭아ㆍ자두ㆍ무화과ㆍ살구 > 복숭아",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "과일",
+        "복숭아ㆍ자두ㆍ무화과ㆍ살구",
+        "복숭아"
+      ],
+      "source_title": "하늘작 부드러운 복숭아 (4-7입/박스)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801448216341/details"
+      ],
+      "unified_category_id": "food.produce.fruit.peach",
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "신선을새롭게",
+      "crawled_at": "2026-08-31T01:46:57.086872Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "농할 할인 20%_결제시 자동적용",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b13c8e43-294b-40a1-bd4a-058920947d1d/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "count_range_unresolved",
+        "promotion_unresolved"
+      ],
+      "item_index": 37,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "7입",
+        "package_quantity": 7.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 13700,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "신선을새롭게",
+          "canon_hash": "2717a84537a12fdc81351ae7a4820128f47814c8",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801448216341/details",
+          "category_hint": "과일",
+          "category_path": [
+            "과일",
+            "복숭아ㆍ자두ㆍ무화과ㆍ살구",
+            "복숭아"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b13c8e43-294b-40a1-bd4a-058920947d1d/300x300.jpg",
+          "mart_native_code": "8801448216341",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801448216341",
+          "source_url": "https://lottemartzetta.com/products/OS8801448216341/details"
+        },
+        "brand": "__no_brand__",
+        "category": "과일",
+        "crawled_at": "2026-08-31T10:46:57.086872",
+        "detail_url": "https://lottemartzetta.com/products/OS8801448216341/details",
+        "discount_percent": null,
+        "display_unit": "7입",
+        "event_name": "농할 할인 20%_결제시 자동적용",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/b13c8e43-294b-40a1-bd4a-058920947d1d/300x300.jpg",
+        "match_key": "__no_brand__|하늘작 부드러운 복숭아 4 7입 박스||7입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "하늘작 부드러운 복숭아 (4-7입/박스)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 7.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 13700,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "7입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "6a335df00ea8863e57c2f1d9ce64daf47d821d37df6ba8d81ecb29ea7945131d",
+      "raw_record_id": "ingestion:28:37",
+      "source_category_path": [
+        "과일",
+        "복숭아ᆞ자두ᆞ무화과ᆞ살구",
+        "복숭아"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801448216341",
+      "source_title": "하늘작 부드러운 복숭아 (4-7입/박스)",
+      "source_url": "https://lottemartzetta.com/products/OS8801448216341/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:28:37",
+    "reasons": [
+      "count_range_unresolved",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801448216341",
+    "source_title": "하늘작 부드러운 복숭아 (4-7입/박스)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.fruit.peach"
+      ],
+      "category_path": [
+        "식품",
+        "농산물",
+        "신선과일",
+        "복숭아"
+      ],
+      "classification_confidence": 0.97,
+      "classification_reason": "supported_by_source_full_path",
+      "evidence_type": "source_full_path",
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9afee6d0ce07e6f93f5ffb2d",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:28:44",
+      "review_status": "classified",
+      "source_path": "과일 > 복숭아ㆍ자두ㆍ무화과ㆍ살구 > 복숭아",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "과일",
+        "복숭아ㆍ자두ㆍ무화과ㆍ살구",
+        "복숭아"
+      ],
+      "source_title": "임실 부드러운 복숭아 (4-7입/박스)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801448261020/details"
+      ],
+      "unified_category_id": "food.produce.fruit.peach",
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:46:57.087326Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "농할 할인 20%_결제시 자동적용",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ec0cadf1-a6e3-4283-93a2-a01a996499a3/300x300.jpg",
+      "ingestion_id": 28,
+      "ingestion_received_at": "2026-08-31T01:49:38.227004Z",
+      "issues": [
+        "count_range_unresolved",
+        "promotion_unresolved"
+      ],
+      "item_index": 44,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "7입",
+        "package_quantity": 7.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 13700,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "단독기획",
+          "canon_hash": "9b1a121b7b483425d7684c2f7cc015975a0d8840",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801448261020/details",
+          "category_hint": "과일",
+          "category_path": [
+            "과일",
+            "복숭아ㆍ자두ㆍ무화과ㆍ살구",
+            "복숭아"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ec0cadf1-a6e3-4283-93a2-a01a996499a3/300x300.jpg",
+          "mart_native_code": "8801448261020",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801448261020",
+          "source_url": "https://lottemartzetta.com/products/OS8801448261020/details"
+        },
+        "brand": "__no_brand__",
+        "category": "과일",
+        "crawled_at": "2026-08-31T10:46:57.087326",
+        "detail_url": "https://lottemartzetta.com/products/OS8801448261020/details",
+        "discount_percent": null,
+        "display_unit": "7입",
+        "event_name": "농할 할인 20%_결제시 자동적용",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/ec0cadf1-a6e3-4283-93a2-a01a996499a3/300x300.jpg",
+        "match_key": "__no_brand__|임실 부드러운 복숭아 4 7입 박스||7입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "임실 부드러운 복숭아 (4-7입/박스)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 7.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 13700,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "7입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "55b844602d13b898500decd3ab7684afb44eacc40eb3ae7f578678cc81f8b2db",
+      "raw_record_id": "ingestion:28:44",
+      "source_category_path": [
+        "과일",
+        "복숭아ᆞ자두ᆞ무화과ᆞ살구",
+        "복숭아"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801448261020",
+      "source_title": "임실 부드러운 복숭아 (4-7입/박스)",
+      "source_url": "https://lottemartzetta.com/products/OS8801448261020/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:28:44",
+    "reasons": [
+      "count_range_unresolved",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801448261020",
+    "source_title": "임실 부드러운 복숭아 (4-7입/박스)"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.produce.fruit.peach"
+      ],
+      "category_path": [
+        "식품",
+        "농산물",
+        "신선과일",
+        "복숭아"
+      ],
+      "classification_confidence": 0.97,
+      "classification_reason": "supported_by_source_full_path",
+      "evidence_type": "source_full_path",
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:9afee6d0ce07e6f93f5ffb2d",
+      "promotion_surface": false,
+      "proposed_path": null,
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:30:29",
+      "review_status": "classified",
+      "source_path": "과일 > 복숭아ㆍ자두ㆍ무화과ㆍ살구 > 복숭아",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "과일",
+        "복숭아ㆍ자두ㆍ무화과ㆍ살구",
+        "복숭아"
+      ],
+      "source_title": "하늘작 아삭한 복숭아 (4-7입/박스)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801448208490/details"
+      ],
+      "unified_category_id": "food.produce.fruit.peach",
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "롯데마트신선",
+      "crawled_at": "2026-08-31T01:46:57.102942Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "농할 할인 20%_결제시 자동적용",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2c1b32a9-8ccf-41be-919e-cf6c3cc1d23a/300x300.jpg",
+      "ingestion_id": 30,
+      "ingestion_received_at": "2026-08-31T01:49:45.368555Z",
+      "issues": [
+        "count_range_unresolved",
+        "promotion_unresolved"
+      ],
+      "item_index": 29,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "7입",
+        "package_quantity": 7.0,
+        "package_unit": "입",
+        "standard_unit": null
+      },
+      "price": 13700,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "롯데마트신선",
+          "canon_hash": "92090ee7d03dde6a536b5bc717a1f57468810daa",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801448208490/details",
+          "category_hint": "과일",
+          "category_path": [
+            "과일",
+            "복숭아ㆍ자두ㆍ무화과ㆍ살구",
+            "복숭아"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2c1b32a9-8ccf-41be-919e-cf6c3cc1d23a/300x300.jpg",
+          "mart_native_code": "8801448208490",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801448208490",
+          "source_url": "https://lottemartzetta.com/products/OS8801448208490/details"
+        },
+        "brand": "__no_brand__",
+        "category": "과일",
+        "crawled_at": "2026-08-31T10:46:57.102942",
+        "detail_url": "https://lottemartzetta.com/products/OS8801448208490/details",
+        "discount_percent": null,
+        "display_unit": "7입",
+        "event_name": "농할 할인 20%_결제시 자동적용",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/2c1b32a9-8ccf-41be-919e-cf6c3cc1d23a/300x300.jpg",
+        "match_key": "__no_brand__|하늘작 아삭한 복숭아 4 7입 박스||7입",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "하늘작 아삭한 복숭아 (4-7입/박스)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 7.0,
+        "package_unit": "입",
+        "price_per_100g": null,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 13700,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "7입",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "01240d9b75798af008d6acb681820605c94f04f2933dbb445da8307ae125b5cc",
+      "raw_record_id": "ingestion:30:29",
+      "source_category_path": [
+        "과일",
+        "복숭아ᆞ자두ᆞ무화과ᆞ살구",
+        "복숭아"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801448208490",
+      "source_title": "하늘작 아삭한 복숭아 (4-7입/박스)",
+      "source_url": "https://lottemartzetta.com/products/OS8801448208490/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:30:29",
+    "reasons": [
+      "count_range_unresolved",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801448208490",
+    "source_title": "하늘작 아삭한 복숭아 (4-7입/박스)"
+  }
+]

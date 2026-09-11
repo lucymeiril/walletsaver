@@ -1,0 +1,432 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meat.eggs.quail",
+        "food.preserved.sides.braised"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "conflicting_category_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:a4de2dd7836cdc6ee8c0d9bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        [
+          "식품",
+          "정육·계란",
+          "알류",
+          "메추리알"
+        ],
+        [
+          "식품",
+          "반찬·저장식품",
+          "밑반찬",
+          "조림반찬"
+        ]
+      ],
+      "raw_native_category_id": "11",
+      "raw_record_id": "ingestion:13:57",
+      "review_status": "pending",
+      "source_path": "두부/김치/반찬 > 반찬/젓갈 > 조림/볶음/기타반찬류",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "반찬/젓갈",
+        "조림/볶음/기타반찬류"
+      ],
+      "source_title": "씨제이 비비고 메추리알 장조림 170G",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=066061080&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "CJ",
+      "crawled_at": "2026-08-31T01:46:07.177535Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "함께할인",
+      "image_url": "",
+      "ingestion_id": 13,
+      "ingestion_received_at": "2026-08-31T01:47:28.609121Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 57,
+      "mart_native_category_id": "11",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "170g",
+        "package_quantity": 170.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 3890,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "씨제이",
+          "canon_hash": "3fee4b5cc0999103632dac206ab2b37c0602fb94",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=066061080&storeType=HYPER",
+          "category_hint": "조림/볶음/기타반찬류",
+          "docId": "H066061080N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%94%A8%EC%A0%9C%EC%9D%B4-%EB%B9%84%EB%B9%84%EA%B3%A0-%EB%A9%94%EC%B6%94%EB%A6%AC%EC%95%8C-%EC%9E%A5%EC%A1%B0%EB%A6%BC-170G/066061080",
+          "mart_native_category_id": "11",
+          "mart_native_category_path": "두부/김치/반찬 > 반찬/젓갈 > 조림/볶음/기타반찬류 > 조림/볶음/기타반찬류",
+          "mart_native_code": "066061080",
+          "normalized_name": "씨제이 비비고 메추리알 장조림 170G",
+          "period": "~2026-09-02",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=066061080&storeType=HYPER",
+          "raw_name": "씨제이 비비고 메추리알 장조림 170G",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "066061080",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=066061080&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "100G",
+          "unit_price_displayed": 2288.0
+        },
+        "brand": "__no_brand__",
+        "category": "조림/볶음/기타반찬류",
+        "crawled_at": "2026-08-31T10:46:07.177535",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=066061080&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "170g",
+        "event_name": "함께할인",
+        "image_url": "",
+        "match_key": "__no_brand__|씨제이 비비고 메추리알 장조림 170g||170g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "씨제이 비비고 메추리알 장조림 170G",
+        "normalized_name": "씨제이 비비고 메추리알 장조림 170G",
+        "original_price": null,
+        "package_quantity": 170.0,
+        "package_unit": "g",
+        "price_per_100g": 2288.24,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3890,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "170g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_to": "2026-09-02T00:00:00",
+        "valid_until": "2026-09-02T00:00:00"
+      },
+      "raw_payload_sha256": "57780e4cb272fed7d7e5dd822219cd87ff5578b942c77b600e6a46ec7122a5ea",
+      "raw_record_id": "ingestion:13:57",
+      "source_category_path": [
+        "두부/김치/반찬",
+        "반찬/젓갈",
+        "조림/볶음/기타반찬류",
+        "조림/볶음/기타반찬류"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "066061080",
+      "source_title": "씨제이 비비고 메추리알 장조림 170G",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=066061080&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": "2026-09-01T15:00:00Z"
+    },
+    "raw_record_id": "ingestion:13:57",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "066061080",
+    "source_title": "씨제이 비비고 메추리알 장조림 170G"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:a4de2dd7836cdc6ee8c0d9bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        "두부/김치/반찬",
+        "반찬/젓갈",
+        "조림/볶음/기타반찬류"
+      ],
+      "raw_native_category_id": "11",
+      "raw_record_id": "ingestion:13:59",
+      "review_status": "pending",
+      "source_path": "두부/김치/반찬 > 반찬/젓갈 > 조림/볶음/기타반찬류",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "반찬/젓갈",
+        "조림/볶음/기타반찬류"
+      ],
+      "source_title": "대상 청정원 아삭 명이나물 300G",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=071293990&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "대상",
+      "crawled_at": "2026-08-31T01:46:07.177692Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "홈플러스 할인",
+      "image_url": "",
+      "ingestion_id": 13,
+      "ingestion_received_at": "2026-08-31T01:47:28.609121Z",
+      "issues": [],
+      "item_index": 59,
+      "mart_native_category_id": "11",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "300g",
+        "package_quantity": 300.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 5590,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "final_price",
+      "raw_payload": {
+        "attributes": {
+          "brand": "대상",
+          "canon_hash": "c36851138d63dcf9823cbc0bf6d0b210848715d1",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=071293990&storeType=HYPER",
+          "category_hint": "조림/볶음/기타반찬류",
+          "docId": "H071293990N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EB%8C%80%EC%83%81-%EC%B2%AD%EC%A0%95%EC%9B%90-%EC%95%84%EC%82%AD-%EB%AA%85%EC%9D%B4%EB%82%98%EB%AC%BC-300G/071293990",
+          "mart_native_category_id": "11",
+          "mart_native_category_path": "두부/김치/반찬 > 반찬/젓갈 > 조림/볶음/기타반찬류 > 조림/볶음/기타반찬류",
+          "mart_native_code": "071293990",
+          "normalized_name": "대상 청정원 아삭 명이나물 300G",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=071293990&storeType=HYPER",
+          "raw_name": "대상 청정원 아삭 명이나물 300G",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "071293990",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071293990&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "100G",
+          "unit_price_displayed": 1863.0
+        },
+        "brand": "__no_brand__",
+        "category": "조림/볶음/기타반찬류",
+        "crawled_at": "2026-08-31T10:46:07.177692",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=071293990&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "300g",
+        "event_name": "홈플러스 할인",
+        "image_url": "",
+        "match_key": "__no_brand__|대상 청정원 아삭 명이나물 300g||300g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "대상 청정원 아삭 명이나물 300G",
+        "normalized_name": "대상 청정원 아삭 명이나물 300G",
+        "original_price": null,
+        "package_quantity": 300.0,
+        "package_unit": "g",
+        "price_per_100g": 1863.33,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 5590,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "300g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "74077d2c546a344ebb1c75a6c207a295c3c6093bb23165624b34d6b08a2d9c85",
+      "raw_record_id": "ingestion:13:59",
+      "source_category_path": [
+        "두부/김치/반찬",
+        "반찬/젓갈",
+        "조림/볶음/기타반찬류",
+        "조림/볶음/기타반찬류"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "071293990",
+      "source_title": "대상 청정원 아삭 명이나물 300G",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=071293990&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:13:59",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid"
+    ],
+    "source_record_key": "071293990",
+    "source_title": "대상 청정원 아삭 명이나물 300G"
+  },
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meat.eggs.quail",
+        "food.preserved.sides.braised"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "conflicting_category_evidence",
+      "evidence_type": null,
+      "mart": "homeplus",
+      "native_category_key": "homeplus:path:a4de2dd7836cdc6ee8c0d9bb",
+      "promotion_surface": false,
+      "proposed_path": [
+        [
+          "식품",
+          "정육·계란",
+          "알류",
+          "메추리알"
+        ],
+        [
+          "식품",
+          "반찬·저장식품",
+          "밑반찬",
+          "조림반찬"
+        ]
+      ],
+      "raw_native_category_id": "11",
+      "raw_record_id": "ingestion:63:40",
+      "review_status": "pending",
+      "source_path": "두부/김치/반찬 > 반찬/젓갈 > 조림/볶음/기타반찬류",
+      "source_path_field": "attributes.mart_native_category_path",
+      "source_path_parts": [
+        "두부/김치/반찬",
+        "반찬/젓갈",
+        "조림/볶음/기타반찬류"
+      ],
+      "source_title": "씨제이 비비고 메추리알 장조림 170G",
+      "source_urls": [
+        "https://mfront.homeplus.co.kr/item?itemNo=066061080&storeType=HYPER"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "CJ",
+      "crawled_at": "2026-09-02T13:39:05.438815Z",
+      "crawler_name": "homeplus",
+      "discount_rate": null,
+      "event_name": "함께할인",
+      "image_url": "",
+      "ingestion_id": 63,
+      "ingestion_received_at": "2026-09-02T13:40:30.196436Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 40,
+      "mart_native_category_id": "11",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "170g",
+        "package_quantity": 170.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 3890,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "씨제이",
+          "canon_hash": "3fee4b5cc0999103632dac206ab2b37c0602fb94",
+          "canonical_url": "https://mfront.homeplus.co.kr/item?itemNo=066061080&storeType=HYPER",
+          "category_hint": "조림/볶음/기타반찬류",
+          "docId": "H066061080N37O0",
+          "external_seller": false,
+          "legacy_detail_url": "https://mfront.homeplus.co.kr/p/%EC%94%A8%EC%A0%9C%EC%9D%B4-%EB%B9%84%EB%B9%84%EA%B3%A0-%EB%A9%94%EC%B6%94%EB%A6%AC%EC%95%8C-%EC%9E%A5%EC%A1%B0%EB%A6%BC-170G/066061080",
+          "mart_native_category_id": "11",
+          "mart_native_category_path": "두부/김치/반찬 > 반찬/젓갈 > 조림/볶음/기타반찬류 > 조림/볶음/기타반찬류",
+          "mart_native_code": "066061080",
+          "normalized_name": "씨제이 비비고 메추리알 장조림 170G",
+          "period": "~2026-09-02",
+          "permanent_url": "https://mfront.homeplus.co.kr/item?itemNo=066061080&storeType=HYPER",
+          "raw_name": "씨제이 비비고 메추리알 장조림 170G",
+          "source": "homeplus",
+          "source_name": "homeplus",
+          "source_record_key": "066061080",
+          "source_url": "https://mfront.homeplus.co.kr/item?itemNo=066061080&storeType=HYPER",
+          "storeType": "HYPER",
+          "unit_price_basis_raw": "100G",
+          "unit_price_displayed": 2288.0
+        },
+        "brand": "__no_brand__",
+        "category": "조림/볶음/기타반찬류",
+        "crawled_at": "2026-09-02T22:39:05.438815",
+        "detail_url": "https://mfront.homeplus.co.kr/item?itemNo=066061080&storeType=HYPER",
+        "discount_percent": null,
+        "display_unit": "170g",
+        "event_name": "함께할인",
+        "image_url": "",
+        "match_key": "__no_brand__|씨제이 비비고 메추리알 장조림 170g||170g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "씨제이 비비고 메추리알 장조림 170G",
+        "normalized_name": "씨제이 비비고 메추리알 장조림 170G",
+        "original_price": null,
+        "package_quantity": 170.0,
+        "package_unit": "g",
+        "price_per_100g": 2288.24,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 3890,
+        "source": "homeplus",
+        "store": "홈플러스",
+        "unit": "170g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_to": "2026-09-02T00:00:00",
+        "valid_until": "2026-09-02T00:00:00"
+      },
+      "raw_payload_sha256": "02c139a07aebc0794adcd896590b46c98d2a1f6e716817d959de3199599ba69c",
+      "raw_record_id": "ingestion:63:40",
+      "source_category_path": [
+        "두부/김치/반찬",
+        "반찬/젓갈",
+        "조림/볶음/기타반찬류",
+        "조림/볶음/기타반찬류"
+      ],
+      "source_name": "homeplus",
+      "source_record_key": "066061080",
+      "source_title": "씨제이 비비고 메추리알 장조림 170G",
+      "source_url": "https://mfront.homeplus.co.kr/item?itemNo=066061080&storeType=HYPER",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": "2026-09-01T15:00:00Z"
+    },
+    "raw_record_id": "ingestion:63:40",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "066061080",
+    "source_title": "씨제이 비비고 메추리알 장조림 170G"
+  }
+]

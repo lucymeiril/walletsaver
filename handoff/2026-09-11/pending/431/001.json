@@ -1,0 +1,136 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [
+        "food.meals.noodles.udon"
+      ],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "source_leaf_needs_name_corroboration",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:8b4f1b8f449438764ae1fc37",
+      "promotion_surface": false,
+      "proposed_path": [
+        "식품",
+        "간편식·면",
+        "면요리",
+        "우동"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:0",
+      "review_status": "pending",
+      "source_path": "건면ㆍ생면ㆍ면요리 > 우동사리ㆍ사리면 > 우동사리",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "건면ㆍ생면ㆍ면요리",
+        "우동사리ㆍ사리면",
+        "우동사리"
+      ],
+      "source_title": "요리하다X정호영 돈코츠라멘 (2인) (426G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8801085884491/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": "YORIHADA",
+      "crawled_at": "2026-08-31T01:47:02.669063Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "2개씩 골라 담으면, 4,000원 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1a3a59eb-b8c6-4af2-9318-508cb2c5a3e4/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 0,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "426g",
+        "package_quantity": 426.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 6990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "YORIHADA",
+          "canon_hash": "2c8356e11d2d9ca25febd235900714feeba2c244",
+          "canonical_url": "https://lottemartzetta.com/products/OS8801085884491/details",
+          "category_hint": "건면ㆍ생면ㆍ면요리",
+          "category_path": [
+            "건면ㆍ생면ㆍ면요리",
+            "우동사리ㆍ사리면",
+            "우동사리"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1a3a59eb-b8c6-4af2-9318-508cb2c5a3e4/300x300.jpg",
+          "mart_native_code": "8801085884491",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8801085884491",
+          "source_url": "https://lottemartzetta.com/products/OS8801085884491/details"
+        },
+        "brand": "__no_brand__",
+        "category": "건면ㆍ생면ㆍ면요리",
+        "crawled_at": "2026-08-31T10:47:02.669063",
+        "detail_url": "https://lottemartzetta.com/products/OS8801085884491/details",
+        "discount_percent": null,
+        "display_unit": "426g",
+        "event_name": "2개씩 골라 담으면, 4,000원 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/1a3a59eb-b8c6-4af2-9318-508cb2c5a3e4/300x300.jpg",
+        "match_key": "__no_brand__|요리하다x정호영 돈코츠라멘 2인 426g||426g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "요리하다X정호영 돈코츠라멘 (2인) (426G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 426.0,
+        "package_unit": "g",
+        "price_per_100g": 1640.85,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 6990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "426g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "a13184e370d616ae017121d680632013620ca9b36cf23363ee9c7866ab2cb63b",
+      "raw_record_id": "ingestion:33:0",
+      "source_category_path": [
+        "건면ᆞ생면ᆞ면요리",
+        "우동사리ᆞ사리면",
+        "우동사리"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8801085884491",
+      "source_title": "요리하다X정호영 돈코츠라멘 (2인) (426G)",
+      "source_url": "https://lottemartzetta.com/products/OS8801085884491/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:33:0",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8801085884491",
+    "source_title": "요리하다X정호영 돈코츠라멘 (2인) (426G)"
+  }
+]

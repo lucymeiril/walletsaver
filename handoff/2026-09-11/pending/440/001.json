@@ -1,0 +1,129 @@
+[
+  {
+    "classification": {
+      "candidate_category_ids": [],
+      "category_path": [],
+      "classification_confidence": 0.0,
+      "classification_reason": "insufficient_leaf_evidence",
+      "evidence_type": null,
+      "mart": "lottemart",
+      "native_category_key": "lottemart:path:f469954b2bc002866ffd86d2",
+      "promotion_surface": false,
+      "proposed_path": [
+        "수산물ㆍ건해산물",
+        "기타해산물"
+      ],
+      "raw_native_category_id": null,
+      "raw_record_id": "ingestion:33:22",
+      "review_status": "pending",
+      "source_path": "수산물ㆍ건해산물 > 기타해산물",
+      "source_path_field": "attributes.category_path",
+      "source_path_parts": [
+        "수산물ㆍ건해산물",
+        "기타해산물"
+      ],
+      "source_title": "신선한 생멍게 (150G)",
+      "source_urls": [
+        "https://lottemartzetta.com/products/OS8809025823333/details"
+      ],
+      "unified_category_id": null,
+      "url_taxonomy_hints": []
+    },
+    "normalized": {
+      "brand": null,
+      "crawled_at": "2026-08-31T01:47:02.672451Z",
+      "crawler_name": "lottemart",
+      "discount_rate": null,
+      "event_name": "수산대전 20% 할인",
+      "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a3a40814-35fd-437e-93a7-f19cafc6d6b5/300x300.jpg",
+      "ingestion_id": 33,
+      "ingestion_received_at": "2026-08-31T01:49:56.093726Z",
+      "issues": [
+        "promotion_unresolved"
+      ],
+      "item_index": 22,
+      "mart_native_category_id": "",
+      "observed_time_precision": "item",
+      "original_price": null,
+      "package": {
+        "bundle_count": 1,
+        "display_unit": "150g",
+        "package_quantity": 150.0,
+        "package_unit": "g",
+        "standard_unit": "g"
+      },
+      "price": 6990,
+      "price_state": "sale_price_only",
+      "promotion_conditions": {},
+      "promotion_type": "unknown",
+      "raw_payload": {
+        "attributes": {
+          "brand": "단독기획",
+          "canon_hash": "5bc22f0ad51fb6103700bd10d7c11900c6566117",
+          "canonical_url": "https://lottemartzetta.com/products/OS8809025823333/details",
+          "category_hint": "수산물ㆍ건해산물",
+          "category_path": [
+            "수산물ㆍ건해산물",
+            "기타해산물"
+          ],
+          "ean_source_key": "retailerProductId",
+          "external_seller": false,
+          "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a3a40814-35fd-437e-93a7-f19cafc6d6b5/300x300.jpg",
+          "mart_native_code": "8809025823333",
+          "source": "lottemart",
+          "source_name": "lottemart",
+          "source_record_key": "8809025823333",
+          "source_url": "https://lottemartzetta.com/products/OS8809025823333/details"
+        },
+        "brand": "__no_brand__",
+        "category": "수산물ㆍ건해산물",
+        "crawled_at": "2026-08-31T10:47:02.672451",
+        "detail_url": "https://lottemartzetta.com/products/OS8809025823333/details",
+        "discount_percent": null,
+        "display_unit": "150g",
+        "event_name": "수산대전 20% 할인",
+        "image_url": "https://lottemartzetta.com/images-v3/932dcbc7-fca8-4d43-bcde-f73d1ce3cc7d/a3a40814-35fd-437e-93a7-f19cafc6d6b5/300x300.jpg",
+        "match_key": "__no_brand__|신선한 생멍게 150g||150g",
+        "matching_miss_reason": "key_not_found",
+        "matching_status": "miss",
+        "name": "신선한 생멍게 (150G)",
+        "normalized_name": "",
+        "original_price": null,
+        "package_quantity": 150.0,
+        "package_unit": "g",
+        "price_per_100g": 4660.0,
+        "promo_label": null,
+        "promo_type": null,
+        "sale_price": 6990,
+        "source": "lottemart",
+        "store": "롯데마트",
+        "unit": "150g",
+        "unit_price_display": "",
+        "valid_from": null,
+        "valid_until": null
+      },
+      "raw_payload_sha256": "90d0929f463d048accf04e91c7722843a0405b5b272844370ae4733b856d5c73",
+      "raw_record_id": "ingestion:33:22",
+      "source_category_path": [
+        "수산물ᆞ건해산물",
+        "기타해산물"
+      ],
+      "source_name": "lottemart",
+      "source_record_key": "8809025823333",
+      "source_title": "신선한 생멍게 (150G)",
+      "source_url": "https://lottemartzetta.com/products/OS8809025823333/details",
+      "timestamp_source": "item_crawled_at",
+      "valid_from": null,
+      "valid_to": null
+    },
+    "raw_record_id": "ingestion:33:22",
+    "reasons": [
+      "catalog_assignment_missing",
+      "category_not_resolved_to_leaf",
+      "classification_confidence_invalid",
+      "promotion_unresolved"
+    ],
+    "source_record_key": "8809025823333",
+    "source_title": "신선한 생멍게 (150G)"
+  }
+]
