@@ -1,0 +1,239 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["046"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, or repository tests were run. Existing source data and explicit review decisions remain unchanged.",
+  "review_summary": {
+    "observations_reviewed": 21,
+    "proposed_existing_leaf": 11,
+    "held_for_review": 10,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "decisions": [
+    {
+      "raw_record_id": "ingestion:28:19",
+      "source_name": "lottemart",
+      "source_record_key": "8801117188603",
+      "source_title": "오리온 포카칩 오리지널 (50G)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.savory.potato",
+      "reason": "포카칩 동일 제품군이 pass41 카탈로그에서 감자스낵 leaf로 감사된 선례가 있음",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:28:30",
+      "source_name": "lottemart",
+      "source_record_key": "8801117268206",
+      "source_title": "오리온 왕 고래밥 (56G)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.savory.wheat",
+      "reason": "왕고래밥 동일 제품군이 pass41 카탈로그에서 밀가루스낵 leaf로 감사된 선례가 있음",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:28:38",
+      "source_name": "lottemart",
+      "source_record_key": "8801117188801",
+      "source_title": "오리온 스윙칩 볶음고추장 (45G)",
+      "status": "held",
+      "reason": "상품명만으로 현재 taxonomy의 감자/옥수수/밀 스낵 leaf를 확정하기에 repo 내 직접 감사 선례가 부족함",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:28:42",
+      "source_name": "lottemart",
+      "source_record_key": "8801117188702",
+      "source_title": "오리온 포카칩 어니언 (50G)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.savory.potato",
+      "reason": "포카칩 양파맛 동일 제품군이 pass41 카탈로그에서 감자스낵 leaf로 감사된 선례가 있음",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:28:49",
+      "source_name": "lottemart",
+      "source_record_key": "8801111180986",
+      "source_title": "크라운 카라멜콘 땅콩 (72G)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.savory.corn",
+      "reason": "카라멜콘과땅콩 동일 제품군이 pass41 카탈로그에서 옥수수스낵 leaf로 감사된 선례가 있음",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:28:66",
+      "source_name": "lottemart",
+      "source_record_key": "8801117165901",
+      "source_title": "오리온 꼬북칩초코츄러스 (64G)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.savory.corn",
+      "reason": "꼬북칩 초코츄러스맛 동일 제품이 pass41 카탈로그에서 옥수수스낵 leaf로 감사된 선례가 있음",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:29:58",
+      "source_name": "lottemart",
+      "source_record_key": "8809506850384",
+      "source_title": "산골과일참 통째로과일칩 (10G)",
+      "status": "held",
+      "reason": "과일칩은 건과일인지 별도 가공스낵인지 공정 정보가 부족하며 기존 배치에서도 과일칩류는 보수적으로 보류함",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:29:93",
+      "source_name": "lottemart",
+      "source_record_key": "8801019612732",
+      "source_title": "해태 가루비감자칩 (40G)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.savory.potato",
+      "reason": "상품명에 감자칩 제품형태가 직접 명시되어 기존 감자스낵 leaf와 일치",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:29:96",
+      "source_name": "lottemart",
+      "source_record_key": "8802259033950",
+      "source_title": "롯데 쌀로칩 들기름 김맛 (38G)",
+      "status": "held",
+      "reason": "쌀 기반 스낵으로 보이지만 현재 repo에서 이 제품군의 직접 감사 선례가 없어 grain leaf 자동 승격은 보류",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:30:15",
+      "source_name": "lottemart",
+      "source_record_key": "8809062651180",
+      "source_title": "오늘좋은 땅콩 오징어볼 (200G)",
+      "status": "held",
+      "reason": "땅콩과 오징어가 함께 표시된 복합 스낵으로 현재 단일 nut/seafood/snack leaf 중 하나를 확정하기 어려움",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:30:33",
+      "source_name": "lottemart",
+      "source_record_key": "8801117113407",
+      "source_title": "오리온 핫 고래밥 매콤양념맛 (56G)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.savory.wheat",
+      "reason": "핫고래밥 동일 제품이 pass41 카탈로그에서 밀가루스낵 leaf로 감사된 선례가 있음",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:31:20",
+      "source_name": "lottemart",
+      "source_record_key": "8801019612862",
+      "source_title": "해태 가루비감자칩 야키니쿠맛 (40G)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.savory.potato",
+      "reason": "상품명에 감자칩 제품형태가 직접 명시되어 기존 감자스낵 leaf와 일치",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:31:30",
+      "source_name": "lottemart",
+      "source_record_key": "8801043062237",
+      "source_title": "농심 빵부장 솔티꽈배기 (90G)",
+      "status": "held",
+      "reason": "꽈배기 풍미 스낵이라는 이름만으로 주원료 기반 wheat/corn leaf를 확정하기 어려움",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:31:34",
+      "source_name": "lottemart",
+      "source_record_key": "8801043058094",
+      "source_title": "농심 바삭츄리 고튀 (90G)",
+      "status": "held",
+      "reason": "상품명 약칭만으로 고구마/곡물 등 실제 스낵 기반을 repo 내부 증거만으로 확정하기 어려움",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:31:55",
+      "source_name": "lottemart",
+      "source_record_key": "8801043064781",
+      "source_title": "농심 망고킥 (100G)",
+      "status": "held",
+      "reason": "망고는 맛/상품명일 수 있어 주원료 기반 corn/fruit leaf를 repo 내부 증거만으로 확정하지 않음",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:32:31",
+      "source_name": "lottemart",
+      "source_record_key": "8801043060073",
+      "source_title": "농심 포테토칩 교촌간장치킨맛 (95G)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.savory.potato",
+      "reason": "포테토칩 제품군은 pass41에 감자스낵으로 감사된 선례가 있으며 맛 변형은 제품 기반을 바꾸지 않음",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:32:74",
+      "source_name": "lottemart",
+      "source_record_key": "8801043047272",
+      "source_title": "농심 포테토칩 K 양념치킨맛 (86G)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.savory.potato",
+      "reason": "포테토칩 제품군은 pass41에 감자스낵으로 감사된 선례가 있으며 맛 변형은 제품 기반을 바꾸지 않음",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:33:12",
+      "source_name": "lottemart",
+      "source_record_key": "8809062651173",
+      "source_title": "오늘좋은 오징어해씨볼 (200G)",
+      "status": "held",
+      "reason": "오징어와 해바라기씨가 결합된 복합 스낵으로 단일 seafood/nut/snack leaf 확정 근거가 부족함",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:33:35",
+      "source_name": "lottemart",
+      "source_record_key": "8801043067768",
+      "source_title": "농심 포테토칩 엽떡로제맛 (95G)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.snacks.savory.potato",
+      "reason": "포테토칩 제품군은 pass41에 감자스낵으로 감사된 선례가 있으며 맛 변형은 제품 기반을 바꾸지 않음",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:34:10",
+      "source_name": "lottemart",
+      "source_record_key": "8809477910780",
+      "source_title": "오늘좋은 빠삭칩 대파&크림치즈 (80G)",
+      "status": "held",
+      "reason": "맛 표기만으로 감자/옥수수/밀 등 실제 칩 기반을 확정할 수 없어 보류",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:35:2",
+      "source_name": "lottemart",
+      "source_record_key": "8809477910704",
+      "source_title": "오늘좋은 빠삭칩 단호박 (85G)",
+      "status": "held",
+      "reason": "단호박이 주원료인지 맛 표기인지 repo 내부 증거만으로 확정할 수 없어 vegetable leaf 강제 분류를 보류",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
