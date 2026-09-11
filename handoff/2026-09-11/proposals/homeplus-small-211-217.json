@@ -1,0 +1,112 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["211", "215", "216", "217"],
+  "scope_note": "GitHub read/write review only. Product-title evidence is allowed to override an unreliable mart leaf, while promotions and quantities remain unchanged. Konjac leaf ids below are review labels only and have not been added to initial_taxonomy.py or any DB.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 270,
+    "batch_reviewed_unique_observations": 16,
+    "cumulative_reviewed_unique_observations": 286,
+    "remaining_unreviewed_observations": 3630
+  },
+  "explicit_review_decision_conflict_check": {
+    "file": "handoff/2026-09-11/review-decisions-input.json",
+    "checked_source_record_keys": ["143580391", "127144229", "125165392", "101914506", "005498031", "103774746", "068964483", "070500707", "070500673", "070500667"],
+    "matches_found": 0
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:14:50", "ingestion:63:87"],
+      "source_record_key": "143580391",
+      "source_title": "씨제이 비비고 우리아이 한입 백김치 270G",
+      "proposed_leaf": "food.preserved.kimchi.white",
+      "reason": "마트 경로는 배추김치지만 제목이 백김치를 직접 명시하고 pass41에 백김치 리프가 존재한다. 제품명 근거를 우선한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:14:91", "ingestion:64:28"],
+      "source_record_key": "127144229",
+      "source_title": "대상 종가 어린이 한입 백김치 300G",
+      "proposed_leaf": "food.preserved.kimchi.white",
+      "reason": "제목이 백김치를 직접 명시하므로 배추김치 진열과 충돌할 때 기존 백김치 리프를 우선한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:20:90", "ingestion:70:17"],
+      "source_record_key": "005498031",
+      "source_title": "오뚜기 스위트콘 340G",
+      "proposed_leaf": "food.preserved.canned.corn",
+      "reason": "제목과 원본 경로가 스위트콘 통조림 품목을 일관되게 가리키며 pass41에 옥수수통조림 리프가 존재한다. 함께할인 promotion_unresolved는 분류와 별개로 유지한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; promotion_unresolved remains",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:21:32", "ingestion:70:20"],
+      "source_record_key": "103774746",
+      "source_title": "오뚜기 초당옥수수 스위트콘 198G",
+      "proposed_leaf": "food.preserved.canned.corn",
+      "reason": "스위트콘이라는 제품형태와 통조림 진열이 일치한다. 초당옥수수 품종 표현은 통조림이라는 제품형태를 바꾸지 않는다. 행사조건은 별도 보류로 유지한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; promotion_unresolved remains",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:21:56"],
+      "source_record_key": "068964483",
+      "source_title": "티아시아 비프키마커리전자레인지용 170G",
+      "proposed_leaf": "food.meals.prepared.curry",
+      "reason": "마트 경로는 즉석국이지만 제목이 전자레인지용 비프 키마커리를 명시한다. pass41 즉석카레 리프가 제품형태와 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; existing 1+1 structured promotion retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:71:97"],
+      "source_record_key": "070500707",
+      "source_title": "오뚜기 그대로짜장 200G",
+      "proposed_leaf": "food.meals.prepared.black_bean",
+      "reason": "즉석국 진열보다 제목의 그대로짜장 제품형태가 직접적이며 pass41의 즉석짜장 리프와 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:71:98"],
+      "source_record_key": "070500673",
+      "source_title": "오뚜기 그대로카레 약간매운맛 200G",
+      "proposed_leaf": "food.meals.prepared.curry",
+      "reason": "제목이 즉석 카레 제품을 직접 명시하며 기존 즉석카레 리프가 맞다. 즉석국 원본 진열은 오진열 근거로 본다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:71:99"],
+      "source_record_key": "070500667",
+      "source_title": "오뚜기 그대로카레 순한맛 200G",
+      "proposed_leaf": "food.meals.prepared.curry",
+      "reason": "제목이 즉석 카레 제품을 직접 명시하며 기존 즉석카레 리프가 맞다. 맛 단계는 별도 카테고리를 만들 이유가 아니다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "deferred_taxonomy_candidates": [
+    {
+      "raw_record_ids": ["ingestion:15:5", "ingestion:64:43"],
+      "source_record_key": "125165392",
+      "source_title": "사조대림 실 곤약 400G",
+      "suggested_new_leaf": "food.plant.konjac.noodle",
+      "reason": "마트 경로는 간식용어묵이지만 제목은 실곤약을 명시한다. 현재 pass41 taxonomy에서 일반 곤약/실곤약 대응 리프 근거를 찾지 못했고 곤약젤리 카탈로그 사례는 제품형태가 다르므로 어묵이나 젤리로 흡수하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:15:53", "ingestion:64:91"],
+      "source_record_key": "101914506",
+      "source_title": "사조대림 곤약 600G",
+      "suggested_new_leaf": "food.plant.konjac.plain",
+      "reason": "일반 곤약 제품임이 제목에서 명확하지만 현재 대응 리프가 없다. 실곤약과 형태가 다르므로 최종 taxonomy 검토 시 하나의 곤약 리프로 합칠지 형태별로 둘지 함께 검토한다."
+    }
+  ],
+  "executed_tests": []
+}
