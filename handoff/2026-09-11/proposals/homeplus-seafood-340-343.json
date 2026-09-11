@@ -1,0 +1,61 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["340", "341", "342", "343"],
+  "already_reviewed_groups_skipped_from_count": ["344", "345"],
+  "scope_note": "GitHub read/write review only. Groups 344 and 345 were opened during continuation but their raw ids were already present in small-food-344-354-404-449-450.json, so they are not counted again. New seafood ids below are taxonomy-review labels only and have not been added to initial_taxonomy.py or any DB.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 344,
+    "batch_reviewed_unique_observations": 8,
+    "cumulative_reviewed_unique_observations": 352,
+    "remaining_unreviewed_observations": 3564
+  },
+  "explicit_review_decision_conflict_check": {
+    "file": "handoff/2026-09-11/review-decisions-input.json",
+    "checked_source_record_keys": ["008589275", "114264071", "125747084", "138052799", "071371258"],
+    "matches_found": 0
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:5:6", "ingestion:54:62"],
+      "source_record_key": "008589275",
+      "source_title": "부세 마리(대/해동/중국산)",
+      "proposed_leaf": "food.seafood.fish.croaker",
+      "reason": "원본 경로가 조기이고 상품은 부세로 명시된다. pass41 생선 taxonomy의 조기 리프 `croaker`가 이 소매 어종 축과 가장 직접적으로 일치한다. 해동/원산지/크기는 속성으로 보존한다.",
+      "quantity_review": "unchanged; per-piece selling unit retained",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "deferred_taxonomy_candidates": [
+    {
+      "raw_record_ids": ["ingestion:4:46", "ingestion:53:47"],
+      "source_record_key": "114264071",
+      "source_title": "바지락살 80G (팩)",
+      "suggested_new_leaf": "food.seafood.shellfish.clam",
+      "reason": "제목과 원본 경로가 바지락을 직접 가리키지만 현재 pass41 갑각·패류 리프는 새우·게·전복뿐이다. 전복이나 기타 기존 리프로 흡수하지 않고 바지락/조개류 신규 리프 후보로 둔다."
+    },
+    {
+      "raw_record_ids": ["ingestion:4:60", "ingestion:53:79"],
+      "source_record_key": "125747084",
+      "source_title": "통영 햇멍게(국내산) 120G(봉)",
+      "suggested_new_leaf": "food.seafood.other.sea_squirt",
+      "reason": "멍게는 제목과 원본 경로에서 명확하지만 현재 pass41 수산 taxonomy에 대응 리프가 없다. 기존 갑각·패류에 생물학적으로 억지 편입하지 않고 별도 수산물 후보로 남긴다."
+    },
+    {
+      "raw_record_ids": ["ingestion:53:24"],
+      "source_record_key": "138052799",
+      "source_title": "데친문어(국내산/절단) 100G",
+      "suggested_new_leaf": "food.seafood.cephalopod.octopus",
+      "reason": "문어라는 품목은 명확하지만 현재 pass41에는 연체/두족류 리프가 없다. 데침·절단은 가공상태 속성으로 보존하고 문어 신규 리프 후보로 둔다."
+    },
+    {
+      "raw_record_ids": ["ingestion:54:1"],
+      "source_record_key": "071371258",
+      "source_title": "손질 생물 낙지 400G(봉)",
+      "suggested_new_leaf": "food.seafood.cephalopod.nakji",
+      "reason": "낙지라는 품목이 제목에서 명확하고 원본 경로도 낙지·문어 축이다. 현재 대응 리프가 없어 문어와 강제 통합하지 않고 두족류 taxonomy 설계 때 별도/통합 여부를 재검토한다."
+    }
+  ],
+  "executed_tests": []
+}
