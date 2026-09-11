@@ -1,0 +1,232 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["040"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Pending group 040 spans 001.json and 002.json. Costco shelf '채소' contains food, kitchen tools, pet food, garden goods, seaweed, and bulk products; title/product form and official URL context override the broad shelf.",
+  "review_summary": {
+    "observations_opened": 25,
+    "already_classified_excluded_from_new_classification_count": 5,
+    "new_classification_reviews": 20,
+    "existing_leaf_decisions": 8,
+    "deferred_taxonomy_or_product_form_candidates": 12
+  },
+  "accounting_note": "This proposal counts 20 new classification reviews, not 25. Five observations are already classified and remain pending only for non-classification issues. Do not mechanically add either number to historical cumulative totals until global proposal accounting reconciliation is complete.",
+  "excluded_already_classified": [
+    {
+      "raw_record_id": "ingestion:47:81",
+      "source_record_key": "655046",
+      "source_title": "친환경 양파 2망(4kg x 2개)",
+      "existing_leaf": "food.produce.vegetables.onion",
+      "note": "classification already reviewed; package/unit issues remain separate"
+    },
+    {
+      "raw_record_id": "ingestion:47:83",
+      "source_record_key": "679688",
+      "source_title": "당근 2kg x 2봉",
+      "existing_leaf": "food.produce.vegetables.carrot",
+      "note": "classification already reviewed; package/unit issues remain separate"
+    },
+    {
+      "raw_record_id": "ingestion:47:89",
+      "source_record_key": "681925",
+      "source_title": "할라페뇨고추 1kg x 2개",
+      "existing_leaf": "food.produce.vegetables.pepper",
+      "note": "classification already reviewed; package/unit issues remain separate"
+    },
+    {
+      "raw_record_id": "ingestion:47:96",
+      "source_record_key": "683909",
+      "source_title": "양송이버섯 500g x 2개",
+      "existing_leaf": "food.produce.vegetables.mushroom",
+      "note": "classification already reviewed; package/unit issues remain separate"
+    },
+    {
+      "raw_record_id": "ingestion:48:1",
+      "source_record_key": "609469",
+      "source_title": "감말랭이 400g x 4팩",
+      "existing_leaf": "food.produce.processed_fruit.dried",
+      "note": "classification already reviewed; package/unit issues remain separate"
+    }
+  ],
+  "explicit_review_decision_conflict_check": {
+    "file": "handoff/2026-09-11/review-decisions-input.json",
+    "method": "three batched repository source_record_key searches over the 20 newly reviewed listings",
+    "checked_source_record_keys": [
+      "1371826", "676562", "694437", "633700", "685752", "697408", "694990",
+      "694986", "694098", "694291", "694401", "655871", "615085", "615083",
+      "655867", "655870", "624156", "600473", "669087", "645163"
+    ],
+    "review_decisions_file_matches_found": 0,
+    "note": "Search results returned raw/pending/unresolved records but did not return review-decisions-input.json for these keys."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:47:72"],
+      "source_record_key": "685752",
+      "source_title": "백오이 2봉 (10개 x 2봉)",
+      "proposed_leaf": "food.produce.vegetables.cucumber",
+      "reason": "제목과 공식 URL이 신선 백오이를 직접 가리킨다. 포장 수량은 분류와 분리한다.",
+      "quantity_review": "classification only; unit/title package conflicts remain",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:47:76"],
+      "source_record_key": "697408",
+      "source_title": "무농약 생 표고버섯(흑화고) 선물세트 600g",
+      "proposed_leaf": "food.produce.vegetables.mushroom",
+      "reason": "제목이 '생 표고버섯'을 직접 명시한다. 무농약·흑화고·선물세트는 속성/구성이고 기존 신선 버섯 leaf를 재사용한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:47:90"],
+      "source_record_key": "655871",
+      "source_title": "일품채 상황영지 모둠세트 2호",
+      "proposed_leaf": "food.produce.vegetables.mushroom",
+      "reason": "상황·영지는 버섯류이고 제목은 버섯 모둠 선물세트의 제품 정체성을 충분히 드러낸다. 건조 여부가 제목에 명시되지 않았으므로 dried_mushroom으로 과추론하지 않고 일반 mushroom leaf를 사용한다.",
+      "quantity_review": "unit_unresolved remains separate",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:47:91"],
+      "source_record_key": "615085",
+      "source_title": "일품채 건표고 혼합세트 2호 x 10세트",
+      "proposed_leaf": "food.produce.processed_vegetables.dried_mushroom",
+      "reason": "제목이 건표고를 직접 명시하고 선행 proposal에서도 건표고/건목이를 기존 dried_mushroom leaf로 사용했다. 10세트는 판매구성이다.",
+      "quantity_review": "unit_unresolved remains separate",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:47:92"],
+      "source_record_key": "615083",
+      "source_title": "일품채 건표고 혼합세트 2호",
+      "proposed_leaf": "food.produce.processed_vegetables.dried_mushroom",
+      "reason": "제품형태가 명시적 건표고 선물세트이므로 기존 dried_mushroom leaf를 재사용한다.",
+      "quantity_review": "unit_unresolved remains separate",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:47:94"],
+      "source_record_key": "655867",
+      "source_title": "일품채 상황영지 모둠세트 1호",
+      "proposed_leaf": "food.produce.vegetables.mushroom",
+      "reason": "상황·영지 버섯 모둠 상품이다. 제목에 건조 형태가 명시되지 않아 일반 mushroom leaf를 사용한다.",
+      "quantity_review": "unit_unresolved remains separate",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:47:95"],
+      "source_record_key": "655870",
+      "source_title": "일품채 상황영지 모둠세트 1호x 10",
+      "proposed_leaf": "food.produce.vegetables.mushroom",
+      "reason": "상황·영지 버섯 모둠의 대량 판매구성이다. 10세트는 수량 속성이고 제품유형은 버섯이다.",
+      "quantity_review": "unit_unresolved remains separate",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:47:97"],
+      "source_record_key": "624156",
+      "source_title": "바다소리 독거도 명품 돌미역 선물세트",
+      "proposed_leaf": "food.seafood.seaweed.miyeok",
+      "reason": "Costco 채소 shelf와 무관한 돌미역 선물세트다. 선물세트는 포장형태이고 기존 미역 leaf를 재사용한다.",
+      "quantity_review": "unit_unresolved remains separate",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "deferred_taxonomy_or_product_form_candidates": [
+    {
+      "raw_record_ids": ["ingestion:47:66"],
+      "source_record_key": "1371826",
+      "source_title": "옥소 소프트웍스 야채 탈수기",
+      "suggested_new_leaf": "household.kitchen.tools.salad_spinner",
+      "reason": "식품 채소가 아니라 공식 URL HomeKitchen의 샐러드/야채 탈수기다. pass41에 대응 kitchen-tool leaf가 확인되지 않아 신규 후보로 보류한다.",
+      "quantity_review": "unit_unresolved remains separate"
+    },
+    {
+      "raw_record_ids": ["ingestion:47:67"],
+      "source_record_key": "676562",
+      "source_title": "유러피언 쌈채소 5종(440g)",
+      "suggested_new_leaf": "food.produce.vegetables.leafy_greens_mix",
+      "reason": "공식 URL은 European Lettuce Assortment지만 제목은 5종 쌈채소 혼합을 명시한다. 정확 품종을 추정해 단일 lettuce leaf로 축소하지 않고 혼합 잎채소 후보로 보류한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:47:68"],
+      "source_record_key": "694437",
+      "source_title": "일품채 솥밥용 버섯채소모둠200g",
+      "suggested_new_leaf": "food.produce.vegetables.mixed_pack",
+      "reason": "버섯과 기타 채소가 함께 들어간 솥밥용 혼합팩이다. mushroom 단일 leaf로 축소하지 않고 혼합 신선채소 후보로 보류한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:47:71"],
+      "source_record_key": "633700",
+      "source_title": "마이크로플레인스파이럴커터",
+      "suggested_new_leaf": "household.kitchen.tools.spiral_cutter",
+      "reason": "공식 URL이 HomeKitchen/KnifeScissors 문맥의 스파이럴 커터다. 채소가 아니라 조리도구이며 pass41 exact leaf가 없어 후보로 보류한다.",
+      "quantity_review": "unit_unresolved remains separate"
+    },
+    {
+      "raw_record_ids": ["ingestion:47:77"],
+      "source_record_key": "694990",
+      "source_title": "루꼴라샐러드 500g x 2입",
+      "suggested_new_leaf": "food.produce.vegetables.arugula",
+      "reason": "공식 URL과 제목이 신선 루꼴라를 직접 가리킨다. pass41에 독립 arugula leaf가 확인되지 않아 후보로 보류한다.",
+      "quantity_review": "classification only; package/unit conflicts remain"
+    },
+    {
+      "raw_record_ids": ["ingestion:47:79"],
+      "source_record_key": "694986",
+      "source_title": "무농약버터헤드레터스 4입+무농약 미니로메인 5입",
+      "suggested_new_leaf": "food.produce.vegetables.lettuce",
+      "reason": "버터헤드와 미니로메인은 모두 lettuce 계열이며 선행 vegetable proposal도 lettuce를 신규 leaf 후보로 유지했다. mixed-package 문제는 별도다.",
+      "quantity_review": "mixed_package_unresolved remains separate"
+    },
+    {
+      "raw_record_ids": ["ingestion:47:85"],
+      "source_record_key": "694098",
+      "source_title": "Chewy Eatus 한입 꿀고구마 말랭이 80g x 10",
+      "suggested_new_leaf": "food.produce.processed_vegetables.dried_sweet_potato",
+      "reason": "고구마 말랭이는 고구마 가공품이며 건과일 leaf로 보내면 원재료 축이 틀린다. 선행 proposal도 동일 제품형태를 강제분류하지 않고 건조 고구마/채소 간식 정책 검토로 보류했다.",
+      "quantity_review": "unchanged; 80g×10 preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:47:87"],
+      "source_record_key": "694291",
+      "source_title": "뉴트리플랜 동결건조 야채트릿 200g",
+      "suggested_new_leaf": "pet.dog.treat.freeze_dried",
+      "reason": "공식 URL이 Dog-Foods이고 제품은 반려견용 동결건조 트릿이다. 야채 원재료 때문에 사람용 채소로 분류하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:47:88"],
+      "source_record_key": "694401",
+      "source_title": "타카쇼 우드 플랜터 600 2PK",
+      "suggested_new_leaf": "home.garden.planters",
+      "reason": "공식 URL이 PatioLawnGarden/Garden-ToolsEquipment/Planters이고 실제 상품은 화분/플랜터다. pass41 대응 원예 leaf가 없어 후보로 보류한다.",
+      "quantity_review": "unit_unresolved remains separate"
+    },
+    {
+      "raw_record_ids": ["ingestion:48:3"],
+      "source_record_key": "600473",
+      "source_title": "캣 트리거 피쉬 & 야채 고양이사료10kg",
+      "suggested_new_leaf": "pet.cat.food.dry",
+      "reason": "공식 URL이 Cat-Foods이고 10kg 고양이 사료다. 피쉬/야채는 원재료·맛이고 사람용 채소/생선 분류 근거가 아니다."
+    },
+    {
+      "raw_record_ids": ["ingestion:48:4"],
+      "source_record_key": "669087",
+      "source_title": "커클랜드 시그니춰 과카몰리 70g X 16ct X 180",
+      "suggested_new_leaf": "food.seasonings.dips.guacamole",
+      "reason": "완제품 과카몰리 대량 포장이다. 아보카도 원물 leaf로 축소하지 않고 dip/spread 제품형태 후보로 보류한다.",
+      "quantity_review": "bulk_package_review_required remains separate"
+    },
+    {
+      "raw_record_ids": ["ingestion:48:5"],
+      "source_record_key": "645163",
+      "source_title": "커클랜드 시그니춰 쓰리베리블렌드1.81kg x 240개",
+      "suggested_candidate_if_form_verified": "food.produce.processed_fruit.frozen",
+      "status": "held_product_form_confirmation",
+      "reason": "쓰리베리 혼합 과일임은 명확하고 pass41에는 냉동과일 leaf가 존재하지만, 저장된 제목과 URL은 이 listing이 냉동 형태임을 직접 명시하지 않는다. 1.81kg 제품명만으로 냉동을 확정하지 않고 원상품 형태 확인 전까지 보류한다.",
+      "quantity_review": "multiple_package_quantities/unit conflicts remain separate"
+    }
+  ],
+  "executed_tests": []
+}
