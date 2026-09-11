@@ -1,0 +1,84 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "028",
+  "scope_note": "Strict raw-coverage reconciliation for pending 028. Both pending/028/001.json and 002.json were read. All 33 observations remain classification-pending in the frozen pass41 handoff. The older proposals/grains-nuts-028-034.json claimed group 028 but covered only 11/33 raw observations. This file records the exact 22-row gap, revalidates the earlier 11 decisions, and gives final group accounting. No DB import/rebuild or repository tests were executed.",
+  "group_accounting": {
+    "observations_opened": 33,
+    "already_classification_complete_excluded": 0,
+    "strict_classification_reviews": 33,
+    "distinct_source_listings": 33,
+    "previous_proposal_covered": 11,
+    "previously_uncovered": 22,
+    "final_existing_leaf_decisions": 28,
+    "final_holds": 5,
+    "new_existing_leaf_supplements": 17,
+    "new_holds": 5,
+    "explicit_review_decision_matches": 0
+  },
+  "prior_proposal": {
+    "path": "proposals/grains-nuts-028-034.json",
+    "covered_raw_record_ids": [
+      "ingestion:35:99",
+      "ingestion:36:0",
+      "ingestion:36:1",
+      "ingestion:36:3",
+      "ingestion:36:5",
+      "ingestion:36:8",
+      "ingestion:36:9",
+      "ingestion:36:13",
+      "ingestion:36:19",
+      "ingestion:36:23",
+      "ingestion:36:26"
+    ],
+    "revalidated_decisions": [
+      {"raw_record_id":"ingestion:35:99","source_record_key":"8809546364575","source_title":"매일 견과 (20G*10입)","unified_category_id":"food.grains.nuts.mixed"},
+      {"raw_record_id":"ingestion:36:0","source_record_key":"8809546367286","source_title":"볶음 땅콩 (450G)","unified_category_id":"food.grains.nuts.peanut"},
+      {"raw_record_id":"ingestion:36:1","source_record_key":"8809546367323","source_title":"구운 껍질캐슈넛 (180G)","unified_category_id":"food.grains.nuts.cashew"},
+      {"raw_record_id":"ingestion:36:3","source_record_key":"8809546367262","source_title":"피스타치오 (170G)","unified_category_id":"food.grains.nuts.pistachio"},
+      {"raw_record_id":"ingestion:36:5","source_record_key":"8809546366654","source_title":"매일견과 하루한줌 80봉 (1280G)","unified_category_id":"food.grains.nuts.mixed"},
+      {"raw_record_id":"ingestion:36:8","source_record_key":"0430001353544","source_title":"오늘좋은 통마카다미아 (250G)","unified_category_id":"food.grains.nuts.macadamia"},
+      {"raw_record_id":"ingestion:36:9","source_record_key":"8809170540536","source_title":"테일러 말린 무화과 (170G)","unified_category_id":"food.produce.processed_fruit.dried"},
+      {"raw_record_id":"ingestion:36:13","source_record_key":"8809546367293","source_title":"베스트견과 3MIX (190G)","unified_category_id":"food.grains.nuts.mixed"},
+      {"raw_record_id":"ingestion:36:19","source_record_key":"8809546362182","source_title":"펍 앤 믹스너츠 (450G)","unified_category_id":"food.grains.nuts.mixed"},
+      {"raw_record_id":"ingestion:36:23","source_record_key":"0430001322434","source_title":"오늘좋은 건포도 (400G)","unified_category_id":"food.produce.processed_fruit.dried"},
+      {"raw_record_id":"ingestion:36:26","source_record_key":"8809546366685","source_title":"넛츠박스 매일견과 20봉 (360G)","unified_category_id":"food.grains.nuts.mixed"}
+    ],
+    "revalidation_result": "all 11 earlier pending-028 proposals remain compatible with current title/product-form-first policy",
+    "conflicts_found": 0
+  },
+  "previously_uncovered_raw_record_ids": [
+    "ingestion:35:96","ingestion:35:97","ingestion:35:98","ingestion:36:2","ingestion:36:4","ingestion:36:6","ingestion:36:7","ingestion:36:10","ingestion:36:11","ingestion:36:12","ingestion:36:14","ingestion:36:15","ingestion:36:16","ingestion:36:17","ingestion:36:18","ingestion:36:20","ingestion:36:21","ingestion:36:22","ingestion:36:24","ingestion:36:25","ingestion:36:27","ingestion:36:28"
+  ],
+  "supplemental_decisions": [
+    {"raw_record_ids":["ingestion:35:96"],"source_record_key":"8809478916521","source_title":"고구마 스틱 (300G)","decision":"propose_existing_leaf","unified_category_id":"food.snacks.savory.vegetable","reason":"Sweet-potato snack form is explicit. Pass41 has audited sweet-potato-chip precedent under the generic vegetable-snack leaf; retailer fruit-chip shelf does not override product identity."},
+    {"raw_record_ids":["ingestion:35:97"],"source_record_key":"8800279451976","source_title":"HBAF 스낵믹스넛 짭짤고소 (200G)","decision":"propose_existing_leaf","unified_category_id":"food.grains.nuts.mixed","reason":"Title and detailed path identify mixed seasoned nuts."},
+    {"raw_record_ids":["ingestion:35:98"],"source_record_key":"8809546367309","source_title":"바삭한 피칸 (120G)","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.grains.nuts.pecan","reason":"Pecan is explicit; reuse the same held candidate established during pending-034 reconciliation because pass41 has no confirmed pecan leaf."},
+    {"raw_record_ids":["ingestion:36:2"],"source_record_key":"8807354219780","source_title":"바삭한 골든고구마칩 (200G)","decision":"propose_existing_leaf","unified_category_id":"food.snacks.savory.vegetable","reason":"Direct sweet-potato-chip precedent exists in pass41."},
+    {"raw_record_ids":["ingestion:36:4"],"source_record_key":"8809546364896","source_title":"구운 호박씨 (300G)","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.grains.seeds.pumpkin","reason":"Reuse pending-034 pumpkin-seed candidate; do not collapse seed into mixed nuts."},
+    {"raw_record_ids":["ingestion:36:6"],"source_record_key":"8807354217045","source_title":"달콤한 자색고구마칩 (240G)","decision":"propose_existing_leaf","unified_category_id":"food.snacks.savory.vegetable","reason":"Sweet-potato chip remains a vegetable snack despite sweet seasoning and retailer fruit-chip placement."},
+    {"raw_record_ids":["ingestion:36:7"],"source_record_key":"8809617944507","source_title":"HBAF 와사비맛 아몬드 (120G)","decision":"propose_existing_leaf","unified_category_id":"food.grains.nuts.almond","reason":"Wasabi is seasoning; primary nut identity is almond."},
+    {"raw_record_ids":["ingestion:36:10"],"source_record_key":"8800279452881","source_title":"바프 HBAF 허니버터아몬드&땅콩 (280G)","decision":"propose_existing_leaf","unified_category_id":"food.grains.nuts.mixed","reason":"Explicit almond+peanut combination is a mixed nut snack."},
+    {"raw_record_ids":["ingestion:36:11"],"source_record_key":"8809019711943","source_title":"사바 바나나칩 (250G)","decision":"propose_existing_leaf","unified_category_id":"food.produce.processed_fruit.dried","reason":"Pass41 has classified dried-fruit-chip precedent under processed_fruit.dried; detailed retailer path is fruit chips."},
+    {"raw_record_ids":["ingestion:36:12"],"source_record_key":"8801133013217","source_title":"오늘좋은 허니버터 아몬드 (50G)","decision":"propose_existing_leaf","unified_category_id":"food.grains.nuts.almond","reason":"Flavoring does not change almond identity."},
+    {"raw_record_ids":["ingestion:36:14"],"source_record_key":"8803143116452","source_title":"바나나칩 (400G)","decision":"propose_existing_leaf","unified_category_id":"food.produce.processed_fruit.dried","reason":"Fruit-chip product form fits existing dried processed-fruit leaf."},
+    {"raw_record_ids":["ingestion:36:15"],"source_record_key":"8809617944514","source_title":"HBAF 군옥수수맛 아몬드 (120G)","decision":"propose_existing_leaf","unified_category_id":"food.grains.nuts.almond","reason":"Corn flavor is seasoning; almond remains the core nut."},
+    {"raw_record_ids":["ingestion:36:16"],"source_record_key":"8807354223442","source_title":"명인부각 누룽지 (180G)","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.grains.processed.nurungji","reason":"Detailed retailer path explicitly says 누룽지. Reuse strict pending-105 candidate; current broad name rules that may surface tea/snack are product-form conflicts."},
+    {"raw_record_ids":["ingestion:36:17"],"source_record_key":"8801133013200","source_title":"오늘좋은 와사비향 아몬드 (50G)","decision":"propose_existing_leaf","unified_category_id":"food.grains.nuts.almond"},
+    {"raw_record_ids":["ingestion:36:18"],"source_record_key":"8809617944521","source_title":"HBAF 쿠키앤크림 아몬드 (120G)","decision":"propose_existing_leaf","unified_category_id":"food.grains.nuts.almond","reason":"Cookie-and-cream seasoning does not erase explicit almond product identity."},
+    {"raw_record_ids":["ingestion:36:20"],"source_record_key":"8801133013309","source_title":"오늘좋은 군옥수수맛 아몬드 (50G)","decision":"propose_existing_leaf","unified_category_id":"food.grains.nuts.almond"},
+    {"raw_record_ids":["ingestion:36:21"],"source_record_key":"8801133013378","source_title":"오늘좋은 바닐라향 마카다미아 (40G)","decision":"propose_existing_leaf","unified_category_id":"food.grains.nuts.macadamia","reason":"Vanilla is flavoring; macadamia identity is explicit."},
+    {"raw_record_ids":["ingestion:36:22"],"source_record_key":"8801416843784","source_title":"그린너트 단호박칩 (200G)","decision":"propose_existing_leaf","unified_category_id":"food.snacks.savory.vegetable","reason":"Current leaf is generic 채소스낵, so pumpkin chip fits the product form without creating a new leaf."},
+    {"raw_record_ids":["ingestion:36:24"],"source_record_key":"8804246049524","source_title":"듀럼밀 (1.5KG)","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.grains.wheat.durum","reason":"Raw durum wheat/grain is explicit. Existing catalog examples named 듀럼밀 are pasta products and are not valid precedent for raw grain; no current durum-wheat leaf was confirmed."},
+    {"raw_record_ids":["ingestion:36:25"],"source_record_key":"8800279452904","source_title":"바프 HBAF 와사비맛아몬드&땅콩 (280G)","decision":"propose_existing_leaf","unified_category_id":"food.grains.nuts.mixed","reason":"Explicit almond+peanut combination."},
+    {"raw_record_ids":["ingestion:36:27"],"source_record_key":"8809617942015","source_title":"HBAF 카라멜 아몬드 앤 프레첼 (120G)","status":"held_mixed_product_form","reason":"This is explicitly almond plus pretzel, so forcing it into pure almond/mixed-nut leaves would discard a material non-nut component. Hold for mixed snack taxonomy/reconciliation."},
+    {"raw_record_ids":["ingestion:36:28"],"source_record_key":"8809617944941","source_title":"HBAF 마늘빵 아몬드 (120G)","decision":"propose_existing_leaf","unified_category_id":"food.grains.nuts.almond","reason":"Garlic-bread flavoring does not change explicit almond identity."}
+  ],
+  "explicit_review_decision_collision_screen": {
+    "source_record_keys_checked": 33,
+    "method": "five batched repository searches covering all pending-028 source_record_key values together with review-decisions-input",
+    "review_decisions_input_hits": 0,
+    "note": "Proposal-stage screen only; the 431 explicit decisions were not mutated."
+  },
+  "executed_tests": []
+}
