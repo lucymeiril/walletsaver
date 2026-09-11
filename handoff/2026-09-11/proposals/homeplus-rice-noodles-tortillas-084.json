@@ -1,0 +1,67 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "084",
+  "source_path": "라면/즉석식품/통조림 > 당면/건면/스파게티 > 쌀국수/월남쌈",
+  "scope_note": "Classification-only proposal. Product identity is grouped by source_record_key; raw observations remain authoritative in pending/084/001.json. The mixed retail shelf contains both tortillas and rice-noodle products.",
+  "review_accounting": {
+    "pending_rows_checked": 11,
+    "unique_products": 6,
+    "new_classification_reviews": 11,
+    "prior_reviewed": 1068,
+    "current_reviewed": 1079,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2837
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "Repository search returned pending/catalog-unresolved evidence only for the six source_record_keys; no earlier proposal conflict was found."
+  },
+  "decisions": [
+    {
+      "source_record_key": "069481326",
+      "source_title": "백제 어머님의손맛 파곰탕면쌀국수 93.5G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.rice_noodle",
+      "reason": "제목이 쌀국수 면요리를 직접 명시하며 곰탕맛은 맛/육수 변형이다. pass41의 rice_noodle leaf가 맞는다."
+    },
+    {
+      "source_record_key": "069481228",
+      "source_title": "백제 어머님의손맛 멸치맛쌀국수 92G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.rice_noodle",
+      "reason": "멸치맛은 맛 변형이며 실제 제품형태는 쌀국수다."
+    },
+    {
+      "source_record_key": "069481292",
+      "source_title": "백제 어머님의손맛 얼큰한맛쌀국수 90G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.rice_noodle",
+      "reason": "얼큰한맛은 맛 변형이고 제품형태는 쌀국수이므로 기존 rice_noodle leaf를 사용한다."
+    }
+  ],
+  "held_decisions": [
+    {
+      "source_record_key": "071029964",
+      "source_title": "Simplus 밀또띠아 315G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.bakery.bread.tortilla",
+      "reason": "또띠아는 쌀국수/월남쌈 shelf에 함께 진열됐지만 면 제품이 아니다. pass41 bread taxonomy에도 또띠아 전용 leaf가 없어 신규 flatbread 후보로 보존한다."
+    },
+    {
+      "source_record_key": "069837156",
+      "source_title": "델리썬 소프트플라워 또띠아 320G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.bakery.bread.tortilla",
+      "reason": "밀가루 또띠아 제품으로 쌀국수 leaf에 넣을 수 없으며 기존 bread leaf 중 식빵/롤/베이글/하드롤/페이스트리/생지 어느 것에도 정확히 맞지 않는다."
+    },
+    {
+      "source_record_key": "071029976",
+      "source_title": "Simplus 통밀또띠아 315G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.bakery.bread.tortilla",
+      "reason": "통밀은 원재료 변형이고 제품형태는 또띠아다. 일반 밀또띠아와 동일 신규 leaf 후보를 재사용한다."
+    }
+  ],
+  "executed_tests": []
+}
