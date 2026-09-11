@@ -1,0 +1,49 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "scope_note": "GitHub read/write review only. No staging DB import, rebuild, or repo tests were run. Pending 451 classification was already resolved; remaining unit/promotion issues are recorded separately.",
+  "reviewed_pending_groups": ["447", "448", "451"],
+  "decisions": [
+    {
+      "pending_group": "447",
+      "raw_record_ids": ["ingestion:35:15"],
+      "source_record_key": "8801052127897",
+      "source_title": "청정원 저당 오리엔탈드레싱 (310G)",
+      "proposed_leaf": "food.seasonings.sauces.dressing",
+      "reason": "제목과 원본 경로가 오리엔탈드레싱을 직접 가리키며 pass41에 샐러드드레싱 전용 리프가 존재한다. 저당 표시는 제품 속성으로 본다.",
+      "quantity_review": "unchanged; promotion_unresolved remains separate",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "448",
+      "raw_record_ids": ["ingestion:34:79"],
+      "source_record_key": "8801392099465",
+      "source_title": "백설 스테비아 (400G)",
+      "proposed_leaf": "food.seasonings.baking.stevia_blend",
+      "reason": "제목과 원본 경로가 스테비아계 대체감미료를 직접 가리키며 pass41에 food.seasonings.baking.stevia_blend 리프가 존재한다.",
+      "quantity_review": "unchanged; promotion_unresolved remains separate",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "already_classified_pending": [
+    {
+      "pending_group": "451",
+      "raw_record_ids": ["ingestion:28:11"],
+      "source_record_key": "8809597440167",
+      "source_title": "국내산 양배추 (1EA)",
+      "existing_leaf": "food.produce.vegetables.cabbage",
+      "review_status": "classified",
+      "remaining_reasons": ["promotion_unresolved", "unit_unresolved"],
+      "review_note": "분류는 이미 완료되어 있다. 제목의 1EA를 근거로 구조화 단위를 새로 덮어쓰지 않고 단위 unresolved와 농할 행사 unresolved를 그대로 유지한다."
+    }
+  ],
+  "explicit_review_conflict_check": {
+    "checked_against": "review-decisions-input.json",
+    "source_record_keys_checked": ["8801052127897", "8801392099465", "8809597440167"],
+    "conflicts_found": 0
+  },
+  "cumulative_reviewed_unique_observations": 477,
+  "baseline_held_observations": 3916,
+  "remaining_unreviewed_observations": 3439,
+  "executed_tests": []
+}
