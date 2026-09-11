@@ -1,0 +1,145 @@
+{
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["032"],
+  "scope_note": "GitHub read/write review only. Both pending/032/001.json and 002.json were read. All 32 observations are classification-pending, but they collapse to 16 source listings observed twice. Broad Homeplus shelf '커피/차 > 코코아/핫초코 > 가향분말류 > 기타가향분말류' was treated as weak evidence; title/product form and prior proposal precedent were used. No DB import/rebuild or repository tests were run.",
+  "accounting": {
+    "observations_opened": 32,
+    "already_classified_exclusions": 0,
+    "classification_review_observations": 32,
+    "distinct_source_listings": 16,
+    "existing_leaf_proposals": 2,
+    "holds": 14,
+    "explicit_review_decision_matches": 0
+  },
+  "precedent_notes": [
+    "Prior bulk review for pending 131 holds kombucha as new taxonomy candidate food.drinks.tea.kombucha and apple-cider-vinegar drink as food.drinks.other.apple_cider_vinegar.",
+    "Prior pending 104 review holds non-yuja fruit preserves/cheong as food.drinks.tea.fruit_preserve instead of forcing them into the yuja-only citron leaf.",
+    "Current taxonomy/review precedent uses food.drinks.tea.black for iced tea and food.drinks.tea.green for explicit matcha/green-tea products.",
+    "The protein sweet-potato cream latte title does not prove coffee content, so it is held rather than forced into coffee.mix."
+  ],
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:15:67", "ingestion:65:44"],
+      "source_record_key": "071090947",
+      "source_title": "동서 애사비 콤부차 파인애플망고 150G(30T)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.kombucha",
+      "reason": "Product form is powdered kombucha despite the broad cocoa/hot-chocolate shelf. Existing precedent holds kombucha as its own tea candidate."
+    },
+    {
+      "raw_record_ids": ["ingestion:15:68", "ingestion:65:25"],
+      "source_record_key": "071090884",
+      "source_title": "동서 애사비 콤부차 레몬라임 150G(30T)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.kombucha",
+      "reason": "Powdered kombucha; apple-cider-vinegar flavoring does not change the primary product form."
+    },
+    {
+      "raw_record_ids": ["ingestion:15:83", "ingestion:65:20"],
+      "source_record_key": "148493091",
+      "source_title": "티젠 콤부차 레몬 30T (150G)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.kombucha"
+    },
+    {
+      "raw_record_ids": ["ingestion:15:87", "ingestion:65:53"],
+      "source_record_key": "148048283",
+      "source_title": "패션후르츠&한라봉청 1KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.fruit_preserve",
+      "reason": "Fruit preserve/cheong for beverage preparation; do not force non-yuja preserve into citron."
+    },
+    {
+      "raw_record_ids": ["ingestion:16:0", "ingestion:65:17"],
+      "source_record_key": "070525908",
+      "source_title": "티젠 콤부차 매실 30T (150G)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.kombucha"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:3", "ingestion:65:33"],
+      "source_record_key": "069206769",
+      "source_title": "티젠 콤부차 파인애플 30T(150G)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.kombucha"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:4", "ingestion:65:15"],
+      "source_record_key": "068948059",
+      "source_title": "티젠 콤부차 피치 30T(150G)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.kombucha"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:10", "ingestion:65:54"],
+      "source_record_key": "148048191",
+      "source_title": "패션후르츠&레몬청 1KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.fruit_preserve"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:24", "ingestion:65:62"],
+      "source_record_key": "071393785",
+      "source_title": "동서 아이스티 티오 복숭아 40T",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.drinks.tea.black",
+      "reason": "Current taxonomy/review precedent treats iced-tea mixes under the black-tea leaf."
+    },
+    {
+      "raw_record_ids": ["ingestion:16:28", "ingestion:65:66"],
+      "source_record_key": "071196667",
+      "source_title": "티젠 브이핏 말차레몬 10T(40G)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.drinks.tea.green",
+      "reason": "Explicit matcha product form supports the existing green-tea leaf despite the broad shelf."
+    },
+    {
+      "raw_record_ids": ["ingestion:16:29", "ingestion:65:67"],
+      "source_record_key": "071195023",
+      "source_title": "티젠 애플사이다비니거 사과&배 30T(150G)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.other.apple_cider_vinegar",
+      "reason": "Prior review precedent already uses this candidate for apple-cider-vinegar drink mix."
+    },
+    {
+      "raw_record_ids": ["ingestion:16:31", "ingestion:65:69"],
+      "source_record_key": "071111256",
+      "source_title": "티젠 콤부차 망고구아바 30T(150G)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.kombucha"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:32", "ingestion:65:30"],
+      "source_record_key": "071090901",
+      "source_title": "동서 애사비 콤부차 피치패션프룻 150G(30T)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.kombucha"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:42", "ingestion:65:81"],
+      "source_record_key": "070739154",
+      "source_title": "맥널티 스테비아 단백질 고구마크림라떼 20T(360G)",
+      "status": "held_product_form_review",
+      "candidate_new_leaf": "food.drinks.other.latte_mix",
+      "reason": "Powdered sweet-potato cream latte is clear, but the title does not establish coffee content; do not force into coffee.mix."
+    },
+    {
+      "raw_record_ids": ["ingestion:16:45", "ingestion:65:84"],
+      "source_record_key": "070243913",
+      "source_title": "티젠 콤부차 라즈베리 30T 150G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.kombucha"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:57", "ingestion:65:94"],
+      "source_record_key": "064586458",
+      "source_title": "티젠 콤부차유자 30T(150G)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.kombucha"
+    }
+  ],
+  "explicit_decision_screen": {
+    "method": "batched repository search using all 16 source_record_key values together with review-decisions-input",
+    "result": "No review-decisions-input match returned for either batch."
+  }
+}
