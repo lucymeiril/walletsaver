@@ -1,0 +1,138 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["244", "245", "246", "247", "248", "371", "372", "374", "375", "380", "382"],
+  "scope_note": "GitHub read/write review only. Classification proposals are separate from the staging DB and are not consumed automatically by the importer.",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:3:9", "ingestion:52:9"],
+      "source_title": "국산 건표고버섯 100G(봉)",
+      "proposed_leaf": "food.produce.processed_vegetables.dried_mushroom",
+      "reason": "원본 경로와 제목 모두 건표고버섯이라는 건조 버섯 형태를 직접 명시한다.",
+      "quantity_review": "unchanged; repeated observations share the same source listing and 100g package",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:3:32", "ingestion:52:54"],
+      "source_title": "건목이 버섯 50G(봉)",
+      "proposed_leaf": "food.produce.processed_vegetables.dried_mushroom",
+      "reason": "원본 경로가 건버섯이고 제목도 건목이버섯 50g으로 건조 형태를 직접 명시한다.",
+      "quantity_review": "unchanged; repeated observations share the same source listing and 50g package",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:2:83", "ingestion:51:83"],
+      "source_title": "산지 그대로 무 국산(개)",
+      "proposed_leaf": "food.produce.vegetables.radish",
+      "reason": "제목이 신선 무를 직접 명시하며 현재 신선채소 taxonomy에 독립 무 리프가 존재한다.",
+      "quantity_review": "unchanged; classification-only proposal; count unit remains as collected",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:3:24", "ingestion:52:52"],
+      "source_title": "맛난이 양송이 버섯 180G(팩)",
+      "proposed_leaf": "food.produce.vegetables.mushroom",
+      "reason": "제목과 원본 경로가 양송이버섯이라는 신선 버섯을 명시하며 현재 taxonomy의 신선 버섯 통합 리프와 일치한다.",
+      "quantity_review": "unchanged; repeated observations share the same source listing and 180g package",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:3:30", "ingestion:51:95"],
+      "source_title": "양송이 버섯 180G(팩)",
+      "proposed_leaf": "food.produce.vegetables.mushroom",
+      "reason": "제목과 원본 경로가 양송이버섯이라는 신선 버섯을 명시한다.",
+      "quantity_review": "unchanged; repeated observations share the same source listing and 180g package",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:2:85", "ingestion:51:82"],
+      "source_title": "평창 고랭지 대파(봉)",
+      "proposed_leaf": "food.produce.vegetables.scallion",
+      "reason": "제목과 원본 경로가 대파를 직접 명시하며 현재 taxonomy의 대파 리프 ID가 food.produce.vegetables.scallion이다.",
+      "quantity_review": "unchanged; classification-only proposal; 봉 단위는 그대로 보존",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:2:98", "ingestion:52:29"],
+      "source_title": "깐 대파(봉)",
+      "proposed_leaf": "food.produce.vegetables.scallion",
+      "reason": "껍질/불필요 부위를 손질한 대파로 제목과 원본 경로가 대파를 직접 명시하며 별도 가공식품 형태는 아니다.",
+      "quantity_review": "unchanged; classification-only proposal; 봉 단위는 그대로 보존",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:3:6", "ingestion:52:3"],
+      "source_title": "부추(봉)",
+      "proposed_leaf": "food.produce.vegetables.chives",
+      "reason": "제목과 원본 경로 모두 신선 부추를 직접 명시하며 현재 taxonomy에 부추 리프가 존재한다.",
+      "quantity_review": "unchanged; classification-only proposal; 봉 단위는 그대로 보존",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:3:17", "ingestion:52:22"],
+      "source_title": "배추 (국산/통)",
+      "proposed_leaf": "food.produce.vegetables.napa_cabbage",
+      "reason": "원본 경로는 배추/절임배추 혼합 진열이지만 제목이 절임이 아닌 통배추를 명시하므로 신선 배추 리프가 맞다.",
+      "quantity_review": "unchanged; classification-only proposal; 개 단위는 그대로 보존",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:3:14", "ingestion:52:31"],
+      "source_title": "맛타리 버섯 500G(팩)",
+      "proposed_leaf": "food.produce.vegetables.mushroom",
+      "reason": "제목과 경로가 신선 맛타리버섯을 직접 명시하며 현재 신선 버섯 통합 리프와 일치한다.",
+      "quantity_review": "unchanged; repeated observations share the same source listing and 500g package",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:52:21"],
+      "source_title": "구이용 모둠버섯 300G(팩)",
+      "proposed_leaf": "food.produce.vegetables.mushroom",
+      "reason": "제목과 경로가 여러 신선 버섯의 모둠팩임을 명시하며 조리완제품이 아니므로 신선 버섯 통합 리프로 제안한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:52:77"],
+      "source_title": "샤브 전골용 모둠버섯 450G(팩)",
+      "proposed_leaf": "food.produce.vegetables.mushroom",
+      "reason": "용도 표현이 샤브 전골용일 뿐 제목과 경로는 조리되지 않은 모둠버섯 팩을 나타낸다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:3:20", "ingestion:52:25"],
+      "source_title": "깐마늘 300G(봉)",
+      "proposed_leaf": "food.produce.vegetables.garlic",
+      "reason": "제목과 원본 경로가 깐마늘을 직접 명시하며 박피는 신선 마늘의 손질 속성으로 보고 기존 마늘 리프에 제안한다.",
+      "quantity_review": "unchanged; repeated observations share the same source listing and 300g package",
+      "identity_merge": "same_source_listing_observations_only"
+    }
+  ],
+  "deferred": [
+    {
+      "raw_record_ids": ["ingestion:3:18", "ingestion:52:34"],
+      "source_title": "고추채 절임 300G(통)",
+      "reason": "마트 경로는 데친나물/삶은나물이지만 제목은 절임을 명시한다. 현재 가공채소의 blanched 리프에 강제하지 않고 절임채소/반찬 taxonomy 정책을 검토한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:47", "ingestion:52:35"],
+      "source_title": "명이 절임 300G(통)",
+      "reason": "마트 경로와 달리 제목이 명이 절임을 명시하므로 데친나물 리프에 넣지 않는다. 절임채소/반찬 분류 정책이 필요하다."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:46", "ingestion:52:65"],
+      "source_title": "열무(국산/봉)",
+      "reason": "원본 경로가 무/열무 혼합이지만 현재 taxonomy에는 일반 무 리프만 있고 열무 독립 리프가 없다. 이름이 열무인 상품을 일반 무로 축소하지 않는다."
+    }
+  ],
+  "nonclassification_pending": [
+    {
+      "raw_record_ids": ["ingestion:3:19", "ingestion:52:11"],
+      "source_title": "양파 중(망)",
+      "existing_leaf": "food.produce.vegetables.onion",
+      "reason": "분류는 이미 confidence 0.97로 resolved 상태이며 pending 이유는 source_specification_changed이다. 첫 관측은 1800g, 두 번째 관측은 1개로 정규화되어 규격 변경 검토가 필요하므로 classification-only 제안으로 해소하지 않는다."
+    }
+  ],
+  "executed_tests": []
+}
