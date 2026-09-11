@@ -1,0 +1,126 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["060"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data, promotions, quantity evidence, and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 756,
+    "batch_reviewed_unique_observations": 16,
+    "cumulative_reviewed_unique_observations": 772,
+    "remaining_unreviewed_observations": 3144
+  },
+  "review_summary": {
+    "unique_source_products_reviewed": 8,
+    "observations_reviewed": 16,
+    "proposed_existing_leaf_products": 0,
+    "proposed_existing_leaf_observations": 0,
+    "held_or_new_taxonomy_products": 8,
+    "held_or_new_taxonomy_observations": 16,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_matches_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "taxonomy_note": "pass41의 기존 주방용품 leaf는 랩·호일·일회용컵·일회용접시 등으로 제한되어 있어 행주/수세미 제품을 안전하게 수용하지 못한다. root 포함 최대 4레벨 규칙 안에서 household > kitchen > cleaning > leaf 축을 신규 후보로 제안한다.",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:27:25", "ingestion:76:88"],
+      "source_name": "homeplus",
+      "source_record_key": "070926716",
+      "source_title": "simplus 망사스펀지수세미 6입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.cleaning.scrubber",
+      "reason": "상품명과 원본 경로가 주방 수세미를 직접 가리킨다. 현재 pass41에 대응 수세미 leaf가 없으므로 다른 주방용품 leaf에 강제하지 않고 주방 청소용품 하위 수세미 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:28", "ingestion:76:90"],
+      "source_name": "homeplus",
+      "source_record_key": "070926745",
+      "source_title": "simplus 다목적수세미 8입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.cleaning.scrubber",
+      "reason": "다목적수세미 제품으로 식기·주방 청소용 수세미 정체성이 명확하나 현재 대응 leaf가 없다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:32", "ingestion:76:95"],
+      "source_name": "homeplus",
+      "source_record_key": "070926699",
+      "source_title": "simplus 망사수세미 6입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.cleaning.scrubber",
+      "reason": "망사 재질은 속성이며 제품유형은 수세미다. 현재 pass41에 수세미 leaf가 없어 신규 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:33", "ingestion:76:99"],
+      "source_name": "homeplus",
+      "source_record_key": "070926676",
+      "source_title": "simplus 컬러폴리수세미 2입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.cleaning.scrubber",
+      "reason": "폴리 재질/컬러는 속성이고 제품유형은 수세미다. 대응 기존 leaf가 없어 신규 수세미 leaf 후보로 유지한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:35", "ingestion:77:12"],
+      "source_name": "homeplus",
+      "source_record_key": "070926780",
+      "source_title": "simplus 셀룰로오스코코넛수세미 4입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.cleaning.scrubber",
+      "reason": "셀룰로오스·코코넛은 소재 속성이고 제품유형은 수세미다. 대응 기존 leaf가 없어 신규 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:39", "ingestion:77:5"],
+      "source_name": "homeplus",
+      "source_record_key": "070926653",
+      "source_title": "simplus 철수세미 6입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.cleaning.scrubber",
+      "reason": "철 재질 수세미로 제품유형이 명확하다. 재질별 leaf를 과도하게 늘리지 않고 수세미 공통 leaf 후보로 묶되 현재 taxonomy에는 해당 leaf가 없어 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:43", "ingestion:77:11"],
+      "source_name": "homeplus",
+      "source_record_key": "070926797",
+      "source_title": "simplus 부직포행주 8입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.cleaning.dishcloth",
+      "reason": "부직포는 소재이며 제품유형은 주방 행주다. 수세미와 다른 사용형태이므로 별도 행주 leaf 후보로 보존한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:27:77", "ingestion:77:33"],
+      "source_name": "homeplus",
+      "source_record_key": "070963470",
+      "source_title": "ScrubDaddy 스펀지캐디 1입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.cleaning.sponge_holder",
+      "reason": "상품명은 스펀지 자체보다 스펀지 보관용 캐디/거치대를 가리킨다. 수세미 leaf에 합치면 제품형태가 왜곡되므로 주방 청소용품 하위 스펀지 거치대 후보로 분리해 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
