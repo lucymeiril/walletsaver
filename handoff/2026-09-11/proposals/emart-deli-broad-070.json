@@ -1,0 +1,136 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "070",
+  "source_path": "김치/반찬/델리",
+  "scope_note": "Classification-only proposal. Quantity/unit/promotion/identity fields are left unchanged. No DB import, catalog rebuild, taxonomy code edit, or tests executed.",
+  "review_accounting": {
+    "pending_rows_checked": 13,
+    "new_classification_reviews": 13,
+    "prior_reviewed": 900,
+    "current_reviewed": 913,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 3003
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "OR search across all 13 source_record_keys returned only pending/raw/catalog-unresolved evidence; no prior proposal hit was found in indexed repository search."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:86:1"],
+      "source_record_key": "1000551873775",
+      "source_title": "김자반 야채",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.seafood.seaweed.laver",
+      "reason": "제품명이 김자반을 직접 명시하며 pass41 해조류 taxonomy의 김 leaf는 김자반/김가루를 포함한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:86:27"],
+      "source_record_key": "1000034128255",
+      "source_title": "풍림 메추리알 장조림 400g",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.preserved.sides.braised",
+      "reason": "원재료 메추리알이 아니라 완성 밑반찬인 장조림 형태가 상품 정체성이다. pass41의 상세 반찬 규칙도 장조림을 조림반찬으로 분류한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:86:43"],
+      "source_record_key": "1000043447846",
+      "source_title": "정성식품 백명란젓 300g",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.seafood.processed.pollock_roe",
+      "reason": "제품명이 명란을 직접 명시하고 pass41에는 명란 독립 수산가공 leaf가 있다. 젓갈 여부를 이유로 더 넓은 임의 leaf를 만들지 않는다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:86:64"],
+      "source_record_key": "1000506684996",
+      "source_title": "정성담은 메추리알 장조림400g",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.preserved.sides.braised",
+      "reason": "장조림 완성 반찬 형태가 명확하며 pass41의 조림반찬 정책과 일치한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:86:7"],
+      "source_record_key": "1000712369580",
+      "source_title": "맛있는 단무지 220g",
+      "suggested_new_leaf": "food.preserved.sides.danmuji",
+      "reason": "단무지는 절임 반찬이지만 현재 pass41의 pickled leaf 표시명은 장아찌이고 단무지 직접 근거가 없다. 장아찌에 강제 합치지 않는다.",
+      "followup": "단무지 독립 leaf 또는 절임반찬 통합 정책 검토"
+    },
+    {
+      "raw_record_ids": ["ingestion:86:25"],
+      "source_record_key": "0000007354825",
+      "source_title": "토굴숙성 광천 새우젓 250g",
+      "suggested_new_leaf": "food.seafood.fermented.shrimp_paste",
+      "reason": "새우젓 제품형태는 명확하지만 pass41 initial taxonomy에 발효수산/젓갈 leaf가 없다.",
+      "followup": "발효수산 상위그룹 및 새우젓 leaf 추가 여부 검토"
+    },
+    {
+      "raw_record_ids": ["ingestion:86:42"],
+      "source_record_key": "1000789548648",
+      "source_title": "[키친델리] 칠리함박&매쉬포테이토(팩)",
+      "suggested_new_leaf": "food.meals.prepared.hamburg_steak",
+      "reason": "함박스테이크와 매쉬포테이토가 결합된 완성 델리 식사다. 기존 ham leaf는 가공햄이고 prepared meat_patty leaf는 동그랑땡이므로 어느 쪽에도 강제하지 않는다.",
+      "followup": "함박스테이크 완성식 leaf 정책 검토"
+    },
+    {
+      "raw_record_ids": ["ingestion:86:45"],
+      "source_record_key": "1000632053385",
+      "source_title": "콘치즈 255g",
+      "suggested_new_leaf": "food.meals.prepared.corn_cheese",
+      "reason": "조리된 콘치즈 반찬/델리 제품이며 현재 prepared taxonomy에 직접 대응 leaf가 없다.",
+      "followup": "조리 사이드디시 또는 콘치즈 독립 leaf 정책 검토"
+    },
+    {
+      "raw_record_ids": ["ingestion:86:50"],
+      "source_record_key": "1000740615012",
+      "source_title": "[키친델리] 뉴강정사새우(팩)",
+      "suggested_new_leaf": "food.meals.prepared.shrimp_gangjeong",
+      "reason": "새우 강정 계열 완성 델리로 보이나 제목만으로 기존 fried_shrimp leaf의 단순 새우튀김과 동일형태라고 단정하지 않는다.",
+      "followup": "강정새우와 새우튀김 통합 여부 검토"
+    },
+    {
+      "raw_record_ids": ["ingestion:86:53"],
+      "source_record_key": "1000721557477",
+      "source_title": "오징어젓갈 500g",
+      "suggested_new_leaf": "food.seafood.fermented.squid_paste",
+      "reason": "오징어젓갈 제품형태는 명확하지만 pass41 initial taxonomy에 젓갈 leaf가 없다.",
+      "followup": "발효수산 상위그룹 및 오징어젓 leaf 추가 여부 검토"
+    },
+    {
+      "raw_record_ids": ["ingestion:86:55"],
+      "source_record_key": "1000847578228",
+      "source_title": "[키친델리] 생연어초밥&훈제말이",
+      "decision": "hold_mixed_product",
+      "reason": "초밥과 훈제말이가 한 판매단위에 함께 들어간 혼합 델리다. pass41의 이마트 보수 규칙도 '&'가 포함된 초밥 제목은 단일 sushi leaf로 자동 분류하지 않는다.",
+      "followup": "혼합 초밥 플래터/델리 세트 identity 및 taxonomy 정책 검토"
+    },
+    {
+      "raw_record_ids": ["ingestion:86:59"],
+      "source_record_key": "1000702450143",
+      "source_title": "낙지젓갈 400g",
+      "suggested_new_leaf": "food.seafood.fermented.octopus_paste",
+      "reason": "낙지젓갈 제품형태는 명확하지만 pass41 initial taxonomy에 젓갈 계열 leaf가 없다.",
+      "followup": "발효수산 상위그룹 및 낙지젓 leaf 추가 여부 검토"
+    },
+    {
+      "raw_record_ids": ["ingestion:86:65"],
+      "source_record_key": "1000644442886",
+      "source_title": "[키친델리] 팔보채 WITH 이금기",
+      "suggested_new_leaf": "food.meals.prepared.palbochae",
+      "reason": "팔보채 완성 델리 요리임은 명확하지만 현재 prepared taxonomy에 대응 leaf가 없다.",
+      "followup": "중식 완성요리 leaf 정책 검토; unit_unresolved는 별도 유지"
+    }
+  ],
+  "executed_tests": []
+}
