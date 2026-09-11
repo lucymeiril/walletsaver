@@ -1,0 +1,71 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "081",
+  "source_path": "채소 > 샐러드/드레싱/편이채소 > 편이채소 > 냉동간편채소",
+  "scope_note": "Classification-only proposal. Repeated Homeplus observations are grouped by source_record_key. Preparation use and package fields are preserved as attributes.",
+  "review_accounting": {
+    "pending_rows_checked": 12,
+    "unique_products": 6,
+    "new_classification_reviews": 12,
+    "prior_reviewed": 1034,
+    "current_reviewed": 1046,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2870
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "pass41 already has food.produce.processed_vegetables.frozen; reviewed source titles and the frozen convenience-vegetable shelf are consistent with that product form."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:3:52", "ingestion:52:73"],
+      "source_record_key": "071151732",
+      "source_title": "그린피아 슬라이스 냉동대파 500G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_vegetables.frozen",
+      "reason": "냉동 대파 슬라이스를 직접 명시하며 신선 대파보다 냉동 가공채소 leaf가 제품형태에 맞는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:53", "ingestion:52:74"],
+      "source_record_key": "071151714",
+      "source_title": "그린피아 만능찌개용 채소믹스 500G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_vegetables.frozen",
+      "reason": "냉동간편채소 shelf의 조리 전 채소믹스다. 찌개는 사용처 속성이지 완성 찌개 제품이 아니다."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:54", "ingestion:52:76"],
+      "source_record_key": "071145383",
+      "source_title": "그린피아 냉동 양파 슬라이스 500G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_vegetables.frozen",
+      "reason": "냉동 양파 슬라이스를 직접 명시하므로 신선 양파가 아닌 냉동 가공채소다."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:55", "ingestion:52:78"],
+      "source_record_key": "070714074",
+      "source_title": "한끼채소 찌개용 360G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_vegetables.frozen",
+      "reason": "냉동간편채소 진열의 조리 전 채소 구성으로, 찌개용 표시는 사용 목적이며 완성식이 아니다."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:56", "ingestion:52:79"],
+      "source_record_key": "070714063",
+      "source_title": "한끼채소 카레짜장용 360G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_vegetables.frozen",
+      "reason": "카레·짜장 조리용 냉동 채소믹스이며 카레/짜장 완제품이 아니다."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:57", "ingestion:52:80"],
+      "source_record_key": "070714057",
+      "source_title": "한끼채소 볶음밥용 360G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_vegetables.frozen",
+      "reason": "볶음밥에 넣는 냉동 채소믹스이며 완성 볶음밥 leaf로 분류하지 않는다."
+    }
+  ],
+  "executed_tests": []
+}
