@@ -1,0 +1,102 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "scope_note": "GitHub read/write review only. No staging DB import, rebuild, or repo tests were run. Pending 418 was already reviewed in vegetable-new-leaf-candidates-249-418.json and is not counted again.",
+  "reviewed_pending_groups": ["413", "414", "415", "416", "417", "419", "420"],
+  "skipped_duplicates": [
+    {
+      "pending_group": "418",
+      "raw_record_ids": ["ingestion:52:69"],
+      "source_title": "목이버섯 150G(팩)",
+      "existing_proposal": "vegetable-new-leaf-candidates-249-418.json",
+      "existing_leaf": "food.produce.vegetables.mushroom",
+      "counted_as_new_review": false
+    }
+  ],
+  "decisions": [
+    {
+      "pending_group": "413",
+      "raw_record_ids": ["ingestion:76:7"],
+      "source_record_key": "070137671",
+      "source_title": "LG생활건강 피지디나자임 캡슐세제 26입",
+      "proposed_leaf": "household.cleaning.laundry.capsule",
+      "reason": "마트 경로는 액체 세탁세제지만 제목이 캡슐세제를 직접 명시한다. pass41에는 캡슐세탁세제 리프와 감사된 캡슐세제 선례가 있으므로 제품 형태를 우선한다.",
+      "quantity_review": "unchanged; 26입 count package preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "417",
+      "raw_record_ids": ["ingestion:55:12"],
+      "source_record_key": "056810102",
+      "source_title": "백숙 재료 담은 토종닭 1,050G(마리)",
+      "proposed_leaf": "food.meat.fresh.chicken",
+      "reason": "제목이 토종닭을 직접 명시하고 원본 경로도 정육/계란 > 닭/오리고기 > 백숙용 > 토종닭이다. pass41 신선육 taxonomy의 닭고기 리프가 제품 유형과 일치한다.",
+      "quantity_review": "held separately; title says 1,050g while structured package is 50g. Do not overwrite either value from classification review.",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "419",
+      "raw_record_ids": ["ingestion:3:50"],
+      "source_record_key": "124982215",
+      "source_title": "풀무원 허니머스타드 드레싱 230G(개)",
+      "proposed_leaf": "food.seasonings.sauces.dressing",
+      "reason": "제목과 원본 경로 모두 드레싱을 직접 가리키며 pass41에 샐러드드레싱 전용 리프가 존재한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "420",
+      "raw_record_ids": ["ingestion:52:70"],
+      "source_record_key": "111021496",
+      "source_title": "친환경 오이맛고추 150G(봉)",
+      "proposed_leaf": "food.produce.vegetables.pepper",
+      "reason": "친환경 표시는 재배 속성이고 제품 유형은 오이맛고추다. pass41 신선채소 taxonomy의 고추·파프리카 리프가 제품 유형과 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "held_decisions": [
+    {
+      "pending_group": "414",
+      "raw_record_ids": ["ingestion:75:87"],
+      "source_record_key": "121261255",
+      "source_title": "LG생활건강 테크 울드라이 리필 1.3L",
+      "suggested_new_leaf": "household.cleaning.laundry.wool",
+      "suggested_path": ["생활용품", "청소·세탁", "세탁용품", "울·홈드라이세제"],
+      "reason": "제목과 상세 경로가 울/홈드라이용 드라이세제를 직접 가리키지만 pass41 세탁용품에는 액체·캡슐·섬유유연제 등은 있어도 울/홈드라이 전용 리프가 확인되지 않았다. 일반 액체세제로 강제하지 않는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "followup": "taxonomy policy approval for wool/delicate laundry detergent leaf"
+    },
+    {
+      "pending_group": "415",
+      "raw_record_ids": ["ingestion:53:58"],
+      "source_record_key": "071371264",
+      "source_title": "손질 주꾸미 400G(봉)",
+      "suggested_new_leaf": "food.seafood.cephalopod.jukkumi",
+      "suggested_path": ["식품", "수산물", "연체류", "주꾸미"],
+      "reason": "제목과 원본 경로가 주꾸미를 직접 가리키지만 pass41 수산물에는 생선·갑각/패류·해조류·수산가공품 리프만 있고 주꾸미/오징어/문어 연체류 신선 리프가 확인되지 않았다. 새우 등 기존 갑각류로 강제하지 않는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "followup": "taxonomy policy approval for fresh cephalopod hierarchy"
+    },
+    {
+      "pending_group": "416",
+      "raw_record_ids": ["ingestion:24:46"],
+      "source_record_key": "128640222",
+      "source_title": "대상 청정원 마시는 홍초 복분자 1.5L",
+      "suggested_new_leaf": "food.drinks.vinegar.drinking",
+      "suggested_path": ["식품", "음료", "식초음료", "마시는식초"],
+      "reason": "제목이 '마시는 홍초'를 명시하므로 조리용 식초와 제품 형태가 다르다. pass41의 food.seasonings.baking.vinegar는 기초조미 식초 리프이므로 여기에 강제하지 않고 음용 식초 축을 별도 후보로 둔다.",
+      "quantity_review": "unchanged; 1+1 promotion remains separate from classification",
+      "followup": "taxonomy policy approval for drinking vinegar beverage leaf"
+    }
+  ],
+  "explicit_review_conflict_check": {
+    "checked_against": "review-decisions-input.json",
+    "source_record_keys_checked": ["070137671", "121261255", "071371264", "128640222", "056810102", "124982215", "111021496"],
+    "conflicts_found": 0
+  },
+  "cumulative_reviewed_unique_observations": 452,
+  "baseline_held_observations": 3916,
+  "remaining_unreviewed_observations": 3464,
+  "executed_tests": []
+}
