@@ -93,3 +93,14 @@
 - 행사조건: 오렌지주스·알로에·매실 등에 있는 1+1은 분류와 별개로 기존 정규화 상태를 변경하지 않았다. 이번 proposal은 가격/행사 해소를 승인하지 않는다.
 - 실제 반영/검사: GitHub 텍스트 읽기·쓰기만 사용했다. staging DB import/재구축, pytest, `verify_initial_stage.py`, 멱등 import는 실행하지 않았다. pass41의 5,280 적재/3,916 보류 수치는 변경되지 않았다.
 - 다음 재개점: 음료 신규 후보(토닉·비타민·숙취)를 다른 마트 관측과 교차확인해 taxonomy 추가 여부를 한 번에 검토한다. 이어서는 아직 분류 원인이 남은 소형 식품 묶음을 처리하되 이미 classification resolved이고 행사/수량/제목변경만 남은 행은 별도로 구분한다.
+
+## 2026-09-11 조미료·전분·식용유 제안 — pending 169 / 170 / 171 / 234 / 235 / 236
+
+- 확인 범위: 위 6개 pending 묶음의 조각 전부, 총 30관측을 검토했다. 동일 홈플러스 판매페이지의 8월31일/9월2일 반복 관측만 같은 판단에 묶고 서로 다른 규격·제품명은 병합하지 않았다.
+- 제안 저장: `proposals/seasonings-starch-oils-169-236.json`. 상태는 `proposal_only`, `baseline_pass=pass41`, `executed_tests=[]`이며 신규 리프 이름은 검토용 후보일 뿐 실제 taxonomy나 DB에는 추가하지 않았다.
+- 기존 리프 제안 4관측: 해표 식용유 1.5L 반복 2건과 1.8L 반복 2건을 원료유 세부 종류를 추정하지 않고 기존 `food.seasonings.oils.cooking`에 제안했다. 카놀라유·포도씨유 등으로 확대하지 않았다.
+- 신규 리프 후보 16관측: 샘표 연두 순/연두진 3판매페이지 반복 6건 → `food.seasonings.stock.liquid_seasoning`; 감자/옥수수/고구마 분말전분 3판매페이지 반복 6건 → `food.seasonings.baking.starch`; 건국 연유 반복 2건 → `food.dairy.condensed_milk.plain`; 허쉬 초코시럽 반복 2건 → `food.seasonings.syrups.chocolate` 후보로 기록했다. 특히 기존 `food.seasonings.syrups.starch`는 물엿 리프이므로 분말전분에 재사용하지 않았다.
+- 명시 안전장치/정책 보류 6관측: `CJ 2배 바삭 튀김유` 반복 2건과 `만토바 230도 오일스프레이` 반복 2건은 현재 `initial_taxonomy.py`가 원료 불명 frying blend와 opaque 230도 spray를 추가 근거 없이 분류하지 않도록 명시하므로 그대로 보류했다. `쇠고기 볶음고추장 60G×3` 반복 2건은 일반 고추장과 동일 리프인지 검토 근거가 없어 보류했다.
+- 비분류 pending 4관측: `CJ 100%태양초 우리쌀고추장 1.5KG+350G` 반복 2건과 `대상 청정원 순창 태양초 고추장 1.5KG+400G` 반복 2건은 이미 `food.seasonings.pastes.gochujang`으로 분류됐으며 pending 원인은 `mixed_package_unresolved`/`multiple_package_quantities`다. 이번 작업에서 규격을 덮어쓰지 않았다.
+- 실제 반영/검사: GitHub 텍스트 읽기·쓰기만 사용했다. `initial_taxonomy.py`, 기존 431개 review decision, staging DB는 수정하지 않았고 pytest/DB import/`verify_initial_stage.py`/멱등 검사는 실행하지 않았다. pass41의 5,280 적재/3,916 보류 수치는 그대로다.
+- 다음 재개점: 신규 후보(액상조미료·분말전분·연유·초코시럽)를 다른 마트/기존 카탈로그에서 더 찾아 교차근거를 쌓고 한 번에 taxonomy 추가 여부를 결정한다. 그 전에는 `suggested_new_leaf`를 실존 리프로 사용하지 않는다. 이어서는 아직 손대지 않은 소형 식품 pending 중 기존 리프로 안전하게 제안 가능한 묶음을 우선 처리한다.
