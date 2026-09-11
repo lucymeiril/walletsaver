@@ -1,0 +1,43 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["068"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data, promotions, quantity evidence, and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 874,
+    "batch_reviewed_unique_observations": 14,
+    "cumulative_reviewed_unique_observations": 888,
+    "remaining_unreviewed_observations": 3028
+  },
+  "review_summary": {
+    "unique_source_products_reviewed": 14,
+    "observations_reviewed": 14,
+    "proposed_existing_leaf_products": 13,
+    "proposed_existing_leaf_observations": 13,
+    "held_or_new_taxonomy_products": 1,
+    "held_or_new_taxonomy_observations": 1,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "taxonomy_note": "롯데마트 논알콜음료 shelf의 14개 상품을 실제 음료형태로 검토했다. 테라·하이트·클라우드·버드와이저·크라우스탈러·하이네켄·기네스·카스 계열 13개는 모두 맥주형 무알코올/논알코올 음료로 pass41의 food.drinks.non_alcoholic.beer를 재사용한다. 티젠 젠하이볼향 0.0 레몬은 하이볼/칵테일 향 음료로 맥주 leaf에 강제하지 않고 food.drinks.non_alcoholic.cocktail 후보로 보류한다. 4개 골라담기 행사 정보는 classification-only 검토에서 변경하지 않는다.",
+  "decisions": [
+    {"raw_record_ids":["ingestion:28:61"],"source_name":"lottemart","source_record_key":"8801001237882","source_title":"하이트진로음료 테라 제로 (350ML)","status":"proposed","proposed_unified_category_id":"food.drinks.non_alcoholic.beer","reason":"논알콜음료 shelf의 테라 제로 맥주형 음료로 기존 무알코올맥주 leaf가 제품형태에 맞는다.","quantity_review":"unchanged; classification-only proposal","promotion_review":"promotion_unresolved preserved; classification-only proposal","identity_merge":"not_requested"},
+    {"raw_record_ids":["ingestion:29:48"],"source_name":"lottemart","source_record_key":"8801119221117","source_title":"하이트 제로 무알콜 (350ML)","status":"proposed","proposed_unified_category_id":"food.drinks.non_alcoholic.beer","reason":"무알콜을 직접 명시한 하이트 맥주형 음료다.","quantity_review":"unchanged; classification-only proposal","promotion_review":"promotion_unresolved preserved; classification-only proposal","identity_merge":"not_requested"},
+    {"raw_record_ids":["ingestion:29:82"],"source_name":"lottemart","source_record_key":"8801022025048","source_title":"클라우드 논알콜릭 (500ML)","status":"proposed","proposed_unified_category_id":"food.drinks.non_alcoholic.beer","reason":"클라우드 논알콜릭 맥주형 음료로 pass41의 무알코올맥주 leaf에 해당한다.","quantity_review":"unchanged; classification-only proposal","promotion_review":"promotion_unresolved preserved; classification-only proposal","identity_merge":"not_requested"},
+    {"raw_record_ids":["ingestion:29:87"],"source_name":"lottemart","source_record_key":"8801001236434","source_title":"하이트 제로 (무알콜)(캔) (500ML)","status":"proposed","proposed_unified_category_id":"food.drinks.non_alcoholic.beer","reason":"무알콜 캔 맥주형 음료로 기존 leaf가 직접 대응한다.","quantity_review":"unchanged; classification-only proposal","promotion_review":"promotion_unresolved preserved; classification-only proposal","identity_merge":"not_requested"},
+    {"raw_record_ids":["ingestion:30:16"],"source_name":"lottemart","source_record_key":"8801022025086","source_title":"클라우드 논알콜릭 (350ML)","status":"proposed","proposed_unified_category_id":"food.drinks.non_alcoholic.beer","reason":"500ml 상품과 규격이 다른 별도 판매 상품이지만 제품형태는 동일한 무알코올맥주다.","quantity_review":"unchanged; classification-only proposal","promotion_review":"promotion_unresolved preserved; classification-only proposal","identity_merge":"not_requested"},
+    {"raw_record_ids":["ingestion:31:69"],"source_name":"lottemart","source_record_key":"8801021233925","source_title":"버드와이저 제로 (330ML)","status":"proposed","proposed_unified_category_id":"food.drinks.non_alcoholic.beer","reason":"버드와이저 제로 맥주형 논알콜 음료다.","quantity_review":"unchanged; classification-only proposal","promotion_review":"promotion_unresolved preserved; classification-only proposal","identity_merge":"not_requested"},
+    {"raw_record_ids":["ingestion:33:36"],"source_name":"lottemart","source_record_key":"8801119221124","source_title":"하이트 제로 무알콜 (350ML * 6)","status":"proposed","proposed_unified_category_id":"food.drinks.non_alcoholic.beer","reason":"6캔 묶음 규격이며 단품과 동일한 무알코올맥주 제품형태다. 패키지 차이는 taxonomy 분기 사유가 아니다.","quantity_review":"unchanged; classification-only proposal","promotion_review":"promotion_unresolved preserved; classification-only proposal","identity_merge":"not_requested"},
+    {"raw_record_ids":["ingestion:33:40"],"source_name":"lottemart","source_record_key":"8801001236441","source_title":"하이트 제로 (무알콜)(캔) (500ML * 6)","status":"proposed","proposed_unified_category_id":"food.drinks.non_alcoholic.beer","reason":"500ml 6캔 묶음의 무알코올맥주로 기존 leaf가 맞는다.","quantity_review":"unchanged; classification-only proposal","promotion_review":"promotion_unresolved preserved; classification-only proposal","identity_merge":"not_requested"},
+    {"raw_record_ids":["ingestion:33:82"],"source_name":"lottemart","source_record_key":"0000040534794","source_title":"크라우스탈러 논알콜 (캔) (330ML)","status":"proposed","proposed_unified_category_id":"food.drinks.non_alcoholic.beer","reason":"논알콜을 직접 명시한 크라우스탈러 맥주형 음료이며 기존 분류 규칙에도 대응한다.","quantity_review":"unchanged; classification-only proposal","promotion_review":"promotion_unresolved preserved; classification-only proposal","identity_merge":"not_requested"},
+    {"raw_record_ids":["ingestion:33:93"],"source_name":"lottemart","source_record_key":"8801001238810","source_title":"하이트 제로 0.00 포멜로 (350ML)","status":"proposed","proposed_unified_category_id":"food.drinks.non_alcoholic.beer","reason":"하이트 제로 0.00의 포멜로 맛 variant로 맥주형 무알코올음료 정체성이 유지된다.","quantity_review":"unchanged; classification-only proposal","promotion_review":"promotion_unresolved preserved; classification-only proposal","identity_merge":"not_requested"},
+    {"raw_record_ids":["ingestion:34:6"],"source_name":"lottemart","source_record_key":"8712000055721","source_title":"하이네켄 넌 알콜릭 (330ML)","status":"proposed","proposed_unified_category_id":"food.drinks.non_alcoholic.beer","reason":"넌 알콜릭 하이네켄 맥주형 음료로 기존 leaf에 해당한다.","quantity_review":"unchanged; classification-only proposal","promotion_review":"promotion_unresolved preserved; classification-only proposal","identity_merge":"not_requested"},
+    {"raw_record_ids":["ingestion:34:28"],"source_name":"lottemart","source_record_key":"8809685983071","source_title":"티젠 젠하이볼향 0.0 레몬 (350ML)","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.drinks.non_alcoholic.cocktail","reason":"0.0 하이볼향 레몬 음료로 맥주형이 아니다. pass41 무알코올음료 하위에는 beer만 있어 칵테일/하이볼형 신규 후보로 보류한다.","quantity_review":"unchanged; classification-only proposal","promotion_review":"promotion_unresolved preserved; classification-only proposal","identity_merge":"not_requested"},
+    {"raw_record_ids":["ingestion:34:77"],"source_name":"lottemart","source_record_key":"8801027884961","source_title":"기네스 드래프트 넌 알콜릭 (440ML)","status":"proposed","proposed_unified_category_id":"food.drinks.non_alcoholic.beer","reason":"기네스 드래프트의 넌 알콜릭 맥주형 음료로 기존 무알코올맥주 leaf가 맞는다.","quantity_review":"unchanged; classification-only proposal","promotion_review":"promotion_unresolved preserved; classification-only proposal","identity_merge":"not_requested"},
+    {"raw_record_ids":["ingestion:35:22"],"source_name":"lottemart","source_record_key":"8801858048600","source_title":"오비맥주 카스 올제로 (350ML)","status":"proposed","proposed_unified_category_id":"food.drinks.non_alcoholic.beer","reason":"카스 올제로 맥주형 무알코올음료로 기존 leaf가 제품형태에 맞는다.","quantity_review":"unchanged; classification-only proposal","promotion_review":"promotion_unresolved preserved; classification-only proposal","identity_merge":"not_requested"}
+  ],
+  "executed_tests": []
+}
