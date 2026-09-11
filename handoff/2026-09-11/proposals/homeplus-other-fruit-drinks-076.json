@@ -1,0 +1,78 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "076",
+  "source_path": "생수/음료/주류 > 과일/야채음료 > 포도/사과/매실/기타 > 기타과일",
+  "scope_note": "Classification-only proposal. Repeated Homeplus observations are grouped by source_record_key. Promotion and quantity fields are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 12,
+    "unique_products": 6,
+    "new_classification_reviews": 12,
+    "prior_reviewed": 974,
+    "current_reviewed": 986,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2930
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "All six source_record_keys were checked against review-decisions-input.json; no existing explicit review decision match was found."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:16:80", "ingestion:66:11"],
+      "source_record_key": "009532404",
+      "source_title": "델몬트 망고 로우슈거 1.5L",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.drinks.juice.fruit_drink",
+      "reason": "과일/야채음료의 기타과일 진열에 있는 망고 음료이며 제목에 100% 주스·착즙 근거가 없어 fruit_drink가 보수적으로 맞는다.",
+      "promotion_review": "unchanged; 1+1 observations preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:92", "ingestion:66:12"],
+      "source_record_key": "070042189",
+      "source_title": "롯데 델몬트 스테비아토마토 1.5L",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.drinks.juice.vegetable_drink",
+      "reason": "1.5L 토마토 음료 제품으로 신선 토마토가 아니며 pass41의 채소음료 leaf가 제품형태와 맞는다.",
+      "promotion_review": "unchanged; 1+1 observations preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:95", "ingestion:66:41"],
+      "source_record_key": "120254409",
+      "source_title": "모구모구 파인애플맛 320ML",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.drinks.juice.fruit_drink",
+      "reason": "파인애플맛 과일음료 진열의 RTD 음료로, 주스보다 과일음료 leaf가 안전하다.",
+      "quantity_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:96", "ingestion:66:22"],
+      "source_record_key": "120231696",
+      "source_title": "모구모구 리치 320ML",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.drinks.juice.fruit_drink",
+      "reason": "리치 기반 RTD 과일음료이며 제목에 주스·착즙 근거가 없어 fruit_drink로 제안한다.",
+      "quantity_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:17:1", "ingestion:66:40"],
+      "source_record_key": "126928341",
+      "source_title": "모구모구 망고 320ML",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.drinks.juice.fruit_drink",
+      "reason": "망고 기반 RTD 과일음료로서 기존 fruit_drink leaf가 제품형태에 맞는다.",
+      "quantity_review": "unchanged"
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:17:6", "ingestion:66:21"],
+      "source_record_key": "128754410",
+      "source_title": "모구모구 요거트맛 320ML",
+      "suggested_new_leaf": "food.drinks.other.yogurt_flavored",
+      "reason": "요거트맛 RTD 음료임은 분명하지만 실제 발효유나 과일음료라고 단정할 근거가 없다. food.dairy.yogurt나 fruit_drink에 강제하지 않는다.",
+      "followup": "요거트향 비유제품 RTD 음료의 taxonomy 정책 검토"
+    }
+  ],
+  "executed_tests": []
+}
