@@ -1,0 +1,129 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["039"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Pending group 039 spans 001.json and 002.json. The broad Emart shelf 스포츠/여행/자동차 was treated as navigation evidence only; product title/form wins.",
+  "review_summary": {
+    "observations_reviewed": 26,
+    "source_listings_reviewed": 26,
+    "already_classified_excluded": 0,
+    "existing_leaf_decisions": 0,
+    "deferred_taxonomy_candidates": 24,
+    "manual_safety_review_holds": 2
+  },
+  "taxonomy_policy": {
+    "current_snapshot_check": "Repository searches did not identify current unified-category precedents for automotive wipers, electric bicycles, golf balls, treadmills, or camping lanterns in the pass41 handoff snapshot.",
+    "grouping_rule": "Brand, blade length, model year, wheel size, gear count, and color are product attributes/variants rather than separate category leaves.",
+    "service_rule": "The lodging/cabin package is a service/voucher-like listing and is not forced into a physical-product category.",
+    "hazard_rule": "Fuel-canister listings are recorded only as manual safety-review holds; this proposal does not create a detailed hazardous-item taxonomy mapping."
+  },
+  "accounting_note": "This file establishes 26 new classification reviews for pending group 039. Do not mechanically add this to historical cumulative review totals until global proposal accounting reconciliation is complete.",
+  "explicit_review_decision_conflict_check": {
+    "file": "handoff/2026-09-11/review-decisions-input.json",
+    "method": "four batched repository source_record_key searches",
+    "checked_source_record_keys": [
+      "1000030798020", "1000027295709", "1000030798206", "1000030798208", "1000030798004", "1000027295710", "1000027295711",
+      "1000027295712", "1000030798005", "1000030798207", "1000027295707", "1000027295708", "1000027295589", "1000030797968",
+      "1000030798000", "1000030797901", "1000030797902", "1000030798009", "0000007696816", "1000384981986", "0000006611373",
+      "1000582070378", "1000787835343", "1000787829839", "1000365230244", "1000737358730"
+    ],
+    "review_decisions_file_matches_found": 0,
+    "note": "Search results returned raw/pending/unresolved files but did not return review-decisions-input.json for these keys. This is a proposal-stage conflict screen only."
+  },
+  "deferred_taxonomy_candidates": [
+    {
+      "suggested_new_leaf": "automotive.maintenance.wiper_blade",
+      "reason": "All 18 listings explicitly describe vehicle windshield wiper blades. Michelin/Bosch, standard/hybrid product line, and 350–650mm blade lengths are variants/attributes, not separate category leaves. No current pass41 unified wiper leaf was found.",
+      "listings": [
+        {"raw_record_id":"ingestion:106:0","source_record_key":"1000030798020","source_title":"미쉐린_라디우스스탠다드와이퍼350mm"},
+        {"raw_record_id":"ingestion:106:1","source_record_key":"1000027295709","source_title":"보쉬 V4 클리어비젼 350mm"},
+        {"raw_record_id":"ingestion:106:2","source_record_key":"1000030798206","source_title":"미쉐린_라디우스스탠다드와이퍼400mm"},
+        {"raw_record_id":"ingestion:106:3","source_record_key":"1000030798208","source_title":"미쉐린_라디우스스탠다드와이퍼450mm"},
+        {"raw_record_id":"ingestion:106:4","source_record_key":"1000030798004","source_title":"미쉐린_라디우스스탠다드와이퍼500mm"},
+        {"raw_record_id":"ingestion:106:5","source_record_key":"1000027295710","source_title":"보쉬 V4 클리어비젼 400mm"},
+        {"raw_record_id":"ingestion:106:6","source_record_key":"1000027295711","source_title":"보쉬 V4 클리어비젼 450mm"},
+        {"raw_record_id":"ingestion:106:7","source_record_key":"1000027295712","source_title":"보쉬 V4 클리어비젼 500mm"},
+        {"raw_record_id":"ingestion:106:8","source_record_key":"1000030798005","source_title":"미쉐린_라디우스스탠다드와이퍼600mm"},
+        {"raw_record_id":"ingestion:106:9","source_record_key":"1000030798207","source_title":"미쉐린_라디우스스탠다드와이퍼650mm"},
+        {"raw_record_id":"ingestion:106:10","source_record_key":"1000027295707","source_title":"보쉬 V4 클리어비젼 550mm"},
+        {"raw_record_id":"ingestion:106:11","source_record_key":"1000027295708","source_title":"보쉬 V4 클리어비젼 600mm"},
+        {"raw_record_id":"ingestion:106:12","source_record_key":"1000027295589","source_title":"보쉬 V4 클리어비젼 650mm"},
+        {"raw_record_id":"ingestion:106:13","source_record_key":"1000030797968","source_title":"미쉐린_F라디우스하이브리드와이퍼350mm"},
+        {"raw_record_id":"ingestion:106:14","source_record_key":"1000030798000","source_title":"미쉐린_라디우스하이브리드와이퍼400mm"},
+        {"raw_record_id":"ingestion:106:15","source_record_key":"1000030797901","source_title":"미쉐린_라디우스하이브리드와이퍼450mm"},
+        {"raw_record_id":"ingestion:106:16","source_record_key":"1000030797902","source_title":"미쉐린_라디우스하이브리드와이퍼500mm"},
+        {"raw_record_id":"ingestion:106:17","source_record_key":"1000030798009","source_title":"미쉐린_라디우스하이브리드와이퍼550mm"}
+      ],
+      "quantity_review": "unit_unresolved remains separate for these listings"
+    },
+    {
+      "raw_record_ids": ["ingestion:106:19"],
+      "source_record_key": "1000384981986",
+      "source_title": "(충남 아산) 파라다이스 스파도고 캐빈파크 2인PKG 구 카라반",
+      "suggested_new_leaf": "travel.lodging.package",
+      "reason": "This is a two-person lodging/cabin package listing rather than a physical sports or automotive product. Keep service/voucher semantics explicit instead of mapping it to camping equipment.",
+      "quantity_review": "unit_unresolved remains separate"
+    },
+    {
+      "raw_record_ids": ["ingestion:106:21"],
+      "source_record_key": "1000582070378",
+      "source_title": "워런핏 클럽용 러닝머신 HSK-9900 트레드밀 유산소운동 헬스 K260E",
+      "suggested_new_leaf": "sports.fitness.treadmill",
+      "reason": "Title explicitly identifies a treadmill/cardio exercise machine. No current pass41 treadmill leaf was found.",
+      "quantity_review": "unit_unresolved remains separate"
+    },
+    {
+      "raw_record_ids": ["ingestion:106:22"],
+      "source_record_key": "1000787835343",
+      "source_title": "팬텀 S4 24인치 7단 삼천리 시티 전기자전거 2026 - 완조립 본사직영몰",
+      "suggested_new_leaf": "sports.cycling.electric_bicycle",
+      "reason": "Title explicitly identifies an electric city bicycle. Wheel size, gears, model year, assembly state, and sales channel are attributes.",
+      "quantity_review": "unit_unresolved remains separate"
+    },
+    {
+      "raw_record_ids": ["ingestion:106:23"],
+      "source_record_key": "1000787829839",
+      "source_title": "팬텀 S2 20인치 삼천리 접이식 전기자전거 2026 - 완조립 본사직영몰",
+      "suggested_new_leaf": "sports.cycling.electric_bicycle",
+      "reason": "Title explicitly identifies a folding electric bicycle. Folding form is an attribute/variant under the same electric-bicycle product type unless taxonomy later chooses a deeper split.",
+      "quantity_review": "unit_unresolved remains separate"
+    },
+    {
+      "raw_record_ids": ["ingestion:106:24"],
+      "source_record_key": "1000365230244",
+      "source_title": "골프공24입(화이트)",
+      "suggested_new_leaf": "sports.golf.ball",
+      "reason": "Title explicitly identifies golf balls. 24-count and white color are package/attribute data rather than category distinctions."
+    },
+    {
+      "raw_record_ids": ["ingestion:106:25"],
+      "source_record_key": "1000737358730",
+      "source_title": "크레모아 3FACE Neo BTR 10",
+      "suggested_new_leaf": "outdoor.camping.lantern",
+      "reason": "Manufacturer documentation identifies 3FACE Neo 10 BTR as an outdoor rechargeable light/lantern product, and repository search found no current pass41 camping-lantern leaf.",
+      "quantity_review": "unit_unresolved remains separate"
+    }
+  ],
+  "manual_safety_review_holds": [
+    {
+      "raw_record_ids": ["ingestion:106:18"],
+      "source_record_key": "0000007696816",
+      "source_title": "맥스 CRV 폭발방지 부탄가스 4입",
+      "status": "manual_safety_review",
+      "reason": "Fuel/hazardous-item listing. Keep classification out of the automatic proposal path and require an adult maintainer to review applicable safety/regulatory taxonomy policy."
+    },
+    {
+      "raw_record_ids": ["ingestion:106:20"],
+      "source_record_key": "0000006611373",
+      "source_title": "썬연료 부탄가스 (4입)",
+      "status": "manual_safety_review",
+      "reason": "Fuel/hazardous-item listing. Keep classification out of the automatic proposal path and require an adult maintainer to review applicable safety/regulatory taxonomy policy."
+    }
+  ],
+  "external_product_form_verification": {
+    "source_title": "크레모아 3FACE Neo BTR 10",
+    "verified_form": "outdoor rechargeable lantern/light",
+    "note": "Used only to resolve product form; no purchase/access/use guidance is part of this proposal."
+  },
+  "executed_tests": []
+}
