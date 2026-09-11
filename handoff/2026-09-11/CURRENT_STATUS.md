@@ -19,16 +19,17 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다. 이 수�
 - deal/promotion collection은 단일 상품으로 분류하지 않는다.
 - Chat에서는 `proposal_only`; 나중에 Codex에서 전역 reconciliation 후 DB에 한 번에 반영한다.
 - **proposal 파일 존재만으로 완료로 보지 않는다. raw_record_id/source-key coverage를 확인한다.** pending 034에서 기존 proposal이 29건 중 19건만 덮던 실제 누락을 발견했다.
+- 각 그룹을 끝낸 즉시 proposal/checkpoint와 이 canonical status를 같이 갱신해 세션 이사 시 재개점이 어긋나지 않게 한다.
 
 ## 2. 완성까지 얼마나 남았나
 
 현재 strict reverse audit의 안전한 상한:
 
-- 미완 strict 범위: `pending 001~032`
-- 원본 관측: **1,595 observations**
-- pass41 전체 pending 3,916 대비 **약 40.7%**
-- 관측 구간 기준 `033~451`은 약 59.3%를 strict/ordered 방식으로 지나왔지만, 이것을 최종 완료율로 부르지 않는다. 과거 proposal 중복/re-review와 taxonomy hold가 남아 있다.
-- `001~032`에도 과거 proposal이 있으므로 실제 새 판단량은 **1,595보다 작을 가능성이 높다**. raw-key 전역 reconciliation 전에는 더 작은 수치를 최종 미완료량으로 확정하지 않는다.
+- 미완 strict 범위: `pending 001~031`
+- 원본 관측: **1,563 observations**
+- pass41 전체 pending 3,916 대비 **약 39.9%**
+- 관측 구간 기준 `032~451`은 약 60.1%를 strict/ordered 방식으로 지나왔지만, 이것을 최종 완료율로 부르지 않는다. 과거 proposal 중복/re-review와 taxonomy hold가 남아 있다.
+- `001~031`에도 과거 proposal이 있으므로 실제 새 판단량은 **1,563보다 작을 가능성이 높다**. raw-key 전역 reconciliation 전에는 더 작은 수치를 최종 미완료량으로 확정하지 않는다.
 
 분류 sweep 뒤 최종 DB 반영 전 남는 단계:
 1. proposal 간 raw-record/source-key 중복 제거
@@ -39,14 +40,14 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다. 이 수�
 
 ## 3. strict reverse sweep 현재 누계
 
-완료 범위: **pending 033~043**
+완료 범위: **pending 032~043**
 
-- observations opened: **288**
+- observations opened: **320**
 - already-classified exclusions: **29**
-- strict/new classification reviews: **259**
-- distinct newly reviewed source listings: **247**
-- existing-leaf proposals: **91 listings**
-- taxonomy/product-form/promotion/manual-review holds: **156 listings**
+- strict/new classification reviews: **291**
+- distinct newly reviewed source listings: **263**
+- existing-leaf proposals: **93 listings**
+- taxonomy/product-form/promotion/manual-review holds: **170 listings**
 
 그룹별 최신 proposal/reconciliation:
 - 043 `proposals/lottemart-vegetables-043.json` — 23 obs / existing 21 / hold 2
@@ -60,8 +61,10 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다. 이 수�
 - 035 `proposals/costco-milk-shelf-035.json` — 27 opened / 2 excluded / 25 new / existing 9 / hold 16
 - 034 `proposals/reconciliation-pending-034.json` — 29 pending / prior coverage 19 / uncovered 10 / final existing 24 / hold 5
 - 033 `proposals/emart-hygiene-health-033.json` — 30 opened / 12 excluded / 18 new / existing 5 / hold 13
+- 032 `proposals/homeplus-flavored-powder-drinks-032.json` — 32 obs / 16 duplicated listings / existing 2 / hold 14
 
 최신 체크포인트:
+- `checkpoints/checkpoint-after-pending-032.md`
 - `checkpoints/checkpoint-after-pending-033.md`
 - `checkpoints/checkpoint-after-pending-034-reconciliation.md`
 - `checkpoints/checkpoint-after-pending-035.md`
@@ -70,6 +73,13 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다. 이 수�
 - `checkpoints/checkpoint-reverse-sweep-038-043.md`
 
 ## 4. 최근 중요한 발견
+
+### pending 032
+- 32 observations는 **16 source listings가 각각 두 번 수집된 구조**.
+- all 32 classification-pending; exclusions 0.
+- existing 2: peach iced-tea mix -> `food.drinks.tea.black`, matcha-lemon -> `food.drinks.tea.green`.
+- holds 14: kombucha 10 -> `food.drinks.tea.kombucha`; fruit preserves 2 -> `food.drinks.tea.fruit_preserve`; apple-cider-vinegar drink mix 1 -> `food.drinks.other.apple_cider_vinegar`; sweet-potato cream latte powder 1 -> product-form hold/candidate `food.drinks.other.latte_mix`.
+- 16 source keys were collision-screened in two batches with `review-decisions-input`; returned match 0.
 
 ### pending 033
 - 30 rows 중 12는 이미 classification-complete; 단위/수량 등의 이유로 pending에 남아 있어 신규 분류량에서 제외.
@@ -92,21 +102,21 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다. 이 수�
 - 288~451: final281, exclusions15, classification-pending266, legacy overlap238, 과거 proposal 대비 true new increment **28 observations** (`288`, `292~304`), 해당 14 source keys explicit exact match 0.
 - pending313 `농심 생생 우동 용기 276G`: older `cup_ramen` vs final `udon` conflict. 최종 승격 전 해결.
 
-## 6. 현재 재개점 — pending 032
+## 6. 현재 재개점 — pending 031
 
 **다음 AI는 임의로 다른 그룹을 고르지 말고 여기서 이어간다.**
 
-- group: `pending/032`
-- PENDING_INDEX: **32 observations / 32 titles**
-- 아직 strict accounting/classification 및 기존-proposal coverage 대조를 시작하지 않았다.
+- group: `pending/031`
+- 032 strict audit은 완료되어 `proposals/homeplus-flavored-powder-drinks-032.json`, `checkpoints/checkpoint-after-pending-032.md`에 기록됨.
+- 031은 아직 이 strict 방식으로 시작하지 않았다.
 
-032 strict audit 절차:
-1. `pending/032/` 디렉터리의 모든 파일 조각 확인.
+031 strict audit 절차:
+1. `pending/031/` 디렉터리의 모든 파일 조각 확인.
 2. already-classified vs classification-pending 분리.
-3. 032를 포함한다고 주장하는 기존 proposal이 있으면 `raw_record_id` coverage 실측.
+3. 031을 포함한다고 주장하는 기존 proposal이 있으면 `raw_record_id` coverage 실측.
 4. 431 `review-decisions-input.json` collision screen.
 5. 누락만 supplement/reconciliation으로 기록하고 conflict는 명시.
-6. 완료 즉시 이 파일의 누계/남은 상한을 갱신하고 재개점을 `031`로 넘긴다.
+6. 완료 즉시 이 파일의 누계/남은 상한을 갱신하고 재개점을 `030`으로 넘긴다.
 
 ## 7. 문서 신뢰 우선순위
 
