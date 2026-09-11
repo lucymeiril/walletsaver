@@ -1,0 +1,65 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "089",
+  "source_path": "냉장/냉동/밀키트 > 떡볶이/면류 > 국수/칼국수/우동 > 기타면",
+  "scope_note": "Classification-only proposal. Repeated Homeplus observations are grouped by source_record_key. Promotion and package fields are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1119,
+    "current_reviewed": 1129,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2787
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "No explicit review-decision conflict was found. Tortilla reuses the same new-leaf candidate already proposed in pending 084 rather than inventing a parallel taxonomy path."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:11:56", "ingestion:60:11"],
+      "source_record_key": "128087842",
+      "source_title": "베이컨 까르보나라 파스타 230G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.pasta",
+      "reason": "제품명이 파스타를 직접 명시하며 Homeplus 냉장 면요리 맥락에서 기존 pasta leaf가 가장 가깝다. 까르보나라/베이컨은 조리 스타일과 맛 속성이다."
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:11:73", "ingestion:61:14"],
+      "source_record_key": "124356899",
+      "source_title": "풀무원 우유 또띠아 225G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.bakery.bread.tortilla",
+      "reason": "또띠아는 면류가 아니며 pending 084에서 이미 같은 제품형태를 tortilla 신규 후보로 제안했다. 우유는 재료/변형 속성이다."
+    },
+    {
+      "raw_record_ids": ["ingestion:11:74", "ingestion:61:15"],
+      "source_record_key": "124356847",
+      "source_title": "풀무원 통밀 또띠아 150G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.bakery.bread.tortilla",
+      "reason": "통밀 여부는 속성이며 제품형태는 또띠아다. pending 084의 동일 신규 후보를 재사용한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:12:1", "ingestion:61:43"],
+      "source_record_key": "071389762",
+      "source_title": "칠갑농산 냉천골 부산비빔밀면 2인분 566G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.noodles.milmyeon",
+      "reason": "밀면은 냉면/소면과 구분되는 지역 면요리 제품형태이며 pass41에 exact leaf가 없다. 비빔은 조리 방식 속성으로 본다."
+    },
+    {
+      "raw_record_ids": ["ingestion:12:4", "ingestion:61:46"],
+      "source_record_key": "071388014",
+      "source_title": "칠갑농산 냉천골 부산밀면 2인분 1060G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.noodles.milmyeon",
+      "reason": "부산밀면 제품으로 기존 naengmyeon/wheat_noodle leaf에 억지로 합치기보다 milmyeon 신규 후보로 보존한다."
+    }
+  ],
+  "executed_tests": []
+}
