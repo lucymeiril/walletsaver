@@ -1,0 +1,79 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["406", "407", "408", "409", "410", "411", "412"],
+  "scope_note": "GitHub read/write review only. All 7 observations were read. Exact source_record_keys were checked against prior proposal search results and all 431 explicit review decisions; no overlaps/conflicts were found. Existing decisions, pass41 catalog/DB and taxonomy source were not modified.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 438,
+    "batch_new_unique_observations": 7,
+    "cumulative_reviewed_unique_observations": 445,
+    "remaining_unreviewed_observations": 3471
+  },
+  "explicit_review_decision_conflicts": [],
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:51:57"],
+      "source_record_key": "119775410",
+      "source_title": "제주 황금향 4-7입(박스)",
+      "proposed_leaf": "food.produce.fruit.citrus",
+      "reason": "황금향은 감귤/만감류의 신선 과일이며 현재 taxonomy는 한라봉·천혜향·레드향 등을 citrus 통합 리프로 다룬다. 황금향도 같은 제품형태 축으로 제안한다.",
+      "quantity_review": "count_range_unresolved remains; 4-7입을 7입으로 확정하지 않음",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:51:46"],
+      "source_record_key": "111089052",
+      "source_title": "항공직송 골드 망고(태국) 개",
+      "proposed_leaf": "food.produce.fruit.mango",
+      "reason": "상온 신선 망고이며 제목이 망고를 직접 명시한다. 현재 taxonomy에 reviewed raw fruit용 mango 리프가 존재한다.",
+      "quantity_review": "unit_unresolved remains; 제목의 '개'만으로 수량을 임의 보정하지 않음",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:60:57"],
+      "source_record_key": "071035882",
+      "source_title": "오발탄 얼큰양해장국 600G",
+      "proposed_leaf": "food.meals.prepared.soup_stew",
+      "reason": "pass41 catalog에서 황태해장국과 소고기해장국이 이미 food.meals.prepared.soup_stew로 감사되어 있어 해장국 완제품의 강한 선례가 있다. 유명맛집/밀키트 진열보다 완제품 형태를 우선한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:22:46"],
+      "source_record_key": "070254404",
+      "source_title": "CJ 스팸닭가슴살 200G*3",
+      "proposed_leaf": "food.preserved.canned.ham",
+      "reason": "제품명이 SPAM 통조림 제품군을 직접 지시하고 현재 taxonomy의 canned.ham은 햄통조림 축이다. 닭가슴살은 이 SPAM 변형의 원료 속성으로 보고 일반 생닭/닭가슴살 제품으로 이동시키지 않는다.",
+      "quantity_review": "unchanged; 200g×3 preserved",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "deferred_taxonomy_candidates": [
+    {
+      "raw_record_ids": ["ingestion:60:3"],
+      "source_record_key": "050993297",
+      "source_title": "동원 양반 통살고기 완자 425G*2",
+      "suggested_new_leaf": "food.meals.prepared.meatball",
+      "reason": "마트 경로는 떡갈비이지만 제목은 완자를 직접 명시한다. 현재 meat_patty 리프는 name_ko와 감사 사례가 동그랑땡 중심이고 완자를 자동 포함하는 근거가 없어 떡갈비/동그랑땡 어느 쪽에도 강제하지 않는다.",
+      "followup": "collect other 완자/meatball products before deciding whether to widen meat_patty or add meatball"
+    },
+    {
+      "raw_record_ids": ["ingestion:20:12"],
+      "source_record_key": "113655610",
+      "source_title": "삼립 꿀호떡 요요 8입 192G",
+      "suggested_new_leaf": "food.bakery.bread.hotteok",
+      "reason": "호떡 제품형태는 명확하지만 현재 pass41 taxonomy에서 호떡 전용 리프를 확인하지 못했다. 일반 빵 리프로 축소하기보다 기존 pending 호떡 사례와 함께 전용 리프 필요성을 검토한다.",
+      "promotion_review": "1+1 structured promotion preserved unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:26:34"],
+      "source_record_key": "133276980",
+      "source_title": "LG생활건강 테크 분말세제 일반드럼겸용 리필 4KG",
+      "suggested_new_leaf": "household.cleaning.laundry.powder",
+      "reason": "분말 세탁세제임이 제목과 원본 경로에서 명확하지만 현재 laundry taxonomy에는 liquid/softener/capsule/dryer_sheet/bleach/washer_cleaner 등은 있어도 powder 리프가 없다. 액체세제로 강제하지 않고 신규 분말세제 축 후보로 둔다.",
+      "promotion_review": "1+1 structured promotion preserved unchanged"
+    }
+  ],
+  "executed_tests": []
+}
