@@ -1,0 +1,65 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "092",
+  "source_path": "두부/김치/반찬 > 두부/나물 > 두부키트류",
+  "scope_note": "Classification-only proposal. Repeated Homeplus observations are grouped by source_record_key. Promotion and quantity fields are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1149,
+    "current_reviewed": 1159,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2757
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "Source keys were found in pending/catalog-unresolved evidence only; no prior proposal conflict or existing exact leaf for 콩물/두부봉 was found."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:14:3", "ingestion:63:18"],
+      "source_record_key": "146525620",
+      "source_title": "풀무원 얇은 두부면 100G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.tofu_noodle",
+      "reason": "두부면 explicitly identifies tofu-noodle form; width is an attribute and the broad tofu-kit shelf does not change product type."
+    },
+    {
+      "raw_record_ids": ["ingestion:14:17", "ingestion:63:53"],
+      "source_record_key": "146525712",
+      "source_title": "풀무원 넓은 두부면 100G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.tofu_noodle",
+      "reason": "두부면 explicitly identifies tofu-noodle form; width is an attribute and the broad tofu-kit shelf does not change product type."
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:13:60", "ingestion:63:43"],
+      "source_record_key": "063731716",
+      "source_title": "특등급 국산 연천콩 콩물 1L",
+      "suggested_new_leaf": "food.plant.soy.soy_liquid",
+      "reason": "콩물 is a liquid soybean preparation, while the current taxonomy has tofu/soymilk leaves but no exact soybean-liquid leaf. The tofu-kit retail shelf does not prove packaged beverage-style 두유.",
+      "followup": "Confirm taxonomy naming/policy for culinary soybean liquid before promotion to an explicit review decision."
+    },
+    {
+      "raw_record_ids": ["ingestion:15:25", "ingestion:64:63"],
+      "source_record_key": "120795495",
+      "source_title": "풀무원 해물 두부봉 180G",
+      "suggested_new_leaf": "food.plant.soy.tofu_bar",
+      "reason": "두부봉 is a shaped processed tofu product and does not fit plain tofu, silken tofu, fried tofu, or tofu-noodle leaves.",
+      "followup": "Confirm a shared processed tofu-bar leaf rather than splitting seafood flavor into taxonomy."
+    },
+    {
+      "raw_record_ids": ["ingestion:15:26", "ingestion:64:64"],
+      "source_record_key": "120795477",
+      "source_title": "풀무원 두부봉 야채 180G",
+      "suggested_new_leaf": "food.plant.soy.tofu_bar",
+      "reason": "두부봉 is a shaped processed tofu product and does not fit plain tofu, silken tofu, fried tofu, or tofu-noodle leaves.",
+      "followup": "Reuse the same processed tofu-bar candidate; vegetable flavor remains an attribute."
+    }
+  ],
+  "executed_tests": []
+}
