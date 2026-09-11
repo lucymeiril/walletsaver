@@ -1,0 +1,37 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["347", "348"],
+  "scope_note": "GitHub read/write review only. The mart baby-skincare shelf is evidence but not accepted blindly. Proposed ids below are taxonomy-review labels only and have not been added to initial_taxonomy.py or any DB. Existing 1+1 promotion structures are preserved unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 352,
+    "batch_reviewed_unique_observations": 4,
+    "cumulative_reviewed_unique_observations": 356,
+    "remaining_unreviewed_observations": 3560
+  },
+  "explicit_review_decision_conflict_check": {
+    "file": "handoff/2026-09-11/review-decisions-input.json",
+    "checked_source_record_keys": ["070860136", "071282162"],
+    "matches_found": 0
+  },
+  "deferred_taxonomy_candidates": [
+    {
+      "raw_record_ids": ["ingestion:26:77", "ingestion:76:76"],
+      "source_record_key": "070860136",
+      "source_title": "더마비 튼살크림 180ML",
+      "suggested_new_leaf": "beauty.personal.body.cream",
+      "reason": "마트 경로는 유아 로션/크림이지만 상품 제목은 튼살크림이며 유아용임을 직접 명시하지 않는다. 현재 pass41 바디케어에는 lotion/wash/handwash/soap만 있어 cream 리프가 없고, baby taxonomy에는 기저귀/물티슈만 있다. 마트 선반만으로 유아 제품으로 확정하지 않고 일반 바디크림 신규 후보로 보류한다.",
+      "promotion_review": "unchanged; existing 1+1 structured promotion retained"
+    },
+    {
+      "raw_record_ids": ["ingestion:26:76", "ingestion:76:71"],
+      "source_record_key": "071282162",
+      "source_title": "닥터아토 울트라 모이스춰 오일투폼 스킨 클렌저 250ML",
+      "suggested_new_leaf": "baby.hygiene.skincare.wash",
+      "reason": "원본 경로가 유아 워시/클렌저이고 제목도 스킨 클렌저라는 제품형태를 명시한다. 현재 pass41 baby taxonomy는 배변용품만 있어 유아 목욕/스킨케어 리프가 없다. generic body wash로 자동 흡수하기보다 유아 스킨케어 taxonomy 확장 후보로 남긴다.",
+      "promotion_review": "unchanged; existing 1+1 structured promotion retained"
+    }
+  ],
+  "executed_tests": []
+}
