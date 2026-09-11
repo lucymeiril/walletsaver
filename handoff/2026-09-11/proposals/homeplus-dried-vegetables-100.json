@@ -1,0 +1,64 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "100",
+  "source_path": "handoff/2026-09-11/pending/100/001.json",
+  "scope_note": "Classification-only proposal. All five products are explicitly dried vegetables/namul and fit the existing processed-vegetables dried leaf. Species, origin, package size, price, and promotion remain attributes.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1229,
+    "current_reviewed": 1239,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2677
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "All five source_record_key values were checked against the 431 explicit review decisions. The current taxonomy contains food.produce.processed_vegetables.dried and no product here is a dried mushroom."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:2:89", "ingestion:52:53"],
+      "source_record_key": "070913582",
+      "source_title": "제주 월동무로 만든 무말랭이 300G(봉)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_vegetables.dried",
+      "reason": "Dried radish vegetable product; origin and 300g pack are attributes."
+    },
+    {
+      "raw_record_ids": ["ingestion:2:95", "ingestion:52:23"],
+      "source_record_key": "148567929",
+      "source_title": "국산 부드러운 건고사리 35G(봉)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_vegetables.dried",
+      "reason": "Explicit dried bracken/namul product; not a fresh vegetable and not a mushroom."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:35", "ingestion:52:57"],
+      "source_record_key": "069867660",
+      "source_title": "바다바람 맞고 자란 고흥 건곤드레 70G(봉)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_vegetables.dried",
+      "reason": "Explicit dried gondre/namul product; regional origin is an attribute."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:36", "ingestion:52:10"],
+      "source_record_key": "069511661",
+      "source_title": "국산 무청 건시래기 180G(봉)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_vegetables.dried",
+      "reason": "Explicit dried radish-greens product; domestic origin and pack size are attributes."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:40", "ingestion:52:24"],
+      "source_record_key": "069406705",
+      "source_title": "바다바람 맞고 자란 고흥 건취나물 80G(봉)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_vegetables.dried",
+      "reason": "Explicit dried chwinamul product; species and regional origin do not require a separate leaf."
+    }
+  ],
+  "held_decisions": [],
+  "executed_tests": []
+}
