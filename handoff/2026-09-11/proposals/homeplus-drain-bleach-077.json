@@ -1,0 +1,76 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "077",
+  "source_path": "세탁/청소 > 주방/청소용 세제 > 변기/싱크/배수구용 > 배수용품",
+  "scope_note": "Classification-only proposal. Repeated Homeplus observations are grouped by source_record_key. Promotion and quantity fields are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 12,
+    "unique_products": 6,
+    "new_classification_reviews": 12,
+    "prior_reviewed": 986,
+    "current_reviewed": 998,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2918
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "All six source_record_keys were checked against review-decisions-input.json; no existing explicit review decision match was found. Existing pending 066 drain-cleaner taxonomy precedent was reused without merging product identities."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:25:94", "ingestion:75:16"],
+      "source_record_key": "071124673",
+      "source_title": "simplus 배수관 클리너 4L",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "household.cleaning.bath.drain",
+      "reason": "배수관 클리너라는 용도가 직접 명시되며 pass41의 배수관세정제 leaf와 정확히 맞는다.",
+      "quantity_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:25:95", "ingestion:75:18"],
+      "source_record_key": "070864984",
+      "source_title": "simplus 배수관 클리너 1L",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "household.cleaning.bath.drain",
+      "reason": "용량 차이만 있는 배수관 클리너이며 기존 drain leaf가 제품형태에 맞는다.",
+      "quantity_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:26:33", "ingestion:75:51"],
+      "source_record_key": "003864227",
+      "source_title": "유한양행 유한펑크린 배수관 세정제 2L",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "household.cleaning.bath.drain",
+      "reason": "상품명이 배수관 세정제를 직접 명시해 기존 drain leaf와 정확히 일치한다.",
+      "quantity_review": "unchanged"
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:25:89", "ingestion:74:96"],
+      "source_record_key": "070861095",
+      "source_title": "simplus 다용도 락스 4L",
+      "suggested_new_leaf": "household.cleaning.general.chlorine_bleach",
+      "reason": "다용도 락스는 염소계 표백·살균 세정제이며 기존 산소계표백제 leaf와 성격이 다르다. 배수용품 진열만 보고 drain으로 보내지 않는다.",
+      "followup": "염소계 락스/표백제 독립 leaf 정책 검토"
+    },
+    {
+      "raw_record_ids": ["ingestion:25:92", "ingestion:75:19"],
+      "source_record_key": "070861089",
+      "source_title": "simplus 다용도 락스 1L",
+      "suggested_new_leaf": "household.cleaning.general.chlorine_bleach",
+      "reason": "같은 다용도 락스 제품군의 1L 규격으로, 산소계표백제나 배수관세정제에 강제하지 않는다.",
+      "followup": "염소계 락스/표백제 독립 leaf 정책 검토"
+    },
+    {
+      "raw_record_ids": ["ingestion:26:0", "ingestion:75:14"],
+      "source_record_key": "000380202",
+      "source_title": "유한양행 유한락스레귤러 3L",
+      "suggested_new_leaf": "household.cleaning.general.chlorine_bleach",
+      "reason": "유한락스 레귤러는 일반 염소계 락스 제품으로 배수관 전용 제품이 아니다. 기존 oxygen_bleach와 구분해 보류한다.",
+      "followup": "염소계 락스/표백제 독립 leaf 정책 검토"
+    }
+  ],
+  "executed_tests": []
+}
