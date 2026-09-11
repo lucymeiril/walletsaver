@@ -1,0 +1,64 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "097",
+  "source_path": "handoff/2026-09-11/pending/097/001.json",
+  "scope_note": "Classification-only proposal for Homeplus face/bath towels. Color, weight, hotel/daily line, price, and promotion metadata are attributes and remain unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1199,
+    "current_reviewed": 1209,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2707
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "No conflicting explicit review decision was found for the five source_record_keys. Current taxonomy includes paper kitchen towels but no bath/face textile towel leaf, and no household.bath.textiles.towel candidate precedent was found."
+  },
+  "decisions": [],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:25:93", "ingestion:75:66"],
+      "source_record_key": "070914500",
+      "source_title": "simplus 데일리 타월 1P 그레이 150g",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.bath.textiles.towel",
+      "reason": "세면용 직물 타월로 키친타월/제지류와 제품형태가 다르다. 색상과 중량은 속성으로 유지한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:26:49", "ingestion:75:73"],
+      "source_record_key": "070914552",
+      "source_title": "simplus 데일리 타월 1P 네이비 150g",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.bath.textiles.towel",
+      "reason": "동일한 세면용 직물 타월 product form이다. 네이비와 150g은 taxonomy 분기 근거가 아니다."
+    },
+    {
+      "raw_record_ids": ["ingestion:26:55", "ingestion:75:67"],
+      "source_record_key": "070894758",
+      "source_title": "simplus 호텔타월 1P 바이올렛200g",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.bath.textiles.towel",
+      "reason": "호텔타월도 세면/욕실용 직물 타월이라는 동일 product form이다. 라인명과 색상은 속성이다."
+    },
+    {
+      "raw_record_ids": ["ingestion:26:56", "ingestion:75:68"],
+      "source_record_key": "070894735",
+      "source_title": "simplus 호텔타월 1P 화이트 200g",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.bath.textiles.towel",
+      "reason": "세면용 직물 타월로 동일 신규 후보에 해당한다. 화이트와 200g은 속성이다."
+    },
+    {
+      "raw_record_ids": ["ingestion:26:57", "ingestion:75:57"],
+      "source_record_key": "070894729",
+      "source_title": "simplus 호텔타월 1P 네이비 200g",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.bath.textiles.towel",
+      "reason": "세면용 직물 타월로 동일 신규 후보에 해당한다. 네이비와 200g은 속성이다."
+    }
+  ],
+  "executed_tests": []
+}
