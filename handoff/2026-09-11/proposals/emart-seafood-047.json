@@ -1,0 +1,244 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["047"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 520,
+    "batch_reviewed_unique_observations": 20,
+    "cumulative_reviewed_unique_observations": 540,
+    "remaining_unreviewed_observations": 3376
+  },
+  "review_summary": {
+    "existing_classification_confirmed": 1,
+    "proposed_existing_leaf": 11,
+    "deferred_taxonomy_candidates": 4,
+    "held_non_product_or_mixed": 4,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431,
+    "explicit_review_raw_ingestion82_matches": ["ingestion:82:39"],
+    "note": "The sole explicit ingestion:82 match is unrelated to pending 047 and is not among this batch's 20 raw ids."
+  },
+  "decisions": [
+    {
+      "raw_record_id": "ingestion:82:0",
+      "source_name": "emart",
+      "source_record_key": "2097001683446",
+      "source_title": "[전국택배][냉장][국산] 가을 서해 꽃게 (3kg, 얼음포장)",
+      "status": "existing_classification_confirmed",
+      "unified_category_id": "food.seafood.shellfish.crab",
+      "reason": "pending 원본 자체가 reviewed Emart fresh/deli 근거로 crab leaf에 classified 상태이며 제목도 꽃게를 직접 명시",
+      "quantity_review": "unchanged; classification review only",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:6",
+      "source_name": "emart",
+      "source_record_key": "1000051450426",
+      "source_title": "[해동][아르헨티나] 손질 오징어 (대, 마리)",
+      "status": "deferred_taxonomy_candidate",
+      "suggested_new_leaf": "food.seafood.cephalopod.squid",
+      "reason": "오징어 품목은 명확하지만 pass41에는 신선 두족류 leaf가 없음. 새우 등 기존 갑각류로 강제하지 않음",
+      "quantity_review": "unchanged; per-piece unit retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:7",
+      "source_name": "emart",
+      "source_record_key": "1000336512757",
+      "source_title": "자른미역 (100g)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.seaweed.miyeok",
+      "reason": "제목이 미역을 직접 명시하고 pass41 해조류 taxonomy에 miyeok leaf가 존재",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:8",
+      "source_name": "emart",
+      "source_record_key": "1000726156282",
+      "source_title": "국산 참기름 들기름 만전재래김 4g*20봉",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.seaweed.laver",
+      "reason": "참기름·들기름은 조미 표현이고 제품 정체성은 재래김. pass41 laver leaf를 사용하고 오일 leaf로 분류하지 않음",
+      "quantity_review": "unchanged; 4g x 20 retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:10",
+      "source_name": "emart",
+      "source_record_key": "1000633154430",
+      "source_title": "[생물][국산] 손질 오징어 (250g 이상, 2~3미) (내장제거)",
+      "status": "deferred_taxonomy_candidate",
+      "suggested_new_leaf": "food.seafood.cephalopod.squid",
+      "reason": "손질·내장제거는 상태 속성이고 품목은 오징어로 명확하지만 현재 fresh cephalopod leaf가 없음",
+      "quantity_review": "unchanged; range and minimum weight retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:12",
+      "source_name": "emart",
+      "source_record_key": "1000147858670",
+      "source_title": "싱싱 생선회&조개류 ~50%할인",
+      "status": "held",
+      "reason": "dealItemView 프로모션 표면이며 단일 상품이 아님. 생선회와 조개류를 하나의 product leaf로 강제하지 않음",
+      "quantity_review": "unchanged; unit remains unresolved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:20",
+      "source_name": "emart",
+      "source_record_key": "1000050449988",
+      "source_title": "[냉동][태국] 자숙 칵테일 새우살 (31-40) (450g)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.shellfish.shrimp",
+      "reason": "자숙·냉동은 상태이고 제품 정체성은 새우살. pass41 shrimp leaf와 직접 일치",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:27",
+      "source_name": "emart",
+      "source_record_key": "1000805268600",
+      "source_title": "[냉동] 해물모둠 600g",
+      "status": "held",
+      "reason": "여러 수산물이 섞인 mixed seafood로 보이며 pass41에 단일 대응 leaf가 없음. 특정 새우/오징어/생선 leaf로 강제하지 않음",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:31",
+      "source_name": "emart",
+      "source_record_key": "2097002304333",
+      "source_title": "[전국택배][냉동][국산] 영광법성포 왕부세 보리굴비세트 3호 (10미 1.8kg 내외/미당 26~30cm 내외)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.processed.dried_fish",
+      "reason": "보리굴비는 건조·숙성된 수산가공품이며 pass41 dried_fish가 건어물류를 담당. 부세 species 정보는 속성으로 보존",
+      "quantity_review": "unchanged; 10 fish, approximate total weight and per-fish size retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:32",
+      "source_name": "emart",
+      "source_record_key": "1000018224021",
+      "source_title": "[활][국산] 활 전복 (특)(100g 단위 판매)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.shellfish.abalone",
+      "reason": "제목이 활 전복을 직접 명시하며 pass41 abalone leaf가 존재",
+      "quantity_review": "unchanged; 100g selling unit retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:34",
+      "source_name": "emart",
+      "source_record_key": "1000632638511",
+      "source_title": "[냉장][노르웨이] 연어 배꼽살 (100g)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.fish.salmon",
+      "reason": "부위 표현은 속성이고 어종은 연어로 명확. pass41 salmon leaf와 일치",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:36",
+      "source_name": "emart",
+      "source_record_key": "1000561251193",
+      "source_title": "[냉동][노르웨이] 노브랜드 노르웨이 훈제연어 (180g/팩)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.fish.salmon",
+      "reason": "기존 taxonomy keyword 데이터가 훈제연어를 salmon 동의표현으로 관리하므로 어종 leaf를 유지",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:41",
+      "source_name": "emart",
+      "source_record_key": "1000874977758",
+      "source_title": "건조 황태채 ~20%",
+      "status": "held",
+      "reason": "dealItemView 할인 표면이며 정확한 단일 판매 단위가 없어 dried_fish 상품으로 자동 승격하지 않음",
+      "quantity_review": "unchanged; unit remains unresolved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:47",
+      "source_name": "emart",
+      "source_record_key": "1000791248883",
+      "source_title": "[냉동][국산] 영광 법성포 참굴비 (총 560g) (2미 140g*4팩)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.processed.dried_fish",
+      "reason": "굴비는 건조·염장 계열 수산가공품으로 pass41 dried_fish 축과 맞으며 어종/산지/포장수량은 속성으로 보존",
+      "quantity_review": "unchanged; structured pack expression retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:48",
+      "source_name": "emart",
+      "source_record_key": "1000700270376",
+      "source_title": "[생물][국산] 벌교 맛조개 (300g)",
+      "status": "deferred_taxonomy_candidate",
+      "suggested_new_leaf": "food.seafood.shellfish.clam",
+      "reason": "맛조개는 조개류로 명확하지만 pass41 shellfish leaf는 새우·게·전복뿐. 기존 Homeplus 바지락 proposal의 clam 후보와 같은 축으로 묶음",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:49",
+      "source_name": "emart",
+      "source_record_key": "1000628155297",
+      "source_title": "[냉동][베트남] 슈림프링 (453g/팩)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.shellfish.shrimp",
+      "reason": "상품명이 shrimp ring을 직접 나타내고 현재 taxonomy의 shrimp leaf가 가장 직접적인 제품 정체성",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:52",
+      "source_name": "emart",
+      "source_record_key": "1000633154431",
+      "source_title": "[해동][국산] 손질 오징어 (380g, 2-3마리)",
+      "status": "deferred_taxonomy_candidate",
+      "suggested_new_leaf": "food.seafood.cephalopod.squid",
+      "reason": "손질·해동은 상태이고 품목은 오징어로 명확하지만 pass41에 신선 오징어 leaf가 없음",
+      "quantity_review": "unchanged; weight and count range retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:55",
+      "source_name": "emart",
+      "source_record_key": "1000632638527",
+      "source_title": "[냉장][국산] 숙성 광어회 (150g)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.fish.flounder",
+      "reason": "광어회는 광어 어종 제품이며 기존 taxonomy keyword가 광어회를 flounder 축으로 관리",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:57",
+      "source_name": "emart",
+      "source_record_key": "1000054910828",
+      "source_title": "볶음/국물용 멸치 ~40% 할인",
+      "status": "held",
+      "reason": "dealItemView 프로모션 표면이며 정확한 단일 상품·단위가 확정되지 않아 멸치 제품으로 자동 적재하지 않음",
+      "quantity_review": "unchanged; unit remains unresolved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_id": "ingestion:82:58",
+      "source_name": "emart",
+      "source_record_key": "1000873735437",
+      "source_title": "[멤버십][냉장][러시아] 실속명란 (320g/팩)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.processed.pollock_roe",
+      "reason": "제목이 명란을 직접 명시하고 pass41에 pollock_roe leaf와 명란 title rule이 존재",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
