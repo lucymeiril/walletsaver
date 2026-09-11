@@ -74,3 +74,22 @@
 - 정책 보류 이유: 얼갈이를 일반 통배추, 쪽파를 기존 표시명 대파인 `food.produce.vegetables.scallion`, 양상추를 쌈채소/샐러드채소로 자동 축소하지 않았다. 브로콜리 손질팩도 신선 브로콜리 품목으로 보고 냉동/가공채소 리프로 돌리지 않았다.
 - 실제 반영/검사: taxonomy 코드, 기존 review decision, staging DB는 수정하지 않았다. GitHub 텍스트 읽기·쓰기 외 실행 도구가 없어 pytest/DB import/verify/멱등 검사는 실행하지 않았다. pass41 적재/보류 수치는 그대로다.
 - 다음 재개점: 신규 리프 후보는 다른 마트의 동일 품목 관측이 있는지 먼저 모아 교차근거를 늘린 뒤 한 번에 taxonomy 설계를 검토한다. 그 전에는 `suggested_new_leaf`를 실존 리프처럼 사용하지 않는다. 이어서는 아직 손대지 않은 소형 채소/식품 묶음 중 기존 리프로 안전하게 제안 가능한 항목을 우선 처리한다.
+
+## 2026-09-11 친환경 채소 제안 — pending 385 / 420 / 421 / 422
+
+- 확인 범위: 위 4개 pending 묶음의 조각 전부, 총 5관측을 검토했다.
+- 제안 저장: `proposals/organic-vegetables-385-422.json`. 상태는 `proposal_only`, `baseline_pass=pass41`, `executed_tests=[]`이며 DB/import 입력이 아니다.
+- 분류 제안 5관측: 친환경 감자 → `food.produce.vegetables.potato`; 친환경 당근 → `food.produce.vegetables.carrot`; 친환경 오이맛고추 → `food.produce.vegetables.pepper`; 친환경 양파 → `food.produce.vegetables.onion`; 친환경 부추 → `food.produce.vegetables.chives`.
+- 판단 원칙: 친환경/유기농은 판매·재배 속성이지 별도 상품 유형이 아니므로 제목에 명시된 실제 채소 품목의 기존 통합 리프를 사용한다. 마트의 `친환경근채류/과채류/김장채소/엽채류` 진열을 통합 taxonomy로 그대로 복사하지 않았다.
+- 실제 반영/검사: GitHub 텍스트 읽기·쓰기만 사용했다. taxonomy 코드, 기존 review decision, staging DB는 수정하지 않았고 pytest/DB import/verify/멱등 검사는 실행하지 않았다.
+
+## 2026-09-11 소형 음료 후속 제안 — pending 219 / 220 / 221 / 222 / 323 / 324 / 325 / 326 / 327
+
+- 확인 범위: 위 9개 pending 묶음의 조각 전부, 총 26관측을 검토했다. 반복 수집은 동일 `source_record_key`만 같은 결정의 `raw_record_ids`에 묶었다.
+- 제안 저장: `proposals/beverages-small-219-327.json`. 상태는 `proposal_only`, `baseline_pass=pass41`, `executed_tests=[]`이며 신규 리프 이름도 검토용 후보일 뿐 실제 taxonomy에는 추가하지 않았다.
+- 기존 리프 제안 14관측: 델몬트 오렌지주스와 simplus NFC 착즙 오렌지주스 반복 4건, simplus NFC 착즙 사과주스 반복 2건 → `food.drinks.juice.fruit`; 게토레이 레몬/레몬제로 반복 4건 → `food.drinks.water_soda.sports`; 웰치소다 그레이프/웰치 제로 그레이프 반복 4건 → `food.drinks.water_soda.soda`.
+- 신규 리프 후보 8관측: 진로 토닉워터 2판매페이지 반복 4건 → `food.drinks.water_soda.tonic` 후보; 비타500 100ml×10 반복 2건 → `food.drinks.water_soda.vitamin` 후보; 상쾌환 100ml×2 반복 2건 → `food.drinks.functional.hangover` 후보. 기존 sports/energy 리프로 억지 흡수하지 않았다.
+- 원본 경로 충돌/제품형태 보류 4관측: 델몬트 알로에 로우슈거 반복 2건은 `천연야채음료` 경로지만 제목에 주스가 없어 vegetable juice 확정 보류; 델몬트 매실 로우슈거 반복 2건은 `pending/324`에서 감귤주스 경로에 잘못 걸렸고 다른 raw 진열에서는 매실/기타과일 계열로 나타나며 제목에도 주스가 없어 `fruit`와 `fruit_drink` 중 선택을 보류했다.
+- 행사조건: 오렌지주스·알로에·매실 등에 있는 1+1은 분류와 별개로 기존 정규화 상태를 변경하지 않았다. 이번 proposal은 가격/행사 해소를 승인하지 않는다.
+- 실제 반영/검사: GitHub 텍스트 읽기·쓰기만 사용했다. staging DB import/재구축, pytest, `verify_initial_stage.py`, 멱등 import는 실행하지 않았다. pass41의 5,280 적재/3,916 보류 수치는 변경되지 않았다.
+- 다음 재개점: 음료 신규 후보(토닉·비타민·숙취)를 다른 마트 관측과 교차확인해 taxonomy 추가 여부를 한 번에 검토한다. 이어서는 아직 분류 원인이 남은 소형 식품 묶음을 처리하되 이미 classification resolved이고 행사/수량/제목변경만 남은 행은 별도로 구분한다.
