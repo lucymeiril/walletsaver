@@ -25,11 +25,11 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다.
 
 ## 2. 완성까지 남은 strict-audit 상한
 
-- 미완 strict 범위: `pending 001~028`
-- 해당 원본 관측: **1,467 observations**
-- pass41 전체 pending 3,916 대비 **약 37.5%**
-- 관측 범위 기준 `029~451`은 약 62.5%를 strict/ordered 방식으로 지나왔다. 단, 이것을 최종 완료율로 부르면 안 된다. 과거 proposal 중복/re-review, taxonomy holds, 최종 reconciliation이 남아 있다.
-- `001~028`에도 과거 proposal이 있으므로 실제 새 판단량은 1,467보다 작을 가능성이 높다.
+- 미완 strict 범위: `pending 001~027`
+- 해당 원본 관측: **1,434 observations**
+- pass41 전체 pending 3,916 대비 **약 36.6%**
+- 관측 범위 기준 `028~451`은 약 63.4%를 strict/ordered 방식으로 지나왔다. 단, 이것을 최종 완료율로 부르면 안 된다. 과거 proposal 중복/re-review, taxonomy holds, 최종 reconciliation이 남아 있다.
+- `001~027`에도 과거 proposal이 있으므로 실제 새 판단량은 1,434보다 작을 가능성이 높다.
 
 분류 sweep 뒤 DB 반영 전 남는 단계:
 1. proposal 간 raw-record/source-key dedupe
@@ -40,16 +40,17 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다.
 
 ## 3. strict reverse sweep 누계
 
-완료 범위: **pending 029~043**
+완료 범위: **pending 028~043**
 
-- observations opened: **416**
+- observations opened: **449**
 - already-classified exclusions: **44**
-- strict/new classification reviews: **372**
-- distinct newly reviewed source listings: **344**
-- existing-leaf proposals: **118 listings**
-- taxonomy/product-form/promotion/manual-review holds: **226 listings**
+- strict/new classification reviews: **405**
+- distinct newly reviewed source listings: **377**
+- existing-leaf proposals: **146 listings**
+- taxonomy/product-form/promotion/manual-review holds: **231 listings**
 
 최근 그룹:
+- 028 `proposals/reconciliation-pending-028.json` — 33 pending / prior coverage 11 / uncovered 22 / final existing 28 / hold 5
 - 029 `proposals/costco-cheese-shelf-029.json` — 32 opened / 8 excluded / 24 new / existing 5 / hold 19
 - 030 `proposals/emart-obanjang-030.json` — 32 / 1 excluded / 31 new / existing 5 / hold 26
 - 031 `proposals/emart-meat-eggs-031.json` — 32 / 6 excluded / 26 new / existing 15 / hold 11
@@ -62,6 +63,7 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다.
 - 038~043: see `checkpoints/checkpoint-reverse-sweep-038-043.md`
 
 Latest checkpoints:
+- `checkpoints/checkpoint-after-pending-028-reconciliation.md`
 - `checkpoints/checkpoint-after-pending-029.md`
 - `checkpoints/checkpoint-after-pending-030.md`
 - `checkpoints/checkpoint-after-pending-031.md`
@@ -72,22 +74,24 @@ Latest checkpoints:
 
 ## 4. 최근 중요 발견
 
-### pending 029 — Costco `치즈` shelf
-- 32 observations / 8 classified exclusions / 24 new listings.
-- shelf 안에 human cheese뿐 아니라 dog treats, kitchen tools, garden items, sauces, prepared meals가 섞임.
-- existing 5: cheddar -> `food.dairy.cheese.sliced` 2, grilling cheese -> `food.dairy.cheese.grilling`, prepared chicken breast -> `food.meals.prepared.chicken`, pork bulbaek -> `food.meals.prepared.seasoned_meat`.
-- holds 19: dog treats, cheese/mixed gift assortments, spreadable cheese, kitchen tools, garden items, chicken sauces, barbecue ribs.
-- 24 source keys explicit-decision collision screen 0.
-- all 24 decisions preserve exact raw IDs.
+### pending 028 — second confirmed raw-coverage gap
+- 33 observations 전부 classification-pending.
+- older `proposals/grains-nuts-028-034.json`이 group 028을 reviewed로 표시했지만 exact raw coverage는 **11/33뿐**이었다.
+- strict audit에서 **22/33 누락**을 발견해 `proposals/reconciliation-pending-028.json`으로 보완.
+- earlier 11 revalidation conflict 0.
+- final existing 28 / hold 5.
+- holds: pecan -> `food.grains.nuts.pecan`; pumpkin seed -> `food.grains.seeds.pumpkin`; nurungji -> `food.grains.processed.nurungji`; raw durum wheat -> `food.grains.wheat.durum`; almond+pretzel mixed snack -> mixed-product-form hold.
+- useful existing precedents: sweet-potato/pumpkin vegetable chips -> `food.snacks.savory.vegetable`; banana chips -> `food.produce.processed_fruit.dried`; flavor-only single-nut snacks keep their core nut leaf.
+- all 33 source keys explicit-decision collision screen 0.
+
+### raw-coverage lesson now confirmed twice
+- pending 034: older proposal covered 19/29, missing 10.
+- pending 028: older proposal covered 11/33, missing 22.
+- Therefore **group name/listing inside an old proposal is never completion evidence. Exact raw/source-key coverage is mandatory for remaining low-number groups.**
 
 ### pending 030 — promotion anomaly
 - 31 new reviews 중 24가 `dealItemView` promotion surface.
 - pre-existing anomaly: `ingestion:1:25`, key `1000601687276`, `석박지/맛김치 1+1`은 mixed deal page인데 이미 `food.preserved.kimchi.cabbage`로 classified. 신규 count에서는 제외하되 최종 global reconciliation에서 재검토.
-
-### pending 034 — coverage lesson
-- 기존 `grains-nuts-028-034.json`은 034 raw 29건 중 실제로 19건만 덮고 있었음.
-- strict audit에서 누락 10건을 발견해 보완.
-- **따라서 pending 028도 같은 기존 proposal이 언급한다는 이유만으로 완료 취급 금지. 반드시 raw coverage 실측.**
 
 ## 5. 이미 확인된 전역 reconciliation 사실
 
@@ -98,22 +102,23 @@ Latest checkpoints:
 - pending313 `농심 생생 우동 용기 276G`: older proposal `cup_ramen` vs final sweep `udon` conflict. 최종 승격 전 해결.
 - 과거 `2,165`, `+266 final sweep`, `840 classification reviews 044~109` 같은 숫자를 global unique completion으로 사용하지 않는다.
 
-## 6. 현재 재개점 — pending 028
+## 6. 현재 재개점 — pending 027
 
 **다음 AI는 여기서 이어간다.**
 
-- group: `pending/028`
-- 029 strict audit 완료: `proposals/costco-cheese-shelf-029.json`, `checkpoints/checkpoint-after-pending-029.md`
-- 028은 아직 현재 strict 방식으로 시작하지 않았다.
-- 과거 proposal `proposals/grains-nuts-028-034.json`이 028을 언급한다.
+- group: `pending/027`
+- pending 028 strict reconciliation 완료:
+  - `proposals/reconciliation-pending-028.json`
+  - `checkpoints/checkpoint-after-pending-028-reconciliation.md`
+- 027은 아직 현재 strict 방식으로 시작하지 않았다.
 
-028 절차:
-1. `pending/028/` 디렉터리 모든 조각을 먼저 list/fetch.
+027 절차:
+1. `pending/027/` 디렉터리 모든 조각을 먼저 list/fetch.
 2. already-classified vs classification-pending 분리.
-3. `grains-nuts-028-034.json`의 **exact raw/source-key coverage**를 계산.
-4. 기존 proposal과 strict 재판단의 conflict가 있으면 명시하고, 누락은 reconciliation/supplement로 보완.
+3. 027을 언급하는 기존 proposal이 있으면 **exact raw/source-key coverage**를 계산.
+4. 기존 proposal과 strict 재판단 conflict/누락을 명시.
 5. 431 explicit decision collision screen.
-6. 완료 즉시 이 파일을 `pending 027` 재개점으로 갱신.
+6. 완료 즉시 이 파일을 `pending 026` 재개점으로 갱신.
 
 ## 7. 새 AI 문서 신뢰 순서
 
