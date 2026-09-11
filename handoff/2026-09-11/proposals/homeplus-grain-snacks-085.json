@@ -1,0 +1,63 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "085",
+  "source_path": "과자/시리얼 > 과자/쿠키/파이 > 쌀/곡물 과자 > 기타곡물스낵",
+  "scope_note": "Classification-only proposal. Product identity is grouped by source_record_key and raw observations remain authoritative in pending/085/001.json. Promotion conditions are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1079,
+    "current_reviewed": 1089,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2827
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "Repository search returned the pending group only for the five source_record_keys; no earlier proposal or explicit-decision conflict was found."
+  },
+  "decisions": [
+    {
+      "source_record_key": "121672045",
+      "source_title": "해태 오사쯔 100G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.snacks.savory.vegetable",
+      "reason": "고구마 기반 스낵 제품으로 pass41의 채소스낵 leaf가 가장 구체적으로 맞는다. 원본의 기타곡물스낵 shelf를 그대로 복사하지 않는다.",
+      "promotion_review": "unchanged; promotion_unresolved remains outside classification-only scope"
+    }
+  ],
+  "held_decisions": [
+    {
+      "source_record_key": "070143064",
+      "source_title": "켈로그 단백질바K 헤이즐넛&다크초코 120G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.snacks.bars.protein",
+      "reason": "제품형태는 단백질바이며 pass41에는 스낵바/프로틴바 leaf가 없다. 초콜릿 맛이 포함돼도 바초콜릿 자체로 분류하지 않는다.",
+      "promotion_review": "unchanged; 1+1 preserved"
+    },
+    {
+      "source_record_key": "070996822",
+      "source_title": "오리온 땅콩강정 65G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.snacks.traditional.gangjeong",
+      "reason": "완성 땅콩강정 스낵이므로 raw peanut/nut leaf가 아니며 pass41 traditional snack에는 강정 전용 leaf가 없다.",
+      "promotion_review": "unchanged; 10+1 preserved"
+    },
+    {
+      "source_record_key": "069708665",
+      "source_title": "오리온 땅콩강정 3번들 80G*3",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.snacks.traditional.gangjeong",
+      "reason": "동일한 땅콩강정 제품형태의 번들 규격이다. 번들 수량은 taxonomy 분기 기준이 아니다."
+    },
+    {
+      "source_record_key": "123847815",
+      "source_title": "그린피스 와사비스낵 380G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.snacks.savory.legume",
+      "reason": "완두콩 계열 와사비 스낵으로 보이며 pass41의 곡물/채소/옥수수/감자/밀 스낵 중 어느 하나로 강제하기보다 legume snack 후보로 보존한다."
+    }
+  ],
+  "executed_tests": []
+}
