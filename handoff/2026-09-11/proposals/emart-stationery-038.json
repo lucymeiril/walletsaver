@@ -1,0 +1,161 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["038"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Pending group 038 spans 001.json and 002.json. Product title/form is the primary evidence; the broad Emart 문구/취미/도서 shelf is navigation evidence only.",
+  "review_summary": {
+    "observations_reviewed": 26,
+    "source_listings_reviewed": 26,
+    "already_classified_excluded": 0,
+    "existing_leaf_decisions": 0,
+    "deferred_taxonomy_candidates": 26
+  },
+  "taxonomy_policy": {
+    "current_snapshot_check": "Repository search did not identify current stationery.* unified-category precedents in the pass41 handoff snapshot.",
+    "grouping_rule": "Brand, color, paper size/weight, blade size, tip size, sheet count, and package count are attributes/variants, not separate category leaves.",
+    "ambiguous_title_resolution": "플립3 0.5mm was externally verified as a Monami 3-color ballpoint/multi-pen before assigning its product-form candidate."
+  },
+  "accounting_note": "This file establishes 26 new classification reviews for pending group 038. Do not mechanically add this number to historical cumulative review totals until global proposal accounting reconciliation is complete.",
+  "explicit_review_decision_conflict_check": {
+    "file": "handoff/2026-09-11/review-decisions-input.json",
+    "method": "four batched repository source_record_key searches",
+    "checked_source_record_keys": [
+      "1000556774362", "1000559938961", "1000558550912", "0000008302063", "1000460438615", "1000020301978", "1000549827410",
+      "0000007212107", "1000280366849", "0000006839974", "1000280759283", "1000040610436", "1000099079484", "0000008051513",
+      "0000008226680", "1000456166278", "1000022878034", "1000550576592", "0000008317323", "1000290626536",
+      "1000049176305", "0000009662603", "0000006618483", "0000008976217", "1000280759271", "0000008232052"
+    ],
+    "review_decisions_file_matches_found": 0,
+    "note": "Search results returned raw/pending/unresolved files but did not return review-decisions-input.json for these keys. This is a proposal-stage conflict screen only."
+  },
+  "deferred_taxonomy_candidates": [
+    {
+      "suggested_new_leaf": "home.office.bookend",
+      "listings": [
+        {"raw_record_id":"ingestion:108:0","source_record_key":"1000556774362","source_title":"프레일 북엔드"}
+      ],
+      "reason": "Book-support/storage accessory; no current exact unified leaf found."
+    },
+    {
+      "suggested_new_leaf": "home.office.memo_board",
+      "listings": [
+        {"raw_record_id":"ingestion:108:1","source_record_key":"1000559938961","source_title":"프레일 원형 스틸메모보드"}
+      ],
+      "reason": "Memo/display board product; material and shape are attributes."
+    },
+    {
+      "suggested_new_leaf": "stationery.notebook",
+      "listings": [
+        {"raw_record_id":"ingestion:108:2","source_record_key":"1000558550912","source_title":"막쓰는 노트 2입"},
+        {"raw_record_id":"ingestion:108:8","source_record_key":"1000280366849","source_title":"모닝 수학노트"},
+        {"raw_record_id":"ingestion:108:10","source_record_key":"1000280759283","source_title":"모닝 와이드 룰 노트(9mm) 컬러랜덤"},
+        {"raw_record_id":"ingestion:108:24","source_record_key":"1000280759271","source_title":"모닝 테마컬러노트(A5)"}
+      ],
+      "reason": "All four listings are writing notebooks; ruling, theme, A5 size, color, and 2-count packaging are attributes."
+    },
+    {
+      "suggested_new_leaf": "stationery.adhesive.packing_tape",
+      "listings": [
+        {"raw_record_id":"ingestion:108:3","source_record_key":"0000008302063","source_title":"테이팩스 투명 OPP테이프 48mmX35m 4개입"},
+        {"raw_record_id":"ingestion:108:5","source_record_key":"1000020301978","source_title":"스카치 포장용테이프 투명"},
+        {"raw_record_id":"ingestion:108:14","source_record_key":"0000008226680","source_title":"스카치 포장 테이프 갈색 50m"},
+        {"raw_record_id":"ingestion:108:16","source_record_key":"1000022878034","source_title":"스카치 포장용 테이프 2배강력(48x100) 투명"}
+      ],
+      "reason": "All are packaging/OPP tape; color, strength, width/length, and pack count are variants."
+    },
+    {
+      "suggested_new_leaf": "stationery.scissors",
+      "listings": [
+        {"raw_record_id":"ingestion:108:4","source_record_key":"1000460438615","source_title":"티타늄 양손가위(22A)"},
+        {"raw_record_id":"ingestion:108:11","source_record_key":"1000040610436","source_title":"블루티타늄 캡 가위"}
+      ],
+      "reason": "Ordinary stationery scissors; coating/model/cap are attributes."
+    },
+    {
+      "suggested_new_leaf": "stationery.paper.copy_paper",
+      "listings": [
+        {"raw_record_id":"ingestion:108:6","source_record_key":"1000549827410","source_title":"A4 복사용지 75g 500매"},
+        {"raw_record_id":"ingestion:108:12","source_record_key":"1000099079484","source_title":"A4 복사지 80g 500매"},
+        {"raw_record_id":"ingestion:108:17","source_record_key":"1000550576592","source_title":"밀크 A4 친환경 복사지 80g 2500매"}
+      ],
+      "reason": "All are A4 copy paper; basis weight, sheet count, brand, and eco claim are attributes."
+    },
+    {
+      "suggested_new_leaf": "stationery.writing.mechanical_pencil",
+      "listings": [
+        {"raw_record_id":"ingestion:108:7","source_record_key":"0000007212107","source_title":"문화 제도 샤프 0.5mm 2개입"}
+      ],
+      "reason": "Explicit mechanical pencil listing; lead size and 2-count are attributes."
+    },
+    {
+      "suggested_new_leaf": "stationery.notes.sticky_note",
+      "listings": [
+        {"raw_record_id":"ingestion:108:9","source_record_key":"0000006839974","source_title":"포스트잇 656 노랑 100매"}
+      ],
+      "reason": "Self-adhesive memo-note product; color/model/sheet count are attributes."
+    },
+    {
+      "suggested_new_leaf": "stationery.adhesive.glue_stick",
+      "listings": [
+        {"raw_record_id":"ingestion:108:13","source_record_key":"0000008051513","source_title":"딱풀 8g 3개입"}
+      ],
+      "reason": "Glue-stick product; weight and pack count are attributes."
+    },
+    {
+      "suggested_new_leaf": "stationery.storage.pencil_case",
+      "listings": [
+        {"raw_record_id":"ingestion:108:15","source_record_key":"1000456166278","source_title":"톤앤무드 봉제필통 (컬러랜덤)"}
+      ],
+      "reason": "Pencil case; textile construction and random color are attributes."
+    },
+    {
+      "suggested_new_leaf": "stationery.writing.pencil",
+      "listings": [
+        {"raw_record_id":"ingestion:108:18","source_record_key":"0000008317323","source_title":"오피스 지우개 연필 2B 6입"}
+      ],
+      "reason": "Graphite pencil with eraser; grade and package count are attributes."
+    },
+    {
+      "suggested_new_leaf": "stationery.art.colored_pencil",
+      "listings": [
+        {"raw_record_id":"ingestion:108:19","source_record_key":"1000290626536","source_title":"샤프식 색연필 빨강 5입"},
+        {"raw_record_id":"ingestion:108:25","source_record_key":"0000008232052","source_title":"뽀로로 미니 색연필 24색"}
+      ],
+      "reason": "Both are colored-pencil products; mechanical/mini form, color set, character branding, and pack count are variants."
+    },
+    {
+      "suggested_new_leaf": "stationery.writing.multicolor_ballpoint_pen",
+      "listings": [
+        {"raw_record_id":"ingestion:108:20","source_record_key":"1000049176305","source_title":"플립3 0.5mm"}
+      ],
+      "reason": "External product-form verification identifies Monami Flip 3 as a three-color ballpoint/multi-pen; 0.5mm is tip size."
+    },
+    {
+      "suggested_new_leaf": "stationery.geometry.set",
+      "listings": [
+        {"raw_record_id":"ingestion:108:21","source_record_key":"0000009662603","source_title":"스마트 삼각자 각도기 세트"}
+      ],
+      "reason": "Geometry ruler/protractor set; set composition is inherent product form."
+    },
+    {
+      "suggested_new_leaf": "stationery.writing.ballpoint_pen",
+      "listings": [
+        {"raw_record_id":"ingestion:108:22","source_record_key":"0000006618483","source_title":"애니볼 유성볼펜 검정3본(0.7mm)"}
+      ],
+      "reason": "Oil-based ballpoint pen; black ink, 0.7mm tip, and 3-count are attributes."
+    },
+    {
+      "suggested_new_leaf": "stationery.storage.document_file",
+      "listings": [
+        {"raw_record_id":"ingestion:108:23","source_record_key":"0000008976217","source_title":"5분류 도큐멘트 파일"}
+      ],
+      "reason": "Document organizer/file product; five-section layout is a product attribute."
+    }
+  ],
+  "external_product_form_verification": {
+    "source_record_key": "1000049176305",
+    "source_title": "플립3 0.5mm",
+    "verified_form": "Monami three-color ballpoint/multi-pen"
+  },
+  "executed_tests": []
+}
