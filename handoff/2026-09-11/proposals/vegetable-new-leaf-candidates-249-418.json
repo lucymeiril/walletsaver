@@ -1,0 +1,73 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["249", "370", "373", "378", "379", "381", "383", "384", "418"],
+  "scope_note": "GitHub read/write review only. Existing-leaf classification is separated from candidate taxonomy additions. Suggested new leaf ids below are review labels only and have not been added to initial_taxonomy.py or any DB.",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:52:69"],
+      "source_title": "목이버섯 150G(팩)",
+      "proposed_leaf": "food.produce.vegetables.mushroom",
+      "reason": "건조 표기가 없는 150g 신선 목이버섯 팩이며 원본 경로도 채소 > 버섯 > 기타버섯이다. 기존 신선 버섯 통합 리프와 일치한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "deferred_taxonomy_candidates": [
+    {
+      "raw_record_ids": ["ingestion:2:82", "ingestion:52:0"],
+      "source_title": "브로콜리 2입(국산/봉)",
+      "suggested_new_leaf": "food.produce.vegetables.broccoli",
+      "reason": "신선 브로콜리임은 명확하지만 pass41 신선채소 taxonomy에 브로콜리 독립 리프가 없다. 기존 고추·파프리카 리프에 합치지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:37", "ingestion:52:20"],
+      "source_title": "손질 브로콜리 300G(팩)",
+      "suggested_new_leaf": "food.produce.vegetables.broccoli",
+      "reason": "손질된 신선 브로콜리 팩으로 품목 자체는 브로콜리다. 박피/손질을 이유로 다른 가공채소 리프에 넣지 않고 브로콜리 신규 리프 후보와 함께 검토한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:13", "ingestion:52:33"],
+      "source_title": "청도 미나리 국산(봉)",
+      "suggested_new_leaf": "food.produce.vegetables.water_parsley",
+      "reason": "신선 미나리임이 제목과 원본 경로에서 명확하지만 현재 독립 리프가 없다. 쌈채소/샐러드채소로 임의 흡수하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:21", "ingestion:52:61"],
+      "source_title": "얼갈이(국산/봉)",
+      "suggested_new_leaf": "food.produce.vegetables.young_napa_cabbage",
+      "reason": "얼갈이는 어린 배추 계열이지만 일반 통배추와 판매·비교 단위가 다른 별도 소매 품목이다. 기존 napa_cabbage에 합칠지 독립 리프로 둘지 정책 검토가 필요하다."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:29", "ingestion:52:47"],
+      "source_title": "아삭아삭 셀러리(봉)",
+      "suggested_new_leaf": "food.produce.vegetables.celery",
+      "reason": "신선 셀러리로 품목이 명확하나 현재 독립 리프가 없다. 샐러드채소 통합 리프에 자동 흡수하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:2:86", "ingestion:51:86"],
+      "source_title": "양상추 (국산) 통",
+      "suggested_new_leaf": "food.produce.vegetables.lettuce",
+      "reason": "통 양상추라는 단일 신선 품목이다. 현재 쌈채소/샐러드채소 리프 중 어느 쪽에도 정확히 대응하지 않아 독립 리프 또는 상위 정책 검토가 필요하다."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:34", "ingestion:52:49"],
+      "source_title": "생강 150G(봉)",
+      "suggested_new_leaf": "food.produce.vegetables.ginger",
+      "reason": "신선 생강임이 제목과 경로에서 명확하지만 현재 독립 리프가 없다. 마늘/양파 등 다른 향신채소 리프로 대체하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:22", "ingestion:52:26"],
+      "source_title": "깐쪽파(봉)",
+      "suggested_new_leaf": "food.produce.vegetables.spring_onion",
+      "reason": "쪽파는 현재 대파 리프(food.produce.vegetables.scallion, 표시명 대파)와 다른 소매 품목이다. 기존 대파로 합치지 않고 별도 리프 필요성을 검토한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:44", "ingestion:52:44"],
+      "source_title": "달콤한 옥수수(태국) 2입(봉)",
+      "suggested_new_leaf": "food.produce.vegetables.corn",
+      "reason": "통 생옥수수 품목임이 제목과 채소 경로에서 명확하지만 현재 신선 옥수수 리프가 없다. 통조림/시리얼/스낵과 구분되는 신선 리프 후보로 보류한다."
+    }
+  ],
+  "executed_tests": []
+}
