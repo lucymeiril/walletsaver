@@ -1,0 +1,127 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["055"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 675,
+    "batch_reviewed_unique_observations": 17,
+    "cumulative_reviewed_unique_observations": 692,
+    "remaining_unreviewed_observations": 3224
+  },
+  "review_summary": {
+    "unique_source_products_reviewed": 9,
+    "observations_reviewed": 17,
+    "proposed_existing_leaf_products": 5,
+    "proposed_existing_leaf_observations": 9,
+    "held_or_new_taxonomy_products": 4,
+    "held_or_new_taxonomy_observations": 8,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:3:91", "ingestion:53:14"],
+      "source_name": "homeplus",
+      "source_record_key": "071421897",
+      "source_title": "용두동 주꾸미볶음 500G(250G*2)(봉)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.seafood_dish",
+      "reason": "주꾸미 원물 상품이 아니라 볶음 조리품이다. 현재 raw seafood leaf나 기존 grilled_fish leaf로 강제하면 제품형태가 왜곡된다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:4", "ingestion:53:22"],
+      "source_name": "homeplus",
+      "source_record_key": "071421868",
+      "source_title": "용두동 낙지볶음 508G(봉)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.seafood_dish",
+      "reason": "낙지 원물 상품이 아니라 볶음 조리품이다. 현재 생수산 leaf로 넣지 않고 조리수산품 정책 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:30", "ingestion:53:97"],
+      "source_name": "homeplus",
+      "source_record_key": "070860234",
+      "source_title": "국내산 순살아귀찜 400G(봉)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.seafood_dish",
+      "reason": "아귀 원물/손질 생선이 아니라 찜 조리품이다. 현재 생선 leaf에 넣지 않고 조리수산품 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:35", "ingestion:54:7"],
+      "source_name": "homeplus",
+      "source_record_key": "134897364",
+      "source_title": "손질 수제 대구살 350G(팩)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.seafood.fish.cod",
+      "reason": "손질 대구살로 어종은 명확하지만 pass41 fish taxonomy에는 대구(cod) leaf가 없다. 명태(pollock)로 합치지 않는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:58", "ingestion:53:62"],
+      "source_name": "homeplus",
+      "source_record_key": "114367038",
+      "source_title": "손질 제주 삼치 500G(팩)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.fish.spanish_mackerel",
+      "reason": "상품명이 손질 삼치를 직접 명시하며 pass41에 삼치 leaf가 존재한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:62", "ingestion:53:94"],
+      "source_name": "homeplus",
+      "source_record_key": "134897358",
+      "source_title": "손질 수제 동태살 500G(팩)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.fish.pollock",
+      "reason": "동태는 pass41 명태(pollock) leaf의 명시된 형태이며 손질 여부는 상품 속성이다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:66", "ingestion:53:71"],
+      "source_name": "homeplus",
+      "source_record_key": "114366713",
+      "source_title": "손질 제주 고등어 500G(팩)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.fish.mackerel",
+      "reason": "상품명이 손질 고등어를 직접 명시하며 pass41 mackerel leaf와 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:5:24", "ingestion:53:75"],
+      "source_name": "homeplus",
+      "source_record_key": "114366537",
+      "source_title": "손질 제주 갈치 400G(팩)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.fish.hairtail",
+      "reason": "상품명이 손질 갈치를 직접 명시하며 pass41 hairtail leaf와 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:53:38"],
+      "source_name": "homeplus",
+      "source_record_key": "071371241",
+      "source_title": "손질 노르웨이 고등어필렛 500G(봉)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.fish.mackerel",
+      "reason": "고등어 필렛은 조리 완료 제품이 아니라 손질된 고등어이며 기존 mackerel leaf가 제품 정체성과 맞는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
