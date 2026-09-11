@@ -53,3 +53,14 @@
 - 근거 교차확인: `initial_taxonomy.py`에 비요뜨 해당 정확 제목의 topping 규칙이 있으며, `initial_audited_seasonings.py`에는 신영 페페로치노홀 정확 제목이 `whole_chili`로 감사돼 있다. 발사믹 식초는 상품명 자체의 제품형태를 마트의 드레싱 혼합 진열보다 우선했다.
 - 실제 반영/검사: GitHub 텍스트 읽기·쓰기만 사용했다. staging DB import/재구축, pytest, `verify_initial_stage.py`, 멱등 import 검사는 실행하지 않았다. pass41 5,280 적재/3,916 보류 수치는 변경하지 않았다.
 - 다음 재개점: 이미 PROGRESS에 예고된 소형 신선채소 묶음을 계속 검토하되, 기존 리프가 없는 세부 채소/처리형태는 새 리프 후보로 별도 보류한다. 제안 파일을 합칠 때는 `raw_record_id` 기준으로 344 같은 재확인 중복을 제거한다.
+
+## 2026-09-11 소형 신선·가공채소 후속 제안 — pending 244 / 245 / 246 / 247 / 248 / 371 / 372 / 374 / 375 / 380 / 382
+
+- 확인 범위: 위 11개 pending 묶음의 조각 전부, 총 34관측을 읽었다. 반복 수집은 배열 인덱스가 바뀐 경우가 있어 각 관측의 실제 `raw_record_id`와 `source_record_key`를 대조해 같은 판매페이지 관측만 한 결정에 묶었다.
+- 제안 저장: `proposals/vegetables-small-244-382.json`. 상태는 `proposal_only`, `baseline_pass=pass41`, `executed_tests=[]`이며 staging DB/import 입력이 아니다.
+- 분류 제안 26관측: 건표고/건목이 반복 4건 → `food.produce.processed_vegetables.dried_mushroom`; 일반 무 반복 2건 → `food.produce.vegetables.radish`; 양송이 2판매페이지 반복 4건·맛타리 반복 2건·모둠버섯 2판매페이지 2건 → `food.produce.vegetables.mushroom`; 대파 2판매페이지 반복 4건 → `food.produce.vegetables.scallion`; 부추 반복 2건 → `food.produce.vegetables.chives`; 통배추 반복 2건 → `food.produce.vegetables.napa_cabbage`; 깐마늘 반복 2건 → `food.produce.vegetables.garlic`.
+- 분류 보류 6관측: `고추채 절임` 반복 2건과 `명이 절임` 반복 2건은 마트의 데친나물/삶은나물 경로보다 제목의 절임 형태를 우선해 `blanched`에 넣지 않았다. `열무` 반복 2건은 일반 무와 다른 품목인데 pass41에 독립 열무 리프가 없어 보류했다.
+- 비분류 pending 2관측: `양파 중(망)`은 이미 `food.produce.vegetables.onion`으로 confidence 0.97 분류됐지만 동일 판매페이지의 첫 관측은 1800g, 후속 관측은 1개로 정규화되어 `source_specification_changed`가 남아 있다. 분류 제안으로 pending을 해소했다고 보지 않는다.
+- 안전장치: 배추/절임배추 혼합 경로의 `배추 (국산/통)`은 제목이 통배추라 신선 배추로 제안했고, 절임 제목 상품은 별도 보류했다. 깐대파·깐마늘은 박피/기본 손질만 있는 신선 원물로 보고 기존 신선 리프에 제안하되 규격이나 상품군 병합은 건드리지 않았다.
+- 실제 반영/검사: GitHub 텍스트 읽기·쓰기만 사용했다. staging DB import/재구축, pytest, `verify_initial_stage.py`, 멱등 import 검사는 실행하지 않았다. pass41의 5,280 적재/3,916 보류 수치는 변경되지 않았다.
+- 다음 재개점: 소형 채소 잔여 중 기존 리프가 있는 항목을 계속 확인하되, 생강·쪽파·브로콜리·샐러리·열무·절임채소처럼 현재 리프와 직접 일치하지 않는 품목은 신규 리프/정책 후보로 모아 한 번에 검토한다. 이미 분류가 resolved이고 규격/행사/제목변경만 pending인 항목은 제안 수에서 분리한다.
