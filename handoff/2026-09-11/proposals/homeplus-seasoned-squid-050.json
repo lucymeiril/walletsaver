@@ -1,0 +1,136 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["050"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 580,
+    "batch_reviewed_unique_observations": 20,
+    "cumulative_reviewed_unique_observations": 600,
+    "remaining_unreviewed_observations": 3316
+  },
+  "review_summary": {
+    "unique_source_products_reviewed": 10,
+    "observations_reviewed": 20,
+    "proposed_existing_leaf_products": 8,
+    "proposed_existing_leaf_observations": 16,
+    "held_products": 2,
+    "held_observations": 4,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:3:99", "ingestion:53:51"],
+      "source_name": "homeplus",
+      "source_record_key": "113246779",
+      "source_title": "부드러운 2.5mm 백진미 오징어채 180Gx2봉",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.processed.dried_fish",
+      "reason": "백진미 오징어채는 건조·조미 수산가공품이며 source path도 건오징어/진미채 > 조미오징어로 일치. 생오징어 leaf로 보내지 않음",
+      "quantity_review": "unchanged; both observations retain unit_text_conflict and unit_title_conflict. Title says 180Gx2봉 while structured package is 2봉; do not overwrite without executable quantity review.",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:15", "ingestion:53:69"],
+      "source_name": "homeplus",
+      "source_record_key": "068866426",
+      "source_title": "지금한끼 2mm 오징어실채 80G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.processed.dried_fish",
+      "reason": "오징어실채는 건조·조미 오징어 가공품으로 현재 dried_fish leaf가 가장 직접적인 기존 축",
+      "quantity_review": "unchanged; 80g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:26", "ingestion:54:13"],
+      "source_name": "homeplus",
+      "source_record_key": "070993554",
+      "source_title": "자외선살균 백진미 오징어채 300G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.processed.dried_fish",
+      "reason": "자외선살균은 처리 속성이고 제품형태는 백진미 오징어채로 명확",
+      "quantity_review": "unchanged; 300g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:31", "ingestion:54:26"],
+      "source_name": "homeplus",
+      "source_record_key": "070995304",
+      "source_title": "부드러운 2.5mm 백진미 오징어채 150G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.processed.dried_fish",
+      "reason": "백진미 오징어채 제품형태가 직접 명시되어 건조 수산가공 leaf와 일치",
+      "quantity_review": "unchanged; 150g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:33", "ingestion:53:95"],
+      "source_name": "homeplus",
+      "source_record_key": "138855811",
+      "source_title": "페스츄리 오징어 150G",
+      "status": "held",
+      "reason": "조미오징어 진열 근거는 있으나 '페스츄리 오징어'가 진미채/건오징어와 같은 가공형태인지 repo 내 직접 감사 선례가 없어 dried_fish 자동 승격을 보류",
+      "quantity_review": "unchanged; 150g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:37", "ingestion:53:99"],
+      "source_name": "homeplus",
+      "source_record_key": "068849159",
+      "source_title": "지금한끼 백진미오징어채 100G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.processed.dried_fish",
+      "reason": "백진미 오징어채 제품형태가 직접 명시되어 건조·조미 수산가공 leaf와 일치",
+      "quantity_review": "unchanged; 100g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:81", "ingestion:54:55"],
+      "source_name": "homeplus",
+      "source_record_key": "071091693",
+      "source_title": "탱글탱글 왕다리오징어 200G",
+      "status": "held",
+      "reason": "조미오징어 source path는 강한 증거지만 '왕다리오징어'의 정확한 가공형태가 제목에서 드러나지 않고 동일상품 감사 선례가 없어 보류",
+      "quantity_review": "unchanged; 200g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:82", "ingestion:54:57"],
+      "source_name": "homeplus",
+      "source_record_key": "070374591",
+      "source_title": "홍진미 오징어채 200G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.processed.dried_fish",
+      "reason": "홍진미 오징어채는 건조·조미 오징어채로 제품형태가 직접 명시됨",
+      "quantity_review": "unchanged; 200g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:86", "ingestion:54:41"],
+      "source_name": "homeplus",
+      "source_record_key": "070996148",
+      "source_title": "홍진미 오징어채 150G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.processed.dried_fish",
+      "reason": "홍진미 오징어채 제품형태가 직접 명시되어 dried_fish leaf와 일치",
+      "quantity_review": "unchanged; 150g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:5:29", "ingestion:54:28"],
+      "source_name": "homeplus",
+      "source_record_key": "070374562",
+      "source_title": "부드러운 2.5mm 백진미 오징어채 200G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.processed.dried_fish",
+      "reason": "백진미 오징어채 제품형태가 직접 명시되어 건조·조미 수산가공 leaf와 일치",
+      "quantity_review": "unchanged; 200g retained",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
