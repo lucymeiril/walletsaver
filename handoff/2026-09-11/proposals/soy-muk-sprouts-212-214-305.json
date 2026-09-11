@@ -1,0 +1,78 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["212", "213", "214", "305"],
+  "scope_note": "GitHub read/write review only. Existing leaves are proposed only where product-title evidence resolves the source-path ambiguity. Soy liquid and muk ids below are taxonomy-review labels only and have not been added to initial_taxonomy.py or any DB.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 256,
+    "batch_reviewed_unique_observations": 14,
+    "cumulative_reviewed_unique_observations": 270,
+    "remaining_unreviewed_observations": 3646
+  },
+  "explicit_review_decision_conflict_check": {
+    "file": "handoff/2026-09-11/review-decisions-input.json",
+    "checked_source_record_keys": ["071094315", "123695625", "070153144", "069399539", "070860891", "071351023", "112088334"],
+    "matches_found": 0
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:12:90", "ingestion:62:17"],
+      "source_record_key": "070860891",
+      "source_title": "simplus 아삭한숙주나물 300G",
+      "proposed_leaf": "food.produce.vegetables.sprouts",
+      "reason": "제목과 원본 경로가 모두 숙주나물을 직접 가리키며 pass41 taxonomy에 콩나물·숙주 통합 리프가 존재한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:15:63", "ingestion:65:1"],
+      "source_record_key": "071351023",
+      "source_title": "simplus 100%국산 무농약 숙주나물 240G",
+      "proposed_leaf": "food.produce.vegetables.sprouts",
+      "reason": "무농약·국산은 재배/원산지 속성이고 실제 품목은 숙주나물이다. 기존 콩나물·숙주 리프와 정확히 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:15:39", "ingestion:64:77"],
+      "source_record_key": "112088334",
+      "source_title": "씨제이 행복한콩 국산콩 순두부 330G",
+      "proposed_leaf": "food.plant.soy.silken",
+      "reason": "마트 원본 경로는 부침용두부로 충돌하지만 상품 제목이 '순두부'를 명시하고, pass41 taxonomy의 silken 리프 이름/정확 키워드가 순두부·연두부다. 마트 경로를 정답으로 간주하지 않고 제품명 근거를 우선한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "deferred_taxonomy_candidates": [
+    {
+      "raw_record_ids": ["ingestion:13:93", "ingestion:63:69"],
+      "source_record_key": "071094315",
+      "source_title": "풀무원 특등급국산콩물 960ML",
+      "suggested_new_leaf": "food.plant.soy.soy_liquid",
+      "reason": "상품 제목은 조리용/식용 콩물을 명시하지만 현재 콩가공품 리프에는 두유·두부·순두부/연두부·낫토·유부만 있다. 낫토 경로는 오진열이며 두유로 자동 흡수할 근거도 부족해 신규 콩물·콩국물 리프 후보로 보류한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:15:16", "ingestion:64:54"],
+      "source_record_key": "123695625",
+      "source_title": "풀무원 국산콩 진한 콩국물 960G",
+      "suggested_new_leaf": "food.plant.soy.soy_liquid",
+      "reason": "콩국물이라는 제품형태가 명확하고 낫토는 아니다. 두유와 사용 맥락/상품형태가 다를 수 있어 기존 두유 리프에 강제로 넣지 않고 콩물·콩국물 신규 리프 후보와 함께 검토한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:13:53", "ingestion:63:4"],
+      "source_record_key": "070153144",
+      "source_title": "simplus 청포묵 300G",
+      "suggested_new_leaf": "food.plant.muk.green_gram",
+      "reason": "제목과 원본 경로가 청포묵을 명확히 가리키지만 현재 pass41 taxonomy에 묵류 리프가 없다. 두부·낫토 등 기존 콩가공품으로 대체하지 않고 묵류 taxonomy 후보로 남긴다."
+    },
+    {
+      "raw_record_ids": ["ingestion:13:73", "ingestion:63:25"],
+      "source_record_key": "069399539",
+      "source_title": "simplus 도토리묵 300G",
+      "suggested_new_leaf": "food.plant.muk.acorn",
+      "reason": "제목과 원본 경로가 도토리묵을 명확히 가리키며 현재 대응 리프가 없다. 청포묵과 원재료/소매품목이 달라 우선 별도 후보로 기록하고 최종 taxonomy 설계 때 합침 여부를 재검토한다."
+    }
+  ],
+  "executed_tests": []
+}
