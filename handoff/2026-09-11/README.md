@@ -1,5 +1,8 @@
 # WalletSaver 초기 DB 작업 인수인계 — 여기부터 읽기
 
+> **2026-09-12 이후 작업자는 이 README 다음에 반드시 [CURRENT_STATUS.md](CURRENT_STATUS.md)를 읽는다.**
+> `PROGRESS.md`와 `checkpoints/`는 누적 역사 로그라 오래된 누적치·재개점이 섞여 있다. 현재 작업량, 신뢰 가능한 회계, 정확한 다음 pending 그룹은 `CURRENT_STATUS.md`가 단일 기준이다.
+
 ## 1. 사용자가 원하는 결과
 
 크롤러 관리자에서 이미 모아둔 **4개 마트의 PENDING 상품**을 직접 읽고, 우리만의 통합 카테고리·상품군·규격·키워드·매칭 규칙을 만들어 초기 DB를 완성한다. 다음 수집 때 기존 상품은 정확히 매칭하여 가격 이력을 쌓고, 신규/이름변경/규격충돌은 검수로 돌리는 것이 목적이다. 새 수집기를 만들거나 예시 데이터를 생성하는 작업이 아니다.
@@ -16,12 +19,14 @@
 - 가격 기록 중 active4,527, 행사조건 보류753. active라고 항상 단위가격 계산 가능한 것은 아니다.
 - 명시적으로 검토한 별도 결정431개는 꼭 유지한다. 자동 분류표의 상품 수와는 다른 숫자다.
 - 원본 선택 데이터 SHA256: `c4431eea85f0c1c2f54c202030daed8f8904d8c7b832491a126b8541590845e0`.
+- 위 DB 숫자는 **동결 pass41 baseline**이다. Chat에서 `proposal_only` 파일을 추가해도 자동으로 변하지 않는다.
 
 ## 3. 파일 안내: 큰 압축파일부터 읽지 말 것
 
 | 목적 | 파일 |
 |---|---|
-| 다음 검토 묶음 고르기 | [PENDING_INDEX.md](PENDING_INDEX.md), [pending/index.json](pending/index.json) |
+| **현재 상태/정확한 재개점** | **[CURRENT_STATUS.md](CURRENT_STATUS.md)** |
+| 다음 검토 묶음 원본 크기 확인 | [PENDING_INDEX.md](PENDING_INDEX.md), [pending/index.json](pending/index.json) |
 | 해당 상품 상세/이유/현재 분류 근거 | `pending/<묶음>/<번호>.json` (각 묶음의 **모든** 파일 확인) |
 | 수집 당시 원문 확인 | `raw/<수집ID>/<번호>.json`, [raw/index.json](raw/index.json) |
 | 현재 통합 카테고리·상품·규격·매칭 규칙 | [catalog/index.json](catalog/index.json) → 해당 유형 조각 |
@@ -29,6 +34,7 @@
 | 최종 적용 결정 기록 | [reviewed-decisions-applied.json](reviewed-decisions-applied.json) |
 | 전체 검토 DB/원본 복원 | `archives/*.gz` + `tools/restore_chat_handoff.py` |
 | 상세 통계·내용 해시 | [summary.json](summary.json), [manifest.json](manifest.json) |
+| 누적 역사 로그 | [PROGRESS.md](PROGRESS.md), `checkpoints/*.md` |
 | 이 대화 이전 작업 기록 | `docs/RESUME_CHECKPOINT.md` (pass41이 기준), `docs/CLASSIFICATION_BATCH_20260908.md` |
 | 다음 대화 첫 문장 | [START_PROMPT.md](START_PROMPT.md) |
 
@@ -52,11 +58,11 @@
 
 ## 5. 다음에 실제로 할 일
 
-1. 현재 브랜치와 이 README를 확인하고 `PENDING_INDEX.md`에서 **마트/진열 묶음 여러 개**를 고른다. 다음 후보는 이마트 쌀·잡곡·견과/생활용품 또는 홈플러스 잔여 식품이다. 제목뿐 아니라 pending 이유·정규화 수량·원문을 함께 읽는다.
-2. 기존 카테고리가 맞는지 먼저 확인. 새 리프가 필요하면 `initial_taxonomy.py`의 트리에 추가한다. 키워드/유사명/규격/행사 근거가 부족하면 이유와 함께 보류한다. 모든 상품에 개인별 키워드를 수작업 입력한 상태는 아니며, 공통 카테고리 키워드와 명시 결정의 상품별 키워드를 구분한다.
-3. 분류 구현 예시는 `packages/db-admin/backend/services/initial_audited_emart_produce.py`, `initial_audited_baking.py`, `initial_audited_seasonings.py` 및 대응 tests 참고. 모든 마트에 퍼지는 느슨한 정규식보다 **검토한 제목/경로에 제한된 근거**를 쓴다. 매칭·규격은 별도 안전장치를 통과해야 적재된다.
-4. 변경 후 아래 실행 경로로 새 DB를 만들고 확인한다. 같은 bundle 두 번 import는 멱등이어야 한다. 새 상품군 ID를 임의로 만들어 기존 규칙을 끊지 않는다. source_sha가 달라지면 이전 수동 결정을 강제로 적용하지 않는다.
-5. 결과를 `handoff/2026-09-11/PROGRESS.md`와 코드 커밋에 남긴다. 읽은 묶음/원본ID, 적용/보류 이유, 수정파일, 실제 검사 결과, 새 데이터 위치, 다음 작업을 적는다. 매번 표 몇 개 추가하고 전역 검사를 반복하는 방식은 피한다.
+1. **먼저 `CURRENT_STATUS.md`의 `현재 재개점`을 따른다. 임의로 다른 pending 묶음을 고르지 않는다.** 현재 작성 시점 재개점은 `pending 037`이며, 상태 문서가 이후 갱신되면 그 값을 우선한다.
+2. 해당 `pending/<group>/` 디렉터리의 파일 목록부터 확인한다. `001.json` 하나뿐이라고 가정하지 않는다. 모든 조각을 읽고 이미 `review_status=classified`인 행을 신규 classification 작업량에서 제외한다.
+3. 기존 카테고리가 맞는지 먼저 확인. 새 리프가 필요하면 proposal에서는 명시적으로 후보/hold로 남긴다. Chat의 GitHub read/write 모드에서는 pass41 snapshot에 없는 leaf를 실존 leaf처럼 사용하지 않는다.
+4. 분류 구현 예시는 `packages/db-admin/backend/services/initial_audited_emart_produce.py`, `initial_audited_baking.py`, `initial_audited_seasonings.py` 및 대응 tests 참고. 모든 마트에 퍼지는 느슨한 정규식보다 **검토한 제목/경로에 제한된 근거**를 쓴다. 매칭·규격은 별도 안전장치를 통과해야 적재된다.
+5. Chat 단계 결과는 `proposals/*.json`과 최신 canonical 상태/체크포인트에 남긴다. 나중에 Codex에서 proposal 전역 dedupe/conflict reconciliation → explicit decision 승격 → 새 pass DB 재구축 → 관련 검사/멱등 검증 순으로 한 번에 반영한다.
 
 ### GitHub 읽기/쓰기만 있고 실행 도구가 없다면
 
