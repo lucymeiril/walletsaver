@@ -1,0 +1,263 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["035"],
+  "scope_note": "GitHub read/write review only. Both pending/035/001.json and 002.json were read. The broad Costco 우유 shelf was treated as weak evidence; title and detailed Costco URL product path were preferred. No staging DB import/rebuild or repository tests were executed.",
+  "group_accounting": {
+    "observations_opened": 27,
+    "already_classification_complete_excluded": 2,
+    "new_classification_reviews": 25,
+    "distinct_newly_reviewed_source_listings": 25,
+    "existing_leaf_proposals": 9,
+    "held_for_taxonomy_product_form_or_identity_review": 16
+  },
+  "excluded_already_classified": [
+    {
+      "raw_record_id": "ingestion:38:61",
+      "source_record_key": "691972",
+      "source_title": "삼육두유 국산 검은콩 두유 190ml x 24 x 189",
+      "current_leaf": "food.plant.soy.soymilk",
+      "reason": "classification already complete; pending reason is bulk package review"
+    },
+    {
+      "raw_record_id": "ingestion:38:62",
+      "source_record_key": "692042",
+      "source_title": "연세우유소화가잘되는멸균우유190ml x 24 x 168",
+      "current_leaf": "food.dairy.milk.plain",
+      "reason": "classification already complete; pending reason is bulk package review"
+    }
+  ],
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:38:48"],
+      "source_record_key": "694101",
+      "source_title": "랑그드샤선물세트 396g (우유&말차)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.snacks.baked.biscuits",
+      "reason": "Langue-de-chat is a baked cookie/biscuit product and the Costco URL identifies a food gift set; 우유 is flavor/ingredient context, not dairy product form.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:38:57"],
+      "source_record_key": "662404",
+      "source_title": "위메이드 밀크쿠키960g (480g x 2)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.snacks.baked.biscuits",
+      "reason": "Title and detailed Costco path both identify cookies; milk is an ingredient/flavor token.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:38:66"],
+      "source_record_key": "695899",
+      "source_title": "풀무원다논YoPro 블루베리요거트 150g x 24",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.dairy.yogurt.spoon",
+      "reason": "150g non-drink yogurt product; current pass41 has a spoon-yogurt leaf. Blueberry is flavor, not a separate product form.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:38:67"],
+      "source_record_key": "695901",
+      "source_title": "풀무원다논 YoPro 무가당 플레인 요거트 150g x 24",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.dairy.yogurt.spoon",
+      "reason": "150g plain non-drink yogurt directly fits the existing spoon-yogurt leaf.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:38:69"],
+      "source_record_key": "670717",
+      "source_title": "Barilla 링귀니 500g x 6",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.pasta",
+      "reason": "Linguine is explicitly identified and pass41 already has audited linguine products under the pasta leaf.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:38:70"],
+      "source_record_key": "1510336",
+      "source_title": "커클랜드 시그니춰 버터 토피맛 캐슈 680g",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.grains.nuts.cashew",
+      "reason": "Cashew is the underlying nut product and pass41 has a dedicated cashew leaf; butter-toffee is seasoning/flavor.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:38:83"],
+      "source_record_key": "663732",
+      "source_title": "Post통보리그래놀라 500g x 3",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.snacks.cereal.granola",
+      "reason": "Title explicitly says granola and pass41 has a dedicated granola leaf.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:38:84"],
+      "source_record_key": "1649248",
+      "source_title": "생미쉘 프렌치 버터쿠키 600g",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.snacks.baked.biscuits",
+      "reason": "Product form is explicitly butter cookie; butter is an ingredient/flavor and the current biscuit/cookie leaf is direct.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:38:95"],
+      "source_record_key": "689481",
+      "source_title": "ORGANIC VALLEY기버터 368G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.dairy.cheese.butter",
+      "reason": "Ghee is clarified butter and the title explicitly contains 기버터. pass41 has a broad butter leaf; no separate ghee leaf is required for this classification proposal.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:38:44"],
+      "source_record_key": "640008",
+      "source_title": "카피탈리 라떼아트 가정용 우유 거품기 F04MK",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_product_form": "milk_frother_appliance",
+      "reason": "Title and URL are a kitchen coffee appliance, not milk. No current pass41 appliance leaf was confirmed."
+    },
+    {
+      "raw_record_ids": ["ingestion:38:45"],
+      "source_record_key": "664672",
+      "source_title": "화과방 우유앙빵 35g x 15입 x 2",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.bakery.dessert.manju",
+      "reason": "Costco English URL identifies Milk Manju and title is a filled sweet bakery product. Reuse pending 036 manju candidate rather than treating 우유 as dairy.",
+      "quantity_review": "classification hold; multiple-package/unit conflicts remain separate"
+    },
+    {
+      "raw_record_ids": ["ingestion:38:51"],
+      "source_record_key": "675479",
+      "source_title": "셀렉스 프로핏 완전단백질 - 모카초콜릿 250ml x 24팩",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.other.protein",
+      "reason": "Protein/nutrition drink product form is explicit; follow the same dedicated candidate policy used in pending 037 instead of forcing it into milk/chocolate/coffee leaves.",
+      "quantity_review": "classification hold; multiple-package/unit conflicts remain separate"
+    },
+    {
+      "raw_record_ids": ["ingestion:38:54"],
+      "source_record_key": "667644",
+      "source_title": "락토프리 파미분유 산양유 300g x 2 + 전용보틀",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_product_form": "pet_dog_milk_replacer",
+      "reason": "Detailed Costco path is Pet Supplies > Dog Foods. This is pet milk powder, not human dairy; no current pass41 pet-food leaf was confirmed."
+    },
+    {
+      "raw_record_ids": ["ingestion:38:59"],
+      "source_record_key": "646219",
+      "source_title": "삼립 크림빵 75g x 20",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.bakery.bread.sweet_bun",
+      "reason": "Cream-filled sweet bread follows the existing sweet-bun candidate policy; current bread leaves do not contain a matching filled-bun leaf."
+    },
+    {
+      "raw_record_ids": ["ingestion:38:63"],
+      "source_record_key": "693738",
+      "source_title": "퓨어틴 프로틴 초코쉐이크 330ml x 12",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.other.protein",
+      "reason": "Protein shake is explicit; flavor is an attribute."
+    },
+    {
+      "raw_record_ids": ["ingestion:38:64"],
+      "source_record_key": "693742",
+      "source_title": "퓨어틴 프로틴 커피쉐이크 330ml x 12",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.other.protein",
+      "reason": "Protein shake is explicit; coffee flavor does not make it a coffee taxonomy product."
+    },
+    {
+      "raw_record_ids": ["ingestion:38:65"],
+      "source_record_key": "1478520",
+      "source_title": "Prana 유기농 오버나이트 치아 앤 오트 800g",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_product_form": "overnight_oats_cereal",
+      "reason": "Costco path identifies cereal, but current pass41 cereal leaves are only flakes and granola. The title is overnight chia/oats and should not be forced into either."
+    },
+    {
+      "raw_record_ids": ["ingestion:38:68"],
+      "source_record_key": "605318",
+      "source_title": "Post 오레오오즈 500g x 3",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_product_form": "other_ready_to_eat_cereal",
+      "reason": "Detailed path identifies cereal, but ring cereal is neither an explicit flake nor granola under the current two-leaf cereal taxonomy."
+    },
+    {
+      "raw_record_ids": ["ingestion:38:75"],
+      "source_record_key": "688246",
+      "source_title": "연세 세브란스 A2프로틴 오리지널 190ml X 30개입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.other.protein",
+      "reason": "Protein nutrition drink is explicit and should follow the common protein-drink candidate rather than the broad 우유 shelf.",
+      "quantity_review": "classification hold; package count conflict remains separate"
+    },
+    {
+      "raw_record_ids": ["ingestion:38:79"],
+      "source_record_key": "688344",
+      "source_title": "닥터케어 캔서코치 미니 125ml x 24개입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_product_form": "specialized_nutrition_drink",
+      "reason": "Costco path is HealthSupplement/Health and title identifies a specialized nutrition product. No current pass41 leaf was confirmed; do not infer ordinary milk/protein-drink classification from the broad shelf.",
+      "quantity_review": "classification hold; package count conflict remains separate"
+    },
+    {
+      "raw_record_ids": ["ingestion:38:87"],
+      "source_record_key": "610945",
+      "source_title": "정식품 국산콩 진한 콩국950ML X 4",
+      "status": "held_product_form",
+      "suggested_product_form": "soybean_soup_or_soy_beverage",
+      "reason": "Title says 콩국, not 두유. Existing audited tests intentionally keep 국산콩 진한 콩국 unresolved rather than equating it to soymilk."
+    },
+    {
+      "raw_record_ids": ["ingestion:38:89"],
+      "source_record_key": "682782",
+      "source_title": "오트몬드 오리지널 190ml x 24",
+      "status": "held_identity_or_product_form",
+      "reason": "Brand-like title does not explicitly state oat milk, almond milk, or soy milk. Existing audited test also keeps this exact Oatmond title unresolved; Costco Soy-MilkMilk path alone is not enough to choose a plant-drink leaf.",
+      "followup": "verify exact ingredient/product labeling before choosing plant drink taxonomy"
+    },
+    {
+      "raw_record_ids": ["ingestion:38:93"],
+      "source_record_key": "672206",
+      "source_title": "마이아 프로틴 메이커 두유 제조기 800ml",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_product_form": "soymilk_maker_appliance",
+      "reason": "Title and URL identify a blender/mixer/juicer-style appliance, not soymilk. No current pass41 appliance leaf was confirmed."
+    },
+    {
+      "raw_record_ids": ["ingestion:38:94"],
+      "source_record_key": "669973",
+      "source_title": "허쉬 아이스바 85ml x 24",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_product_form": "ice_cream_bar",
+      "reason": "Title and Costco frozen-food path identify an ice bar. No current pass41 ice-cream/bar leaf was confirmed, so do not force it into dairy milk or dessert cake leaves."
+    },
+    {
+      "raw_record_ids": ["ingestion:38:96"],
+      "source_record_key": "652406",
+      "source_title": "제너럴밀스시나몬토스트크런치702g x 2",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_product_form": "other_ready_to_eat_cereal",
+      "reason": "Detailed Costco path identifies cereal, while current pass41 cereal taxonomy only confirms flakes and granola. Title does not establish either form."
+    }
+  ],
+  "explicit_review_decision_collision_screen": {
+    "source_keys_checked": 25,
+    "method": "three batched repository searches for all new-classification source_record_keys",
+    "review_decisions_input_hits": 0,
+    "note": "Searches surfaced pending/raw/unresolved material but did not surface review-decisions-input.json. Proposal-stage screen only."
+  },
+  "executed_tests": []
+}
