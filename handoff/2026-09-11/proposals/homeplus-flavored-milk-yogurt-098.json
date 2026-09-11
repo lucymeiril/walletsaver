@@ -1,0 +1,64 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "098",
+  "source_path": "handoff/2026-09-11/pending/098/001.json",
+  "scope_note": "Classification-only proposal. Actual product form wins over the broad flavored-milk shelf; the Greek drink product is kept in drinking yogurt rather than forced into milk. Quantity, price, promotion, and raw observations are unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1209,
+    "current_reviewed": 1219,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2697
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "All five source_record_key values were checked against the 431 explicit review decisions. The Greek-drink title appears only in pending/raw/catalog-unresolved evidence; no prior proposal precedent was found."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:7:43", "ingestion:56:35"],
+      "source_record_key": "062499138",
+      "source_title": "서울우유 커피포리 200ML*4",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.dairy.milk.coffee",
+      "reason": "Coffee-flavored dairy milk on a milk shelf; pack count is an attribute."
+    },
+    {
+      "raw_record_ids": ["ingestion:7:53", "ingestion:56:54"],
+      "source_record_key": "069643280",
+      "source_title": "부산우유 초코가득 200ML",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.dairy.milk.chocolate",
+      "reason": "Chocolate-flavored milk identity is explicit and matches the existing chocolate-milk leaf."
+    },
+    {
+      "raw_record_ids": ["ingestion:7:54", "ingestion:56:55"],
+      "source_record_key": "070818902",
+      "source_title": "부산우유 딸기가득 200ML",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.dairy.milk.strawberry",
+      "reason": "Strawberry-flavored milk identity is explicit and matches the existing strawberry-milk leaf."
+    },
+    {
+      "raw_record_ids": ["ingestion:7:64", "ingestion:57:4"],
+      "source_record_key": "069643308",
+      "source_title": "부산우유 바나나가득 200ML",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.dairy.milk.banana",
+      "reason": "Banana-flavored milk identity is explicit and matches the existing banana-milk leaf."
+    },
+    {
+      "raw_record_ids": ["ingestion:7:80", "ingestion:57:26"],
+      "source_record_key": "071037367",
+      "source_title": "매일 바이오그릭드링크바나나 710ML",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.dairy.yogurt.drink",
+      "reason": "The product title explicitly says Greek drink; drinkable yogurt form takes precedence over the surrounding milk shelf and over spoonable Greek-yogurt form. Banana is a flavor attribute."
+    }
+  ],
+  "held_decisions": [],
+  "executed_tests": []
+}
