@@ -25,11 +25,11 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다. 이 수�
 
 현재 strict reverse audit의 안전한 상한:
 
-- 미완 strict 범위: `pending 001~031`
-- 원본 관측: **1,563 observations**
-- pass41 전체 pending 3,916 대비 **약 39.9%**
-- 관측 구간 기준 `032~451`은 약 60.1%를 strict/ordered 방식으로 지나왔지만, 이것을 최종 완료율로 부르지 않는다. 과거 proposal 중복/re-review와 taxonomy hold가 남아 있다.
-- `001~031`에도 과거 proposal이 있으므로 실제 새 판단량은 **1,563보다 작을 가능성이 높다**. raw-key 전역 reconciliation 전에는 더 작은 수치를 최종 미완료량으로 확정하지 않는다.
+- 미완 strict 범위: `pending 001~030`
+- 원본 관측: **1,531 observations**
+- pass41 전체 pending 3,916 대비 **약 39.1%**
+- 관측 구간 기준 `031~451`은 약 60.9%를 strict/ordered 방식으로 지나왔지만, 이것을 최종 완료율로 부르지 않는다. 과거 proposal 중복/re-review와 taxonomy hold가 남아 있다.
+- `001~030`에도 과거 proposal이 있으므로 실제 새 판단량은 **1,531보다 작을 가능성이 높다**. raw-key 전역 reconciliation 전에는 더 작은 수치를 최종 미완료량으로 확정하지 않는다.
 
 분류 sweep 뒤 최종 DB 반영 전 남는 단계:
 1. proposal 간 raw-record/source-key 중복 제거
@@ -40,14 +40,14 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다. 이 수�
 
 ## 3. strict reverse sweep 현재 누계
 
-완료 범위: **pending 032~043**
+완료 범위: **pending 031~043**
 
-- observations opened: **320**
-- already-classified exclusions: **29**
-- strict/new classification reviews: **291**
-- distinct newly reviewed source listings: **263**
-- existing-leaf proposals: **93 listings**
-- taxonomy/product-form/promotion/manual-review holds: **170 listings**
+- observations opened: **352**
+- already-classified exclusions: **35**
+- strict/new classification reviews: **317**
+- distinct newly reviewed source listings: **289**
+- existing-leaf proposals: **108 listings**
+- taxonomy/product-form/promotion/manual-review holds: **181 listings**
 
 그룹별 최신 proposal/reconciliation:
 - 043 `proposals/lottemart-vegetables-043.json` — 23 obs / existing 21 / hold 2
@@ -62,8 +62,10 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다. 이 수�
 - 034 `proposals/reconciliation-pending-034.json` — 29 pending / prior coverage 19 / uncovered 10 / final existing 24 / hold 5
 - 033 `proposals/emart-hygiene-health-033.json` — 30 opened / 12 excluded / 18 new / existing 5 / hold 13
 - 032 `proposals/homeplus-flavored-powder-drinks-032.json` — 32 obs / 16 duplicated listings / existing 2 / hold 14
+- 031 `proposals/emart-meat-eggs-031.json` — 32 opened / 6 excluded / 26 new / existing 15 / hold 11
 
 최신 체크포인트:
+- `checkpoints/checkpoint-after-pending-031.md`
 - `checkpoints/checkpoint-after-pending-032.md`
 - `checkpoints/checkpoint-after-pending-033.md`
 - `checkpoints/checkpoint-after-pending-034-reconciliation.md`
@@ -74,22 +76,21 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다. 이 수�
 
 ## 4. 최근 중요한 발견
 
+### pending 031
+- 32 observations 중 6 already-classified, 26 strict classification reviews.
+- existing 15: clear pork cuts 5, chicken eggs 6, clear Hanwoo/Wagyu beef cuts 3, explicit chicken leg product 1.
+- promotion holds 9: all multi-product `dealItemView` discount surfaces; not single SKUs.
+- species-review holds 2: `국내산 등심 카레용` and `국내산 냉장 갈비 찜용` do not prove pork vs beef from pending evidence, so no forced leaf.
+- 26 source keys collision-screened in four batches with `review-decisions-input`; returned match 0.
+
 ### pending 032
 - 32 observations는 **16 source listings가 각각 두 번 수집된 구조**.
 - all 32 classification-pending; exclusions 0.
 - existing 2: peach iced-tea mix -> `food.drinks.tea.black`, matcha-lemon -> `food.drinks.tea.green`.
 - holds 14: kombucha 10 -> `food.drinks.tea.kombucha`; fruit preserves 2 -> `food.drinks.tea.fruit_preserve`; apple-cider-vinegar drink mix 1 -> `food.drinks.other.apple_cider_vinegar`; sweet-potato cream latte powder 1 -> product-form hold/candidate `food.drinks.other.latte_mix`.
-- 16 source keys were collision-screened in two batches with `review-decisions-input`; returned match 0.
+- 16 source keys collision-screened in two batches with `review-decisions-input`; returned match 0.
 
-### pending 033
-- 30 rows 중 12는 이미 classification-complete; 단위/수량 등의 이유로 pending에 남아 있어 신규 분류량에서 제외.
-- 신규 18 중 existing 5: toothbrush 3, toothpaste 1, wet wipes 1.
-- 일반 중형/대형 생리대 9개는 current feminine taxonomy가 liner/overnight/pants/tampon만 갖고 있어 `household.hygiene.feminine.day` 후보 hold.
-- senior-care refill pad는 menstrual pad가 아니므로 `household.hygiene.incontinence.pad` 후보 hold.
-- mouthwash, aromatic inhaler, hand sanitizer도 현행 leaf 미확인으로 hold.
-- 18 raw ids collision screen에서 `review-decisions-input.json` hit 0.
-
-### pending 034
+### pending 034 coverage lesson
 - 기존 `grains-nuts-028-034.json`은 034 raw 29건 중 19건만 실제 커버.
 - strict audit에서 누락 10건 보완. existing 5 + hold 5. 기존 19건 conflict 0.
 - 따라서 저번호 과거 proposal 그룹은 **파일 존재가 아니라 raw coverage를 실측**한다.
@@ -102,21 +103,21 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다. 이 수�
 - 288~451: final281, exclusions15, classification-pending266, legacy overlap238, 과거 proposal 대비 true new increment **28 observations** (`288`, `292~304`), 해당 14 source keys explicit exact match 0.
 - pending313 `농심 생생 우동 용기 276G`: older `cup_ramen` vs final `udon` conflict. 최종 승격 전 해결.
 
-## 6. 현재 재개점 — pending 031
+## 6. 현재 재개점 — pending 030
 
 **다음 AI는 임의로 다른 그룹을 고르지 말고 여기서 이어간다.**
 
-- group: `pending/031`
-- 032 strict audit은 완료되어 `proposals/homeplus-flavored-powder-drinks-032.json`, `checkpoints/checkpoint-after-pending-032.md`에 기록됨.
-- 031은 아직 이 strict 방식으로 시작하지 않았다.
+- group: `pending/030`
+- 031 strict audit은 완료되어 `proposals/emart-meat-eggs-031.json`, `checkpoints/checkpoint-after-pending-031.md`에 기록됨.
+- 030은 아직 이 strict 방식으로 시작하지 않았다.
 
-031 strict audit 절차:
-1. `pending/031/` 디렉터리의 모든 파일 조각 확인.
+030 strict audit 절차:
+1. `pending/030/` 디렉터리의 모든 파일 조각 확인.
 2. already-classified vs classification-pending 분리.
-3. 031을 포함한다고 주장하는 기존 proposal이 있으면 `raw_record_id` coverage 실측.
+3. 030을 포함한다고 주장하는 기존 proposal이 있으면 `raw_record_id` coverage 실측.
 4. 431 `review-decisions-input.json` collision screen.
 5. 누락만 supplement/reconciliation으로 기록하고 conflict는 명시.
-6. 완료 즉시 이 파일의 누계/남은 상한을 갱신하고 재개점을 `030`으로 넘긴다.
+6. 완료 즉시 이 파일의 누계/남은 상한을 갱신하고 재개점을 `029`로 넘긴다.
 
 ## 7. 문서 신뢰 우선순위
 
