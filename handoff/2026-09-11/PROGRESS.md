@@ -41,3 +41,15 @@
 - 반복 수집 보존: 동일 홈플러스 `source_record_key`/판매페이지가 8월31일과 9월2일에 반복 수집된 경우 하나의 결정에 두 `raw_record_ids`를 묶어 기록했다. 서로 다른 판매페이지 상품군 병합은 요청하지 않았다.
 - 실제 반영/검사: GitHub 텍스트 읽기·쓰기만 사용했다. staging DB import/재구축, pytest, `verify_initial_stage.py`, 멱등 import 검사는 실행하지 않았다. pass41의 5,280 적재/3,916 보류 수치는 변경되지 않았다.
 - 다음 재개점: 소형 신선채소 묶음에서 기존 리프가 있는 대파·배추·무·양파·마늘·부추·버섯·샐러드채소 등을 먼저 검토한다. 세부 품종 리프가 없거나 처리형태(건조/데침/냉동)가 다른 상품은 기존 신선채소 리프에 억지로 합치지 않는다.
+
+## 2026-09-11 소형 유제품·조미료 후속 제안 — pending 344 / 345 / 346 / 349 / 350 / 351 / 352 / 353 / 354 / 404 / 449 / 450
+
+- 확인 범위: 위 12개 pending 묶음의 인덱스상 관측 전부를 읽었다. `pending/344` 서리태 반복 2관측은 앞선 `grains-nuts-small-139-282-344-400-405-443-446.json`에서도 이미 보류한 항목으로, 이번 파일에서는 재확인일 뿐 새 결정으로 세지 않는다.
+- 제안 저장: `proposals/small-food-344-354-404-449-450.json`. 상태는 `proposal_only`, `baseline_pass=pass41`, `executed_tests=[]`이며 현재 import 입력이 아니다. 기존 pass41 DB·431개 review decision·applied decision은 수정하지 않았다.
+- 기존 리프 제안 9관측: 비요뜨 쿠키앤크림 반복 2건 → `food.dairy.yogurt.topping`; 빙그레 바나나맛우유 미니 반복 2건 → `food.dairy.milk.banana`; 신영 페페로치노홀 반복 2건 → `food.seasonings.spices.whole_chili`; 폰타나 모데나 발사믹 식초 반복 2건 → `food.seasonings.baking.vinegar`; 벨큐브 고메스타일 1건 → 기존 벨큐브 125g 제품군 근거로 `food.dairy.cheese.portion` 후보. 서로 다른 판매페이지 상품군 병합은 요청하지 않았다.
+- 기존 결정 보존: pass39 문서에서 성분 불명으로 미확정한 `CJ 백설 자일로스 갈색설탕 1KG` 반복 2건과 `simplus 뉴슈가 100G` 반복 2건은 새 근거가 없어 계속 보류했다. 특히 마트의 갈색설탕/흰설탕 경로만으로 강제 분류하지 않았다.
+- 새 정책/리프 필요 보류: 서리태 반복 2건은 콩/서리태 리프 부재, 농심 혼다시 반복 2건은 어류계 다시 stock 리프 부재, 파스퇴르 단백질플러스 검은콩·검은깨맛/곡물맛 각 1건은 현재 맛별 우유 리프에 대응 항목 부재로 보류했다. `요즘 마시는 그릭요거트` 1건은 drink와 greek 축 충돌이라 정책 결정을 기다린다.
+- 비분류 pending 별도 기록: 청정원 까르보나라 파스타소스 동일 판매페이지 2관측은 이미 `food.seasonings.sauces.pasta`로 분류되어 있고 pending 원인은 `source_title_changed`다. 분류 제안으로 pending이 해소됐다고 보지 않는다.
+- 근거 교차확인: `initial_taxonomy.py`에 비요뜨 해당 정확 제목의 topping 규칙이 있으며, `initial_audited_seasonings.py`에는 신영 페페로치노홀 정확 제목이 `whole_chili`로 감사돼 있다. 발사믹 식초는 상품명 자체의 제품형태를 마트의 드레싱 혼합 진열보다 우선했다.
+- 실제 반영/검사: GitHub 텍스트 읽기·쓰기만 사용했다. staging DB import/재구축, pytest, `verify_initial_stage.py`, 멱등 import 검사는 실행하지 않았다. pass41 5,280 적재/3,916 보류 수치는 변경하지 않았다.
+- 다음 재개점: 이미 PROGRESS에 예고된 소형 신선채소 묶음을 계속 검토하되, 기존 리프가 없는 세부 채소/처리형태는 새 리프 후보로 별도 보류한다. 제안 파일을 합칠 때는 `raw_record_id` 기준으로 344 같은 재확인 중복을 제거한다.
