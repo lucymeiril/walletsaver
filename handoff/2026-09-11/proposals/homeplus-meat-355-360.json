@@ -1,0 +1,75 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["355", "356", "357", "358", "359", "360"],
+  "scope_note": "GitHub read/write review only. Current unified fresh-meat taxonomy is species-level, so pork cuts and cooking-use labels are retained as attributes rather than creating cut-specific category leaves. No DB or taxonomy source was modified.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 356,
+    "batch_reviewed_unique_observations": 12,
+    "cumulative_reviewed_unique_observations": 368,
+    "remaining_unreviewed_observations": 3548
+  },
+  "explicit_review_decision_conflict_check": {
+    "file": "handoff/2026-09-11/review-decisions-input.json",
+    "checked_source_record_keys": ["128065505", "062020072", "062020095", "070614089", "062020089", "070471055"],
+    "matches_found": 0
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:5:55", "ingestion:55:16"],
+      "source_record_key": "128065505",
+      "source_title": "무항생제 황금닭 800G(마리)",
+      "proposed_leaf": "food.meat.fresh.chicken",
+      "reason": "생닭 전체육이며 무항생제·백숙용·통닭은 사육/용도/형태 속성이다. pass41 신선육 taxonomy의 닭고기 리프와 직접 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:5:58", "ingestion:54:90"],
+      "source_record_key": "062020072",
+      "source_title": "한돈 일품포크 등심 100G/돼지고기",
+      "proposed_leaf": "food.meat.fresh.pork",
+      "reason": "제목이 생 돼지고기 등심을 명시한다. 현재 unified taxonomy는 돼지고기 부위를 별도 리프로 나누지 않으므로 등심은 cut 속성으로 보존하고 fresh.pork를 제안한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:5:48", "ingestion:54:71"],
+      "source_record_key": "062020095",
+      "source_title": "한돈 일품포크 뒷다리살 100G/돼지고기",
+      "proposed_leaf": "food.meat.fresh.pork",
+      "reason": "생 돼지고기 뒷다리살이며 부위는 속성으로 유지한다. pass41 species-level 신선육 리프와 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:6:30", "ingestion:55:68"],
+      "source_record_key": "070614089",
+      "source_title": "백두대간 한돈 앞다리 수육용 500G",
+      "proposed_leaf": "food.meat.fresh.pork",
+      "reason": "생 돼지고기 앞다리이며 '수육용'은 조리 용도다. 별도 조리식품으로 보지 않고 fresh.pork를 제안한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:5:38", "ingestion:54:69"],
+      "source_record_key": "062020089",
+      "source_title": "한돈 일품포크 앞다리살 100G/돼지고기",
+      "proposed_leaf": "food.meat.fresh.pork",
+      "reason": "제목과 원본 경로가 생 돼지고기 앞다리를 직접 가리키며 현재 taxonomy 정책상 부위별 leaf가 아닌 fresh.pork가 맞다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:5:45", "ingestion:54:82"],
+      "source_record_key": "070471055",
+      "source_title": "정다운 허브를 담은 훈제오리 500G",
+      "proposed_leaf": "food.meat.processed.smoked_duck",
+      "reason": "제목과 원본 경로가 훈제오리를 직접 명시하고 pass41에 정확한 훈제오리 리프와 감사 선례가 존재한다. 허브는 flavor 속성이다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
