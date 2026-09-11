@@ -1,0 +1,102 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "scope_note": "GitHub read/write review only. No staging DB import, rebuild, or repo tests were run. Classification was separated from promotion/count-range issues.",
+  "reviewed_pending_groups": ["429", "430", "431", "432", "433", "434", "435", "436"],
+  "decisions": [
+    {
+      "pending_group": "429",
+      "raw_record_ids": ["ingestion:34:62"],
+      "source_record_key": "8804316004033",
+      "source_title": "요리하다X안유성 타레 야키토리 봉 (300G)",
+      "proposed_leaf": "food.meals.prepared.chicken",
+      "reason": "원본 경로는 닭꼬치이고 제목의 야키토리도 조리 닭꼬치 제품을 직접 가리킨다. pass41 카탈로그에는 숯불닭꼬치·데리야키 닭꼬치가 food.meals.prepared.chicken으로 감사된 선례가 있다.",
+      "quantity_review": "unchanged; promotion_unresolved remains separate",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "430",
+      "raw_record_ids": ["ingestion:29:50"],
+      "source_record_key": "8809146312112",
+      "source_title": "사세 치킨 가라아게 (300G)",
+      "proposed_leaf": "food.meals.prepared.chicken",
+      "reason": "마트 경로는 치킨너겟·텐더지만 제목은 가라아게다. pass41 카탈로그의 사세 치킨 가라아게 500G와 쿠즈락 통살 가라아게 500G가 이미 food.meals.prepared.chicken으로 감사되어 있어 제품형태 선례를 따른다.",
+      "quantity_review": "unchanged; promotion_unresolved remains separate",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "436",
+      "raw_record_ids": ["ingestion:31:31"],
+      "source_record_key": "8801052101071",
+      "source_title": "대상 종가 시원하고 아삭한 석박지 (900G)",
+      "proposed_leaf": "food.preserved.kimchi.seokbakji",
+      "reason": "마트는 총각김치 leaf에 진열했지만 제목이 석박지를 직접 명시한다. pass41 김치 taxonomy에 석박지 전용 리프가 있으므로 제목 제품유형을 우선한다.",
+      "quantity_review": "unchanged; promotion_unresolved remains separate",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "already_classified_pending": [
+    {
+      "pending_group": "432",
+      "raw_record_ids": ["ingestion:32:80"],
+      "source_record_key": "0430000532766",
+      "source_title": "저탄소 배 (3~5입/봉)",
+      "existing_leaf": "food.produce.fruit.pear",
+      "review_status": "classified",
+      "remaining_reasons": ["count_range_unresolved", "promotion_unresolved"],
+      "review_note": "분류는 이미 완료되어 있다. 3~5입 범위를 5입으로 확정하지 않고 행사도 별도 unresolved로 유지한다."
+    },
+    {
+      "pending_group": "433",
+      "raw_record_ids": ["ingestion:28:15"],
+      "source_record_key": "8801448110724",
+      "source_title": "유명산지 햇사과 (4-8입/봉)",
+      "existing_leaf": "food.produce.fruit.apple",
+      "review_status": "classified",
+      "remaining_reasons": ["count_range_unresolved", "promotion_unresolved"],
+      "review_note": "분류는 이미 완료되어 있다. 4-8입 범위를 8입으로 확정하지 않고 행사도 별도 unresolved로 유지한다."
+    }
+  ],
+  "held_decisions": [
+    {
+      "pending_group": "431",
+      "raw_record_ids": ["ingestion:33:0"],
+      "source_record_key": "8801085884491",
+      "source_title": "요리하다X정호영 돈코츠라멘 (2인) (426G)",
+      "suggested_new_leaf": "food.meals.noodles.ramen",
+      "suggested_path": ["식품", "간편식·면", "면요리", "라멘"],
+      "reason": "마트 경로는 우동사리지만 제목은 돈코츠라멘이다. pass41에 우동·짬뽕·한국식 봉지/컵라면 리프는 있으나 일본식 라멘 전용 리프가 확인되지 않았다. pending 426과 같은 정책 후보로 묶는다.",
+      "quantity_review": "unchanged; promotion_unresolved remains separate",
+      "followup": "review together with pending 426 for Japanese ramen taxonomy policy"
+    },
+    {
+      "pending_group": "434",
+      "raw_record_ids": ["ingestion:28:18"],
+      "source_record_key": "8801117120306",
+      "source_title": "오리온 통크 초코 (45G)",
+      "candidate_leaf": "food.snacks.baked.biscuits",
+      "reason": "마트 경로는 스틱과자지만 pass41에는 스틱과자 전용 리프가 없고, 제목 '통크 초코'만으로 비스킷·웨하스·초콜릿바 중 정확한 형태를 확정하기 어렵다. 경로만으로 biscuits에 강제하지 않는다.",
+      "quantity_review": "unchanged; classification-only review",
+      "followup": "inspect product-form detail or audited same-product precedent before assigning a leaf"
+    },
+    {
+      "pending_group": "435",
+      "raw_record_ids": ["ingestion:31:84"],
+      "source_record_key": "8801268006665",
+      "source_title": "오늘좋은 옥수수 똘뱅이 (195G)",
+      "candidate_leaf": "food.snacks.savory.corn",
+      "reason": "제목에 옥수수가 있고 pass41에 옥수수스낵 리프가 있으나 원본 진열은 전통과자이며 '똘뱅이'만으로 스낵의 실제 형태를 충분히 확인하지 못했다. 원재료 단어만으로 옥수수스낵에 강제하지 않는다.",
+      "quantity_review": "unchanged; promotion_unresolved remains separate",
+      "followup": "inspect product-form detail or audited same-product precedent before assigning corn snack"
+    }
+  ],
+  "explicit_review_conflict_check": {
+    "checked_against": "review-decisions-input.json",
+    "source_record_keys_checked": ["8804316004033", "8809146312112", "8801085884491", "0430000532766", "8801448110724", "8801117120306", "8801268006665", "8801052101071"],
+    "conflicts_found": 0
+  },
+  "cumulative_reviewed_unique_observations": 468,
+  "baseline_held_observations": 3916,
+  "remaining_unreviewed_observations": 3448,
+  "executed_tests": []
+}
