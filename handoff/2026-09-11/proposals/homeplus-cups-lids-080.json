@@ -1,0 +1,71 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "080",
+  "source_path": "주방용품 > 주방/일회용품 > 종이컵 > 컵류",
+  "scope_note": "Classification-only proposal. Repeated Homeplus observations are grouped by source_record_key. Package/count information is preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 12,
+    "unique_products": 6,
+    "new_classification_reviews": 12,
+    "prior_reviewed": 1022,
+    "current_reviewed": 1034,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2882
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "pass41 household taxonomy contains cleaning/hygiene leaves but no kitchen drinkware/disposable cup leaf; no prior explicit review decision was found for these source keys."
+  },
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:27:57", "ingestion:77:17"],
+      "source_record_key": "070564631",
+      "source_title": "simplus 다회용투명컵 190ML*20개입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.drinkware.plastic_cup",
+      "reason": "다회용 투명 플라스틱 컵 제품이며 현재 pass41 household taxonomy에 주방용 컵 leaf가 없다."
+    },
+    {
+      "raw_record_ids": ["ingestion:27:58", "ingestion:77:18"],
+      "source_record_key": "070564625",
+      "source_title": "simplus 다회용투명소주컵65ML 25개입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.drinkware.plastic_cup",
+      "reason": "소주용 소형 다회용 투명컵이며 용량/용도는 속성으로 보고 같은 플라스틱 컵 후보로 묶는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:27:78", "ingestion:77:16"],
+      "source_record_key": "070564734",
+      "source_title": "simplus 다회용투명컵 280ML*10개입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.drinkware.plastic_cup",
+      "reason": "다회용 투명 플라스틱 컵으로 190ML 제품과 동일 제품형태이며 수량/용량만 다르다."
+    },
+    {
+      "raw_record_ids": ["ingestion:27:63", "ingestion:77:20"],
+      "source_record_key": "128522472",
+      "source_title": "simplus 테이크아웃아이스컵뚜껑 20P",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.drinkware.cup_lid",
+      "reason": "컵 본체가 아닌 테이크아웃 아이스컵용 뚜껑 액세서리다. broad 컵류 shelf를 이유로 컵 본체에 합치지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:27:82", "ingestion:77:19"],
+      "source_record_key": "070258084",
+      "source_title": "simplus 테이크아웃종이컵뚜껑 473ML 25P",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.drinkware.cup_lid",
+      "reason": "473ML 종이컵용 뚜껑으로 컵 자체가 아닌 부속품이다."
+    },
+    {
+      "raw_record_ids": ["ingestion:27:83", "ingestion:77:40"],
+      "source_record_key": "070258032",
+      "source_title": "simplus 테이크아웃종이컵뚜껑240ML 25P",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.drinkware.cup_lid",
+      "reason": "240ML 종이컵용 뚜껑으로 용량 차이는 속성이며 동일 cup_lid 후보가 적합하다."
+    }
+  ],
+  "executed_tests": []
+}
