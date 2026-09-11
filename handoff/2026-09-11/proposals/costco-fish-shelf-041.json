@@ -1,0 +1,234 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["041"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Costco source shelf '생선' is heavily contaminated in this batch, so title/product form and official URL context override the broad shelf when they conflict.",
+  "review_summary": {
+    "observations_reviewed": 24,
+    "source_listings_reviewed": 24,
+    "existing_leaf_decisions": 13,
+    "deferred_taxonomy_candidates": 11
+  },
+  "accounting_note": "Do not mechanically add this batch to historical cumulative reviewed counts until proposal accounting reconciliation is complete. This file establishes pending group 041 coverage only.",
+  "explicit_review_decision_conflict_check": {
+    "file": "handoff/2026-09-11/review-decisions-input.json",
+    "method": "three batched repository source_record_key searches",
+    "checked_source_record_keys": [
+      "635794", "660573", "638576", "652150", "692390", "653899", "676969", "668584",
+      "668204", "650636", "640375", "785801", "687936", "687939", "785802", "672329",
+      "639597", "654944", "658206", "510583", "619201", "689025", "609348", "753144"
+    ],
+    "review_decisions_file_matches_found": 0,
+    "note": "Search results returned raw/pending/unresolved records but did not return review-decisions-input.json for these keys. This is a proposal-stage conflict screen only."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:46:33"],
+      "source_record_key": "635794",
+      "source_title": "비비고 생선구이 혼합 6팩",
+      "proposed_leaf": "food.meals.prepared.grilled_fish",
+      "reason": "완제품 생선구이 혼합팩이다. pass41에 조리생선구이 existing leaf가 있고 원물 어종 리프보다 조리 제품형태가 우선한다.",
+      "quantity_review": "unchanged; 6-pack preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:34"],
+      "source_record_key": "660573",
+      "source_title": "비비고 고등어구이 60g x 8",
+      "proposed_leaf": "food.meals.prepared.grilled_fish",
+      "reason": "제목이 조리된 고등어구이를 직접 명시한다. 고등어 원물 leaf보다 조리생선구이 product-form leaf를 우선한다.",
+      "quantity_review": "unchanged; 60g×8 preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:35"],
+      "source_record_key": "638576",
+      "source_title": "비비고 삼치구이 60g x 6",
+      "proposed_leaf": "food.meals.prepared.grilled_fish",
+      "reason": "조리된 삼치구이 완제품이므로 기존 조리생선구이 leaf가 맞다.",
+      "quantity_review": "unchanged; 60g×6 preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:36"],
+      "source_record_key": "652150",
+      "source_title": "비비고 갈치구이 70g x 5",
+      "proposed_leaf": "food.meals.prepared.grilled_fish",
+      "reason": "조리된 갈치구이 완제품이므로 기존 조리생선구이 leaf가 맞다.",
+      "quantity_review": "unchanged; 70g×5 preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:38"],
+      "source_record_key": "653899",
+      "source_title": "해찬들 청양초/차돌/바지락꽃게 된장찌개양념 450gx3",
+      "proposed_leaf": "food.seasonings.pastes.doenjang",
+      "reason": "Costco 생선 shelf와 무관한 된장찌개 양념 세트다. 제목과 공식 URL의 Seasoned Soybean Paste 문맥이 된장 기반 장류임을 직접 지지한다. 청양초/차돌/바지락꽃게는 맛 변형이고 3팩 구성은 속성이다.",
+      "quantity_review": "unchanged; 450g×3 preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:42"],
+      "source_record_key": "650636",
+      "source_title": "삼진해물맛/야채맛모듬어묵1,968g",
+      "proposed_leaf": "food.seafood.processed.fishcake",
+      "reason": "제목이 모듬어묵을 직접 명시하며 기존 어묵 leaf와 정확히 일치한다. 해물맛/야채맛은 맛 변형이다.",
+      "quantity_review": "classification only; existing multiple_package_quantities/unit conflicts remain unresolved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:43"],
+      "source_record_key": "640375",
+      "source_title": "Fish Tree 볶음조림용소멸치1000g",
+      "proposed_leaf": "food.seafood.processed.anchovy",
+      "reason": "건멸치 제품이며 용도(볶음/조림)는 속성이다. pass41 processed seafood의 건멸치 leaf를 재사용한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:48"],
+      "source_record_key": "672329",
+      "source_title": "Fish Tree 빠삭하고 더 고소한 먹태 525g",
+      "proposed_leaf": "food.seafood.processed.dried_fish",
+      "reason": "먹태는 건조 명태 가공품이고 현재 audited dried_fish leaf가 건어물 스낵/건오징어 계열을 포괄한다. 생명태 원물 leaf보다 가공형태를 우선한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:49"],
+      "source_record_key": "639597",
+      "source_title": "Fish Tree 국물용 멸치 1.3kg",
+      "proposed_leaf": "food.seafood.processed.anchovy",
+      "reason": "국물용은 사용처이고 제품은 건멸치다. 기존 건멸치 leaf를 재사용한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:50"],
+      "source_record_key": "654944",
+      "source_title": "3 컬러 오징어300g / 100g x 3",
+      "proposed_leaf": "food.seafood.processed.dried_fish",
+      "reason": "공식 URL이 Foods/Snack 문맥이고 pass41에는 조미·건조 오징어를 dried_fish로 분류한 audited 선례가 있다. 생오징어 원물로 보지 않는다.",
+      "quantity_review": "unchanged; 100g×3 preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:52"],
+      "source_record_key": "510583",
+      "source_title": "바다소리 장에 찍어먹는 생돌김 9g x 15",
+      "proposed_leaf": "food.seafood.seaweed.laver",
+      "reason": "제품은 돌김이며 '장에 찍어먹는'은 섭취 방식/마케팅 문구다. 기존 김 leaf를 재사용한다.",
+      "quantity_review": "unchanged; 9g×15 preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:53"],
+      "source_record_key": "619201",
+      "source_title": "해드림 한우선지해장국 2,260g",
+      "proposed_leaf": "food.meals.prepared.soup_stew",
+      "reason": "생선 shelf와 무관한 완제품 해장국이다. pass41에서 국/탕/찌개를 soup_stew로 재사용한 선례가 있다.",
+      "quantity_review": "classification only; existing title/unit quantity conflicts remain unresolved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:55"],
+      "source_record_key": "609348",
+      "source_title": "바다소리 참멸치 2호 선물세트",
+      "proposed_leaf": "food.seafood.processed.anchovy",
+      "reason": "선물세트는 포장/구성 속성이고 핵심 상품은 참멸치다. 기존 건멸치 leaf를 재사용한다.",
+      "quantity_review": "unit_unresolved remains separate",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "deferred_taxonomy_candidates": [
+    {
+      "raw_record_ids": ["ingestion:46:37"],
+      "source_record_key": "692390",
+      "source_title": "알래스카손질대구살1kg x 2pack",
+      "suggested_new_leaf": "food.seafood.fish.cod",
+      "reason": "대구 어종이 명확하지만 pass41 fish taxonomy에는 cod leaf가 없다. 선행 proposal도 대구를 명태(pollock)로 합치지 않고 동일 신규 후보로 보류했다.",
+      "quantity_review": "unchanged; 1kg×2 preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:39"],
+      "source_record_key": "676969",
+      "source_title": "촉촉한 반건조 열빙어1.2kg X 2pack",
+      "suggested_new_leaf": "food.seafood.processed.semi_dried_fish",
+      "reason": "제품형태는 반건조 통열빙어다. 현재 dried_fish leaf는 건어물 스낵/건오징어 쪽 audited 범위가 강하고, fresh fish species leaf로 보내면 가공형태를 잃는다. 별도 반건조 수산물 후보로 보류한다.",
+      "quantity_review": "unchanged; 1.2kg×2 preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:40"],
+      "source_record_key": "668584",
+      "source_title": "생선뼈 선인장 토분3팩",
+      "suggested_new_leaf": "home.garden.plants.cactus",
+      "reason": "공식 URL이 PatioLawnGarden/Live-Plants/Fishbone-Cactus이고 실제 상품은 살아있는 선인장 화분이다. 제목의 '생선뼈' 때문에 수산물로 오분류하면 안 된다. pass41에 대응 원예 leaf 선례가 없어 후보로 보류한다.",
+      "quantity_review": "unchanged; 3-pack preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:41"],
+      "source_record_key": "668204",
+      "source_title": "뉴트리플랜 모이스 트루 어덜트 참치 & 닭고기 80g x 12 x 3",
+      "suggested_new_leaf": "pet.cat.food.wet",
+      "reason": "공식 URL이 Cat-Foods이고 제목도 반려묘용 습식 사료 제품이다. 참치/닭고기는 원재료·맛이지 사람용 생선 분류 근거가 아니다. pass41에 대응 pet-food leaf가 확인되지 않아 후보로 보류한다.",
+      "quantity_review": "unchanged; 80g×12×3 preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:44"],
+      "source_record_key": "785801",
+      "source_title": "려강부추편육 300g x 2 + 순살족발400g",
+      "suggested_new_leaf": "food.meals.prepared.pork_assortment",
+      "reason": "편육과 족발이 섞인 조리 돼지고기 구성 상품이다. 현재 pass41에 정확한 족발/편육 leaf가 확인되지 않았고 한 구성품으로 강제 분류하지 않기 위해 조리 돼지고기 혼합 후보로 보류한다.",
+      "quantity_review": "classification only; mixed-package/unit conflicts remain separate"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:45"],
+      "source_record_key": "687936",
+      "source_title": "하림 더리얼 밀 냉동 화식 연어 60g x 10",
+      "suggested_new_leaf": "pet.dog.food.frozen_meal",
+      "reason": "공식 URL이 Dog-Foods이고 제목의 연어는 반려견 냉동 화식의 원재료다. 사람용 연어 leaf로 보내지 않는다.",
+      "quantity_review": "unchanged; 60g×10 preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:46"],
+      "source_record_key": "687939",
+      "source_title": "하림 더리얼 밀 그레인프리 냉동 화식 연어 60g x 10",
+      "suggested_new_leaf": "pet.dog.food.frozen_meal",
+      "reason": "반려견용 냉동 화식이다. 그레인프리와 연어는 식이/원재료 속성으로 두고 사람용 수산물과 분리한다.",
+      "quantity_review": "unchanged; 60g×10 preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:47"],
+      "source_record_key": "785802",
+      "source_title": "려강부추편육300g +순살족발400g + 불족발 400g",
+      "suggested_new_leaf": "food.meals.prepared.pork_assortment",
+      "reason": "편육·순살족발·불족발의 혼합 조리육 구성이다. 특정 한 제품형태 leaf로 축소하지 않고 동일 조리 돼지고기 혼합 후보로 보류한다.",
+      "quantity_review": "classification only; mixed-package issues remain separate"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:51"],
+      "source_record_key": "658206",
+      "source_title": "뉴트리플랜모이스트루참치+ 참치&닭고기80g x 12 x 3",
+      "suggested_new_leaf": "pet.cat.food.wet",
+      "reason": "공식 URL이 Cat-Foods이며 반려묘 습식 사료다. 참치/닭고기는 맛·원재료 속성이다.",
+      "quantity_review": "unchanged; 80g×12×3 preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:54"],
+      "source_record_key": "689025",
+      "source_title": "동원참치회1kg (눈다랑어뱃살)",
+      "suggested_new_leaf": "food.seafood.fish.tuna",
+      "reason": "신선 참치회/눈다랑어 뱃살 상품이며 canned tuna가 아니다. legacy taxonomy에는 tuna가 있으나 pass41 current food.seafood.fish snapshot에서 tuna leaf가 확인되지 않아 신규 후보로 보류한다.",
+      "quantity_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:46:56"],
+      "source_record_key": "753144",
+      "source_title": "ANF 식스프리골드 인도어 독 소고기&연어 10kg",
+      "suggested_new_leaf": "pet.dog.food.dry",
+      "reason": "공식 URL이 Dog-Foods이고 실내견용 건식 사료다. 소고기/연어는 원재료·맛 속성이지 사람용 고기/생선 분류 근거가 아니다.",
+      "quantity_review": "unchanged; 10kg preserved"
+    }
+  ],
+  "executed_tests": []
+}
