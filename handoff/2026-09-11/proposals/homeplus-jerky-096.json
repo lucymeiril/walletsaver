@@ -1,0 +1,64 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "096",
+  "source_path": "handoff/2026-09-11/pending/096/001.json",
+  "scope_note": "Classification-only proposal for Homeplus jerky shelf. Flavor labels and price promotions are attributes; raw observations and promotion fields are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1189,
+    "current_reviewed": 1199,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2717
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "No conflicting explicit review decision was found for the five source_record_keys. Current taxonomy has no jerky leaf, and repository search found no existing food.meat.processed.jerky candidate precedent."
+  },
+  "decisions": [],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:4:74", "ingestion:53:65"],
+      "source_record_key": "069348216",
+      "source_title": "궁 우육포 골든올리브 100G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meat.processed.jerky",
+      "reason": "우육포라는 product form이 명확하지만 현재 taxonomy에 육포 leaf가 없다. 골든올리브는 맛/제품 변형 속성이다."
+    },
+    {
+      "raw_record_ids": ["ingestion:4:79", "ingestion:54:9"],
+      "source_record_key": "069348036",
+      "source_title": "궁 우육포 오리지날 100G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meat.processed.jerky",
+      "reason": "우육포 product form을 동일 신규 후보로 묶는다. 오리지날 표기는 flavor/style 속성이다."
+    },
+    {
+      "raw_record_ids": ["ingestion:4:95", "ingestion:54:25"],
+      "source_record_key": "122951036",
+      "source_title": "코주부 클래식 육포 MILD 130G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meat.processed.jerky",
+      "reason": "육포가 명시된 가공육 제품이다. MILD는 맛 강도 속성이며 별도 taxonomy 분기가 아니다."
+    },
+    {
+      "raw_record_ids": ["ingestion:5:19", "ingestion:54:51"],
+      "source_record_key": "122951059",
+      "source_title": "코주부 클래식 육포 HOT&SPICY 130G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meat.processed.jerky",
+      "reason": "육포 product form은 동일하고 HOT&SPICY는 flavor 속성이다."
+    },
+    {
+      "raw_record_ids": ["ingestion:5:20", "ingestion:54:35"],
+      "source_record_key": "122951042",
+      "source_title": "코주부 클래식 육포 BBQ 130G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meat.processed.jerky",
+      "reason": "육포 product form은 동일하고 BBQ는 flavor 속성이다."
+    }
+  ],
+  "executed_tests": []
+}
