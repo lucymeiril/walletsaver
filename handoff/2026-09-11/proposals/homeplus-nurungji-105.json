@@ -1,0 +1,59 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "105",
+  "source_path": "handoff/2026-09-11/pending/105/001.json",
+  "scope_note": "Classification-only proposal. Raw observation identity, pricing, quantity, promotion, and source evidence remain authoritative in the pending source file.",
+  "review_accounting": {
+    "pending_rows_checked": 9,
+    "unique_products": 5,
+    "new_classification_reviews": 9,
+    "prior_reviewed": 1279,
+    "current_reviewed": 1288,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2628
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "The five source_record_key values were checked against the existing explicit review decisions. No match was found. Repository search found no existing food.grains.processed.nurungji candidate precedent. Current broad name rules can surface tea/snack candidates for 누룽지, but these products are bulk processed-rice foods and those candidates are product-form conflicts."
+  },
+  "decisions": [],
+  "held_decisions": [
+    {
+      "source_record_key": "071367724",
+      "source_title": "달콤바삭 찹쌀누룽지 920G(팩)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.grains.processed.nurungji",
+      "reason": "Bulk glutinous-rice nurungji is a processed grain/rice food, not grain tea or a conventional savory snack."
+    },
+    {
+      "source_record_key": "071384410",
+      "source_title": "포켓 김치누룽지 330G(팩)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.grains.processed.nurungji",
+      "reason": "Kimchi is a flavor/style attribute on a nurungji product; retain the common processed-rice product form."
+    },
+    {
+      "source_record_key": "070913645",
+      "source_title": "국산 100% 가마솥 누룽지 2.5KG(봉)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.grains.processed.nurungji",
+      "reason": "Large-format cauldron nurungji clearly represents processed rice food rather than tea or snack."
+    },
+    {
+      "source_record_key": "071431643",
+      "source_title": "달콤바삭 찹쌀누룽지 구운김 920G(팩)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.grains.processed.nurungji",
+      "reason": "Roasted laver is a flavor/addition; product form remains glutinous-rice nurungji."
+    },
+    {
+      "source_record_key": "071384393",
+      "source_title": "국내산 100% 포켓 백미 누룽지 330G(팩)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.grains.processed.nurungji",
+      "reason": "Explicit white-rice nurungji is a processed rice product; rice variety is an attribute rather than a separate leaf."
+    }
+  ],
+  "executed_tests": []
+}
