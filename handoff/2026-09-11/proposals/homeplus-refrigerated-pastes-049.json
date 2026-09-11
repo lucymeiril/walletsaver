@@ -1,0 +1,139 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["049"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 560,
+    "batch_reviewed_unique_observations": 20,
+    "cumulative_reviewed_unique_observations": 580,
+    "remaining_unreviewed_observations": 3336
+  },
+  "review_summary": {
+    "unique_source_products_reviewed": 10,
+    "observations_reviewed": 20,
+    "proposed_existing_leaf_products": 7,
+    "proposed_existing_leaf_observations": 14,
+    "deferred_taxonomy_candidate_products": 2,
+    "deferred_taxonomy_candidate_observations": 4,
+    "held_products": 1,
+    "held_observations": 2,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:12:76", "ingestion:62:85"],
+      "source_name": "homeplus",
+      "source_record_key": "100880455",
+      "source_title": "씨제이 다담 된장찌개 양념 530G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seasonings.sauces.stew",
+      "reason": "된장 자체가 아니라 찌개용 양념 제품이며 pass41 title rule과 기존 다담 감사 상품이 찌개양념 leaf를 사용",
+      "quantity_review": "unchanged; 530g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:13:41", "ingestion:63:63"],
+      "source_name": "homeplus",
+      "source_record_key": "109803579",
+      "source_title": "씨제이 다담 청국장 양념 530G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seasonings.sauces.stew",
+      "reason": "다담 청국장 찌개 양념 동일 제품군의 감사 선례가 stew leaf에 존재하므로 순수 청국장 paste와 구분",
+      "quantity_review": "unchanged; 530g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:14:42", "ingestion:63:79"],
+      "source_name": "homeplus",
+      "source_record_key": "145064158",
+      "source_title": "풀무원 고소 튜브 쌈장 360G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seasonings.pastes.ssamjang",
+      "reason": "제목이 쌈장을 직접 명시하고 pass41 쌈장 leaf 및 다수 감사 상품 선례가 존재",
+      "quantity_review": "unchanged; 360g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:14:43", "ingestion:63:80"],
+      "source_name": "homeplus",
+      "source_record_key": "145064106",
+      "source_title": "풀무원 매콤 튜브 쌈장 360G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seasonings.pastes.ssamjang",
+      "reason": "매콤/튜브는 속성이고 제품 정체성은 쌈장으로 명확",
+      "quantity_review": "unchanged; 360g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:14:90", "ingestion:64:27"],
+      "source_name": "homeplus",
+      "source_record_key": "127171191",
+      "source_title": "씨제이 다담 양념듬뿍 쌈장 570G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seasonings.pastes.ssamjang",
+      "reason": "양념듬뿍은 변형 표현이며 제목의 제품형태는 쌈장으로 직접 명시",
+      "quantity_review": "unchanged; 570g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:15:3", "ingestion:64:41"],
+      "source_name": "homeplus",
+      "source_record_key": "125845025",
+      "source_title": "씨제이 다담 된장찌개 양념 840G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seasonings.sauces.stew",
+      "reason": "된장 자체가 아니라 찌개양념 제품이며 기존 다담 된장찌개 양념 감사 선례와 동일 축",
+      "quantity_review": "unchanged; 840g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:15:17", "ingestion:64:55"],
+      "source_name": "homeplus",
+      "source_record_key": "123568460",
+      "source_title": "씨제이 다담 우렁 강된장 양념 500G",
+      "status": "held",
+      "reason": "강된장 양념은 순수 된장 paste인지 비빔/조리용 소스인지 현재 제목과 repo 감사 근거만으로 단일 leaf를 확정하기 어려움",
+      "quantity_review": "unchanged; 500g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:15:28", "ingestion:64:66"],
+      "source_name": "homeplus",
+      "source_record_key": "120523420",
+      "source_title": "옹심원 재래식 청국장 국산 400G",
+      "status": "deferred_taxonomy_candidate",
+      "suggested_new_leaf": "food.seasonings.pastes.cheonggukjang",
+      "reason": "순수 청국장 paste 제품이지만 pass41 pastes는 간장/고추장/된장/쌈장만 있어 별도 청국장 leaf가 필요",
+      "quantity_review": "unchanged; 400g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:15:29", "ingestion:64:67"],
+      "source_name": "homeplus",
+      "source_record_key": "120523414",
+      "source_title": "옹심원 재래식 청국장 수입산 400G",
+      "status": "deferred_taxonomy_candidate",
+      "suggested_new_leaf": "food.seasonings.pastes.cheonggukjang",
+      "reason": "원산지 차이일 뿐 제품형태는 순수 청국장 paste이며 현재 대응 leaf가 없음",
+      "quantity_review": "unchanged; 400g retained",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:15:46", "ingestion:64:84"],
+      "source_name": "homeplus",
+      "source_record_key": "107076451",
+      "source_title": "풀무원 고소 견과 쌈장 450G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seasonings.pastes.ssamjang",
+      "reason": "견과는 배합/맛 속성이고 제품형태는 쌈장으로 명확",
+      "quantity_review": "unchanged; 450g retained",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
