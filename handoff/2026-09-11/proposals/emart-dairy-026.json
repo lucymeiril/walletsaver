@@ -1,0 +1,76 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["026"],
+  "scope_note": "Strict GitHub read/write review of pending group 026 (Emart 우유/유제품). Both pending fragments were read. Two rows are already classification-complete and remain pending only for non-classification issues; they are excluded from new classification work. Exact product identity/form evidence was used for opaque or form-sensitive dairy titles. No DB import/rebuild, taxonomy code edit, repository tests or idempotence run was executed.",
+  "review_summary": {
+    "observations_opened": 35,
+    "already_classification_complete_excluded": 2,
+    "strict_classification_reviews": 33,
+    "distinct_source_listings_reviewed": 33,
+    "existing_leaf_proposals": 32,
+    "holds": 1
+  },
+  "already_classified_exclusions": [
+    {"raw_record_id":"ingestion:83:20","source_record_key":"1000277628967","source_title":"굿모닝 굿밀크 1L","existing_leaf":"food.dairy.milk.plain","reason":"review_status=classified; pending for non-classification reconciliation only"},
+    {"raw_record_id":"ingestion:83:69","source_record_key":"0000008895612","source_title":"체다 슬라이스 치즈(270g2개입) 540g","existing_leaf":"food.dairy.cheese.sliced","reason":"review_status=classified; pending reason is multiple_package_quantities"}
+  ],
+  "decisions": [
+    {"raw_record_ids":["ingestion:83:0"],"source_record_key":"1000772503866","source_title":"[쓱7클럽] 소와나무 체다치즈 270g","decision":"propose_existing_leaf","unified_category_id":"food.dairy.cheese.sliced","reason":"Exact catalog product family already records this 270g cheddar as sliced cheese; promotion prefix does not alter form."},
+    {"raw_record_ids":["ingestion:83:3"],"source_record_key":"1000017917189","source_title":"앙팡치즈 까요까요 플레인 72g","decision":"propose_existing_leaf","unified_category_id":"food.dairy.cheese.portion","reason":"Current strict precedent maps 까요까요 mini/portion cheese to the existing portion leaf."},
+    {"raw_record_ids":["ingestion:83:4"],"source_record_key":"1000017917188","source_title":"앙팡치즈 까요까요 딸기 72g","decision":"propose_existing_leaf","unified_category_id":"food.dairy.cheese.portion","reason":"Same portion-cheese product form as plain variant; strawberry is flavour."},
+    {"raw_record_ids":["ingestion:83:5"],"source_record_key":"1000332411674","source_title":"치즈큐빅 파티 플레인87g","decision":"propose_existing_leaf","unified_category_id":"food.dairy.cheese.portion","reason":"Exact retailer product detail identifies processed cheese with cheese form 큐브/포션."},
+    {"raw_record_ids":["ingestion:83:6"],"source_record_key":"1000642004123","source_title":"[한국야쿠르트]메치니코프플레인사과 140mlX4","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.drink","reason":"140ml fermented-yogurt drink product form; apple is flavour. Unit conflicts remain separate."},
+    {"raw_record_ids":["ingestion:83:7"],"source_record_key":"1000813128948","source_title":"hy 메치니코프 오곡씨리얼 140ml*4","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.drink","reason":"Liquid 140ml fermented-yogurt drink form; cereal is flavour/formulation modifier."},
+    {"raw_record_ids":["ingestion:83:8"],"source_record_key":"1000642004121","source_title":"[한국야쿠르트]메치니코프플레인 140mlX4","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.drink","reason":"Liquid 140ml fermented-yogurt drink form. Unit conflicts remain separate."},
+    {"raw_record_ids":["ingestion:83:13"],"source_record_key":"0000006615136","source_title":"[매일유업] 상하치즈 뼈로가는 칼슘치즈 270g","decision":"propose_existing_leaf","unified_category_id":"food.dairy.cheese.sliced","reason":"Exact catalog product is already classified as sliced cheese."},
+    {"raw_record_ids":["ingestion:83:16"],"source_record_key":"1000392777415","source_title":"치즈큐빅파티 플레인87g*2입기획","decision":"propose_existing_leaf","unified_category_id":"food.dairy.cheese.portion","reason":"Same cube/portion cheese product as the 87g single pack; multipack does not change form."},
+    {"raw_record_ids":["ingestion:83:24"],"source_record_key":"0000008486451","source_title":"윌 오리지날 150mlX5개","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.drink","reason":"Liquid 150ml fermented-yogurt drink form; unit conflicts remain separate."},
+    {"raw_record_ids":["ingestion:83:26"],"source_record_key":"0000006615474","source_title":"1000ml 나100%","decision":"propose_existing_leaf","unified_category_id":"food.dairy.milk.plain","reason":"Exact retailer identity check already performed in pending027 identifies Seoul Milk Na100%, food type milk/시유 and plain white milk."},
+    {"raw_record_ids":["ingestion:83:31"],"source_record_key":"1000721236973","source_title":"[매일유업] 엔요 10입 기획(100ml*10)","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.drink","reason":"100ml fermented-yogurt drink multipack; pack count is an attribute."},
+    {"raw_record_ids":["ingestion:83:32"],"source_record_key":"1000809018961","source_title":"[매일유업] 바이오 그릭 딜라이트 무가당 플레인 8본 (80G*8)","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.greek","reason":"Title explicitly identifies Greek yogurt; current taxonomy has a dedicated Greek-yogurt leaf and retailer food type is concentrated fermented milk."},
+    {"raw_record_ids":["ingestion:83:35"],"source_record_key":"0000006617166","source_title":"짜요짜요 딸기맛 240g","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.squeeze","reason":"Current pass41 has a squeeze-yogurt leaf and explicit 짜요짜요 precedent; strawberry is flavour."},
+    {"raw_record_ids":["ingestion:83:36"],"source_record_key":"1000031728895","source_title":"더 진한 순수 플레인 요거트 1.8L","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.drink","reason":"Exact catalog product is already classified under yogurt drink; large bottle form is not a spoon cup."},
+    {"raw_record_ids":["ingestion:83:37"],"source_record_key":"1000026680931","source_title":"[매일유업] 매일우유 오리지널 후레쉬팩 900ML*2","decision":"propose_existing_leaf","unified_category_id":"food.dairy.milk.plain","reason":"Plain original milk multipack; pack count is an attribute."},
+    {"raw_record_ids":["ingestion:83:39"],"source_record_key":"1000103647391","source_title":"커피포리 200ml* 4입","decision":"propose_existing_leaf","unified_category_id":"food.dairy.milk.coffee","reason":"Exact retailer detail identifies Seoul Milk Coffee Pori as 가공우유; current flavored-milk policy therefore uses coffee milk rather than ready-to-drink coffee."},
+    {"raw_record_ids":["ingestion:83:41"],"source_record_key":"0000008040272","source_title":"목장의 신선함이 살아 있는 저지방 1L","decision":"propose_existing_leaf","unified_category_id":"food.dairy.milk.plain","reason":"Current taxonomy explicitly treats low-fat percentage as an attribute of plain milk, not a sibling leaf."},
+    {"raw_record_ids":["ingestion:83:42"],"source_record_key":"0000008350710","source_title":"(200ml*3개)","decision":"propose_existing_leaf","unified_category_id":"food.dairy.milk.plain","reason":"Opaque title resolved by exact retailer detail: Seoul Milk, food type 우유, product info 흰우유."},
+    {"raw_record_ids":["ingestion:83:44"],"source_record_key":"0000008562071","source_title":"바나나 스페셜(240ml*6개) 1440ml","decision":"propose_existing_leaf","unified_category_id":"food.dairy.milk.banana","reason":"Banana-flavoured milk identity and dairy shelf context are explicit; current taxonomy has a banana-milk leaf."},
+    {"raw_record_ids":["ingestion:83:46"],"source_record_key":"0000007900507","source_title":"비요뜨 초코링 (138g*2개)","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.topping","reason":"Current taxonomy has an explicit Biyotte Choco Ring topping-yogurt precedent."},
+    {"raw_record_ids":["ingestion:83:48"],"source_record_key":"0000007909931","source_title":"비요뜨 크런치볼 (138g*2개)","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.topping","reason":"Current taxonomy has an explicit Biyotte Crunch Ball topping-yogurt precedent."},
+    {"raw_record_ids":["ingestion:83:50"],"source_record_key":"1000021244781","source_title":"드빈치 자연방목치즈30입 기획","decision":"propose_existing_leaf","unified_category_id":"food.dairy.cheese.sliced","reason":"Exact retailer product detail states cheese form 슬라이스 and 30–40 slices."},
+    {"raw_record_ids":["ingestion:83:57"],"source_record_key":"1000280367092","source_title":"에이 클래스 저지방요거트 900g","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.spoon","reason":"Exact retailer product detail categorizes it as 떠먹는요구르트; low-fat is an attribute."},
+    {"raw_record_ids":["ingestion:83:58"],"source_record_key":"0000006615615","source_title":"요플레 클래식 플레인 (85g4개)","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.spoon","reason":"Individual 85g plain yogurt cups are spoon yogurt; flavour is plain."},
+    {"raw_record_ids":["ingestion:83:59"],"source_record_key":"0000008528743","source_title":"이오 15입(80ml*15)","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.drink","reason":"80ml fermented-yogurt drink multipack; count does not change product form."},
+    {"raw_record_ids":["ingestion:83:60"],"source_record_key":"1000017812046","source_title":"거꾸로먹는 야쿠르트 (110ml*4입)","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.drink","reason":"Yakult-style liquid fermented-yogurt drink product form."},
+    {"raw_record_ids":["ingestion:83:63"],"source_record_key":"0000008488475","source_title":"윌 저지방 150mlX5개","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.drink","reason":"Liquid 150ml fermented-yogurt drink; low-fat and unit conflicts are attributes/issues."},
+    {"raw_record_ids":["ingestion:83:67"],"source_record_key":"1000020832042","source_title":"피로케어 쿠퍼스 140mlX4개","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.drink","reason":"Liquid 140ml fermented-yogurt drink form; unit conflicts remain separate."},
+    {"raw_record_ids":["ingestion:83:68"],"source_record_key":"1000018804736","source_title":"딸기 담은 요구르트 750ml","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.drink","reason":"750ml liquid 요구르트 bottle; strawberry is flavour."},
+    {"raw_record_ids":["ingestion:83:71"],"source_record_key":"1000011626449","source_title":"유기농 베이비 요구르트 플레인 340g (85g*4)","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.spoon","reason":"Four 85g plain yogurt cups; baby/organic descriptors are attributes."},
+    {"raw_record_ids":["ingestion:83:77"],"source_record_key":"0000009035829","source_title":"다논 하루요거트플레인 80g*4","decision":"propose_existing_leaf","unified_category_id":"food.dairy.yogurt.spoon","reason":"Four 80g plain yogurt cups; product form is spoon yogurt."}
+  ],
+  "held_decisions": [
+    {"raw_record_ids":["ingestion:83:53"],"source_record_key":"1000830439785","source_title":"인기 치즈/버터 모음전, 최대 ~50% 행사","status":"held_promotion_collection","reason":"URL is dealItemView and the title is a multi-product cheese/butter promotion collection, not one classifiable product."}
+  ],
+  "external_identity_form_checks": [
+    {"source_record_key":"0000008350710","result":"food.dairy.milk.plain","evidence":"Exact SSG product detail: Seoul Milk; food type 우유; product info 흰우유."},
+    {"source_record_key":"1000332411674","result":"food.dairy.cheese.portion","evidence":"Exact SSG product detail: 가공치즈; 치즈형태 큐브/포션."},
+    {"source_record_key":"1000021244781","result":"food.dairy.cheese.sliced","evidence":"Exact SSG product detail: 치즈형태 슬라이스; 30~40매 미만."},
+    {"source_record_key":"1000280367092","result":"food.dairy.yogurt.spoon","evidence":"Exact SSG category/product info: 떠먹는요구르트, 컵형."},
+    {"source_record_key":"1000103647391","result":"food.dairy.milk.coffee","evidence":"Exact SSG product detail identifies 서울우유 커피포리; food type 가공우유."}
+  ],
+  "cross_group_overlap_notes": [
+    {"source_record_key":"0000006615474","also_reviewed_in":"pending 027","note":"Keep ingestion:83:26 in group026 strict accounting; final global source-key dedupe will merge overlap."}
+  ],
+  "prior_group026_proposal_coverage": {
+    "confirmed_prior_group026_proposal": false,
+    "note":"Searches for group markers, representative titles and all 33 new source keys did not surface a pre-existing proposal claiming pending026 coverage. One source key overlaps the newly-created pending027 proposal and is recorded separately above."
+  },
+  "explicit_review_decision_collision_screen": {
+    "source_record_keys_checked": 33,
+    "method":"five batched repository searches covering every new-classification source key",
+    "review_decisions_input_hits":0,
+    "note":"No review-decisions-input.json hit surfaced. This is proposal-stage screening and does not mutate the 431 explicit decisions."
+  },
+  "executed_tests": []
+}
