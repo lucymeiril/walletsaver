@@ -1,0 +1,103 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["219", "220", "221", "222", "323", "324", "325", "326", "327"],
+  "scope_note": "GitHub read/write review only. Existing beverage leaves are proposed only where title and source evidence agree. New leaf labels are suggestions only and have not been added to taxonomy or DB.",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:16:65", "ingestion:66:1"],
+      "source_title": "델몬트 오렌지 주스 1.5L",
+      "proposed_leaf": "food.drinks.juice.fruit",
+      "reason": "제목이 오렌지 주스를 직접 명시하고 원본 경로도 오렌지주스다. 1+1 행사조건은 분류와 별개로 원본 그대로 보존한다.",
+      "quantity_review": "unchanged; repeated observations share the same source listing and 1.5L package",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:86", "ingestion:66:14"],
+      "source_title": "simplus NFC 착즙 오렌지주스 1L",
+      "proposed_leaf": "food.drinks.juice.fruit",
+      "reason": "NFC 착즙 오렌지주스라는 제품형태가 제목에 직접 명시되어 기존 과일주스 리프와 일치한다.",
+      "quantity_review": "unchanged; repeated observations share the same source listing and 1L package",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:72", "ingestion:66:3"],
+      "source_title": "롯데칠성 게토레이 레몬 1.5L",
+      "proposed_leaf": "food.drinks.water_soda.sports",
+      "reason": "게토레이는 원본 경로가 이온음료이고 현재 taxonomy의 sports 리프가 스포츠/이온음료를 통합한다.",
+      "quantity_review": "unchanged; repeated observations share the same source listing and 1.5L package",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:73", "ingestion:66:13"],
+      "source_title": "롯데칠성 게토레이 레몬 제로 1.5L",
+      "proposed_leaf": "food.drinks.water_soda.sports",
+      "reason": "제로 여부는 당류 속성 차이이며 제품유형은 이온/스포츠음료다. 기존 sports 리프와 일치한다.",
+      "quantity_review": "unchanged; repeated observations share the same source listing and 1.5L package",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:17:8", "ingestion:66:39"],
+      "source_title": "농심 웰치소다 그레이프맛 355ML*6",
+      "proposed_leaf": "food.drinks.water_soda.soda",
+      "reason": "제목이 웰치소다를 직접 명시하고 현재 분류 코드도 웰치소다를 일반 탄산음료 리프의 명확한 이름 근거로 취급한다.",
+      "quantity_review": "unchanged; repeated observations share the same source listing and 355ml×6 package",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:17:11", "ingestion:66:42"],
+      "source_title": "농심 웰치 제로 그레이프맛 355ML*6",
+      "proposed_leaf": "food.drinks.water_soda.soda",
+      "reason": "원본 경로가 과즙탄산이며 웰치 제로 그레이프는 탄산음료 제품이다. 제로 여부는 별도 속성으로 보존한다.",
+      "quantity_review": "unchanged; repeated observations share the same source listing and 355ml×6 package",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:90", "ingestion:66:16"],
+      "source_title": "simplus NFC 착즙 사과주스 1L",
+      "proposed_leaf": "food.drinks.juice.fruit",
+      "reason": "NFC 착즙 사과주스라는 제품형태가 제목에 직접 명시되어 기존 과일주스 리프와 일치한다.",
+      "quantity_review": "unchanged; repeated observations share the same source listing and 1L package",
+      "identity_merge": "same_source_listing_observations_only"
+    }
+  ],
+  "deferred_taxonomy_candidates": [
+    {
+      "raw_record_ids": ["ingestion:16:81", "ingestion:66:35"],
+      "source_title": "진로 토닉워터 300ML*6",
+      "suggested_new_leaf": "food.drinks.water_soda.tonic",
+      "reason": "토닉워터임은 제목과 원본 경로에서 명확하지만 pass41 생수·탄산 taxonomy에는 생수/탄산수/콜라/사이다/일반탄산/스포츠/에너지 리프만 확인되고 토닉 독립 리프가 없다. 탄산수나 일반 소다로 임의 축소하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:17:2", "ingestion:66:38"],
+      "source_title": "진로 토닉워터 600ML",
+      "suggested_new_leaf": "food.drinks.water_soda.tonic",
+      "reason": "동일하게 토닉워터 독립 유형 후보로 보류한다. 300ml×6 상품과 다른 판매페이지/규격을 상품군 병합하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:16:76", "ingestion:66:32"],
+      "source_title": "광동제약 비타500 100ML*10",
+      "suggested_new_leaf": "food.drinks.water_soda.vitamin",
+      "reason": "원본 경로가 비타민음료이고 제목도 비타500이지만 현재 taxonomy에는 에너지음료만 있고 비타민음료 독립 리프가 없다. 비타500 이온킥과 같은 스포츠음료 제품 사례를 근거로 일반 비타500까지 sports/energy에 합치지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:17:10", "ingestion:66:46"],
+      "source_title": "삼양사 큐원 상쾌환 100ML*2",
+      "suggested_new_leaf": "food.drinks.functional.hangover",
+      "reason": "원본 경로와 제품명이 숙취해소 음료임을 지지하지만 현재 확인한 음료 taxonomy에 숙취음료 리프가 없다. 에너지/비타민음료로 대체하지 않고 기능성 음료 구조를 함께 검토한다."
+    }
+  ],
+  "deferred_source_conflicts": [
+    {
+      "raw_record_ids": ["ingestion:16:87", "ingestion:66:26"],
+      "source_title": "롯데 델몬트 알로에 로우슈거 1.5L",
+      "reason": "마트 경로는 천연야채음료지만 제목에는 주스/야채주스가 명시되지 않는다. 알로에 음료를 vegetable juice로 볼지 별도 과채음료로 볼지 추가 근거가 필요하다."
+    },
+    {
+      "raw_record_ids": ["ingestion:16:94", "ingestion:66:17"],
+      "source_title": "롯데 델몬트 매실 로우슈거 1.5L",
+      "reason": "pending/324의 마트 경로는 감귤주스지만 실제 제목은 매실 로우슈거이며 다른 raw 진열에서도 포도/사과/매실 계열로 나타난다. 제목에 주스가 명시되지 않아 fruit와 fruit_drink 중 어느 리프인지 이번에는 확정하지 않는다."
+    }
+  ],
+  "executed_tests": []
+}
