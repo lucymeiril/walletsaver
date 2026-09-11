@@ -1,0 +1,78 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "073",
+  "source_path": "두부/김치/반찬 > 유부초밥/김밥재료 > 김밥재료",
+  "scope_note": "Classification-only proposal. These are ingredients or ingredient kits for making kimbap, not finished kimbap. Repeated Homeplus observations are grouped by source_record_key. Quantity, promotion and identity fields are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 12,
+    "unique_products": 6,
+    "new_classification_reviews": 12,
+    "prior_reviewed": 938,
+    "current_reviewed": 950,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2966
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "OR search across all six source_record_keys found only pending-group evidence in indexed repository search; no prior proposal hit was found."
+  },
+  "taxonomy_note": "pass41 has the parent food.preserved.ingredients with only the existing inari leaf for 유부초밥재료. Finished-kimbap leaf food.meals.prepared.kimbap is not used for raw/seasoned ingredient kits.",
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:13:30", "ingestion:62:69"],
+      "source_record_key": "000023469",
+      "source_title": "한성 김밥준비한번에OK 505G",
+      "suggested_new_leaf": "food.preserved.ingredients.kimbap",
+      "reason": "김밥을 완성한 상품이 아니라 여러 김밥 재료를 한 번에 제공하는 조리재료 세트다. existing inari leaf와 같은 조리재료 축 아래 김밥재료 후보로 보존한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:13:36", "ingestion:62:75"],
+      "source_record_key": "123826731",
+      "source_title": "한성 프리미엄 김밥 세트 440G",
+      "suggested_new_leaf": "food.preserved.ingredients.kimbap",
+      "reason": "김밥 완제품이 아닌 김밥재료 세트이며 finished kimbap leaf로 보내지 않는다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:13:69", "ingestion:63:2"],
+      "source_record_key": "109803624",
+      "source_title": "씨제이 하선정 김밥 단무지 370G",
+      "suggested_new_leaf": "food.preserved.sides.danmuji",
+      "reason": "단무지 자체 상품이며 pending 070에서 사용한 동일 단무지 taxonomy gap과 제품형태가 같다. 김밥용 표시는 사용 맥락이지 완성 김밥 정체성이 아니다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:14:1", "ingestion:63:11"],
+      "source_record_key": "071050419",
+      "source_title": "simplus 김밥용 우엉 150G",
+      "suggested_new_leaf": "food.preserved.ingredients.burdock",
+      "reason": "김밥용으로 가공된 우엉 조리재료임은 명확하지만 제목만으로 장아찌/조림 중 하나로 단정하기 어렵다. 기존 preserved.ingredients 축 아래 우엉 재료 후보로 보존한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:14:15", "ingestion:64:17"],
+      "source_record_key": "128299833",
+      "source_title": "사조대림 명품 김밥 세트 520G",
+      "suggested_new_leaf": "food.preserved.ingredients.kimbap",
+      "reason": "여러 김밥재료를 묶은 조리재료 세트이며 완성 김밥이 아니다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:15:27", "ingestion:64:65"],
+      "source_record_key": "120740047",
+      "source_title": "씨제이 하선정치자단무지와우엉 220G",
+      "suggested_new_leaf": "food.preserved.ingredients.kimbap",
+      "reason": "단무지와 우엉을 함께 묶은 김밥 조리재료 혼합상품이다. 단무지 단일 leaf나 우엉 단일 leaf로 축소하지 않고 김밥재료 세트 후보와 함께 보존한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
