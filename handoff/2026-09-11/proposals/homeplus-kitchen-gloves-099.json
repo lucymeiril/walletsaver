@@ -1,0 +1,64 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "099",
+  "source_path": "handoff/2026-09-11/pending/099/001.json",
+  "scope_note": "Classification-only proposal. The current taxonomy has no kitchen-glove leaf. Reusable rubber gloves and disposable nitrile gloves are held separately by product form/material. Sizes, colors, counts, prices, and promotions are unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1219,
+    "current_reviewed": 1229,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2687
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "All five source_record_key values were checked against the 431 explicit review decisions. No existing household.kitchen.gloves candidate precedent was found in repository search."
+  },
+  "decisions": [],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:27:27", "ingestion:77:39"],
+      "source_record_key": "070483162",
+      "source_title": "simplus 고무장갑(대) 1입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.gloves.rubber",
+      "reason": "Reusable rubber kitchen glove. Size and single-pack count are attributes, and there is no exact current taxonomy leaf."
+    },
+    {
+      "raw_record_ids": ["ingestion:27:34", "ingestion:76:82"],
+      "source_record_key": "069620399",
+      "source_title": "뉴랩 도톰한 니트릴 장갑 핑크M 100매",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.gloves.nitrile",
+      "reason": "Disposable nitrile gloves are a different product form/material from reusable rubber gloves; color, size, and 100-count are attributes."
+    },
+    {
+      "raw_record_ids": ["ingestion:27:36", "ingestion:77:1"],
+      "source_record_key": "070483381",
+      "source_title": "simplus 고무장갑(대) 3입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.gloves.rubber",
+      "reason": "Same reusable rubber-glove product type as the one-pack variant; three-pack quantity does not create a taxonomy split."
+    },
+    {
+      "raw_record_ids": ["ingestion:27:37", "ingestion:77:6"],
+      "source_record_key": "070483110",
+      "source_title": "simplus 고무장갑(중) 1입",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.gloves.rubber",
+      "reason": "Same reusable rubber-glove product type; medium size is an attribute."
+    },
+    {
+      "raw_record_ids": ["ingestion:27:84", "ingestion:77:41"],
+      "source_record_key": "069224661",
+      "source_title": "뉴랩 도톰한 니트릴 장갑 S 100매",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.kitchen.gloves.nitrile",
+      "reason": "Same disposable nitrile-glove product type as the M variant; size and count remain attributes."
+    }
+  ],
+  "executed_tests": []
+}
