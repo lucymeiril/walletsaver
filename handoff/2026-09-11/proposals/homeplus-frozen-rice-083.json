@@ -1,0 +1,65 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "083",
+  "source_path": "냉장/냉동/밀키트 > 냉동밥/죽/스프 > 냉동밥/덮밥류 > 냉동밥/덥밥류",
+  "scope_note": "Classification-only proposal. Product identity is grouped by source_record_key; raw observation identity remains authoritative in pending/083/001.json. The broad frozen-rice shelf does not override explicit 주먹밥/김밥 product forms.",
+  "review_accounting": {
+    "pending_rows_checked": 11,
+    "unique_products": 6,
+    "new_classification_reviews": 11,
+    "prior_reviewed": 1057,
+    "current_reviewed": 1068,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2848
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "All six source_record_keys returned the pending group only in repository search; no earlier proposal conflict was found."
+  },
+  "decisions": [
+    {
+      "source_record_key": "140583801",
+      "source_title": "씨제이 햇반 김치치즈 주먹밥 500G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.rice.rice_ball",
+      "reason": "제목이 주먹밥 제품형태를 직접 명시하며 pass41에 주먹밥 전용 leaf가 있다. broad 냉동밥 shelf의 볶음밥 후보보다 구체적이다."
+    },
+    {
+      "source_record_key": "140583784",
+      "source_title": "씨제이 햇반 불고기 주먹밥 500G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.rice.rice_ball",
+      "reason": "불고기는 맛/속재료 변형이고 실제 제품형태는 주먹밥이다."
+    },
+    {
+      "source_record_key": "058706690",
+      "source_title": "씨제이 햇반 치즈닭갈비 주먹밥 500G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.rice.rice_ball",
+      "reason": "치즈닭갈비는 속재료 변형이며 주먹밥 전용 leaf가 정확히 맞는다."
+    },
+    {
+      "source_record_key": "148605655",
+      "source_title": "씨제이 햇반 버터장조림 주먹밥 500G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.rice.rice_ball",
+      "reason": "장조림 반찬 자체가 아니라 장조림을 넣은 주먹밥 완제품이다."
+    },
+    {
+      "source_record_key": "071275902",
+      "source_title": "올곧 소시지치즈 김밥 240G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.prepared.kimbap",
+      "reason": "완성 김밥 상품이며 pass41의 prepared.kimbap leaf가 정확히 맞는다. 소시지/치즈는 속재료 속성이다."
+    },
+    {
+      "source_record_key": "071243969",
+      "source_title": "올곧 명란마요 김밥 230G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.prepared.kimbap",
+      "reason": "명란 자체가 아니라 명란마요를 속재료로 사용한 완성 김밥이므로 kimbap leaf를 사용한다."
+    }
+  ],
+  "executed_tests": []
+}
