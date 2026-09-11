@@ -1,0 +1,78 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "074",
+  "source_path": "라면/즉석식품/통조림 > 당면/건면/스파게티 > 즉석면요리 > 즉석면",
+  "scope_note": "Classification-only proposal. Repeated Homeplus observations are grouped by source_record_key. Promotion and quantity fields are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 12,
+    "unique_products": 6,
+    "new_classification_reviews": 12,
+    "prior_reviewed": 950,
+    "current_reviewed": 962,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2954
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "All six source_record_keys were checked against review-decisions-input.json and repository search; no existing explicit decision or prior proposal conflict was found."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:21:52", "ingestion:70:89"],
+      "source_record_key": "069818166",
+      "source_title": "면사랑 강원도식 비빔막국수 2인 643G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.makguksu",
+      "reason": "상품명이 비빔막국수를 직접 명시하며 pass41에 막국수 독립 leaf가 있다.",
+      "promotion_review": "unchanged; 1+1 observations preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:21:55", "ingestion:71:32"],
+      "source_record_key": "070567864",
+      "source_title": "면사랑 동치미육수 평양물냉면 1026G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.naengmyeon",
+      "reason": "동치미육수는 조리/맛 속성이고 제품형태는 평양 물냉면으로 명확하다.",
+      "promotion_review": "unchanged; 1+1 observations preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:22:44", "ingestion:71:91"],
+      "source_record_key": "071153160",
+      "source_title": "풀무원 직화볶음짬뽕 2인 406.8G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.jjamppong",
+      "reason": "직화볶음은 조리 특성이고 제품형태는 짬뽕면으로 명확하다.",
+      "promotion_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:22:62", "ingestion:71:68"],
+      "source_record_key": "071153275",
+      "source_title": "풀무원 직화볶음짜장 2인 512.8G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.black_bean",
+      "reason": "상품명이 완성 짜장면 제품을 직접 나타내며 pass41에 짜장면 leaf가 있다.",
+      "promotion_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:22:63", "ingestion:71:89"],
+      "source_record_key": "071153223",
+      "source_title": "풀무원 멸치 칼국수 2인 319.6G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.kalguksu",
+      "reason": "멸치는 육수/맛 요소이고 기본 제품형태는 칼국수다.",
+      "promotion_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:22:64", "ingestion:71:90"],
+      "source_record_key": "071153217",
+      "source_title": "풀무원 가쓰오 우동 2인 422G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.udon",
+      "reason": "가쓰오는 육수/맛 요소이고 제품형태는 우동으로 명확하다.",
+      "promotion_review": "unchanged"
+    }
+  ],
+  "held_decisions": [],
+  "executed_tests": []
+}
