@@ -1,0 +1,68 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "090",
+  "source_path": "냉장/냉동/밀키트 > 만두 > 교자만두/군만두 > 김치교자만두",
+  "scope_note": "Classification-only proposal. Repeated Homeplus observations are grouped by source_record_key. Promotion and quantity fields are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1129,
+    "current_reviewed": 1139,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2777
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "Source keys were found in pending evidence only; no prior proposal conflict was found. Product-form wording is preferred over the broad kimchi-gyoza shelf label."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:10:31", "ingestion:59:67"],
+      "source_record_key": "070623297",
+      "source_title": "해태 고향만두 김치 320G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.dumplings.assorted",
+      "reason": "The title identifies a general kimchi dumpling but does not establish gyoza form; use the existing general dumpling leaf rather than inheriting the shelf label.",
+      "promotion_review": "unchanged; 1+1 evidence is outside classification-only scope"
+    },
+    {
+      "raw_record_ids": ["ingestion:10:33", "ingestion:59:49"],
+      "source_record_key": "070980817",
+      "source_title": "동원 개성김치감자만두 350G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.dumplings.assorted",
+      "reason": "감자만두 has an existing reviewed contextual precedent for the general dumpling leaf; kimchi filling does not change the product-form leaf.",
+      "promotion_review": "unchanged; 1+1 evidence is outside classification-only scope"
+    },
+    {
+      "raw_record_ids": ["ingestion:11:22", "ingestion:61:54"],
+      "source_record_key": "071376028",
+      "source_title": "풀무원 생만두 갓김치 400G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.dumplings.assorted",
+      "reason": "The title says fresh dumpling with gat-kimchi filling and does not prove gyoza form; retain the general dumpling product type."
+    },
+    {
+      "raw_record_ids": ["ingestion:11:42", "ingestion:60:80"],
+      "source_record_key": "138355619",
+      "source_title": "씨제이 비비고 수제 김치 만두 400G*2",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.dumplings.assorted",
+      "reason": "수제만두 has an existing reviewed contextual precedent for assorted/general dumplings; the 2-pack is quantity metadata, not taxonomy.",
+      "quantity_review": "unchanged; 400G*2 bundle preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:11:70", "ingestion:61:11"],
+      "source_record_key": "124808279",
+      "source_title": "씨제이 비비고 김치 왕교자 420G*2",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.dumplings.gyoza",
+      "reason": "왕교자 explicitly establishes gyoza form and has an existing reviewed contextual rule; kimchi is filling rather than a separate product-form leaf.",
+      "quantity_review": "unchanged; 420G*2 bundle preserved"
+    }
+  ],
+  "held_decisions": [],
+  "executed_tests": []
+}
