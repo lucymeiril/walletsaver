@@ -1,0 +1,127 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["054"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data, promotions, and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 657,
+    "batch_reviewed_unique_observations": 18,
+    "cumulative_reviewed_unique_observations": 675,
+    "remaining_unreviewed_observations": 3241
+  },
+  "review_summary": {
+    "unique_source_products_reviewed": 9,
+    "observations_reviewed": 18,
+    "proposed_existing_leaf_products": 9,
+    "proposed_existing_leaf_observations": 18,
+    "held_products": 0,
+    "held_observations": 0,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:20:93", "ingestion:70:30"],
+      "source_name": "homeplus",
+      "source_record_key": "102810371",
+      "source_title": "오뚜기 맛있는컵밥 김치참치덮밥 310G",
+      "proposed_unified_category_id": "food.meals.rice.cup",
+      "reason": "상품명이 맛있는컵밥을 직접 명시하며 기존 taxonomy에 컵밥 leaf가 존재한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; preserve structured 2+1 data",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:20:94", "ingestion:71:61"],
+      "source_name": "homeplus",
+      "source_record_key": "128129713",
+      "source_title": "오뚜기 맛있는컵밥 톡톡김치알밥 222G",
+      "proposed_unified_category_id": "food.meals.rice.cup",
+      "reason": "상품명이 맛있는컵밥을 직접 명시하며 알밥 맛/형태는 컵밥 제품의 세부 속성이다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; preserve source promotion data",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:20:95", "ingestion:71:18"],
+      "source_name": "homeplus",
+      "source_record_key": "138330712",
+      "source_title": "CJ 햇반 컵반 김치 날치알밥 188G",
+      "proposed_unified_category_id": "food.meals.rice.cup",
+      "reason": "상품명이 햇반 컵반을 직접 명시하며 기존 taxonomy의 컵밥 leaf와 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; promotion_unresolved remains unresolved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:20:96", "ingestion:71:55"],
+      "source_name": "homeplus",
+      "source_record_key": "055410433",
+      "source_title": "CJ 햇반 컵반 참치마요덮밥 204G",
+      "proposed_unified_category_id": "food.meals.rice.cup",
+      "reason": "상품명이 햇반 컵반을 직접 명시하며 덮밥 맛은 컵밥 제품의 세부 속성이다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; promotion_unresolved remains unresolved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:21:74", "ingestion:70:32"],
+      "source_name": "homeplus",
+      "source_record_key": "128196914",
+      "source_title": "오뚜기 맛있는컵밥 차돌 강된장 보리밥 310G",
+      "proposed_unified_category_id": "food.meals.rice.cup",
+      "reason": "상품명이 맛있는컵밥을 직접 명시하며 보리밥/강된장은 컵밥 제품의 맛·구성 속성이다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; preserve structured 2+1 data",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:21:77", "ingestion:69:94"],
+      "source_name": "homeplus",
+      "source_record_key": "123732899",
+      "source_title": "오뚜기 맛있는컵밥 제육덮밥 310G",
+      "proposed_unified_category_id": "food.meals.rice.cup",
+      "reason": "상품명이 맛있는컵밥을 직접 명시하며 제육덮밥은 컵밥 제품의 맛·구성 속성이다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; preserve structured source promotion data",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:21:86", "ingestion:71:6"],
+      "source_name": "homeplus",
+      "source_record_key": "128196943",
+      "source_title": "오뚜기 맛있는컵밥 전주식 돌솥비빔밥 269G",
+      "proposed_unified_category_id": "food.meals.rice.cup",
+      "reason": "상품명이 맛있는컵밥을 직접 명시하며 비빔밥 방식은 컵밥 제품의 세부 구성이다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; preserve structured 2+1 data",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:22:5", "ingestion:71:78"],
+      "source_name": "homeplus",
+      "source_record_key": "125165518",
+      "source_title": "CJ 햇반 컵반 강된장 보리 비빔밥 280G",
+      "proposed_unified_category_id": "food.meals.rice.cup",
+      "reason": "상품명이 햇반 컵반을 직접 명시하며 강된장 보리 비빔밥은 컵밥 제품의 세부 구성이다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; promotion_unresolved remains unresolved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:22:31", "ingestion:70:98"],
+      "source_name": "homeplus",
+      "source_record_key": "124800967",
+      "source_title": "CJ 햇반 컵반 황태국밥 170G",
+      "proposed_unified_category_id": "food.meals.rice.cup",
+      "reason": "상품명이 햇반 컵반을 직접 명시하며 국밥형 컵반도 현재 taxonomy의 컵밥 leaf가 받는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; promotion_unresolved remains unresolved",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
