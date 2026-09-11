@@ -1,0 +1,126 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["061"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data, promotions, quantity evidence, and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 772,
+    "batch_reviewed_unique_observations": 16,
+    "cumulative_reviewed_unique_observations": 788,
+    "remaining_unreviewed_observations": 3128
+  },
+  "review_summary": {
+    "unique_source_products_reviewed": 8,
+    "observations_reviewed": 16,
+    "proposed_existing_leaf_products": 2,
+    "proposed_existing_leaf_observations": 4,
+    "held_or_new_taxonomy_products": 6,
+    "held_or_new_taxonomy_observations": 12,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_matches_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "taxonomy_note": "pass41 차 taxonomy에는 보리차·허브차·유자차·녹차/말차·홍차/아이스티·보이차·곡물차 등이 있으나 생강차·레몬차·한라봉차·음용 애사비 농축액 전용 leaf는 없다. 조리용 식초 leaf와 음용 애사비를 혼동하지 않는다.",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:15:78", "ingestion:65:80"],
+      "source_name": "homeplus",
+      "source_record_key": "070826034",
+      "source_title": "하루하나 유기농 레몬생강즙 14T(280G)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.ginger",
+      "reason": "액상차/농축액 진열의 레몬생강 농축 제품으로 생강 기반 음용차 성격이 명확하지만 pass41에 생강차 leaf가 없다. 조리용 소스나 일반 과즙으로 강제하지 않고 생강차 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "1+1 evidence is preserved and not altered by this classification proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:15:84", "ingestion:65:4"],
+      "source_name": "homeplus",
+      "source_record_key": "071090826",
+      "source_title": "하루하나 매실톡(애사비) 14T(280G)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.vinegar.apple_cider",
+      "reason": "액상차/농축액 진열의 음용 애플사이다비니거(애사비) 농축 제품이다. pass41의 food.seasonings.baking.vinegar는 조리용 식초이므로 그 leaf로 강제하지 않고 음용 식초 축의 신규 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "1+1 evidence is preserved and not altered by this classification proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:15:85", "ingestion:65:5"],
+      "source_name": "homeplus",
+      "source_record_key": "071090792",
+      "source_title": "하루하나 레몬톡(애사비) 14T(280G)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.vinegar.apple_cider",
+      "reason": "레몬 맛의 음용 애사비 농축 제품이며 조리용 식초가 아니다. 기존 조미료 식초 leaf와 분리해 음용 애플사이다비니거 신규 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "1+1 evidence is preserved and not altered by this classification proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:1", "ingestion:65:89"],
+      "source_name": "homeplus",
+      "source_record_key": "069327954",
+      "source_title": "자임 꿀유자차 1KG",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.drinks.tea.citron",
+      "reason": "상품명이 꿀유자차를 직접 명시하고 pass41에 유자차 전용 leaf가 존재한다. 액상/농축 형태는 제품 규격이며 유자차 정체성과 충돌하지 않는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:2", "ingestion:65:47"],
+      "source_name": "homeplus",
+      "source_record_key": "069327113",
+      "source_title": "생강차 1KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.ginger",
+      "reason": "상품명이 생강차를 직접 명시하지만 pass41 차 taxonomy에 생강차 leaf가 없다. 유자차나 허브차로 임의 통합하지 않고 생강차 신규 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:9", "ingestion:65:52"],
+      "source_name": "homeplus",
+      "source_record_key": "149163236",
+      "source_title": "꽃샘 피어나다 히비스커스&자몽 350G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.drinks.tea.herbal",
+      "reason": "액상차 진열의 히비스커스 기반 차 제품으로 pass41의 허브차 leaf와 제품 정체성이 일치한다. 자몽은 혼합 맛 요소로 본다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:50", "ingestion:65:90"],
+      "source_name": "homeplus",
+      "source_record_key": "069327614",
+      "source_title": "자임 꿀레몬차 1KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.lemon",
+      "reason": "상품명이 꿀레몬차를 직접 명시하지만 pass41에는 레몬차 전용 leaf가 없다. 유자차로 합치지 않고 레몬차 신규 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:51", "ingestion:65:91"],
+      "source_name": "homeplus",
+      "source_record_key": "069327286",
+      "source_title": "자임 꿀한라봉차 1KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.tea.hallabong",
+      "reason": "상품명이 꿀한라봉차를 직접 명시하지만 pass41에 한라봉차 전용 leaf가 없다. 다른 감귤계 차 leaf로 임의 통합하지 않고 신규 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
