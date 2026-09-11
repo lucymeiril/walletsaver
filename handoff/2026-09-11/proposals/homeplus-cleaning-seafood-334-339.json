@@ -1,0 +1,84 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["334", "335", "336", "337", "338", "339"],
+  "scope_note": "GitHub read/write review only. Mart paths are evidence only. Existing household/seafood leaves are reused conservatively, and the quarter-fish quantity conflict on the Spanish mackerel listing is explicitly left unresolved for later quantity review.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 332,
+    "batch_reviewed_unique_observations": 12,
+    "cumulative_reviewed_unique_observations": 344,
+    "remaining_unreviewed_observations": 3572
+  },
+  "explicit_review_decision_conflict_check": {
+    "file": "handoff/2026-09-11/review-decisions-input.json",
+    "checked_source_record_keys": ["071292305", "071292242", "069017100", "065061260", "122325295", "006404057", "069026573"],
+    "matches_found": 0
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:25:90"],
+      "source_record_key": "071292305",
+      "source_title": "크린센스 편백 물걸레 청소포 대형 20매",
+      "proposed_leaf": "household.cleaning.general.wipes",
+      "reason": "제목과 원본 경로가 일회용 물걸레 청소포를 직접 가리킨다. pass41 일반청소 taxonomy의 `wipes` 리프 표시명이 청소용티슈이므로 제품형태가 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:25:91"],
+      "source_record_key": "071292242",
+      "source_title": "크린센스 편백 물걸레 청소포 표준형 25매",
+      "proposed_leaf": "household.cleaning.general.wipes",
+      "reason": "대형 제품과 동일한 물걸레 청소포 유형이며 크기/매수 차이는 variant 속성이다. 기존 청소용티슈 리프를 제안한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:27", "ingestion:54:17"],
+      "source_record_key": "069017100",
+      "source_title": "해풍 건오징어 3미 (210G)",
+      "proposed_leaf": "food.seafood.processed.dried_fish",
+      "reason": "제목과 원본 경로가 건오징어를 직접 명시한다. pass41 수산가공품의 `dried_fish`는 건어물스낵 리프이며 기존 코드도 쥐치포·진미채·맛오징어 등 건어물류를 이 리프로 관리한다. 생오징어 리프나 다른 생선 리프로 보내지 않는다.",
+      "quantity_review": "unchanged; 3미/210g source detail retained; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:5:1", "ingestion:54:31"],
+      "source_record_key": "065061260",
+      "source_title": "부드러운 건 한치 130G",
+      "proposed_leaf": "food.seafood.processed.dried_fish",
+      "reason": "상품명과 원본 경로가 건한치를 직접 가리킨다. 현재 별도 한치 건어물 리프가 없고 기존 `dried_fish`가 건어물 제품군을 담당하므로 해당 리프를 제안한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:65", "ingestion:53:96"],
+      "source_record_key": "122325295",
+      "source_title": "명엽채 200G(봉)",
+      "proposed_leaf": "food.seafood.processed.dried_fish",
+      "reason": "마트 원본 경로는 먹태이지만 상품 제목은 명엽채이며 먹태라는 제품 근거가 없다. 명엽채는 건어물 가공품 유형이므로 broad mart leaf를 정답으로 쓰지 않고 기존 건어물스낵 리프를 제안한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:4:54", "ingestion:53:84"],
+      "source_record_key": "006404057",
+      "source_title": "생물 용가자미(중) 마리",
+      "proposed_leaf": "food.seafood.fish.flounder",
+      "reason": "제목과 원본 경로가 가자미를 직접 가리키며 pass41에 `food.seafood.fish.flounder` 리프가 있고 기존 가자미 카탈로그 선례도 존재한다.",
+      "quantity_review": "unchanged; source uses per-piece selling unit and standard_unit is null",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:3:94", "ingestion:53:15"],
+      "source_record_key": "069026573",
+      "source_title": "생물 대삼치 1/4 마리(왕특대)",
+      "proposed_leaf": "food.seafood.fish.spanish_mackerel",
+      "reason": "제목과 원본 경로가 삼치를 직접 명시하고 pass41에 삼치 리프가 존재한다. 분류 판단과 수량 파싱 문제는 분리한다.",
+      "quantity_review": "requires_separate_review; source title says 1/4 마리 but normalized package currently says 4마리 / quantity 4.0. Do not auto-overwrite structured quantity from this classification proposal.",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
