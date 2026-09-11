@@ -1,0 +1,80 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "071",
+  "source_path": "과자/시리얼 > 시리얼/간식류소시지 > 어린이용 시리얼 > 초코",
+  "scope_note": "Classification-only proposal. Repeated observations sharing a Homeplus source_record_key are grouped together. Promotion and quantity facts are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 13,
+    "unique_products": 7,
+    "new_classification_reviews": 13,
+    "prior_reviewed": 913,
+    "current_reviewed": 926,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2990
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "OR search across all seven source_record_keys found only the pending group in indexed repository search; no prior proposal hit was found."
+  },
+  "taxonomy_note": "pass41 cereal taxonomy contains flakes and granola only. Oreo O's, Coco Ball, Chex and Crecchio are chocolate breakfast cereals but are not safely reducible to either existing form leaf. Child-targeting and cup/box packaging are treated as attributes rather than taxonomy branches.",
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:17:32", "ingestion:67:37"],
+      "source_record_key": "126557854",
+      "source_title": "동서 오레오오즈 500G",
+      "suggested_new_leaf": "food.snacks.cereal.chocolate",
+      "reason": "초코 계열 아침 시리얼임은 source path와 상품명으로 명확하지만 flakes/granola 어느 기존 leaf에도 맞지 않는다.",
+      "quantity_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:17:33", "ingestion:67:36"],
+      "source_record_key": "070602316",
+      "source_title": "동서 크리치오 500G",
+      "suggested_new_leaf": "food.snacks.cereal.chocolate",
+      "reason": "동일 초코 어린이용 시리얼 진열의 완성 시리얼이며 기존 flakes/granola 이분법에 강제하지 않는다.",
+      "promotion_review": "unchanged; 1+1 observation preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:17:41", "ingestion:67:52"],
+      "source_record_key": "110603929",
+      "source_title": "동서 오곡 코코볼 570G",
+      "suggested_new_leaf": "food.snacks.cereal.chocolate",
+      "reason": "코코볼 형태의 초코 시리얼로 제품형태가 명확하나 플레이크나 그래놀라가 아니다.",
+      "quantity_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:18:48", "ingestion:69:5"],
+      "source_record_key": "070109647",
+      "source_title": "동서 오곡 코코볼 컵 30G",
+      "suggested_new_leaf": "food.snacks.cereal.chocolate",
+      "reason": "컵 포장은 패키징 차이일 뿐 코코볼 초코 시리얼의 제품형태는 동일하다.",
+      "quantity_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:19:15"],
+      "source_record_key": "103005138",
+      "source_title": "농심 켈로그 오곡 첵스 초코 570G",
+      "suggested_new_leaf": "food.snacks.cereal.chocolate",
+      "reason": "첵스 초코 시리얼이며 기존 flakes/granola에 정확히 대응하지 않는다.",
+      "quantity_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:19:38", "ingestion:69:42"],
+      "source_record_key": "071037649",
+      "source_title": "켈로그 첵스초코 쿠키앤크림 420G",
+      "suggested_new_leaf": "food.snacks.cereal.chocolate",
+      "reason": "쿠키앤크림 맛은 flavor attribute이고 기본 제품형태는 첵스 초코 시리얼이다.",
+      "quantity_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:19:66", "ingestion:68:86"],
+      "source_record_key": "127554153",
+      "source_title": "농심 켈로그 첵스초코 컵 30G",
+      "suggested_new_leaf": "food.snacks.cereal.chocolate",
+      "reason": "컵 포장은 variant이며 첵스초코 시리얼 제품형태를 바꾸지 않는다.",
+      "quantity_review": "unchanged"
+    }
+  ],
+  "executed_tests": []
+}
