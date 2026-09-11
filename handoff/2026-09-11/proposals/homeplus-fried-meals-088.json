@@ -1,0 +1,67 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "088",
+  "source_path": "냉장/냉동/밀키트 > 돈까스/떡갈비/너겟 > 돈까스/생선까스/탕수육/김말이/기타 > 탕수육/김말이",
+  "scope_note": "Classification-only proposal. Repeated Homeplus observations are grouped by source_record_key. Promotion and package fields are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1109,
+    "current_reviewed": 1119,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2797
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "Repository evidence for these products is pending/raw/catalog-unresolved only; no explicit review-decision conflict was found."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:12:37", "ingestion:61:77"],
+      "source_record_key": "071342627",
+      "source_title": "씨제이 고메 흑백요리사 유린기 370G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.prepared.chicken",
+      "reason": "유린기는 조리된 닭고기 요리이며 pass41의 조리치킨 leaf가 제품형태를 포괄한다. broad 탕수육/김말이 shelf보다 실제 닭고기 조리식품 정체성을 우선한다."
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:9:93", "ingestion:59:32"],
+      "source_record_key": "070960974",
+      "source_title": "동원 양반 야채바삭 김말이 475G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.gimmari",
+      "reason": "김말이는 당면을 김으로 말아 튀긴 독립 조리식품 형태이며 pass41에 대응 leaf가 없다. 다른 튀김/만두 leaf에 강제하지 않는다.",
+      "promotion_review": "unchanged; 1+1 preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:10:1", "ingestion:59:79"],
+      "source_record_key": "070960951",
+      "source_title": "동원 양반 매콤바삭 김말이 475G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.gimmari",
+      "reason": "매콤 맛 차이는 속성이며 제품형태는 김말이다. 기존 exact leaf가 없어 동일 신규 후보로 보존한다.",
+      "promotion_review": "unchanged; 1+1 preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:12:38", "ingestion:61:78"],
+      "source_record_key": "071342610",
+      "source_title": "씨제이 고메 흑백요리사 탕수육 390G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.tangsuyuk",
+      "reason": "탕수육은 독립 조리식품 형태지만 pass41에 대응 leaf가 없다. 돈까스나 일반 조리치킨으로 확대하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:12:59", "ingestion:61:99"],
+      "source_record_key": "071259346",
+      "source_title": "simplus 김말이튀김 700G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.gimmari",
+      "reason": "제품명이 김말이튀김 형태를 직접 명시하며 동일 gimmari 신규 후보가 적합하다."
+    }
+  ],
+  "executed_tests": []
+}
