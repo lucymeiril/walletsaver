@@ -1,0 +1,66 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["306", "307", "308", "309", "310"],
+  "scope_note": "GitHub read/write review only. Existing catalog/taxonomy evidence is reused conservatively; quantity issues are not rewritten and ambiguous duck barbecue is not forced into smoked duck.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 286,
+    "batch_reviewed_unique_observations": 10,
+    "cumulative_reviewed_unique_observations": 296,
+    "remaining_unreviewed_observations": 3620
+  },
+  "explicit_review_decision_conflict_check": {
+    "file": "handoff/2026-09-11/review-decisions-input.json",
+    "checked_source_record_keys": ["112841891", "071050293", "113462535", "071294504", "129473101"],
+    "matches_found": 0
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:15:38", "ingestion:64:76"],
+      "source_record_key": "112841891",
+      "source_title": "대상 고소한 국산콩 찌개용 두부 400G",
+      "proposed_leaf": "food.plant.soy.tofu",
+      "reason": "마트 경로는 순두부/연두부지만 제목이 찌개용 일반 두부를 직접 명시한다. silken 리프는 제목의 순두부·연두부 corroboration을 요구하므로 일반 두부 리프를 제안한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:13:51", "ingestion:62:53"],
+      "source_record_key": "071050293",
+      "source_title": "simplus 새콤한맛쌈무 350G",
+      "proposed_leaf": "food.preserved.sides.pickled",
+      "reason": "쌈무는 절임 무 반찬이고 원본 경로도 피클류다. pass41에는 `food.preserved.sides.pickled` 리프가 존재하며 기존 카탈로그의 깻잎지 같은 절임반찬이 이 리프에 분류돼 있어 제품형태가 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:14:74", "ingestion:64:11"],
+      "source_record_key": "129473101",
+      "source_title": "씨제이 맥스봉 숯불구이맛 핫바 70G",
+      "proposed_leaf": "food.meat.processed.sausage",
+      "reason": "같은 맥스봉 숯불구이맛 핫바 70G의 기존 롯데마트 카탈로그 상품이 confidence 0.97로 `food.meat.processed.sausage`에 분류돼 있다. 홈플러스 비엔나/후랑크 진열도 이 판단과 모순되지 않는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "nonclassification_pending": [
+    {
+      "raw_record_ids": ["ingestion:13:24", "ingestion:62:93"],
+      "source_record_key": "113462535",
+      "source_title": "사조대림 크라비아 기획 160G+80G",
+      "existing_leaf": "food.seafood.processed.surimi",
+      "reason": "분류는 이미 confidence 0.97로 맛살 리프에 resolved다. pending 원인은 mixed_package_unresolved와 multiple_package_quantities이므로 classification proposal로 해소됐다고 세지 않는다."
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:12:68", "ingestion:62:2"],
+      "source_record_key": "071294504",
+      "source_title": "품애복 1등급 흑마늘 오리바베큐 슬라이스 500G",
+      "candidate_existing_leaf": "food.meat.processed.smoked_duck",
+      "reason": "원본 경로는 닭가슴살/훈제오리이고 기존 훈제오리 리프가 있으나 제목은 훈제 대신 오리바베큐라고만 명시한다. 현재 정확 자동/감사 근거는 '훈제오리' 표현 중심이어서 바베큐 오리를 같은 리프로 볼지 정책 확인 전에는 강제 분류하지 않는다."
+    }
+  ],
+  "executed_tests": []
+}
