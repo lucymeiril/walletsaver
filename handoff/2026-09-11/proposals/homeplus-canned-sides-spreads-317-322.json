@@ -1,0 +1,71 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["317", "318", "319", "320", "321", "322"],
+  "scope_note": "GitHub read/write review only. Existing leaves are reused only where title/form evidence is direct. New ids are taxonomy-review labels only; ambiguous perilla side dish is held rather than forced into pickled or seasoned.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 308,
+    "batch_reviewed_unique_observations": 12,
+    "cumulative_reviewed_unique_observations": 320,
+    "remaining_unreviewed_observations": 3596
+  },
+  "explicit_review_decision_conflict_check": {
+    "file": "handoff/2026-09-11/review-decisions-input.json",
+    "checked_source_record_keys": ["120997532", "121025121", "071107734", "071369688", "068967629", "106827090"],
+    "matches_found": 0
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:22:66", "ingestion:71:94"],
+      "source_record_key": "071107734",
+      "source_title": "샘표 쓱쓱싹싹 밥도둑 쇠고기장조림 130G",
+      "proposed_leaf": "food.preserved.sides.braised",
+      "reason": "제목과 원본 경로가 쇠고기장조림을 직접 명시하며 pass41의 조림반찬 리프가 제품형태와 정확히 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:21:66", "ingestion:72:5"],
+      "source_record_key": "068967629",
+      "source_title": "동원 김치찌개용꽁치 300G",
+      "proposed_leaf": "food.preserved.canned.saury",
+      "reason": "제목이 꽁치를 명시하고 원본 경로도 통조림 코너의 꽁치다. pass41에 꽁치통조림 리프가 존재한다. '김치찌개용'은 용도 표현이며 제품 종류를 바꾸지 않는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "deferred_taxonomy_candidates": [
+    {
+      "raw_record_ids": ["ingestion:21:18", "ingestion:70:59"],
+      "source_record_key": "121025121",
+      "source_title": "유동 번데기 130G",
+      "suggested_new_leaf": "food.preserved.canned.pupa",
+      "reason": "제목과 원본 경로가 번데기 통조림 상품을 직접 가리키지만 pass41 canned 리프에는 번데기 대응 리프가 없다. 다른 통조림 리프에 임의 흡수하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:22:15", "ingestion:71:67"],
+      "source_record_key": "071369688",
+      "source_title": "동원 자연산 진고등어 300G",
+      "suggested_new_leaf": "food.preserved.canned.mackerel",
+      "reason": "원본 경로는 참치/꽁치/고등어 통조림 축이고 제목도 고등어를 명시하지만 현재 canned taxonomy에는 고등어 리프가 없다. 꽁치 리프로 대체하지 않고 신규 고등어통조림 후보로 남긴다."
+    },
+    {
+      "raw_record_ids": ["ingestion:20:19", "ingestion:69:53"],
+      "source_record_key": "106827090",
+      "source_title": "오뚜기 옥수수 마아가린 200G",
+      "suggested_new_leaf": "food.bakery.spreads.margarine",
+      "reason": "제목이 마가린을 직접 명시하고 원본 경로도 스프레드다. pass41의 기존 spread 리프는 땅콩버터와 과일잼뿐이고 마가린/버터 대체지방 대응 리프를 찾지 못해 별도 후보로 둔다."
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:21:12", "ingestion:71:80"],
+      "source_record_key": "120997532",
+      "source_title": "샘표 우리엄마 깻잎 매콤한맛 70G",
+      "candidate_existing_leaves": ["food.preserved.sides.pickled", "food.preserved.sides.seasoned"],
+      "reason": "깻잎 반찬이라는 점은 분명하지만 제목만으로 절임(깻잎지)인지 양념무침형인지 구분하기 어렵다. 기존 카탈로그의 '깻잎지'는 pickled 선례가 있으나 이 제품은 '매콤한맛 깻잎'만 명시하므로 원재료/제품형태 근거 없이 강제하지 않는다."
+    }
+  ],
+  "executed_tests": []
+}
