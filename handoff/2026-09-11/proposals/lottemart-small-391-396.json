@@ -1,0 +1,121 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["391", "392", "393", "394", "395", "396"],
+  "scope_note": "GitHub read/write review only. All 12 observations were read. Exact source_record_keys were searched against prior proposals and all 431 explicit review decisions; no overlaps/conflicts were found. Existing decisions, pass41 catalog/DB and taxonomy source were not modified. Promotion-unresolved states remain separate from classification.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 414,
+    "batch_new_unique_observations": 12,
+    "cumulative_reviewed_unique_observations": 426,
+    "remaining_unreviewed_observations": 3490
+  },
+  "explicit_review_decision_conflicts": [],
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:34:19"],
+      "source_record_key": "8801114179352",
+      "source_title": "풀무원 철판 도톰녹두전 (300G)",
+      "proposed_leaf": "food.meals.prepared.pancake",
+      "reason": "현재 taxonomy에 냉동전 리프가 있으며, pass41 catalog에서 풀무원 철판 감자채전이 같은 food.meals.prepared.pancake로 이미 감사되어 있다. 녹두전도 동일한 조리 전 제품군으로 보는 근거가 충분하다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; promotion_unresolved remains",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:29:70"],
+      "source_record_key": "8801392172519",
+      "source_title": "CJ 주부초밥왕 저당 유부초밥 (280G)",
+      "proposed_leaf": "food.preserved.ingredients.inari",
+      "reason": "홈플러스의 같은 CJ 주부초밥왕 유부초밥 제품군(320G)이 pass41 catalog에서 food.preserved.ingredients.inari로 이미 감사되어 있다. 완성 초밥이 아니라 밥에 채워 먹는 유부초밥 재료 키트 제품군으로 일관되게 본다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; promotion_unresolved remains",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:31:73"],
+      "source_record_key": "8801066600379",
+      "source_title": "대림 주부초밥짱 (160G)",
+      "proposed_leaf": "food.preserved.ingredients.inari",
+      "reason": "홈플러스의 사조대림 주부 유부초밥 짱 160G가 pass41 catalog에서 food.preserved.ingredients.inari로 정확히 감사되어 있어 동일 제품군 형태의 강한 선례가 있다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; promotion_unresolved remains",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:31:93"],
+      "source_record_key": "9556023228699",
+      "source_title": "오늘좋은 치즈샌드 (90G)",
+      "proposed_leaf": "food.snacks.baked.sandwich",
+      "reason": "현재 taxonomy는 일반 biscuits와 별도로 샌드과자 리프를 두고 이름 근거어로 '샌드'를 사용한다. 제목이 치즈샌드를 직접 명시하므로 일반 비스킷보다 sandwich 리프가 구체적이다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; promotion_unresolved remains",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:33:28"],
+      "source_record_key": "9556023228705",
+      "source_title": "오늘좋은 초코샌드 (90G)",
+      "proposed_leaf": "food.snacks.baked.sandwich",
+      "reason": "현재 taxonomy의 샌드과자 리프가 제목의 '샌드' 형태를 직접 포괄한다. 초코는 맛 속성으로 두고 제품형태는 샌드과자로 제안한다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; promotion_unresolved remains",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "deferred": [
+    {
+      "raw_record_ids": ["ingestion:30:45"],
+      "source_record_key": "8809294660004",
+      "source_title": "요리하다 중화식 잡채밥 (250G)",
+      "reason": "마트 세부 경로는 볶음밥이지만 제목은 잡채밥이며 현재 food.meals.rice.fried는 볶음밥 형태를 명시적으로 다룬다. source path만으로 볶음밥에 강제하지 않고 잡채밥/덮밥류를 어떻게 통합할지 정책 검토가 필요하다.",
+      "followup": "prepared rice-dish/bowl taxonomy policy; promotion_unresolved remains"
+    },
+    {
+      "raw_record_ids": ["ingestion:33:34"],
+      "source_record_key": "8801007528939",
+      "source_title": "CJ 햇반 불고기비빔밥 (410G)",
+      "reason": "마트 경로는 볶음밥이지만 제목은 비빔밥이다. 현재 rice.fried의 의미를 비빔밥까지 확대하는 명시 선례가 없어 보류한다.",
+      "followup": "bibimbap/prepared rice-dish taxonomy policy; promotion_unresolved remains"
+    },
+    {
+      "raw_record_ids": ["ingestion:28:17"],
+      "source_record_key": "8801007626970",
+      "source_title": "CJ 제일제당 고메 함박 스테이크 (152G)",
+      "suggested_new_leaf": "food.meals.prepared.hamburg_steak",
+      "reason": "함박스테이크라는 제품형태는 명확하지만 현재 prepared 리프에는 떡갈비·동그랑땡 등이 있고 함박 전용 리프는 확인되지 않는다. 유사 육가공 리프에 강제하지 않고 신규 함박스테이크 리프 후보로 둔다.",
+      "followup": "compare with pending 428 cheese hamburg steak before adding leaf; promotion_unresolved remains"
+    },
+    {
+      "raw_record_ids": ["ingestion:30:11"],
+      "source_record_key": "8809654956518",
+      "source_title": "아사이볼 (104G/팩)",
+      "reason": "마트 경로는 냉동과일이지만 제목의 '아사이볼'만으로 단순 냉동과일인지 퓨레/디저트/가공볼인지 확정하기 어렵다. source_title_product_type_conflict를 그대로 보존한다.",
+      "followup": "product-form evidence needed; promotion_unresolved remains"
+    },
+    {
+      "raw_record_ids": ["ingestion:32:51"],
+      "source_record_key": "8809654956525",
+      "source_title": "망고볼 (104G/팩)",
+      "reason": "냉동과일 경로와 달리 raw attributes에 storage_type=ambient가 있어 제품형태/보관정보가 충돌한다. frozen leaf로 강제하지 않는다.",
+      "followup": "product-form and storage evidence needed; promotion_unresolved remains"
+    },
+    {
+      "raw_record_ids": ["ingestion:28:76"],
+      "source_record_key": "8809506850346",
+      "source_title": "산골과일참 딸기칩 (7G)",
+      "suggested_new_leaf": "food.produce.processed_fruit.chip",
+      "reason": "과일칩임은 명확하지만 현재 processed_fruit에는 dried/frozen/cut/cup만 있고 과일칩 리프가 없다. 건과일로 자동 축소하면 건조/동결건조/가공칩 공정 차이를 잃을 수 있어 별도 fruit-chip 정책 후보로 둔다.",
+      "followup": "decide fruit-chip vs dried-fruit policy; promotion_unresolved remains"
+    },
+    {
+      "raw_record_ids": ["ingestion:30:78"],
+      "source_record_key": "8809506850353",
+      "source_title": "산골과일참 배칩 (10G)",
+      "suggested_new_leaf": "food.produce.processed_fruit.chip",
+      "reason": "배 과일칩으로 제품형태는 명확하지만 현재 taxonomy에 과일칩 전용 리프가 없다. 딸기칩과 같은 정책 후보로 묶고 dried 리프로 성급히 축소하지 않는다.",
+      "followup": "decide fruit-chip vs dried-fruit policy; promotion_unresolved remains"
+    }
+  ],
+  "executed_tests": []
+}
