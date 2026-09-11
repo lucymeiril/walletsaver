@@ -1,0 +1,59 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "106",
+  "source_path": "handoff/2026-09-11/pending/106/001.json",
+  "scope_note": "Classification-only proposal. Raw observation identity, pricing, quantity, promotion, and source evidence remain authoritative in the pending source file.",
+  "review_accounting": {
+    "pending_rows_checked": 9,
+    "unique_products": 5,
+    "new_classification_reviews": 9,
+    "prior_reviewed": 1288,
+    "current_reviewed": 1297,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2619
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "All five source_record_key values were checked against the existing explicit review decisions with no match. Current taxonomy contains food.meals.dumplings.dimsum; title rules already recognize 하가우 and 완탕 as dim sum, and 샤오롱바오 is the same Chinese dim-sum dumpling product form."
+  },
+  "decisions": [
+    {
+      "source_record_key": "071230973",
+      "source_title": "씨제이 고메 새우 하가우 135G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.dumplings.dimsum",
+      "reason": "하가우 is an explicit dim-sum dumpling form; shrimp filling and 1+1 promotion do not change taxonomy."
+    },
+    {
+      "source_record_key": "071203810",
+      "source_title": "씨제이 고메 샤오롱바오 141G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.dumplings.dimsum",
+      "reason": "샤오롱바오 is a Chinese dim-sum dumpling form and fits the existing dimsum leaf better than generic assorted dumplings."
+    },
+    {
+      "source_record_key": "071379555",
+      "source_title": "동원 딤섬 사천우육 완탕 336G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.dumplings.dimsum",
+      "reason": "Both 딤섬 and 완탕 explicitly identify the product form; Sichuan beef is a filling/flavor attribute."
+    },
+    {
+      "source_record_key": "071379549",
+      "source_title": "동원 딤섬 광동 새우완탕 294G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.dumplings.dimsum",
+      "reason": "Explicit 딤섬/완탕 product form maps directly to the existing dimsum leaf; shrimp filling is an attribute."
+    },
+    {
+      "source_record_key": "069063326",
+      "source_title": "동원 딤섬 샤오롱바오 390G*2",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.dumplings.dimsum",
+      "reason": "The title explicitly identifies 딤섬 샤오롱바오; the 2-pack quantity remains outside classification."
+    }
+  ],
+  "held_decisions": [],
+  "executed_tests": []
+}
