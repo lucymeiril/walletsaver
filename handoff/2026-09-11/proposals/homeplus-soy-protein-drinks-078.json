@@ -1,0 +1,75 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "078",
+  "source_path": "우유/유제품 > 두유 > 일반두유",
+  "scope_note": "Classification-only proposal. Repeated Homeplus observations are grouped by source_record_key. Promotion and package fields are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 12,
+    "unique_products": 6,
+    "new_classification_reviews": 12,
+    "prior_reviewed": 998,
+    "current_reviewed": 1010,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2906
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "Repository search across all six source_record_keys found pending/catalog-unresolved evidence only; no prior proposal or explicit-decision conflict was found."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:6:84", "ingestion:56:16"],
+      "source_record_key": "124942580",
+      "source_title": "정식품 베지밀 달콤한 검은콩B 190ML*16",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.plant.soy.soymilk",
+      "reason": "베지밀 검은콩 제품이며 원본 진열도 일반두유다. 검은콩/가당 여부는 두유의 변형 속성으로 본다.",
+      "promotion_review": "unchanged; 1+1 preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:7:28", "ingestion:57:33"],
+      "source_record_key": "124679799",
+      "source_title": "매일 아몬드브리즈 무당 950ML",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.plant.drinks.almond",
+      "reason": "아몬드브리즈는 아몬드 기반 식물성음료로 제품명이 명확하며 pass41에 아몬드음료 독립 leaf가 있다. 두유 shelf보다 실제 제품형태를 우선한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:7:66", "ingestion:56:28"],
+      "source_record_key": "124942505",
+      "source_title": "정식품 베지밀 담백한 검은콩A 190ML*16",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.plant.soy.soymilk",
+      "reason": "베지밀 검은콩 두유 제품이며 pass41의 soymilk leaf가 정확히 맞는다.",
+      "promotion_review": "unchanged; 1+1 preserved"
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:8:14", "ingestion:57:53"],
+      "source_record_key": "070967293",
+      "source_title": "하이뮨 프로틴밸런스 액티브 딸기 250ML",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.other.protein",
+      "reason": "제품명은 단백질 영양음료 정체성을 강하게 보이지만 pass41에는 protein/nutrition drink leaf가 없다. 두유 shelf만으로 soymilk에 넣거나 딸기우유로 확대하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:8:31", "ingestion:57:54"],
+      "source_record_key": "069762207",
+      "source_title": "하이뮨 프로틴액티브 밀크 250ML",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.other.protein",
+      "reason": "프로틴 액티브 계열 영양음료이며 '밀크' 맛 표기가 일반 흰우유를 의미한다고 단정할 수 없다. 단백질 음료 후보로 보류한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:8:32", "ingestion:57:67"],
+      "source_record_key": "069762173",
+      "source_title": "하이뮨 프로틴액티브 초코 250ML",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.drinks.other.protein",
+      "reason": "프로틴 액티브 계열의 초코 맛 영양음료로 보이며 초코우유나 두유로 강제하지 않는다."
+    }
+  ],
+  "executed_tests": []
+}
