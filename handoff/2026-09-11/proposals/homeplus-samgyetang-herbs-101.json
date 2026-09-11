@@ -1,0 +1,64 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "101",
+  "source_path": "handoff/2026-09-11/pending/101/001.json",
+  "scope_note": "Classification-only proposal. The current taxonomy has no exact leaf for samgyetang herbal ingredient mixes or standalone astragalus. These are held as cooking-ingredient taxonomy candidates instead of being forced into dried vegetables or generic spices. Price, package size, promotion, and raw observations are unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1239,
+    "current_reviewed": 1249,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2667
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "All five source_record_key values were checked against the 431 explicit review decisions. Repository search found no existing samgyetang_mix/astragalus candidate precedent, and the current taxonomy has no exact 황기 or 삼계재료 leaf."
+  },
+  "decisions": [],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:3:11", "ingestion:52:60"],
+      "source_record_key": "123591771",
+      "source_title": "온가족 삼계재료 모음 100G(봉)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.ingredients.herbal.samgyetang_mix",
+      "reason": "Mixed dried herbal ingredients sold specifically for samgyetang; not a single dried vegetable or a generic spice."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:16", "ingestion:52:62"],
+      "source_record_key": "068979074",
+      "source_title": "간편 삼계재료 티백 100G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.ingredients.herbal.samgyetang_mix",
+      "reason": "Samgyetang herbal ingredient mix in tea-bag form. Packaging form does not change the underlying cooking-ingredient type."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:45", "ingestion:52:14"],
+      "source_record_key": "054133492",
+      "source_title": "국산 황기 80G(봉)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.ingredients.herbal.astragalus",
+      "reason": "Standalone dried astragalus root cooking/herbal ingredient; current taxonomy has no exact leaf and dried-vegetable would be semantically misleading."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:49", "ingestion:52:64"],
+      "source_record_key": "135314374",
+      "source_title": "상황 삼계재료 115G(봉)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.ingredients.herbal.samgyetang_mix",
+      "reason": "Samgyetang herbal ingredient mix; the 상황 variant is a formulation/style attribute rather than a separate product-type leaf."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:59", "ingestion:52:63"],
+      "source_record_key": "069132913",
+      "source_title": "찹쌀 누룽지 품은 삼계재료 220G(봉)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.ingredients.herbal.samgyetang_mix",
+      "reason": "A samgyetang ingredient kit with added glutinous-rice/nurungji components; product purpose/form remains a samgyetang ingredient mix rather than a prepared meal."
+    }
+  ],
+  "executed_tests": []
+}
