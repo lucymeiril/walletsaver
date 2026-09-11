@@ -1,0 +1,203 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["056"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 692,
+    "batch_reviewed_unique_observations": 16,
+    "cumulative_reviewed_unique_observations": 708,
+    "remaining_unreviewed_observations": 3208
+  },
+  "review_summary": {
+    "observations_reviewed": 16,
+    "unique_source_products_reviewed": 16,
+    "existing_explicit_decisions_preserved": 1,
+    "proposed_existing_leaf_observations": 11,
+    "held_promotion_surface_observations": 2,
+    "new_taxonomy_candidate_observations": 2,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_matches_found": 1,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:79:2"],
+      "source_name": "emart",
+      "source_record_key": "1000043447773",
+      "source_title": "국산콩 전주콩나물 340g+60g",
+      "status": "existing_explicit_decision_preserved",
+      "existing_unified_category_id": "food.produce.vegetables.sprouts",
+      "reason": "431개 명시결정에 이미 sprouts로 승인된 관측이다. 현재 pending 사유는 mixed_package_unresolved 및 multiple_package_quantities이므로 분류를 다시 제안하지 않는다.",
+      "quantity_review": "unresolved; preserve 340g+60g mixed-package evidence without overwrite",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:79:6"],
+      "source_name": "emart",
+      "source_record_key": "0000010732911",
+      "source_title": "팽이버섯 (봉)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.vegetables.mushroom",
+      "reason": "팽이버섯 원물로 제품형태가 명확하고 pass41 mushroom leaf가 팽이버섯을 포함한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:79:7"],
+      "source_name": "emart",
+      "source_record_key": "1000011376327",
+      "source_title": "새송이 버섯 (팩)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.vegetables.mushroom",
+      "reason": "새송이버섯 원물로 제품형태가 명확하고 pass41 mushroom leaf가 새송이버섯을 포함한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:79:8"],
+      "source_name": "emart",
+      "source_record_key": "1000018141092",
+      "source_title": "소소한하루 새송이",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.vegetables.mushroom",
+      "reason": "제목이 새송이버섯 상품을 가리키며 pass41 mushroom leaf와 일치한다.",
+      "quantity_review": "unit_unresolved preserved; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:79:11"],
+      "source_name": "emart",
+      "source_record_key": "1000700381565",
+      "source_title": "강원 인큐 애호박 (개, 200g이상)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.vegetables.zucchini",
+      "reason": "상품명이 애호박을 직접 명시하며 pass41 zucchini leaf와 일치한다.",
+      "quantity_review": "unchanged; 200g이상 표현을 임의 고정중량으로 보정하지 않음",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:79:13"],
+      "source_name": "emart",
+      "source_record_key": "1000865170138",
+      "source_title": "채소 행사전 (대파/배추 등)",
+      "status": "held_promotion_surface",
+      "reason": "개별 상품이 아니라 대파/배추 등 여러 상품을 묶은 dealItemView 행사 표면이다. 하나의 product leaf를 부여하지 않는다.",
+      "quantity_review": "unit_unresolved preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:79:20"],
+      "source_name": "emart",
+      "source_record_key": "1000029185704",
+      "source_title": "소소한 하루 오이맛고추(봉)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.vegetables.pepper",
+      "reason": "오이맛고추는 신선 고추 상품이며 pass41 pepper leaf가 고추를 포함한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:79:23"],
+      "source_name": "emart",
+      "source_record_key": "1000563110346",
+      "source_title": "모닝 샐러드 (300g)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.vegetables.salad",
+      "reason": "신선 채소 표면의 포장 샐러드 상품으로 pass41 샐러드채소 leaf가 제품형태와 맞는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:79:24"],
+      "source_name": "emart",
+      "source_record_key": "1000543329817",
+      "source_title": "소소한하루 흙당근(봉)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.vegetables.carrot",
+      "reason": "상품명이 흙당근 원물을 직접 명시하며 pass41 carrot leaf와 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:79:27"],
+      "source_name": "emart",
+      "source_record_key": "1000641686009",
+      "source_title": "팽이버섯 (3입) 봉",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.vegetables.mushroom",
+      "reason": "팽이버섯 원물이며 3입은 포장규격이다. pass41 mushroom leaf와 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:79:34"],
+      "source_name": "emart",
+      "source_record_key": "1000852281356",
+      "source_title": "금주 채소 행사전",
+      "status": "held_promotion_surface",
+      "reason": "개별 채소 상품이 아니라 여러 상품을 묶은 dealItemView 행사 표면이다. 단일 leaf를 부여하지 않는다.",
+      "quantity_review": "unit_unresolved preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:79:41"],
+      "source_name": "emart",
+      "source_record_key": "1000050494213",
+      "source_title": "하루채소 만가닥",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.vegetables.mushroom",
+      "reason": "만가닥버섯 원물로 판단되며 pass41의 포괄 mushroom leaf가 제품형태와 맞는다.",
+      "quantity_review": "unit_unresolved preserved; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:79:42"],
+      "source_name": "emart",
+      "source_record_key": "1000033355892",
+      "source_title": "미역줄기 (300g*2)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.seaweed.miyeok",
+      "reason": "마트의 넓은 채소 표면보다 상품명인 미역줄기를 우선한다. pass41의 미역 leaf가 일반 미역 제품형태를 받으며 별도 미역줄기 leaf는 없다.",
+      "quantity_review": "unchanged; preserve 300g×2 package evidence",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:79:53"],
+      "source_name": "emart",
+      "source_record_key": "1000036881763",
+      "source_title": "소소한 하루 가벼운 샐러드 (80g)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.vegetables.salad",
+      "reason": "신선 채소 표면의 포장 샐러드 상품으로 pass41 샐러드채소 leaf가 제품형태와 맞는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:79:56"],
+      "source_name": "emart",
+      "source_record_key": "1000632832698",
+      "source_title": "청경채 200g (4~6입)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.produce.vegetables.bok_choy",
+      "reason": "청경채 원물은 명확하지만 pass41 초기 taxonomy에는 청경채 전용 leaf가 없고 현재 leaf(쌈채소 등)에 억지로 합치지 않는다.",
+      "quantity_review": "preserve 200g and 4~6입 evidence; do not collapse count range",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:79:61"],
+      "source_name": "emart",
+      "source_record_key": "0000010351081",
+      "source_title": "우엉대 절단(봉)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.produce.vegetables.burdock",
+      "reason": "절단 우엉 원물로 제품 정체성은 명확하지만 pass41 초기 taxonomy에 우엉 leaf가 없다. 다른 근채 leaf로 강제하지 않는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
