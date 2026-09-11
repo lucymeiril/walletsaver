@@ -1,0 +1,252 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["043"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. The broad mart shelf '채소' was not accepted as a final category; product titles were primary evidence and retailer category_path was corroborating evidence only.",
+  "review_summary": {
+    "observations_reviewed": 23,
+    "source_listings_reviewed": 23,
+    "existing_leaf_decisions": 21,
+    "deferred_taxonomy_candidates": 2
+  },
+  "accounting_note": "Do not add this batch mechanically to historical cumulative reviewed counts. Proposal accounting is being reconciled separately because earlier cumulative progress mixed duplicate/re-review observations. This file establishes pending group 043 coverage only.",
+  "explicit_review_decision_conflict_check": {
+    "file": "handoff/2026-09-11/review-decisions-input.json",
+    "method": "batched repository source_record_key search",
+    "checked_source_record_keys": [
+      "8801114102091",
+      "8801114147894",
+      "0430011064706",
+      "8803150260704",
+      "8809597442246",
+      "2873260000008",
+      "8809031558045",
+      "8809597440068",
+      "8809404680373",
+      "8809009552143",
+      "8809597448880",
+      "8809289163589",
+      "0400353080009",
+      "0430001130480",
+      "8801007565101",
+      "0430000459742",
+      "8809597441263",
+      "8809597441201",
+      "0430000421640",
+      "8801114111116",
+      "8809597448989",
+      "8801114110300",
+      "8809387747209"
+    ],
+    "review_decisions_file_matches_found": 0,
+    "note": "The batched searches returned pending/raw/unresolved records but did not return review-decisions-input.json for these keys. This is a proposal-stage conflict screen, not a DB mutation."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:35:70"],
+      "source_record_key": "8801114102091",
+      "source_title": "풀무원 특등급 무농약 국산 콩나물 (340G)",
+      "proposed_leaf": "food.produce.vegetables.sprouts",
+      "reason": "제목이 콩나물을 직접 명시하고 retailer 상세 경로도 콩나물이다. 무농약/국산은 속성이고 기존 콩나물·숙주 통합 리프를 재사용한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:71"],
+      "source_record_key": "8801114147894",
+      "source_title": "풀무원 국산 숙주나물 (260G)",
+      "proposed_leaf": "food.produce.vegetables.sprouts",
+      "reason": "제목과 retailer 상세 경로가 모두 숙주나물을 직접 가리키며 기존 콩나물·숙주 통합 리프와 일치한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:72"],
+      "source_record_key": "0430011064706",
+      "source_title": "국내산 킹단호박 (개)",
+      "proposed_leaf": "food.produce.vegetables.pumpkin",
+      "reason": "제목이 단호박을 직접 명시하고 retailer 상세 경로도 호박이다. 애호박(zucchini)이 아닌 단호박이므로 기존 호박 리프를 제안한다.",
+      "quantity_review": "unchanged; promotion_unresolved remains a separate issue",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:74"],
+      "source_record_key": "8803150260704",
+      "source_title": "오늘좋은 더 큰 두부 (400G)",
+      "proposed_leaf": "food.plant.soy.tofu",
+      "reason": "제목과 retailer 상세 경로가 일반 두부를 직접 명시한다. 순두부/연두부 형태가 아니므로 일반 두부 리프를 재사용한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:75"],
+      "source_record_key": "8809597442246",
+      "source_title": "대파 (700G/봉)",
+      "proposed_leaf": "food.produce.vegetables.scallion",
+      "reason": "제목이 대파를 직접 명시하고 retailer 상세 경로도 파다. 현재 taxonomy의 대파 리프와 정확히 맞는다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:76"],
+      "source_record_key": "2873260000008",
+      "source_title": "당근 (200G)",
+      "proposed_leaf": "food.produce.vegetables.carrot",
+      "reason": "제목과 retailer 상세 경로가 모두 당근을 직접 명시하고 기존 당근 리프와 일치한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:77"],
+      "source_record_key": "8809031558045",
+      "source_title": "오늘좋은 1등급 국산콩 두부 기획 (300G*2입)",
+      "proposed_leaf": "food.plant.soy.tofu",
+      "reason": "제목이 일반 두부 2입 기획을 직접 명시하고 retailer 상세 경로도 두부다. 등급/국산콩/기획은 속성 또는 판매구성이다.",
+      "quantity_review": "unchanged; 300g×2 package preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:80"],
+      "source_record_key": "8809597440068",
+      "source_title": "국내산 다다기오이 (5입/봉)",
+      "proposed_leaf": "food.produce.vegetables.cucumber",
+      "reason": "제목과 retailer 상세 경로가 오이를 직접 명시하며 기존 오이 리프와 일치한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:81"],
+      "source_record_key": "8809404680373",
+      "source_title": "오늘좋은 더 많은 콩나물 (400G)",
+      "proposed_leaf": "food.produce.vegetables.sprouts",
+      "reason": "제목이 콩나물을 직접 명시하므로 기존 콩나물·숙주 통합 리프를 제안한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:82"],
+      "source_record_key": "8809009552143",
+      "source_title": "강릉초당두부 (550G)",
+      "proposed_leaf": "food.plant.soy.tofu",
+      "reason": "제목과 retailer 상세 경로가 일반 두부를 직접 명시하며 기존 두부 리프와 일치한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:83"],
+      "source_record_key": "8809597448880",
+      "source_title": "GAP 친환경 뿌리손질 새송이버섯 (600G/봉)",
+      "proposed_leaf": "food.produce.vegetables.mushroom",
+      "reason": "제목이 신선 새송이버섯을 직접 명시하고 retailer 상세 경로도 새송이버섯이다. GAP/친환경/뿌리손질은 속성이다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:84"],
+      "source_record_key": "8809289163589",
+      "source_title": "GAP 친환경 향기로운 송이버섯 (230G*2/봉)",
+      "proposed_leaf": "food.produce.vegetables.mushroom",
+      "reason": "제목은 신선 버섯 상품이고 retailer 상세 경로도 기타버섯이다. 별도 송이 리프를 만들지 않고 현재 신선 버섯 통합 리프를 재사용한다.",
+      "quantity_review": "unchanged; 230g×2 package preserved",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:87"],
+      "source_record_key": "8801007565101",
+      "source_title": "CJ 행복한콩 안심콩나물 (500G/봉)",
+      "proposed_leaf": "food.produce.vegetables.sprouts",
+      "reason": "제목과 retailer 상세 경로가 콩나물을 직접 명시하며 기존 콩나물·숙주 통합 리프와 일치한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:88"],
+      "source_record_key": "0430000459742",
+      "source_title": "국내산 파프리카 (개)",
+      "proposed_leaf": "food.produce.vegetables.pepper",
+      "reason": "현재 taxonomy의 pepper 리프 표시명이 고추·파프리카이고 파프리카를 명시적으로 포괄한다. 국내산은 원산지 속성이다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:89"],
+      "source_record_key": "8809597441263",
+      "source_title": "소용량 양파 (2입/망)",
+      "proposed_leaf": "food.produce.vegetables.onion",
+      "reason": "제목과 retailer 상세 경로가 양파를 직접 명시하며 기존 양파 리프와 일치한다. 소용량은 판매규격 속성이다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:90"],
+      "source_record_key": "8809597441201",
+      "source_title": "소용량 깐마늘 (60G/봉)",
+      "proposed_leaf": "food.produce.vegetables.garlic",
+      "reason": "제목과 retailer 상세 경로가 마늘을 직접 명시한다. 박피는 손질 속성으로 보고 기존 신선 마늘 리프를 재사용한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:91"],
+      "source_record_key": "0430000421640",
+      "source_title": "국내산 다다기오이 (개)",
+      "proposed_leaf": "food.produce.vegetables.cucumber",
+      "reason": "제목이 오이를 직접 명시하며 동일 품목의 5입 상품과 같은 기존 오이 리프가 맞다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:92"],
+      "source_record_key": "8801114111116",
+      "source_title": "풀무원 특등급 국산 콩나물 (200G)",
+      "proposed_leaf": "food.produce.vegetables.sprouts",
+      "reason": "제목과 retailer 상세 경로가 콩나물을 직접 명시하며 기존 콩나물·숙주 통합 리프와 일치한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:93"],
+      "source_record_key": "8809597448989",
+      "source_title": "감자 (1.5KG)",
+      "proposed_leaf": "food.produce.vegetables.potato",
+      "reason": "제목과 retailer 상세 경로가 감자를 직접 명시하며 기존 감자 리프와 일치한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:94"],
+      "source_record_key": "8801114110300",
+      "source_title": "풀무원 Soga두부 (찌개용) (300G)",
+      "proposed_leaf": "food.plant.soy.tofu",
+      "reason": "찌개용은 용도 표현이고 상품형태는 일반 두부다. 제목과 retailer 상세 경로가 두부를 명시하므로 기존 일반 두부 리프를 제안한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:95"],
+      "source_record_key": "8809387747209",
+      "source_title": "오늘좋은 숙주나물 (380G)",
+      "proposed_leaf": "food.produce.vegetables.sprouts",
+      "reason": "제목이 숙주나물을 직접 명시하고 기존 콩나물·숙주 통합 리프와 일치한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "deferred_taxonomy_candidates": [
+    {
+      "raw_record_ids": ["ingestion:35:85"],
+      "source_record_key": "0400353080009",
+      "source_title": "양상추 (봉)",
+      "suggested_new_leaf": "food.produce.vegetables.lettuce",
+      "reason": "통/생 양상추 단일 품목이다. 선행 vegetable proposal이 양상추를 broad leaf/salad leaf로 자동 축소하지 않고 독립 lettuce 리프 후보로 보류하는 정책을 이미 세웠으므로 동일 정책을 유지한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:35:86"],
+      "source_record_key": "0430001130480",
+      "source_title": "브로콜리 (1입/봉)",
+      "suggested_new_leaf": "food.produce.vegetables.broccoli",
+      "reason": "신선 브로콜리임은 명확하지만 pass41 신선채소 taxonomy에 독립 브로콜리 리프가 없고 선행 proposal도 신규 리프 후보로 보류했다. 동일 정책을 유지한다."
+    }
+  ],
+  "executed_tests": []
+}
