@@ -1,0 +1,60 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["367", "368", "369", "370", "371", "372"],
+  "scope_note": "GitHub read/write review only. All 12 observations in these pending groups were read. Existing review decisions and pass41 artifacts were not modified. This proposal is not an import input and no DB/test execution was performed.",
+  "explicit_review_conflicts": [],
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:3:43", "ingestion:52:55"],
+      "source_record_key": "120131342",
+      "source_title": "알이 굵은 프리미엄 국산 건대추 150G(봉)",
+      "proposed_leaf": "food.produce.processed_fruit.dried",
+      "reason": "마트 경로는 채소/건채소이지만 제목이 건대추를 직접 명시한다. 현재 taxonomy의 가공과일 건과일 리프가 제품 형태와 가장 잘 맞으며 mart 경로는 증거일 뿐 정답으로 고정하지 않는다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:3:6", "ingestion:52:3"],
+      "source_record_key": "069674496",
+      "source_title": "부추(봉)",
+      "proposed_leaf": "food.produce.vegetables.chives",
+      "reason": "제목과 원본 경로가 모두 부추를 직접 지시하며 현재 taxonomy에 정확한 부추 리프가 존재한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:3:17", "ingestion:52:22"],
+      "source_record_key": "000987166",
+      "source_title": "배추 (국산/통)",
+      "proposed_leaf": "food.produce.vegetables.napa_cabbage",
+      "reason": "제목이 생배추 통상품을 직접 명시하고 현재 taxonomy에 배추 리프가 존재한다. 마트 경로의 절임배추 병기는 이 상품의 실제 형태보다 약한 증거다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "same_source_listing_observations_only"
+    }
+  ],
+  "deferred": [
+    {
+      "raw_record_ids": ["ingestion:27:75", "ingestion:77:31"],
+      "source_record_key": "071216167",
+      "source_title": "simplus 304 스텐와이드필러",
+      "suggested_new_leaf": "household.kitchen.tools.peeler",
+      "reason": "야채 필러임은 명확하지만 현재 pass41 taxonomy에 주방 조리도구/칼용품 축이 없다. unit_unresolved와 promotion_unresolved는 분류와 분리해 유지한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:52:37", "ingestion:52:84"],
+      "source_record_keys": ["000004847", "000004839"],
+      "source_titles": ["아욱(봉)", "근대(봉)"],
+      "suggested_new_leaf": "food.produce.vegetables.leafy_greens",
+      "reason": "둘 다 신선 잎채소지만 현재 leaf 리프는 쌈채소 의미로 제한되어 있어 억지 매핑하지 않는다. 아욱/근대를 포괄하는 잎채소 리프 신설 여부를 taxonomy 정책으로 검토한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:3:13", "ingestion:52:33"],
+      "source_record_key": "112250864",
+      "source_title": "청도 미나리 국산(봉)",
+      "suggested_new_leaf": "food.produce.vegetables.leafy_greens",
+      "reason": "신선 미나리임은 명확하지만 현재 taxonomy에 미나리 전용 리프나 일반 나물채소 리프가 없다. 쌈채소 leaf로 축소하지 않고 잎/나물채소 정책 후보로 유지한다."
+    }
+  ],
+  "executed_tests": []
+}
