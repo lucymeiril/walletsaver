@@ -1,0 +1,121 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["397", "398", "399", "401", "402", "403"],
+  "scope_note": "GitHub read/write review only. All 12 observations in these six groups were read. Pending 400 and 404 were intentionally skipped because prior proposal files already cover them. All 12 source_record_keys were checked against prior proposal search results and all 431 explicit review decisions; no overlaps/conflicts were found. Existing decisions, pass41 catalog/DB and taxonomy source were not modified.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 426,
+    "batch_new_unique_observations": 12,
+    "cumulative_reviewed_unique_observations": 438,
+    "remaining_unreviewed_observations": 3478
+  },
+  "explicit_review_decision_conflicts": [],
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:32:14"],
+      "source_record_key": "8801007876283",
+      "source_title": "CJ 비비고 석박지 (900G)",
+      "proposed_leaf": "food.preserved.kimchi.seokbakji",
+      "reason": "마트 세부 경로는 열무김치이지만 제목이 석박지를 직접 명시하고 현재 taxonomy에 정확한 seokbakji 리프가 있다. 상품명 근거를 우선한다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; promotion_unresolved remains",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:41"],
+      "source_record_key": "8801024947287",
+      "source_title": "대상 종가 백열무물김치 (1.2KG)",
+      "proposed_leaf": "food.preserved.kimchi.water",
+      "reason": "제목이 백열무 '물김치'라는 완제품 형태를 직접 명시한다. source path의 열무김치보다 제품명 형태 근거를 우선하며, 백열무는 재료/변형 속성으로 본다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; promotion_unresolved remains",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:32:46"],
+      "source_record_key": "8859205302592",
+      "source_title": "가시없는 노르웨이 순살 고등어 필렛 (600G)",
+      "proposed_leaf": "food.seafood.fish.mackerel",
+      "reason": "제목이 고등어 필렛을 직접 명시하고 조리 완료 제품임을 뜻하는 표현이 없다. 간편수산물 진열보다 생선 종 기준의 기존 mackerel 리프가 제품 정체성과 맞는다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; promotion_unresolved remains",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:34:8"],
+      "source_record_key": "8859205302585",
+      "source_title": "노르웨이 고등어 필렛 (700G)",
+      "proposed_leaf": "food.seafood.fish.mackerel",
+      "reason": "제목이 고등어 필렛을 직접 명시하며 현재 taxonomy의 mackerel 리프가 정확한 생선 종류를 표현한다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; promotion_unresolved remains",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:31:5"],
+      "source_record_key": "8801013777246",
+      "source_title": "큐원 알룰로스 프리바이오틱스 (540G)",
+      "proposed_leaf": "food.seasonings.syrups.allulose",
+      "reason": "현재 taxonomy는 분말 알룰로스(baking.allulose)와 액상 알룰로스(syrups.allulose)를 구분한다. 이 상품은 마트의 물엿·액상당류 경로에 있고 제목에 분말 표기가 없어 액상 알룰로스 리프가 더 적합하다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; promotion_unresolved remains",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:34:22"],
+      "source_record_key": "8801013777239",
+      "source_title": "큐원 알룰로스 난소화성말토덱스트린 (540G)",
+      "proposed_leaf": "food.seasonings.syrups.allulose",
+      "reason": "알룰로스 액상당류 경로이며 제목에 분말 표기가 없다. 첨가된 난소화성말토덱스트린은 배합 속성으로 보고 기존 액상알룰로스 리프를 제안한다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; promotion_unresolved remains",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:32:42"],
+      "source_record_key": "8809201780108",
+      "source_title": "오늘좋은 국물떡볶이소스 (150G)",
+      "proposed_leaf": "food.seasonings.sauces.tteokbokki",
+      "reason": "제목이 떡볶이소스를 직접 명시하고 현재 taxonomy에 정확한 tteokbokki sauce 리프가 존재한다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; promotion_unresolved remains",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "nonclassification_pending": [
+    {
+      "raw_record_ids": ["ingestion:32:53"],
+      "source_record_key": "2851550000006",
+      "source_title": "생물 고등어 (1EA)",
+      "existing_leaf": "food.seafood.fish.mackerel",
+      "reason": "classification은 이미 confidence 0.97로 mackerel에 resolved되어 있다. pending 이유는 promotion_unresolved와 unit_unresolved이므로 분류 검토 완료로 세되 해당 문제를 해소했다고 주장하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:34:76"],
+      "source_record_key": "2528300000004",
+      "source_title": "천일염으로 염장한 국산 고등어자반 (특대) (1EA)",
+      "existing_leaf": "food.seafood.fish.mackerel",
+      "reason": "classification은 이미 confidence 0.97로 mackerel에 resolved되어 있다. 염장 표현은 제품 속성이며 현재 pending은 promotion/unit 문제이므로 그대로 유지한다."
+    }
+  ],
+  "deferred_taxonomy_candidates": [
+    {
+      "raw_record_ids": ["ingestion:33:29", "ingestion:33:98"],
+      "source_record_keys": ["0000049320367", "0000049320381"],
+      "source_titles": ["크라시에 시즈쿠 유자 샤베트 (140ML)", "크라시에 시즈쿠 백포도 샤베트 (140ML)"],
+      "suggested_new_leaf": "food.snacks.frozen.sorbet",
+      "reason": "샤베트라는 제품형태와 컵 빙과 진열은 명확하지만 현재 pass41 initial_taxonomy에서 아이스크림/샤베트 전용 통합 축을 확인하지 못했다. 이 ID는 proposal-only 후보이며 상위 frozen-dessert 구조를 함께 결정한 뒤 확정해야 한다.",
+      "followup": "review pending 110 and other ice-cream groups before finalizing parent hierarchy; promotion_unresolved remains"
+    },
+    {
+      "raw_record_ids": ["ingestion:33:50"],
+      "source_record_key": "8809201780092",
+      "source_title": "오늘좋은 오징어볶음양념 (140G)",
+      "suggested_new_leaf": "food.seasonings.sauces.stir_fry",
+      "reason": "오징어볶음용 조리양념임은 명확하지만 현재 sauce taxonomy의 meat/stew/braise 등 어느 기존 리프도 정확하지 않다. 해산물만을 위한 지나치게 좁은 리프보다 볶음양념 공통 축을 후보로 두되 다른 볶음소스 사례를 모은 뒤 확정한다.",
+      "followup": "collect other stir-fry seasoning listings; promotion_unresolved remains"
+    }
+  ],
+  "executed_tests": []
+}
