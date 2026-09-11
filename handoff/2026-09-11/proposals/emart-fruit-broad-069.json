@@ -1,0 +1,183 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["069"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Quantity/unit-only pending reasons and already-classified rows are kept separate from classification progress.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 888,
+    "pending_rows_inspected": 13,
+    "batch_reviewed_classification_observations": 12,
+    "skipped_already_classified_observations": 1,
+    "cumulative_reviewed_unique_observations": 900,
+    "remaining_unreviewed_observations": 3016
+  },
+  "review_summary": {
+    "classification_relevant_products_reviewed": 12,
+    "proposed_existing_leaf_products": 7,
+    "held_taxonomy_gap_products": 2,
+    "held_non_product_collection_rows": 2,
+    "skipped_already_classified_products": 1,
+    "existing_proposal_source_key_duplicates_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "taxonomy_note": "이마트의 넓은 '과일' shelf를 실제 제목 기준으로 분리한다. 복숭아·키위·수박·멜론은 기존 신선과일 leaf를 사용한다. 레몬은 이전 fruit-small 검토와 동일하게 pass41에 독립 레몬 leaf가 없고 감귤류 통합 정책도 확정되지 않아 보류한다. 군밤은 생과일이 아니며 기존 견과/건과일 leaf로 강제하지 않는다. dealItemView 기반 '딜/모음전' 두 행은 단일 상품이 아니므로 taxonomy에 넣지 않는다.",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:78:1"],
+      "source_name": "emart",
+      "source_record_key": "1000857203143",
+      "source_title": "[할인 특가]시즌 제철 과일 딜",
+      "status": "held_non_product_collection",
+      "reason": "dealItemView 기반 시즌 과일 딜로 여러 상품을 묶는 판매/프로모션 표면이며 단일 상품 taxonomy assignment를 만들 근거가 없다. unit_unresolved도 그대로 남긴다.",
+      "quantity_review": "unit_unresolved preserved; not a classification fix",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:78:2"],
+      "source_name": "emart",
+      "source_record_key": "1000022907520",
+      "source_title": "부드러운 복숭아 4~6입 팩",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.fruit.peach",
+      "reason": "상품명이 복숭아를 직접 명시하며 기존 신선과일 복숭아 leaf에 대응한다. 4~6입 범위 문제는 별도 보존한다.",
+      "quantity_review": "count_range_unresolved preserved; classification-only proposal",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:78:3"],
+      "source_name": "emart",
+      "source_record_key": "1000012683733",
+      "source_title": "아삭한 복숭아 4~6입 팩",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.fruit.peach",
+      "reason": "상품명이 복숭아를 직접 명시하며 식감 표현은 taxonomy 분기 사유가 아니다. count range는 분리 보존한다.",
+      "quantity_review": "count_range_unresolved preserved; classification-only proposal",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:78:5"],
+      "source_name": "emart",
+      "source_record_key": "1000859414577",
+      "source_title": "뉴질랜드산 골드키위 (팩)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.fruit.kiwi",
+      "reason": "골드키위가 제목에 명시되어 기존 키위 leaf에 직접 대응한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:78:7"],
+      "source_name": "emart",
+      "source_record_key": "1000847891012",
+      "source_title": "부드러운 복숭아 1.25kg 내외 (4~6입)/팩",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.fruit.peach",
+      "reason": "1.25kg 내외 및 4~6입 규격과 무관하게 제품형태는 신선 복숭아로 명확하다.",
+      "quantity_review": "approximate/range quantity evidence unchanged; classification-only proposal",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:78:11"],
+      "source_name": "emart",
+      "source_record_key": "1000045258266",
+      "source_title": "까망 애플수박 1.5kg미만",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.fruit.watermelon",
+      "reason": "애플수박은 신선 수박의 품종/소형 제품이며 기존 수박 leaf가 제품형태에 맞는다. 1.5kg미만 조건은 분류와 분리한다.",
+      "quantity_review": "upper-bound weight wording unchanged; classification-only proposal",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:78:12"],
+      "source_name": "emart",
+      "source_record_key": "1000034437862",
+      "source_title": "머스크 메론 2.2kg내외 (왕특대)",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.fruit.melon",
+      "reason": "머스크 메론이 제목에 직접 명시되어 기존 멜론·참외 leaf 중 멜론 제품에 해당한다.",
+      "quantity_review": "approximate weight unchanged; classification-only proposal",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:78:28"],
+      "source_name": "emart",
+      "source_record_key": "1000016841944",
+      "source_title": "칠레산 레몬 1개(150g내외)",
+      "status": "held_taxonomy_policy_needed",
+      "reason": "신선 레몬임은 명확하지만 pass41 신선과일 taxonomy에는 라임 독립 leaf는 있어도 레몬 독립 leaf가 없다. 이전 pending 260 검토와 동일하게 라임으로 잘못 합치지 않고, 레몬 독립 leaf 또는 감귤류 통합 정책 결정을 기다린다.",
+      "followup": "consider food.produce.fruit.lemon versus explicit citrus consolidation policy",
+      "quantity_review": "approximate weight unchanged; classification-only hold",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:78:30"],
+      "source_name": "emart",
+      "source_record_key": "1000005986961",
+      "source_title": "미국산 허니듀 메론 1.8kg내외",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.fruit.melon",
+      "reason": "허니듀 메론은 기존 멜론 leaf에 직접 대응하며 이전 홈플러스 허니듀 검토와도 일관된다.",
+      "quantity_review": "approximate weight unchanged; classification-only proposal",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:78:32"],
+      "source_name": "emart",
+      "source_record_key": "1000829666992",
+      "source_title": "아삭 복숭아 1.25kg 내외 (4~6입)/팩",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.produce.fruit.peach",
+      "reason": "상품명이 복숭아를 직접 명시하며 기존 복숭아 leaf가 제품형태에 맞는다.",
+      "quantity_review": "approximate/range quantity evidence unchanged; classification-only proposal",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:78:33"],
+      "source_name": "emart",
+      "source_record_key": "1000569543454",
+      "source_title": "한입 쏙 유기농 군밤 240g",
+      "status": "held_taxonomy_gap",
+      "reason": "군밤은 가열·가공된 밤 간식으로 신선과일이 아니다. 현재 견과 leaf에는 밤이 없고 processed_fruit의 건과일로도 자동 축소할 근거가 부족하다. Costco 유기농 맛밤 관측도 기존 unresolved에 남아 있어 별도 roasted chestnut/맛밤 제품형태 정책이 필요하다.",
+      "followup": "review a dedicated roasted-chestnut/matbam leaf before assignment",
+      "quantity_review": "240g observed; classification-only hold",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:78:34"],
+      "source_name": "emart",
+      "source_record_key": "1000643954887",
+      "source_title": "친환경 신선 행사 모음전",
+      "status": "held_non_product_collection",
+      "reason": "dealItemView 기반 친환경 신선 행사 모음전으로 단일 상품명이 아니다. 특정 신선과일 leaf를 배정하지 않으며 unit_unresolved도 별도 유지한다.",
+      "quantity_review": "unit_unresolved preserved; not a classification fix",
+      "promotion_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "non_classification_pending": [
+    {
+      "raw_record_ids": ["ingestion:78:41"],
+      "source_name": "emart",
+      "source_record_key": "1000028077377",
+      "source_title": "맑은청 찰토마토 7~10입/팩",
+      "resolved_leaf": "food.produce.fruit.tomato",
+      "remaining_reason": "count_range_unresolved",
+      "note": "review_status=classified 상태이므로 이번 classification-only 진행량에는 포함하지 않는다."
+    }
+  ],
+  "executed_tests": []
+}
