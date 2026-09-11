@@ -1,0 +1,66 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "093",
+  "source_path": "두부/김치/반찬 > 어묵/맛살/단무지 > 맛살 > 반찬용맛살",
+  "scope_note": "Classification-only proposal. Repeated Homeplus observations are grouped by source_record_key. Promotion and quantity fields are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1159,
+    "current_reviewed": 1169,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2747
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "Source keys were found in pending evidence only; no prior proposal conflict was found. The existing processed seafood surimi leaf exactly matches all five titles."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:13:46", "ingestion:62:42"],
+      "source_record_key": "113462391",
+      "source_title": "사조대림 게 맛살 큰잔치 500G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.seafood.processed.surimi",
+      "reason": "맛살 is explicitly represented by the existing processed seafood surimi leaf."
+    },
+    {
+      "raw_record_ids": ["ingestion:14:10", "ingestion:62:83"],
+      "source_record_key": "113134654",
+      "source_title": "사조대림 오양 맛살 270G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.seafood.processed.surimi",
+      "reason": "맛살 is explicitly represented by the existing processed seafood surimi leaf."
+    },
+    {
+      "raw_record_ids": ["ingestion:15:35", "ingestion:64:73"],
+      "source_record_key": "113462471",
+      "source_title": "사조대림 김밥애 쏘옥 맛살 231G*2",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.seafood.processed.surimi",
+      "reason": "김밥용 usage does not change the product form from surimi/matsal.",
+      "quantity_review": "unchanged; 231G*2 bundle preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:15:36", "ingestion:64:74"],
+      "source_record_key": "113462316",
+      "source_title": "사조대림 게 맛살 큰잔치 190G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.seafood.processed.surimi",
+      "reason": "맛살 is explicitly represented by the existing processed seafood surimi leaf."
+    },
+    {
+      "raw_record_ids": ["ingestion:15:44", "ingestion:64:82"],
+      "source_record_key": "107494979",
+      "source_title": "한성 속살의 미 맛살 210G*2",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.seafood.processed.surimi",
+      "reason": "맛살 is explicitly represented by the existing processed seafood surimi leaf.",
+      "quantity_review": "unchanged; 210G*2 bundle preserved"
+    }
+  ],
+  "held_decisions": [],
+  "executed_tests": []
+}
