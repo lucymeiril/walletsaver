@@ -38,4 +38,4 @@ Dockerfile text eol=lf
 *.webp binary
 
 # Frozen handoff manifest hashes are byte-exact, including JSON/Markdown.
-handoff/2026-09-11/** -text
+handoff/2026-09-11/** -text whitespace=cr-at-eol
