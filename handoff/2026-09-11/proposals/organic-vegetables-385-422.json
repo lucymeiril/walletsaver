@@ -1,0 +1,49 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["385", "420", "421", "422"],
+  "scope_note": "GitHub read/write review only. Organic/eco-friendly merchandising is treated as product evidence/attribute, not as a separate unified product-type branch.",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:52:17"],
+      "source_title": "친환경 감자 500g(봉)",
+      "proposed_leaf": "food.produce.vegetables.potato",
+      "reason": "제목이 친환경 감자를 직접 명시한다. 친환경 여부는 품목 유형을 바꾸지 않으므로 기존 신선 감자 리프에 제안한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:52:75"],
+      "source_title": "실속) 친환경당근 800G(봉)",
+      "proposed_leaf": "food.produce.vegetables.carrot",
+      "reason": "제목이 친환경 당근을 직접 명시하며 기존 신선 당근 리프와 일치한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:52:70"],
+      "source_title": "친환경 오이맛고추 150G(봉)",
+      "proposed_leaf": "food.produce.vegetables.pepper",
+      "reason": "오이맛고추는 신선 고추 품종이며 현재 통합 리프가 고추·파프리카를 포괄하는 food.produce.vegetables.pepper다. 친환경 표시는 속성으로 보존한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:52:16"],
+      "source_title": "친환경 양파 800G(망)",
+      "proposed_leaf": "food.produce.vegetables.onion",
+      "reason": "원본 진열명은 친환경김장채소지만 제목이 양파를 직접 명시하므로 기존 신선 양파 리프가 맞다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:52:68"],
+      "source_title": "친환경 부추 180G(봉)",
+      "proposed_leaf": "food.produce.vegetables.chives",
+      "reason": "제목이 친환경 부추를 직접 명시하며 기존 부추 리프와 일치한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
