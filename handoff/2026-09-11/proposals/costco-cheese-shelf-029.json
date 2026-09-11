@@ -1,0 +1,59 @@
+{
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["029"],
+  "scope_note": "GitHub read/write review only. Both pending/029/001.json and 002.json were inspected. Costco's broad '치즈' shelf was treated as weak evidence because it contains cheese, pet treats, kitchen tools, garden items, sauces and prepared meals. Product title/form and URL taxonomy path were primary evidence. Already-classified rows were excluded from new classification accounting. No DB import/rebuild or repository tests were run.",
+  "accounting": {
+    "observations_opened": 32,
+    "already_classified_exclusions": 8,
+    "classification_review_observations": 24,
+    "distinct_source_listings": 24,
+    "existing_leaf_proposals": 5,
+    "holds": 19,
+    "explicit_review_decision_matches": 0
+  },
+  "excluded_already_classified": [
+    {"raw_record_id":"ingestion:44:51","source_record_key":"641175","source_title":"고메포테이토 치즈핫도그 400g x 3 개","unified_category_id":"food.meals.prepared.hotdog"},
+    {"raw_record_id":"ingestion:44:72","source_record_key":"687529","source_title":"명랑 모짜렐라 핫도그(85g x 10) x 2팩","unified_category_id":"food.meals.prepared.hotdog"},
+    {"raw_record_id":"ingestion:44:73","source_record_key":"644167","source_title":"Euro Pomella 냉동부라타치즈 100g x 8 개","unified_category_id":"food.dairy.cheese.burrata"},
+    {"raw_record_id":"ingestion:45:30","source_record_key":"671257","source_title":"왕애밥상 묵은지고기김치찌개(600g x 4ea) x 2 set","unified_category_id":"food.meals.prepared.soup_stew"},
+    {"raw_record_id":"ingestion:45:31","source_record_key":"641176","source_title":"비비고 왕교자 골라담기","unified_category_id":"food.meals.dumplings.gyoza"},
+    {"raw_record_id":"ingestion:45:40","source_record_key":"684940","source_title":"애슐리 화덕피자3종","unified_category_id":"food.meals.prepared.pizza"},
+    {"raw_record_id":"ingestion:45:52","source_record_key":"635391","source_title":"사옹원깻잎전 & 녹두빈대떡 400g x 4 (총1,600g)","unified_category_id":"food.meals.prepared.pancake"},
+    {"raw_record_id":"ingestion:45:57","source_record_key":"642459","source_title":"풀무원 노엣지피자 4판 골라담기","unified_category_id":"food.meals.prepared.pizza"}
+  ],
+  "decisions": [
+    {"raw_record_ids":["ingestion:44:47"],"source_record_key":"688937","source_title":"상하치즈 유기농 체다치즈 180g x 12","status":"proposed","proposed_unified_category_id":"food.dairy.cheese.sliced","reason":"Pass41 catalog has multiple audited 체다치즈 products under sliced cheese; no separate cheddar leaf exists."},
+    {"raw_record_ids":["ingestion:44:48"],"source_record_key":"647713","source_title":"덴마크 짜지않은 치즈 고칼슘&비타민 252g x 10","status":"proposed","proposed_unified_category_id":"food.dairy.cheese.sliced","reason":"The same Denmark non-salty high-calcium/vitamin cheese product family already exists in pass41 as sliced cheese."},
+    {"raw_record_ids":["ingestion:44:49"],"source_record_key":"674770","source_title":"네추럴코어 애견 치즈 컷트 간식 23g x 10","status":"held_new_taxonomy_candidate","suggested_new_leaf":"pet.dog.treat.cheese","reason":"Official URL is Dog-Foods and the title explicitly says dog cheese snack; do not classify as human cheese."},
+    {"raw_record_ids":["ingestion:44:52"],"source_record_key":"690895","source_title":"치즈 선물세트 A 1,210g","status":"held_mixed_assortment","candidate_new_leaf":"food.dairy.cheese.assortment","reason":"Cheese assortment/gift set does not establish one existing cheese subtype."},
+    {"raw_record_ids":["ingestion:44:53"],"source_record_key":"671972","source_title":"덴마크 구워먹는치즈 500g x 2","status":"proposed","proposed_unified_category_id":"food.dairy.cheese.grilling","reason":"Exact product form matches the current grilling-cheese leaf."},
+    {"raw_record_ids":["ingestion:44:54"],"source_record_key":"690902","source_title":"치즈 & 하몽 선물세트 C","status":"held_mixed_bundle","reason":"Cheese plus cured meat gift set is a mixed-type bundle; do not collapse into a cheese or meat leaf."},
+    {"raw_record_ids":["ingestion:44:55"],"source_record_key":"690899","source_title":"치즈 & 하몽 선물세트 B 1,285g","status":"held_mixed_bundle","reason":"Cheese plus cured meat gift set is a mixed-type bundle."},
+    {"raw_record_ids":["ingestion:44:56"],"source_record_key":"696561","source_title":"치즈 & 하몽선물세트D","status":"held_mixed_bundle","reason":"Cheese plus cured meat gift set is a mixed-type bundle."},
+    {"raw_record_ids":["ingestion:44:57"],"source_record_key":"696562","source_title":"치즈 & 하몽선물세트E","status":"held_mixed_bundle","reason":"Cheese plus cured meat gift set is a mixed-type bundle."},
+    {"raw_record_ids":["ingestion:44:58"],"source_record_key":"690859","source_title":"구르메 치즈 & 초리조선물세트 875g","status":"held_mixed_bundle","reason":"Cheese plus chorizo gift set is a mixed-type bundle."},
+    {"raw_record_ids":["ingestion:44:59"],"source_record_key":"627017","source_title":"프레지덩스프레더블치즈 140g x 6","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.dairy.cheese.spreadable","reason":"Current pass41 cheese taxonomy has cream cheese but no generic spreadable-cheese leaf; title does not prove cream cheese."},
+    {"raw_record_ids":["ingestion:44:76"],"source_record_key":"674771","source_title":"네추럴코어 치즈브림 요구르트 애견용 간식 27g x 10","status":"held_new_taxonomy_candidate","suggested_new_leaf":"pet.dog.treat.cheese","reason":"Official URL is Dog-Foods and title explicitly identifies a dog cheese/yogurt snack."},
+    {"raw_record_ids":["ingestion:44:88"],"source_record_key":"695090","source_title":"쿠진아트 듀얼 필러 & 가위 세트","status":"held_new_taxonomy_candidate","suggested_new_leaf":"household.kitchen.tools.mixed_set","reason":"Kitchen tool set, not food/cheese. Keep as a neutral household-tool taxonomy hold."},
+    {"raw_record_ids":["ingestion:44:89"],"source_record_key":"695089","source_title":"쿠진아트 미니 중식도 & 강판 세트","status":"held_manual_taxonomy_review","candidate_parent":"household.kitchen.tools","reason":"Kitchen cutting/grating tool set, not food/cheese. Keep generic/manual taxonomy hold; do not force a food leaf."},
+    {"raw_record_ids":["ingestion:45:3"],"source_record_key":"611716","source_title":"고마워 치즈야 치즈볼 애견 간식 150g x 10봉","status":"held_new_taxonomy_candidate","suggested_new_leaf":"pet.dog.treat.cheese","reason":"Official URL is Dog-Foods and title explicitly identifies a dog cheese snack."},
+    {"raw_record_ids":["ingestion:45:4"],"source_record_key":"677739","source_title":"타카쇼 로즈아치","status":"held_new_taxonomy_candidate","suggested_new_leaf":"home.garden.structures.arch","reason":"Official URL is Outdoor Structures > Garden Arches/Fences; cheese shelf is erroneous."},
+    {"raw_record_ids":["ingestion:45:5"],"source_record_key":"684515","source_title":"치자 2개입","status":"held_new_taxonomy_candidate","suggested_new_leaf":"home.garden.plants.gardenia","reason":"Official URL is Patio/Lawn/Garden > Live Plants > Gardenia; this is a live plant."},
+    {"raw_record_ids":["ingestion:45:6"],"source_record_key":"649704","source_title":"설성목장 닭가슴살 로제 토마토 소스 100g x 8","status":"proposed","proposed_unified_category_id":"food.meals.prepared.chicken","reason":"Official URL is processed/instant food and title is a prepared flavored chicken-breast product; pass41 uses prepared.chicken for comparable cooked/seasoned chicken breast products."},
+    {"raw_record_ids":["ingestion:45:7"],"source_record_key":"693790","source_title":"하인즈프라이드치킨소스295ml x 3","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.seasonings.sauces.chicken","reason":"Clearly a chicken-serving sauce, but current pass41 sauce leaves do not provide a safe exact subtype; do not force to generic meat sauce."},
+    {"raw_record_ids":["ingestion:45:8"],"source_record_key":"600478","source_title":"딩고 애견 치킨껌 2개 x 10봉","status":"held_new_taxonomy_candidate","suggested_new_leaf":"pet.dog.treat.chew","reason":"Dog chew treat; do not classify by chicken ingredient as human food."},
+    {"raw_record_ids":["ingestion:45:10"],"source_record_key":"692862","source_title":"주비푸드 치킨 디핑 소스 100g x 8 /최소구매 2","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.seasonings.sauces.chicken","reason":"Chicken dipping sauce lacks a safe exact current sauce leaf; minimum-purchase condition is separate from product classification."},
+    {"raw_record_ids":["ingestion:45:12"],"source_record_key":"600479","source_title":"딩고 애견 치킨껌 5개 x 10봉","status":"held_new_taxonomy_candidate","suggested_new_leaf":"pet.dog.treat.chew","reason":"Dog chew treat; do not classify by chicken ingredient as human food."},
+    {"raw_record_ids":["ingestion:45:27"],"source_record_key":"669358","source_title":"애슐리 바비큐 폭립 (800gx2 + 50gx2)","status":"held_new_taxonomy_candidate","suggested_new_leaf":"food.meals.prepared.ribs","reason":"Prior strict reviews already hold barbecue/sl sliced ribs as prepared.ribs; current pass41 has no exact promoted ribs leaf."},
+    {"raw_record_ids":["ingestion:45:37"],"source_record_key":"677501","source_title":"궁 소문난돼지불백 400G x 5 x 2","status":"proposed","proposed_unified_category_id":"food.meals.prepared.seasoned_meat","reason":"Pass41 catalog contains pork bulbaek under seasoned_meat; title/URL clearly establish seasoned pork bulgogi product form."}
+  ],
+  "explicit_decision_screen": {
+    "method": "Three batched repository searches using all 24 classification-review source_record_key values together with review-decisions-input",
+    "result": "No review-decisions-input match returned in any batch."
+  },
+  "notes": [
+    "All 24 new decisions preserve exact raw_record_ids and source_record_keys.",
+    "Legacy category_data entries were not treated as proof of pass41 leaf existence; pet/garden/household forms absent from the pass41 handoff snapshot remain holds.",
+    "The Costco cheese shelf is demonstrably polluted, so official URL path and product form override the shelf label."
+  ]
+}
