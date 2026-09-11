@@ -1,0 +1,59 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "107",
+  "source_path": "handoff/2026-09-11/pending/107/001.json",
+  "scope_note": "Classification-only proposal. Raw observation identity, pricing, quantity, promotion, and source evidence remain authoritative in the pending source file.",
+  "review_accounting": {
+    "pending_rows_checked": 9,
+    "unique_products": 5,
+    "new_classification_reviews": 9,
+    "prior_reviewed": 1297,
+    "current_reviewed": 1306,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2610
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "All five source_record_key values were checked against the existing explicit review decisions with no match. Current taxonomy has fresh potato, potato snack, and generic raw/prepped frozen-vegetable leaves, but no exact leaf for ready-to-cook frozen fries/wedges. Repository search found no existing frozen-potato candidate precedent."
+  },
+  "decisions": [],
+  "held_decisions": [
+    {
+      "source_record_key": "070374959",
+      "source_title": "써니데일 슈튜링컷 감자튀김 1KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.frozen_potato",
+      "reason": "Explicit frozen fry-cut potato product is more processed than raw/prepped frozen vegetables and is not a shelf-stable potato snack."
+    },
+    {
+      "source_record_key": "070375388",
+      "source_title": "동원 퀴진 크링클컷 냉동감자 650G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.frozen_potato",
+      "reason": "Crinkle-cut frozen potato is a ready-to-cook frozen potato side; cut style is an attribute rather than a separate leaf."
+    },
+    {
+      "source_record_key": "070374965",
+      "source_title": "써니데일 크링클컷 1KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.frozen_potato",
+      "reason": "The audited frozen-potato shelf plus crinkle-cut product form supports a prepared frozen-potato candidate, not fresh potato or chips."
+    },
+    {
+      "source_record_key": "133161810",
+      "source_title": "동원 퀴진 케이준 양념감자 800G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.frozen_potato",
+      "reason": "Cajun seasoning is a flavor treatment on the same frozen potato side product form."
+    },
+    {
+      "source_record_key": "070374971",
+      "source_title": "써니데일 스파이스웨지 1KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.frozen_potato",
+      "reason": "Spiced wedges are the same ready-to-cook frozen potato family; wedge shape and seasoning remain attributes."
+    }
+  ],
+  "executed_tests": []
+}
