@@ -1,0 +1,116 @@
+{
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["030"],
+  "scope_note": "GitHub read/write review only. Both pending/030/001.json and 002.json were inspected. Emart '오반장' is a promotion surface, so URL form was decisive: dealItemView pages were held as promotions rather than classified as products; itemView pages were reviewed by product form. Already-classified rows were excluded from new classification accounting. No DB import/rebuild or repository tests were run.",
+  "accounting": {
+    "observations_opened": 32,
+    "already_classified_exclusions": 1,
+    "classification_review_observations": 31,
+    "distinct_source_listings": 31,
+    "existing_leaf_proposals": 5,
+    "holds": 26,
+    "promotion_surface_holds": 24,
+    "taxonomy_or_bundle_holds": 2,
+    "explicit_review_decision_matches": 0
+  },
+  "excluded_already_classified": [
+    {
+      "raw_record_id": "ingestion:1:25",
+      "source_record_key": "1000601687276",
+      "source_title": "석박지/맛김치 1+1",
+      "unified_category_id": "food.preserved.kimchi.cabbage",
+      "note": "Excluded from new classification count because review_status is already classified and only unit_unresolved remains. However, this is itself a dealItemView promotion surface; flag this pre-existing classified-promotion anomaly for final global reconciliation rather than silently treating the deal page as a clean product precedent."
+    }
+  ],
+  "product_decisions": [
+    {
+      "raw_record_ids": ["ingestion:1:3"],
+      "source_record_key": "1000020004132",
+      "source_title": "찰흑미 4kg (2kg+2kg) 26년 햇곡",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.grains.rice.black",
+      "reason": "Actual itemView product; 찰흑미 has existing pass41 black-rice precedent."
+    },
+    {
+      "raw_record_ids": ["ingestion:1:11"],
+      "source_record_key": "1000874160001",
+      "source_title": "[쓱7클럽][무료배송] 황태로 만든 저칼로리 건강스낵! 황홀태 5봉 / 델리황 10봉 택일",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.seafood.processed.dried_fish",
+      "reason": "Actual itemView choice listing; both selectable products are dried-pollock snacks. Prior strict review maps dried pollock/snack products to dried_fish."
+    },
+    {
+      "raw_record_ids": ["ingestion:1:13"],
+      "source_record_key": "1000033518683",
+      "source_title": "바삭한치킨윙 800g",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.meals.prepared.chicken",
+      "reason": "Actual itemView prepared chicken-wing product. Pass41 audited food contains prepared wing/chicken products under food.meals.prepared.chicken."
+    },
+    {
+      "raw_record_ids": ["ingestion:1:18"],
+      "source_record_key": "2097001033371",
+      "source_title": "[전국택배]프리미엄 홍두깨 육포세트 350g (70g*5개)",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meat.processed.jerky",
+      "reason": "Actual itemView jerky gift set. Prior pending 096 review explicitly holds meat jerky under this new candidate because pass41 has no exact jerky leaf."
+    },
+    {
+      "raw_record_ids": ["ingestion:1:19"],
+      "source_record_key": "1000641893584",
+      "source_title": "오리지널 국물떡볶이 570g",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.meals.prepared.tteokbokki",
+      "reason": "Actual itemView product; existing taxonomy directly maps 떡볶이 to the prepared tteokbokki leaf."
+    },
+    {
+      "raw_record_ids": ["ingestion:1:20"],
+      "source_record_key": "2097002504719",
+      "source_title": "[9/4(금) 순차출고,사전예약] 밀키트 3종 기획 (밀푀유나베+우삼겹된장찌개+찹스테이크)",
+      "status": "held_mixed_bundle",
+      "reason": "Actual itemView, but one listing bundles three materially different meal kits. Do not collapse the bundle into any one prepared-meal leaf during proposal-only review."
+    },
+    {
+      "raw_record_ids": ["ingestion:1:27"],
+      "source_record_key": "1000870082339",
+      "source_title": "[쓱클럽 10%쿠폰] 우주인 불고기풀토핑 화덕피자_415g",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.meals.prepared.pizza",
+      "reason": "Actual itemView pizza product. Pass41 audited food includes the same 우주인피자 불고기풀토핑 화덕피자 title under prepared pizza; coupon wording does not change product form."
+    }
+  ],
+  "promotion_surface_holds": [
+    {"raw_record_id":"ingestion:1:0","source_record_key":"1000534782697","source_title":"26년 가을 서해 꽃게 ~50%할인"},
+    {"raw_record_id":"ingestion:1:1","source_record_key":"1000827513645","source_title":"단짠 과자/초콜릿/소시지 쓱/새벽배송 행사"},
+    {"raw_record_id":"ingestion:1:2","source_record_key":"1000872390824","source_title":"볶음밥/곰탕/국밥 등 ~35%"},
+    {"raw_record_id":"ingestion:1:4","source_record_key":"1000304996494","source_title":"코디 생필품 ~1+1"},
+    {"raw_record_id":"ingestion:1:5","source_record_key":"1000054910828","source_title":"볶음/국물용 멸치 ~40% 할인"},
+    {"raw_record_id":"ingestion:1:6","source_record_key":"1000614988034","source_title":"냉동 삼겹살/목심 할인행사"},
+    {"raw_record_id":"ingestion:1:7","source_record_key":"1000748511962","source_title":"고용량멀티탭 ~40%"},
+    {"raw_record_id":"ingestion:1:8","source_record_key":"1000827525181","source_title":"피코크 과자초콜릿젤리 쓱/새벽/스타배송"},
+    {"raw_record_id":"ingestion:1:9","source_record_key":"1000874467972","source_title":"달콤한 디저트 할인전 ~50%"},
+    {"raw_record_id":"ingestion:1:10","source_record_key":"1000699250713","source_title":"[쓱7클럽 ] 뉴케어 박스 상품 쿠폰행사 / 올프로틴 마이키즈 행사"},
+    {"raw_record_id":"ingestion:1:12","source_record_key":"1000518805288","source_title":"램 코프타, 모둠꼬치 등 안주류 ~40%"},
+    {"raw_record_id":"ingestion:1:14","source_record_key":"1000830439785","source_title":"인기 치즈/버터 모음전, 최대 ~50% 행사"},
+    {"raw_record_id":"ingestion:1:15","source_record_key":"1000874010656","source_title":"햄/비엔나/잠봉~50%"},
+    {"raw_record_id":"ingestion:1:16","source_record_key":"1000870199272","source_title":"프리미엄 오일/비네거/죽염 선물세트"},
+    {"raw_record_id":"ingestion:1:17","source_record_key":"1000869831690","source_title":"삼계탕 행사모음전[NEO 권역 한정]"},
+    {"raw_record_id":"ingestion:1:21","source_record_key":"1000754607145","source_title":"화장지/키친타올/생리대 특가(※일부품목제외)"},
+    {"raw_record_id":"ingestion:1:22","source_record_key":"1000754976116","source_title":"화장지/생리대/티슈류~1+1"},
+    {"raw_record_id":"ingestion:1:23","source_record_key":"1000850176632","source_title":"퍼실/모락셀라 캡슐/액체세제 ~1+1 (8/14~9/2)"},
+    {"raw_record_id":"ingestion:1:24","source_record_key":"1000870502679","source_title":"8/14~9/2 삼양 용기면 8개 10,000원 외 행사모음"},
+    {"raw_record_id":"ingestion:1:26","source_record_key":"1000683381107","source_title":"봉지 2개 이상 개당 1000원 할인(교차가능) 외"},
+    {"raw_record_id":"ingestion:1:28","source_record_key":"1000790572629","source_title":"포터블스크린 카드할인 구매찬스"},
+    {"raw_record_id":"ingestion:1:29","source_record_key":"1000740016886","source_title":"맥심/남양/일리/보난자 커피 ~25% 할인"},
+    {"raw_record_id":"ingestion:1:30","source_record_key":"1000821313926","source_title":"8/20~9/2 CJ 행사상품 더블적립/다운로드쿠폰"},
+    {"raw_record_id":"ingestion:1:31","source_record_key":"1000768597107","source_title":"동물복지 유정란, 왕란 등 계란 행사"}
+  ],
+  "promotion_hold_rule": "All entries above use dealItemView and represent discount/event collections rather than one stable SKU. Product words inside the title are not sufficient to assign a leaf.",
+  "explicit_decision_screen": {
+    "method": "Four batched repository searches using all 31 classification-review source_record_key values together with review-decisions-input",
+    "result": "No review-decisions-input match returned in any batch."
+  },
+  "reconciliation_flags": [
+    "ingestion:1:25 / source key 1000601687276 is already classified as food.preserved.kimchi.cabbage even though its URL is dealItemView and the title is a mixed 석박지/맛김치 1+1 promotion. Keep it excluded from new-review accounting, but revisit this pre-existing classification during final global reconciliation."
+  ]
+}
