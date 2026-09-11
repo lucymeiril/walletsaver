@@ -64,3 +64,13 @@
 - 안전장치: 배추/절임배추 혼합 경로의 `배추 (국산/통)`은 제목이 통배추라 신선 배추로 제안했고, 절임 제목 상품은 별도 보류했다. 깐대파·깐마늘은 박피/기본 손질만 있는 신선 원물로 보고 기존 신선 리프에 제안하되 규격이나 상품군 병합은 건드리지 않았다.
 - 실제 반영/검사: GitHub 텍스트 읽기·쓰기만 사용했다. staging DB import/재구축, pytest, `verify_initial_stage.py`, 멱등 import 검사는 실행하지 않았다. pass41의 5,280 적재/3,916 보류 수치는 변경되지 않았다.
 - 다음 재개점: 소형 채소 잔여 중 기존 리프가 있는 항목을 계속 확인하되, 생강·쪽파·브로콜리·샐러리·열무·절임채소처럼 현재 리프와 직접 일치하지 않는 품목은 신규 리프/정책 후보로 모아 한 번에 검토한다. 이미 분류가 resolved이고 규격/행사/제목변경만 pending인 항목은 제안 수에서 분리한다.
+
+## 2026-09-11 채소 신규 리프 후보 수집 — pending 249 / 370 / 373 / 378 / 379 / 381 / 383 / 384 / 418
+
+- 확인 범위: 위 9개 pending 묶음의 조각 전부, 총 19관측을 검토했다. 이 배치는 현재 리프에 억지로 넣는 대신 신규 taxonomy 후보를 한곳에 모으는 목적이다.
+- 제안 저장: `proposals/vegetable-new-leaf-candidates-249-418.json`. `status=proposal_only`, `baseline_pass=pass41`, `executed_tests=[]`이며 `suggested_new_leaf`는 검토용 이름일 뿐 `initial_taxonomy.py`나 DB에 추가한 것이 아니다.
+- 기존 리프 제안 1관측: `목이버섯 150G(팩)`은 건조 표기가 없는 신선 버섯으로 `food.produce.vegetables.mushroom`에 제안했다.
+- 신규 리프 후보 18관측: 브로콜리 2판매페이지 반복 4건 → `food.produce.vegetables.broccoli`; 미나리 반복 2건 → `water_parsley`; 얼갈이 반복 2건 → `young_napa_cabbage`; 셀러리 반복 2건 → `celery`; 통 양상추 반복 2건 → `lettuce`; 생강 반복 2건 → `ginger`; 깐쪽파 반복 2건 → `spring_onion`; 생옥수수 반복 2건 → `corn` 후보로 기록했다.
+- 정책 보류 이유: 얼갈이를 일반 통배추, 쪽파를 기존 표시명 대파인 `food.produce.vegetables.scallion`, 양상추를 쌈채소/샐러드채소로 자동 축소하지 않았다. 브로콜리 손질팩도 신선 브로콜리 품목으로 보고 냉동/가공채소 리프로 돌리지 않았다.
+- 실제 반영/검사: taxonomy 코드, 기존 review decision, staging DB는 수정하지 않았다. GitHub 텍스트 읽기·쓰기 외 실행 도구가 없어 pytest/DB import/verify/멱등 검사는 실행하지 않았다. pass41 적재/보류 수치는 그대로다.
+- 다음 재개점: 신규 리프 후보는 다른 마트의 동일 품목 관측이 있는지 먼저 모아 교차근거를 늘린 뒤 한 번에 taxonomy 설계를 검토한다. 그 전에는 `suggested_new_leaf`를 실존 리프처럼 사용하지 않는다. 이어서는 아직 손대지 않은 소형 채소/식품 묶음 중 기존 리프로 안전하게 제안 가능한 항목을 우선 처리한다.
