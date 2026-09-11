@@ -1,0 +1,72 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "scope": "proposal accounting reconciliation for ordered final sweep pending 288-451",
+  "source_final_sweep": "handoff/2026-09-11/proposals/bulk-pending-288-451-final-sweep.json",
+  "accounting": {
+    "pending_rows_inspected_by_final_sweep": 281,
+    "already_classified_rows_excluded": 15,
+    "classification_pending_rows_revalidated": 266,
+    "legacy_proposal_covered_rows_in_range": 253,
+    "legacy_proposal_covered_classification_rows": 238,
+    "unique_new_classification_reviews_from_final_sweep": 28,
+    "formula": "266 - 238 = 28",
+    "legacy_covered_groups": "289-291 and 305-451",
+    "unique_new_groups": ["288", "292", "293", "294", "295", "296", "297", "298", "299", "300", "301", "302", "303", "304"],
+    "note": "Do not add 266 to any historical cumulative count. Within 288-451, only these 28 observations were not already represented by an earlier proposal_only review. This file does not assert a final all-proposal unique total for pending 001-451; earlier ranges still require global reconciliation."
+  },
+  "already_classified_exclusions_within_legacy_coverage": [
+    {"group":"289","rows":2},
+    {"group":"308","rows":2},
+    {"group":"354","rows":2},
+    {"group":"382","rows":2},
+    {"group":"389","rows":2},
+    {"group":"399","rows":2},
+    {"group":"432","rows":1},
+    {"group":"433","rows":1},
+    {"group":"451","rows":1}
+  ],
+  "unique_new_observations": [
+    {"group":"288","source_record_key":"149806813","raw_record_ids":["ingestion:2:32","ingestion:51:27"]},
+    {"group":"292","source_record_key":"071295244","raw_record_ids":["ingestion:18:43","ingestion:67:26"]},
+    {"group":"293","source_record_key":"071035628","raw_record_ids":["ingestion:17:27","ingestion:66:71"]},
+    {"group":"294","source_record_key":"071396465","raw_record_ids":["ingestion:11:95","ingestion:61:37"]},
+    {"group":"295","source_record_key":"070904535","raw_record_ids":["ingestion:10:3","ingestion:59:34"]},
+    {"group":"296","source_record_key":"071195708","raw_record_ids":["ingestion:9:84","ingestion:59:25"]},
+    {"group":"297","source_record_key":"138313382","raw_record_ids":["ingestion:10:37","ingestion:59:62"]},
+    {"group":"298","source_record_key":"122624764","raw_record_ids":["ingestion:11:78","ingestion:61:19"]},
+    {"group":"299","source_record_key":"101423045","raw_record_ids":["ingestion:11:87","ingestion:61:28"]},
+    {"group":"300","source_record_key":"071402995","raw_record_ids":["ingestion:11:94","ingestion:61:36"]},
+    {"group":"301","source_record_key":"071386039","raw_record_ids":["ingestion:12:6","ingestion:61:48"]},
+    {"group":"302","source_record_key":"071426811","raw_record_ids":["ingestion:10:46","ingestion:60:29"]},
+    {"group":"303","source_record_key":"069804919","raw_record_ids":["ingestion:6:57","ingestion:56:1"]},
+    {"group":"304","source_record_key":"105116704","raw_record_ids":["ingestion:15:49","ingestion:64:87"]}
+  ],
+  "explicit_review_decision_collision_check": {
+    "file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431,
+    "checked_source_record_keys": ["149806813","071295244","071035628","071396465","070904535","071195708","138313382","122624764","101423045","071402995","071386039","071426811","069804919","105116704"],
+    "exact_matches_found": 0,
+    "result": "the 28 unique-new observations remain unique-new relative to explicit review decisions"
+  },
+  "proposal_evolution_conflicts": [
+    {
+      "group": "313",
+      "source_title": "농심 생생 우동 용기 276G",
+      "legacy_proposal": "handoff/2026-09-11/proposals/homeplus-noodles-canned-311-316.json",
+      "legacy_leaf": "food.meals.noodles.cup_ramen",
+      "final_sweep_leaf": "food.meals.noodles.udon",
+      "status": "hold_for_reconciliation",
+      "reason": "first and final proposal disagree; do not silently promote either decision before the full first-vs-final proposal comparison"
+    }
+  ],
+  "remaining_reconciliation": [
+    "deduplicate proposal_only observations for pending 001-287 before publishing a final global unique-reviewed count",
+    "compare first-vs-final proposed leaves/holds for all duplicate source_record_key/raw_record_id observations, not only the detected pending 313 conflict",
+    "only after full reconciliation, prepare an approved promotion set for an execution-capable environment"
+  ],
+  "database_modified": false,
+  "taxonomy_modified": false,
+  "explicit_review_decisions_modified": false,
+  "executed_tests": []
+}
