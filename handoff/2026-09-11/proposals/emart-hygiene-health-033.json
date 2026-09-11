@@ -1,0 +1,201 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["033"],
+  "scope_note": "Strict review of both pending/033/001.json and 002.json. Broad Emart 제지/위생/건강 shelf was treated as weak evidence; title/product form and verified retailer detail were preferred. Rows already classified in pass41 were excluded from new-classification accounting. No DB import/rebuild, taxonomy code edit, or repository tests were executed.",
+  "group_accounting": {
+    "observations_opened": 30,
+    "already_classification_complete_excluded": 12,
+    "new_classification_reviews": 18,
+    "distinct_newly_reviewed_source_listings": 18,
+    "existing_leaf_proposals": 5,
+    "held_for_taxonomy_product_form_or_manual_review": 13
+  },
+  "excluded_already_classified": [
+    {"raw_record_id":"ingestion:96:5","source_record_key":"1000829062199","source_title":"(온)크리넥스 밤부케어 25m * 12개입","current_leaf":"household.hygiene.paper.toilet"},
+    {"raw_record_id":"ingestion:96:13","source_record_key":"1000791248937","source_title":"페리오키즈 고불소치약 민트향 75gX3입","current_leaf":"beauty.personal.oral.toothpaste"},
+    {"raw_record_id":"ingestion:96:14","source_record_key":"1000791248939","source_title":"페리오키즈 고불소치약 애플민트향 75gx3입","current_leaf":"beauty.personal.oral.toothpaste"},
+    {"raw_record_id":"ingestion:96:18","source_record_key":"1000349401215","source_title":"3겹 화장지 33m X 30롤","current_leaf":"household.hygiene.paper.toilet"},
+    {"raw_record_id":"ingestion:96:27","source_record_key":"1000617011596","source_title":"4겹 울트라클린 25-30롤","current_leaf":"household.hygiene.paper.toilet"},
+    {"raw_record_id":"ingestion:96:33","source_record_key":"1000593035665","source_title":"멀티케어 허브민트향 프레쉬치약 150gX4입","current_leaf":"beauty.personal.oral.toothpaste"},
+    {"raw_record_id":"ingestion:96:43","source_record_key":"1000020371278","source_title":"스펀지 치실","current_leaf":"beauty.personal.oral.floss"},
+    {"raw_record_id":"ingestion:96:46","source_record_key":"0000008516466","source_title":"잇몸고 치약120gx3개","current_leaf":"beauty.personal.oral.toothpaste"},
+    {"raw_record_id":"ingestion:96:65","source_record_key":"1000689518895","source_title":"안심 키친타월 120매x12롤 ESG","current_leaf":"household.hygiene.paper.kitchen"},
+    {"raw_record_id":"ingestion:96:66","source_record_key":"1000632784489","source_title":"코디 음식전용 안심 UKP 키친타월 140매*4롤","current_leaf":"household.hygiene.paper.kitchen"},
+    {"raw_record_id":"ingestion:96:76","source_record_key":"1000712610389","source_title":"초극세모 칫솔","current_leaf":"beauty.personal.oral.toothbrush"},
+    {"raw_record_id":"ingestion:96:77","source_record_key":"1000859265343","source_title":"3겹 컴포트소프트 호호바 30+3M-30롤","current_leaf":"household.hygiene.paper.toilet"}
+  ],
+  "decisions": [
+    {
+      "raw_record_ids":["ingestion:96:6"],
+      "source_record_key":"0000007118517",
+      "source_title":"조르단 어린이용 STEP-3 (6~8세용) 2입",
+      "decision":"propose_existing_leaf",
+      "unified_category_id":"beauty.personal.oral.toothbrush",
+      "reason":"Retailer category/detail verification identifies this exact Jordan STEP-3 product as a children's toothbrush. pass41 has an existing toothbrush leaf.",
+      "quantity_review":"unchanged; classification-only proposal",
+      "identity_merge":"not_requested"
+    },
+    {
+      "raw_record_ids":["ingestion:96:24"],
+      "source_record_key":"1000202362818",
+      "source_title":"맘껏양껏 110매 (캡)",
+      "decision":"propose_existing_leaf",
+      "unified_category_id":"household.hygiene.paper.wipes",
+      "reason":"The short title is ambiguous by itself, so retailer product detail was checked and explicitly identifies this item as cap-type wet wipes. pass41 has an existing wet-wipes leaf.",
+      "quantity_review":"unchanged; classification-only proposal",
+      "identity_merge":"not_requested"
+    },
+    {
+      "raw_record_ids":["ingestion:96:35"],
+      "source_record_key":"1000755332250",
+      "source_title":"깊은세정 크로스액션 플라그가드 32모 3입",
+      "decision":"propose_existing_leaf",
+      "unified_category_id":"beauty.personal.oral.toothbrush",
+      "reason":"Oral-B collection plus brush-bristle count and CrossAction product form identify a toothbrush. Reuse the current toothbrush leaf.",
+      "quantity_review":"unchanged; classification-only proposal",
+      "identity_merge":"not_requested"
+    },
+    {
+      "raw_record_ids":["ingestion:96:50"],
+      "source_record_key":"0000009077389",
+      "source_title":"페리오토탈7 오리지널 120g X3(의약외품)",
+      "decision":"propose_existing_leaf",
+      "unified_category_id":"beauty.personal.oral.toothpaste",
+      "reason":"Perio Total7 is toothpaste and the current audited household taxonomy already has the toothpaste leaf and closely related Perio titles.",
+      "quantity_review":"unchanged; classification-only proposal",
+      "identity_merge":"not_requested"
+    },
+    {
+      "raw_record_ids":["ingestion:96:56"],
+      "source_record_key":"1000755332414",
+      "source_title":"오랄비 어드벤티지 칫솔 3입+크로스액션 2입",
+      "decision":"propose_existing_leaf",
+      "unified_category_id":"beauty.personal.oral.toothbrush",
+      "reason":"Title explicitly identifies toothbrushes. The 3+2 mixed package issue is separate from classification.",
+      "quantity_review":"classification-only proposal; mixed_package_unresolved remains",
+      "identity_merge":"not_requested"
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids":["ingestion:96:10"],
+      "source_record_key":"2097001752296",
+      "source_title":"손소독제 스프레이 에탄올 70% 500ml 의약외품",
+      "status":"held_manual_health_hygiene_taxonomy",
+      "suggested_product_form":"hand_sanitizer",
+      "reason":"Product form is a hand sanitizer, but no matching current pass41 leaf was confirmed. Keep as a classification hold rather than inferring from the broad hygiene shelf."
+    },
+    {
+      "raw_record_ids":["ingestion:96:23"],
+      "source_record_key":"1000015214631",
+      "source_title":"토탈케어 플러스 750ml [치석케어]",
+      "status":"held_new_taxonomy_candidate",
+      "suggested_new_leaf":"beauty.personal.oral.mouthwash",
+      "reason":"Listerine collection and liquid oral-care product form indicate mouthwash, while the current pass41 oral leaf set confirmed toothpaste/toothbrush/floss but no mouthwash leaf."
+    },
+    {
+      "raw_record_ids":["ingestion:96:34"],
+      "source_record_key":"1000872178352",
+      "source_title":"[NEW] 포이시안 마크2 야돔 1.7ml(6입)",
+      "status":"held_new_taxonomy_candidate",
+      "suggested_product_form":"nasal_aromatic_inhaler",
+      "reason":"Product form is distinct from paper/oral/feminine hygiene and no current pass41 leaf was confirmed. Keep as a product-form hold."
+    },
+    {
+      "raw_record_ids":["ingestion:96:38"],
+      "source_record_key":"1000699348872",
+      "source_title":"깨끗한소프트버블 중형 40P",
+      "status":"held_new_taxonomy_candidate",
+      "suggested_new_leaf":"household.hygiene.feminine.day",
+      "reason":"Retailer category confirms a regular menstrual pad. Current pass41 feminine leaves are liner/overnight/pants/tampon and lack a normal day-pad leaf."
+    },
+    {
+      "raw_record_ids":["ingestion:96:41"],
+      "source_record_key":"1000032586060",
+      "source_title":"한결 대형 32P",
+      "status":"held_new_taxonomy_candidate",
+      "suggested_new_leaf":"household.hygiene.feminine.day",
+      "reason":"Sofy product is a regular large menstrual pad; current pass41 has no regular day-pad leaf."
+    },
+    {
+      "raw_record_ids":["ingestion:96:44"],
+      "source_record_key":"1000791935411",
+      "source_title":"라엘 무표백 순면 중형 14P",
+      "status":"held_new_taxonomy_candidate",
+      "suggested_new_leaf":"household.hygiene.feminine.day",
+      "reason":"Regular medium menstrual pad product form does not fit liner/overnight/pants/tampon leaves."
+    },
+    {
+      "raw_record_ids":["ingestion:96:47"],
+      "source_record_key":"1000848266491",
+      "source_title":"리얼순면 중형 40P",
+      "status":"held_new_taxonomy_candidate",
+      "suggested_new_leaf":"household.hygiene.feminine.day",
+      "reason":"Regular medium menstrual pad product form requires a day-pad leaf rather than reusing the liner leaf."
+    },
+    {
+      "raw_record_ids":["ingestion:96:54"],
+      "source_record_key":"1000676768506",
+      "source_title":"유기농100%순면 슬날 중형 36P",
+      "status":"held_new_taxonomy_candidate",
+      "suggested_new_leaf":"household.hygiene.feminine.day",
+      "reason":"Regular medium menstrual pad; current pass41 has no matching day-pad leaf."
+    },
+    {
+      "raw_record_ids":["ingestion:96:55"],
+      "source_record_key":"1000791935396",
+      "source_title":"라엘 무표백 순면 대형 12P",
+      "status":"held_new_taxonomy_candidate",
+      "suggested_new_leaf":"household.hygiene.feminine.day",
+      "reason":"Regular large menstrual pad; do not force into liner/overnight leaves."
+    },
+    {
+      "raw_record_ids":["ingestion:96:59"],
+      "source_record_key":"1000032586065",
+      "source_title":"한결 중형 36P",
+      "status":"held_new_taxonomy_candidate",
+      "suggested_new_leaf":"household.hygiene.feminine.day",
+      "reason":"Retailer listing identifies Sofy regular menstrual pad; current pass41 lacks the normal day-pad leaf."
+    },
+    {
+      "raw_record_ids":["ingestion:96:68"],
+      "source_record_key":"1000048770548",
+      "source_title":"건강한 순수한면 대형 32개입",
+      "status":"held_new_taxonomy_candidate",
+      "suggested_new_leaf":"household.hygiene.feminine.day",
+      "reason":"Regular large menstrual pad product form does not fit the existing specialized feminine leaves."
+    },
+    {
+      "raw_record_ids":["ingestion:96:72"],
+      "source_record_key":"1000062926083",
+      "source_title":"깨끗한 리오셀 대형 34P",
+      "status":"held_new_taxonomy_candidate",
+      "suggested_new_leaf":"household.hygiene.feminine.day",
+      "reason":"Regular large menstrual pad; current pass41 feminine taxonomy lacks a normal day-pad leaf."
+    },
+    {
+      "raw_record_ids":["ingestion:96:74"],
+      "source_record_key":"1000048428087",
+      "source_title":"시니어돌봄 리필형패드 일반 20P",
+      "status":"held_new_taxonomy_candidate",
+      "suggested_new_leaf":"household.hygiene.incontinence.pad",
+      "reason":"Senior-care refill pad is an adult incontinence/care product, not a menstrual pad. No matching current pass41 leaf was confirmed."
+    }
+  ],
+  "explicit_review_decision_collision_screen": {
+    "raw_record_ids_checked": 18,
+    "method": "three batched repository searches covering all new-classification raw_record_ids",
+    "review_decisions_input_hits": 0,
+    "note": "Searches surfaced raw/pending/unresolved/accounting material but not review-decisions-input.json. Proposal-stage screen only."
+  },
+  "external_product_form_verification": {
+    "used_for": [
+      "조르단 어린이용 STEP-3 (6~8세용) 2입 -> toothbrush",
+      "맘껏양껏 110매 (캡) -> wet wipes",
+      "ambiguous medium/large Sofy/No Brand sanitary-pad titles -> menstrual pads"
+    ],
+    "note": "External retailer information was used only to disambiguate product form; no DB mutation resulted."
+  },
+  "executed_tests": []
+}
