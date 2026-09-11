@@ -1,0 +1,64 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "091",
+  "source_path": "냉장/냉동/밀키트 > 밀키트 > 글로벌밀키트",
+  "scope_note": "Classification-only proposal. Repeated Homeplus observations are grouped by source_record_key. Promotion and quantity fields are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1139,
+    "current_reviewed": 1149,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2767
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "Source keys were found in pending evidence only; no prior proposal conflict was found. Every source title explicitly carries the [밀키트] product-form marker."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:10:34", "ingestion:59:52"],
+      "source_record_key": "070448268",
+      "source_title": "[밀키트] 홈밀 놀부 부대찌개 1042G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.prepared.meal_kit",
+      "reason": "The title explicitly identifies a meal kit; the finished dish name does not override the product form."
+    },
+    {
+      "raw_record_ids": ["ingestion:10:83", "ingestion:60:36"],
+      "source_record_key": "070459422",
+      "source_title": "[밀키트] 홈밀 푸짐한 밀푀유나베 1079G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.prepared.meal_kit",
+      "reason": "The title explicitly identifies a meal kit; nabe style is a dish attribute rather than a different product form."
+    },
+    {
+      "raw_record_ids": ["ingestion:12:24", "ingestion:61:66"],
+      "source_record_key": "071360225",
+      "source_title": "[밀키트] 불고기 쉬림프 월남쌈 850G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.prepared.meal_kit",
+      "reason": "The explicit [밀키트] marker establishes meal-kit form; ingredients and cuisine style remain attributes."
+    },
+    {
+      "raw_record_ids": ["ingestion:12:27", "ingestion:61:69"],
+      "source_record_key": "071360070",
+      "source_title": "[밀키트] 맛있어서 놀라지 마라탕 774G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.prepared.meal_kit",
+      "reason": "The explicit [밀키트] marker establishes meal-kit form; do not collapse it into a ready-to-eat soup/stew category."
+    },
+    {
+      "raw_record_ids": ["ingestion:12:31", "ingestion:61:73"],
+      "source_record_key": "071359896",
+      "source_title": "[밀키트] 감바스 알하이요 602G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.prepared.meal_kit",
+      "reason": "The explicit [밀키트] marker establishes meal-kit form; cuisine identity does not require a separate leaf."
+    }
+  ],
+  "held_decisions": [],
+  "executed_tests": []
+}
