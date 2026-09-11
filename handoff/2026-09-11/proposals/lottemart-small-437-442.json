@@ -1,0 +1,81 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "scope_note": "GitHub read/write review only. No staging DB import, rebuild, or repo tests were run. Mart paths were treated as evidence only when title/product form conflicted.",
+  "reviewed_pending_groups": ["437", "438", "439", "440", "441", "442"],
+  "decisions": [
+    {
+      "pending_group": "437",
+      "raw_record_ids": ["ingestion:28:35"],
+      "source_record_key": "2700000096345",
+      "source_title": "탱글탱글 소세지가 쏙! 15핫도그 (팩)",
+      "proposed_leaf": "food.meals.prepared.hotdog",
+      "reason": "마트는 샌드위치 진열이지만 제목이 핫도그를 직접 명시한다. pass41 조리식품 taxonomy에 핫도그 전용 리프와 제목 규칙이 있으므로 제품형태를 우선한다.",
+      "quantity_review": "unchanged; 1팩 unit and promotion_unresolved remain separate",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "438",
+      "raw_record_ids": ["ingestion:35:12"],
+      "source_record_key": "8801045480572",
+      "source_title": "오뚜기 옛날 잡채 (75G*4)",
+      "proposed_leaf": "food.meals.prepared.japchae",
+      "reason": "마트는 봉지라면으로 진열했지만 제목은 잡채를 직접 명시한다. pass41에는 조리잡채 리프와 감사된 잡채 선례가 있고 봉지라면 분류는 '잡채' 제목을 방어적으로 제외한다.",
+      "quantity_review": "unchanged; 75g×4 preserved and promotion_unresolved remains separate",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "439",
+      "raw_record_ids": ["ingestion:34:51"],
+      "source_record_key": "8801045695075",
+      "source_title": "오뚜기 동대문식 닭한마리 칼국수 (460G)",
+      "proposed_leaf": "food.meals.noodles.kalguksu",
+      "reason": "마트는 일반 봉지라면으로 진열했지만 제목이 칼국수를 직접 명시한다. pass41 면요리 taxonomy와 제목 규칙은 '칼국수'를 food.meals.noodles.kalguksu로 분류하며 봉지라면 쪽에는 '닭한마리' 방어 규칙이 있다.",
+      "quantity_review": "unchanged; promotion_unresolved remains separate",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "442",
+      "raw_record_ids": ["ingestion:31:13"],
+      "source_record_key": "8801045197319",
+      "source_title": "이금기 팬더굴소스 (320G)",
+      "proposed_leaf": "food.seasonings.sauces.oyster",
+      "reason": "제목이 굴소스를 직접 명시하고 pass41 소스 taxonomy에 굴소스 전용 리프가 존재한다. 수입식품/동남아 진열은 원산·판매문맥으로만 본다.",
+      "quantity_review": "unchanged; promotion_unresolved remains separate",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "held_decisions": [
+    {
+      "pending_group": "440",
+      "raw_record_ids": ["ingestion:33:22"],
+      "source_record_key": "8809025823333",
+      "source_title": "신선한 생멍게 (150G)",
+      "suggested_new_leaf": "food.seafood.other.sea_squirt",
+      "suggested_path": ["식품", "수산물", "기타해산물", "멍게"],
+      "reason": "제목이 생멍게를 직접 명시하지만 pass41 수산 taxonomy의 생선·갑각/패류·해조류·가공수산물 리프 중 멍게를 정확히 표현하는 리프가 확인되지 않았다. 새우·전복 등 다른 수산종 리프로 강제하지 않는다.",
+      "quantity_review": "unchanged; promotion_unresolved remains separate",
+      "followup": "taxonomy policy approval for fresh sea-squirt/other-seafood leaf"
+    },
+    {
+      "pending_group": "441",
+      "raw_record_ids": ["ingestion:35:42"],
+      "source_record_key": "2580430000002",
+      "source_title": "국산 생물도미 (마리)",
+      "suggested_new_leaf": "food.seafood.fish.sea_bream",
+      "suggested_path": ["식품", "수산물", "생선", "도미"],
+      "reason": "제목과 원본 경로가 생물 도미를 직접 가리키지만 pass41 생선 리프에는 고등어·연어·명태·가자미·삼치·갈치·조기·우럭만 확인되어 도미 전용 리프가 없다. 기타 기존 생선종으로 강제하지 않는다.",
+      "quantity_review": "unchanged; 1마리 count unit and promotion_unresolved remain separate",
+      "followup": "taxonomy policy approval for sea-bream leaf"
+    }
+  ],
+  "explicit_review_conflict_check": {
+    "checked_against": "review-decisions-input.json",
+    "source_record_keys_checked": ["2700000096345", "8801045480572", "8801045695075", "8809025823333", "2580430000002", "8801045197319"],
+    "conflicts_found": 0
+  },
+  "cumulative_reviewed_unique_observations": 474,
+  "baseline_held_observations": 3916,
+  "remaining_unreviewed_observations": 3442,
+  "executed_tests": []
+}
