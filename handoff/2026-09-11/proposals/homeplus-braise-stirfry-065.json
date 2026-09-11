@@ -1,0 +1,114 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["065"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data, promotions, quantity evidence, and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 832,
+    "batch_reviewed_unique_observations": 14,
+    "cumulative_reviewed_unique_observations": 846,
+    "remaining_unreviewed_observations": 3070
+  },
+  "review_summary": {
+    "unique_source_products_reviewed": 7,
+    "observations_reviewed": 14,
+    "proposed_existing_leaf_products": 2,
+    "proposed_existing_leaf_observations": 4,
+    "held_or_new_taxonomy_products": 5,
+    "held_or_new_taxonomy_observations": 10,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_matches_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "taxonomy_note": "원본 shelf는 볶음/찜이지만 순대·육류 찜·해산물 볶음·닭볶음탕이 섞여 있다. pass41의 순대와 국·탕·찌개 leaf는 명확한 상품에 재사용한다. 뼈찜/김치찜을 단순 양념육이나 국·탕으로 강제하지 않고 육류 찜·조림 후보로, 낙지/쭈꾸미볶음은 밑반찬 볶음이 아닌 메인 조리식품이므로 해산물 볶음 후보로 보류한다.",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:9:72", "ingestion:59:6"],
+      "source_name": "homeplus",
+      "source_record_key": "126076795",
+      "source_title": "려강 속이꽉찬 고기순대 312G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.meat.processed.sundae",
+      "reason": "상품명이 고기순대를 직접 명시하며 pass41에 순대 전용 leaf가 이미 존재한다. 볶음/찜 진열보다 실제 제품형태를 우선한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "1+1 evidence is preserved and not altered by this classification proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:9:97", "ingestion:60:20"],
+      "source_name": "homeplus",
+      "source_record_key": "069739606",
+      "source_title": "도드람 본래매운맛뼈찜 1KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.braised_meat",
+      "reason": "매운맛 돼지 뼈찜 계열의 완성 조리식품이다. 국·탕·찌개나 단순 양념육보다 찜·조림 제품형태가 핵심이며 pass41에 대응 leaf가 없어 신규 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "1+1 evidence is preserved and not altered by this classification proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:10:38", "ingestion:60:21"],
+      "source_name": "homeplus",
+      "source_record_key": "069739226",
+      "source_title": "도드람 본래간장맛뼈찜 1KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.braised_meat",
+      "reason": "간장맛 뼈찜 역시 완성 육류 찜 제품이다. 매운맛 상품과 같은 제품형태 후보를 공유하되 판매페이지와 맛 variant는 별개 상품으로 유지한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "1+1 evidence is preserved and not altered by this classification proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:10:39", "ingestion:59:73"],
+      "source_name": "homeplus",
+      "source_record_key": "071079812",
+      "source_title": "무교동낙지볶음 300G*2",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.seafood_stir_fry",
+      "reason": "낙지를 주재료로 한 메인 조리식품 볶음이며 pass41의 밑반찬 볶음 leaf와 성격이 다르다. 준비식품 해산물 볶음 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:10:74", "ingestion:59:72"],
+      "source_name": "homeplus",
+      "source_record_key": "071079795",
+      "source_title": "무교동쭈꾸미볶음 300G*2",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.seafood_stir_fry",
+      "reason": "쭈꾸미를 주재료로 한 메인 조리식품 볶음이다. 낙지볶음과 같은 제품형태 후보를 공유하되 서로 다른 판매 상품으로 유지한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:11:12", "ingestion:59:85"],
+      "source_name": "homeplus",
+      "source_record_key": "128065235",
+      "source_title": "홈밀 채소가득 닭볶음탕 870G",
+      "status": "proposed",
+      "proposed_unified_category_id": "food.meals.prepared.soup_stew",
+      "reason": "상품명이 닭볶음탕을 직접 명시하고 냉장/냉동 조리식품 진열에 있다. pass41의 국·탕·찌개 leaf가 완성 탕류 제품형태를 가장 직접적으로 포괄한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:11:33", "ingestion:60:71"],
+      "source_name": "homeplus",
+      "source_record_key": "147006481",
+      "source_title": "홈밀 돼지등뼈 김치찜 1300G",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.meals.prepared.braised_meat",
+      "reason": "돼지등뼈와 김치를 함께 찐 완성 조리식품으로, 배추김치 자체나 국·탕 제품이 아니다. 뼈찜 두 상품과 같은 육류 찜·조림 후보에 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
