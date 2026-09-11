@@ -1,0 +1,73 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["311", "312", "313", "314", "315", "316"],
+  "scope_note": "GitHub read/write review only. Exact existing catalog precedent is preferred over broad mart shelf names. New leaf ids are review labels only and have not been added to initial_taxonomy.py or any DB.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 296,
+    "batch_reviewed_unique_observations": 12,
+    "cumulative_reviewed_unique_observations": 308,
+    "remaining_unreviewed_observations": 3608
+  },
+  "explicit_review_decision_conflict_check": {
+    "file": "handoff/2026-09-11/review-decisions-input.json",
+    "checked_source_record_keys": ["111394292", "069414806", "120076044", "107799422", "111433491", "129076180"],
+    "matches_found": 0
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:21:49", "ingestion:70:80"],
+      "source_record_key": "111394292",
+      "source_title": "봉평 메밀 국수 850G",
+      "proposed_leaf": "food.meals.noodles.naengmyeon",
+      "reason": "pass41 taxonomy의 해당 리프 표시명이 '냉면·메밀면'이고 원본 경로도 메밀면을 직접 명시한다. 기존 카탈로그에도 메밀 생면/메밀소바가 이 축에서 관리된다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:21:91", "ingestion:70:55"],
+      "source_record_key": "120076044",
+      "source_title": "농심 생생 우동 용기 276G",
+      "proposed_leaf": "food.meals.noodles.cup_ramen",
+      "reason": "코스트코의 같은 농심 생생우동 용기 276g 제품(12개입)이 기존 카탈로그에서 confidence 0.90으로 `food.meals.noodles.cup_ramen`에 분류돼 있다. 단일 용량이 동일하고 제품형태도 용기형이므로 broad '우동라면' shelf보다 정확 제품 선례를 우선한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:21:81", "ingestion:71:11"],
+      "source_record_key": "111433491",
+      "source_title": "동원 Dole 후르츠칵테일 836G",
+      "proposed_leaf": "food.preserved.canned.fruit",
+      "reason": "제목과 원본 경로가 후르츠칵테일을 직접 가리키며 pass41 통조림 taxonomy에 과일통조림 리프가 존재한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:21:11", "ingestion:70:88"],
+      "source_record_key": "129076180",
+      "source_title": "슬라이스드 오이피클 500G",
+      "proposed_leaf": "food.preserved.sides.pickled",
+      "reason": "상품 제목이 오이피클이고 원본 경로도 피클을 직접 명시한다. pass41의 절임반찬 리프 `food.preserved.sides.pickled`와 제품형태가 일치하며, 같은 배치의 쌈무와 동일한 보존 방식 축이다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "deferred_taxonomy_candidates": [
+    {
+      "raw_record_ids": ["ingestion:22:49", "ingestion:72:4"],
+      "source_record_key": "069414806",
+      "source_title": "동원 진한사골쌀떡국 151G",
+      "suggested_new_leaf": "food.meals.prepared.rice_cake_soup",
+      "reason": "마트 경로의 상온떡볶이는 제목과 충돌한다. 현재 기존 `rice_cake`는 일반 떡, `soup_stew`는 국·탕·찌개라는 넓은 축인데 저장된 카탈로그에서 이 즉석 떡국의 정확 선례를 찾지 못했다. 떡볶이로 오분류하거나 일반 떡으로 축소하지 않고 즉석 떡국 신규 리프/상위 정책 후보로 보류한다."
+    },
+    {
+      "raw_record_ids": ["ingestion:22:61", "ingestion:71:65"],
+      "source_record_key": "107799422",
+      "source_title": "S&W 프리미엄 키드니 빈 400G",
+      "suggested_new_leaf": "food.preserved.canned.beans",
+      "reason": "원본 경로는 통조림 코너의 콩류이고 제목은 키드니빈을 명시한다. pass41 canned 리프에는 참치·햄·옥수수·과일·골뱅이·꽁치만 있고 콩통조림 리프가 없다. 생곡물/병아리콩 축에 넣지 않고 콩통조림 후보로 분리한다."
+    }
+  ],
+  "executed_tests": []
+}
