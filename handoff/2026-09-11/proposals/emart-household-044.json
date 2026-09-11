@@ -1,0 +1,223 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "scope_note": "GitHub read/write review only. No staging DB import, rebuild, or repo tests were run. Emart's broad 청소/생활용품 surface was treated as weak evidence; product title/form was reviewed per observation. Mixed product bundles and unsupported household hardware/tool types were not forced into existing detergent leaves.",
+  "reviewed_pending_groups": ["044"],
+  "reviewed_observations": 22,
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:98:38"],
+      "source_record_key": "1000867881873",
+      "source_title": "[기획세트] 퍼실 세탁세제 2.5L+1.5L(파워젤)",
+      "proposed_leaf": "household.cleaning.laundry.liquid",
+      "reason": "2.5L+1.5L은 동일 액체 세탁세제 계열의 다중 규격 기획세트이며 제목이 퍼실 세탁세제/파워젤을 명시한다. 제품유형은 pass41의 액체세탁세제 리프와 일치한다.",
+      "quantity_review": "leave mixed_package_unresolved and multiple_package_quantities unchanged; classification does not collapse 2.5L+1.5L into one quantity",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:41"],
+      "source_record_key": "1000832578828",
+      "source_title": "홈스타 락스와 세제 750ml(후로랄파인)",
+      "proposed_leaf": "household.cleaning.general.chlorine",
+      "reason": "제목이 락스를 직접 명시하며 pass41에는 염소계표백제 리프와 '깨끗한 락스', '락스 2.25L' 감사 선례가 있다. '와 세제'는 혼합 포장 세트가 아니라 락스 기반 세정 제품의 제형 표현으로 보며 별도 기존 리프가 없다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:48"],
+      "source_record_key": "1000633383238",
+      "source_title": "액츠 퍼펙트 실내건조 2.2L (일반/드럼 겸용) (온)",
+      "proposed_leaf": "household.cleaning.laundry.liquid",
+      "reason": "제목이 2.2L 액체 세탁세제를 가리키고 pass41 세탁용품의 액체세탁세제 리프와 일치한다. 실내건조/일반·드럼 겸용은 사용 속성이다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "already_classified_pending": [
+    {
+      "raw_record_ids": ["ingestion:98:68"],
+      "source_record_key": "2097001684689",
+      "source_title": "프리미엄 냉장고 탈취제 김치냄새 악취 냄새 제거 살균 탈취 스틱",
+      "existing_leaf": "household.cleaning.general.deodorizer",
+      "review_status": "classified",
+      "remaining_reasons": ["unit_unresolved"],
+      "review_note": "분류는 이미 탈취제로 완료되어 있다. 단위만 unresolved로 유지하며 분류 제안으로 다시 덮어쓰지 않는다."
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:98:0"],
+      "source_record_key": "2097002333074",
+      "source_title": "수뜰리에 살균 소독 다목적 발포세정제 40개입 텀블러,냄비 세척 레몬향",
+      "suggested_new_leaf": "household.cleaning.kitchen.cleaner",
+      "reason": "텀블러·냄비용 발포 세정제지만 pass41의 주방세제는 일반 주방세제/퐁퐁 계열이고, 식기세척기세제·기름때세정제 외 다목적 주방 세정제 리프가 없다. 기존 주방세제에 강제하지 않는다.",
+      "quantity_review": "40개입 unchanged",
+      "followup": "taxonomy policy for multipurpose kitchen cleaning tablets"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:2"],
+      "source_record_key": "2097002345589",
+      "source_title": "수뜰리에 캡슐세제 린넨블랑 40개입+다목적 발포세정제 40개입 선물세트",
+      "reason": "캡슐세제와 다목적 발포세정제가 동등하게 묶인 혼합 선물세트다. 한 상품은 정확히 하나의 leaf여야 하지만 어느 한 구성품을 대표 leaf로 정할 정책 근거가 없다.",
+      "quantity_review": "preserve mixed_package_unresolved; do not reduce 40+40 to one package",
+      "followup": "bundle/product-kit classification policy"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:3"],
+      "source_record_key": "2097002345596",
+      "source_title": "수뜰리에 캡슐세제 인칸토 40개입+다목적 발포세정제 40개입 선물세트",
+      "reason": "캡슐세제와 다목적 발포세정제가 동등하게 묶인 혼합 선물세트다. 캡슐세제 leaf로 강제하면 두 번째 구성품을 잃는다.",
+      "quantity_review": "preserve mixed_package_unresolved",
+      "followup": "bundle/product-kit classification policy"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:4"],
+      "source_record_key": "2097002344643",
+      "source_title": "수뜰리에 캡슐세제 로즈애플 40개입+다목적 발포세정제 40개입 선물세트",
+      "reason": "캡슐세제와 다목적 발포세정제가 동등하게 묶인 혼합 선물세트다. 기존 단일 세탁세제 leaf 하나로 축약하지 않는다.",
+      "quantity_review": "preserve mixed_package_unresolved",
+      "followup": "bundle/product-kit classification policy"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:23"],
+      "source_record_key": "1000807127772",
+      "source_title": "롱핸들 물기제거기",
+      "suggested_new_leaf": "household.cleaning.tools.squeegee",
+      "reason": "청소 도구인 물기제거기/스퀴지이며 pass41 household taxonomy에는 세정제 중심 리프만 있고 청소도구 리프가 확인되지 않았다.",
+      "quantity_review": "unit_unresolved preserved",
+      "followup": "household cleaning-tool taxonomy"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:37"],
+      "source_record_key": "1000028219837",
+      "source_title": "넥스케어 딥클렌징 샤워타올",
+      "suggested_new_leaf": "household.bath.accessories.shower_towel",
+      "reason": "신체 세정용 샤워타올이며 청소세제나 욕실세정제가 아니다. 현재 초기 taxonomy 서비스에서 대응 욕실 액세서리 리프가 확인되지 않았다.",
+      "quantity_review": "unit_unresolved preserved",
+      "followup": "bath/body accessory taxonomy"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:44"],
+      "source_record_key": "1000032065973",
+      "source_title": "미끄럼방지 슬리퍼",
+      "suggested_new_leaf": "household.bath.accessories.slipper",
+      "reason": "생활/욕실 잡화인 미끄럼방지 슬리퍼로 세정제 taxonomy와 제품유형이 다르며 대응 리프가 확인되지 않았다.",
+      "quantity_review": "unit_unresolved preserved",
+      "followup": "bath/household accessory taxonomy"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:51"],
+      "source_record_key": "1000067324459",
+      "source_title": "구연산 1KG",
+      "suggested_new_leaf": "household.cleaning.general.citric_acid",
+      "reason": "청소용 구연산은 pass41의 기존 욕실세정제와 별개 제품이며 기존 분류 방어규칙도 구연산을 household.cleaning.bath.cleaner로 강제하지 않도록 제외한다. 대응 전용 리프가 없다.",
+      "quantity_review": "1kg unchanged",
+      "followup": "cleaning-agent taxonomy for citric acid/baking soda/percarbonate"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:57"],
+      "source_record_key": "1000806538937",
+      "source_title": "손잡이가 편한 변기 청소솔",
+      "suggested_new_leaf": "household.cleaning.tools.toilet_brush",
+      "reason": "변기용 청소도구이며 기존 household.cleaning.bath.toilet은 변기세정제 제품용이다. 도구를 세정제 leaf에 넣지 않는다.",
+      "quantity_review": "unit_unresolved preserved",
+      "followup": "household cleaning-tool taxonomy"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:62"],
+      "source_record_key": "1000806540033",
+      "source_title": "대림바스 1기능 수압상승 샤워헤드 와이드형 무광그레이",
+      "suggested_new_leaf": "household.bath.fixtures.shower_head",
+      "reason": "욕실 설비/하드웨어인 샤워헤드이며 현재 pass41 청소 taxonomy와 제품유형이 다르다.",
+      "quantity_review": "unit_unresolved preserved",
+      "followup": "bath fixture taxonomy"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:63"],
+      "source_record_key": "0000008303508",
+      "source_title": "무궁화 행주 전용비누",
+      "suggested_new_leaf": "household.cleaning.kitchen.dishcloth_soap",
+      "reason": "행주 세척 전용 고형비누이며 pass41의 household.cleaning.kitchen.detergent는 일반 주방세제/퐁퐁 계열 선례다. 고형 행주비누를 근거 없이 동일 leaf로 강제하지 않는다.",
+      "quantity_review": "unit_unresolved preserved",
+      "followup": "kitchen cleaning-agent taxonomy"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:64"],
+      "source_record_key": "1000040396040",
+      "source_title": "부드러운 거품 샤워볼 3P",
+      "suggested_new_leaf": "household.bath.accessories.shower_ball",
+      "reason": "신체 세정용 샤워볼이며 기존 청소세제 leaf에 해당하지 않고 대응 욕실 액세서리 리프가 확인되지 않았다.",
+      "quantity_review": "3P unchanged",
+      "followup": "bath/body accessory taxonomy"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:72"],
+      "source_record_key": "1000034979455",
+      "source_title": "디클린 멀티 필터 샤워기(실속형)",
+      "suggested_new_leaf": "household.bath.fixtures.shower_head",
+      "reason": "필터형 샤워기/샤워헤드 하드웨어이며 청소세제 taxonomy와 제품유형이 다르다.",
+      "quantity_review": "unit_unresolved preserved",
+      "followup": "bath fixture taxonomy"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:74"],
+      "source_record_key": "1000806539168",
+      "source_title": "손잡이가 편한 원형 청소솔",
+      "suggested_new_leaf": "household.cleaning.tools.brush",
+      "reason": "일반 청소솔 도구이며 세정제 중심 pass41 household taxonomy에 대응 도구 leaf가 없다.",
+      "quantity_review": "unit_unresolved preserved",
+      "followup": "household cleaning-tool taxonomy"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:76"],
+      "source_record_key": "1000783636484",
+      "source_title": "도기일체형비데 완전직수 림리스 강력세정 자동물내림 호텔식 사각플랫 완벽방수 iw-699",
+      "suggested_new_leaf": "household.bath.fixtures.bidet",
+      "reason": "비데/도기 일체형 욕실 설비 제품으로 청소세제나 위생소모품 leaf와 제품유형이 다르며 대응 리프가 확인되지 않았다.",
+      "quantity_review": "unit_unresolved preserved",
+      "followup": "bath fixture taxonomy"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:77"],
+      "source_record_key": "1000832145871",
+      "source_title": "대림바스 디클린 PVC 샤워호스 2m(실버)",
+      "suggested_new_leaf": "household.bath.fixtures.shower_hose",
+      "reason": "욕실 하드웨어인 샤워호스로 기존 청소세제 taxonomy에 대응 leaf가 없다.",
+      "quantity_review": "unit_unresolved preserved; title length 2m is not rewritten into normalized package here",
+      "followup": "bath fixture taxonomy"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:78"],
+      "source_record_key": "1000806538970",
+      "source_title": "손잡이가 편한 사각 청소솔",
+      "suggested_new_leaf": "household.cleaning.tools.brush",
+      "reason": "일반 청소솔 도구이며 현재 pass41에 청소도구 leaf가 없다.",
+      "quantity_review": "unit_unresolved preserved",
+      "followup": "household cleaning-tool taxonomy"
+    },
+    {
+      "raw_record_ids": ["ingestion:98:80"],
+      "source_record_key": "1000807126862",
+      "source_title": "논슬립 옷걸이 5개입",
+      "suggested_new_leaf": "household.storage.closet.hanger",
+      "reason": "수납/의류정리용 옷걸이로 청소·세탁 세정제 taxonomy와 제품유형이 다르며 대응 리프가 확인되지 않았다.",
+      "quantity_review": "5개입 unchanged",
+      "followup": "household storage/closet taxonomy"
+    }
+  ],
+  "explicit_review_conflict_check": {
+    "checked_against": "review-decisions-input.json",
+    "source_record_keys_checked": [
+      "2097002333074", "2097002345589", "2097002345596", "2097002344643", "1000807127772", "1000028219837", "1000867881873", "1000832578828", "1000032065973", "1000633383238", "1000067324459", "1000806538937", "1000806540033", "0000008303508", "1000040396040", "2097001684689", "1000034979455", "1000806539168", "1000783636484", "1000832145871", "1000806538970", "1000807126862"
+    ],
+    "conflicts_found": 0
+  },
+  "duplicate_proposal_check": {
+    "checked_scope": "handoff/2026-09-11/proposals",
+    "duplicates_found": 0
+  },
+  "cumulative_reviewed_unique_observations": 499,
+  "baseline_held_observations": 3916,
+  "remaining_unreviewed_observations": 3417,
+  "executed_tests": []
+}
