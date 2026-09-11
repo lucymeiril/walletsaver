@@ -1,0 +1,78 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "072",
+  "source_path": "냉장/냉동/밀키트 > 떡볶이/면류 > 국수/칼국수/우동 > 간편국수",
+  "scope_note": "Classification-only proposal. Repeated Homeplus observations are grouped by source_record_key. Promotion and quantity fields are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 12,
+    "unique_products": 6,
+    "new_classification_reviews": 12,
+    "prior_reviewed": 926,
+    "current_reviewed": 938,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2978
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "OR search across all six source_record_keys found only pending evidence in indexed repository search; no prior proposal hit was found."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:10:13", "ingestion:59:51"],
+      "source_record_key": "120794357",
+      "source_title": "씨제이 백설 생칼국수 550G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.kalguksu",
+      "reason": "상품명이 생칼국수를 직접 명시하고 pass41에 칼국수 독립 leaf가 있다.",
+      "promotion_review": "unchanged; 1+1 observation preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:10:23", "ingestion:60:47"],
+      "source_record_key": "071426264",
+      "source_title": "씨제이 비비고 들기름 막국수 2인 377G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.makguksu",
+      "reason": "들기름은 조리/맛 속성이며 기본 제품형태는 막국수다. pass41에 막국수 독립 leaf가 있다.",
+      "promotion_review": "unchanged; 1+1 observation preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:11:39", "ingestion:60:77"],
+      "source_record_key": "138480983",
+      "source_title": "씨제이 베트남 쌀국수 375G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.rice_noodle",
+      "reason": "상품명이 베트남 쌀국수를 직접 명시하며 pass41에 쌀국수 leaf가 있다.",
+      "quantity_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:11:98", "ingestion:61:40"],
+      "source_record_key": "071390120",
+      "source_title": "칠갑농산 냉천골 들기름막국수 2인분 440G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.makguksu",
+      "reason": "들기름 맛/조리 속성과 무관하게 제품형태가 막국수로 명확하다.",
+      "quantity_review": "unchanged"
+    },
+    {
+      "raw_record_ids": ["ingestion:12:33", "ingestion:61:75"],
+      "source_record_key": "071353349",
+      "source_title": "simplus 바지락칼국수 328G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.meals.noodles.kalguksu",
+      "reason": "바지락은 토핑/맛 요소이고 제품형태는 칼국수다.",
+      "quantity_review": "unchanged"
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:11:40", "ingestion:60:78"],
+      "source_record_key": "138480977",
+      "source_title": "씨제이 사천 마라탕면 2인분 434G",
+      "suggested_new_leaf": "food.meals.noodles.malatang_noodle",
+      "reason": "마라탕면 완성 간편면임은 명확하지만 pass41에는 대응 면 leaf가 없다. 짬뽕면이나 일반 국수로 강제하지 않는다.",
+      "followup": "마라탕면 독립 leaf 또는 아시안 면요리 통합 정책 검토"
+    }
+  ],
+  "executed_tests": []
+}
