@@ -1,0 +1,244 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["051"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 600,
+    "batch_reviewed_unique_observations": 20,
+    "cumulative_reviewed_unique_observations": 620,
+    "remaining_unreviewed_observations": 3296
+  },
+  "review_summary": {
+    "unique_source_products_reviewed": 20,
+    "observations_reviewed": 20,
+    "proposed_existing_leaf_products": 15,
+    "proposed_existing_leaf_observations": 15,
+    "held_products": 5,
+    "held_observations": 5,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431,
+    "quantity_or_promotion_repairs_applied": 0
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:35:50"],
+      "source_name": "lottemart",
+      "source_record_key": "0430001339340",
+      "source_title": "정감 부드러운 복숭아 (4-7입/박스)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.fruit.peach",
+      "reason": "제품명과 상세 category_path가 복숭아를 직접 가리킨다. 4-7입 범위와 promotion_unresolved는 분류와 분리해 그대로 보존한다.",
+      "quantity_review": "unchanged; count_range_unresolved preserved",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:51"],
+      "source_name": "lottemart",
+      "source_record_key": "8809928400518",
+      "source_title": "프라임 사과, 배 (사과4입, 배6입)",
+      "decision": "hold",
+      "reason": "사과와 배를 함께 구성한 선물세트다. 현재 신선과일 taxonomy는 한 상품에 단일 fruit leaf를 요구하며 혼합 신선과일 leaf가 없어 어느 한 구성품으로 강제 분류하지 않는다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:52"],
+      "source_name": "lottemart",
+      "source_record_key": "8809928400501",
+      "source_title": "천안배 (배 5-6입)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.fruit.pear",
+      "reason": "제품명이 배를 직접 가리킨다. 5-6입 범위는 별도 수량 이슈로 유지한다.",
+      "quantity_review": "unchanged; count_range_unresolved preserved",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:53"],
+      "source_name": "lottemart",
+      "source_record_key": "8809597447852",
+      "source_title": "나주 최종기 농부의 하우스배 (배 7-11입)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.fruit.pear",
+      "reason": "하우스배 상품으로 제품명이 배를 직접 가리킨다. 수량 범위는 수정하지 않는다.",
+      "quantity_review": "unchanged; count_range_unresolved preserved",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:54"],
+      "source_name": "lottemart",
+      "source_record_key": "8809922661847",
+      "source_title": "AI로 선별한 머스크 메론 (메론4입)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.fruit.melon",
+      "reason": "머스크 메론은 기존 멜론·참외 leaf에 해당한다. 'AI로 선별'은 선별 방식 표현으로 제품 종류를 바꾸지 않는다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:55"],
+      "source_name": "lottemart",
+      "source_record_key": "8809048476677",
+      "source_title": "제스프리 그린키위 (22~25입)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.fruit.kiwi",
+      "reason": "그린키위가 제품명에 명시된다. 22~25입 범위는 별도 수량 이슈로 유지한다.",
+      "quantity_review": "unchanged; count_range_unresolved preserved",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:56"],
+      "source_name": "lottemart",
+      "source_record_key": "8809019712179",
+      "source_title": "상주곶감(복) (곶감30입)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_fruit.dried",
+      "reason": "initial_taxonomy.py에 곶감을 food.produce.processed_fruit.dried로 보내는 명시 규칙이 있다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:57"],
+      "source_name": "lottemart",
+      "source_record_key": "8809019711790",
+      "source_title": "상주 곶감 (정) (상주곶감 30입)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_fruit.dried",
+      "reason": "곶감 명시 규칙을 재사용한다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:58"],
+      "source_name": "lottemart",
+      "source_record_key": "8809928402826",
+      "source_title": "한가득 정성담은 샤인 혼합과일 (4KG/박스)",
+      "decision": "hold",
+      "reason": "샤인머스캣을 포함한 혼합과일 세트로 보이지만 구성 전체가 한 fruit leaf로 환원되지 않는다. 혼합 신선과일 정책 또는 별도 leaf 검토가 필요하다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:59"],
+      "source_name": "lottemart",
+      "source_record_key": "8809210970569",
+      "source_title": "제스프리 골드키위 (20~25입)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.fruit.kiwi",
+      "reason": "골드키위가 제품명에 명시된다. 수량 범위는 수정하지 않는다.",
+      "quantity_review": "unchanged; count_range_unresolved preserved",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:60"],
+      "source_name": "lottemart",
+      "source_record_key": "8803143116544",
+      "source_title": "상주 무농약 왕곶감 (곶감 24입)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_fruit.dried",
+      "reason": "곶감 명시 규칙을 재사용한다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:61"],
+      "source_name": "lottemart",
+      "source_record_key": "8809019712643",
+      "source_title": "청도 실속 반건시 (반건시 20입)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_fruit.dried",
+      "reason": "반건시는 건조·반건조 감 제품으로 기존 가공과일/건과일 leaf가 가장 직접적이다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:62"],
+      "source_name": "lottemart",
+      "source_record_key": "8809928402512",
+      "source_title": "한가득 정성담은 혼합과일 11종 (4KG/박스)",
+      "decision": "hold",
+      "reason": "11종 혼합 신선과일 세트다. 단일 fruit leaf로 강제 분류하지 않는다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:63"],
+      "source_name": "lottemart",
+      "source_record_key": "8809597444226",
+      "source_title": "나주하우스배 충주사과 (사과8입, 배6입)",
+      "decision": "hold",
+      "reason": "사과와 배를 함께 구성한 혼합 세트로, 단일 apple 또는 pear leaf에 넣지 않는다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:64"],
+      "source_name": "lottemart",
+      "source_record_key": "8809928400242",
+      "source_title": "태국산 망고 (태국망고 9입)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.fruit.mango",
+      "reason": "제품명이 생망고를 직접 가리키며 현재 taxonomy에 mango leaf가 존재한다. 전역 자동 키워드는 추가하지 않고 이 판매키만 수동 제안한다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:65"],
+      "source_name": "lottemart",
+      "source_record_key": "8809928402499",
+      "source_title": "한가득 정성담은 혼합과일 5종 (4KG/박스)",
+      "decision": "hold",
+      "reason": "5종 혼합 신선과일 세트다. 단일 fruit leaf로 강제 분류하지 않는다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:66"],
+      "source_name": "lottemart",
+      "source_record_key": "8809019712667",
+      "source_title": "GAP 청도 반건시 (반건시 30입)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_fruit.dried",
+      "reason": "반건시는 건조·반건조 감 제품으로 processed_fruit.dried에 제안한다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:67"],
+      "source_name": "lottemart",
+      "source_record_key": "8809597448682",
+      "source_title": "망고 혼합 (옐로망고, 애플망고) (태국망고 3입,애플망고 6입)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.fruit.mango",
+      "reason": "구성은 옐로망고와 애플망고로 모두 망고 품종이다. 서로 다른 fruit type 혼합이 아니므로 기존 mango leaf를 재사용한다. 복합 수량은 수정하지 않는다.",
+      "quantity_review": "unchanged; mixed counts preserved",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:68"],
+      "source_name": "lottemart",
+      "source_record_key": "8809597447869",
+      "source_title": "천안 지순태 농부의 GAP 배 (배 8-9입)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.fruit.pear",
+      "reason": "제품명이 배를 직접 가리킨다. 8-9입 범위는 별도 수량 이슈로 유지한다.",
+      "quantity_review": "unchanged; count_range_unresolved preserved",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:35:69"],
+      "source_name": "lottemart",
+      "source_record_key": "8809019711257",
+      "source_title": "상주 왕 곶감 (상주곶감 32입)",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.produce.processed_fruit.dried",
+      "reason": "곶감 명시 규칙을 재사용한다.",
+      "quantity_review": "unchanged",
+      "promotion_review": "unchanged; unresolved promotion preserved"
+    }
+  ],
+  "executed_tests": []
+}
