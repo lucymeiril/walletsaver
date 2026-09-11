@@ -1,0 +1,78 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["385", "386", "387", "388", "389", "390"],
+  "scope_note": "GitHub read/write review only. All 12 observations were read and exact source keys were checked against prior proposal search results and the 431 explicit review decisions. Existing decisions, pass41 catalog/DB and taxonomy source were not modified.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 402,
+    "batch_new_unique_observations": 12,
+    "cumulative_reviewed_unique_observations": 414,
+    "remaining_unreviewed_observations": 3502
+  },
+  "explicit_review_decision_conflicts": [],
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:52:17"],
+      "source_record_key": "127973751",
+      "source_title": "친환경 감자 500g(봉)",
+      "proposed_leaf": "food.produce.vegetables.potato",
+      "reason": "친환경 여부는 재배/상품 속성이고 제품 정체성은 신선 감자다. 현재 taxonomy에 감자 리프가 정확히 존재한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:52:75"],
+      "source_record_key": "071150595",
+      "source_title": "실속) 친환경당근 800G(봉)",
+      "proposed_leaf": "food.produce.vegetables.carrot",
+      "reason": "친환경/실속 표기는 속성이고 제목이 신선 당근을 직접 지시한다. 현재 taxonomy의 carrot 리프와 일치한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:49", "ingestion:65:88"],
+      "source_record_key": "069367595",
+      "source_title": "녹차원 보이차 40T(36G)",
+      "proposed_leaf": "food.drinks.tea.puer",
+      "reason": "제목과 원본 경로가 보이차를 직접 명시하고 현재 taxonomy에 정확한 puer/보이차 리프가 존재한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "same_source_listing_observations_only"
+    },
+    {
+      "raw_record_ids": ["ingestion:16:60", "ingestion:65:19"],
+      "source_record_key": "004739183",
+      "source_title": "동서 제티 쵸코스틱 20T (340G)",
+      "proposed_leaf": "food.drinks.tea.cocoa",
+      "reason": "원본 경로가 가향코코아믹스이고 제목의 제티 초코스틱도 코코아계 분말음료다. 현재 taxonomy에 cocoa/코코아·핫초코 리프가 존재한다.",
+      "quantity_review": "unchanged",
+      "identity_merge": "same_source_listing_observations_only"
+    }
+  ],
+  "deferred_taxonomy_candidates": [
+    {
+      "raw_record_ids": ["ingestion:15:90", "ingestion:65:39"],
+      "source_record_key": "127049233",
+      "source_title": "녹차원 사양벌꿀 1KG",
+      "suggested_new_leaf": "food.seasonings.syrups.honey",
+      "reason": "제품이 벌꿀임은 명확하지만 현재 액상당류 taxonomy에는 올리고당·물엿·알룰로스 등은 있어도 벌꿀 전용 리프가 확인되지 않는다. 다른 당류로 강제하지 않고 공통 honey 리프 후보로 둔다."
+    },
+    {
+      "raw_record_ids": ["ingestion:16:22", "ingestion:65:43"],
+      "source_record_key": "105367183",
+      "source_title": "동서 아카시아 꿀 튜브 900G",
+      "suggested_new_leaf": "food.seasonings.syrups.honey",
+      "reason": "아카시아는 꿀의 원료/화종 속성이고 제품형태는 벌꿀이다. 별도 아카시아 리프를 즉시 만들기보다 사양벌꿀과 함께 일반 honey 리프 정책 후보로 묶는다."
+    }
+  ],
+  "nonclassification_pending": [
+    {
+      "raw_record_ids": ["ingestion:16:58", "ingestion:65:28"],
+      "source_record_key": "064586356",
+      "source_title": "동서 맥심 슈프림골드 커피믹스 150T+20T (2295G)",
+      "existing_leaf": "food.drinks.coffee.mix",
+      "reason": "두 관측 모두 분류 자체는 이미 coffee.mix로 resolved 상태다. pending 이유는 mixed_package_unresolved이므로 150T+20T 규격 해석을 이번 분류 proposal이 해결했다고 보지 않는다."
+    }
+  ],
+  "executed_tests": []
+}
