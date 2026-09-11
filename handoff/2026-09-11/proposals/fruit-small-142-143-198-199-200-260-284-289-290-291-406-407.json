@@ -1,0 +1,165 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["142", "143", "144", "198", "199", "200", "260", "284", "289", "290", "291", "406", "407"],
+  "scope_note": "GitHub read/write review only. Classification decisions are separated from quantity/unit/title-change pending reasons. No staging DB import or repository tests were executed.",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:2:9", "ingestion:51:16"],
+      "source_title": "14Brix 제스프리 썬골드키위(뉴질랜드) 1.1KG(박스)",
+      "proposed_leaf": "food.produce.fruit.kiwi",
+      "reason": "홈플러스 경로가 그린키위/골드키위/참다래이고 제목이 썬골드키위 1.1kg을 직접 명시한다. 동일 판매페이지 반복관측을 함께 보존한다.",
+      "quantity_review": "unchanged; 1.1kg observed; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:2:22", "ingestion:51:20"],
+      "source_title": "제스프리 썬골드키위 7-10입(팩)",
+      "proposed_leaf": "food.produce.fruit.kiwi",
+      "reason": "원본 경로와 제목 모두 골드키위를 직접 가리킨다. 동일 판매페이지의 반복관측이다.",
+      "quantity_review": "unchanged; count_range_unresolved remains pending",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:2:30", "ingestion:51:37"],
+      "source_title": "제스프리 그린키위 7-12입(팩)",
+      "proposed_leaf": "food.produce.fruit.kiwi",
+      "reason": "원본 경로와 제목 모두 그린키위를 직접 가리킨다. 동일 판매페이지의 반복관측이다.",
+      "quantity_review": "unchanged; count_range_unresolved remains pending",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:2:4", "ingestion:51:3"],
+      "source_title": "15Brix 샤인머스캣 1.3KG(박스)",
+      "proposed_leaf": "food.produce.fruit.grape",
+      "reason": "홈플러스 국산포도 경로와 샤인머스캣 제목이 포도 상품임을 직접 뒷받침한다. 동일 판매페이지 반복관측을 함께 보존한다.",
+      "quantity_review": "unchanged; 1.3kg observed; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:2:11", "ingestion:51:5"],
+      "source_title": "15Brix 거봉포도 2-3송이(박스)",
+      "proposed_leaf": "food.produce.fruit.grape",
+      "reason": "홈플러스 국산포도 경로와 거봉포도 제목이 포도 상품임을 직접 뒷받침한다.",
+      "quantity_review": "unchanged; classification-only proposal; title count wording not re-normalized",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:2:15", "ingestion:51:13"],
+      "source_title": "유명산지 캠벨포도 1.5KG(박스)",
+      "proposed_leaf": "food.produce.fruit.grape",
+      "reason": "홈플러스 국산포도 경로와 캠벨포도 제목이 포도 상품임을 직접 뒷받침한다.",
+      "quantity_review": "unchanged; 1.5kg observed; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:2:13", "ingestion:51:17"],
+      "source_title": "12Brix 점보 머스크멜론(통)",
+      "proposed_leaf": "food.produce.fruit.melon",
+      "reason": "홈플러스 메론 경로와 제목의 머스크멜론이 기존 멜론·참외 리프 중 멜론 상품임을 직접 나타낸다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:2:28", "ingestion:51:29"],
+      "source_title": "고당도 허니듀 멜론(미국)통",
+      "proposed_leaf": "food.produce.fruit.melon",
+      "reason": "홈플러스 메론 경로와 제목의 허니듀 멜론이 상품유형을 직접 나타낸다.",
+      "quantity_review": "unchanged; unit_unresolved remains pending",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:2:45", "ingestion:51:50"],
+      "source_title": "프리미엄 블랙사파이어 포도(미국) 600G(팩)",
+      "proposed_leaf": "food.produce.fruit.grape",
+      "reason": "홈플러스 수입포도 경로와 제목의 블랙사파이어 포도가 상품유형을 직접 나타낸다.",
+      "quantity_review": "unchanged; 600g observed; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:2:56", "ingestion:51:30"],
+      "source_title": "씨없는 청포도(미국) 600G(팩)",
+      "proposed_leaf": "food.produce.fruit.grape",
+      "reason": "홈플러스 수입포도 경로와 제목의 씨없는 청포도가 상품유형을 직접 나타낸다.",
+      "quantity_review": "unchanged; 600g observed; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:2:41", "ingestion:51:39"],
+      "source_title": "자몽(남아공) 개",
+      "proposed_leaf": "food.produce.fruit.grapefruit",
+      "reason": "홈플러스 자몽/메로골드 경로와 제목의 자몽이 기존 자몽 리프에 직접 대응한다.",
+      "quantity_review": "unchanged; 1개 observed; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:2:24", "ingestion:51:26"],
+      "source_title": "아보카도(페루) 3-4입(팩)",
+      "proposed_leaf": "food.produce.fruit.avocado",
+      "reason": "홈플러스 아보카도 경로와 제목이 아보카도를 직접 명시한다.",
+      "quantity_review": "unchanged; count_range_unresolved remains pending",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:51:57"],
+      "source_title": "제주 황금향 4-7입(박스)",
+      "proposed_leaf": "food.produce.fruit.citrus",
+      "reason": "홈플러스 만감류 경로와 제목의 황금향은 기존 감귤류 통합 리프에 대응한다.",
+      "quantity_review": "unchanged; count_range_unresolved remains pending",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:51:46"],
+      "source_title": "항공직송 골드 망고(태국) 개",
+      "proposed_leaf": "food.produce.fruit.mango",
+      "reason": "홈플러스 망고/열대과일 경로와 제목의 골드 망고가 기존 망고 리프에 직접 대응한다.",
+      "quantity_review": "unchanged; unit_unresolved remains pending",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:2:34", "ingestion:51:40", "ingestion:51:64"],
+      "source_title": "레몬(칠레) 관련 판매페이지",
+      "reason": "원본 경로는 레몬/라임이지만 pass41 신선과일 taxonomy에는 라임 독립 리프는 있어도 레몬 독립 리프가 확인되지 않았다. 레몬을 라임으로 잘못 합치지 않는다.",
+      "followup": "레몬 독립 리프 또는 감귤류 통합 정책을 검토하고 수량범위 관측은 별도 유지"
+    },
+    {
+      "raw_record_ids": ["ingestion:2:12", "ingestion:51:14"],
+      "source_title": "고산지 허니글로우(베트남)",
+      "reason": "홈플러스 경로는 바나나지만 제목 자체에는 바나나가 없고 현재 분류기도 source_leaf_needs_name_corroboration으로 보류한다. 진열 경로만으로 바나나를 확정하지 않는다.",
+      "followup": "원문 상세 또는 안정적인 상품명 alias 근거 확인"
+    }
+  ],
+  "non_classification_pending": [
+    {
+      "raw_record_ids": ["ingestion:2:18", "ingestion:51:15"],
+      "source_title": "제주 하우스밀감 1.4KG 판매페이지",
+      "resolved_leaf": "food.produce.fruit.citrus",
+      "remaining_reason": "source_title_changed",
+      "note": "분류는 이미 resolved 상태이므로 이번 classification proposal로 중복 해결하지 않는다."
+    },
+    {
+      "raw_record_ids": ["ingestion:2:25", "ingestion:51:22"],
+      "source_title": "11Brix 당도선별 햇배 4-6입(박스)",
+      "resolved_leaf": "food.produce.fruit.pear",
+      "remaining_reason": "count_range_unresolved",
+      "note": "배 분류는 이미 resolved이며 4-6입 범위 규격만 별도 검토 대상이다."
+    },
+    {
+      "raw_record_ids": ["ingestion:2:6", "ingestion:2:7", "ingestion:2:35", "ingestion:51:7", "ingestion:51:8", "ingestion:51:23"],
+      "source_title": "홈플러스 복숭아 4-7입 계열",
+      "resolved_leaf": "food.produce.fruit.peach",
+      "remaining_reason": "count_range_unresolved",
+      "note": "복숭아 분류는 이미 resolved이며 수량범위 문제 때문에 pending이다."
+    },
+    {
+      "raw_record_ids": ["ingestion:2:3", "ingestion:51:6"],
+      "source_title": "델몬트 바나나(베트남)",
+      "resolved_leaf": "food.produce.fruit.banana",
+      "remaining_reason": "unit_unresolved",
+      "note": "바나나 분류는 이미 resolved 상태이며 단위 문제만 남아 있다."
+    }
+  ],
+  "executed_tests": []
+}
