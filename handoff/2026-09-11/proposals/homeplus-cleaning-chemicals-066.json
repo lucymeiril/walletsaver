@@ -1,0 +1,137 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "reviewed_pending_groups": ["066"],
+  "scope_note": "GitHub read/write review only. No staging DB import, catalog rebuild, taxonomy code edit, or repository tests were run. Existing source data, promotions, quantity evidence, and explicit review decisions remain unchanged.",
+  "progress_accounting": {
+    "baseline_pending_observations": 3916,
+    "prior_reviewed_unique_observations": 846,
+    "batch_reviewed_unique_observations": 14,
+    "cumulative_reviewed_unique_observations": 860,
+    "remaining_unreviewed_observations": 3056
+  },
+  "review_summary": {
+    "unique_source_products_reviewed": 9,
+    "observations_reviewed": 14,
+    "proposed_existing_leaf_products": 5,
+    "proposed_existing_leaf_observations": 8,
+    "held_or_new_taxonomy_products": 4,
+    "held_or_new_taxonomy_observations": 6,
+    "existing_proposal_duplicates_found": 0,
+    "explicit_review_decision_conflicts_found": 0,
+    "explicit_review_decision_file": "handoff/2026-09-11/review-decisions-input.json",
+    "explicit_review_decision_count": 431
+  },
+  "taxonomy_note": "원본 shelf는 욕실세정제이지만 실제 상품은 과탄산소다·베이킹소다·구연산·세탁조세정제·배수관세정제가 섞여 있다. pass41의 욕실세정제는 제품명 충돌 방지 규칙상 이 제목들에 사용할 수 없다. 과탄산소다는 기존 산소계표백제, 세탁조 클리너는 기존 세탁조세정제, 세면대 배수관 클리너는 기존 배수관세정제로 제안한다. 단독 베이킹소다와 구연산 세정제는 현재 대응 leaf가 없어 일반청소 하위 신규 후보로 보류한다.",
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:25:64", "ingestion:75:13"],
+      "source_name": "homeplus",
+      "source_record_key": "147531311",
+      "source_title": "슈가버블 과탄산소다 리필 1KG",
+      "status": "proposed",
+      "proposed_unified_category_id": "household.cleaning.laundry.oxygen_bleach",
+      "reason": "상품명이 과탄산소다를 직접 명시하며 pass41에 산소계표백제 leaf가 이미 존재한다. 욕실세정제 shelf보다 실제 화학 세정제 형태를 우선한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:25:65", "ingestion:74:88"],
+      "source_name": "homeplus",
+      "source_record_key": "127354539",
+      "source_title": "LG생활건강 홈스타 세탁조 클리너 450ML",
+      "status": "proposed",
+      "proposed_unified_category_id": "household.cleaning.laundry.machine_cleaner",
+      "reason": "상품명이 세탁조 클리너를 직접 명시하며 pass41에 세탁조세정제 전용 leaf가 존재한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:25:69", "ingestion:75:26"],
+      "source_name": "homeplus",
+      "source_record_key": "147531305",
+      "source_title": "슈가버블 베이킹소다 리필 2KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.cleaning.general.baking_soda",
+      "reason": "단독 베이킹소다 세정제이며 식용 베이킹소다도 욕실세정제도 아니다. pass41 일반청소 계열에 대응 leaf가 없어 신규 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:26:22", "ingestion:75:3"],
+      "source_name": "homeplus",
+      "source_record_key": "147531363",
+      "source_title": "슈가버블 구연산 리필 1KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.cleaning.general.citric_acid",
+      "reason": "단독 구연산 세정제로 pass41에 정확한 household leaf가 없다. 식품용 산미료나 욕실세정제로 강제하지 않고 일반청소 하위 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:26:23", "ingestion:75:33"],
+      "source_name": "homeplus",
+      "source_record_key": "127354545",
+      "source_title": "LG생활건강 홈스타 세면대 배수관 클리너 230ML",
+      "status": "proposed",
+      "proposed_unified_category_id": "household.cleaning.bath.drain",
+      "reason": "세면대 배수관 클리너라는 용도가 명확하며 pass41에 배수관세정제 전용 leaf가 존재한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:75:83"],
+      "source_name": "homeplus",
+      "source_record_key": "124661071",
+      "source_title": "LG생활건강 한입 과탄산소다 천연세제 리필 1KG",
+      "status": "proposed",
+      "proposed_unified_category_id": "household.cleaning.laundry.oxygen_bleach",
+      "reason": "과탄산소다 기반 세정제로 기존 산소계표백제 leaf가 제품형태에 맞는다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:75:84"],
+      "source_name": "homeplus",
+      "source_record_key": "123394296",
+      "source_title": "LG생활건강 한입구연산 리필 1KG",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.cleaning.general.citric_acid",
+      "reason": "단독 구연산 세정제이며 기존 pass41에 정확한 household leaf가 없어 슈가버블 구연산과 같은 신규 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:75:86"],
+      "source_name": "homeplus",
+      "source_record_key": "122650300",
+      "source_title": "LG생활건강 한입 베이킹소다 리필 2kg",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "household.cleaning.general.baking_soda",
+      "reason": "단독 베이킹소다 세정제로 슈가버블 베이킹소다와 같은 제품형태다. 기존 욕실세정제에 넣지 않고 신규 후보로 보류한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    },
+    {
+      "raw_record_ids": ["ingestion:76:13"],
+      "source_name": "homeplus",
+      "source_record_key": "068735386",
+      "source_title": "LG생활건강 홈스타 발포 세탁조 버블워시 100G*2포",
+      "status": "proposed",
+      "proposed_unified_category_id": "household.cleaning.laundry.machine_cleaner",
+      "reason": "발포형이지만 사용 대상이 세탁조로 명확하여 기존 세탁조세정제 leaf에 해당한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "promotion_review": "unchanged; captured promotion evidence is outside this classification-only review",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "executed_tests": []
+}
