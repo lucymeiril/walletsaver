@@ -25,11 +25,11 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다. 이 수�
 
 현재 strict reverse audit의 안전한 상한:
 
-- 미완 strict 범위: `pending 001~030`
-- 원본 관측: **1,531 observations**
-- pass41 전체 pending 3,916 대비 **약 39.1%**
-- 관측 구간 기준 `031~451`은 약 60.9%를 strict/ordered 방식으로 지나왔지만, 이것을 최종 완료율로 부르지 않는다. 과거 proposal 중복/re-review와 taxonomy hold가 남아 있다.
-- `001~030`에도 과거 proposal이 있으므로 실제 새 판단량은 **1,531보다 작을 가능성이 높다**. raw-key 전역 reconciliation 전에는 더 작은 수치를 최종 미완료량으로 확정하지 않는다.
+- 미완 strict 범위: `pending 001~029`
+- 원본 관측: **1,499 observations**
+- pass41 전체 pending 3,916 대비 **약 38.3%**
+- 관측 구간 기준 `030~451`은 약 61.7%를 strict/ordered 방식으로 지나왔지만, 이것을 최종 완료율로 부르지 않는다. 과거 proposal 중복/re-review와 taxonomy hold가 남아 있다.
+- `001~029`에도 과거 proposal이 있으므로 실제 새 판단량은 **1,499보다 작을 가능성이 높다**. raw-key 전역 reconciliation 전에는 더 작은 수치를 최종 미완료량으로 확정하지 않는다.
 
 분류 sweep 뒤 최종 DB 반영 전 남는 단계:
 1. proposal 간 raw-record/source-key 중복 제거
@@ -40,14 +40,14 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다. 이 수�
 
 ## 3. strict reverse sweep 현재 누계
 
-완료 범위: **pending 031~043**
+완료 범위: **pending 030~043**
 
-- observations opened: **352**
-- already-classified exclusions: **35**
-- strict/new classification reviews: **317**
-- distinct newly reviewed source listings: **289**
-- existing-leaf proposals: **108 listings**
-- taxonomy/product-form/promotion/manual-review holds: **181 listings**
+- observations opened: **384**
+- already-classified exclusions: **36**
+- strict/new classification reviews: **348**
+- distinct newly reviewed source listings: **320**
+- existing-leaf proposals: **113 listings**
+- taxonomy/product-form/promotion/manual-review holds: **207 listings**
 
 그룹별 최신 proposal/reconciliation:
 - 043 `proposals/lottemart-vegetables-043.json` — 23 obs / existing 21 / hold 2
@@ -63,8 +63,10 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다. 이 수�
 - 033 `proposals/emart-hygiene-health-033.json` — 30 opened / 12 excluded / 18 new / existing 5 / hold 13
 - 032 `proposals/homeplus-flavored-powder-drinks-032.json` — 32 obs / 16 duplicated listings / existing 2 / hold 14
 - 031 `proposals/emart-meat-eggs-031.json` — 32 opened / 6 excluded / 26 new / existing 15 / hold 11
+- 030 `proposals/emart-obanjang-030.json` — 32 opened / 1 excluded / 31 new / existing 5 / hold 26
 
 최신 체크포인트:
+- `checkpoints/checkpoint-after-pending-030.md`
 - `checkpoints/checkpoint-after-pending-031.md`
 - `checkpoints/checkpoint-after-pending-032.md`
 - `checkpoints/checkpoint-after-pending-033.md`
@@ -75,6 +77,14 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다. 이 수�
 - `checkpoints/checkpoint-reverse-sweep-038-043.md`
 
 ## 4. 최근 중요한 발견
+
+### pending 030
+- 32 observations 중 1 already-classified, 31 strict classification reviews.
+- `오반장` broad surface 안에서 URL form을 분리하니 신규 31건 중 **24건이 dealItemView promotion pages**, 실제 individual itemView는 7건이었다.
+- existing 5: 찰흑미 -> `food.grains.rice.black`; 황태 snack choice listing -> `food.seafood.processed.dried_fish`; 바삭한치킨윙 -> `food.meals.prepared.chicken`; 국물떡볶이 -> `food.meals.prepared.tteokbokki`; 우주인 불고기풀토핑 화덕피자 -> `food.meals.prepared.pizza`.
+- holds 2 beyond promotions: 홍두깨 육포세트 -> new candidate `food.meat.processed.jerky`; 서로 다른 요리 3종 밀키트 bundle -> mixed-bundle hold.
+- **pre-existing classification anomaly:** excluded row `ingestion:1:25`, key `1000601687276`, title `석박지/맛김치 1+1` is already classified as `food.preserved.kimchi.cabbage` despite being a mixed `dealItemView` promotion. Exclude from new-review count, but revisit during final global reconciliation.
+- 31 review source keys collision-screened in four batches with `review-decisions-input`; returned match 0.
 
 ### pending 031
 - 32 observations 중 6 already-classified, 26 strict classification reviews.
@@ -103,21 +113,21 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다. 이 수�
 - 288~451: final281, exclusions15, classification-pending266, legacy overlap238, 과거 proposal 대비 true new increment **28 observations** (`288`, `292~304`), 해당 14 source keys explicit exact match 0.
 - pending313 `농심 생생 우동 용기 276G`: older `cup_ramen` vs final `udon` conflict. 최종 승격 전 해결.
 
-## 6. 현재 재개점 — pending 030
+## 6. 현재 재개점 — pending 029
 
 **다음 AI는 임의로 다른 그룹을 고르지 말고 여기서 이어간다.**
 
-- group: `pending/030`
-- 031 strict audit은 완료되어 `proposals/emart-meat-eggs-031.json`, `checkpoints/checkpoint-after-pending-031.md`에 기록됨.
-- 030은 아직 이 strict 방식으로 시작하지 않았다.
+- group: `pending/029`
+- 030 strict audit은 완료되어 `proposals/emart-obanjang-030.json`, `checkpoints/checkpoint-after-pending-030.md`에 기록됨.
+- 029은 아직 이 strict 방식으로 시작하지 않았다.
 
-030 strict audit 절차:
-1. `pending/030/` 디렉터리의 모든 파일 조각 확인.
+029 strict audit 절차:
+1. `pending/029/` 디렉터리의 모든 파일 조각 확인.
 2. already-classified vs classification-pending 분리.
-3. 030을 포함한다고 주장하는 기존 proposal이 있으면 `raw_record_id` coverage 실측.
+3. 029을 포함한다고 주장하는 기존 proposal이 있으면 `raw_record_id` coverage 실측.
 4. 431 `review-decisions-input.json` collision screen.
 5. 누락만 supplement/reconciliation으로 기록하고 conflict는 명시.
-6. 완료 즉시 이 파일의 누계/남은 상한을 갱신하고 재개점을 `029`로 넘긴다.
+6. 완료 즉시 이 파일의 누계/남은 상한을 갱신하고 재개점을 `028`로 넘긴다.
 
 ## 7. 문서 신뢰 우선순위
 
