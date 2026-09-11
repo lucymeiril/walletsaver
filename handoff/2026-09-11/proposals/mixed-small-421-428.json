@@ -1,0 +1,101 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "scope_note": "GitHub read/write review only. No staging DB import, rebuild, or repo tests were run. Mart merchandising paths were treated as evidence only; title/product form wins when paths conflict.",
+  "reviewed_pending_groups": ["421", "422", "423", "424", "425", "426", "427", "428"],
+  "decisions": [
+    {
+      "pending_group": "421",
+      "raw_record_ids": ["ingestion:52:16"],
+      "source_record_key": "122215920",
+      "source_title": "친환경 양파 800G(망)",
+      "proposed_leaf": "food.produce.vegetables.onion",
+      "reason": "친환경/김장채소 진열은 속성·판매문맥이고 제목이 양파를 직접 명시한다. pass41의 신선 양파 리프와 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "422",
+      "raw_record_ids": ["ingestion:52:68"],
+      "source_record_key": "124646504",
+      "source_title": "친환경 부추 180G(봉)",
+      "proposed_leaf": "food.produce.vegetables.chives",
+      "reason": "친환경 표시는 재배 속성이고 제목이 부추를 직접 명시한다. pass41의 부추 리프와 일치한다.",
+      "quantity_review": "unchanged; classification-only proposal",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "423",
+      "raw_record_ids": ["ingestion:34:44"],
+      "source_record_key": "8802039010812",
+      "source_title": "면사랑 해물짬뽕 (363G)",
+      "proposed_leaf": "food.meals.noodles.jjamppong",
+      "reason": "제목이 짬뽕을 직접 명시하고 pass41 면요리 taxonomy에 짬뽕면 리프 및 제목 규칙이 존재한다.",
+      "quantity_review": "unchanged; promotion_unresolved remains separate",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "424",
+      "raw_record_ids": ["ingestion:35:11"],
+      "source_record_key": "8801045513102",
+      "source_title": "오뚜기 면사랑 얼큰 짬뽕 (2인) (390G)",
+      "proposed_leaf": "food.meals.noodles.jjamppong",
+      "reason": "마트는 짜장면 leaf에 진열했지만 제목은 얼큰 짬뽕을 직접 명시한다. pass41의 짬뽕면 리프가 제품 유형과 일치하므로 제목을 우선한다.",
+      "quantity_review": "unchanged; promotion_unresolved remains separate",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "425",
+      "raw_record_ids": ["ingestion:33:52"],
+      "source_record_key": "8801005000789",
+      "source_title": "샘표 티아시아 게살 푸팟퐁 커리 (170G)",
+      "proposed_leaf": "food.meals.prepared.curry",
+      "reason": "제목이 170g 즉석 커리 제품을 직접 가리키며 pass41에 즉석카레 리프와 170g 레토르트 카레 감사 선례가 있다. 광범위한 밀키트 진열보다 제품 형태를 우선한다.",
+      "quantity_review": "unchanged; promotion_unresolved remains separate",
+      "identity_merge": "not_requested"
+    },
+    {
+      "pending_group": "427",
+      "raw_record_ids": ["ingestion:33:86"],
+      "source_record_key": "8801114172698",
+      "source_title": "풀무원 철판 바삭감자채전 (300G)",
+      "proposed_leaf": "food.meals.prepared.pancake",
+      "reason": "제목이 감자채전을 직접 명시하고 pass41의 냉동전 리프에는 감자채전 감사 선례가 있다.",
+      "quantity_review": "unchanged; promotion_unresolved remains separate",
+      "identity_merge": "not_requested"
+    }
+  ],
+  "held_decisions": [
+    {
+      "pending_group": "426",
+      "raw_record_ids": ["ingestion:34:83"],
+      "source_record_key": "8802039011673",
+      "source_title": "면사랑 차슈돈코츠라멘 (285G)",
+      "suggested_new_leaf": "food.meals.noodles.ramen",
+      "suggested_path": ["식품", "간편식·면", "면요리", "라멘"],
+      "reason": "원본 경로는 밀키트 > 일식이고 제목은 차슈돈코츠라멘이다. pass41에는 한국식 봉지라면/컵라면 및 우동·짬뽕 등은 있으나 일본식 라멘 전용 리프가 확인되지 않았다. 제목에 밀키트가 없으므로 generic meal_kit로 확정하지 않고 라멘 제품유형 후보로 보류한다.",
+      "quantity_review": "unchanged; promotion_unresolved remains separate",
+      "followup": "taxonomy policy approval for Japanese ramen leaf or explicit decision to use generic meal_kit"
+    },
+    {
+      "pending_group": "428",
+      "raw_record_ids": ["ingestion:28:56"],
+      "source_record_key": "8801007772493",
+      "source_title": "CJ 제일제당 고메 치즈함박 스테이크 (152G)",
+      "suggested_new_leaf": "food.meals.prepared.hamburg_steak",
+      "suggested_path": ["식품", "간편식·면", "조리식품", "함박스테이크"],
+      "reason": "마트는 떡갈비 leaf에 진열했지만 제목은 치즈함박 스테이크를 명시한다. pass41의 떡갈비·동그랑땡·가공햄 리프는 함박을 정확히 표현하지 못하며 기존 taxonomy도 함박을 햄/소시지에 넣지 않도록 방어한다.",
+      "quantity_review": "unchanged; promotion_unresolved remains separate",
+      "followup": "taxonomy policy approval for prepared hamburg steak leaf"
+    }
+  ],
+  "explicit_review_conflict_check": {
+    "checked_against": "review-decisions-input.json",
+    "source_record_keys_checked": ["122215920", "124646504", "8802039010812", "8801045513102", "8801005000789", "8802039011673", "8801114172698", "8801007772493"],
+    "conflicts_found": 0
+  },
+  "cumulative_reviewed_unique_observations": 460,
+  "baseline_held_observations": 3916,
+  "remaining_unreviewed_observations": 3456,
+  "executed_tests": []
+}
