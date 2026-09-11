@@ -1,0 +1,67 @@
+{
+  "status": "proposal_only",
+  "baseline_pass": "pass41",
+  "pending_group": "087",
+  "source_path": "과자/시리얼 > 초콜릿/캔디/젤리/껌 > 젤리/푸딩",
+  "scope_note": "Classification-only proposal. Repeated Homeplus observations are grouped by source_record_key. Promotion and package fields are preserved unchanged.",
+  "review_accounting": {
+    "pending_rows_checked": 10,
+    "unique_products": 5,
+    "new_classification_reviews": 10,
+    "prior_reviewed": 1099,
+    "current_reviewed": 1109,
+    "baseline_pending": 3916,
+    "remaining_unreviewed": 2807
+  },
+  "conflict_checks": {
+    "explicit_review_decision_matches": 0,
+    "repository_search_note": "Existing Homeplus taxonomy tests explicitly keep Polaretti unresolved rather than mapping it to jelly; no explicit review-decision conflict was found."
+  },
+  "decisions": [
+    {
+      "raw_record_ids": ["ingestion:19:3", "ingestion:69:1"],
+      "source_record_key": "071109156",
+      "source_title": "자임 콜라겐 애사비 젤리 210G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.snacks.sweets.jelly",
+      "reason": "제품명이 젤리 형태를 명시하며 pass41의 jelly leaf와 직접 일치한다. 콜라겐/애사비는 제품 부가 특성으로 본다."
+    },
+    {
+      "raw_record_ids": ["ingestion:19:57", "ingestion:69:2"],
+      "source_record_key": "071109144",
+      "source_title": "자임 콜라겐 레몬 젤리 210G",
+      "decision": "propose_existing_leaf",
+      "unified_category_id": "food.snacks.sweets.jelly",
+      "reason": "제품명이 젤리 형태를 명시하므로 기존 jelly leaf가 정확히 맞는다."
+    }
+  ],
+  "held_decisions": [
+    {
+      "raw_record_ids": ["ingestion:18:13", "ingestion:67:28"],
+      "source_record_key": "071403971",
+      "source_title": "돌핀 폴라레티 후르트 400ML",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.frozen.desserts.ice_pop",
+      "reason": "폴라레티는 아이스바/아이스팝 제품군으로 확인되며 기존 Homeplus 테스트도 이 상품을 jelly로 분류하지 않도록 고정한다. 젤리 shelf만으로 jelly에 강제하지 않는다.",
+      "promotion_review": "unchanged; 1+1 preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:18:14", "ingestion:67:4"],
+      "source_record_key": "070068619",
+      "source_title": "돌핀 폴라레티 해피썸머 400ML",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.frozen.desserts.ice_pop",
+      "reason": "동일 폴라레티 아이스팝 계열이며 젤리보다 냉동 디저트 제품형태가 우선한다.",
+      "promotion_review": "unchanged; 1+1 preserved"
+    },
+    {
+      "raw_record_ids": ["ingestion:18:90", "ingestion:68:74"],
+      "source_record_key": "071403942",
+      "source_title": "돌핀 폴라레티 후르츠 바이오 400ML",
+      "status": "held_new_taxonomy_candidate",
+      "suggested_new_leaf": "food.frozen.desserts.ice_pop",
+      "reason": "동일 폴라레티 아이스팝 제품군으로 보며 pass41에 대응 냉동 디저트 leaf가 없어 신규 후보로 보존한다."
+    }
+  ],
+  "executed_tests": []
+}
