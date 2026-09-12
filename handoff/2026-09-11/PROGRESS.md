@@ -120,3 +120,18 @@
 - 남은 strict 상한: `pending 001~019` **1,133 observations**, pass41 pending 3,916의 약 **28.9%**. 관측범위 020~451은 약 71.1%를 지나왔지만 최종 프로젝트 완료율은 아니다.
 - 실제 반영/검사: 이번 작업도 GitHub proposal/checkpoint/status 문서만 갱신했다. DB import/rebuild, taxonomy code edit, pytest, 멱등 검사는 실행하지 않았다.
 - **현재 재개점: `pending/019` — Emart `면류/통조림`, 42 observations / 25 titles, files `pending/019/001.json`, `pending/019/002.json`. 현재 숫자는 항상 `CURRENT_STATUS.md`를 우선한다.**
+
+## 2026-09-12 strict reverse sweep — pending 019
+
+- 확인 범위: `pending/019/001.json`, `pending/019/002.json` 전부. 이마트 `면류/통조림` 42관측은 25개 source listings이며, 17개는 ingestion 89/90 반복 pair, 8개는 singleton이다.
+- 이미 분류 완료 제외: 12판매페이지 / **19관측**이 `review_status=classified`여서 신규 classification 작업량에서 제외했다.
+- 실제 신규 검토: **23관측 / 13판매페이지**. `proposals/emart-noodles-canned-019.json`에 기존 leaf 10개와 hold 3개를 기록했고, `checkpoints/checkpoint-after-pending-019.md`에 누계와 재개점을 고정했다.
+- 기존 leaf 10개: 간편잡채 → `food.meals.prepared.japchae`; 닭한마리 칼국수 → `food.meals.noodles.kalguksu`; 피클 2종 → `food.preserved.sides.pickled`; 메밀쌀소면 → frozen pass41의 `food.meals.noodles.naengmyeon`; 짜장면사리 → `food.meals.noodles.black_bean`; 컵형 라면 4종 → `food.meals.noodles.cup_ramen`.
+- 컵형 identity 보강: 제목에 `컵`이 없던 불닭 70g, 완면각짬뽕 105g, 삼양1963 우지 파개장 115g, 불닭 105g은 current exact-product retail evidence로 작은컵/큰컵 계열임을 교차확인했다. 이 근거는 classification form에만 사용했고 수량·가격 정규화는 바꾸지 않았다.
+- hold 3개: 라면사리 → candidate `food.meals.noodles.ramen_sari`; 밀또띠아 → candidate `food.bakery.bread.tortilla`; 베이크드빈스 → 기존 strict candidate `food.preserved.canned.beans` 재사용.
+- snapshot 안전장치: current source code에 later `wheat_noodle`/`buckwheat_noodle` refinement가 있어도 pass41 snapshot에 없으므로 existing leaf로 취급하지 않았다.
+- collision screen: 그룹 25개 source key의 기존 proposal exact hit **0**, 431 explicit decision hit **0**. classification-pending 13개 source key를 repository-wide 개별 검색해 cross-group pending hit **0**을 확인했다.
+- strict 누계: 완료 범위 **pending 019~043**, opened **792**, exclusions **84**, new classification reviews **708**, reviewed source-listing decisions **652**, existing proposals **305**, holds **347**.
+- 남은 strict 상한: `pending 001~018` **1,091 observations**, pass41 pending 3,916의 약 **27.9%**. 관측범위 019~451은 약 **72.1%**를 지나왔지만 최종 프로젝트 완료율은 아니다.
+- 실제 반영/검사: 이번 작업도 GitHub proposal/checkpoint/status 문서만 갱신했다. DB import/rebuild, taxonomy code edit, pytest, 멱등 검사는 실행하지 않았다.
+- **현재 재개점: `pending/018` — Emart `유아동/완구`, 43 observations / 43 titles, files `pending/018/001.json`, `pending/018/002.json`. 현재 숫자는 항상 `CURRENT_STATUS.md`를 우선한다.**
