@@ -1,0 +1,233 @@
+{
+  "status": "proposal_only",
+  "work_id": "2026-09-12-batch-167-171",
+  "baseline_commit": "5c3996fd364e73a101031f5c4f60cd490c892aed",
+  "reservation_commit": "f94bba4ac9630d6c2dadda112c08a84235aebb6e",
+  "scope": [
+    "remaining/167/001.json",
+    "remaining/168/001.json",
+    "remaining/169/001.json",
+    "remaining/170/001.json",
+    "remaining/171/001.json"
+  ],
+  "historical_references": [
+    "../2026-09-11/proposals/bulk-pending-151-208.json"
+  ],
+  "review_accounting": {
+    "bundles": 5,
+    "products": 15,
+    "observations": 30,
+    "existing_leaf_products": 6,
+    "existing_leaf_observations": 12,
+    "new_leaf_needed_products": 0,
+    "new_leaf_needed_observations": 0,
+    "hold_products": 7,
+    "hold_observations": 14,
+    "already_classified_products": 2,
+    "already_classified_observations": 4
+  },
+  "taxonomy_checks": {
+    "existing": [
+      "food.drinks.juice.fruit_drink",
+      "food.dairy.cream.fresh",
+      "food.seasonings.pastes.gochujang"
+    ],
+    "missing_or_held_candidates": [
+      "food.seasonings.pastes.stir_fried_gochujang",
+      "food.seasonings.liquid_seasoning",
+      "food.seasonings.baking.starch"
+    ],
+    "note": "Current pass43 taxonomy contains fruit_drink (과일음료), fresh cream (생크림), and generic gochujang (고추장). The stir-fried-gochujang, liquid-seasoning, and starch candidate ids are absent, so they remain review-only held candidates and are not treated as approved taxonomy additions."
+  },
+  "conflict_checks": {
+    "accepted_raw_id_matches": 0,
+    "current_explicit_review_decision_matches_for_groups_169_171": 0,
+    "explicit_review_decision_count": 431,
+    "historical_bulk_explicit_review_decision_matches": 0,
+    "note": "All 30 current remaining raw ids were compared with current accepted new_included_ids and accepted_but_blocked_ids with zero overlaps. The seven higher-risk source_record_keys in groups 169-171 were searched exactly in the preserved 431 explicit review decisions with zero matches; the historical 151-208 bulk proposal also recorded zero explicit-review conflicts."
+  },
+  "decisions": [
+    {
+      "group": "167",
+      "source_record_key": "071089512",
+      "source_title": "simplus 복숭아쿨 930ML",
+      "raw_record_ids": ["ingestion:7:29", "ingestion:56:49"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.juice.fruit_drink",
+      "reason": "The title identifies a peach-flavoured Cool-style beverage rather than milk or yogurt; the current generic fruit-drink leaf fits the beverage form, while the dairy-area retail shelf is broader than the product itself.",
+      "issues_preserved": ["promotion_unresolved"]
+    },
+    {
+      "group": "167",
+      "source_record_key": "071089529",
+      "source_title": "simplus 파인애플쿨 930ML",
+      "raw_record_ids": ["ingestion:7:61", "ingestion:57:16"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.juice.fruit_drink",
+      "reason": "The title identifies a pineapple-flavoured Cool-style beverage; flavour is an attribute and the current generic fruit-drink leaf is the product-form match.",
+      "issues_preserved": ["promotion_unresolved"]
+    },
+    {
+      "group": "167",
+      "source_record_key": "102444235",
+      "source_title": "동원소와나무 쿨피스 자두 930ML",
+      "raw_record_ids": ["ingestion:8:26", "ingestion:57:34"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.drinks.juice.fruit_drink",
+      "reason": "The title explicitly identifies a plum-flavoured Coolpis beverage; it is conservatively classified as a fruit drink rather than inferred as dairy from the broad chilled-beverage shelf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "168",
+      "source_record_key": "127731370",
+      "source_title": "알라 휘핑크림 1L",
+      "raw_record_ids": ["ingestion:8:70", "ingestion:58:1"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.cream.fresh",
+      "reason": "The title and source shelf explicitly identify whipping cream, and the current dairy fresh-cream leaf is the closest exact product-form leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "168",
+      "source_record_key": "127571149",
+      "source_title": "직수입 LAURA 휘핑크림 250G",
+      "raw_record_ids": ["ingestion:8:72", "ingestion:58:3"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.cream.fresh",
+      "reason": "The product is explicitly whipping cream and the current taxonomy contains the general fresh-cream leaf; import status and package unit do not change classification.",
+      "issues_preserved": []
+    },
+    {
+      "group": "168",
+      "source_record_key": "111564132",
+      "source_title": "매일 휘핑크림 250ML",
+      "raw_record_ids": ["ingestion:9:53", "ingestion:58:87"],
+      "decision": "existing_leaf",
+      "review_lane": "clear_existing",
+      "unified_category_id": "food.dairy.cream.fresh",
+      "reason": "The title explicitly identifies whipping cream and matches the current dairy fresh-cream leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "169",
+      "source_record_key": "070406831",
+      "source_title": "CJ 100%태양초 우리쌀고추장 1.5KG+350G",
+      "raw_record_ids": ["ingestion:22:85", "ingestion:72:24"],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": "food.seasonings.pastes.gochujang",
+      "reason": "Both current observations are already classified as generic gochujang and remain in the queue only for mixed-package and multiple-quantity review; preserve the existing classification without claiming new classification progress.",
+      "issues_preserved": ["mixed_package_unresolved", "multiple_package_quantities"]
+    },
+    {
+      "group": "169",
+      "source_record_key": "069668901",
+      "source_title": "대상 청정원 순창 태양초 고추장 1.5KG+400G",
+      "raw_record_ids": ["ingestion:23:20", "ingestion:72:31"],
+      "decision": "already_classified",
+      "review_lane": "needs_review",
+      "unified_category_id": "food.seasonings.pastes.gochujang",
+      "reason": "Current observations already resolve to the generic gochujang leaf. The remaining mixed-package and multiple-quantity issues are separate from classification and are preserved unchanged.",
+      "issues_preserved": ["mixed_package_unresolved", "multiple_package_quantities"]
+    },
+    {
+      "group": "169",
+      "source_record_key": "100045388",
+      "source_title": "대상 청정원 순창 쇠고기 볶음고추장 60G*3",
+      "raw_record_ids": ["ingestion:24:52", "ingestion:72:69"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seasonings.pastes.stir_fried_gochujang",
+      "reason": "The explicit title identifies stir-fried beef gochujang, a prepared paste form that should not be silently collapsed into the generic current gochujang leaf. The historical candidate id is absent from current taxonomy, so it remains held for taxonomy review.",
+      "issues_preserved": []
+    },
+    {
+      "group": "170",
+      "source_record_key": "128172522",
+      "source_title": "샘표 연두 순 500ML",
+      "raw_record_ids": ["ingestion:23:37", "ingestion:74:16"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seasonings.liquid_seasoning",
+      "reason": "The source path explicitly identifies liquid seasoning and the title is consistent with that form. Current taxonomy has no exact generic liquid-seasoning leaf, so the product remains a review-only candidate.",
+      "issues_preserved": []
+    },
+    {
+      "group": "170",
+      "source_record_key": "113129716",
+      "source_title": "샘표 연두 순 320G",
+      "raw_record_ids": ["ingestion:24:65", "ingestion:74:44"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seasonings.liquid_seasoning",
+      "reason": "The authoritative retail path explicitly says liquid seasoning; package unit does not change the product form, and current taxonomy lacks an exact liquid-seasoning leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "170",
+      "source_record_key": "128172516",
+      "source_title": "샘표 연두진 500ML",
+      "raw_record_ids": ["ingestion:24:87", "ingestion:73:83"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seasonings.liquid_seasoning",
+      "reason": "The product is explicitly shelved as liquid seasoning and the title identifies the Yeondu seasoning line. No exact current liquid-seasoning leaf exists, so it remains held.",
+      "issues_preserved": []
+    },
+    {
+      "group": "171",
+      "source_record_key": "071295671",
+      "source_title": "simplus 감자맛 전분 400G",
+      "raw_record_ids": ["ingestion:23:97", "ingestion:73:34"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seasonings.baking.starch",
+      "reason": "The title and source path explicitly identify starch. Current taxonomy has no generic starch leaf, and the product should not be forced into flour or an unrelated baking ingredient leaf.",
+      "issues_preserved": []
+    },
+    {
+      "group": "171",
+      "source_record_key": "071295481",
+      "source_title": "simplus 옥수수맛 전분 400G",
+      "raw_record_ids": ["ingestion:24:53", "ingestion:73:96"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seasonings.baking.starch",
+      "reason": "The source path explicitly identifies starch and the title specifies the corn variant. The generic starch candidate is absent from current taxonomy, so it remains held rather than mapped to flour.",
+      "issues_preserved": []
+    },
+    {
+      "group": "171",
+      "source_record_key": "071295498",
+      "source_title": "simplus 국내산 고구마맛 전분 400G",
+      "raw_record_ids": ["ingestion:25:41", "ingestion:74:50"],
+      "decision": "hold",
+      "review_lane": "needs_review",
+      "candidate_category_id": "food.seasonings.baking.starch",
+      "reason": "The title and source path explicitly identify sweet-potato starch. Origin is an attribute; because current taxonomy lacks a generic starch leaf, the product remains a held taxonomy candidate.",
+      "issues_preserved": []
+    }
+  ],
+  "identity_merge": "not_requested",
+  "preserved_contracts": [
+    "No raw, accepted, explicit review-decision, taxonomy, or DB data modified.",
+    "Promotion, quantity, package, unit, and price interpretation remain outside classification-only scope.",
+    "Group 167 preserves four promotion_unresolved observations independently from classification.",
+    "Group 169 preserves mixed_package_unresolved and multiple_package_quantities on the four already-classified generic-gochujang observations.",
+    "Broad retail shelf labels do not override explicit product form.",
+    "Missing taxonomy ids are review candidates only and are not treated as approved taxonomy additions.",
+    "Historical bulk decisions were revalidated against current titles, current classification state, and current taxonomy rather than copied blindly."
+  ],
+  "executed_tests": [
+    "Reviewed all 30 current remaining observations across groups 167-171 and grouped repeated observations into 15 exact source_record_keys.",
+    "Revalidated food.drinks.juice.fruit_drink, food.dairy.cream.fresh, and food.seasonings.pastes.gochujang against current pass43 taxonomy and confirmed that the three held candidate ids are absent.",
+    "Compared all 30 current raw_record_ids with current accepted.json new_included_ids and accepted_but_blocked_ids and found zero overlaps.",
+    "Searched the seven higher-risk source_record_keys in groups 169-171 against the current preserved 431 explicit review decisions and found zero exact matches; the historical 151-208 bulk conflict record is also zero.",
+    "No repository tests or DB import were run because this is proposal-only review and no executable, taxonomy, accepted, or DB state was changed."
+  ]
+}
