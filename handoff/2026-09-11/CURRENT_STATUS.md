@@ -25,11 +25,11 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다.
 
 ## 2. 완성까지 남은 strict-audit 상한
 
-- 미완 strict 범위: `pending 001~021`
-- 해당 원본 관측: **1,216 observations**
-- pass41 전체 pending 3,916 대비 **약 31.1%**
-- 관측 범위 기준 `022~451`은 약 68.9%를 strict/ordered 방식으로 지나왔다. 이것을 최종 완료율로 부르면 안 된다. 과거 proposal 중복/re-review, taxonomy holds, 최종 reconciliation이 남아 있다.
-- `001~021`에도 과거 proposal과 cross-group duplicate가 있으므로 실제 새 판단량은 1,216보다 작을 수 있다.
+- 미완 strict 범위: `pending 001~020`
+- 해당 원본 관측: **1,175 observations**
+- pass41 전체 pending 3,916 대비 **약 30.0%**
+- 관측 범위 기준 `021~451`은 약 70.0%를 strict/ordered 방식으로 지나왔다. 이것을 최종 완료율로 부르면 안 된다. 과거 proposal 중복/re-review, taxonomy holds, 최종 reconciliation이 남아 있다.
+- `001~020`에도 과거 proposal과 cross-group duplicate가 있으므로 실제 새 판단량은 1,175보다 작을 수 있다.
 
 분류 sweep 뒤 DB 반영 전 남는 단계:
 1. proposal 간 raw-record/source-key dedupe
@@ -40,19 +40,20 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다.
 
 ## 3. strict reverse sweep 누계
 
-완료 범위: **pending 022~043**
+완료 범위: **pending 021~043**
 
-- observations opened: **667**
+- observations opened: **708**
 - already-classified exclusions: **59**
-- strict/new classification reviews: **608**
-- strict group source listings reviewed: **580**
-- existing-leaf proposals: **276 listings**
-- taxonomy/product-form/promotion/manual-review holds: **304 listings**
+- strict/new classification reviews: **649**
+- strict group source listings reviewed: **621**
+- existing-leaf proposals: **291 listings**
+- taxonomy/product-form/promotion/manual-review holds: **330 listings**
 
 > 위 source-listing 수는 strict group 내부 판단 수의 누계다. 서로 다른 pending group에 같은 `source_record_key`가 재등장할 수 있으므로 글로벌 unique source-key 수로 사용하지 않는다. 최종 global dedupe에서 합친다.
 
 최근 그룹:
-- 022 `proposals/emart-organic-022.json` — 40 opened / 2 excluded / 38 new / existing 31 / hold 7
+- 021 `proposals/costco-kimchi-shelf-021.json` — 41 opened / 0 excluded / 41 new / existing 15 / hold 26
+- 022 `proposals/emart-organic-022.json` — 40 / 2 / 38 / existing 31 / hold 7
 - 023 `proposals/costco-tissue-shelf-023.json` — 39 / 9 / 30 / existing 13 / hold 17
 - 024 `proposals/emart-coffee-tea-024.json` — 36 / 2 / 34 / existing 23 / hold 11
 - 025 `proposals/emart-health-foods-025.json` — 35 / 0 / 35 / existing 0 / hold 35
@@ -68,6 +69,7 @@ Chat 단계에서는 DB import/rebuild/test를 실행하지 않는다.
 - 035~043: see latest checkpoints.
 
 Latest checkpoints:
+- `checkpoints/checkpoint-after-pending-021.md`
 - `checkpoints/checkpoint-after-pending-022.md`
 - `checkpoints/checkpoint-after-pending-023.md`
 - `checkpoints/checkpoint-after-pending-024.md`
@@ -84,24 +86,29 @@ Latest checkpoints:
 
 ## 4. 최근 중요 발견
 
+### pending 021 — Costco `김치`
+- 41 observations / exclusions 0 / existing 15 / hold 26.
+- shelf pollution is severe: kimchi refrigerators, kitchen storage, kimchi marinade, pickles, chili powder, fermented shrimp, prepared pork/udon/side dishes, and a kimchi-fried-rice scorched-rice item all appear under `김치`.
+- all 41 rows are genuinely classification-pending; no already-classified exclusions.
+- existing kimchi leaves reused only when product form is explicit: cabbage, water, green-onion, and seokbakji. Mixed packs crossing current leaves were held.
+- standalone 깍두기 is held as candidate `food.preserved.kimchi.kkakdugi`; the current category snapshot has no dedicated 깍두기 leaf.
+- 10 LG kimchi refrigerators are held out of current taxonomy; official Costco URLs identify `Appliances/Refrigerators/Kimchi-Fridges`.
+- 고춧가루 -> `food.seasonings.spices.chili_powder`; 장아찌 -> `food.preserved.sides.pickled`; 제육볶음 -> `food.meals.prepared.seasoned_meat`; explicit 우동 -> `food.meals.noodles.udon`; 멸치볶음 -> `food.preserved.sides.stir_fried`.
+- 새우젓 reuses held candidate `food.seafood.fermented.shrimp_paste` from prior strict sweep.
+- group-marker search found no older pending021 proposal; 41 source-key repository collision search surfaced no prior proposal hit and no `review-decisions-input.json` hit.
+
 ### pending 022 — Emart `친환경/유기농`
-- 40 observations / **2 classified exclusions** / 38 new; existing 31 / hold 7.
-- broad organic shelf is strongly multi-department: eggs, vegetables, dairy, pasta, traditional drinks, grains and seasonings all coexist. Shelf name was not used as a product taxonomy leaf.
-- existing leaves reused for explicit fresh eggs/quail eggs, milk, yogurt form, baby sliced cheese, pasta and fresh produce.
-- holds: two freezable ice-cream products; 수정과; raw 서리태; kombucha; misutgaru; 깨소금.
-- raw 서리태 follows prior strict policy: pass41 has no confirmed black-soybean leaf, so do not substitute chickpea/another grain leaf.
-- `깨소금` was not forced into `food.seasonings.spices.roasted_sesame` because exact product-form equivalence was not established.
-- exact source-key overlap found: `1000011626449` (베이비 요구르트 플레인) also appears in pending026 / `proposals/emart-dairy-026.json`; both decisions are `food.dairy.yogurt.spoon`. Keep both strict group observations and dedupe globally later.
-- repository collision searches across all 38 classification-pending keys surfaced no `review-decisions-input.json` hit.
+- 40 observations / 2 classified exclusions / 38 new; existing 31 / hold 7.
+- broad organic shelf is strongly multi-department; product identity/form controlled classification.
+- exact source-key overlap `1000011626449` also appears in pending026 with the same `food.dairy.yogurt.spoon` decision; preserve strict group accounting and dedupe globally later.
 
 ### pending 023 — Costco `휴지`
 - 39 observations / 9 classified exclusions / 30 new; existing 13 / hold 17.
-- shelf pollution is material: body cooling sheet, table napkin, dry cotton/coin tissues, cleaning wipes, trash bins, and a garden hose reel appeared under `휴지`.
-- cleaning wipes were not forced into personal `paper.wipes`; trash bins/hose reel likewise held rather than misclassified.
+- shelf pollution includes body cooling sheet, table napkin, dry cotton/coin tissues, cleaning wipes, trash bins, and a garden hose reel.
 
 ### pending 024 — Emart `커피/원두/차`
 - 36 observations / 2 classified exclusions / 34 new; existing 23 / hold 11.
-- shallow status inspection initially surfaced one exclusion; direct per-record inspection found the second. Canonical exclusion count is 2.
+- direct per-record inspection corrected an initial shallow-search exclusion miss.
 
 ### pending 025 — Emart `건강식품`
 - 35 observations / exclusions 0 / existing 0 / holds 35.
@@ -124,24 +131,24 @@ Latest checkpoints:
 - pending313 `농심 생생 우동 용기 276G`: older proposal `cup_ramen` vs final sweep `udon` conflict. 최종 승격 전 해결.
 - 과거 `2,165`, `+266 final sweep`, `840 classification reviews 044~109` 같은 숫자를 global unique completion으로 사용하지 않는다.
 
-## 6. 현재 재개점 — pending 021
+## 6. 현재 재개점 — pending 020
 
 **다음 AI는 여기서 이어간다.**
 
-- group: `pending/021`
-- mart/shelf: Costco `김치`
-- index: **41 observations / 41 titles**
-- files: `pending/021/001.json`, `pending/021/002.json`
-- pending022 strict 완료:
-  - `proposals/emart-organic-022.json`
-  - `checkpoints/checkpoint-after-pending-022.md`
+- group: `pending/020`
+- mart/shelf: Emart `밀키트/간편식`
+- index: **42 observations / 21 titles**
+- files: `pending/020/001.json`, `pending/020/002.json`
+- pending021 strict 완료:
+  - `proposals/costco-kimchi-shelf-021.json`
+  - `checkpoints/checkpoint-after-pending-021.md`
 
-021 절차:
+020 절차:
 1. 두 pending 조각을 전부 fetch하고 record별 `review_status=classified` 제외 수를 직접 확정.
-2. 기존 proposal의 **exact raw/source-key coverage**를 계산. group/file 이름만 믿지 않는다.
-3. Costco `김치` shelf 오염 여부를 title/product form과 official URL taxonomy hint로 확인한다.
-4. cross-group source-key overlap과 431 explicit decision collision을 별도로 기록한다.
-5. 완료 즉시 이 파일을 `pending 020` 재개점으로 갱신.
+2. 42 observations / 21 titles 구조가 반복수집 pair인지 source-key/raw-id 기준으로 실측한다.
+3. 기존 proposal의 **exact raw/source-key coverage**를 계산. group/file 이름만 믿지 않는다.
+4. Emart `밀키트/간편식` shelf보다 title/product form을 우선하고, 431 explicit decision collision + cross-group source-key overlap을 별도로 기록한다.
+5. 완료 즉시 이 파일을 `pending 019` 재개점으로 갱신.
 
 ## 7. 새 AI 문서 신뢰 순서
 
