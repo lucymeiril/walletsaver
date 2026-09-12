@@ -1,10 +1,12 @@
 # 이어받기 진행 기록
 
+> **상태 안내:** 이 파일은 append-only 역사 로그다. 아래 여러 절의 `다음 재개점`은 각 작성 시점의 기록이므로 현재 작업 위치로 사용하지 않는다. **현재 재개점과 strict 누계는 `CURRENT_STATUS.md`만 단일 기준으로 사용한다.**
+
 ## 2026-09-11 인수인계 기준
 
 - 분류 데이터는 pass41, 분류 코드18e8fc9 기준. 포장 중 추가 분류 없음.
 - 9,196관측 중5,280검토 적재/3,916보류. 운영 승인/공개 없음.
-- README → PENDING_INDEX → 해당 pending 조각 순으로 읽기.
+- 새 AI 읽기 순서: README → **CURRENT_STATUS** → PROGRESS → PENDING_INDEX → 해당 pending 조각. 숫자/재개점 충돌 시 CURRENT_STATUS를 우선한다.
 - 다음 작업자는 아래에 새 절을 추가: 처리 묶음/원본ID, 판단, 수정파일, 제안과 실제 적재의 구별, 실행한 검사, 다음 재개점.
 - 원본/현재 DB는 동결 기준선이다. 새로운 분류 커밋만으로 이 폴더의 DB 수치가 바뀌지 않는다.
 - 포장 검증: manifest 전체 파일 해시/압축 복원, 원본108실행 및 catalog 모든 조각 무손실 대조, 보류3,916개 ID 전량 대조 통과. 추출 원본DB로 새 DB를 재구축하여 동일5,280적재/3,916보류 및 검증·멱등 import를 확인했다. 복원한 stage 정합성 검사도 통과. 전체 앱 회귀검사는 이번 자료 포장과 무관하여 미실행.
@@ -73,7 +75,7 @@
 - 신규 리프 후보 18관측: 브로콜리 2판매페이지 반복 4건 → `food.produce.vegetables.broccoli`; 미나리 반복 2건 → `water_parsley`; 얼갈이 반복 2건 → `young_napa_cabbage`; 셀러리 반복 2건 → `celery`; 통 양상추 반복 2건 → `lettuce`; 생강 반복 2건 → `ginger`; 깐쪽파 반복 2건 → `spring_onion`; 생옥수수 반복 2건 → `corn` 후보로 기록했다.
 - 정책 보류 이유: 얼갈이를 일반 통배추, 쪽파를 기존 표시명 대파인 `food.produce.vegetables.scallion`, 양상추를 쌈채소/샐러드채소로 자동 축소하지 않았다. 브로콜리 손질팩도 신선 브로콜리 품목으로 보고 냉동/가공채소 리프로 돌리지 않았다.
 - 실제 반영/검사: taxonomy 코드, 기존 review decision, staging DB는 수정하지 않았다. GitHub 텍스트 읽기·쓰기 외 실행 도구가 없어 pytest/DB import/verify/멱등 검사는 실행하지 않았다. pass41 적재/보류 수치는 그대로다.
-- 다음 재개점: 신규 리프 후보는 다른 마트의 동일 품목 관측이 있는지 먼저 모아 교차근거를 늘린 뒤 한 번에 taxonomy 설계를 검토한다. 그 전에는 `suggested_new_leaf`를 실존 리프처럼 사용하지 않는다. 이어서는 아직 손대지 않은 소형 채소/식품 묶음 중 기존 리프로 안전하게 제안 가능한 항목을 우선 처리한다.
+- 다음 재개점: 신규 리프 후보는 다른 마트의 동일 품목 관측이 있는지 먼저 모아 교차근거를 늘린 뒤 한 번에 taxonomy 설계를 검토한다. 그 전에는 `suggested_new_leaf`를 실존 리프로 사용하지 않는다. 이어서는 아직 손대지 않은 소형 채소/식품 묶음 중 기존 리프로 안전하게 제안 가능한 항목을 우선 처리한다.
 
 ## 2026-09-11 친환경 채소 제안 — pending 385 / 420 / 421 / 422
 
@@ -104,3 +106,17 @@
 - 비분류 pending 4관측: `CJ 100%태양초 우리쌀고추장 1.5KG+350G` 반복 2건과 `대상 청정원 순창 태양초 고추장 1.5KG+400G` 반복 2건은 이미 `food.seasonings.pastes.gochujang`으로 분류됐으며 pending 원인은 `mixed_package_unresolved`/`multiple_package_quantities`다. 이번 작업에서 규격을 덮어쓰지 않았다.
 - 실제 반영/검사: GitHub 텍스트 읽기·쓰기만 사용했다. `initial_taxonomy.py`, 기존 431개 review decision, staging DB는 수정하지 않았고 pytest/DB import/`verify_initial_stage.py`/멱등 검사는 실행하지 않았다. pass41의 5,280 적재/3,916 보류 수치는 그대로다.
 - 다음 재개점: 신규 후보(액상조미료·분말전분·연유·초코시럽)를 다른 마트/기존 카탈로그에서 더 찾아 교차근거를 쌓고 한 번에 taxonomy 추가 여부를 결정한다. 그 전에는 `suggested_new_leaf`를 실존 리프로 사용하지 않는다. 이어서는 아직 손대지 않은 소형 식품 pending 중 기존 리프로 안전하게 제안 가능한 묶음을 우선 처리한다.
+
+## 2026-09-12 strict reverse sweep — pending 020
+
+- 확인 범위: `pending/020/001.json`, `pending/020/002.json` 전부. 이마트 `밀키트/간편식` 42관측은 21개 `source_record_key`가 ingestion 84/85에 한 번씩 반복된 정확한 pair 구조다.
+- 이미 분류 완료 제외: 부대찌개·물만두·화덕피자 3판매페이지가 각각 두 번 관측되어 **6관측**을 신규 classification 작업량에서 제외했다.
+- 실제 신규 검토: **36관측 / 18판매페이지**. `proposals/emart-mealkit-convenience-020.json`에 기존 leaf 4개와 hold 14개를 기록했고, `checkpoints/checkpoint-after-pending-020.md`에 누계와 다음 재개점을 고정했다.
+- 기존 leaf 4개: 쌈무 → `food.preserved.sides.pickled`; 비프라자냐 → `food.meals.noodles.pasta`; 모듬닭꼬치 → `food.meals.prepared.chicken`; 된장찌개 양념 → `food.seasonings.sauces.stew`.
+- 선행 정책 재사용: standalone 단무지는 `food.preserved.sides.danmuji` 후보, 도토리묵은 `food.plant.muk.acorn` 후보, 감자튀김은 `food.meals.prepared.frozen_potato` 후보를 그대로 재사용했다. 맘마밀 이유식/오트밀은 baby-food taxonomy 부재로 hold했다.
+- 추가 hold: 생선까스는 `food.meals.prepared.fish_cutlet` 후보; 메밀김치전병·곤드레나물밥은 exact current leaf가 확인되지 않아 정책 hold; `딱 한끼(순한맛)`은 삼진어묵 collection 정보만으로 제품형태를 확정하지 않고 identity hold했다.
+- collision screen: 21개 source key 전부를 기존 proposal 및 431 explicit decision 입력과 exact 검색했으며 각각 **0 hit**. pending-path 검색에서도 cross-group exact key는 표면화되지 않았다.
+- strict 누계: 완료 범위 **pending 020~043**, opened **750**, exclusions **65**, new classification reviews **685**, reviewed source-listing decisions **639**, existing proposals **295**, holds **344**.
+- 남은 strict 상한: `pending 001~019` **1,133 observations**, pass41 pending 3,916의 약 **28.9%**. 관측범위 020~451은 약 71.1%를 지나왔지만 최종 프로젝트 완료율은 아니다.
+- 실제 반영/검사: 이번 작업도 GitHub proposal/checkpoint/status 문서만 갱신했다. DB import/rebuild, taxonomy code edit, pytest, 멱등 검사는 실행하지 않았다.
+- **현재 재개점: `pending/019` — Emart `면류/통조림`, 42 observations / 25 titles, files `pending/019/001.json`, `pending/019/002.json`. 현재 숫자는 항상 `CURRENT_STATUS.md`를 우선한다.**
